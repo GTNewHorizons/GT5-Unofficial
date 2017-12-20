@@ -7,9 +7,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.PollutionUtils;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -334,22 +334,22 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				this.mNewTier = mTier2;
 				//ReflectionUtils.setFinalStatic(mTier2, GT_Values.V[0]);
 			} catch (Exception e) {
-				Utils.LOG_INFO("Failed setting mTier.");
+				Logger.INFO("Failed setting mTier.");
 				e.printStackTrace();
 			}
 
 			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
 			if (mTicksToBurnFor >= Integer.MAX_VALUE){
 				mTicksToBurnFor = Integer.MAX_VALUE;
-				Utils.LOG_INFO("Fuel went over Int limit, setting to MAX_VALUE.");
+				Logger.INFO("Fuel went over Int limit, setting to MAX_VALUE.");
 			}
 			this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor/20/60/3);
-			Utils.LOG_INFO("step | "+(int) (mTicksToBurnFor * getEfficiency() / 100L));
+			Logger.INFO("step | "+(int) (mTicksToBurnFor * getEfficiency() / 100L));
 			return (int) (mTicksToBurnFor * getEfficiency() / 100L);
 			//return (int) (tFuel.mSpecialValue * 365L * getEfficiency() / 100L);
 			//return tFuel.mEUt;
 		}
-		Utils.LOG_INFO("Not sure");
+		Logger.INFO("Not sure");
 		return 0;
 	}
 

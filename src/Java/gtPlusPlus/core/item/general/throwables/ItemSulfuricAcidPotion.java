@@ -15,6 +15,7 @@ public class ItemSulfuricAcidPotion extends CoreItem {
 		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, description, EnumRarity.common, EnumChatFormatting.GRAY, false, null);
 	}
 	
+	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		if (!player.capabilities.isCreativeMode) {
 			--item.stackSize;

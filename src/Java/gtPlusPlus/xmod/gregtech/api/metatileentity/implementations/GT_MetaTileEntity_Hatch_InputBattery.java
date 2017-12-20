@@ -3,21 +3,16 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_4by4;
+import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.*;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -219,10 +214,12 @@ GT_MetaTileEntity_Hatch {
 				&& (mRecipeMap == null || mRecipeMap.containsInput(aStack));
 	}
 
+	@Override
 	public int rechargerSlotStartIndex() {
 		return 0;
 	}
 
+	@Override
 	public int rechargerSlotCount() {
 		switch (mTier) {
 			case 2 :
@@ -234,10 +231,12 @@ GT_MetaTileEntity_Hatch {
 		}
 	}
 
+	@Override
 	public int dechargerSlotStartIndex() {
 		return 0;
 	}
 
+	@Override
 	public int dechargerSlotCount() {
 		return 0;
 	}

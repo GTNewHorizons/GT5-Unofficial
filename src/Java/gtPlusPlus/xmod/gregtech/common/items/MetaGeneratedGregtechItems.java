@@ -12,6 +12,7 @@ import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.StringUtils;
@@ -35,7 +36,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		int tLastID = 0;
 
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			Utils.LOG_INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.)");
+			Logger.INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.)");
 			GregtechItemList.Electric_Pump_LuV.set(this.addItem(tLastID = 0, "Electric Pump (LuV)", "163920 L/sec (as Cover)", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 			GregtechItemList.Electric_Pump_ZPM.set(this.addItem(tLastID = 1, "Electric Pump (ZPM)", "655680 L/sec (as Cover)", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 2L), getTcAspectStack(TC_Aspects.MACHINA, 2L), getTcAspectStack(TC_Aspects.ITER, 2L), getTcAspectStack(TC_Aspects.AQUA, 2L)}));
 			GregtechItemList.Electric_Pump_UV.set(this.addItem(tLastID = 2, "Electric Pump (UV)", "2622720 L/sec (as Cover)", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 4L), getTcAspectStack(TC_Aspects.MACHINA, 4L), getTcAspectStack(TC_Aspects.ITER, 4L), getTcAspectStack(TC_Aspects.AQUA, 4L)}));
@@ -299,7 +300,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 	private boolean registerOldCircuits(){
 		//Enable Old Circuits
-		Utils.LOG_INFO("[Old Feature - Circuits] Enabling Pre-5.09.28 Circuits and Data Storage.");
+		Logger.INFO("[Old Feature - Circuits] Enabling Pre-5.09.28 Circuits and Data Storage.");
 
 		GregtechItemList.Old_Circuit_Primitive.set(this.addItem(200, "NAND Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
 		GregtechItemList.Old_Circuit_Basic.set(this.addItem(201, "Basic Electronic Circuit", "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));

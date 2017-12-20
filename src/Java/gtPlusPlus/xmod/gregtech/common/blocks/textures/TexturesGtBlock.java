@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +23,7 @@ public class TexturesGtBlock {
 
 		public CustomIcon(final String aIconName) {
 			this.mIconName = aIconName;
-			Utils.LOG_WARNING("Constructing a Custom Texture. " + this.mIconName);
+			Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
 		}
 
@@ -40,7 +40,7 @@ public class TexturesGtBlock {
 		@Override
 		public void run() {
 			this.mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + this.mIconName);
-			Utils.LOG_WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
+			Logger.WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
 		}
 
 		@Override

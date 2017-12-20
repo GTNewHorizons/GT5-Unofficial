@@ -1,6 +1,7 @@
 package gtPlusPlus.core.tileentities;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
@@ -12,13 +13,12 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.thaumcraft.common.tile.TCTileEntities;
 
 public class ModTileEntities {
 
 	public static void init() {
-		Utils.LOG_INFO("Registering Tile Entities.");
+		Logger.INFO("Registering Tile Entities.");
 		GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "HeliumGenerator");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");

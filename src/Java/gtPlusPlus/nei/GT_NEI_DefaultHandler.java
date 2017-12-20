@@ -328,7 +328,7 @@ extends TemplateRecipeHandler {
 						if (!permutations.isEmpty()) {
 							ItemStack stack;
 							for (final Iterator<ItemStack> i$ = permutations.iterator(); i$.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, new Object[]{stack}))) {
-								stack = (ItemStack) i$.next();
+								stack = i$.next();
 							}
 						} else {
 							final ItemStack base = new ItemStack(tStack.getItem(), tStack.stackSize);

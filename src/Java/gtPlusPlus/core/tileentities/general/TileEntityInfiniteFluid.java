@@ -6,12 +6,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
 public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler {
 
@@ -22,16 +17,19 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 	public TileEntityInfiniteFluid() {
 	}
 
+	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		needsUpdate = true;
 		return this.tank.fill(resource, doFill);
 	}
 
+	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 		needsUpdate = true;
 		return this.tank.drain(resource.amount, doDrain);
 	}
 
+	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 		needsUpdate = true;
 		FluidStack fluid = this.tank.getFluid();
@@ -60,14 +58,17 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 		return stack;
 	}
 
+	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 		return true;
 	}
 
+	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 		return new FluidTankInfo[] { this.tank.getInfo() };
 	}
@@ -80,6 +81,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 		return volume;
 	}
 
+	@Override
 	public void updateEntity() {
 		
 		if (this.tank.getFluid() != null){

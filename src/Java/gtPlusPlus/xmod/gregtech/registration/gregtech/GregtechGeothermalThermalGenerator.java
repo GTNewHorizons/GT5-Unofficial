@@ -2,11 +2,11 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class GregtechGeothermalThermalGenerator {
 
 	public static void run() {
 		if (LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
+			Logger.INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
 			if (CORE.ConfigSwitches.enableMachine_GeothermalEngines) {
 				run1();
 			}

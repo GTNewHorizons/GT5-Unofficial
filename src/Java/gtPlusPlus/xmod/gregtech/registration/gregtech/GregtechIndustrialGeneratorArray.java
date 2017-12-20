@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityGeneratorArray;
 
@@ -8,7 +8,7 @@ public class GregtechIndustrialGeneratorArray {
 
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Generator Array Multiblock.");
+			Logger.INFO("Gregtech5u Content | Registering Industrial Generator Array Multiblock.");
 			//if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) { // TODO
 				run1();
 			//}

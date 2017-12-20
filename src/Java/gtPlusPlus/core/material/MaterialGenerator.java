@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
@@ -140,7 +141,7 @@ public class MaterialGenerator {
 			return true;
 		} catch (final Throwable t)
 		{
-			Utils.LOG_WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
 		}
 	}
@@ -211,7 +212,7 @@ public class MaterialGenerator {
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 			new RecipeGen_Recycling(matInfo);
 		} catch (final Throwable t){
-			Utils.LOG_WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
 	}
 

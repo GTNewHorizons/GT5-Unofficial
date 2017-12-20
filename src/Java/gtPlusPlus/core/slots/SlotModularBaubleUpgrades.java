@@ -6,7 +6,7 @@ import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mV
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
@@ -25,8 +25,8 @@ public class SlotModularBaubleUpgrades extends Slot {
 	public boolean isItemValid(final ItemStack itemstack) {
 		boolean isValid = false;
 		if (itemstack != null) {
-			Utils.LOG_INFO("trying to insert " + itemstack.getDisplayName());
-			Utils.LOG_INFO("Valid Upgrade count: " + mValidUpgradeList.size());
+			Logger.INFO("trying to insert " + itemstack.getDisplayName());
+			Logger.INFO("Valid Upgrade count: " + mValidUpgradeList.size());
 
 			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
 			while (it.hasNext()) {

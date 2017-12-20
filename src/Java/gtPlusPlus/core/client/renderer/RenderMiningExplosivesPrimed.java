@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -19,7 +19,7 @@ public class RenderMiningExplosivesPrimed extends Render {
 
 	public RenderMiningExplosivesPrimed(){
 		this.shadowSize = 0.5F;
-		Utils.LOG_INFO("Rendering Mining Explosion. 1");
+		Logger.INFO("Rendering Mining Explosion. 1");
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class RenderMiningExplosivesPrimed extends Render {
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
 	public void doRender(final EntityTNTPrimed entity, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
-		Utils.LOG_INFO("Rendering Mining Explosion. 2");
+		Logger.INFO("Rendering Mining Explosion. 2");
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)p_76986_2_, (float)p_76986_4_, (float)p_76986_6_);
 		float f2;

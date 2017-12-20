@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -104,13 +105,13 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		final String toolScrewDriver = "craftingToolScrewdriver";
 
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
-			Utils.LOG_WARNING("stickLong of "+cleanName+" does not exist.");
+			Logger.WARNING("stickLong of "+cleanName+" does not exist.");
 			return false;
 		}
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
-			Utils.LOG_WARNING("plateDense of "+cleanName+" does not exist.");
+			Logger.WARNING("plateDense of "+cleanName+" does not exist.");
 			if (null != ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDouble, 1)){
-				Utils.LOG_WARNING("plateDouble of "+cleanName+" does exist. Using it instead.");
+				Logger.WARNING("plateDouble of "+cleanName+" does exist. Using it instead.");
 				RecipeUtils.recipeBuilder(
 						plateDouble, plateDouble, plateDouble,
 						toolFile, rodLong, toolHammer,
@@ -119,7 +120,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 				return true;
 			}
-			Utils.LOG_WARNING("plateDouble of "+cleanName+" does not exist.");
+			Logger.WARNING("plateDouble of "+cleanName+" does not exist.");
 			return false;
 		}
 
@@ -161,13 +162,13 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 				//Utils.LOG_WARNING(removalist.toString());
 
 				bHardness = removalist.getBlockHardness(world, X, Y, Z)*100;
-				Utils.LOG_INFO("Hardness: "+bHardness);
+				Logger.INFO("Hardness: "+bHardness);
 
 				bDurabilityLoss = 100;
 				//Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
 				correctTool = this.canPickaxeBlock(removalist, world, new int[]{X,Y,Z});
-				Utils.LOG_WARNING(""+correctTool);
+				Logger.WARNING(""+correctTool);
 
 				if (!correctTool){
 					return 0;

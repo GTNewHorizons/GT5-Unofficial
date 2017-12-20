@@ -18,14 +18,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.particles.BlockBreakParticles;
@@ -36,9 +34,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -101,7 +97,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
 
-		Utils.LOG_INFO("Called NBT data save");
+		Logger.WARNING("Called NBT data save");
 		aNBT.setLong("mInternalPower", this.mInternalPower);
 
 		//Save [Buzz]Saw
@@ -112,7 +108,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				final NBTTagCompound data = new NBTTagCompound();
 				stack.writeToNBT(data);
 				data.setInteger("Slot", i);
-				Utils.LOG_INFO("Saving "+stack.getDisplayName()+" in slot "+i);
+				Logger.WARNING("Saving "+stack.getDisplayName()+" in slot "+i);
 				list.appendTag(data);
 			}
 		}
@@ -132,7 +128,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			final int slot = data.getInteger("Slot");
 			if((slot >= 0) && (slot < 2)){
 				this.mInventory[slot] = ItemStack.loadItemStackFromNBT(data);
-				Utils.LOG_INFO("Loading "+this.mInventory[slot].getDisplayName()+" in slot "+i);
+				Logger.WARNING("Loading "+this.mInventory[slot].getDisplayName()+" in slot "+i);
 			}
 		}
 
@@ -143,7 +139,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public boolean drainEnergyInput(final long aEU) {
 		if (this.mInternalPower >= 32){
 			this.mInternalPower = (this.mInternalPower-32);
-			Utils.LOG_MACHINE_INFO("Draining internal power storage by 32EU. Stored:"+this.mInternalPower);
+			Logger.MACHINE_INFO("Draining internal power storage by 32EU. Stored:"+this.mInternalPower);
 			return true;}
 		return false;
 	}
@@ -163,7 +159,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 					}
 				}
 				else {
-					Utils.LOG_MACHINE_INFO("Bad Power hatch to obtain energy from.");
+					Logger.MACHINE_INFO("Bad Power hatch to obtain energy from.");
 				}
 			}
 		}
@@ -238,7 +234,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide() || aBaseMetaTileEntity.getWorld().isRemote) {
-			Utils.LOG_INFO("Doing nothing Client Side.");
+			Logger.WARNING("Doing nothing Client Side.");
 			return false;
 		}
 		aBaseMetaTileEntity.openGUI(aPlayer);
@@ -257,7 +253,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_MACHINE_INFO("Working");
+		Logger.MACHINE_INFO("Working");
 		this.mEfficiency = 0;
 		this.mEfficiencyIncrease = 0;
 		this.mMaxProgresstime = 0;
@@ -266,38 +262,38 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Utils.LOG_WARNING("Step 1");
+		Logger.WARNING("Step 1");
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 
 		for (int i = -7; i <= 7; i++) {
-			Utils.LOG_WARNING("Step 2");
+			Logger.WARNING("Step 2");
 			for (int j = -7; j <= 7; j++) {
-				Utils.LOG_WARNING("Step 3");
+				Logger.WARNING("Step 3");
 				for (int h = 0; h <= 1; h++) {
-					Utils.LOG_WARNING("Step 4");
+					Logger.WARNING("Step 4");
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 					//Farm Floor inner 14x14
 					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
-						Utils.LOG_WARNING("Step 5 - H:"+h);
+						Logger.WARNING("Step 5 - H:"+h);
 						// Farm Dirt Floor and Inner Air/Log space.
 						if (h == 0) {
 							//Dirt Floor
 							if (!TreefarmManager.isDirtBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_MACHINE_INFO("Dirt like block missing from inner 14x14.");
-								Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Logger.MACHINE_INFO("Dirt like block missing from inner 14x14.");
+								Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}
 						}
 					}
 					//Dealt with inner 5x5, now deal with the exterior.
 					else {
-						Utils.LOG_WARNING("Step 6 - H:"+h);
+						Logger.WARNING("Step 6 - H:"+h);
 						//Deal with all 4 sides (Fenced area)
 						if (h == 1) {
 							if (!TreefarmManager.isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_MACHINE_INFO("Fence/Gate missing from outside the second layer.");
-								Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Logger.MACHINE_INFO("Fence/Gate missing from outside the second layer.");
+								Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}
 						}
@@ -308,11 +304,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 									if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 										if (tTileEntity.getMetaTileID() != 752) {
-											Utils.LOG_MACHINE_INFO("Farm Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
-											Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" "+tTileEntity.getMetaTileID());
+											Logger.MACHINE_INFO("Farm Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
+											Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" "+tTileEntity.getMetaTileID());
 											return false;
 										}
-										Utils.LOG_WARNING("Found a farm keeper.");
+										Logger.WARNING("Found a farm keeper.");
 									}
 								}
 						}
@@ -325,8 +321,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		if (this.mEnergyHatches != null) {
 			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
 				if (this.mEnergyHatches.get(i).mTier < 2){
-					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Energy Hatches.");
-					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.MACHINE_INFO("You require at LEAST MV tier Energy Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
 				}
 			}
@@ -336,9 +332,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
 				if ((this.mOutputHatches.get(i).mTier < 2) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Output Hatches.");
-					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Logger.MACHINE_INFO("You require at LEAST MV tier Output Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
@@ -347,15 +343,15 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		if (this.mInputHatches != null) {
 			for (int i = 0; i < this.mInputHatches.size(); i++) {
 				if (this.mInputHatches.get(i).mTier < 2){
-					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Input Hatches.");
-					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Logger.MACHINE_INFO("You require at LEAST MV tier Input Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
 		}
 		this.mSolderingTool = true;
-		Utils.LOG_MACHINE_INFO("Multiblock Formed.");
+		Logger.MACHINE_INFO("Multiblock Formed.");
 		return true;
 	}
 
@@ -374,6 +370,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return 0;//moved to cut log instead
 	}
 
+	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}
@@ -412,7 +409,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	private boolean findLogs(final IGregTechTileEntity aBaseMetaTileEntity){
 
-		Utils.LOG_MACHINE_INFO("called findLogs()");
+		Logger.MACHINE_INFO("called findLogs()");
 		int logsCut = 0;
 		boolean stopCheck = false;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
@@ -447,8 +444,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 						}
 
 						if (stopCheck){
-							Utils.LOG_MACHINE_INFO("Either found too many logs, so taking a break mid cut for lag conservation, or found no trees to cut, so stopping");
-							Utils.LOG_MACHINE_INFO("found: "+logsCut +" and check up to h:"+h+" - Taking Break:"+ takingBreak);
+							Logger.MACHINE_INFO("Either found too many logs, so taking a break mid cut for lag conservation, or found no trees to cut, so stopping");
+							Logger.MACHINE_INFO("found: "+logsCut +" and check up to h:"+h+" - Taking Break:"+ takingBreak);
 							stopCheck = false;
 							break OUTER;
 						}
@@ -460,20 +457,20 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 							if (TreefarmManager.isWoodLog(loopBlock) || TreefarmManager.isLeaves(loopBlock)){
 								final long tempStoredEU = this.mInternalPower;
 								if (tempStoredEU >= powerDrain){
-									Utils.LOG_MACHINE_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+this.maxEUStore());
+									Logger.MACHINE_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+this.maxEUStore());
 									this.drainEnergyInput(powerDrain);
 
 									final long tempStoredEU2 = this.mInternalPower;
 									if (tempStoredEU != tempStoredEU2){
 										if (tempStoredEU == (tempStoredEU2+powerDrain)){
-											Utils.LOG_MACHINE_INFO(powerDrain+"EU was drained.");
+											Logger.MACHINE_INFO(powerDrain+"EU was drained.");
 										}
 										else {
-											Utils.LOG_MACHINE_INFO(""+(tempStoredEU-tempStoredEU2)+"EU was drained.");
+											Logger.MACHINE_INFO(""+(tempStoredEU-tempStoredEU2)+"EU was drained.");
 										}
 									}
 									else {
-										Utils.LOG_MACHINE_INFO("Stored EU did not change.");
+										Logger.MACHINE_INFO("Stored EU did not change.");
 									}
 
 									posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
@@ -485,7 +482,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 									}
 								}
 								else {
-									Utils.LOG_MACHINE_INFO("Not enough power to cut.");
+									Logger.MACHINE_INFO("Not enough power to cut.");
 								}
 							}
 						}
@@ -494,7 +491,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}
 		}
 		else {
-			Utils.LOG_MACHINE_INFO("Not enough Power | can hold:"+this.maxEUStore()+" | holding:"+aBaseMetaTileEntity.getStoredEU());
+			Logger.MACHINE_INFO("Not enough Power | can hold:"+this.maxEUStore()+" | holding:"+aBaseMetaTileEntity.getStoredEU());
 		}
 
 		this.canChop = false;
@@ -506,7 +503,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 
 	private boolean growSaplingsWithBonemeal(final IGregTechTileEntity aBaseMetaTileEntity){
-		Utils.LOG_MACHINE_INFO("called growSaplingsWithBonemeal()");
+		Logger.MACHINE_INFO("called growSaplingsWithBonemeal()");
 		int saplings = 0;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
@@ -529,25 +526,25 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 								TreeFarmHelper.applyBonemeal(this.getFakePlayer(), aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, fertTier);
 							}
 							else {
-								Utils.LOG_MACHINE_INFO("x3");
+								Logger.MACHINE_INFO("x3");
 								break;
 							}
 						}
 						else {
-							Utils.LOG_MACHINE_INFO("x2");
+							Logger.MACHINE_INFO("x2");
 							break;
 						}
 					}
 				}
 			}
 		}
-		Utils.LOG_MACHINE_INFO("Tried to grow saplings: | "+saplings );
+		Logger.MACHINE_INFO("Tried to grow saplings: | "+saplings );
 		return true;
 	}
 
 	@SuppressWarnings("deprecation")
 	private boolean plantSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
-		Utils.LOG_MACHINE_INFO("called plantSaplings()");
+		Logger.MACHINE_INFO("called plantSaplings()");
 		final World world = aBaseMetaTileEntity.getWorld();
 		ArrayList<ItemStack> r = this.getStoredInputs();
 		final int saplings = 0;
@@ -555,12 +552,12 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 		int counter = 0;
 		if (r.size() > 0){
-			Utils.LOG_MACHINE_INFO("| r was not null. "+r.size()+" |");
+			Logger.MACHINE_INFO("| r was not null. "+r.size()+" |");
 			if (this.getStoredInternalPower() >= 32) {
 				OUTER : for (final ItemStack n : r){
-					Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
+					Logger.MACHINE_INFO("found "+n.getDisplayName());
 					if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
-						Utils.LOG_MACHINE_INFO(""+n.getDisplayName());
+						Logger.MACHINE_INFO(""+n.getDisplayName());
 
 						counter = n.stackSize;
 						final Block saplingToPlace = Block.getBlockFromItem(n.getItem());
@@ -602,18 +599,18 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 												//Test If Inputs Changed
 												final ArrayList<ItemStack> temp = this.getStoredInputs();
 												if (r != temp){
-													Utils.LOG_MACHINE_INFO("Inputs changed, updating.");
+													Logger.MACHINE_INFO("Inputs changed, updating.");
 													for (final ItemStack xr : r){
-														Utils.LOG_MACHINE_INFO("xr:"+xr.getDisplayName()+"x"+xr.stackSize);
+														Logger.MACHINE_INFO("xr:"+xr.getDisplayName()+"x"+xr.stackSize);
 													}
 													for (final ItemStack xc : temp){
-														Utils.LOG_MACHINE_INFO("xc:"+xc.getDisplayName()+"x"+xc.stackSize);
+														Logger.MACHINE_INFO("xc:"+xc.getDisplayName()+"x"+xc.stackSize);
 													}
 													r = temp;
 												}
 											}
 											else {
-												Utils.LOG_MACHINE_INFO(n.getDisplayName()+" did not have a valid block.");
+												Logger.MACHINE_INFO(n.getDisplayName()+" did not have a valid block.");
 											}
 										}
 										else {
@@ -631,7 +628,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 						}
 					}
 					else {
-						Utils.LOG_MACHINE_INFO("item was not a sapling");
+						Logger.MACHINE_INFO("item was not a sapling");
 						continue OUTER;
 					}
 				}
@@ -643,13 +640,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}*/
 			}
 		}
-		Utils.LOG_MACHINE_INFO("Tried to plant saplings: | "+saplings );
+		Logger.MACHINE_INFO("Tried to plant saplings: | "+saplings );
 		return true;
 	}
 
 	@Optional.Method(modid = "Forestry")
 	public boolean plantSaplingAt(final ItemStack germling, final World world, final int x, final int y, final int z) {
-		Utils.LOG_MACHINE_INFO("Planting Sapling with Forestry method, since it's installed.");
+		Logger.MACHINE_INFO("Planting Sapling with Forestry method, since it's installed.");
 		if (PluginManager.Module.ARBORICULTURE.isEnabled()) {
 			final IIndividual tree = GeneticsUtil.getGeneticEquivalent(germling);
 			if (!(tree instanceof ITree)) {
@@ -677,7 +674,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			if (block.getUnlocalizedName().toLowerCase().contains("leaves") || block.getUnlocalizedName().toLowerCase().contains("leaf") || TreefarmManager.isLeaves(block)){
 				chanceForLeaves = MathUtils.randInt(1, 10);
 				if (chanceForLeaves > 8) {
-					Utils.LOG_MACHINE_INFO("Found some leaves that will drop, chance to drop item "+chanceForLeaves+", needed 800-1000.");
+					Logger.MACHINE_INFO("Found some leaves that will drop, chance to drop item "+chanceForLeaves+", needed 800-1000.");
 				}
 			}
 
@@ -688,7 +685,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				final int multiplier = MathUtils.randInt(1, 3);
 				if ((chanceForRubber > 7) && (chanceForLeaves > 8)){
 					rubberResin.stackSize = multiplier;
-					Utils.LOG_MACHINE_INFO("Adding "+rubberResin.getDisplayName()+" x"+rubberResin.stackSize);
+					Logger.MACHINE_INFO("Adding "+rubberResin.getDisplayName()+" x"+rubberResin.stackSize);
 					this.addOutput(rubberResin);
 					this.updateSlots();
 				}
@@ -702,7 +699,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			if (drops != null){
 				for (final ItemStack outputs : drops){
 					if (chanceForLeaves > 8){
-						Utils.LOG_MACHINE_INFO("Adding 1x "+outputs.getDisplayName());
+						Logger.MACHINE_INFO("Adding 1x "+outputs.getDisplayName());
 						this.addOutput(outputs);
 						//Update bus contents.
 						this.updateSlots();
@@ -747,7 +744,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}
 		}
 		else {
-			Utils.LOG_MACHINE_INFO("No fertiliser found.");
+			Logger.MACHINE_INFO("No fertiliser found.");
 			return false;
 		}
 		return false;
@@ -799,7 +796,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				}
 			}
 		}
-		Utils.LOG_MACHINE_INFO("No fertiliser found.");
+		Logger.MACHINE_INFO("No fertiliser found.");
 		return false;
 	}
 
@@ -836,7 +833,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			return false;
 		}
 
-		Utils.LOG_MACHINE_INFO("Taking one sapling away from in input bus.");
+		Logger.MACHINE_INFO("Taking one sapling away from in input bus.");
 
 		for (final GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
 			tHatch.mRecipeMap = this.getRecipeMap();
@@ -942,19 +939,19 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				if (this.canChop){
 					//Set Machine State
 					if (this.treeCheckTicks == 200){
-						Utils.LOG_MACHINE_INFO("Looking For Trees - Serverside | "+this.treeCheckTicks);
+						Logger.MACHINE_INFO("Looking For Trees - Serverside | "+this.treeCheckTicks);
 						//Find wood to Cut
 						if (validCuttingTool){
 							this.findLogs(aBaseMetaTileEntity);
 						}
 						else {
-							Utils.LOG_MACHINE_INFO("Did not find a valid saw or Buzzsaw blade.");
+							Logger.MACHINE_INFO("Did not find a valid saw or Buzzsaw blade.");
 						}
 					}
 				}
 				else {
 					if (this.plantSaplingTicks == 100){
-						Utils.LOG_MACHINE_INFO("Looking For space to plant saplings - Serverside | "+this.plantSaplingTicks);
+						Logger.MACHINE_INFO("Looking For space to plant saplings - Serverside | "+this.plantSaplingTicks);
 						//Plant Some Saplings
 
 						if (aBaseMetaTileEntity != null){
@@ -962,7 +959,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 						}
 					}
 					else if (this.plantSaplingTicks == 200){
-						Utils.LOG_MACHINE_INFO("Looking For Saplings to grow - Serverside | "+this.plantSaplingTicks);
+						Logger.MACHINE_INFO("Looking For Saplings to grow - Serverside | "+this.plantSaplingTicks);
 						//Try Grow some Saplings
 
 						if (this.doesInputHatchContainAnyFertiliser()){
@@ -980,7 +977,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			}
 			else {
 				if ((this.treeCheckTicks == 200) || (this.plantSaplingTicks == 100) || (this.plantSaplingTicks == 200)){
-					Utils.LOG_MACHINE_INFO("Machine is not fully repaired, not ticking. Repair status code:"+this.getRepairStatus());
+					Logger.MACHINE_INFO("Machine is not fully repaired, not ticking. Repair status code:"+this.getRepairStatus());
 				}
 			}
 

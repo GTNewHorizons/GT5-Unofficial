@@ -3,10 +3,8 @@ package gtPlusPlus.xmod.gregtech.recipes;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
-import gregtech.common.GT_RecipeAdder;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
@@ -25,7 +23,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				//RECIPEHANDLER_CokeOven.debug1();
 				if (((aInput1 == null) /*&& (aFluidInput == null)*/) || ((aOutput == null) || (aFluidOutput == null))) {
 					//Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
+					Logger.WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -34,7 +32,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				//RECIPEHANDLER_CokeOven.debug2(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0)) {
 					//Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
+					Logger.WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -43,7 +41,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				//RECIPEHANDLER_CokeOven.debug3(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aFluidOutput == null) || ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
 					//Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
+					Logger.WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -64,12 +62,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				return true;
 
 			} catch (final NullPointerException e){
-				Utils.LOG_WARNING("Something was null, returning false");
+				Logger.WARNING("Something was null, returning false");
 				return false;
 			}
 		} catch (final Throwable e){
-			Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-			Utils.LOG_WARNING("Failed.");
+			Logger.WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+			Logger.WARNING("Failed.");
 			e.getStackTrace();
 			return false;
 		}
@@ -82,7 +80,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				//RECIPEHANDLER_MatterFabricator.debug1();
 				if (aFluidOutput == null) {
 					//Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
+					Logger.WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -107,7 +105,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			}
 		} catch (final Throwable e){
 			//Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-			Utils.LOG_WARNING("Failed.");
+			Logger.WARNING("Failed.");
 			e.getStackTrace();
 			return false;
 		}
@@ -134,7 +132,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addFuel(final ItemStack aInput1, final ItemStack aOutput1, final int aEU, final int aType) {
 		if (aInput1 == null) {
-			Utils.LOG_WARNING("Fuel Input is Invalid.");
+			Logger.WARNING("Fuel Input is Invalid.");
 			return false;
 		}
 		//new GregtechRecipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
@@ -190,7 +188,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addDehydratorRecipe(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput, int aDuration, final int aEUt) {
-		Utils.LOG_WARNING("Trying to add a Dehydrator recipe.");
+		Logger.WARNING("Trying to add a Dehydrator recipe.");
 		try{
 			if ((aInput == null) || (aFluid == null) || (aOutput == null)) {
 				return false;
@@ -201,7 +199,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
 			//RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
 			return true;
-		}catch (final NullPointerException e){Utils.LOG_WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
+		}catch (final NullPointerException e){Logger.WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
 
@@ -209,18 +207,18 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addDehydratorRecipe(final ItemStack[] aInput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final ItemStack[] aOutputItems, final int[] aChances, int aDuration, final int aEUt) throws IndexOutOfBoundsException{
-		Utils.LOG_WARNING("Trying to add a Dehydrator recipe.");
+		Logger.WARNING("Trying to add a Dehydrator recipe.");
 		try{
 			if (aInput[0] != null){
-				Utils.LOG_WARNING("Recipe requires input: "+aInput[0].getDisplayName()+" x"+aInput[0].stackSize);
+				Logger.WARNING("Recipe requires input: "+aInput[0].getDisplayName()+" x"+aInput[0].stackSize);
 			}
 			if (aInput.length > 1){
 				if (aInput[1] != null){
-					Utils.LOG_WARNING("Recipe requires input: "+aInput[1].getDisplayName()+" x"+aInput[1].stackSize);
+					Logger.WARNING("Recipe requires input: "+aInput[1].getDisplayName()+" x"+aInput[1].stackSize);
 				}
 			}
 			if (aFluidInput != null){
-				Utils.LOG_WARNING("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
+				Logger.WARNING("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
 			}
 			if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
 				return false;
@@ -229,36 +227,36 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				return false;
 			}
 			if (aOutputItems != null){
-				Utils.LOG_WARNING("Recipe will output: "+ItemUtils.getArrayStackNames(aOutputItems));
+				Logger.WARNING("Recipe will output: "+ItemUtils.getArrayStackNames(aOutputItems));
 			}
 			if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
 				return false;
 			}
 			if (aFluidOutput != null){
-				Utils.LOG_WARNING("Recipe will output: "+aFluidOutput.getFluid().getName());
+				Logger.WARNING("Recipe will output: "+aFluidOutput.getFluid().getName());
 			}
 
 
 
 			if (aInput.length == 1){
-				Utils.LOG_WARNING("Dehydrator recipe only has a single input item.");
+				Logger.WARNING("Dehydrator recipe only has a single input item.");
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 
 			}
 			else {
-				Utils.LOG_WARNING("Dehydrator recipe has two input items.");
+				Logger.WARNING("Dehydrator recipe has two input items.");
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 
 			}
 
 			return true;
-		}catch (final NullPointerException e){Utils.LOG_WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
+		}catch (final NullPointerException e){Logger.WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
 	@Override
 	public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aOutput, final int aChance, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {
-			Utils.LOG_WARNING("Fail - Input or Output was null.");
+			Logger.WARNING("Fail - Input or Output was null.");
 			return false;
 		}
 
@@ -270,24 +268,24 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
 		}
 		if ((aDuration = GregTech_API.sRecipeFile.get("blastsmelter", aOutput.getFluid().getName(), aDuration)) <= 0) {
-			Utils.LOG_WARNING("Recipe did not register.");
+			Logger.WARNING("Recipe did not register.");
 			return false;
 		}
 
 		for (int das=0;das<aInput.length;das++){
 			if (aInput[das] != null) {
-				Utils.LOG_WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+				Logger.WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
 			}
 		}
 
 		Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, new ItemStack[]{null}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
 		return true;
 	}
-	
+
 	@Override
 	public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, final int aChance, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {
-			Utils.LOG_WARNING("Fail - Input or Output was null.");
+			Logger.WARNING("Fail - Input or Output was null.");
 			return false;
 		}
 
@@ -299,13 +297,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
 		}
 		if ((aDuration = GregTech_API.sRecipeFile.get("blastsmelter", aOutput.getFluid().getName(), aDuration)) <= 0) {
-			Utils.LOG_WARNING("Recipe did not register.");
+			Logger.WARNING("Recipe did not register.");
 			return false;
 		}
 
 		for (int das=0;das<aInput.length;das++){
 			if (aInput[das] != null) {
-				Utils.LOG_WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+				Logger.WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
 			}
 		}
 
@@ -353,7 +351,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		CustomRecipeMap.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
 		return true;
 	}
-	
+
+	@Override
 	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
 		if (aOutputs == null) {
@@ -372,7 +371,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return false;
 	}
-	
+
+	@Override
 	public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
 			FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt) {
 		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {
@@ -390,55 +390,56 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				new FluidStack[] { aFluidOutput }, aDuration, aEUt, 0);
 		return true;
 	}
-	
+
 	//Machine Component Assembler
-	 public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt) {
-	    	if (areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
-	    		return false;
-	    	}
-	    	if (aOutput1 == null) {
-	    		return false;
-	    	}
-	    	if ((aDuration = GregTech_API.sRecipeFile.get("machinecomponents", aOutput1, aDuration)) <= 0) {
-	            return false;
-	        }
-	    	Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
-	        return true;
-	    }
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
-			boolean itemsNull = true;
-			if (items != null) {
-				for (final ItemStack itemStack : items) {
-					if (itemStack != null) {
-						itemsNull = false;
-						break;
-					}
-				}
-			}
-			boolean fluidsNull = true;
-			if (fluids != null) {
-				for (final FluidStack fluidStack : fluids) {
-					if (fluidStack != null) {
-						fluidsNull = false;
-						break;
-					}
-				}
-			}
-			return itemsNull && fluidsNull;
+	@Override
+	public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt) {
+		if (areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
+			return false;
 		}
-	
+		if (aOutput1 == null) {
+			return false;
+		}
+		if ((aDuration = GregTech_API.sRecipeFile.get("machinecomponents", aOutput1, aDuration)) <= 0) {
+			return false;
+		}
+		Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
+		return true;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
+		boolean itemsNull = true;
+		if (items != null) {
+			for (final ItemStack itemStack : items) {
+				if (itemStack != null) {
+					itemsNull = false;
+					break;
+				}
+			}
+		}
+		boolean fluidsNull = true;
+		if (fluids != null) {
+			for (final FluidStack fluidStack : fluids) {
+				if (fluidStack != null) {
+					fluidsNull = false;
+					break;
+				}
+			}
+		}
+		return itemsNull && fluidsNull;
+	}
+
 
 }

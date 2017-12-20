@@ -12,8 +12,8 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -222,14 +222,14 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-		Utils.LOG_WARNING("Right Click on MTE by Player");
+		Logger.WARNING("Right Click on MTE by Player");
 		if (aBaseMetaTileEntity.isClientSide())
 		{
 			return true;
 			//aBaseMetaTileEntity.openGUI(aPlayer);
 		}
 
-		Utils.LOG_WARNING("MTE is Client-side");
+		Logger.WARNING("MTE is Client-side");
 		this.showEnergy(aPlayer.getEntityWorld(), aPlayer);
 		return true;
 	}

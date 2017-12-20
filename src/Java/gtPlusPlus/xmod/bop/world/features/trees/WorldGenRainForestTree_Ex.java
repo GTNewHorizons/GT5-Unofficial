@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.bop.world.features.trees;
 
 import java.util.Random;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.init.Blocks;
@@ -74,23 +74,23 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 				block2.onPlantGrow(world, x, y - 1, z, x, y, z);
 				byte b0 = 3;
 				byte b1 = 0;
-				Utils.LOG_WARNING("Sapling located at X:"+x+" | Y:"+y+" | Z:"+z);
+				Logger.WARNING("Sapling located at X:"+x+" | Y:"+y+" | Z:"+z);
 				for (int k1 = y - b0 + treeHeight; k1 <= y + treeHeight; k1++)
 				{
-					Utils.LOG_WARNING("[1]| k1 = "+k1+" | y = "+y+" | b0 = "+b0+" | l = "+treeHeight+" | ");
+					Logger.WARNING("[1]| k1 = "+k1+" | y = "+y+" | b0 = "+b0+" | l = "+treeHeight+" | ");
 					int i3 = k1 - (y + treeHeight);
 					int l1 = b1 + 1 - i3;
 					for (int i2 = x - l1; i2 <= x + l1; i2++){
 						int j2 = i2 - x;
-						Utils.LOG_WARNING("[2]| i2 = "+i2+" | x = "+x+" | l1 = "+l1+" | j2 = "+j2+" | ");
+						Logger.WARNING("[2]| i2 = "+i2+" | x = "+x+" | l1 = "+l1+" | j2 = "+j2+" | ");
 						for (int k2 = z - l1; k2 <= z + l1; k2++){
 							int l2 = k2 - z;
-							Utils.LOG_WARNING("[3]| k2 = "+k2+" | z = "+z+" | l1 = "+l1+" | l2 = "+l2+" | ");
+							Logger.WARNING("[3]| k2 = "+k2+" | z = "+z+" | l1 = "+l1+" | l2 = "+l2+" | ");
 							if ((Math.abs(j2) != l1) || (Math.abs(l2) != l1) || ((random.nextInt(2) != 0) && (i3 != 0)))
 							{
 								Block block1 = world.getBlock(i2, k1, k2);
 								if ((block1.isAir(world, i2, k1, k2)) || (block1.isLeaves(world, i2, k1, k2))) {
-									Utils.LOG_WARNING("Setting something as leaves?");
+									Logger.WARNING("Setting something as leaves?");
 									setBlockAndNotifyAdequately(world, i2, k1, k2, this.leaves, this.leavesMeta);
 								}
 							}
@@ -99,7 +99,7 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 				}
 				for (int k1 = 0; k1 < treeHeight; k1++)
 				{
-					Utils.LOG_WARNING("Building tree - Layer "+k1+" | Max height is "+treeHeight);
+					Logger.WARNING("Building tree - Layer "+k1+" | Max height is "+treeHeight);
 					Block block = world.getBlock(x, y + k1, z);
 					if ((block.isAir(world, x, y + k1, z)) || (block.isLeaves(world, x, y + k1, z))){
 						setBlockAndNotifyAdequately(world, x, y + k1, z, this.wood, this.woodMeta);
@@ -118,10 +118,10 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 								for (int xDir = -5; xDir <= 5; xDir++){
 									for (int zDir = -5; zDir <= 5; zDir++){
 										if (canRemoveLeafBlockLayer2(-5, 5, xDir, -5, 5, zDir)){
-											Utils.LOG_WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+" z="+zDir);
+											Logger.WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+" z="+zDir);
 										}
 										else {
-											Utils.LOG_WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+" z="+zDir);
+											Logger.WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+" z="+zDir);
 											block5 = world.getBlock(x+xDir, y+k1, z+zDir);
 											if (block5.isAir(world, x+xDir, y+k1, x+zDir)){
 												setBlockAndNotifyAdequately(world, x+xDir, y + k1, z+zDir, this.leaves, this.leavesMeta);
@@ -133,10 +133,10 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 								for (int xDir = -4; xDir <= 4; xDir++){
 									for (int zDir = -4; zDir <= 4; zDir++){
 										if (canRemoveLeafBlockLayer2(-4, 4, xDir, -4, 4, zDir)){
-											Utils.LOG_WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+1+" z="+zDir);
+											Logger.WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+1+" z="+zDir);
 										}
 										else {
-											Utils.LOG_WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y + k1 + 1+" z="+zDir);
+											Logger.WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y + k1 + 1+" z="+zDir);
 											block5 = world.getBlock(x+xDir, y+k1 + 1, z+zDir);
 											if (block5.isAir(world, x+xDir, y+k1 + 1, x+zDir)){
 												setBlockAndNotifyAdequately(world, x+xDir, y + k1 + 1, z+zDir, this.leaves, this.leavesMeta);
@@ -149,10 +149,10 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 								for (int xDir = -3; xDir <= 3; xDir++){
 									for (int zDir = -3; zDir <= 3; zDir++){
 										if (canRemoveLeafBlockLayer2(-3, 3, xDir, -3, 3, zDir)){
-											Utils.LOG_WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+2+" z="+zDir);
+											Logger.WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+2+" z="+zDir);
 										}
 										else {
-											Utils.LOG_WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+k1+2+" z="+zDir);
+											Logger.WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+k1+2+" z="+zDir);
 											block5 = world.getBlock(x+xDir, y+k1+2, z+zDir);
 											if (block5.isAir(world, x+xDir, y+k1+2, x+zDir)){
 												setBlockAndNotifyAdequately(world, x+xDir, y + k1 + 2, z+zDir, this.leaves, this.leavesMeta);
@@ -165,10 +165,10 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree{
 								for (int xDir = -2; xDir <= 2; xDir++){
 									for (int zDir = -2; zDir <= 2; zDir++){
 										if (canRemoveLeafBlockLayer2(-2, 2, xDir, -2, 2, zDir)){
-											Utils.LOG_WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+3+" z="+zDir);
+											Logger.WARNING("Doing Nothing at "+"x="+xDir+" | y="+y+k1+3+" z="+zDir);
 										}
 										else {
-											Utils.LOG_WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+k1+3+" z="+zDir);
+											Logger.WARNING("Trying to place leaves at "+"x="+xDir+" | y="+y+k1+3+" z="+zDir);
 											block5 = world.getBlock(x+xDir, y+k1+3, z+zDir);
 											if (block5.isAir(world, x+xDir, y+k1+3, x+zDir)){
 												setBlockAndNotifyAdequately(world, x+xDir, y + k1 + 3, z+zDir, this.leaves, this.leavesMeta);

@@ -11,10 +11,10 @@ import java.util.Random;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -107,7 +107,7 @@ public class BlockEventHandler {
 					}
 				}
 				else {
-					Utils.LOG_WARNING("invalid chance");
+					Logger.WARNING("invalid chance");
 				}
 			}
 
@@ -129,15 +129,15 @@ public class BlockEventHandler {
 						}
 					}
 
-					Utils.LOG_WARNING("Found Limestone in OreDict.");
+					Logger.WARNING("Found Limestone in OreDict.");
 					if (!mBlockTypes.isEmpty()) {
-						Utils.LOG_WARNING("1a | "+event.block.getUnlocalizedName());
+						Logger.WARNING("1a | "+event.block.getUnlocalizedName());
 						for (final Block temp : mBlockTypes){
-							Utils.LOG_WARNING("2a - "+temp.getUnlocalizedName());
+							Logger.WARNING("2a - "+temp.getUnlocalizedName());
 							if (event.block == temp) {
-								Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
+								Logger.WARNING("3a - found "+temp.getUnlocalizedName());
 								if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-									Utils.LOG_WARNING("4a");
+									Logger.WARNING("4a");
 									event.drops.clear();
 									event.drops.add(fluoriteOre.copy());
 								}
@@ -148,9 +148,9 @@ public class BlockEventHandler {
 
 
 				if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
-					Utils.LOG_WARNING("1c");
+					Logger.WARNING("1c");
 					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-						Utils.LOG_WARNING("2c");
+						Logger.WARNING("2c");
 						event.drops.clear();
 						event.drops.add(fluoriteOre.copy());
 					}
@@ -170,7 +170,7 @@ public class BlockEventHandler {
 			}
 		}
 		catch (Throwable r){
-			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");
+			Logger.INFO("Block Event Handler Failed. Please Report this to Alkalus.");
 			r.printStackTrace();
 		}
 	}

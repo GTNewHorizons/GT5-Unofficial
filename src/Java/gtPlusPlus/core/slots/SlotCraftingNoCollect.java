@@ -5,11 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.stats.AchievementList;
 
 public class SlotCraftingNoCollect extends SlotCrafting {
@@ -34,6 +30,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 	 * Check if the stack is a valid item for this slot. Always true beside for
 	 * the armor slots.
 	 */
+	@Override
 	public boolean isItemValid(ItemStack p_75214_1_) {
 		return false;
 	}
@@ -42,6 +39,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 	 * Decrease the size of the stack in slot (first int arg) by the amount of
 	 * the second int arg. Returns the new stack.
 	 */
+	@Override
 	public ItemStack decrStackSize(int amount) {
 		if (this.getHasStack()) {
 			this.amountCrafted += Math.min(amount, this.getStack().stackSize);
@@ -55,6 +53,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 	 * not ore and wood. Typically increases an internal count then calls
 	 * onCrafting(item).
 	 */
+	@Override
 	protected void onCrafting(ItemStack output, int amount) {
 		this.amountCrafted += amount;
 		this.onCrafting(output);
@@ -64,6 +63,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes,
 	 * not ore and wood.
 	 */
+	@Override
 	protected void onCrafting(ItemStack output) {
 		output.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amountCrafted);
 		this.amountCrafted = 0;
@@ -110,6 +110,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
 		}
 	}
 
+	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack output) {
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, output, craftMatrix);
 		this.onCrafting(output);

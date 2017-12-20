@@ -10,6 +10,8 @@ import java.util.concurrent.Phaser;
 
 import com.mojang.authlib.GameProfile;
 import com.segment.analytics.Analytics;
+
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
@@ -212,7 +214,7 @@ public class SegmentAnalytics {
 	// Non-Dev Comments
 	public static void LOG(final String s) {
 		if (CORE.DEBUG){
-			Utils.getLogger().info("[Analytics] "+s);
+			Logger.getLogger().info("[Analytics] "+s);
 		}
 	}
 

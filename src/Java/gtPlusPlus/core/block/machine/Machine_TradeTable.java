@@ -3,10 +3,10 @@ package gtPlusPlus.core.block.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BlockBaseNBT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
@@ -55,7 +55,7 @@ public class Machine_TradeTable extends BlockBaseNBT
 			return true;
 		}
 		else {
-			Utils.LOG_INFO("Bad TE");
+			Logger.INFO("Bad TE");
 		}
 		return false;
 	}

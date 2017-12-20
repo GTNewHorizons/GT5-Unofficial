@@ -9,22 +9,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.*;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -280,6 +272,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	}
 
+	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return true;
 	}
@@ -288,9 +281,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public boolean checkRecipe(ItemStack aStack) {
 		//Utils.LOG_INFO("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
-		ItemStack[] tItemInputs = (ItemStack[]) tItemList.toArray(new ItemStack[tItemList.size()]);
+		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
 		ArrayList<FluidStack> tInputList = getStoredFluids();
-		FluidStack[] tFluidInputs = (FluidStack[]) tInputList.toArray(new FluidStack[tInputList.size()]);
+		FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[tInputList.size()]);
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
@@ -318,11 +311,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];				
 				for (int i = 0; i < tRecipe.mOutputs.length; i++){
 					if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)){
-						Utils.LOG_WARNING("Adding a bonus output");
+						Logger.WARNING("Adding a bonus output");
 						outputs[i] = tRecipe.getOutput(i);
 					}
 					else {
-						Utils.LOG_WARNING("Adding null output");
+						Logger.WARNING("Adding null output");
 						outputs[i] = null;
 					}
 				}
@@ -441,6 +434,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		return 50;
 	}
 
+	@Override
 	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
@@ -472,10 +466,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		return true;
 	}
 
+	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean turnCasingActive(final boolean status) {
 		if (this.mEnergyHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {

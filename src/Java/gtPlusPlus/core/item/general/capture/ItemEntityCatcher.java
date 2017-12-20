@@ -5,16 +5,14 @@ import java.util.UUID;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IEntityCatcher;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,22 +47,22 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	@Override
 	public Entity getStoredEntity(World aWorld, ItemStack aStack) {
 		if (aStack == null || !hasEntity(aStack)) {
-			Utils.LOG_INFO("Cannot get stored entity.");
+			Logger.INFO("Cannot get stored entity.");
 			return null;
 		}
 
 		Entity mEntityToSpawn;
 		int mEntityID;
-		Utils.LOG_WARNING("getStoredEntity(1)");
+		Logger.WARNING("getStoredEntity(1)");
 
 		mEntityID = NBTUtils.getInteger(aStack, "mEntityID");
 		mEntityToSpawn = EntityList.createEntityByID(mEntityID, aWorld);
 		if (mEntityToSpawn != null) {
-			Utils.LOG_WARNING("getStoredEntity(2)");
+			Logger.WARNING("getStoredEntity(2)");
 			return mEntityToSpawn;
 		}
 
-		Utils.LOG_INFO("Failed to get stored entity. - getStoredEntity()");
+		Logger.INFO("Failed to get stored entity. - getStoredEntity()");
 		return null;
 	}
 
@@ -72,11 +70,11 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	public boolean setStoredEntity(World aWorld, ItemStack aStack, Entity aEntity) {
 		if (aEntity == null) {
 			NBTUtils.setBoolean(aStack, "mHasEntity", false);
-			Utils.LOG_INFO("Bad Entity being stored.");
+			Logger.INFO("Bad Entity being stored.");
 			return false;
 		}
 		
-		Utils.LOG_WARNING("setStoredEntity(1)");
+		Logger.WARNING("setStoredEntity(1)");
 
 		NBTTagCompound mEntityData;
 		Class<? extends Entity> mEntityClass;
@@ -84,7 +82,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		String mEntityName;
 		int mEntityID, mEntityHashcode;
 		UUID mUuidPersistent, mUuidUnique;
-		Utils.LOG_WARNING("setStoredEntity(2)");
+		Logger.WARNING("setStoredEntity(2)");
 
 		mEntityData = aEntity.getEntityData();
 		mEntityClass = aEntity.getClass();
@@ -95,7 +93,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		mEntityHashcode = aEntity.hashCode();
 		mUuidPersistent = aEntity.getPersistentID();
 		mUuidUnique = aEntity.getUniqueID();
-		Utils.LOG_WARNING("setStoredEntity(3)");
+		Logger.WARNING("setStoredEntity(3)");
 
 		NBTUtils.createTagCompound(aStack, "mEntityData", mEntityData);
 		NBTUtils.setString(aStack,"mEntityName", mEntityName);
@@ -105,7 +103,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		NBTUtils.setString(aStack,"mUuidUnique", mUuidUnique.toString());
 		NBTUtils.setInteger(aStack,"mEntityHashcode", mEntityHashcode);
 		NBTUtils.setBoolean(aStack,"mHasEntity", true);
-		Utils.LOG_WARNING("setStoredEntity(4)");
+		Logger.WARNING("setStoredEntity(4)");
 		return true;
 	}
 
@@ -132,7 +130,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	@Override
 	public boolean spawnStoredEntity(World aWorld, ItemStack aStack, BlockPos aPos) {
 		if (aStack == null || !hasEntity(aStack)) {
-			Utils.LOG_INFO("Cannot release, either invalid Itemstack or no entity stored.");
+			Logger.INFO("Cannot release, either invalid Itemstack or no entity stored.");
 			return false;
 		}
 
@@ -147,31 +145,31 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		EntityLiving mEntityToSpawn = (EntityLiving) getStoredEntity(aWorld, aStack);
 		Class<? extends Entity> mEntityClass = getStoredEntityClass(aStack);
 		
-		Utils.LOG_WARNING("spawnStoredEntity(1)");
+		Logger.WARNING("spawnStoredEntity(1)");
 
 		if (mEntityToSpawn != null && mEntityClass != null) {
-			Utils.LOG_WARNING("spawnStoredEntity(2)");
+			Logger.WARNING("spawnStoredEntity(2)");
 			if (mEntityToSpawn.getEntityData() != mEntityData) {
-				Utils.LOG_WARNING("spawnStoredEntity(x)");
+				Logger.WARNING("spawnStoredEntity(x)");
 				NBTUtils.setEntityCustomData(mEntityToSpawn, mEntityData);
 			}
 
 			mEntityToSpawn.setLocationAndAngles(aPos.xPos, aPos.yPos, aPos.zPos, aWorld.rand.nextFloat() * 360.0F,
 					0.0F);
-			if (mEntityToSpawn instanceof EntityLiving) {
-				((EntityLiving) mEntityToSpawn).onSpawnWithEgg(null);
+			if (mEntityToSpawn != null) {
+				mEntityToSpawn.onSpawnWithEgg(null);
 				aWorld.spawnEntityInWorld(mEntityToSpawn);
-				Utils.LOG_WARNING("spawnStoredEntity(3)");
+				Logger.WARNING("spawnStoredEntity(3)");
 			}
-			if (mEntityToSpawn instanceof EntityLiving) {
-				((EntityLiving) mEntityToSpawn).playLivingSound();
-				Utils.LOG_WARNING("spawnStoredEntity(4)");
+			if (mEntityToSpawn != null) {
+				mEntityToSpawn.playLivingSound();
+				Logger.WARNING("spawnStoredEntity(4)");
 			}
-			Utils.LOG_WARNING("spawnStoredEntity(5)");
+			Logger.WARNING("spawnStoredEntity(5)");
 			NBTUtils.setBoolean(aStack,"mHasEntity", false);
 			return true;
 		}
-		Utils.LOG_INFO("Failed to spawn stored entity. - spawnStoredEntity()");
+		Logger.INFO("Failed to spawn stored entity. - spawnStoredEntity()");
 		return false;
 	}
 
@@ -202,10 +200,10 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
 			float xOffset, float yOffset, float zOffset) {
 		if (Utils.isServer()) {
-			Utils.LOG_WARNING("Trying to release (1)");
+			Logger.WARNING("Trying to release (1)");
 			if (NBTUtils.hasKey(itemstack,"mHasEntity")
 					&& NBTUtils.getBoolean(itemstack,"mHasEntity")) {
-				Utils.LOG_WARNING("Trying to release (2)");
+				Logger.WARNING("Trying to release (2)");
 				boolean mDidSpawn =  spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z));
 				
 				if (!mDidSpawn){
@@ -223,12 +221,12 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	@Override
 	public boolean itemInteractionForEntity(ItemStack aStack, EntityPlayer aPlayer, EntityLivingBase aEntity) {
 		if (Utils.isServer()) {
-			Utils.LOG_WARNING("Trying to catch (1)");
+			Logger.WARNING("Trying to catch (1)");
 			if (!hasEntity(aStack)) {
-				Utils.LOG_WARNING("Trying to catch (2)");
+				Logger.WARNING("Trying to catch (2)");
 				boolean mStored = setStoredEntity(aPlayer.worldObj, aStack, aEntity);
 				if (mStored) {
-					Utils.LOG_WARNING("Trying to catch (3)");
+					Logger.WARNING("Trying to catch (3)");
 					aEntity.setDead();
 					PlayerUtils.messagePlayer(aPlayer, "You have captured a "+NBTUtils.getString(aStack,"mEntityName")+" in the Jar.");
 					//NBTUtils.tryIterateNBTData(aStack);

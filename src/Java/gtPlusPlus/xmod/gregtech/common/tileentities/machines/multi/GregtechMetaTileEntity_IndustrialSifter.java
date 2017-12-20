@@ -14,9 +14,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -117,7 +117,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
-		Utils.LOG_WARNING("1");
+		Logger.WARNING("1");
 
 		//Get inputs.
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
@@ -134,7 +134,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
-		Utils.LOG_WARNING("2");
+		Logger.WARNING("2");
 
 		//Temp var
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
@@ -145,7 +145,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 
-		Utils.LOG_WARNING("3");
+		Logger.WARNING("3");
 
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
@@ -156,53 +156,53 @@ extends GregtechMeta_MultiBlockBase {
 
 		if ((this.cloneRecipe != tRecipe) || (this.cloneRecipe == null)){
 			this.cloneRecipe = tRecipe.copy();
-			Utils.LOG_WARNING("Setting Recipe");
+			Logger.WARNING("Setting Recipe");
 		}
 		if ((this.mInputStacks != tRecipe.mInputs) || (this.mInputStacks == null)){
 			this.mInputStacks = tRecipe.mInputs;
-			Utils.LOG_WARNING("Setting Recipe Inputs");
+			Logger.WARNING("Setting Recipe Inputs");
 		}
 		if ((this.cloneChances != tRecipe.mChances) || (this.cloneChances == null)){
 			this.cloneChances = tRecipe.mChances.clone();
-			Utils.LOG_WARNING("Setting Chances");
+			Logger.WARNING("Setting Chances");
 		}
 
 		for (int r=0;r<this.cloneChances.length;r++){
-			Utils.LOG_WARNING("Original map Output["+r+"] chance = "+this.cloneChances[r]);
+			Logger.WARNING("Original map Output["+r+"] chance = "+this.cloneChances[r]);
 		}
 
-		Utils.LOG_WARNING("3.1");
+		Logger.WARNING("3.1");
 
 		//Change bonus chances
 		int[] outputChances;
 
-		Utils.LOG_WARNING("3.2");
+		Logger.WARNING("3.2");
 
 		if (this.cloneRecipe.mChances != null){
 			outputChances = this.cloneRecipe.mChances.clone();
 
-			Utils.LOG_WARNING("3.3");
+			Logger.WARNING("3.3");
 
 			for (int r=0;r<outputChances.length;r++){
-				Utils.LOG_WARNING("Output["+r+"] chance = "+outputChances[r]);
+				Logger.WARNING("Output["+r+"] chance = "+outputChances[r]);
 				if (outputChances[r]<10000){
 					final int temp = outputChances[r];
 					if ((outputChances[r] < 8000) && (outputChances[r] >= 1)){
 						outputChances[r] = temp+1200;
-						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
+						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 					else if ((outputChances[r] < 9000) && (outputChances[r] >= 8000)){
 						outputChances[r] = temp+400;
-						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
+						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 					else if ((outputChances[r] <= 9900) && (outputChances[r] >= 9000)){
 						outputChances[r] = temp+100;
-						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
+						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 				}
 			}
 
-			Utils.LOG_WARNING("3.4");
+			Logger.WARNING("3.4");
 
 			//Rebuff Drop Rates for % output
 			this.cloneRecipe.mChances = outputChances;
@@ -210,16 +210,16 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 
-		Utils.LOG_WARNING("4");
+		Logger.WARNING("4");
 
 
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), this.cloneRecipe, tInputs);
-		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
+		Logger.WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
 			if ((this.cloneRecipe != null) && (this.cloneRecipe.isRecipeInputEqual(true, null, tInputs))) {
-				Utils.LOG_WARNING("Valid Recipe found - size "+this.cloneRecipe.mOutputs.length);
+				Logger.WARNING("Valid Recipe found - size "+this.cloneRecipe.mOutputs.length);
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
 
@@ -229,11 +229,11 @@ extends GregtechMeta_MultiBlockBase {
 				final ItemStack[] outputs = new ItemStack[this.cloneRecipe.mOutputs.length];
 				for (int i = 0; i < this.cloneRecipe.mOutputs.length; i++){
 					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < this.cloneRecipe.getOutputChance(i)){
-						Utils.LOG_WARNING("Adding a bonus output");
+						Logger.WARNING("Adding a bonus output");
 						outputs[i] = this.cloneRecipe.getOutput(i);
 					}
 					else {
-						Utils.LOG_WARNING("Adding null output");
+						Logger.WARNING("Adding null output");
 						outputs[i] = null;
 					}
 				}
@@ -250,7 +250,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Utils.LOG_MACHINE_INFO("Checking structure for Industrial Sifter.");
+		Logger.MACHINE_INFO("Checking structure for Industrial Sifter.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 
@@ -278,12 +278,12 @@ extends GregtechMeta_MultiBlockBase {
 						if (h != 0){
 							if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
-									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Logger.MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
+									Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Logger.MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 							}
@@ -291,12 +291,12 @@ extends GregtechMeta_MultiBlockBase {
 						else {
 							if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
-									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Logger.MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
+									Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Logger.MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 								tAmount++;
@@ -319,13 +319,13 @@ extends GregtechMeta_MultiBlockBase {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 									if ((tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter) || (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines)){
 										if (h != 0){
-											Utils.LOG_MACHINE_INFO("Found a secondary controller at the wrong Y level.");
+											Logger.MACHINE_INFO("Found a secondary controller at the wrong Y level.");
 											return false;
 										}
 									}
 									else {
-										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
+										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 								}
@@ -335,9 +335,9 @@ extends GregtechMeta_MultiBlockBase {
 
 									}
 									else {
-										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
-										Utils.LOG_MACHINE_INFO("Incorrect Meta value for block, expected 5.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j)+".");
+										Logger.MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
+										Logger.MACHINE_INFO("Incorrect Meta value for block, expected 5.");
+										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j)+".");
 										return false;
 									}
 								}
@@ -353,11 +353,11 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
-			Utils.LOG_INFO("Returned False 3");
-			Utils.LOG_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
-			Utils.LOG_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
-			Utils.LOG_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
-			Utils.LOG_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
+			Logger.INFO("Returned False 3");
+			Logger.INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
+			Logger.INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
+			Logger.INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
+			Logger.INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
@@ -368,7 +368,7 @@ extends GregtechMeta_MultiBlockBase {
 			if (tmpHatches[i] == null) {
 				tmpHatches[i] = this.mOutputBusses.get(i);
 			} else {
-				Utils.LOG_MACHINE_INFO("Returned False 5 - "+this.mOutputBusses.size());
+				Logger.MACHINE_INFO("Returned False 5 - "+this.mOutputBusses.size());
 				return false;
 			}
 		}
@@ -377,7 +377,7 @@ extends GregtechMeta_MultiBlockBase {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
 
-		Utils.LOG_INFO("Industrial Sifter - Structure Built? "+(tAmount>=35));
+		Logger.INFO("Industrial Sifter - Structure Built? "+(tAmount>=35));
 
 		return tAmount >= 35;
 	}

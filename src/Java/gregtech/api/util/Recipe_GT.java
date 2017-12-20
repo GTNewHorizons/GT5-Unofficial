@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Assembler;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -31,7 +31,7 @@ public class Recipe_GT extends GT_Recipe{
 
 	protected Recipe_GT(final boolean aOptimize, final ItemStack[] aInputs, final ItemStack[] aOutputs, final Object aSpecialItems, final int[] aChances, final FluidStack[] aFluidInputs, final FluidStack[] aFluidOutputs, final int aDuration, final int aEUt, final int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-		Utils.LOG_SPECIFIC_WARNING(this.getClass().getName()+" | [GregtechRecipe]", "Created new recipe instance for "+ItemUtils.getArrayStackNames(aInputs), 167);
+		Logger.SPECIFIC_WARNING(this.getClass().getName()+" | [GregtechRecipe]", "Created new recipe instance for "+ItemUtils.getArrayStackNames(aInputs), 167);
 	}
 
 	public Recipe_GT(final ItemStack aInput1, final ItemStack aOutput1, final int aFuelValue, final int aType) {
@@ -42,12 +42,12 @@ public class Recipe_GT extends GT_Recipe{
 	public Recipe_GT(final ItemStack aInput1, final ItemStack aOutput1, final ItemStack aOutput2, final ItemStack aOutput3, final ItemStack aOutput4, final int aSpecialValue, final int aType) {
 		this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
 
-		Utils.LOG_INFO("Switch case method for adding fuels");
+		Logger.INFO("Switch case method for adding fuels");
 		if ((this.mInputs.length > 0) && (aSpecialValue > 0)) {
 			switch (aType) {
 			// Diesel Generator
 			case 0:
-				Utils.LOG_INFO("Added fuel "+aInput1.getDisplayName()+" is ROCKET FUEL - continuing");
+				Logger.INFO("Added fuel "+aInput1.getDisplayName()+" is ROCKET FUEL - continuing");
 				Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);
 				break;
 				// Gas Turbine
@@ -374,23 +374,23 @@ public class Recipe_GT extends GT_Recipe{
 			}*/
 
 		public GT_Recipe addRecipe(final GT_Recipe aRecipe) {
-			Utils.LOG_INFO("Adding Recipe Method 1");
+			Logger.INFO("Adding Recipe Method 1");
 			return this.addRecipe(aRecipe, true, false, false);
 		}
 
 		protected GT_Recipe addRecipe(final GT_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
-			Utils.LOG_INFO("Adding Recipe Method 2 - This Checks if hidden, fake or if duplicate recipes exists, I think.");
+			Logger.INFO("Adding Recipe Method 2 - This Checks if hidden, fake or if duplicate recipes exists, I think.");
 			aRecipe.mHidden = aHidden;
 			aRecipe.mFakeRecipe = aFakeRecipe;
-			Utils.LOG_INFO("Logging some data about this method: GregtechRecipe["+aRecipe.toString()+"] | aCheckForCollisions["+aCheckForCollisions+"] | aFakeRecipe["+aFakeRecipe+"] | aHidden["+aHidden+"]");
-			Utils.LOG_INFO("Logging some data about this method: mMinimalInputFluids["+this.mMinimalInputFluids+"] | mMinimalInputItems["+this.mMinimalInputItems+"] | aRecipe.mFluidInputs.length["+aRecipe.mFluidInputs.length+"] | aRecipe.mInputs.length["+aRecipe.mInputs.length+"]");
+			Logger.INFO("Logging some data about this method: GregtechRecipe["+aRecipe.toString()+"] | aCheckForCollisions["+aCheckForCollisions+"] | aFakeRecipe["+aFakeRecipe+"] | aHidden["+aHidden+"]");
+			Logger.INFO("Logging some data about this method: mMinimalInputFluids["+this.mMinimalInputFluids+"] | mMinimalInputItems["+this.mMinimalInputItems+"] | aRecipe.mFluidInputs.length["+aRecipe.mFluidInputs.length+"] | aRecipe.mInputs.length["+aRecipe.mInputs.length+"]");
 			if ((aRecipe.mFluidInputs.length < this.mMinimalInputFluids) && (aRecipe.mInputs.length < this.mMinimalInputItems)){
-				Utils.LOG_INFO("Step 2 failed");
+				Logger.INFO("Step 2 failed");
 				return null;}
 
-			Utils.LOG_INFO("Logging some data about this method: aCheckForCollisions["+aCheckForCollisions+"] | findRecipe != null ["+(this.findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)+"]");
+			Logger.INFO("Logging some data about this method: aCheckForCollisions["+aCheckForCollisions+"] | findRecipe != null ["+(this.findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)+"]");
 			if (aCheckForCollisions && (this.findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)){
-				Utils.LOG_INFO("Step 2 failed - 2");
+				Logger.INFO("Step 2 failed - 2");
 				return null;
 			}
 			return this.add(aRecipe);
@@ -420,11 +420,11 @@ public class Recipe_GT extends GT_Recipe{
 		}
 
 		public GT_Recipe add(final GT_Recipe aRecipe) {
-			Utils.LOG_INFO("Adding Recipe Method 3");
+			Logger.INFO("Adding Recipe Method 3");
 			this.mRecipeList.add(aRecipe);
 			for (final FluidStack aFluid : aRecipe.mFluidInputs) {
 				if (aFluid != null) {
-					Utils.LOG_INFO("Fluid is valid - getting some kind of fluid instance to add to the recipe hashmap.");
+					Logger.INFO("Fluid is valid - getting some kind of fluid instance to add to the recipe hashmap.");
 					Collection<GT_Recipe> tList = this.mRecipeFluidMap.get(aFluid.getFluid());
 					if (tList == null) {
 						this.mRecipeFluidMap.put(aFluid.getFluid(), tList = new HashSet<>(1));
@@ -588,28 +588,28 @@ public class Recipe_GT extends GT_Recipe{
 		}
 
 		protected GT_Recipe addToItemMap(final GT_Recipe aRecipe) {
-			Utils.LOG_INFO("Adding Recipe Method 4");
+			Logger.INFO("Adding Recipe Method 4");
 			for (final ItemStack aStack : aRecipe.mInputs) {
 				if (aStack != null) {
-					Utils.LOG_INFO("Method 4 - Manipulating "+aStack.getDisplayName());
+					Logger.INFO("Method 4 - Manipulating "+aStack.getDisplayName());
 					final GT_ItemStack tStack = new GT_ItemStack(aStack);
-					Utils.LOG_INFO("Method 4 - Made gt stack of item "+tStack.toStack().getDisplayName());
+					Logger.INFO("Method 4 - Made gt stack of item "+tStack.toStack().getDisplayName());
 					Collection<GT_Recipe> tList = this.mRecipeItemMap.get(tStack);
 					if (tList != null){
-						Utils.LOG_INFO("Method 4 - Gt Recipe Hashmap: "+tList.toString());
+						Logger.INFO("Method 4 - Gt Recipe Hashmap: "+tList.toString());
 					}
 					if (tList == null){
-						Utils.LOG_INFO("Method 4 - brrr list was NUll");
+						Logger.INFO("Method 4 - brrr list was NUll");
 						this.mRecipeItemMap.put(tStack, tList = new HashSet<>(1));
-						Utils.LOG_INFO("Method 4 - Attemping backup method for Gt Recipe Hashmap:");
+						Logger.INFO("Method 4 - Attemping backup method for Gt Recipe Hashmap:");
 
 						while (tList.iterator().hasNext()){
-							Utils.LOG_INFO(tList.iterator().next().toString());
+							Logger.INFO(tList.iterator().next().toString());
 						}
 
 					}
 					tList.add(aRecipe);
-					Utils.LOG_INFO("Method 4 - Added recipe to map? I think.");
+					Logger.INFO("Method 4 - Added recipe to map? I think.");
 				}
 			}
 			return aRecipe;
@@ -796,27 +796,27 @@ public class Recipe_GT extends GT_Recipe{
 		}
 
 		public GT_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final int aFuelValueInEU) {
-			Utils.LOG_INFO("Adding Fuel using method 1");
+			Logger.INFO("Adding Fuel using method 1");
 			return this.addFuel(aInput, aOutput, null, null, 10000, aFuelValueInEU);
 		}
 
 		public GT_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final int aChance, final int aFuelValueInEU) {
-			Utils.LOG_INFO("Adding Fuel using method 2");
+			Logger.INFO("Adding Fuel using method 2");
 			return this.addFuel(aInput, aOutput, null, null, aChance, aFuelValueInEU);
 		}
 
 		public GT_Recipe addFuel(final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
-			Utils.LOG_INFO("Adding Fuel using method 3");
+			Logger.INFO("Adding Fuel using method 3");
 			return this.addFuel(null, null, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
 		public GT_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aFuelValueInEU) {
-			Utils.LOG_INFO("Adding Fuel using method 4");
+			Logger.INFO("Adding Fuel using method 4");
 			return this.addFuel(aInput, aOutput, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
 		public GT_Recipe addFuel(final ItemStack aInput, final ItemStack aOutput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aChance, final int aFuelValueInEU) {
-			Utils.LOG_INFO("Adding Fuel using method 5");
+			Logger.INFO("Adding Fuel using method 5");
 			return this.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
 		}
 	}

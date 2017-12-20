@@ -1,15 +1,14 @@
 package gtPlusPlus.core.container;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -93,7 +92,8 @@ public class Container_ProjectTable extends Container {
 	/**
      * Callback for when the crafting matrix is changed.
      */
-    public void onCraftMatrixChanged(IInventory p_75130_1_)
+    @Override
+	public void onCraftMatrixChanged(IInventory p_75130_1_)
     {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
     }
@@ -101,7 +101,8 @@ public class Container_ProjectTable extends Container {
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(EntityPlayer p_75134_1_){
+    @Override
+	public void onContainerClosed(EntityPlayer p_75134_1_){
         super.onContainerClosed(p_75134_1_);
         if (!this.worldObj.isRemote){
             for (int i = 0; i < 9; ++i){
@@ -122,16 +123,16 @@ public class Container_ProjectTable extends Container {
 			}
 
 			if (aSlotIndex == 0){
-				Utils.LOG_INFO("Player Clicked on the Data Stick slot");
+				Logger.INFO("Player Clicked on the Data Stick slot");
 				//TODO
 			}if (aSlotIndex == 1){
-				Utils.LOG_INFO("Player Clicked on the output slot");
+				Logger.INFO("Player Clicked on the output slot");
 				//TODO
 			}
 
 			for (final int x : this.slotGrid){
 				if (aSlotIndex == x){
-					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+					Logger.INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
 				}
 			}			
 		}
@@ -212,6 +213,7 @@ public class Container_ProjectTable extends Container {
 	}
 
 	//Can merge Slot
+	@Override
 	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
         return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
     }

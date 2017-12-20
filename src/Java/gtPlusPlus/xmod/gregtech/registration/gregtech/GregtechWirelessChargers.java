@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
@@ -12,7 +13,7 @@ public class GregtechWirelessChargers {
 	public static void run(){
 
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Wireless Chargers.");
+			Logger.INFO("Gregtech5u Content | Registering Wireless Chargers.");
 
 
 			long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE

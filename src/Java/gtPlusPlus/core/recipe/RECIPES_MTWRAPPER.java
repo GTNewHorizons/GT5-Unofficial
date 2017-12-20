@@ -2,7 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import java.util.ArrayList;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.core.util.wrapper.var;
@@ -99,7 +99,7 @@ public class RECIPES_MTWRAPPER {
 			k.getClass();
 			k.printStackTrace();
 			k.getLocalizedMessage();
-			Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+((var) item_Output).getsanitizedName());
+			Logger.WARNING("@@@: Invalid Recipe detected for: "+((var) item_Output).getsanitizedName());
 			MT_RECIPES_FAILED++;
 		}
 	}

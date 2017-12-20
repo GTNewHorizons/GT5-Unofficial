@@ -6,9 +6,9 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.StringUtils;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,25 +54,25 @@ public class BaseItemDustUnique extends Item{
 		}
 
 		String temp = "";
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+		Logger.WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
 		if (this.getUnlocalizedName().contains("item.")){
 			temp = this.getUnlocalizedName().replace("item.", "");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = this.getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else if (temp.contains("DustSmall")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));

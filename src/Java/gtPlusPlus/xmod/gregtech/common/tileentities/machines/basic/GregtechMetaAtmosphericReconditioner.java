@@ -12,10 +12,10 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.PollutionUtils;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.CONTAINER_PollutionCleaner;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.GUI_PollutionCleaner;
@@ -158,7 +158,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 							//Use a Turbine
 							if(hasRotor(stackRotor) && hasAirFilter(stackFilter)){
-								Utils.LOG_WARNING("Found Turbine.");
+								Logger.WARNING("Found Turbine.");
 								mBaseEff = (int) ((50.0F + (10.0F * ((GT_MetaGenerated_Tool) stackRotor.getItem()).getToolCombatDamage(stackRotor))) * 100);
 								mOptimalAirFlow = (int) Math.max(Float.MIN_NORMAL, ((GT_MetaGenerated_Tool) stackRotor.getItem()).getToolStats(stackRotor).getSpeedMultiplier()
 										* GT_MetaGenerated_Tool.getPrimaryMaterial(stackRotor).mToolSpeed * 50);
@@ -168,8 +168,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 									//Utils.LOG_WARNING("Pollution Cleaner [5]");
 
 									//Log Debug information.
-									Utils.LOG_WARNING("mBaseEff[1]:"+mBaseEff);
-									Utils.LOG_WARNING("mOptimalAirFlow[1]:"+mOptimalAirFlow);
+									Logger.WARNING("mBaseEff[1]:"+mBaseEff);
+									Logger.WARNING("mOptimalAirFlow[1]:"+mOptimalAirFlow);
 
 									//Calculate The Voltage we are running
 									long tVoltage = maxEUInput();
@@ -182,7 +182,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 									//If no sides are free, how will you process the atmosphere?
 									if (mAirSides > 0){
 										mPollutionReduction += (((mTier*2)*100)*mAirSides); //Was originally *100
-										Utils.LOG_WARNING("mPollutionReduction[1]:"+mPollutionReduction);
+										Logger.WARNING("mPollutionReduction[1]:"+mPollutionReduction);
 
 										//I stole this code
 										mPollutionReduction = (MathUtils.safeInt((long)mPollutionReduction*this.mBaseEff)/100000)*mAirSides;
@@ -193,7 +193,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										//Set a temp to remove variable to aleviate duplicate code.
 										int toRemove = 0;
 
-										Utils.LOG_WARNING("mCurrentPollution[4]:"+mCurrentPollution);
+										Logger.WARNING("mCurrentPollution[4]:"+mCurrentPollution);
 										if (mPollutionReduction <= mCurrentPollution){
 											//Clean some Air.
 											toRemove = mPollutionReduction;
@@ -207,10 +207,10 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										if (toRemove > 0){
 											if (damageTurbineRotor() && damageAirFilter()){
 												removePollution(toRemove);	
-												Utils.LOG_WARNING("mNewPollution[4]:"+getCurrentChunkPollution());		
+												Logger.WARNING("mNewPollution[4]:"+getCurrentChunkPollution());		
 											}
 											else {
-												Utils.LOG_WARNING("Could not damage turbine rotor or Air Filter.");
+												Logger.WARNING("Could not damage turbine rotor or Air Filter.");
 												aBaseMetaTileEntity.setActive(false);
 											}
 										} //End of pollution removal block.								
@@ -271,16 +271,16 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 					}
 				}
 
-				Utils.LOG_WARNING("Trying to do "+damageValue+" damage to the rotor.");
+				Logger.WARNING("Trying to do "+damageValue+" damage to the rotor.");
 
 				//Damage Rotor
 				//int rotorDurability = this.mInventory[this.SLOT_ROTOR].getItemDamage();
 				long rotorDamage = GT_MetaGenerated_Tool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
 				long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(this.mInventory[this.SLOT_ROTOR]);
 				long rotorDurability = (rotorDurabilityMax - rotorDamage);
-				Utils.LOG_WARNING("Rotor Damage: "+rotorDamage + " | Max Durability: "+rotorDurabilityMax+" | "+" Remaining Durability: "+rotorDurability);
+				Logger.WARNING("Rotor Damage: "+rotorDamage + " | Max Durability: "+rotorDurabilityMax+" | "+" Remaining Durability: "+rotorDurability);
 				if (rotorDurability > damageValue){
-					Utils.LOG_WARNING("Damaging Rotor.");
+					Logger.WARNING("Damaging Rotor.");
 					GT_ModHandler.damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
 
 					long tempDur = GT_MetaGenerated_Tool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
@@ -293,14 +293,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				}
 
 				if (rotorDurability <= 0) {
-					Utils.LOG_WARNING("Destroying Rotor.");
+					Logger.WARNING("Destroying Rotor.");
 					this.mInventory[this.SLOT_ROTOR] = null;
 					return false;
 				}
 
 
 			}else {
-				Utils.LOG_WARNING("Bad Rotor.");
+				Logger.WARNING("Bad Rotor.");
 				return false;
 			}
 		}
@@ -369,7 +369,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			else {
 				//Do Damage
 				ItemAirFilter.setFilterDamage(filter, currentUse+1);
-				Utils.LOG_WARNING("Filter Damage: "+currentUse);
+				Logger.WARNING("Filter Damage: "+currentUse);
 				return true;
 			}			
 		}		

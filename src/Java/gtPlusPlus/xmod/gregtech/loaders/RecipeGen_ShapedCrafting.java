@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +21,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 	}
 
 	public static void generateRecipes(final Material material){
-		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
+		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
 		
 		//Nuggets
@@ -81,10 +81,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 						"craftingToolFile", material.getRod(1), null,
 						null, null, null,
 						material.getRing(1))){
-					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Success");
+					Logger.WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Failed");
+					Logger.WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Failed");
 				}
 			}
 			else {
@@ -93,10 +93,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 						null, material.getRod(1), null,
 						null, null, null,
 						material.getRing(1))){
-					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
+					Logger.WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");
+					Logger.WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");
 				}
 			}
 		}
@@ -110,10 +110,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					stackStick, "craftingToolWrench", stackStick,
 					stackStick, stackStick, stackStick,
 					material.getFrameBox(2))){
-				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -154,10 +154,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					null, material.getRod(1), null,
 					null, null, null,
 					material.getBolt(2))){
-				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -168,10 +168,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				null, material.getIngot(1), null,
 				null, null, null,
 				material.getRod(1))){
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 
@@ -181,10 +181,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				material.getLongRod(1), null, null,
 				null, null, null,
 				material.getRod(2))){
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Two small to long rod
@@ -193,10 +193,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				null, null, null,
 				null, null, null,
 				material.getLongRod(1))){
-			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Rotor Recipe
@@ -206,10 +206,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					material.getScrew(1), material.getRing(1), "craftingToolFile",
 					material.getPlate(1), "craftingToolScrewdriver", material.getPlate(1),
 					material.getRotor(1))){
-				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -220,10 +220,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					material.getPlate(1), "craftingToolWrench", material.getPlate(1),
 					material.getRod(1), material.getPlate(1), material.getRod(1),
 					material.getGear(1))){
-				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Gear Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -234,10 +234,10 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					material.getBolt(1), null, null,
 					null, null, null,
 					material.getScrew(1))){
-				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Screw Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Screw Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 	}

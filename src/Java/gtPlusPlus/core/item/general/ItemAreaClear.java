@@ -2,10 +2,10 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -182,7 +182,7 @@ public class ItemAreaClear extends CoreItem {
 			removeBlocks(world, groundBlock);			
 		}
 		else {
-			Utils.LOG_INFO("Filling.");
+			Logger.INFO("Filling.");
 			fillBlocks(world, groundBlock);
 		}
 		return super.onItemRightClick(thisItem, world, parEntity);

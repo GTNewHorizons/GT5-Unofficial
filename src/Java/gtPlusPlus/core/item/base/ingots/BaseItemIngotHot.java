@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.base.ingots;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -44,7 +45,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	}
 
 	private void generateRecipe(){
-		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+this.materialName+".");
+		Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+this.materialName+".");
 		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), this.outputIngot.copy(), 60*this.mTier);
 	}
 

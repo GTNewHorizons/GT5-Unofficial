@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 
 public enum GTPP_Branch_Definition {
 
@@ -29,14 +29,14 @@ public enum GTPP_Branch_Definition {
 			Enum enumA = mActualValues;
 			Method methodMyMethod = gtBranchDefClass.getMethod("getTemplate");
 
-			Utils.LOG_INFO("[Bees] gtBranchDefClass: "+(gtBranchDefClass != null));
-			Utils.LOG_INFO("[Bees] enumA: "+(enumA != null));
-			Utils.LOG_INFO("[Bees] methodMyMethod: "+(methodMyMethod != null));
+			Logger.INFO("[Bees] gtBranchDefClass: "+(gtBranchDefClass != null));
+			Logger.INFO("[Bees] enumA: "+(enumA != null));
+			Logger.INFO("[Bees] methodMyMethod: "+(methodMyMethod != null));
 			
 			return (IAllele[]) methodMyMethod.invoke(enumA);
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Utils.LOG_INFO("[Bees] Bad Reflection. getTemplate()");
+			Logger.INFO("[Bees] Bad Reflection. getTemplate()");
 			e.printStackTrace();
 			//gregtech.loaders.misc.GT_BranchDefinition.getTemplate()
 			return null;
@@ -51,14 +51,14 @@ public enum GTPP_Branch_Definition {
 			Method methodMyMethod = gtBranchDefClass.getMethod("getBranch");
 			
 
-			Utils.LOG_INFO("[Bees] gtBranchDefClass: "+(gtBranchDefClass != null));
-			Utils.LOG_INFO("[Bees] enum_MY_SAMPLE_ENUM: "+(enum_MY_SAMPLE_ENUM != null));
-			Utils.LOG_INFO("[Bees] methodMyMethod: "+(methodMyMethod != null));
+			Logger.INFO("[Bees] gtBranchDefClass: "+(gtBranchDefClass != null));
+			Logger.INFO("[Bees] enum_MY_SAMPLE_ENUM: "+(enum_MY_SAMPLE_ENUM != null));
+			Logger.INFO("[Bees] methodMyMethod: "+(methodMyMethod != null));
 			
 			return (IClassification) methodMyMethod.invoke(enum_MY_SAMPLE_ENUM);
 		}
 		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Utils.LOG_INFO("[Bees] Bad Reflection. getBranch()");
+			Logger.INFO("[Bees] Bad Reflection. getBranch()");
 			e.printStackTrace();
 			return null;
 		}

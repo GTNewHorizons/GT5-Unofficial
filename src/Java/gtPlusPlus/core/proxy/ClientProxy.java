@@ -12,6 +12,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.*;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
@@ -25,7 +26,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import net.minecraft.client.Minecraft;
@@ -89,18 +89,18 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelMob.class, new RenderBloodSteelMob(new ModelBloodSteelMob(), 0));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class, new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));		
-		Utils.LOG_INFO("Registering Custom Renderer for Mining Explosives.");
+		Logger.INFO("Registering Custom Renderer for Mining Explosives.");
 		RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
 		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
 		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
-		Utils.LOG_INFO("Registering Custom Renderer for Sulfuric potion.");
+		Logger.INFO("Registering Custom Renderer for Sulfuric potion.");
 		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderSnowball(ModItems.itemSulfuricPotion));
 
 		
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
-		Utils.LOG_INFO("Registering Custom Renderer for the Fire Pit.");
+		Logger.INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
 	}
 
@@ -170,10 +170,11 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		}
 	}
 
+	@Override
 	public void run() {
 		try {
 			if (ConfigSwitches.enableCustomCapes){
-				Utils.LOG_INFO("GT++ Mod: Downloading Cape List.");
+				Logger.INFO("GT++ Mod: Downloading Cape List.");
 				@SuppressWarnings("resource")
 				Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
 				while (tScanner.hasNextLine()) {
@@ -184,7 +185,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 				}
 			}
 		} catch (Throwable e) {
-			Utils.LOG_INFO("Failed to download GT++ cape list.");
+			Logger.INFO("Failed to download GT++ cape list.");
 		}
 	}
 

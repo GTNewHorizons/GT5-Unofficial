@@ -5,9 +5,9 @@ import static net.minecraftforge.event.entity.player.PlayerInteractEvent.Action.
 import java.util.List;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemGeneric;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class DEBUG_ITEM_ShapeSpawner extends BaseItemGeneric{
 	public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer player){
 
 		if (!world.isRemote){
-			Utils.LOG_INFO("Constructing the shape for the "+"VACUUM FREEZER");
+			Logger.INFO("Constructing the shape for the "+"VACUUM FREEZER");
 			final Thread thread = new Thread(new DEBUG_TimerThread(world, player));
 			thread.start();
 		}

@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -10,12 +9,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_4by4;
+import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.*;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -178,18 +174,22 @@ GT_MetaTileEntity_Hatch {
 				}
 	}
 
+	@Override
 	public int rechargerSlotStartIndex() {
 		return 0;
 	}
 
+	@Override
 	public int rechargerSlotCount() {
 		return 0;
 	}
 
+	@Override
 	public int dechargerSlotStartIndex() {
 		return 0;
 	}
 
+	@Override
 	public int dechargerSlotCount() {
 		return mTier == 2 ? 4 : 16;
 	}
@@ -205,7 +205,7 @@ GT_MetaTileEntity_Hatch {
 			if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
 				MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();				
 				if (mMetaTileEntity.dechargerSlotCount() > 0 && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
-					Utils.LOG_INFO("3");
+					Logger.INFO("3");
 					for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
 						if (mMetaTileEntity.mInventory[i] != null && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
 							aBaseMetaTileEntity.increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(mMetaTileEntity.mInventory[i], (int) Math.min(V[mTier] * 15, aBaseMetaTileEntity.getEUCapacity() - aBaseMetaTileEntity.getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), true, false, false), true);

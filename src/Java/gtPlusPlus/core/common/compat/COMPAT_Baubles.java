@@ -1,9 +1,9 @@
 package gtPlusPlus.core.common.compat;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 
 public class COMPAT_Baubles {
 
@@ -17,7 +17,7 @@ public class COMPAT_Baubles {
 	}
 
 	public static void baublesLoaded(){
-		Utils.LOG_INFO("Baubles Found - Loading Wearables.");
+		Logger.INFO("Baubles Found - Loading Wearables.");
 		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 		//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
@@ -27,7 +27,7 @@ public class COMPAT_Baubles {
 	}
 
 	public static void baublesNotLoaded(){
-		Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+		Logger.INFO("Baubles Not Found - Skipping Resources.");
 	}
 
 }

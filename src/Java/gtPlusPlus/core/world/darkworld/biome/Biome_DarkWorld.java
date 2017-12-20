@@ -6,10 +6,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCaveSpider;
@@ -66,7 +66,7 @@ public class Biome_DarkWorld {
 		public BiomeGenbiomeDarkWorld() {
 			super(CORE.DARKBIOME_ID);
 			this.theBiomeDecorator = new BiomeGenerator_Custom();
-			Utils.LOG_INFO("Dark World Temperature Category: "+getTempCategory());
+			Logger.INFO("Dark World Temperature Category: "+getTempCategory());
 			this.setBiomeName("Dark World");
 			this.topBlock = Dimension_DarkWorld.blockTopLayer;
 			this.fillerBlock = Dimension_DarkWorld.blockSecondLayer;

@@ -11,6 +11,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.HotFuel;
 import gregtech.api.util.ThermalFuel;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -18,7 +19,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class RECIPES_GREGTECH {
 
 	public static void run(){
-		Utils.LOG_INFO("Loading Recipes through GregAPI for Industrial Multiblocks.");
+		Logger.INFO("Loading Recipes through GregAPI for Industrial Multiblocks.");
 		execute();
 	}
 
@@ -380,7 +380,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void cokeOvenRecipes(){
-		Utils.LOG_INFO("Loading Recipes for Industrial Coking Oven.");
+		Logger.INFO("Loading Recipes for Industrial Coking Oven.");
 
 		//Wood to Charcoal
 		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
@@ -417,7 +417,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void matterFabRecipes(){
-		Utils.LOG_INFO("Loading Recipes for Matter Fabricator.");
+		Logger.INFO("Loading Recipes for Matter Fabricator.");
 
 		try {
 
@@ -426,7 +426,7 @@ public class RECIPES_GREGTECH {
 					Materials.UUMatter.getFluid(1L), //Fluid Output
 					800,  //Time in ticks
 					32); //EU
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			CORE.RA.addMatterFabricatorRecipe(
@@ -434,12 +434,12 @@ public class RECIPES_GREGTECH {
 					Materials.UUMatter.getFluid(1L), //Fluid Output
 					3200,  //Time in ticks
 					32); //EU
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 	}
 
 	private static void dehydratorRecipes(){
-		Utils.LOG_INFO("Loading Recipes for Chemical Dehydrator.");
+		Logger.INFO("Loading Recipes for Chemical Dehydrator.");
 
 		try {
 			//Makes Lithium Carbonate
@@ -456,7 +456,7 @@ public class RECIPES_GREGTECH {
 					}, //Output Array of Items - Upto 9
 					30*20, //Time in ticks
 					30); //EU
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			ItemStack cells = ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemCellEmpty", "Empty Fluid Cells", 0, 12);
@@ -482,7 +482,7 @@ public class RECIPES_GREGTECH {
 					75*20, //Time in ticks
 					1000); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			CORE.RA.addDehydratorRecipe(
@@ -499,7 +499,7 @@ public class RECIPES_GREGTECH {
 					150*20, //Time in ticks
 					2000); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			CORE.RA.addDehydratorRecipe(
@@ -516,7 +516,7 @@ public class RECIPES_GREGTECH {
 					300*20, //Time in ticks
 					4000); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 		//Raisins from Grapes
 		try {
@@ -534,7 +534,7 @@ public class RECIPES_GREGTECH {
 					10*20, //Time in ticks
 					8); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 		//Calcium Hydroxide
 		if ((ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() != ModItems.AAA_Broken) || LoadedMods.IHL){
@@ -553,7 +553,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						120); //EU
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//2 LiOH + CaCO3
 			try {
@@ -572,7 +572,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						1000); //EU
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//LiOH Liquid to Dust
 			try {
@@ -590,7 +590,7 @@ public class RECIPES_GREGTECH {
 						1*20, //Time in ticks
 						64); //EU
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//Zirconium Chloride -> TetraFluoride
 			try {
@@ -610,7 +610,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						500); //EU
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
 			try {
@@ -634,7 +634,7 @@ public class RECIPES_GREGTECH {
 						10*60*20, //Time in ticks
 						230); //EU
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 			
 			//Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
 			try {
@@ -654,7 +654,7 @@ public class RECIPES_GREGTECH {
 						64); //EU				
 				
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//(NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
 			try {
@@ -673,7 +673,7 @@ public class RECIPES_GREGTECH {
 						5*60*20, //Time in ticks
 						120); //EU				
 
-			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 		}
 
@@ -682,7 +682,7 @@ public class RECIPES_GREGTECH {
 	private static void lftrRecipes(){
 		try {
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			//Fli2BeF4 + Thorium TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
@@ -692,7 +692,7 @@ public class RECIPES_GREGTECH {
 					300*60*20, //Time in ticks
 					3500); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			//Fli2BeF4 + Uranium235 = 1x Uranium233
 			CORE.RA.addLFTRRecipe(
@@ -701,7 +701,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 3*144), //Output Array of Items - Upto 9,
 					120*60*20, //Time in ticks
 					8000); //EU
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
@@ -711,7 +711,7 @@ public class RECIPES_GREGTECH {
 					420*60*20, //Time in ticks
 					4000); //EU
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
 
 	private static void fissionFuelRecipes(){
@@ -768,7 +768,7 @@ public class RECIPES_GREGTECH {
 					60*60*20, //Duration
 					500);
 
-		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
 
 	private static void assemblerRecipes(){
@@ -790,7 +790,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void distilleryRecipes(){
-		Utils.LOG_INFO("Registering Distillery/Distillation Tower Recipes.");
+		Logger.INFO("Registering Distillery/Distillation Tower Recipes.");
 		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), FluidUtils.getFluidStack("air", 1000), FluidUtils.getFluidStack("helium", 1), 400, 30, false);
 		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStackArray("helium", 25), ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob, 1), 200, 60);
 
@@ -834,7 +834,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void addFuels(){
-		Utils.LOG_INFO("Registering New Fuels.");
+		Logger.INFO("Registering New Fuels.");
 		GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketFire_water", 0, 1), null, 120, 0);
 		GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
@@ -883,7 +883,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void extractorRecipes(){
-		Utils.LOG_INFO("Registering Extractor Recipes.");
+		Logger.INFO("Registering Extractor Recipes.");
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Sodium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));

@@ -7,7 +7,7 @@ import java.util.*;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -214,7 +214,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (this.mRecipeList.isEmpty()) {
-			Utils.LOG_WARNING("BAD RECIPE");
+			Logger.WARNING("BAD RECIPE");
 			return null;
 		}
 
@@ -223,7 +223,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		if (GregTech_API.sPostloadFinished) {
 			if (this.mMinimalInputFluids > 0) {
 				if (aFluids == null) {
-					Utils.LOG_WARNING("BAD RECIPE [1]");
+					Logger.WARNING("BAD RECIPE [1]");
 					return null;
 				}
 				int tAmount = 0;
@@ -233,13 +233,13 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 					}
 				}
 				if (tAmount < this.mMinimalInputFluids) {
-					Utils.LOG_WARNING("BAD RECIPE [2]");
+					Logger.WARNING("BAD RECIPE [2]");
 					return null;
 				}
 			}
 			if (this.mMinimalInputItems > 0) {
 				if (aInputs == null) {
-					Utils.LOG_WARNING("BAD RECIPE [3]");
+					Logger.WARNING("BAD RECIPE [3]");
 					return null;
 				}
 				int tAmount = 0;
@@ -249,7 +249,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 					}
 				}
 				if (tAmount < this.mMinimalInputItems) {
-					Utils.LOG_WARNING("BAD RECIPE [4]");
+					Logger.WARNING("BAD RECIPE [4]");
 					return null;
 				}
 			}
@@ -263,38 +263,38 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
 		if (aRecipe != null) {
 			if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
-				Utils.LOG_WARNING("BAD RECIPE [a]");
+				Logger.WARNING("BAD RECIPE [a]");
 				return aRecipe.mEnabled && ((aVoltage * this.mAmperage) >= aRecipe.mEUt) ? aRecipe : null;
 			}
 		}
 
 		// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
 		if ((this.mUsualInputCount > 0) && (aInputs != null)) {
-			Utils.LOG_WARNING("BAD RECIPE [b0]");
+			Logger.WARNING("BAD RECIPE [b0]");
 			for (final ItemStack tStack : aInputs) {
-				Utils.LOG_WARNING("BAD RECIPE [b1]");
+				Logger.WARNING("BAD RECIPE [b1]");
 				if (tStack != null) {
-					Utils.LOG_WARNING("BAD RECIPE [b2] | "+tStack.getDisplayName());
+					Logger.WARNING("BAD RECIPE [b2] | "+tStack.getDisplayName());
 					Collection<GT_Recipe>
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(tStack));
 					if (tRecipes != null) {
-						Utils.LOG_WARNING("BAD RECIPE [b3]");
+						Logger.WARNING("BAD RECIPE [b3]");
 						for (final GT_Recipe tRecipe : tRecipes) {
-							Utils.LOG_WARNING("BAD RECIPE [b4]");
+							Logger.WARNING("BAD RECIPE [b4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
-								Utils.LOG_WARNING("BAD RECIPE [b5]");
+								Logger.WARNING("BAD RECIPE [b5]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
 					}
-					Utils.LOG_WARNING("BAD RECIPE [b6]");
+					Logger.WARNING("BAD RECIPE [b6]");
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
 					if (tRecipes != null) {
-						Utils.LOG_WARNING("BAD RECIPE [b7]");
+						Logger.WARNING("BAD RECIPE [b7]");
 						for (final GT_Recipe tRecipe : tRecipes) {
-							Utils.LOG_WARNING("BAD RECIPE [b8]");
+							Logger.WARNING("BAD RECIPE [b8]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
-								Utils.LOG_WARNING("BAD RECIPE [b9]");
+								Logger.WARNING("BAD RECIPE [b9]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
@@ -305,19 +305,19 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 
 		// If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map too.
 		if ((this.mMinimalInputItems == 0) && (aFluids != null && aFluids.length > 0)) {
-			Utils.LOG_WARNING("BAD RECIPE [c0] "+aFluids.length);
+			Logger.WARNING("BAD RECIPE [c0] "+aFluids.length);
 			for (final FluidStack aFluid : aFluids) {
-				Utils.LOG_WARNING("BAD RECIPE [c1]");
+				Logger.WARNING("BAD RECIPE [c1]");
 				if (aFluid != null) {
-					Utils.LOG_WARNING("BAD RECIPE [c2]");
+					Logger.WARNING("BAD RECIPE [c2]");
 					final Collection<GT_Recipe>
 					tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
 					if (tRecipes != null) {
-						Utils.LOG_WARNING("BAD RECIPE [c3]");
+						Logger.WARNING("BAD RECIPE [c3]");
 						for (final GT_Recipe tRecipe : tRecipes) {
-							Utils.LOG_WARNING("BAD RECIPE [c4]");
+							Logger.WARNING("BAD RECIPE [c4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
-								Utils.LOG_WARNING("BAD RECIPE [c5]");
+								Logger.WARNING("BAD RECIPE [c5]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
@@ -327,7 +327,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		}
 
 		// And nothing has been found.
-		Utils.LOG_WARNING("BAD RECIPE [5]");
+		Logger.WARNING("BAD RECIPE [5]");
 		return null;
 	}
 

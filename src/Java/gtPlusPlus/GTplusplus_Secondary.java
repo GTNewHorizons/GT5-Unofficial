@@ -10,8 +10,8 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
 import gtPlusPlus.core.world.darkworld.block.blockDarkWorldGround;
@@ -47,7 +47,7 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
-		Utils.LOG_INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
+		Logger.INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
 
 		//Load Dark World and Biome
 		GameRegistry.registerFuelHandler(this);
@@ -60,7 +60,7 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	// Pre-Init
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
-		Utils.LOG_INFO("Loading " + MODID2 + " V" + VERSION2);
+		Logger.INFO("Loading " + MODID2 + " V" + VERSION2);
 
 		//Setup
 		setVars();
@@ -129,7 +129,7 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 
 	@EventHandler
 	public static void postInit(final FMLPostInitializationEvent e) {
-		Utils.LOG_INFO("Finished loading Dark World plugin for GT++.");
+		Logger.INFO("Finished loading Dark World plugin for GT++.");
 	}
 
 }

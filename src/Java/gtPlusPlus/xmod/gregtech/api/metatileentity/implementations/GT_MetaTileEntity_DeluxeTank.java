@@ -5,7 +5,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_DeluxeTank;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_DeluxeTank;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -228,7 +228,7 @@ public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_Bas
 						}
 					}
 					else {
-						Utils.LOG_INFO("Something broke when trying to empty cells between two fluid tank areas.");
+						Logger.INFO("Something broke when trying to empty cells between two fluid tank areas.");
 					}
 				}
 			}

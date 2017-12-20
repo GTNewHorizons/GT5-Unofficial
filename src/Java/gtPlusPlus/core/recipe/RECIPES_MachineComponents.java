@@ -2,9 +2,9 @@ package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -94,7 +94,7 @@ public class RECIPES_MachineComponents {
 	public static String smallGearTier10 = "gearGtSmallNeutronium";
 
 	public static final void RECIPES_LOAD(){
-		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");
+		Logger.INFO("Loading Recipes for the Various Circuits and Machine components.");
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			run();
 		}
@@ -284,7 +284,7 @@ public class RECIPES_MachineComponents {
 
 		onlyULVComponents();
 
-		Utils.LOG_INFO("Done loading recipes for the Various machine components.");
+		Logger.INFO("Done loading recipes for the Various machine components.");
 
 	}
 
@@ -383,7 +383,7 @@ public class RECIPES_MachineComponents {
 
 	private static void GregtechMachinePhase(){
 		if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
-			Utils.LOG_INFO("Adding Gregtech machine recipes for the circuits.");
+			Logger.INFO("Adding Gregtech machine recipes for the circuits.");
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_IV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), 32, 256);
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_LuV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_LuV.get(1L, new Object[0]), 64, 512);
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 2L), GregtechItemList.Circuit_Parts_Wiring_ZPM.get(4L, new Object[0]), GregtechItemList.Circuit_Board_ZPM.get(1L, new Object[0]), 96, 1024);

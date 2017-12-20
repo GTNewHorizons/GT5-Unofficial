@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -58,7 +59,7 @@ public class LeavesBase extends BlockLeaves {
 			}
 		}
 		else {
-			Utils.LOG_WARNING("Unable to drop anything, Leaf Type array and Loot array are different sizes.");
+			Logger.WARNING("Unable to drop anything, Leaf Type array and Loot array are different sizes.");
 		}
 	}
 

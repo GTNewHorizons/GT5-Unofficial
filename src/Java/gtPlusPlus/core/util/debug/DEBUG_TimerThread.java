@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.debug;
 
 import java.util.concurrent.TimeUnit;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -28,9 +28,9 @@ public class DEBUG_TimerThread implements Runnable {
 		final int stepX = Minecraft.getMinecraft().objectMouseOver.blockX;
 		final int stepY = Minecraft.getMinecraft().objectMouseOver.blockY;
 		final int stepZ = Minecraft.getMinecraft().objectMouseOver.blockZ;
-		Utils.LOG_INFO("Clicked on a Block @ "+"[X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]"+" with xDir:"+xDir+" zDir:"+zDir);
+		Logger.INFO("Clicked on a Block @ "+"[X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]"+" with xDir:"+xDir+" zDir:"+zDir);
 		this.world.setBlock(stepX, stepY, stepZ, Blocks.bedrock,0,3);
-		Utils.LOG_INFO("Makng it Bedrock for future investment.");
+		Logger.INFO("Makng it Bedrock for future investment.");
 		//for (int i = -1; i <= 1; i++) {
 		//stepX = stepX+i;
 		for (int i = stepX-1; i <= (stepX+1); i++){
@@ -44,12 +44,12 @@ public class DEBUG_TimerThread implements Runnable {
 					//stepZ = stepZ+j;
 					//for (int h = -1; h <= 1; h++) {
 					//stepY = stepY+h;
-					Utils.LOG_INFO("Placing Block @ "+"[X:"+i+"][Y:"+h+"][Z:"+j+"]"+" with xDir:"+xDir+" zDir:"+zDir);
+					Logger.INFO("Placing Block @ "+"[X:"+i+"][Y:"+h+"][Z:"+j+"]"+" with xDir:"+xDir+" zDir:"+zDir);
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						this.world.setBlock(i, h, j, Blocks.stone,0,3);
 					}
 					else {
-						Utils.LOG_INFO("Not even sure what this is for, but I got here.");
+						Logger.INFO("Not even sure what this is for, but I got here.");
 					}
 					try {
 						TimeUnit.MILLISECONDS.sleep(500);

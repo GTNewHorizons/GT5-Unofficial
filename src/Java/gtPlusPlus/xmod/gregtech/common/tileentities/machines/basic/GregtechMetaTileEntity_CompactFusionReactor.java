@@ -9,11 +9,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeMachine;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -147,16 +145,16 @@ GT_MetaTileEntity_DeluxeMachine {
 	long mFusionPoint = 20000000L;
 	@Override
 	public int checkRecipe() {
-		Utils.LOG_WARNING("Recipe Tick 1.");
+		Logger.WARNING("Recipe Tick 1.");
 		if (!this.mCanProcessRecipe) {
-			Utils.LOG_WARNING("Recipe Tick 1.1 - Cannot Process Recipe.");
+			Logger.WARNING("Recipe Tick 1.1 - Cannot Process Recipe.");
 			if (this.mChargeConsumed < mFusionPoint) {
-				Utils.LOG_WARNING("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
+				Logger.WARNING("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
 				this.mCharging = true;
 				this.mCanProcessRecipe = false;
 				if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
 						(mFusionPoint / 100), false)) {
-					Utils.LOG_WARNING("Recipe Tick 1.3 - Charging Internal storage. "+(mFusionPoint / 100)+"/"+mFusionPoint);
+					Logger.WARNING("Recipe Tick 1.3 - Charging Internal storage. "+(mFusionPoint / 100)+"/"+mFusionPoint);
 					mChargeConsumed += (mFusionPoint / 100);
 				}
 			} else {
@@ -166,13 +164,13 @@ GT_MetaTileEntity_DeluxeMachine {
 
 			}
 		} else {
-			Utils.LOG_WARNING("Recipe Tick 1.1 - Try to Process Recipe.");
+			Logger.WARNING("Recipe Tick 1.1 - Try to Process Recipe.");
 			if (checkRecipeMulti()) {
-				Utils.LOG_WARNING("Recipe Tick 1.2 - Process Recipe was Successful.");
+				Logger.WARNING("Recipe Tick 1.2 - Process Recipe was Successful.");
 				return 2;
 			}
 		}
-		Utils.LOG_WARNING("Recipe Tick 2. - Process Recipe failed.");
+		Logger.WARNING("Recipe Tick 2. - Process Recipe failed.");
 		return 0;
 	}
 
@@ -188,11 +186,11 @@ GT_MetaTileEntity_DeluxeMachine {
 		int tFluidList_sS = tFluidList.size();
 		for (int i = 0; i < tFluidList_sS - 1; i++) {
 			for (int j = i + 1; j < tFluidList_sS; j++) {
-				if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i),
-						(FluidStack) tFluidList.get(j))) {
-					if (((FluidStack) tFluidList
-							.get(i)).amount >= ((FluidStack) tFluidList
-									.get(j)).amount) {
+				if (GT_Utility.areFluidsEqual(tFluidList.get(i),
+						tFluidList.get(j))) {
+					if (tFluidList
+							.get(i).amount >= tFluidList
+									.get(j).amount) {
 						tFluidList.remove(j--);
 						tFluidList_sS = tFluidList.size();
 					} else {
@@ -435,22 +433,22 @@ GT_MetaTileEntity_DeluxeMachine {
 			long aTick) {
 		//super.onPostTick(aBaseMetaTileEntity, aTick); 
 		if (aBaseMetaTileEntity.isServerSide()) {
-			Utils.LOG_WARNING("1");
+			Logger.WARNING("1");
 			if (mEfficiency < 0)
 				mEfficiency = 0;
 			if (mRunningOnLoad) {
-				Utils.LOG_WARNING("2");
+				Logger.WARNING("2");
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipeMulti();
 			}
 			if (--mUpdate == 0 || --mStartUpCheck == 0) {
-				Utils.LOG_WARNING("3");
+				Logger.WARNING("3");
 				mMachine = true;
 			}
 			if (mStartUpCheck < 0) {
-				Utils.LOG_WARNING("4");
+				Logger.WARNING("4");
 				if (mMachine) {
-					Utils.LOG_WARNING("5");
+					Logger.WARNING("5");
 
 					if (aBaseMetaTileEntity.getStoredEU()
 							+ (2048 * tierOverclock()) < maxEUStore()) {
@@ -458,12 +456,12 @@ GT_MetaTileEntity_DeluxeMachine {
 								2048 * tierOverclock(), true);
 					}
 					if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-						Utils.LOG_WARNING("6");
+						Logger.WARNING("6");
 						stopMachine();
 						this.mLastRecipe = null;
 					}
 					if (mMaxProgresstime > 0) {
-						Utils.LOG_WARNING("7");
+						Logger.WARNING("7");
 						this.getBaseMetaTileEntity()
 						.decreaseStoredEnergyUnits(mEUt, true);
 						if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
@@ -485,21 +483,21 @@ GT_MetaTileEntity_DeluxeMachine {
 								checkRecipeMulti();
 						}
 					} else {
-						Utils.LOG_WARNING("8");
+						Logger.WARNING("8");
 						if (aTick % 100 == 0
 								|| aBaseMetaTileEntity.hasWorkJustBeenEnabled()
 								|| aBaseMetaTileEntity
 								.hasInventoryBeenModified()) {
-							Utils.LOG_WARNING("9");
+							Logger.WARNING("9");
 							// turnCasingActive(mMaxProgresstime > 0);
 							if (aBaseMetaTileEntity.isAllowedToWork()) {
-								Utils.LOG_WARNING("10");
+								Logger.WARNING("10");
 								this.mEUStore = (int) aBaseMetaTileEntity
 										.getStoredEU();
 								if (checkRecipeMulti()) {
-									Utils.LOG_WARNING("11");
+									Logger.WARNING("11");
 									if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
-										Utils.LOG_WARNING("12");
+										Logger.WARNING("12");
 										mMaxProgresstime = 0;
 										// turnCasingActive(false);
 									}
@@ -515,12 +513,12 @@ GT_MetaTileEntity_DeluxeMachine {
 					}
 				} else {
 					// turnCasingActive(false);
-					Utils.LOG_WARNING("Bad");
+					Logger.WARNING("Bad");
 					this.mLastRecipe = null;
 					stopMachine();
 				}
 			}
-			Utils.LOG_WARNING("Good");
+			Logger.WARNING("Good");
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
 		}
 	}
@@ -605,19 +603,16 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	@Override
 	public int fill(FluidStack aFluid, boolean doFill) {
-		// TODO Auto-generated method stub
 		return super.fill(aFluid, doFill);
 	}
 
 	@Override
 	public FluidStack drain(int maxDrain, boolean doDrain) {
-		// TODO Auto-generated method stub
 		return super.drain(maxDrain, doDrain);
 	}
 
 	@Override
 	public int getTankPressure() {
-		// TODO Auto-generated method stub
 		return 500;
 	}
 

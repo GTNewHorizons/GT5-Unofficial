@@ -7,13 +7,13 @@ import java.util.Queue;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.*;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.*;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
@@ -28,7 +28,7 @@ public class COMPAT_HANDLER {
 
 	public static void registerMyModsOreDictEntries(){
 
-		Utils.LOG_INFO("Registering Materials with OreDict.");
+		Logger.INFO("Registering Materials with OreDict.");
 		//In-house
 
 		//tools

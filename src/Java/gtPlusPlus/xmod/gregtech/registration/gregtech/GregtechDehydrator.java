@@ -4,11 +4,11 @@ import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public class GregtechDehydrator {
 	public static void run() {
 		if (LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
+			Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
 			if (CORE.ConfigSwitches.enableMachine_Dehydrators) {
 				run1();
 			}

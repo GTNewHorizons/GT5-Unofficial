@@ -6,6 +6,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.Utils;
@@ -404,7 +405,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		else {
 			returnValue = getCurrentChunkPollution();
 		}
-		Utils.LOG_INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
+		Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
 		return returnValue;
 	}
 
@@ -434,6 +435,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
+	@Override
 	public boolean allowGeneralRedstoneOutput() {
 		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
 			this.markDirty();

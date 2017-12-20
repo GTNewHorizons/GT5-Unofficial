@@ -8,9 +8,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
@@ -22,7 +22,7 @@ public class GregtechComponentAssembler {
 	public static void run() {
 		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			Utils.LOG_INFO("Component Assemblers cannot be created in 5.08.33 during the pre-release. Please wait for 1.7.0 release.");
+			Logger.INFO("Component Assemblers cannot be created in 5.08.33 during the pre-release. Please wait for 1.7.0 release.");
 			return;
 		}
 		

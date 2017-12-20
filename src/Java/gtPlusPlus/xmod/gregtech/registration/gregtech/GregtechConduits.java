@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -51,7 +52,7 @@ public class GregtechConduits {
 	public static void run()
 	{
 		if (Gregtech){
-			Utils.LOG_INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
+			Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
 			if (CORE.ConfigSwitches.enableCustom_Cables) {
 				run1();
 			}
@@ -111,8 +112,8 @@ public class GregtechConduits {
 		final Materials T = Materials.valueOf(Material);
 		int V = Utils.calculateVoltageTier(Voltage);
 		if (V == -1){
-			Utils.LOG_ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
-			Utils.LOG_ERROR(Material+" has defaulted to 8v.");
+			Logger.ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
+			Logger.ERROR(Material+" has defaulted to 8v.");
 			V=0;
 		}
 		makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false, rgb);
@@ -121,7 +122,7 @@ public class GregtechConduits {
 	@SuppressWarnings("deprecation")
 	private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated, final short[] aRGB)
 	{
-		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new material for Wire & Cable.");
+		Logger.WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new material for Wire & Cable.");
 		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt01, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 0, "wire." + aMaterial.name().toLowerCase() + ".01", "1x " + aMaterial.mDefaultLocalName + " Wire", 0.125F, aMaterial, aLoss, 1L * aAmperage, aVoltage, false, !aAutoInsulated, aRGB).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt02, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 1, "wire." + aMaterial.name().toLowerCase() + ".02", "2x " + aMaterial.mDefaultLocalName + " Wire", 0.25F, aMaterial, aLoss, 2L * aAmperage, aVoltage, false, !aAutoInsulated, aRGB).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt04, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 2, "wire." + aMaterial.name().toLowerCase() + ".04", "4x " + aMaterial.mDefaultLocalName + " Wire", 0.375F, aMaterial, aLoss, 4L * aAmperage, aVoltage, false, !aAutoInsulated, aRGB).getStackForm(1L));
@@ -144,8 +145,8 @@ public class GregtechConduits {
 	private static void customWireFactory(final Material Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){
 		int V = Utils.calculateVoltageTier(Voltage);
 		if (V == -1){
-			Utils.LOG_ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
-			Utils.LOG_ERROR(Material+" has defaulted to 8v.");
+			Logger.ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
+			Logger.ERROR(Material+" has defaulted to 8v.");
 			V=0;
 		}
 		makeCustomWires(Material, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
@@ -153,7 +154,7 @@ public class GregtechConduits {
 
 	private static void makeCustomWires(final Material aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
 	{
-		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.getLocalizedName() +" as a new material for Wire & Cable.");
+		Logger.WARNING("Gregtech5u Content | Registered "+aMaterial.getLocalizedName() +" as a new material for Wire & Cable.");
 		registerOre(OrePrefixes.wireGt01, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 0, "wire." + aMaterial.getLocalizedName().toLowerCase() + ".01", "1x " + aMaterial.getLocalizedName() + " Wire", 0.125F, aLoss, 1L * aAmperage, aVoltage, false, !aAutoInsulated, aMaterial.getRGBA()).getStackForm(1L));
 		registerOre(OrePrefixes.wireGt02, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 1, "wire." + aMaterial.getLocalizedName().toLowerCase() + ".02", "2x " + aMaterial.getLocalizedName() + " Wire", 0.25F, aLoss, 2L * aAmperage, aVoltage, false, !aAutoInsulated, aMaterial.getRGBA()).getStackForm(1L));
 		registerOre(OrePrefixes.wireGt04, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 2, "wire." + aMaterial.getLocalizedName().toLowerCase() + ".04", "4x " + aMaterial.getLocalizedName() + " Wire", 0.375F, aLoss, 4L * aAmperage, aVoltage, false, !aAutoInsulated, aMaterial.getRGBA()).getStackForm(1L));
@@ -210,8 +211,8 @@ public class GregtechConduits {
 			V = 9;
 		}
 		else {
-			Utils.LOG_ERROR("Failed to set voltage on "+Material.name()+". Invalid voltage of "+Voltage+"V set.");
-			Utils.LOG_ERROR(Material.name()+" has defaulted to 8v.");
+			Logger.ERROR("Failed to set voltage on "+Material.name()+". Invalid voltage of "+Voltage+"V set.");
+			Logger.ERROR(Material.name()+" has defaulted to 8v.");
 			V = 0;
 		}
 		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);
@@ -268,7 +269,7 @@ public class GregtechConduits {
 			output = "Void";
 		}
 
-		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");
+		Logger.INFO("Generating "+output+" pipes & respective recipes.");
 
 		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+output, 1);
 		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+output, 1);
@@ -280,11 +281,11 @@ public class GregtechConduits {
 		}
 
 		//Check all pipes are not null
-		Utils.LOG_WARNING("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeNormal from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeLarge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
+		Logger.WARNING("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
+		Logger.WARNING("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
+		Logger.WARNING("Generated pipeNormal from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
+		Logger.WARNING("Generated pipeLarge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
+		Logger.WARNING("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 
 		int eut = 120;
 		int time;
@@ -351,7 +352,7 @@ public class GregtechConduits {
 						pipePlateDouble, "craftingToolWrench", pipePlateDouble,
 						ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
 			} else {
-				Utils.LOG_INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
+				Logger.INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
 			}
 		}
 

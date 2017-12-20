@@ -20,7 +20,7 @@ public class InventoryUtils {
 	        {
 	            for (int i1 = 0; i1 < ((IInventory) tileentity).getSizeInventory(); ++i1)
 	            {
-	                ItemStack itemstack = (ItemStack) ((IInventory) tileentity).getStackInSlot(i1);
+	                ItemStack itemstack = ((IInventory) tileentity).getStackInSlot(i1);
 
 	                if (itemstack != null)
 	                {
@@ -38,11 +38,11 @@ public class InventoryUtils {
 	                        }
 
 	                        itemstack.stackSize -= j1;
-	                        entityitem = new EntityItem(world, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+	                        entityitem = new EntityItem(world, x + f, y + f1, z + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 	                        float f3 = 0.05F;
-	                        entityitem.motionX = (double)((float)mRandom.nextGaussian() * f3);
-	                        entityitem.motionY = (double)((float)mRandom.nextGaussian() * f3 + 0.2F);
-	                        entityitem.motionZ = (double)((float)mRandom.nextGaussian() * f3);
+	                        entityitem.motionX = (float)mRandom.nextGaussian() * f3;
+	                        entityitem.motionY = (float)mRandom.nextGaussian() * f3 + 0.2F;
+	                        entityitem.motionZ = (float)mRandom.nextGaussian() * f3;
 
 	                        if (itemstack.hasTagCompound())
 	                        {

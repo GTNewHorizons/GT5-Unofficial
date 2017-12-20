@@ -1,6 +1,6 @@
 package gtPlusPlus.core.util.player;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -35,7 +35,7 @@ public class UtilsMining {
 
 				}
 				else {
-					Utils.LOG_WARNING("Incorrect Tool for mining this block.");
+					Logger.WARNING("Incorrect Tool for mining this block.");
 				}
 			}
 		} catch (final NullPointerException e){
@@ -179,29 +179,29 @@ public class UtilsMining {
 
 		try {
 			blockClass = block.getClass().toString().toLowerCase();
-			Utils.LOG_WARNING(blockClass);
+			Logger.WARNING(blockClass);
 			if (blockClass.toLowerCase().contains(LIQUID)){
-				Utils.LOG_WARNING(block.toString()+" is a Liquid.");
+				Logger.WARNING(block.toString()+" is a Liquid.");
 				return false;
 			}
 			else if (blockClass.toLowerCase().contains(ORE)){
-				Utils.LOG_WARNING(block.toString()+" is an Ore.");
+				Logger.WARNING(block.toString()+" is an Ore.");
 				return true;
 			}
 			else if (block.getHarvestLevel(world.getBlockMetadata(xyz[0], xyz[1], xyz[2])) >= miningLevel){
-				Utils.LOG_WARNING(block.toString()+" is minable.");
+				Logger.WARNING(block.toString()+" is minable.");
 				return true;
 			}
 			else if (blockClass.toLowerCase().contains(AIR)){
-				Utils.LOG_WARNING(block.toString()+" is Air.");
+				Logger.WARNING(block.toString()+" is Air.");
 				return false;
 			}
 			else if (blockClass.toLowerCase().contains(BLOCK)){
-				Utils.LOG_WARNING(block.toString()+" is a block of some kind.");
+				Logger.WARNING(block.toString()+" is a block of some kind.");
 				return false;
 			}
 			else {
-				Utils.LOG_WARNING(block.toString()+" is mystery.");
+				Logger.WARNING(block.toString()+" is mystery.");
 				return false;
 			}
 		}

@@ -17,9 +17,9 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
@@ -106,12 +106,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_WARNING("Fabricating Matter.");
+		Logger.WARNING("Fabricating Matter.");
 		if (this.mInputHatches.size() != 1){
-			Utils.LOG_INFO("Too many input hatches. Found: "+this.mInputHatches.size()+" | Expected: 1");
+			Logger.INFO("Too many input hatches. Found: "+this.mInputHatches.size()+" | Expected: 1");
 			return false;
 		}
-		Utils.LOG_WARNING("Step 1");
+		Logger.WARNING("Step 1");
 
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
@@ -126,7 +126,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				}
 			}
 		}
-		Utils.LOG_WARNING("Step 2");
+		Logger.WARNING("Step 2");
 
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
@@ -145,7 +145,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				}
 			}
 		}
-		Utils.LOG_WARNING("Step 3");
+		Logger.WARNING("Step 3");
 
 		final long tVoltage = this.getMaxInputVoltage();
 		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -183,12 +183,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				Utils.LOG_INFO("Did not find an itemstack containing 9 IC2 Scrap or more.");
 			}
 		}*/
-		Utils.LOG_WARNING("Step 4");
+		Logger.WARNING("Step 4");
 
 		tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 
 		if (tFluids.length > 0) {
-			Utils.LOG_WARNING("Input fluid found");
+			Logger.WARNING("Input fluid found");
 			for(int i = 0;i<tFluids.length;i++){
 				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
 				if (tRecipe != null) {
@@ -221,13 +221,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					}
 				}
 				else {
-					Utils.LOG_INFO("Invalid Recipe");
+					Logger.INFO("Invalid Recipe");
 					return false;
 				}
 			}
 		}
 		else if (tFluids.length == 0) {
-			Utils.LOG_WARNING("Input fluid not found");
+			Logger.WARNING("Input fluid not found");
 			this.fakeRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{this.tempFake}, new ItemStack[]{});
 
 			this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
@@ -256,9 +256,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			}
 		}
 		else {
-			Utils.LOG_INFO("Invalid no input Recipe");
+			Logger.INFO("Invalid no input Recipe");
 		}
-		Utils.LOG_INFO("Fabricating Matter.bad");
+		Logger.INFO("Fabricating Matter.bad");
 		return false;
 	}
 
@@ -284,27 +284,27 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {// innerer 3x3 ohne h�he
 						if (h == 0) {// innen boden (kantal coils)
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
+								Logger.INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
+								Logger.INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
 								return false;
 							}
 						} else if (h == 3) {// innen decke (ulv casings + input + muffler)
 							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+									Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+									Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 							}
 						} else {// innen air
 							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Utils.LOG_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
+								Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
 								return false;
 							}
 						}
@@ -313,11 +313,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 							if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
 										return false;
 									}
 								}
@@ -327,18 +327,18 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
 										return false;
 									}
 								}
 
 								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
-										Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+										Logger.INFO("Glass Casings Missing from somewhere in the second layer.");
 										return false;
 									}
 								}
@@ -346,29 +346,29 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 							if (h == 2) {
 								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
+										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
 										return false;
 									}
 								}
 
 								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
-										Utils.LOG_INFO("Glass Casings Missing from somewhere in the third layer.");
+										Logger.INFO("Glass Casings Missing from somewhere in the third layer.");
 										return false;
 									}
 								}
 							}
 							if (h == 3) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
+									Logger.INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
+									Logger.INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
 									return false;
 								}
 							}
@@ -377,7 +377,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				}
 			}
 		}
-		Utils.LOG_INFO("Multiblock Formed.");
+		Logger.INFO("Multiblock Formed.");
 		return true;
 	}
 

@@ -6,11 +6,11 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
@@ -95,7 +95,7 @@ public class Machine_ProjectTable extends BlockContainer
 				player.openGui(GTplusplus.instance, 0, world, x, y, z);
 				return true;
 			}
-			Utils.LOG_INFO("Holding a Wrench, doing wrench things instead.");
+			Logger.INFO("Holding a Wrench, doing wrench things instead.");
 		}
 		return false;
 	}

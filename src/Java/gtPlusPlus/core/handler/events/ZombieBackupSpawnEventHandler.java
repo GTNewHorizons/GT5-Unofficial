@@ -8,7 +8,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.analytics.SegmentHelper;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.event.entity.living.ZombieEvent;
 
 public class ZombieBackupSpawnEventHandler {
@@ -32,7 +32,7 @@ public class ZombieBackupSpawnEventHandler {
 			if (event.attacker != null){
 				SegmentHelper.getInstance().trackUser(event.attacker.getUniqueID().toString(), "Zombie Backup");			
 			}
-			Utils.LOG_WARNING("[Zombie] ZombieEvent.SummonAidEvent.");
+			Logger.WARNING("[Zombie] ZombieEvent.SummonAidEvent.");
 			event.setResult(Result.DENY);
 		}
 		catch(Throwable t){}
@@ -41,9 +41,9 @@ public class ZombieBackupSpawnEventHandler {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onZombieReinforcement(final ZombieEvent event) {
 		try {
-			Utils.LOG_WARNING("[Zombie] ZombieEvent.");
+			Logger.WARNING("[Zombie] ZombieEvent.");
 			if (event.entity != null){
-				Utils.LOG_WARNING("Event Entity: "+event.entity.getCommandSenderName());
+				Logger.WARNING("Event Entity: "+event.entity.getCommandSenderName());
 			}
 			event.setResult(Result.DENY);
 		}

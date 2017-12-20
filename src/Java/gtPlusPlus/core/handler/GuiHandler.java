@@ -3,6 +3,7 @@ package gtPlusPlus.core.handler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_BackpackBase;
 import gtPlusPlus.core.container.Container_FishTrap;
 import gtPlusPlus.core.container.Container_Grindle;
@@ -31,7 +32,6 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
 import gtPlusPlus.xmod.thaumcraft.gui.ContainerFastAlchemyFurnace;
 import gtPlusPlus.xmod.thaumcraft.gui.GuiFastAlchemyFurnace;
@@ -56,7 +56,7 @@ public class GuiHandler implements IGuiHandler {
 
 	public static void init(){
 
-		Utils.LOG_INFO("Registering GUIs.");
+		Logger.INFO("Registering GUIs.");
 		NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
 		//Register GuiHandler
 		//NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
@@ -87,7 +87,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_Workbench(player.inventory, (TileEntityWorkbench)te);
 			}
 			else if (ID == GUI5){
-				Utils.LOG_INFO("sad");
+				Logger.INFO("sad");
 				return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 
 			}
@@ -117,7 +117,7 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override //GuiModTileEntity
 	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
-		Utils.LOG_WARNING("getClientGuiElement Called by: "+player+", in world: "+player.dimension+" at x:"+x+", y:"+y+", z:"+z+".");
+		Logger.WARNING("getClientGuiElement Called by: "+player+", in world: "+player.dimension+" at x:"+x+", y:"+y+", z:"+z+".");
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null){
 			if (ID == GUI1){
@@ -140,7 +140,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_Workbench(player.inventory, (TileEntityWorkbench)te);
 			}
 			else if (ID == GUI5){
-				Utils.LOG_INFO("sad");
+				Logger.INFO("sad");
 				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 			}
 			else if (ID == GUI6){

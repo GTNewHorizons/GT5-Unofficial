@@ -16,12 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.commons.lang3.EnumUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
@@ -30,10 +26,10 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -73,7 +69,7 @@ public class Utils {
 	static class ShortTimerTask extends TimerTask {
 		@Override
 		public void run() {
-			Utils.LOG_WARNING("Timer expired.");
+			Logger.WARNING("Timer expired.");
 		}
 	}
 
@@ -109,47 +105,47 @@ public class Utils {
 			// Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "COGNITIO")) {
-					Utils.LOG_WARNING("TC Aspect found - " + aspect);
+					Logger.WARNING("TC Aspect found - " + aspect);
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
 				} else {
-					Utils.LOG_INFO("Fallback TC Aspect found - " + aspect
+					Logger.INFO("Fallback TC Aspect found - " + aspect
 							+ " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
 				}
 			} catch (final NoSuchFieldError r) {
-				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
+				Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 		} else if (aspect.toUpperCase().equals("EXANIMUS")) {
 			// Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "EXANIMUS")) {
-					Utils.LOG_WARNING("TC Aspect found - " + aspect);
+					Logger.WARNING("TC Aspect found - " + aspect);
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
 				} else {
-					Utils.LOG_INFO("Fallback TC Aspect found - " + aspect
+					Logger.INFO("Fallback TC Aspect found - " + aspect
 							+ " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
 				}
 			} catch (final NoSuchFieldError r) {
-				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
+				Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 
 		} else if (aspect.toUpperCase().equals("PRAECANTATIO")) {
 			// Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "PRAECANTATIO")) {
-					Utils.LOG_WARNING("TC Aspect found - " + aspect);
+					Logger.WARNING("TC Aspect found - " + aspect);
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
 				} else {
-					Utils.LOG_INFO("Fallback TC Aspect found - " + aspect
+					Logger.INFO("Fallback TC Aspect found - " + aspect
 							+ " - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
 				}
 			} catch (final NoSuchFieldError r) {
-				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
+				Logger.INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 		} else {
-			Utils.LOG_WARNING("TC Aspect found - " + aspect);
+			Logger.WARNING("TC Aspect found - " + aspect);
 			returnValue = new TC_AspectStack(TC_Aspects.valueOf(aspect), size);
 		}
 
@@ -173,73 +169,6 @@ public class Utils {
 		}
 		return ((target.getItem() == input.getItem()) && (((target.getItemDamage() == WILDCARD_VALUE) && !strict)
 				|| (target.getItemDamage() == input.getItemDamage())));
-	}
-
-	// Logging Functions
-	private static final Logger modLogger = makeLogger();
-
-	// Generate GT++ Logger
-	public static Logger makeLogger() {
-		final Logger gtPlusPlusLogger = LogManager.getLogger("GT++");
-		return gtPlusPlusLogger;
-	}
-	
-	public static final Logger getLogger(){
-		return modLogger;
-	}
-
-	// Non-Dev Comments
-	public static void LOG_INFO(final String s) {
-		// if (CORE.DEBUG){
-		modLogger.info(s);
-		// }
-	}
-
-	// Non-Dev Comments
-	public static void LOG_MACHINE_INFO(final String s) {
-
-		boolean localPlayer = false;
-		try {
-			if (ClientProxy.playerName != null){
-				if (ClientProxy.playerName.toLowerCase().contains("draknyte1")){
-					localPlayer = true;
-				}
-			}
-		}
-		catch (final Throwable t){
-
-		}
-
-		if (CORE.ConfigSwitches.MACHINE_INFO || localPlayer) {
-			final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
-			modLogger.info("Machine Info: " + s + " | " + name1);
-		}
-	}
-
-	// Developer Comments
-	public static void LOG_WARNING(final String s) {
-		if (CORE.DEBUG) {
-			modLogger.warn(s);
-		}
-	}
-
-	// Errors
-	public static void LOG_ERROR(final String s) {
-		if (CORE.DEBUG) {
-			modLogger.fatal(s);
-		}
-	}
-
-	// Developer Logger
-	public static void LOG_SPECIFIC_WARNING(final String whatToLog, final String msg, final int line) {
-		// if (!CORE.DEBUG){
-		FMLLog.warning("GT++ |" + line + "| " + whatToLog + " | " + msg);
-		// }
-	}
-
-	// Non-Dev Comments
-	public static void LOG_ASM(final String s) {
-		FMLRelaunchLog.info("", s);
 	}
 
 	//Register an event to both busses.
@@ -293,7 +222,7 @@ public class Utils {
 		if (!currentWorld.isRemote) {
 			try {
 				correctTool = currentBlock.getHarvestTool(0);
-				Utils.LOG_WARNING(correctTool);
+				Logger.WARNING(correctTool);
 
 			} catch (final NullPointerException e) {
 
@@ -434,8 +363,8 @@ public class Utils {
 		// System.out.println( "hex: " + Integer.toHexString( c.getRGB() &
 		// 0xFFFFFF ) + " hex value:"+temp);
 		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-		Utils.LOG_WARNING("Made " + temp + " - Hopefully it's not a mess.");
-		Utils.LOG_WARNING("It will decode into " + Integer.decode(temp) + ".");
+		Logger.WARNING("Made " + temp + " - Hopefully it's not a mess.");
+		Logger.WARNING("It will decode into " + Integer.decode(temp) + ".");
 		return Integer.decode(temp);
 	}
 
@@ -486,7 +415,7 @@ public class Utils {
 			code = code + code + code;
 			final int i = Integer.parseInt(code);
 			hexColorMap.put(a, Integer.toHexString(0x1000000 | i).substring(1).toUpperCase());
-			Utils.LOG_WARNING("" + Integer.toHexString(0x1000000 | i).substring(1).toUpperCase());
+			Logger.WARNING("" + Integer.toHexString(0x1000000 | i).substring(1).toUpperCase());
 		}
 		return hexColorMap;
 	}
@@ -517,7 +446,7 @@ public class Utils {
 	public static Integer appenedHexNotationToInteger(final int hexAsStringOrInt) {
 		final String hexChar = "0x";
 		String result;
-		Utils.LOG_WARNING(String.valueOf(hexAsStringOrInt));
+		Logger.WARNING(String.valueOf(hexAsStringOrInt));
 		result = hexChar + String.valueOf(hexAsStringOrInt);
 		return Integer.getInteger(result);
 	}
@@ -546,21 +475,21 @@ public class Utils {
 	private static short cellID = 15;
 
 	public static ItemStack createInternalNameAndFluidCell(final String s) {
-		Utils.LOG_WARNING("1");
+		Logger.WARNING("1");
 		final InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
-		Utils.LOG_WARNING("2 " + yourName.name());
+		Logger.WARNING("2 " + yourName.name());
 		final ItemCell item = (ItemCell) Ic2Items.cell.getItem();
-		Utils.LOG_WARNING("3 " + item.getUnlocalizedName());
+		Logger.WARNING("3 " + item.getUnlocalizedName());
 		try {
-			Utils.LOG_WARNING("4");
+			Logger.WARNING("4");
 			final Class<? extends ItemCell> clz = item.getClass();
-			Utils.LOG_WARNING("5 " + clz.getSimpleName());
+			Logger.WARNING("5 " + clz.getSimpleName());
 			final Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
-			Utils.LOG_WARNING("6 " + methode.getName());
+			Logger.WARNING("6 " + methode.getName());
 			methode.setAccessible(true);
-			Utils.LOG_WARNING("7 " + methode.isAccessible());
+			Logger.WARNING("7 " + methode.isAccessible());
 			final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
-			Utils.LOG_WARNING("Successfully created " + temp.getDisplayName() + "s.");
+			Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(),
 					Ic2Items.cell.copy());
 			ItemUtils.addItemToOreDictionary(temp.copy(), "cell" + s);
@@ -572,21 +501,21 @@ public class Utils {
 	}
 
 	public static ItemStack createInternalNameAndFluidCellNoOreDict(final String s) {
-		Utils.LOG_WARNING("1");
+		Logger.WARNING("1");
 		final InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
-		Utils.LOG_WARNING("2 " + yourName.name());
+		Logger.WARNING("2 " + yourName.name());
 		final ItemCell item = (ItemCell) Ic2Items.cell.getItem();
-		Utils.LOG_WARNING("3 " + item.getUnlocalizedName());
+		Logger.WARNING("3 " + item.getUnlocalizedName());
 		try {
-			Utils.LOG_WARNING("4");
+			Logger.WARNING("4");
 			final Class<? extends ItemCell> clz = item.getClass();
-			Utils.LOG_WARNING("5 " + clz.getSimpleName());
+			Logger.WARNING("5 " + clz.getSimpleName());
 			final Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
-			Utils.LOG_WARNING("6 " + methode.getName());
+			Logger.WARNING("6 " + methode.getName());
 			methode.setAccessible(true);
-			Utils.LOG_WARNING("7 " + methode.isAccessible());
+			Logger.WARNING("7 " + methode.isAccessible());
 			final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
-			Utils.LOG_WARNING("Successfully created " + temp.getDisplayName() + "s.");
+			Logger.WARNING("Successfully created " + temp.getDisplayName() + "s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(),
 					Ic2Items.cell.copy());
 			// ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
@@ -739,7 +668,7 @@ public class Utils {
 		final float damage = material.vToolQuality;
 		final int efficiency = material.vToolQuality;
 		// int enchantability = material.mEnchantmentToolsLevel;
-		Utils.LOG_INFO("ToolMaterial stats for " + material.getLocalizedName() + " | harvestLevel:" + harvestLevel
+		Logger.INFO("ToolMaterial stats for " + material.getLocalizedName() + " | harvestLevel:" + harvestLevel
 				+ " | durability:" + durability + " | toolQuality:" + damage + " | toolSpeed:" + damage);
 		final ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, 0);
 		return temp;
@@ -814,7 +743,7 @@ public class Utils {
 				.append("'").toString());
 		NBTUtils.createIntegerTagCompound(rStack, "stats", "mMeta", vMeta);
 		CORE.sBookList.put(aMapping, rStack);
-		Utils.LOG_INFO("Creating book: " + aTitle + " by " + aAuthor + ". Using Meta " + vMeta + ".");
+		Logger.INFO("Creating book: " + aTitle + " by " + aAuthor + ". Using Meta " + vMeta + ".");
 		return GT_Utility.copy(new Object[] { rStack });
 	}
 

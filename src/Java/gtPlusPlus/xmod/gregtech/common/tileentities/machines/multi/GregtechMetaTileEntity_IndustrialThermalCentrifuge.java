@@ -11,9 +11,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -41,14 +41,14 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
 				"60% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [WxHxL]", "Controller (front centered)",
-				"1x Input Bus (Any casing)",
-				"1x Output Bus (Any casing)",
-				"1x Maintenance Hatch (Any casing)",
-				"1x Muffler Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)",
+				"Size: 3x2x3 [WxHxL]", "Controller (front centered, top layer)",
+				"1x Input Bus (Any bottom layer casing)",
+				"1x Output Bus (Any bottom layer casing)",
+				"1x Maintenance Hatch (Any bottom layer casing)",
+				"1x Muffler Hatch (Casing under controller)",
+				"1x Energy Hatch (Any bottom layer casing)",
 				"Thermal processing Casings for the rest (8 at least!)",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
+				"Noise Hazard Sign Blocks also count as valid casings",
 				CORE.GT_Tooltip
 				
 		};
@@ -89,7 +89,7 @@ extends GregtechMeta_MultiBlockBase {
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
-				Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+				Logger.WARNING("Valid Output Slots: "+tValidOutputSlots);
 				//More than or one input
 				if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
 
@@ -141,24 +141,29 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = -1; i < 2; ++i) {
 			for (int j = -1; j < 2; ++j) {
 				for (int h = -1; h < 0; ++h) {
-					//if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
+					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
 								zDir + j);
+
+						Logger.INFO("------------------");
+						Logger.INFO("xDir: "+xDir+" | zDir: "+zDir);
+						Logger.INFO("i: "+i+" | j: "+j+" | h: "+h);
 						if (!addToMachineList(tTileEntity)) {
 							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
 									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								Utils.LOG_WARNING("Wrong Block?");
+								Logger.INFO("Wrong Block?");
 								return false;
 							}
-							++tAmount;
+							tAmount++;
 						}
-					//}
+					}
 				}
 			}
 		}
-		Utils.LOG_WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
+		Logger.INFO("------------------");
+		Logger.WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
 		return (tAmount >= 8);
 	}
 
@@ -167,6 +172,7 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
 		return 45;
 	}

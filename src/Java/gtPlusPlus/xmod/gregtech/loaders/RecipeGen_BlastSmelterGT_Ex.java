@@ -2,9 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -30,6 +28,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 		for (OrePrefixes tPrefix : this.mSmeltingPrefixes) tPrefix.add(this);
 	}
 
+	@Override
 	public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
 		boolean keepHighTempRecipes = !CORE.GTNH;

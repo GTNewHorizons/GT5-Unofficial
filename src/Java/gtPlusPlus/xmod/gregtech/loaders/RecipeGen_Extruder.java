@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Extruder implements Runnable{
@@ -35,7 +35,7 @@ public class RecipeGen_Extruder implements Runnable{
 		final ItemStack shape_Block = ItemList.Shape_Extruder_Block.get(0);
 		final ItemStack shape_Ingot = ItemList.Shape_Extruder_Ingot.get(0);
 
-		Utils.LOG_WARNING("Generating Extruder recipes for "+material.getLocalizedName());
+		Logger.WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 
 		//Ingot Recipe
 		if (addExtruderRecipe(
@@ -44,10 +44,10 @@ public class RecipeGen_Extruder implements Runnable{
 				material.getIngot(9),
 				(int) Math.max(material.getMass() * 2L * 1, 1),
 				4 * material.vVoltageMultiplier)){
-			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Block Recipe
@@ -57,10 +57,10 @@ public class RecipeGen_Extruder implements Runnable{
 				material.getBlock(1),
 				(int) Math.max(material.getMass() * 2L * 1, 1),
 				8 * material.vVoltageMultiplier)){
-			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Plate Recipe
@@ -69,10 +69,10 @@ public class RecipeGen_Extruder implements Runnable{
 				shape_Plate,
 				plate_Single,
 				10, 4 * tVoltageMultiplier)){
-			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Ring Recipe
@@ -83,10 +83,10 @@ public class RecipeGen_Extruder implements Runnable{
 					material.getRing(4),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
 					6 * material.vVoltageMultiplier)){
-				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -99,10 +99,10 @@ public class RecipeGen_Extruder implements Runnable{
 					itemGear,
 					(int) Math.max(material.getMass() * 5L, 1),
 					8 * material.vVoltageMultiplier)){
-				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -114,10 +114,10 @@ public class RecipeGen_Extruder implements Runnable{
 				material.getRod(2),
 				(int) Math.max(material.getMass() * 2L * 1, 1),
 				6 * material.vVoltageMultiplier)){
-			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Logger.WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");
+			Logger.WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 
@@ -129,10 +129,10 @@ public class RecipeGen_Extruder implements Runnable{
 					material.getBolt(8),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
 					6 * material.vVoltageMultiplier)){
-				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 

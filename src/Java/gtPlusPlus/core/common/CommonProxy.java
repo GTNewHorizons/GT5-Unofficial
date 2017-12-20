@@ -4,6 +4,7 @@ import static gtPlusPlus.core.lib.CORE.DEBUG;
 
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
@@ -34,12 +35,12 @@ public class CommonProxy {
 		Utils.registerEvent(this);
 		if (LoadedMods.Gregtech){
 			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
+				Logger.INFO("We're using Gregtech 5.09 Experimental.");
 			}
 			else {
-				Utils.LOG_INFO("We're using Gregtech 5.08 or an earlier fork.");
+				Logger.INFO("We're using Gregtech 5.08 or an earlier fork.");
 			}
-			Utils.LOG_INFO("Setting up our own GT_Proxy.");
+			Logger.INFO("Setting up our own GT_Proxy.");
 			GtProxy = new Meta_GT_Proxy();
 		}
 		else {
@@ -48,27 +49,27 @@ public class CommonProxy {
 	}
 
 	public void preInit(final FMLPreInitializationEvent e) {
-		Utils.LOG_INFO("Doing some house cleaning.");
+		Logger.INFO("Doing some house cleaning.");
 		LoadedMods.checkLoaded();
-		Utils.LOG_INFO("Making sure we're ready to party!");
+		Logger.INFO("Making sure we're ready to party!");
 
 
 		if (!DEBUG){
-			Utils.LOG_WARNING("Development mode not enabled.");
+			Logger.WARNING("Development mode not enabled.");
 		}
 		else if (DEBUG){
-			Utils.LOG_INFO("Development mode enabled.");
+			Logger.INFO("Development mode enabled.");
 		}
 		else {
-			Utils.LOG_WARNING("Development mode not set.");
+			Logger.WARNING("Development mode not set.");
 		}
 		AddToCreativeTab.initialiseTabs();
 		COMPAT_IntermodStaging.preInit();
 		BookHandler.run();
 		//Registration of entities and renderers
-		Utils.LOG_INFO("[Proxy] Calling Entity registrator.");
+		Logger.INFO("[Proxy] Calling Entity registrator.");
 		registerEntities();
-		Utils.LOG_INFO("[Proxy] Calling Tile Entity registrator.");
+		Logger.INFO("[Proxy] Calling Tile Entity registrator.");
 		registerTileEntities();
 
 
@@ -103,7 +104,7 @@ public class CommonProxy {
 		 * End of Subscribe Event registration.
 		 */
 
-		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
+		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
 
 		//Compat Handling
@@ -113,7 +114,7 @@ public class CommonProxy {
 	}
 
 	public void postInit(final FMLPostInitializationEvent e) {
-		Utils.LOG_INFO("Cleaning up, doing postInit.");
+		Logger.INFO("Cleaning up, doing postInit.");
 		PlayerCache.initCache();
 
 		//Circuits
@@ -126,7 +127,7 @@ public class CommonProxy {
 		if (!CORE.burnables.isEmpty()){
 			BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
 			GameRegistry.registerFuelHandler(fuelHandler);
-			Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
+			Logger.INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
 		}
 
 		//Compat Handling

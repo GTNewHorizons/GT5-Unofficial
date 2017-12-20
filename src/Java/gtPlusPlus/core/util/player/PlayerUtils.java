@@ -24,7 +24,7 @@ public class PlayerUtils {
 			final List<EntityPlayer> i = new ArrayList<>();
 			final Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
 			while (iterator.hasNext()) {
-				i.add((EntityPlayer) (iterator.next()));
+				i.add((iterator.next()));
 			}
 			for (final EntityPlayer temp : i) {
 				if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())){

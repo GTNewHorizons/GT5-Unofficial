@@ -11,6 +11,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
@@ -115,7 +116,7 @@ public class ItemUtils {
 				GT_OreDictUnificator.registerOre(oreDictName, new ItemStack(itemStackWithMeta.getItem()));*/
 			}
 		} catch (final NullPointerException e) {
-			Utils.LOG_ERROR(itemName+" not found. [NULL]");
+			Logger.ERROR(itemName+" not found. [NULL]");
 		}
 	}
 
@@ -123,7 +124,7 @@ public class ItemUtils {
 		try {
 			GT_OreDictUnificator.registerOre(oreDictName, stack);
 		} catch (final NullPointerException e) {
-			Utils.LOG_ERROR(stack.getDisplayName()+" not registered. [NULL]");
+			Logger.ERROR(stack.getDisplayName()+" not registered. [NULL]");
 		}
 	}
 
@@ -144,7 +145,7 @@ public class ItemUtils {
 				}
 				return null;
 			} catch (final NullPointerException e) {
-				Utils.LOG_ERROR(itemName+" not found. [NULL]");
+				Logger.ERROR(itemName+" not found. [NULL]");
 				return null;
 			}
 		}
@@ -167,7 +168,7 @@ public class ItemUtils {
 			}
 			return null;
 		} catch (final NullPointerException e) {
-			Utils.LOG_ERROR(FQRN+" not found. [NULL]");
+			Logger.ERROR(FQRN+" not found. [NULL]");
 			return null;
 		}
 	}
@@ -180,7 +181,7 @@ public class ItemUtils {
 			}
 			Item em = item;
 			final Item em1 = item;
-			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			Logger.WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null){
 				if (null == em){
 					em = em1;
@@ -282,11 +283,11 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(final String oredictName, final int amount){
 		if (CORE.DEBUG){
-			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
-			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
-			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
-			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
-			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
+			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
+			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
+			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
+			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
+			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
 		}
 		try{
 
@@ -309,7 +310,7 @@ public class ItemUtils {
 					}
 				}
 			}
-			Utils.LOG_WARNING(oredictName+" was not valid.");
+			Logger.WARNING(oredictName+" was not valid.");
 			return null;
 		}
 		catch (final Throwable t){
@@ -324,7 +325,7 @@ public class ItemUtils {
 				return returnValue.copy();
 			}
 		}
-		Utils.LOG_WARNING(material+" was not valid.");
+		Logger.WARNING(material+" was not valid.");
 		return null;
 	}
 
@@ -400,20 +401,20 @@ public class ItemUtils {
 	}
 
 	public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final ToolMaterial customMaterial, final String name, final int durability, final short[] rgba, final Object enchantment){
-		Utils.LOG_WARNING("Generating a Multi-Pick out of "+name);
+		Logger.WARNING("Generating a Multi-Pick out of "+name);
 		final short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
-		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
+		Logger.WARNING("Determined durability for "+name+" is "+dur);
 		if (GT_Durability){
 			dur = durability*100;
-			Utils.LOG_WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
+			Logger.WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
 		}
 		else if (dur <= 0){
 			dur = durability;
-			Utils.LOG_WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
+			Logger.WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
 		}
 		if (dur <= 0){
-			Utils.LOG_WARNING("Still too low, "+name+" will now go unused.");
+			Logger.WARNING("Still too low, "+name+" will now go unused.");
 			return null;
 		}
 
@@ -437,7 +438,7 @@ public class ItemUtils {
 		if (MP_Redstone.isValid){
 			return MP_Redstone;
 		}
-		Utils.LOG_WARNING("Pickaxe was not valid.");
+		Logger.WARNING("Pickaxe was not valid.");
 		return null;
 	}
 
@@ -457,20 +458,20 @@ public class ItemUtils {
 	}
 
 	public static MultiSpadeBase generateMultiShovel(final boolean GT_Durability, final ToolMaterial customMaterial, final String name, final int durability, final short[] rgba){
-		Utils.LOG_WARNING("Generating a Multi-Spade out of "+name);
+		Logger.WARNING("Generating a Multi-Spade out of "+name);
 		final short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
-		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
+		Logger.WARNING("Determined durability for "+name+" is "+dur);
 		if (GT_Durability){
 			dur = durability*100;
-			Utils.LOG_WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
+			Logger.WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
 		}
 		else if (dur <= 0){
 			dur = durability;
-			Utils.LOG_WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
+			Logger.WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
 		}
 		if (dur <= 0){
-			Utils.LOG_WARNING("Still too low, "+name+" will now go unused.");
+			Logger.WARNING("Still too low, "+name+" will now go unused.");
 			return null;
 		}
 		final MultiSpadeBase MP_Redstone = new MultiSpadeBase(

@@ -3,7 +3,7 @@ package gtPlusPlus.core.world.darkworld.chunk;
 import java.util.List;
 import java.util.Random;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -391,7 +391,7 @@ public class ChunkProviderModded implements IChunkProvider {
 			} catch (NullPointerException n){
 				n.getStackTrace();
 				(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-				Utils.LOG_INFO("Error while generating DarkWorld Lake.");
+				Logger.INFO("Error while generating DarkWorld Lake.");
 			}
 		}
 
@@ -406,7 +406,7 @@ public class ChunkProviderModded implements IChunkProvider {
 				try{
 					(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
 				} catch (NullPointerException n){
-					Utils.LOG_INFO("Error while generating DarkWorld Lake. [2]");
+					Logger.INFO("Error while generating DarkWorld Lake. [2]");
 				}
 			}
 		}

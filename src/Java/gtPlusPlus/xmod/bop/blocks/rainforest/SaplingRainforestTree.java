@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.bop.blocks.rainforest;
 
 import java.util.Random;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 import gtPlusPlus.xmod.bop.world.features.trees.WorldGenRainForestTree_Ex;
@@ -19,7 +19,7 @@ public class SaplingRainforestTree extends SaplingBase {
 
 	@Override
 	public void func_149878_d(World world, int x, int y, int z, Random rand){
-		Utils.LOG_WARNING("func_149878_d - 1");
+		Logger.WARNING("func_149878_d - 1");
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
 		int l = world.getBlockMetadata(x, y, z) & 7;
 		rand.nextInt(10);

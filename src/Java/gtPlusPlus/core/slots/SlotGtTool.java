@@ -1,7 +1,7 @@
 package gtPlusPlus.core.slots;
 
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -16,10 +16,10 @@ public class SlotGtTool extends Slot {
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool) {
-			Utils.LOG_WARNING(itemstack.getDisplayName() + " is a valid Tool.");
+			Logger.WARNING(itemstack.getDisplayName() + " is a valid Tool.");
 			return true;
 		}
-		Utils.LOG_WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
+		Logger.WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
 		return false;
 	}
 

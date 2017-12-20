@@ -4,8 +4,8 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.UtilsMining;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -75,7 +75,7 @@ public class StaballoySpade extends ItemSpade{
 				correctTool = currentBlock.getHarvestTool(0);
 				//Utils.LOG_WARNING(correctTool);
 
-				Utils.LOG_WARNING("Tool for Block: "+correctTool+" | Current block: "+currentBlock.getLocalizedName());
+				Logger.WARNING("Tool for Block: "+correctTool+" | Current block: "+currentBlock.getLocalizedName());
 				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("shovel")){
 					return true;}
 			} catch (final NullPointerException e){
@@ -117,18 +117,18 @@ public class StaballoySpade extends ItemSpade{
 			}
 
 			//int heldItemDurability = heldItem.getDamage(1);
-			Utils.LOG_WARNING("Total Loss: "+(int)DURABILITY_LOSS);
+			Logger.WARNING("Total Loss: "+(int)DURABILITY_LOSS);
 			//heldItem.setDamage(heldStack, DURABILITY_LOSS);
 			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
 			//Utils.LOG_WARNING("Durability: "+heldStack.getDamage(heldStack));
-			Utils.LOG_WARNING("1x: "+(heldItem.getItemDamage()));
+			Logger.WARNING("1x: "+(heldItem.getItemDamage()));
 			final int itemdmg = heldItem.getItemDamage();
 			final int maxdmg = heldItem.getMaxDamage();
 			final int dodmg = (int)DURABILITY_LOSS;
 			final int durNow = maxdmg-itemdmg;
 			final int durLeft = (int) ((maxdmg-itemdmg)-DURABILITY_LOSS);
 
-			Utils.LOG_WARNING(
+			Logger.WARNING(
 					"Current Damage: " + itemdmg
 					+ " Max Damage: " + maxdmg
 					+ " Durability to be lost: " + dodmg
@@ -140,13 +140,13 @@ public class StaballoySpade extends ItemSpade{
 			//Break Tool
 			if (((durNow-dodmg) <= (900)) && (itemdmg != 0)){
 				//TODO break tool
-				Utils.LOG_WARNING("Breaking Tool");
+				Logger.WARNING("Breaking Tool");
 				heldItem.stackSize = 0;
 			}
 			//Do Damage
 			else {
 				//setItemDamage(heldItem, durLeft);
-				Utils.LOG_WARNING(""+(durNow-durLeft));
+				Logger.WARNING(""+(durNow-durLeft));
 				this.damageItem(heldItem, (durNow-durLeft)-1, this.localPlayer);
 			}
 			DURABILITY_LOSS = 0;
@@ -165,10 +165,10 @@ public class StaballoySpade extends ItemSpade{
 	//Should clear up blocks quicker if I chain it.
 	public int removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
 		this.localWorld = world;
-		Utils.LOG_WARNING("Trying to drop/remove a block.");
+		Logger.WARNING("Trying to drop/remove a block.");
 		try {
 			final Block block = world.getBlock(X, Y, Z);
-			Utils.LOG_WARNING(block.toString());
+			Logger.WARNING(block.toString());
 			String removalTool = "";
 			removalTool = block.getHarvestTool(0);
 			if (removalTool != null){
@@ -188,22 +188,22 @@ public class StaballoySpade extends ItemSpade{
 							}
 							block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
 							world.setBlockToAir(X, Y, Z);
-							Utils.LOG_WARNING("Adding 100 damage to item.");
+							Logger.WARNING("Adding 100 damage to item.");
 							return 100;
 						}
-						Utils.LOG_WARNING("Incorrect Tool for mining this block. Wrong Block Water/lava/bedrock/blacklist");
+						Logger.WARNING("Incorrect Tool for mining this block. Wrong Block Water/lava/bedrock/blacklist");
 						return 0;
 					}
-					Utils.LOG_WARNING("Incorrect Tool for mining this block. Cannot Shovel this block type.");
+					Logger.WARNING("Incorrect Tool for mining this block. Cannot Shovel this block type.");
 					return 0;
 				}
-				Utils.LOG_WARNING("Incorrect Tool for mining this block. Blocks mining tool is now Shovel.");
+				Logger.WARNING("Incorrect Tool for mining this block. Blocks mining tool is now Shovel.");
 				return 0;
 			}
-			Utils.LOG_WARNING("Either the block was air or it declares an invalid mining tool.");
+			Logger.WARNING("Either the block was air or it declares an invalid mining tool.");
 			return 0;
 		} catch (final NullPointerException e){
-			Utils.LOG_WARNING("Something Broke");
+			Logger.WARNING("Something Broke");
 			e.printStackTrace();
 			return 0;
 		}

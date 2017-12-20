@@ -1,7 +1,7 @@
 package gtPlusPlus.core.slots;
 
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -82,10 +82,10 @@ public class SlotGtToolElectric extends SlotGtTool {
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		if ((itemstack.getItem() instanceof GT_MetaGenerated_Tool) || (itemstack.getItem() instanceof IElectricItem)) {
-			Utils.LOG_WARNING(itemstack.getDisplayName() + " is a valid Tool.");
+			Logger.WARNING(itemstack.getDisplayName() + " is a valid Tool.");
 			return true;
 		}
-		Utils.LOG_WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
+		Logger.WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
 		return false;
 	}
 

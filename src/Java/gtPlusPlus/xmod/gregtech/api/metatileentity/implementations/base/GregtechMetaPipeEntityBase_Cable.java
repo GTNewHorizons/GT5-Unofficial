@@ -19,8 +19,8 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.Entity;
@@ -88,8 +88,8 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 				// Utils.LOG_INFO("FATAL ERROR - REFLECTION FAILED FOR GT CABLES
 				// - PLEASE REPORT THIS.");
-				Utils.LOG_WARNING("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
-				Utils.LOG_ERROR("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+				Logger.WARNING("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+				Logger.ERROR("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
 				temp = 4;
 			}
 		}

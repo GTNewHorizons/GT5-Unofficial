@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import static gtPlusPlus.core.lib.CORE.sTesseractGeneratorOwnershipMap;
 import static gtPlusPlus.core.lib.CORE.sTesseractTerminalOwnershipMap;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ public class TesseractHelper {
 	public final static boolean isGeneratorOwnedByPlayer(EntityPlayer player,
 			GT_MetaTileEntity_TesseractGenerator generator) {
 		if (player == null){
-			Utils.LOG_WARNING("Failed. [isGeneratorOwnedByPlayer]");
+			Logger.WARNING("Failed. [isGeneratorOwnedByPlayer]");
 			return false;
 		}
 		//Utils.LOG_WARNING("Success. [isGeneratorOwnedByPlayer] 1");
@@ -47,7 +47,7 @@ public class TesseractHelper {
 				}
 			}
 		}
-		Utils.LOG_WARNING("Failed. [isGeneratorOwnedByPlayer]");
+		Logger.WARNING("Failed. [isGeneratorOwnedByPlayer]");
 		return false;
 	}
 
@@ -58,7 +58,7 @@ public class TesseractHelper {
 			return false;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_WARNING("Setting Generator on "+freq+" for "+player.getDisplayName()+".");
+		Logger.WARNING("Setting Generator on "+freq+" for "+player.getDisplayName()+".");
 		if (playerIdentifier != null) {
 			Map<Integer, GT_MetaTileEntity_TesseractGenerator> playerOwned = sTesseractGeneratorOwnershipMap
 					.get(playerIdentifier);
@@ -66,7 +66,7 @@ public class TesseractHelper {
 				Map<Integer, GT_MetaTileEntity_TesseractGenerator> newOwnershipMap = new HashMap<Integer, GT_MetaTileEntity_TesseractGenerator>();
 				newOwnershipMap.put(freq, generator);
 				sTesseractGeneratorOwnershipMap.put(playerIdentifier, newOwnershipMap);
-				Utils.LOG_WARNING("Success! [Empty Map]");
+				Logger.WARNING("Success! [Empty Map]");
 				return true;
 			} else if (sTesseractGeneratorOwnershipMap.containsKey(playerIdentifier)) {
 				Map<Integer, GT_MetaTileEntity_TesseractGenerator> ownershipMap = sTesseractGeneratorOwnershipMap
@@ -76,11 +76,11 @@ public class TesseractHelper {
 				}
 				ownershipMap.put(freq, generator);
 				sTesseractGeneratorOwnershipMap.put(playerIdentifier, ownershipMap);
-				Utils.LOG_WARNING("Success!");
+				Logger.WARNING("Success!");
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("Failed. [setGeneratorOwnershipByPlayer]");
+		Logger.WARNING("Failed. [setGeneratorOwnershipByPlayer]");
 		return false;
 	}
 
@@ -91,7 +91,7 @@ public class TesseractHelper {
 			return null;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_WARNING("Getting Generator on "+freq+" for "+player.getDisplayName()+".");
+		Logger.WARNING("Getting Generator on "+freq+" for "+player.getDisplayName()+".");
 		if (!sTesseractGeneratorOwnershipMap.isEmpty() && playerIdentifier != null) {
 			//Utils.LOG_WARNING("Success. [getGeneratorByFrequency] 1");
 			Map<Integer, GT_MetaTileEntity_TesseractGenerator> generators = getGeneratorOwnershipByPlayer(player);
@@ -102,12 +102,12 @@ public class TesseractHelper {
 				Entry<Integer, GT_MetaTileEntity_TesseractGenerator> current = i.next();
 				if (current.getKey().equals(freq)) {
 					//Utils.LOG_WARNING("Success. [getGeneratorByFrequency] 3");
-					Utils.LOG_WARNING("Success!");
+					Logger.WARNING("Success!");
 					return current.getValue();
 				}
 			}
 		}
-		Utils.LOG_WARNING("Failed. [getGeneratorByFrequency]");
+		Logger.WARNING("Failed. [getGeneratorByFrequency]");
 		return null;
 	}
 
@@ -161,14 +161,14 @@ public class TesseractHelper {
 		}
 		UUID playerIdentifier = player.getUniqueID();
 		if (playerIdentifier != null) {
-			Utils.LOG_WARNING("Setting Terminal on "+freq+" for "+player.getDisplayName()+".");
+			Logger.WARNING("Setting Terminal on "+freq+" for "+player.getDisplayName()+".");
 			Map<Integer, GT_MetaTileEntity_TesseractTerminal> playerOwned = sTesseractTerminalOwnershipMap
 					.get(playerIdentifier);
 			if (playerOwned == null || playerOwned.isEmpty()) {
 				Map<Integer, GT_MetaTileEntity_TesseractTerminal> newOwnershipMap = new HashMap<Integer, GT_MetaTileEntity_TesseractTerminal>();
 				newOwnershipMap.put(freq, generator);
 				sTesseractTerminalOwnershipMap.put(playerIdentifier, newOwnershipMap);
-				Utils.LOG_WARNING("Success! [Empty Map]");
+				Logger.WARNING("Success! [Empty Map]");
 				return true;
 			} else if (sTesseractTerminalOwnershipMap.containsKey(playerIdentifier)) {
 				Map<Integer, GT_MetaTileEntity_TesseractTerminal> ownershipMap = sTesseractTerminalOwnershipMap
@@ -177,11 +177,11 @@ public class TesseractHelper {
 					ownershipMap.put(freq, generator);
 				}
 				sTesseractTerminalOwnershipMap.put(playerIdentifier, ownershipMap);
-				Utils.LOG_WARNING("Success!");
+				Logger.WARNING("Success!");
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("Failed. [setTerminalOwnershipByPlayer]");
+		Logger.WARNING("Failed. [setTerminalOwnershipByPlayer]");
 		return false;
 	}
 
@@ -192,7 +192,7 @@ public class TesseractHelper {
 			return null;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_WARNING("Getting Terminal on "+freq+" for "+player.getDisplayName()+".");
+		Logger.WARNING("Getting Terminal on "+freq+" for "+player.getDisplayName()+".");
 		if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
 			Map<Integer, GT_MetaTileEntity_TesseractTerminal> generators = getTerminalOwnershipByPlayer(player);
 			Set<Entry<Integer, GT_MetaTileEntity_TesseractTerminal>> players = generators.entrySet();
@@ -200,12 +200,12 @@ public class TesseractHelper {
 			while (i.hasNext()) {
 				Entry<Integer, GT_MetaTileEntity_TesseractTerminal> current = i.next();
 				if (current.getKey().equals(freq)) {
-					Utils.LOG_WARNING("Success!");
+					Logger.WARNING("Success!");
 					return current.getValue();
 				}
 			}
 		}
-		Utils.LOG_WARNING("Failed. [getTerminalByFrequency]");
+		Logger.WARNING("Failed. [getTerminalByFrequency]");
 		return null;
 	}
 

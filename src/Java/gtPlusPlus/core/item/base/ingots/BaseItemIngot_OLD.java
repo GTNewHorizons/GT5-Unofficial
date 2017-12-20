@@ -3,9 +3,9 @@ package gtPlusPlus.core.item.base.ingots;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -67,13 +67,13 @@ public class BaseItemIngot_OLD extends Item{
 			final ItemStack tempStack = ItemUtils.getSimpleStack(this, 9);
 			ItemStack tempOutput = null;
 			String temp = this.getUnlocalizedName().replace("item.itemIngot", "block");
-			Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+			Logger.WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
 			if (this.getUnlocalizedName().contains("item.")){
 				temp = this.getUnlocalizedName().replace("item.", "");
-				Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+				Logger.WARNING("Generating OreDict Name: "+temp);
 			}
 			temp = temp.replace("itemIngot", "block");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 			if ((temp != null) && !temp.equals("")){
 				tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 				if (tempOutput != null){

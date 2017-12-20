@@ -1,9 +1,9 @@
 package gtPlusPlus.core.item.base.rods;
 
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
 public class BaseItemRod extends BaseItemComponent{
@@ -15,7 +15,7 @@ public class BaseItemRod extends BaseItemComponent{
 
 
 	private void addExtruderRecipe(){
-		Utils.LOG_WARNING("Adding cutter recipe for "+this.materialName+" Rods");
+		Logger.WARNING("Adding cutter recipe for "+this.materialName+" Rods");
 
 		final ItemStack stackStick = this.componentMaterial.getRod(1);
 		final ItemStack stackBolt = this.componentMaterial.getBolt(4);

@@ -65,7 +65,8 @@ public class ModelStaballoyConstruct extends ModelIronGolem
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_)
+    @Override
+	public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_)
     {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
         this.ironGolemHead.render(p_78088_7_);
@@ -81,7 +82,8 @@ public class ModelStaballoyConstruct extends ModelIronGolem
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
+    @Override
+	public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
     {
         this.ironGolemHead.rotateAngleY = p_78087_4_ / (180F / (float)Math.PI);
         this.ironGolemHead.rotateAngleX = p_78087_5_ / (180F / (float)Math.PI);
@@ -95,15 +97,16 @@ public class ModelStaballoyConstruct extends ModelIronGolem
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_)
+    @Override
+	public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_)
     {
         EntityIronGolem entityirongolem = (EntityIronGolem)p_78086_1_;
         int i = entityirongolem.getAttackTimer();
 
         if (i > 0)
         {
-            this.ironGolemRightArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)i - p_78086_4_, 10.0F);
-            this.ironGolemLeftArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float)i - p_78086_4_, 10.0F);
+            this.ironGolemRightArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a(i - p_78086_4_, 10.0F);
+            this.ironGolemLeftArm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a(i - p_78086_4_, 10.0F);
         }
         else
         {
@@ -111,7 +114,7 @@ public class ModelStaballoyConstruct extends ModelIronGolem
 
             if (j > 0)
             {
-                this.ironGolemRightArm.rotateAngleX = -0.8F + 0.025F * this.func_78172_a((float)j, 70.0F);
+                this.ironGolemRightArm.rotateAngleX = -0.8F + 0.025F * this.func_78172_a(j, 70.0F);
                 this.ironGolemLeftArm.rotateAngleX = 0.0F;
             }
             else

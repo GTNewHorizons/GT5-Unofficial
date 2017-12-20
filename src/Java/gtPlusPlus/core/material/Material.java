@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.M;
 import java.util.*;
 
 import gregtech.api.enums.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
@@ -246,11 +247,11 @@ public class Material {
 			this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
 		}
 		else if (!this.vChemicalSymbol.equals("")){
-			Utils.LOG_WARNING("materialInput is null, using a valid chemical symbol.");
+			Logger.WARNING("materialInput is null, using a valid chemical symbol.");
 			this.vChemicalFormula = this.vChemicalSymbol;
 		}
 		else{
-			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
+			Logger.WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
 
@@ -288,13 +289,13 @@ public class Material {
 			}
 		}
 
-		Utils.LOG_WARNING("Creating a Material instance for "+materialName);
-		Utils.LOG_WARNING("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
-		Utils.LOG_WARNING("Protons: "+this.vProtons);
-		Utils.LOG_WARNING("Neutrons: "+this.vNeutrons);
-		Utils.LOG_WARNING("Mass: "+this.vMass+"/units");
-		Utils.LOG_WARNING("Melting Point: "+this.meltingPointC+"C.");
-		Utils.LOG_WARNING("Boiling Point: "+this.boilingPointC+"C.");
+		Logger.WARNING("Creating a Material instance for "+materialName);
+		Logger.WARNING("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
+		Logger.WARNING("Protons: "+this.vProtons);
+		Logger.WARNING("Neutrons: "+this.vNeutrons);
+		Logger.WARNING("Mass: "+this.vMass+"/units");
+		Logger.WARNING("Melting Point: "+this.meltingPointC+"C.");
+		Logger.WARNING("Boiling Point: "+this.boilingPointC+"C.");
 	}
 
 	public final String getLocalizedName(){
@@ -453,8 +454,8 @@ public class Material {
 					try {
 						testNull = this.vMaterialInput.get(i).getValidStack();
 					} catch (final Throwable r){
-						Utils.LOG_WARNING("Failed gathering material stack for "+this.localizedName+".");
-						Utils.LOG_WARNING("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
+						Logger.WARNING("Failed gathering material stack for "+this.localizedName+".");
+						Logger.WARNING("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
 					}
 					try {
 						if (testNull != null){
@@ -462,7 +463,7 @@ public class Material {
 							temp[i] = this.vMaterialInput.get(i).getValidStack();
 						}
 					} catch (final Throwable r){
-						Utils.LOG_WARNING("Failed setting slot "+i+", using "+this.localizedName);
+						Logger.WARNING("Failed setting slot "+i+", using "+this.localizedName);
 					}
 				}
 				return temp;
@@ -510,8 +511,8 @@ public class Material {
 	public final long[] getSmallestRatio(final ArrayList<MaterialStack> tempInput){
 		if (tempInput != null){
 			if (!tempInput.isEmpty()){
-				Utils.LOG_WARNING("length: "+tempInput.size());
-				Utils.LOG_WARNING("(inputs != null): "+(tempInput != null));
+				Logger.WARNING("length: "+tempInput.size());
+				Logger.WARNING("(inputs != null): "+(tempInput != null));
 				//Utils.LOG_WARNING("length: "+inputs.length);
 				final long[] tempRatio = new long[tempInput.size()];
 				for (int x=0;x<tempInput.size();x++){
@@ -529,7 +530,7 @@ public class Material {
 					for (int r=0;r<tempRatio.length;r++){
 						tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] +" : ";
 					}
-					Utils.LOG_WARNING("Default Ratio: "+tempRatioStringThing1);
+					Logger.WARNING("Default Ratio: "+tempRatioStringThing1);
 
 					String tempRatioStringThing = "";
 					int tempSmallestCraftingUseSize = 0;
@@ -538,7 +539,7 @@ public class Material {
 						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
 					}
 					//this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
-					Utils.LOG_WARNING("Smallest Ratio: "+tempRatioStringThing);
+					Logger.WARNING("Smallest Ratio: "+tempRatioStringThing);
 					return smallestRatio;
 				}
 			}
@@ -550,7 +551,7 @@ public class Material {
 		if (!aShowQuestionMarks && (this.vChemicalFormula.equals("?")||this.vChemicalFormula.equals("??"))) {
 			return "";
 		}
-		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
+		Logger.WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals("")) {
 			return chemSymbol;
 		}
@@ -593,13 +594,13 @@ public class Material {
 						return StringUtils.subscript(dummyFormula);
 						//return dummyFormula;
 					}
-					Utils.LOG_WARNING("dummyFormulaArray <= 0");
+					Logger.WARNING("dummyFormulaArray <= 0");
 				}
-				Utils.LOG_WARNING("dummyFormulaArray == null");
+				Logger.WARNING("dummyFormulaArray == null");
 			}
-			Utils.LOG_WARNING("tempInput.length <= 0");
+			Logger.WARNING("tempInput.length <= 0");
 		}
-		Utils.LOG_WARNING("tempInput == null");
+		Logger.WARNING("tempInput == null");
 		return "??";
 
 	}
@@ -607,37 +608,37 @@ public class Material {
 	public final Fluid generateFluid(){
 
 		final Materials isValid = Materials.get(this.getLocalizedName());
-		Utils.LOG_WARNING("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
+		Logger.WARNING("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
 		if (isValid != Materials._NULL){
 			for (Materials m : invalidMaterials.values()){
 				if (isValid == m){
-					Utils.LOG_WARNING("Trying to generate a fluid for blacklisted material: "+m.mDefaultLocalName);
+					Logger.WARNING("Trying to generate a fluid for blacklisted material: "+m.mDefaultLocalName);
 					FluidStack a1 = m.getFluid(1);
 					FluidStack a2 = m.getGas(1);
 					FluidStack a3 = m.getMolten(1);
 					FluidStack a4 = m.getSolid(1);
 					FluidStack a5 = m.getPlasma(1);
 					if (a1 != null){
-						Utils.LOG_WARNING("Using a pre-defined Fluid from GT. Fluid.");
+						Logger.WARNING("Using a pre-defined Fluid from GT. Fluid.");
 						return a1.getFluid();
 					}
 					if (a2 != null){
-						Utils.LOG_WARNING("Using a pre-defined Fluid from GT. Gas.");
+						Logger.WARNING("Using a pre-defined Fluid from GT. Gas.");
 						return a2.getFluid();
 					}
 					if (a3 != null){
-						Utils.LOG_WARNING("Using a pre-defined Fluid from GT. Molten.");
+						Logger.WARNING("Using a pre-defined Fluid from GT. Molten.");
 						return a3.getFluid();
 					}
 					if (a4 != null){
-						Utils.LOG_WARNING("Using a pre-defined Fluid from GT. Solid.");
+						Logger.WARNING("Using a pre-defined Fluid from GT. Solid.");
 						return a4.getFluid();
 					}
 					if (a5 != null){
-						Utils.LOG_WARNING("Using a pre-defined Fluid from GT. Plasma.");
+						Logger.WARNING("Using a pre-defined Fluid from GT. Plasma.");
 						return a5.getFluid();
 					}			
-					Utils.LOG_WARNING("Using null.");	
+					Logger.WARNING("Using null.");	
 					return null;
 				}
 			}
@@ -645,44 +646,44 @@ public class Material {
 
 		if (this.materialState == MaterialState.SOLID){
 			if (isValid.mFluid != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mFluid.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mFluid.");
 				return isValid.mFluid;			
 			}	
 			else if (isValid.mStandardMoltenFluid != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
 				return isValid.mStandardMoltenFluid;		
 			}
 		}
 		else if (this.materialState == MaterialState.GAS){
 			if (isValid.mGas != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mGas.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mGas.");
 				return isValid.mGas;			
 			}	
 		}
 		else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID){
 			if (isValid.mFluid != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mFluid.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mFluid.");
 				return isValid.mFluid;			
 			}	
 			else if (isValid.mGas != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mGas.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mGas.");
 				return isValid.mGas;			
 			}
 			else if (isValid.mStandardMoltenFluid != null){
-				Utils.LOG_WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
+				Logger.WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
 				return isValid.mStandardMoltenFluid;		
 			}
 		}		
 
-		Utils.LOG_WARNING("Generating our own fluid.");
+		Logger.WARNING("Generating our own fluid.");
 		//Generate a Cell if we need to
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){			
 			if (this.vGenerateCells){
 				final Item temp = new BaseItemCell(this);
-				Utils.LOG_WARNING("Generated a cell for "+this.getUnlocalizedName());
+				Logger.WARNING("Generated a cell for "+this.getUnlocalizedName());
 			}
 			else {
-				Utils.LOG_WARNING("Did not generate a cell for "+this.getUnlocalizedName());
+				Logger.WARNING("Did not generate a cell for "+this.getUnlocalizedName());
 			}
 		}
 
@@ -736,11 +737,11 @@ public class Material {
 			}
 		}
 		if (isValid.mPlasma != null){
-			Utils.LOG_WARNING("Using a pre-defined Plasma from GT.");
+			Logger.WARNING("Using a pre-defined Plasma from GT.");
 			return isValid.mPlasma;			
 		}	
 
-		Utils.LOG_WARNING("Generating our own Plasma.");
+		Logger.WARNING("Generating our own Plasma.");
 		return FluidUtils.addGTPlasma(this);
 	}
 
@@ -760,10 +761,10 @@ public class Material {
 		for (MaterialStack  part : this.vMaterialInput){
 			int incrementor = part.getStackMaterial().getMeltingPointC();
 			meltingPoint += incrementor;
-			Utils.LOG_WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		Utils.LOG_WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
+		Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
 		meltingPoint = (meltingPoint/divisor);
 		return meltingPoint;
 	}

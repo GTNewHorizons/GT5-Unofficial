@@ -4,10 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,13 +27,13 @@ public class GUI_TradeTable extends GuiContainer {
 		if (te == null){
 			this.mThisTable = null;
 			this.mOwnerName = mOwnerName;
-			Utils.LOG_INFO("Set invalid TE in GUI");
+			Logger.INFO("Set invalid TE in GUI");
 		}
 		else {
 			if (te.isServerSide()){
 			mThisTable = te;
 			this.mOwnerName = mOwnerName;
-			Utils.LOG_INFO("Set valid TE in GUI");	
+			Logger.INFO("Set valid TE in GUI");	
 			}
 		}
 	}

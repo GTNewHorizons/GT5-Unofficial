@@ -1,8 +1,8 @@
 package gtPlusPlus.core.handler.Recipes;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
-import gtPlusPlus.core.util.Utils;
 
 public class LateRegistrationHandler {
 
@@ -20,9 +20,9 @@ public class LateRegistrationHandler {
 		try {
 			Thread.sleep(10);
 		} catch (final InterruptedException e) {
-			Utils.LOG_INFO(e.toString());
+			Logger.INFO(e.toString());
 		}
-		Utils.LOG_INFO("Late Recipes Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
+		Logger.INFO("Late Recipes Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 	}
 
 }

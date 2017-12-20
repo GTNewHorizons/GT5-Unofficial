@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.fluid;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
@@ -40,14 +41,14 @@ public class GregtechFluidHandler {
 
 		if (!LoadedMods.ThermalFoundation){
 
-			Utils.LOG_INFO("Adding in our own GT versions of Thermal Foundation Fluids");
+			Logger.INFO("Adding in our own GT versions of Thermal Foundation Fluids");
 			FluidUtils.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			FluidUtils.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			FluidUtils.addFluid("ender", "Resonant Ender", GT_Materials.Ender, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			}
 
 		if (LoadedMods.IndustrialCraft2){
-			Utils.LOG_INFO("Adding in GT Fluids for various nuclear related content.");
+			Logger.INFO("Adding in GT Fluids for various nuclear related content.");
 
 			FluidUtils.addFluid("hydrofluoricAcid", "Industrial Strength Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("HydrofluoricAcid");
@@ -65,10 +66,10 @@ public class GregtechFluidHandler {
 			if (!LoadedMods.IHL || (ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null)){
 				if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
 					if (LoadedMods.IHL){
-						Utils.LOG_INFO("IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
+						Logger.INFO("IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
 					}
 					else {
-						Utils.LOG_INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
+						Logger.INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
 					}
 					FluidUtils.addFluid("hydrogenChloride", "Industrial Strength Hydrogen Chloride", GT_Materials.HydrogenChloride, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 					generateIC2FluidCell("HydrogenChloride");
@@ -87,7 +88,7 @@ public class GregtechFluidHandler {
 	}
 
 	private static ItemStack generateIC2FluidCell(final String fluidNameWithCaps){
-		Utils.LOG_INFO("Adding a Cell for "+fluidNameWithCaps);
+		Logger.INFO("Adding a Cell for "+fluidNameWithCaps);
 		if (LoadedMods.IndustrialCraft2){
 			return Utils.createInternalNameAndFluidCell(fluidNameWithCaps);
 		}
@@ -95,7 +96,7 @@ public class GregtechFluidHandler {
 	}
 	
 	private static ItemStack generateIC2FluidCellNoOreDict(final String fluidNameWithCaps){
-		Utils.LOG_INFO("Adding a Cell for "+fluidNameWithCaps);
+		Logger.INFO("Adding a Cell for "+fluidNameWithCaps);
 		if (LoadedMods.IndustrialCraft2){
 			return Utils.createInternalNameAndFluidCellNoOreDict(fluidNameWithCaps);
 		}

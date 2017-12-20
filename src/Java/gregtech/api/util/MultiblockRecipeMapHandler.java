@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -139,10 +139,10 @@ public class MultiblockRecipeMapHandler{
 		for (final GT_Recipe newBo : x) {			
 			int duration = MathUtils.findPercentageOfInt(newBo.mDuration, 80);			
 			if (newMap.addRecipe(new GT_Recipe(true, newBo.mInputs, newBo.mOutputs, newBo.mSpecialItems, newBo.mChances, newBo.mFluidInputs, newBo.mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
-				Utils.LOG_INFO("Successfully added a simple recipe to the "+newMap.mNEIName+" map.");
+				Logger.INFO("Successfully added a simple recipe to the "+newMap.mNEIName+" map.");
 			}
 			else {
-				Utils.LOG_INFO("Failed adding a simple recipe to the "+newMap.mNEIName+" map.");
+				Logger.INFO("Failed adding a simple recipe to the "+newMap.mNEIName+" map.");
 			}
 		}
 	}
@@ -162,29 +162,29 @@ public class MultiblockRecipeMapHandler{
 			if (newBo.mChances != null){
 				outputChances = newBo.mChances.clone();				
 				for (int g=0;g<outputChances.length;g++){
-					Utils.LOG_WARNING("Output["+g+"] chance = "+outputChances[g]);
+					Logger.WARNING("Output["+g+"] chance = "+outputChances[g]);
 					if (outputChances[g]<10000){
 						int temp = outputChances[g];
 						if (outputChances[g] < 8000 && outputChances[g] >= 1){
 							outputChances[g] = temp+600;
-							Utils.LOG_WARNING("Output["+g+"] chance now = "+outputChances[g]);
+							Logger.WARNING("Output["+g+"] chance now = "+outputChances[g]);
 						}
 						else if (outputChances[g] < 9000 && outputChances[g] >= 8000){
 							outputChances[g] = temp+200;
-							Utils.LOG_WARNING("Output["+g+"] chance now = "+outputChances[g]);
+							Logger.WARNING("Output["+g+"] chance now = "+outputChances[g]);
 						}
 						else if (outputChances[g] <= 9900 && outputChances[g] >= 9000){
 							outputChances[g] = temp+100;
-							Utils.LOG_WARNING("Output["+g+"] chance now = "+outputChances[g]);
+							Logger.WARNING("Output["+g+"] chance now = "+outputChances[g]);
 						}
 					}
 				}
 			}
 			if (newMap.addRecipe(new GT_Recipe(true, mInputs, mOutputs, newBo.mSpecialItems, outputChances, mFluidInputs, mFluidOutputs, duration, newBo.mEUt, newBo.mSpecialValue), false, true, true) != null){
-				Utils.LOG_INFO("Successfully added a recipe to the "+newMap.mNEIName+" map.");
+				Logger.INFO("Successfully added a recipe to the "+newMap.mNEIName+" map.");
 			}
 			else {
-				Utils.LOG_INFO("Failed adding a recipe to the "+newMap.mNEIName+" map.");
+				Logger.INFO("Failed adding a recipe to the "+newMap.mNEIName+" map.");
 			}
 		}
 	}

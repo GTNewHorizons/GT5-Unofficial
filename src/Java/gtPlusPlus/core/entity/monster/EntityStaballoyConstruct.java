@@ -11,11 +11,9 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
@@ -188,15 +186,18 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		}
 	}
 
+	@Override
 	public Village getVillage() {
 		return null;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getAttackTimer() {
 		return this.attackTimer;
 	}
 
+	@Override
 	public void setHoldingRose(boolean p_70851_1_) {
 		this.holdRoseTick = p_70851_1_ ? 400 : 0;
 		this.worldObj.setEntityState(this, (byte) 11);
@@ -248,14 +249,17 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		}
 	}
 
+	@Override
 	public int getHoldRoseTick() {
 		return this.holdRoseTick;
 	}
 
+	@Override
 	public boolean isPlayerCreated() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
+	@Override
 	public void setPlayerCreated(boolean p_70849_1_) {
 		byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 

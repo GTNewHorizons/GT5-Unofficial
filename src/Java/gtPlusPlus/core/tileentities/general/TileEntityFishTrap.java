@@ -3,10 +3,10 @@ package gtPlusPlus.core.tileentities.general;
 import java.util.Random;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
@@ -81,8 +81,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 					return true;
 				}
 				else if ((waterCount >= 2) && (trapCount > 4)) {
-					Utils.LOG_WARNING("Too many fish traps surrounding this one.");
-					Utils.LOG_WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
+					Logger.WARNING("Too many fish traps surrounding this one.");
+					Logger.WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
 							+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
 				}
 			}
@@ -187,7 +187,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
 		}
 		loot.stackSize=1;
-		Utils.LOG_WARNING("Adding x"+loot.stackSize+" "+loot.getDisplayName()+".");
+		Logger.WARNING("Adding x"+loot.stackSize+" "+loot.getDisplayName()+".");
 		return loot;
 	}
 
@@ -221,8 +221,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 						this.markDirty();
 					}
 					else {
-						Utils.LOG_WARNING("This Trap does not have enough water around it.");
-						Utils.LOG_WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
+						Logger.WARNING("This Trap does not have enough water around it.");
+						Logger.WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
 								+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
 						this.markDirty();
 					}

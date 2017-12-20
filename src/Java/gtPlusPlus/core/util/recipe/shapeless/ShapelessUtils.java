@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.recipe.shapeless;
 
 import java.util.ArrayList;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,11 +34,11 @@ public class ShapelessUtils {
 			{
 				if ((object1 == null))
 				{
-					Utils.LOG_INFO(("Invalid shapeless input, ignoring!"));
+					Logger.INFO(("Invalid shapeless input, ignoring!"));
 				}
 				else if (!(object1 instanceof Block) && (object1 != null))
 				{
-					Utils.LOG_INFO(("Invalid shapeless recipe!"));
+					Logger.INFO(("Invalid shapeless recipe!"));
 					return false;
 				}
 				else {

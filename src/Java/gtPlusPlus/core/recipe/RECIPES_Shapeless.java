@@ -1,7 +1,7 @@
 package gtPlusPlus.core.recipe;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Shapeless {
@@ -21,7 +21,7 @@ public class RECIPES_Shapeless {
 
 	public static final void RECIPES_LOAD(){
 		//run();
-		Utils.LOG_INFO("Loading Shapeless Recipes.");
+		Logger.INFO("Loading Shapeless Recipes.");
 	}
 
 	private static void run(){

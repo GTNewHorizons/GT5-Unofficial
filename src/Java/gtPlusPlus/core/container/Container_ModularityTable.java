@@ -1,20 +1,16 @@
 package gtPlusPlus.core.container;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
 public class Container_ModularityTable extends Container {
@@ -41,7 +37,7 @@ public class Container_ModularityTable extends Container {
 		this.inventoryOutputs = tile.inventoryOutputs;
 		this.tile_entity.setContainer(this);
 		this.mRecipeTime = this.tile_entity.getRecipeTime();
-		Utils.LOG_INFO("Container: "+this.mRecipeTime);
+		Logger.INFO("Container: "+this.mRecipeTime);
 
 		int var6;
 		int var7;
@@ -103,6 +99,7 @@ public class Container_ModularityTable extends Container {
 	/**
 	 * Called when the container is closed.
 	 */
+	@Override
 	public void onContainerClosed(EntityPlayer p_75134_1_){
 		super.onContainerClosed(p_75134_1_);
 		if (!this.worldObj.isRemote){
@@ -131,21 +128,21 @@ public class Container_ModularityTable extends Container {
 			}
 
 			if (aSlotIndex == 0){
-				Utils.LOG_INFO("Player Clicked on the bauble slot");
+				Logger.INFO("Player Clicked on the bauble slot");
 				//TODO
 			}
 			else if (aSlotIndex == 1){
-				Utils.LOG_INFO("Player Clicked on the upgrade slot");
+				Logger.INFO("Player Clicked on the upgrade slot");
 				//TODO
 			}
 			else if (aSlotIndex == 2){
-				Utils.LOG_INFO("Player Clicked on the output slot");
+				Logger.INFO("Player Clicked on the output slot");
 				//TODO
 			}
 			else {
 				for (final int x : this.slotGrid){
 					if (aSlotIndex == x){
-						Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+						Logger.INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
 					}
 				}
 			}

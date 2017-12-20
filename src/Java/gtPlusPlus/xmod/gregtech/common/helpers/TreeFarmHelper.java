@@ -9,9 +9,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.particles.BlockBreakParticles;
@@ -121,7 +121,7 @@ public class TreeFarmHelper {
 		}
 		final BonemealEvent event = new BonemealEvent(player, world, block, intX, intY, intZ);
 		if (MinecraftForge.EVENT_BUS.post(event)){
-			Utils.LOG_MACHINE_INFO("Not sure why this returned false");
+			Logger.MACHINE_INFO("Not sure why this returned false");
 			return false;
 		}
 		if (event.getResult() == Result.ALLOW){
@@ -145,7 +145,7 @@ public class TreeFarmHelper {
 	}
 
 	public static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity){
-		Utils.LOG_MACHINE_INFO("called cleanUp()");
+		Logger.MACHINE_INFO("called cleanUp()");
 		int cleanedUp = 0;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11;
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 11;
@@ -173,7 +173,7 @@ public class TreeFarmHelper {
 									)){
 
 						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
-							Utils.LOG_INFO("5:"+testBlock.getUnlocalizedName());
+							Logger.WARNING("5:"+testBlock.getUnlocalizedName());
 						} else {
 							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.bookshelf);
 						}
@@ -193,14 +193,14 @@ public class TreeFarmHelper {
 							){
 
 						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
-							Utils.LOG_INFO("0:"+testBlock.getUnlocalizedName());
+							Logger.WARNING("0:"+testBlock.getUnlocalizedName());
 						} else {
 							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.melon_block);
 						}
 
 
 						if (TreefarmManager.isLeaves(testBlock) || TreefarmManager.isWoodLog(testBlock)){
-							Utils.LOG_INFO("1:"+testBlock.getUnlocalizedName());
+							Logger.WARNING("1:"+testBlock.getUnlocalizedName());
 							int posiX, posiY, posiZ;
 							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
 							posiY = aBaseMetaTileEntity.getYCoord()+h;
@@ -211,11 +211,11 @@ public class TreeFarmHelper {
 							new BlockBreakParticles(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, Blocks.dirt);
 						}
 						else {
-							//Utils.LOG_INFO("2:"+testBlock.getUnlocalizedName());
+							//Utils.LOG_WARNING("2:"+testBlock.getUnlocalizedName());
 						}
 					}
 					else {
-						//Utils.LOG_INFO("1");
+						//Utils.LOG_WARNING("1");
 					}
 
 
@@ -223,13 +223,13 @@ public class TreeFarmHelper {
 
 			}
 		}
-		Utils.LOG_MACHINE_INFO("cleaning up | "+cleanedUp );
+		Logger.MACHINE_INFO("cleaning up | "+cleanedUp );
 		return true;
 	}
 
 	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
 		if (aStack != null){
-			//Utils.LOG_INFO("Found "+aStack.getDisplayName()+" in the GUI slot.");
+			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
 			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
 				if (OrePrefixes.craftingTool.contains(aStack)){
 					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.10")){

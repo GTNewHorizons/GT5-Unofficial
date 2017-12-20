@@ -6,6 +6,7 @@ import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseEuItem;
@@ -502,7 +503,7 @@ public final class ModItems {
 
 
 		} catch (final Throwable r){
-			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
+			Logger.INFO("Failed to Generated a Material. "+r.getMessage());
 			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
 			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
 			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
@@ -692,7 +693,7 @@ public final class ModItems {
 
 		//EnderIO Resources
 		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT)){
-			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
+			Logger.INFO("EnderIO Found - Loading Resources.");
 			//Enderio Dusts
 			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", MaterialEIO.SOULARIUM.vChemicalFormula, MaterialEIO.SOULARIUM.getRgbAsHex())[0];
 			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", MaterialEIO.REDSTONE_ALLOY.vChemicalFormula, MaterialEIO.REDSTONE_ALLOY.getRgbAsHex())[0];
@@ -718,24 +719,24 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
 		}
 		else {
-			Utils.LOG_WARNING("EnderIO not Found - Skipping Resources.");
+			Logger.WARNING("EnderIO not Found - Skipping Resources.");
 		}
 
 		//Big Reactors
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
+			Logger.INFO("BigReactors Found - Loading Resources.");
 			//Item Init
 			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Blutonium", "Blutonium", new short[]{0, 0, 255}, 0);
 			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
 			itemPlateLudicrite = ItemUtils.generateSpecialUsePlate("Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 0);
 		}
 		else {
-			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
+			Logger.WARNING("BigReactors not Found - Skipping Resources.");
 		}
 
 		//Thaumcraft
 		if ((LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT) && !CORE.GTNH){
-			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
+			Logger.INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			try {
 				ItemUtils.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
@@ -747,44 +748,44 @@ public final class ModItems {
 
 		}
 		else {
-			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
+			Logger.WARNING("Thaumcraft not Found - Skipping Resources.");
 		}
 
 		//Pneumaticraft
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
+			Logger.INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
 			itemPlateCompressedIron = ItemUtils.generateSpecialUsePlate("CompressedIron", "Compressed Iron", new short[]{128, 128, 128}, 0);
 		}
 		else {
-			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
+			Logger.WARNING("PneumaticCraft not Found - Skipping Resources.");
 		}
 
 		//Simply Jetpacks
 		if (LoadedMods.Simply_Jetpacks|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
+			Logger.INFO("SimplyJetpacks Found - Loading Resources.");
 			//Item Init
 			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateSoularium");
 			//Registry
 			GameRegistry.registerItem(itemPlateEnrichedSoularium, "itemPlateEnrichedSoularium");
 		}
 		else {
-			Utils.LOG_WARNING("SimplyJetpacks not Found - Skipping Resources.");
+			Logger.WARNING("SimplyJetpacks not Found - Skipping Resources.");
 		}
 
 		//rfTools
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("rfTools Found - Loading Resources.");
+			Logger.INFO("rfTools Found - Loading Resources.");
 			//Item Init
 			itemPlateDimensionShard = ItemUtils.generateSpecialUsePlate("DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 0);
 		}
 		else {
-			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
+			Logger.WARNING("rfTools not Found - Skipping Resources.");
 		}
 
 		//IC2 Exp
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("IndustrialCraft2 Found - Loading Resources.");
+			Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
 			RfEuBattery = new RF2EU_Battery();
 
 			//Baubles Mod Test
@@ -794,14 +795,14 @@ public final class ModItems {
 					COMPAT_Baubles.run();
 				}
 				else {
-					Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+					Logger.INFO("Baubles Not Found - Skipping Resources.");
 				}
 			} catch(final Throwable T){
-				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+				Logger.INFO("Baubles Not Found - Skipping Resources.");
 			}
 		}
 		else {
-			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
+			Logger.WARNING("IndustrialCraft2 not Found - Skipping Resources.");
 		}
 
 

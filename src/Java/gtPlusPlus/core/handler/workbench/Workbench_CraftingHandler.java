@@ -97,7 +97,7 @@ public class Workbench_CraftingHandler {
 
 			if (hashmap.containsKey(Character.valueOf(c)))
 			{
-				aitemstack[i1] = ((ItemStack)hashmap.get(Character.valueOf(c))).copy();
+				aitemstack[i1] = hashmap.get(Character.valueOf(c)).copy();
 			}
 			else
 			{
@@ -185,7 +185,7 @@ public class Workbench_CraftingHandler {
 
 		for (int k = 0; k < this.recipes.size(); k++)
 		{
-			final IRecipe irecipe = (IRecipe)this.recipes.get(k);
+			final IRecipe irecipe = this.recipes.get(k);
 
 			if (irecipe.matches(par1InventoryCrafting, par2World))
 			{
