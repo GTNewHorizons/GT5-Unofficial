@@ -114,12 +114,12 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		//Is this a composite?
 		if ((inputStacks != null) && !disableOptional){
 			//Is this a composite?
-			Utils.LOG_INFO("mixer length: "+inputStacks.length);
+			Utils.LOG_WARNING("mixer length: "+inputStacks.length);
 			if ((inputStacks.length != 0) && (inputStacks.length <= 4)){
 				//Log Input items
 				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 				final long[] inputStackSize = material.vSmallestRatio;
-				Utils.LOG_INFO("mixer is stacksizeVar null? "+(inputStackSize != null));
+				Utils.LOG_WARNING("mixer is stacksizeVar null? "+(inputStackSize != null));
 				//Is smallest ratio invalid?
 				if (inputStackSize != null){
 					//set stack sizes on an input ItemStack[]
@@ -168,19 +168,19 @@ public class RecipeGen_DustGeneration  implements Runnable{
 							(int) Math.max(material.getMass() * 2L * 1, 1),
 							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 					{
-						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+						Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 					}
 					else {
-						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
+						Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
 					}
 
 					//Add Shapeless recipe for low tier alloys.
 					if (tVoltageMultiplier <= 30){
 						if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
-							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");
+							Utils.LOG_WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");
 						}
 						else {
-							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
+							Utils.LOG_WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
 						}
 					}
 				}
@@ -200,12 +200,12 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		//Is this a composite?
 		if ((inputStacks != null)){
 			//Is this a composite?
-			Utils.LOG_INFO("mixer length: "+inputStacks.length);
+			Utils.LOG_WARNING("mixer length: "+inputStacks.length);
 			if ((inputStacks.length >= 1) && (inputStacks.length <= 4)){
 				//Log Input items
 				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 				final long[] inputStackSize = material.vSmallestRatio;
-				Utils.LOG_INFO("mixer is stacksizeVar not null? "+(inputStackSize != null));
+				Utils.LOG_WARNING("mixer is stacksizeVar not null? "+(inputStackSize != null));
 				//Is smallest ratio invalid?
 				if (inputStackSize != null){
 					//set stack sizes on an input ItemStack[]
@@ -215,7 +215,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 						}
 					}
 					//Relog input values, with stack sizes
-					Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
+					Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
 					//Get us four ItemStacks to input into the mixer
 					ItemStack input1, input2, input3, input4;
@@ -254,24 +254,24 @@ public class RecipeGen_DustGeneration  implements Runnable{
 							(int) Math.max(material.getMass() * 2L * 1, 1),
 							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 					{
-						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+						Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 						return true;
 					}
 					else {
-						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
+						Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
 						return false;
 					}
 				}
 				else {
-					Utils.LOG_INFO("inputStackSize == NUll - "+material.getLocalizedName());
+					Utils.LOG_WARNING("inputStackSize == NUll - "+material.getLocalizedName());
 				}
 			}
 			else {
-				Utils.LOG_INFO("InputStacks is out range 1-4 - "+material.getLocalizedName());
+				Utils.LOG_WARNING("InputStacks is out range 1-4 - "+material.getLocalizedName());
 			}
 		}
 		else {
-			Utils.LOG_INFO("InputStacks == NUll - "+material.getLocalizedName());
+			Utils.LOG_WARNING("InputStacks == NUll - "+material.getLocalizedName());
 		}
 		return false;
 	}

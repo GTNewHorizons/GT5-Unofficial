@@ -48,7 +48,7 @@ public class Preloader_GT_OreDict {
 			}
 
 			//Mekanism Support - Let's not make Mek Osmium useful in GT anymore.
-			if ((((bannedItem != null) && (ItemUtils.getModId(bannedItem).toLowerCase().equals("mekanism"))) || (LoadedMods.Mekanism)) && !LoadedMods.RedTech){
+			if ((((bannedItem != null) && !LoadedMods.RedTech && (ItemUtils.getModId(bannedItem).toLowerCase().equals("mekanism"))) || (LoadedMods.Mekanism)) && !LoadedMods.RedTech){
 				//Circuits
 				if (Class.forName("mekanism.common.item.ItemControlCircuit") != null) {
 					final Class<?> MekCircuit = Class.forName("mekanism.common.item.ItemControlCircuit");

@@ -15,6 +15,7 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
@@ -29,6 +30,7 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -79,6 +81,7 @@ public class GTplusplus implements ActionListener {
 
 		//Give this a go mate.
 		initAnalytics();
+		setupMaterialBlacklist();
 
 		//HTTP Requests
 		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
@@ -188,5 +191,35 @@ public class GTplusplus implements ActionListener {
 		}
 		
 		new SegmentHelper();
+	}
+	
+	private static final boolean setupMaterialBlacklist(){		
+		int ID = 0;
+		Material.invalidMaterials.put(ID++, Materials._NULL);
+		Material.invalidMaterials.put(ID++, Materials.Clay);
+		Material.invalidMaterials.put(ID++, Materials.Phosphorus);
+		Material.invalidMaterials.put(ID++, Materials.Steel);
+		Material.invalidMaterials.put(ID++, Materials.Bronze);
+		Material.invalidMaterials.put(ID++, Materials.Hydrogen);
+		//Infused TC stuff
+		Material.invalidMaterials.put(ID++, Materials.InfusedAir);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedFire);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedWater);
+		
+		//EIO Materials
+		Material.invalidMaterials.put(ID++, Materials.SoulSand);
+		Material.invalidMaterials.put(ID++, Materials.EnderPearl);
+		Material.invalidMaterials.put(ID++, Materials.EnderEye);
+		Material.invalidMaterials.put(ID++, Materials.Redstone);
+		Material.invalidMaterials.put(ID++, Materials.Glowstone);
+		Material.invalidMaterials.put(ID++, Materials.Soularium);
+		Material.invalidMaterials.put(ID++, Materials.PhasedIron);
+				
+		if (Material.invalidMaterials.size() > 0){
+			return true;
+		}
+		return false;
+		
 	}
 }

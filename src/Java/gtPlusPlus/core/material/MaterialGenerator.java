@@ -19,15 +19,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_AlloySmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Assembler;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
+import gtPlusPlus.xmod.gregtech.loaders.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -148,7 +140,7 @@ public class MaterialGenerator {
 			return true;
 		} catch (final Throwable t)
 		{
-			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
+			Utils.LOG_WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
 		}
 	}
@@ -219,7 +211,7 @@ public class MaterialGenerator {
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 			new RecipeGen_Recycling(matInfo);
 		} catch (final Throwable t){
-			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
+			Utils.LOG_WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
 	}
 
