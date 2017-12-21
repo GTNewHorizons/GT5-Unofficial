@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalInstanceContainer;
+import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

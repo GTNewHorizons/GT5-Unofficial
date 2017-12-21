@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.core.interfaces;
+package com.github.technus.tectech.elementalMatter.core.transformations;
 
 /**
  * Created by Tec on 23.05.2017.

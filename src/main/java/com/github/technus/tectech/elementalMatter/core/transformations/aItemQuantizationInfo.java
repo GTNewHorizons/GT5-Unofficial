@@ -1,7 +1,6 @@
 package com.github.technus.tectech.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.elementalMatter.core.interfaces.iExchangeInfo;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
