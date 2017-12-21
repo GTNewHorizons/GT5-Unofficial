@@ -53,6 +53,7 @@ public class CORE {
 
 	//Tweakables
 	public static int DARKBIOME_ID = 238;	
+	public static int DARKWORLD_ID = 227;
 
 	//GT Vars;
 	public static final int GREG_FIRST_ID = 760;

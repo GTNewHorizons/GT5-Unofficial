@@ -100,10 +100,10 @@ public class TreefarmManager {
 	public static boolean isSapling(final Block log){
 		if (log != null){
 			if (OrePrefixes.sapling.contains(new ItemStack(log, 1))){
-				Logger.INFO(""+log.getLocalizedName());
+				Logger.WARNING(""+log.getLocalizedName());
 			}
 			if (log.getLocalizedName().toLowerCase().contains("sapling")){
-				Logger.INFO(""+log.getLocalizedName());
+				Logger.WARNING(""+log.getLocalizedName());
 				return true;
 			}
 		}

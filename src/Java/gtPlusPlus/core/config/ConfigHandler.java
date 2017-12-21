@@ -1,8 +1,7 @@
 package gtPlusPlus.core.config;
 
 import static gtPlusPlus.core.item.general.RF2EU_Battery.rfPerEU;
-import static gtPlusPlus.core.lib.CORE.DARKBIOME_ID;
-import static gtPlusPlus.core.lib.CORE.DEBUG;
+import static gtPlusPlus.core.lib.CORE.*;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
 
@@ -151,6 +150,7 @@ public class ConfigHandler {
 				"Disables Zombie Reinforcement on hard difficutly.");
 	
 		//Biomes
+		DARKWORLD_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");
 		DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
 	
 		//Blacklisted Accelerator TileEntities

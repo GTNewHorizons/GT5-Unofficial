@@ -1,13 +1,17 @@
 package gtPlusPlus.core.entity.monster;
 
+import java.lang.reflect.Field;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,26 +22,30 @@ import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
-	/** deincrements, and a distance-to-home check is done at 0 */
-	private int homeCheckTimer;
-	Village villageObj;
-	private int attackTimer;
-	private int holdRoseTick;
+	
+	/*
+	 * Determines whether or not the entity is in a fluid at all.
+	 */
+	private volatile boolean inFluid = false;
+	private volatile boolean mReflectFirstUpdate = true;
+	private volatile int attackTimer;
 
 	public EntityStaballoyConstruct(World world) {
 		super(world);
 		this.setSize(1.4F, 2.9F);
 		this.getNavigator().setAvoidsWater(true);
+		this.getNavigator().setBreakDoors(true);
+		this.getNavigator().setCanSwim(false);
+		this.getNavigator().setAvoidSun(false);
 		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 1.0D, true));
-		//this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
+		this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
 		//this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
-		this.tasks.addTask(2, new EntityAIMoveTowardsRestriction(this, 1.0D));
-		this.tasks.addTask(3, new EntityAIWander(this, 0.6D));
-		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(5, new EntityAILookIdle(this));
+		this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
+		this.tasks.addTask(4, new EntityAIWander(this, 0.6D));
+		this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		//this.targetTasks.addTask(2,
-				//new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
 	}
 
 	@Override
@@ -59,11 +67,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	 */
 	@Override
 	protected void updateAITick() {
-		if (--this.homeCheckTimer <= 0) {
-		this.homeCheckTimer = 70 + this.rand.nextInt(50);			
-				this.detachHome();
-			}
-
 		super.updateAITick();
 	}
 
@@ -79,7 +82,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	 */
 	@Override
 	protected int decreaseAirSupply(int p_70682_1_) {
-		return p_70682_1_;
+		return 0;
 	}
 
 	@Override
@@ -104,10 +107,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			--this.attackTimer;
 		}
 
-		if (this.holdRoseTick > 0) {
-			--this.holdRoseTick;
-		}
-
 		if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D
 				&& this.rand.nextInt(5) == 0) {
 			int i = MathHelper.floor_double(this.posX);
@@ -115,8 +114,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			int k = MathHelper.floor_double(this.posZ);
 			Block block = this.worldObj.getBlock(i, j, k);
 
-			
-			
+
+
 			if (block.getMaterial() != Material.air) {
 				this.worldObj.spawnParticle(
 						"blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(i, j, k),
@@ -133,9 +132,8 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	 * Returns true if this entity can attack entities of the specified class.
 	 */
 	@Override
-	public boolean canAttackClass(Class p_70686_1_) {
-		return this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(p_70686_1_) ? false
-				: super.canAttackClass(p_70686_1_);
+	public boolean canAttackClass(Class clazz) {
+		return clazz.equals(this.getClass()) ? false : true;
 	}
 
 	/**
@@ -178,9 +176,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			this.attackTimer = 10;
 			this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
 		}
-		else if (p_70103_1_ == 11) {
-			this.holdRoseTick = 400;
-		}
 		else {
 			super.handleHealthUpdate(p_70103_1_);
 		}
@@ -195,12 +190,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	@SideOnly(Side.CLIENT)
 	public int getAttackTimer() {
 		return this.attackTimer;
-	}
-
-	@Override
-	public void setHoldingRose(boolean p_70851_1_) {
-		this.holdRoseTick = p_70851_1_ ? 400 : 0;
-		this.worldObj.setEntityState(this, (byte) 11);
 	}
 
 	/**
@@ -221,7 +210,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
 	@Override
 	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {
-		//this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
+		this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
 	}
 
 	/**
@@ -250,11 +239,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	}
 
 	@Override
-	public int getHoldRoseTick() {
-		return this.holdRoseTick;
-	}
-
-	@Override
 	public boolean isPlayerCreated() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
@@ -277,5 +261,189 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	@Override
 	public void onDeath(DamageSource p_70645_1_) {
 		super.onDeath(p_70645_1_);
+	}
+
+	@Override
+	protected String getLivingSound() { //TODO
+		return super.getLivingSound();
+	}
+
+	@Override
+	public int getTalkInterval() {
+		return 0;
+	}
+
+	@Override
+	protected boolean canDespawn() {
+		return true;
+	}
+
+	@Override
+	public void onEntityUpdate() {
+		//Set Fire Immunity
+		if (!this.isImmuneToFire){
+			this.isImmuneToFire = true;
+		} 	
+
+		//Handle Exploding
+		if (isReadyToExplode){
+			if (this.fuse-- <= 0){
+				this.setDead();
+
+				if (!this.worldObj.isRemote)
+				{
+					this.explode();
+				}
+			}
+			else
+			{
+				this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+			}		
+		}
+
+		//Get a private field from a super class if it exists.
+		if (ReflectionUtils.getField(this, "firstUpdate") != null && mReflectFirstUpdate == true){
+			Field x = ReflectionUtils.getField(this, "firstUpdate");
+			try {
+				this.mReflectFirstUpdate = (boolean) x.get(this);
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {}
+		}
+		super.onEntityUpdate();
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
+	}
+
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
+	}
+
+	@Override
+	public void knockBack(Entity p_70653_1_, float p_70653_2_, double p_70653_3_, double p_70653_5_) {
+		// Do Nothing because he weighs metric shittonnes.
+	}
+
+	@Override
+	protected void setOnFireFromLava() {
+		extinguish();
+	}
+
+	@Override
+	public void setFire(int p_70015_1_) {
+		extinguish();
+	}
+
+	@Override
+	protected void dealFireDamage(int p_70081_1_) {
+
+	}
+
+	@Override
+	public boolean isInWater() {
+		if (super.isInWater()){
+			return true;
+		}
+		else {
+			this.moveForward *= 0.98F;
+			return false;
+		}
+	}
+
+	@Override
+	public boolean handleWaterMovement() {
+		this.moveForward *= 0.74F;
+		return handleFluidMovement(Material.water);
+	}
+
+	@Override
+	public boolean handleLavaMovement() {
+		this.moveForward *= 0.74F;
+		return  handleFluidMovement(Material.lava);
+	}
+
+	/**
+	 * Returns if this entity is in water and will end up adding the waters velocity to the entity
+	 */
+	public boolean handleFluidMovement(Material fluid){
+
+
+
+		if (this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), fluid, this))
+		{
+			if (!this.inFluid && !this.mReflectFirstUpdate)
+			{
+				float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
+
+				if (f > 1.0F)
+				{
+					f = 1.0F;
+				}
+
+				this.playSound(this.getSplashSound(), f, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+				float f1 = MathHelper.floor_double(this.boundingBox.minY);
+				int i;
+				float f2;
+				float f3;
+
+				for (i = 0; i < 1.0F + this.width * 20.0F; ++i)
+				{
+					f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					this.worldObj.spawnParticle("bubble", this.posX + f2, f1 + 1.0F, this.posZ + f3, this.motionX, this.motionY - this.rand.nextFloat() * 0.2F, this.motionZ);
+				}
+
+				for (i = 0; i < 1.0F + this.width * 20.0F; ++i)
+				{
+					f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					this.worldObj.spawnParticle("splash", this.posX + f2, f1 + 1.0F, this.posZ + f3, this.motionX, this.motionY, this.motionZ);
+				}
+			}
+			this.fallDistance = 0.0F;
+			this.inFluid = true;
+		}
+		else
+		{
+			this.inFluid = false;
+		}
+		return this.inFluid;
+	}
+
+	@Override
+	public void onChunkLoad() {
+		// TODO Auto-generated method stub
+		super.onChunkLoad();
+	}
+
+	private int fuse = 60;
+	private boolean isReadyToExplode = false;
+	@Override
+	public void onStruckByLightning(EntityLightningBolt p_70077_1_) {
+		this.isReadyToExplode = true;
+		this.fuse = 20;
+	}
+	
+	private void explode(){
+        float f = 12.0F;
+        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
+    }
+
+	@Override
+	public boolean canAttackWithItem() {
+		return true;
+	}
+
+	@Override
+	public boolean canRenderOnFire() {
+		return false;
+	}
+
+	@Override
+	public boolean isPushedByWater() {
+		return false;
 	}
 }

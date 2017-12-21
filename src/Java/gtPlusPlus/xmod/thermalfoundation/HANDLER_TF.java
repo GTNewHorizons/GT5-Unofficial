@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.thermalfoundation;
 
-import static gtPlusPlus.GTplusplus.mGregMatLoader;
-
-import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
@@ -19,7 +16,7 @@ public class HANDLER_TF{
 			TF_Blocks.preInit();
 			if (LoadedMods.Gregtech){
 				if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-					mGregMatLoader.enableMaterial(Materials.Enderium);
+					//mGregMatLoader.enableMaterial(Materials.Enderium);
 				}
 			}
 		}

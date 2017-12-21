@@ -171,7 +171,12 @@ public class ChunkProviderModded implements IChunkProvider {
 									p_147424_3_[j3 += short1] = Dimension_DarkWorld.blockMainFiller;
 								}
 								else if (k2 * 8 + l2 < b0) {
-									p_147424_3_[j3 += short1] = Blocks.water; //River Fluid									
+									try {
+										p_147424_3_[j3 += short1] = Dimension_DarkWorld.blockFluidLakes; //River Fluid		 .
+									}
+									catch (Throwable t){
+										p_147424_3_[j3 += short1] = Blocks.water; //River Fluid	Fallback										
+									}
 								}
 								else {
 									p_147424_3_[j3 += short1] = null;

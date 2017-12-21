@@ -5,23 +5,20 @@ import java.util.Random;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.world.darkworld.block.*;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortal;
 import gtPlusPlus.core.world.darkworld.item.itemDarkWorldPortalTrigger;
 import gtPlusPlus.core.world.darkworld.world.WorldProviderMod;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-@SuppressWarnings("unchecked")
 public class Dimension_DarkWorld {
 
 	public Object instance;
-	public static int DIMID = 227;
+	public static int DIMID = CORE.DARKWORLD_ID;
 
 	public static blockDarkWorldPortal portalBlock;
 	public static itemDarkWorldPortalTrigger portalItem;
@@ -29,7 +26,7 @@ public class Dimension_DarkWorld {
 	public static Block blockSecondLayer;
 	public static Block blockMainFiller = Blocks.stone;
 	public static Block blockSecondaryFiller;
-	public static Block blockFluidLakes = ModBlocks.blockFluidSludge;
+	public static Block blockFluidLakes;
 
 	public static Block blockPortalFrame;
 

@@ -14,15 +14,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldGround;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPollutedDirt;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortal;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortalFrame;
-import gtPlusPlus.core.world.darkworld.item.itemDarkWorldPortalTrigger;
+import gtPlusPlus.core.world.darkworld.block.DarkWorldContentLoader;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -80,17 +74,10 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	}
 	
 	void setVars(){
-		Dimension_DarkWorld.DIMID = DimensionManager.getNextFreeDimId();
-		Dimension_DarkWorld.portalBlock = new blockDarkWorldPortal();
-		Dimension_DarkWorld.portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
-		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", Dimension_DarkWorld.portalItem);
-		Dimension_DarkWorld.blockTopLayer = new blockDarkWorldGround();
-		Dimension_DarkWorld.blockSecondLayer = new blockDarkWorldPollutedDirt();
-		GameRegistry.registerBlock(Dimension_DarkWorld.blockTopLayer, "blockDarkWorldGround");
-		GameRegistry.registerBlock(Dimension_DarkWorld.blockSecondLayer, "blockDarkWorldGround2");
-		Blocks.fire.setFireInfo(Dimension_DarkWorld.blockTopLayer, 30, 20);
-		Dimension_DarkWorld.blockPortalFrame = new blockDarkWorldPortalFrame();
-		GameRegistry.registerBlock(Dimension_DarkWorld.blockPortalFrame, "blockDarkWorldPortalFrame");
+		if (DimensionManager.isDimensionRegistered(Dimension_DarkWorld.DIMID)){
+			Dimension_DarkWorld.DIMID = DimensionManager.getNextFreeDimId();
+		}
+		DarkWorldContentLoader.run();
 	}
 
 	@EventHandler
@@ -111,18 +98,18 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 		chunkX = chunkX * 16;
-		chunkZ = chunkZ * 16;
+		chunkZ = chunkZ * 16;		
+
+		/*if (world.provider.dimensionId == Dimension_DarkWorld.DIMID) {
+			DarkWorld_Biome.generateSurface(world, random, chunkX, chunkZ);
+		}*/
+		
+		//What does this even do?
 		if (world.provider.dimensionId == -1) {
 			DarkWorld_Biome.generateNether(world, random, chunkX, chunkZ);
 		}
 		if (world.provider.dimensionId == 0) {
 			DarkWorld_Biome.generateSurface(world, random, chunkX, chunkZ);
-		}
-		if (world.provider.dimensionId == -1) {
-			DarkWorld_Dimension.generateNether(world, random, chunkX, chunkZ);
-		}
-		if (world.provider.dimensionId == 0) {
-
 		}
 
 	}
