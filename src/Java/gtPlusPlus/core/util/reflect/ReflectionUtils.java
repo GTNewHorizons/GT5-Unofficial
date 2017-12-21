@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 
 public class ReflectionUtils {
 
-	public static Field getField(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
+	public static Field getField(final Class clazz, final String fieldName) throws NoSuchFieldException {
 		try {
 			return clazz.getDeclaredField(fieldName);
 		} catch (final NoSuchFieldException e) {

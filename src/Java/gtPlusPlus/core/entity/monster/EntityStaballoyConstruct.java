@@ -4,9 +4,11 @@ import java.lang.reflect.Field;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -22,16 +24,19 @@ import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
-	
+
 	/*
 	 * Determines whether or not the entity is in a fluid at all.
 	 */
 	private volatile boolean inFluid = false;
 	private volatile boolean mReflectFirstUpdate = true;
+	private volatile boolean isReadyToExplode = false;
+	private volatile int fuse = 60;
 	private volatile int attackTimer;
 
 	public EntityStaballoyConstruct(World world) {
 		super(world);
+		this.experienceValue = 250;
 		this.setSize(1.4F, 2.9F);
 		this.getNavigator().setAvoidsWater(true);
 		this.getNavigator().setBreakDoors(true);
@@ -46,6 +51,28 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
+	}
+
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
+	@Override
+	public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+		super.writeEntityToNBT(p_70014_1_);
+		p_70014_1_.setBoolean("inFluid", this.inFluid);
+		p_70014_1_.setBoolean("isReadyToExplode", this.isReadyToExplode);
+		p_70014_1_.setInteger("fuse", this.fuse);
+	}
+
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
+	@Override
+	public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
+		super.readEntityFromNBT(p_70037_1_);
+		this.inFluid = p_70037_1_.getBoolean("inFluid");
+		this.isReadyToExplode = p_70037_1_.getBoolean("isReadyToExplode");
+		this.fuse = p_70037_1_.getInteger("fuse");
 	}
 
 	@Override
@@ -134,24 +161,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	@Override
 	public boolean canAttackClass(Class clazz) {
 		return clazz.equals(this.getClass()) ? false : true;
-	}
-
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
-	@Override
-	public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-		super.writeEntityToNBT(p_70014_1_);
-		p_70014_1_.setBoolean("PlayerCreated", this.isPlayerCreated());
-	}
-
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
-	@Override
-	public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-		super.readEntityFromNBT(p_70037_1_);
-		this.setPlayerCreated(p_70037_1_.getBoolean("PlayerCreated"));
 	}
 
 	@Override
@@ -285,8 +294,15 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			this.isImmuneToFire = true;
 		} 	
 
+		if (this.getHealth() <= (this.getMaxHealth()*MathUtils.randDouble(0.02, 0.15))){
+			float r = MathUtils.randFloat(0, 1);
+			if (r <= 0.1){
+				this.isReadyToExplode = true;
+			}
+		}
+
 		//Handle Exploding
-		if (isReadyToExplode){
+		if (isReadyToExplode){			
 			if (this.fuse-- <= 0){
 				this.setDead();
 
@@ -295,20 +311,63 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 					this.explode();
 				}
 			}
-			else
-			{
-				this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+			else {
+				
+				int maxFuse = 60;
+				int fuseUsed = maxFuse-this.fuse;
+				float var2 = (float) (fuseUsed * 0.1);
+				
+				this.setSize(1.4F+(var2/2), 2.9F+(var2/2));
+				
+				float r = MathUtils.randFloat(0, 1);
+				int r2 = MathUtils.randInt(5, 15);
+				for (int o=0;o<r2;o++){
+					if (r <= 0.3){
+						this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					else if (r <= 0.6){
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					if (r <= 0.3){
+						this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					else if (r <= 0.7){
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					if (r <= 0.2){
+						this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					else if (r <= 0.5){
+						this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+					else if (r <= 0.7){
+						this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+					}
+				}
+				
+
 			}		
 		}
 
 		//Get a private field from a super class if it exists.
-		if (ReflectionUtils.getField(this, "firstUpdate") != null && mReflectFirstUpdate == true){
-			Field x = ReflectionUtils.getField(this, "firstUpdate");
-			try {
-				this.mReflectFirstUpdate = (boolean) x.get(this);
+		try {
+			if (ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate") != null && mReflectFirstUpdate == true){
+				Field x = ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate");
+				try {
+					this.mReflectFirstUpdate = (boolean) x.get(this);
+					Logger.REFLECTION("Successfully got 'firstUpdate' variable state via reflection.");
+				}
+				catch (IllegalArgumentException | IllegalAccessException e) {}
 			}
-			catch (IllegalArgumentException | IllegalAccessException e) {}
 		}
+		catch (NoSuchFieldException | ClassNotFoundException e) {}
 		super.onEntityUpdate();
 	}
 
@@ -419,18 +478,54 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		super.onChunkLoad();
 	}
 
-	private int fuse = 60;
-	private boolean isReadyToExplode = false;
 	@Override
 	public void onStruckByLightning(EntityLightningBolt p_70077_1_) {
 		this.isReadyToExplode = true;
 		this.fuse = 20;
 	}
-	
+
 	private void explode(){
-        float f = 12.0F;
-        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
-    }
+		/* float f = 12.0F;
+        this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);*/
+
+		final float f = 16F;		
+		ExplosionHandler explode = new ExplosionHandler();
+		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);	
+		
+		float r = MathUtils.randFloat(0, 1);
+		int r2 = MathUtils.randInt(20, 40);
+		for (int o=0;o<r2;o++){
+			if (r <= 0.3){
+				this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(0, 3), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			else if (r <= 0.6){
+				this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			if (r <= 0.3){
+				this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			else if (r <= 0.7){
+				this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			if (r <= 0.2){
+				this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			else if (r <= 0.5){
+				this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+			else if (r <= 0.7){
+				this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+			}
+		}
+		
+	}
 
 	@Override
 	public boolean canAttackWithItem() {

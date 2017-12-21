@@ -124,7 +124,15 @@ public class Logger {
 		if (CORE.DEVENV || CORE.DEBUG)
 		modLogger.info("[Reflection] "+s);
 	}
+
 	
+	/**
+	 * Special Logger for Darkworld related content
+	 */
+	public static void WORLD(final String s) {
+		if (CORE.DEVENV || CORE.DEBUG)
+		modLogger.info("[WorldGen] "+s);
+	}
 	
 	
 

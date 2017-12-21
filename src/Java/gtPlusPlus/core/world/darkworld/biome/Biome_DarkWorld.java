@@ -13,6 +13,7 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
@@ -60,6 +61,7 @@ public class Biome_DarkWorld {
 			super(CORE.DARKBIOME_ID);
 			this.setBiomeID();
 			this.theBiomeDecorator = new BiomeGenerator_Custom();
+			this.theBiomeDecorator.treesPerChunk = 10;
 			Logger.INFO("Dark World Temperature Category: "+getTempCategory());
 			this.setBiomeName("Dark World");
 			this.topBlock = Dimension_DarkWorld.blockTopLayer;
@@ -78,11 +80,12 @@ public class Biome_DarkWorld {
 			this.spawnableCaveCreatureList.clear();
 
 			//Enemies			
-			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySickBlaze.class, 100, 4, 4));
-			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityStaballoyConstruct.class, 80, 1, 2));
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySickBlaze.class, 100, 2, 6));
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityPigZombie.class, 75, 4, 16));
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityStaballoyConstruct.class, 20, 1, 2));
 
 			//Animals
-			this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySquid.class, 10, 4, 4));
+			this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySquid.class, 1, 1, 6));
 			this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityBat.class, 10, 8, 8));
 
 		}

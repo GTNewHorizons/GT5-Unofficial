@@ -47,7 +47,7 @@ public class DarkWorldContentLoader {
 	public synchronized static boolean initBlocks(){		
 
 		//Create Block Instances
-		blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, blockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f).setLightOpacity(1);
+		blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, blockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f).setLightOpacity(1).setBlockName("blockDarkWorldSludgeFluid");
 		portalBlock = new blockDarkWorldPortal();
 		blockTopLayer = new blockDarkWorldGround();
 		blockSecondLayer = new blockDarkWorldPollutedDirt();

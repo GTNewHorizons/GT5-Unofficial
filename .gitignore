@@ -30,7 +30,6 @@ mods/
 resourcepacks/
 saves/
 VillageWiper/
-world/
 
 # Windows shortcuts
 *.lnk
@@ -111,3 +110,4 @@ local.properties
 # STS (Spring Tool Suite)
 .springBeans
 /screenshots
+/world
