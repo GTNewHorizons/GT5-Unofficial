@@ -11,6 +11,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
 import gtPlusPlus.core.world.darkworld.block.DarkWorldContentLoader;
@@ -62,6 +64,9 @@ public class GTplusplus_Secondary {
 	public void load(final FMLInitializationEvent e) {
 		Logger.INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
 
+		//Run Ore Material Handler
+		GenerateOreMaterials();
+		
 		//Load Dark World and Biome
 		//GameRegistry.registerFuelHandler(this);
 		GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), 50);
@@ -70,6 +75,15 @@ public class GTplusplus_Secondary {
 
 	}
 	
+	private void GenerateOreMaterials() {
+		MaterialGenerator.generate(ORES.CROCROITE);
+		MaterialGenerator.generate(ORES.GEIKIELITE);
+		MaterialGenerator.generate(ORES.NICHROMITE);
+		MaterialGenerator.generate(ORES.TITANITE);
+		MaterialGenerator.generate(ORES.ZIMBABWEITE);
+		MaterialGenerator.generate(ORES.ZIRCONILITE);		
+	}
+
 	void setVars(){
 		if (DimensionManager.isDimensionRegistered(Dimension_DarkWorld.DIMID)){
 			Dimension_DarkWorld.DIMID = DimensionManager.getNextFreeDimId();

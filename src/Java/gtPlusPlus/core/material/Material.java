@@ -64,6 +64,10 @@ public class Material {
 
 	public static Map<Integer, Materials> invalidMaterials = new HashMap<Integer, Materials>();
 
+	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
+		this (materialName, defaultState, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
+	}	
+
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){
 		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
 	}
@@ -296,7 +300,7 @@ public class Material {
 		Logger.WARNING("Mass: "+this.vMass+"/units");
 		Logger.WARNING("Melting Point: "+this.meltingPointC+"C.");
 		Logger.WARNING("Boiling Point: "+this.boilingPointC+"C.");
-	}
+	}	
 
 	public final String getLocalizedName(){
 		if (this.localizedName != null) {
@@ -759,9 +763,14 @@ public class Material {
 	final public int calculateMeltingPoint(){
 		int meltingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			int incrementor = part.getStackMaterial().getMeltingPointC();
-			meltingPoint += incrementor;
-			Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			if (part != null){
+				int incrementor = part.getStackMaterial().getMeltingPointC();
+				meltingPoint += incrementor;
+				Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
@@ -772,7 +781,12 @@ public class Material {
 	final public int calculateBoilingPoint(){
 		int boilingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			boilingPoint += part.getStackMaterial().getBoilingPointC();
+			if (part != null){
+				boilingPoint += part.getStackMaterial().getBoilingPointC();
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		boilingPoint = (boilingPoint/divisor);
@@ -782,7 +796,12 @@ public class Material {
 	final public long calculateProtons(){
 		long protonCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			protonCount += (part.getStackMaterial().getProtons());
+			if (part != null){
+				protonCount += (part.getStackMaterial().getProtons());
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		protonCount = (protonCount/divisor);
@@ -792,7 +811,12 @@ public class Material {
 	final public long calculateNeutrons(){
 		long neutronCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			neutronCount += (part.getStackMaterial().getNeutrons());
+			if (part != null){
+				neutronCount += (part.getStackMaterial().getNeutrons());
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		neutronCount = (neutronCount/divisor);

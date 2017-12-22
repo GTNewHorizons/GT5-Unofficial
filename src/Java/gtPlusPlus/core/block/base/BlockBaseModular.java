@@ -8,26 +8,31 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtFrameBox;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockBaseModular extends BasicBlock{
 
+	protected Material blockMaterial;
+	
 	protected int blockColour;
 	protected BlockTypes thisBlock;
 	protected String thisBlockMaterial;
 	protected final String thisBlockType;
 
-
+	public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
+		this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron, blockType, colour, 2);
+	}
+	
 	public BlockBaseModular(final String unlocalizedName, final String blockMaterial,  final BlockTypes blockType, final int colour) {
-		this(unlocalizedName, blockMaterial, Material.iron, blockType, colour, 2);
+		this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
 	}
 
-	public BlockBaseModular(final String unlocalizedName, final String blockMaterial, final Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
+	public BlockBaseModular(final String unlocalizedName, final String blockMaterial, final net.minecraft.block.material.Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
 		super(unlocalizedName, vanillaMaterial);
 		this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
 		this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());

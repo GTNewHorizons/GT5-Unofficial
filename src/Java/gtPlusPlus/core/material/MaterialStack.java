@@ -3,7 +3,9 @@ package gtPlusPlus.core.material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
@@ -51,6 +53,14 @@ public class MaterialStack {
 	}
 
 	public Material getStackMaterial(){
+		if (this.stackMaterial == null){
+			Logger.MATERIALS("Tried getStackMaterial, got an invalid material.");
+			Logger.MATERIALS(ReflectionUtils.getMethodName(0));
+			Logger.MATERIALS(ReflectionUtils.getMethodName(1));
+			Logger.MATERIALS(ReflectionUtils.getMethodName(2));
+			Logger.MATERIALS(ReflectionUtils.getMethodName(3));
+			return null;
+		}
 		return this.stackMaterial;
 	}
 

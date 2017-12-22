@@ -9,6 +9,7 @@ import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
+import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -125,6 +126,18 @@ public class MaterialGenerator {
 				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;
 			}
+			else if (matInfo.getState() == MaterialState.ORE){
+					if (sRadiation >= 1){
+						Item temp;
+						Block tempBlock;
+						tempBlock = new BlockBaseModular(matInfo ,BlockTypes.ORE, Colour);
+
+						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+						temp = new BaseItemCrushedOre(matInfo);
+					}
+			}
 
 			//Add A jillion Recipes - old code
 			RecipeGen_AlloySmelter.generateRecipes(matInfo);
@@ -139,7 +152,9 @@ public class MaterialGenerator {
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 			new RecipeGen_Recycling(matInfo);
 			return true;
-		} catch (final Throwable t)
+			
+			} catch (final Throwable t)
+		
 		{
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
