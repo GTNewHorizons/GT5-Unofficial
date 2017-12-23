@@ -94,7 +94,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected long eRequiredData = 0; // data required to operate
     protected long eAvailableData = 0; // data being available
 
-    private boolean explodedThisTick=false;
+    private boolean explodedThisTick=false, eHadNoParametrizationHatches = true;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -103,7 +103,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //if you want to add checks that run periodically when machine works then make onRunningTick better
     //if you want to add checks that run periodically when machine is built then use check params
 
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         return false;
     }
     // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
@@ -122,7 +122,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
     // Setting available data processing
 
-    protected void hatchInit_EM() {
+    protected void hatchInit_EM(boolean mMachine) {
     }//For extra types of hatches initiation, LOOK HOW IT IS CALLED! onPostTick
 
     protected void extraExplosions_EM() {
@@ -158,13 +158,44 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return 0;
     }
 
-    //triggered if machine is not allowed to work after completing a recipe
+    //helper method so i don't have to set that params to nothing at all times
+    protected void afterRecipeCheckFailed(){
+        if (outputEM != null) {
+            float mass = 0;
+            for (cElementalInstanceStackMap tree : outputEM)
+                mass += tree.getMass();
+            if (mass > 0) {
+                if (eMufflerHatches.size() < 1) explodeMultiblock();
+                else {
+                    mass /= eMufflerHatches.size();
+                    for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
+                        if (dump.addOverflowMatter(mass)) explodeMultiblock();
+                }
+            }
+            outputEM = null;
+        }
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData)
+            data.q = null;
+
+        mOutputItems = null;
+        mOutputFluids = null;
+        mEfficiency = 0;
+        mEfficiencyIncrease = 0;
+        mProgresstime = 0;
+        //mMaxProgresstime = 0; //Done after this - cos it is VITAL!
+        eAvailableData = 0;
+        //getBaseMetaTileEntity().disableWorking();
+        //hatchesStatusUpdate_EM(); //called always after recipe checks
+    }
+
+    //triggered if machine is not allowed to work after completing a recipe, override to make it not shutdown for instance (like turbines).
     protected void notAllowedToWork_stopMachine_EM(){
         stopMachine();
     }
 
     //Override if needed but usually call super method at start!
-    //On machine stop - NOT called when softhammered to offline state! - it SHOULD cause a full stop like power failure does
+    //On machine stop - NOT called directly when softhammered to offline state! - it SHOULD cause a full stop like power failure does
     @Override
     public void stopMachine() {
         if (outputEM != null) {
@@ -188,11 +219,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         mOutputItems = null;
         mOutputFluids = null;
         mEfficiency = 0;
+        mEfficiencyIncrease = 0;
         mProgresstime = 0;
         mMaxProgresstime = 0;
-        mEfficiencyIncrease = 0;
-        getBaseMetaTileEntity().disableWorking();
+        eAvailableData = 0;
         hatchesStatusUpdate_EM();
+        getBaseMetaTileEntity().disableWorking();
     }
 
     @Override
@@ -267,6 +299,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setBoolean("eVoid", eSafeVoid);
         aNBT.setBoolean("eBoom", eDismantleBoom);
         aNBT.setBoolean("eOK", mMachine);
+        aNBT.setBoolean("eHadNoParam", eHadNoParametrizationHatches);
 
         //Ensures compatibility
         if (mOutputItems != null) {
@@ -345,6 +378,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismantleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
+        eHadNoParametrizationHatches = aNBT.getBoolean("eHadNoParam");
 
         //Ensures compatibility
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
@@ -597,13 +631,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             if(hatch.param>=0) bParamsAreFloats[hatch.param]=hatch.isUsingFloats();
                         }
                     }
+                    eHadNoParametrizationHatches &=eParamHatches.size()==0;
                 } else {
                     maxEUinputMin = 0;
                     maxEUinputMax = 0;
                     eMaxAmpereFlow = 0;
                     this.setEUVar(0);
                 }
-                hatchInit_EM();
+                hatchInit_EM(mMachine);
             }
 
             if (mStartUpCheck < 0) {//E
@@ -744,7 +779,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                         if (checkRecipe(mInventory[1])) {
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }else {
-                                            mMaxProgresstime=0;
+                                            afterRecipeCheckFailed();
+                                            mMaxProgresstime=0;//Just to be sure...
                                         }
                                         updateSlots();
                                     } else notAllowedToWork_stopMachine_EM();
@@ -757,7 +793,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 if (checkRecipe(mInventory[1])) {
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                 }else {
-                                    mMaxProgresstime=0;
+                                    afterRecipeCheckFailed();
+                                    mMaxProgresstime=0;//Just to be sure...
                                 }
                                 updateSlots();
                             } //else notAllowedToWork_stopMachine_EM(); //it is already stopped here
@@ -815,19 +852,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
-            if(energyFlow(aStack,false))
+            if(energyFlowOnRunningTick(aStack,false))
                 stopMachine();
             return false;
         }
-        return energyFlow(aStack,true);
+        return energyFlowOnRunningTick(aStack,true);
     }
 
     //new method
-    private boolean energyFlow(ItemStack aStack,boolean allowProduction) {
-        long temp = mEUt * eAmpereFlow;//quick scope sign
-        if (allowProduction && temp > 0) {
+    private boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
+        long euFlow = mEUt * eAmpereFlow;//quick scope sign
+        if (allowProduction && euFlow > 0) {
             this.addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
-        } else if (temp < 0) {
+        } else if (euFlow < 0) {
             if (!this.drainEnergyInput_EM(mEUt,(long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
@@ -837,18 +874,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //region energy
-    public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
-        long temp = eu * ampere;//quick scope sign
-        if (temp > 0) {
-            this.addEnergyOutput_EM(eu, ampere);
-        } else if (temp < 0) {
-            if (!this.drainEnergyInput_EM(eu,eu, ampere)) {
-                stopMachine();
-                return false;
-            }
-        }
-        return true;
-    }
+    //public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
+    //    long temp = eu * ampere;//quick scope sign
+    //    if (temp > 0) {
+    //        this.addEnergyOutput_EM(eu, ampere);
+    //    } else if (temp < 0) {
+    //        if (!this.drainEnergyInput_EM(eu,eu, ampere)) {
+    //            stopMachine();
+    //            return false;
+    //        }
+    //    }
+    //    return true;
+    //}
 
     @Override
     public final long maxEUStore() {
@@ -940,17 +977,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
-    private boolean drainEnergyInput_EM(long EUt, long EUtEff, long Amperes) {
-        if(EUt<0) EUt=-EUt;
-        if(EUtEff<0) EUtEff=-EUtEff;
+    private boolean drainEnergyInput_EM(long EUtTierVoltage, long EUtEffective, long Amperes) {
+        if(EUtTierVoltage<0) EUtTierVoltage=-EUtTierVoltage;
+        if(EUtEffective<0) EUtEffective=-EUtEffective;
         if(Amperes<0) Amperes=-Amperes;
-        long EUuse = EUtEff * Amperes;
+        long EUuse = EUtEffective * Amperes;
         if (EUuse > getEUVar() || //not enough power
-                EUt > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEff input
-                ((EUt*Amperes) - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
+                EUtTierVoltage > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
+                ((EUtTierVoltage*Amperes) - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.Logger.debug("L1 " + EUuse + " " + getEUVar() + " " + (EUuse > getEUVar()));
-                TecTech.Logger.debug("L2 " + EUtEff + " " + maxEUinputMax + " " + (EUtEff > maxEUinputMax));
+                TecTech.Logger.debug("L2 " + EUtEffective + " " + maxEUinputMax + " " + (EUtEffective > maxEUinputMax));
                 TecTech.Logger.debug("L3 " + EUuse + " " + eMaxAmpereFlow);
                 TecTech.Logger.debug("L4 " + ((EUuse - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
@@ -1100,7 +1137,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (outputEM == null) return;
         float mass = 0;
         for (cElementalInstanceStackMap map : outputEM)
-            mass = map.removeOverflow(0, 0);
+            mass += map.getMass();
 
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
@@ -1115,7 +1152,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
         hatchesStatusUpdate_EM();
-        return checkRecipe_EM(itemStack, eParamHatches.size()==0);
+        boolean result= checkRecipe_EM(itemStack, eHadNoParametrizationHatches);//if had no - set default params
+        hatchesStatusUpdate_EM();
+        return result;
     }
 
     private void hatchesStatusUpdate_EM() {
@@ -1129,7 +1168,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 hatch.input0i = iParamsOut[paramID];
                 hatch.input1i = iParamsOut[paramID + 10];
             }
-        }else {//write only
+        }else {//write to hatches only
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
                 final int paramID = hatch.param;
@@ -1225,7 +1264,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
             }
-            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM())) explodeMultiblock();
+            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()))
+                explodeMultiblock();
             if (outputEM != null)
                 for (cElementalInstanceStackMap output : outputEM)
                     if (output.hasStacks()) explodeMultiblock();

@@ -111,13 +111,11 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         cElementalInstanceStackMap map= getInputsClone_EM();
         if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()< STABLE_RAW_LIFE_TIME){
             return startRecipe(map.getFirst());
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 

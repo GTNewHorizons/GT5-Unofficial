@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {//TODO implement by item quantization, implement instance quantization
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {//TODO implement by item quantization, implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ItemStack[] inI = getStoredInputs().toArray(new ItemStack[0]);
             if (inI.length > 0) {
@@ -144,8 +144,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 }
             }
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 

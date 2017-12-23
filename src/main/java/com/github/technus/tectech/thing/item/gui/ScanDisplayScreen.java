@@ -21,15 +21,14 @@ public class ScanDisplayScreen extends GuiScreen {
     private final String[] lines;
     private int firstLine =0;
 
-    private static final ResourceLocation[] BACKGROUND1 =new ResourceLocation[]{new ResourceLocation("tectech:textures/gui/scanDisplayScreen1.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen2.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen3.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen4.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen5.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen6.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen7.png"),
-    new ResourceLocation("tectech:textures/gui/scanDisplayScreen8.png")};
-    private static final ResourceLocation BACKGROUND = BACKGROUND1[0];
+    private static final ResourceLocation[] BACKGROUNDS =new ResourceLocation[]{new ResourceLocation("tectech:textures/gui/scanDisplayScreen1.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen2.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen3.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen4.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen5.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen6.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen7.png"),
+                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen8.png")};
     private static final ResourceLocation ITEM =new ResourceLocation("tectech:textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player){
@@ -45,7 +44,7 @@ public class ScanDisplayScreen extends GuiScreen {
         long tick=System.currentTimeMillis()/150;
         int itick=(int)(tick%12);
         drawTexturedModalRect(baseX+99,baseY+189,32*(itick/6),32*(itick%6), 32, 32);
-        this.mc.getTextureManager().bindTexture(BACKGROUND1[(int)(tick%8)]);
+        this.mc.getTextureManager().bindTexture(BACKGROUNDS[(int)(tick%8)]);
         drawTexturedModalRect(baseX,baseY,0,0, sizeX, sizeY);
         glDisable(GL_BLEND);
         super.drawScreen(x,y,partialTicks);
@@ -132,7 +131,7 @@ public class ScanDisplayScreen extends GuiScreen {
                 this.field_146123_n = xPos >= this.xPosition && yPos >= this.yPosition && xPos < this.xPosition + this.width && yPos < this.yPosition + this.height;
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                mc.getTextureManager().bindTexture(BACKGROUND);
+                mc.getTextureManager().bindTexture(BACKGROUNDS[0]);
                 drawTexturedModalRect(this.xPosition, this.yPosition, u + this.getHoverState(this.field_146123_n) * 80, v, this.width, this.height);
                 glDisable(GL_BLEND);
                 GL11.glEnable(GL11.GL_BLEND);

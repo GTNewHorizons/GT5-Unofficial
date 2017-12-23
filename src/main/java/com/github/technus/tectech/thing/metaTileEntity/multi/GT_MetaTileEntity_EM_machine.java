@@ -1,15 +1,23 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -80,5 +88,50 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 "Processing quantum matter since...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "the time u started using it."
         };
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+        Behaviour currentBehaviour=map.get(new GT_ItemStack(itemStack));
+        if(currentBehaviour==null) return false;
+        //mux input
+        cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[3];
+        if(hadNoParametrizationHatches){
+            try {
+                handles[0] = eInputHatches.get(0).getContainerHandler();
+                handles[1] = eInputHatches.get(1).getContainerHandler();
+                handles[2] = eInputHatches.get(2).getContainerHandler();
+            }catch (Exception ignored){}
+        }else{
+            try {
+
+            }catch (Exception ignored){}
+        }
+        MultiblockControl<cElementalInstanceStackMap> control=currentBehaviour.process(handles, hadNoParametrizationHatches);
+        if(control==null) return false;
+        outputEM=control.getValues();
+        mEUt=control.getEUT();
+        eAmpereFlow=control.getAmperage();
+        mMaxProgresstime=control.getMaxProgressTime();
+        eRequiredData=control.getRequiredData();
+        mEfficiencyIncrease=control.getEffIncrease();
+        return true;
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        //mux output
+        //output
+    }
+
+    private static final HashMap<GT_ItemStack,Behaviour> map=new HashMap<>();
+    public abstract class Behaviour {
+        public Behaviour(ItemStack... keyItems){
+            for(ItemStack is:keyItems){
+                map.put(new GT_ItemStack(is.getItem(),1,is.getItemDamage()),this);
+            }
+        }
+
+        public abstract MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, boolean noParametrizationHatches, double... parameters);
     }
 }

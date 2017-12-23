@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         container=essentiaContainerCompat.getContainer(this);
         cElementalInstanceStack newStack=essentiaContainerCompat.getFromContainer(container);
         if(newStack!=null){
@@ -127,8 +127,6 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             }
             return true;
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 

@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         if (itemStack != null && itemStack.stackSize == 1) {
             Item ofThis = itemStack.getItem();
             if (ofThis instanceof IElectricItem) {
@@ -105,10 +105,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 return true;
             }
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
-        eAmpereFlow = 0;
-        mEUt = 0;
         return false;
     }
 

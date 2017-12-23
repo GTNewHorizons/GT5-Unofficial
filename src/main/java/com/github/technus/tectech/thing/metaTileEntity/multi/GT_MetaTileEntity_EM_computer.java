@@ -64,13 +64,13 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public GT_MetaTileEntity_EM_computer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         eCertainMode = 5;
-        eCertainStatus = -128;//no-brainer value
+        eCertainStatus = -128;//no-brain value
     }
 
     public GT_MetaTileEntity_EM_computer(String aName) {
         super(aName);
         eCertainMode = 5;
-        eCertainStatus = -128;//no-brainer value
+        eCertainStatus = -128;//no-brain value
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -94,18 +94,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         eAvailableData = 0;
         maxCurrentTemp = 0;
         double overClockRatio,overVoltageRatio;
-        if (noParametrizationHatches) {
+        if (hadNoParametrizationHatches) {
             overVoltageRatio=overClockRatio=1;
         } else {
             overClockRatio= getParameterIn(0,0);
             overVoltageRatio= getParameterIn(0,1);
             if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
-                mMaxProgresstime = 0;
-                mEfficiencyIncrease = 0;
                 for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
                     r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
                 return false;
@@ -117,8 +115,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mEUt = -(int)eut;
             else{
                 mEUt = -(int)V[8];
-                mMaxProgresstime = 0;
-                mEfficiencyIncrease = 0;
                 for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
                     r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
                 return false;
@@ -156,8 +152,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 return true;
             }
         }
-        mMaxProgresstime = 0;
-        mEfficiencyIncrease = 0;
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
             r.getBaseMetaTileEntity().setActive(false);
         return false;

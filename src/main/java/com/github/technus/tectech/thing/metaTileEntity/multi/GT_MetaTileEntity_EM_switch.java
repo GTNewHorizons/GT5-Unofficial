@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
             if (di.q != null)
@@ -94,8 +94,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             mEfficiencyIncrease = 10000;
             return true;
         }
-        mMaxProgresstime = 0;
-        mEfficiencyIncrease = 0;
         return false;
     }
 

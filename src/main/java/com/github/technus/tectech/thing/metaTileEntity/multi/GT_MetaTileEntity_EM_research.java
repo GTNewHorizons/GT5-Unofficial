@@ -177,7 +177,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
         tRecipe=null;
         aRecipe=null;
         if(eHolders.size()>0 && eHolders.get(0).mInventory[0]!=null) {
@@ -244,8 +244,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
         holdItem=null;
         computationRequired=computationRemaining=0;
-        mMaxProgresstime=0;
-        mEfficiencyIncrease = 0;
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
             r.getBaseMetaTileEntity().setActive(false);
         return false;
