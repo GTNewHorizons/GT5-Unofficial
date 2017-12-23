@@ -94,7 +94,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected long eRequiredData = 0; // data required to operate
     protected long eAvailableData = 0; // data being available
 
-    private boolean explodedThisTick=false, eHadNoParametrizationHatches = true;
+    private boolean explodedThisTick=false;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -103,13 +103,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //if you want to add checks that run periodically when machine works then make onRunningTick better
     //if you want to add checks that run periodically when machine is built then use check params
 
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         return false;
     }
     // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
     // Set mEUt, Efficiencies, required computation, time, check input etc.
 
-    public void updateParameters_EM(boolean busy) {
+    protected void parametersInRead_EM(){
+
+    }
+
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
     }
     // update status of parameters in guis and "machine state"
     // Called before check recipe, before outputting, and every second the machine is active
@@ -246,10 +250,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        parametersLoadDefault_EM();
     }
 
     public GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
+        parametersLoadDefault_EM();
     }
 
     @Override
@@ -299,7 +305,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setBoolean("eVoid", eSafeVoid);
         aNBT.setBoolean("eBoom", eDismantleBoom);
         aNBT.setBoolean("eOK", mMachine);
-        aNBT.setBoolean("eHadNoParam", eHadNoParametrizationHatches);
 
         //Ensures compatibility
         if (mOutputItems != null) {
@@ -378,7 +383,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismantleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
-        eHadNoParametrizationHatches = aNBT.getBoolean("eHadNoParam");
 
         //Ensures compatibility
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
@@ -439,6 +443,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //Param methods
+    //called in creator
+    protected void parametersLoadDefault_EM(){
+        //load default parameters with setParameterPairIn_ClearOut
+    }
+
+    public final boolean setParameterPairIn_ClearOut(int hatchNo, boolean usesFloats, double value0, double value1) {
+        if (mMaxProgresstime > 0) return false;
+        bParamsAreFloats[hatchNo] = usesFloats;
+        if (usesFloats) {
+            iParamsIn[hatchNo] = Float.floatToIntBits((float) value0);
+            iParamsIn[hatchNo + 10] = Float.floatToIntBits((float) value1);
+        } else {
+            iParamsIn[hatchNo] = (int) value0;
+            iParamsIn[hatchNo + 10] = (int) value1;
+        }
+        iParamsOut[hatchNo] = 0;
+        iParamsOut[hatchNo + 10] = 0;
+        return true;
+    }
+
     public final boolean isParametrizerUsingFloat(int hatchNo){
         return bParamsAreFloats[hatchNo];
     }
@@ -631,7 +655,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             if(hatch.param>=0) bParamsAreFloats[hatch.param]=hatch.isUsingFloats();
                         }
                     }
-                    eHadNoParametrizationHatches &=eParamHatches.size()==0;
                 } else {
                     maxEUinputMin = 0;
                     maxEUinputMax = 0;
@@ -1152,23 +1175,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
         hatchesStatusUpdate_EM();
-        boolean result= checkRecipe_EM(itemStack, eHadNoParametrizationHatches);//if had no - set default params
+        boolean result= checkRecipe_EM(itemStack);//if had no - set default params
         hatchesStatusUpdate_EM();
         return result;
     }
 
     private void hatchesStatusUpdate_EM() {
-        if(mMaxProgresstime==0) {
-            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
-                if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
-                final int paramID = hatch.param;
-                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
-                iParamsIn[paramID] = hatch.value0i;
-                iParamsIn[paramID + 10] = hatch.value1i;
-                hatch.input0i = iParamsOut[paramID];
-                hatch.input1i = iParamsOut[paramID + 10];
-            }
-        }else {//write to hatches only
+        boolean busy=mMaxProgresstime>0;
+        if (busy) {//write from buffer to hatches only
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
                 final int paramID = hatch.param;
@@ -1183,12 +1197,22 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
                 }
             }
+            parametersInRead_EM();
+        } else {//if has nothing to do update all
+            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
+                final int paramID = hatch.param;
+                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                iParamsIn[paramID] = hatch.value0i;
+                iParamsIn[paramID + 10] = hatch.value1i;
+                hatch.input0i = iParamsOut[paramID];
+                hatch.input1i = iParamsOut[paramID + 10];
+            }
         }
-        updateParameters_EM(mMaxProgresstime>0);
-        eAvailableData = getAvailableData_EM();
-
         for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches)
             eCertainStatus = uncertainty.update(eCertainMode);
+        eAvailableData = getAvailableData_EM();
+        parametersOutAndStatusesWrite_EM(busy);
     }
 
     @Override

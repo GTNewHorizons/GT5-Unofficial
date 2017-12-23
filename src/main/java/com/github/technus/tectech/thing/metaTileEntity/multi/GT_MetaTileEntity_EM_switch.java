@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
             if (di.q != null)
@@ -149,7 +149,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void updateParameters_EM(boolean busy) {
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double weight, dest;
         for (int i = 0; i < 10; i++) {
             weight = getParameterIn(i, 0);

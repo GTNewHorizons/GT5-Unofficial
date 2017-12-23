@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         container=essentiaContainerCompat.getContainer(this);
         cElementalInstanceStack newStack=essentiaContainerCompat.getFromContainer(container);
         if(newStack!=null){

@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         container=essentiaContainerCompat.getContainer(this);
         if (eInputHatches.size() < 1 || container==null) {
             stopMachine();

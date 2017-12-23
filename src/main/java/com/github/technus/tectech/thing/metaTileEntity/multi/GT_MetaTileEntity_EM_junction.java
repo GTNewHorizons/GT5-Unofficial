@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void updateParameters_EM(boolean busy) {
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double src, dest;
         for (int i = 0; i < 10; i++) {
             src = getParameterIn(i, 0);
@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches)
             if (in.getContainerHandler().hasStacks()) {
                 mEUt = -(int) V[8];

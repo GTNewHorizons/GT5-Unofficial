@@ -177,7 +177,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         tRecipe=null;
         aRecipe=null;
         if(eHolders.size()>0 && eHolders.get(0).mInventory[0]!=null) {

@@ -36,9 +36,7 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     public final static int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
-    private int powerSetting = POWER_SETTING_DEFAULT;
-    private int timerSetting = TIMER_SETTING_DEFAULT;
-    private int timerValue = 0;
+    private int powerSetting,timerSetting,timerValue;
     private boolean hasBeenPausedThisCycle=false;
     private boolean flipped=false;
 
@@ -155,12 +153,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         hasBeenPausedThisCycle =false;
-        if(hadNoParametrizationHatches){
-            powerSetting=POWER_SETTING_DEFAULT;
-            timerSetting=TIMER_SETTING_DEFAULT;
-        }
         if(powerSetting<300 || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
             timerValue=timerSetting;
@@ -241,7 +235,20 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void updateParameters_EM(boolean machineIsBusy) {
+    protected void parametersLoadDefault_EM() {
+        powerSetting = POWER_SETTING_DEFAULT;
+        timerSetting = TIMER_SETTING_DEFAULT;
+        setParameterPairIn_ClearOut(0,false,POWER_SETTING_DEFAULT,TIMER_SETTING_DEFAULT);
+    }
+
+    @Override
+    protected void parametersInRead_EM() {
+        powerSetting = (int) getParameterIn(0, 0);
+        timerSetting = (int) getParameterIn(0, 1);
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double powerParameter = getParameterIn(0, 0);
         if (powerParameter < 300) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
         else if (powerParameter < 1000) setStatusOfParameterIn(0, 0, STATUS_LOW);
@@ -258,16 +265,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
         setParameterOut(0, 0, timerValue);
         setParameterOut(0, 1, timerSetting - timerValue);
-
-        if (machineIsBusy) return;
-
-        powerSetting = (int) powerParameter;
-        timerSetting = (int) timerParameter;
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if(eSafeVoid) hasBeenPausedThisCycle =true;
+        if(eSafeVoid) hasBeenPausedThisCycle = true;
         return hasBeenPausedThisCycle || super.onRunningTick(aStack);//consume eu and other resources if not paused
     }
 

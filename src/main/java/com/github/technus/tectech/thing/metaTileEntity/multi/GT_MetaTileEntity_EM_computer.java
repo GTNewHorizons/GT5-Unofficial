@@ -94,20 +94,13 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         eAvailableData = 0;
         maxCurrentTemp = 0;
-        double overClockRatio,overVoltageRatio;
-        if (hadNoParametrizationHatches) {
-            overVoltageRatio=overClockRatio=1;
-        } else {
-            overClockRatio= getParameterIn(0,0);
-            overVoltageRatio= getParameterIn(0,1);
-            if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
-                for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
-                    r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
-                return false;
-            }
+        double overClockRatio= getParameterIn(0,0);
+        double overVoltageRatio= getParameterIn(0,1);
+        if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
+            return false;
         }
         if(overClockRatio>0 && overVoltageRatio>=0.7f && overClockRatio<=3 && overVoltageRatio<=2){
             float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
@@ -115,8 +108,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mEUt = -(int)eut;
             else{
                 mEUt = -(int)V[8];
-                for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
-                    r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
                 return false;
             }
             short thingsActive = 0;
@@ -152,9 +143,25 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 return true;
             }
         }
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
-            r.getBaseMetaTileEntity().setActive(false);
         return false;
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        if (eOutputData.size() > 0) {
+            final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+            QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
+            for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
+                if (i.q == null || i.q.contains(pos)) continue;
+                pack = pack.unifyPacketWith(i.q);
+                if (pack == null) return;
+            }
+
+            pack.computation /= eOutputData.size();
+
+            for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData)
+                o.q = pack;
+        }
     }
 
     @Override
@@ -163,7 +170,19 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void updateParameters_EM(boolean busy) {
+    protected void afterRecipeCheckFailed() {
+        super.afterRecipeCheckFailed();
+        for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
+            r.getBaseMetaTileEntity().setActive(false);
+    }
+
+    @Override
+    protected void parametersLoadDefault_EM() {
+        setParameterPairIn_ClearOut(0, false, 1, 1);
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double ocRatio = getParameterIn(0, 0);
         if (ocRatio < 0) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
         else if (ocRatio < 1) setStatusOfParameterIn(0, 0, STATUS_LOW);
@@ -189,28 +208,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         else if (maxCurrentTemp <= 5000) setStatusOfParameterOut(0, 0, STATUS_HIGH);
         else setStatusOfParameterOut(0, 0, STATUS_TOO_HIGH);
 
-        if (!busy) setStatusOfParameterOut(0, 1, STATUS_WRONG);
+        if (!machineBusy) setStatusOfParameterOut(0, 1, STATUS_UNUSED);
         else if (eAvailableData <= 0) setStatusOfParameterOut(0, 1, STATUS_TOO_LOW);
         else setStatusOfParameterOut(0, 1, STATUS_OK);
     }
 
-    @Override
-    public void outputAfterRecipe_EM() {
-        if (eOutputData.size() > 0) {
-            final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
-            QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
-            for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
-                if (i.q == null || i.q.contains(pos)) continue;
-                pack = pack.unifyPacketWith(i.q);
-                if (pack == null) return;
-            }
-
-            pack.computation /= eOutputData.size();
-
-            for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData)
-                o.q = pack;
-        }
-    }
 
     @Override
     public void onRemoval() {

@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         if (itemStack != null && itemStack.stackSize == 1) {
             Item ofThis = itemStack.getItem();
             if (ofThis instanceof IElectricItem) {

@@ -4,8 +4,6 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
@@ -91,24 +88,17 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean hadNoParametrizationHatches) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         Behaviour currentBehaviour=map.get(new GT_ItemStack(itemStack));
         if(currentBehaviour==null) return false;
         //mux input
+        double[] parameters=new double[]{getParameterIn(0,0),getParameterIn(0,1),getParameterIn(1,0),getParameterIn(1,1),
+                getParameterIn(2,0),getParameterIn(2,1),getParameterIn(3,0),getParameterIn(3,1)};
+        if(!currentBehaviour.setAndCheckParametersOutAndStatuses(this,parameters))return false;
         cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[3];
-        if(hadNoParametrizationHatches){
-            try {
-                handles[0] = eInputHatches.get(0).getContainerHandler();
-                handles[1] = eInputHatches.get(1).getContainerHandler();
-                handles[2] = eInputHatches.get(2).getContainerHandler();
-            }catch (Exception ignored){}
-        }else{
-            try {
-
-            }catch (Exception ignored){}
-        }
-        MultiblockControl<cElementalInstanceStackMap> control=currentBehaviour.process(handles, hadNoParametrizationHatches);
+        MultiblockControl<cElementalInstanceStackMap> control=currentBehaviour.process(handles,parameters);
         if(control==null) return false;
+        //update other pare
         outputEM=control.getValues();
         mEUt=control.getEUT();
         eAmpereFlow=control.getAmperage();
@@ -116,6 +106,21 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         eRequiredData=control.getRequiredData();
         mEfficiencyIncrease=control.getEffIncrease();
         return true;
+    }
+
+    @Override
+    protected void parametersLoadDefault_EM() {//default 1 to 1 routing table
+        setParameterPairIn_ClearOut(4,false,1,1);//I
+        setParameterPairIn_ClearOut(5,false,2,2);//I
+        setParameterPairIn_ClearOut(6,false,3,3);//I
+        setParameterPairIn_ClearOut(7,false,1,1);//O
+        setParameterPairIn_ClearOut(8,false,2,2);//O
+        setParameterPairIn_ClearOut(9,false,3,3);//O
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+        //update routing
     }
 
     @Override
@@ -132,6 +137,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             }
         }
 
-        public abstract MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, boolean noParametrizationHatches, double... parameters);
+        public abstract boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parameters);
+        public abstract MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, double[] parameters);
     }
 }
