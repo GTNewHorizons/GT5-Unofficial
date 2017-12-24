@@ -4,6 +4,8 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -162,7 +164,51 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        //update routing stats
+        double pointer;
+        for (int i = 4; i <= 6; i++) {
+            pointer= getParameterInInt(i,0);
+            if(Double.isNaN(pointer))
+                setStatusOfParameterIn(i,0,STATUS_WRONG);
+            else if(pointer<0)
+                setStatusOfParameterIn(i,0,STATUS_TOO_LOW);
+            else if(pointer==0)
+                setStatusOfParameterIn(i,0,STATUS_LOW);
+            else if(pointer<=eInputHatches.size())
+                setStatusOfParameterIn(i,0,STATUS_OK);
+            else setStatusOfParameterIn(i,0,STATUS_TOO_HIGH);
+            pointer= getParameterInInt(i,1);
+            if(Double.isNaN(pointer))
+                setStatusOfParameterIn(i,1,STATUS_WRONG);
+            else if(pointer<0)
+                setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
+            else if(pointer==0)
+                setStatusOfParameterIn(i,1,STATUS_LOW);
+            else if(pointer<=eInputHatches.size())
+                setStatusOfParameterIn(i,1,STATUS_OK);
+            else setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
+        }
+        for (int i = 7; i <= 9; i++) {
+            pointer= getParameterInInt(i,0);
+            if(Double.isNaN(pointer))
+                setStatusOfParameterIn(i,0,STATUS_WRONG);
+            else if(pointer<0)
+                setStatusOfParameterIn(i,0,STATUS_TOO_LOW);
+            else if(pointer==0)
+                setStatusOfParameterIn(i,0,STATUS_LOW);
+            else if(pointer<=eOutputHatches.size())
+                setStatusOfParameterIn(i,0,STATUS_OK);
+            else setStatusOfParameterIn(i,0,STATUS_TOO_HIGH);
+            pointer= getParameterInInt(i,1);
+            if(Double.isNaN(pointer))
+                setStatusOfParameterIn(i,1,STATUS_WRONG);
+            else if(pointer<0)
+                setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
+            else if(pointer==0)
+                setStatusOfParameterIn(i,1,STATUS_LOW);
+            else if(pointer<=eOutputHatches.size())
+                setStatusOfParameterIn(i,1,STATUS_OK);
+            else setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
+        }
     }
 
     private static final HashMap<GT_ItemStack,Behaviour> map=new HashMap<>();
