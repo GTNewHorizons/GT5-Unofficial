@@ -63,9 +63,6 @@ public class GTplusplus_Secondary {
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
 		Logger.INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
-
-		//Run Ore Material Handler
-		GenerateOreMaterials();
 		
 		//Load Dark World and Biome
 		//GameRegistry.registerFuelHandler(this);
@@ -75,13 +72,13 @@ public class GTplusplus_Secondary {
 
 	}
 	
-	private void GenerateOreMaterials() {
-		MaterialGenerator.generate(ORES.CROCROITE);
-		MaterialGenerator.generate(ORES.GEIKIELITE);
-		MaterialGenerator.generate(ORES.NICHROMITE);
-		MaterialGenerator.generate(ORES.TITANITE);
-		MaterialGenerator.generate(ORES.ZIMBABWEITE);
-		MaterialGenerator.generate(ORES.ZIRCONILITE);		
+	public static void GenerateOreMaterials() {
+		MaterialGenerator.generateOreMaterial(ORES.CROCROITE);
+		MaterialGenerator.generateOreMaterial(ORES.GEIKIELITE);
+		MaterialGenerator.generateOreMaterial(ORES.NICHROMITE);
+		MaterialGenerator.generateOreMaterial(ORES.TITANITE);
+		MaterialGenerator.generateOreMaterial(ORES.ZIMBABWEITE);
+		MaterialGenerator.generateOreMaterial(ORES.ZIRCONILITE);		
 	}
 
 	void setVars(){

@@ -6,6 +6,7 @@ import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.GTplusplus_Secondary;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -500,6 +501,10 @@ public final class ModItems {
 
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
+			
+			
+			//Ores
+			GTplusplus_Secondary.GenerateOreMaterials();
 
 
 		} catch (final Throwable r){

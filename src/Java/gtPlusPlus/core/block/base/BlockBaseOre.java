@@ -2,9 +2,10 @@ package gtPlusPlus.core.block.base;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IIcon;
@@ -22,12 +23,28 @@ public class BlockBaseOre extends BlockBaseModular{
 		return true;
 	}*/
 
+	protected Material blockMaterial;
+	
+	protected int blockColour;
+	protected BlockTypes thisBlock;
+	protected String thisBlockMaterial;
+	protected final String thisBlockType;
+
+	public BlockBaseOre(final Material material, final BlockTypes blockType, final int colour) {
+		this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron, blockType, colour, 3);
+	}
+	
+
 	public BlockBaseOre(final String unlocalizedName, final String blockMaterial,  final BlockTypes blockType, final int colour) {
-		this(unlocalizedName, blockMaterial, Material.iron, blockType, colour, 2);
+		this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
 	}
 
-	public BlockBaseOre(final String unlocalizedName, final String blockMaterial, final Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
+	public BlockBaseOre(final String unlocalizedName, final String blockMaterial, final net.minecraft.block.material.Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
 		super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);
+		this.blockColour = colour;
+		this.thisBlock = blockType;
+		this.thisBlockMaterial = blockMaterial;
+		this.thisBlockType = blockType.name().toUpperCase();
 	}
 
 	/**

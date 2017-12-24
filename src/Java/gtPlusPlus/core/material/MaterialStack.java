@@ -16,6 +16,7 @@ public class MaterialStack {
 
 	public MaterialStack(final Material inputs, final double partOutOf100){
 		this.stackMaterial = inputs;
+		//Logger.INFO("Tried getting MaterialStack for "+inputs.getLocalizedName());
 		this.vPercentageToUse = partOutOf100;
 		this.vAmount = this.math(partOutOf100);
 	}

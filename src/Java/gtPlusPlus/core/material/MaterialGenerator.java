@@ -3,13 +3,18 @@ package gtPlusPlus.core.material;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
+import gtPlusPlus.core.item.base.ore.BaseItemCentrifugedCrushedOre;
 import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
+import gtPlusPlus.core.item.base.ore.BaseItemImpureDust;
+import gtPlusPlus.core.item.base.ore.BaseItemPurifiedCrushedOre;
+import gtPlusPlus.core.item.base.ore.BaseItemPurifiedDust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -130,7 +135,9 @@ public class MaterialGenerator {
 					if (sRadiation >= 1){
 						Item temp;
 						Block tempBlock;
-						tempBlock = new BlockBaseModular(matInfo ,BlockTypes.ORE, Colour);
+						//tempBlock = new BlockBaseModular(matInfo ,BlockTypes.ORE, Colour);
+						tempBlock = new BlockBaseOre(matInfo ,BlockTypes.ORE, Colour);
+						
 
 						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -218,6 +225,50 @@ public class MaterialGenerator {
 			temp = new BaseItemNugget(matInfo);
 			temp = new BaseItemPlate(matInfo);
 			temp = new BaseItemPlateDouble(matInfo);
+
+			RecipeGen_Plates.generateRecipes(matInfo);
+			RecipeGen_Extruder.generateRecipes(matInfo);
+			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+			RecipeGen_Fluids.generateRecipes(matInfo);
+			RecipeGen_Assembler.generateRecipes(matInfo);
+			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+			new RecipeGen_Recycling(matInfo);
+		} catch (final Throwable t){
+			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
+		}
+	}
+	
+
+	public static void generateOreMaterial(final Material matInfo){
+		generateOreMaterial(matInfo, true);
+	}
+
+	@SuppressWarnings("unused")
+	public static void generateOreMaterial(final Material matInfo, final boolean generatePlates){
+		try {
+			final String unlocalizedName = matInfo.getUnlocalizedName();
+			final String materialName = matInfo.getLocalizedName();
+			final short[] C = matInfo.getRGBA();
+			final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+
+			int sRadiation = 0;
+			if (matInfo.vRadiationLevel != 0){
+				sRadiation = matInfo.vRadiationLevel;
+			}
+
+			Item temp;
+			Block tempBlock;
+
+			tempBlock = new BlockBaseOre(matInfo ,BlockTypes.ORE, Colour);			
+
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation);
+			temp = new BaseItemCrushedOre(matInfo);
+			temp = new BaseItemCentrifugedCrushedOre(matInfo);
+			temp = new BaseItemPurifiedCrushedOre(matInfo);
+			temp = new BaseItemImpureDust(matInfo);
+			temp = new BaseItemPurifiedDust(matInfo);
 
 			RecipeGen_Plates.generateRecipes(matInfo);
 			RecipeGen_Extruder.generateRecipes(matInfo);

@@ -6,8 +6,12 @@ public final class ORES {
 
 	public static final Material GEIKIELITE = new Material(
 			"Geikielite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{187, 193, 204, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().MAGNESIUM, 1),
@@ -17,11 +21,15 @@ public final class ORES {
 
 	public static final Material ZIMBABWEITE = new Material(
 			"Zimbabweite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{193, 187, 131, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().POTASSIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().LEAD, 1),
 					new MaterialStack(ELEMENT.getInstance().ARSENIC, 4),
@@ -33,8 +41,12 @@ public final class ORES {
 	
 	public static final Material TITANITE = new Material(
 			"Titanite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{184, 198, 105, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
@@ -46,8 +58,12 @@ public final class ORES {
 	
 	public static final Material ZIRCONILITE = new Material(
 			"Zirconolite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{45, 26, 0, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
@@ -59,8 +75,12 @@ public final class ORES {
 	
 	public static final Material CROCROITE = new Material(
 			"Crocoite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{255, 143, 84, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().LEAD, 1),
@@ -70,8 +90,12 @@ public final class ORES {
 	
 	public static final Material NICHROMITE = new Material(
 			"Nichromite", //Material Name
-			MaterialState.ORE, //State
+			MaterialState.SOLID, //State
 			new short[]{22, 19, 19, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().NICKEL, 1),

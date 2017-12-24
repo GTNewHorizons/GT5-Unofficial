@@ -3,6 +3,8 @@ package gtPlusPlus.core.item.base.ore;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -11,13 +13,20 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BaseOreComponent extends Item{
+
+	@SideOnly(Side.CLIENT)
+	private IIcon base;
+	@SideOnly(Side.CLIENT)
+	private IIcon overlay;
 
 	public final Material componentMaterial;
 	public final String materialName;
@@ -28,7 +37,7 @@ public class BaseOreComponent extends Item{
 
 	public BaseOreComponent(final Material material, final ComponentTypes componentType) {
 		this.componentMaterial = material;
-		this.unlocalName = "item"+componentType.COMPONENT_NAME+material.getUnlocalizedName();
+		this.unlocalName = componentType.COMPONENT_NAME+material.getUnlocalizedName();
 		this.materialName = material.getLocalizedName();
 		this.componentType = componentType;
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
@@ -44,15 +53,15 @@ public class BaseOreComponent extends Item{
 		if (!CORE.ConfigSwitches.useGregtechTextures){
 			return CORE.MODID + ":" + "item"+this.componentType.COMPONENT_NAME;
 		}
-		
+
 		/*if (this.componentType == ComponentTypes.GEAR){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGt";
 		}
 		else if (this.componentType == ComponentTypes.SMALLGEAR){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGtSmall";
 		}*/
-		
-		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME.toLowerCase();
+
+		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME;
 	}
 
 	@Override
@@ -107,29 +116,61 @@ public class BaseOreComponent extends Item{
 
 
 
+	/**
+	 * Rendering Related
+	 * @author Alkalus
+	 *
+	 */
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses(){
+		if (this.componentType.hasOverlay()){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(final IIconRegister par1IconRegister){
+		if (CORE.ConfigSwitches.useGregtechTextures){
+			this.base = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell");
+			if (this.componentType.hasOverlay()){
+				this.overlay = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
+			}
+		}
+		else {
+			this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "item"+this.componentType.getComponent());
+			if (this.componentType.hasOverlay()){
+				this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "item"+this.componentType.getComponent()+"_Overlay");
+			}
+		}
+	}
 
 
 
 
 
-	
 	public static enum ComponentTypes {
-		DUST("Dust", " Dust", "dust"),
-		DUSTDIRTY("Ingot", " Ingot", "ingot"),
-		DUSTIMPURE("Ingot", " Ingot", "ingot"),
-		DUSTPURE("Ingot", " Ingot", "ingot"),
-		DUSTREFINED("Ingot", " Ingot", "ingot"),
-		CRUSHED("Ingot", " Ingot", "ingot"),
-		CRUSHEDCENTRIFUGED("Ingot", " Ingot", "ingot"),
-		CRUSHEDPURIFIED("Ingot", " Ingot", "ingot");
+		DUST("dust", "", " Dust", "dust", true),
+		DUSTIMPURE("dustImpure", "Impure ", " Dust", "dustImpure", true),
+		DUSTPURE("dustPure", "Purified ", " Dust", "dustPure", true),
+		CRUSHED("crushed", "Crushed ", " Ore", "crushed", true),
+		CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged "," Ore", "crushedCentrifuged", true),
+		CRUSHEDPURIFIED("crushedPurified", "Purified", " Ore", "crushedPurified", true);
 
 		private String COMPONENT_NAME;
+		private String PREFIX;
 		private String DISPLAY_NAME;
 		private String OREDICT_NAME;
-		private ComponentTypes (final String LocalName, final String DisplayName, final String OreDictName){
+		private boolean HAS_OVERLAY;
+		private ComponentTypes (final String LocalName, final String prefix, final String DisplayName, final String OreDictName, final boolean overlay){
 			this.COMPONENT_NAME = LocalName;
+			this.PREFIX = prefix;
 			this.DISPLAY_NAME = DisplayName;
 			this.OREDICT_NAME = OreDictName;
+			this.HAS_OVERLAY = overlay;
 			// dust + Dirty, Impure, Pure, Refined
 			// crushed + centrifuged, purified
 		}
@@ -144,6 +185,10 @@ public class BaseOreComponent extends Item{
 
 		public String getOreDictName(){
 			return this.OREDICT_NAME;
+		}
+
+		public boolean hasOverlay(){
+			return this.HAS_OVERLAY;
 		}
 
 	}
