@@ -1,12 +1,17 @@
 package gtPlusPlus.core.util.entity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.array.BlockPos;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -36,7 +41,7 @@ public class EntityUtils {
 		final int blockZ = MathHelper.floor_double(parEntity.posZ);
 		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
 	}
-	
+
 	public static BlockPos findBlockPosUnderEntity(final Entity parEntity){
 		final int blockX = MathHelper.floor_double(parEntity.posX);
 		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
@@ -70,6 +75,36 @@ public class EntityUtils {
 			return true;
 		}
 		return false;
+	}
+
+
+	/**
+	 * Static Version of the method used in {@code doFireDamage(entity, int)} to save memory.
+	 */
+	private static volatile Method dealFireDamage;
+
+	/**
+	 * Reflective Call to do Fire Damage to an entity (Does not set entity on fire though)
+	 */
+	public static boolean doFireDamage(Entity entity, int amount){
+		if (dealFireDamage == null){
+			try {
+				dealFireDamage = Entity.class.getDeclaredMethod("dealFireDamage", int.class);
+				dealFireDamage.setAccessible(true);				
+			}
+			catch (NoSuchMethodException | SecurityException e) {}
+		}
+		else {
+			try {
+				dealFireDamage.invoke(entity, amount);
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
+		}		
+		return false;
+	}
+
+	public static void doDamage(Entity entity, DamageSource dmg, int i) {		
+		entity.attackEntityFrom(dmg, i);		
 	}
 
 }

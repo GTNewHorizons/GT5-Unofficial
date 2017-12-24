@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -28,7 +29,7 @@ public class RenderMiningExplosivesPrimed extends Render {
 	 * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
-	public void doRender(final EntityTNTPrimed entity, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
+	public void doRender(final EntityPrimedMiningExplosive entity, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
 		Logger.INFO("Rendering Mining Explosion. 2");
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)p_76986_2_, (float)p_76986_4_, (float)p_76986_6_);
@@ -78,7 +79,7 @@ public class RenderMiningExplosivesPrimed extends Render {
 	/**
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
-	protected ResourceLocation getEntityTexture(final EntityTNTPrimed p_110775_1_){
+	protected ResourceLocation getEntityTexture(final EntityPrimedMiningExplosive p_110775_1_){
 		return TextureMap.locationBlocksTexture;
 	}
 
@@ -87,7 +88,8 @@ public class RenderMiningExplosivesPrimed extends Render {
 	 */
 	@Override
 	protected ResourceLocation getEntityTexture(final Entity p_110775_1_){
-		return this.getEntityTexture((EntityTNTPrimed)p_110775_1_);
+		Logger.INFO("Rendering Mining Explosion. 4");
+		return this.getEntityTexture((EntityPrimedMiningExplosive)p_110775_1_);
 	}
 
 	/**
@@ -98,6 +100,7 @@ public class RenderMiningExplosivesPrimed extends Render {
 	 */
 	@Override
 	public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
-		this.doRender((EntityTNTPrimed)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+		Logger.INFO("Rendering Mining Explosion. 3");
+		this.doRender((EntityPrimedMiningExplosive)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 	}
 }

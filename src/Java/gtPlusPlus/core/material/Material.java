@@ -761,66 +761,86 @@ public class Material {
 
 
 	final public int calculateMeltingPoint(){
-		int meltingPoint = 0;
-		for (MaterialStack  part : this.vMaterialInput){
-			if (part != null){
-				int incrementor = part.getStackMaterial().getMeltingPointC();
-				meltingPoint += incrementor;
-				Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+		try {
+			int meltingPoint = 0;
+			for (MaterialStack  part : this.vMaterialInput){
+				if (part != null){
+					int incrementor = part.getStackMaterial().getMeltingPointC();
+					meltingPoint += incrementor;
+					Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+				}
+				else {
+					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+				}
 			}
-			else {
-				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
-			}
+			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
+			Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
+			meltingPoint = (meltingPoint/divisor);
+			return meltingPoint;
 		}
-		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
-		meltingPoint = (meltingPoint/divisor);
-		return meltingPoint;
+		catch (Throwable r){
+			return 500;
+		}
 	}
 
 	final public int calculateBoilingPoint(){
-		int boilingPoint = 0;
-		for (MaterialStack  part : this.vMaterialInput){
-			if (part != null){
-				boilingPoint += part.getStackMaterial().getBoilingPointC();
+		try {
+			int boilingPoint = 0;
+			for (MaterialStack  part : this.vMaterialInput){
+				if (part != null){
+					boilingPoint += part.getStackMaterial().getBoilingPointC();
+				}
+				else {
+					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+				}
 			}
-			else {
-				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
-			}
+			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
+			boilingPoint = (boilingPoint/divisor);
+			return boilingPoint;
 		}
-		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		boilingPoint = (boilingPoint/divisor);
-		return boilingPoint;
+		catch (Throwable r){
+			return 2500;
+		}
 	}
 
 	final public long calculateProtons(){
-		long protonCount = 0;
-		for (MaterialStack  part : this.vMaterialInput){
-			if (part != null){
-				protonCount += (part.getStackMaterial().getProtons());
+		try {
+			long protonCount = 0;
+			for (MaterialStack  part : this.vMaterialInput){
+				if (part != null){
+					protonCount += (part.getStackMaterial().getProtons());
+				}
+				else {
+					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+				}
 			}
-			else {
-				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
-			}
+			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
+			protonCount = (protonCount/divisor);
+			return protonCount;
 		}
-		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		protonCount = (protonCount/divisor);
-		return protonCount;
+		catch (Throwable r){
+			return 50;
+		}
 	}
 
 	final public long calculateNeutrons(){
-		long neutronCount = 0;
-		for (MaterialStack  part : this.vMaterialInput){
-			if (part != null){
-				neutronCount += (part.getStackMaterial().getNeutrons());
+		try {
+			long neutronCount = 0;
+			for (MaterialStack  part : this.vMaterialInput){
+				if (part != null){
+					neutronCount += (part.getStackMaterial().getNeutrons());
+				}
+				else {
+					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+				}
 			}
-			else {
-				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
-			}
+			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
+			neutronCount = (neutronCount/divisor);
+			return neutronCount;
 		}
-		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		neutronCount = (neutronCount/divisor);
-		return neutronCount;
+		catch (Throwable r){
+			return 75;
+		}
 	}
 
 

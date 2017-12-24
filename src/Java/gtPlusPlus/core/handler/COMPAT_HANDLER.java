@@ -101,6 +101,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialCuttingFactory.run();
 			GregtechMiniRaFusion.run();
 			GregtechComponentAssembler.run();
+			GregtechTeslaTower.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

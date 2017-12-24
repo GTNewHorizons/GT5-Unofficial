@@ -174,8 +174,8 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	Casing_Autocrafter,
 	Casing_CuttingFactoryFrame, 
-	Casing_PlaceHolder14, 
-	Casing_PlaceHolder15,
+	Casing_TeslaTower, 
+	Casing_PLACEHOLDER_TreeFarmer,
 
 	//LFTR
 	ThoriumReactor,
@@ -273,7 +273,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Component Makers
 	Machine_LV_Component_Maker, Machine_MV_Component_Maker, Machine_HV_Component_Maker, 
-	Machine_EV_Component_Maker, Machine_IV_Component_Maker,
+	Machine_EV_Component_Maker, Machine_IV_Component_Maker, 
+	
+	//Tesla Tower
+	TelsaTower,
 	
 	
 	

@@ -52,7 +52,7 @@ public class CasingTextureHandler2 {
 			case 13:
 				return TexturesGtBlock.Casing_Machine_Ultra.getIcon();
 			case 14:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 			case 15:
 				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon(); //Tree Farmer Textures
 

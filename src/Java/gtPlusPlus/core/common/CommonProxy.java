@@ -71,6 +71,8 @@ public class CommonProxy {
 		registerEntities();
 		Logger.INFO("[Proxy] Calling Tile Entity registrator.");
 		registerTileEntities();
+		Logger.INFO("[Proxy] Calling Render registrator.");
+		registerRenderThings();
 
 
 	}
@@ -103,9 +105,6 @@ public class CommonProxy {
 		/**
 		 * End of Subscribe Event registration.
 		 */
-
-		Logger.INFO("[Proxy] Calling Render registrator.");
-		registerRenderThings();
 
 		//Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
