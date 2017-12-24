@@ -18,17 +18,7 @@ public class GT_NeutronReflector_Item
 
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY, int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
-            if (!GregTech_API.mIC2Classic&&(pulsingStack.getItem() instanceof ic2.core.item.reactor.ItemReactorMOX)) {
-                float breedereffectiveness = reactor.getHeat() / reactor.getMaxHeat();
-                float ReaktorOutput = 4.0F * breedereffectiveness + 1.0F;
-                reactor.addOutput(ReaktorOutput);
-            } else {
-                float tEnergy = 1.0f;
-                if (pulsingStack.getItem() instanceof GT_RadioactiveCellIC_Item) {
-                    tEnergy = (float) ((GT_RadioactiveCellIC_Item) pulsingStack.getItem()).sEnergy;
-                }
-                reactor.addOutput(tEnergy);
-            }
+        	((IReactorComponent) pulsingStack.getItem()).acceptUraniumPulse(reactor, pulsingStack, yourStack, pulseX, pulseY, youX, youY, heatrun);
         }
         return true;
     }
