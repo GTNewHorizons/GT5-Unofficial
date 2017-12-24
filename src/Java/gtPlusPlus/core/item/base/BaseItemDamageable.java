@@ -5,8 +5,8 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -159,7 +159,7 @@ public class BaseItemDamageable extends Item {
 
 	@Override
 	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
-		Utils.LOG_INFO("Does Leave Table? "+stack.getDisplayName());
+		Logger.INFO("Does Leave Table? "+stack.getDisplayName());
 		return true;
 	}
 
@@ -175,7 +175,7 @@ public class BaseItemDamageable extends Item {
 
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
-		Utils.LOG_INFO("hasContainerItem? "+stack.getDisplayName());
+		Logger.INFO("hasContainerItem? "+stack.getDisplayName());
 		return true;
 	}
 

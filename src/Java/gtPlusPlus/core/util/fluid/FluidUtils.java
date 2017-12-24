@@ -4,6 +4,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.fluids.GenericFluid;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
@@ -26,7 +27,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 public class FluidUtils {
 
 	public static FluidStack getFluidStack(final String fluidName, final int amount){
-		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
+		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
 			return FluidRegistry.getFluidStack(fluidName, amount).copy();
 		}
@@ -37,7 +38,7 @@ public class FluidUtils {
 	}
 
 	public static FluidStack getFluidStack(final FluidStack vmoltenFluid, final int fluidAmount) {
-		Utils.LOG_WARNING("Trying to get a fluid stack of "+vmoltenFluid.getFluid().getName());
+		Logger.WARNING("Trying to get a fluid stack of "+vmoltenFluid.getFluid().getName());
 		try {
 			return FluidRegistry.getFluidStack(vmoltenFluid.getFluid().getName(), fluidAmount).copy();
 		}
@@ -47,7 +48,7 @@ public class FluidUtils {
 	}
 
 	public static FluidStack getFluidStack(final Fluid vFluid, final int fluidAmount) {
-		Utils.LOG_WARNING("Trying to get a fluid stack of "+vFluid.getName());
+		Logger.WARNING("Trying to get a fluid stack of "+vFluid.getName());
 		try {
 			return FluidRegistry.getFluidStack(vFluid.getName(), fluidAmount).copy();
 		}
@@ -57,7 +58,7 @@ public class FluidUtils {
 	}
 
 	public static FluidStack[] getFluidStackArray(final String fluidName, final int amount){
-		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
+		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
 			final FluidStack[] singleFluid = {FluidRegistry.getFluidStack(fluidName, amount)};
 			return singleFluid;
@@ -69,7 +70,7 @@ public class FluidUtils {
 	}
 
 	public static FluidStack[] getFluidStackArray(final FluidStack fluidName, final int amount){
-		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
+		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
 			final FluidStack[] singleFluid = {FluidRegistry.getFluidStack(fluidName.getLocalizedName(), amount)};
 			return singleFluid;
@@ -244,13 +245,13 @@ public class FluidUtils {
 		if (aMaterial.getLocalizedName().toLowerCase().contains("clay") || (aMaterial.getComposites().size()>1) || aMaterial.getLocalizedName().toLowerCase().contains("wrought")){
 			return null;
 		}
-		Utils.LOG_INFO("Generating a "+aMaterial.getLocalizedName()+" Plasma Cell");
+		Logger.INFO("Generating a "+aMaterial.getLocalizedName()+" Plasma Cell");
 		if (aMaterial.vComponentCount != 1){
-			Utils.LOG_INFO("Compound made from: ");
+			Logger.INFO("Compound made from: ");
 			for (final MaterialStack x : aMaterial.getComposites()){
-				Utils.LOG_INFO(x.getStackMaterial().getLocalizedName());
+				Logger.INFO(x.getStackMaterial().getLocalizedName());
 			}
-			Utils.LOG_INFO("Material is a composite, not generating plasma.");
+			Logger.INFO("Material is a composite, not generating plasma.");
 			return null;
 		}
 
@@ -410,7 +411,7 @@ public class FluidUtils {
 
 	public final static Fluid generateFluid(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA){
 		if ((FluidUtils.getFluidStack("molten"+"."+unlocalizedName.toLowerCase(), 1) == null) && (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1) != null)){
-			Utils.LOG_WARNING("Generating our own fluid.");
+			Logger.WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1) == null){
@@ -439,7 +440,7 @@ public class FluidUtils {
 					);
 			return gtFluid;
 		}
-		Utils.LOG_INFO("FLUID GENERATION FAILED FOR "+localizedName);
+		Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName);
 		return null;
 	}
 
@@ -452,7 +453,7 @@ public class FluidUtils {
 			dustStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1);
 		}
 		if ((FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1) == null)/* && ((dustStack != null) || (dustStack2 != null))*/){
-			Utils.LOG_WARNING("Generating our own fluid.");
+			Logger.WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1) == null){
@@ -494,14 +495,14 @@ public class FluidUtils {
 
 			return gtFluid;
 		}
-		Utils.LOG_INFO("FLUID GENERATION FAILED FOR "+localizedName);
+		Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName);
 		return null;
 	}
 
 	public final static Fluid generateFluidNoPrefix(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA){
 		Fluid gtFluid;
 		if (FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1) == null){
-			Utils.LOG_WARNING("Generating our own fluid.");
+			Logger.WARNING("Generating our own fluid.");
 			gtFluid = FluidUtils.addGTFluidNoPrefix(
 					unlocalizedName,
 					localizedName,

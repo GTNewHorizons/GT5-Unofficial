@@ -122,6 +122,7 @@ public interface Interface_ToolStats extends IToolStats{
 	/**
 	 * @return If this Tool can be used as an BC Wrench.
 	 */
+	@Override
 	public boolean isWrench();
 
 	/**

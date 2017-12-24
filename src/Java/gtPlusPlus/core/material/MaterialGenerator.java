@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
@@ -8,6 +9,7 @@ import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
+import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -19,15 +21,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_AlloySmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Assembler;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
+import gtPlusPlus.xmod.gregtech.loaders.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -132,6 +126,18 @@ public class MaterialGenerator {
 				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;
 			}
+			else if (matInfo.getState() == MaterialState.ORE){
+					if (sRadiation >= 1){
+						Item temp;
+						Block tempBlock;
+						tempBlock = new BlockBaseModular(matInfo ,BlockTypes.ORE, Colour);
+
+						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+						temp = new BaseItemCrushedOre(matInfo);
+					}
+			}
 
 			//Add A jillion Recipes - old code
 			RecipeGen_AlloySmelter.generateRecipes(matInfo);
@@ -146,9 +152,11 @@ public class MaterialGenerator {
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 			new RecipeGen_Recycling(matInfo);
 			return true;
-		} catch (final Throwable t)
+			
+			} catch (final Throwable t)
+		
 		{
-			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
 		}
 	}
@@ -219,7 +227,7 @@ public class MaterialGenerator {
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 			new RecipeGen_Recycling(matInfo);
 		} catch (final Throwable t){
-			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
 	}
 

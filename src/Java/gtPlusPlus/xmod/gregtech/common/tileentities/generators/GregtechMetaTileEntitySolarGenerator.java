@@ -9,7 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaSolarGenerator;
@@ -70,7 +70,7 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 
 			if ((aTick % 10L) == 0L) {
 
-				Utils.LOG_WARNING("getUniversalEnergyStored: "+aBaseMetaTileEntity.getUniversalEnergyStored() + "    maxEUOutput * 20 + getMinimumStoredEU: " + ((this.maxEUOutput() * 20) + this.getMinimumStoredEU()));
+				Logger.WARNING("getUniversalEnergyStored: "+aBaseMetaTileEntity.getUniversalEnergyStored() + "    maxEUOutput * 20 + getMinimumStoredEU: " + ((this.maxEUOutput() * 20) + this.getMinimumStoredEU()));
 
 				if ((this.mSolarCharge > 100) && (aBaseMetaTileEntity.isAllowedToWork()) &&
 						(!aBaseMetaTileEntity.getWorld().isThundering()) &&
@@ -80,13 +80,13 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 			}
 
 			if ((this.mSolarCharge < 500) && (this.mProcessingEnergy != 0) && ((aTick % 32L) == 0L)) {
-				Utils.LOG_WARNING("Adding Solar Charge. Currently "+this.mSolarCharge);
+				Logger.WARNING("Adding Solar Charge. Currently "+this.mSolarCharge);
 				this.mProcessingEnergy -= 1;
 				this.mSolarCharge += 1;
 			}
 
 			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && ((aTick % 64L) == 0L) && (!aBaseMetaTileEntity.getWorld().isThundering())) {
-				Utils.LOG_WARNING("Adding Processing Energy. Currently "+this.mProcessingEnergy);
+				Logger.WARNING("Adding Processing Energy. Currently "+this.mProcessingEnergy);
 				final boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
 				this.mProcessingEnergy += (bRain && (aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4)) || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
 			}

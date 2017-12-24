@@ -13,10 +13,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.ArrayUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
@@ -178,12 +178,12 @@ extends GT_MetaTileEntity_MultiBlockBase
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(28))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) != ModBlocks.blockCasings2Misc) {
-								Utils.LOG_WARNING("Bad Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) .getLocalizedName());
-								Utils.LOG_WARNING("Block Found at x:"+(aBaseMetaTileEntity.getXCoord()+xDir+i)+" | y:"+(aBaseMetaTileEntity.getYCoord()+h)+" | z:"+(aBaseMetaTileEntity.getZCoord()+zDir+j));
+								Logger.WARNING("Bad Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) .getLocalizedName());
+								Logger.WARNING("Block Found at x:"+(aBaseMetaTileEntity.getXCoord()+xDir+i)+" | y:"+(aBaseMetaTileEntity.getYCoord()+h)+" | z:"+(aBaseMetaTileEntity.getZCoord()+zDir+j));
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-								Utils.LOG_WARNING("Bad Meta.");
+								Logger.WARNING("Bad Meta.");
 								return false;
 							}
 							++tAmount;
@@ -197,8 +197,8 @@ extends GT_MetaTileEntity_MultiBlockBase
 				(this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0) || 
 				(this.mMufflerHatches.size() != 1) || (this.mMaintenanceHatches.size() != 1) ||
 				(this.mEnergyHatches.size() == 0)){
-			Utils.LOG_WARNING("Wrong Hatch count.");
-			Utils.LOG_WARNING("|"+this.mInputHatches.size()+
+			Logger.WARNING("Wrong Hatch count.");
+			Logger.WARNING("|"+this.mInputHatches.size()+
 					"|"+this.mOutputHatches.size()+
 					"|"+this.mInputBusses.size()+
 					"|"+this.mOutputBusses.size()+
@@ -394,7 +394,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		//Return if no input hatch set.
 		if (craftingInput == null){
-			Utils.LOG_WARNING("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
+			Logger.WARNING("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
 			return false;
 
 		}
@@ -458,7 +458,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 						this.mEUt = 8 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
 						this.mMaxProgresstime = MathUtils.roundToClosestInt((50-(5*MathUtils.randDouble(((this.mTier-2) <= 0 ? 1 : (this.mTier-2)), this.mTier))));
 
-						Utils.LOG_WARNING("MPT: "+mMaxProgresstime+" | "+mEUt);
+						Logger.WARNING("MPT: "+mMaxProgresstime+" | "+mEUt);
 						this.getBaseMetaTileEntity().setActive(true);
 
 						//Setup some vars
@@ -494,7 +494,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 								mCorrectInputs++;
 							}
 							else {
-								Utils.LOG_WARNING("Input in Slot "+mCorrectInputs+" was not valid.");
+								Logger.WARNING("Input in Slot "+mCorrectInputs+" was not valid.");
 							}
 						}
 

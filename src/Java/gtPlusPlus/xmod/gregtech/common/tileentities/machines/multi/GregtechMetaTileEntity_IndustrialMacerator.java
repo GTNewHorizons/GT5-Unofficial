@@ -15,9 +15,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -147,7 +147,7 @@ extends GregtechMeta_MultiBlockBase {
 			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 
 			final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-			Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
+			Logger.WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
 
 			//More than or one input
 			if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
@@ -191,11 +191,11 @@ extends GregtechMeta_MultiBlockBase {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Returned False 1");
+								Logger.INFO("Returned False 1");
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
-								Utils.LOG_INFO("Returned False 2");
+								Logger.INFO("Returned False 2");
 								return false;
 							}
 							tAmount++;
@@ -205,12 +205,12 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((this.mOutputHatches.size() != 0) || (this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 5)) {
-			Utils.LOG_INFO("Returned False 3");
+			Logger.INFO("Returned False 3");
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
 		if (this.mInputBusses.get(0).getBaseMetaTileEntity().getYCoord() != height) {
-			Utils.LOG_INFO("height: "+height+" | Returned False 4");
+			Logger.INFO("height: "+height+" | Returned False 4");
 			return false;
 		}
 		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[5];
@@ -219,7 +219,7 @@ extends GregtechMeta_MultiBlockBase {
 			if (tmpHatches[hatchNumber] == null) {
 				tmpHatches[hatchNumber] = this.mOutputBusses.get(i);
 			} else {
-				Utils.LOG_INFO("Returned False 5");
+				Logger.INFO("Returned False 5");
 				return false;
 			}
 		}
@@ -270,16 +270,16 @@ extends GregtechMeta_MultiBlockBase {
 		
 	      for (int i = 0; (i < 256) && (j < this.mOutputItems.length); ++i) {
 					if (i==0) {
-						Utils.LOG_WARNING("Adding the default output");						
+						Logger.WARNING("Adding the default output");						
 						this.mOutputItems[0] =  tRecipe.getOutput(0);						
-						Utils.LOG_INFO("Ading output. "+i+" | "+tRecipe.mOutputs.length + " | "+this.mOutputItems[0].stackSize+" | "+tRecipe.getOutput(0).stackSize);
+						Logger.INFO("Ading output. "+i+" | "+tRecipe.mOutputs.length + " | "+this.mOutputItems[0].stackSize+" | "+tRecipe.getOutput(0).stackSize);
 					}
 					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
-						Utils.LOG_WARNING("Adding a bonus output");
+						Logger.WARNING("Adding a bonus output");
 						this.mOutputItems[i] = tRecipe.getOutput(i);
 					}
 					else {
-						Utils.LOG_WARNING("Adding null output");
+						Logger.WARNING("Adding null output");
 						this.mOutputItems[i] = null;	  
 					}
 	        	++j;

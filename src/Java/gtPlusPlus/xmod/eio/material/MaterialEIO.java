@@ -1,10 +1,6 @@
 package gtPlusPlus.xmod.eio.material;
 
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.material.NONMATERIAL;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
 
 public class MaterialEIO {
@@ -18,6 +14,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().GOLD, 1),
@@ -33,6 +30,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 1),
@@ -48,6 +46,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 1),
@@ -63,6 +62,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ALLOY.STEEL, 3),
@@ -78,6 +78,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().GOLD, 1),
@@ -94,6 +95,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ENERGETIC_ALLOY, 1),
@@ -109,6 +111,7 @@ public class MaterialEIO {
 			10,
 			10,
 			false, //Uses Blast furnace?
+			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().SILICON, 1),

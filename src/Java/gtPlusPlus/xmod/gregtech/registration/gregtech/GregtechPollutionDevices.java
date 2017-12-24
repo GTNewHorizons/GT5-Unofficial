@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.*;
 
@@ -9,7 +9,7 @@ public class GregtechPollutionDevices {
 
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
+			Logger.INFO("Gregtech5u Content | Registering Anti-Pollution Devices.");
 			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 				run1();
 			}

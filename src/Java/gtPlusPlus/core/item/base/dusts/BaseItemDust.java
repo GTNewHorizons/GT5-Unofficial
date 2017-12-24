@@ -8,9 +8,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -48,25 +48,25 @@ public class BaseItemDust extends Item{
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+		Logger.WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
 		if (this.getUnlocalizedName().contains("item.")){
 			temp = this.getUnlocalizedName().replace("item.", "");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = this.getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else if (temp.contains("DustSmall")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+			Logger.WARNING("Generating OreDict Name: "+temp);
 		}
 		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
@@ -157,7 +157,7 @@ public class BaseItemDust extends Item{
 	}
 
 	private void addMacerationRecipe(){
-		Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Dusts");
+		Logger.WARNING("Adding recipe for "+this.materialName+" Dusts");
 
 		String tempIngot = this.getUnlocalizedName().replace("item.itemDust", "ingot");
 		final String tempDust = this.getUnlocalizedName().replace("item.itemDust", "dust");
@@ -168,17 +168,17 @@ public class BaseItemDust extends Item{
 			return;
 		}
 
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+		Logger.WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
 		if (this.getUnlocalizedName().contains("item.")){
 			tempIngot = this.getUnlocalizedName().replace("item.", "");
-			Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
+			Logger.WARNING("Generating OreDict Name: "+tempIngot);
 		}
 		else {
 			tempIngot = this.getUnlocalizedName();
 		}
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
-		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
+		Logger.WARNING("Generating OreDict Name: "+tempIngot);
 		final ItemStack[] outputStacks = {this.dustInfo.getDust(1)};
 		if ((tempIngot != null) && !tempIngot.equals("")){
 			tempInputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
@@ -224,30 +224,30 @@ public class BaseItemDust extends Item{
 		if ((temp != null) && !temp.equals("")){
 
 			if (this.dustInfo.requiresBlastFurnace()){
-				Utils.LOG_WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
+				Logger.WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
 				final String tempIngot = temp.replace("ingot", "ingotHot");
 				final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 				if (null != tempOutputStack){
-					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
+					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 					this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
 				}
 				return;
 			}
-			Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Ingots in a furnace.");
+			Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a furnace.");
 			final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if ((this.mTier < 5) || !this.dustInfo.requiresBlastFurnace()){
 					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
-						Utils.LOG_WARNING("Successfully added a furnace recipe for "+this.materialName);
+						Logger.WARNING("Successfully added a furnace recipe for "+this.materialName);
 					}
 					else {
-						Utils.LOG_WARNING("Failed to add a furnace recipe for "+this.materialName);
+						Logger.WARNING("Failed to add a furnace recipe for "+this.materialName);
 					}
 				}
 				else if ((this.mTier >= 5) || this.dustInfo.requiresBlastFurnace()){
-					Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
-					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
+					Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
+					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack){
 						this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
 					}

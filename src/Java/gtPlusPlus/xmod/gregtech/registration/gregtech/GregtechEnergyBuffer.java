@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative.GregtechMetaCreativeEnergyBuffer;
@@ -18,7 +18,7 @@ public class GregtechEnergyBuffer
 	public static void run()
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
+			Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
 			if (CORE.ConfigSwitches.enableMachine_RocketEngines) {
 				run1();
 			}

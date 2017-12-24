@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Container;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_AutoCrafter;
@@ -23,7 +23,7 @@ public class CraftingHelper{
 	public final AC_Helper_Container inventory;
 
 	public CraftingHelper(GT4Entity_AutoCrafter AC){
-		Utils.LOG_INFO("[A-C] Created a crafting helper.");
+		Logger.INFO("[A-C] Created a crafting helper.");
 		crafter = AC;
 		AC_Helper_Utils.addCrafter(AC);
 		//Get some variables.

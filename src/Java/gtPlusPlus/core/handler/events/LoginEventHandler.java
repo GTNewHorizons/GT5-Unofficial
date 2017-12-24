@@ -6,6 +6,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.proxy.ClientProxy;
@@ -52,15 +53,15 @@ public class LoginEventHandler {
 
 					if (CORE.ConfigSwitches.enableUpdateChecker){
 						if (!Utils.isModUpToDate()){
-							Utils.LOG_INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
+							Logger.INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
 							if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
-								Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+								Logger.INFO("Latest version is: "+CORE.MASTER_VERSION);
 							}
-							Utils.LOG_INFO("You currently have: "+CORE.VERSION);
+							Logger.INFO("You currently have: "+CORE.VERSION);
 							ShortTimer(this.localPlayerRef, 20);						
 						}
 						else {
-							Utils.LOG_INFO("You're using the latest recommended version of GT++.");
+							Logger.INFO("You're using the latest recommended version of GT++.");
 						}
 					}
 
@@ -109,7 +110,7 @@ public class LoginEventHandler {
 
 			}
 		} catch (final Throwable errr){
-			Utils.LOG_INFO("Login Handler encountered an error.");
+			Logger.INFO("Login Handler encountered an error.");
 
 		}
 	}

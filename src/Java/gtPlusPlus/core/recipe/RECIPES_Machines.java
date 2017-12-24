@@ -2,12 +2,12 @@ package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -183,7 +183,7 @@ public class RECIPES_Machines {
 	
         public static final void RECIPES_LOAD(){
 		run();
-		Utils.LOG_INFO("Loading Recipes for the Various machine blocks.");
+		Logger.INFO("Loading Recipes for the Various machine blocks.");
 	}
 
 	private static void run(){
@@ -547,7 +547,7 @@ public class RECIPES_Machines {
 
 			//Tiered Tanks
 			if (CORE.ConfigSwitches.enableMachine_FluidTanks){
-				Utils.LOG_WARNING("Is New Horizons Loaded? "+CORE.GTNH);
+				Logger.WARNING("Is New Horizons Loaded? "+CORE.GTNH);
 				if (!CORE.GTNH){
 					RecipeUtils.addShapedGregtechRecipe(
 							CI.component_Plate[1], CI.component_Plate[1], CI.component_Plate[1],
@@ -1119,6 +1119,6 @@ public class RECIPES_Machines {
 
 
 		}
-		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
+		Logger.INFO("Done loading recipes for the Various machine blocks.");
 	}
 }

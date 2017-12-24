@@ -3,7 +3,7 @@ package gtPlusPlus.core.world.darkworld.chunk;
 import java.util.List;
 import java.util.Random;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -171,7 +171,12 @@ public class ChunkProviderModded implements IChunkProvider {
 									p_147424_3_[j3 += short1] = Dimension_DarkWorld.blockMainFiller;
 								}
 								else if (k2 * 8 + l2 < b0) {
-									p_147424_3_[j3 += short1] = Blocks.water; //River Fluid									
+									try {
+										p_147424_3_[j3 += short1] = Dimension_DarkWorld.blockFluidLakes; //River Fluid		 .
+									}
+									catch (Throwable t){
+										p_147424_3_[j3 += short1] = Blocks.water; //River Fluid	Fallback										
+									}
 								}
 								else {
 									p_147424_3_[j3 += short1] = null;
@@ -391,7 +396,7 @@ public class ChunkProviderModded implements IChunkProvider {
 			} catch (NullPointerException n){
 				n.getStackTrace();
 				(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
-				Utils.LOG_INFO("Error while generating DarkWorld Lake.");
+				Logger.INFO("Error while generating DarkWorld Lake.");
 			}
 		}
 
@@ -406,7 +411,7 @@ public class ChunkProviderModded implements IChunkProvider {
 				try{
 					(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
 				} catch (NullPointerException n){
-					Utils.LOG_INFO("Error while generating DarkWorld Lake. [2]");
+					Logger.INFO("Error while generating DarkWorld Lake. [2]");
 				}
 			}
 		}

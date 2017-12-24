@@ -1,19 +1,14 @@
 package gtPlusPlus.core.util.materials;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.*;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -217,6 +212,7 @@ public class MaterialUtils {
 	}*/
 
 
+	@SuppressWarnings("deprecation")
 	public static String getMaterialName(Materials mat){
 		String mName;
 		try {
@@ -229,28 +225,6 @@ public class MaterialUtils {
 			mName = mat.name();
 		}
 		return mName;
-	}
-
-	public static boolean tryEnableMaterial(Materials mMaterial){
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			return false;
-		}			
-		return ReflectionUtils.setField(mMaterial, "mHasParentMod", true);		 
-	}
-
-	public static boolean tryEnableMaterialPart(OrePrefixes prefix, Materials mMaterial){
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			return false;
-		}		
-		try {
-			Method enableComponent = Class.forName("gregtech.api.enums.OrePrefixes").getDeclaredMethod("enableComponent", Materials.class);
-			enableComponent.invoke(prefix, mMaterial);
-			return true;
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-			Utils.LOG_INFO("Failed to enabled "+prefix.mRegularLocalName+" for "+mMaterial.mDefaultLocalName);
-		}		
-		return false;
 	}
 
 }

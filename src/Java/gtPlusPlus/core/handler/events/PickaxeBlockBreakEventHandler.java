@@ -5,7 +5,7 @@ import java.util.UUID;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.*;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 import net.minecraft.block.Block;
@@ -21,7 +21,7 @@ public class PickaxeBlockBreakEventHandler {
 			final TileEntity entity = event.world.getTileEntity(event.x, event.y, event.z);
 			if (entity != null){
 				final EntityPlayer playerInternal = event.getPlayer();
-				Utils.LOG_WARNING(entity.getClass().getSimpleName());
+				Logger.WARNING(entity.getClass().getSimpleName());
 				if (entity.getClass().getSimpleName().equals("")){
 
 				}
@@ -32,12 +32,12 @@ public class PickaxeBlockBreakEventHandler {
 
 						final UUID ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
 						final UUID accessorUUID = playerInternal.getUniqueID();
-						Utils.LOG_WARNING("Owner UUID: "+ownerUUID);
-						Utils.LOG_WARNING("Accessor UUID: "+accessorUUID);
+						Logger.WARNING("Owner UUID: "+ownerUUID);
+						Logger.WARNING("Accessor UUID: "+accessorUUID);
 
 						if (((GregtechMetaSafeBlockBase)X).bUnbreakable){
 
-							Utils.LOG_INFO("UUID info. Accessor: "+accessorUUID + " | Owner: "+ownerUUID);
+							Logger.INFO("UUID info. Accessor: "+accessorUUID + " | Owner: "+ownerUUID);
 
 							if (accessorUUID == ownerUUID){
 								PlayerUtils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");

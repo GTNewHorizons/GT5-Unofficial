@@ -3,8 +3,8 @@ package gtPlusPlus.core.util.player;
 import java.io.*;
 import java.util.*;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
@@ -18,12 +18,12 @@ public class PlayerCache {
 
 				if (cache != null){
 					CORE.PlayerCache = PlayerCache.readPropertiesFileAsMap();
-					Utils.LOG_INFO("Loaded PlayerCache.dat");
+					Logger.INFO("Loaded PlayerCache.dat");
 				}
 
 
 			} catch (final Exception e) {
-				Utils.LOG_INFO("Failed to initialise PlayerCache.dat");
+				Logger.INFO("Failed to initialise PlayerCache.dat");
 				PlayerCache.createPropertiesFile("PLAYER_", "DATA");
 				//e.printStackTrace();
 			}
@@ -36,7 +36,7 @@ public class PlayerCache {
 			props.setProperty(playerName+" ", playerUUIDasString);
 			final OutputStream out = new FileOutputStream(cache);
 			props.store(out, "Player Cache.");
-			Utils.LOG_INFO("PlayerCache.dat created for future use.");
+			Logger.INFO("PlayerCache.dat created for future use.");
 			out.close();
 		}
 		catch (final Exception e ) {
@@ -71,11 +71,11 @@ public class PlayerCache {
 			oos.writeObject(playerInfo);
 			oos.close();
 			fos.close();
-			Utils.LOG_INFO("Serialized Player data saved in PlayerCache.dat");
+			Logger.INFO("Serialized Player data saved in PlayerCache.dat");
 		}
 
 		catch (final IOException e) {
-			Utils.LOG_INFO("No PlayerCache file found, creating one.");
+			Logger.INFO("No PlayerCache file found, creating one.");
 			createPropertiesFile(playerName, playerUUIDasString);
 		}
 	}
@@ -136,11 +136,11 @@ public class PlayerCache {
 			return null;
 		}catch(final ClassNotFoundException c)
 		{
-			Utils.LOG_INFO("Class not found");
+			Logger.INFO("Class not found");
 			c.printStackTrace();
 			return null;
 		}
-		Utils.LOG_WARNING("Deserialized PlayerCache..");
+		Logger.WARNING("Deserialized PlayerCache..");
 		return map;
 	}
 

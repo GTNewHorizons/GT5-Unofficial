@@ -99,7 +99,8 @@ public class EnergyStorage
     }
   }
   
-  public int receiveEnergy(int maxReceive, boolean simulate)
+  @Override
+public int receiveEnergy(int maxReceive, boolean simulate)
   {
     int energyReceived = Math.min(this.capacity - this.energy, Math.min(this.maxReceive, maxReceive));
     if (!simulate) {
@@ -108,7 +109,8 @@ public class EnergyStorage
     return energyReceived;
   }
   
-  public int extractEnergy(int maxExtract, boolean simulate)
+  @Override
+public int extractEnergy(int maxExtract, boolean simulate)
   {
     int energyExtracted = Math.min(this.energy, Math.min(this.maxExtract, maxExtract));
     if (!simulate) {
@@ -117,12 +119,14 @@ public class EnergyStorage
     return energyExtracted;
   }
   
-  public int getEnergyStored()
+  @Override
+public int getEnergyStored()
   {
     return this.energy;
   }
   
-  public int getMaxEnergyStored()
+  @Override
+public int getMaxEnergyStored()
   {
     return this.capacity;
   }

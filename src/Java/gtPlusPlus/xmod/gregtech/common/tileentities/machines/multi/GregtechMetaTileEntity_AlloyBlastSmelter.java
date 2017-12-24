@@ -14,9 +14,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -137,7 +137,7 @@ extends GregtechMeta_MultiBlockBase {
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 			final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 			if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-				Utils.LOG_WARNING("Found some Valid Inputs.");
+				Logger.WARNING("Found some Valid Inputs.");
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
 				if (tRecipe.mEUt <= 16) {
@@ -160,7 +160,7 @@ extends GregtechMeta_MultiBlockBase {
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("Failed to find some Valid Inputs.");
+		Logger.WARNING("Failed to find some Valid Inputs.");
 		return false;
 	}
 

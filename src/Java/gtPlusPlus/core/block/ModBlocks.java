@@ -1,6 +1,7 @@
 package gtPlusPlus.core.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
@@ -66,7 +67,7 @@ public final class ModBlocks {
 	public static Block blockNet;
 
 	public static void init() {
-		Utils.LOG_INFO("Initializing Blocks.");
+		Logger.INFO("Initializing Blocks.");
 		//blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 
 		registerBlocks();
@@ -74,7 +75,7 @@ public final class ModBlocks {
 
 	public static void registerBlocks(){
 
-		Utils.LOG_INFO("Registering Blocks.");
+		Logger.INFO("Registering Blocks.");
 		GameRegistry.registerBlock(MatterFabricatorEffectBlock = new LightGlass(Material.glass, false).setHardness(0.1F).setBlockTextureName(CORE.MODID + ":" + "blockMFEffect").setStepSound(Block.soundTypeGlass), "blockMFEffect");
 
 		//Fluids

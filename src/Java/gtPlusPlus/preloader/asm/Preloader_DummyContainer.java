@@ -11,7 +11,7 @@ import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.preloader.CORE_Preloader;
 import net.minecraftforge.common.config.Configuration;
 
@@ -53,19 +53,19 @@ public class Preloader_DummyContainer extends DummyModContainer {
 	
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
-		Utils.LOG_INFO("[GT++ ASM] Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+		Logger.INFO("[GT++ ASM] Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 	}
 	
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent event) {
-		Utils.LOG_INFO("[GT++ ASM] Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+		Logger.INFO("[GT++ ASM] Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 		// Handle GT++ Config
 		handleConfigFile(event);
 	}
 
 	@Subscribe
 	public void postInit(FMLPostInitializationEvent evt) {
-		Utils.LOG_INFO("[GT++ ASM] Finished loading GT++ Pre-Loader.");
+		Logger.INFO("[GT++ ASM] Finished loading GT++ Pre-Loader.");
 	}
 	
 	public static void handleConfigFile(final FMLPreInitializationEvent event) {

@@ -12,8 +12,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -178,115 +178,115 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 					if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(17))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(17)))) {
 
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-							Utils.LOG_INFO("Wrong Block.");
+							Logger.INFO("Wrong Block.");
 							return false;
 						}
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-							Utils.LOG_INFO("Wrong Meta 1.");
+							Logger.INFO("Wrong Meta 1.");
 							return false;
 						}
 					}
 					else {
-						Utils.LOG_INFO("Added Hatch. "+tTileEntity.getInventoryName());
+						Logger.INFO("Added Hatch. "+tTileEntity.getInventoryName());
 					}
 				}
 				Y = 1;
-				Utils.LOG_INFO("Checking at Y+1 as well.");
+				Logger.INFO("Checking at Y+1 as well.");
 				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
 				if ((!this.addToMachineList(tTileEntity2, TAE.GTPP_INDEX(17))) && (!this.addEnergyInputToMachineList(tTileEntity2, TAE.GTPP_INDEX(17)))) {
 
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-						Utils.LOG_INFO("Wrong Block.");
+						Logger.INFO("Wrong Block.");
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-						Utils.LOG_INFO("Wrong Meta 1.");
+						Logger.INFO("Wrong Meta 1.");
 						return false;
 					}
 				}
 				else {
-					Utils.LOG_INFO("Added Hatch. "+tTileEntity2.getInventoryName());
+					Logger.INFO("Added Hatch. "+tTileEntity2.getInventoryName());
 				}
 			}
 		}
 
 		for (int y = 2; y < 6; y++) {
 			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir) != ModBlocks.blockCasings2Misc) { //Must Define meta for center blocks
-				Utils.LOG_INFO("Wrong Block.");
+				Logger.INFO("Wrong Block.");
 				return false;
 			}
 			if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir) != 3) {
-				Utils.LOG_INFO("Wrong Meta. 2");
+				Logger.INFO("Wrong Meta. 2");
 				return false;
 			}
 			if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) != ModBlocks.blockCasings2Misc) {
-				Utils.LOG_INFO("Wrong Block.1");
+				Logger.INFO("Wrong Block.1");
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
 							return false;
 						}
-						Utils.LOG_INFO("Found Zeron-Casing.");
+						Logger.INFO("Found Zeron-Casing.");
 					}
 				}
 				else {
-					Utils.LOG_INFO("debug.1");
+					Logger.INFO("debug.1");
 					return false;
 				}
 			}
 
 			if (aBaseMetaTileEntity.getBlockOffset(xDir - 1, y, zDir) != ModBlocks.blockCasings2Misc) {
-				Utils.LOG_INFO("Wrong Block.2");
+				Logger.INFO("Wrong Block.2");
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
 							return false;
 						}
-						Utils.LOG_INFO("Found Zeron-Casing.");
+						Logger.INFO("Found Zeron-Casing.");
 					}
 				}
 				else {
-					Utils.LOG_INFO("debug.2");
+					Logger.INFO("debug.2");
 					return false;
 				}
 			}
 
 			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir + 1) != ModBlocks.blockCasings2Misc) {
-				Utils.LOG_INFO("Wrong Block.3");
+				Logger.INFO("Wrong Block.3");
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
 							return false;
 						}
-						Utils.LOG_INFO("Found Zeron-Casing.");
+						Logger.INFO("Found Zeron-Casing.");
 					}
 				}
 				else {
-					Utils.LOG_INFO("debug.3");
+					Logger.INFO("debug.3");
 					return false;
 				}
 			}
 			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir - 1) != ModBlocks.blockCasings2Misc) {
-				Utils.LOG_INFO("Wrong Block.4");
+				Logger.INFO("Wrong Block.4");
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
 							return false;
 						}
-						Utils.LOG_INFO("Found Zeron-Casing.");
+						Logger.INFO("Found Zeron-Casing.");
 					}
 				}
 				else {
-					Utils.LOG_INFO("debug.4");
+					Logger.INFO("debug.4");
 					return false;
 				}
 			}
 			if (aBaseMetaTileEntity.getBlockOffset(xDir, y + 3, zDir) != ModBlocks.blockCasings2Misc) {
-				Utils.LOG_INFO("Wrong Block.5");
+				Logger.INFO("Wrong Block.5");
 				return false;
 			}
 			if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 3, zDir) != 3) {
-				Utils.LOG_INFO("Wrong Meta. 3");
+				Logger.INFO("Wrong Meta. 3");
 				return false;
 			}
 		}
@@ -294,15 +294,15 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 		if ((this.mInputHatches.size() != 4) || (this.mOutputHatches.size() != 2) ||
 				(this.mOutputBusses.size() != 1) || (this.mMufflerHatches.size() != 1) ||
 				(this.mMaintenanceHatches.size() != 2) || (this.mEnergyHatches.size() < 1)){
-			Utils.LOG_INFO("Wrong Hatch count.");
+			Logger.INFO("Wrong Hatch count.");
 			return false;
 		}
 		if (this.mMufflerHatches.size() == 1){
 			if (this.mMufflerHatches.get(0).mTier < 7){
-				Utils.LOG_INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
+				Logger.INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
 			}
 		}
-		Utils.LOG_INFO("Multiblock Formed.");
+		Logger.INFO("Multiblock Formed.");
 		return true;
 	}
 

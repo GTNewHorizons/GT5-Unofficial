@@ -5,12 +5,12 @@ import static gtPlusPlus.core.util.item.ItemUtils.getSimpleStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
@@ -98,7 +98,7 @@ public class RECIPES_General {
 				"stickWood", "treeSapling", "stickWood",
 				"stickWood", "dustBone", "stickWood",
 				ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest))){
-			Utils.LOG_INFO("Added a recipe for Rainforest oak Saplings.");
+			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
 		if (!CORE.GTNH) {
@@ -110,7 +110,7 @@ public class RECIPES_General {
 					ironBars, "frameGtWroughtIron", ironBars,
 					ironBars, ironBars, ironBars,
 					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
-				Utils.LOG_INFO("Added a recipe for the Fish Trap.");
+				Logger.INFO("Added a recipe for the Fish Trap.");
 			}
 		} else {
 			//Steel Bars
@@ -121,7 +121,7 @@ public class RECIPES_General {
 					steelBars, "frameGtWroughtIron", steelBars,
 					steelBars, steelBars, steelBars,
 					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))) {
-				Utils.LOG_INFO("Added a recipe for the Fish Trap.");
+				Logger.INFO("Added a recipe for the Fish Trap.");
 			}
 		}
 
@@ -131,7 +131,7 @@ public class RECIPES_General {
 				"gemFlawlessRuby", ItemList.Credit_Greg_Naquadah.get(1), "gemFlawlessSapphire",
 				"gemExquisiteEmerald", "gemFlawlessEmerald", "gemExquisiteSapphire",
 				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk))){
-			Utils.LOG_INFO("Added a recipe for The Alkalus Disk.");
+			Logger.INFO("Added a recipe for The Alkalus Disk.");
 		}
 
 		final String fancyGems[] = new String[]{"gemExquisiteDiamond", "gemExquisiteEmerald", "gemExquisiteRuby", "gemExquisiteSapphire"};

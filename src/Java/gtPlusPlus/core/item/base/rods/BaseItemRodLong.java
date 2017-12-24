@@ -1,9 +1,9 @@
 package gtPlusPlus.core.item.base.rods;
 
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
@@ -20,7 +20,7 @@ public class BaseItemRodLong extends BaseItemComponent{
 	}
 
 	private void addExtruderRecipe(){
-		Utils.LOG_WARNING("Adding recipe for Long "+this.materialName+" Rods");
+		Logger.WARNING("Adding recipe for Long "+this.materialName+" Rods");
 
 		final String tempStick = this.unlocalName.replace("itemRodLong", "stick");
 		final String tempStickLong = this.unlocalName.replace("itemRodLong", "stickLong");

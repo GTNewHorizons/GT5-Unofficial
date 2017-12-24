@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.util.*;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -9,18 +11,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBlockBase {
 
@@ -34,10 +31,12 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		super(aName);
 	}
 
+	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntityGeneratorArray(this.mName);
 	}
 
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Generator Array",
@@ -51,6 +50,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		"Place up to 16 Single Block GT Generators into the Controller Inventory"};
 	}
 
+	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
@@ -58,10 +58,12 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48]};
 	}
 
+	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ProcessingArray.png");
 	}
 
+	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		if (mInventory[1] == null) return null;
 		String tmp = mInventory[1].getUnlocalizedName().replaceAll("gt\\.blockmachines\\.basicgenerator\\.", "");
@@ -93,6 +95,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return null;
 	}
 
+	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		if (aStack != null && aStack.getUnlocalizedName().startsWith("gt.blockmachines.")) {
 			return true;
@@ -100,11 +103,13 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return false;
 	}
 
+	@Override
 	public boolean isFacingValid(byte aFacing) {
 		return aFacing > 1;
 	}
 
 	public String mMachine = "";
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
 		if (!isCorrectMachinePart(mInventory[1])) {
 			return false;
@@ -138,17 +143,17 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 
 		if(!mMachine.equals(mInventory[1].getUnlocalizedName()))mLastRecipe=null;
 		mMachine = mInventory[1].getUnlocalizedName();
-		Utils.LOG_WARNING("mMachine: "+mMachine);
+		Logger.WARNING("mMachine: "+mMachine);
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		Collection<GT_Recipe> tRecipeList = this.getRecipeMap().mRecipeList;
-		Utils.LOG_WARNING("tRecipeList: "+tRecipeList);
+		Logger.WARNING("tRecipeList: "+tRecipeList);
 
 		if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
-			Utils.LOG_WARNING("1");
+			Logger.WARNING("1");
 			for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-				Utils.LOG_WARNING("2");
+				Logger.WARNING("2");
 				for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
-					Utils.LOG_WARNING("3");
+					Logger.WARNING("3");
 					/*if (aFuel != null){
 						for (FluidStack x : aFuel.mFluidInputs){
 							if (x != null){
@@ -158,12 +163,12 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 					}*/
 					FluidStack tLiquid;
 					tLiquid = FluidUtils.getFluidStack(aFuel.mFluidInputs[0], aFuel.mFluidInputs[0].amount);
-					Utils.LOG_WARNING("5");
+					Logger.WARNING("5");
 					fuelConsumption = aFuel.mFluidInputs[0].amount;
 					if(depleteInput(tLiquid)) { //Deplete that amount
-						Utils.LOG_WARNING("6");
+						Logger.WARNING("6");
 						boostEu = true;
-						Utils.LOG_WARNING("7");                               
+						Logger.WARNING("7");                               
 
 						fuelValue = aFuel.mEUt*aFuel.mDuration;
 						fuelRemaining = hatchFluid1.amount; //Record available fuel
@@ -171,7 +176,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 						//this.mProgresstime = 1;
 						this.mMaxProgresstime = 20;
 						this.mEfficiencyIncrease = 9500;
-						Utils.LOG_WARNING("9");
+						Logger.WARNING("9");
 						return true;
 					}
 				}
@@ -190,6 +195,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return list.toArray(new ItemStack[list.size()]);
 	}
 
+	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
@@ -218,22 +224,27 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return tAmount >= 16;
 	}
 
+	@Override
 	public int getMaxEfficiency(ItemStack aStack) {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
 		return 0;
 	}
 
+	@Override
 	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
 
+	@Override
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
 	}
 
+	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}

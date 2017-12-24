@@ -3,7 +3,7 @@ package gtPlusPlus.core.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -82,23 +82,23 @@ public class CommandMath implements ICommand
 			System.out.println("Processing on Server side - Home Teleport engaged by: "+P.getDisplayName());
 
 			final int XP_TOTAL = P.experienceTotal;
-			Utils.LOG_WARNING("Total Xp:" + XP_TOTAL);
+			Logger.WARNING("Total Xp:" + XP_TOTAL);
 			final ChunkCoordinates X = P.getPlayerCoordinates();
-			Utils.LOG_WARNING("Player Location: "+X);
+			Logger.WARNING("Player Location: "+X);
 			ChunkCoordinates Y = null;
-			Utils.LOG_WARNING("Bed Location: "+Y);
+			Logger.WARNING("Bed Location: "+Y);
 			try {
 				if (P.getBedLocation(0) == null){
 					Y = W.getSpawnPoint();
-					Utils.LOG_WARNING("Spawn Location: "+Y);
+					Logger.WARNING("Spawn Location: "+Y);
 				}
 				else if (P.getBedLocation(0) != null){
 					Y = P.getBedLocation(0);
-					Utils.LOG_WARNING("Bed Location: "+Y);
+					Logger.WARNING("Bed Location: "+Y);
 				}
 				else {
 					Y = W.getSpawnPoint();
-					Utils.LOG_WARNING("Spawn Location: "+Y);
+					Logger.WARNING("Spawn Location: "+Y);
 				}
 			}
 			catch(final NullPointerException e) {
@@ -106,37 +106,37 @@ public class CommandMath implements ICommand
 			}
 			if (Y == null) {
 				Y = W.getSpawnPoint();
-				Utils.LOG_WARNING("Spawn Location: "+Y);
+				Logger.WARNING("Spawn Location: "+Y);
 			}
 
 			final int x1 = X.posX;
-			Utils.LOG_WARNING("X1: "+x1);
+			Logger.WARNING("X1: "+x1);
 			final int x2 = Y.posX;
-			Utils.LOG_WARNING("X2: "+x2);
+			Logger.WARNING("X2: "+x2);
 			final int y1 = X.posY;
-			Utils.LOG_WARNING("Y1: "+y1);
+			Logger.WARNING("Y1: "+y1);
 			final int y2 = Y.posY;
-			Utils.LOG_WARNING("Y2: "+y2);
+			Logger.WARNING("Y2: "+y2);
 			final int z1 = X.posZ;
-			Utils.LOG_WARNING("Z1: "+z1);
+			Logger.WARNING("Z1: "+z1);
 			final int z2 = Y.posZ;
-			Utils.LOG_WARNING("Z2: "+z2);
+			Logger.WARNING("Z2: "+z2);
 
 
 			final double d = Math.sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))+((z2-z1)*(z2-z1)));
 			final String xpCost = String.valueOf((int)(d*0.15));
 
-			Utils.LOG_WARNING("d:" + d);
-			Utils.LOG_WARNING("-----------------------------------------");
-			Utils.LOG_WARNING("Actual math formulae");
-			Utils.LOG_WARNING(String.valueOf(d));
-			Utils.LOG_WARNING("-----------------------------------------");
-			Utils.LOG_WARNING("Xp Cost based on answer B.");
-			Utils.LOG_WARNING(String.valueOf(d*0.15) + " | " + String.valueOf(xpCost));
-			Utils.LOG_WARNING("-----------------------------------------");
-			Utils.LOG_WARNING("Xp Total");
-			Utils.LOG_WARNING(String.valueOf(XP_TOTAL));
-			Utils.LOG_WARNING("-----------------------------------------");
+			Logger.WARNING("d:" + d);
+			Logger.WARNING("-----------------------------------------");
+			Logger.WARNING("Actual math formulae");
+			Logger.WARNING(String.valueOf(d));
+			Logger.WARNING("-----------------------------------------");
+			Logger.WARNING("Xp Cost based on answer B.");
+			Logger.WARNING(String.valueOf(d*0.15) + " | " + String.valueOf(xpCost));
+			Logger.WARNING("-----------------------------------------");
+			Logger.WARNING("Xp Total");
+			Logger.WARNING(String.valueOf(XP_TOTAL));
+			Logger.WARNING("-----------------------------------------");
 
 
 

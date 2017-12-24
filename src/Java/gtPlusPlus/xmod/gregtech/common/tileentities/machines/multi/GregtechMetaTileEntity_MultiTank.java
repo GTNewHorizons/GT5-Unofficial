@@ -3,9 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,9 +13,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -137,11 +135,11 @@ extends GregtechMeta_MultiBlockBase {
 		if (temp != null){
 			if (this.internalStorageTank == null){
 				this.internalStorageTank = temp;
-				Utils.LOG_WARNING(temp.getFluid().getName()+" Amount: "+temp.amount+"L");
+				Logger.WARNING(temp.getFluid().getName()+" Amount: "+temp.amount+"L");
 			}
 			else{
-				Utils.LOG_WARNING("Retained Fluid.");
-				Utils.LOG_WARNING(this.internalStorageTank.getFluid().getName()+" Amxount: "+this.internalStorageTank.amount+"L");
+				Logger.WARNING("Retained Fluid.");
+				Logger.WARNING(this.internalStorageTank.getFluid().getName()+" Amxount: "+this.internalStorageTank.amount+"L");
 			}
 			this.markDirty();
 			return true;
@@ -172,7 +170,7 @@ extends GregtechMeta_MultiBlockBase {
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 
-		if (this.internalStorageTank.amount >= this.maximumFluidStorage){
+		if ((this.internalStorageTank != null) && this.internalStorageTank.amount >= this.maximumFluidStorage){
 			if (this.internalStorageTank.amount > this.maximumFluidStorage){
 				this.internalStorageTank.amount = this.maximumFluidStorage;
 			}
@@ -272,7 +270,7 @@ extends GregtechMeta_MultiBlockBase {
 		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[1]), 0, 1);
 
 		if (tFluids.length >= 2){
-			Utils.LOG_WARNING("Bad");
+			Logger.WARNING("Bad");
 			return false;
 		}
 
@@ -289,37 +287,37 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((tFluids.length <= 0) || (slotInputCount > 1)){
-			Utils.LOG_WARNING("Bad");
+			Logger.WARNING("Bad");
 			return false;
 		}
 
-		Utils.LOG_WARNING("Okay - 2");
+		Logger.WARNING("Okay - 2");
 		if (this.internalStorageTank == null){
-			Utils.LOG_WARNING("Okay - 3");
+			Logger.WARNING("Okay - 3");
 			if ((rList.get(0).getKey().mFluid != null) && (rList.get(0).getKey().mFluid.amount > 0)){
-				Utils.LOG_WARNING("Okay - 4");
-				Utils.LOG_WARNING("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount /*+" internalStorageTank:"+internalStorageTank.amount*/);
+				Logger.WARNING("Okay - 4");
+				Logger.WARNING("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount /*+" internalStorageTank:"+internalStorageTank.amount*/);
 				final FluidStack tempFluidStack = rList.get(0).getKey().mFluid;
 				final Fluid tempFluid = tempFluidStack.getFluid();
 				this.internalStorageTank = FluidUtils.getFluidStack(tempFluid.getName(), tempFluidStack.amount);
 				rList.get(0).getKey().mFluid.amount = 0;
-				Utils.LOG_WARNING("Okay - 1.1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount +" internalStorageTank:"+this.internalStorageTank.amount);
+				Logger.WARNING("Okay - 1.1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount +" internalStorageTank:"+this.internalStorageTank.amount);
 				return true;
 			}
-			Utils.LOG_WARNING("No Fluid in hatch.");
+			Logger.WARNING("No Fluid in hatch.");
 			return false;
 		}
 		else if (this.internalStorageTank.isFluidEqual(rList.get(0).getKey().mFluid)){
-			Utils.LOG_WARNING("Storing "+rList.get(0).getKey().mFluid.amount+"L");
-			Utils.LOG_WARNING("Contains "+this.internalStorageTank.amount+"L");
+			Logger.WARNING("Storing "+rList.get(0).getKey().mFluid.amount+"L");
+			Logger.WARNING("Contains "+this.internalStorageTank.amount+"L");
 
 
 			int tempAdd = 0;
 			tempAdd = rList.get(0).getKey().getFluidAmount();
 			rList.get(0).getKey().mFluid = null;
-			Utils.LOG_WARNING("adding "+tempAdd);
+			Logger.WARNING("adding "+tempAdd);
 			this.internalStorageTank.amount = this.internalStorageTank.amount + tempAdd;
-			Utils.LOG_WARNING("Tank now Contains "+this.internalStorageTank.amount+"L of "+this.internalStorageTank.getFluid().getName()+".");
+			Logger.WARNING("Tank now Contains "+this.internalStorageTank.amount+"L of "+this.internalStorageTank.getFluid().getName()+".");
 
 
 			//Utils.LOG_WARNING("Tank");
@@ -327,19 +325,19 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		else {
 			final FluidStack superTempFluidStack = rList.get(0).getKey().mFluid;
-			Utils.LOG_WARNING("is input fluid equal to stored fluid? "+(this.internalStorageTank.isFluidEqual(superTempFluidStack)));
+			Logger.WARNING("is input fluid equal to stored fluid? "+(this.internalStorageTank.isFluidEqual(superTempFluidStack)));
 			if (superTempFluidStack != null) {
-				Utils.LOG_WARNING("Input hatch[0] Contains "+superTempFluidStack.amount+"L of "+superTempFluidStack.getFluid().getName()+".");
+				Logger.WARNING("Input hatch[0] Contains "+superTempFluidStack.amount+"L of "+superTempFluidStack.getFluid().getName()+".");
 			}
-			Utils.LOG_WARNING("Large Multi-Tank Contains "+this.internalStorageTank.amount+"L of "+this.internalStorageTank.getFluid().getName()+".");
+			Logger.WARNING("Large Multi-Tank Contains "+this.internalStorageTank.amount+"L of "+this.internalStorageTank.getFluid().getName()+".");
 
 			if (this.internalStorageTank.amount <= 0){
-				Utils.LOG_WARNING("Internal Tank is empty, sitting idle.");
+				Logger.WARNING("Internal Tank is empty, sitting idle.");
 				return false;
 			}
 
 			if ((this.mOutputHatches.get(0).mFluid == null) || this.mOutputHatches.isEmpty() || (this.mOutputHatches.get(0).mFluid.isFluidEqual(this.internalStorageTank) && (this.mOutputHatches.get(0).mFluid.amount < this.mOutputHatches.get(0).getCapacity()))){
-				Utils.LOG_WARNING("Okay - 3");
+				Logger.WARNING("Okay - 3");
 				final int tempCurrentStored = this.internalStorageTank.amount;
 				int tempResult = 0;
 				final int tempHatchSize = this.mOutputHatches.get(0).getCapacity();
@@ -349,10 +347,10 @@ extends GregtechMeta_MultiBlockBase {
 				if (tempHatchRemainingSpace <= 0){
 					return false;
 				}
-				Utils.LOG_WARNING("Okay - 3.1.x"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored: "+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");
+				Logger.WARNING("Okay - 3.1.x"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored: "+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");
 
 				if (tempHatchSize >= tempHatchRemainingSpace){
-					Utils.LOG_WARNING("Okay - 3.1.1"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored: "+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");
+					Logger.WARNING("Okay - 3.1.1"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored: "+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");
 
 					int adder;
 					if ((tempCurrentStored > 0) && (tempCurrentStored <= tempHatchSize)){
@@ -370,20 +368,20 @@ extends GregtechMeta_MultiBlockBase {
 
 					tempResult = adder;
 					tempOutputFluid.amount = tempResult;
-					Utils.LOG_WARNING("Okay - 3.1.2"+" result: "+tempResult +" tempCurrentStored: "+tempCurrentStored + " filling output hatch with: "+tempOutputFluid.amount+"L of "+tempOutputFluid.getFluid().getName());
+					Logger.WARNING("Okay - 3.1.2"+" result: "+tempResult +" tempCurrentStored: "+tempCurrentStored + " filling output hatch with: "+tempOutputFluid.amount+"L of "+tempOutputFluid.getFluid().getName());
 					this.mOutputHatches.get(0).fill(tempOutputFluid, true);
 					//mOutputHatches.get(0).mFluid.amount = tempResult;
 					this.internalStorageTank.amount = (tempCurrentStored-adder);
-					Utils.LOG_WARNING("Okay - 3.1.3"+" internalTankStorage: "+this.internalStorageTank.amount +"L | output hatch contains: "+this.mOutputHatches.get(0).mFluid.amount+"L of "+this.mOutputHatches.get(0).mFluid.getFluid().getName());
+					Logger.WARNING("Okay - 3.1.3"+" internalTankStorage: "+this.internalStorageTank.amount +"L | output hatch contains: "+this.mOutputHatches.get(0).mFluid.amount+"L of "+this.mOutputHatches.get(0).mFluid.getFluid().getName());
 					/*if (internalStorageTank.amount <= 0)
 						internalStorageTank = null;*/
 				}
-				Utils.LOG_WARNING("Tank ok.");
+				Logger.WARNING("Tank ok.");
 				return true;
 			}
 		}
 		//this.getBaseMetaTileEntity().(tFluids[0].amount, true);
-		Utils.LOG_WARNING("Tank");
+		Logger.WARNING("Tank");
 		return false;
 	}
 
@@ -392,7 +390,7 @@ extends GregtechMeta_MultiBlockBase {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			Utils.LOG_WARNING("Must be hollow.");
+			Logger.WARNING("Must be hollow.");
 			return false;
 		}
 		int tAmount = 0;
@@ -404,7 +402,7 @@ extends GregtechMeta_MultiBlockBase {
 						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11)))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								if (h < 3){
-									Utils.LOG_WARNING("Casing Expected.");
+									Logger.WARNING("Casing Expected.");
 									return false;
 								}
 								else if (h >= 3){
@@ -413,7 +411,7 @@ extends GregtechMeta_MultiBlockBase {
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 11) {
 								if (h < 3){
-									Utils.LOG_WARNING("Wrong Meta.");
+									Logger.WARNING("Wrong Meta.");
 									return false;
 								}
 								else if (h >= 3){
@@ -425,10 +423,10 @@ extends GregtechMeta_MultiBlockBase {
 							}
 							else if (h >= 3){
 								if ((aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == Blocks.air) || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName().contains("residual")){
-									Utils.LOG_WARNING("Found air");
+									Logger.WARNING("Found air");
 								}
 								else {
-									Utils.LOG_WARNING("Layer "+(h+2)+" is complete. Adding "+(64000*9)+"L storage to the tank.");
+									Logger.WARNING("Layer "+(h+2)+" is complete. Adding "+(64000*9)+"L storage to the tank.");
 									tAmount++;
 								}
 							}
@@ -439,8 +437,8 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		this.multiblockCasingCount = (short) tAmount;
 		this.maximumFluidStorage = getMaximumTankStorage(tAmount);
-		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
-		Utils.LOG_INFO("Casings Count: "+this.multiblockCasingCount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+this.maximumFluidStorage+"L");
+		Logger.INFO("Your Multitank can be 20 blocks tall.");
+		Logger.INFO("Casings Count: "+this.multiblockCasingCount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+this.maximumFluidStorage+"L");
 		this.tryForceNBTUpdate();
 		return tAmount >= 16;
 	}
@@ -522,6 +520,7 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
 		return 5;
 	}

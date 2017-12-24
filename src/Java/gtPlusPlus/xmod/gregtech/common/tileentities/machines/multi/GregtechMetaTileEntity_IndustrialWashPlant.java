@@ -9,9 +9,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -131,7 +131,7 @@ extends GregtechMeta_MultiBlockBase {
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 
 						if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, mFluidInputList, new ItemStack[]{tInput})) {
-							Utils.LOG_WARNING("Recipe Complete.");
+							Logger.WARNING("Recipe Complete.");
 							this.mLastRecipe = tRecipe;
 							this.mEUt = MathUtils.findPercentageOfInt(this.mLastRecipe.mEUt, 80);
 							this.mMaxProgresstime = MathUtils.findPercentageOfInt(this.mLastRecipe.mDuration, 20);
@@ -166,7 +166,7 @@ extends GregtechMeta_MultiBlockBase {
 		int mOffsetZ_Upper = 0;
 
 
-		Utils.LOG_WARNING("mDirectionX "+(mDirectionX));
+		Logger.WARNING("mDirectionX "+(mDirectionX));
 		if (mDirectionX == 0){
 			mCurrentDirectionX = 2;
 			mCurrentDirectionZ = 3;
@@ -174,7 +174,7 @@ extends GregtechMeta_MultiBlockBase {
 			mOffsetX_Upper = 2;
 			mOffsetZ_Lower = -3;
 			mOffsetZ_Upper = 3;
-			Utils.LOG_WARNING("Controler is facing Z direction.");
+			Logger.WARNING("Controler is facing Z direction.");
 		}
 		else {
 			mCurrentDirectionX = 3;
@@ -183,7 +183,7 @@ extends GregtechMeta_MultiBlockBase {
 			mOffsetX_Upper = 3;
 			mOffsetZ_Lower = -2;
 			mOffsetZ_Upper = 2;	
-			Utils.LOG_WARNING("Controler is facing X direction.");	
+			Logger.WARNING("Controler is facing X direction.");	
 		}
 
 		//if (aBaseMetaTileEntity.fac)
@@ -191,8 +191,8 @@ extends GregtechMeta_MultiBlockBase {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * mCurrentDirectionX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * mCurrentDirectionZ;
 
-		Utils.LOG_WARNING("xDir"+(xDir));
-		Utils.LOG_WARNING("zDir"+(zDir)); 
+		Logger.WARNING("xDir"+(xDir));
+		Logger.WARNING("zDir"+(zDir)); 
 		/*if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
 			return false;
 		}*/
@@ -204,22 +204,22 @@ extends GregtechMeta_MultiBlockBase {
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
 								zDir + j);
 						if (!addToMachineList(tTileEntity)) {
-							Utils.LOG_WARNING("X: "+i+" | Z: "+j);
+							Logger.WARNING("X: "+i+" | Z: "+j);
 							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((tBlock != getCasingBlock()) && (tMeta != getCasingMeta())) {
 								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
 										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
 									if (tBlock == Blocks.air){
-										Utils.LOG_WARNING("Found Air");
+										Logger.WARNING("Found Air");
 									}
 									else if (tBlock == Blocks.water){
-										Utils.LOG_WARNING("Found Water");
+										Logger.WARNING("Found Water");
 									}
 								}
 								else {
-									Utils.LOG_WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
-									Utils.LOG_WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
+									Logger.WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
+									Logger.WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
 									return false;
 								}
 
@@ -231,10 +231,10 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((tAmount >= 8)){
-			Utils.LOG_WARNING("Made structure.");
+			Logger.WARNING("Made structure.");
 		}
 		else {
-			Utils.LOG_WARNING("Did not make structure.");
+			Logger.WARNING("Did not make structure.");
 		}
 		return (tAmount >= 8);
 	}
@@ -375,10 +375,10 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((tAmount == 45)){
-			Utils.LOG_WARNING("Filled structure.");
+			Logger.WARNING("Filled structure.");
 		}
 		else {
-			Utils.LOG_WARNING("Did not fill structure.");
+			Logger.WARNING("Did not fill structure.");
 		}
 		return (tAmount == 45);
 	}

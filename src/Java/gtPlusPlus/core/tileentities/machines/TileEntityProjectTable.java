@@ -5,12 +5,12 @@ import java.util.Vector;
 
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_ProjectTable;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.ModularBauble;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
@@ -139,7 +139,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 						|| (dataStick == GregtechItemList.Old_Tool_DataStick.get(1)) 
 						|| (dataStick.getItem() instanceof MetaGeneratedGregtechItems && dataStick.getItemDamage() == 32208)){				
 
-					Utils.LOG_INFO("Found Data Stick and valid container.");
+					Logger.INFO("Found Data Stick and valid container.");
 
 
 					ItemStack outputComponent = container.getOutputContent();
@@ -151,17 +151,17 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 					NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
 					NBTUtils.setBoolean(newStick, "mEncrypted", true);
 					int slotm=0;
-					Utils.LOG_WARNING("Uploading to Data Stick.");
+					Logger.WARNING("Uploading to Data Stick.");
 					for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
 						if (is != null){
-							Utils.LOG_WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+							Logger.WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
 						}
 						else {					
-							Utils.LOG_WARNING("Left memory slot "+slotm+" blank.");
+							Logger.WARNING("Left memory slot "+slotm+" blank.");
 						}
 						slotm++;
 					}
-					Utils.LOG_WARNING("Encrypting Data Stick.");
+					Logger.WARNING("Encrypting Data Stick.");
 					this.inventoryOutputs.setInventorySlotContents(1, newStick);
 					this.inventoryOutputs.setInventorySlotContents(0, null);
 				}
@@ -170,12 +170,12 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 			//Utils.LOG_INFO("Doing thing 1");
 			if (dataStick != null)
 				if (dataStick.getItem() instanceof ModularBauble){
-					Utils.LOG_INFO("Doing thing 2");
+					Logger.INFO("Doing thing 2");
 					ItemStack tBauble = dataStick;
 					dataStick = null;
 					this.inventoryOutputs.setInventorySlotContents(0, dataStick);
 					if (this.inventoryGrid != null){
-						Utils.LOG_INFO("Doing things");
+						Logger.INFO("Doing things");
 						ItemStack[] tStack = container.getInputComponents();
 						if (tStack != null){
 							//Utils.LOG_INFO(""+tStack.length);
@@ -184,29 +184,29 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 
 									ItemStack testStack;
 									if ((testStack = container.inventoryGrid.getStackInSlot(i)) != null){
-										Utils.LOG_INFO("FOUND: "+testStack.getDisplayName());
+										Logger.INFO("FOUND: "+testStack.getDisplayName());
 									}
 
 									if (tStack[i] != null){					
-										Utils.LOG_INFO("found "+tStack[i].getDisplayName());
+										Logger.INFO("found "+tStack[i].getDisplayName());
 										try {
 											if (tStack[i].getItem() == Items.feather){
 												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_BELT);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
 											}
 											if (tStack[i].getItem() == Items.bed){
 												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_RING);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
 											}
 											if (tStack[i].getItem() == Items.boat){
 												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_AMULET);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
@@ -214,7 +214,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 
 											if (tStack[i].getItem() == Items.egg){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_HOLY, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HOLY)+1);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
@@ -222,7 +222,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 											
 											if (tStack[i].getItem() == Items.baked_potato){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DEF, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)+1);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
@@ -230,7 +230,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 
 											if (tStack[i].getItem() == Items.cooked_beef){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_HP, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HP)+1);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
@@ -238,25 +238,25 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 
 											if (tStack[i] == ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:17019", 17019, 1)){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DEF, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)+1);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 											}
 											if (tStack[i] == ItemList.Electric_Motor_LV.get(1)){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+1);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 											}
 											else if (tStack[i] == ItemList.Electric_Motor_MV.get(1)){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+2);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 											}
 											else if (tStack[i] == ItemList.Electric_Motor_HV.get(1)){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+3);
-												Utils.LOG_INFO("buffed Modular bauble");
+												Logger.INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);
 											}
@@ -266,7 +266,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 										}
 									}
 								}
-								Utils.LOG_INFO("set new Modular bauble");
+								Logger.INFO("set new Modular bauble");
 								this.inventoryOutputs.setInventorySlotContents(1, tBauble);
 							}
 						}

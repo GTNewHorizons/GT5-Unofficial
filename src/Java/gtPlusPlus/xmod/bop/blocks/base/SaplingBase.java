@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -59,7 +60,7 @@ public class SaplingBase extends BlockSapling
 		try {
 			return this.saplingTextures[meta];  
 		}catch(Throwable T){
-			Utils.LOG_WARNING("Invalid Sapling meta is "+meta);
+			Logger.WARNING("Invalid Sapling meta is "+meta);
 			return this.saplingTextures[0];
 		}
 	}
@@ -72,11 +73,11 @@ public class SaplingBase extends BlockSapling
 		if (!world.isRemote){
 			super.updateTick(world, x, y, z, rand);
 			if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(7) == 0){
-				Utils.LOG_WARNING("Update Tick");
+				Logger.WARNING("Update Tick");
 				this.updateMeta(world, x, y, z, rand);
 			}
 			else {
-				Utils.LOG_WARNING("Tried to Tick.");
+				Logger.WARNING("Tried to Tick.");
 			}
 		}
 	}
@@ -84,7 +85,7 @@ public class SaplingBase extends BlockSapling
 	//Dunno - Think it is doGrow || doGrowthTick
 	@Override
 	public void func_149853_b(World world, Random rand, int x, int y, int z){
-		Utils.LOG_WARNING("Please find what calls me - func_149853_b");
+		Logger.WARNING("Please find what calls me - func_149853_b");
 		this.updateMeta(world, x, y, z, rand);
 	}
 
@@ -94,22 +95,22 @@ public class SaplingBase extends BlockSapling
 
 	@Override
 	public void func_149879_c(World world, int x, int y, int z, Random rand){
-		Utils.LOG_WARNING("func_149879_c - 1");
+		Logger.WARNING("func_149879_c - 1");
 		int l = world.getBlockMetadata(x, y, z);
 
 		if ((l & 8) == 0){
-			Utils.LOG_WARNING("func_149879_c - 2");
+			Logger.WARNING("func_149879_c - 2");
 			world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
 		}
 		else{
-			Utils.LOG_WARNING("func_149879_c - 3");
+			Logger.WARNING("func_149879_c - 3");
 			this.func_149878_d(world, x, y, z, rand);
 		}
 	}
 
 	@Override
 	public void func_149878_d(World world, int x, int y, int z, Random rand){
-		Utils.LOG_WARNING("func_149878_d - 1");
+		Logger.WARNING("func_149878_d - 1");
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
 		int l = world.getBlockMetadata(x, y, z) & 7;
 		Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
@@ -121,7 +122,7 @@ public class SaplingBase extends BlockSapling
 		{
 			case 0:
 			default:
-				Utils.LOG_WARNING("Case 0 - Grow Tree");
+				Logger.WARNING("Case 0 - Grow Tree");
 				break;
 			
 		}

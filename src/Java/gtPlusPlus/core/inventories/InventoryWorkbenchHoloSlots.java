@@ -1,6 +1,6 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -190,25 +190,25 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 	public ItemStack decrStackSize(final int p_70298_1_, final int p_70298_2_)
 	{
 		if (this.getStackInSlot(0) != null){
-			Utils.LOG_INFO("getStackInSlot(0) contains "+this.getStackInSlot(0).getDisplayName());
+			Logger.INFO("getStackInSlot(0) contains "+this.getStackInSlot(0).getDisplayName());
 			if (this.stackResult[0] == null){
-				Utils.LOG_INFO("this.stackResult[0] == null");
+				Logger.INFO("this.stackResult[0] == null");
 				this.stackResult[0] = this.getStackInSlot(0);
 			}
 			else if (this.stackResult[0] != null){
-				Utils.LOG_INFO("this.stackResult[0] != null");
+				Logger.INFO("this.stackResult[0] != null");
 				if (this.stackResult[0].getDisplayName().toLowerCase().equals(this.getStackInSlot(0).getDisplayName().toLowerCase())){
-					Utils.LOG_INFO("Items are the same?");
+					Logger.INFO("Items are the same?");
 				}
 				else {
-					Utils.LOG_INFO("Items are not the same.");
+					Logger.INFO("Items are not the same.");
 				}
 			}
 		}
 
 		if (this.stackResult[0] != null)
 		{
-			Utils.LOG_INFO("this.stackResult[0] != null - Really never should be though. - Returning "+this.stackResult[0].getDisplayName());
+			Logger.INFO("this.stackResult[0] != null - Really never should be though. - Returning "+this.stackResult[0].getDisplayName());
 			final ItemStack itemstack = this.stackResult[0];
 			this.stackResult[0] = null;
 			return itemstack;

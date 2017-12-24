@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
@@ -10,7 +11,17 @@ public final class ELEMENT {
 	private static final ELEMENT thisClass = new ELEMENT();
 
 	public ELEMENT(){
-
+		
+		//GTNH Trinium Handling		
+		if (CORE.GTNH){
+			TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(Materials.valueOf("Trinium"));
+			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+		}
+		else {
+			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
+			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+		}
+		
 	}
 
 	public static ELEMENT getInstance(){
@@ -131,7 +142,7 @@ public final class ELEMENT {
 	
 	//Fictional	
 	public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
-	public final Material TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{170, 210, 130}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
-	public final Material TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+	public final Material TRINIUM;
+	public final Material TRINIUM_REFINED;
 	//https://github.com/Blood-Asp/GT5-Unofficial/issues/609
 }

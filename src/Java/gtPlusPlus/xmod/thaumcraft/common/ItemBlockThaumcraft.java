@@ -22,6 +22,7 @@ public class ItemBlockThaumcraft extends ItemBlockEntityBase{
 		return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
 	}
 
+	@Override
 	public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World world, final int x,
 			final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ,
 			final int metadata) {

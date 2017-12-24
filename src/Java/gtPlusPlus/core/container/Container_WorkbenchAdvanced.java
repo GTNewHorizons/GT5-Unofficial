@@ -1,13 +1,13 @@
 package gtPlusPlus.core.container;
 
 import gregtech.api.gui.GT_Slot_Holo;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -151,74 +151,74 @@ public class Container_WorkbenchAdvanced extends Container {
 			}
 
 			if (aSlotIndex == this.slotOutput){
-				Utils.LOG_WARNING("Player Clicked on the output slot");
+				Logger.WARNING("Player Clicked on the output slot");
 				//TODO
 			}
 
 			for (final int x : this.slotHolo){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Holo Grid");
+					Logger.WARNING("Player Clicked slot "+aSlotIndex+" in the Holo Grid");
 					if (x == 1){
-						Utils.LOG_WARNING("Player Clicked Blueprint slot in the Holo Grid");
+						Logger.WARNING("Player Clicked Blueprint slot in the Holo Grid");
 					}
 					else if (x == 2){
-						Utils.LOG_WARNING("Player Clicked Right Arrow slot in the Holo Grid");
+						Logger.WARNING("Player Clicked Right Arrow slot in the Holo Grid");
 						if (this.inventoryHolo.getStackInSlot(1) != null){
-							Utils.LOG_WARNING("Found an ItemStack.");
+							Logger.WARNING("Found an ItemStack.");
 							if (this.inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
-								Utils.LOG_WARNING("Found a blueprint.");
+								Logger.WARNING("Found a blueprint.");
 								final ItemStack tempBlueprint = this.inventoryHolo.getStackInSlot(1);
 								final ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();
 								if ((this.inventoryHolo.getStackInSlot(0) != null) && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
-									Utils.LOG_WARNING("Output slot was not empty.");
-									Utils.LOG_WARNING("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
+									Logger.WARNING("Output slot was not empty.");
+									Logger.WARNING("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
 									tempItemBlueprint.setBlueprint(this.inventoryHolo.getStackInSlot(1), this.craftMatrix, this.inventoryHolo.getStackInSlot(0));
 									final ItemStack newTempBlueprint = ItemUtils.getSimpleStack(tempItemBlueprint);
 									this.inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
-									Utils.LOG_WARNING(ItemUtils.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
+									Logger.WARNING(ItemUtils.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
 								}
 								else {
 									if (tempItemBlueprint.hasBlueprint(tempBlueprint)){
-										Utils.LOG_WARNING("Blueprint already holds a recipe.");
+										Logger.WARNING("Blueprint already holds a recipe.");
 									}
 									else {
-										Utils.LOG_WARNING("Output slot was empty.");
+										Logger.WARNING("Output slot was empty.");
 									}
 								}
 							}
 							else {
-								Utils.LOG_WARNING("ItemStack found was not a blueprint.");
+								Logger.WARNING("ItemStack found was not a blueprint.");
 							}
 						}
 						else {
-							Utils.LOG_WARNING("No ItemStack found in Blueprint slot.");
+							Logger.WARNING("No ItemStack found in Blueprint slot.");
 						}
 					}
 					else if (x == 3){
-						Utils.LOG_WARNING("Player Clicked Big [P] slot in the Holo Grid");
+						Logger.WARNING("Player Clicked Big [P] slot in the Holo Grid");
 					}
 					else if (x == 4){
-						Utils.LOG_WARNING("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");
+						Logger.WARNING("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");
 					}
 					else if (x == 5){
-						Utils.LOG_WARNING("Player Clicked Transfer to Storage Grid slot in the Holo Grid");
+						Logger.WARNING("Player Clicked Transfer to Storage Grid slot in the Holo Grid");
 					}
 				}
 			}
 
 			for (final int x : this.slotCrafting){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+					Logger.WARNING("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
 				}
 			}
 			for (final int x : this.slotStorage){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the storage Grid");
+					Logger.WARNING("Player Clicked slot "+aSlotIndex+" in the storage Grid");
 				}
 			}
 			for (final int x : this.slotTools){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the tool Grid");
+					Logger.WARNING("Player Clicked slot "+aSlotIndex+" in the tool Grid");
 				}
 			}
 		}

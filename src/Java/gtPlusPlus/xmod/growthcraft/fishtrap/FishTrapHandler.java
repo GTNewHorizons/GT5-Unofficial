@@ -1,9 +1,12 @@
 package gtPlusPlus.xmod.growthcraft.fishtrap;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
@@ -11,30 +14,62 @@ import net.minecraft.item.ItemStack;
 public class FishTrapHandler {
 
 	private static final String[] fishTypes = {"fish", "junk", "treasure"};
+	private static Object mFishingRegistry;
+	private static Growthcraft_Old mHandler;
+	
+	public static Object getFishingRegistry(){
+		if (mFishingRegistry != null){
+			return mFishingRegistry;
+		}
+		else {
+			return setFishTrapRegistry();
+		}
+	}
+
+	private final static Object setFishTrapRegistry(){
+		Class mFishingRegistryClass;
+		try {
+			mFishingRegistryClass = Class.forName("growthcraft.api.fishtrap.FishTrapRegistry");
+			final Method mFishingRegistryMethod = mFishingRegistryClass.getDeclaredMethod("getInstance", null);
+			mFishingRegistry = mFishingRegistryMethod.invoke(null);
+			if (mFishingRegistry != null){
+				return mFishingRegistry;
+			}
+		}
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		}
+		return null;
+	}
 
 	protected static void addFish(final String lootType, final ItemStack lootStack, final int lootChance){
 
+		if (mFishingRegistry == null){
+			setFishTrapRegistry();
+		}
+		if (mHandler == null){
+			mHandler = new Growthcraft_Old();
+		}
+		
 		final String GCVersion = LoadedMods.getModVersion("Growthcraft");
-
 		final String[] versionString = GCVersion.split("//.");
 
 		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1") || versionString[1].equals("3")){
 			if (lootType.equals(fishTypes[0])){
-				Growthcraft_Old.addTrapFish(lootStack, lootChance);
-				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
+				mHandler.addTrapFish(lootStack, lootChance);
+				Logger.INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
 			}
 			else if (lootType.equals(fishTypes[1])){
-				Growthcraft_Old.addTrapJunk(lootStack, lootChance);
-				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
+				mHandler.addTrapJunk(lootStack, lootChance);
+				Logger.INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
 			}
 			else if (lootType.equals(fishTypes[2])){
-				Growthcraft_Old.addTrapTreasure(lootStack, lootChance);
-				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
+				mHandler.addTrapTreasure(lootStack, lootChance);
+				Logger.INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
 			}
 			else {
 				return;
 			}
-		}
+		}/*
 		else if (LoadedMods.getModVersion("Growthcraft").contains("2.7.2")){
 			if (lootType.equals(fishTypes[0])){
 				Growthcraft_New.addTrapFish(lootStack, lootChance);
@@ -51,10 +86,10 @@ public class FishTrapHandler {
 			else {
 				return;
 			}
-		}
+		}*/
 
 		else {
-			Utils.LOG_INFO("Extra Fish loot for Growthcraft Fishtraps disabled. Found V."+LoadedMods.getModVersion("Growthcraft"));
+			Logger.INFO("Extra Fish loot for Growthcraft Fishtraps disabled. Found V."+LoadedMods.getModVersion("Growthcraft"));
 		}
 
 	}

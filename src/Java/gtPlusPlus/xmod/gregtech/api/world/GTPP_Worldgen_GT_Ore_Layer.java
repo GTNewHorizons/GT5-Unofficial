@@ -2,6 +2,11 @@ package gtPlusPlus.xmod.gregtech.api.world;
 
 import static gtPlusPlus.xmod.gregtech.HANDLER_GT.sCustomWorldgenFile;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Random;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -12,11 +17,6 @@ import gtPlusPlus.core.material.Material;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class GTPP_Worldgen_GT_Ore_Layer
 extends GTPP_Worldgen {
@@ -83,6 +83,7 @@ extends GTPP_Worldgen {
 		 }
 	}
 
+	@Override
 	public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
 		if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
 			return false; //Not the correct biome for ore mix

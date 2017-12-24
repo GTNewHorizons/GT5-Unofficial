@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -39,7 +39,7 @@ public class Gregtech4Content {
 
 	private static void tesseracts() {
 		// Gregtech 4 Tesseracts
-		Utils.LOG_INFO("Gregtech 4 Content | Registering Tesseracts.");
+		Logger.INFO("Gregtech 4 Content | Registering Tesseracts.");
 		GregtechItemList.GT4_Tesseract_Generator
 				.set(new GT_MetaTileEntity_TesseractGenerator(833, "tesseract.generator", "Tesseract Generator", 4)
 						.getStackForm(1L));
@@ -50,7 +50,7 @@ public class Gregtech4Content {
 
 	private static void shelves() {
 		// Gregtech 4 Shelves
-		Utils.LOG_INFO("Gregtech 4 Content | Registering Shelves.");
+		Logger.INFO("Gregtech 4 Content | Registering Shelves.");
 		GregtechItemList.GT4_Shelf
 				.set(new GT4Entity_Shelf(870, "gtplusplus.shelf.wooden", "Wood encased Shelf", "Stores Books & Things")
 						.getStackForm(1L));
@@ -69,7 +69,7 @@ public class Gregtech4Content {
 	private static void thermalBoiler() {
 		// Gregtech 4 Thermal Boiler
 		if (CORE.ConfigSwitches.enableMultiblock_ThermalBoiler){
-		Utils.LOG_INFO("Gregtech 4 Content | Registering Thermal Boiler.");
+		Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
 		GregtechItemList.GT4_Thermal_Boiler
 				.set(new GT4Entity_ThermalBoiler(875, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
 		}
@@ -78,7 +78,7 @@ public class Gregtech4Content {
 
 	private static void multiCrafter() {
 		// Gregtech 4 Multiblock Auto-Crafter
-		Utils.LOG_INFO("Gregtech 4 Content | Registering Multiblock Crafter.");
+		Logger.INFO("Gregtech 4 Content | Registering Multiblock Crafter.");
 		GregtechItemList.GT4_Multi_Crafter.set(
 				new GT4Entity_AutoCrafter(876, "gtplusplus.autocrafter.multi", "Large Scale Auto-Asesembler v1.01").getStackForm(1L));
 	}

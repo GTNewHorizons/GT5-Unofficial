@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base.foods;
 
 import java.util.List;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -40,7 +41,7 @@ public class BaseItemHotFood extends BaseItemFood{
 		if (!world.isRemote){
 			if(iStack.getItemDamage() == this.cooldownTime)	{
 				if (entityHolding instanceof EntityPlayer){
-					Utils.LOG_INFO("Foods Done.");
+					Logger.INFO("Foods Done.");
 					((EntityPlayer) entityHolding).inventory.addItemStackToInventory(ItemUtils.getSimpleStack(this.output));
 					((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
 				}

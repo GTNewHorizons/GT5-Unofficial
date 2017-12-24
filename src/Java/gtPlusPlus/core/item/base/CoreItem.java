@@ -5,8 +5,8 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -175,7 +175,7 @@ public class CoreItem extends Item
 		if (this.turnsInto != null){
 			if (entityHolding instanceof EntityPlayer){
 
-				Utils.LOG_INFO("Replacing "+iStack.getDisplayName()+" with "+this.turnsInto.getDisplayName()+".");
+				Logger.INFO("Replacing "+iStack.getDisplayName()+" with "+this.turnsInto.getDisplayName()+".");
 				final ItemStack tempTransform = this.turnsInto;
 				if (iStack.stackSize == 64){
 					tempTransform.stackSize=64;

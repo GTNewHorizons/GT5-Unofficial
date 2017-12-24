@@ -1,6 +1,6 @@
 package gtPlusPlus.core.recipe;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
@@ -32,7 +32,7 @@ public class ShapedRecipeObject {
 		this.object_H = input_H;
 		this.object_I = input_I;
 		this.object_OUTPUT = input_Output;
-		Utils.LOG_SPECIFIC_WARNING("ShapedRecipeObject", "New object created.", 36);
+		Logger.SPECIFIC_WARNING("ShapedRecipeObject", "New object created.", 36);
 	}
 
 	public void buildRecipe(){

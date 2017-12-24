@@ -6,7 +6,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,7 +19,7 @@ public class Meta_GT_Proxy {
 	public static IIconRegister sBlockIcons, sItemIcons;
 
 	public Meta_GT_Proxy() {
-		Utils.LOG_INFO("GT_PROXY - initialized.");
+		Logger.INFO("GT_PROXY - initialized.");
 		for (final String tOreName : OreDictionary.getOreNames()) {
 
 		}

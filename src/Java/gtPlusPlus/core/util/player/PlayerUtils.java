@@ -1,12 +1,10 @@
 package gtPlusPlus.core.util.player;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +24,7 @@ public class PlayerUtils {
 			final List<EntityPlayer> i = new ArrayList<>();
 			final Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
 			while (iterator.hasNext()) {
-				i.add((EntityPlayer) (iterator.next()));
+				i.add((iterator.next()));
 			}
 			for (final EntityPlayer temp : i) {
 				if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())){
@@ -157,7 +155,11 @@ public class PlayerUtils {
 		return null;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public static final boolean isPlayerAlkalus(){
+		if (Utils.isServer()){
+			return false;
+		}
 		return isPlayerAlkalus(Minecraft.getMinecraft().thePlayer);
 	}
 	

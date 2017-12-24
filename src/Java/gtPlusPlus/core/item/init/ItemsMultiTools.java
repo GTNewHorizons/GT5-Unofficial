@@ -1,12 +1,12 @@
 package gtPlusPlus.core.item.init;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 
 public class ItemsMultiTools {
@@ -64,7 +64,7 @@ public class ItemsMultiTools {
 	}
 
 	private static boolean toolFactory(final Material m){
-		Utils.LOG_WARNING("Generating Multi-Tools for "+m.getLocalizedName());
+		Logger.WARNING("Generating Multi-Tools for "+m.getLocalizedName());
 		ModItems.MP_GTMATERIAL = ItemUtils.generateMultiPick(m);
 		ModItems.MS_GTMATERIAL = ItemUtils.generateMultiShovel(m);
 		return true;

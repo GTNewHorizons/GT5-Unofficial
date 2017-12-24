@@ -8,8 +8,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -34,7 +34,7 @@ public class GregtechMiniRaFusion {
 		int mRecipeCount = 0;		
 		GT_Recipe_Map r = GT_Recipe.GT_Recipe_Map.sFusionRecipes;		
 			final Collection<GT_Recipe> x = r.mRecipeList;
-			Utils.LOG_INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
+			Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
 			for (final GT_Recipe newBo : x) {				
 				if (Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.addRecipe(
 						true, 

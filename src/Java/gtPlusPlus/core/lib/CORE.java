@@ -1,17 +1,10 @@
 package gtPlusPlus.core.lib;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
@@ -46,8 +39,6 @@ public class CORE {
 
 	public static boolean DEVENV = false;
 	public static boolean DEBUG = false;
-	@SideOnly(Side.CLIENT)
-	public static boolean mFancyGraphics = false;
 	//Only can be set in Dev, no config or setting elsewhere.
 	public static final boolean LOAD_ALL_CONTENT = false;;
 
@@ -55,13 +46,14 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.6.101-prerelease";
+	public static final String VERSION = "1.6.110-prerelease";
 	public static String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static String USER_COUNTRY = GeoUtils.determineUsersCountry();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
 
 	//Tweakables
 	public static int DARKBIOME_ID = 238;	
+	public static int DARKWORLD_ID = 227;
 
 	//GT Vars;
 	public static final int GREG_FIRST_ID = 760;

@@ -1,16 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.items.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.array.Pair;
@@ -184,20 +181,20 @@ public class ChargingHelper {
 		if (mEntity == null){
 			return false;
 		}
-		Utils.LOG_WARNING("trying to map new player");
+		Logger.WARNING("trying to map new player");
 		if (mValidPlayers.containsKey(mPlayer)){
-			Utils.LOG_WARNING("Key contains player already?");
+			Logger.WARNING("Key contains player already?");
 			return false;
 		}
 		else {
-			Utils.LOG_WARNING("key not found, adding");
+			Logger.WARNING("key not found, adding");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
 			if (mValidPlayers.put(mPlayer, mEntry) == null){
-				Utils.LOG_WARNING("Added a Player to the Tick Map.");
+				Logger.WARNING("Added a Player to the Tick Map.");
 				return true;
 			}
 			else {
-				Utils.LOG_WARNING("Tried to add player but it was already there?");
+				Logger.WARNING("Tried to add player but it was already there?");
 				return false;
 			}
 		}
@@ -207,21 +204,21 @@ public class ChargingHelper {
 		if (mEntity == null){
 			return false;
 		}
-		Utils.LOG_WARNING("trying to remove player from map");
+		Logger.WARNING("trying to remove player from map");
 		if (mValidPlayers.containsKey(mPlayer)){
-			Utils.LOG_WARNING("key found, removing");
+			Logger.WARNING("key found, removing");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
 			if (mValidPlayers.remove(mPlayer, mEntry)){
-				Utils.LOG_WARNING("Removed a Player to the Tick Map.");
+				Logger.WARNING("Removed a Player to the Tick Map.");
 				return true;
 			}
 			else {
-				Utils.LOG_WARNING("Tried to remove player but it was not there?");
+				Logger.WARNING("Tried to remove player but it was not there?");
 				return false;
 			}
 		}
 		else {
-			Utils.LOG_WARNING("Key does not contain player?");
+			Logger.WARNING("Key does not contain player?");
 			return false;
 		}
 	}
@@ -268,17 +265,17 @@ public class ChargingHelper {
 		for (ItemStack mTemp : mItems){
 			mItemSlot++;
 			if (mTemp != null){
-				Utils.LOG_WARNING("Slot "+mItemSlot+" contains "+mTemp.getDisplayName());
+				Logger.WARNING("Slot "+mItemSlot+" contains "+mTemp.getDisplayName());
 			}
 			//Is item Electrical
 			if (isItemValid(mTemp)){
-				Utils.LOG_WARNING("1");
+				Logger.WARNING("1");
 
 				//Transfer Limit
 				double mItemEuTLimit = ((IElectricItem) mTemp.getItem()).getTransferLimit(mTemp);
 				//Check if Tile has more or equal EU to what can be transferred into the item.
 				if (mEuStored >= mItemEuTLimit){
-					Utils.LOG_WARNING("2");
+					Logger.WARNING("2");
 
 					double mItemMaxCharge = ((IElectricItem) mTemp.getItem()).getMaxCharge(mTemp);
 					double mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
@@ -289,7 +286,7 @@ public class ChargingHelper {
 
 					//Try get charge direct from NBT for GT and IC2 stacks
 					try { 
-						Utils.LOG_WARNING("3");						
+						Logger.WARNING("3");						
 						if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01 
 								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_01 
 								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_02 
@@ -327,7 +324,7 @@ public class ChargingHelper {
 						mVoltageIncrease = mItemEuTLimit;
 					}
 
-					Utils.LOG_WARNING("4");
+					Logger.WARNING("4");
 
 					int mMulti;
 					if ((mitemCurrentCharge + (mVoltageIncrease*20)) <= (mItemMaxCharge - (mVoltageIncrease*20))){
@@ -342,15 +339,15 @@ public class ChargingHelper {
 					else {
 						mMulti = 1;
 					}
-					Utils.LOG_WARNING("5");
+					Logger.WARNING("5");
 
 
 					int mMultiVoltage = (int) (mMulti*mVoltageIncrease);
 
 					if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge){
-						Utils.LOG_WARNING("6");
+						Logger.WARNING("6");
 						if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, mTier, true, false) == 0){
-							Utils.LOG_WARNING("6.5");
+							Logger.WARNING("6.5");
 							for (int i=0; i<mMulti;i++){
 								if (ElectricItem.manager.charge(mTemp, mVoltageIncrease, mTier, false, false) == 0){
 									continue;
@@ -358,10 +355,10 @@ public class ChargingHelper {
 							}
 						}
 						if (ElectricItem.manager.getCharge(mTemp) > mitemCurrentCharge){
-							Utils.LOG_WARNING("7");
-							mEntity.setEUVar((long) (mEuStored-(mVoltage*mMulti)));
+							Logger.WARNING("7");
+							mEntity.setEUVar(mEuStored-(mVoltage*mMulti));
 							mEuStored = mEntity.getEUVar();
-							Utils.LOG_WARNING("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
+							Logger.WARNING("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
 							mChargedItems++;
 						}
 					}
@@ -371,7 +368,7 @@ public class ChargingHelper {
 			}
 			else {
 				if (mTemp != null){
-					Utils.LOG_WARNING("Found Non-Valid item. "+mTemp.getDisplayName());
+					Logger.WARNING("Found Non-Valid item. "+mTemp.getDisplayName());
 				}
 			}
 		}

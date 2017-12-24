@@ -2,7 +2,7 @@ package gtPlusPlus.core.tileentities.general;
 
 import org.lwjgl.input.Keyboard;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,26 +54,26 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
 		this.needsUpdate = true;
-		Utils.LOG_WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
+		Logger.WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
 		if (this.mConvertToEssence){
 			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Utils.LOG_WARNING("fill(tankLiquidXp)");
+				Logger.WARNING("fill(tankLiquidXp)");
 				return this.tankLiquidXp.fill(resource, doFill);
 			}
 			else {
-				Utils.LOG_WARNING("Looking for Liquid Xp, Instead found "+resource.getLocalizedName()+".");
+				Logger.WARNING("Looking for Liquid Xp, Instead found "+resource.getLocalizedName()+".");
 			}
 		}
 		else {
 			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Utils.LOG_WARNING("fill(tankEssence)");
+				Logger.WARNING("fill(tankEssence)");
 				return this.tankEssence.fill(resource, doFill);
 			}
 			else {
-				Utils.LOG_WARNING("Looking for Essence, Instead found "+resource.getLocalizedName()+".");
+				Logger.WARNING("Looking for Essence, Instead found "+resource.getLocalizedName()+".");
 			}
 		}
-		Utils.LOG_WARNING("fill(0)");
+		Logger.WARNING("fill(0)");
 		return 0;
 	}
 
@@ -82,24 +82,24 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 		this.needsUpdate = true;
 		if (this.mConvertToEssence){
 			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Utils.LOG_WARNING("drain(mConvertToEssence)");
+				Logger.WARNING("drain(mConvertToEssence)");
 				return this.tankEssence.drain(resource.amount, doDrain);
 			}
 		}
 		else {
 			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Utils.LOG_WARNING("drain(tankLiquidXp)");
+				Logger.WARNING("drain(tankLiquidXp)");
 				return this.tankLiquidXp.drain(resource.amount, doDrain);
 			}
 		}
-		Utils.LOG_WARNING("drain(null)");
+		Logger.WARNING("drain(null)");
 		return null;
 	}
 
 	@Override
 	public FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
 		this.needsUpdate = true;
-		Utils.LOG_WARNING("drain(Ex)");
+		Logger.WARNING("drain(Ex)");
 		final FluidStack fluid_Essence = this.tankEssence.getFluid();
 		final FluidStack fluid_Xp = this.tankLiquidXp.getFluid();
 		if ((fluid_Essence == null) && (fluid_Xp == null)) {
@@ -144,7 +144,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 			this.tankLiquidXp = tank;
 		}
 
-		Utils.LOG_WARNING("drain(Ex2)");
+		Logger.WARNING("drain(Ex2)");
 		return stack;
 	}
 
@@ -152,17 +152,17 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public boolean canFill(final ForgeDirection from, final Fluid fluid) {
 		if (this.mConvertToEssence){
 			if (this.tankEssence.getFluidAmount() < this.tankEssence.getCapacity()){
-				Utils.LOG_WARNING("canFill(mConvertToEssence)");
+				Logger.WARNING("canFill(mConvertToEssence)");
 				return true;
 			}
 		}
 		else {
 			if (this.tankLiquidXp.getFluidAmount()  < this.tankLiquidXp.getCapacity()){
-				Utils.LOG_WARNING("canFill(tankLiquidXp)");
+				Logger.WARNING("canFill(tankLiquidXp)");
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("canFill(false)");
+		Logger.WARNING("canFill(false)");
 		return false;
 	}
 
@@ -178,7 +178,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("canDrain(false)");
+		Logger.WARNING("canDrain(false)");
 		return false;
 	}
 
@@ -193,7 +193,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	}
 
 	public float getAdjustedVolume() {
-		Utils.LOG_WARNING("AdjustedVolume()");
+		Logger.WARNING("AdjustedVolume()");
 		this.needsUpdate = true;
 		final float amount = this.tankLiquidXp.getFluidAmount();
 		final float capacity = this.tankLiquidXp.getCapacity();
@@ -226,7 +226,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 					this.tankEssence.fill(bigStorage, true);
 					this.tankLiquidXp.drain(100, true);
 					this.needsUpdate = true;
-					Utils.LOG_WARNING("B->A");
+					Logger.WARNING("B->A");
 				}
 			}
 			else {
@@ -236,7 +236,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 					this.tankLiquidXp.fill(bigStorage, true);
 					this.tankEssence.drain((int) rm, true);
 					this.needsUpdate = true;
-					Utils.LOG_WARNING("A->B");
+					Logger.WARNING("A->B");
 				}
 			}
 		}

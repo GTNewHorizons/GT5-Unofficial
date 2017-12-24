@@ -23,9 +23,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.*;
 
 public class ModularBauble extends BaseBauble {
 
@@ -86,7 +84,7 @@ public class ModularBauble extends BaseBauble {
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0) {
 			if (mStatlevel > 0 && mStatlevel <= 100) {
-				int bonus = (int) (mStatlevel / 5);
+				int bonus = mStatlevel / 5;
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(),
 						new AttributeModifier(getBaubleUUID(stack), "HP" + mStatlevel, bonus * 2, 0));
 			}
@@ -142,7 +140,7 @@ public class ModularBauble extends BaseBauble {
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0) {
 			list.add(EnumChatFormatting.GRAY + "Health Boost: " + EnumChatFormatting.RED + mStatlevel
-					+ EnumChatFormatting.GRAY + "/100. Bonus " + ((int) mStatlevel / 5) + " hearts.");
+					+ EnumChatFormatting.GRAY + "/100. Bonus " + (mStatlevel / 5) + " hearts.");
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0) {
 			list.add(EnumChatFormatting.GRAY + "Speed Boost: " + EnumChatFormatting.WHITE + mStatlevel

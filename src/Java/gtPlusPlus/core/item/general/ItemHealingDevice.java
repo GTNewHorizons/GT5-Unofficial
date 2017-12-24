@@ -6,9 +6,9 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -215,7 +215,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 			if (this.getCharge(arg0) >= (1638400/4)){
 				if (arg1.getHealth() < arg1.getMaxHealth()){
 					final float rx = arg1.getMaxHealth()-arg1.getHealth();
-					Utils.LOG_INFO("rx:"+rx);
+					Logger.INFO("rx:"+rx);
 					arg1.heal(rx*2);
 					this.discharge(arg0, (1638400/4)*rx, 6, true, true, false);
 					PlayerUtils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");

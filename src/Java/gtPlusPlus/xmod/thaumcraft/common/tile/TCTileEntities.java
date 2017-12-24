@@ -2,14 +2,14 @@ package gtPlusPlus.xmod.thaumcraft.common.tile;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 
 public class TCTileEntities {	
 
 	@Optional.Method(modid = "Thaumcraft")
 		public static void init() {
-			Utils.LOG_INFO("Registering TC Tile Entities.");
+			Logger.INFO("Registering TC Tile Entities.");
 			if (LoadedMods.Thaumcraft){
 				GameRegistry.registerTileEntity(TileFastAlchemyFurnace.class, "TileFastAlchemyFurnace");
 				GameRegistry.registerTileEntity(TileFastArcaneAlembic.class, "TileFastArcaneAlembic");

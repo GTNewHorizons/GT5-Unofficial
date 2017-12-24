@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockGrass;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 
@@ -19,6 +18,7 @@ public class blockDarkWorldPollutedDirt extends BlockDirt {
 		LanguageRegistry.addName(this, "Polluted Soil");
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
@@ -30,6 +30,7 @@ public class blockDarkWorldPollutedDirt extends BlockDirt {
 	/**
 	 * Returns the color this block should be rendered. Used by leaves.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
@@ -40,6 +41,7 @@ public class blockDarkWorldPollutedDirt extends BlockDirt {
 	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
 	 * when first determining what to render.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
 	{

@@ -1,5 +1,8 @@
 package gtPlusPlus.core.world.darkworld.biome;
 
+import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.*;
+import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
+
 import java.util.Random;
 
 import gtPlusPlus.core.block.ModBlocks;
@@ -11,23 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigMushroom;
-import net.minecraft.world.gen.feature.WorldGenCactus;
-import net.minecraft.world.gen.feature.WorldGenClay;
-import net.minecraft.world.gen.feature.WorldGenDeadBush;
-import net.minecraft.world.gen.feature.WorldGenFlowers;
-import net.minecraft.world.gen.feature.WorldGenLiquids;
-import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.feature.WorldGenPumpkin;
-import net.minecraft.world.gen.feature.WorldGenReed;
-import net.minecraft.world.gen.feature.WorldGenSand;
-import net.minecraft.world.gen.feature.WorldGenWaterlily;
-import net.minecraft.world.gen.feature.WorldGenerator;
-
-import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.*;
-import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.*;
-import net.minecraftforge.common.*;
+import net.minecraft.world.gen.feature.*;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.*;
 
 public class BiomeGenerator_Custom extends BiomeDecorator {
@@ -144,7 +132,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
         this.generateLakes = true;
     }
 
-    public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_)
+    @Override
+	public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_)
     {
         if (this.currentWorld != null)
         {
@@ -162,7 +151,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
         }
     }
 
-    protected void genDecorations(BiomeGenBase p_150513_1_)
+    @Override
+	protected void genDecorations(BiomeGenBase p_150513_1_)
     {
         MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Pre(currentWorld, randomGenerator, chunk_X, chunk_Z));
         this.generateOres();
@@ -373,7 +363,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     /**
      * Standard ore generation helper. Generates most ores.
      */
-    protected void genStandardOre1(int p_76795_1_, WorldGenerator p_76795_2_, int p_76795_3_, int p_76795_4_)
+    @Override
+	protected void genStandardOre1(int p_76795_1_, WorldGenerator p_76795_2_, int p_76795_3_, int p_76795_4_)
     {
         for (int l = 0; l < p_76795_1_; ++l)
         {
@@ -387,7 +378,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     /**
      * Standard ore generation helper. Generates Lapis Lazuli.
      */
-    protected void genStandardOre2(int p_76793_1_, WorldGenerator p_76793_2_, int p_76793_3_, int p_76793_4_)
+    @Override
+	protected void genStandardOre2(int p_76793_1_, WorldGenerator p_76793_2_, int p_76793_3_, int p_76793_4_)
     {
         for (int l = 0; l < p_76793_1_; ++l)
         {
@@ -401,7 +393,8 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     /**
      * Generates ores in the current chunk
      */
-    protected void generateOres()
+    @Override
+	protected void generateOres()
     {
         MinecraftForge.ORE_GEN_BUS.post(new OreGenEvent.Pre(currentWorld, randomGenerator, chunk_X, chunk_Z));
         if (TerrainGen.generateOre(currentWorld, randomGenerator, dirtGen, chunk_X, chunk_Z, DIRT))

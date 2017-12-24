@@ -13,9 +13,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -132,7 +132,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
 					for (byte k = -1; k < 2; k = (byte) (k + 1)) {
 						if (this.getBaseMetaTileEntity().getAirOffset(i, j, k)) {
-							Utils.LOG_INFO("Found Air at: "+(controllerX+i)+" "+(controllerY+k)+" "+(controllerZ+k));
+							Logger.INFO("Found Air at: "+(controllerX+i)+" "+(controllerY+k)+" "+(controllerZ+k));
 							//if (aBaseMetaTileEntity.getWorld().isRemote){
 							//asdasd.renderStandardBlock(ModBlocks.MatterFabricatorEffectBlock, (controllerX+i), (controllerY+k), (controllerZ+k));
 							//UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.YELLOW_GREEN);
@@ -143,7 +143,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 			if (tAirCount != 10) {
-				Utils.LOG_INFO("False. Air != 10. Air == "+tAirCount);
+				Logger.INFO("False. Air != 10. Air == "+tAirCount);
 				//return false;
 			}
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
@@ -169,14 +169,14 @@ extends GT_MetaTileEntity_MultiBlockBase {
 								if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 								}
 								else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))))) {
-									Utils.LOG_INFO("False 2");
+									Logger.INFO("False 2");
 									return false;
 								}
 							}
 							else if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 							}
 							else {
-								Utils.LOG_INFO("False 3");
+								Logger.INFO("False 3");
 								return false;
 							}
 						}
@@ -184,11 +184,11 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				}
 			}
 			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				Utils.LOG_INFO("Use Busses, Not Hatches for Input/Output.");
+				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
 				return false;
 			}
 			if ((this.mInputBusses.size() != 2) || (this.mOutputBusses.size() != 2)) {
-				Utils.LOG_INFO("Incorrect amount of Input & Output busses.");
+				Logger.INFO("Incorrect amount of Input & Output busses.");
 				return false;
 			}
 			this.mMaintenanceHatches.clear();
@@ -198,19 +198,19 @@ extends GT_MetaTileEntity_MultiBlockBase {
 					this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 					((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
 				} else {
-					Utils.LOG_INFO("Maintenance hatch must be in the middle block on the back.");
+					Logger.INFO("Maintenance hatch must be in the middle block on the back.");
 					return false;
 				}
 			}
 			if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
-				Utils.LOG_INFO("Incorrect amount of Maintenance or Energy hatches.");
+				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
 				return false;
 			}
 		} else {
-			Utils.LOG_INFO("False 5");
+			Logger.INFO("False 5");
 			return false;
 		}
-		Utils.LOG_INFO("True");
+		Logger.INFO("True");
 		return true;
 	}
 

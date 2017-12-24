@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Level;
 import org.objectweb.asm.*;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -22,10 +23,10 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 			// Circuits
 			CORE_Preloader.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
 					"Restores circuits and their recipes from Pre-5.09.28 times.");
-			Utils.LOG_INFO("GT++ ASM - Loaded the configuration file.");
+			Logger.INFO("GT++ ASM - Loaded the configuration file.");
 			return CORE_Preloader.enableOldGTcircuits;
 		}
-		Utils.LOG_INFO("GT++ ASM - Failed loading the configuration file.");
+		Logger.INFO("GT++ ASM - Failed loading the configuration file.");
 		return false;
 	}
 

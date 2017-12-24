@@ -1,14 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.autocrafter;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -69,16 +64,18 @@ public class AC_Helper_Container extends Container
 	/**
 	 * Callback for when the crafting matrix is changed.
 	 */
+	@Override
 	public void onCraftMatrixChanged(IInventory p_75130_1_)
 	{
 		this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
-		Utils.LOG_INFO("Crafted "+this.craftResult.getStackInSlot(0));
+		Logger.INFO("Crafted "+this.craftResult.getStackInSlot(0));
 	
 	}
 
 	/**
 	 * Called when the container is closed.
 	 */
+	@Override
 	public void onContainerClosed(EntityPlayer p_75134_1_)
 	{
 		super.onContainerClosed(p_75134_1_);
@@ -97,6 +94,7 @@ public class AC_Helper_Container extends Container
 		}
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer p_75145_1_)
 	{
 		return true;
@@ -105,11 +103,13 @@ public class AC_Helper_Container extends Container
 	/**
 	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_){
 		ItemStack itemstack = null;
 		return itemstack;
 	}
 
+	@Override
 	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_)
 	{
 		return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);

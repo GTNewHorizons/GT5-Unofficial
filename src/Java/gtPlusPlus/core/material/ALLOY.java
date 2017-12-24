@@ -589,7 +589,7 @@ public final class ALLOY {
 			-1, //Boiling Point in C
 			-1,
 			-1,
-			true, //Uses Blast furnace?
+			false, //Uses Blast furnace?
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 5),
 					new MaterialStack(ELEMENT.getInstance().NAQUADAH, 9)

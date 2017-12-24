@@ -1,30 +1,26 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Locale;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import forestry.api.apiculture.*;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
-import forestry.apiculture.genetics.Bee;
-import forestry.apiculture.genetics.BeeDefinition;
-import forestry.apiculture.genetics.BeeVariation;
-import forestry.apiculture.genetics.IBeeDefinition;
+import forestry.apiculture.genetics.*;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Locale;
 
 public enum GTPP_Bee_Definition implements IBeeDefinition {
 
@@ -814,10 +810,10 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
 	protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
 		IAllele[] template = getTemplate();
-		Utils.LOG_INFO("[Bees-Debug] parent1: "+(parent1 != null));
-		Utils.LOG_INFO("[Bees-Debug] parent2: "+(parent2 != null));
-		Utils.LOG_INFO("[Bees-Debug] chance: "+(chance));
-		Utils.LOG_INFO("[Bees-Debug] template: "+(template != null));
+		Logger.DEBUG_BEES("parent1: "+(parent1 != null));
+		Logger.DEBUG_BEES("parent2: "+(parent2 != null));
+		Logger.DEBUG_BEES("chance: "+(chance));
+		Logger.DEBUG_BEES("template: "+(template != null));
 		return BeeManager.beeMutationFactory.createMutation(parent1, parent2, template, chance);
 	}
 

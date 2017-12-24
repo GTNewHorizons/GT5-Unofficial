@@ -2,15 +2,15 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 
 public class GregtechSafeBlock {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
-			Utils.LOG_INFO("Gregtech5u Content | Registering Lockable Safe Blocks.");
+			Logger.INFO("Gregtech5u Content | Registering Lockable Safe Blocks.");
 			if (CORE.ConfigSwitches.enableMachine_Safes) {
 				run1();
 			}

@@ -2,7 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -79,7 +79,7 @@ public class Gregtech_Recipe_Adder {
 	}
 
 	private static void addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
-		Utils.LOG_INFO("Registering Blast Furnace Recipes.");
+		Logger.INFO("Registering Blast Furnace Recipes.");
 		GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,

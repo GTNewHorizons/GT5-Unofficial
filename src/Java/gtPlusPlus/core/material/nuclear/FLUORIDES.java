@@ -19,6 +19,7 @@ public class FLUORIDES {
 			((ELEMENT.getInstance().CALCIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*2))/3), //Protons
 			((ELEMENT.getInstance().CALCIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*2))/3), //Neutrons
 			false, //Uses Blast furnace?
+			false, //Generate cells
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),

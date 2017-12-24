@@ -1,6 +1,6 @@
 package gtPlusPlus.core.handler.events;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.client.Minecraft;
 
 public class SneakManager {
@@ -41,7 +41,7 @@ public class SneakManager {
 	}
 
 	private static State toggleState(final State state){
-		Utils.LOG_INFO("State Toggle");
+		Logger.INFO("State Toggle");
 		if (state == State.ON) {
 			return State.OFF;
 		}

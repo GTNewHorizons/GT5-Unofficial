@@ -3,8 +3,8 @@ package gtPlusPlus.core.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.init.Items;
@@ -22,7 +22,7 @@ public class BookHandler {
 	
 	public static void run(){		
 
-		Utils.LOG_INFO("Writing books.");
+		Logger.INFO("Writing books.");
 
 		//Thermal Boiler
 		book_ThermalBoiler = writeBookTemplate(

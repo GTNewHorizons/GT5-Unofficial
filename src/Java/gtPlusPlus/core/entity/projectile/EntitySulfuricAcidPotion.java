@@ -29,6 +29,7 @@ public class EntitySulfuricAcidPotion extends EntityThrowable {
 	/**
 	 * Called when this EntityThrowable hits a block or entity.
 	 */
+	@Override
 	protected void onImpact(MovingObjectPosition object) {
 		int xBlock = object.blockX;
 		int yBlock = object.blockY;
@@ -36,7 +37,7 @@ public class EntitySulfuricAcidPotion extends EntityThrowable {
 		if (object.entityHit != null) {
 			byte b0 = 6;
 			if (!GT_Utility.isWearingFullRadioHazmat((EntityLivingBase) object.entityHit)){
-				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) b0);
+				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), b0);
 				EntityUtils.setEntityOnFire(object.entityHit, 10);
 				object.entityHit.fireResistance = 0;
 				ravage(EntityUtils.findBlockPosUnderEntity(object.entityHit));

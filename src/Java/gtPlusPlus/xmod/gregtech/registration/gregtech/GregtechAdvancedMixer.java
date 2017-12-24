@@ -7,8 +7,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechAdvancedMixer {
@@ -25,7 +25,7 @@ public class GregtechAdvancedMixer {
 			GT_Recipe_Map oldMap = GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 			GT_Recipe_Map map = Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes;
 			final Collection<GT_Recipe> x = oldMap.mRecipeList;
-			Utils.LOG_INFO("Generating " + map.mUnlocalizedName + " Recipes.");
+			Logger.INFO("Generating " + map.mUnlocalizedName + " Recipes.");
 			for (final GT_Recipe g : x) {
 				Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.add(g);
 			}
@@ -34,7 +34,7 @@ public class GregtechAdvancedMixer {
 				return true;
 			}
 			else {
-				Utils.LOG_INFO("Failed to generate "+ map.mUnlocalizedName +" recipes.");
+				Logger.INFO("Failed to generate "+ map.mUnlocalizedName +" recipes.");
 				return false;
 			}
 

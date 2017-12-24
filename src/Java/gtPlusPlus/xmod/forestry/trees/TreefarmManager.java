@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.trees;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
@@ -100,10 +100,10 @@ public class TreefarmManager {
 	public static boolean isSapling(final Block log){
 		if (log != null){
 			if (OrePrefixes.sapling.contains(new ItemStack(log, 1))){
-				Utils.LOG_INFO(""+log.getLocalizedName());
+				Logger.WARNING(""+log.getLocalizedName());
 			}
 			if (log.getLocalizedName().toLowerCase().contains("sapling")){
-				Utils.LOG_INFO(""+log.getLocalizedName());
+				Logger.WARNING(""+log.getLocalizedName());
 				return true;
 			}
 		}

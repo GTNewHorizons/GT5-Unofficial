@@ -2,9 +2,10 @@ package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import gregtech.api.enums.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
@@ -28,7 +29,7 @@ public class Material {
 
 	private final Fluid vMoltenFluid;
 	private final Fluid vPlasma;
-	
+
 	private final boolean vGenerateCells;
 
 	protected Object dataVar = MathUtils.generateSingularRandomHexValue();
@@ -60,8 +61,19 @@ public class Material {
 	public final int vToolQuality;
 	public final int vHarvestLevel;
 
+
+	public static Map<Integer, Materials> invalidMaterials = new HashMap<Integer, Materials>();
+
+	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
+		this (materialName, defaultState, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
+	}	
+
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){
 		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
+	}
+
+	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, boolean generateCells, final MaterialStack... inputs){
+		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, generateCells, inputs);
 	}
 
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs){
@@ -83,7 +95,7 @@ public class Material {
 	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
 		this (materialName, defaultState, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, true, inputs);
 	}
-	
+
 	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, final MaterialStack... inputs){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
@@ -105,7 +117,7 @@ public class Material {
 				}
 			}
 		}
-		
+
 
 		//Set Melting/Boiling point, if value is -1 calculate it from compound inputs.
 		if (meltingPoint != -1){
@@ -128,7 +140,7 @@ public class Material {
 
 		this.meltingPointK = (int) MathUtils.celsiusToKelvin(this.meltingPointC);
 		this.boilingPointK = (int) MathUtils.celsiusToKelvin(this.boilingPointC);
-		
+
 		//Set Proton/Neutron count, if value is -1 calculate it from compound inputs.
 		if (protons != -1){
 			this.vProtons = protons;
@@ -142,10 +154,10 @@ public class Material {
 		else {
 			this.vNeutrons = this.calculateNeutrons();
 		}
-		
-		
-		
-		
+
+
+
+
 		this.vMass = this.getMass();
 
 		//Sets tool Durability
@@ -239,20 +251,20 @@ public class Material {
 			this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
 		}
 		else if (!this.vChemicalSymbol.equals("")){
-			Utils.LOG_WARNING("materialInput is null, using a valid chemical symbol.");
+			Logger.WARNING("materialInput is null, using a valid chemical symbol.");
 			this.vChemicalFormula = this.vChemicalSymbol;
 		}
 		else{
-			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
+			Logger.WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
 
+
 		final Materials isValid = Materials.get(this.getLocalizedName());
-		
 		if (FluidUtils.getFluidStack(localizedName, 1) != null){
 			this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
 		}
-		else if (isValid == Materials._NULL){
+		else if (isValid == null || isValid == Materials._NULL){
 			this.vMoltenFluid = this.generateFluid();
 		}
 		else {
@@ -269,8 +281,6 @@ public class Material {
 
 		this.vPlasma = this.generatePlasma();
 
-		//dataVar = MathUtils.generateSingularRandomHexValue();
-
 		String ratio = "";
 		if (this.vSmallestRatio != null) {
 			for (int hu=0;hu<this.vSmallestRatio.length;hu++){
@@ -283,14 +293,14 @@ public class Material {
 			}
 		}
 
-		Utils.LOG_WARNING("Creating a Material instance for "+materialName);
-		Utils.LOG_WARNING("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
-		Utils.LOG_WARNING("Protons: "+this.vProtons);
-		Utils.LOG_WARNING("Neutrons: "+this.vNeutrons);
-		Utils.LOG_WARNING("Mass: "+this.vMass+"/units");
-		Utils.LOG_WARNING("Melting Point: "+this.meltingPointC+"C.");
-		Utils.LOG_WARNING("Boiling Point: "+this.boilingPointC+"C.");
-	}
+		Logger.WARNING("Creating a Material instance for "+materialName);
+		Logger.WARNING("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
+		Logger.WARNING("Protons: "+this.vProtons);
+		Logger.WARNING("Neutrons: "+this.vNeutrons);
+		Logger.WARNING("Mass: "+this.vMass+"/units");
+		Logger.WARNING("Melting Point: "+this.meltingPointC+"C.");
+		Logger.WARNING("Boiling Point: "+this.boilingPointC+"C.");
+	}	
 
 	public final String getLocalizedName(){
 		if (this.localizedName != null) {
@@ -448,8 +458,8 @@ public class Material {
 					try {
 						testNull = this.vMaterialInput.get(i).getValidStack();
 					} catch (final Throwable r){
-						Utils.LOG_WARNING("Failed gathering material stack for "+this.localizedName+".");
-						Utils.LOG_WARNING("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
+						Logger.WARNING("Failed gathering material stack for "+this.localizedName+".");
+						Logger.WARNING("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
 					}
 					try {
 						if (testNull != null){
@@ -457,7 +467,7 @@ public class Material {
 							temp[i] = this.vMaterialInput.get(i).getValidStack();
 						}
 					} catch (final Throwable r){
-						Utils.LOG_WARNING("Failed setting slot "+i+", using "+this.localizedName);
+						Logger.WARNING("Failed setting slot "+i+", using "+this.localizedName);
 					}
 				}
 				return temp;
@@ -505,8 +515,8 @@ public class Material {
 	public final long[] getSmallestRatio(final ArrayList<MaterialStack> tempInput){
 		if (tempInput != null){
 			if (!tempInput.isEmpty()){
-				Utils.LOG_WARNING("length: "+tempInput.size());
-				Utils.LOG_WARNING("(inputs != null): "+(tempInput != null));
+				Logger.WARNING("length: "+tempInput.size());
+				Logger.WARNING("(inputs != null): "+(tempInput != null));
 				//Utils.LOG_WARNING("length: "+inputs.length);
 				final long[] tempRatio = new long[tempInput.size()];
 				for (int x=0;x<tempInput.size();x++){
@@ -524,7 +534,7 @@ public class Material {
 					for (int r=0;r<tempRatio.length;r++){
 						tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] +" : ";
 					}
-					Utils.LOG_WARNING("Default Ratio: "+tempRatioStringThing1);
+					Logger.WARNING("Default Ratio: "+tempRatioStringThing1);
 
 					String tempRatioStringThing = "";
 					int tempSmallestCraftingUseSize = 0;
@@ -533,7 +543,7 @@ public class Material {
 						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
 					}
 					//this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
-					Utils.LOG_WARNING("Smallest Ratio: "+tempRatioStringThing);
+					Logger.WARNING("Smallest Ratio: "+tempRatioStringThing);
 					return smallestRatio;
 				}
 			}
@@ -545,7 +555,7 @@ public class Material {
 		if (!aShowQuestionMarks && (this.vChemicalFormula.equals("?")||this.vChemicalFormula.equals("??"))) {
 			return "";
 		}
-		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
+		Logger.WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals("")) {
 			return chemSymbol;
 		}
@@ -588,101 +598,164 @@ public class Material {
 						return StringUtils.subscript(dummyFormula);
 						//return dummyFormula;
 					}
-					Utils.LOG_WARNING("dummyFormulaArray <= 0");
+					Logger.WARNING("dummyFormulaArray <= 0");
 				}
-				Utils.LOG_WARNING("dummyFormulaArray == null");
+				Logger.WARNING("dummyFormulaArray == null");
 			}
-			Utils.LOG_WARNING("tempInput.length <= 0");
+			Logger.WARNING("tempInput.length <= 0");
 		}
-		Utils.LOG_WARNING("tempInput == null");
+		Logger.WARNING("tempInput == null");
 		return "??";
 
 	}
 
 	public final Fluid generateFluid(){
 
-		try {
-			if (Materials.get(this.localizedName) == Materials.Clay){
-				return null;
-			}
-		} catch (final Throwable e){}
-
-		if (Materials.get(this.localizedName).mFluid == null){
-			Utils.LOG_WARNING("Generating our own fluid.");
-
-			//Generate a Cell if we need to
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){			
-				if (this.vGenerateCells){
-					final Item temp = new BaseItemCell(this);
+		final Materials isValid = Materials.get(this.getLocalizedName());
+		Logger.WARNING("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
+		if (isValid != Materials._NULL){
+			for (Materials m : invalidMaterials.values()){
+				if (isValid == m){
+					Logger.WARNING("Trying to generate a fluid for blacklisted material: "+m.mDefaultLocalName);
+					FluidStack a1 = m.getFluid(1);
+					FluidStack a2 = m.getGas(1);
+					FluidStack a3 = m.getMolten(1);
+					FluidStack a4 = m.getSolid(1);
+					FluidStack a5 = m.getPlasma(1);
+					if (a1 != null){
+						Logger.WARNING("Using a pre-defined Fluid from GT. Fluid.");
+						return a1.getFluid();
+					}
+					if (a2 != null){
+						Logger.WARNING("Using a pre-defined Fluid from GT. Gas.");
+						return a2.getFluid();
+					}
+					if (a3 != null){
+						Logger.WARNING("Using a pre-defined Fluid from GT. Molten.");
+						return a3.getFluid();
+					}
+					if (a4 != null){
+						Logger.WARNING("Using a pre-defined Fluid from GT. Solid.");
+						return a4.getFluid();
+					}
+					if (a5 != null){
+						Logger.WARNING("Using a pre-defined Fluid from GT. Plasma.");
+						return a5.getFluid();
+					}			
+					Logger.WARNING("Using null.");	
+					return null;
 				}
 			}
+		}
 
-			if (this.materialState == MaterialState.SOLID){
-				return FluidUtils.addGTFluid(
-						this.getUnlocalizedName(),
-						"Molten "+this.getLocalizedName(),
-						this.RGBA,
-						this.materialState.ID(),
-						this.getMeltingPointK(),
-						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-						ItemList.Cell_Empty.get(1L, new Object[0]),
-						1000);
-			}
-			else if (this.materialState == MaterialState.LIQUID){
-				return FluidUtils.addGTFluid(
-						this.getUnlocalizedName(),
-						this.getLocalizedName(),
-						this.RGBA,
-						this.materialState.ID(),
-						this.getMeltingPointK(),
-						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-						ItemList.Cell_Empty.get(1L, new Object[0]),
-						1000);
-			}
-			else if (this.materialState == MaterialState.GAS){
-				return FluidUtils.addGTFluid(
-						this.getUnlocalizedName(),
-						this.getLocalizedName()+" Gas",
-						this.RGBA,
-						this.materialState.ID(),
-						this.getMeltingPointK(),
-						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-						ItemList.Cell_Empty.get(1L, new Object[0]),
-						1000);
-			}
-			else { //Plasma
-				return this.generatePlasma();
+		if (this.materialState == MaterialState.SOLID){
+			if (isValid.mFluid != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mFluid.");
+				return isValid.mFluid;			
+			}	
+			else if (isValid.mStandardMoltenFluid != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
+				return isValid.mStandardMoltenFluid;		
 			}
 		}
-		Utils.LOG_WARNING("Getting the fluid from a GT material instead.");
-		return Materials.get(this.localizedName).mFluid;
+		else if (this.materialState == MaterialState.GAS){
+			if (isValid.mGas != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mGas.");
+				return isValid.mGas;			
+			}	
+		}
+		else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID){
+			if (isValid.mFluid != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mFluid.");
+				return isValid.mFluid;			
+			}	
+			else if (isValid.mGas != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mGas.");
+				return isValid.mGas;			
+			}
+			else if (isValid.mStandardMoltenFluid != null){
+				Logger.WARNING("Using a pre-defined Fluid from GT. mStandardMoltenFluid.");
+				return isValid.mStandardMoltenFluid;		
+			}
+		}		
+
+		Logger.WARNING("Generating our own fluid.");
+		//Generate a Cell if we need to
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){			
+			if (this.vGenerateCells){
+				final Item temp = new BaseItemCell(this);
+				Logger.WARNING("Generated a cell for "+this.getUnlocalizedName());
+			}
+			else {
+				Logger.WARNING("Did not generate a cell for "+this.getUnlocalizedName());
+			}
+		}
+
+		if (this.materialState == MaterialState.SOLID){
+			return FluidUtils.addGTFluid(
+					this.getUnlocalizedName(),
+					"Molten "+this.getLocalizedName(),
+					this.RGBA,
+					this.materialState.ID(),
+					this.getMeltingPointK(),
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
+					ItemList.Cell_Empty.get(1L, new Object[0]),
+					1000);
+		}
+		else if (this.materialState == MaterialState.LIQUID){
+			return FluidUtils.addGTFluid(
+					this.getUnlocalizedName(),
+					this.getLocalizedName(),
+					this.RGBA,
+					this.materialState.ID(),
+					this.getMeltingPointK(),
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
+					ItemList.Cell_Empty.get(1L, new Object[0]),
+					1000);
+		}
+		else if (this.materialState == MaterialState.GAS){
+			return FluidUtils.addGTFluid(
+					this.getUnlocalizedName(),
+					this.getLocalizedName()+" Gas",
+					this.RGBA,
+					this.materialState.ID(),
+					this.getMeltingPointK(),
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
+					ItemList.Cell_Empty.get(1L, new Object[0]),
+					1000);
+		}
+		else { //Plasma
+			return this.generatePlasma();
+		}
 	}
 
 	public final Fluid generatePlasma(){
-		final Materials isValid = Materials.get(this.getLocalizedName());
-		if ((isValid != Materials._NULL) && (isValid != null) && (isValid != Materials.Clay) && (isValid != Materials.Clay)
-				&& (isValid != Materials.Phosphorus) && (isValid != Materials.Steel) && (isValid != Materials.Bronze)){
-			if (isValid.mPlasma != null){
-				Utils.LOG_WARNING("Using a pre-defined Plasma from GT.");
-				return isValid.mPlasma;
-			}
-		}
-		
-		if (this.vGenerateCells){
+		final Materials isValid = Materials.get(this.getLocalizedName());		
+
+		if (!this.vGenerateCells){
 			return null;
 		}
-		
-		Utils.LOG_WARNING("Generating our own Plasma.");
+		for (Materials m : invalidMaterials.values()){
+			if (isValid == m){
+				return (m.mPlasma != null ? m.mPlasma : null);
+			}
+		}
+		if (isValid.mPlasma != null){
+			Logger.WARNING("Using a pre-defined Plasma from GT.");
+			return isValid.mPlasma;			
+		}	
+
+		Logger.WARNING("Generating our own Plasma.");
 		return FluidUtils.addGTPlasma(this);
-		//return null;
 	}
 
 
 
-	final public FluidStack getFluid(final int fluidAmount) {
-		//Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
+	final public FluidStack getFluid(final int fluidAmount) {		
+		if (this.vMoltenFluid == null){
+			return null;
+		}		
 		final FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
-		//Utils.LOG_WARNING("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
 		return moltenFluid;
 	}
 
@@ -690,12 +763,17 @@ public class Material {
 	final public int calculateMeltingPoint(){
 		int meltingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			int incrementor = part.getStackMaterial().getMeltingPointC();
-			meltingPoint += incrementor;
-			Utils.LOG_WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			if (part != null){
+				int incrementor = part.getStackMaterial().getMeltingPointC();
+				meltingPoint += incrementor;
+				Logger.WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		Utils.LOG_WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
+		Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
 		meltingPoint = (meltingPoint/divisor);
 		return meltingPoint;
 	}
@@ -703,7 +781,12 @@ public class Material {
 	final public int calculateBoilingPoint(){
 		int boilingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			boilingPoint += part.getStackMaterial().getBoilingPointC();
+			if (part != null){
+				boilingPoint += part.getStackMaterial().getBoilingPointC();
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		boilingPoint = (boilingPoint/divisor);
@@ -713,7 +796,12 @@ public class Material {
 	final public long calculateProtons(){
 		long protonCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			protonCount += (part.getStackMaterial().getProtons());
+			if (part != null){
+				protonCount += (part.getStackMaterial().getProtons());
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		protonCount = (protonCount/divisor);
@@ -723,7 +811,12 @@ public class Material {
 	final public long calculateNeutrons(){
 		long neutronCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			neutronCount += (part.getStackMaterial().getNeutrons());
+			if (part != null){
+				neutronCount += (part.getStackMaterial().getNeutrons());
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
+			}
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		neutronCount = (neutronCount/divisor);

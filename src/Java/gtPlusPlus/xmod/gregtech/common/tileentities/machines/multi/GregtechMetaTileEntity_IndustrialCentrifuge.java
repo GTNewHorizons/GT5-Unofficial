@@ -16,9 +16,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -103,17 +103,17 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}*/
 
-		Utils.LOG_WARNING("Centrifuge Debug - 1");
+		Logger.WARNING("Centrifuge Debug - 1");
 		final GT_Recipe.GT_Recipe_Map map = this.getRecipeMap();
 		if (map == null) {
-			Utils.LOG_WARNING("Centrifuge Debug - False - No recipe map");
+			Logger.WARNING("Centrifuge Debug - False - No recipe map");
 			return false;
 		}
-		Utils.LOG_WARNING("Centrifuge Debug - 2");
+		Logger.WARNING("Centrifuge Debug - 2");
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		final long tVoltage = this.getMaxInputVoltage();
 		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		Utils.LOG_WARNING("Centrifuge Debug - Tier variable: "+tTier);
+		Logger.WARNING("Centrifuge Debug - Tier variable: "+tTier);
 		final ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
 		final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
@@ -121,41 +121,41 @@ extends GregtechMeta_MultiBlockBase {
 			GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
 			if (tRecipe != null) {
-				Utils.LOG_WARNING("Recipe was not invalid");
+				Logger.WARNING("Recipe was not invalid");
 				this.mLastRecipe = tRecipe;
 				this.mEUt = 0;
 				this.mOutputItems = null;
 				this.mOutputFluids = null;
 				if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
 
-					Utils.LOG_WARNING("False: 1");
+					Logger.WARNING("False: 1");
 					return false;
 				}
 
 				this.mMaxProgresstime = tRecipe.mDuration;
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
-				Utils.LOG_WARNING("Centrifuge Debug - 2 - Max Progress Time: "+this.mMaxProgresstime);
+				Logger.WARNING("Centrifuge Debug - 2 - Max Progress Time: "+this.mMaxProgresstime);
 				if (tRecipe.mEUt <= 16) {
-					Utils.LOG_WARNING("Centrifuge Debug - Using < 16eu/t");
+					Logger.WARNING("Centrifuge Debug - Using < 16eu/t");
 					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
 					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-					Utils.LOG_WARNING("Centrifuge Debug - 3.1 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					Logger.WARNING("Centrifuge Debug - 3.1 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
 				} else {
-					Utils.LOG_WARNING("Centrifuge Debug - using > 16eu/t");
+					Logger.WARNING("Centrifuge Debug - using > 16eu/t");
 					this.mEUt = tRecipe.mEUt;
 					this.mMaxProgresstime = tRecipe.mDuration;
-					Utils.LOG_WARNING("Centrifuge Debug - 3.2 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					Logger.WARNING("Centrifuge Debug - 3.2 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
 					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 						this.mEUt *= 4;
 						this.mMaxProgresstime /= 2;
-						Utils.LOG_WARNING("Centrifuge Debug - 4 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+						Logger.WARNING("Centrifuge Debug - 4 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 					}
 				}
 				this.mEUt *= 1;
 				if (this.mEUt > 0) {
 					this.mEUt = (-this.mEUt);
-					Utils.LOG_WARNING("Centrifuge Debug - 5 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+					Logger.WARNING("Centrifuge Debug - 5 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 				}
 				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
 				for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -184,7 +184,7 @@ extends GregtechMeta_MultiBlockBase {
 				if (this.mMaxProgresstime <= 0){
 					this.mMaxProgresstime++;
 				}
-				Utils.LOG_WARNING("Centrifuge Debug - 6 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+				Logger.WARNING("Centrifuge Debug - 6 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 				final List<ItemStack> overStacks = new ArrayList<>();
 				for (int f = 0; f < tOut.length; f++) {
 					if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
@@ -211,11 +211,11 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputItems = tOut;
 				this.mOutputFluids = new FluidStack[]{tFOut};
 				this.updateSlots();
-				Utils.LOG_WARNING("Centrifuge: True");
+				Logger.WARNING("Centrifuge: True");
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("Centrifuge: Recipe was invalid.");
+		Logger.WARNING("Centrifuge: Recipe was invalid.");
 		return false;
 	}
 
@@ -264,7 +264,7 @@ extends GregtechMeta_MultiBlockBase {
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
 								if ((tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord()) && (tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord()) && (tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2))) {
 									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-										Utils.LOG_WARNING("MAINT HATCH IN CORRECT PLACE");
+										Logger.WARNING("MAINT HATCH IN CORRECT PLACE");
 										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
 									} else {
@@ -272,7 +272,7 @@ extends GregtechMeta_MultiBlockBase {
 									}
 								}
 								else {
-									Utils.LOG_WARNING("MAINT HATCH IN WRONG PLACE");
+									Logger.WARNING("MAINT HATCH IN WRONG PLACE");
 								}
 							}
 

@@ -31,25 +31,36 @@ public class SlotBuzzSaw extends Slot {
 				if (OrePrefixes.craftingTool.contains(itemstack)) {
 					if (itemstack.getDisplayName().toLowerCase().contains("saw")
 							|| itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.10")
+							|| itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.110")
+							|| itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.112")
+							|| itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.114")
 							|| itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")) {
 						if (itemstack.getItemDamage() == 10) {
 							isValid = true;
 							this.currentTool = SAWTOOL.SAW;
 						}
-						if (itemstack.getItemDamage() == 140) {
+						else if (itemstack.getItemDamage() == 110) {
+							isValid = true;
+							this.currentTool = SAWTOOL.CHAINSAW;
+						}
+						else if (itemstack.getItemDamage() == 112) {
+							isValid = true;
+							this.currentTool = SAWTOOL.CHAINSAW;
+						}
+						else if (itemstack.getItemDamage() == 114) {
+							isValid = true;
+							this.currentTool = SAWTOOL.CHAINSAW;
+						}
+						else if (itemstack.getItemDamage() == 140) {
 							isValid = true;
 							this.currentTool = SAWTOOL.BUZZSAW;
 						}
+						return isValid;
 					}
-				} else {
-					this.currentTool = SAWTOOL.NONE;
-				}
-			} else {
-				this.currentTool = SAWTOOL.NONE;
-			}
-		} else {
-			this.currentTool = SAWTOOL.NONE;
-		}
+				} 
+			} 
+		} 
+		this.currentTool = SAWTOOL.NONE;
 		return isValid;
 	}
 
@@ -59,7 +70,7 @@ public class SlotBuzzSaw extends Slot {
 	}
 
 	public enum SAWTOOL {
-		NONE, SAW, BUZZSAW
+		NONE, SAW, BUZZSAW, CHAINSAW
 	}
 
 }

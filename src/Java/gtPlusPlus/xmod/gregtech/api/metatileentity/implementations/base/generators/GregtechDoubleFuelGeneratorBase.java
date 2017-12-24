@@ -10,8 +10,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -70,10 +70,10 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide()){
-			Utils.LOG_WARNING("Entity is Client side, simply returning true");
+			Logger.WARNING("Entity is Client side, simply returning true");
 			return true;
 		}
-		Utils.LOG_WARNING("Entity is not Client side, opening entity Container and by extension, it's GUI, then returning true");
+		Logger.WARNING("Entity is not Client side, opening entity Container and by extension, it's GUI, then returning true");
 		aBaseMetaTileEntity.openGUI(aPlayer);
 		return true;
 	}
@@ -216,19 +216,19 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 					final int tFuelValue2 = this.getFuelValue(this.mFluid2), tConsumed2 = this.consumedFluidPerOperation(this.mFluid2);
 					if (((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount > tConsumed))/* && (tFuelValue2 > 0 && tConsumed2 > 0 && mFluid2.amount > tConsumed2)*/) {
 
-						Utils.LOG_WARNING("tFuelValue: "+tFuelValue);
-						Utils.LOG_WARNING("tConsumed: "+tConsumed);
-						Utils.LOG_WARNING("mFluid.name: "+this.mFluid.getFluid().getName());
-						Utils.LOG_WARNING("mFluid.amount: "+this.mFluid.amount);
-						Utils.LOG_WARNING("mFluid.amount > tConsumed: "+(this.mFluid.amount > tConsumed));
+						Logger.WARNING("tFuelValue: "+tFuelValue);
+						Logger.WARNING("tConsumed: "+tConsumed);
+						Logger.WARNING("mFluid.name: "+this.mFluid.getFluid().getName());
+						Logger.WARNING("mFluid.amount: "+this.mFluid.amount);
+						Logger.WARNING("mFluid.amount > tConsumed: "+(this.mFluid.amount > tConsumed));
 
-						Utils.LOG_WARNING("=========================================================");
+						Logger.WARNING("=========================================================");
 
-						Utils.LOG_WARNING("tFuelValue2: "+tFuelValue2);
-						Utils.LOG_WARNING("tConsumed2: "+tConsumed2);
-						Utils.LOG_WARNING("mFluid2.name: "+this.mFluid2.getFluid().getName());
-						Utils.LOG_WARNING("mFluid2.amount: "+this.mFluid2.amount);
-						Utils.LOG_WARNING("mFluid2.amount > tConsumed2: "+(this.mFluid2.amount > tConsumed2));
+						Logger.WARNING("tFuelValue2: "+tFuelValue2);
+						Logger.WARNING("tConsumed2: "+tConsumed2);
+						Logger.WARNING("mFluid2.name: "+this.mFluid2.getFluid().getName());
+						Logger.WARNING("mFluid2.amount: "+this.mFluid2.amount);
+						Logger.WARNING("mFluid2.amount > tConsumed2: "+(this.mFluid2.amount > tConsumed2));
 						long tFluidAmountToUse = Math.min(this.mFluid.amount / tConsumed, (((this.maxEUOutput() * 30) + this.getMinimumStoredEU()) - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
 						long tFluidAmountToUse2 = Math.min(this.mFluid2.amount / tConsumed2, (((this.maxEUOutput() * 30) + this.getMinimumStoredEU()) - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue2);
 
@@ -239,9 +239,9 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 
 							if (aBaseMetaTileEntity.getUniversalEnergyStored() <= (aBaseMetaTileEntity.getEUCapacity()-aBaseMetaTileEntity.getUniversalEnergyStored())){
 								tFluidAmountToUse = 1;
-								Utils.LOG_WARNING("=========================================================");
-								Utils.LOG_WARNING("tFluidAmountToUse - Updated: "+tFluidAmountToUse);
-								Utils.LOG_WARNING("=========================================================");
+								Logger.WARNING("=========================================================");
+								Logger.WARNING("tFluidAmountToUse - Updated: "+tFluidAmountToUse);
+								Logger.WARNING("=========================================================");
 							}
 						}
 
@@ -251,15 +251,15 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 							}*/
 							if (aBaseMetaTileEntity.getUniversalEnergyStored() <= (aBaseMetaTileEntity.getEUCapacity()-aBaseMetaTileEntity.getUniversalEnergyStored())){
 								tFluidAmountToUse2 = 1;
-								Utils.LOG_WARNING("=========================================================");
-								Utils.LOG_WARNING("tFluidAmountToUse2 - Updated: "+tFluidAmountToUse2);
-								Utils.LOG_WARNING("=========================================================");
+								Logger.WARNING("=========================================================");
+								Logger.WARNING("tFluidAmountToUse2 - Updated: "+tFluidAmountToUse2);
+								Logger.WARNING("=========================================================");
 							}
 						}
 
-						Utils.LOG_WARNING("=========================================================");
-						Utils.LOG_WARNING("tFluidAmountToUse: "+tFluidAmountToUse);
-						Utils.LOG_WARNING("=========================================================");
+						Logger.WARNING("=========================================================");
+						Logger.WARNING("tFluidAmountToUse: "+tFluidAmountToUse);
+						Logger.WARNING("=========================================================");
 
 						/*Utils.LOG_WARNING("mFluid.amount / tConsumed: "+("fluidAmount:"+mFluid.amount)+(" tConsumed:"+tConsumed)+" | "+(mFluid.amount / tConsumed));
 						Utils.LOG_WARNING("maxEUOutput() * 20 + getMinimumStoredEU(): "+(maxEUOutput() * 30 + getMinimumStoredEU()));
@@ -272,9 +272,9 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 						Utils.LOG_WARNING("(maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue): "+((maxEUOutput() * 30 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue));
 						 */
 
-						Utils.LOG_WARNING("=========================================================");
-						Utils.LOG_WARNING("tFluidAmountToUse2: "+tFluidAmountToUse2);
-						Utils.LOG_WARNING("=========================================================");
+						Logger.WARNING("=========================================================");
+						Logger.WARNING("tFluidAmountToUse2: "+tFluidAmountToUse2);
+						Logger.WARNING("=========================================================");
 
 						/*Utils.LOG_WARNING("mFluid2.amount / tConsumed2: "+("fluidAmount2:"+mFluid2.amount)+(" tConsumed2:"+tConsumed2)+" | "+(mFluid2.amount / tConsumed2));
 						Utils.LOG_WARNING("maxEUOutput() * 20 + getMinimumStoredEU(): "+(maxEUOutput() * 30 + getMinimumStoredEU()));
@@ -288,19 +288,19 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 						 */
 						if (((tFluidAmountToUse > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) && ((tFluidAmountToUse2 > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse2 * tFuelValue2, true))){
 
-							Utils.LOG_WARNING("tFuelValue: "+tFuelValue);
-							Utils.LOG_WARNING("tConsumed: "+tConsumed);
-							Utils.LOG_WARNING("mFluid.name: "+this.mFluid.getFluid().getName());
-							Utils.LOG_WARNING("mFluid.amount: "+this.mFluid.amount);
-							Utils.LOG_WARNING("mFluid.amount > tConsumed: "+(this.mFluid.amount > tConsumed));
+							Logger.WARNING("tFuelValue: "+tFuelValue);
+							Logger.WARNING("tConsumed: "+tConsumed);
+							Logger.WARNING("mFluid.name: "+this.mFluid.getFluid().getName());
+							Logger.WARNING("mFluid.amount: "+this.mFluid.amount);
+							Logger.WARNING("mFluid.amount > tConsumed: "+(this.mFluid.amount > tConsumed));
 
-							Utils.LOG_WARNING("=========================================================");
+							Logger.WARNING("=========================================================");
 
-							Utils.LOG_WARNING("tFuelValue2: "+tFuelValue2);
-							Utils.LOG_WARNING("tConsumed2: "+tConsumed2);
-							Utils.LOG_WARNING("mFluid2.name: "+this.mFluid2.getFluid().getName());
-							Utils.LOG_WARNING("mFluid2.amount: "+this.mFluid2.amount);
-							Utils.LOG_WARNING("mFluid2.amount > tConsumed2: "+(this.mFluid2.amount > tConsumed2));
+							Logger.WARNING("tFuelValue2: "+tFuelValue2);
+							Logger.WARNING("tConsumed2: "+tConsumed2);
+							Logger.WARNING("mFluid2.name: "+this.mFluid2.getFluid().getName());
+							Logger.WARNING("mFluid2.amount: "+this.mFluid2.amount);
+							Logger.WARNING("mFluid2.amount > tConsumed2: "+(this.mFluid2.amount > tConsumed2));
 
 							if (this.useFuel){
 								this.mFluid.amount -= tFluidAmountToUse * tConsumed;
@@ -313,10 +313,10 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 
 						}
 						else {
-							Utils.LOG_WARNING("=========================================================");
-							Utils.LOG_WARNING("Either tFluidAmountToUse1 <= 0, power cannot be increased of tFluidAmountToUse2 <= 0");
-							Utils.LOG_WARNING("tFluidAmountToUse1: "+tFluidAmountToUse);
-							Utils.LOG_WARNING("tFluidAmountToUse2: "+tFluidAmountToUse2);
+							Logger.WARNING("=========================================================");
+							Logger.WARNING("Either tFluidAmountToUse1 <= 0, power cannot be increased of tFluidAmountToUse2 <= 0");
+							Logger.WARNING("tFluidAmountToUse1: "+tFluidAmountToUse);
+							Logger.WARNING("tFluidAmountToUse2: "+tFluidAmountToUse2);
 						}
 					}
 					else {
@@ -335,12 +335,12 @@ public abstract class GregtechDoubleFuelGeneratorBase extends GT_MetaTileEntity_
 					}
 				}
 				else {
-					Utils.LOG_WARNING("One mFluid is null");
+					Logger.WARNING("One mFluid is null");
 					if (this.mFluid != null) {
-						Utils.LOG_WARNING("mFluid1 is not null");
+						Logger.WARNING("mFluid1 is not null");
 					}
 					if (this.mFluid2 != null) {
-						Utils.LOG_WARNING("mFluid2 is not null");
+						Logger.WARNING("mFluid2 is not null");
 					}
 				}
 			}

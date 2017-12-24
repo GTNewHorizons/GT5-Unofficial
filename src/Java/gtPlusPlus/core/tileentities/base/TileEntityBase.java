@@ -2,7 +2,7 @@ package gtPlusPlus.core.tileentities.base;
 
 import java.util.UUID;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -60,7 +60,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 				onPreTick();
 			}
 		} catch (Throwable t){
-			Utils.LOG_ERROR("Tile Entity Encountered an error in it's pre-tick stage.");
+			Logger.ERROR("Tile Entity Encountered an error in it's pre-tick stage.");
 			t.printStackTrace();
 		}
 		try{
@@ -68,7 +68,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 				onTick();
 			}
 		} catch (Throwable t){
-			Utils.LOG_ERROR("Tile Entity Encountered an error in it's tick stage.");
+			Logger.ERROR("Tile Entity Encountered an error in it's tick stage.");
 			t.printStackTrace();
 		}
 		try{
@@ -76,7 +76,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 				onPostTick();
 			}
 		} catch (Throwable t){
-			Utils.LOG_ERROR("Tile Entity Encountered an error in it's post-tick stage.");
+			Logger.ERROR("Tile Entity Encountered an error in it's post-tick stage.");
 			t.printStackTrace();
 		}
 	}
@@ -92,7 +92,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 				processRecipe();
 			}
 		} catch (Throwable t){
-			Utils.LOG_ERROR("Tile Entity Encountered an error in it's processing of a recipe stage.");
+			Logger.ERROR("Tile Entity Encountered an error in it's processing of a recipe stage.");
 			t.printStackTrace();
 		}
 		return true;

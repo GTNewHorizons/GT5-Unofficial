@@ -1,25 +1,21 @@
 package gtPlusPlus.core.world.darkworld.biome;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -28,7 +24,7 @@ import net.minecraftforge.common.BiomeManager;
 
 public class Biome_DarkWorld {
 
-	public static BiomeGenbiomeDarkWorld biome = new BiomeGenbiomeDarkWorld();
+	public static BiomeGenDarkWorld biome = new BiomeGenDarkWorld();
 
 	public Object instance;
 
@@ -38,8 +34,6 @@ public class Biome_DarkWorld {
 	public void load() {
 		BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DEAD);
 		BiomeManager.addSpawnBiome(biome);
-		// BiomeManager.desertBiomes.add(new BiomeManager.BiomeEntry(biome,
-		// 10));
 	}
 
 	public void generateNether(World world, Random random, int chunkX, int chunkZ) {
@@ -61,12 +55,14 @@ public class Biome_DarkWorld {
 	public void preInit(FMLPreInitializationEvent event) {
 	}
 
-	static class BiomeGenbiomeDarkWorld extends BiomeGenBase {
+	static class BiomeGenDarkWorld extends BiomeGenBase {
 		@SuppressWarnings("unchecked")
-		public BiomeGenbiomeDarkWorld() {
+		public BiomeGenDarkWorld() {
 			super(CORE.DARKBIOME_ID);
+			this.setBiomeID();
 			this.theBiomeDecorator = new BiomeGenerator_Custom();
-			Utils.LOG_INFO("Dark World Temperature Category: "+getTempCategory());
+			this.theBiomeDecorator.treesPerChunk = 10;
+			Logger.INFO("Dark World Temperature Category: "+getTempCategory());
 			this.setBiomeName("Dark World");
 			this.topBlock = Dimension_DarkWorld.blockTopLayer;
 			this.fillerBlock = Dimension_DarkWorld.blockSecondLayer;
@@ -82,29 +78,42 @@ public class Biome_DarkWorld {
 			this.spawnableCreatureList.clear();
 			this.spawnableWaterCreatureList.clear();
 			this.spawnableCaveCreatureList.clear();
-			
-			//Enemies
-			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 10, 4, 10));			
-			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 60, 1, 2));
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 30, 1, 2));
-			//this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 5, 1, 5));
-			
-			addToMonsterSpawnLists(EntityBlaze.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityCaveSpider.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityCreeper.class, 4, 1, 2);
-			addToMonsterSpawnLists(EntityEnderman.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntitySkeleton.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntitySpider.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityZombie.class, 5, 1, 5);
 
-			//Passive
-			this.spawnableCreatureList.add(new SpawnListEntry(EntityCow.class, 5, 5, 10));
-			this.spawnableCreatureList.add(new SpawnListEntry(EntityBat.class, 4, 4, 8));
-			this.spawnableCreatureList.add(new SpawnListEntry(EntityWolf.class, 5, 4, 10));
-			
-			//Water
-			this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySquid.class, 5, 1, 10));
-			
+			//Enemies			
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySickBlaze.class, 100, 2, 6));
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityPigZombie.class, 75, 4, 16));
+			this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityStaballoyConstruct.class, 20, 1, 2));
+
+			//Animals
+			this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySquid.class, 1, 1, 6));
+			this.spawnableCaveCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityBat.class, 10, 8, 8));
+
+		}
+
+		private synchronized boolean setBiomeID() {
+			BiomeGenBase[] mTempList;
+			try {
+				Field mInternalBiomeList = ReflectionUtils.getField(BiomeGenBase.class, "biomeList");
+				Field mClone = mInternalBiomeList;
+				mTempList = (BiomeGenBase[]) mInternalBiomeList.get(null);
+				if (mTempList != null){
+					mTempList[CORE.DARKBIOME_ID] = this;
+					mInternalBiomeList.set(null, mTempList);
+					if (mClone != mInternalBiomeList && mClone.hashCode() != mInternalBiomeList.hashCode()){
+						ReflectionUtils.setFinalStatic(mInternalBiomeList, mTempList);
+						Logger.REFLECTION("Set Biome ID for Dark World Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");						
+						return true;
+					}
+					else {
+						Logger.REFLECTION("Failed to set Biome ID for Dark World Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");					
+					}
+				}
+				return false;
+			}
+			catch (Exception e) {
+				Logger.REFLECTION("Could not access 'biomeList' field in "+BiomeGenBase.class.getCanonicalName()+".");
+				return false;
+			}			
 		}
 
 		@SideOnly(Side.CLIENT)
@@ -122,8 +131,8 @@ public class Biome_DarkWorld {
 		public int getSkyColorByTemp(float par1) {
 			return 0xF67A14;
 		}
-		
-		@SuppressWarnings("unchecked")
+
+		@SuppressWarnings({ "unchecked", "unused" })
 		private boolean addToMonsterSpawnLists(Class<?> EntityClass, int a, int b, int c){
 			//this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
 			this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));

@@ -1,11 +1,11 @@
 package gtPlusPlus.core.container;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
 import gtPlusPlus.core.slots.SlotFuelRod;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -54,7 +54,7 @@ public class Container_HeliumGenerator extends Container {
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				Utils.LOG_INFO("Adding slots at var:"+(o)+" x:"+(8 + var7 * 18)+" y:"+(9 + var6 * 18));
+				Logger.INFO("Adding slots at var:"+(o)+" x:"+(8 + var7 * 18)+" y:"+(9 + var6 * 18));
 				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, o, 8 + (var7 * 18), 18 + (var6 * 18)));
 				this.slotStorage[o] = o;
 				o++;
@@ -66,7 +66,7 @@ public class Container_HeliumGenerator extends Container {
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				Utils.LOG_INFO("Adding slots at var:"+(o)+" x:"+(90+8+(var7 * 18))+" y:"+(9 + var6 * 18));
+				Logger.INFO("Adding slots at var:"+(o)+" x:"+(90+8+(var7 * 18))+" y:"+(9 + var6 * 18));
 				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, o, 116 + (var7 * 18), 18 + (var6 * 18)));
 				this.slotStorage[o] = o;
 				o++;

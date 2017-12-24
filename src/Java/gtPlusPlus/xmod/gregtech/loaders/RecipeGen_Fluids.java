@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class RecipeGen_Fluids  implements Runnable{
 
@@ -48,10 +48,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					1*20, //Duration
 					16 //Eu Tick
 					)){
-				Utils.LOG_WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Plate
@@ -62,10 +62,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					1*20, //Duration
 					16 //Eu Tick
 					)){
-				Utils.LOG_WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Double Plate
@@ -76,10 +76,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					1*20, //Duration
 					16 //Eu Tick
 					)){
-				Utils.LOG_WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Nugget
@@ -90,10 +90,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					16, //Duration
 					8 //Eu Tick
 					)){
-				Utils.LOG_WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Block
@@ -104,10 +104,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					288, //Duration
 					16 //Eu Tick
 					)){
-				Utils.LOG_WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 
@@ -126,10 +126,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					32, //Duration
 					8 //Eu Tick
 					)){
-				Utils.LOG_WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Plate
@@ -140,10 +140,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					32, //Duration
 					8 //Eu Tick
 					)){
-				Utils.LOG_WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Nugget
@@ -154,10 +154,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					16, //Duration
 					4 //Eu Tick
 					)){
-				Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Gears
@@ -168,10 +168,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					128, //Duration
 					8 //Eu Tick
 					)){
-				Utils.LOG_WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
 			//Blocks
@@ -182,10 +182,10 @@ public class RecipeGen_Fluids  implements Runnable{
 					288, //Duration
 					16 //Eu Tick
 					)){
-				Utils.LOG_WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Success");
+				Logger.WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
+				Logger.WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 	}

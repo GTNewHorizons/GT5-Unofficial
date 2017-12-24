@@ -1,21 +1,15 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeList;
-import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_ModularityTable;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
@@ -56,6 +50,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 		return this.mRecipeTimeRemaining;
 	}
 
+	@Override
 	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
 		if (!nbt.hasKey(tag)) {
@@ -331,7 +326,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack item, int side) {
-		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
+		Logger.INFO("Slot:"+slot+" | side? "+side);
 
 		/*if (side == 1){
 			return this.inventoryOutputs.isItemValidForSlot(slot-9, item);
@@ -346,17 +341,19 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack item, int side) {
-		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
+		Logger.INFO("Slot:"+slot+" | side? "+side);
 		if (slot == 11 || slot <= 8){
 			return true;
 		}
 		return false;
 	}
 
+	@Override
 	public String getCustomName() {
 		return this.customName;
 	}
 
+	@Override
 	public void setCustomName(String customName) {
 		this.customName = customName;
 	}

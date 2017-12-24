@@ -6,10 +6,10 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.*;
 import gregtech.common.GT_Proxy;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -23,7 +23,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	@Override
 	public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName, final String aModName, final ItemStack aStack) {
 		if (aOreDictName.equals(OreDictNames.craftingLensRed.toString())) {
-			Utils.LOG_INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 2)");
+			Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 2)");
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Copper, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1L, new Object[0]), 64, 30);
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.AnnealedCopper, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1L, new Object[0]), 64, 30);
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.get(1L, new Object[0]), 64, 120);
@@ -32,20 +32,20 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		} 
 
 		else if (aOreDictName.equals(OreDictNames.craftingLensGreen.toString())) {
-			Utils.LOG_INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 3)");
+			Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 3)");
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Olivine, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]), 256, 480);
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]), 256, 480);
 		} 
 
 		else if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString()) || aOreDictName.equals(OreDictNames.craftingLensCyan.toString()) || aOreDictName.equals(OreDictNames.craftingLensLightBlue.toString())) {
-			Utils.LOG_INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 4)");
+			Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 4)");
 			GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_LapotronCrystal.getWildcard(1L, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]), 256, 480);
 		}		
 	}
 
 
 	private static boolean addCircuitRecipes(){
-		Utils.LOG_INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 1)");
+		Logger.INFO("[Old Feature - Circuits] Adding recipes for old circuits. (Part 1)");
 		GT_ModHandler.addShapelessCraftingRecipe(GregtechItemList.Old_Circuit_Primitive.get(1L, new Object[0]), new Object[]{GT_ModHandler.getIC2Item("casingadviron", 1L), OrePrefixes.wireGt01.get(Materials.RedAlloy), OrePrefixes.wireGt01.get(Materials.RedAlloy), OrePrefixes.wireGt01.get(Materials.Tin)});
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[]{"WWW", "CPC", "WWW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OrePrefixes.plate.get(Materials.Steel)});
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Old_Circuit_Basic.get(1L, new Object[0]), new Object[]{"WCW", "WPW", "WCW", 'C', OrePrefixes.circuit.get(Materials.Primitive), 'W', OreDictNames.craftingWireCopper, 'P', OrePrefixes.plate.get(Materials.Steel)});
@@ -101,7 +101,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	}
 
 	private static boolean removeNewCircuits(){
-		Utils.LOG_INFO("[Old Feature - Circuits] Overriding .28+ circuit values in the GT5u Itemlist with values from GT++.");
+		Logger.INFO("[Old Feature - Circuits] Overriding .28+ circuit values in the GT5u Itemlist with values from GT++.");
 
 		ItemList.Circuit_Primitive.set(GregtechItemList.Old_Circuit_Primitive.get(1));
 		ItemList.Circuit_Basic.set(GregtechItemList.Old_Circuit_Basic.get(1));
@@ -275,7 +275,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	private static boolean hideCircuitsNEI(){
 		Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
 		if (isNEILoaded && !CORE.ConfigSwitches.showHiddenNEIItems){
-			Utils.LOG_INFO("[Old Feature - Circuits] Hiding .28+ circuits in NEI.");
+			Logger.INFO("[Old Feature - Circuits] Hiding .28+ circuits in NEI.");
 			String[] CircuitToHide = {
 					"Circuit_Board_Basic",
 					"Circuit_Board_Advanced",
@@ -373,8 +373,8 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 				try {
 					API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
 				} catch (IllegalArgumentException I){
-					Utils.LOG_INFO("Could not find "+component+" in the Gregtech item list.");
-					Utils.LOG_INFO("This is NOT an error, simply a notification.");
+					Logger.INFO("Could not find "+component+" in the Gregtech item list.");
+					Logger.INFO("This is NOT an error, simply a notification.");
 				}
 			}			
 		}

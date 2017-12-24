@@ -15,6 +15,7 @@ public class ItemHydrofluoricAcidPotion extends CoreItem {
 		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, description, EnumRarity.uncommon, EnumChatFormatting.GRAY, false, null);
 	}
 	
+	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		if (!player.capabilities.isCreativeMode) {
 			--item.stackSize;

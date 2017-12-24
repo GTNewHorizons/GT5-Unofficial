@@ -34,13 +34,12 @@
  */
 
 package gtPlusPlus.api.objects;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import gtPlusPlus.api.interfaces.IRandomGenerator;
 import gtPlusPlus.core.util.Utils;
-
-import java.security.SecureRandom;
-import java.math.BigInteger;
 
 /**
  * The Blum-Blum-Shub random number generator.
@@ -205,7 +204,8 @@ public class CSPRNG extends Random implements IRandomGenerator {
      *
      * @return int
      */
-    public int next(int numBits) {
+    @Override
+	public int next(int numBits) {
 	// TODO: find out how many LSB one can extract per cycle.
 	//   it is more than one.
 	int result = 0;

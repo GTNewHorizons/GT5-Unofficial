@@ -2,11 +2,11 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
@@ -16,7 +16,7 @@ public class NewHorizonsAccelerator {
 
 	public static void run() {
 		if (LoadedMods.Gregtech && !CORE.GTNH) {
-			Utils.LOG_INFO("New Horizons Content | Registering World Accelerators.");
+			Logger.INFO("New Horizons Content | Registering World Accelerators.");
 			if (CORE.ConfigSwitches.enableMachine_WorldAccelerators) {
 				run1();
 			}

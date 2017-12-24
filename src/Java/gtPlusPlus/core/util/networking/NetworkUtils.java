@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 
 public class NetworkUtils {
 
@@ -26,13 +26,13 @@ public class NetworkUtils {
 				return tempLine;
 			}
 			catch (final MalformedURLException e) {
-				Utils.LOG_INFO("Bad URL for Version Check.");
+				Logger.INFO("Bad URL for Version Check.");
 			}
 			catch (final IOException e) {
-				Utils.LOG_INFO("IOException during Version Check.");
+				Logger.INFO("IOException during Version Check.");
 			}				
 		}
-		Utils.LOG_INFO("Network Not Available during Version Check.");
+		Logger.INFO("Network Not Available during Version Check.");
 		return "offline";
 	}
 
@@ -50,11 +50,11 @@ public class NetworkUtils {
 					return true;
 				}
 				else {
-					Utils.LOG_INFO("No sites responded to network connectivity test.");
+					Logger.INFO("No sites responded to network connectivity test.");
 				}
 			}
 			else {
-				Utils.LOG_INFO("Network Adapter was not valid.");
+				Logger.INFO("Network Adapter was not valid.");
 			}
 		}
 		catch (SocketException e) {}

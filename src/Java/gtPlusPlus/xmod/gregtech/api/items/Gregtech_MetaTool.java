@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -147,6 +145,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public void addAdditionalToolTips(final List aList, final ItemStack aStack) {
 		final long tMaxDamage = getToolMaxDamage(aStack);
 		final Materials tMaterial = getPrimaryMaterial(aStack);
@@ -171,6 +170,8 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 		}
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	public void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
 		final long tMaxDamage = getToolMaxDamage(aStack);
 		final Materials tMaterial = getPrimaryMaterial(aStack);

@@ -14,7 +14,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -452,7 +452,7 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
             }
 
             boolean tRemovedOutputFluid = false;
-            Utils.LOG_WARNING("R0");
+            Logger.WARNING("R0");
 
             if (doesAutoOutputFluids() && getDrainableStack() != null && aBaseMetaTileEntity.getFrontFacing() != mMainFacing && (tSucceeded || aTick % 20 == 0)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -477,27 +477,27 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
 
             if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
             else mOutputBlocked++;
-            Utils.LOG_WARNING("R1");
+            Logger.WARNING("R1");
             if (allowToCheckRecipe()) {
-                Utils.LOG_WARNING("R2--------------------------------------------------");
-                Utils.LOG_WARNING("R2: (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork() && (tRemovedOutputFluid || tSucceeded || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) && hasEnoughEnergyToCheckRecipe())");
-                Utils.LOG_WARNING("R2--------------------------------------------------");
-                Utils.LOG_WARNING("R2-mMaxProgresstime: "+mMaxProgresstime);
-                Utils.LOG_WARNING("R2-isAllowedToWork(): "+aBaseMetaTileEntity.isAllowedToWork());
-                Utils.LOG_WARNING("R2--------------------------------------------------");
-                Utils.LOG_WARNING("R2-tRemovedOutputFluid: "+tRemovedOutputFluid);
-                Utils.LOG_WARNING("R2-tSucceeded: "+tSucceeded);
-                Utils.LOG_WARNING("R2-hasInventoryBeenModified(): "+aBaseMetaTileEntity.hasInventoryBeenModified());
-                Utils.LOG_WARNING("R2-(aTick % 600 == 0): "+(aTick % 600 == 0));
-                Utils.LOG_WARNING("R2-hasWorkJustBeenEnabled(): "+aBaseMetaTileEntity.hasWorkJustBeenEnabled());
-                Utils.LOG_WARNING("R2--------------------------------------------------");
-                Utils.LOG_WARNING("R2-hasEnoughEnergyToCheckRecipe(): "+hasEnoughEnergyToCheckRecipe());
-                Utils.LOG_WARNING("R2--------------------------------------------------");
+                Logger.WARNING("R2--------------------------------------------------");
+                Logger.WARNING("R2: (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork() && (tRemovedOutputFluid || tSucceeded || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) && hasEnoughEnergyToCheckRecipe())");
+                Logger.WARNING("R2--------------------------------------------------");
+                Logger.WARNING("R2-mMaxProgresstime: "+mMaxProgresstime);
+                Logger.WARNING("R2-isAllowedToWork(): "+aBaseMetaTileEntity.isAllowedToWork());
+                Logger.WARNING("R2--------------------------------------------------");
+                Logger.WARNING("R2-tRemovedOutputFluid: "+tRemovedOutputFluid);
+                Logger.WARNING("R2-tSucceeded: "+tSucceeded);
+                Logger.WARNING("R2-hasInventoryBeenModified(): "+aBaseMetaTileEntity.hasInventoryBeenModified());
+                Logger.WARNING("R2-(aTick % 600 == 0): "+(aTick % 600 == 0));
+                Logger.WARNING("R2-hasWorkJustBeenEnabled(): "+aBaseMetaTileEntity.hasWorkJustBeenEnabled());
+                Logger.WARNING("R2--------------------------------------------------");
+                Logger.WARNING("R2-hasEnoughEnergyToCheckRecipe(): "+hasEnoughEnergyToCheckRecipe());
+                Logger.WARNING("R2--------------------------------------------------");
                 if (mMaxProgresstime <= 0 && aBaseMetaTileEntity.isAllowedToWork() && (tRemovedOutputFluid || tSucceeded || aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) && hasEnoughEnergyToCheckRecipe()) {
-                    Utils.LOG_WARNING("R3");
+                    Logger.WARNING("R3");
                     if (checkRecipe() == 2) {
                         if (mInventory[3] != null && mInventory[3].stackSize <= 0) mInventory[3] = null;
-                        Utils.LOG_WARNING("R4");
+                        Logger.WARNING("R4");
                         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
                             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
                         for (int i = 0; i < mOutputItems.length; i++) {

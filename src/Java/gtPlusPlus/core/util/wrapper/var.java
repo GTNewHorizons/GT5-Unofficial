@@ -1,7 +1,7 @@
 package gtPlusPlus.core.util.wrapper;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
@@ -23,7 +23,7 @@ public class var{
 		for (int i=0;i<input.length();i++) {
 			if (input.charAt(i) == token) {
 				input = input.replace(input.charAt(i), ' ');
-				Utils.LOG_WARNING("MATCH FOUND");
+				Logger.WARNING("MATCH FOUND");
 			}
 			input = input.replaceAll(" ", "");
 		}

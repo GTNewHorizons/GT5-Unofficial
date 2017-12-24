@@ -1,21 +1,21 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -102,7 +102,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public int getValidOutputSlots(final IGregTechTileEntity machineCalling,
 			final GT_Recipe sRecipes, final ItemStack[] sInputs) {
-		Utils.LOG_WARNING("Finding valid output slots for "
+		Logger.WARNING("Finding valid output slots for "
 				+ machineCalling.getInventoryName());
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		final GT_Recipe tRecipe = sRecipes;
@@ -145,11 +145,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		baseRecipe = tRecipe.copy();
 		if ((cloneRecipe != baseRecipe) || (cloneRecipe == null)) {
 			cloneRecipe = baseRecipe.copy();
-			Utils.LOG_WARNING("Setting Recipe");
+			Logger.WARNING("Setting Recipe");
 		}
 		if ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0)) {
 			cloneTime = baseRecipe.mDuration;
-			Utils.LOG_WARNING("Setting Time");
+			Logger.WARNING("Setting Time");
 		}
 
 		if (cloneRecipe.mDuration > 0) {
@@ -158,16 +158,16 @@ GT_MetaTileEntity_MultiBlockBase {
 					(100 - percentage));
 			cloneRecipe.mDuration = tempTime;
 			if (cloneRecipe.mDuration < originalTime) {
-				Utils.LOG_MACHINE_INFO("Generated recipe with a smaller time. | "
+				Logger.MACHINE_INFO("Generated recipe with a smaller time. | "
 						+ originalTime + " | " + cloneRecipe.mDuration + " |");
 				return cloneRecipe;
 			} else {
-				Utils.LOG_MACHINE_INFO("Did not generate recipe with a smaller time. | "
+				Logger.MACHINE_INFO("Did not generate recipe with a smaller time. | "
 						+ originalTime + " | " + cloneRecipe.mDuration + " |");
 				return tRecipe;
 			}
 		}
-		Utils.LOG_MACHINE_INFO("Error generating recipe, returning null.");
+		Logger.MACHINE_INFO("Error generating recipe, returning null.");
 		return null;
 
 	}
@@ -212,6 +212,15 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		super.updateSlots();
+	}
+	
+	public boolean isToolCreative(ItemStack mStack){
+		Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
+		Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
+		if (t1 == Materials._NULL && t2 == Materials._NULL){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -399,6 +408,46 @@ GT_MetaTileEntity_MultiBlockBase {
 			
 		}
 		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	
+	/**
+	 * Pollution Management
+	 */
+
+	public int getPollutionPerTick(ItemStack arg0) {
+		return 0;
+	}
+
+	public boolean polluteEnvironment(int aPollutionLevel) {
+		int mPollution = 0;
+		Field f = FieldUtils.getDeclaredField(this.getClass(), "mPollution", true);
+		if (f != null){
+			try {
+				mPollution = (int) f.get(this);
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {}
+		}	
+		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && f != null){
+			mPollution += aPollutionLevel;
+			for (final GT_MetaTileEntity_Hatch_Muffler tHatch : this.mMufflerHatches) {
+				if (isValidMetaTileEntity(tHatch)) {
+					if (mPollution < 10000) {
+						break;
+					}
+					if (!tHatch.polluteEnvironment()) {
+						continue;
+					}
+					mPollution -= 10000;
+				}
+			}
+			return mPollution < 10000;
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 }

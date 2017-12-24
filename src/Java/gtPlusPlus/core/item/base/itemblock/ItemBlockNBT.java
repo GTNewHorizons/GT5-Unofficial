@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.base.itemblock;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -73,7 +73,7 @@ public class ItemBlockNBT extends ItemBlock {
 		TileEntityBase tTileEntity = (TileEntityBase) aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity != null && aPlayer != null) {
 			if (tTileEntity.isServerSide()){				
-				Utils.LOG_INFO("Setting Tile Entity information");
+				Logger.INFO("Setting Tile Entity information");
 				NBTTagCompound aNBT = GT_Utility.ItemNBT.getNBT(aStack);				
 				tTileEntity.setOwnerInformation(aNBT.getString("mOwner"), aNBT.getString("mUUID"), aNBT.getBoolean("mOP"));
 			}

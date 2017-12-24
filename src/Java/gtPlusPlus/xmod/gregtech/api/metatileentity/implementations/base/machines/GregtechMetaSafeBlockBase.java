@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,35 +201,35 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 			}*/
 			//Utils.LOG_INFO("test");
 			if (this.ownerUUID == null){
-				Utils.LOG_INFO("No owner yet for this block.");
+				Logger.INFO("No owner yet for this block.");
 			}
 			else {
 				//Utils.LOG_INFO("test");
-				Utils.LOG_INFO("Current Owner: "+PlayerCache.lookupPlayerByUUID(this.ownerUUID)+" - UUID: "+this.ownerUUID);
+				Logger.INFO("Current Owner: "+PlayerCache.lookupPlayerByUUID(this.ownerUUID)+" - UUID: "+this.ownerUUID);
 			}
-			Utils.LOG_WARNING("Is ownerUUID Null");
+			Logger.WARNING("Is ownerUUID Null");
 			if (this.ownerUUID == null){
-				Utils.LOG_WARNING("OwnerUUID is Null, let's set it.");
-				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
+				Logger.WARNING("OwnerUUID is Null, let's set it.");
+				Logger.WARNING("Accessing Players UUID is: "+tempUUID);
 				this.ownerUUID = tempUUID;
 				//Utils.messagePlayer(aPlayer, "Owner of this safe, now set. Try accessing it again.");
-				Utils.LOG_WARNING("Block Owner is now set to: "+this.ownerUUID);
+				Logger.WARNING("Block Owner is now set to: "+this.ownerUUID);
 			}
-			Utils.LOG_WARNING("No, it is not.");
-			Utils.LOG_WARNING("Checking ownerUUID.");
+			Logger.WARNING("No, it is not.");
+			Logger.WARNING("Checking ownerUUID.");
 			if (this.ownerUUID != null){
-				Utils.LOG_WARNING("ownerUUID != Null, if accessor == owner.");
-				Utils.LOG_WARNING("Accessing is: "+PlayerCache.lookupPlayerByUUID(tempUUID));
+				Logger.WARNING("ownerUUID != Null, if accessor == owner.");
+				Logger.WARNING("Accessing is: "+PlayerCache.lookupPlayerByUUID(tempUUID));
 				if (this.ownerUUID.equals(tempUUID)){
-					Utils.LOG_WARNING("Owner's UUID: "+this.ownerUUID);
+					Logger.WARNING("Owner's UUID: "+this.ownerUUID);
 					aBaseMetaTileEntity.openGUI(aPlayer);
 					//Utils.LOG_WARNING("GUI should now be open for you sir.");
 				}
 				else {
 					PlayerUtils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
 					PlayerUtils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(this.ownerUUID));
-					Utils.LOG_WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(this.ownerUUID));
-					Utils.LOG_ERROR("Access Denied.");
+					Logger.WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(this.ownerUUID));
+					Logger.ERROR("Access Denied.");
 					return true;
 				}
 
@@ -284,7 +284,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 			this.value_last = this.value_current;
 			this.value_current = this.bUnbreakable;
 			if (this.value_last != this.value_current){
-				Utils.LOG_WARNING("VALUE CHANGE - Ticking for a moment.");
+				Logger.WARNING("VALUE CHANGE - Ticking for a moment.");
 				if (this.bUnbreakable == true){
 					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
 					//Utils.LOG_ERROR("Safe is Indestructible.");

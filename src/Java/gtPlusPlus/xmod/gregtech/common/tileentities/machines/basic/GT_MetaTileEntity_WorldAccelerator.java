@@ -13,8 +13,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -213,8 +213,8 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 				}
 			}
 		} catch (Exception e) {
-			Utils.LOG_ERROR("GT_MetaTileEntity_WorldAccelerator.onPostTick.crash");
-			Utils.LOG_ERROR(e.getMessage());
+			Logger.ERROR("GT_MetaTileEntity_WorldAccelerator.onPostTick.crash");
+			Logger.ERROR(e.getMessage());
 		}
 	}
 
@@ -236,8 +236,8 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 				}
 			}
 		} catch (Exception e) {
-			Utils.LOG_ERROR("GT_MetaTileEntity_WorldAccelerator.doAccelerateTileEntities.crash");
-			Utils.LOG_ERROR(e.getMessage());
+			Logger.ERROR("GT_MetaTileEntity_WorldAccelerator.doAccelerateTileEntities.crash");
+			Logger.ERROR(e.getMessage());
 		}
 	}
 
@@ -316,8 +316,8 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 					tBlock.updateTick(pWorld, pX, pY, pZ, pRnd);
 			}
 		} catch (Exception e) {
-			Utils.LOG_ERROR("GT_MetaTileEntity_WorldAccelerator.tryTickBlock.crash");
-			Utils.LOG_ERROR(e.getMessage());
+			Logger.ERROR("GT_MetaTileEntity_WorldAccelerator.tryTickBlock.crash");
+			Logger.ERROR(e.getMessage());
 		}
 	}
 }

@@ -1,23 +1,25 @@
 package gtPlusPlus;
 
-import static gtPlusPlus.core.lib.CORE.DEBUG;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
@@ -27,6 +29,7 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -35,7 +38,7 @@ import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import net.minecraft.client.Minecraft;
+import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
@@ -47,9 +50,12 @@ public class GTplusplus implements ActionListener {
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
+	
+	//Material Loader
+	public static GT_Material_Loader mGregMatLoader;
 
 	//GT_Proxy instance
-	protected static Meta_GT_Proxy gregtechproxy;
+	protected static Meta_GT_Proxy mGregProxy;
 
 	//GT++ Proxy Instances
 	@SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
@@ -58,28 +64,28 @@ public class GTplusplus implements ActionListener {
 	// Loads Textures
 	@SideOnly(value = Side.CLIENT)
 	public static void loadTextures() {
-		Utils.LOG_INFO("Loading some textures on the client.");
+		Logger.INFO("Loading some textures on the client.");
 		// Tools
-		Utils.LOG_WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 
 		// Blocks
-		Utils.LOG_WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
 	}
 
 	// Pre-Init
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
-		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
+		Logger.INFO("Loading " + CORE.name + " V" + CORE.VERSION);
 
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;
-			//Get Graphics Mode.
-			CORE.mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 		}
 
 		//Give this a go mate.
 		initAnalytics();
+		setupMaterialBlacklist();
+		//setupMaterialWhitelist();
 
 		//HTTP Requests
 		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
@@ -91,13 +97,13 @@ public class GTplusplus implements ActionListener {
 		//Check for Dev
 		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 		if (enableUpdateChecker){
-			Utils.LOG_INFO("Latest is " + CORE.MASTER_VERSION + ". Updated? " + Utils.isModUpToDate());
+			Logger.INFO("Latest is " + CORE.MASTER_VERSION + ". Updated? " + Utils.isModUpToDate());
 		}
 		//Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
 		// FirstCall();
 		Utils.registerEvent(new LoginEventHandler());
-		Utils.LOG_INFO("Login Handler Initialized");
+		Logger.INFO("Login Handler Initialized");
 
 
 
@@ -111,7 +117,7 @@ public class GTplusplus implements ActionListener {
 		proxy.registerNetworkStuff();
 
 		//Set Variables for Fluorite Block handling
-		Utils.LOG_INFO("Setting some Variables for the block break event handler.");
+		Logger.INFO("Setting some Variables for the block break event handler.");
 		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
 		BlockEventHandler.fluoriteOre = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite));
@@ -122,19 +128,12 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void postInit(final FMLPostInitializationEvent event) {
 		proxy.postInit(event);
-
-		if (DEBUG) {
-			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sChemicalDehydratorRecipes);
-			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
-			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
-			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
-		}
 		BookHandler.runLater();
-		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		Utils.LOG_INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
+		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
-		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		Utils.LOG_INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
+		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 	}
 
 	@EventHandler
@@ -151,11 +150,9 @@ public class GTplusplus implements ActionListener {
 	public void serverStopping(final FMLServerStoppingEvent event) {
 		//Flush all data to Server at the end of the day.
 		if (SegmentAnalytics.sAnalyticsMasterList.size() > 0){
-		int i=0;
 			for (SegmentAnalytics sa : SegmentAnalytics.sAnalyticsMasterList.values()){
 				sa.flushDataFinal();
 				SegmentAnalytics.LOG("Cleaned up Analytics Data for player "+sa.mLocalName+".");
-				i++;
 			}
 		}
 		
@@ -168,26 +165,69 @@ public class GTplusplus implements ActionListener {
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
 		final Collection<GT_Recipe> x = r.mRecipeList;
-		Utils.LOG_INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
+		Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug.");
 		for (final GT_Recipe newBo : x) {
-			Utils.LOG_INFO("========================");
-			Utils.LOG_INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
-			Utils.LOG_INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
-			Utils.LOG_INFO("Dumping Duration: " + newBo.mDuration);
-			Utils.LOG_INFO("Dumping EU/t: " + newBo.mEUt);
-			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
-			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
-			Utils.LOG_INFO("========================");
+			Logger.INFO("========================");
+			Logger.INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
+			Logger.INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
+			Logger.INFO("Dumping Duration: " + newBo.mDuration);
+			Logger.INFO("Dumping EU/t: " + newBo.mEUt);
+			Logger.INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
+			Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
+			Logger.INFO("========================");
 		}
 	}
 
 
 	private static final void initAnalytics(){
 		SegmentAnalytics.isEnabled = CORE.ConfigSwitches.enableUpdateChecker;
-		if (PlayerUtils.isPlayerAlkalus()){
+		if (!Utils.isServer() && PlayerUtils.isPlayerAlkalus()){
 			SegmentAnalytics.isEnabled = true;
-		}
-		
+		}		
 		new SegmentHelper();
+	}
+	
+	private static final boolean setupMaterialBlacklist(){		
+		int ID = 0;
+		Material.invalidMaterials.put(ID++, Materials._NULL);
+		Material.invalidMaterials.put(ID++, Materials.Clay);
+		Material.invalidMaterials.put(ID++, Materials.Phosphorus);
+		Material.invalidMaterials.put(ID++, Materials.Steel);
+		Material.invalidMaterials.put(ID++, Materials.Bronze);
+		Material.invalidMaterials.put(ID++, Materials.Hydrogen);
+		//Infused TC stuff
+		Material.invalidMaterials.put(ID++, Materials.InfusedAir);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedFire);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedWater);
+		
+		//EIO Materials
+		Material.invalidMaterials.put(ID++, Materials.SoulSand);
+		Material.invalidMaterials.put(ID++, Materials.EnderPearl);
+		Material.invalidMaterials.put(ID++, Materials.EnderEye);
+		Material.invalidMaterials.put(ID++, Materials.Redstone);
+		Material.invalidMaterials.put(ID++, Materials.Glowstone);
+		Material.invalidMaterials.put(ID++, Materials.Soularium);
+		Material.invalidMaterials.put(ID++, Materials.PhasedIron);
+				
+		if (Material.invalidMaterials.size() > 0){
+			return true;
+		}
+		return false;
+		
+	}
+
+	private void setupMaterialWhitelist() {
+		
+		mGregMatLoader = new GT_Material_Loader();
+		
+		//Non GTNH Materials
+		if (!CORE.GTNH){
+			//Mithril - Random Dungeon Loot
+			mGregMatLoader.enableMaterial(Materials.Mithril);			
+		}	
+		
+		//Force - Alloying
+		mGregMatLoader.enableMaterial(Materials.Force);		
 	}
 }

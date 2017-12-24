@@ -7,10 +7,10 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityReverter;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -266,7 +266,7 @@ public class TowerDevice extends Block {
 	public TileEntity createTileEntity(final World world, final int metadata)
 	{
 		if (metadata == 0) {
-			Utils.LOG_INFO("I have been created. [Antigriefer]"+this.getLocalizedName());
+			Logger.INFO("I have been created. [Antigriefer]"+this.getLocalizedName());
 			return new TileEntityReverter();
 		}
 		return null;

@@ -5,10 +5,8 @@ import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
@@ -34,6 +32,7 @@ public class EntityHydrofluoricAcidPotion extends EntityThrowable {
 	/**
 	 * Called when this EntityThrowable hits a block or entity.
 	 */
+	@Override
 	protected void onImpact(MovingObjectPosition object) {
 		int xBlock = object.blockX;
 		int yBlock = object.blockY;
@@ -41,7 +40,7 @@ public class EntityHydrofluoricAcidPotion extends EntityThrowable {
 		if (object.entityHit != null) {
 			byte b0 = 6;
 			if (!GT_Utility.isWearingFullRadioHazmat((EntityLivingBase) object.entityHit)){
-				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) b0);
+				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), b0);
 				EntityUtils.setEntityOnFire(object.entityHit, 5);
 
 				if (object.entityHit instanceof EntityPlayer){

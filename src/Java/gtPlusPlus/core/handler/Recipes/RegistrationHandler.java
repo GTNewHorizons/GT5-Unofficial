@@ -1,8 +1,8 @@
 package gtPlusPlus.core.handler.Recipes;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.recipe.*;
-import gtPlusPlus.core.util.Utils;
 
 public class RegistrationHandler {
 
@@ -21,7 +21,7 @@ public class RegistrationHandler {
 		RECIPE_Batteries.RECIPES_LOAD();
 		RECIPES_General.RECIPES_LOAD();
 		//RECIPES_MTWRAPPER.run();
-		Utils.LOG_INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
+		Logger.INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 		COMPAT_HANDLER.areInitItemsLoaded = true;
 		//Utils.LOG_INFO("MT Loaded: "+RECIPES_MTWRAPPER.MT_RECIPES_LOADED+" MT Failed: "+RECIPES_MTWRAPPER.MT_RECIPES_FAILED);
 	}

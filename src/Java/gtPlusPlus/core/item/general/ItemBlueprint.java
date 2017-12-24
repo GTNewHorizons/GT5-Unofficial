@@ -3,10 +3,10 @@ package gtPlusPlus.core.item.general;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -224,19 +224,19 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 		if (itemStack.hasTagCompound()){
 			if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName").equals("")){
 				//No Blueprint and no name Set
-				Utils.LOG_WARNING("No Blueprint and no name Set");
+				Logger.WARNING("No Blueprint and no name Set");
 				return false;
 			}
 			else if (itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName").equals("")){
 				//Has Blueprint but invalid name set
-				Utils.LOG_WARNING("Has Blueprint but invalid name set");
+				Logger.WARNING("Has Blueprint but invalid name set");
 				//itemStack.stackTagCompound = null;
 				//createNBT(itemStack);
 				return false;
 			}
 			else if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && itemStack.stackTagCompound.getString("mName").equals("")){
 				//Has no Blueprint, but strangely has a name
-				Utils.LOG_WARNING("Has no Blueprint, but strangely has a name");
+				Logger.WARNING("Has no Blueprint, but strangely has a name");
 				//itemStack.stackTagCompound = null;
 				//createNBT(itemStack);
 				return false;
@@ -247,7 +247,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			final int bpID = MathUtils.randInt(0, 1000);
 			final boolean hasRecipe = false;
 			final String recipeName = "";
-			Utils.LOG_WARNING("Creating Blueprint, setting up it's NBT data. "+bpID);
+			Logger.WARNING("Creating Blueprint, setting up it's NBT data. "+bpID);
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setInteger("mID", bpID);
 			itemStack.stackTagCompound.setBoolean("mBlueprint", hasRecipe);
@@ -258,7 +258,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			final int bpID = MathUtils.randInt(0, 1000);
 			final boolean hasRecipe = false;
 			final String recipeName = "";
-			Utils.LOG_WARNING("Creating a Blueprint, setting up it's NBT data. "+bpID);
+			Logger.WARNING("Creating a Blueprint, setting up it's NBT data. "+bpID);
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setInteger("mID", bpID);
 			itemStack.stackTagCompound.setBoolean("mBlueprint", hasRecipe);

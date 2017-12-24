@@ -7,7 +7,7 @@ import java.util.Map;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.Entity;
@@ -210,11 +210,11 @@ public class NBTUtils {
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 					if (mInternalMap != null) {
 						for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
-							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue());
+							Logger.INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue());
 						}
 						return true;
 					} else {
-						Utils.LOG_INFO("Data map reflected from NBTTagCompound was not valid.");
+						Logger.INFO("Data map reflected from NBTTagCompound was not valid.");
 						return false;
 					}
 				} 
@@ -408,7 +408,7 @@ public class NBTUtils {
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 					if (mInternalMap != null) {
 						for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
-							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue().toString());
+							Logger.INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue().toString());
 							if (e.getValue().getClass() == String.class){
 								createStringTagCompound(aStack, "mEntityTag", (String) e.getKey(), (String) e.getValue());
 							}

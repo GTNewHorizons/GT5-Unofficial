@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 
@@ -315,10 +316,10 @@ public class MathUtils {
 			temp = "0F0F0F";
 		}
 
-		Utils.LOG_WARNING("Operating with "+temp);
+		Logger.WARNING("Operating with "+temp);
 		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-		Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
-		Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
+		Logger.WARNING("Made "+temp+" - Hopefully it's not a mess.");
+		Logger.WARNING("It will decode into "+Integer.decode(temp)+".");
 		return Integer.decode(temp);
 	}
 

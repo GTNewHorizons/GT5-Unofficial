@@ -13,8 +13,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -111,7 +111,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_INFO("Working");
+		Logger.INFO("Working");
 		/*if (!checkRecursiveBlocks()) {
 			this.mEfficiency = 0;
 			this.mEfficiencyIncrease = 0;
@@ -145,28 +145,28 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 
 		//this.mCasings.clear();
-		Utils.LOG_INFO("Step 1");
+		Logger.INFO("Step 1");
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 
 		for (int i = -7; i <= 7; i++) {
-			Utils.LOG_INFO("Step 2");
+			Logger.INFO("Step 2");
 			for (int j = -7; j <= 7; j++) {
-				Utils.LOG_INFO("Step 3");
+				Logger.INFO("Step 3");
 				for (int h = 0; h <= 1; h++) {
-					Utils.LOG_INFO("Step 4");
+					Logger.INFO("Step 4");
 
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 
 					//Farm Floor inner 14x14
 					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
-						Utils.LOG_INFO("Step 5 - H:"+h);
+						Logger.INFO("Step 5 - H:"+h);
 						// Farm Dirt Floor and Inner Air/Log space.
 						if (h == 0) {
 							//Dirt Floor
 							if (!TreefarmManager.isDirtBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_INFO("Dirt like block missing from inner 14x14.");
-								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Logger.INFO("Dirt like block missing from inner 14x14.");
+								Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								aBaseMetaTileEntity.getWorld().setBlock(
 										(aBaseMetaTileEntity.getXCoord()+(xDir+i)),
 										(aBaseMetaTileEntity.getYCoord()+(h)),
@@ -189,12 +189,12 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 					}
 					//Dealt with inner 5x5, now deal with the exterior.
 					else {
-						Utils.LOG_INFO("Step 6 - H:"+h);
+						Logger.INFO("Step 6 - H:"+h);
 						//Deal with all 4 sides (Fenced area)
 						if (h == 1) {
 							if (!TreefarmManager.isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_INFO("Fence/Gate missing from outside the second layer.");
-								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Logger.INFO("Fence/Gate missing from outside the second layer.");
+								Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}
 						}
@@ -209,31 +209,31 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (!(aBaseMetaTileEntity.getMetaTileID() != 752)) {
-										Utils.LOG_INFO("Fark Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Fark Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
-									Utils.LOG_INFO("Found a farm keeper.");
+									Logger.INFO("Found a farm keeper.");
 								}
 							}
 						}
-						Utils.LOG_INFO("Step a");
+						Logger.INFO("Step a");
 
 					}
-					Utils.LOG_INFO("Step b");
+					Logger.INFO("Step b");
 				}
-				Utils.LOG_INFO("Step c");
+				Logger.INFO("Step c");
 			}
-			Utils.LOG_INFO("Step d");
+			Logger.INFO("Step d");
 		}
-		Utils.LOG_INFO("Step 7");
+		Logger.INFO("Step 7");
 
 		//Must have at least one energy hatch.
 		if (this.mEnergyHatches != null) {
 			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
 				if (this.mEnergyHatches.get(i).mTier < 2){
-					Utils.LOG_INFO("You require at LEAST MV tier Energy Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.INFO("You require at LEAST MV tier Energy Hatches.");
+					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
 				}
 			}
@@ -243,9 +243,9 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
 				if ((this.mOutputHatches.get(i).mTier < 2) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-					Utils.LOG_INFO("You require at LEAST MV tier Output Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Logger.INFO("You require at LEAST MV tier Output Hatches.");
+					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
@@ -254,16 +254,16 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 		if (this.mInputHatches != null) {
 			for (int i = 0; i < this.mInputHatches.size(); i++) {
 				if (this.mInputHatches.get(i).mTier < 2){
-					Utils.LOG_INFO("You require at LEAST MV tier Input Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Logger.INFO("You require at LEAST MV tier Input Hatches.");
+					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
 		}
 		this.mSolderingTool = true;
 		//turnCasingActive(true);
-		Utils.LOG_INFO("Multiblock Formed.");
+		Logger.INFO("Multiblock Formed.");
 		return true;
 	}
 
@@ -326,7 +326,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				//System.out.println("After: "+cv.mTextures.hashCode());
 				return cv;
 			} catch (final NoSuchFieldException e) {
-				Utils.LOG_INFO("Could not find mTextures.");
+				Logger.INFO("Could not find mTextures.");
 				return casing;
 			}
 		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {

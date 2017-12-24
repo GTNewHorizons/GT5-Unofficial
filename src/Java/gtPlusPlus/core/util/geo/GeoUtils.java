@@ -5,7 +5,7 @@ import java.net.*;
 
 import org.apache.http.client.utils.URIBuilder;
 
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.networking.NetworkUtils;
 
 public class GeoUtils {
@@ -19,7 +19,7 @@ public class GeoUtils {
 			return "Offline.";
 		}
 		} catch (Throwable T){
-			Utils.LOG_INFO("Failed to initialise GeoUtils.");
+			Logger.INFO("Failed to initialise GeoUtils.");
 			return "Failed.";
 		}
 	}
@@ -78,7 +78,7 @@ public class GeoUtils {
 				return result;
 				//Catch block for bad connection
 			} catch (IOException e) {
-				Utils.LOG_INFO("Method 1 - Failed.");
+				Logger.INFO("Method 1 - Failed.");
 			}  
 		    
 		    //Secondary method
@@ -87,19 +87,19 @@ public class GeoUtils {
 				return r.replaceAll("(\\r|\\n)", "");
 				//Catch block for bad connection
 			} catch (java.io.IOException e) {
-				Utils.LOG_INFO("Method 2 - Failed.");			
+				Logger.INFO("Method 2 - Failed.");			
 			}
 		    
 		}
 		//Catch block for all the Bad URI/URL building
 		catch (URISyntaxException | MalformedURLException e1) {
 			if (e1 instanceof URISyntaxException){
-				Utils.LOG_INFO("Bad URI Syntax for builder.");
+				Logger.INFO("Bad URI Syntax for builder.");
 			}
 			else {
-				Utils.LOG_INFO("Malformed URL.");				
+				Logger.INFO("Malformed URL.");				
 			}
-			Utils.LOG_INFO("Country Check - Failed.");
+			Logger.INFO("Country Check - Failed.");
 		}
 		return "Error getting users Country. "+ipAddress;
 	}

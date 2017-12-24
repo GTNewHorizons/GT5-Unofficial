@@ -2,6 +2,7 @@ package gtPlusPlus.core.recipe.common;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
@@ -389,18 +390,18 @@ public class CI {
 			if (material instanceof Materials){
 				//return (ItemStack) type.get(material);
 				String materialName = ((Materials) material).mDefaultLocalName;
-				Utils.LOG_INFO("Searching for a component named "+type.name()+materialName);
+				Logger.INFO("Searching for a component named "+type.name()+materialName);
 				//return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
 				return (type.name()+materialName);
 			}
 			else {
 				String materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
-				Utils.LOG_INFO("Searching for a component named "+type.name()+materialName);
+				Logger.INFO("Searching for a component named "+type.name()+materialName);
 				//return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
 				return (type.name()+materialName);
 			}
 		}
-		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.name()+" | "+tier);
+		Logger.INFO("[Components] Failed getting a tiered component. "+type.name()+" | "+tier);
 		return null;
 	}
 

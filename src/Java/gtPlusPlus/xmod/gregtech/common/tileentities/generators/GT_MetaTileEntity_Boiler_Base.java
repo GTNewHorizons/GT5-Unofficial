@@ -8,8 +8,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -265,7 +265,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (fuelSlot != null)) {
 
 				if (isInputFuelItem(fuelSlot) && (this.mTemperature < (maxProgresstime() - 250))) {
-					Utils.LOG_INFO("Current Heat:" + this.mTemperature + "/" + (maxProgresstime() - 250)
+					Logger.INFO("Current Heat:" + this.mTemperature + "/" + (maxProgresstime() - 250)
 							+ " Burning fuel because not yet at a suitable temp.");
 					useInputFuelItem(aBaseMetaTileEntity, fuelSlot);
 				}

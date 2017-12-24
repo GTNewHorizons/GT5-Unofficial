@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.nbt;
 
 import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.array.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -115,7 +115,7 @@ public class ModularArmourUtils {
 	}
 
 	public static void setBaubleType(ItemStack aStack, BT aMod) {
-		Utils.LOG_INFO("Changing bauble type.");
+		Logger.INFO("Changing bauble type.");
 		NBTTagCompound tNBT = NBTUtils.getNBT(aStack);
 		if (aMod != null) {
 			tNBT.setInteger("mBaubleType", aMod.getID());

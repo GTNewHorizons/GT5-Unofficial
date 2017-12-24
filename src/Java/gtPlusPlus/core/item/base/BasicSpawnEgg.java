@@ -5,8 +5,8 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -44,7 +44,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer
 		this.entityMODID = MODID;
 
 		// DEBUG
-		Utils.LOG_WARNING("Spawn egg constructor for "+this.entityToSpawnName);
+		Logger.WARNING("Spawn egg constructor for "+this.entityToSpawnName);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer
 			else
 			{
 				//DEBUG
-				Utils.LOG_WARNING("Entity not found "+this.entityToSpawnName);
+				Logger.WARNING("Entity not found "+this.entityToSpawnName);
 			}
 		}
 

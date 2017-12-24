@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -29,7 +29,7 @@ public class HANDLER_Mekanism {
 	public static void postInit(){
 		if (LoadedMods.Mekanism && !LoadedMods.RedTech){
 
-			Utils.LOG_INFO("Performing GT recipe balance for Mek. now that it's Osmium is useless.");
+			Logger.INFO("Performing GT recipe balance for Mek. now that it's Osmium is useless.");
 
 			//Steel Casing
 			final ItemStack tSteelCasing = ItemUtils.simpleMetaStack("Mekanism:BasicBlock:8", 8, 1);
@@ -263,12 +263,12 @@ public class HANDLER_Mekanism {
 				}
 			}
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Utils.LOG_INFO("[Mek] Failed to use the built-in recipe remover from Mekanism.");
+			Logger.INFO("[Mek] Failed to use the built-in recipe remover from Mekanism.");
 		}
 		if (!removed){
 			removed = GT_ModHandler.removeRecipeByOutput(item);
 		}
-		Utils.LOG_INFO("[Mek] Successfully removed the recipe for "+item.getDisplayName()+".");
+		Logger.INFO("[Mek] Successfully removed the recipe for "+item.getDisplayName()+".");
 		return removed;
 	}
 

@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +29,7 @@ public final class TexturesGtTools {
 
 		public CustomIcon(final String aIconName) {
 			this.mIconName = aIconName;
-			Utils.LOG_INFO("Constructing a Custom Texture. " + this.mIconName);
+			Logger.INFO("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTItemIconload.add(this);
 		}
 
