@@ -1424,7 +1424,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             lines.add("SYMBOL = "+getSymbol());
         }
         if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" eV");
+            lines.add("CHARGE = "+getCharge()/3f+" e");
         if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
             lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))

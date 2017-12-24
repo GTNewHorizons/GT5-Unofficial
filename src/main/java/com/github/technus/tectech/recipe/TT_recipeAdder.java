@@ -6,7 +6,7 @@ import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefiniti
 import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.GT_RecipeAdder;

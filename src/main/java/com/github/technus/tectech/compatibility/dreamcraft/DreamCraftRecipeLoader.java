@@ -407,5 +407,11 @@ public class DreamCraftRecipeLoader implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                 }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 2000000);
         //endregion
+
+        register_machine_EM_behaviours();
+    }
+
+    private void register_machine_EM_behaviours(){
+
     }
 }

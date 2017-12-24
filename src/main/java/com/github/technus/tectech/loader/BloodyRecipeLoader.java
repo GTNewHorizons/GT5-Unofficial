@@ -355,5 +355,11 @@ public class BloodyRecipeLoader implements Runnable {
                         Materials.Osmiridium.getMolten(1296),
                 }, CustomItemList.Machine_Multi_Scanner.get(1), 24000, 500000);
         //endregion
+
+        register_machine_EM_behaviours();
+    }
+
+    private void register_machine_EM_behaviours(){
+
     }
 }

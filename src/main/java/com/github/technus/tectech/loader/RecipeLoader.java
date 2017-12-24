@@ -34,5 +34,7 @@ public class RecipeLoader implements Runnable {
 
         if (Loader.isModLoaded("dreamcraft")) new DreamCraftRecipeLoader().run();//init recipes for GTNH version
         else new BloodyRecipeLoader().run();//init recipes for NON-GTNH version
+
+
     }
 }

@@ -5,17 +5,29 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
  */
 
 public class MultiblockControl<T>{
-    private final int[] controls;
+    private final int[] controls=new int[7];
     private final T[] values;
 
     public MultiblockControl(T[] values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime){
         this.values = values;
-        controls=new int[5];
         controls[0]=EUt;
         controls[1]=amperes;
         controls[2]=requiredData;
         controls[3]=effIncrease;
         controls[4]=maxProgressTime;
+        controls[5]=0;
+        controls[6]=Float.floatToIntBits(0);
+    }
+
+    public MultiblockControl(T[] values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime, int pollutionToAdd, float excessMass){
+        this.values = values;
+        controls[0]=EUt;
+        controls[1]=amperes;
+        controls[2]=requiredData;
+        controls[3]=effIncrease;
+        controls[4]=maxProgressTime;
+        controls[5]=pollutionToAdd;
+        controls[6]=Float.floatToIntBits(excessMass);
     }
 
     public T[] getValues() {
@@ -40,5 +52,13 @@ public class MultiblockControl<T>{
 
     public int getMaxProgressTime(){
         return controls[4];
+    }
+
+    public int getPollutionToAdd(){
+        return controls[5];
+    }
+
+    public float getExcessMass(){
+        return Float.intBitsToFloat(controls[6]);
     }
 }

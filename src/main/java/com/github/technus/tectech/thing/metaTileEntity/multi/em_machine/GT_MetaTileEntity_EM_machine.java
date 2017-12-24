@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi;
+package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
@@ -24,6 +24,8 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    private Behaviour currentBehaviour;
+
     public final static String machine="EM Machinery";
 
     //region structure
@@ -89,55 +91,89 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        Behaviour currentBehaviour=map.get(new GT_ItemStack(itemStack));
+        currentBehaviour=map.get(new GT_ItemStack(itemStack));
         if(currentBehaviour==null) return false;
         //mux input
         double[] parameters=new double[]{getParameterIn(0,0),getParameterIn(0,1),getParameterIn(1,0),getParameterIn(1,1),
                 getParameterIn(2,0),getParameterIn(2,1),getParameterIn(3,0),getParameterIn(3,1)};
         if(!currentBehaviour.setAndCheckParametersOutAndStatuses(this,parameters))return false;
-        cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[3];
+
+        cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[6];
+        int pointer= getParameterInInt(4,0)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[0]=eInputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(4,1)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[1]=eInputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(5,0)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[2]=eInputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(5,1)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[3]=eInputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(6,0)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[4]=eInputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(6,1)-1;
+        if(pointer>=0 && pointer<eInputHatches.size()) handles[5]=eInputHatches.get(pointer).getContainerHandler();
+
         MultiblockControl<cElementalInstanceStackMap> control=currentBehaviour.process(handles,parameters);
         if(control==null) return false;
         //update other pare
         outputEM=control.getValues();
+        cElementalInstanceStackMap nullFix=new cElementalInstanceStackMap();
+        for(int i=0;i<outputEM.length;i++){
+            if(outputEM[i]==null) outputEM[i]=nullFix;
+        }
         mEUt=control.getEUT();
         eAmpereFlow=control.getAmperage();
         mMaxProgresstime=control.getMaxProgressTime();
         eRequiredData=control.getRequiredData();
         mEfficiencyIncrease=control.getEffIncrease();
-        return true;
-    }
-
-    @Override
-    protected void parametersLoadDefault_EM() {//default 1 to 1 routing table
-        setParameterPairIn_ClearOut(4,false,1,1);//I
-        setParameterPairIn_ClearOut(5,false,2,2);//I
-        setParameterPairIn_ClearOut(6,false,3,3);//I
-        setParameterPairIn_ClearOut(7,false,1,1);//O
-        setParameterPairIn_ClearOut(8,false,2,2);//O
-        setParameterPairIn_ClearOut(9,false,3,3);//O
-    }
-
-    @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        //update routing
+        cleanMassEM_EM(control.getExcessMass());
+        return polluteEnvironment(control.getPollutionToAdd());
     }
 
     @Override
     public void outputAfterRecipe_EM() {
-        //mux output
+        cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[6];
+        int pointer= getParameterInInt(7,0)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[0]=eOutputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(7,1)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[1]=eOutputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(8,0)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[2]=eOutputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(8,1)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[3]=eOutputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(9,0)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[4]=eOutputHatches.get(pointer).getContainerHandler();
+        pointer= getParameterInInt(9,1)-1;
+        if(pointer>=0 && pointer<eOutputHatches.size()) handles[5]=eOutputHatches.get(pointer).getContainerHandler();
         //output
+        for(int i=0;i<6;i++) if(handles[i]!=null && outputEM[i].hasStacks()) handles[i].putUnifyAll(outputEM[i].takeAll());
+        //all other are handled by base multi block code - cleaning is automatic
+    }
+
+    @Override
+    protected void parametersLoadDefault_EM() {//default routing table
+        setParameterPairIn_ClearOut(4,false,1,2);//I
+        setParameterPairIn_ClearOut(5,false,3,4);//I
+        setParameterPairIn_ClearOut(6,false,5,6);//I
+
+        setParameterPairIn_ClearOut(7,false,1,2);//O
+        setParameterPairIn_ClearOut(8,false,3,4);//O
+        setParameterPairIn_ClearOut(9,false,5,6);//O
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+        //update routing stats
     }
 
     private static final HashMap<GT_ItemStack,Behaviour> map=new HashMap<>();
-    public abstract class Behaviour {
-        public Behaviour(ItemStack... keyItems){
-            for(ItemStack is:keyItems){
-                map.put(new GT_ItemStack(is.getItem(),1,is.getItemDamage()),this);
-            }
-        }
 
+    public static void registerBehaviour(Behaviour behaviour,GT_ItemStack is){
+        map.put(is,behaviour);
+    }
+
+    public static abstract class Behaviour {
         public abstract boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parameters);
+
         public abstract MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, double[] parameters);
     }
 }
