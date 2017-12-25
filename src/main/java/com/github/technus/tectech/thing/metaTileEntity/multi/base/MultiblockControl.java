@@ -6,9 +6,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 public class MultiblockControl<T>{
     private final int[] controls=new int[7];
-    private final T[] values;
+    private final T values;
 
-    public MultiblockControl(T[] values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime){
+    public MultiblockControl(T values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime){
         this.values = values;
         controls[0]=EUt;
         controls[1]=amperes;
@@ -19,7 +19,7 @@ public class MultiblockControl<T>{
         controls[6]=Float.floatToIntBits(0);
     }
 
-    public MultiblockControl(T[] values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime, int pollutionToAdd, float excessMass){
+    public MultiblockControl(T values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime, int pollutionToAdd, float excessMass){
         this.values = values;
         controls[0]=EUt;
         controls[1]=amperes;
@@ -30,7 +30,7 @@ public class MultiblockControl<T>{
         controls[6]=Float.floatToIntBits(excessMass);
     }
 
-    public T[] getValues() {
+    public T getValue() {
         return values;
     }
 

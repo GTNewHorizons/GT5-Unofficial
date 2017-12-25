@@ -167,7 +167,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (outputEM != null) {
             float mass = 0;
             for (cElementalInstanceStackMap tree : outputEM)
-                mass += tree.getMass();
+                if(tree!=null) mass += tree.getMass();
             if (mass > 0) {
                 if (eMufflerHatches.size() < 1) explodeMultiblock();
                 else {
@@ -205,7 +205,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (outputEM != null) {
             float mass = 0;
             for (cElementalInstanceStackMap tree : outputEM)
-                mass += tree.getMass();
+                if(tree!=null) mass += tree.getMass();
             if (mass > 0) {
                 if (eMufflerHatches.size() < 1) explodeMultiblock();
                 else {
@@ -329,13 +329,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
 
         if (outputEM != null) {
-            aNBT.setInteger("outputStackCount", outputEM.length);
+            aNBT.setInteger("eOutputStackCount", outputEM.length);
             NBTTagCompound output = new NBTTagCompound();
             for (int i = 0; i < outputEM.length; i++)
-                output.setTag(Integer.toString(i), outputEM[i].toNBT());
+                if(outputEM[i]!=null)
+                    output.setTag(Integer.toString(i), outputEM[i].toNBT());
             aNBT.setTag("outputEM", output);
         } else {
-            aNBT.setInteger("outputStackCount", 0);
+            aNBT.setInteger("eOutputStackCount", 0);
             aNBT.removeTag("outputEM");
         }
 
@@ -400,18 +401,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
         }
 
-        final int outputLen = aNBT.getInteger("outputStackCount");
+        final int outputLen = aNBT.getInteger("eOutputStackCount");
         if (outputLen > 0) {
             outputEM = new cElementalInstanceStackMap[outputLen];
-            for (int i = 0; i < outputEM.length; i++)
-                try {
-                    outputEM[i] = cElementalInstanceStackMap.fromNBT(
-                            aNBT.getCompoundTag("outputEM").getCompoundTag(Integer.toString(i)));
-                } catch (tElementalException e) {
-                    if (DEBUG_MODE) e.printStackTrace();
-                    outputEM[i] = new cElementalInstanceStackMap();
+            NBTTagCompound compound=aNBT.getCompoundTag("outputEM");
+            for (int i = 0; i < outputEM.length; i++) {
+                if (compound.hasKey(Integer.toString(i))) {
+                    try {
+                        outputEM[i] = cElementalInstanceStackMap.fromNBT(compound.getCompoundTag(Integer.toString(i)));
+                    } catch (tElementalException e) {
+                        if (DEBUG_MODE) e.printStackTrace();
+                        outputEM[i] = null;
+                    }
                 }
-        } else outputEM = new cElementalInstanceStackMap[0];
+            }
+        } else outputEM = null;
 
         NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
         for (int i = 0; i < iParamsIn.length; i++)
@@ -596,7 +600,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         explodeMultiblock();
                     if (outputEM != null)
                         for (cElementalInstanceStackMap tree : outputEM)
-                            if (tree.hasStacks()) explodeMultiblock();
+                            if (tree!=null && tree.hasStacks()) explodeMultiblock();
                 }
 
                 if (eUncertainHatches.size() > 1) mMachine = false;
@@ -1153,7 +1157,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (outputEM == null) return;
         float mass = 0;
         for (cElementalInstanceStackMap map : outputEM)
-            mass += map.getMass();
+            if(map!=null) mass += map.getMass();
 
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
@@ -1285,7 +1289,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 explodeMultiblock();
             if (outputEM != null)
                 for (cElementalInstanceStackMap output : outputEM)
-                    if (output.hasStacks()) explodeMultiblock();
+                    if (output!=null && output.hasStacks()) explodeMultiblock();
         } catch (Exception e) {
             if (DEBUG_MODE) e.printStackTrace();
         }

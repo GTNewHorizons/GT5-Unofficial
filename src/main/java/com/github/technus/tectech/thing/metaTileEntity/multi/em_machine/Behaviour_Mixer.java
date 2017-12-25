@@ -18,7 +18,7 @@ public class Behaviour_Mixer extends GT_MetaTileEntity_EM_machine.Behaviour {
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, double[] parameters) {
+    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] parameters) {
         return null;
     }
 }

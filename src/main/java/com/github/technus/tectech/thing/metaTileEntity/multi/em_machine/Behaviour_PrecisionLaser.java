@@ -18,7 +18,7 @@ public class Behaviour_PrecisionLaser extends GT_MetaTileEntity_EM_machine.Behav
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap> process(cElementalInstanceStackMap[] inputs, double[] parameters) {
+    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] parameters) {
         return null;
     }
 }
