@@ -7,8 +7,6 @@ import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -35,15 +33,15 @@ public class TecTech {
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
 
-    @Instance(Reference.MODID)
+    @Mod.Instance(Reference.MODID)
     public static TecTech instance;
 
     public static final XSTR Rnd = XSTR.XSTR_INSTANCE;
     public static final LogHelper Logger = new LogHelper(Reference.MODID);
-    private static IngameErrorLog Module_AdminErrorLogs = null;
-    public static MainLoader GTCustomLoader = null;
+    private static IngameErrorLog Module_AdminErrorLogs;
+    public static MainLoader GTCustomLoader;
     public static TecTechConfig ModConfig;
-    public static CreativeTabs mainTab = null;
+    public static CreativeTabs mainTab;
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
 
@@ -54,15 +52,14 @@ public class TecTech {
             Module_AdminErrorLogs.AddErrorLogOnAdminJoin(pMessage);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
 
-        if (!ModConfig.LoadConfig())
-            Logger.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
+        if (!ModConfig.LoadConfig()) Logger.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
 
         if (ModConfig.ModAdminErrorLogs_Enabled) {
             Logger.debug("Module_AdminErrorLogs is enabled");
@@ -71,10 +68,10 @@ public class TecTech {
 
         GTCustomLoader = new MainLoader();
 
-        TecTech.Logger.info("Added Atom Overrider");
+        Logger.info("Added Atom Overrider");
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
         hasThaumcraft = Loader.isModLoaded(Reference.THAUMCRAFT);
@@ -86,18 +83,18 @@ public class TecTech {
         proxy.registerRenderInfo();
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         GTCustomLoader.postLoad();
         if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
         fixBlocks();
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent ev) {
     }
 
@@ -107,14 +104,14 @@ public class TecTech {
             FluidStack p = m.getPlasma(1);
             if (p != null) {
                 if (DEBUG_MODE)
-                    TecTech.Logger.info("Found Plasma of " + m.mName);
+                    Logger.info("Found Plasma of " + m.mName);
                 if (m.mElement != null &&
                         (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
                                 -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
                     if (DEBUG_MODE)
-                        TecTech.Logger.info("Attempting to bind " + m.mName);
+                        Logger.info("Attempting to bind " + m.mName);
                     if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
                     else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
                     else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());
@@ -126,7 +123,7 @@ public class TecTech {
             Fluid f = binds.get(r.mFluidOutputs[0].getFluid());
             if (f != null) {
                 if (DEBUG_MODE)
-                    TecTech.Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
+                    Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
                 r.mFluidOutputs[0] = new FluidStack(f, r.mFluidInputs[0].amount);
             }
         }

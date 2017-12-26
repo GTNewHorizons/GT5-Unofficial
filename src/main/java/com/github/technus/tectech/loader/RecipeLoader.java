@@ -17,6 +17,7 @@ import static gregtech.api.enums.GT_Values.RA;
  * Created by danie_000 on 16.11.2016.
  */
 public class RecipeLoader implements Runnable {
+    @Override
     public void run() {
         dAtomDefinition.setTransformation();
         dHadronDefinition.setTransformations();

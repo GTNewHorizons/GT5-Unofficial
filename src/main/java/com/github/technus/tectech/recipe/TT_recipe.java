@@ -41,12 +41,12 @@ public class TT_recipe extends GT_Recipe {
     
     public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks, FluidStack[] fluidStacks, cElementalInstanceStackMap[] in, cElementalInstanceStackMap[] catalyst) {
         if(additionalCheck !=null && !additionalCheck.check(this,consume,doNotCheckStackSizes,itemStacks,fluidStacks,in,catalyst)) return false;
-        if (this.eCatalyst != null) {
-            if (catalyst != null && catalyst.length >= this.eCatalyst.length) {
-                for (int i = 0; i < this.eCatalyst.length; i++) {
-                    if (this.eCatalyst[i] != null && this.eCatalyst[i].hasStacks()) {
+        if (eCatalyst != null) {
+            if (catalyst != null && catalyst.length >= eCatalyst.length) {
+                for (int i = 0; i < eCatalyst.length; i++) {
+                    if (eCatalyst[i] != null && eCatalyst[i].hasStacks()) {
                         if (catalyst[i] != null && catalyst[i].hasStacks()) {
-                            if (!catalyst[i].removeAllAmounts(true, this.eCatalyst[i])) return false;
+                            if (!catalyst[i].removeAllAmounts(true, eCatalyst[i])) return false;
                         } else {
                             return false;
                         }
@@ -80,12 +80,12 @@ public class TT_recipe extends GT_Recipe {
 
     public boolean EMisRecipeInputEqualConsumeFromOne(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks, FluidStack[] fluidStacks, cElementalInstanceStackMap in, cElementalInstanceStackMap[] catalyst) {
         if(additionalCheck !=null && !additionalCheck.check(this,consume,doNotCheckStackSizes,itemStacks,fluidStacks,in,catalyst)) return false;
-        if (this.eCatalyst != null) {
-            if (catalyst != null && catalyst.length >= this.eCatalyst.length) {
-                for (int i = 0; i < this.eCatalyst.length; i++) {
-                    if (this.eCatalyst[i] != null && this.eCatalyst[i].hasStacks()) {
+        if (eCatalyst != null) {
+            if (catalyst != null && catalyst.length >= eCatalyst.length) {
+                for (int i = 0; i < eCatalyst.length; i++) {
+                    if (eCatalyst[i] != null && eCatalyst[i].hasStacks()) {
                         if (catalyst[i] != null && catalyst[i].hasStacks()) {
-                            if (!catalyst[i].removeAllAmounts(true, this.eCatalyst[i])) return false;
+                            if (!catalyst[i].removeAllAmounts(true, eCatalyst[i])) return false;
                         } else {
                             return false;
                         }
@@ -97,10 +97,10 @@ public class TT_recipe extends GT_Recipe {
         }
         if (input != null) {
             if (in != null) {
-                for (int i = 0; i < input.length; i++) {
-                    if (input[i] != null && input[i].hasStacks()) {
+                for (cElementalDefinitionStackMap anInput : input) {
+                    if (anInput != null && anInput.hasStacks()) {
                         if (in.hasStacks()) {
-                            if (!in.removeAllAmounts(consume, input[i])) return false;
+                            if (!in.removeAllAmounts(consume, anInput)) return false;
                         } else {
                             return false;
                         }

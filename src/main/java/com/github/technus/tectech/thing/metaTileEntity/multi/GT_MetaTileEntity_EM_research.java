@@ -16,6 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
@@ -81,14 +82,15 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_research(this.mName);
+        return new GT_MetaTileEntity_EM_research(mName);
     }
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Holder rack : eHolders)
-            if (isValidMetaTileEntity(rack))
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(false);
         eHolders.clear();
 
@@ -96,7 +98,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             return false;
 
         for (GT_MetaTileEntity_Hatch_Holder rack : eHolders)
-            if (isValidMetaTileEntity(rack))
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eHolders.size() == 1;
     }
@@ -148,7 +150,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
                         for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
                             if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                                this.aRecipe = assRecipeTT;
+                                aRecipe = assRecipeTT;
                                 machineType = machine;
                                 break;
                             }
@@ -156,7 +158,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         if (aRecipe == null) {
                             for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
                                 if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                                    this.aRecipe = assRecipeTT;
+                                    aRecipe = assRecipeTT;
                                     machineType = crafter;
                                     break;
                                 }
@@ -185,7 +187,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             if(ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                        this.tRecipe = assRecipe;
+                        tRecipe = assRecipe;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
                             if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
@@ -204,7 +206,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             }else if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)){
                 for (TT_recipe.TT_assLineRecipe assRecipeTT:TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()){
                     if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                        this.aRecipe = assRecipeTT;
+                        aRecipe = assRecipeTT;
                         machineType=machine;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
@@ -223,7 +225,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 }
                 for (TT_recipe.TT_assLineRecipe assRecipeTT:TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()){
                     if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                        this.aRecipe = assRecipeTT;
+                        aRecipe = assRecipeTT;
                         machineType=crafter;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
@@ -283,7 +285,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 }
                 tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + " Assembling Line Recipe Generator");
                 NBTTagList tNBTList = new NBTTagList();
-                tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + (tRecipe.mDuration / 20)));
+                tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + tRecipe.mDuration / 20));
                 for (int i = 0; i < tRecipe.mInputs.length; i++) {
                     if (tRecipe.mInputs[i] != null) {
                         tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
@@ -327,7 +329,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new GT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }
@@ -390,13 +392,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }

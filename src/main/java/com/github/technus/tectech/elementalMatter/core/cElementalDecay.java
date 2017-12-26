@@ -26,7 +26,7 @@ public final class cElementalDecay {
         for (int i = 0; i < outArr.length; i++) {
             outArr[i] = new cElementalDefinitionStack(outSafe[i], 1);
         }
-        this.outputStacks = new cElementalDefinitionStackMap(outArr);
+        outputStacks = new cElementalDefinitionStackMap(outArr);
         this.probability = probability;
     }
 
@@ -35,7 +35,7 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStack... out) {
-        this.outputStacks = new cElementalDefinitionStackMap(out);
+        outputStacks = new cElementalDefinitionStackMap(out);
         this.probability = probability;
     }
 
@@ -44,7 +44,7 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStackMap tree) {
-        this.outputStacks = tree;
+        outputStacks = tree;
         this.probability = probability;
     }
 

@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -19,6 +18,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
@@ -94,8 +94,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         eDismantleBoom=true;
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_scanner(this.mName);
+        return new GT_MetaTileEntity_EM_scanner(mName);
     }
 
     @Override
@@ -280,56 +281,56 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     private void addComputationRequirements(int depthPlus, int capabilities){
-        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE,capabilities)){
+        if(areBitsSet(SCAN_GET_NOMENCLATURE,capabilities)){
             totalComputationRequired +=depthPlus*5;
             eRequiredData+=depthPlus;
         }
-        if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities)){
+        if(areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities)){
             totalComputationRequired +=depthPlus*10;
             eRequiredData+=depthPlus;
 
         }
-        if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities)){
+        if(areBitsSet(SCAN_GET_AMOUNT,capabilities)){
             totalComputationRequired +=depthPlus*64;
             eRequiredData+=depthPlus*8;
 
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)){
+        if(areBitsSet(SCAN_GET_CHARGE,capabilities)){
             totalComputationRequired +=depthPlus*128;
             eRequiredData+=depthPlus*4;
 
         }
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)){
+        if(areBitsSet(SCAN_GET_MASS,capabilities)){
             totalComputationRequired +=depthPlus*256;
             eRequiredData+=depthPlus*4;
 
         }
-        if(Util.areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities)){
+        if(areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities)){
             totalComputationRequired +=depthPlus*512;
             eRequiredData+=depthPlus*16;
 
         }
-        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO,capabilities)){
+        if(areBitsSet(SCAN_GET_TIMESPAN_INFO,capabilities)){
             totalComputationRequired +=depthPlus*1024;
             eRequiredData+=depthPlus*32;
 
         }
-        if(Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
+        if(areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
             totalComputationRequired +=depthPlus*2048;
             eRequiredData+=depthPlus*32;
 
         }
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)){
+        if(areBitsSet(SCAN_GET_COLOR,capabilities)){
             totalComputationRequired +=depthPlus*1024;
             eRequiredData+=depthPlus*48;
 
         }
-        if(Util.areBitsSet(SCAN_GET_AGE,capabilities)){
+        if(areBitsSet(SCAN_GET_AGE,capabilities)){
             totalComputationRequired +=depthPlus*2048;
             eRequiredData+=depthPlus*64;
 
         }
-        if(Util.areBitsSet(SCAN_GET_TIMESPAN_MULT,capabilities)){
+        if(areBitsSet(SCAN_GET_TIMESPAN_MULT,capabilities)){
             totalComputationRequired +=depthPlus*2048;
             eRequiredData+=depthPlus*64;
 
@@ -377,13 +378,13 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }

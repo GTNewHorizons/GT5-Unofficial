@@ -29,7 +29,6 @@ import static gregtech.api.enums.GT_Values.E;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    private TileEntity container;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -63,8 +62,9 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_essentiaQuantizer(this.mName);
+        return new GT_MetaTileEntity_EM_essentiaQuantizer(mName);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        container=essentiaContainerCompat.getContainer(this);
+        TileEntity container = essentiaContainerCompat.getContainer(this);
         cElementalInstanceStack newStack=essentiaContainerCompat.getFromContainer(container);
         if(newStack!=null){
             mMaxProgresstime = 20;

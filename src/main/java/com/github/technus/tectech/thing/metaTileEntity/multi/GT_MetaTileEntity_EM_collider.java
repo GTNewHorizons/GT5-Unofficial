@@ -60,12 +60,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             {"F2222#\"#2222","F41155555114","F2222#\"#2222",},
     };
     private static final Block[] blockType = new Block[]{
-            TT_Container_Casings.sBlockCasingsTT,
-            TT_Container_Casings.sBlockCasingsTT,
-            TT_Container_Casings.sBlockCasingsTT,
+            sBlockCasingsTT,
+            sBlockCasingsTT,
+            sBlockCasingsTT,
             QuantumGlassBlock.INSTANCE,
-            TT_Container_Casings.sBlockCasingsTT,
-            TT_Container_Casings.sBlockCasingsTT
+            sBlockCasingsTT,
+            sBlockCasingsTT
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
@@ -91,8 +91,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_collider(this.mName);
+        return new GT_MetaTileEntity_EM_collider(mName);
     }
 
     @Override
@@ -132,7 +133,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*2;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*2;
-        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != TT_Container_Casings.sBlockCasingsTT) {
+        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != sBlockCasingsTT) {
             eTier = 0;
             return false;
         }
@@ -149,10 +150,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         boolean test;
         switch (eTier) {
             case 1:
-                test = structureCheck_EM(shape, blockType, blockMeta1,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
+                test = structureCheck_EM(shape, blockType, blockMeta1, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
                 break;
             case 2:
-                test = structureCheck_EM(shape, blockType, blockMeta2,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
+                test = structureCheck_EM(shape, blockType, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 11, 1, 18);
                 break;
             default:
                 eTier = 0;

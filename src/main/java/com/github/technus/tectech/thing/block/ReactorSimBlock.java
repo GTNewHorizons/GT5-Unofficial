@@ -28,7 +28,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
 
     public ReactorSimBlock() {
         super(Material.iron);
-        this.setBlockBounds(0, 0, 0, 1, 1, 1);
+        setBlockBounds(0, 0, 0, 1, 1, 1);
         setBlockName("reactorSim");
         setHarvestLevel("wrench", 3);
         setHardness(50);
@@ -57,7 +57,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
-        stuff = this.blockIcon;
+        stuff = blockIcon;
     }
 
     public static void run() {
@@ -71,6 +71,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
         return new ReactorSimTileEntity();
     }
 
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float a, float b, float c) {
         if(entityPlayer.isSneaking()) {
             return false;
@@ -80,6 +81,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
         }
     }
 
+    @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block srcBlock) {
         TileEntity te = world.getTileEntity(x,y,z);
         if(te instanceof TileEntityBlock) {

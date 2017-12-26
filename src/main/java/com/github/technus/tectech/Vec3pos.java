@@ -16,9 +16,9 @@ public class Vec3pos implements Comparable<Vec3pos> {
     }
 
     public Vec3pos(IGregTechTileEntity te) {
-        this.x = te.getXCoord();
-        this.y = te.getYCoord();
-        this.z = te.getZCoord();
+        x = te.getXCoord();
+        y = te.getYCoord();
+        z = te.getZCoord();
     }
 
     @Override

@@ -114,20 +114,20 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     @Deprecated
-    private void removeAll(iHasElementalDefinition... hasElementals) {
-        for (iHasElementalDefinition has : hasElementals)
+    private void removeAll(iHasElementalDefinition... hasElementalDefinition) {
+        for (iHasElementalDefinition has : hasElementalDefinition)
             map.remove(has.getDefinition());
     }
 
     //Remove amounts
     public boolean removeAmount(boolean testOnly, cElementalInstanceStack instance) {
-        final cElementalInstanceStack target = map.get(instance.definition);
+        cElementalInstanceStack target = map.get(instance.definition);
         if (target == null)
             return false;
         if (testOnly)
             return target.amount >= instance.amount;
         else {
-            final long diff = target.amount - instance.amount;
+            long diff = target.amount - instance.amount;
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -140,13 +140,13 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public boolean removeAmount(boolean testOnly, iHasElementalDefinition stack) {
-        final cElementalInstanceStack target = map.get(stack.getDefinition());
+        cElementalInstanceStack target = map.get(stack.getDefinition());
         if (target == null)
             return false;
         if (testOnly)
             return target.amount >= stack.getAmount();
         else {
-            final long diff = target.amount - stack.getAmount();
+            long diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -185,7 +185,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     @Deprecated
     public boolean removeAllAmounts(boolean testOnly, iElementalDefinition... definitions) {
-        final cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[definitions.length];
+        cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[definitions.length];
         for (int i = 0; i < stacks.length; i++)
             stacks[i] = new cElementalDefinitionStack(definitions[i], 1);
         return removeAllAmounts(testOnly, stacks);
@@ -193,13 +193,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
         boolean test=true;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry : container.map.entrySet()) {
             test &= removeAmount(true, entry.getValue());
         }
         if (testOnly || !test) return test;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry : container.map.entrySet()) {
             removeAmount(false, entry.getValue());
         }
         return true;
@@ -207,13 +205,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
         boolean test=true;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalInstanceStack> entry : container.map.entrySet()) {
             test &= removeAmount(true, entry.getValue());
         }
         if (testOnly || !test) return test;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalInstanceStack> entry : container.map.entrySet()) {
             test &= removeAmount(false, entry.getValue());
         }
         return true;
@@ -224,14 +220,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         float massRemoved = 0;
 
         if (map.size() > stacksCount) {
-            iElementalDefinition[] keys = this.keys();
+            iElementalDefinition[] keys = keys();
             for (int i = stacksCount; i < keys.length; i++) {
                 massRemoved += map.get(keys[i]).getDefinitionStack().getMass();
                 map.remove(keys[i]);
             }
         }
 
-        for (cElementalInstanceStack instance : this.values())
+        for (cElementalInstanceStack instance : values())
             if (instance.amount > stackCapacity) {
                 massRemoved += instance.definition.getMass() * (instance.amount - stackCapacity);
                 instance.amount = stackCapacity;
@@ -246,11 +242,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public void putReplaceAll(cElementalInstanceStack... instances) {
         for (cElementalInstanceStack instance : instances)
-            this.map.put(instance.definition, instance);
+            map.put(instance.definition, instance);
     }
 
     private void putReplaceAll(Map<iElementalDefinition, cElementalInstanceStack> inTreeUnsafe) {
-        this.map.putAll(inTreeUnsafe);
+        map.putAll(inTreeUnsafe);
     }
 
     public void putReplaceAll(cElementalInstanceStackMap inContainerUnsafe) {
@@ -296,7 +292,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public String[] getElementalInfo() {
-        final String[] info = new String[map.size() * 4];
+        String[] info = new String[map.size() * 4];
         int i = 0;
         for (cElementalInstanceStack instance : map.values()) {
             info[i] = EnumChatFormatting.BLUE + instance.definition.getName();
@@ -355,7 +351,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public void tickContent(float lifeTimeMult, int postEnergize, int seconds){
-        for (cElementalInstanceStack instance : this.values()) {
+        for (cElementalInstanceStack instance : values()) {
             cElementalInstanceStackMap newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
             if (newInstances == null) {
                 instance.nextColor();
@@ -371,8 +367,8 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //NBT
     public NBTTagCompound getInfoNBT() {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        final String[] info = getElementalInfo();
+        NBTTagCompound nbt = new NBTTagCompound();
+        String[] info = getElementalInfo();
         nbt.setInteger("i", info.length);
         for (int i = 0; i < info.length; i++)
             nbt.setString(Integer.toString(i), info[i]);
@@ -380,8 +376,8 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public NBTTagCompound getScanInfoNBT(int[] capabilities) {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        final ArrayList<String> info = getScanInfo(capabilities);
+        NBTTagCompound nbt = new NBTTagCompound();
+        ArrayList<String> info = getScanInfo(capabilities);
         nbt.setInteger("i", info.size());
         for (int i = 0; i < info.size(); i++)
             nbt.setString(Integer.toString(i), info.get(i));
@@ -389,7 +385,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public NBTTagCompound toNBT() {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", map.size());
         int i = 0;
         for (cElementalInstanceStack instance : map.values())
@@ -398,7 +394,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public static cElementalInstanceStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
-        final cElementalInstanceStack[] instances = new cElementalInstanceStack[nbt.getInteger("i")];
+        cElementalInstanceStack[] instances = new cElementalInstanceStack[nbt.getInteger("i")];
         for (int i = 0; i < instances.length; i++) {
             instances[i] = cElementalInstanceStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
             if (instances[i].definition.equals(nbtE__))
@@ -409,14 +405,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //stackUp
     public static cElementalInstanceStack[] stackUp(cElementalInstanceStack... in) {
-        final cElementalInstanceStackMap inTree = new cElementalInstanceStackMap();
+        cElementalInstanceStackMap inTree = new cElementalInstanceStackMap();
         inTree.putUnifyAll(in);
         return inTree.values();
     }
 
     @Override
     public int compareTo(cElementalInstanceStackMap o) {
-        final int sizeDiff = map.size() - o.map.size();
+        int sizeDiff = map.size() - o.map.size();
         if (sizeDiff != 0) return sizeDiff;
         cElementalInstanceStack[] ofThis = values(), ofThat = o.values();
         for (int i = 0; i < ofThat.length; i++) {

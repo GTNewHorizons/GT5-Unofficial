@@ -91,13 +91,13 @@ public final class iaeaNuclide {
     private iaeaNuclide(String[][] rows){
         N=Short.parseShort(rows[1][2]);
         Z=Short.parseShort(rows[1][0]);
-        NUCLIDES.put((((int)Z)<<16)+N,this);
+        NUCLIDES.put(((int)Z <<16)+N,this);
 
         String[] parts = Util.splitButDifferent(rows[0][16], "|");
         double Mass=doubleOrNaN(parts[0],"mass");
         if(!Double.isNaN(Mass)) {
             //System.out.println("Mass =\t" + Mass+"\t"+(N+Z)+"\t"+N+"\t"+Z+"\t"+(Mass/(N+Z)));
-            mass = (float)(Mass*MICRO_AMU_TO_EV_DIV_C_C);
+            mass = (float)(Mass* MICRO_AMU_TO_EV_DIV_C_C);
         }
         else mass=Float.NaN;
 
@@ -117,12 +117,12 @@ public final class iaeaNuclide {
         //    if (add(cells[17])) System.out.println(N + " " + Z);
         //    if (add(cells[20])) System.out.println(N + " " + Z);
         //}
-        new energeticState(this, halfTime,getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
+        new energeticState(this, halfTime, getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
     }
 
     private static final energeticState[] empty=new energeticState[0];
     private void makeArrayOfEnergyStates(){
-        if(energeticStates==null || energeticStates.size()==0)energeticStatesArray=empty;
+        if(energeticStates==null || energeticStates.size()==0)energeticStatesArray= empty;
         else energeticStatesArray=energeticStates.values().toArray(new energeticState[energeticStates.size()]);
     }
 
@@ -156,12 +156,12 @@ public final class iaeaNuclide {
         }
 
         private energeticState(String[] cells){
-            iaeaNuclide nuclide=get((int)doubleOrNaN(cells[0],"protons"),(int)doubleOrNaN(cells[1],"neutrons"));
+            iaeaNuclide nuclide= get((int)doubleOrNaN(cells[0],"protons"),(int)doubleOrNaN(cells[1],"neutrons"));
             if(nuclide==null)
                 throw new Error("Missing nuclide "+(int)doubleOrNaN(cells[0],"protons")+" "+(int)doubleOrNaN(cells[1],"neutrons"));
-            this.energy=(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000f);//to eV
+            energy =(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000f);//to eV
             if(energy<0) throw new Error("Invalid energy "+ nuclide.N +" "+nuclide.Z+ " "+cells[3]);
-            this.Thalf=(float) doubleOrNaN(cells[10],"half life",nuclide);
+            Thalf =(float) doubleOrNaN(cells[10],"half life",nuclide);
             if(nuclide.energeticStates==null) {
                 new Exception("Should be initialized before doing this... "+ nuclide.N +" "+nuclide.Z).printStackTrace();
                 nuclide.energeticStates = new TreeMap<>();
@@ -172,7 +172,7 @@ public final class iaeaNuclide {
             //    if (add(cells[15])) System.out.println(nuclide.N + " " + nuclide.Z);
             //    if (add(cells[18])) System.out.println(nuclide.N + " " + nuclide.Z);
             //}
-            this.decaymodes=getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
+            decaymodes = getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
         }
 
         private double doubleOrNaN(String s, String name){
@@ -208,43 +208,43 @@ public final class iaeaNuclide {
 
     private static iaeaDecay[] getDecaysFixed(String decay1, double chance1,String decay2, double chance2,String decay3, double chance3){
         boolean do1,do2,do3;
-        do1=(decay1.length()>0 && !Double.isNaN(chance1));
-        do2=(decay2.length()>0 && !Double.isNaN(chance2));
-        do3=(decay3.length()>0 && !Double.isNaN(chance3));
+        do1= decay1.length()>0 && !Double.isNaN(chance1);
+        do2= decay2.length()>0 && !Double.isNaN(chance2);
+        do3= decay3.length()>0 && !Double.isNaN(chance3);
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
         if(do1 && do2 && chance1==100 && chance2==100 && chance3!=100){
             decays.put(1D, new iaeaDecay(1f, decay1));
             if(do3) {
                 chance3/=100d;
-                decays.put(chance3, new iaeaDecay((float) (chance3), decay2));
+                decays.put(chance3, new iaeaDecay((float) chance3, decay2));
                 chance2=1d-chance3;
             }
             chance2/=2d;
-            decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+            decays.put(chance2, new iaeaDecay((float) chance2, decay2));
         }else if(do1 && chance1==100){
             decays.put(1D, new iaeaDecay(1f, decay1));
             if(do2) {
                 chance2/=100d;
-                decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+                decays.put(chance2, new iaeaDecay((float) chance2, decay2));
             }
             if(do3) {
                 chance3 /= 100d;
                 if(do2) chance3 *= chance2;
-                decays.put(chance3, new iaeaDecay((float) (chance3), decay3));
+                decays.put(chance3, new iaeaDecay((float) chance3, decay3));
             }
         }else{
-            double normalization=((do1?chance1:0)+(do2?chance2:0)+(do3?chance3:0));
+            double normalization= (do1?chance1:0) + (do2?chance2:0) + (do3?chance3:0);
             if(do1) {
                 chance1/=normalization;
-                decays.put(chance1, new iaeaDecay((float) (chance1), decay1));
+                decays.put(chance1, new iaeaDecay((float) chance1, decay1));
             }
             if(do2) {
                 chance2/=normalization;
-                decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+                decays.put(chance2, new iaeaDecay((float) chance2, decay2));
             }
             if(do3) {
                 chance3/=normalization;
-                decays.put(chance3, new iaeaDecay((float) (chance3), decay3));
+                decays.put(chance3, new iaeaDecay((float) chance3, decay3));
             }
             if(do1||do2||do3)
                 decays.put(1D,iaeaDecay.DEAD_END);

@@ -66,11 +66,11 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     //
     protected void init(cElementalPrimitive antiParticle, float rawLifeTime, int naturalInstant, int energeticInstant, cElementalDecay... elementalDecaysArray) {
-        this.anti = antiParticle;
+        anti = antiParticle;
         this.rawLifeTime = rawLifeTime;
-        this.naturalDecayInstant = (byte) naturalInstant;
-        this.energeticDecayInstant = (byte) energeticInstant;
-        this.elementalDecays = elementalDecaysArray;
+        naturalDecayInstant = (byte) naturalInstant;
+        energeticDecayInstant = (byte) energeticInstant;
+        elementalDecays = elementalDecaysArray;
     }
 
     @Override
@@ -117,7 +117,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -181,7 +181,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+nbtType+" "+getClassType());
+            lines.add("CLASS = "+ nbtType +" "+getClassType());
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getName());
             lines.add("SYMBOL = "+getSymbol());
@@ -205,7 +205,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
             if (DEBUG_MODE) e.printStackTrace();
         }
         if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+(-128));
+            TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+ -128);
     }
 
     @Override

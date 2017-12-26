@@ -54,8 +54,8 @@ public class projectileEM extends TurretProjectile {
                 if(consumeFromThis.definition.getType()>1 || consumeFromThis.definition.getType()<-1) exotic = true;
                 if(consumeFromThis.definition.getType()<0) antiMatter = true;
 
-                if (consumeFromThis.definition.getCharge() == 0) this.gravity = massFactor/100f;
-                else this.gravity = Math.min(0.0025F/Math.abs(consumeFromThis.definition.getCharge()),massFactor/100f);
+                if (consumeFromThis.definition.getCharge() == 0) gravity = massFactor/100f;
+                else gravity = Math.min(0.0025F/Math.abs(consumeFromThis.definition.getCharge()),massFactor/100f);
 
                 avalableEM.removeAmount(false,consumeFromThis.definition.getStackForm(1));
             }
@@ -65,13 +65,14 @@ public class projectileEM extends TurretProjectile {
         //todo add more subspace pollution
     }
 
+    @Override
     protected void onImpact(MovingObjectPosition movingobjectposition) {
-        if(this.ticksExisted > 1) {
+        if(ticksExisted > 1) {
             if(movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                Block hitBlock = this.worldObj.getBlock(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
+                Block hitBlock = worldObj.getBlock(movingobjectposition.blockX, movingobjectposition.blockY, movingobjectposition.blockZ);
                 if(hitBlock != null){
                     if (hitBlock.getMaterial().isSolid() && TecTech.ModConfig.ENABLE_TURRET_EXPLOSIONS && antiMatter) {
-                        this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.Rnd.nextFloat() + 0.5F);
+                        worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.Rnd.nextFloat() + 0.5F);
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(209), 1.0F, -1.0F,
                                 movingobjectposition.blockX,
                                 movingobjectposition.blockY,
@@ -79,20 +80,20 @@ public class projectileEM extends TurretProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.blockX + 0.5D,
                                 movingobjectposition.blockY + 0.5D,
-                                movingobjectposition.blockZ + 0.5D, (exotic?10:1) * TecTech.ModConfig.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped?(amp_level*.1f)+1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.blockZ + 0.5D, (exotic?10:1) * TecTech.ModConfig.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1) * (ticksExisted/250f), true);
                     } else {
                         return;
                     }
                 }
             }
 
-            if(movingobjectposition.entityHit != null && !this.worldObj.isRemote) {
-                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.Rnd.nextFloat() + 0.5F);
-                if(movingobjectposition.entityHit != null && !this.worldObj.isRemote) {
-                    float damage = (exotic?10:1) * TecTech.ModConfig.TURRET_DAMAGE_FACTOR * massFactor * (isAmped?(amp_level*.1f)+1:1);
+            if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
+                worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.Rnd.nextFloat() + 0.5F);
+                if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
+                    float damage = (exotic?10:1) * TecTech.ModConfig.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1);
 
                     if(movingobjectposition.entityHit instanceof EntityPlayer) {
-                        if(this.canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
+                        if(canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
                             movingobjectposition.entityHit.setFire((exotic?10:1)*2);
                             movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
                             if(antiMatter) movingobjectposition.entityHit.hurtResistantTime = 0;
@@ -111,17 +112,18 @@ public class projectileEM extends TurretProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.entityHit.posX,
                                 movingobjectposition.entityHit.posY,
-                                movingobjectposition.entityHit.posZ, (exotic?10:1) * TecTech.ModConfig.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped?(amp_level*.1f)+1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.entityHit.posZ, (exotic?10:1) * TecTech.ModConfig.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1) * (ticksExisted/250f), true);
                     }
                 }
             }
-            this.setDead();
+            setDead();
         }
     }
 
+    @Override
     public void onEntityUpdate() {
-        if(this.ticksExisted >= 75) {
-            this.setDead();
+        if(ticksExisted >= 75) {
+            setDead();
         }
     }
 }

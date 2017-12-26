@@ -77,7 +77,7 @@ public class ClientProxy extends CommonProxy {
 
         boolean origFont = fontRenderer.getUnicodeFlag();
 
-        if ((mc.gameSettings.guiScale) == 3) {
+        if (mc.gameSettings.guiScale == 3) {
             fontRenderer.setUnicodeFlag(true);
             float dist = 0.08F;
             y--;

@@ -7,7 +7,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -32,7 +31,6 @@ public class ScanDisplayScreen extends GuiScreen {
     private static final ResourceLocation ITEM =new ResourceLocation("tectech:textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player){
-        super();
         lines=ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem());
     }
 
@@ -40,11 +38,11 @@ public class ScanDisplayScreen extends GuiScreen {
     public void drawScreen(int x, int y, float partialTicks) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        this.mc.getTextureManager().bindTexture(ITEM);
+        mc.getTextureManager().bindTexture(ITEM);
         long tick=System.currentTimeMillis()/150;
         int itick=(int)(tick%12);
         drawTexturedModalRect(baseX+99,baseY+189,32*(itick/6),32*(itick%6), 32, 32);
-        this.mc.getTextureManager().bindTexture(BACKGROUNDS[(int)(tick%8)]);
+        mc.getTextureManager().bindTexture(BACKGROUNDS[(int)(tick%8)]);
         drawTexturedModalRect(baseX,baseY,0,0, sizeX, sizeY);
         glDisable(GL_BLEND);
         super.drawScreen(x,y,partialTicks);
@@ -62,7 +60,7 @@ public class ScanDisplayScreen extends GuiScreen {
                 TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY - 8 + j, 200, itick);
             }
         }
-        for(int i=firstLine, j=0;i<lines.length && j<renderedLines;i++,j++){
+        for(int i = firstLine, j = 0; i<lines.length && j< renderedLines; i++,j++){
             textBaseY += 9;
             int equalPos=lines[i].indexOf('=');
             if(equalPos>=0){
@@ -72,7 +70,7 @@ public class ScanDisplayScreen extends GuiScreen {
                 TecTech.proxy.renderUnicodeString(lines[i], textBaseX, textBaseY, 200, itick);
             }
         }
-        for(int i=firstLine+renderedLines, j=8;i<lines.length && j!=0;i++,j/=2){
+        for(int i = firstLine+ renderedLines, j = 8; i<lines.length && j!=0; i++,j/=2){
             int equalPos=lines[i].indexOf('=');
             if(equalPos>=0){
                 TecTech.proxy.renderUnicodeString(lines[i].substring(0,equalPos), textBaseX, textBaseY + 17 - j, 200, itick);
@@ -90,13 +88,13 @@ public class ScanDisplayScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        baseX=(width-sizeX)/2;
-        baseY=(height-sizeY)/2-12;
+        baseX=(width- sizeX)/2;
+        baseY=(height- sizeY)/2-12;
         int buttonBaseY=baseY+145;
-        this.buttonList.add(pgUp=new Button(0,baseX+77,buttonBaseY,0,220));
-        this.buttonList.add(up=new Button(1,baseX+99,buttonBaseY,20,220));
-        this.buttonList.add(down=new Button(2,baseX+121,buttonBaseY,40,220));
-        this.buttonList.add(pgDown=new Button(3,baseX+143,buttonBaseY,60,220));
+        buttonList.add(pgUp=new Button(0,baseX+77,buttonBaseY,0,220));
+        buttonList.add(up=new Button(1,baseX+99,buttonBaseY,20,220));
+        buttonList.add(down=new Button(2,baseX+121,buttonBaseY,40,220));
+        buttonList.add(pgDown=new Button(3,baseX+143,buttonBaseY,60,220));
     }
 
     @Override
@@ -126,15 +124,15 @@ public class ScanDisplayScreen extends GuiScreen {
         @Override
         public void drawButton(Minecraft mc, int xPos, int yPos)
         {
-            if (this.visible)
+            if (visible)
             {
-                this.field_146123_n = xPos >= this.xPosition && yPos >= this.yPosition && xPos < this.xPosition + this.width && yPos < this.yPosition + this.height;
+                field_146123_n = xPos >= xPosition && yPos >= yPosition && xPos < xPosition + width && yPos < yPosition + height;
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 mc.getTextureManager().bindTexture(BACKGROUNDS[0]);
-                drawTexturedModalRect(this.xPosition, this.yPosition, u + this.getHoverState(this.field_146123_n) * 80, v, this.width, this.height);
+                drawTexturedModalRect(xPosition, yPosition, u + getHoverState(field_146123_n) * 80, v, width, height);
                 glDisable(GL_BLEND);
-                GL11.glEnable(GL11.GL_BLEND);
+                glEnable(GL_BLEND);
             }
         }
     }

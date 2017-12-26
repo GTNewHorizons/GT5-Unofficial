@@ -33,7 +33,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     public final String[] getElementalInfo() {
-        final String[] info = new String[map.size() * 3];
+        String[] info = new String[map.size() * 3];
         int i = 0;
         for (cElementalDefinitionStack defStack : map.values()) {
             info[i] = EnumChatFormatting.BLUE + defStack.definition.getName();
@@ -71,8 +71,8 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
 
     //NBT
     public final NBTTagCompound getInfoNBT() {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        final String[] info = getElementalInfo();
+        NBTTagCompound nbt = new NBTTagCompound();
+        String[] info = getElementalInfo();
         nbt.setInteger("i", info.length);
         for (int i = 0; i < info.length; i++)
             nbt.setString(Integer.toString(i), info[i]);
@@ -80,7 +80,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     public final NBTTagCompound toNBT() {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", map.size());
         int i = 0;
         for (cElementalDefinitionStack defStack : map.values())
@@ -90,7 +90,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
 
     @Override
     public final int compareTo(cElementalStackMap o) {//this actually compares rest
-        final int sizeDiff = map.size() - o.map.size();
+        int sizeDiff = map.size() - o.map.size();
         if (sizeDiff != 0) return sizeDiff;
         cElementalDefinitionStack[] ofThis = values(), ofO = o.values();
         for (int i = 0; i < ofO.length; i++) {

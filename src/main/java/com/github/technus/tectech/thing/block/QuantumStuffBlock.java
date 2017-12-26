@@ -27,7 +27,7 @@ public final class QuantumStuffBlock extends BlockBase {
 
     public QuantumStuffBlock() {
         super(Material.iron);
-        this.setBlockBounds(0, 0, 0, 1, 1, 1);
+        setBlockBounds(0, 0, 0, 1, 1, 1);
         setBlockName("quantumStuff");
         setHarvestLevel("wrench", 0);
         setHardness(500);
@@ -45,7 +45,7 @@ public final class QuantumStuffBlock extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
-        stuff = this.blockIcon;
+        stuff = blockIcon;
     }
 
     @Override
@@ -68,15 +68,18 @@ public final class QuantumStuffBlock extends BlockBase {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 1;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         return false;
@@ -84,7 +87,7 @@ public final class QuantumStuffBlock extends BlockBase {
 
     @Override
     public int getRenderType() {
-        return QuantumStuffBlock.renderID;
+        return renderID;
     }
 
     public static void run() {

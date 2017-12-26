@@ -31,7 +31,6 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     public static IIcon offline, online;
 
     private ElementalDefinitionScanStorage_EM() {
-        super();
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionScanStorage");
         setTextureName(MODID + ":itemDefinitionScanStorage");
@@ -89,7 +88,7 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         offline =iconRegister.registerIcon(MODID + ":itemDefinitionScanStorageOff");
-        online =this.itemIcon = iconRegister.registerIcon(this.getIconString());
+        online = itemIcon = iconRegister.registerIcon(getIconString());
     }
 
     @Override

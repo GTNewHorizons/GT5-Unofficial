@@ -16,6 +16,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
         super(MaxEnergyStorage, MaxIO);
     }
 
+    @Override
     @Optional.Method(
             modid = "OpenComputers"
     )

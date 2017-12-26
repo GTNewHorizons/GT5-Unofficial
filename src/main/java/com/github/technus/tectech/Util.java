@@ -75,7 +75,7 @@ public class Util {
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -199,7 +199,7 @@ public class Util {
         IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -344,7 +344,7 @@ public class Util {
         //TE Rotation
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=tileEntity.xCoord,
                 baseZ=tileEntity.zCoord,
                 baseY=tileEntity.yCoord;
@@ -472,7 +472,7 @@ public class Util {
         ItemStack[] array = new ItemStack[10];
 
         int x, y, z, a, b, c;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -533,7 +533,7 @@ public class Util {
 
                     if (!block.hasTileEntity(meta) && block.getMaterial() != Material.air) {
                         boolean err = true;
-                        final ItemStack is = new ItemStack(block, 1, meta);
+                        ItemStack is = new ItemStack(block, 1, meta);
                         for (int i = 0; i < array.length; i++) {
                             if (array[i] == null) {
                                 array[i] = is;
@@ -730,7 +730,7 @@ public class Util {
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : givenInputs) {
-                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                    if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
                         if (aDontCheckStackSizes) {
                             temp = false;
                             break;
@@ -762,7 +762,6 @@ public class Util {
                                     aFluid.amount = 0;
                                 } else {
                                     aFluid.amount -= amt;
-                                    amt = 0;
                                     break;
                                 }
                             }
@@ -776,7 +775,7 @@ public class Util {
                     if (tStack != null) {
                         amt = tStack.stackSize;
                         for (ItemStack aStack : givenInputs) {
-                            if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                            if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
                                 if (aDontCheckStackSizes) {
                                     aStack.stackSize -= amt;
                                     break;
@@ -786,7 +785,6 @@ public class Util {
                                     aStack.stackSize = 0;
                                 } else {
                                     aStack.stackSize -= amt;
-                                    amt = 0;
                                     break;
                                 }
                             }
@@ -833,7 +831,7 @@ public class Util {
     }
 
     public static String[] infoFromNBT(NBTTagCompound nbt) {
-        final String[] strings = new String[nbt.getInteger("i")];
+        String[] strings = new String[nbt.getInteger("i")];
         for (int i = 0; i < strings.length; i++)
             strings[i] = nbt.getString(Integer.toString(i));
         return strings;

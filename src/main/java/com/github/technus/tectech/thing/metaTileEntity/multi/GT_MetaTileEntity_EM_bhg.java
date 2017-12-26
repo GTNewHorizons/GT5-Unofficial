@@ -132,8 +132,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_bhg(this.mName);
+        return new GT_MetaTileEntity_EM_bhg(mName);
     }
 
     @Override

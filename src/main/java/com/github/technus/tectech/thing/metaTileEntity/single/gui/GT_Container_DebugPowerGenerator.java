@@ -24,25 +24,25 @@ public class GT_Container_DebugPowerGenerator
 
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 5, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 23, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 41, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 8, 59, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 8, 5, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 8, 23, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 8, 41, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 8, 59, false, false, 1));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 26, 5, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 26, 23, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 26, 41, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 26, 59, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 26, 5, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 26, 23, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 26, 41, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 26, 59, false, false, 1));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 5, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 23, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 41, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 59, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 5, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 23, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 41, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 59, false, false, 1));
 
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 134, 5, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 134, 23, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 134, 41, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 134, 59, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 5, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 23, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 41, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 134, 59, false, false, 1));
     }
 
     @Override
@@ -50,57 +50,57 @@ public class GT_Container_DebugPowerGenerator
         if (aSlotIndex < 0) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
-        Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
-        if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
+        Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
+        if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
             switch (aSlotIndex) {
                 case 0:
-                    dpg.EUT -= (aShifthold == 1 ? 512 : 64);
+                    dpg.EUT -= aShifthold == 1 ? 512 : 64;
                     break;
                 case 1:
-                    dpg.EUT /= (aShifthold == 1 ? 512 : 64);
+                    dpg.EUT /= aShifthold == 1 ? 512 : 64;
                     break;
                 case 2:
-                    dpg.AMP -= (aShifthold == 1 ? 512 : 64);
+                    dpg.AMP -= aShifthold == 1 ? 512 : 64;
                     break;
                 case 3:
-                    dpg.AMP /= (aShifthold == 1 ? 512 : 64);
+                    dpg.AMP /= aShifthold == 1 ? 512 : 64;
                     break;
                 case 4:
-                    dpg.EUT -= (aShifthold == 1 ? 16 : 1);
+                    dpg.EUT -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 5:
-                    dpg.EUT /= (aShifthold == 1 ? 16 : 2);
+                    dpg.EUT /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 6:
-                    dpg.AMP -= (aShifthold == 1 ? 16 : 1);
+                    dpg.AMP -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 7:
-                    dpg.AMP /= (aShifthold == 1 ? 16 : 2);
+                    dpg.AMP /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 8:
-                    dpg.EUT += (aShifthold == 1 ? 512 : 64);
+                    dpg.EUT += aShifthold == 1 ? 512 : 64;
                     break;
                 case 9:
-                    dpg.EUT *= (aShifthold == 1 ? 512 : 64);
+                    dpg.EUT *= aShifthold == 1 ? 512 : 64;
                     break;
                 case 10:
-                    dpg.AMP += (aShifthold == 1 ? 512 : 64);
+                    dpg.AMP += aShifthold == 1 ? 512 : 64;
                     break;
                 case 11:
-                    dpg.AMP *= (aShifthold == 1 ? 512 : 64);
+                    dpg.AMP *= aShifthold == 1 ? 512 : 64;
                     break;
                 case 12:
-                    dpg.EUT += (aShifthold == 1 ? 16 : 1);
+                    dpg.EUT += aShifthold == 1 ? 16 : 1;
                     break;
                 case 13:
-                    dpg.EUT *= (aShifthold == 1 ? 16 : 2);
+                    dpg.EUT *= aShifthold == 1 ? 16 : 2;
                     break;
                 case 14:
-                    dpg.AMP += (aShifthold == 1 ? 16 : 1);
+                    dpg.AMP += aShifthold == 1 ? 16 : 1;
                     break;
                 case 15:
-                    dpg.AMP *= (aShifthold == 1 ? 16 : 2);
+                    dpg.AMP *= aShifthold == 1 ? 16 : 2;
                     break;
                 default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
@@ -113,7 +113,7 @@ public class GT_Container_DebugPowerGenerator
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
             return;
         }
 
@@ -121,9 +121,8 @@ public class GT_Container_DebugPowerGenerator
         EUT=dpg.EUT;
         AMP=dpg.AMP;
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
+        for (Object crafter : crafters) {
+            ICrafting var1 = (ICrafting) crafter;
             var1.sendProgressBarUpdate(this, 100, EUT & 0xFFFF);
             var1.sendProgressBarUpdate(this, 101, EUT >>> 16);
             var1.sendProgressBarUpdate(this, 102, AMP & 0xFFFF);
@@ -131,21 +130,22 @@ public class GT_Container_DebugPowerGenerator
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 100:
-                this.EUT = (this.EUT & 0xFFFF0000 | par2);
+                EUT = EUT & 0xFFFF0000 | par2;
                 break;
             case 101:
-                this.EUT = (this.EUT & 0xFFFF | par2 << 16);
+                EUT = EUT & 0xFFFF | par2 << 16;
                 break;
             case 102:
-                this.AMP = (this.AMP & 0xFFFF0000 | par2);
+                AMP = AMP & 0xFFFF0000 | par2;
                 break;
             case 103:
-                this.AMP = (this.AMP & 0xFFFF | par2 << 16);
+                AMP = AMP & 0xFFFF | par2 << 16;
                 break;
         }
     }

@@ -28,9 +28,9 @@ public class BlockHint extends EntityFX {
     @Override
     public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         float size = .5f;
-        float X = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) subTickTime - interpPosX);
-        float Y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) subTickTime - interpPosY) - size / 2;
-        float Z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) subTickTime - interpPosZ);
+        float X = (float) (prevPosX + (posX - prevPosX) * (double) subTickTime - EntityFX.interpPosX);
+        float Y = (float) (prevPosY + (posY - prevPosY) * (double) subTickTime - EntityFX.interpPosY) - size / 2;
+        float Z = (float) (prevPosZ + (posZ - prevPosZ) * (double) subTickTime - EntityFX.interpPosZ);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
         tes.setColorRGBA_F(.9F, .95F, 1F, .75f);

@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
@@ -120,7 +119,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
                         if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental))
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
-                        if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental)) {
+                        if (tGTTileEntity != null && tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental) {
                             GT_MetaTileEntity_Hatch_OverflowElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_OverflowElemental) tGTTileEntity.getMetaTileEntity();
                             if (aMetaTileEntity.addOverflowMatter(overflowMatter)) {
                                 if (TecTech.ModConfig.BOOM_ENABLE) tGTTileEntity.doExplosion(V[14]);
@@ -217,8 +216,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 if (content == null || content.size() == 0)
                     return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
                 else {
-                    final String[] lines = content.getElementalInfo();
-                    final String[] output = new String[lines.length + 1];
+                    String[] lines = content.getElementalInfo();
+                    String[] output = new String[lines.length + 1];
                     output[0] = "ID: " + EnumChatFormatting.AQUA + id;
                     System.arraycopy(lines, 0, output, 1, lines.length);
                     return output;
@@ -245,7 +244,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_EM,
+                TEC_MARK_EM,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),

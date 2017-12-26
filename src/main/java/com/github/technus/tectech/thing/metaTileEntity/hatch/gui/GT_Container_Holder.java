@@ -15,14 +15,17 @@ public class GT_Container_Holder extends GT_ContainerMetaTile_Machine {
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        this.addSlotToContainer(new Slot(this.mTileEntity, 0, 80, 39));
+        addSlotToContainer(new Slot(mTileEntity, 0, 80, 39));
     }
 
+    @Override
     public int getSlotCount() {
         return 1;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 1;
     }

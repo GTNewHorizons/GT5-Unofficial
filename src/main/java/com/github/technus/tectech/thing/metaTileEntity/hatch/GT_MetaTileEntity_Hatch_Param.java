@@ -136,6 +136,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("eFloats", usesFloat);
@@ -147,6 +148,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
         aNBT.setInteger("eParam", param);
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         usesFloat = aNBT.getBoolean("eFloats");

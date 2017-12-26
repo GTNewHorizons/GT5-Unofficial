@@ -49,8 +49,9 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_junction(this.mName);
+        return new GT_MetaTileEntity_EM_junction(mName);
     }
 
     @Override
@@ -83,22 +84,22 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
         for (int i = 0; i < 10; i++) {
             src = getParameterIn(i, 0);
             if (src <= 0) {
-                setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
-                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             } else if (src > eInputHatches.size()) {
-                setStatusOfParameterIn(i, 0, STATUS_TOO_HIGH);
-                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             } else if (Double.isNaN(src)) {
-                setStatusOfParameterIn(i, 0, STATUS_WRONG);
-                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             } else {
-                setStatusOfParameterIn(i, 0, STATUS_OK);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 dest = getParameterIn(i, 1);
-                if (dest < 0) setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
-                else if (dest == 0) setStatusOfParameterIn(i, 1, STATUS_LOW);
-                else if (dest > eOutputHatches.size()) setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
-                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, STATUS_WRONG);
-                else setStatusOfParameterIn(i, 1, STATUS_OK);
+                if (dest < 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                else if (dest == 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                else if (dest > eOutputHatches.size()) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                else setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
             }
         }
     }
@@ -108,7 +109,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches)
             if (in.getContainerHandler().hasStacks()) {
                 mEUt = -(int) V[8];
-                eAmpereFlow = 1 + ((eInputHatches.size() + eOutputHatches.size()) >> 1);
+                eAmpereFlow = 1 + (eInputHatches.size() + eOutputHatches.size() >> 1);
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
                 return true;
@@ -123,9 +124,9 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             src= getParameterIn(i,0);
             dest= getParameterIn(i,1);
             if(Double.isNaN(src) || Double.isNaN(dest)) continue;
-            final int inIndex = (int)src - 1;
+            int inIndex = (int)src - 1;
             if (inIndex < 0 || inIndex >= eInputHatches.size()) continue;
-            final int outIndex = (int)dest - 1;
+            int outIndex = (int)dest - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContentEM_EM(in);

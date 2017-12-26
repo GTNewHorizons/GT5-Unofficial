@@ -35,6 +35,7 @@ public final class ePrimalAspectDefinition extends cElementalPrimitive implement
         return "Primal: " + name;
     }
 
+    @Override
     public Object materializeIntoAspect() {
         return aspectDefinitionCompat.getAspect(this);
     }

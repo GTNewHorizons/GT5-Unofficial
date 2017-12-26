@@ -56,7 +56,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     private dComplexAspectDefinition(boolean check, cElementalDefinitionStackMap aspects) throws tElementalException {
         if (check && !canTheyBeTogether(aspects)) throw new tElementalException("Hadron Definition error");
-        this.aspectStacks = aspects;
+        aspectStacks = aspects;
         float mass=0;
         for(cElementalDefinitionStack stack:aspects.values()){
             mass+=stack.getMass();
@@ -166,7 +166,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -204,6 +204,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         return null;
     }
 
+    @Override
     public Object materializeIntoAspect() {
         return aspectDefinitionCompat.getAspect(this);
     }
@@ -220,7 +221,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
             if (DEBUG_MODE) e.printStackTrace();
         }
         if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect "+nbtType+" "+(-96));
+            TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect "+nbtType+" "+ -96);
     }
 
     @Override
@@ -236,7 +237,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+nbtType+" "+getClassType());
+            lines.add("CLASS = "+ nbtType +" "+getClassType());
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
             lines.add("NAME = "+getName());
             //lines.add("SYMBOL = "+getSymbol());

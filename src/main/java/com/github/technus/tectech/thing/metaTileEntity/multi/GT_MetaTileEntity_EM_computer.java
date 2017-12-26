@@ -18,6 +18,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -73,8 +74,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         eCertainStatus = -128;//no-brain value
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_computer(this.mName);
+        return new GT_MetaTileEntity_EM_computer(mName);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             int rackComputation;
 
             for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
-                if (!isValidMetaTileEntity(rack)) continue;
+                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) continue;
                 if (rack.heat > maxCurrentTemp) maxCurrentTemp = rack.heat;
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
@@ -149,7 +151,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void outputAfterRecipe_EM() {
         if (eOutputData.size() > 0) {
-            final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+            Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
             for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
                 if (i.q == null || i.q.contains(pos)) continue;
@@ -184,33 +186,33 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double ocRatio = getParameterIn(0, 0);
-        if (ocRatio < 0) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-        else if (ocRatio < 1) setStatusOfParameterIn(0, 0, STATUS_LOW);
-        else if (ocRatio == 1) setStatusOfParameterIn(0, 0, STATUS_OK);
-        else if (ocRatio <= 3) setStatusOfParameterIn(0, 0, STATUS_HIGH);
-        else if (Double.isNaN(ocRatio)) setStatusOfParameterIn(0, 0, STATUS_WRONG);
-        else setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
+        if (ocRatio < 0) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else if (ocRatio < 1) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+        else if (ocRatio == 1) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        else if (ocRatio <= 3) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+        else if (Double.isNaN(ocRatio)) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        else setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
 
         double ovRatio = getParameterIn(0, 1);
-        if (ovRatio < 0.7f) setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-        else if (ovRatio < 0.8f) setStatusOfParameterIn(0, 1, STATUS_LOW);
-        else if (ovRatio <= 1.2f) setStatusOfParameterIn(0, 1, STATUS_OK);
-        else if (ovRatio <= 2) setStatusOfParameterIn(0, 1, STATUS_HIGH);
-        else if (Double.isNaN(ovRatio)) setStatusOfParameterIn(0, 1, STATUS_WRONG);
-        else setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
+        if (ovRatio < 0.7f) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else if (ovRatio < 0.8f) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+        else if (ovRatio <= 1.2f) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        else if (ovRatio <= 2) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+        else if (Double.isNaN(ovRatio)) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        else setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
 
         setParameterOut(0, 0, maxCurrentTemp);
         setParameterOut(0, 1, eAvailableData);
 
-        if (maxCurrentTemp < -10000) setStatusOfParameterOut(0, 0, STATUS_TOO_LOW);
-        else if (maxCurrentTemp < 0) setStatusOfParameterOut(0, 0, STATUS_LOW);
-        else if (maxCurrentTemp == 0) setStatusOfParameterOut(0, 0, STATUS_OK);
-        else if (maxCurrentTemp <= 5000) setStatusOfParameterOut(0, 0, STATUS_HIGH);
-        else setStatusOfParameterOut(0, 0, STATUS_TOO_HIGH);
+        if (maxCurrentTemp < -10000) setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else if (maxCurrentTemp < 0) setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+        else if (maxCurrentTemp == 0) setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        else if (maxCurrentTemp <= 5000) setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+        else setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
 
-        if (!machineBusy) setStatusOfParameterOut(0, 1, STATUS_UNUSED);
-        else if (eAvailableData <= 0) setStatusOfParameterOut(0, 1, STATUS_TOO_LOW);
-        else setStatusOfParameterOut(0, 1, STATUS_OK);
+        if (!machineBusy) setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        else if (eAvailableData <= 0) setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
     }
 
 
@@ -232,7 +234,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
-            if (isValidMetaTileEntity(rack))
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(false);
         eRacks.clear();
         if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0))
@@ -253,7 +255,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return false;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
-            if (isValidMetaTileEntity(rack))
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eUncertainHatches.size() == 1;
     }

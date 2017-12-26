@@ -44,7 +44,7 @@ public abstract class cElementalDefinition extends iElementalDefinition {
 
     @Override
     public int compareTo(iElementalDefinition o) {
-        final int classCompare = compareClassID(o);
+        int classCompare = compareClassID(o);
         if (classCompare != 0) return classCompare;
 
         //only of the internal def stacks!!!
@@ -61,7 +61,7 @@ public abstract class cElementalDefinition extends iElementalDefinition {
         }
         if (sc == null) return 1;
 
-        final int lenDiff = tc.length - sc.length;
+        int lenDiff = tc.length - sc.length;
         if (lenDiff != 0) return lenDiff;
 
         for (int i = 0; i < tc.length; i++) {

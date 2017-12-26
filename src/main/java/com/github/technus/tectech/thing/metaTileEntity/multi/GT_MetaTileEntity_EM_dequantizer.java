@@ -63,8 +63,9 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_dequantizer(this.mName);
+        return new GT_MetaTileEntity_EM_dequantizer(mName);
     }
 
     @Override

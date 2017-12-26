@@ -63,8 +63,9 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_quantizer(this.mName);
+        return new GT_MetaTileEntity_EM_quantizer(mName);
     }
 
     @Override
@@ -111,8 +112,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             aOredictQuantizationInfo aOQI = bTransformationInfo.oredictQuantization.get(ID);
                             if (aOQI == null) continue;
                             iHasElementalDefinition into = aOQI.output();
-                            if (into != null && isInputEqual(true, false,
-                                    nothingF, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
+                            if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
                                 return true;
                             }
@@ -122,8 +122,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         if (DEBUG_MODE)
                             TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage());
                         iHasElementalDefinition into = aIQI.output();
-                        if (into != null && isInputEqual(true, false,
-                                nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
+                        if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
                             startRecipe(into);
                             return true;
                         }
@@ -137,7 +136,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     if (aFQI == null) continue;
                     iHasElementalDefinition into = aFQI.output();
                     if (into != null && fs.amount >= aFQI.input().amount && isInputEqual(true, false,
-                            new FluidStack[]{aFQI.input()}, nothingI, inF, (ItemStack[]) null)) {
+                            new FluidStack[]{aFQI.input()}, GT_MetaTileEntity_MultiblockBase_EM.nothingI, inF, (ItemStack[]) null)) {
                         startRecipe(into);
                         return true;
                     }

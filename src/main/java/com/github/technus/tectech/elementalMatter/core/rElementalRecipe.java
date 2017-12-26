@@ -12,7 +12,7 @@ public class rElementalRecipe implements Comparable<rElementalRecipe> {
     public final cElementalDefinitionStackMap outEM;
     public final ItemStack[] outItems;
     public final FluidStack[] outFluids;
-    public Object[] extension = null;
+    public Object[] extension;
 
     public rElementalRecipe(
             cElementalDefinitionStackMap inEM,//not null plz
@@ -24,7 +24,7 @@ public class rElementalRecipe implements Comparable<rElementalRecipe> {
         this.outEM = outEM;
         this.outItems = outItems;
         this.outFluids = outFluids;
-        this.ID = id;//allows multiple recipes with the same input EM,so u can actually extend...
+        ID = id;//allows multiple recipes with the same input EM,so u can actually extend...
     }
 
     public rElementalRecipe extend(Object... data) {
@@ -34,7 +34,7 @@ public class rElementalRecipe implements Comparable<rElementalRecipe> {
 
     @Override
     public int compareTo(rElementalRecipe o) {
-        final int compare = inEM.compareTo(o.inEM);
+        int compare = inEM.compareTo(o.inEM);
         return compare != 0 ? compare : (int) ID - o.ID;
     }
 

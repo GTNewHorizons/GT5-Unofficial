@@ -37,14 +37,13 @@ public class XSTR extends Random {
 
     private static final long serialVersionUID = 6208727693524452904L;
     private long seed;
-    private long last;
     private static final long GAMMA = 0x9e3779b97f4a7c15L;
     private static final int PROBE_INCREMENT = 0x9e3779b9;
     private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
     private static final double DOUBLE_UNIT = 0x1.0p-53;  // 1.0  / (1L << 53)
     private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
-    public final static XSTR XSTR_INSTANCE=new XSTR(){
+    public static final XSTR XSTR_INSTANCE=new XSTR(){
         @Override
         public synchronized void setSeed(long seed) {
             if(!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
@@ -88,12 +87,14 @@ public class XSTR extends Random {
         this.seed = seed;
     }
 
+    @Override
     public boolean nextBoolean() {
         return next(1) != 0;
     }
 
+    @Override
     public double nextDouble() {
-        return (((long) (next(26)) << 27) + next(27)) * DOUBLE_UNIT;
+        return (((long) next(26) << 27) + next(27)) * DOUBLE_UNIT;
     }
 
     /**
@@ -112,6 +113,7 @@ public class XSTR extends Random {
      *
      * @param seed the new seed
      */
+    @Override
     public synchronized void setSeed(long seed) {
         this.seed = seed;
     }
@@ -132,20 +134,22 @@ public class XSTR extends Random {
      * @param nbits
      * @return
      */
+    @Override
     public int next(int nbits) {
         long x = seed;
-        x ^= (x << 21);
-        x ^= (x >>> 35);
-        x ^= (x << 4);
+        x ^= x << 21;
+        x ^= x >>> 35;
+        x ^= x << 4;
         seed = x;
-        x &= ((1L << nbits) - 1);
+        x &= (1L << nbits) - 1;
         return (int) x;
     }
 
     private boolean haveNextNextGaussian = false;
     private double nextNextGaussian = 0;
 
-    synchronized public double nextGaussian() {
+    @Override
+    public synchronized double nextGaussian() {
         // See Knuth, ACP, Section 3.4.1 Algorithm C.
         if (haveNextNextGaussian) {
             haveNextNextGaussian = false;
@@ -219,6 +223,7 @@ public class XSTR extends Random {
      * @throws IllegalArgumentException if bound is not positive
      * @since 1.2
      */
+    @Override
     public int nextInt(int bound) {
         //if (bound <= 0) {
         //throw new RuntimeException("BadBound");
@@ -237,27 +242,31 @@ public class XSTR extends Random {
         }
         return r;*/
         //speedup, new nextInt ~+40%
-        last = seed ^ (seed << 21);
-        last ^= (last >>> 35);
-        last ^= (last << 4);
+        long last = seed ^ seed << 21;
+        last ^= last >>> 35;
+        last ^= last << 4;
         seed = last;
         int out = (int) last % bound;
-        return (out < 0) ? -out : out;
+        return out < 0 ? -out : out;
     }
 
+    @Override
     public int nextInt() {
         return next(32);
     }
 
+    @Override
     public float nextFloat() {
         return next(24) * FLOAT_UNIT;
     }
 
+    @Override
     public long nextLong() {
         // it's okay that the bottom word remains signed.
-        return ((long) (next(32)) << 32) + next(32);
+        return ((long) next(32) << 32) + next(32);
     }
 
+    @Override
     public void nextBytes(byte[] bytes_arr) {
         for (int iba = 0, lenba = bytes_arr.length; iba < lenba; )
             for (int rndba = nextInt(),

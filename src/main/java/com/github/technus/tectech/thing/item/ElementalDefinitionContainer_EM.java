@@ -24,7 +24,6 @@ public class ElementalDefinitionContainer_EM extends Item {
     public static ElementalDefinitionContainer_EM INSTANCE;
 
     private ElementalDefinitionContainer_EM() {
-        super();
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");

@@ -74,7 +74,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         int y = (height - ySize) / 2;
         y -= 26;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize + 26);
-        if (this.mContainer != null && ((GT_Container_MultiMachineEM) this.mContainer).eParamsInStatus != null) {
+        if (mContainer != null && ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus != null) {
             counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
@@ -97,17 +97,17 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             y += 96;
             for (int i = 0; i < 20; ) {
                 byte j = (byte) (i >>> 1);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) this.mContainer).eParamsInStatus[j]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) this.mContainer).eParamsOutStatus[j]);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) this.mContainer).eParamsInStatus[j + 10]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) this.mContainer).eParamsOutStatus[j + 10]);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[j]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[j]);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[j + 10]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[j + 10]);
             }
 
-            final short rU = 183, Vs = 77;
+            short rU = 183, Vs = 77;
             x += 140;
             y -= 19;
-            final byte state = ((GT_Container_MultiMachineEM) this.mContainer).eCertainStatus;
-            switch (((GT_Container_MultiMachineEM) this.mContainer).eCertainMode) {
+            byte state = ((GT_Container_MultiMachineEM) mContainer).eCertainStatus;
+            switch (((GT_Container_MultiMachineEM) mContainer).eCertainMode) {
                 case 1://ooo oxo ooo
                     drawTexturedModalRect(x + 6, y + 6,
                             rU + (state == 0 ? 38 : 6),
@@ -171,7 +171,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     }
 
     private void LEDdrawP(int x, int y, int i, int j, byte status) {
-        final int v = 192, su = 8, sv = 6, u = 11;
+        int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
             case STATUS_WRONG:
                 if (counter < 2) {

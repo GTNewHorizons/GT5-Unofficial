@@ -20,12 +20,12 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
 
     public TurretHeadEM(){
         super(Material.glass);
-        this.setCreativeTab(TecTech.mainTab);
-        this.setBlockUnbreakable();
-        this.setResistance(6000000.0F);
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 1F, 0.8F);
-        this.setBlockName("turretHeadEM");
+        setCreativeTab(TecTech.mainTab);
+        setBlockUnbreakable();
+        setResistance(6000000.0F);
+        setStepSound(Block.soundTypeMetal);
+        setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 1F, 0.8F);
+        setBlockName("turretHeadEM");
         //this.setBlockTextureName(Reference.MODID+":turretHeadEM");
     }
 

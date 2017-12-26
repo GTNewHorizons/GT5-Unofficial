@@ -14,7 +14,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     public final long amount;
 
     public cElementalDefinitionStack(iElementalDefinition def, long amount) {
-        this.definition = def == null ? null__ : def;
+        definition = def == null ? null__ : def;
         this.amount = amount;
     }
 
@@ -33,10 +33,12 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         return amount;
     }
 
+    @Override
     public long getCharge() {
         return definition.getCharge() * amount;
     }
 
+    @Override
     public float getMass() {
         return definition.getMass() * amount;
     }

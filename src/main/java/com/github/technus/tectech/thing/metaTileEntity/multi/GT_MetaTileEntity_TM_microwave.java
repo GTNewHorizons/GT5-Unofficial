@@ -35,7 +35,7 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    public final static int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
+    public static final int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
     private int powerSetting,timerSetting,timerValue;
     private boolean hasBeenPausedThisCycle=false;
     private boolean flipped=false;
@@ -78,8 +78,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TM_microwave(this.mName);
+        return new GT_MetaTileEntity_TM_microwave(mName);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png", false, false, true);//todo texture
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", false, false, true);//todo texture
     }
 
     @Override
@@ -238,7 +239,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     protected void parametersLoadDefault_EM() {
         powerSetting = POWER_SETTING_DEFAULT;
         timerSetting = TIMER_SETTING_DEFAULT;
-        setParameterPairIn_ClearOut(0,false,POWER_SETTING_DEFAULT,TIMER_SETTING_DEFAULT);
+        setParameterPairIn_ClearOut(0,false, POWER_SETTING_DEFAULT, TIMER_SETTING_DEFAULT);
     }
 
     @Override
@@ -250,18 +251,18 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double powerParameter = getParameterIn(0, 0);
-        if (powerParameter < 300) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-        else if (powerParameter < 1000) setStatusOfParameterIn(0, 0, STATUS_LOW);
-        else if (powerParameter == 1000) setStatusOfParameterIn(0, 0, STATUS_OK);
-        else if (powerParameter == Double.POSITIVE_INFINITY) setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-        else if (Double.isNaN(powerParameter)) setStatusOfParameterIn(0, 0, STATUS_WRONG);
-        else setStatusOfParameterOut(0, 0, STATUS_HIGH);
+        if (powerParameter < 300) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else if (powerParameter < 1000) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+        else if (powerParameter == 1000) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        else if (powerParameter == Double.POSITIVE_INFINITY) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+        else if (Double.isNaN(powerParameter)) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        else setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
 
         double timerParameter = getParameterIn(0, 1);
-        if (timerParameter <= 1) setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-        else if (timerParameter <= 3000) setStatusOfParameterIn(0, 0, STATUS_OK);
-        else if (Double.isNaN(timerParameter)) setStatusOfParameterIn(0, 1, STATUS_WRONG);
-        else setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
+        if (timerParameter <= 1) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        else if (timerParameter <= 3000) setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        else if (Double.isNaN(timerParameter)) setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        else setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
 
         setParameterOut(0, 0, timerValue);
         setParameterOut(0, 1, timerSetting - timerValue);

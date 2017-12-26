@@ -15,13 +15,13 @@ import java.util.HashMap;
  * Created by Tec on 26.05.2017.
  */
 public class bTransformationInfo {
-    final static public HashMap<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
+    public static final HashMap<Integer,aFluidQuantizationInfo> fluidQuantization=new HashMap<>(32);
     public HashMap<iElementalDefinition,aFluidDequantizationInfo> fluidDequantization;
 
-    final static public HashMap<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
+    public static final HashMap<aItemQuantizationInfo,aItemQuantizationInfo> itemQuantization=new HashMap<>(32);
     public HashMap<iElementalDefinition,aItemDequantizationInfo> itemDequantization;
 
-    final static public HashMap<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
+    public static final HashMap<Integer,aOredictQuantizationInfo> oredictQuantization=new HashMap<>(32);
     public HashMap<iElementalDefinition,aOredictDequantizationInfo> oredictDequantization;
 
     public bTransformationInfo(){

@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    public final static String crafter="EM Crafting";
+    public static final String crafter="EM Crafting";
     //region structure
     private static final String[][] shape = new String[][]{
             {"A000","0   0","0 . 0","0   0","A000",},
@@ -64,8 +64,9 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_crafting(this.mName);
+        return new GT_MetaTileEntity_EM_crafting(mName);
     }
 
     @Override

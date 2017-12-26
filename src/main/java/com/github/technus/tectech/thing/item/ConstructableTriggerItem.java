@@ -37,7 +37,6 @@ public class ConstructableTriggerItem extends Item {
     public static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
-        super();
         setUnlocalizedName("em.debugBuilder");
         setTextureName(MODID + ":itemDebugBuilder");
     }

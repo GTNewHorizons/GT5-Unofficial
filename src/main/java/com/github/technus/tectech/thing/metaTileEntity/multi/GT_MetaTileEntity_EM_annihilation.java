@@ -63,8 +63,9 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_annihilation(this.mName);
+        return new GT_MetaTileEntity_EM_annihilation(mName);
     }
 
     @Override

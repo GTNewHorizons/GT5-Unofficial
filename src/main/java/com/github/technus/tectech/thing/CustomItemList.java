@@ -55,7 +55,7 @@ public enum CustomItemList implements IItemContainer {
     scanContainer,parametrizerMemory;
 
 
-    private ItemStack mStack = null;
+    private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 
     //public static Fluid sOilExtraHeavy, sOilHeavy, sOilMedium, sOilLight, sNaturalGas;

@@ -23,6 +23,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Locale;
+
 import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
 import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
@@ -91,8 +93,8 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
-                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
+                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
                 "DO NOT OBSTRUCT THE OUTPUT!"
         };
     }
@@ -146,7 +148,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20) == DISPERSE_AT) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 if (overflowMatter > overflowDisperse) {
                     //todo add full dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)

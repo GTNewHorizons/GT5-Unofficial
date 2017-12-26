@@ -34,7 +34,6 @@ public class ParametrizerMemoryCard extends Item {
     public static IIcon locked,unlocked;
 
     private ParametrizerMemoryCard() {
-        super();
         setMaxStackSize(1);
         setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
@@ -50,7 +49,7 @@ public class ParametrizerMemoryCard extends Item {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE != null) {
                     if (metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
-                        GT_MetaTileEntity_Hatch_Param parametrizer = ((GT_MetaTileEntity_Hatch_Param) metaTE);
+                        GT_MetaTileEntity_Hatch_Param parametrizer = (GT_MetaTileEntity_Hatch_Param) metaTE;
                         if (aStack.getTagCompound() == null) aStack.setTagCompound(new NBTTagCompound());
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if (aStack.getItemDamage() == 1) {
@@ -72,7 +71,7 @@ public class ParametrizerMemoryCard extends Item {
                         }
                         return true;
                     }else if(metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM){
-                        GT_MetaTileEntity_MultiblockBase_EM base = ((GT_MetaTileEntity_MultiblockBase_EM) metaTE);
+                        GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) metaTE;
                         if (aStack.getTagCompound() == null) aStack.setTagCompound(new NBTTagCompound());
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if(aStack.getItemDamage()== 1){
@@ -147,8 +146,8 @@ public class ParametrizerMemoryCard extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        locked=iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        unlocked=this.itemIcon = iconRegister.registerIcon(this.getIconString());
+        locked =iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
+        unlocked = itemIcon = iconRegister.registerIcon(getIconString());
     }
 
     @Override

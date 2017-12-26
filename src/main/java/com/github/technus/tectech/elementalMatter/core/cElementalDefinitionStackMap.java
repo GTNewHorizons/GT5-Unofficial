@@ -53,7 +53,7 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
     }
 
     public static cElementalDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
-        final cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
+        cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < defStacks.length; i++) {
             defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
             if (defStacks[i].definition.equals(nbtE__))

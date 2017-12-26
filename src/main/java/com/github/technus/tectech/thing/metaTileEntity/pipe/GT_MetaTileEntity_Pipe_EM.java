@@ -121,13 +121,13 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
                         if (tColor != aBaseMetaTileEntity.getColorization()) continue;
                         //}
                     }
-                    if (tTileEntity instanceof iConnectsToEMpipe && (((iConnectsToEMpipe) tTileEntity).canConnect(j))) {
-                        mConnections |= (1 << i);
+                    if (tTileEntity instanceof iConnectsToEMpipe && ((iConnectsToEMpipe) tTileEntity).canConnect(j)) {
+                        mConnections |= 1 << i;
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToEMpipe) {
                         if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) ||
                                 ((iConnectsToEMpipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
-                            mConnections |= (1 << i);
+                            mConnections |= 1 << i;
                             connectionCount++;
                         }
                     }
@@ -170,12 +170,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
         if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
 
         byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if((tConn & (1 << ForgeDirection.DOWN.ordinal()) ) != 0) tSide0 = 0f;
-        if((tConn & (1 << ForgeDirection.UP.ordinal())   ) != 0) tSide1 = 1f;
-        if((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-        if((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-        if((tConn & (1 << ForgeDirection.WEST.ordinal()) ) != 0) tSide4 = 0f;
-        if((tConn & (1 << ForgeDirection.EAST.ordinal()) ) != 0) tSide5 = 1f;
+        if((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) tSide0 = 0f;
+        if((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) tSide1 = 1f;
+        if((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) tSide2 = 0f;
+        if((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) tSide3 = 1f;
+        if((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) tSide4 = 0f;
+        if((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) tSide5 = 1f;
 
         return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }

@@ -115,6 +115,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         return false;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mSel", selection);
@@ -126,6 +127,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         aNBT.setTag("mMat", mat);
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         selection = aNBT.getByte("mSel");
@@ -182,7 +184,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         for (int i = 0; i < masses.length >> 1; i++) {
             inequality += Math.abs(masses[i] - masses[masses.length - i - 1]);
         }
-        return inequality < (masses.length << 7);
+        return inequality < masses.length << 7;
     }
 
     public void regenerate() {
@@ -260,8 +262,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     private void shift() {
-        final int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
-        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * j >> 5;
+        int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
+        matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
         matrix[i] += j == 0 ? 1 : 0;
         if (matrix[i] < 0) matrix[i] = 0;
         else if (matrix[i] > 1000) matrix[i] = 999;

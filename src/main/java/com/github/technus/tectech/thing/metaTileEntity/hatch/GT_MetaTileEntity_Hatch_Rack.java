@@ -150,7 +150,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
                     mInventory[i] = null;
                     continue;
                 } else if (comp.subZero || this.heat >= 0) {
-                    heat += (1f + (comp.coEff * this.heat / 10000f)) * (comp.heat > 0 ? comp.heat * overclock * overclock * overvolt : comp.heat);
+                    heat += (1f + comp.coEff * this.heat / 10000f) * (comp.heat > 0 ? comp.heat * overclock * overclock * overvolt : comp.heat);
                     //=MAX(0;MIN(MIN($B4;1*C$3+C$3-0,25);1+RAND()+(C$3-1)-($B4-1)/2))
                     if (overvolt * 10f > 7f + TecTech.Rnd.nextFloat())
                         computation += comp.computation * Math.max(0, Math.min(Math.min(overclock, overvolt + overvolt - 0.25), 1 + TecTech.Rnd.nextFloat() + (overvolt - 1) - (overclock - 1) / 2));
@@ -181,19 +181,19 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % 20 == MULTI_CHECK_AT) {
-                if (this.heat > 0) {
+                if (heat > 0) {
                     float heatC = 0;
                     for (int i = 0; i < mInventory.length; i++) {
                         if (mInventory[i] == null || mInventory[i].stackSize != 1) continue;
                         rackComponent comp = componentBinds.get(getUniqueIdentifier(mInventory[i]));
                         if (comp == null) continue;
-                        if (this.heat > comp.maxHeat) {
+                        if (heat > comp.maxHeat) {
                             mInventory[i] = null;
                         } else if (comp.heat < 0) {
-                            heatC += comp.heat * (this.heat / 10000);
+                            heatC += comp.heat * (heat / 10000);
                         }
                     }
-                    this.heat += Math.max(-this.heat, Math.ceil(heatC));
+                    heat += Math.max(-heat, Math.ceil(heatC));
                 }
 
                 if (heat > 0) heat -= Math.max(heat / 1000, 1);
@@ -201,7 +201,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
 
                 if (heat > 9000) aBaseMetaTileEntity.setOnFire();
                 else if (heat > 10000) aBaseMetaTileEntity.setToFire();
-                else if (heat < -10000) this.heat = -10000;
+                else if (heat < -10000) heat = -10000;
             }
         }
     }
@@ -237,7 +237,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         return new String[]{
                 "Base computation: " + EnumChatFormatting.AQUA + getComputationPower(1, 0, false),
                 "After overclocking: " + EnumChatFormatting.AQUA + getComputationPower(overClock, 0, false),
-                "Heat Accumulated: " + EnumChatFormatting.RED + ((heat + 99) / 100) + EnumChatFormatting.RESET + " %"};
+                "Heat Accumulated: " + EnumChatFormatting.RED + (heat + 99) / 100 + EnumChatFormatting.RESET + " %"};
         //heat==0? --> ((heat+9)/10) = 0
         //Heat==1-10? -->  1
     }

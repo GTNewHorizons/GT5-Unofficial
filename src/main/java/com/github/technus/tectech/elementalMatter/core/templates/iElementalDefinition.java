@@ -66,9 +66,10 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract cElementalDefinitionStack getStackForm(int i);
 
+    @Override
     public abstract iElementalDefinition clone();
 
     final int compareClassID(iElementalDefinition obj) {
-        return ((int) getClassType()) - obj.getClassType();
+        return (int) getClassType() - obj.getClassType();
     }
 }

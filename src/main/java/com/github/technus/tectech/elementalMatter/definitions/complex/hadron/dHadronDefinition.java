@@ -2,7 +2,6 @@ package com.github.technus.tectech.elementalMatter.definitions.complex.hadron;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.cElementalMutableDefinitionStackMap;
@@ -76,7 +75,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     private dHadronDefinition(boolean check, cElementalDefinitionStackMap quarks) throws tElementalException {
         if (check && !canTheyBeTogether(quarks)) throw new tElementalException("Hadron Definition error");
-        this.quarkStacks = quarks;
+        quarkStacks = quarks;
 
         byte amount = 0;
         int charge = 0;
@@ -92,19 +91,19 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         }
         this.amount = amount;
         this.charge = charge;
-        this.type = containsAnti ? (byte) (-type) : (byte) type;
+        this.type = containsAnti ? (byte) -type : (byte) type;
         int mult = this.amount * this.amount * (this.amount - 1);
         this.mass = mass * 5.543F * (float) mult;//yes it becomes heavier
 
-        if (this.mass == protonMass && this.amount == 3) this.rawLifeTime = STABLE_RAW_LIFE_TIME;
-        else if (this.mass == neutronMass && this.amount == 3) this.rawLifeTime = 882F;
+        if (this.mass == protonMass && this.amount == 3) rawLifeTime = iElementalDefinition.STABLE_RAW_LIFE_TIME;
+        else if (this.mass == neutronMass && this.amount == 3) rawLifeTime = 882F;
         else {
             if (this.amount == 3) {
-                this.rawLifeTime = (1.34F / this.mass) * (float) Math.pow(9.81, charge);
+                rawLifeTime = 1.34F / this.mass * (float) Math.pow(9.81, charge);
             } else if (this.amount == 2) {
-                this.rawLifeTime = (1.21F / this.mass) / (float) Math.pow(19.80, charge);
+                rawLifeTime = 1.21F / this.mass / (float) Math.pow(19.80, charge);
             } else {
-                this.rawLifeTime = (1.21F / this.mass) / (float) Math.pow(9.80, charge);
+                rawLifeTime = 1.21F / this.mass / (float) Math.pow(9.80, charge);
             }
         }
 
@@ -198,7 +197,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -214,7 +213,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         else if (amount != 3)
             return new cElementalDecay[]{new cElementalDecay(0.95F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
         else {
-            ArrayList<eQuarkDefinition> newBaryon = new ArrayList<eQuarkDefinition>();
+            ArrayList<eQuarkDefinition> newBaryon = new ArrayList<>();
             iElementalDefinition[] Particles = new iElementalDefinition[2];
             for (cElementalDefinitionStack quarks : quarkStacks) {
                 for (int i = 0; i < quarks.amount; i++)
@@ -297,7 +296,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         try {
             return new dHadronDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -346,12 +345,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
             hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(2), eQuarkDefinition.quark_d.getStackForm(1)));
-            hadron_p_ = (dHadronDefinition) (hadron_p.getAnti());
+            hadron_p_ = (dHadronDefinition) hadron_p.getAnti();
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
-            hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
+            hadron_n_ = (dHadronDefinition) hadron_n.getAnti();
         } catch (tElementalException e) {
             if (DEBUG_MODE) e.printStackTrace();
             protonMass = -1;
@@ -371,12 +370,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             if (DEBUG_MODE) e.printStackTrace();
         }
         if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
+            TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+ -64);
     }
 
     public static void setTransformations(){
         //Added to atom map, but should be in its own
-        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(dHadronDefinition.hadron_n, 100000);
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 100000);
         transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
         bTransformationInfo.oredictQuantization.put(
                 OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
@@ -397,7 +396,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+nbtType+" "+getClassType());
+            lines.add("CLASS = "+ nbtType +" "+getClassType());
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getSimpleName());
             //lines.add("SYMBOL = "+getSymbol());

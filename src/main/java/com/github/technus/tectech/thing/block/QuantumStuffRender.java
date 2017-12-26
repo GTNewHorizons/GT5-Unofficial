@@ -52,6 +52,7 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
         GL11.glPopMatrix();
     }
 
+    @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         //renderer.renderStandardBlock(block, x, y, z);
         GL11.glPushMatrix();
@@ -59,7 +60,7 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
         tes.setBrightness(15728880);
         IIcon side = QuantumStuffBlock.stuff;
         for(int i=0;i<6;i++){
-            float b = 1 - (TecTech.Rnd.nextFloat() / 4f), g = b - (TecTech.Rnd.nextFloat() / 4f), r = g - (TecTech.Rnd.nextFloat() / 4f) - 0.25f;
+            float b = 1 - TecTech.Rnd.nextFloat() / 4f, g = b - TecTech.Rnd.nextFloat() / 4f, r = g - TecTech.Rnd.nextFloat() / 4f - 0.25f;
             tes.setColorOpaque_F(r, g, b);
             float rotX=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotY=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotZ=TecTech.Rnd.nextFloat()*2*(float) Math.PI;
             tesAbuse(x,y,z,-1.425f,-1.425f,.1f,rotX,rotY,rotZ,side.getMinU(), side.getMaxV());

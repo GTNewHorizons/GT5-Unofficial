@@ -23,17 +23,20 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
         super(aInventoryPlayer, aTileEntity);
     }
 
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        this.addSlotToContainer(new Slot(this.mTileEntity, 0, 69, 28));
-        this.addSlotToContainer(new Slot(this.mTileEntity, 1, 91, 28));
-        this.addSlotToContainer(new Slot(this.mTileEntity, 2, 69, 50));
-        this.addSlotToContainer(new Slot(this.mTileEntity, 3, 91, 50));
+        addSlotToContainer(new Slot(mTileEntity, 0, 69, 28));
+        addSlotToContainer(new Slot(mTileEntity, 1, 91, 28));
+        addSlotToContainer(new Slot(mTileEntity, 2, 69, 50));
+        addSlotToContainer(new Slot(mTileEntity, 3, 91, 50));
     }
 
+    @Override
     public int getSlotCount() {
         return 4;
     }
 
+    @Override
     public int getShiftClickSlotCount() {
         return 4;
     }
@@ -41,24 +44,24 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) {
             return;
         }
-        this.heat = ((GT_MetaTileEntity_Hatch_Rack) this.mTileEntity.getMetaTileEntity()).heat > 0;
+        heat = ((GT_MetaTileEntity_Hatch_Rack) mTileEntity.getMetaTileEntity()).heat > 0;
 
-        Iterator var2 = this.crafters.iterator();
-        while (var2.hasNext()) {
-            ICrafting var1 = (ICrafting) var2.next();
-            var1.sendProgressBarUpdate(this, 100, this.heat ? 1 : 0);
+        for (Object crafter : crafters) {
+            ICrafting var1 = (ICrafting) crafter;
+            var1.sendProgressBarUpdate(this, 100, heat ? 1 : 0);
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 100:
-                this.heat = par2 != 0;
+                heat = par2 != 0;
                 return;
         }
     }

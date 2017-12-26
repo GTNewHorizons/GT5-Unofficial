@@ -62,8 +62,8 @@ public final class MainLoader {
         TecTech.Logger.info("Entities registered");
 
         progressBarLoad.step("Add damage types");
-        microwaving=new DamageSource("microwaving").setDamageBypassesArmor();
-        elementalPollution=new DamageSource("elementalPollution").setDamageBypassesArmor();
+        microwaving =new DamageSource("microwaving").setDamageBypassesArmor();
+        elementalPollution =new DamageSource("elementalPollution").setDamageBypassesArmor();
         TecTech.Logger.info("Damage types addition Done");
 
         ProgressManager.pop(progressBarLoad);

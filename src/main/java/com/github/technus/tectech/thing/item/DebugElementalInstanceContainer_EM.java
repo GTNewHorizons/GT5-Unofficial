@@ -31,7 +31,6 @@ public class DebugElementalInstanceContainer_EM extends Item {
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
     private DebugElementalInstanceContainer_EM() {
-        super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
         setTextureName(MODID + ":itemDebugContainer");
