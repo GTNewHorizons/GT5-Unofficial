@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         if(pointer>=0 && pointer<eInputHatches.size()) handles[4]=eInputHatches.get(pointer).getContainerHandler();
         pointer= getParameterInInt(6,1)-1;
         if(pointer>=0 && pointer<eInputHatches.size()) handles[5]=eInputHatches.get(pointer).getContainerHandler();
-        for(int i=0;i<5;i++) for(int j=i+1;j<6;j++) if (handles[i]!=null && handles[j]!=null && handles[i]==handles[j]) return false;
+        for(int i=1;i<6;i++) if(handles[i]!=null) for(int j=0;j<i;j++) if (handles[i]==handles[j]) return false;
 
         MultiblockControl<cElementalInstanceStackMap[]> control=currentBehaviour.process(handles,parameters);
         if(control==null) return false;
