@@ -13,9 +13,6 @@ import org.lwjgl.opengl.GL11;
  */
 public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
 
-    public QuantumGlassRender() {
-    }
-
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

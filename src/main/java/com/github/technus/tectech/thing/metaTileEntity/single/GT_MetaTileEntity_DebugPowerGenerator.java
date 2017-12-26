@@ -111,7 +111,9 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }

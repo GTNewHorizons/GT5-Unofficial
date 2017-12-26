@@ -17,10 +17,11 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         proxy.renderUnicodeString("Schr\u00F6dinger", 46, 7, 167, 0xffffff);
-        if (mContainer != null && ((GT_Container_Uncertainty) mContainer).status == 0)
+        if (mContainer != null && ((GT_Container_Uncertainty) mContainer).status == 0) {
             proxy.renderUnicodeString("Status: OK", 46, 16, 167, 0xffffff);
-        else
+        } else {
             proxy.renderUnicodeString("Status: NG", 46, 16, 167, 0xffffff);
+        }
     }
 
     @Override
@@ -97,10 +98,11 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
             }
             x -= 6;
             y -= 6;
-            for (int i = 0; i < 16; i++)
-                if (TecTech.Rnd.nextInt(1000) < ((GT_Container_Uncertainty) mContainer).matrix[i])
-                    drawTexturedModalRect(x + 12 * (i / 4), y + 12 * (i % 4),
-                            fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
+            for (int i = 0; i < 16; i++) {
+                if (TecTech.Rnd.nextInt(1000) < ((GT_Container_Uncertainty) mContainer).matrix[i]) {
+                    drawTexturedModalRect(x + 12 * (i / 4), y + 12 * (i % 4), fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
+                }
+            }
             if (((GT_Container_Uncertainty) mContainer).selection > -1) {
                 int sel = ((GT_Container_Uncertainty) mContainer).selection;
                 drawTexturedModalRect(x + 12 * (sel / 4), y + 12 * (sel % 4),

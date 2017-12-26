@@ -22,7 +22,9 @@ public class BlockHint extends EntityFX {
         prevPosZ = posZ;
         noClip = true;
         particleMaxAge = 2000 + TecTech.Rnd.nextInt(200);
-        for (int i = 0; i < 6; i++) icons[i] = block.getIcon(i, meta);
+        for (int i = 0; i < 6; i++) {
+            icons[i] = block.getIcon(i, meta);
+        }
     }
 
     @Override
@@ -38,7 +40,9 @@ public class BlockHint extends EntityFX {
         //var8, var9 - X U
         //var 10, var 11 - Y V
         for(int i=0;i<6;i++){
-            if(icons[i]==null) continue;
+            if(icons[i]==null) {
+                continue;
+            }
             double u=icons[i].getMinU();
             double U=icons[i].getMaxU();
             double v=icons[i].getMinV();

@@ -60,8 +60,9 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         this.charge = (byte) charge;
         this.color = (byte) color;
         this.ID = ID;
-        if (bindsBO.put(ID, this) != null)
+        if (bindsBO.put(ID, this) != null) {
             Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition", new tElementalException("Duplicate ID")));
+        }
     }
 
     //
@@ -105,13 +106,17 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
-        if (naturalDecayInstant < 0) return elementalDecays;
+        if (naturalDecayInstant < 0) {
+            return elementalDecays;
+        }
         return new cElementalDecay[]{elementalDecays[naturalDecayInstant]};
     }
 
     @Override
     public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
-        if (energeticDecayInstant < 0) return elementalDecays;
+        if (energeticDecayInstant < 0) {
+            return elementalDecays;
+        }
         return new cElementalDecay[]{elementalDecays[energeticDecayInstant]};
     }
 
@@ -180,18 +185,22 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+ nbtType +" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getName());
             lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" e");
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
-            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
             lines.add((isTimeSpanHalfLife()?"HALF LIFE = ":"LIFE TIME = ")+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");
@@ -202,18 +211,25 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-128);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
-        if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+ -128);
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Registered Elemental Matter Class: Primitive " + nbtType + ' ' + -128);
+        }
     }
 
     @Override
     public final int compareTo(iElementalDefinition o) {
         if (getClassType() == o.getClassType()) {
             int oID = ((cElementalPrimitive) o).ID;
-            if (ID > oID) return 1;
-            if (ID < oID) return -1;
+            if (ID > oID) {
+                return 1;
+            }
+            if (ID < oID) {
+                return -1;
+            }
             return 0;
         }
         return compareClassID(o);

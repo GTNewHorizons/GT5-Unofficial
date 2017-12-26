@@ -70,7 +70,9 @@ public class QuantumDataPacket {
     }
 
     public long computationIfNotContained(Vec3pos pos) {
-        if (trace.contains(pos)) return 0;
+        if (trace.contains(pos)) {
+            return 0;
+        }
         return computation;
     }
 }

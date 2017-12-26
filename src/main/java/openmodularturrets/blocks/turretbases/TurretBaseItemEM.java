@@ -14,8 +14,8 @@ import java.util.List;
  * Created by Bass on 28/07/2017.
  */
 public class TurretBaseItemEM extends ItemBlock {
-    public TurretBaseItemEM(Block b) {
-        super(b);
+    public TurretBaseItemEM(Block block) {
+        super(block);
     }
 
     @Override

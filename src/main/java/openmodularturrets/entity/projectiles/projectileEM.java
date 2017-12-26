@@ -51,11 +51,18 @@ public class projectileEM extends TurretProjectile {
                 cElementalInstanceStack consumeFromThis=avalableEM.get(TecTech.Rnd.nextInt(avalableEM.size()));
                 massFactor =consumeFromThis.definition.getMass()/ dHadronDefinition.hadron_n_.getMass();
 
-                if(consumeFromThis.definition.getType()>1 || consumeFromThis.definition.getType()<-1) exotic = true;
-                if(consumeFromThis.definition.getType()<0) antiMatter = true;
+                if(consumeFromThis.definition.getType()>1 || consumeFromThis.definition.getType()<-1) {
+                    exotic = true;
+                }
+                if(consumeFromThis.definition.getType()<0) {
+                    antiMatter = true;
+                }
 
-                if (consumeFromThis.definition.getCharge() == 0) gravity = massFactor/100f;
-                else gravity = Math.min(0.0025F/Math.abs(consumeFromThis.definition.getCharge()),massFactor/100f);
+                if (consumeFromThis.definition.getCharge() == 0) {
+                    gravity = massFactor / 100f;
+                } else {
+                    gravity = Math.min(0.0025F / Math.abs(consumeFromThis.definition.getCharge()), massFactor / 100f);
+                }
 
                 avalableEM.removeAmount(false,consumeFromThis.definition.getStackForm(1));
             }
@@ -96,12 +103,16 @@ public class projectileEM extends TurretProjectile {
                         if(canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
                             movingobjectposition.entityHit.setFire((exotic?10:1)*2);
                             movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
-                            if(antiMatter) movingobjectposition.entityHit.hurtResistantTime = 0;
+                            if(antiMatter) {
+                                movingobjectposition.entityHit.hurtResistantTime = 0;
+                            }
                         }
                     } else {
                         movingobjectposition.entityHit.setFire((exotic?10:1)*2);
                         movingobjectposition.entityHit.attackEntityFrom(new NormalDamageSource("laser"), damage);
-                        if(antiMatter) movingobjectposition.entityHit.hurtResistantTime = 0;
+                        if(antiMatter) {
+                            movingobjectposition.entityHit.hurtResistantTime = 0;
+                        }
                     }
 
                     if (TecTech.ModConfig.ENABLE_TURRET_EXPLOSIONS && antiMatter) {

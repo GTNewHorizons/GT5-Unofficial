@@ -5,6 +5,8 @@ import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefin
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -45,11 +47,13 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     public final cElementalDefinitionStack[] values() {
-        return map.values().toArray(new cElementalDefinitionStack[0]);
+        Collection<cElementalDefinitionStack> var = map.values();
+        return var.toArray(new cElementalDefinitionStack[var.size()]);
     }
 
     public final iElementalDefinition[] keys() {
-        return map.keySet().toArray(new iElementalDefinition[0]);
+        Set<iElementalDefinition> var = map.keySet();
+        return var.toArray(new iElementalDefinition[var.size()]);
     }
 
     //Tests
@@ -66,7 +70,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     public final boolean hasStacks() {
-        return map.size() > 0;
+        return !map.isEmpty();
     }
 
     //NBT
@@ -74,8 +78,9 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         NBTTagCompound nbt = new NBTTagCompound();
         String[] info = getElementalInfo();
         nbt.setInteger("i", info.length);
-        for (int i = 0; i < info.length; i++)
+        for (int i = 0; i < info.length; i++) {
             nbt.setString(Integer.toString(i), info[i]);
+        }
         return nbt;
     }
 
@@ -83,37 +88,44 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", map.size());
         int i = 0;
-        for (cElementalDefinitionStack defStack : map.values())
+        for (cElementalDefinitionStack defStack : map.values()) {
             nbt.setTag(Integer.toString(i++), defStack.toNBT());
+        }
         return nbt;
     }
 
     @Override
     public final int compareTo(cElementalStackMap o) {//this actually compares rest
         int sizeDiff = map.size() - o.map.size();
-        if (sizeDiff != 0) return sizeDiff;
+        if (sizeDiff != 0) {
+            return sizeDiff;
+        }
         cElementalDefinitionStack[] ofThis = values(), ofO = o.values();
         for (int i = 0; i < ofO.length; i++) {
             int result = ofThis[i].compareTo(ofO[i]);
-            if (result != 0) return result;
+            if (result != 0) {
+                return result;
+            }
         }
         return 0;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof cElementalStackMap)
+        if (obj instanceof cElementalStackMap) {
             return compareTo((cElementalStackMap) obj) == 0;
-        if (obj instanceof cElementalInstanceStackMap)
+        }
+        if (obj instanceof cElementalInstanceStackMap) {
             return compareTo(((cElementalInstanceStackMap) obj).toDefinitionMapForComparison()) == 0;
+        }
         return false;
     }
 
     @Override
     public final int hashCode() {//Hash only definitions to compare contents not amounts or data
         int hash = -(map.size() << 4);
-        for (cElementalDefinitionStack s : map.values()) {
-            hash += s.definition.hashCode();
+        for (cElementalDefinitionStack stack : map.values()) {
+            hash += stack.definition.hashCode();
         }
         return hash;
     }

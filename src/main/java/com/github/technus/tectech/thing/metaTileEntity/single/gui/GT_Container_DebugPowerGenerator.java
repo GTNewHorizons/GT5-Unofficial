@@ -12,8 +12,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_DebugPowerGenerator
         extends GT_ContainerMetaTile_Machine {
     public int EUT=0,AMP=0;

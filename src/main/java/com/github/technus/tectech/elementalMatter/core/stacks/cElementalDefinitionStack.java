@@ -19,7 +19,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     @Override
-    public final cElementalDefinitionStack clone() {
+    public cElementalDefinitionStack clone() {
         return this;//IMMUTABLE
     }
 
@@ -57,16 +57,21 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(long amount) {
-        if(amount==0) return this;
+        if(amount==0) {
+            return this;
+        }
         return new cElementalDefinitionStack(definition, amount + this.amount);
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
-        if (other == null || other.length == 0) return this;
-        long i = 0;
-        for (cElementalDefinitionStack stack : other)
-            i += stack.amount;
-        return addAmountIntoNewInstance(i);
+        if (other == null || other.length == 0) {
+            return this;
+        }
+        long l = 0;
+        for (cElementalDefinitionStack stack : other) {
+            l += stack.amount;
+        }
+        return addAmountIntoNewInstance(l);
     }
 
     @Override
@@ -76,10 +81,12 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof iElementalDefinition)
+        if (obj instanceof iElementalDefinition) {
             return definition.compareTo((iElementalDefinition) obj) == 0;
-        if (obj instanceof iHasElementalDefinition)
+        }
+        if (obj instanceof iHasElementalDefinition) {
             return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        }
         return false;
     }
 

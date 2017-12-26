@@ -101,8 +101,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
+        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)) {
             return false;
+        }
         return eInputHatches.size() == 1 && eOutputHatches.size() == 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
     }
 
@@ -130,13 +131,21 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         super.saveNBTData(aNBT);
         aNBT.setLong("eComputationRemaining", totalComputationRemaining);
         aNBT.setLong("eComputationRequired", totalComputationRequired);
-        if(objectResearched!=null)
-            aNBT.setTag("eObject",objectResearched.toNBT());
-        else aNBT.removeTag("eObject");
-        if(scanComplexity!=null) aNBT.setIntArray("eScanComplexity",scanComplexity);
-        else aNBT.removeTag("eScanComplexity");
-        if(objectsScanned!=null) aNBT.setTag("eScanObjects",objectsScanned.toNBT());
-        else aNBT.removeTag("eScanObjects");
+        if(objectResearched!=null) {
+            aNBT.setTag("eObject", objectResearched.toNBT());
+        } else {
+            aNBT.removeTag("eObject");
+        }
+        if(scanComplexity!=null) {
+            aNBT.setIntArray("eScanComplexity", scanComplexity);
+        } else {
+            aNBT.removeTag("eScanComplexity");
+        }
+        if(objectsScanned!=null) {
+            aNBT.setTag("eScanObjects", objectsScanned.toNBT());
+        } else {
+            aNBT.removeTag("eScanObjects");
+        }
     }
 
     @Override
@@ -146,12 +155,21 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         totalComputationRequired =aNBT.getLong("eComputationRequired");
         if(aNBT.hasKey("eObject")) {
             objectResearched = cElementalDefinitionStack.fromNBT(aNBT.getCompoundTag("eObject"));
-            if(objectResearched.definition==nbtE__) objectResearched=null;
-        }else objectResearched=null;
-        if(aNBT.hasKey("eScanComplexity")) scanComplexity=aNBT.getIntArray("eScanComplexity");
-        else scanComplexity=null;
+            if(objectResearched.definition==nbtE__) {
+                objectResearched = null;
+            }
+        }else {
+            objectResearched = null;
+        }
+        if(aNBT.hasKey("eScanComplexity")) {
+            scanComplexity = aNBT.getIntArray("eScanComplexity");
+        } else {
+            scanComplexity = null;
+        }
         try {
-            if (aNBT.hasKey("eScanObjects")) objectsScanned = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
+            if (aNBT.hasKey("eScanObjects")) {
+                objectsScanned = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
+            }
         }catch (tElementalException e){
             objectsScanned=new cElementalInstanceStackMap();
         }
@@ -190,7 +208,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     totalComputationRequired = totalComputationRemaining = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
-                } else quantumStuff(true);
+                } else {
+                    quantumStuff(true);
+                }
             }
         }
     }
@@ -198,7 +218,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         eRecipe=null;
-        if(eInputHatches.size()>0 && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
+        if(!eInputHatches.isEmpty() && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
             cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContainerHandler();
             if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
                 GT_Recipe scannerRecipe=null;
@@ -257,7 +277,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         for (int i = 0; i < 20; i++) {
                             if (scanComplexityTemp[i] != SCAN_DO_NOTHING) {
                                 maxDepth = i;
-                                if(!DEBUG_MODE) scanComplexityTemp[i]&=~SCAN_GET_CLASS_TYPE;
+                                if(!DEBUG_MODE) {
+                                    scanComplexityTemp[i] &= ~SCAN_GET_CLASS_TYPE;
+                                }
                                 addComputationRequirements(i+1,scanComplexityTemp[i]);
                             }
                         }
@@ -282,57 +304,57 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     private void addComputationRequirements(int depthPlus, int capabilities){
         if(areBitsSet(SCAN_GET_NOMENCLATURE,capabilities)){
-            totalComputationRequired +=depthPlus*5;
+            totalComputationRequired +=depthPlus*5L;
             eRequiredData+=depthPlus;
         }
         if(areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities)){
-            totalComputationRequired +=depthPlus*10;
+            totalComputationRequired +=depthPlus*10L;
             eRequiredData+=depthPlus;
 
         }
         if(areBitsSet(SCAN_GET_AMOUNT,capabilities)){
-            totalComputationRequired +=depthPlus*64;
-            eRequiredData+=depthPlus*8;
+            totalComputationRequired +=depthPlus*64L;
+            eRequiredData+=depthPlus*8L;
 
         }
         if(areBitsSet(SCAN_GET_CHARGE,capabilities)){
-            totalComputationRequired +=depthPlus*128;
-            eRequiredData+=depthPlus*4;
+            totalComputationRequired +=depthPlus*128L;
+            eRequiredData+=depthPlus*4L;
 
         }
         if(areBitsSet(SCAN_GET_MASS,capabilities)){
-            totalComputationRequired +=depthPlus*256;
-            eRequiredData+=depthPlus*4;
+            totalComputationRequired +=depthPlus*256L;
+            eRequiredData+=depthPlus*4L;
 
         }
         if(areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities)){
-            totalComputationRequired +=depthPlus*512;
-            eRequiredData+=depthPlus*16;
+            totalComputationRequired +=depthPlus*512L;
+            eRequiredData+=depthPlus*16L;
 
         }
         if(areBitsSet(SCAN_GET_TIMESPAN_INFO,capabilities)){
-            totalComputationRequired +=depthPlus*1024;
-            eRequiredData+=depthPlus*32;
+            totalComputationRequired +=depthPlus*1024L;
+            eRequiredData+=depthPlus*32L;
 
         }
         if(areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
-            totalComputationRequired +=depthPlus*2048;
-            eRequiredData+=depthPlus*32;
+            totalComputationRequired +=depthPlus*2048L;
+            eRequiredData+=depthPlus*32L;
 
         }
         if(areBitsSet(SCAN_GET_COLOR,capabilities)){
-            totalComputationRequired +=depthPlus*1024;
-            eRequiredData+=depthPlus*48;
+            totalComputationRequired +=depthPlus*1024L;
+            eRequiredData+=depthPlus*48L;
 
         }
         if(areBitsSet(SCAN_GET_AGE,capabilities)){
-            totalComputationRequired +=depthPlus*2048;
-            eRequiredData+=depthPlus*64;
+            totalComputationRequired +=depthPlus*2048L;
+            eRequiredData+=depthPlus*64L;
 
         }
         if(areBitsSet(SCAN_GET_TIMESPAN_MULT,capabilities)){
-            totalComputationRequired +=depthPlus*2048;
-            eRequiredData+=depthPlus*64;
+            totalComputationRequired +=depthPlus*2048L;
+            eRequiredData+=depthPlus*64L;
 
         }
     }
@@ -433,11 +455,13 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 4+base.getZCoord();
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
             if (shouldExist) {
-                if(block != null && block.getMaterial()== Material.air)
-                base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE,0,2);
+                if(block != null && block.getMaterial()== Material.air) {
+                    base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
+                }
             } else {
-                if (block instanceof QuantumStuffBlock)
-                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air,0,2);
+                if (block instanceof QuantumStuffBlock) {
+                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air, 0, 2);
+                }
             }
         }
     }

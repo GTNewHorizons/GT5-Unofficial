@@ -54,13 +54,17 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
+        if (mTier >= 10) {
+            return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
+        }
         return new GT_Container_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
+        if (mTier >= 10) {
+            return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
+        }
         return new GT_GUIContainer_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -100,18 +104,9 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
-        if(mTier>=10)
-            return new String[]{
-                    "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
-                    "Value 0I: " + EnumChatFormatting.AQUA + value0i,
-                    "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i)+" "+ Util.intBitsToShortString(value0i),
-                    "Value 1I: " + EnumChatFormatting.BLUE + value1i,
-                    "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i)+" "+ Util.intBitsToShortString(value1i),
-                    "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
-                    "Input 0FB: " + EnumChatFormatting.GOLD   + Float.intBitsToFloat(input0i)+" "+ Util.intBitsToShortString(input0i),
-                    "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
-                    "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i)+" "+ Util.intBitsToShortString(input1i),
-            };
+        if(mTier>=10) {
+            return new String[]{"Parametrizer ID: " + EnumChatFormatting.GREEN + param, "Value 0I: " + EnumChatFormatting.AQUA + value0i, "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i) + ' ' + Util.intBitsToShortString(value0i), "Value 1I: " + EnumChatFormatting.BLUE + value1i, "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i) + ' ' + Util.intBitsToShortString(value1i), "Input 0I: " + EnumChatFormatting.GOLD + input0i, "Input 0FB: " + EnumChatFormatting.GOLD + Float.intBitsToFloat(input0i) + ' ' + Util.intBitsToShortString(input0i), "Input 1I: " + EnumChatFormatting.YELLOW + input1i, "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i) + ' ' + Util.intBitsToShortString(input1i),};
+        }
         return new String[]{
                 "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
                 "Value 0I: " + EnumChatFormatting.AQUA + value0i,
@@ -187,7 +182,9 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }

@@ -86,23 +86,7 @@ public final class MainLoader {
         TecTech.Logger.info("Recipe Init Done");
 
         progressBarPostLoad.step("Creative Tab part1");
-        mainTab = new CreativeTabs("TecTech") {
-            @SideOnly(Side.CLIENT)
-            @Override
-            public Item getTabIconItem() {
-                return DebugElementalInstanceContainer_EM.INSTANCE;
-            }
-
-            @Override
-            public void displayAllReleventItems(List stuffToShow) {
-                for(CustomItemList item: CustomItemList.values()){
-                    if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
-                        stuffToShow.add(item.get(1));
-                    }
-                }
-                super.displayAllReleventItems(stuffToShow);
-            }
-        };
+        mainTab = new MyCreativeTab();
         progressBarPostLoad.step("Creative Tab part2");
         registerThingsInTabs();
         TecTech.Logger.info("CreativeTab initiation complete");
@@ -194,5 +178,25 @@ public final class MainLoader {
         GregTech_API.sElectroHazmatList.add(IC2_qB);
         
         //todo add GC GS stuff
+    }
+
+    private static final class MyCreativeTab extends CreativeTabs {
+        private MyCreativeTab() {super("TecTech");}
+
+        @SideOnly(Side.CLIENT)
+        @Override
+        public Item getTabIconItem() {
+            return DebugElementalInstanceContainer_EM.INSTANCE;
+        }
+
+        @Override
+        public void displayAllReleventItems(List stuffToShow) {
+            for(CustomItemList item: CustomItemList.values()){
+                if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
+                    stuffToShow.add(item.get(1));
+                }
+            }
+            super.displayAllReleventItems(stuffToShow);
+        }
     }
 }

@@ -12,8 +12,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
     public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
     public byte selection = -1, mode = 0, status = -128;
@@ -77,9 +75,11 @@ public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
 
         ((GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity()).compute();
 
-        if (matrix != null)
-            for (int i = 0; i < 16; i++)
+        if (matrix != null) {
+            for (int i = 0; i < 16; i++) {
                 matrix[i] = ((GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity()).matrix[i];
+            }
+        }
 
         selection = ((GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity()).selection;
         mode = ((GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity()).mode;
@@ -91,8 +91,11 @@ public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
             var1.sendProgressBarUpdate(this, 101, mode);
             var1.sendProgressBarUpdate(this, 102, status);
 
-            if (matrix != null) for (int i = 0; i < 16; i++)
-                var1.sendProgressBarUpdate(this, 103 + i, matrix[i]);
+            if (matrix != null) {
+                for (int i = 0; i < 16; i++) {
+                    var1.sendProgressBarUpdate(this, 103 + i, matrix[i]);
+                }
+            }
         }
     }
 

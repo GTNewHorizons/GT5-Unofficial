@@ -29,7 +29,7 @@ import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ParametrizerMemoryCard extends Item {
+public final class ParametrizerMemoryCard extends Item {
     public static ParametrizerMemoryCard INSTANCE;
     public static IIcon locked,unlocked;
 
@@ -45,12 +45,14 @@ public class ParametrizerMemoryCard extends Item {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
-            if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
+            if (tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE != null) {
                     if (metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
                         GT_MetaTileEntity_Hatch_Param parametrizer = (GT_MetaTileEntity_Hatch_Param) metaTE;
-                        if (aStack.getTagCompound() == null) aStack.setTagCompound(new NBTTagCompound());
+                        if (aStack.getTagCompound() == null) {
+                            aStack.setTagCompound(new NBTTagCompound());
+                        }
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if (aStack.getItemDamage() == 1) {
                             //write to parametrizer
@@ -72,7 +74,9 @@ public class ParametrizerMemoryCard extends Item {
                         return true;
                     }else if(metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM){
                         GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) metaTE;
-                        if (aStack.getTagCompound() == null) aStack.setTagCompound(new NBTTagCompound());
+                        if (aStack.getTagCompound() == null) {
+                            aStack.setTagCompound(new NBTTagCompound());
+                        }
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if(aStack.getItemDamage()== 1){
                             //write to base

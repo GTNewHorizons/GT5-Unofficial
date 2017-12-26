@@ -85,12 +85,9 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
                     iGregTechTileEntity.getZCoord()+zDir,
                     TT_Container_Casings.sHintCasingsTT,12);
         } else{
-            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
-                iGregTechTileEntity.getWorld().setBlock(
-                        iGregTechTileEntity.getXCoord()+xDir,
-                        iGregTechTileEntity.getYCoord()+yDir,
-                        iGregTechTileEntity.getZCoord()+zDir,
-                        TT_Container_Casings.sHintCasingsTT,12,2);
+            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air) {
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+            }
         }
         StructureBuilder(shape, blockType, blockMeta,1, 1, 0, iGregTechTileEntity,hintsOnly);
     }

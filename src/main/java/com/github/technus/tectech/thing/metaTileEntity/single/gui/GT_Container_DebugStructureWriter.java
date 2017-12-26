@@ -12,12 +12,10 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_DebugStructureWriter
         extends GT_ContainerMetaTile_Machine {
     public boolean size = false;
-    public short numbers[] = new short[6];
+    public short[] numbers = new short[6];
 
     public GT_Container_DebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -54,7 +52,9 @@ public class GT_Container_DebugStructureWriter
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             GT_MetaTileEntity_DebugStructureWriter dsw = (GT_MetaTileEntity_DebugStructureWriter) mTileEntity.getMetaTileEntity();
-            if (dsw.numbers == null) return null;
+            if (dsw.numbers == null) {
+                return null;
+            }
             switch (aSlotIndex) {
                 case 0:
                     dsw.numbers[size ? 3 : 0] -= aShifthold == 1 ? 512 : 64;
@@ -110,8 +110,9 @@ public class GT_Container_DebugStructureWriter
             return;
         }
         GT_MetaTileEntity_DebugStructureWriter dsw = (GT_MetaTileEntity_DebugStructureWriter) mTileEntity.getMetaTileEntity();
-        if (numbers != null)
+        if (numbers != null) {
             System.arraycopy(dsw.numbers, 0, numbers, 0, dsw.numbers.length);
+        }
         size = dsw.size;
 
         for (Object crafter : crafters) {
@@ -137,7 +138,9 @@ public class GT_Container_DebugStructureWriter
                 size = par2 == 1;
                 break;
             default:
-                if (numbers != null && par1 >= 100 && par1 <= 105) numbers[par1 - 100] = (short) par2;
+                if (numbers != null && par1 >= 100 && par1 <= 105) {
+                    numbers[par1 - 100] = (short) par2;
+                }
                 break;
         }
     }

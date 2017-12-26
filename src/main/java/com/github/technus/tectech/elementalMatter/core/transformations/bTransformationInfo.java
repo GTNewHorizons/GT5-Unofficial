@@ -31,9 +31,15 @@ public class bTransformationInfo {
     }
 
     public bTransformationInfo(int fluidCap,int itemCap, int oreCap){
-        if(fluidCap>0)fluidDequantization=new HashMap<>(fluidCap);
-        if(itemCap>0)itemDequantization=new HashMap<>(itemCap);
-        if(oreCap>0)oredictDequantization=new HashMap<>(oreCap);
+        if(fluidCap>0) {
+            fluidDequantization = new HashMap<>(fluidCap);
+        }
+        if(itemCap>0) {
+            itemDequantization = new HashMap<>(itemCap);
+        }
+        if(oreCap>0) {
+            oredictDequantization = new HashMap<>(oreCap);
+        }
     }
 
     public void addFluid(iHasElementalDefinition em, FluidStack fluidStack){

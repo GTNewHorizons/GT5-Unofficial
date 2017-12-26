@@ -55,7 +55,9 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     private dComplexAspectDefinition(boolean check, cElementalDefinitionStackMap aspects) throws tElementalException {
-        if (check && !canTheyBeTogether(aspects)) throw new tElementalException("Hadron Definition error");
+        if (check && !canTheyBeTogether(aspects)) {
+            throw new tElementalException("Hadron Definition error");
+        }
         aspectStacks = aspects;
         float mass=0;
         for(cElementalDefinitionStack stack:aspects.values()){
@@ -69,8 +71,9 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         long amount = 0;
         for (cElementalDefinitionStack aspects : stacks.values()) {
-            if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition))
+            if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition)) {
                 return false;
+            }
             amount += aspects.amount;
         }
         return amount==2;
@@ -89,21 +92,21 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public String getSymbol() {
-        String symbol = "";
+        StringBuilder symbol = new StringBuilder(8);
         for (cElementalDefinitionStack aspect : aspectStacks.values()) {
             if (aspect.definition instanceof ePrimalAspectDefinition) {
                 for (int i = 0; i < aspect.amount; i++) {
-                    symbol += aspect.definition.getSymbol();
+                    symbol.append(aspect.definition.getSymbol());
                 }
             } else {
-                symbol+="(";
+                symbol.append('(');
                 for (int i = 0; i < aspect.amount; i++) {
-                    symbol += aspect.definition.getSymbol();
+                    symbol.append(aspect.definition.getSymbol());
                 }
-                symbol+=")";
+                symbol.append(')');
             }
         }
-        return symbol;
+        return symbol.toString();
     }
 
     @Override
@@ -112,19 +115,23 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         nbt.setByte("t", nbtType);
         cElementalDefinitionStack[] quarkStacksValues = aspectStacks.values();
         nbt.setInteger("i", quarkStacksValues.length);
-        for (int i = 0; i < quarkStacksValues.length; i++)
+        for (int i = 0; i < quarkStacksValues.length; i++) {
             nbt.setTag(Integer.toString(i), quarkStacksValues[i].toNBT());
+        }
         return nbt;
     }
 
     public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < stacks.length; i++)
+        for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+        }
         try {
             return new dComplexAspectDefinition(stacks);
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -218,10 +225,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-96);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
-        if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect "+nbtType+" "+ -96);
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect " + nbtType + ' ' + -96);
+        }
     }
 
     @Override
@@ -236,18 +246,22 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+ nbtType +" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
             lines.add("NAME = "+getName());
             //lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" e");
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
-            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
             lines.add("LIFE TIME = "+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");

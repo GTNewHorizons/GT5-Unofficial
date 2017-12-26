@@ -65,17 +65,24 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     public iConnectsToDataPipe getNext(iConnectsToDataPipe source/*==this*/) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         byte color = base.getColorization();
-        if (color < 0) return null;
+        if (color < 0) {
+            return null;
+        }
         IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (next == null || color != base.getColorization()) return null;
+        if (next == null || color != base.getColorization()) {
+            return null;
+        }
         IMetaTileEntity meta = next.getMetaTileEntity();
         if (meta instanceof iConnectsToDataPipe) {
             if (meta instanceof GT_MetaTileEntity_Hatch_InputData
-                    && GT_Utility.getOppositeSide(next.getFrontFacing()) == base.getFrontFacing())
+                    && GT_Utility.getOppositeSide(next.getFrontFacing()) == base.getFrontFacing()) {
                 return (iConnectsToDataPipe) meta;
+            }
             if (meta instanceof GT_MetaTileEntity_Pipe_Data
                     /*&& ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2*/)//Checked later
+            {
                 return (iConnectsToDataPipe) meta;
+            }
         }
         return null;
     }

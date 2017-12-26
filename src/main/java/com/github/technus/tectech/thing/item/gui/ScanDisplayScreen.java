@@ -91,15 +91,17 @@ public class ScanDisplayScreen extends GuiScreen {
         baseX=(width- sizeX)/2;
         baseY=(height- sizeY)/2-12;
         int buttonBaseY=baseY+145;
-        buttonList.add(pgUp=new Button(0,baseX+77,buttonBaseY,0,220));
-        buttonList.add(up=new Button(1,baseX+99,buttonBaseY,20,220));
-        buttonList.add(down=new Button(2,baseX+121,buttonBaseY,40,220));
-        buttonList.add(pgDown=new Button(3,baseX+143,buttonBaseY,60,220));
+        buttonList.add(pgUp= new Button(0, baseX + 77, buttonBaseY, 0, 220));
+        buttonList.add(up= new Button(1, baseX + 99, buttonBaseY, 20, 220));
+        buttonList.add(down= new Button(2, baseX + 121, buttonBaseY, 40, 220));
+        buttonList.add(pgDown= new Button(3, baseX + 143, buttonBaseY, 60, 220));
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (lines.length <= renderedLines) return;
+        if (lines.length <= renderedLines) {
+            return;
+        }
         if (button == pgUp) {
             firstLine -= renderedLines;
         } else if (button == up) {
@@ -109,11 +111,15 @@ public class ScanDisplayScreen extends GuiScreen {
         } else if (button == pgDown) {
             firstLine += renderedLines;
         }
-        if (firstLine > lines.length - renderedLines) firstLine = lines.length - renderedLines;
-        if (firstLine < 0) firstLine = 0;
+        if (firstLine > lines.length - renderedLines) {
+            firstLine = lines.length - renderedLines;
+        }
+        if (firstLine < 0) {
+            firstLine = 0;
+        }
     }
 
-    private class Button extends GuiButton{
+    private static class Button extends GuiButton{
         int u,v;
         Button(int id,int x,int y,int u,int v){
             super(id,x,y,20,20,"");

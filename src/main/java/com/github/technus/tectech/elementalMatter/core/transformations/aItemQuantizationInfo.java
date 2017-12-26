@@ -40,23 +40,29 @@ public class aItemQuantizationInfo implements iExchangeInfo {
 
     @Override
     public int hashCode() {
-        return (GameRegistry.findUniqueIdentifierFor(in.getItem())+":"+in.getUnlocalizedName()+":"+in.getItemDamage()).hashCode();
+        return (GameRegistry.findUniqueIdentifierFor(in.getItem())+":"+in.getUnlocalizedName()+ ':' +in.getItemDamage()).hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof  aItemQuantizationInfo){
             //alias
-            ItemStack b=((aItemQuantizationInfo) obj).in;
-            if(!in.getUnlocalizedName().equals(((aItemQuantizationInfo) obj).in.getUnlocalizedName())) return false;
+            ItemStack stack=((aItemQuantizationInfo) obj).in;
+            if(!in.getUnlocalizedName().equals(((aItemQuantizationInfo) obj).in.getUnlocalizedName())) {
+                return false;
+            }
 
             if(!GameRegistry.findUniqueIdentifierFor(in.getItem()).equals(
-                GameRegistry.findUniqueIdentifierFor(((aItemQuantizationInfo) obj).in.getItem()))) return false;
-
-            if(in.getItemDamage() != OreDictionary.WILDCARD_VALUE && b.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
-                if (in.getItemDamage() != b.getItemDamage()) return false;
+                GameRegistry.findUniqueIdentifierFor(((aItemQuantizationInfo) obj).in.getItem()))) {
+                return false;
             }
-            return skipNBT || ItemStack.areItemStackTagsEqual(in, b);
+
+            if(in.getItemDamage() != OreDictionary.WILDCARD_VALUE && stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+                if (in.getItemDamage() != stack.getItemDamage()) {
+                    return false;
+                }
+            }
+            return skipNBT || ItemStack.areItemStackTagsEqual(in, stack);
         }
         return false;
     }

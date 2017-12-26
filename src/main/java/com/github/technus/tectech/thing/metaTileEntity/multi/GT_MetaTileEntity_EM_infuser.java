@@ -115,10 +115,14 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         if (itemStack != null && itemStack.stackSize == 1) {
             Item ofThis = itemStack.getItem();
             if (ofThis instanceof IElectricItem) {
-                if (doChargeItemStack((IElectricItem) ofThis, itemStack) == 0) getBaseMetaTileEntity().disableWorking();
+                if (doChargeItemStack((IElectricItem) ofThis, itemStack) == 0) {
+                    getBaseMetaTileEntity().disableWorking();
+                }
                 return;
             } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
-                if (doChargeItemStackRF((IEnergyContainerItem) ofThis, itemStack) == 0) getBaseMetaTileEntity().disableWorking();
+                if (doChargeItemStackRF((IEnergyContainerItem) ofThis, itemStack) == 0) {
+                    getBaseMetaTileEntity().disableWorking();
+                }
                 return;
             }
         }
@@ -139,16 +143,22 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            if (euDiff > 0) setEUVar(getEUVar() - (getEUVar() >> 5));
+            if (euDiff > 0) {
+                setEUVar(getEUVar() - (getEUVar() >> 5));
+            }
             long remove = (long) Math.ceil(
                     ElectricItem.manager.charge(stack,
                             Math.min(euDiff, getEUVar())
                             , item.getTier(stack), true, false));
             setEUVar(getEUVar() - remove);
-            if (getEUVar() < 0) setEUVar(0);
+            if (getEUVar() < 0) {
+                setEUVar(0);
+            }
             return remove;
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
         return 0;
     }
@@ -160,10 +170,14 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
             RF = RF * 100L / mEUtoRF;
             setEUVar(getEUVar() - RF);
-            if (getEUVar() < 0) setEUVar(0);
+            if (getEUVar() < 0) {
+                setEUVar(0);
+            }
             return RF;
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
         return 0;
     }

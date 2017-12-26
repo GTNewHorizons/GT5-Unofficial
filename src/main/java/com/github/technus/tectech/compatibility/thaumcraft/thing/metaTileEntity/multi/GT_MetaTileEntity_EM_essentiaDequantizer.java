@@ -85,12 +85,9 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
                     iGregTechTileEntity.getZCoord()+zDir,
                     TT_Container_Casings.sHintCasingsTT,12);
         } else{
-            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
-                iGregTechTileEntity.getWorld().setBlock(
-                        iGregTechTileEntity.getXCoord()+xDir,
-                        iGregTechTileEntity.getYCoord()+yDir,
-                        iGregTechTileEntity.getZCoord()+zDir,
-                        TT_Container_Casings.sHintCasingsTT,12,2);
+            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air) {
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord() + yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+            }
         }
         StructureBuilder(shape, blockType, blockMeta,1, 1, 0, iGregTechTileEntity,hintsOnly);
     }
@@ -111,8 +108,9 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
         if(inputHatchContainer.hasStacks()){
             cElementalInstanceStack stack = inputHatchContainer.getFirst();
             inputHatchContainer.removeAmount(false,new cElementalInstanceStack(stack.definition,1));
-            if(!essentiaContainerCompat.putElementalInstanceStack(container,stack))
+            if(!essentiaContainerCompat.putElementalInstanceStack(container,stack)) {
                 cleanStackEM_EM(stack);
+            }
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow=1;

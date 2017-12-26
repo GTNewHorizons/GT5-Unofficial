@@ -18,9 +18,6 @@ import org.lwjgl.opengl.GL11;
 public class projectileRenderEM extends Render {
     private static final ResourceLocation textures = new ResourceLocation(Reference.MODID + ":textures/entity/projectileEM.png");
 
-    public projectileRenderEM() {
-    }
-
     private void render(projectileEM entity, double par2, double par4, double par6, float par9) {
         bindEntityTexture(entity);
         GL11.glPushMatrix();
@@ -37,8 +34,8 @@ public class projectileRenderEM extends Render {
         GL11.glEnable('\u803a');
         float f11 = - par9;
         if(f11 > 0.0F) {
-            float i = -MathHelper.sin(f11 * 3.0F) * f11;
-            GL11.glRotatef(i, 0.0F, 0.0F, 1.0F);
+            float f = -MathHelper.sin(f11 * 3.0F) * f11;
+            GL11.glRotatef(f, 0.0F, 0.0F, 1.0F);
         }
 
         GL11.glDisable(2896);

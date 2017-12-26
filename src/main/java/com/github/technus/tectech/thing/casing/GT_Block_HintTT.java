@@ -20,7 +20,7 @@ import java.util.List;
  * Created by danie_000 on 03.10.2016.
  */
 public class GT_Block_HintTT extends GT_Block_Casings_Abstract {
-    private static IIcon hint[] = new IIcon[16];
+    private static IIcon[] hint = new IIcon[16];
 
     public GT_Block_HintTT() {
         super(GT_Item_HintTT.class, "gt.blockhintTT", GT_Material_Casings.INSTANCE);

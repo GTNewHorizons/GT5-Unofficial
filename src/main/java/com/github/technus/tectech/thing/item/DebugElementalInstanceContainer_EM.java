@@ -27,7 +27,7 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class DebugElementalInstanceContainer_EM extends Item {
+public final class DebugElementalInstanceContainer_EM extends Item {
     public static DebugElementalInstanceContainer_EM INSTANCE;
 
     private DebugElementalInstanceContainer_EM() {
@@ -42,15 +42,17 @@ public class DebugElementalInstanceContainer_EM extends Item {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
-            if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
+            if (tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null && metaTE instanceof iElementalInstanceContainer) {
+                if (metaTE instanceof iElementalInstanceContainer) {
                     cElementalInstanceStackMap content = ((iElementalInstanceContainer) metaTE).getContainerHandler();
                     if (tNBT.hasKey("content")) {
                         try {
                             content.putUnifyAll(cElementalInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
                         } catch (tElementalException e) {
-                            if (DEBUG_MODE) e.printStackTrace();
+                            if (DEBUG_MODE) {
+                                e.printStackTrace();
+                            }
                             return true;
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();

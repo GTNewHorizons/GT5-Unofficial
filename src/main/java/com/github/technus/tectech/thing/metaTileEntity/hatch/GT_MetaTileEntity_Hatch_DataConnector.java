@@ -33,11 +33,11 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
 
     public short id = -1;
 
-    public GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
+    protected GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
     }
 
-    public GT_MetaTileEntity_Hatch_DataConnector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    protected GT_MetaTileEntity_Hatch_DataConnector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -64,16 +64,18 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setShort("eID", id);
-        if (q != null)
+        if (q != null) {
             aNBT.setTag("eDATA", q.toNbt());
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
-        if (aNBT.hasKey("eDATA"))
+        if (aNBT.hasKey("eDATA")) {
             q = new QuantumDataPacket(aNBT.getCompoundTag("eDATA"));
+        }
     }
 
     @Override
@@ -139,11 +141,9 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
 
     @Override
     public String[] getInfoData() {
-        if (id > 0) return new String[]{
-                "ID: " + EnumChatFormatting.AQUA + id,
-                "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0),
-                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),
-        };
+        if (id > 0) {
+            return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0), "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),};
+        }
         return new String[]{
                 "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0),
                 "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),

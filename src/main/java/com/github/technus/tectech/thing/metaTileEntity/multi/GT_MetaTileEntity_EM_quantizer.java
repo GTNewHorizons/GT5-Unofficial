@@ -21,6 +21,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
+
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
@@ -95,7 +97,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement by item quantization, implement instance quantization
         if (GregTech_API.sPostloadFinished) {
-            ItemStack[] inI = getStoredInputs().toArray(new ItemStack[0]);
+            ArrayList<ItemStack> storedInputs = getStoredInputs();
+            ItemStack[] inI = storedInputs.toArray(new ItemStack[storedInputs.size()]);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
@@ -107,10 +110,13 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         //ORE DICT quantization
                         int[] oreIDs = OreDictionary.getOreIDs(is);
                         for (int ID : oreIDs) {
-                            if (DEBUG_MODE)
-                                TecTech.Logger.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage() + " " + OreDictionary.getOreName(ID));
+                            if (DEBUG_MODE) {
+                                TecTech.Logger.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
+                            }
                             aOredictQuantizationInfo aOQI = bTransformationInfo.oredictQuantization.get(ID);
-                            if (aOQI == null) continue;
+                            if (aOQI == null) {
+                                continue;
+                            }
                             iHasElementalDefinition into = aOQI.output();
                             if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
@@ -119,8 +125,9 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         }
                     } else {
                         //Do ITEM STACK quantization
-                        if (DEBUG_MODE)
-                            TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage());
+                        if (DEBUG_MODE) {
+                            TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
+                        }
                         iHasElementalDefinition into = aIQI.output();
                         if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
                             startRecipe(into);
@@ -129,11 +136,14 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     }
                 }
             }
-            FluidStack[] inF = getStoredFluids().toArray(new FluidStack[0]);
+            ArrayList<FluidStack> storedFluids = getStoredFluids();
+            FluidStack[] inF = storedFluids.toArray(new FluidStack[storedFluids.size()]);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     aFluidQuantizationInfo aFQI = bTransformationInfo.fluidQuantization.get(fs.getFluid().getID());
-                    if (aFQI == null) continue;
+                    if (aFQI == null) {
+                        continue;
+                    }
                     iHasElementalDefinition into = aFQI.output();
                     if (into != null && fs.amount >= aFQI.input().amount && isInputEqual(true, false,
                             new FluidStack[]{aFQI.input()}, GT_MetaTileEntity_MultiblockBase_EM.nothingI, inF, (ItemStack[]) null)) {

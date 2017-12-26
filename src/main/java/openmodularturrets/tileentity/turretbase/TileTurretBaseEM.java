@@ -28,28 +28,34 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
         World worldIn = getWorldObj();
         TileEntity te;
         if ((te = worldIn.getTileEntity(xCoord + 1, yCoord, zCoord)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         if ((te = worldIn.getTileEntity(xCoord - 1, yCoord, zCoord)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         if ((te = worldIn.getTileEntity(xCoord, yCoord + 1, zCoord)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         if ((te = worldIn.getTileEntity(xCoord, yCoord - 1, zCoord)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         if ((te = worldIn.getTileEntity(xCoord, yCoord, zCoord + 1)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         if ((te = worldIn.getTileEntity(xCoord, yCoord, zCoord - 1)) instanceof IGregTechTileEntity &&
-                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental)
+                ((IGregTechTileEntity) te).getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_InputElemental) {
             return getFromHatch((GT_MetaTileEntity_Hatch_InputElemental) ((IGregTechTileEntity) te).getMetaTileEntity());
+        }
 
         return null;
     }

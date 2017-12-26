@@ -19,9 +19,6 @@ import openmodularturrets.util.TurretHeadUtil;
 public class TileTurretHeadEM extends TurretHead{
     private cElementalInstanceStackMap hatchContentPointer;
 
-    public TileTurretHeadEM() {
-    }
-
     @Override
     public int getTurretRange() {
         return ConfigHandler.getLaserTurretSettings().getRange()<<1;
@@ -44,8 +41,9 @@ public class TileTurretHeadEM extends TurretHead{
 
     @Override
     public void updateEntity() {
-        if(!worldObj.isRemote && base instanceof TileTurretBaseEM)
-            hatchContentPointer =((TileTurretBaseEM) base).getContainerHandler();
+        if(!worldObj.isRemote && base instanceof TileTurretBaseEM) {
+            hatchContentPointer = ((TileTurretBaseEM) base).getContainerHandler();
+        }
         super.updateEntity();
     }
 

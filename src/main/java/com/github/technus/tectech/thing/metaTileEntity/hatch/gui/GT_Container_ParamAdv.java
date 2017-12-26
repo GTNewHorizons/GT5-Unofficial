@@ -12,8 +12,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
     public boolean usesFloats = false;
     public int pointer=0;
@@ -67,52 +65,82 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     paramH.param -= aShifthold == 1 ? 16 : 4;
                     break;
                 case 1:
-                    if (secondRow) secondRow = false;
-                    else columnPointer -= aShifthold == 1 ? 16 : 4;
+                    if (secondRow) {
+                        secondRow = false;
+                    } else {
+                        columnPointer -= aShifthold == 1 ? 16 : 4;
+                    }
                     break;
                 case 2:
-                    if (secondRow) columnPointer -= aShifthold == 1 ? 16 : 4;
-                    else secondRow = true;
+                    if (secondRow) {
+                        columnPointer -= aShifthold == 1 ? 16 : 4;
+                    } else {
+                        secondRow = true;
+                    }
                     break;
                 case 3:
                     if (aShifthold == 1) {
-                        if (secondRow) paramH.value1i = 0xFFFFFFFF;
-                        else paramH.value0i = 0xFFFFFFFF;
+                        if (secondRow) {
+                            paramH.value1i = 0xFFFFFFFF;
+                        } else {
+                            paramH.value0i = 0xFFFFFFFF;
+                        }
                     } else {
-                        if (secondRow) paramH.value1i |= 1 << columnPointer;
-                        else paramH.value0i |= 1 << columnPointer;
+                        if (secondRow) {
+                            paramH.value1i |= 1 << columnPointer;
+                        } else {
+                            paramH.value0i |= 1 << columnPointer;
+                        }
                     }
                     break;
                 case 4:
                     paramH.param -= aShifthold == 1 ? 2 : 1;
                     break;
                 case 5:
-                    if (secondRow) secondRow = false;
-                    else columnPointer -= aShifthold == 1 ? 2 : 1;
+                    if (secondRow) {
+                        secondRow = false;
+                    } else {
+                        columnPointer -= aShifthold == 1 ? 2 : 1;
+                    }
                     break;
                 case 6:
-                    if (secondRow) columnPointer -= aShifthold == 1 ? 2 : 1;
-                    else secondRow = true;
+                    if (secondRow) {
+                        columnPointer -= aShifthold == 1 ? 2 : 1;
+                    } else {
+                        secondRow = true;
+                    }
                     break;
                 case 7:
                     if (aShifthold == 1) {
-                        if (secondRow) paramH.value1i = 0;
-                        else paramH.value0i = 0;
+                        if (secondRow) {
+                            paramH.value1i = 0;
+                        } else {
+                            paramH.value0i = 0;
+                        }
                     } else {
-                        if (secondRow) paramH.value1i &= ~(1 << columnPointer);
-                        else paramH.value0i &= ~(1 << columnPointer);
+                        if (secondRow) {
+                            paramH.value1i &= ~(1 << columnPointer);
+                        } else {
+                            paramH.value0i &= ~(1 << columnPointer);
+                        }
                     }
                     break;
                 case 8:
                     paramH.param += aShifthold == 1 ? 16 : 4;
                     break;
                 case 9:
-                    if (secondRow) secondRow = false;
-                    else columnPointer += aShifthold == 1 ? 16 : 4;
+                    if (secondRow) {
+                        secondRow = false;
+                    } else {
+                        columnPointer += aShifthold == 1 ? 16 : 4;
+                    }
                     break;
                 case 10:
-                    if (secondRow) columnPointer += aShifthold == 1 ? 16 : 4;
-                    else secondRow = true;
+                    if (secondRow) {
+                        columnPointer += aShifthold == 1 ? 16 : 4;
+                    } else {
+                        secondRow = true;
+                    }
                     break;
                 case 11:
                     showInts ^= true;
@@ -121,32 +149,50 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     paramH.param += aShifthold == 1 ? 2 : 1;
                     break;
                 case 13:
-                    if (secondRow) secondRow = false;
-                    else columnPointer += aShifthold == 1 ? 2 : 1;
+                    if (secondRow) {
+                        secondRow = false;
+                    } else {
+                        columnPointer += aShifthold == 1 ? 2 : 1;
+                    }
                     break;
                 case 14:
-                    if (secondRow) columnPointer += aShifthold == 1 ? 2 : 1;
-                    else secondRow = true;
+                    if (secondRow) {
+                        columnPointer += aShifthold == 1 ? 2 : 1;
+                    } else {
+                        secondRow = true;
+                    }
                     break;
                 case 15:
                     if (aShifthold == 1) {
-                        if (secondRow) paramH.value1i ^= 0xFFFFFFFF;
-                        else paramH.value0i ^= 0xFFFFFFFF;
+                        if (secondRow) {
+                            paramH.value1i ^= 0xFFFFFFFF;
+                        } else {
+                            paramH.value0i ^= 0xFFFFFFFF;
+                        }
                     } else {
-                        if (secondRow) paramH.value1i ^= 1 << columnPointer;
-                        else paramH.value0i ^= 1 << columnPointer;
+                        if (secondRow) {
+                            paramH.value1i ^= 1 << columnPointer;
+                        } else {
+                            paramH.value0i ^= 1 << columnPointer;
+                        }
                     }
                     break;
                 default:
                     doStuff = false;
             }
             if (doStuff) {
-                if(columnPointer>=32) columnPointer=31;
-                else if(columnPointer<0) columnPointer=0;
+                if(columnPointer>=32) {
+                    columnPointer = 31;
+                } else if(columnPointer<0) {
+                    columnPointer = 0;
+                }
                 paramH.pointer=secondRow?columnPointer+0x100:columnPointer;
                 paramH.setUsingFloats(!showInts);
-                if (paramH.param > 9) paramH.param = 9;
-                else if (paramH.param < -1) paramH.param = -1;
+                if (paramH.param > 9) {
+                    paramH.param = 9;
+                } else if (paramH.param < -1) {
+                    paramH.param = -1;
+                }
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);

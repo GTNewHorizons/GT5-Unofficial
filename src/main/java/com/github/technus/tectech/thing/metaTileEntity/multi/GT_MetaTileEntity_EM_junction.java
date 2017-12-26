@@ -95,18 +95,24 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             } else {
                 setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 dest = getParameterIn(i, 1);
-                if (dest < 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                else if (dest == 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-                else if (dest > eOutputHatches.size()) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                if (dest < 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                } else if (dest == 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                } else if (dest > eOutputHatches.size()) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                } else if (Double.isNaN(dest)) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                }
             }
         }
     }
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches)
+        for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             if (in.getContainerHandler().hasStacks()) {
                 mEUt = -(int) V[8];
                 eAmpereFlow = 1 + (eInputHatches.size() + eOutputHatches.size() >> 1);
@@ -114,6 +120,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 return true;
             }
+        }
         return false;
     }
 
@@ -123,15 +130,21 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
         for (int i = 0; i < 10; i++) {
             src= getParameterIn(i,0);
             dest= getParameterIn(i,1);
-            if(Double.isNaN(src) || Double.isNaN(dest)) continue;
+            if(Double.isNaN(src) || Double.isNaN(dest)) {
+                continue;
+            }
             int inIndex = (int)src - 1;
-            if (inIndex < 0 || inIndex >= eInputHatches.size()) continue;
+            if (inIndex < 0 || inIndex >= eInputHatches.size()) {
+                continue;
+            }
             int outIndex = (int)dest - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContentEM_EM(in);
             } else {
-                if (outIndex < 0 || outIndex >= eOutputHatches.size()) continue;
+                if (outIndex < 0 || outIndex >= eOutputHatches.size()) {
+                    continue;
+                }
                 GT_MetaTileEntity_Hatch_OutputElemental out = eOutputHatches.get(outIndex);
                 out.getContainerHandler().putUnifyAll(in.getContainerHandler());
                 in.getContainerHandler().clear();

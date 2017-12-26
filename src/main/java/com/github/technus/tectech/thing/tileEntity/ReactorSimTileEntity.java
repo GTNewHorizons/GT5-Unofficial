@@ -18,17 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
     private boolean hadRedstone =true;
 
-    public ReactorSimTileEntity() {
-        //this.updateTicker = IC2.random.nextInt(this.getTickRate());
-        //this.inputTank = new FluidTank(10000);
-        //this.outputTank = new FluidTank(10000);
-        //this.reactorSlot = new InvSlotReactor(this, "reactor", 0, 54);
-        //this.coolantinputSlot = new InvSlotConsumableLiquidByList(this, "coolantinputSlot", 55, InvSlot.Access.I, 1, InvSlot.InvSide.ANY, InvSlotConsumableLiquid.OpType.Drain, BlocksItems.getFluid(InternalName.fluidCoolant));
-        //this.hotcoolinputSlot = new InvSlotConsumableLiquidByTank(this, "hotcoolinputSlot", 56, InvSlot.Access.I, 1, InvSlot.InvSide.ANY, InvSlotConsumableLiquid.OpType.Fill, this.outputTank);
-        //this.coolantoutputSlot = new InvSlotOutput(this, "coolantoutputSlot", 57, 1);
-        //this.hotcoolantoutputSlot = new InvSlotOutput(this, "hotcoolantoutputSlot", 58, 1);
-    }
-
     @Override
     public void onLoaded() {
         super.onLoaded();
@@ -155,8 +144,9 @@ public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
     protected void updateEntityServer() {
         if(updateTicker++ % getTickRate() == 0) {
             if (!worldObj.isRemote && worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 2)) {
-                if(hadRedstone && !receiveredstone()) hadRedstone=false;
-                else if(!hadRedstone && receiveredstone()){
+                if(hadRedstone && !receiveredstone()) {
+                    hadRedstone = false;
+                } else if(!hadRedstone && receiveredstone()){
                     doUpdates();
                     hadRedstone=true;
                 }

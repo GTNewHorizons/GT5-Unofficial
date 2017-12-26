@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
 
     @Override
     public long getMinimumStoredEU() {
-        return 128 * Amperes;
+        return 128L * Amperes;
     }
 
     @Override

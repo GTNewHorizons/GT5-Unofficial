@@ -26,7 +26,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ElementalDefinitionScanStorage_EM extends Item {
+public final class ElementalDefinitionScanStorage_EM extends Item {
     public static ElementalDefinitionScanStorage_EM INSTANCE;
     public static IIcon offline, online;
 
@@ -39,23 +39,26 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     //return previous thing
     public static void setContent(ItemStack containerItem, cElementalInstanceStackMap definitions, int[] detailsOnDepthLevels){
         if(containerItem.getItem() instanceof ElementalDefinitionScanStorage_EM) {
-            if (containerItem.stackTagCompound == null) containerItem.stackTagCompound=new NBTTagCompound();
+            if (containerItem.stackTagCompound == null) {
+                containerItem.stackTagCompound = new NBTTagCompound();
+            }
             containerItem.stackTagCompound.setTag("elementalInfo", definitions.getScanInfoNBT(detailsOnDepthLevels));
         }
     }
 
     public static void clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionScanStorage_EM){
-            if (containerItem.stackTagCompound == null) return;
+            if (containerItem.stackTagCompound == null) {
+                return;
+            }
             containerItem.stackTagCompound=null;
-            return;
         }
-        return;
     }
 
     public static String[] getLines(ItemStack containerItem){
-        if(containerItem.stackTagCompound!=null && containerItem.stackTagCompound.hasKey("elementalInfo"))
+        if(containerItem.stackTagCompound!=null && containerItem.stackTagCompound.hasKey("elementalInfo")) {
             return Util.infoFromNBT(containerItem.stackTagCompound.getCompoundTag("elementalInfo"));
+        }
         return null;
     }
 
@@ -94,16 +97,18 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     @Override
     public IIcon getIconIndex(ItemStack itemStack) {
         NBTTagCompound tagCompound=itemStack.stackTagCompound;
-        if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
+        if(tagCompound!=null && tagCompound.hasKey("elementalInfo")) {
             return online;
+        }
         return offline;
     }
 
     @Override
     public IIcon getIcon(ItemStack itemStack, int pass) {
         NBTTagCompound tagCompound=itemStack.stackTagCompound;
-        if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
+        if(tagCompound!=null && tagCompound.hasKey("elementalInfo")) {
             return online;
+        }
         return offline;
     }
 
@@ -117,8 +122,9 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if(world.isRemote){
             NBTTagCompound tagCompound=itemStack.stackTagCompound;
-            if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
-                player.openGui(TecTech.instance, ModGuiHandler.SCAN_DISPLAY_SCREEN_ID,world,0,0,0);
+            if(tagCompound!=null && tagCompound.hasKey("elementalInfo")) {
+                player.openGui(TecTech.instance, ModGuiHandler.SCAN_DISPLAY_SCREEN_ID, world, 0, 0, 0);
+            }
         }
         return itemStack;
     }

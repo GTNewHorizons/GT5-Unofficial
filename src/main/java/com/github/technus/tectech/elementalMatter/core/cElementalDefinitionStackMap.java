@@ -38,7 +38,7 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
 
     //IMMUTABLE DON'T NEED IT
     @Override
-    public final cElementalDefinitionStackMap clone() {
+    public cElementalDefinitionStackMap clone() {
         return this;
     }
 
@@ -56,8 +56,9 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
         cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < defStacks.length; i++) {
             defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-            if (defStacks[i].definition.equals(nbtE__))
+            if (defStacks[i].definition.equals(nbtE__)) {
                 throw new tElementalException("Something went Wrong");
+            }
         }
         return new cElementalDefinitionStackMap(defStacks);
     }

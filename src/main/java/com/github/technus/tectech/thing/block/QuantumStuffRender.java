@@ -16,8 +16,6 @@ import org.lwjgl.opengl.GL11;
 public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
     private static Tessellator tes=Tessellator.instance;
 
-    public QuantumStuffRender() {}
-
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -60,8 +58,8 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
         tes.setBrightness(15728880);
         IIcon side = QuantumStuffBlock.stuff;
         for(int i=0;i<6;i++){
-            float b = 1 - TecTech.Rnd.nextFloat() / 4f, g = b - TecTech.Rnd.nextFloat() / 4f, r = g - TecTech.Rnd.nextFloat() / 4f - 0.25f;
-            tes.setColorOpaque_F(r, g, b);
+            float f = 1 - TecTech.Rnd.nextFloat() / 4f, g = f - TecTech.Rnd.nextFloat() / 4f, r = g - TecTech.Rnd.nextFloat() / 4f - 0.25f;
+            tes.setColorOpaque_F(r, g, f);
             float rotX=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotY=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotZ=TecTech.Rnd.nextFloat()*2*(float) Math.PI;
             tesAbuse(x,y,z,-1.425f,-1.425f,.1f,rotX,rotY,rotZ,side.getMinU(), side.getMaxV());
             tesAbuse(x,y,z,-1.425f,1.425f,.1f,rotX,rotY,rotZ,side.getMinU(), side.getMinV());

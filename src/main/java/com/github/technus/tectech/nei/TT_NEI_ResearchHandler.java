@@ -54,7 +54,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
         mRecipeMap = aRecipeMap;
         transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
         if (!NEI_TT_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(TecTech.instance, "NEIPlugins", "register-crafting-handler", Reference.MODID+"@" + getRecipeName() + "@" + getOverlayIdentifier());
+            FMLInterModComms.sendRuntimeMessage(TecTech.instance, "NEIPlugins", "register-crafting-handler", Reference.MODID+ '@' + getRecipeName() + '@' + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -197,7 +197,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                     if (!(tStack instanceof FixedPositionedStack) || ((FixedPositionedStack) tStack).mChance <= 0 || ((FixedPositionedStack) tStack).mChance == 10000) {
                         break;
                     }
-                    currenttip.add(trans("150","Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + "." + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + "%");
+                    currenttip.add(trans("150","Chance: ") + ((FixedPositionedStack) tStack).mChance / 100 + '.' + (((FixedPositionedStack) tStack).mChance % 100 < 10 ? "0" + ((FixedPositionedStack) tStack).mChance % 100 : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100)) + '%');
                     break;
                 }
             }
@@ -356,8 +356,8 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                         List<ItemStack> permutations = ItemList.itemMap.get(tStack.getItem());
                         if (!permutations.isEmpty()) {
                             ItemStack stack;
-                            for (Iterator i$ = permutations.iterator(); i$.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, stack))) {
-                                stack = (ItemStack) i$.next();
+                            for (Iterator<ItemStack> iterator = permutations.iterator(); iterator.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, stack))) {
+                                stack = iterator.next();
                             }
                         } else {
                             ItemStack base = new ItemStack(tStack.getItem(), tStack.stackSize);
@@ -369,7 +369,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
                     }
                 }
             }
-            items = tDisplayStacks.toArray(new ItemStack[0]);
+            items = tDisplayStacks.toArray(new ItemStack[tDisplayStacks.size()]);
             if (items.length == 0) {
                 items = new ItemStack[]{new ItemStack(Blocks.fire)};
             }

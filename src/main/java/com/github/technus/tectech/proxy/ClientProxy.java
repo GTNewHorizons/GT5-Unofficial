@@ -32,7 +32,9 @@ public class ClientProxy extends CommonProxy {
         QuantumStuffBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumStuffBlock.renderID, new QuantumStuffRender());
 
-        if(Loader.isModLoaded("openmodularturrets")) new TT_turret_loader().run();
+        if(Loader.isModLoaded("openmodularturrets")) {
+            new TT_turret_loader().run();
+        }
     }
 
     @Override
@@ -93,8 +95,9 @@ public class ClientProxy extends CommonProxy {
                 dist = -dist;
             }
             fontRenderer.setUnicodeFlag(origFont);
-        } else
+        } else {
             fontRenderer.drawSplitString(str, x, y, maxWidth, color);
+        }
     }
 
     @Override

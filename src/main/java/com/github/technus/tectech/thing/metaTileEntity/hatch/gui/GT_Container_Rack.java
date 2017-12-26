@@ -11,8 +11,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 /**
  * Created by Tec on 09.04.2017.
  */
@@ -62,43 +60,54 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
         switch (par1) {
             case 100:
                 heat = par2 != 0;
-                return;
         }
     }
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if (heat || mActive != 0) return null;
+        if (heat || mActive != 0) {
+            return null;
+        }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-        if (heat || mActive != 0) return null;
+        if (heat || mActive != 0) {
+            return null;
+        }
         return super.transferStackInSlot(aPlayer, aSlotIndex);
     }
 
     @Override
     public boolean canDragIntoSlot(Slot par1Slot) {
-        if (heat || mActive != 0) return false;
+        if (heat || mActive != 0) {
+            return false;
+        }
         return super.canDragIntoSlot(par1Slot);
     }
 
     @Override
     public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
-        if (heat || mActive != 0) return;
+        if (heat || mActive != 0) {
+            return;
+        }
         super.putStacksInSlots(par1ArrayOfItemStack);
     }
 
     @Override
     protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
-        if (heat || mActive != 0) return false;
+        if (heat || mActive != 0) {
+            return false;
+        }
         return super.mergeItemStack(aStack, aStartIndex, aSlotCount, par4);
     }
 
     @Override
     public void putStackInSlot(int par1, ItemStack par2ItemStack) {
-        if (heat || mActive != 0) return;
+        if (heat || mActive != 0) {
+            return;
+        }
         super.putStackInSlot(par1, par2ItemStack);
     }
 }

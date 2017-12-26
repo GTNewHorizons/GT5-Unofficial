@@ -36,24 +36,33 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         fontRendererObj.drawString(mName, 10, -18, 16448255);
 
         if (mContainer != null) {
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 1) != 0)
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 1) != 0) {
                 fontRendererObj.drawString("Pipe is loose.", 10, -10, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 2) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 2) != 0) {
                 fontRendererObj.drawString("Screws are loose.", 10, -2, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 4) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 4) != 0) {
                 fontRendererObj.drawString("Something is stuck.", 10, 6, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 8) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 8) != 0) {
                 fontRendererObj.drawString("Plating is dented.", 10, 14, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 16) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 16) != 0) {
                 fontRendererObj.drawString("Circuitry burned out.", 10, 22, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 32) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 32) != 0) {
                 fontRendererObj.drawString("That doesn't belong there.", 10, 30, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 64) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 64) != 0) {
                 fontRendererObj.drawString("Incomplete Structure.", 10, 38, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 128) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 128) != 0) {
                 fontRendererObj.drawString("Too Uncertain.", 10, 46, 16448255);
-            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 256) != 0)
+            }
+            if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 256) != 0) {
                 fontRendererObj.drawString("Invalid Parameters.", 10, 54, 16448255);
+            }
 
             if (((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachineEM) mContainer).mActive == 0) {
@@ -78,29 +87,32 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
-            if(!ePowerPassButton)
+            if(!ePowerPassButton) {
                 drawTexturedModalRect(x + 151, y + 23, 215, 23, 18, 18);
-            else if (((GT_Container_MultiMachineEM) mContainer).ePowerPass)
+            } else if (((GT_Container_MultiMachineEM) mContainer).ePowerPass) {
                 drawTexturedModalRect(x + 151, y + 23, 183, 23, 18, 18);
+            }
 
-            if(!eSafeVoidButton)
+            if(!eSafeVoidButton) {
                 drawTexturedModalRect(x + 151, y + 41, 215, 41, 18, 18);
-            else if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid)
+            } else if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid) {
                 drawTexturedModalRect(x + 151, y + 41, 183, 41, 18, 18);
+            }
 
-            if(!allowedToWorkButton)
+            if(!allowedToWorkButton) {
                 drawTexturedModalRect(x + 151, y + 57, 215, 57, 18, 18);
-            else if (((GT_Container_MultiMachineEM) mContainer).allowedToWork)
+            } else if (((GT_Container_MultiMachineEM) mContainer).allowedToWork) {
                 drawTexturedModalRect(x + 151, y + 57, 183, 57, 18, 18);
+            }
 
             x += 11;
             y += 96;
             for (int i = 0; i < 20; ) {
-                byte j = (byte) (i >>> 1);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[j]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[j]);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[j + 10]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[j + 10]);
+                byte b = (byte) (i >>> 1);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[b]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[b]);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[b + 10]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[b + 10]);
             }
 
             short rU = 183, Vs = 77;
@@ -173,7 +185,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x, int y, int i, int j, byte status) {
         int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
-            case STATUS_WRONG:
+            case STATUS_WRONG: {//fallthrough
                 if (counter < 2) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
@@ -181,6 +193,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
+            }
             case STATUS_OK://ok
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);
                 break;

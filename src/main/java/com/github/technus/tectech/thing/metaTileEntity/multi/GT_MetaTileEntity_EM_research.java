@@ -89,17 +89,22 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders)
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
+        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                 rack.getBaseMetaTileEntity().setActive(false);
+            }
+        }
         eHolders.clear();
 
-        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 3, 4))
+        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 3, 4)) {
             return false;
+        }
 
-        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders)
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack))
+        for (GT_MetaTileEntity_Hatch_Holder rack : eHolders) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
+            }
+        }
         return eHolders.size() == 1;
     }
 
@@ -118,9 +123,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.saveNBTData(aNBT);
         aNBT.setLong("eComputationRemaining",computationRemaining);
         aNBT.setLong("eComputationRequired",computationRequired);
-        if(holdItem!=null)
+        if(holdItem!=null) {
             aNBT.setTag("eHold", holdItem.writeToNBT(new NBTTagCompound()));
-        else aNBT.removeTag("eHold");
+        } else {
+            aNBT.removeTag("eHold");
+        }
     }
 
     @Override
@@ -128,9 +135,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.loadNBTData(aNBT);
         computationRemaining=aNBT.getLong("eComputationRemaining");
         computationRequired=aNBT.getLong("eComputationRequired");
-        if(aNBT.hasKey("eHold"))
-            holdItem =ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
-        else holdItem=null;
+        if(aNBT.hasKey("eHold")) {
+            holdItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
+        } else {
+            holdItem = null;
+        }
     }
 
     @Override
@@ -171,8 +180,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     computationRequired = computationRemaining = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
-                    for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+                    for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
                         r.getBaseMetaTileEntity().setActive(false);
+                    }
                 }
             }
         }
@@ -182,7 +192,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public boolean checkRecipe_EM(ItemStack itemStack) {
         tRecipe=null;
         aRecipe=null;
-        if(eHolders.size()>0 && eHolders.get(0).mInventory[0]!=null) {
+        if(!eHolders.isEmpty() && eHolders.get(0).mInventory[0]!=null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
             if(ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -246,8 +256,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
         holdItem=null;
         computationRequired=computationRemaining=0;
-        for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+        for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
             r.getBaseMetaTileEntity().setActive(false);
+        }
         return false;
     }
 
@@ -266,7 +277,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM() {
-        if(eHolders.size()>0) {
+        if(!eHolders.isEmpty()) {
             if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)){
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 eHolders.get(0).mInventory[0] = null;
@@ -278,17 +289,17 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 tNBT.setInteger("time", tRecipe.mDuration);
                 tNBT.setInteger("eu", tRecipe.mEUt);
                 for (int i = 0; i < tRecipe.mInputs.length; i++) {
-                    tNBT.setTag("" + i, tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
+                    tNBT.setTag(String.valueOf(i), tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
                 }
                 for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
                     tNBT.setTag("f" + i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
                 }
                 tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + " Assembling Line Recipe Generator");
                 NBTTagList tNBTList = new NBTTagList();
-                tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + " " + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + tRecipe.mDuration / 20));
+                tNBTList.appendTag(new NBTTagString("Construction plan for " + tRecipe.mOutput.stackSize + ' ' + GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ". Needed EU/t: " + tRecipe.mEUt + " Production time: " + tRecipe.mDuration / 20));
                 for (int i = 0; i < tRecipe.mInputs.length; i++) {
                     if (tRecipe.mInputs[i] != null) {
-                        tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + " " + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
+                        tNBTList.appendTag(new NBTTagString("Input Bus " + (i + 1) + ": " + tRecipe.mInputs[i].stackSize + ' ' + GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
                     }
                 }
                 for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
@@ -318,7 +329,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void extraExplosions_EM() {
-        for (MetaTileEntity tTileEntity : eHolders) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+        for (MetaTileEntity tTileEntity : eHolders) {
+            tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+        }
     }
 
     @Override
@@ -347,15 +360,17 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+        for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
             r.getBaseMetaTileEntity().setActive(false);
+        }
     }
 
     @Override
     public void stopMachine() {
         super.stopMachine();
-        for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+        for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
             r.getBaseMetaTileEntity().setActive(false);
+        }
         computationRequired=computationRemaining=0;
         tRecipe=null;
         aRecipe=null;
@@ -364,9 +379,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     //NEW METHOD
     public final boolean addHolderToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
+        if (aTileEntity == null) {
+            return false;
+        }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity == null) {
+            return false;
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Holder) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((GT_MetaTileEntity_Hatch_Holder) aMetaTileEntity);
@@ -378,7 +397,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         try {
             adderMethodMap.put("addHolderToMachineList", GT_MetaTileEntity_EM_research.class.getMethod("addHolderToMachineList", IGregTechTileEntity.class, int.class));
         } catch (NoSuchMethodException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
     }
 

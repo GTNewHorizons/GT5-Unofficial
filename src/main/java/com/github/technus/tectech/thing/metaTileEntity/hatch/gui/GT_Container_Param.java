@@ -12,8 +12,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.Iterator;
-
 public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
     public int param = 0;
     public int value0f = 0;
@@ -114,8 +112,11 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     doStuff = false;
             }
             if (doStuff) {
-                if (paramH.param > 9) paramH.param = 9;
-                else if (paramH.param < -1) paramH.param = -1;
+                if (paramH.param > 9) {
+                    paramH.param = 9;
+                } else if (paramH.param < -1) {
+                    paramH.param = -1;
+                }
             }
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);

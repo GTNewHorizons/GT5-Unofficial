@@ -93,29 +93,55 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         Behaviour currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new GT_ItemStack(itemStack));
-        if(currentBehaviour ==null) return false;
+        if(currentBehaviour ==null) {
+            return false;
+        }
         //mux input
         double[] parameters=new double[]{getParameterIn(0,0),getParameterIn(0,1),getParameterIn(1,0),getParameterIn(1,1),
                 getParameterIn(2,0),getParameterIn(2,1),getParameterIn(3,0),getParameterIn(3,1)};
-        if(!currentBehaviour.setAndCheckParametersOutAndStatuses(this,parameters))return false;
+        if(!currentBehaviour.setAndCheckParametersOutAndStatuses(this,parameters)) {
+            return false;
+        }
 
         cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[6];
         int pointer= getParameterInInt(4,0)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[0]=eInputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[0] = eInputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(4,1)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[1]=eInputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[1] = eInputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(5,0)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[2]=eInputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[2] = eInputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(5,1)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[3]=eInputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[3] = eInputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(6,0)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[4]=eInputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[4] = eInputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(6,1)-1;
-        if(pointer>=0 && pointer<eInputHatches.size()) handles[5]=eInputHatches.get(pointer).getContainerHandler();
-        for(int i=1;i<6;i++) if(handles[i]!=null) for(int j=0;j<i;j++) if (handles[i]==handles[j]) return false;
+        if(pointer>=0 && pointer<eInputHatches.size()) {
+            handles[5] = eInputHatches.get(pointer).getContainerHandler();
+        }
+        for(int i=1;i<6;i++) {
+            if (handles[i] != null) {
+                for (int j = 0; j < i; j++) {
+                    if (handles[i] == handles[j]) {
+                        return false;
+                    }
+                }
+            }
+        }
 
         MultiblockControl<cElementalInstanceStackMap[]> control= currentBehaviour.process(handles,parameters);
-        if(control==null) return false;
+        if(control==null) {
+            return false;
+        }
         //update other pare
         outputEM=control.getValue();
         mEUt=control.getEUT();
@@ -131,19 +157,35 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     public void outputAfterRecipe_EM() {
         cElementalInstanceStackMap[] handles=new cElementalInstanceStackMap[6];
         int pointer= getParameterInInt(7,0)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[0]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[0] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(7,1)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[1]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[1] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(8,0)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[2]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[2] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(8,1)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[3]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[3] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(9,0)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[4]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[4] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         pointer= getParameterInInt(9,1)-1;
-        if(pointer>=0 && pointer<eOutputHatches.size()) handles[5]=eOutputHatches.get(pointer).getContainerHandler();
+        if(pointer>=0 && pointer<eOutputHatches.size()) {
+            handles[5] = eOutputHatches.get(pointer).getContainerHandler();
+        }
         //output
-        for(int i=0;i<6;i++) if(handles[i]!=null && outputEM[i].hasStacks()) handles[i].putUnifyAll(outputEM[i].takeAll());
+        for(int i=0;i<6;i++) {
+            if (handles[i] != null && outputEM[i].hasStacks()) {
+                handles[i].putUnifyAll(outputEM[i].takeAll());
+            }
+        }
         //all other are handled by base multi block code - cleaning is automatic
     }
 
@@ -165,9 +207,11 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             BitSet checkArray = new BitSet();
             for (int i = 4; i <= 6; i++) {
                 pointer = getParameterInInt(i, 0);
-                if (Double.isNaN(pointer)) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else if (pointer <= 0) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                    //else if(pointer==0)
+                if (Double.isNaN(pointer)) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else if (pointer <= 0) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                }//else if(pointer==0)
                     //    setStatusOfParameterIn(i,0,STATUS_LOW);
                 else if (pointer <= eInputHatches.size()) {
                     if (checkArray.get(pointer)) {
@@ -176,35 +220,54 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                         setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                         checkArray.set(pointer);
                     }
-                } else setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                } else {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                }
                 pointer = getParameterInInt(i, 1);
-                if (Double.isNaN(pointer)) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else if (pointer < 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                else if (pointer == 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-                else if (pointer <= eInputHatches.size()) {
+                if (Double.isNaN(pointer)) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else if (pointer < 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                } else if (pointer == 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                } else if (pointer <= eInputHatches.size()) {
                     if (checkArray.get(pointer)) {
                         setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
                     } else {
                         setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                         checkArray.set(pointer);
                     }
-                } else setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                } else {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                }
             }
         }
         {
             for (int i = 7; i <= 9; i++) {
                 pointer = getParameterInInt(i, 0);
-                if (Double.isNaN(pointer)) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else if (pointer < 0) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                else if (pointer == 0) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-                else if (pointer <= eOutputHatches.size()) setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-                else setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                if (Double.isNaN(pointer)) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else if (pointer < 0) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                } else if (pointer == 0) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                } else if (pointer <= eOutputHatches.size()) {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                } else {
+                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                }
                 pointer = getParameterInInt(i, 1);
-                if (Double.isNaN(pointer)) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else if (pointer < 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                else if (pointer == 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-                else if (pointer <= eOutputHatches.size()) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
-                else setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                if (Double.isNaN(pointer)) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else if (pointer < 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                } else if (pointer == 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                } else if (pointer <= eOutputHatches.size()) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                } else {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                }
             }
         }
     }
@@ -215,9 +278,9 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         map.put(is,behaviour);
     }
 
-    public abstract static class Behaviour {
-        public abstract boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parameters);
+    public interface Behaviour {
+        boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parameters);
 
-        public abstract MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] parameters);
+        MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] parameters);
     }
 }

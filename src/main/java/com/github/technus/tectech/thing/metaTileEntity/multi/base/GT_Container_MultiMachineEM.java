@@ -43,8 +43,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if (aSlotIndex < 0)
+        if (aSlotIndex < 0) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+        }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity();
@@ -53,13 +54,18 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                     if(ePowerPassButton) {
                         base.ePowerPass ^= true;
                         if (!allowedToWorkButton) {//TRANSFORMER HACK
-                            if (base.ePowerPass) base.getBaseMetaTileEntity().enableWorking();
-                            else base.getBaseMetaTileEntity().disableWorking();
+                            if (base.ePowerPass) {
+                                base.getBaseMetaTileEntity().enableWorking();
+                            } else {
+                                base.getBaseMetaTileEntity().disableWorking();
+                            }
                         }
                     }
                     break;
                 case 2:
-                    if(eSafeVoidButton) base.eSafeVoid ^= true;
+                    if(eSafeVoidButton) {
+                        base.eSafeVoid ^= true;
+                    }
                     break;
                 case 3:
                     if(allowedToWorkButton) {
@@ -78,8 +84,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null || eParamsInStatus == null)
+        if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null || eParamsInStatus == null) {
             return;
+        }
         eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsInStatus;
         eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsOutStatus;
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
@@ -91,8 +98,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
             int i = 100;
-            for (int j = 0; j < eParamsInStatus.length; j++)
+            for (int j = 0; j < eParamsInStatus.length; j++) {
                 var1.sendProgressBarUpdate(this, i++, eParamsInStatus[j] | eParamsOutStatus[j] << 8);
+            }
             var1.sendProgressBarUpdate(this, 120, eCertainMode | eCertainStatus << 8);
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
         }
@@ -101,7 +109,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        if (eParamsInStatus == null) return;
+        if (eParamsInStatus == null) {
+            return;
+        }
         if (par1 >= 100 && par1 < 120) {
             eParamsInStatus[par1 - 100] = (byte) (par2 & 0xff);
             eParamsOutStatus[par1 - 100] = (byte) (par2 >>> 8);

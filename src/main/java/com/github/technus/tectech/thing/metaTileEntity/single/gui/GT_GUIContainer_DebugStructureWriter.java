@@ -16,7 +16,9 @@ public class GT_GUIContainer_DebugStructureWriter extends GT_GUIContainerMetaTil
         fontRendererObj.drawString("StructPrint", 46, 8, 16448255);
         if (mContainer != null) {
             GT_Container_DebugStructureWriter dsw = (GT_Container_DebugStructureWriter) mContainer;
-            if (dsw.numbers == null) return;
+            if (dsw.numbers == null) {
+                return;
+            }
             fontRendererObj.drawString(dsw.size ? "Size" : "Offset", 46, 16, 16448255);
             fontRendererObj.drawString("A: " + dsw.numbers[dsw.size ? 3 : 0], 46, 24, 16448255);
             fontRendererObj.drawString("B: " + dsw.numbers[dsw.size ? 4 : 1], 46, 32, 16448255);

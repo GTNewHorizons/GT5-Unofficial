@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Tec on 02.03.2017.
@@ -24,8 +25,9 @@ public class rElementalRecipeMap {//TODO FIX
     }
 
     public void putAll(rElementalRecipe... contents) {
-        for (rElementalRecipe recipe : contents)
+        for (rElementalRecipe recipe : contents) {
             put(recipe);
+        }
     }
 
     public rElementalRecipe remove(cElementalStackMap map, short id) {
@@ -51,16 +53,20 @@ public class rElementalRecipeMap {//TODO FIX
     //Return a recipeShortMap when the content of input matches the recipe input - does not ignore amounts but ignores instance data!
     @Deprecated
     public HashMap<Short, rElementalRecipe> findMatch(cElementalMutableDefinitionStackMap in, boolean testOnlyTruePreferred) {
-        for (cElementalDefinitionStackMap requirement : recipes.keySet())
-            if (in.removeAllAmounts(testOnlyTruePreferred, requirement))
-                return recipes.get(requirement);
+        for (Map.Entry<cElementalDefinitionStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
+            if (in.removeAllAmounts(testOnlyTruePreferred, cElementalDefinitionStackMapHashMapEntry.getKey())) {
+                return cElementalDefinitionStackMapHashMapEntry.getValue();
+            }
+        }
         return null;
     }
 
     public HashMap<Short, rElementalRecipe> findMatch(cElementalInstanceStackMap in, boolean testOnly) {
-        for (cElementalDefinitionStackMap requirement : recipes.keySet())
-            if (in.removeAllAmounts(testOnly, requirement))
-                return recipes.get(requirement);
+        for (Map.Entry<cElementalDefinitionStackMap, HashMap<Short, rElementalRecipe>> cElementalDefinitionStackMapHashMapEntry : recipes.entrySet()) {
+            if (in.removeAllAmounts(testOnly, cElementalDefinitionStackMapHashMapEntry.getKey())) {
+                return cElementalDefinitionStackMapHashMapEntry.getValue();
+            }
+        }
         return null;
     }
 

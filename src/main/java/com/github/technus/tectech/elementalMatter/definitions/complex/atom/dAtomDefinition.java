@@ -104,7 +104,9 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStackMap things) throws tElementalException {
-        if (check && !canTheyBeTogether(things)) throw new tElementalException("Atom Definition error");
+        if (check && !canTheyBeTogether(things)) {
+            throw new tElementalException("Atom Definition error");
+        }
         elementalStacks = things;
 
         float mass = 0;
@@ -117,16 +119,22 @@ public final class dAtomDefinition extends cElementalDefinition {
             iElementalDefinition def = stack.definition;
             int amount = (int)stack.amount;
             mass += stack.getMass();
-            if (def.getType() < 0) containsAnti = true;
+            if (def.getType() < 0) {
+                containsAnti = true;
+            }
             type = Math.max(type, Math.abs(def.getType()));
 
             if (def instanceof eLeptonDefinition) {
                 cLeptons += stack.getCharge();
             } else {
                 cNucleus += stack.getCharge();
-                if (def.getCharge() == 3) element += amount;
-                else if (def.getCharge() == -3) element -= amount;
-                else if (def.getCharge() == 0) neutralCount += amount;
+                if (def.getCharge() == 3) {
+                    element += amount;
+                } else if (def.getCharge() == -3) {
+                    element -= amount;
+                } else if (def.getCharge() == 0) {
+                    neutralCount += amount;
+                }
             }
         }
         this.type = containsAnti ? (byte) -type : (byte) type;
@@ -146,15 +154,18 @@ public final class dAtomDefinition extends cElementalDefinition {
         xstr.setSeed((element + 1L) * (neutralCount + 100L));
         iaea =iaeaNuclide.get(element,neutralCount);
         if(iaea!=null){
-            if(Float.isNaN(iaea.mass)) this.mass=mass;
-            else this.mass=iaea.mass;
+            if(Float.isNaN(iaea.mass)) {
+                this.mass = mass;
+            } else {
+                this.mass = iaea.mass;
+            }
 
             if(Float.isNaN(iaea.halfTime)) {
                 Float overriddenLifeTime= lifetimeOverrides.get(this);
                 float rawLifeTimeTemp;
-                if(overriddenLifeTime!=null)
+                if(overriddenLifeTime!=null) {
                     rawLifeTimeTemp = overriddenLifeTime;
-                else {
+                } else {
                     rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
                 }
                 rawLifeTime =rawLifeTimeTemp> iElementalDefinition.STABLE_RAW_LIFE_TIME ? iElementalDefinition.STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
@@ -167,9 +178,9 @@ public final class dAtomDefinition extends cElementalDefinition {
 
             Float overriddenLifeTime= lifetimeOverrides.get(this);
             float rawLifeTimeTemp;
-            if(overriddenLifeTime!=null)
+            if(overriddenLifeTime!=null) {
                 rawLifeTimeTemp = overriddenLifeTime;
-            else {
+            } else {
                 rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
             }
             rawLifeTime =rawLifeTimeTemp> iElementalDefinition.STABLE_RAW_LIFE_TIME ? iElementalDefinition.STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
@@ -178,8 +189,11 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
 
         if(iaea==null || iaea.energeticStatesArray[0].energy!=0) {
-            if (izoDiff == 0) decayMode = 0;
-            else decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
+            if (izoDiff == 0) {
+                decayMode = 0;
+            } else {
+                decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
+            }
         }else{
             decayMode = izoDiff > 0 ? (byte) (Math.min(2, 1 + izoDiffAbs / 4)+ BYTE_OFFSET) : (byte) (-Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET);
         }
@@ -228,15 +242,27 @@ public final class dAtomDefinition extends cElementalDefinition {
                 unstabilityEXP = Math.min(element / 2.4f, 6 + ((element + 1) % 2) * 3e6F / elementPow4) + (float) -izoDiff * elementPow4 / 1e8F - Math.abs(izoDiff - 1 + element / 60F) * (3f - element / 12.5f + element * element / 1500f);
             } else if (element < 180) {
                 unstabilityEXP = Math.min((element - 85) * 2, 16 + ((isotope + 1) % 2) * 2.5F - (element - 85) / 3F) - Math.abs(izoDiff) * (3f - element / 13f + element * element / 1600f);
-            } else return -1;
-            if ((isotope == 127 || isotope == 128) && element < 120 && element > 83) unstabilityEXP -= 1.8f;
-            if (element > 83 && element < 93 && isotope % 2 == 0 && izoDiff == 3) unstabilityEXP += 6;
-            if (element > 93 && element < 103 && isotope % 2 == 0 && izoDiff == 4) unstabilityEXP += 6;
+            } else {
+                return -1;
+            }
+            if ((isotope == 127 || isotope == 128) && element < 120 && element > 83) {
+                unstabilityEXP -= 1.8f;
+            }
+            if (element > 83 && element < 93 && isotope % 2 == 0 && izoDiff == 3) {
+                unstabilityEXP += 6;
+            }
+            if (element > 93 && element < 103 && isotope % 2 == 0 && izoDiff == 4) {
+                unstabilityEXP += 6;
+            }
             rawLifeTime = (containsAnti ? 1e-8f : 1f) * (float) Math.pow(10F, unstabilityEXP) * (1f + xstr.nextFloat() * 9f);
         }
 
-        if (rawLifeTime < 8e-15) return 1e-35f;
-        if (rawLifeTime > 8e28) return 8e30f;
+        if (rawLifeTime < 8e-15) {
+            return 1e-35f;
+        }
+        if (rawLifeTime > 8e28) {
+            return 8e30f;
+        }
         return rawLifeTime;
     }
 
@@ -245,9 +271,13 @@ public final class dAtomDefinition extends cElementalDefinition {
         long qty=0;
         for (cElementalDefinitionStack stack : stacks.values()) {
             if (stack.definition instanceof dHadronDefinition) {
-                if (((dHadronDefinition) stack.definition).amount != 3) return false;
+                if (((dHadronDefinition) stack.definition).amount != 3) {
+                    return false;
+                }
                 nuclei = true;
-            } else if (!(stack.definition instanceof eLeptonDefinition)) return false;
+            } else if (!(stack.definition instanceof eLeptonDefinition)) {
+                return false;
+            }
             qty+=stack.amount;
         }
         return nuclei && qty<ATOM_COMPLEXITY_LIMIT;
@@ -282,7 +312,9 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public float getRawTimeSpan(long currentEnergy) {
-        if(currentEnergy<=0) return rawLifeTime;
+        if(currentEnergy<=0) {
+            return rawLifeTime;
+        }
         if(iaeaDefinitionExistsAndHasEnergyLevels){
             if(currentEnergy>=iaea.energeticStatesArray.length){
                 return iaea.energeticStatesArray[iaea.energeticStatesArray.length-1].Thalf/(currentEnergy-iaea.energeticStatesArray.length+1);
@@ -307,10 +339,14 @@ public final class dAtomDefinition extends cElementalDefinition {
         int element = Math.abs(this.element);
         boolean negative = element < 0;
         try {
-            if (type != 1) return (negative ? "~? " : "? ") + nomenclature.Name[element];
-            return negative ? "~" + nomenclature.Name[-element] : nomenclature.Name[element];
+            if (type != 1) {
+                return (negative ? "~? " : "? ") + nomenclature.Name[element];
+            }
+            return negative ? '~' + nomenclature.Name[-element] : nomenclature.Name[element];
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return (negative ? "Element: ~" : "Element: ") + element;
         }
     }
@@ -322,12 +358,16 @@ public final class dAtomDefinition extends cElementalDefinition {
         try {
             return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             try {
                 int s100 = element / 100, s1 = element / 10 % 10, s10 = element % 10;
                 return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
             } catch (Exception E) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
                 return (negative ? "~" : "") + "? N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
             }
         }
@@ -348,54 +388,66 @@ public final class dAtomDefinition extends cElementalDefinition {
         if (type == 1) {
             switch (decayMode) {
                 case -2:
-                    if(TecTech.Rnd.nextBoolean() && ElectronCapture(decaysList))
+                    if(TecTech.Rnd.nextBoolean() && ElectronCapture(decaysList)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
-                    else if(PbetaDecay(decaysList))
+                    } else if(PbetaDecay(decaysList)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    }
                     break;
                 case -1:
-                    if(Emmision(decaysList, dHadronDefinition.hadron_p1))
+                    if(Emmision(decaysList, dHadronDefinition.hadron_p1)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    }
                     break;
                 case 0:
-                    if(alphaDecay(decaysList))
+                    if(alphaDecay(decaysList)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    }
                     break;
                 case 1:
-                    if(Emmision(decaysList, dHadronDefinition.hadron_n1))
+                    if(Emmision(decaysList, dHadronDefinition.hadron_n1)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    }
                     break;
                 case 2:
-                    if(MbetaDecay(decaysList))
+                    if(MbetaDecay(decaysList)) {
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    }
                     break;
                 default:
                     if(decayMode>8){
-                        if(iaeaDecay(decaysList,0))
+                        if(iaeaDecay(decaysList,0)) {
                             return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        }
                         return getDecayArray(decaysList,decayMode- BYTE_OFFSET,false);
                     }
             }
             return cElementalDecay.noDecay;
         }else if(type ==-1){
             dAtomDefinition anti=getAnti();
-            if(anti!=null) return anti.getDecayArray(decaysList,decayMode,false);
+            if(anti!=null) {
+                return anti.getDecayArray(decaysList, decayMode, false);
+            }
         }
         return getNaturalDecayInstant();
     }
 
     private boolean iaeaDecay(ArrayList<cElementalDecay> decaysList,long energy){
         iaeaNuclide.energeticState state;
-        if(energy>iaea.energeticStatesArray.length) state = iaea.energeticStatesArray[iaea.energeticStatesArray.length-1];
-        else if(energy<=0) state = iaea.energeticStatesArray[0];
-        else state=iaea.energeticStatesArray[(int)energy];
+        if(energy>iaea.energeticStatesArray.length) {
+            state = iaea.energeticStatesArray[iaea.energeticStatesArray.length - 1];
+        } else if(energy<=0) {
+            state = iaea.energeticStatesArray[0];
+        } else {
+            state = iaea.energeticStatesArray[(int) energy];
+        }
         for (int i=0;i<state.decaymodes.length;i++){
             if(!getDecayFromIaea(decaysList,state.decaymodes[i],energy)) {
                 decaysList.clear();
                 return false;
             }
         }
-        return decaysList.size()>0;
+        return !decaysList.isEmpty();
     }
 
     private boolean getDecayFromIaea(ArrayList<cElementalDecay> decaysList, iaeaNuclide.iaeaDecay decay, long energy){
@@ -437,7 +489,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -449,7 +503,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -461,7 +517,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -473,7 +531,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -487,7 +547,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -501,7 +563,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -515,7 +579,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -529,7 +595,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -542,7 +610,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -555,7 +625,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -569,7 +641,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -583,7 +657,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -598,7 +674,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -613,7 +691,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -627,7 +707,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -642,7 +724,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -657,7 +741,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -671,7 +757,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -684,7 +772,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -698,7 +788,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -712,7 +804,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -726,7 +820,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -738,7 +834,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -750,7 +848,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -762,7 +862,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -774,21 +876,30 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
-            case "SF":
-                if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+            case "SF": {
+                if (Fission(decaysList, withThis, newStuff, decay.chance, false)) {
+                    return true;
+                }
+            } break;
             case "B-F": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
                     withThis.putUnify(dHadronDefinition.hadron_p1);
                     newStuff.putReplace(eLeptonDefinition.lepton_e1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     try{
-                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) {
+                            return true;
+                        }
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -797,9 +908,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                     withThis.putUnify(dHadronDefinition.hadron_n1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     try{
-                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) {
+                            return true;
+                        }
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -809,9 +924,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eLeptonDefinition.lepton_e_1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) {
+                            return true;
+                        }
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -821,9 +940,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     try{
-                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) {
+                            return true;
+                        }
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
@@ -832,7 +955,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                     decaysList.add(new cElementalDecay(decay.chance, this, boson_Y__));
                     return true;
                 }else{
-                    if(DEBUG_MODE) TecTech.Logger.info("Tried to emit Gamma from ground state");
+                    if(DEBUG_MODE) {
+                        TecTech.Logger.info("Tried to emit Gamma from ground state");
+                    }
                     decaysList.add(new cElementalDecay(decay.chance, this));
                     return true;
                 }
@@ -848,16 +973,20 @@ public final class dAtomDefinition extends cElementalDefinition {
                         decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
-                        if(DEBUG_MODE) e.printStackTrace();
+                        if(DEBUG_MODE) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } break;
             case "DEAD_END":
                 decaysList.add(deadEnd);
                 return true;
-            default: throw new Error("Unsupported decay mode: " + decay.decayName + " "+ neutralCount+" "+element);
+            default: throw new Error("Unsupported decay mode: " + decay.decayName + ' ' + neutralCount+ ' ' +element);
         }
-        if(DEBUG_MODE) TecTech.Logger.info("Failed to decay "+element+" "+neutralCount+" "+decay.decayName);
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Failed to decay " + element + ' ' + neutralCount + ' ' + decay.decayName);
+        }
         return false;
     }
 
@@ -868,7 +997,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), emit));
                 return true;
             } catch (Exception e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -881,7 +1012,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), alpha));
                 return true;
             } catch (Exception e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -895,7 +1028,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1));
                 return true;
             } catch (Exception e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -909,7 +1044,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -923,7 +1060,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), eNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -935,8 +1074,9 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         for(cElementalDefinitionStack stack: fissile.values()){
             if(spontaneousCheck && stack.definition instanceof dHadronDefinition &&
-                    (stack.amount<=80 || stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80))
+                    (stack.amount<=80 || stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80)) {
                 return false;
+            }
             if(stack.definition.getCharge()==0){
                 //if(stack.definition instanceof dHadronDefinition){
                     double neutrals=stack.amount*liquidDrop[2];
@@ -945,8 +1085,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                     particles.putUnify(new cElementalDefinitionStack(stack.definition, neutrals_cnt));
 
                     int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[1]);
-                    while(heavy_cnt+neutrals_cnt>stack.amount)
+                    while(heavy_cnt+neutrals_cnt>stack.amount) {
                         heavy_cnt--;
+                    }
                     fissile.removeAmount(false,new cElementalDefinitionStack(stack.definition,heavy_cnt+neutrals_cnt));
                     heavy.putReplace(new cElementalDefinitionStack(stack.definition, heavy_cnt));
                 //}else{
@@ -955,8 +1096,9 @@ public final class dAtomDefinition extends cElementalDefinition {
                 //}
             }else{
                 int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[0]);
-                if(heavy_cnt%2==1 && XSTR_INSTANCE.nextFloat()>0.05f)
+                if(heavy_cnt%2==1 && XSTR_INSTANCE.nextFloat()>0.05f) {
                     heavy_cnt--;
+                }
                 cElementalDefinitionStack new_stack=new cElementalDefinitionStack(stack.definition, heavy_cnt);
                 fissile.removeAmount(false,new_stack);
                 heavy.putReplace(new_stack);
@@ -969,7 +1111,9 @@ public final class dAtomDefinition extends cElementalDefinition {
             decaysList.add(new cElementalDecay(probability, particles.toImmutable_unsafeMightLeaveExposedElementalTree()));
             return true;
         } catch (Exception e) {
-            if(DEBUG_MODE) e.printStackTrace();
+            if(DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -979,28 +1123,34 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         out[0] = XSTR_INSTANCE.nextGaussian();
 
-        if (out[0] < 1 && out[0] >= -1)
-            if (XSTR_INSTANCE.nextBoolean())
+        if (out[0] < 1 && out[0] >= -1) {
+            if (XSTR_INSTANCE.nextBoolean()) {
                 out[0] = XSTR_INSTANCE.nextDouble() * 2d - 1d;
+            }
+        }
 
-        if (asymmetric && out[0] > XSTR_INSTANCE.nextDouble() && XSTR_INSTANCE.nextInt(4) == 0)
+        if (asymmetric && out[0] > XSTR_INSTANCE.nextDouble() && XSTR_INSTANCE.nextInt(4) == 0) {
             out[0] = -out[0];
+        }
 
         //scale to splitting ratio
         out[0] = out[0] * 0.05d + .6d;
 
-        if (out[0] < 0 || out[0] > 1)
+        if (out[0] < 0 || out[0] > 1) {
             return liquidDropFunction(asymmetric);
-        if (out[0] < .5d)
+        }
+        if (out[0] < .5d) {
             out[0] = 1d - out[0];
+        }
 
         //extra neutrals
         out[2] = 0.012d + XSTR_INSTANCE.nextDouble() * 0.01d;
 
-        if (asymmetric)
+        if (asymmetric) {
             out[1] = out[0];
-        else
+        } else {
             out[1] = out[0] - out[2] * .5d;
+        }
 
         return out;
     }
@@ -1031,14 +1181,24 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
 
             if(currentEnergyLevel<=0){
-                if(newEnergyLevel<=0) return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
-                else result+= iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * -currentEnergyLevel;
-            }else result-=iaea.energeticStatesArray[(int)Math.min(iaea.energeticStatesArray.length-1,currentEnergyLevel)].energy;
+                if(newEnergyLevel<=0) {
+                    return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * (newEnergyLevel - currentEnergyLevel);
+                } else {
+                    result += iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * -currentEnergyLevel;
+                }
+            }else {
+                result -= iaea.energeticStatesArray[(int) Math.min(iaea.energeticStatesArray.length - 1, currentEnergyLevel)].energy;
+            }
             if(newEnergyLevel>=iaea.energeticStatesArray.length){
-                if(currentEnergyLevel>=iaea.energeticStatesArray.length) return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
-                else result+= iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-iaea.energeticStatesArray.length+1);
+                if(currentEnergyLevel>=iaea.energeticStatesArray.length) {
+                    return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * (newEnergyLevel - currentEnergyLevel);
+                } else {
+                    result += iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT * (newEnergyLevel - iaea.energeticStatesArray.length + 1);
+                }
                 result+=iaea.energeticStatesArray[iaea.energeticStatesArray.length-1].energy;
-            }else result+=iaea.energeticStatesArray[(int)Math.max(0,newEnergyLevel)].energy;
+            }else {
+                result += iaea.energeticStatesArray[(int) Math.max(0, newEnergyLevel)].energy;
+            }
 
             return backwards?-result:result;
         }
@@ -1084,12 +1244,15 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public dAtomDefinition getAnti() {
         cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-        for (cElementalDefinitionStack stack : elementalStacks.values())
+        for (cElementalDefinitionStack stack : elementalStacks.values()) {
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+        }
         try {
             return new dAtomDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -1110,7 +1273,6 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private static final class nomenclature {
-        private nomenclature(){}
         private static final String[] Symbol = new String[]{"Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"};
         private static final String[] Name = new String[]{"Neutronium", "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};
         private static final String[] SymbolIUPAC = new String[]{"n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N", "U", "B", "T", "Q", "P", "H", "S", "O", "E"};
@@ -1122,25 +1284,31 @@ public final class dAtomDefinition extends cElementalDefinition {
         nbt.setByte("t", nbtType);
         cElementalDefinitionStack[] elementalStacksValues = elementalStacks.values();
         nbt.setInteger("i", elementalStacksValues.length);
-        for (int i = 0; i < elementalStacksValues.length; i++)
+        for (int i = 0; i < elementalStacksValues.length; i++) {
             nbt.setTag(Integer.toString(i), elementalStacksValues[i].toNBT());
+        }
         return nbt;
     }
 
     public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < stacks.length; i++)
+        for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+        }
         try {
             return new dAtomDefinition(stacks);
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
 
     public static void run() {
-        for (Runnable r : overrides) r.run();
+        for (Runnable r : overrides) {
+            r.run();
+        }
 
         for(Map.Entry<dAtomDefinition,Float> entry:lifetimeOverrides.entrySet()){
             try {
@@ -1152,6 +1320,7 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         //populate stable isotopes
         for (int element = 1; element < 83; element++)//Up to Bismuth exclusive
+        {
             for (int isotope = 0; isotope < 130; isotope++) {
                 xstr.setSeed((long) (element + 1) * (isotope + 100));
                 //stability curve
@@ -1159,16 +1328,19 @@ public final class dAtomDefinition extends cElementalDefinition {
                 int izoDiff = isotope - StableIsotope;
                 int izoDiffAbs = Math.abs(izoDiff);
                 float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                iaeaNuclide nuclide=iaeaNuclide.get(element,isotope);
-                if (rawLifeTime>= STABLE_RAW_LIFE_TIME || nuclide!=null && nuclide.halfTime >=STABLE_RAW_LIFE_TIME) {
+                iaeaNuclide nuclide = iaeaNuclide.get(element, isotope);
+                if (rawLifeTime >= STABLE_RAW_LIFE_TIME || nuclide != null && nuclide.halfTime >= STABLE_RAW_LIFE_TIME) {
                     TreeSet<Integer> isotopes = stableIsotopes.get(element);
-                    if (isotopes == null) stableIsotopes.put(element, isotopes = new TreeSet<>());
+                    if (isotopes == null) {
+                        stableIsotopes.put(element, isotopes = new TreeSet<>());
+                    }
                     isotopes.add(isotope);
                 }
             }
+        }
 
         //populate unstable isotopes
-        for (int element = 83; element < 150; element++)
+        for (int element = 83; element < 150; element++) {
             for (int isotope = 100; isotope < 180; isotope++) {
                 xstr.setSeed((long) (element + 1) * (isotope + 100));
                 //stability curve
@@ -1177,26 +1349,31 @@ public final class dAtomDefinition extends cElementalDefinition {
                 int izoDiffAbs = Math.abs(izoDiff);
                 float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
                 TreeMap<Float, Integer> isotopes = mostStableUnstableIsotopes.get(element);
-                if (isotopes == null) mostStableUnstableIsotopes.put(element, isotopes = new TreeMap<>());
+                if (isotopes == null) {
+                    mostStableUnstableIsotopes.put(element, isotopes = new TreeMap<>());
+                }
                 isotopes.put(rawLifeTime, isotope);
             }
+        }
 
         try {
-            for (int key : stableIsotopes.keySet()) {
-                stableAtoms.put(key, new dAtomDefinition(
-                        new cElementalDefinitionStack(dHadronDefinition.hadron_p, key),
-                        new cElementalDefinitionStack(dHadronDefinition.hadron_n, stableIsotopes.get(key).first()),
-                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e, key)));
-                if (DEBUG_MODE)
-                    TecTech.Logger.info("Added Stable Atom:" + key + " " + stableIsotopes.get(key).first() + " " + stableAtoms.get(key).getMass());
+            for (Map.Entry<Integer, TreeSet<Integer>> integerTreeSetEntry : stableIsotopes.entrySet()) {
+                stableAtoms.put(integerTreeSetEntry.getKey(), new dAtomDefinition(
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_p, integerTreeSetEntry.getKey()),
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_n, integerTreeSetEntry.getValue().first()),
+                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e, integerTreeSetEntry.getKey())));
+                if (DEBUG_MODE) {
+                    TecTech.Logger.info("Added Stable Atom:" + integerTreeSetEntry.getKey() + ' ' + integerTreeSetEntry.getValue().first() + ' ' + stableAtoms.get(integerTreeSetEntry.getKey()).getMass());
+                }
             }
-            for (int key : mostStableUnstableIsotopes.keySet()) {
-                unstableAtoms.put(key, new dAtomDefinition(
-                        new cElementalDefinitionStack(dHadronDefinition.hadron_p, key),
-                        new cElementalDefinitionStack(dHadronDefinition.hadron_n, mostStableUnstableIsotopes.get(key).lastEntry().getValue()),
-                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e, key)));
-                if (DEBUG_MODE)
-                    TecTech.Logger.info("Added Unstable Atom:" + key + " " + mostStableUnstableIsotopes.get(key).lastEntry().getValue() + " " + unstableAtoms.get(key).getMass());
+            for (Map.Entry<Integer, TreeMap<Float, Integer>> integerTreeMapEntry : mostStableUnstableIsotopes.entrySet()) {
+                unstableAtoms.put(integerTreeMapEntry.getKey(), new dAtomDefinition(
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_p, integerTreeMapEntry.getKey()),
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_n, integerTreeMapEntry.getValue().lastEntry().getValue()),
+                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e, integerTreeMapEntry.getKey())));
+                if (DEBUG_MODE) {
+                    TecTech.Logger.info("Added Unstable Atom:" + integerTreeMapEntry.getKey() + ' ' + integerTreeMapEntry.getValue().lastEntry().getValue() + ' ' + unstableAtoms.get(integerTreeMapEntry.getKey()).getMass());
+                }
             }
             deuterium=new dAtomDefinition(
                     dHadronDefinition.hadron_p1,
@@ -1230,16 +1407,21 @@ public final class dAtomDefinition extends cElementalDefinition {
                     new cElementalDefinitionStack(dHadronDefinition.hadron_n, 20),
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 14)).getStackForm(1);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
 
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dAtomDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)64);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
-        if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Atom "+nbtType+" "+64);
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Registered Elemental Matter Class: Atom " + nbtType + ' ' + 64);
+        }
     }
 
     public static void setTransformation(){
@@ -1382,10 +1564,14 @@ public final class dAtomDefinition extends cElementalDefinition {
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Plutonium241,1);
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
 
-        if(Loader.isModLoaded("miscutils")) new GtppAtomLoader().run();
+        if(Loader.isModLoaded("miscutils")) {
+            new GtppAtomLoader().run();
+        }
     }
 
     public static dAtomDefinition getFirstStableIsotope(int element) {
@@ -1408,18 +1594,22 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+ nbtType +" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getName());
             lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" e");
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
-            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        }
         if(iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
             for(int i=1;i<iaea.energeticStatesArray.length;i++){
                 lines.add("ENERGY LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");

@@ -159,7 +159,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 eTier = 0;
                 return false;
         }
-        if (test) return true;
+        if (test) {
+            return true;
+        }
         eTier = 0;
         return false;
     }
@@ -176,17 +178,15 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getZCoord()+zDir,
                     TT_Container_Casings.sHintCasingsTT,12);
         } else{
-            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
-                iGregTechTileEntity.getWorld().setBlock(
-                        iGregTechTileEntity.getXCoord()+xDir,
-                        iGregTechTileEntity.getYCoord(),
-                        iGregTechTileEntity.getZCoord()+zDir,
-                        TT_Container_Casings.sHintCasingsTT,12,2);
+            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air) {
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord(), iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+            }
         }
-        if ((stackSize & 1) == 1)
-            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,hintsOnly);
-        else
-            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity,hintsOnly);
+        if ((stackSize & 1) == 1) {
+            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, hintsOnly);
+        } else {
+            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, hintsOnly);
+        }
     }
 
     @Override

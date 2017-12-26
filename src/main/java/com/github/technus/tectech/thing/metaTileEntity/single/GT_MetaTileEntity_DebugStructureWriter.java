@@ -26,7 +26,7 @@ import static com.github.technus.tectech.Util.StructureWriter;
  */
 public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
     private static GT_RenderedTexture MARK;
-    public short numbers[] = new short[6];
+    public short[] numbers = new short[6];
     public boolean size = false;
     public String[] result = new String[]{"Undefined"};
 
@@ -103,8 +103,9 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            for (String s : result)
+            for (String s : result) {
                 TecTech.Logger.info(s);
+            }
             aBaseMetaTileEntity.disableWorking();
         }
     }
@@ -112,13 +113,16 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        for (String s : result)
+        for (String s : result) {
             TecTech.Logger.info(s);
+        }
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
         //    TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));

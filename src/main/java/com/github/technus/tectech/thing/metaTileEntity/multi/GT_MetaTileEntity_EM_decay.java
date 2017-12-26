@@ -124,8 +124,12 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private float m1,m2,m3;
     private boolean startRecipe(cElementalInstanceStack input) {
         m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
-        if(m3<1) explodeMultiblock();
-        if(m3>=Integer.MAX_VALUE) return false;
+        if(m3<1) {
+            explodeMultiblock();
+        }
+        if(m3>=Integer.MAX_VALUE) {
+            return false;
+        }
         mMaxProgresstime = 1;//(int)m3;
         mEfficiencyIncrease = 10000;
         m1 = input.getMass()/input.amount;
@@ -170,7 +174,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
-                m1+" "+m2+" "+m3
+                m1+" "+m2+ ' ' +m3
         };
     }
 }

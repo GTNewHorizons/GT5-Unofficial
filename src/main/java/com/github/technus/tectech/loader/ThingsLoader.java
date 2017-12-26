@@ -22,8 +22,9 @@ import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 public class ThingsLoader implements Runnable {
     @Override
     public void run() {
-        if(Textures.BlockIcons.casingTexturePages[tectechTexturePage1]==null)
-            Textures.BlockIcons.casingTexturePages[tectechTexturePage1]=new ITexture[128];
+        if(Textures.BlockIcons.casingTexturePages[tectechTexturePage1]==null) {
+            Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
+        }
         TecTech.Logger.info("Added texture page if was null");
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.Logger.info("Elemental Casing registered");

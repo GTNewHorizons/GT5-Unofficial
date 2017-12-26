@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
-                        if (items != null && items.size() > 0) {
+                        if (items != null && !items.isEmpty()) {
                             mOutputItems = new ItemStack[]{items.get(0)};
                             startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                             return true;

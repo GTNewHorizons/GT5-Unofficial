@@ -83,9 +83,11 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         short thingsActive = 0;
-        for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
-            if (di.q != null)
+        for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
+            if (di.q != null) {
                 thingsActive++;
+            }
+        }
 
         if (thingsActive > 0) {
             thingsActive += eOutputData.size();
@@ -100,23 +102,28 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (eOutputData.size() > 0) {
+        if (!eOutputData.isEmpty()) {
             double total = 0;
             double dest;
             double weight;
             for (int i = 0; i < 10; i++) {//each param pair
                 dest= getParameterIn(i,1);
                 weight= getParameterIn(i,0);
-                if (weight > 0 && dest >= 0)
+                if (weight > 0 && dest >= 0) {
                     total += weight;//Total weighted div
+                }
             }
 
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(pos, 0);
-            for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
-                if (i.q == null || i.q.contains(pos)) continue;
-                pack = pack.unifyPacketWith(i.q);
-                if (pack == null) return;
+            for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
+                if (hatch.q == null || hatch.q.contains(pos)) {
+                    continue;
+                }
+                pack = pack.unifyPacketWith(hatch.q);
+                if (pack == null) {
+                    return;
+                }
             }
 
             long remaining = pack.computation;
@@ -126,7 +133,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 weight= getParameterIn(i,0);
                 if (weight > 0 && dest >= 0) {
                     int outIndex = (int)dest - 1;
-                    if (outIndex < 0 || outIndex >= eOutputData.size()) continue;
+                    if (outIndex < 0 || outIndex >= eOutputData.size()) {
+                        continue;
+                    }
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
                     if(Double.isInfinite(total)){
                         if(Double.isInfinite(weight)){
@@ -137,11 +146,14 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                         long part = (long) Math.floor(pack.computation * weight / total);
                         if (part > 0) {
                             remaining -= part;
-                            if (remaining > 0) out.q = new QuantumDataPacket(pack, part);
-                            else if (part + remaining > 0) {
+                            if (remaining > 0) {
+                                out.q = new QuantumDataPacket(pack, part);
+                            } else if (part + remaining > 0) {
                                 out.q = new QuantumDataPacket(pack, part + remaining);
                                 break;
-                            } else break;
+                            } else {
+                                break;
+                            }
                         }
                     }
                 }
@@ -163,11 +175,17 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             } else {
                 setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 dest = getParameterIn(i, 1);
-                if (dest < 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
-                else if (dest == 0) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-                else if (dest > eOutputData.size()) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
-                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
-                else setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                if (dest < 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                } else if (dest == 0) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                } else if (dest > eOutputData.size()) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                } else if (Double.isNaN(dest)) {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                } else {
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                }
             }
         }
     }
