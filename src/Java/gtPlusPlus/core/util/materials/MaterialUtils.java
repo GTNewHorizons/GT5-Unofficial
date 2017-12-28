@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.*;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
@@ -44,6 +45,7 @@ public class MaterialUtils {
 		final long neutrons = material.getNeutrons();
 		final boolean blastFurnace = material.mBlastFurnaceRequired;
 		final int durability = material.mDurability;
+		boolean mGenerateCell = false;
 		MaterialState materialState;
 		final String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
 		final Element element = material.mElement;
@@ -53,19 +55,34 @@ public class MaterialUtils {
 		}
 
 		//Determine default state
-		if (material.getMolten(1) != null){
+		Logger.MATERIALS("[Debug] Setting State of GT generated material.");
+		if (material.getMolten(1) != null || material.getSolid(1) != null){
 			materialState = MaterialState.SOLID;
+			Logger.MATERIALS("[Debug] Molten or Solid was not null.");
+			if (material.getMolten(1) == null && material.getSolid(1) != null){
+				Logger.MATERIALS("[Debug] Molten is Null, Solid is not. Enabling cell generation.");
+				mGenerateCell = true;
+			}
+			else if (material.getMolten(1) != null && material.getSolid(1) == null){
+				Logger.MATERIALS("[Debug] Molten is not Null, Solid is null. Not enabling cell generation.");
+				//mGenerateCell = true;
+			}
+			Logger.MATERIALS("[Debug] State set as solid.");
 		}
 		else if (material.getFluid(1) != null){
+			Logger.MATERIALS("[Debug] State set as liquid.");
 			materialState = MaterialState.LIQUID;
 		}
 		else if (material.getGas(1) != null){
+			Logger.MATERIALS("[Debug] State set as gas.");
 			materialState = MaterialState.GAS;
-		}
+		}/*
 		else if (material.getPlasma(1) != null){
+			Logger.MATERIALS("[Debug] State set as plasma.");
 			materialState = MaterialState.PLASMA;
-		}
+		}*/
 		else {
+			Logger.MATERIALS("[Debug] State set as solid.");
 			materialState = MaterialState.SOLID;
 		}
 
@@ -77,7 +94,7 @@ public class MaterialUtils {
 		if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, false);
+			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell);
 		}
 		return null;
 

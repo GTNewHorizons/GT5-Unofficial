@@ -78,6 +78,12 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		if (LoadedMods.PlayerAPI){
 			this.init_PlayerAPI_INIT();
 		}
+		
+		/**
+		 * Custom Block Renderers
+		 */
+		new CustomOreBlockRenderer();
+		
 		super.init(e);
 	}
 
@@ -106,6 +112,10 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
 		Logger.INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
+		
+		//Special Renderers
+		//RenderingRegistry.registerBlockHandler((CustomOreBlockRenderer.mRenderID=RenderingRegistry.getNextAvailableRenderId()), new CustomOreBlockRenderer());
+		
 	}
 
 	@Override

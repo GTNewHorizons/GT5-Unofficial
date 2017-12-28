@@ -12,6 +12,10 @@ item.itemBedLocator_Base.name=Bed Locator [NBT Test]
 item.itemBaseItemWithCharge.name=Base Chargeable Item
 item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
+//Death Messages
+death.attack.plasmabolt=%s died by burning hot plasma.
+death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
+
 //Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy

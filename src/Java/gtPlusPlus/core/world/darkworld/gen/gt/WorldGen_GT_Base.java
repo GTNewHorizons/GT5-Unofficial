@@ -109,10 +109,10 @@ public class WorldGen_GT_Base implements IWorldGenerator{
 		//...
 	}
 
-	private void generateDarkWorld(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider){
+	private synchronized void generateDarkWorld(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider){
 		synchronized (listLock)
 		{
-			WorldGen_GT_Base.mList.add(new WorldGenContainer(new XSTR(Math.abs(aRandom.nextInt()) +1), aX, aZ, ((aChunkGenerator instanceof ChunkProviderEnd)) || (aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8) == BiomeGenBase.sky) ? 1 : ((aChunkGenerator instanceof ChunkProviderHell)) || (aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8) == BiomeGenBase.hell) ? -1 : 0, aWorld, aChunkGenerator, aChunkProvider, aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8).biomeName));
+			WorldGen_GT_Base.mList.add(new WorldGenContainer(new CSPRNG(Math.abs(aRandom.nextInt()) +1), aX, aZ, ((aChunkGenerator instanceof ChunkProviderEnd)) || (aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8) == BiomeGenBase.sky) ? 1 : ((aChunkGenerator instanceof ChunkProviderHell)) || (aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8) == BiomeGenBase.hell) ? -1 : 0, aWorld, aChunkGenerator, aChunkProvider, aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8).biomeName));
 			if (debugWorldGen) GT_Log.out.println(
 					"ADD WorldSeed:"+aWorld.getSeed() +
 					" DimId" + aWorld.provider.dimensionId + 
@@ -229,7 +229,7 @@ public class WorldGen_GT_Base implements IWorldGenerator{
 					);
 
 			// Search for a valid orevein for this dimension
-			if(validOreveins.size() > 0 && !validOreveins.containsKey(oreveinSeed) ) {
+			if(!validOreveins.containsKey(oreveinSeed) ) {
 				if ( (oreveinPercentageRoll<oreveinPercentage) && (WorldGen_GT_Ore_Layer.sWeight > 0) && (WorldGen_GT_Ore_Layer.sList.size() > 0)) {
 					int placementAttempts = 0;
 					boolean oreveinFound = false;

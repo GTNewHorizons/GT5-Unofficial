@@ -104,7 +104,10 @@ public class Material {
 		try {
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
+		
 		this.materialState = defaultState;
+		Logger.MATERIALS(this.getLocalizedName()+" is "+defaultState.name()+".");
+		
 		this.RGBA = rgba;
 		this.vGenerateCells = generateCells;
 
@@ -332,11 +335,23 @@ public class Material {
 		return this.materialState;
 	}
 
-	final public short[] getRGBA(){
+	final public short[] getRGB(){
 		if (this.RGBA != null) {
 			return this.RGBA;
 		}
 		return new short[] {255,0,0};
+	}
+	
+	final public short[] getRGBA(){
+		if (this.RGBA != null) {
+			if (this.RGBA.length == 4){
+				return this.RGBA;				
+			}
+			else {
+				return new short[]{this.RGBA[0], this.RGBA[1], this.RGBA[2], 0};
+			}
+		}
+		return new short[] {255,0,0, 0};
 	}
 
 	final public int getRgbAsHex(){
