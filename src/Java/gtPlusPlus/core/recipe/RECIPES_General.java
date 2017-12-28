@@ -10,6 +10,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -40,6 +41,7 @@ public class RECIPES_General {
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();
 			addCompressedObsidian();
+			addFluoriteFix();
 		}
 	}
 
@@ -240,6 +242,10 @@ public class RECIPES_General {
 
 		}
 		return true;
+	}
+	
+	private static boolean addFluoriteFix(){
+		return RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
 	}
 
 }

@@ -40,13 +40,13 @@ public class RecipeGen_Ore implements Runnable{
 			Material bonusB; //Tin
 			
 			if (material.getComposites().get(0) != null){
-				bonusA = material.getComposites().get(1).getStackMaterial();
+				bonusA = material.getComposites().get(0).getStackMaterial();
 			}
 			else {
 				return ;
 			}
-			if (material.getComposites().get(1) != null){
-				bonusB = material.getComposites().get(2).getStackMaterial();
+			if (material.getComposites().size() >= 1 && material.getComposites().get(1) != null){
+				bonusB = material.getComposites().get(1).getStackMaterial();
 			}
 			else if (material.getComposites().get(0) != null){
 				bonusB = material.getComposites().get(0).getStackMaterial();

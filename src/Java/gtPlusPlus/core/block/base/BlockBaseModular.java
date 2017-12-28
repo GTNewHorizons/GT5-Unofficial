@@ -60,14 +60,6 @@ public class BlockBaseModular extends BasicBlock{
 			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
-		else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())){
-			LanguageRegistry.addName(this, blockMaterial+ " Ore");
-			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
-		}
-		else {
-			LanguageRegistry.addName(this, blockMaterial);
-			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial);
-		}
 
 		//setOreDict(unlocalizedName, blockType);
 		if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())){
@@ -79,16 +71,6 @@ public class BlockBaseModular extends BasicBlock{
 			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			GT_OreDictUnificator.registerOre("frameGt"+getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), ItemUtils.getSimpleStack(this));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");
-		}
-		else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())){
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
-			GT_OreDictUnificator.registerOre("block"+getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
-			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");
-		}
-		else {
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
-			GT_OreDictUnificator.registerOre("block"+getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
-			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial);
 		}
 
 

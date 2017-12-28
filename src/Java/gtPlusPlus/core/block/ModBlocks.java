@@ -88,7 +88,7 @@ public final class ModBlocks {
 		blockFirePit = new FirePit();
 		blockFishTrap = new FishTrap();
 		blockInfiniteFLuidTank = new FluidTankInfinite();
-		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
+		blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 		blockMiningExplosive = new MiningExplosives();
 		blockHellfire = new HellFire();
 		blockProjectTable =  new Machine_ProjectTable();

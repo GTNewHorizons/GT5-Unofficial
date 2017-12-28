@@ -30,6 +30,7 @@ import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -120,7 +121,7 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Setting some Variables for the block break event handler.");
 		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
-		BlockEventHandler.fluoriteOre = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite));
+		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
 
 	}
 

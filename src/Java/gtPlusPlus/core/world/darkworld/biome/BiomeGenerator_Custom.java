@@ -112,7 +112,7 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
         this.redstoneGen = new WorldGenMinable_Custom(Blocks.redstone_ore, 10);
         this.diamondGen = new WorldGenMinable_Custom(Blocks.diamond_ore, 12);
         this.lapisGen = new WorldGenMinable_Custom(Blocks.lapis_ore, 8);
-        this.fluoriteGen = new WorldGenMinable_Custom(ModBlocks.blockOreFluorite, 20);
+        // this.fluoriteGen = new WorldGenMinable_Custom(ModBlocks.blockOreFluorite, 20);
         
         //Nature
         this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);

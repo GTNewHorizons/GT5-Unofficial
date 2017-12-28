@@ -423,7 +423,6 @@ public final class ModItems {
 			MaterialGenerator.generate(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
 
 			//Generate Fluorides
-			MaterialGenerator.generateNuclearMaterial(FLUORIDES.FLUORITE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.BERYLLIUM_FLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.LITHIUM_FLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_TETRAFLUORIDE);
@@ -504,6 +503,7 @@ public final class ModItems {
 			
 			
 			//Ores
+			MaterialGenerator.generateOreMaterial(FLUORIDES.FLUORITE);
 			GTplusplus_Secondary.GenerateOreMaterials();
 
 

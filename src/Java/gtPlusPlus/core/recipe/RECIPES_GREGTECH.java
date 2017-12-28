@@ -17,6 +17,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -1079,8 +1080,8 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
 		GT_ModHandler.addPulverisationRecipe(
-				ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite)),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 4));
+				FLUORIDES.FLUORITE.getOre(1),
+				FLUORIDES.FLUORITE.getDust(4));
 
 		if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null){
 			GT_ModHandler.addPulverisationRecipe(

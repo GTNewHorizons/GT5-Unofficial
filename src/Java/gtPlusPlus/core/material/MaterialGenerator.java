@@ -132,18 +132,7 @@ public class MaterialGenerator {
 				return true;
 			}
 			else if (matInfo.getState() == MaterialState.ORE){
-					if (sRadiation >= 1){
-						Item temp;
-						Block tempBlock;
-						//tempBlock = new BlockBaseModular(matInfo ,BlockTypes.ORE, Colour);
-						tempBlock = new BlockBaseOre(matInfo ,BlockTypes.ORE, Colour);
-						
-
-						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
-						temp = new BaseItemCrushedOre(matInfo);
-					}
+					
 			}
 
 			//Add A jillion Recipes - old code
@@ -237,29 +226,28 @@ public class MaterialGenerator {
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
 	}
-	
-
-	public static void generateOreMaterial(final Material matInfo){
-		generateOreMaterial(matInfo, true);
-	}
 
 	@SuppressWarnings("unused")
-	public static void generateOreMaterial(final Material matInfo, final boolean generatePlates){
+	public static void generateOreMaterial(final Material matInfo){
 		try {
 			final String unlocalizedName = matInfo.getUnlocalizedName();
 			final String materialName = matInfo.getLocalizedName();
 			final short[] C = matInfo.getRGBA();
-			final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+			final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
 			int sRadiation = 0;
-			if (matInfo.vRadiationLevel != 0){
+			if (matInfo.vRadiationLevel > 0){
 				sRadiation = matInfo.vRadiationLevel;
 			}
 
 			Item temp;
 			Block tempBlock;
+			
+			if (matInfo == null || Colour == null){
+				Logger.DEBUG_MATERIALS("Invalid Material while constructing "+materialName+".");
+			}
 
-			tempBlock = new BlockBaseOre(matInfo ,BlockTypes.ORE, Colour);			
+			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());			
 
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation, false);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
@@ -273,7 +261,8 @@ public class MaterialGenerator {
 			RecipeGen_Ore.generateRecipes(matInfo);
 			
 		} catch (final Throwable t){
-			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.MATERIALS("[Error] "+matInfo.getLocalizedName()+" failed to generate.");
+			t.printStackTrace();
 		}
 	}
 

@@ -661,7 +661,10 @@ public class Material {
 	}
 
 	public final Fluid generateFluid(){
-
+		if (this.materialState == MaterialState.ORE){
+			return null;
+		}
+		
 		final Materials isValid = Materials.get(this.getLocalizedName());
 		Logger.INFO("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
 		if (isValid != Materials._NULL){
@@ -781,6 +784,9 @@ public class Material {
 	}
 
 	public final Fluid generatePlasma(){
+		if (this.materialState == MaterialState.ORE){
+			return null;
+		}
 		final Materials isValid = Materials.get(this.getLocalizedName());		
 
 		if (!this.vGenerateCells){
