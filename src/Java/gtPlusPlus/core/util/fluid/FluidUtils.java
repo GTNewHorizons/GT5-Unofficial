@@ -26,6 +26,18 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidUtils {
 
+	public static FluidStack getWater(final int amount){
+		return FluidUtils.getFluidStack("water", amount);
+	}
+	
+	public static FluidStack getlava(final int amount){
+		return FluidUtils.getFluidStack("lava", amount);
+	}
+	
+	public static FluidStack getMilk(final int amount){
+		return FluidUtils.getFluidStack("milk", amount);
+	}
+	
 	public static FluidStack getFluidStack(final String fluidName, final int amount){
 		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {

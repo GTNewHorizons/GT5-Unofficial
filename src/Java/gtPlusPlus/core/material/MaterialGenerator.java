@@ -261,22 +261,17 @@ public class MaterialGenerator {
 
 			tempBlock = new BlockBaseOre(matInfo ,BlockTypes.ORE, Colour);			
 
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation, false);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation, false);
 			temp = new BaseItemCrushedOre(matInfo);
 			temp = new BaseItemCentrifugedCrushedOre(matInfo);
 			temp = new BaseItemPurifiedCrushedOre(matInfo);
 			temp = new BaseItemImpureDust(matInfo);
 			temp = new BaseItemPurifiedDust(matInfo);
 
-			RecipeGen_Plates.generateRecipes(matInfo);
-			RecipeGen_Extruder.generateRecipes(matInfo);
-			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-			RecipeGen_Fluids.generateRecipes(matInfo);
-			RecipeGen_Assembler.generateRecipes(matInfo);
-			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
-			new RecipeGen_Recycling(matInfo);
+			RecipeGen_Ore.generateRecipes(matInfo);
+			
 		} catch (final Throwable t){
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
