@@ -690,6 +690,19 @@ public class ItemUtils {
 		//Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
 		return (gregstack);
 	}
+	
+
+	public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
+
+		String mName = Utils.sanitizeString(mMat.getLocalizedName());
+
+		String mItemName = mPrefix.name()+mName;
+		ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDict(mItemName, mAmount);		
+		if (gregstack == null){
+			return null;
+		}	
+		return (gregstack);
+	}
 
 	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictname);

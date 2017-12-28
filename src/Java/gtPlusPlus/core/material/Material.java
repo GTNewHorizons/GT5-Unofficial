@@ -68,7 +68,7 @@ public class Material {
 		this (materialName, defaultState, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
 	}	
 
-	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, int j, int k, int l, int m, MaterialStack[] materialStacks){
+	public Material(String materialName, MaterialState defaultState, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
 			this (materialName, defaultState, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
 	
@@ -219,13 +219,15 @@ public class Material {
 		}
 
 		//Sets the Rad level
-		if (radiationLevel != 0){
+		if (radiationLevel > 0){
+			Logger.MATERIALS(this.getLocalizedName()+" is radioactive. Level: "+radiationLevel+".");
 			this.isRadioactive = true;
 			this.vRadiationLevel = (byte) radiationLevel;
 		}
 		else {
+			Logger.MATERIALS(this.getLocalizedName()+" is not radioactive.");
 			this.isRadioactive = false;
-			this.vRadiationLevel = (byte) radiationLevel;
+			this.vRadiationLevel = 0;
 		}
 
 		//Sets the materials 'tier'. Will probably replace this logic.
@@ -456,6 +458,30 @@ public class Material {
 
 	public final ItemStack getNugget(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+this.unlocalizedName, stacksize);
+	}
+	
+	/**
+	 * Ore Components
+	 * @return
+	 */
+	
+	public final ItemStack getOre(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+this.unlocalizedName+"Ore", stacksize);
+	}
+	public final ItemStack getCrushed(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushed"+this.unlocalizedName, stacksize);
+	}
+	public final ItemStack getCrushedPurified(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushedPurified"+this.unlocalizedName, stacksize);
+	}
+	public final ItemStack getCrushedCentrifuged(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushedCentrifuged"+this.unlocalizedName, stacksize);
+	}	
+	public final ItemStack getDustPurified(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPure"+this.unlocalizedName, stacksize);
+	}
+	public final ItemStack getDustImpure(final int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustImpure"+this.unlocalizedName, stacksize);
 	}
 
 	final public ItemStack[] getMaterialComposites(){

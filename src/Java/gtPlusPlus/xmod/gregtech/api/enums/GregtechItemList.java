@@ -276,7 +276,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_EV_Component_Maker, Machine_IV_Component_Maker, 
 	
 	//Tesla Tower
-	TelsaTower,
+	TelsaTower, 
+	
+	Battery_Gem_1, Battery_Gem_2, Battery_Gem_3,
 	
 	
 	

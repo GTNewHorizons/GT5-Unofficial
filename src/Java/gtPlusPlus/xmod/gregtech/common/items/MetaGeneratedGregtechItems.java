@@ -171,6 +171,21 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Battery_RE_EV_Lithium.set(this.addItem(tLastID = 54, "Quad Cell Lithium Battery", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 3L), getTcAspectStack(TC_Aspects.METALLUM, 3L), getTcAspectStack(TC_Aspects.POTENTIA, 3L)}));
 		this.setElectricStats(32000 + tLastID, 6400000L, GT_Values.V[4], 4L, -3L, true);
 
+		/**
+		 * Power Gems
+		 */
+		
+		GregtechItemList.Battery_Gem_1.set(this.addItem(tLastID = 66, "Fission Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 24L), getTcAspectStack(TC_Aspects.POTENTIA, 16L)}));
+		this.setElectricStats(32000 + tLastID, 32000000L, GT_Values.V[5], 5L, -3L, false);
+		GregtechItemList.Battery_Gem_2.set(this.addItem(tLastID = 68, "Fusion Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 16L), getTcAspectStack(TC_Aspects.METALLUM, 32L), getTcAspectStack(TC_Aspects.POTENTIA, 32L)}));
+		this.setElectricStats(32000 + tLastID, 750000000L, GT_Values.V[6], 6L, -3L, false);
+		GregtechItemList.Battery_Gem_3.set(this.addItem(tLastID = 70, "Portable Neutron Star", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 32L), getTcAspectStack(TC_Aspects.METALLUM, 48L), getTcAspectStack(TC_Aspects.POTENTIA, 64L)}));
+		this.setElectricStats(32000 + tLastID, 64000000000L, GT_Values.V[7], 7L, -3L, false);
+		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_1.get(1), "batteryFutureBasic");
+		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_2.get(1), "batteryFutureGood");
+		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_3.get(1), "batteryFutureAdvanced");
+		
+		
 		/*GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Acid Battery", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.METALLUM, 1L), getTcAspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);
 

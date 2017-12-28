@@ -114,6 +114,37 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		ItemList.Circuit_Elite.set(GregtechItemList.Old_Circuit_Elite.get(1));
 		ItemList.Circuit_Master.set(GregtechItemList.Old_Circuit_Master.get(1));
 		ItemList.Circuit_Ultimate.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
+		
+		/**
+		 * Try Set New circuits to have old replacements
+		 */
+				
+		//Basic
+		ItemList.Circuit_Microprocessor.set(GregtechItemList.Old_Circuit_Basic.get(1));		
+		//Good
+		ItemList.Circuit_Integrated.set(GregtechItemList.Old_Circuit_Good.get(1));		
+		//Advanced
+		ItemList.Circuit_Nanoprocessor.set(GregtechItemList.Old_Circuit_Advanced.get(1));		
+		//Data
+		ItemList.Circuit_Quantumprocessor.set(GregtechItemList.Old_Circuit_Data.get(1));
+		ItemList.Circuit_Nanocomputer.set(GregtechItemList.Old_Circuit_Data.get(1));		
+		//Elite
+		ItemList.Circuit_Crystalprocessor.set(GregtechItemList.Old_Circuit_Elite.get(1));
+		ItemList.Circuit_Quantumcomputer.set(GregtechItemList.Old_Circuit_Elite.get(1));
+		ItemList.Circuit_Elitenanocomputer.set(GregtechItemList.Old_Circuit_Elite.get(1));		
+		//Master
+		ItemList.Circuit_Neuroprocessor.set(GregtechItemList.Old_Circuit_Master.get(1));
+		ItemList.Circuit_Masterquantumcomputer.set(GregtechItemList.Old_Circuit_Master.get(1));		
+		//Ultimate
+		ItemList.Circuit_Wetwarecomputer.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
+		ItemList.Circuit_Ultimatecrystalcomputer.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
+		ItemList.Circuit_Quantummainframe.set(GregtechItemList.Old_Circuit_Ultimate.get(1));		
+		//Superconductor
+		ItemList.Circuit_Wetwaresupercomputer.set(GregtechItemList.Circuit_IV.get(1));
+		ItemList.Circuit_Crystalmainframe.set(GregtechItemList.Circuit_IV.get(1));
+		//Infinite
+		ItemList.Circuit_Wetwaremainframe.set(GregtechItemList.Circuit_LuV.get(1));
+		
 
 		//set data orbs and sticks to their new replacements
 		ItemList.Tool_DataStick.set(GregtechItemList.Old_Tool_DataStick.get(1));

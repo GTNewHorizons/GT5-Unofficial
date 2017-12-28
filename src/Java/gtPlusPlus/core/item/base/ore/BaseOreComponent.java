@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -43,33 +44,22 @@ public class BaseOreComponent extends Item{
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(this.unlocalName);
 		this.setMaxStackSize(64);
-		this.setTextureName(this.getCorrectTextures());
+		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
-		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre(componentType.getComponent()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 	}
 
 	public String getCorrectTextures(){
 		if (!CORE.ConfigSwitches.useGregtechTextures){
 			return CORE.MODID + ":" + "item"+this.componentType.COMPONENT_NAME;
 		}
-
-		/*if (this.componentType == ComponentTypes.GEAR){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGt";
-		}
-		else if (this.componentType == ComponentTypes.SMALLGEAR){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGtSmall";
-		}*/
-
 		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME;
 	}
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-		if (this.componentMaterial != null) {
-			return (this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
-		}
-		return this.materialName+" Cell";
+			return (this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
 	}
 
 	public final String getMaterialName() {
@@ -88,19 +78,11 @@ public class BaseOreComponent extends Item{
 				}
 
 				if (this.componentMaterial.isRadioactive){
-					list.add(CORE.GT_Tooltip_Radioactive);
+					list.add(CORE.GT_Tooltip_Radioactive+" | Level: "+this.componentMaterial.vRadiationLevel);
 				}
 			}
-
 		}
-
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
-
-	@Override
-	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-		return this.componentColour;
 	}
 
 	@Override
@@ -135,9 +117,11 @@ public class BaseOreComponent extends Item{
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(final IIconRegister par1IconRegister){
 		if (CORE.ConfigSwitches.useGregtechTextures){
-			this.base = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell");
+			Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+" is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the layer 0 texture path.");
+			this.base = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
 			if (this.componentType.hasOverlay()){
-				this.overlay = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
+				Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+" is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
+				this.overlay = par1IconRegister.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"_OVERLAY");
 			}
 		}
 		else {
@@ -148,28 +132,45 @@ public class BaseOreComponent extends Item{
 		}
 	}
 
+	@Override
+	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
+		if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
+			return this.componentColour;
+		}
+		if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
+			return Utils.rgbtoHexValue(230, 230, 230);
+		}
+		return this.componentColour;
+	}
+
+
+	@Override
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+		if(pass == 0) {
+			return this.base;
+		}
+		return this.overlay;
+	}
 
 
 
 
 	public static enum ComponentTypes {
-		DUST("dust", "", " Dust", "dust", true),
-		DUSTIMPURE("dustImpure", "Impure ", " Dust", "dustImpure", true),
-		DUSTPURE("dustPure", "Purified ", " Dust", "dustPure", true),
-		CRUSHED("crushed", "Crushed ", " Ore", "crushed", true),
-		CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged "," Ore", "crushedCentrifuged", true),
-		CRUSHEDPURIFIED("crushedPurified", "Purified", " Ore", "crushedPurified", true);
+		DUST("dust", "", " Dust", true),
+		DUSTIMPURE("dustImpure", "Impure ", " Dust", true),
+		DUSTPURE("dustPure", "Purified ", " Dust", true),
+		CRUSHED("crushed", "Crushed ", " Ore", true),
+		CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed "," Ore", true),
+		CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true);
 
 		private String COMPONENT_NAME;
 		private String PREFIX;
 		private String DISPLAY_NAME;
-		private String OREDICT_NAME;
 		private boolean HAS_OVERLAY;
-		private ComponentTypes (final String LocalName, final String prefix, final String DisplayName, final String OreDictName, final boolean overlay){
+		private ComponentTypes (final String LocalName, final String prefix, final String DisplayName, final boolean overlay){
 			this.COMPONENT_NAME = LocalName;
 			this.PREFIX = prefix;
 			this.DISPLAY_NAME = DisplayName;
-			this.OREDICT_NAME = OreDictName;
 			this.HAS_OVERLAY = overlay;
 			// dust + Dirty, Impure, Pure, Refined
 			// crushed + centrifuged, purified
@@ -183,14 +184,13 @@ public class BaseOreComponent extends Item{
 			return this.DISPLAY_NAME;
 		}
 
-		public String getOreDictName(){
-			return this.OREDICT_NAME;
-		}
-
 		public boolean hasOverlay(){
 			return this.HAS_OVERLAY;
 		}
-
+		
+		public String getPrefix(){
+			return this.PREFIX;
+		}
 	}
 
 }
