@@ -5,11 +5,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -906,5 +909,56 @@ public final class Util {
 
     public static boolean areBitsSet(int setBits,int testedValue){
         return (testedValue&setBits)==setBits;
+    }
+
+    public static class TT_ItemStack {
+        public final Item mItem;
+        public final int mStackSize;
+        public final int mMetaData;
+
+        public TT_ItemStack(Item aItem, long aStackSize, long aMetaData) {
+            this.mItem = aItem;
+            this.mStackSize = (byte)((int)aStackSize);
+            this.mMetaData = (short)((int)aMetaData);
+        }
+
+        public TT_ItemStack(ItemStack aStack) {
+            if(aStack==null){
+                mItem=null;
+                mStackSize=0;
+                mMetaData=0;
+            }else{
+                mItem=aStack.getItem();
+                mStackSize=aStack.stackSize;
+                mMetaData=aStack.getItemDamage();
+            }
+        }
+
+        public TT_ItemStack(int aHashCode) {
+            this(GT_Utility.intToStack(aHashCode));
+        }
+
+        public final ItemStack toStack() {
+            return this.mItem == null?null:new ItemStack(this.mItem, 1, this.mMetaData);
+        }
+
+        public final boolean isStackEqual(ItemStack aStack) {
+            return GT_Utility.areStacksEqual(this.toStack(), aStack);
+        }
+
+        public final boolean isStackEqual(GT_ItemStack aStack) {
+            return GT_Utility.areStacksEqual(this.toStack(), aStack.toStack());
+        }
+
+        public boolean equals(Object aStack) {
+            return aStack == this ||
+                    (aStack instanceof TT_ItemStack &&
+                            (((TT_ItemStack) aStack).mItem == this.mItem &&
+                             ((TT_ItemStack) aStack).mMetaData == this.mMetaData));
+        }
+
+        public int hashCode() {
+            return GT_Utility.stackToInt(this.toStack());
+        }
     }
 }

@@ -359,6 +359,22 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return mass;
     }
 
+    public long getCharge() {
+        long charge = 0;
+        for (cElementalInstanceStack stack : map.values()) {
+            charge += stack.getCharge();
+        }
+        return charge;
+    }
+
+    public long getCountOfAllAmounts(){
+        long sum=0;
+        for(cElementalInstanceStack stack:map.values()){
+            sum+=stack.amount;
+        }
+        return sum;
+    }
+
     //Tests
     public boolean containsDefinition(iElementalDefinition def) {
         return map.containsKey(def);
@@ -374,6 +390,10 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public boolean hasStacks() {
         return !map.isEmpty();
+    }
+
+    public boolean isEmpty(){
+        return map.isEmpty();
     }
 
     //Tick Content
@@ -490,7 +510,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return build.toString();
     }
 
-    public cElementalInstanceStackMap takeAll(){
+    public cElementalInstanceStackMap takeAllToNewMap(){
         TreeMap<iElementalDefinition, cElementalInstanceStack> map=this.map;
         this.map=new TreeMap<>();
         return new cElementalInstanceStackMap(map);

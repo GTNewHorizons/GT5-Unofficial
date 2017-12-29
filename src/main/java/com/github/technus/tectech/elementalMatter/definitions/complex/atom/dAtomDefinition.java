@@ -51,10 +51,15 @@ public final class dAtomDefinition extends cElementalDefinition {
     private static final Map<Integer, dAtomDefinition> unstableAtoms = new HashMap<>();
     private static cElementalDefinitionStack alpha,deuterium,tritium,helium_3,beryllium_8,carbon_14,neon_24,silicon_34;
     private static final HashMap<dAtomDefinition,Float> lifetimeOverrides = new HashMap<>();
-    public static final ArrayList<Runnable> overrides = new ArrayList<>();
 
     public final iaeaNuclide iaea;
 
+    private static dAtomDefinition somethingHeavy;
+    public static dAtomDefinition getSomethingHeavy() {
+        return somethingHeavy;
+    }
+
+    private static final ArrayList<Runnable> overrides = new ArrayList<>();
     public static void addOverride(dAtomDefinition atom, float rawLifeTime){
         lifetimeOverrides.put(atom,rawLifeTime);
     }
@@ -1543,12 +1548,16 @@ public final class dAtomDefinition extends cElementalDefinition {
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Uranium/*238*/,1);
 
+            float tempMass=temp.getMass();
+
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 92),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_p, 92),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_n, 143)
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Uranium235,1);
+
+            TecTech.Logger.info("Diff Mass U : "+(temp.getMass()-tempMass));
 
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),
@@ -1557,12 +1566,17 @@ public final class dAtomDefinition extends cElementalDefinition {
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Plutonium/*239*/,1);
 
-            temp=new dAtomDefinition(
+            somethingHeavy=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_p, 94),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_n, 147)
             );
-            transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Plutonium241,1);
+            transformation.addOredict(new cElementalDefinitionStack(somethingHeavy, 144), dust, Materials.Plutonium241,1);
+
+            TecTech.Logger.info("Diff Mass Pu: "+(somethingHeavy.getMass()-temp.getMass()));
+
+            TecTech.Logger.info("Neutron Mass: "+dHadronDefinition.hadron_n.getMass());
+
         } catch (tElementalException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();

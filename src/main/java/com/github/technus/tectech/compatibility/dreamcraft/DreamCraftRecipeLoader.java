@@ -4,6 +4,9 @@ import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Centrifuge;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -410,6 +413,22 @@ public class DreamCraftRecipeLoader implements Runnable {
     }
 
     private void register_machine_EM_behaviours(){
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(5),ItemList.Machine_IV_Centrifuge.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(6),com.dreammaster.gthandler.CustomItemList.CentrifugeLuV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(7),com.dreammaster.gthandler.CustomItemList.CentrifugeZPM.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(8),com.dreammaster.gthandler.CustomItemList.CentrifugeUV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(9),com.dreammaster.gthandler.CustomItemList.CentrifugeUHV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(10),com.dreammaster.gthandler.CustomItemList.CentrifugeUEV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(11),com.dreammaster.gthandler.CustomItemList.CentrifugeUIV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(12),com.dreammaster.gthandler.CustomItemList.CentrifugeUMV.get(1));
 
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(5),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(6),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorLuV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(7),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorZPM.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(8),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorUV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(9),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorUHV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(10),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorUEV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(11),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorUIV.get(1));
+        GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(12),com.dreammaster.gthandler.CustomItemList.ElectromagneticSeparatorUMV.get(1));
     }
 }

@@ -258,7 +258,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             }else if(CustomItemList.scanContainer.isStackEqual(itemStack, false, true)) {
                 eRecipe=null;
                 if(researchEM.hasStacks()) {
-                    objectsScanned = researchEM.takeAll();
+                    objectsScanned = researchEM.takeAllToNewMap();
                     cleanMassEM_EM(objectsScanned.getMass());
 
                     totalComputationRequired =0;

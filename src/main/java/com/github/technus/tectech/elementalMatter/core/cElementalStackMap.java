@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core;
 
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -56,6 +57,14 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return var.toArray(new iElementalDefinition[var.size()]);
     }
 
+    public long getCountOfAllAmounts(){
+        long sum=0;
+        for(cElementalDefinitionStack stack:map.values()){
+            sum+=stack.amount;
+        }
+        return sum;
+    }
+
     //Tests
     public final boolean containsDefinition(iElementalDefinition def) {
         return map.containsKey(def);
@@ -71,6 +80,10 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
 
     public final boolean hasStacks() {
         return !map.isEmpty();
+    }
+
+    public final boolean isEmpty(){
+        return map.isEmpty();
     }
 
     //NBT

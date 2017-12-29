@@ -6,6 +6,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 public class MultiblockControl<T>{
     private final int[] controls=new int[7];
+    private final boolean shouldExplode;
     private final T values;
 
     public MultiblockControl(T values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime){
@@ -15,8 +16,7 @@ public class MultiblockControl<T>{
         controls[2]=requiredData;
         controls[3]=effIncrease;
         controls[4]=maxProgressTime;
-        controls[5]=0;
-        controls[6]=Float.floatToIntBits(0);
+        shouldExplode=false;
     }
 
     public MultiblockControl(T values, int EUt, int amperes, int requiredData, int effIncrease, int maxProgressTime, int pollutionToAdd, float excessMass){
@@ -28,6 +28,13 @@ public class MultiblockControl<T>{
         controls[4]=maxProgressTime;
         controls[5]=pollutionToAdd;
         controls[6]=Float.floatToIntBits(excessMass);
+        shouldExplode=false;
+    }
+
+    public MultiblockControl(float excessMass){
+        this.values = null;
+        controls[6]=Float.floatToIntBits(excessMass);
+        shouldExplode=true;
     }
 
     public T getValue() {
@@ -60,5 +67,9 @@ public class MultiblockControl<T>{
 
     public float getExcessMass(){
         return Float.intBitsToFloat(controls[6]);
+    }
+
+    public boolean shouldExplode() {
+        return shouldExplode;
     }
 }
