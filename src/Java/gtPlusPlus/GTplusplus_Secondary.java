@@ -92,6 +92,24 @@ public class GTplusplus_Secondary {
 		MaterialGenerator.generateOreMaterial(ORES.YTTRIALITE);
 		MaterialGenerator.generateOreMaterial(ORES.YTTROCERITE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIRCON);
+		
+		//Lot 3
+		MaterialGenerator.generateOreMaterial(ORES.POLYCRASE);
+		MaterialGenerator.generateOreMaterial(ORES.ZIRCOPHYLLITE);
+		MaterialGenerator.generateOreMaterial(ORES.ZIRKELITE);
+		MaterialGenerator.generateOreMaterial(ORES.LANTHANITE_LA);
+		MaterialGenerator.generateOreMaterial(ORES.LANTHANITE_CE);
+		MaterialGenerator.generateOreMaterial(ORES.LANTHANITE_ND);
+		MaterialGenerator.generateOreMaterial(ORES.AGARDITE_Y);
+		MaterialGenerator.generateOreMaterial(ORES.AGARDITE_CD);
+		MaterialGenerator.generateOreMaterial(ORES.AGARDITE_LA);
+		MaterialGenerator.generateOreMaterial(ORES.AGARDITE_ND);
+		MaterialGenerator.generateOreMaterial(ORES.HIBONITE);
+		MaterialGenerator.generateOreMaterial(ORES.CERITE);
+		MaterialGenerator.generateOreMaterial(ORES.FLUORCAPHITE);
+		MaterialGenerator.generateOreMaterial(ORES.FLORENCITE);
+		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);
+		
 	}
 
 	void setVars(){

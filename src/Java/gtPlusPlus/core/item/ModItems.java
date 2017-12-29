@@ -352,19 +352,19 @@ public final class ModItems {
 			 */
 
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
+		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mChemicalFormula, Utils.rgbtoHexValue(226, 172, 9));
 			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dystYtterbium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Utils.rgbtoHexValue(Materials.Ytterbium.mRGBa[0], Materials.Ytterbium.mRGBa[1], Materials.Ytterbium.mRGBa[2]));
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mChemicalFormula, Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Utils.rgbtoHexValue(Materials.Samarium.mRGBa[0], Materials.Samarium.mRGBa[1], Materials.Samarium.mRGBa[2]));
+		    	ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mChemicalFormula, Utils.rgbtoHexValue(161, 168, 114));
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Utils.rgbtoHexValue(Materials.Lanthanum.mRGBa[0], Materials.Lanthanum.mRGBa[1], Materials.Lanthanum.mRGBa[2]));
+		    	ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mChemicalFormula, Utils.rgbtoHexValue(106, 127, 163));
 			}
 			/*if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
+		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", "", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
 			}*/
 			
 

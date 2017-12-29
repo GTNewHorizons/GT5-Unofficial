@@ -279,6 +279,293 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 5),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
 			});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	public static final Material POLYCRASE = new Material(
+			"Polycrase", //Material Name
+			MaterialState.ORE, //State
+			new short[]{51, 0, 11, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			1, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().URANIUM235, 1),
+					new MaterialStack(ELEMENT.getInstance().THORIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().TANTALUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 6)
+			});
+	
+	public static final Material ZIRCOPHYLLITE = new Material(
+			"Zircophyllite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{30, 0, 6, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().POTASSIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().MANGANESE, 7),
+					new MaterialStack(ELEMENT.getInstance().IRON, 7),
+					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().SILICON, 8),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 13),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 7),
+			});
+	
+	public static final Material ZIRKELITE = new Material(
+			"Zirkelite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{229, 208, 48, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (Ca,Th,Ce)Zr(Ti,Nb)2O7
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().THORIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 7)
+			});
+	
+	public static final Material LANTHANITE_LA = new Material(
+			"Lanthanite (La)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{219, 160, 214, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (La)2(CO3)3·8(H2O)
+					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+			});
+	
+	public static final Material LANTHANITE_CE = new Material(
+			"Lanthanite (Ce)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{186, 113, 179, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (Ce)2(CO3)3·8(H2O)
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+			});
+	
+	public static final Material LANTHANITE_ND = new Material(
+			"Lanthanite (Nd)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{153, 76, 145, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (Nd)2(CO3)3·8(H2O)
+					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 3),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+			});
+	
+	public static final Material HIBONITE = new Material(
+			"Hibonite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{58, 31, 0, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// ((Ca,Ce)(Al,Ti,Mg)12O19)
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().MAGNESIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 19),
+			});
+	
+	public static final Material CERITE = new Material(
+			"Cerite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{68, 13, 0, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (Ce,La,Ca)9(Mg,Fe+3)(SiO4)6(SiO3OH)(OH)3
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 9),
+					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 9),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 9),
+					new MaterialStack(ELEMENT.getInstance().MAGNESIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().IRON, 3),
+					new MaterialStack(ELEMENT.getInstance().SILICON, 7),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 20),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
+			});
+	
+	public static final Material AGARDITE_Y = new Material(
+			"Agardite (Y)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{210, 232, 44, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (YCa)Cu5(As2O4)3(OH)6·3H2O
+					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 5),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 6),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 21),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 12)
+			});
+	
+	public static final Material AGARDITE_CD = new Material(
+			"Agardite (Cd)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{170, 188, 33, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (CdCa)Cu7(AsO2)4(O2H)5·3H2O
+					new MaterialStack(ELEMENT.getInstance().CADMIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 7),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 4),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 21),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 11)
+			});
+	
+	public static final Material AGARDITE_LA = new Material(
+			"Agardite (La)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{206, 232, 9, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (LaCa)Cu5(AsO6)2(OH)4·3H2O
+					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 5),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 19),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 10)
+			});
+	
+	public static final Material AGARDITE_ND = new Material(
+			"Agardite (Nd)", //Material Name
+			MaterialState.ORE, //State
+			new short[]{225, 244, 78, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (NdCa)Cu6(As3O3)2(O2H)6·3H2O
+					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 6),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 6),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 21),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 12)
+			});
+	
+	public static final Material FLUORCAPHITE = new Material(
+			"Fluorcaphite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{255, 255, 30, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// (Ca,Sr,Ce,Na)5(PO4)3F
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().STRONTIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().CERIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 3),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 12),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6),
+			});
+	
+	public static final Material FLORENCITE = new Material(
+			"Florencite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{249, 249, 124, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// SmAl3(PO4)2(OH)6
+					new MaterialStack(ELEMENT.getInstance().SAMARIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 6)
+			});
+	
+	public static final Material CRYOLITE = new Material(
+			"Cryolite", //Material Name
+			MaterialState.ORE, //State
+			new short[]{205, 205, 255, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 3),
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
 
 
 

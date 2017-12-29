@@ -103,29 +103,25 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
-		if (!CORE.GTNH) {
-			//Iron bars
-			final ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
-			//Fish Trap
-			if (RecipeUtils.recipeBuilder(
-					ironBars, ironBars, ironBars,
-					ironBars, "frameGtWroughtIron", ironBars,
-					ironBars, ironBars, ironBars,
-					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
-				Logger.INFO("Added a recipe for the Fish Trap.");
-			}
+
+
+		//Iron bars
+		final ItemStack ironBars;
+		if (CORE.GTNH) {
+			ironBars = ItemUtils.getItemStack("dreamcraft:item.SteelBars", 1);
 		} else {
-			//Steel Bars
-			final ItemStack steelBars = ItemUtils.getItemStack("dreamcraft:item.SteelBars", 1);
-			//Fish Trap
-			if (RecipeUtils.recipeBuilder(
-					steelBars, steelBars, steelBars,
-					steelBars, "frameGtWroughtIron", steelBars,
-					steelBars, steelBars, steelBars,
-					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))) {
-				Logger.INFO("Added a recipe for the Fish Trap.");
-			}
+			ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
 		}
+
+		//Fish Trap
+		if (RecipeUtils.recipeBuilder(
+				ironBars, ironBars, ironBars,
+				ironBars, "frameGtWroughtIron", ironBars,
+				ironBars, ironBars, ironBars,
+				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
+			Logger.INFO("Added a recipe for the Fish Trap.");
+		}
+
 
 		//Alkalus Coin
 		if (RecipeUtils.recipeBuilder(
@@ -243,9 +239,12 @@ public class RECIPES_General {
 		}
 		return true;
 	}
-	
+
 	private static boolean addFluoriteFix(){
-		return RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
+		if (ModBlocks.blockOreFluorite != null){
+			return RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
+		}
+		return false;
 	}
 
 }
