@@ -12,9 +12,9 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -27,63 +27,42 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockBaseOre extends BlockBaseModular implements ITexturedTileEntity {
+public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 
-	@SuppressWarnings("unused")
-	private IIcon base;
-	@SuppressWarnings("unused")
-	private IIcon overlay;
-
-	protected Material blockMaterial;
-
-	protected int blockColour;
-	protected BlockTypes thisBlock;
+	private final Material blockMaterial;
 
 	public BlockBaseOre(final Material material, final BlockTypes blockType, final int colour) {
-		this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron, blockType, colour, 3);
-		blockMaterial = material;
-	}
+		super(Utils.sanitizeString(material.getUnlocalizedName()), net.minecraft.block.material.Material.rock);
+		this.blockMaterial = material;
+		this.setHardness(2.0f);
+		this.setResistance(6.0F);
+		this.setLightLevel(0.0F);
+		this.setHarvestLevel("pickaxe", 3);
+		this.setCreativeTab(AddToCreativeTab.tabBlock);
+		this.setStepSound(soundTypeStone);		
+		this.setBlockName(Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
 
-	public BlockBaseOre(final String unlocalizedName, final String blockMaterial,  final BlockTypes blockType, final int colour) {
-		this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
-	}
-
-	public BlockBaseOre(final String unlocalizedName, final String blockMaterial, final net.minecraft.block.material.Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
-		super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);
-		try {
-		if (blockMaterial == null){
-			Logger.DEBUG_MATERIALS("Failed to generate "+unlocalizedName+" due to invalid material variable.");
-		}
 		
-		this.blockColour = colour;
-		this.thisBlock = blockType;
+		//this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
+		//this.setBlockName(this.blockMaterial.getLocalizedName()+" Ore");
 		
-		if (this == null || this.blockMaterial == null){
-			Logger.DEBUG_MATERIALS("Issue during Ore construction, Material or Block is null.");
-		}
-		
-		GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString("ore"+Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
+		try {			
+		GameRegistry.registerBlock(this, ItemBlockOre.class, Utils.sanitizeString("ore"+Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
 		GT_OreDictUnificator.registerOre("ore"+Utils.sanitizeString(this.blockMaterial.getLocalizedName()), ItemUtils.getSimpleStack(this));
-		LanguageRegistry.addName(this, blockMaterial+ " Ore");
+		LanguageRegistry.addName(this, blockMaterial.getLocalizedName()+ " Ore");
 		}
 		catch (Throwable t){
 			t.printStackTrace();
 		}
 	}
 
-	/**
-	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-	 */
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderBlockPass(){
-		return 0;
-	}
-
 	@Override
 	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
 		return false;
+	}
+	
+	public Material getMaterialEx(){
+		return this.blockMaterial;
 	}
 
 	@Override
