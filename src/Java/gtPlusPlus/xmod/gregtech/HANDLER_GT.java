@@ -8,6 +8,7 @@ import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -23,6 +24,7 @@ public class HANDLER_GT {
 	public static GT_Config mMaterialProperties = null;
 	
 	public static GTPP_Config sCustomWorldgenFile = null;
+	public static final List<WorldGen_GT> sWorldgenList = new ArrayList<WorldGen_GT>();
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
 
 	public static void preInit(){

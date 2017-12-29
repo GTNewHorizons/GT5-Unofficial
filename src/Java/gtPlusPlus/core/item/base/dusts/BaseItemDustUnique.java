@@ -108,7 +108,7 @@ public class BaseItemDustUnique extends Item{
 		if (this.sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
-		if (StringUtils.containsSuperOrSubScript(this.chemicalNotation)){
+		if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("") && !chemicalNotation.equals("NullFormula")){
 			list.add(this.chemicalNotation);
 		}
 		super.addInformation(stack, aPlayer, list, bool);

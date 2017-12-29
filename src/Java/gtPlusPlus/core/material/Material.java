@@ -15,6 +15,7 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -482,6 +483,28 @@ public class Material {
 	
 	public final ItemStack getOre(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.getUnlocalizedName()), stacksize);
+	}
+	public final Block getOreBlock(final int stacksize){
+		Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for '"+"ore"+Utils.sanitizeString(this.getUnlocalizedName())+"'.");
+		try{
+			ItemStack a1 = getOre(1);
+			Item a2 = a1.getItem();
+			Block a3 = Block.getBlockFromItem(a2);
+
+			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
+			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
+			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
+			
+		Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
+		if (x != null){
+			return x;
+		}
+		}
+		catch (Throwable t){
+			t.printStackTrace();
+		}
+		Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
+		return Blocks.stone;
 	}
 	public final ItemStack getCrushed(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushed"+this.unlocalizedName, stacksize);

@@ -188,7 +188,7 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
-					new MaterialStack(ELEMENT.getInstance().IRON, 1),
+					new MaterialStack(ELEMENT.getInstance().GADOLINIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().SILICON, 7),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 14),
@@ -209,7 +209,7 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 4),
-					new MaterialStack(ELEMENT.getInstance().IRON, 2),
+					new MaterialStack(ELEMENT.getInstance().GADOLINIUM, 2),
 					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 3),
 					new MaterialStack(ELEMENT.getInstance().SILICON, 4),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 9),
@@ -223,7 +223,7 @@ public final class ORES {
 			1500,
 			50,
 			75,
-			0, //Radiation
+			1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().GADOLINIUM, 2),
@@ -279,19 +279,6 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 5),
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
 			});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	
 	public static final Material POLYCRASE = new Material(
 			"Polycrase", //Material Name

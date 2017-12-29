@@ -47,15 +47,20 @@ public class MaterialUtils {
 		final int durability = material.mDurability;
 		boolean mGenerateCell = false;
 		MaterialState materialState;
-		final String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+		String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
 		final Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){
 			radioactivity = 1;
 		}
-
+		
+		//Weird Blacklist of Bad Chemical Strings
+		if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar){
+			chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
+		}
+		
 		//Determine default state
-		Logger.MATERIALS("[Debug] Setting State of GT generated material.");
+		Logger.MATERIALS("[Debug] Setting State of GT generated material. "+material.mDefaultLocalName);
 		if (material.getMolten(1) != null || material.getSolid(1) != null){
 			materialState = MaterialState.SOLID;
 			Logger.MATERIALS("[Debug] Molten or Solid was not null.");
@@ -96,6 +101,9 @@ public class MaterialUtils {
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
 			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell);
 		}
+		else {
+			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
+		}
 		return null;
 
 	}
@@ -116,26 +124,10 @@ public class MaterialUtils {
 		return temp;
 	}
 
-	public static boolean hasValidRGBA(final short[] rgba){
-		boolean test1 = false;
-		boolean test2 = false;
-		boolean test3 = false;
-		for (int r=0;r<rgba.length;r++){
-			if (rgba[r] == 0){
-				if (r == 0){
-					test1 = true;
-				}
-				else if (r == 1){
-					test2 = true;
-				}
-				else if (r == 2){
-					test3 = true;
-				}
-			}
-		}
-		if ((test1 && test2) || (test1 && test3) || (test3 && test2)){
+	public static boolean hasValidRGBA(final short[] rgba){		
+		if (rgba == null || rgba.length < 3 || rgba.length > 4){
 			return false;
-		}
+		}		
 		return true;
 	}
 

@@ -9,6 +9,8 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Config;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -17,6 +19,7 @@ import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
 import gtPlusPlus.core.world.darkworld.block.DarkWorldContentLoader;
 import gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_GT_Base;
+import gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_Ores;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import net.minecraftforge.common.DimensionManager;
@@ -44,7 +47,7 @@ public class GTplusplus_Secondary {
 		Logger.INFO("Loading " + MODID2 + " V" + VERSION2);
 
 		//Setup
-		setVars();
+		setVars(event);
 		
 		setDarkBiome(new Biome_DarkWorld());
 		DarkWorld_Dimension = new Dimension_DarkWorld();
@@ -112,7 +115,10 @@ public class GTplusplus_Secondary {
 		
 	}
 
-	void setVars(){
+	void setVars(FMLPreInitializationEvent event){
+		//Init WorldGen config.
+        HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
+		
 		if (DimensionManager.isDimensionRegistered(Dimension_DarkWorld.DIMID)){
 			Dimension_DarkWorld.DIMID = DimensionManager.getNextFreeDimId();
 		}
@@ -120,7 +126,7 @@ public class GTplusplus_Secondary {
 		/*
 		 * Set World Generation Values
 		 */
-		
+		WorldGen_Ores.generateValidOreVeins();
 		WorldGen_GT_Base.oreveinPercentage = 75;
 		WorldGen_GT_Base.oreveinAttempts = 64;
 		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 8;	

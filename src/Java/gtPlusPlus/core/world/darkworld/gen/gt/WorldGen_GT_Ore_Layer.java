@@ -5,18 +5,23 @@ import static gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_GT_Base.debugWorld
 import java.util.ArrayList;
 import java.util.Random;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
-import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.loaders.misc.GT_Achievements;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 public class WorldGen_GT_Ore_Layer
-        extends GT_Worldgen {
+        extends WorldGen_GT {
     public static ArrayList<WorldGen_GT_Ore_Layer> sList = new ArrayList<WorldGen_GT_Ore_Layer>();
     public static int sWeight = 0;
     public final short mMinY;
@@ -24,10 +29,16 @@ public class WorldGen_GT_Ore_Layer
     public final short mWeight;
     public final short mDensity;
     public final short mSize;
-    public final short mPrimaryMeta;
-    public final short mSecondaryMeta;
-    public final short mBetweenMeta;
-    public final short mSporadicMeta;
+    public Block mPrimaryMeta;
+    public Block mSecondaryMeta;
+    public Block mBetweenMeta;
+    public Block mSporadicMeta;
+    public final Material mPrimary;
+    public final Material mSecondary;
+    public final Material mBetween;
+    public final Material mSporadic;
+    
+    
     //public final String mBiome;
     public final String mRestrictBiome;
     public final boolean mOverworld;
@@ -45,16 +56,22 @@ public class WorldGen_GT_Ore_Layer
     //public final boolean mAsteroid;
     public final String aTextWorldgen = "worldgen.";
 
-    public WorldGen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3,  Materials aPrimary, Materials aSecondary, Materials aBetween, Materials aSporadic) {
+    public WorldGen_GT_Ore_Layer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,  Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
+     this(aName, true, aMinY, aMaxY, aWeight, aDensity, aSize, false, false, false, false, false, false, aPrimary, aSecondary, aBetween, aSporadic);   
+    }
+    
+    
+    public WorldGen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3,  Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
-        this.mOverworld = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
-        //this.mMoon = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
-        //this.mMars = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
-        //this.mAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
-        this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
-        short mMaxY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
+        Logger.WORLD("Creating Ore Layer Object");
+        this.mOverworld = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
+        this.mNether = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
+        this.mEnd = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
+        //this.mMoon = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
+        //this.mMars = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
+        //this.mAsteroid = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
+        this.mMinY = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
+        short mMaxY = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
         if (mMaxY < (this.mMinY + 7))    {
             GT_Log.out.println(
                     "Oremix " + this.mWorldGenName +
@@ -63,14 +80,18 @@ public class WorldGen_GT_Ore_Layer
             mMaxY = (short) (this.mMinY + 7);
         }
         this.mMaxY = mMaxY;
-        this.mWeight = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
-        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
-        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
-        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
-        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
-        this.mRestrictBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+        this.mWeight = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
+        this.mDensity = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
+        this.mSize = ((short) Math.max(1, HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+        this.mPrimary = aPrimary;
+        this.mSecondary = aSecondary;
+        this.mBetween =  aBetween;
+        this.mSporadic  = aSporadic;
+        this.mPrimaryMeta = aPrimary.getOreBlock(1);
+        this.mSecondaryMeta = aSecondary.getOreBlock(1);
+        this.mBetweenMeta =  aBetween.getOreBlock(1);
+        this.mSporadicMeta  = aSporadic.getOreBlock(1);
+        this.mRestrictBiome = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
 
         //if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied ID " + mPrimaryMeta + " for " + mWorldGenName + " does not exist");
         //if (mSecondaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied ID " + mSecondaryMeta + " for " + mWorldGenName + " does not exist");
@@ -78,23 +99,39 @@ public class WorldGen_GT_Ore_Layer
         //if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied ID " + mSporadicMeta + " for " + mWorldGenName + " does not exist");
 
         if (this.mEnabled) {
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
-            GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            //GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+        	//GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            //GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
+            //GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY, aWeight, aOverworld, aNether, aEnd);
             sWeight += this.mWeight;            
         }
     }
 
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        if( mWorldGenName.equals("NoOresInVein") ) {
+        
+    	//Debug Handler
+    	/**
+    	 * This handles Variables that are null during Init
+    	 */
+    	
+    	if (this.mPrimaryMeta == Blocks.stone || this.mSecondaryMeta == Blocks.stone
+    			|| this.mBetweenMeta == Blocks.stone || this.mSporadicMeta == Blocks.stone){
+            this.mPrimaryMeta = this.mPrimary.getOreBlock(1);
+            this.mSecondaryMeta = this.mSecondary.getOreBlock(1);
+            this.mBetweenMeta =  this.mBetween.getOreBlock(1);
+            this.mSporadicMeta  = this.mSporadic.getOreBlock(1);
+            Logger.WORLD("[Vein Generator] An Ore in a Vein had defaulted back to a default value, so they have now been reset to correct values.");
+    	}
+    	
+    	if( mWorldGenName.equals("vein0") ) {
             if (debugWorldGen) GT_Log.out.println(
-                            " NoOresInVein"
+                            " NoOresInVein-vein0"
             );
             // This is a special empty orevein
+        	Logger.WORLD("[World Generation Debug] Special Empty Vein placed.");
             return ORE_PLACED;
         }
-        if (!isGenerationAllowed(aWorld, aDimensionType, ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld)) || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
+        if (aDimensionType != Dimension_DarkWorld.DIMID) {
             /* // Debug code, but spams log
             if (debugWorldGen) {
                 GT_Log.out.println(
@@ -102,6 +139,7 @@ public class WorldGen_GT_Ore_Layer
                 );
             }
             */
+        	Logger.WORLD("[World Generation Debug] Wrong dimension.");
             return WRONG_DIMENSION;
         }
         if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
@@ -152,35 +190,36 @@ public class WorldGen_GT_Ore_Layer
                 int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ))/localDensity);
-                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta > 0) ) {
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
+                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta != null) ) {
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
                             placeCount[1]++;
                         }
                     }
-                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta > 0) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
+                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta != null) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
                             placeCount[3]++;
                     }
                 }
             }
-        if ((placeCount[1]+placeCount[3])==0) {
+        /*if ((placeCount[1]+placeCount[3])==0) {
             if (debugWorldGen) GT_Log.out.println(
                 " No ore in bottom layer"
             );
             return NO_ORE_IN_BOTTOM_LAYER;  // Exit early, didn't place anything in the bottom layer
-        }
+        }*/
+        Logger.WORLD("[World Generation Debug] Trying to set Ores?");
         for (level = tMinY; level < (tMinY-1+3); level++) {
             for (int tX = wX; tX < eX; tX++) {
                 int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ))/localDensity);
-                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta > 0) ) {
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
+                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta != null) ) {
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, false)) {
                             placeCount[1]++;
                         }
                     }
-                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta > 0) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
+                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta != null) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
                             placeCount[3]++;
                     }
                 }
@@ -192,13 +231,13 @@ public class WorldGen_GT_Ore_Layer
                 int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ))/localDensity);
-                    if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mBetweenMeta > 0) ) {  // Between are only 1 per vertical column, reduce by 1/2 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
+                    if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mBetweenMeta != null) ) {  // Between are only 1 per vertical column, reduce by 1/2 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
                             placeCount[2]++;
                         }
                     }
-                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta > 0) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
+                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta != null) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
                             placeCount[3]++;
                     }
                 }
@@ -209,18 +248,18 @@ public class WorldGen_GT_Ore_Layer
                 int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ))/localDensity);
-                    if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mBetweenMeta > 0) ) {  // Between are only 1 per vertical column, reduce by 1/2 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
+                    if ((aRandom.nextInt(2) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mBetweenMeta != null) ) {  // Between are only 1 per vertical column, reduce by 1/2 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mBetweenMeta, false, false)) {
                             placeCount[2]++;
                         }
                     }
-                    else if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0) ) {
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
+                    else if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta != null) ) {
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
                             placeCount[0]++;
                         }
                     }
-                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta > 0) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
+                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta != null) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
                             placeCount[3]++;
                     }
                 }
@@ -232,13 +271,13 @@ public class WorldGen_GT_Ore_Layer
                 int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
                 for (int tZ = nZ; tZ < sZ; tZ++) {
                     int placeZ = Math.max(1, Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ))/localDensity);
-                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0) ) {
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
+                    if ( ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta != null) ) {
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, false)) {
                             placeCount[0]++;
                         }
                     }
-                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta > 0) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
-                        if (GT_TileEntity_Ores.setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
+                    else if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSporadicMeta != null) ) {  // Sporadics are only 1 per vertical column normally, reduce by 1/7 to compensate
+                        if (setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, false))
                             placeCount[3]++;
                     }
                 }
@@ -268,5 +307,83 @@ public class WorldGen_GT_Ore_Layer
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;
+    }
+    
+    @SuppressWarnings("deprecation")
+	public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, Block aMetaData, boolean isSmallOre,
+			boolean air) {
+		if (!air) {
+			aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+		}
+		
+		//Set GT ORE
+		if (aMetaData instanceof GT_Block_Ores){
+			
+			if (this.mPrimaryMeta == aMetaData){
+				for (Materials f : Materials.values()){
+					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mPrimary.getLocalizedName().toLowerCase()))){
+						int r = f.mMetaItemSubID;					
+						if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, r, false)){
+							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							return true;
+						}	
+					}
+				}
+			}
+			if (this.mSecondaryMeta == aMetaData){
+				for (Materials f : Materials.values()){
+					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mSecondary.getLocalizedName().toLowerCase()))){
+						int r = f.mMetaItemSubID;				
+						if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, r, false)){
+							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							return true;
+						}	
+					}
+				}
+			}
+			if (this.mBetweenMeta == aMetaData){
+				for (Materials f : Materials.values()){
+					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mBetween.getLocalizedName().toLowerCase()))){
+						int r = f.mMetaItemSubID;				
+						if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, r, false)){	
+							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							return true;
+						}	
+					}
+				}
+			}
+			if (this.mSporadicMeta == aMetaData){
+				for (Materials f : Materials.values()){
+					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mSporadic.getLocalizedName().toLowerCase()))){
+						int r = f.mMetaItemSubID;						
+						if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, r, false)){
+							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							return true;
+						}	
+					}
+				}
+			}
+			
+		}
+		
+		Block tBlock = aWorld.getBlock(aX, aY, aZ);
+		Block tOreBlock = aMetaData;
+		int BlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
+		String BlockName = tBlock.getUnlocalizedName();
+		if (
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockTopLayer) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondLayer) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockMainFiller) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondaryFiller) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
+			if (aWorld.setBlock(aX, aY, aZ, tOreBlock, 0, 3)){
+				Logger.WORLD("[World Generation Debug] Set "+tOreBlock.getLocalizedName()+" at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+				return true;
+			}			
+		}
+		return false;		
     }
 }
