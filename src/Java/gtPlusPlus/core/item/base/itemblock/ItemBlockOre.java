@@ -45,6 +45,10 @@ public class ItemBlockOre extends ItemBlock{
 
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		if (this.mThisMaterial != null){
+			list.add(this.mThisMaterial.vChemicalFormula);			
+		}	
+
 		//Radioactive?
 		if (this.mThisRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
@@ -64,8 +68,14 @@ public class ItemBlockOre extends ItemBlock{
 
 	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		if (this.mThisRadiation > 0){
-			EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.mThisRadiation, world, entityHolding);
+		if (this.mThisMaterial != null){
+			if (this.mThisRadiation > 0){
+				if (entityHolding instanceof EntityPlayer){
+					if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+						EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.mThisMaterial.vRadiationLevel, world, entityHolding);	
+					}
+				}
+			}
 		}
 	}
 

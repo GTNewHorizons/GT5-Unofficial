@@ -903,6 +903,16 @@ public class RECIPES_GREGTECH {
 				chances,
 				30*20,
 				240);
+		
+		GT_Values.RA.addChemicalBathRecipe(
+				FLUORIDES.FLUORITE.getCrushed(2), 
+				FluidUtils.getFluidStack("hydrogen", 2000),
+				FLUORIDES.FLUORITE.getCrushedPurified(8),
+				FLUORIDES.FLUORITE.getDustImpure(4),
+				FLUORIDES.FLUORITE.getDustPurified(2),
+				new int[]{10000, 5000, 1000},
+				30*20,
+				240);
 
 		GT_Values.RA.addChemicalBathRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
@@ -1079,9 +1089,9 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addPulverisationRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
-		GT_ModHandler.addPulverisationRecipe(
+		/*GT_ModHandler.addPulverisationRecipe(
 				FLUORIDES.FLUORITE.getOre(1),
-				FLUORIDES.FLUORITE.getDust(4));
+				FLUORIDES.FLUORITE.getDust(4));*/
 
 		if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null){
 			GT_ModHandler.addPulverisationRecipe(

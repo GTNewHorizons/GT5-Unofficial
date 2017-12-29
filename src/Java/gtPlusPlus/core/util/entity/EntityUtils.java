@@ -11,6 +11,7 @@ import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -58,18 +59,20 @@ public class EntityUtils {
 		if (!world.isRemote){
 			if ((radiationLevel > 0) && (entityHolding instanceof EntityLivingBase)) {
 				final EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
-				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving) || !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
-					int duration;
-					if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
-						//Utils.LOG_INFO("t");
-						duration = (radiationLevel*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
+				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+					if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving) && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
+						int duration;
+						if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
+							//Utils.LOG_INFO("t");
+							duration = (radiationLevel*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
+						}
+						else {
+							//Utils.LOG_INFO("f");
+							duration = radiationLevel*30;
+						}
+						//IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
+						GT_Utility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
 					}
-					else {
-						//Utils.LOG_INFO("f");
-						duration = radiationLevel*30;
-					}
-					//IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
-					GT_Utility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
 				}
 			}
 			return true;

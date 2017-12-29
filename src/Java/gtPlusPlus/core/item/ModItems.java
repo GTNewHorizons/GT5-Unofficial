@@ -346,6 +346,27 @@ public final class ModItems {
 
 
 		try{
+			
+			/**
+			 * Try generate dusts for missing rare earth materials if they don't exist
+			 */
+
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
+			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dystYtterbium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Utils.rgbtoHexValue(Materials.Ytterbium.mRGBa[0], Materials.Ytterbium.mRGBa[1], Materials.Ytterbium.mRGBa[2]));
+			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Utils.rgbtoHexValue(Materials.Samarium.mRGBa[0], Materials.Samarium.mRGBa[1], Materials.Samarium.mRGBa[2]));
+			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Utils.rgbtoHexValue(Materials.Lanthanum.mRGBa[0], Materials.Lanthanum.mRGBa[1], Materials.Lanthanum.mRGBa[2]));
+			}
+			/*if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
+			}*/
+			
 
 			//Elements generate first so they can be used in compounds.
 			//Missing Elements

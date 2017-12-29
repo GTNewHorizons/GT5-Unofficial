@@ -481,7 +481,7 @@ public class Material {
 	 */
 	
 	public final ItemStack getOre(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+this.unlocalizedName+"Ore", stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.getUnlocalizedName()), stacksize);
 	}
 	public final ItemStack getCrushed(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushed"+this.unlocalizedName, stacksize);

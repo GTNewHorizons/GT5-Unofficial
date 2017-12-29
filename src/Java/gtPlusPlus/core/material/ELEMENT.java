@@ -43,7 +43,7 @@ public final class ELEMENT {
 	public final Material MAGNESIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Magnesium);
 	public final Material ALUMINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Aluminium);
 	public final Material SILICON = MaterialUtils.generateMaterialFromGtENUM(Materials.Silicon);
-	public final Material PHOSPHORUS = MaterialUtils.generateMaterialFromGtENUM(Materials.Phosphorus);
+	public final Material PHOSPHORUS = MaterialUtils.generateMaterialFromGtENUM(Materials.Phosphor);
 	public final Material SULFUR = MaterialUtils.generateMaterialFromGtENUM(Materials.Sulfur);
 	public final Material CHLORINE = MaterialUtils.generateMaterialFromGtENUM(Materials.Chlorine);
 	public final Material ARGON = MaterialUtils.generateMaterialFromGtENUM(Materials.Argon);

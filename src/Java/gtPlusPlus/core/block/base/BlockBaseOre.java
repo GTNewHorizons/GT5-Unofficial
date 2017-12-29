@@ -40,7 +40,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 		this.setHarvestLevel("pickaxe", 3);
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setStepSound(soundTypeStone);		
-		this.setBlockName(Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
+		this.setBlockName("Ore"+Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
 
 		
 		//this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
@@ -97,22 +97,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 	}
 
 	public static class oldOreBlock extends BlockBaseModular{
+
 		@SuppressWarnings("unused")
 		private IIcon base;
 		@SuppressWarnings("unused")
 		private IIcon overlay;
-
-		protected Material blockMaterial;
-
-		protected int blockColour;
-		protected BlockTypes thisBlock;
-		protected String thisBlockMaterial;
-		protected final String thisBlockType;
-
-		public oldOreBlock(final Material material, final BlockTypes blockType, final int colour) {
-			this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron, blockType, colour, 3);
-			blockMaterial = material;
-		}
 
 		public oldOreBlock(final String unlocalizedName, final String blockMaterial,  final BlockTypes blockType, final int colour) {
 			this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
@@ -120,41 +109,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 
 		public oldOreBlock(final String unlocalizedName, final String blockMaterial, final net.minecraft.block.material.Material vanillaMaterial,  final BlockTypes blockType, final int colour, final int miningLevel) {
 			super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);
-			this.blockColour = colour;
-			this.thisBlock = blockType;
-			this.thisBlockMaterial = blockMaterial;
-			this.thisBlockType = blockType.name().toUpperCase();
-			this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
-		}
-
-		/**
-		 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-		 */
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public int getRenderBlockPass(){
-			return 0;
-		}
-
-		@Override
-		public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
-			return false;
-		}
-
-		@Override
-		public int getRenderType() {
-			return 0;
-		}
-
-		@Override
-		public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
-			return Blocks.stone.getIcon(0, 0);
-		}
-
-		@Override
-		public IIcon getIcon(int aSide, int aMeta) {
-			return Blocks.stone.getIcon(0, 0);
 		}
 
 		@Override
@@ -162,6 +116,8 @@ public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 		public void registerBlockIcons(final IIconRegister iIcon)
 		{
 			this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
+			//this.base = iIcon.registerIcon(CORE.MODID + ":" + "blockStone");
+			//this.overlay = iIcon.registerIcon(CORE.MODID + ":" + "blockOre_Overlay");
 		}
 
 		@Override
@@ -178,6 +134,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedTileEntity {
 				return MathUtils.generateSingularRandomHexValue();
 			}
 			return this.blockColour;
+		}
+
+		@Override
+		public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+			return false;
 		}
 
 	}
