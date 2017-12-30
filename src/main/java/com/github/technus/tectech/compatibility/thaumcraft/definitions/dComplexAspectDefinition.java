@@ -121,7 +121,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
+    public static dComplexAspectDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));

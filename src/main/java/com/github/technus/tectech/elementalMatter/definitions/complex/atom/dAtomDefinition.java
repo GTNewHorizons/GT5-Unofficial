@@ -361,19 +361,19 @@ public final class dAtomDefinition extends cElementalDefinition {
         int element = Math.abs(this.element);
         boolean negative = element < 0;
         try {
-            return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
+            return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C:" + getCharge();
         } catch (Exception e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
             }
             try {
                 int s100 = element / 100, s1 = element / 10 % 10, s10 = element % 10;
-                return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
+                return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C:" + getCharge();
             } catch (Exception E) {
                 if (DEBUG_MODE) {
                     e.printStackTrace();
                 }
-                return (negative ? "~" : "") + "? N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
+                return (negative ? "~" : "") + "? N:" + neutralCount + " I:" + (neutralCount+element) + " C:" + getCharge();
             }
         }
     }
@@ -1295,7 +1295,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
+    public static dAtomDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));

@@ -25,9 +25,13 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
  */
 public abstract class cElementalPrimitive extends cElementalDefinition {
-    private static final byte nbtType = (byte) 'p';
+    public static final byte nbtType = (byte) 'p';
 
-    public static final Map<Integer, iElementalDefinition> bindsBO = new HashMap<>();
+    private static final Map<Integer, cElementalPrimitive> bindsBO = new HashMap<>();
+
+    public static Map<Integer, cElementalPrimitive> getBindsPrimitive() {
+        return bindsBO;
+    }
 
     public final String name;
     public final String symbol;
@@ -173,8 +177,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound content) {
-        iElementalDefinition primitive = bindsBO.get(content.getInteger("c"));
+    public static cElementalPrimitive fromNBT(NBTTagCompound content) {
+        cElementalPrimitive primitive = bindsBO.get(content.getInteger("c"));
         return primitive == null ? null__ : primitive;
     }
 

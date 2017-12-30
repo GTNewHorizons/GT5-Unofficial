@@ -385,9 +385,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         }else if(objectsScanned!=null && CustomItemList.scanContainer.isStackEqual(mInventory[1], false, true)){
             ElementalDefinitionScanStorage_EM.setContent(mInventory[1],objectsScanned,scanComplexity);
         }
-        quantumStuff(false);
         objectResearched=null;
         totalComputationRemaining =0;
+        quantumStuff(false);
     }
 
     @Override
@@ -434,16 +434,16 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void onRemoval() {
-        super.onRemoval();
         quantumStuff(false);
+        super.onRemoval();
     }
 
     @Override
     public void stopMachine() {
+        quantumStuff(false);
         super.stopMachine();
         totalComputationRequired = totalComputationRemaining =0;
         objectResearched=null;
-        quantumStuff(false);
 
     }
 

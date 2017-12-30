@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class BloodyRecipeLoader implements Runnable {
     @Override
     public void run() {
+        //todo fix recipes (of assembler)
+
         //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),
@@ -377,7 +379,7 @@ public class BloodyRecipeLoader implements Runnable {
             GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(11),ItemList.Machine_IV_Centrifuge.get(32));
             GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_Centrifuge(12),ItemList.Machine_IV_Centrifuge.get(64));
         }
-        
+
         GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(6),ItemList.Machine_IV_ElectromagneticSeparator.get(1));
         try {
             GT_MetaTileEntity_EM_machine.registerBehaviour(new Behaviour_ElectromagneticSeparator(7),ItemList.valueOf("Machine_LuV_ElectromagneticSeparator").get(1));

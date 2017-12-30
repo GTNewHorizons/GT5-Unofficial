@@ -5,7 +5,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -911,7 +910,7 @@ public final class Util {
         return (testedValue&setBits)==setBits;
     }
 
-    public static class TT_ItemStack {
+    public static class TT_ItemStack implements Comparable<TT_ItemStack>{
         public final Item mItem;
         public final int mStackSize;
         public final int mMetaData;
@@ -925,40 +924,43 @@ public final class Util {
         public TT_ItemStack(ItemStack aStack) {
             if(aStack==null){
                 mItem=null;
-                mStackSize=0;
-                mMetaData=0;
+                mStackSize=mMetaData=0;
             }else{
                 mItem=aStack.getItem();
                 mStackSize=aStack.stackSize;
-                mMetaData=aStack.getItemDamage();
+                mMetaData=Items.feather.getDamage(aStack);
             }
         }
 
-        public TT_ItemStack(int aHashCode) {
-            this(GT_Utility.intToStack(aHashCode));
+        @Override
+        public int compareTo(TT_ItemStack o) {
+            if(mMetaData>o.mMetaData) return 1;
+            if(mMetaData<o.mMetaData) return -1;
+            if(mStackSize>o.mStackSize) return 1;
+            if(mStackSize<o.mStackSize) return -1;
+            if(mItem!=null && o.mItem!=null) return mItem.getUnlocalizedName().compareTo(o.mItem.getUnlocalizedName());
+            if(mItem==null && o.mItem==null) return 0;
+            if(mItem!=null) return 1;
+            return -1;
         }
 
-        public final ItemStack toStack() {
-            return this.mItem == null?null:new ItemStack(this.mItem, 1, this.mMetaData);
-        }
-
-        public final boolean isStackEqual(ItemStack aStack) {
-            return GT_Utility.areStacksEqual(this.toStack(), aStack);
-        }
-
-        public final boolean isStackEqual(GT_ItemStack aStack) {
-            return GT_Utility.areStacksEqual(this.toStack(), aStack.toStack());
-        }
-
+        @Override
         public boolean equals(Object aStack) {
             return aStack == this ||
                     (aStack instanceof TT_ItemStack &&
-                            (((TT_ItemStack) aStack).mItem == this.mItem &&
-                             ((TT_ItemStack) aStack).mMetaData == this.mMetaData));
+                            ((mItem==((TT_ItemStack) aStack).mItem) || ((TT_ItemStack) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
+                            ((TT_ItemStack) aStack).mStackSize == this.mStackSize &&
+                            ((TT_ItemStack) aStack).mMetaData == this.mMetaData);
         }
 
+        @Override
         public int hashCode() {
-            return GT_Utility.stackToInt(this.toStack());
+            return (mItem!=null?mItem.getUnlocalizedName().hashCode():0) ^ (mMetaData << 16) ^ (mStackSize<<24);
+        }
+
+        @Override
+        public String toString() {
+            return Integer.toString(hashCode())+' '+(mItem==null?"null":mItem.getUnlocalizedName())+' '+mMetaData+' '+mStackSize;
         }
     }
 }

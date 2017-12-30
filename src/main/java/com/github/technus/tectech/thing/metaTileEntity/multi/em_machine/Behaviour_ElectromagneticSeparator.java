@@ -25,7 +25,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         tier=(byte) desiredTier;
         ticks =Math.max(20,(1<<(12-desiredTier))*20);
         maxCapacity= dAtomDefinition.getSomethingHeavy().getMass()*(2<<tier);
-        maxCharge=144*(1<<(tier-6));
+        maxCharge=144*(1<<(tier-5));
         switch (tier){
             case 12:
                 precisionFull=1;
@@ -55,9 +55,13 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
                 precisionFull=12;
                 precisionMinimal =3;
                 break;
+            case 5:
+                precisionFull=24;
+                precisionMinimal =6;
+                break;
             default: precisionFull= precisionMinimal =Byte.MAX_VALUE;
         }
-        offsetMax=1<<(tier*2);
+        offsetMax=1<<((tier-8)<<1);
     }
 
     @Override
@@ -124,7 +128,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         }else if(offset>=-offsetMax){
             te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
-        }else if(offset<-offset){
+        }else if(offset<-offsetMax){
             te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
             check=false;
         }else {
@@ -137,27 +141,29 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
 
     @Override
     public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters) {
-
         cElementalInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
         cElementalInstanceStack[] stacks = input.values();
 
-        float inputMass = input.getMass();
+        double inputMass = 0;
+        for (cElementalInstanceStack stack : stacks) {
+            inputMass += Math.abs(stack.getMass());
+        }
         float excessMass = 0;
-        while (inputMass > maxCapacity || -inputMass > maxCapacity) {
+        while (inputMass > maxCapacity) {
             cElementalInstanceStack randomStack = stacks[TecTech.Rnd.nextInt(stacks.length)];
             int amountToRemove = TecTech.Rnd.nextInt((int) randomStack.getAmount()) + 1;
             randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);
             }
-            float mass = randomStack.getDefinition().getMass() * amountToRemove;
+            float mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
             excessMass += mass;
             inputMass -= mass;
         }
 
-        long totalCharge=input.getCharge();
+        long totalCharge=Math.abs(input.getCharge());
         if (totalCharge>maxCharge) return new MultiblockControl<>(excessMass);//AND THEN IT EXPLODES
 
         int mEut=(int)(((double)totalCharge/(double) maxCharge)*V[tier]);
@@ -170,15 +176,15 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             outputs[i] = new cElementalInstanceStackMap();
         }
 
+        double offsetIn=checkedAndFixedParameters[2];
         double precisionFullIn=checkedAndFixedParameters[0];
         double precisionMinimalIn=checkedAndFixedParameters[1];
-        double levelsCount=precisionFullIn-precisionMinimalIn+1;
-        double offset=checkedAndFixedParameters[2];
+        double levelsCountPlus1=precisionFullIn-precisionMinimalIn+1;
 
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage
         stacks = input.takeAllToNewMap().values();//cleanup stacks
         for(cElementalInstanceStack stack:stacks){
-            double charge=stack.definition.getCharge()-offset;
+            double charge=stack.definition.getCharge()-offsetIn;
             if(charge<precisionMinimalIn && charge>-precisionMinimalIn){
                 outputs[1].putReplace(stack);
             }else if(charge>=precisionFullIn){
@@ -186,7 +192,7 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             }else if(charge<=-precisionFullIn){
                 outputs[0].putReplace(stack);
             }else{
-                long amount=(long)(stack.amount*((Math.abs(charge)-precisionMinimalIn+1)/levelsCount));
+                long amount=(long)(stack.amount*((Math.abs(charge)-precisionMinimalIn+1)/levelsCountPlus1));//todo check
                 if(amount>=stack.amount){
                     if(charge>0){
                         outputs[2].putReplace(stack);
@@ -208,6 +214,6 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
             }
         }
 
-        return new MultiblockControl<>(outputs, mEut, 1, 0, 10000, mTicks, 0, excessMass);
+        return new MultiblockControl<>(outputs, mEut, 1+((int)Math.abs(offsetIn))/3, 0, 10000, mTicks, 0, excessMass);
     }
 }

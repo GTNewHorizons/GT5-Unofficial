@@ -346,7 +346,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
+    public static dHadronDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));

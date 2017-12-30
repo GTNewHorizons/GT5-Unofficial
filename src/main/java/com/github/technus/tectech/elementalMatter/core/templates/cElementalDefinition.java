@@ -25,11 +25,15 @@ public abstract class cElementalDefinition extends iElementalDefinition {
 
     protected static void addCreatorFromNBT(byte shortcutNBT, Method constructorFromNBT,byte classID) {
         if(nbtCreationBind.put(shortcutNBT, constructorFromNBT)!=null) {
-            throw new Error("Duplicate NBT shortcut! " + shortcutNBT);
+            throw new Error("Duplicate NBT shortcut! " + shortcutNBT + " used for NBT based creation");
         }
         if(!classSet.add(classID)) {
-            throw new Error("Duplicate Class ID! " + classID);
+            throw new Error("Duplicate Class ID! " + classID + " used for class comparison");
         }
+    }
+
+    public static Map<Byte, Method> getBindsComplex(){
+        return nbtCreationBind;
     }
 
     @Override
@@ -96,7 +100,7 @@ public abstract class cElementalDefinition extends iElementalDefinition {
     }
 
     @Override
-    public final cElementalDefinitionStack getStackForm(int i) {
+    public final cElementalDefinitionStack getStackForm(long i) {
         return new cElementalDefinitionStack(this,i);
     }
 

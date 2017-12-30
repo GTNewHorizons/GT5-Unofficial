@@ -1,19 +1,26 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.BitSet;
 import java.util.HashMap;
@@ -30,14 +37,24 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     public static final String machine = "EM Machinery";
 
     //region structure
-    private static final String[][] shape = new String[][]{{"B0", "A   ", "0 - 0", "A   ", "B0",}, {"A000", "00000", "00.00", "00000", "A000",}, {"A121", "1C1", "2C2", "1C1", "A121",}, {"A131", "1C1", "3C3", "1C1", "A131",}, {"A121", "1C1", "2C2", "1C1", "A121",}, {"A000", "00000", "00A00", "00000", "A000",}, {"B0", "A!!!", "0!\"!0", "A!!!", "B0",},};
+    private static final String[][] shape = new String[][]{
+            {"B0", "A   ", "0 - 0", "A   ", "B0",},
+            {"A000", "00000", "00.00", "00000", "A000",},
+            {"A121", "1C1", "2C2", "1C1", "A121",},
+            {"A131", "1C1", "3C3", "1C1", "A131",},
+            {"A121", "1C1", "2C2", "1C1", "A121",},
+            {"A000", "00000", "00A00", "00000", "A000",},
+            {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList", "addElementalInputToMachineList"};
-    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
-    private static final String[] description = new String[]{EnumChatFormatting.AQUA + "Hint Details:", "1 - Classic Hatches or High Power Casing", "2 - Elemental Hatches or Molecular Casing", "2 - Elemental Input Hatch",};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA + "Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "2 - Elemental Hatches or Molecular Casing",};
     //endregion
 
     public GT_MetaTileEntity_EM_machine(int aID, String aName, String aNameRegional) {
@@ -74,9 +91,41 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(aBaseMetaTileEntity.isServerSide()) {
+            quantumStuff(aBaseMetaTileEntity.isActive());
+        }
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if(aBaseMetaTileEntity.isActive() && (aTick & 0x2)==0 && aBaseMetaTileEntity.isClientSide()){
+            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2+aBaseMetaTileEntity.getXCoord();
+            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*2+aBaseMetaTileEntity.getYCoord();
+            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2+aBaseMetaTileEntity.getZCoord();
+            aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
+        }
+    }
+
+    @Override
+    public void onRemoval() {
+        quantumStuff(false);
+        super.onRemoval();
+    }
+
+    @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        Behaviour currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new GT_ItemStack(itemStack));
+        Behaviour currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new Util.TT_ItemStack(itemStack));
+        //TecTech.Logger.info("Looking for "+new Util.TT_ItemStack(itemStack).toString());
         if (currentBehaviour == null) {
+            setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(2,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(2,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(3,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterIn(3,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             return false;
         }
         //mux input
@@ -137,7 +186,15 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         mMaxProgresstime = control.getMaxProgressTime();
         eRequiredData = control.getRequiredData();
         mEfficiencyIncrease = control.getEffIncrease();
-        return polluteEnvironment(control.getPollutionToAdd());
+        boolean polluted=polluteEnvironment(control.getPollutionToAdd());
+        quantumStuff(polluted);
+        return polluted;
+    }
+
+    @Override
+    protected void afterRecipeCheckFailed() {
+        quantumStuff(false);
+        super.afterRecipeCheckFailed();
     }
 
     @Override
@@ -175,7 +232,14 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 outputEM[i] = null;
             }
         }
+        quantumStuff(false);
         //all other are handled by base multi block code - cleaning is automatic
+    }
+
+    @Override
+    public void stopMachine() {
+        quantumStuff(false);
+        super.stopMachine();
     }
 
     @Override
@@ -263,16 +327,33 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     private static final HashMap<Util.TT_ItemStack, Behaviour> map = new HashMap<>();
 
-    public static void registerBehaviour(Behaviour behaviour, Util.TT_ItemStack is) {
-        map.put(is, behaviour);
-    }
     public static void registerBehaviour(Behaviour behaviour, ItemStack is) {
         map.put(new Util.TT_ItemStack(is), behaviour);
+        TecTech.Logger.info("Registered EM machine behaviour "+behaviour.getClass().getSimpleName()+' '+new Util.TT_ItemStack(is).toString());
     }
 
     public interface Behaviour {
         boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix);
 
         MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters);
+    }
+
+    private void quantumStuff(boolean shouldExist){
+        IGregTechTileEntity base=getBaseMetaTileEntity();
+        if(base!=null && base.getWorld()!=null) {
+            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 2+base.getXCoord();
+            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 2+base.getYCoord();
+            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 2+base.getZCoord();
+            Block block = base.getWorld().getBlock(xDir, yDir, zDir);
+            if (shouldExist) {
+                if(block != null && block.getMaterial()== Material.air) {
+                    base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE, 0, 2);
+                }
+            } else {
+                if (block instanceof QuantumStuffBlock) {
+                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air, 0, 2);
+                }
+            }
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.core.commands.ListEM;
+import com.github.technus.tectech.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
@@ -97,6 +99,10 @@ public class TecTech {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
+        if(DEBUG_MODE) {
+            pEvent.registerServerCommand(new GiveEM());
+            pEvent.registerServerCommand(new ListEM());
+        }
     }
 
     @Mod.EventHandler

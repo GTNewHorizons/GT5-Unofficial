@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement by item quantization, implement instance quantization
+    public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             ItemStack[] inI = storedInputs.toArray(new ItemStack[storedInputs.size()]);
@@ -104,10 +104,10 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     //ITEM STACK quantization
                     aItemQuantizationInfo aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, true, null));
+                        aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, true, null));//todo check if works?
                     }
                     if (aIQI == null) {
-                        //ORE DICT quantization
+                        //ORE DICT quantization //todo fix for uranium?
                         int[] oreIDs = OreDictionary.getOreIDs(is);
                         for (int ID : oreIDs) {
                             if (DEBUG_MODE) {

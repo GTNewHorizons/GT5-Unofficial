@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by danie_000 on 24.12.2017.
@@ -98,21 +99,24 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
 
         cElementalInstanceStack[] stacks = input.values();
 
-        float inputMass = input.getMass();
+        double inputMass = 0;
+        for (cElementalInstanceStack stack : stacks) {
+            inputMass += Math.abs(stack.getMass());
+        }
         float excessMass = 0;
-        while (inputMass > maxCapacity || -inputMass > maxCapacity) {
+        while (inputMass > maxCapacity) {
             cElementalInstanceStack randomStack = stacks[TecTech.Rnd.nextInt(stacks.length)];
             int amountToRemove = TecTech.Rnd.nextInt((int) randomStack.getAmount()) + 1;
             randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);
             }
-            float mass = randomStack.getDefinition().getMass() * amountToRemove;
+            float mass = Math.abs(randomStack.getDefinition().getMass()) * amountToRemove;
             excessMass += mass;
             inputMass -= mass;
         }
 
-        inputMass = Math.abs(inputMass);
+        inputMass = Math.abs(input.getMass());
 
         double RCF = getRCF(checkedAndFixedParameters[0]);
         if (inputMass * RCF > maxForce) return new MultiblockControl<>(excessMass);//AND THEN IT EXPLODES
@@ -149,7 +153,13 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
             for (cElementalInstanceStack stack : stacks) {
                 absMassPerOutput += Math.abs(stack.getMass());
             }
+            if(DEBUG_MODE){
+                TecTech.Logger.info("absMass "+absMassPerOutput);
+            }
             absMassPerOutput /= fractionCount;
+            if(DEBUG_MODE){
+                TecTech.Logger.info("absMassPerOutput "+absMassPerOutput);
+            }
 
             nextFraction:
             for (int fraction = 0; fraction < fractionCount - 1; fraction++) {
@@ -157,7 +167,13 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
                 for (int stackNo = 0; stackNo < stacks.length; stackNo++) {
                     if (stacks[stackNo] != null) {
                         double stackMass = Math.abs(stacks[stackNo].getMass());
-                        long amount = (long) (Math.abs(stacks[stackNo].definition.getMass()) / remaining);
+                        long amount = (long) (remaining/Math.abs(stacks[stackNo].definition.getMass()));
+                        //if(DEBUG_MODE){
+                        //    TecTech.Logger.info("stackMass "+stackMass);
+                        //    TecTech.Logger.info("defMass "+stacks[stackNo].definition.getMass());
+                        //    TecTech.Logger.info("remaining "+remaining);
+                        //    TecTech.Logger.info("amountToMoveAvailable "+amount+"/"+stacks[stackNo].amount);
+                        //}
                         if (stackMass == 0) {
                             addRandomly(stacks[stackNo], outputs, fractionCount);
                             stacks[stackNo] = null;
@@ -170,6 +186,11 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
                             cElementalInstanceStack clone = stacks[stackNo].clone();
                             clone.amount = amount;
                             outputs[fraction].putReplace(clone);
+                            stacks[stackNo].amount-=amount;
+                            //if(DEBUG_MODE){
+                            //    TecTech.Logger.info("remainingAfter "+remaining);
+                            //    TecTech.Logger.info("amountCloneAfter "+clone.amount+"/"+stacks[stackNo].amount);
+                            //}
                         } else {
                             continue nextFraction;
                         }
