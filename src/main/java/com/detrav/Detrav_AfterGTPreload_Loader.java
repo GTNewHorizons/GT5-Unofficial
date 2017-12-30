@@ -1,11 +1,7 @@
 package com.detrav;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.items.processing.*;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
+import com.detrav.items.processing.ProcessingDetravToolProPick;
 
 /**
  * Created by wital_000 on 18.03.2016.

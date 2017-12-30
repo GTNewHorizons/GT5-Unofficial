@@ -1,20 +1,9 @@
 package com.detrav.proxies;
 
-import com.detrav.DetravScannerMod;
-
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.gui.DetravGuiProPick;
-import com.detrav.items.DetravMetaGeneratedTool01;
 import cpw.mods.fml.common.network.IGuiHandler;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**

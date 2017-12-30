@@ -1,6 +1,5 @@
 package com.detrav;
 
-import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
 import com.detrav.net.DetravNetwork;
@@ -10,7 +9,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.3";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 

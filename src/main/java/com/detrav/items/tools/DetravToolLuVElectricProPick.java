@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class DetravToolLVElectricProPick implements IToolStats {
+public class DetravToolLuVElectricProPick implements IToolStats {
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
     }

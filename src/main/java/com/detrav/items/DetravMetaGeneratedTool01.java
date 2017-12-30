@@ -2,8 +2,9 @@ package com.detrav.items;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravToolDictNames;
-import com.detrav.items.tools.*;
-import com.detrav.utils.DetravCreativeTab;
+import com.detrav.items.tools.DetravToolLuVElectricProPick;
+import com.detrav.items.tools.DetravToolUVElectricProPick;
+import com.detrav.items.tools.DetravToolZPMElectricProPick;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IToolStats;
@@ -14,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ObjectIntIdentityMap;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
@@ -28,9 +28,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolLuVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolZPMElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolUVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
 
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }

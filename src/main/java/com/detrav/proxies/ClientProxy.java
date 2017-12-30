@@ -3,10 +3,8 @@ package com.detrav.proxies;
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.Textures01;
 import com.detrav.gui.DetravGuiProPick;
-import gregtech.api.enums.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by wital_000 on 19.03.2016.

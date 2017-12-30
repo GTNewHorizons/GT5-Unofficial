@@ -7,15 +7,16 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class DetravToolMVElectricProPick extends DetravToolLVElectricProPick {
+public class DetravToolUVElectricProPick extends DetravToolZPMElectricProPick {
     public int getBaseQuality() {
-        return 1;
+        return 2;
     }
+
     public float getMaxDurabilityMultiplier() {
-        return 2.0F;
+        return 4.0F;
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[1];
+        return Textures01.mTextures[2];
     }
 }

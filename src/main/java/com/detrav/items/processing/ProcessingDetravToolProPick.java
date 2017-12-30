@@ -1,13 +1,12 @@
 package com.detrav.items.processing;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
+import com.dreammaster.gthandler.CustomItemList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.item.ItemStack;
-import com.dreammaster.gthandler.CustomItemList;
 
 /**
  * Created by wital_000 on 18.03.2016.

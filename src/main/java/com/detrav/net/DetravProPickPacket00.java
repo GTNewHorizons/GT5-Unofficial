@@ -9,9 +9,6 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
