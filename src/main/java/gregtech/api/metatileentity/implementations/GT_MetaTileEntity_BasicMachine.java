@@ -109,11 +109,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mGUIName = aGUIName;
         mNEIName = aNEIName;
     }
+
+    protected boolean isValidMainFacing(byte aSide) {
+    	return aSide > 1;
+    }
     
-    public boolean setMainFacing(byte aDirection){
-    	mMainFacing = aDirection;
+    public boolean setMainFacing(byte aSide){
+    	if (!isValidMainFacing(aSide)) return false;
+    	mMainFacing = aSide;
     	if(getBaseMetaTileEntity().getFrontFacing() == mMainFacing){
-    		getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aDirection));
+    		getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aSide));
     	}
         onFacingChange();
         onMachineBlockUpdate();
