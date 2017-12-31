@@ -1557,7 +1557,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144), dust, Materials.Uranium235,1);
 
-            TecTech.Logger.info("Diff Mass U : "+(temp.getMass()-tempMass));
+            TecTech.Logger.info("Diff Mass U : "+(tempMass-temp.getMass()));
 
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),

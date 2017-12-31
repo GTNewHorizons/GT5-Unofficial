@@ -37,6 +37,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3, hadron_p5;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
+    private static final float actualProtonMass=938272081.3f;
+    private static final float actualNeutronMass=939565413.3f;
 
     //float-mass in eV/c^2
     public final float mass;
@@ -97,22 +99,24 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         this.charge = charge;
         this.type = containsAnti ? (byte) -type : (byte) type;
         int mult = this.amount * this.amount * (this.amount - 1);
-        this.mass = mass * 5.543F * (float) mult;//yes it becomes heavier
+        mass = mass * 5.543F * (float) mult;//yes it becomes heavier
 
-        if (this.mass == protonMass && this.amount == 3) {
+        if (mass == protonMass && this.amount == 3) {
             rawLifeTime = iElementalDefinition.STABLE_RAW_LIFE_TIME;
-        } else if (this.mass == neutronMass && this.amount == 3) {
+            mass=actualProtonMass;
+        } else if (mass == neutronMass && this.amount == 3) {
             rawLifeTime = 882F;
+            mass=actualNeutronMass;
         } else {
             if (this.amount == 3) {
-                rawLifeTime = 1.34F / this.mass * (float) Math.pow(9.81, charge);
+                rawLifeTime = 1.34F / mass * (float) Math.pow(9.81, charge);
             } else if (this.amount == 2) {
-                rawLifeTime = 1.21F / this.mass / (float) Math.pow(19.80, charge);
+                rawLifeTime = 1.21F / mass / (float) Math.pow(19.80, charge);
             } else {
-                rawLifeTime = 1.21F / this.mass / (float) Math.pow(9.80, charge);
+                rawLifeTime = 1.21F / mass / (float) Math.pow(9.80, charge);
             }
         }
-
+        this.mass=mass;
         hash=super.hashCode();
     }
 
