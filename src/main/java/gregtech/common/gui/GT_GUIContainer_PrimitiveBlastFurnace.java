@@ -5,13 +5,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GT_GUIContainer_PrimitiveBlastFurnace extends GT_GUIContainerMetaTile_Machine {
-    private String name;
-
-    public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity, String name) {
-        super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity),
-                String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
-        this.name = name;
-    }
+	private String name;
+	public String mNEI;
+	
+	public GT_GUIContainer_PrimitiveBlastFurnace(InventoryPlayer inventoryPlayer, IGregTechTileEntity tileEntity, String name, String aNEI) {
+		super(new GT_Container_PrimitiveBlastFurnace(inventoryPlayer, tileEntity), 
+				String.format("gregtech:textures/gui/%s.png", name.replace(" ", "")));
+		this.name = name;
+		this.mNEI = aNEI;
+	}
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(name, 8, 4, 4210752);
