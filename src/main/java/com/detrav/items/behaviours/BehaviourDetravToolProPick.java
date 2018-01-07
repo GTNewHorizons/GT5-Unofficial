@@ -75,7 +75,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             if (aTileEntity instanceof GT_TileEntity_Ores) {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
                 short meta = gt_entity.getMetaData();
-                String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"), meta);
+                String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"), meta%1000);
                 addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode)
                     aItem.doDamage(aStack, this.mCosts);
@@ -115,7 +115,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                 tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
                                 try {
                                     String name = Materials.getLocalizedNameForItem(
-                                    		GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID);
+                                    		GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID%1000);
                                     if (name.startsWith("Small")) if (data != 1) continue;
                                     if (name.startsWith("Small")) if(data!=1) continue;
                                     if (!ores.containsKey(name))
@@ -145,7 +145,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                         tMetaID = (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
                                         
                                         String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(
-                                                "gt.blockores." + tMetaID + ".name"), tMetaID);
+                                                "gt.blockores." + tMetaID + ".name"), tMetaID%1000);
                                         if (!ores.containsKey(name))
                                             ores.put(name, 1);
                                         else {
