@@ -594,12 +594,12 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-    	return isConnectedAtSide(aSide) && !isInputDisabledAtSide(aSide);
+    	return !isInputDisabledAtSide(aSide);
     }
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-    	return isConnectedAtSide(aSide);
+    	return true;
     }
 
     public boolean isInputDisabledAtSide(int aSide) {
