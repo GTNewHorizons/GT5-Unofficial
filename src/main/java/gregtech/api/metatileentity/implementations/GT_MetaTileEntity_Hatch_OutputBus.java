@@ -4,6 +4,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
@@ -110,8 +111,16 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick&0x7)==0) {
-            IInventory tTileEntity =aBaseMetaTileEntity.getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if(tTileEntity!=null){
+            byte aSide = aBaseMetaTileEntity.getFrontFacing();
+            IInventory tTileEntity = aBaseMetaTileEntity.getIInventoryAtSide(aSide);
+            byte tSide = GT_Utility.getOppositeSide(aSide);
+            boolean tIsPipe = tTileEntity instanceof BaseMetaPipeEntity && ((BaseMetaPipeEntity)tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Item ;
+
+            // We're connected if the tile entity isn't null, and the tile entity isn't a pipe, or it is a pipe and the pipe is connected in this direction 
+            boolean tIsConnected = tTileEntity != null && (!tIsPipe || (tIsPipe && 
+            		((GT_MetaPipeEntity_Item) ((BaseMetaPipeEntity)tTileEntity).getMetaTileEntity()).isConnectedAtSide(tSide) ));
+
+            if(tTileEntity != null && tIsConnected) {
                 for (ItemStack aMInventory : mInventory)
                     GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity,
                             aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(),

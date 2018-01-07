@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
@@ -82,8 +83,16 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick&0x7)==0) {
-            IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
-            if (tTileEntity != null) {
+            byte aSide = aBaseMetaTileEntity.getFrontFacing();
+            IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(aSide);
+            byte tSide = GT_Utility.getOppositeSide(aSide);
+            boolean tIsPipe = tTileEntity instanceof BaseMetaPipeEntity && ((BaseMetaPipeEntity)tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Fluid ;
+
+            // We're connected if the tile entity isn't null, and the tile entity isn't a pipe, or it is a pipe and the pipe is connected in this direction 
+            boolean tIsConnected = tTileEntity != null && (!tIsPipe || (tIsPipe && 
+            		((GT_MetaPipeEntity_Fluid) ((BaseMetaPipeEntity)tTileEntity).getMetaTileEntity()).isConnectedAtSide(tSide) ));
+            
+            if (tTileEntity != null && tIsConnected) {
                 for (boolean temp = true; temp && mFluid != null; ) {
                     temp = false;
                     FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()), Math.max(1, mFluid.amount), false);
