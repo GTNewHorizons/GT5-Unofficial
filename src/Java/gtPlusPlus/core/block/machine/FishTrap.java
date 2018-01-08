@@ -5,7 +5,9 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.util.inventory.InventoryUtils;
@@ -22,7 +24,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class FishTrap extends BlockContainer
+public class FishTrap extends BlockContainer implements ITileTooltip
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon textureTop;
@@ -31,6 +33,15 @@ public class FishTrap extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	private IIcon textureFront;
 
+	/**
+	 * Determines which tooltip is displayed within the itemblock.
+	 */
+	private final int mTooltipID = 0;
+
+	@Override
+	public int getTooltipID() {
+		return this.mTooltipID;
+	}
 
 	@SuppressWarnings("deprecation")
 	public FishTrap()
@@ -38,7 +49,7 @@ public class FishTrap extends BlockContainer
 		super(Material.iron);
 		this.setBlockName("blockFishTrap");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, "blockFishTrap");
+		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockFishTrap");
 		LanguageRegistry.addName(this, "Fish Catcher");
 
 	}

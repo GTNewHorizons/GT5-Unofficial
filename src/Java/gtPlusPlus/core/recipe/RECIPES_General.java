@@ -122,6 +122,15 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for the Fish Trap.");
 		}
 
+		//Mining Explosive
+		if (RecipeUtils.recipeBuilder(
+				CI.explosiveITNT, CI.explosiveTNT, CI.explosiveITNT,
+				CI.explosiveTNT, "frameGtWroughtIron", CI.explosiveTNT,
+				"dustSulfur", CI.explosiveTNT, "dustSulfur",
+				ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive))){
+			Logger.INFO("Added a recipe for Mining Explosives.");
+		}
+
 
 		//Alkalus Coin
 		if (RecipeUtils.recipeBuilder(

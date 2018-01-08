@@ -5,8 +5,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import net.minecraft.block.BlockContainer;
@@ -19,7 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Machine_ModularityTable extends BlockContainer
+public class Machine_ModularityTable extends BlockContainer implements ITileTooltip
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon textureTop;
@@ -28,13 +30,23 @@ public class Machine_ModularityTable extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	private IIcon textureFront;
 
+	/**
+	 * Determines which tooltip is displayed within the itemblock.
+	 */
+	private final int mTooltipID = 1;
+
+	@Override
+	public int getTooltipID() {
+		return this.mTooltipID;
+	}
+
 	@SuppressWarnings("deprecation")
 	public Machine_ModularityTable()
 	{
 		super(Material.iron);
 		this.setBlockName("blockModularity");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, "blockModularity");
+		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockModularity");
 		LanguageRegistry.addName(this, "Modularity Configurator");
 
 	}

@@ -11,6 +11,9 @@ import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import ic2.core.Ic2Items;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class CI {
@@ -162,8 +165,26 @@ public class CI {
 	public static String craftingToolCrowbar = "craftingToolCrowbar";
 	public static String craftingToolWireCutter = "craftingToolWirecutter";
 	public static String craftingToolSolderingIron = "craftingToolSolderingIron";
+	
+	//Explosives
+	public static ItemStack explosivePowderKeg;
+	public static ItemStack explosiveTNT;
+	public static ItemStack explosiveITNT;
 
 	public static void Init(){
+		
+		//Set Explosives
+		if (ItemList.valueOf("Block_Powderbarrel") != null){
+			explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1);
+		}
+		else {
+			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder);
+		}
+		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt);
+		explosiveITNT = Ic2Items.industrialTnt.copy();
+		
+		
+		
 
 		//Tiered Components
 		component_Plate = new String[]{

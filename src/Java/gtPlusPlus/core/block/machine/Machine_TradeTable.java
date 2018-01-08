@@ -3,6 +3,7 @@ package gtPlusPlus.core.block.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BlockBaseNBT;
 import gtPlusPlus.core.lib.CORE;
@@ -16,7 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Machine_TradeTable extends BlockBaseNBT
+public class Machine_TradeTable extends BlockBaseNBT  implements ITileTooltip
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon textureTop;
@@ -24,6 +25,16 @@ public class Machine_TradeTable extends BlockBaseNBT
 	private IIcon textureBottom;
 	@SideOnly(Side.CLIENT)
 	private IIcon textureFront;
+
+	/**
+	 * Determines which tooltip is displayed within the itemblock.
+	 */
+	private final int mTooltipID = 2;
+
+	@Override
+	public int getTooltipID() {
+		return this.mTooltipID;
+	}
 
 	public Machine_TradeTable(){
 		super(Material.leaves, "blockTradeBench", "Trade-o-Mat");

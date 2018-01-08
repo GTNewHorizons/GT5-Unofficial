@@ -51,7 +51,7 @@ public class ItemUtils {
 	public static ItemStack getSimpleStack(final Item x, final int i){
 		try {
 			final ItemStack r = new ItemStack(x, i);
-			return r;
+			return r.copy();
 		} catch(final Throwable e){
 			return null;
 		}

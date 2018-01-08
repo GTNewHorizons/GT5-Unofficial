@@ -6,8 +6,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
@@ -26,7 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
-public class Machine_ProjectTable extends BlockContainer
+public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
 {
 	@SideOnly(Side.CLIENT)
 	private IIcon textureTop;
@@ -35,13 +37,23 @@ public class Machine_ProjectTable extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	private IIcon textureFront;
 
+	/**
+	 * Determines which tooltip is displayed within the itemblock.
+	 */
+	private final int mTooltipID = 3;
+
+	@Override
+	public int getTooltipID() {
+		return this.mTooltipID;
+	}
+
 	@SuppressWarnings("deprecation")
 	public Machine_ProjectTable()
 	{
 		super(Material.iron);
 		this.setBlockName("blockProjectBench");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, "blockProjectBench");
+		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockProjectBench");
 		LanguageRegistry.addName(this, "Project Workbench");
 
 	}
