@@ -8,14 +8,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderTNTPrimed;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class RenderMiningExplosivesPrimed extends Render {
+public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 	private final RenderBlocks blockRenderer = new RenderBlocks();
 
 	public RenderMiningExplosivesPrimed(){

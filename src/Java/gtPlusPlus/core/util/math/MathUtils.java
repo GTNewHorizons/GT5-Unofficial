@@ -4,9 +4,11 @@ import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.CSPRNG;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 
 public class MathUtils {
 
@@ -23,7 +25,7 @@ public class MathUtils {
 	public static int randInt(final int min, final int max) {
 
 		// Usually this can be a field rather than a method variable
-		final Random rand = new XSTR();
+		final Random rand = CSPRNG.generate(CORE.RANDOM);
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -50,7 +52,7 @@ public class MathUtils {
 	 */
 	public static long randLong(final long min, final long max) {
 		// Usually this can be a field rather than a method variable
-		final Random rand = new XSTR();
+		final Random rand = CSPRNG.generate(CORE.RANDOM);
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -81,7 +83,7 @@ public class MathUtils {
 	 */
 	public static double randDouble(final double min, final double max) {
 		// Usually this can be a field rather than a method variable
-		final Random rand = new XSTR();
+		final Random rand = CSPRNG.generate(CORE.RANDOM);
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -111,7 +113,7 @@ public class MathUtils {
 	 */
 	public static float randFloat(final float min, final float max) {
 		// Usually this can be a field rather than a method variable
-		final Random rand = new XSTR();
+		final Random rand = CSPRNG.generate(CORE.RANDOM);
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive

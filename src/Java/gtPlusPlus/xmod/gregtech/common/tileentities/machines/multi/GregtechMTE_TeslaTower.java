@@ -29,6 +29,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -308,15 +310,20 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 								if (!((Entity) r).getUniqueID().equals(getOwner())){
 									if (((Entity) r).isEntityAlive() || r instanceof EntityLiving){
 										if (((Entity) r).getDistance(this.xLoc, this.yLoc, this.zLoc) <= this.mRange){
-											if (!this.mMode){
-												mInRange.put(new Pair<Long, Long>(((Entity) r).getUniqueID().getMostSignificantBits(), ((Entity) r).getUniqueID().getLeastSignificantBits()), (Entity) r);
+											if (r instanceof EntityItem){
+												//Do nothing
 											}
 											else {
-												if (r instanceof EntityPlayer){
+												if (!this.mMode){
 													mInRange.put(new Pair<Long, Long>(((Entity) r).getUniqueID().getMostSignificantBits(), ((Entity) r).getUniqueID().getLeastSignificantBits()), (Entity) r);
 												}
+												else {
+													if (r instanceof EntityPlayer){
+														mInRange.put(new Pair<Long, Long>(((Entity) r).getUniqueID().getMostSignificantBits(), ((Entity) r).getUniqueID().getLeastSignificantBits()), (Entity) r);
+													}
+												}
 											}
-											}
+										}
 									}
 								}
 							}
@@ -358,10 +365,13 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 
 									if (f.isEntityAlive() && !f.getUniqueID().equals(getOwner())){
 										//if (world.canLightningStrikeAt(j1, l1+1, k1)){
-											if (isEnergyEnough() && world.addWeatherEffect(new EntityTeslaTowerLightning(world, (double)j1, (double)l1, (double)k1))){								
+										//if (isEnergyEnough() && world.addWeatherEffect(new EntityTeslaTowerLightning(world, (double)j1, (double)l1, (double)k1))){								
+										if (isEnergyEnough() && world.addWeatherEffect(new EntityTeslaTowerLightning(world, (double)j1, (double)l1, (double)k1, f, getOwner()))){	
+											if (f == null || f.isDead || !f.isEntityAlive()){
 												this.mInRange.remove(new Pair<Long, Long>(f.getUniqueID().getMostSignificantBits(),  f.getUniqueID().getLeastSignificantBits()));
-												this.setEUVar(this.getEUVar()-5000000);
 											}
+											this.setEUVar(this.getEUVar()-5000000);
+										}
 										//}
 									}
 

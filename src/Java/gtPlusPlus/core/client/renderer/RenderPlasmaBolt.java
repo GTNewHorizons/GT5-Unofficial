@@ -30,7 +30,7 @@ public class RenderPlasmaBolt extends Render {
 	 */
 	public void doRender(EntityTeslaTowerLightning p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_,
 			float p_76986_8_, float p_76986_9_) {
-		Logger.INFO("Render 1");
+		Logger.INFO("Render Plasma. 1");
 		Tessellator tessellator = Tessellator.instance;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -126,7 +126,6 @@ public class RenderPlasmaBolt extends Render {
 				}
 			}
 		}
-
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -145,6 +144,7 @@ public class RenderPlasmaBolt extends Render {
 	 * unless you call Render.bindEntityTexture.
 	 */
 	protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
+		Logger.INFO("Render  Plasma. 5");
 		return this.getEntityTexture((EntityTeslaTowerLightning) p_110775_1_);
 	}
 
@@ -158,7 +158,7 @@ public class RenderPlasmaBolt extends Render {
 	 */
 	public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
 			float p_76986_9_) {
-		Logger.INFO("Render 2");
+		Logger.INFO("Render  Plasma. 2");
 		this.doRender((EntityTeslaTowerLightning) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_,
 				p_76986_9_);
 	}

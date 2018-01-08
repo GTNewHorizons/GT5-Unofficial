@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.GregTech_API;
+import gtPlusPlus.api.objects.CSPRNG;
+import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.geo.GeoUtils;
@@ -13,7 +15,6 @@ import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
-import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
@@ -32,7 +33,7 @@ public class CORE {
 
 	//Math Related
 	public static final float PI = (float) Math.PI;
-	public static volatile Random RANDOM = new XSTR();
+	public static volatile Random RANDOM = CSPRNG.generate(new XSTR());
 
 	//Env. Variables
 	public static Configuration Config;

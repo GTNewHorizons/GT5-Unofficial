@@ -106,7 +106,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		Logger.INFO("Registering Custom Renderer for Sulfuric potion.");
 		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderSnowball(ModItems.itemSulfuricPotion));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHydrofluoricAcidPotion.class, new RenderSnowball(ModItems.itemHydrofluoricPotion));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderLightningBolt());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
 		
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
