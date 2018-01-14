@@ -134,6 +134,9 @@ public enum Element {
     Og(118, 176, 0, -1, null, "Oganesson", false),
     Tn(125, 198, 0, -1, null, "Tritanium", false),
 
+    De(22, 27, 0, -1, null, "Desh", false), 
+    Oh(76, 125, 0, -1, null, "Oriharukon", false),
+       
     Ma(0, 0, 100, -1, null, "Magic", false),
     Nt(0, 100000, 0, -1, null, "Neutronium", false),
 
@@ -261,6 +264,9 @@ public enum Element {
     $Ts(-117, -177, 0, -1, null, "Anti-Tenness", false),
     $Og(-118, -176, 0, -1, null, "Anti-Oganesson", false),
     $Tn(-125, -198, 0, -1, null, "Anti-Tritanium", false),
+    
+    $De(-22, -27, 0, -1, null, "Anti-Desh", true), 
+    $Oh(-76, -125, 0, -1, null, "Anti-Oriharukon", true),
 
     $Ma(0, 0, -100, -1, null, "Anti-Magic", false),
     $Nt(0, -10000, 0, -1, null, "Anti-Neutronium", false);
