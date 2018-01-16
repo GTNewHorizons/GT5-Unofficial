@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Vec3pos;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -21,11 +22,13 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;
@@ -53,6 +56,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
+
+    @SideOnly(Side.CLIENT)
+    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_lo_freq");
+    @SideOnly(Side.CLIENT)
+    private SoundLoop activitySoundLoop;
 
     protected ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
@@ -982,6 +990,27 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
                 aMuffler.getBaseMetaTileEntity().setActive(active);
+            }
+        }else{
+            soundMagic(getActivitySound());
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return activitySound;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void soundMagic(ResourceLocation activitySound){
+        if(getBaseMetaTileEntity().isActive()){
+            if(activitySoundLoop==null){
+                activitySoundLoop =new SoundLoop(activitySound,getBaseMetaTileEntity(),false,true);
+                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+            }
+        }else {
+            if(activitySoundLoop!=null) {
+                activitySoundLoop = null;
             }
         }
     }

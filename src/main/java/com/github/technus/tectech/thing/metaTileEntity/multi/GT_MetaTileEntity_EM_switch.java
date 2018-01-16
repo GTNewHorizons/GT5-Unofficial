@@ -2,11 +2,14 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Vec3pos;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.dataFramework.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,6 +18,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.V;
@@ -35,7 +39,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     private static final Block[] blockType = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{3};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
-    private static final short[] casingTextures = new short[]{textureOffset};
+    private static final short[] casingTextures = new short[]{textureOffset+1};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
@@ -50,6 +54,15 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     public GT_MetaTileEntity_EM_switch(String aName) {
         super(aName);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_hi_freq");
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return activitySound;
     }
 
     @Override
@@ -166,14 +179,14 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
         double weight, dest;
         for (int i = 0; i < 10; i++) {
             weight = getParameterIn(i, 0);
-            if (weight <= 0) {
+            if (weight < 0) {
                 setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
                 setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             } else if (Double.isNaN(weight)) {
                 setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
                 setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
             } else {
-                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                setStatusOfParameterIn(i, 0, weight==0?STATUS_LOW:GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 dest = getParameterIn(i, 1);
                 if (dest < 0) {
                     setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);

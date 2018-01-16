@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Uncertainty;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,6 +53,8 @@ public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
             GT_MetaTileEntity_Hatch_Uncertainty catH = (GT_MetaTileEntity_Hatch_Uncertainty) mTileEntity.getMetaTileEntity();
             if (aSlotIndex < 16 && catH.matrix != null) {
+                IGregTechTileEntity base=catH.getBaseMetaTileEntity();
+                TecTech.proxy.playSound(base,"fx_click");
                 if (catH.selection == -1) {
                     catH.selection = (byte) aSlotIndex;
                 } else {

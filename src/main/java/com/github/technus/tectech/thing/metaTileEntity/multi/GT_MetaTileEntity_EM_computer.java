@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,12 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         super(aName);
         eCertainMode = 5;
         eCertainStatus = -128;//no-brain value
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return GT_MetaTileEntity_EM_switch.activitySound;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.github.technus.tectech.thing.item.gui;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -140,6 +143,13 @@ public class ScanDisplayScreen extends GuiScreen {
                 glDisable(GL_BLEND);
                 glEnable(GL_BLEND);
             }
+        }
+
+        //play cool sound fx
+        @Override
+        public void func_146113_a(SoundHandler soundHandler)
+        {
+            soundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(Reference.MODID+":fx_click"), 1.0F));
         }
     }
 }

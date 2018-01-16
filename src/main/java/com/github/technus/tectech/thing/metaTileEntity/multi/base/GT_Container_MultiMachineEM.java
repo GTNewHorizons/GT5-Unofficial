@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import com.github.technus.tectech.TecTech;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,31 +49,35 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_MultiblockBase_EM mte = (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity();
+            IGregTechTileEntity base = mte.getBaseMetaTileEntity();
             switch (aSlotIndex) {
                 case 1:
                     if(ePowerPassButton) {
-                        base.ePowerPass ^= true;
+                        TecTech.proxy.playSound(base,"fx_click");
+                        mte.ePowerPass ^= true;
                         if (!allowedToWorkButton) {//TRANSFORMER HACK
-                            if (base.ePowerPass) {
-                                base.getBaseMetaTileEntity().enableWorking();
+                            if (mte.ePowerPass) {
+                                mte.getBaseMetaTileEntity().enableWorking();
                             } else {
-                                base.getBaseMetaTileEntity().disableWorking();
+                                mte.getBaseMetaTileEntity().disableWorking();
                             }
                         }
                     }
                     break;
                 case 2:
                     if(eSafeVoidButton) {
-                        base.eSafeVoid ^= true;
+                        TecTech.proxy.playSound(base,"fx_click");
+                        mte.eSafeVoid ^= true;
                     }
                     break;
                 case 3:
                     if(allowedToWorkButton) {
-                        if (base.getBaseMetaTileEntity().isAllowedToWork()) {
-                            base.getBaseMetaTileEntity().disableWorking();
+                        TecTech.proxy.playSound(base,"fx_click");
+                        if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
+                            mte.getBaseMetaTileEntity().disableWorking();
                         } else {
-                            base.getBaseMetaTileEntity().enableWorking();
+                            mte.getBaseMetaTileEntity().enableWorking();
                         }
                     }
                     break;

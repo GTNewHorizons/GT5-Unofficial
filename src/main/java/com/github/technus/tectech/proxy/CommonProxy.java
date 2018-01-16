@@ -40,4 +40,6 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void printInchat(String... strings){}
+
+    public void playSound(IGregTechTileEntity base,String name){}
 }

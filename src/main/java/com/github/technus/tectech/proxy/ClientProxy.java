@@ -1,6 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
@@ -106,5 +107,10 @@ public class ClientProxy extends CommonProxy {
         for (String s : strings) {
             chat.printChatMessage(new ChatComponentText(s));
         }
+    }
+
+    @Override
+    public void playSound(IGregTechTileEntity base,String name) {
+        base.getWorld().playSoundEffect(base.getXCoord(),base.getYCoord(),base.getZCoord(), Reference.MODID+':'+name, 1, 1);
     }
 }

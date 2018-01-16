@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -181,6 +182,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     doStuff = false;
             }
             if (doStuff) {
+                IGregTechTileEntity base=paramH.getBaseMetaTileEntity();
+                TecTech.proxy.playSound(base,"fx_click");
                 if(columnPointer>=32) {
                     columnPointer = 31;
                 } else if(columnPointer<0) {
