@@ -263,8 +263,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             }
 
             if (mLastReceivedFrom == oLastReceivedFrom) {
-                ConcurrentHashMap<IFluidHandler, ForgeDirection> tTanks = new ConcurrentHashMap<IFluidHandler, ForgeDirection>();
-                
+                ArrayList<IFluidHandler> tTanksList = new ArrayList<>();
+                ArrayList<ForgeDirection> tDirectionsList = new ArrayList<>();
                 for (byte tSide = 0, uSide = 0, i = 0, j = (byte) aBaseMetaTileEntity.getRandomNumber(6); i < 6; i++) {
                 	tSide = (byte) ((i + j) % 6);
                 	uSide = GT_Utility.getOppositeSide(tSide);
@@ -277,38 +277,102 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 		case 0:
                 			disconnect(tSide); break;
                 		case 2:
-                			if ((mLastReceivedFrom & (1 << tSide)) == 0)
-                				tTanks.put(tTank, ForgeDirection.getOrientation(tSide).getOpposite()); break;
-                		}
-                	}
+                            if ((mLastReceivedFrom & (1 << tSide)) == 0) {
+                                tTanksList.add(tTank);
+                                tDirectionsList.add(ForgeDirection.getOrientation(tSide).getOpposite());
+                            }
+                        }
+                    }
                 }
                 if (GT_Mod.gregtechproxy.gt6Pipe) mCheckConnections = false;
                 
                 for (int i = 0, j = aBaseMetaTileEntity.getRandomNumber(mPipeAmount); i < mPipeAmount; i++) {
-                	int index = (i + j) % mPipeAmount;
-                	if (mFluids[index] != null && mFluids[index].amount > 0) {
-                        int tAmount = Math.max(1, Math.min(mCapacity * 10, mFluids[index].amount / 2)), tSuccessfulTankAmount = 0;
+                    int index = (i + j) % mPipeAmount;
+                    if (mFluids[index] != null && mFluids[index].amount > 0) {
+                        int tAmount = Math.max(1, Math.min(mCapacity * 10, mFluids[index].amount));
 
-                        for (Entry<IFluidHandler, ForgeDirection> tEntry : tTanks.entrySet())
-                            if (tEntry.getKey().fill(tEntry.getValue(), drainFromIndex(tAmount, false, index), false) > 0)
-                                tSuccessfulTankAmount++;
+                        List<Integer> tTankAmounts = new ArrayList<Integer>();
+                        int totalFreeAmount = 0;
+                        int totalOverAmount = 0;
 
-                        if (tSuccessfulTankAmount > 0) {
-                            if (tAmount >= tSuccessfulTankAmount) {
-                                tAmount /= tSuccessfulTankAmount;
-                                for (Entry<IFluidHandler, ForgeDirection> tTileEntity : tTanks.entrySet()) {
-                                    if (mFluids[index] == null || mFluids[index].amount <= 0) break;
-                                    int tFilledAmount = tTileEntity.getKey().fill(tTileEntity.getValue(), drain(tAmount, false), false);
-                                    if (tFilledAmount > 0)
-                                        tTileEntity.getKey().fill(tTileEntity.getValue(), drainFromIndex(tFilledAmount, true, index), true);
+                        // Calculating of amounts by fullness of consumers
+                        for (int tankIndex = 0; tankIndex < tTanksList.size(); tankIndex++) {
+                            IFluidHandler tTileEntity = tTanksList.get(tankIndex);
+                            ForgeDirection dir = tDirectionsList.get(tankIndex);
+                            FluidTankInfo[] tTankInfoList = tTileEntity.getTankInfo(dir.getOpposite());
+                            tTankAmounts.add(0);
+
+                            FluidTankInfo successfulTankInfo = null;
+                            for (FluidTankInfo tankInfo : tTankInfoList) {
+                                // Empty tank
+                                if (successfulTankInfo == null && tankInfo.fluid == null)
+                                    successfulTankInfo = tankInfo;
+                                // Tank with equal fluid
+                                if (tankInfo.fluid == null || !tankInfo.fluid.isFluidEqual(mFluids[index])) continue;
+                                successfulTankInfo = tankInfo;
+                                break;
+                            }
+                            if (successfulTankInfo != null) {
+                                tTankAmounts.set(tankIndex, (successfulTankInfo.fluid != null)
+                                        ? successfulTankInfo.capacity - successfulTankInfo.fluid.amount
+                                        : successfulTankInfo.capacity);
+                            }
+
+                            totalFreeAmount += tTankAmounts.get(tankIndex);
+                        }
+
+                        // Accounting of proportions
+                        if (totalFreeAmount > tAmount) {
+                            for (int tankIndex = 0; tankIndex < tTanksList.size(); tankIndex++) {
+                                double tankAmount = (double)tTankAmounts.get(tankIndex);
+                                tTankAmounts.set(tankIndex, (int)Math.floor(tankAmount * tAmount / totalFreeAmount));
+                                totalOverAmount += tTankAmounts.get(tankIndex);
+                            }
+                            totalOverAmount = tAmount - totalOverAmount;
+                        } else {
+                            tAmount = totalFreeAmount;
+                        }
+
+                        int tOverAmount = totalOverAmount;
+                        int tRemainingAmount = tAmount;
+                        int tFilledTanksCnt = 0;
+
+                        // Filling and amount correction
+                        for (int tFillIndex = 0; tFillIndex < tTanksList.size(); tFillIndex++) {
+                            if (tFilledTanksCnt >= tTanksList.size() || tRemainingAmount <= 0) break;
+
+                            for (int tankIndex = 0; tankIndex < tTanksList.size(); tankIndex++) {
+                                int tankAmount = tTankAmounts.get(tankIndex);
+                                if (tankAmount < 0) continue;
+
+                                IFluidHandler tTileEntity = tTanksList.get(tankIndex);
+                                ForgeDirection tDir = tDirectionsList.get(tankIndex);
+
+                                int tFilledAmount = tTileEntity.fill(tDir, drainFromIndex(tankAmount, false, index), false);
+                                if (tFilledAmount > 0) {
+                                    tTileEntity.fill(tDir, drainFromIndex(tFilledAmount, true, index), true);
+}
+                                tRemainingAmount -= tFilledAmount;
+
+                                if (tFilledAmount < tankAmount) {
+                                    tFilledTanksCnt++;
+                                    tOverAmount += tankAmount - tFilledAmount;
+                                    tTankAmounts.set(tankIndex, -1);
                                 }
-                            } else {
-                                for (Entry<IFluidHandler, ForgeDirection> tTileEntity : tTanks.entrySet()) {
-                                    if (mFluids[index] == null || mFluids[index].amount <= 0) break;
-                                    int tFilledAmount = tTileEntity.getKey().fill(tTileEntity.getValue(), drainFromIndex(mFluids[index].amount, false, index), false);
-                                    if (tFilledAmount > 0)
-                                        tTileEntity.getKey().fill(tTileEntity.getValue(), drainFromIndex(tFilledAmount, true, index), true);
+                            }
+
+                            // Unused amount will be transferred to the rest
+                            if (tFilledTanksCnt < tTanksList.size()) {
+                                totalOverAmount = tOverAmount;
+                                tOverAmount = tOverAmount / (tTanksList.size() - tFilledTanksCnt);
+
+                                for (int tankIndex = 0; tankIndex < tTanksList.size(); tankIndex++) {
+                                    int tankAmount = tTankAmounts.get(tankIndex);
+                                    if (tankAmount < 0) continue;
+
+                                    tTankAmounts.set(tankIndex, tankAmount + tOverAmount);
                                 }
+                                tOverAmount = totalOverAmount - tOverAmount * (tTanksList.size() - tFilledTanksCnt);
                             }
                         }
                     }
