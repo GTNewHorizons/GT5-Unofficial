@@ -100,12 +100,11 @@ public class GT5OreSmallHelper {
             this.genOverworld = worldGen.mOverworld;
             this.genNether = worldGen.mNether;
             this.genEnd = worldGen.mEnd;
-            if (GT5OreSmallHelper.restrictBiomeSupport)
-                this.restrictBiome = worldGen.mRestrictBiome;
-            if (GT5OreSmallHelper.gcBasicSupport) {
-                this.genMoon = worldGen.mMoon;
-                this.genMars = worldGen.mMars;
+            //if (GT5OreSmallHelper.restrictBiomeSupport)
+            //    this.restrictBiome = worldGen.mRestrictBiome;
+           // if (GT5OreSmallHelper.gcBasicSupport) {
+           //     this.genMoon = worldGen.mMoon;
+          //      this.genMars = worldGen.mMars;
             }
         }
     }
-}

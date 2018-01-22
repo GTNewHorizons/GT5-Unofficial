@@ -58,7 +58,6 @@ gtnop.ore.custom.name=Custom
 
 
 # vein names
-# gregtech5.09
 gtnop.ore.mix.naquadah=Naquadah
 gtnop.ore.mix.lignite=Lignite
 gtnop.ore.mix.coal=Coal
@@ -91,11 +90,7 @@ gtnop.ore.mix.galena=Galena
 gtnop.ore.mix.lapis=Lapis
 gtnop.ore.mix.beryllium=Beryllium
 gtnop.ore.mix.oilsand=Oilsand
-
-# gregtech5.08
 gtnop.ore.mix.plutonium=Plutonium
-
-# gregtech6
 gtnop.ore.mix.iodinesalt=Iodinesalt
 gtnop.ore.mix.rocksalt=Rocksalt
 gtnop.ore.mix.asbestos=Asbestos

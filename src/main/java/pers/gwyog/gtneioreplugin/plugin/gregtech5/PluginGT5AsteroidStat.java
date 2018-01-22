@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin.gregtech5;
+/*package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -57,10 +57,10 @@ public class PluginGT5AsteroidStat extends PluginGT5Base {
         CachedAsteroidStatRecipe crecipe = (CachedAsteroidStatRecipe) this.arecipes.get(recipe);
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedAsteroidName(oreLayer.veinName), 2, 18, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidBetween") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSporadic") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.sporadicMeta)), 2, 70, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.Meta[0])), 2, 31, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.Meta[1])), 2, 44, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidBetween") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.Meta[2])), 2, 57, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSporadic") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.Meta[3])), 2, 70, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genEndAsteroid, oreLayer.genGCAsteroid), 2, 83, 0x404040, false);        
         GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
     }
@@ -94,10 +94,10 @@ public class PluginGT5AsteroidStat extends PluginGT5Base {
             for (String veinName: GT5OreLayerHelper.mapOreLayerWrapper.keySet()) {
                 oreLayerWrapper = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
                 if (oreLayerWrapper.genEndAsteroid || oreLayerWrapper.genGCAsteroid) {
-                    ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.primaryMeta+2000);
-                    ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.secondaryMeta+2000);
-                    ItemStack stackBetween = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.betweenMeta+2000);
-                    ItemStack stackSporadic = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.sporadicMeta+2000);
+                    ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.Meta[0]+2000);
+                    ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.Meta[1]+2000);
+                    ItemStack stackBetween = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.Meta[2]+2000);
+                    ItemStack stackSporadic = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.Meta[3]+2000);
                     this.arecipes.add(new CachedAsteroidStatRecipe(veinName, stackPrimary, stackSecondary, stackBetween, stackSporadic));
                 }
             }
@@ -115,12 +115,12 @@ public class PluginGT5AsteroidStat extends PluginGT5Base {
             }
             short baseMeta = (short)(stack.getItemDamage() % 1000);
             for (OreLayerWrapper worldGen: GT5OreLayerHelper.mapOreLayerWrapper.values()) {
-                if (worldGen.primaryMeta == baseMeta || worldGen.secondaryMeta == baseMeta || worldGen.betweenMeta == baseMeta || worldGen.sporadicMeta == baseMeta) {
+                if (worldGen.Meta[0] == baseMeta || worldGen.Meta[1] == baseMeta || worldGen.Meta[2] == baseMeta || worldGen.Meta[3] == baseMeta) {
                     if (worldGen.genEndAsteroid || worldGen.genGCAsteroid) {
-                        ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.primaryMeta+2000);
-                        ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.secondaryMeta+2000);
-                        ItemStack stackBetween = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.betweenMeta+2000);
-                        ItemStack stackSporadic = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.sporadicMeta+2000);
+                        ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.Meta[0]+2000);
+                        ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.Meta[1]+2000);
+                        ItemStack stackBetween = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.Meta[2]+2000);
+                        ItemStack stackSporadic = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.Meta[3]+2000);
                         this.arecipes.add(new CachedAsteroidStatRecipe(worldGen.veinName, stackPrimary, stackSecondary, stackBetween, stackSporadic));
                     }
                 }
@@ -140,3 +140,4 @@ public class PluginGT5AsteroidStat extends PluginGT5Base {
         return I18n.format("gtnop.gui.asteroidStat.name");
     }
 }
+*/

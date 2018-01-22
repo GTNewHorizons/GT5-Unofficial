@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,7 +24,7 @@ public class PluginGT5Base extends PluginBase {
     }
     
     public String getGTOreLocalizedName(short index) {
-        return GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index));
+        return Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index%1000);
     }
     
     public String getGTOreUnlocalizedName(short index) {

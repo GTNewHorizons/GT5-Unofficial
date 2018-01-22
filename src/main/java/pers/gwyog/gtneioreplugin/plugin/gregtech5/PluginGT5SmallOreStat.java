@@ -64,8 +64,8 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + getGTOreLocalizedName((short)(oreSmall.oreMeta+16000)), 2, 18, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreSmall.worldGenHeightRange, 2, 31, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.amount") + ": " + oreSmall.amountPerChunk, 2, 44, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreSmall.genOverworld, oreSmall.genNether, oreSmall.genEnd, oreSmall.genMoon, oreSmall.genMars), 2, 57, 0x404040, false);
-        if (GT5OreSmallHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreSmall.restrictBiome), 2, 70, 0x404040, false);
+       // GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreSmall.genOverworld, oreSmall.genNether, oreSmall.genEnd, oreSmall.genMoon, oreSmall.genMars), 2, 57, 0x404040, false);
+       // if (GT5OreSmallHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreSmall.restrictBiome), 2, 70, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.chanceDrops") + ": ", 2, 83+getRestrictBiomeOffset(), 0x404040, false);
         GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
     }

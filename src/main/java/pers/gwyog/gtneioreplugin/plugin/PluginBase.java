@@ -34,37 +34,13 @@ public class PluginBase extends TemplateRecipeHandler {
     public String getOutputId() {
         return null;
     }
-  
-    public String getBiomeTranslated(String unlocalizedBiome) {
-        return unlocalizedBiome.equals("None")? I18n.format("gtnop.biome.none.name"): unlocalizedBiome;
-    }
-    
-    public String getWorldNameTranslated(boolean genOverworld, boolean genNether, boolean genEnd, boolean genMoon, boolean genMars) {
+   
+    public String getWorldNameTranslated(boolean genOverworld) {
         String worldNameTranslated = "";
         if (genOverworld) {
             if (!worldNameTranslated.isEmpty())
                 worldNameTranslated += ", ";
             worldNameTranslated += I18n.format("gtnop.world.overworld.name");
-        }
-        if (genNether) {
-            if (!worldNameTranslated.isEmpty())
-                worldNameTranslated += ", ";
-            worldNameTranslated += I18n.format("gtnop.world.nether.name");
-        }
-        if (genEnd) {
-            if (!worldNameTranslated.isEmpty())
-                worldNameTranslated += ", ";
-            worldNameTranslated += I18n.format("gtnop.world.end.name");
-        }
-        if (genMoon) {
-            if (!worldNameTranslated.isEmpty())
-                worldNameTranslated += ", ";
-            worldNameTranslated += I18n.format("gtnop.world.moon.name");
-        }
-        if (genMars) {
-            if (!worldNameTranslated.isEmpty())
-                worldNameTranslated += ", ";
-            worldNameTranslated += I18n.format("gtnop.world.mars.name");
         }
         return worldNameTranslated;
     }
