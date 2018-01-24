@@ -23,13 +23,13 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -82,7 +82,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"Size(WxHxD): 3x7x3", "Controller (Front middle at bottom)",
 				"3x1x3 Base of " + casings,
 				"1x3x1 " + casings + " pillar (Center of base)",
-				"1x3x1 " + getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)",
+				"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
 				"1x Maintenance Hatch (One of base casings)",
 				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
 	}
@@ -398,7 +398,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 		casingMeta = getCasingBlockItem().get(0).getItemDamage();
 		int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
 		frameMeta = GregTech_API.METATILEENTITIES[frameId] != null ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType() : W;		
-		 */return Materials.TungstenCarbide;
+		 */return Materials.get("TungstenCarbide");
 	}
 
 	protected int getCasingTextureIndex() {

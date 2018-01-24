@@ -30,7 +30,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 	public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
 		Block tTileEntity = aBlock;
 		if ((tTileEntity instanceof ITexturedTileEntity)) {
-			return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 0), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 1), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 2), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 3), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 4), ((ITexturedTileEntity) tTileEntity).getTexture(aBlock, (byte) 5)});
+			return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, new ITexture[][]{((ITexturedTileEntity) tTileEntity).getTexture((byte) 0), ((ITexturedTileEntity) tTileEntity).getTexture((byte) 1), ((ITexturedTileEntity) tTileEntity).getTexture((byte) 2), ((ITexturedTileEntity) tTileEntity).getTexture((byte) 3), ((ITexturedTileEntity) tTileEntity).getTexture((byte) 4), ((ITexturedTileEntity) tTileEntity).getTexture((byte) 5)});
 		}
 		return false;
 	}
@@ -192,27 +192,27 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
-		renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 0), true);
+		renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 0), true);
 		Tessellator.instance.draw();
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
-		renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 1), true);
+		renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 1), true);
 		Tessellator.instance.draw();
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
-		renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 2), true);
+		renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 2), true);
 		Tessellator.instance.draw();
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
-		renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 3), true);
+		renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 3), true);
 		Tessellator.instance.draw();
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
-		renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 4), true);
+		renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 4), true);
 		Tessellator.instance.draw();
 		Tessellator.instance.startDrawingQuads();
 		Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
-		renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture(aBlock, (byte) 5), true);
+		renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, ((ITexturedTileEntity) aBlock).getTexture((byte) 5), true);
 		Tessellator.instance.draw();
 		aBlock.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		aRenderer.setRenderBoundsFromBlock(aBlock);

@@ -435,7 +435,6 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
-	@Override
 	public boolean allowGeneralRedstoneOutput() {
 		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
 			this.markDirty();

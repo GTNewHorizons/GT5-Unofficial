@@ -170,7 +170,6 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 		}
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
 		final long tMaxDamage = getToolMaxDamage(aStack);

@@ -16,7 +16,9 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
@@ -420,23 +422,35 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public boolean polluteEnvironment(int aPollutionLevel) {
-		int mPollution = 0;
-		Field f = FieldUtils.getDeclaredField(this.getClass(), "mPollution", true);
+		try {
+		Integer mPollution = 0;
+		Field f = ReflectionUtils.getField(this.getClass(), "mPollution");
 		if (f != null){
+			Logger.REFLECTION("pollution field was not null");
 			try {
-				mPollution = (int) f.get(this);
+				mPollution = (Integer) f.get(this);
+				if (mPollution != null){
+					Logger.REFLECTION("pollution field value was not null");
+				}
+				else {
+					Logger.REFLECTION("pollution field value was null");					
+				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {}
 		}	
+		else {
+			Logger.REFLECTION("pollution field was null");
+		}
 		
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && f != null){
+			Logger.REFLECTION("doing pollution");
 			mPollution += aPollutionLevel;
 			for (final GT_MetaTileEntity_Hatch_Muffler tHatch : this.mMufflerHatches) {
 				if (isValidMetaTileEntity(tHatch)) {
 					if (mPollution < 10000) {
 						break;
 					}
-					if (!tHatch.polluteEnvironment()) {
+					if (!polluteEnvironmentHatch(tHatch)) {
 						continue;
 					}
 					mPollution -= 10000;
@@ -447,7 +461,25 @@ GT_MetaTileEntity_MultiBlockBase {
 		else {
 			return false;
 		}
-		
+		}
+		catch (Throwable t){
+			Logger.REFLECTION("Failed to add pollution.");
+			t.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean polluteEnvironmentHatch(GT_MetaTileEntity_Hatch_Muffler tHatch) {
+		if (tHatch.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
+			PollutionUtils.addPollution(tHatch.getBaseMetaTileEntity(), calculatePollutionReduction(tHatch, 10000));
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int calculatePollutionReduction(GT_MetaTileEntity_Hatch_Muffler tHatch, int aPollution) {
+		return (int) ((double) aPollution * Math.pow(0.7D, (double) (tHatch.mTier - 1)));
 	}
 
 }

@@ -102,7 +102,6 @@ extends GT_Tool {
 		return true;
 	}
 
-	@Override
 	public boolean isWrench(){
 		return true;
 	}

@@ -34,7 +34,6 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 		onConfigLoad();
 	}
 
-	@Override
 	public int getPollution() {
 		return (int) (2.0D * Math.pow(2.0D, this.mTier));
 	}

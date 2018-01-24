@@ -50,14 +50,14 @@ public class Logger {
 
 	// Developer Comments
 	public static void WARNING(final String s) {
-		if (CORE.DEBUG) {
+		if (CORE.DEVENV || CORE.DEBUG) {
 			modLogger.warn(s);
 		}
 	}
 
 	// Errors
 	public static void ERROR(final String s) {
-		if (CORE.DEBUG) {
+		if (CORE.DEVENV || CORE.DEBUG) {
 			modLogger.fatal(s);
 		}
 	}
@@ -91,6 +91,7 @@ public class Logger {
 	 * Special Logger for Bee related content
 	 */
 	public static void BEES(final String s) {
+		if (CORE.DEVENV || CORE.DEBUG)
 		modLogger.info("[Bees] "+s);
 	}
 	/**
@@ -107,6 +108,7 @@ public class Logger {
 	 * Special Logger for Materials related content
 	 */
 	public static void MATERIALS(final String s) {
+		if (CORE.DEVENV || CORE.DEBUG)
 		modLogger.info("[Materials] "+s);
 	}
 	/**
@@ -118,7 +120,7 @@ public class Logger {
 	}
 	
 	/**
-	 * Special Logger for Bee related content
+	 * Special Logger for Reflection related content
 	 */
 	public static void REFLECTION(final String s) {
 		if (CORE.DEVENV || CORE.DEBUG)

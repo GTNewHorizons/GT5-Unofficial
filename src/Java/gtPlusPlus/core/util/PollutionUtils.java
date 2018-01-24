@@ -5,6 +5,7 @@ import java.lang.reflect.*;
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.GT_Proxy;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class PollutionUtils {
 
@@ -12,12 +13,12 @@ public class PollutionUtils {
 		try {
 			GT_Proxy GT_Pollution = GT_Mod.gregtechproxy;
 			if (GT_Pollution != null) {
-				Field mPollution = GT_Pollution.getClass().getField("mPollution");
+				Field mPollution = ReflectionUtils.getField(GT_Pollution.getClass(), "mPollution");
 				if (mPollution != null) {
 					return mPollution.getBoolean(GT_Pollution);
 				}
 			}
-		} catch (SecurityException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException e) {
+		} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
 			return false;
 		}
 		return false;

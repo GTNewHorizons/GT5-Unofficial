@@ -19,7 +19,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 
 	public RenderMiningExplosivesPrimed(){
 		this.shadowSize = 0.5F;
-		Logger.INFO("Rendering Mining Explosion. 1");
+		Logger.WARNING("Rendering Mining Explosion. 1");
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
 	public void doRender(final EntityPrimedMiningExplosive entity, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
-		Logger.INFO("Rendering Mining Explosion. 2");
+		Logger.WARNING("Rendering Mining Explosion. 2");
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)p_76986_2_, (float)p_76986_4_, (float)p_76986_6_);
 		float f2;
@@ -87,7 +87,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 	 */
 	@Override
 	protected ResourceLocation getEntityTexture(final Entity p_110775_1_){
-		Logger.INFO("Rendering Mining Explosion. 4");
+		Logger.WARNING("Rendering Mining Explosion. 4");
 		return this.getEntityTexture((EntityPrimedMiningExplosive)p_110775_1_);
 	}
 
@@ -99,7 +99,7 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed {
 	 */
 	@Override
 	public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
-		Logger.INFO("Rendering Mining Explosion. 3");
+		Logger.WARNING("Rendering Mining Explosion. 3");
 		this.doRender((EntityPrimedMiningExplosive)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
 	}
 }
