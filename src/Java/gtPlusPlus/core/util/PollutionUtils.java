@@ -18,9 +18,7 @@ public class PollutionUtils {
 					return mPollution.getBoolean(GT_Pollution);
 				}
 			}
-		} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
-			return false;
-		}
+		} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {}
 		return false;
 	}
 
@@ -35,9 +33,7 @@ public class PollutionUtils {
 				}
 			}
 		} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			return false;
-		}
+				| IllegalArgumentException | InvocationTargetException e) {}
 		return false;
 	}
 
@@ -51,9 +47,7 @@ public class PollutionUtils {
 				}
 			}
 		} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			return 0;
-		}
+				| IllegalArgumentException | InvocationTargetException e) {}
 		return 0;
 	}
 

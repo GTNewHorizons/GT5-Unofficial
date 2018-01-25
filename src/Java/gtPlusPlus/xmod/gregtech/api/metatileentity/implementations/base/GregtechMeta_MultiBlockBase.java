@@ -215,7 +215,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		super.updateSlots();
 	}
-	
+
 	public boolean isToolCreative(ItemStack mStack){
 		Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
 		Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
@@ -252,7 +252,7 @@ GT_MetaTileEntity_MultiBlockBase {
 				return this.mMultiDynamoHatches.add(
 						(GT_MetaTileEntity_Hatch) aMetaTileEntity);
 			}
-			
+
 		}
 		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
@@ -322,19 +322,19 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Enable Texture Casing Support if found in GT 5.09
 	 */
-	
+
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
 		try {
 			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
 			if (mProper != null){
 				if (aTileEntity instanceof GT_MetaTileEntity_Hatch){				
-				mProper.setAccessible(true);
-				mProper.invoke(this, aCasingID);
-				return true;
+					mProper.setAccessible(true);
+					mProper.invoke(this, aCasingID);
+					return true;
 				}					
 			}
 			else {
@@ -344,33 +344,33 @@ GT_MetaTileEntity_MultiBlockBase {
 		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}		
 		return false;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	/**
 	 * TecTech Support
 	 */
-	
-	
+
+
 	/**
 	 * This is the array Used to Store the Tectech Multi-Amp hatches.
 	 */
-	
+
 	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList();	
-	
+
 	/**
 	 * TecTech Multi-Amp Dynamo Support
 	 * @param aTileEntity - The Dynamo Hatch
 	 * @param aBaseCasingIndex - Casing Texture
 	 * @return
 	 */
-	
+
 	public boolean addMultiAmpDynamoToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
 		//GT_MetaTileEntity_Hatch_DynamoMulti
 		if (aTileEntity == null) {
@@ -386,7 +386,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return false;
 	}
-	
+
 	public boolean isThisHatchMultiDynamo(){
 		Class mDynamoClass;
 		try {
@@ -407,12 +407,12 @@ GT_MetaTileEntity_MultiBlockBase {
 			if (isThisHatchMultiDynamo()) {
 				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 			}
-			
+
 		}
 		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
-	
+
 	/**
 	 * Pollution Management
 	 */
@@ -422,62 +422,58 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public boolean polluteEnvironment(int aPollutionLevel) {
-		try {
-		Integer mPollution = 0;
-		Field f = ReflectionUtils.getField(this.getClass(), "mPollution");
-		if (f != null){
-			Logger.REFLECTION("pollution field was not null");
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			try {
-				mPollution = (Integer) f.get(this);
-				if (mPollution != null){
-					Logger.REFLECTION("pollution field value was not null");
+				Integer mPollution = 0;
+				Field f = ReflectionUtils.getField(this.getClass(), "mPollution");
+				if (f != null){
+					try {
+						mPollution = (Integer) f.get(this);
+					}
+					catch (IllegalArgumentException | IllegalAccessException e) {}
 				}
-				else {
-					Logger.REFLECTION("pollution field value was null");					
+				if (f != null){
+					try {
+						if (mPollution != null){
+							//Reflectively set the pollution back to the TE
+							int temp = (mPollution += aPollutionLevel);
+							f.set(this, temp);
+							Logger.REFLECTION("Set pollution to "+temp+", it was "+mPollution+" before.");
+
+							//Iterate Mufflers
+							for (final GT_MetaTileEntity_Hatch_Muffler tHatch : this.mMufflerHatches) {
+								if (isValidMetaTileEntity(tHatch)) {
+									if (mPollution < 10000) {
+										break;
+									}
+									if (!polluteEnvironmentHatch(tHatch)) {
+										continue;
+									}
+									mPollution -= 10000;
+								}
+							}
+							return mPollution < 10000;
+
+						}
+					}
+					catch (IllegalArgumentException | IllegalAccessException e) {}
 				}
 			}
-			catch (IllegalArgumentException | IllegalAccessException e) {}
-		}	
-		else {
-			Logger.REFLECTION("pollution field was null");
+			catch (Throwable t){}
 		}
-		
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && f != null){
-			Logger.REFLECTION("doing pollution");
-			mPollution += aPollutionLevel;
-			for (final GT_MetaTileEntity_Hatch_Muffler tHatch : this.mMufflerHatches) {
-				if (isValidMetaTileEntity(tHatch)) {
-					if (mPollution < 10000) {
-						break;
-					}
-					if (!polluteEnvironmentHatch(tHatch)) {
-						continue;
-					}
-					mPollution -= 10000;
-				}
-			}
-			return mPollution < 10000;
-		}
-		else {
-			return false;
-		}
-		}
-		catch (Throwable t){
-			Logger.REFLECTION("Failed to add pollution.");
-			t.printStackTrace();
-			return false;
-		}
+		return false;
 	}
-	
+
 	public boolean polluteEnvironmentHatch(GT_MetaTileEntity_Hatch_Muffler tHatch) {
-		if (tHatch.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
+		if (tHatch.getBaseMetaTileEntity().getAirAtSide(tHatch.getBaseMetaTileEntity().getFrontFacing())) {
+			Logger.REFLECTION("doing pollution");
 			PollutionUtils.addPollution(tHatch.getBaseMetaTileEntity(), calculatePollutionReduction(tHatch, 10000));
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public int calculatePollutionReduction(GT_MetaTileEntity_Hatch_Muffler tHatch, int aPollution) {
 		return (int) ((double) aPollution * Math.pow(0.7D, (double) (tHatch.mTier - 1)));
 	}

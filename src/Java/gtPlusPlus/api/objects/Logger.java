@@ -50,14 +50,14 @@ public class Logger {
 
 	// Developer Comments
 	public static void WARNING(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG) {
+		if (CORE.DEBUG) {
 			modLogger.warn(s);
 		}
 	}
 
 	// Errors
 	public static void ERROR(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG) {
+		if (CORE.DEBUG) {
 			modLogger.fatal(s);
 		}
 	}

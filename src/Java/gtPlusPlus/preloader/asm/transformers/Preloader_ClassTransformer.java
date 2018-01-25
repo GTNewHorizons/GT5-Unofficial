@@ -1,4 +1,4 @@
-package gtPlusPlus.preloader.asm;
+package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -11,10 +11,9 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;
-import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.common.config.Configuration;
 
-public class Preloader_ClassTransformer implements IClassTransformer {
+public class Preloader_ClassTransformer {
 
 	public boolean getConfig(){
 		final Configuration config = new Configuration(	new File(Utils.getMcDir(), "config/GTplusplus/GTplusplus.cfg"));
@@ -30,19 +29,7 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 		return false;
 	}
 
-
-	@Override
-	public byte[] transform(String name, String transformedName, byte[] basicClass) {
-			if(transformedName.equals("net.minecraftforge.oredict.OreDictionary")) {
-				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Transforming %s", transformedName);
-				ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-				new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
-				return classWriter.toByteArray();
-			}
-		return basicClass;
-	}
-
-	private static final class OreDictionaryVisitor extends ClassVisitor {
+	public static final class OreDictionaryVisitor extends ClassVisitor {
 
 		public OreDictionaryVisitor(ClassVisitor cv) {
 			super(ASM5, cv);

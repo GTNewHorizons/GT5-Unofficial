@@ -7,8 +7,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
@@ -128,5 +130,15 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 	public boolean displaysStackSize() { 	
 		return false; 	
 	}
+	
+	@Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+		Logger.INFO("Setting item nbt");
+        super.setItemNBT(aNBT);
+        if (mFluid != null){
+    		Logger.INFO("Setting item fluid nbt");
+        	aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        }        
+    }
 
 }
