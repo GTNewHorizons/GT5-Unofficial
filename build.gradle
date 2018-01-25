@@ -24,10 +24,15 @@ sourceSets {
     }
 }
 
+configurations {
+    fatJar
+}
+
 dependencies {
     compile files('mods/gregtech_1.7.10-5.08.33.jar')
 	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
+    fatJar files('libs/Segment-2.1.0.jar')
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_7
@@ -46,6 +51,7 @@ jar {
         attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
+    from configurations.fatJar.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 
