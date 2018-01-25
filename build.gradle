@@ -1,37 +1,33 @@
- buildscript {
-repositories
-{
-mavenCentral()
-maven {
-name = "forge"
-url = "http://files.minecraftforge.net/maven"
-}
-maven {
-name = "sonatype"
-url = "https://oss.sonatype.org/content/repositories/snapshots/"
-}
-}
-dependencies
-{
-classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-}
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+    }
 }
 
 apply plugin: "forge"
 
-sourceSets
-{
-main
-{
-java { srcDirs = ["$projectDir/src/java"] }
-resources { srcDirs = ["$projectDir/src/resources"] }
-}
+sourceSets {
+    main {
+        java { srcDirs = ["$projectDir/src/java"] }
+        resources { srcDirs = ["$projectDir/src/resources"] }
+    }
 }
 
 dependencies {
     compile files('mods/gregtech_1.7.10-5.08.33.jar')
 	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
-	compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_7
@@ -44,9 +40,9 @@ version = "1.6.110-prerelease"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 
-jar{
-    archiveName = archivesBaseName+"-"+version+".jar"
-    manifest{
+jar {
+    archiveName = archivesBaseName + "-" + version + ".jar"
+    manifest {
         attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
@@ -56,7 +52,7 @@ jar{
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
-	manifest {
+    manifest {
         attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
@@ -76,13 +72,13 @@ artifacts {
 }
 
 processResources {
-from(sourceSets.main.resources.srcDirs) {
-    include 'mcmod.info'
-    include 'pack.mcmeta'
-    expand 'version':project.version, 'mcversion':project.minecraft.version
-}
-from(sourceSets.main.resources.srcDirs) {
-    exclude 'mcmod.info'
-    exclude 'pack.mcmeta'
-}
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        include 'pack.mcmeta'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+        exclude 'pack.mcmeta'
+    }
 }
