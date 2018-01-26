@@ -24,7 +24,11 @@ public class PluginGT5Base extends PluginBase {
     }
     
     public String getGTOreLocalizedName(short index) {
+    	
+    	if (!Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index%1000).contains("Awakened"))
         return Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index%1000);
+    	else
+    	return "Aw. Draconium Ore";
     }
     
     public String getGTOreUnlocalizedName(short index) {

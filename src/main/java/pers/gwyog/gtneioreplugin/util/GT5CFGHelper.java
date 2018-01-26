@@ -2,7 +2,6 @@ package pers.gwyog.gtneioreplugin.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class GT5CFGHelper {
 	public static String GT5CFG(File F, String Veinname) {
 		//FMLLog.info(Veinname);
 		if (F == null) {
-			FMLLog.bigWarning("GT_CFG_NOT_FOUND");
+			FMLLog.bigWarning("GT_CFG_NOT_found[0]");
 			return "Error while Loading CFG";
 		}
 		else
@@ -26,41 +25,70 @@ public class GT5CFGHelper {
 		if (buffer > F.length())
 			buffer = (int) F.length();
 		//allocate 10% of free memory for read-in-buffer, if there is less than filesize memory aviable
-			//FMLLog.info("GT_CFG_FOUND");
+			//FMLLog.info("GT_CFG_found[0]");
 		FileReader in = new FileReader(F);
 		//FMLLog.info("FileReader created");
 		BufferedReader reader = new BufferedReader(in, buffer);
 		//FMLLog.info("BufferedReader" +Integer.toString(buffer)+"created");
-		String st="";
+		String st=null;
 		List<String> raw= new ArrayList<String>();
 		List<String> rawbools = new ArrayList<String>();
-		boolean found = false;
+		Boolean[] found = new Boolean[2];
+		found[0] = false;
+		found[1] = false;
 	   
 		do{
+			//FMLLog.info("erste");
 			//read until reached eof or mix {
 	    	st = reader.readLine();
 	    	//FMLLog.info("st: "+st);
-	    	if ((reader.readLine() != null))
-	    	if (st.contains("mix {")) {
-	    		do{
-	    			//read until reached eof or Veinname {
+	    	if (st != null && st.trim().equals("mix {")) {
+	    		while(!((st == null)||((st != null)&&found[0]))){
+	    			//FMLLog.info("zweite");
 	    			st = reader.readLine();
+	    			//read until reached eof or Veinname {
 	    			//FMLLog.info("MIXst: "+st);
-	    			if ((reader.readLine() != null))
-	    			if (st.contains(Veinname)) {
-	    				//FMLLog.info("VEINNAMEst: "+st);
-	    			//for (int i=0; i < 44;i++)
-	    			do{
-	    				//add everything below Veinname { undtil } to raw
-	    			raw.add(reader.readLine());
-	    			}while (!reader.readLine().contains("}")&&(reader.readLine() != null));
-	    			found = true;
+	    			if (st != null && st.trim().equals(Veinname+" {")) {
+	    			//FMLLog.info("VEINNAMEst: "+st);
+	    				while (!((st == null)||((st != null)&&found[0]))){
+	    					st = reader.readLine();
+	    					if (st.trim().equals("}"))
+	    						found[0] = true;
+	    					//FMLLog.info("dritte");
+	    					//add everything below Veinname { undtil } to raw
+	    					raw.add(st);
+	    				   }
+	    				}
 	    			}
-	    			}while((!found) || (reader.readLine() != null));
 	        }
-	    }while((!found) || (reader.readLine() != null));
-	    
-	    reader.close();//not needed anymore
+	    	
+	    	if (st != null && st.trim().equals("dimensions {")) {
+	    		while(!((st == null)||((st != null)&&found[1]))){
+	    			//FMLLog.info("zweite");
+	    			st = reader.readLine();
+	    			if (st != null && (st.trim().equals("mix {"))) {
+	    				while(!((st == null)||((st != null)&&found[1]))){
+	    					//FMLLog.info("dritte");
+	    					st = reader.readLine();
+	    					//read until reached eof or Veinname {
+	    					//FMLLog.info("MIXst: "+st);
+	    					if (st != null && st.trim().equals(Veinname+" {")) {
+	    						//FMLLog.info("VEINNAMEst: "+st);
+	    						while (!((st == null)||((st != null)&&found[1]))){
+	    							st = reader.readLine();
+	    							if (st.trim().equals("}"))
+	    								found[1] = true;
+	    							//FMLLog.info("vierte");
+	    							//add everything below Veinname { undtil } to raw
+	    							raw.add(st);
+	    				   		}
+	    					}
+	    				}
+	    			}
+	    		}
+	    	}
+	    }while(st != null);
+		reader.close();//not needed anymore
 	    
 	    if (!raw.isEmpty())
 	    for (int i=0; i < raw.size();i++) {
@@ -75,16 +103,14 @@ public class GT5CFGHelper {
 	    
 	    String ret=" ";
 	    
-	    //HashSet<String> rawboolsset = new HashSet<String>();
+	    HashSet<String> rawboolsset = new HashSet<String>();
 	    if (!rawbools.isEmpty()) {
 	    	//remove dublicats
-	    	/*
 	    	for (int i=0; i < rawbools.size();i++){
-	    		st = rawbools.get(i).replace("B:", "").replace("_true", "").replace("_false", "").replaceAll(" ", "");
+	    		st = rawbools.get(i).replace("B:", "").replace("_true", "").replace("_false", "").replaceAll(" ", "").replaceAll("\"", "");
 	    		rawboolsset.add(st);
 	    	}
 	    	rawbools = new ArrayList<String>(rawboolsset);
-	    	*/
 	    	//filter for dims set to true
 	    	for (int i=0; i < rawbools.size();i++) {
 	    		st = rawbools.get(i);
@@ -92,14 +118,14 @@ public class GT5CFGHelper {
 	    		for (int j=0; j < DimensionHelper.DimName.length;j++) {
     				if(st.contains(DimensionHelper.DimName[j]))
     				if(st.contains("=true"))
-    				ret=(ret+DimensionHelper.DimNameDisplayed[j]+" ");
+    				ret=(ret+DimensionHelper.DimNameDisplayed[j]+",");
     			}
 	    	}
 	    }
 	    ret = ret.trim();
 	    //FMLLog.info("ret:"+ret);
 	    if(ret.equals("")||ret.equals(" "))
-	    ret ="Not aviable in any Galactic Dim, maybe Deep Dark or Bedrock Dim";
+	    ret ="Not aviable in any Galactic Dim!";
         return ret;
 		} catch (IOException e) {
 		    e.printStackTrace();

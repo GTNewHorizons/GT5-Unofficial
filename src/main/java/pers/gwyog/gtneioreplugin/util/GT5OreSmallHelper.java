@@ -86,25 +86,12 @@ public class GT5OreSmallHelper {
         public String worldGenHeightRange;
         public short amountPerChunk;
         public String restrictBiome;
-        public boolean genOverworld = false;
-        public boolean genNether = false;
-        public boolean genEnd = false;
-        public boolean genMoon = false;
-        public boolean genMars = false;
         
         public OreSmallWrapper(GT_Worldgen_GT_Ore_SmallPieces worldGen) {
             this.oreGenName = worldGen.mWorldGenName;
             this.oreMeta = worldGen.mMeta;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
             this.amountPerChunk = worldGen.mAmount;
-            this.genOverworld = worldGen.mOverworld;
-            this.genNether = worldGen.mNether;
-            this.genEnd = worldGen.mEnd;
-            //if (GT5OreSmallHelper.restrictBiomeSupport)
-            //    this.restrictBiome = worldGen.mRestrictBiome;
-           // if (GT5OreSmallHelper.gcBasicSupport) {
-           //     this.genMoon = worldGen.mMoon;
-          //      this.genMars = worldGen.mMars;
             }
         }
     }

@@ -6,12 +6,12 @@ gtnop.gui.ieVeinStat.name=IE Vein Stats
 gtnop.gui.bedrockOreStat.name=Bedrock Ore Stats
 
 gtnop.gui.nei.veinName=Vein name
-gtnop.gui.nei.primaryOre=Primary-Gen
-gtnop.gui.nei.secondaryOre=Secondary-Gen
-gtnop.gui.nei.betweenOre=Between-Gen
-gtnop.gui.nei.sporadicOre=Sporadic-Gen
+gtnop.gui.nei.primaryOre=Primary
+gtnop.gui.nei.secondaryOre=Secondary
+gtnop.gui.nei.betweenOre=Between
+gtnop.gui.nei.sporadicOre=Sporadic
 gtnop.gui.nei.genHeight=Height
-gtnop.gui.nei.weightedChance=Chance
+gtnop.gui.nei.weightedChance=Weight
 gtnop.gui.nei.worldNames=Generated world
 gtnop.gui.nei.restrictBiome=Restricted biome
 
