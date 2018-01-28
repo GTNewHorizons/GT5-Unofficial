@@ -199,18 +199,16 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 
-		// Convert speed bonus to duration multiplier
-		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
-
 		// EU discount
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
 		float tTotalEUt = 0.0f;
 
+		// Reset outputs and progress stats
 		this.mEUt = 0;
-
+		this.mMaxProgresstime = 0;
+		this.mOutputItems = new ItemStack[]{};
+		this.mOutputFluids = new FluidStack[]{};
+		
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
@@ -219,11 +217,17 @@ GT_MetaTileEntity_MultiBlockBase {
 			tTotalEUt += tRecipeEUt;
 		}
 
-		this.mEUt = (int)Math.ceil(tTotalEUt);
-
 		if (parallelRecipes == 0) {
 			return false;
 		}
+
+		// Convert speed bonus to duration multiplier
+		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
+		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
+
+		this.mEUt = (int)Math.ceil(tTotalEUt);
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
