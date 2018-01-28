@@ -140,26 +140,28 @@ extends GregtechMeta_MultiBlockBase {
 		int tAmount = 0;
 		for (int i = -1; i < 2; ++i) {
 			for (int j = -1; j < 2; ++j) {
-				for (int h = -1; h < 0; ++h) {
-					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
-								zDir + j);
+				for (int h = -1; h < 1; ++h) {
+					if ((xDir + i == 0) && (zDir + j == 0) && (h == 0)) continue; // controller block
 
-						Logger.INFO("------------------");
-						Logger.INFO("xDir: "+xDir+" | zDir: "+zDir);
-						Logger.INFO("i: "+i+" | j: "+j+" | h: "+h);
-						if (!addToMachineList(tTileEntity)) {
-							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
-									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								Logger.INFO("Wrong Block?");
-								return false;
-							}
-							tAmount++;
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
+							zDir + j);
+
+					Logger.INFO("------------------");
+					Logger.INFO("xDir: " + xDir + " | zDir: " + zDir);
+					Logger.INFO("i: " + i + " | j: " + j + " | h: " + h);
+					if ((h == 0) || !addToMachineList(tTileEntity)) { // only bottom layer allows machine parts
+						// top layer, or not machine part, must be casing
+						Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+						byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+						if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
+								&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
+							Logger.INFO("Wrong Block?");
+							return false;
 						}
+						tAmount++;
 					}
 				}
+
 			}
 		}
 		Logger.INFO("------------------");
