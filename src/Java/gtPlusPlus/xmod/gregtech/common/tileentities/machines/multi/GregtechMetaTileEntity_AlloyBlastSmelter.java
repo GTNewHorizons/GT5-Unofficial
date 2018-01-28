@@ -61,6 +61,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getSound() {
+		return GregTech_API.sSoundList.get(Integer.valueOf(208));
+	}
+
+	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(15)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
@@ -81,19 +86,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		return true;
-	}
-
-	@Override
-	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 1) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(208)), 10, 1.0F, aX, aY, aZ);
-		}
-	}
-
-	@Override
-	public void startProcess() {
-		this.sendLoopStart((byte) 1);
 	}
 
 	@Override

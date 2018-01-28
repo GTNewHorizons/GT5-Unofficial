@@ -1,9 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -13,17 +9,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 public class GregtechMetaTileEntity_IndustrialSifter
 extends GregtechMeta_MultiBlockBase {
@@ -46,6 +42,8 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
+				"400% faster than single-block machines of the same voltage",
+				"Increased output chances",
 				"Size[WxHxL]: 5x3x5",
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any top or bottom edge casing)",
@@ -89,163 +87,24 @@ extends GregtechMeta_MultiBlockBase {
 	public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPreTick(aBaseMetaTileEntity, aTick);
 		if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive()) && (aBaseMetaTileEntity.getFrontFacing() != 1) && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0) && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
-			if (MathUtils.randInt(0, 5) == 5){
-				final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
-				aBaseMetaTileEntity.getWorld().spawnParticle("reddust", (aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F), aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F), (aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F), 0.0D, 0.0D, 0.0D);
-			}
+			final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
+			if (tRandom.nextFloat() > 0.4) return;
+
+			final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
+			final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+
+			aBaseMetaTileEntity.getWorld().spawnParticle("smoke",
+					(aBaseMetaTileEntity.getXCoord() + xDir + 2.1F) - (tRandom.nextFloat() * 3.2F),
+					aBaseMetaTileEntity.getYCoord() + 2.5f + (tRandom.nextFloat() * 1.2F),
+					(aBaseMetaTileEntity.getZCoord() + zDir + 2.1F) - (tRandom.nextFloat() * 3.2F),
+					0.0, 0.0, 0.0);
+
 		}
 	}
-
-	@Override
-	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 1) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(201)), 10, 1.0F, aX, aY, aZ);
-		}
-	}
-
-	@Override
-	public void startProcess() {
-		this.sendLoopStart((byte) 1);
-	}
-
-	ItemStack[] mInputStacks;
-	int[] cloneChances;
-	GT_Recipe baseRecipe;
-	GT_Recipe cloneRecipe;
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-
-		Logger.WARNING("1");
-
-		//Get inputs.
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-					} else {
-						tInputList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-
-		Logger.WARNING("2");
-
-		//Temp var
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-		//Don't check the recipe if someone got around the output bus size check.
-		if (this.mOutputBusses.size() != 4){
-			return false;
-		}
-
-
-		Logger.WARNING("3");
-
-		//Make a recipe instance for the rest of the method.
-		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-
-		if (tRecipe != null) {
-			this.baseRecipe = tRecipe.copy();
-		}
-
-		if ((this.cloneRecipe != tRecipe) || (this.cloneRecipe == null)){
-			this.cloneRecipe = tRecipe.copy();
-			Logger.WARNING("Setting Recipe");
-		}
-		if ((this.mInputStacks != tRecipe.mInputs) || (this.mInputStacks == null)){
-			this.mInputStacks = tRecipe.mInputs;
-			Logger.WARNING("Setting Recipe Inputs");
-		}
-		if ((this.cloneChances != tRecipe.mChances) || (this.cloneChances == null)){
-			this.cloneChances = tRecipe.mChances.clone();
-			Logger.WARNING("Setting Chances");
-		}
-
-		for (int r=0;r<this.cloneChances.length;r++){
-			Logger.WARNING("Original map Output["+r+"] chance = "+this.cloneChances[r]);
-		}
-
-		Logger.WARNING("3.1");
-
-		//Change bonus chances
-		int[] outputChances;
-
-		Logger.WARNING("3.2");
-
-		if (this.cloneRecipe.mChances != null){
-			outputChances = this.cloneRecipe.mChances.clone();
-
-			Logger.WARNING("3.3");
-
-			for (int r=0;r<outputChances.length;r++){
-				Logger.WARNING("Output["+r+"] chance = "+outputChances[r]);
-				if (outputChances[r]<10000){
-					final int temp = outputChances[r];
-					if ((outputChances[r] < 8000) && (outputChances[r] >= 1)){
-						outputChances[r] = temp+1200;
-						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
-					}
-					else if ((outputChances[r] < 9000) && (outputChances[r] >= 8000)){
-						outputChances[r] = temp+400;
-						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
-					}
-					else if ((outputChances[r] <= 9900) && (outputChances[r] >= 9000)){
-						outputChances[r] = temp+100;
-						Logger.WARNING("Output["+r+"] chance now = "+outputChances[r]);
-					}
-				}
-			}
-
-			Logger.WARNING("3.4");
-
-			//Rebuff Drop Rates for % output
-			this.cloneRecipe.mChances = outputChances;
-
-		}
-
-
-		Logger.WARNING("4");
-
-
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), this.cloneRecipe, tInputs);
-		Logger.WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
-
-		//More than or one input
-		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			if ((this.cloneRecipe != null) && (this.cloneRecipe.isRecipeInputEqual(true, null, tInputs))) {
-				Logger.WARNING("Valid Recipe found - size "+this.cloneRecipe.mOutputs.length);
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-
-
-				this.mEUt = (-this.cloneRecipe.mEUt);
-				this.mMaxProgresstime = Math.max(1, (this.cloneRecipe.mDuration/5));
-				final ItemStack[] outputs = new ItemStack[this.cloneRecipe.mOutputs.length];
-				for (int i = 0; i < this.cloneRecipe.mOutputs.length; i++){
-					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < this.cloneRecipe.getOutputChance(i)){
-						Logger.WARNING("Adding a bonus output");
-						outputs[i] = this.cloneRecipe.getOutput(i);
-					}
-					else {
-						Logger.WARNING("Adding null output");
-						outputs[i] = null;
-					}
-				}
-
-				this.mOutputItems = outputs;
-				this.sendLoopStart((byte) 20);
-				this.updateSlots();
-				//tRecipe.mChances = baseRecipe.mChances;
-				return true;
-			}
-		}
-		return false;
+		return checkRecipeGeneric(2, 100, 400, 8800);
 	}
 
 	@Override

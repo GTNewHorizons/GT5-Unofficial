@@ -1,11 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -15,7 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -24,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialElectrolyzer
 extends GregtechMeta_MultiBlockBase {
@@ -81,133 +73,9 @@ extends GregtechMeta_MultiBlockBase {
 		return aFacing > 1;
 	}
 
-	ArrayList<ItemStack> tInputList = this.getStoredInputs();
-	GT_Recipe mLastRecipe;
-
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-					} else {
-						tInputList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		for (int i = 0; i < (tFluidList.size() - 1); i++) {
-			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-					} else {
-						tFluidList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[(byte) Math.max(1, GT_Utility.getTier(this.getMaxInputVoltage()))], tFluids, tInputs), tInputs);
-		Logger.WARNING("Valid Output Slots: "+tValidOutputSlots);
-
-		//More than or one input
-		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			final long tVoltage = this.getMaxInputVoltage();
-			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
-			if ((tRecipe != null) && (7500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe.mEUt <= 16) {
-					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-				} else {
-					this.mEUt = tRecipe.mEUt;
-					this.mMaxProgresstime = tRecipe.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-					}
-				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-				for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-					tOut[h] = tRecipe.getOutput(h).copy();
-					tOut[h].stackSize = 0;
-				}
-				FluidStack tFOut = null;
-				if (tRecipe.getFluidOutput(0) != null) {
-					tFOut = tRecipe.getFluidOutput(0).copy();
-				}
-				for (int f = 0; f < tOut.length; f++) {
-					if ((tRecipe.mOutputs[f] != null) && (tOut[f] != null)) {
-						for (int g = 0; g < 1; g++) {
-							if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f)) {
-								tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
-							}
-						}
-					}
-				}
-				if (tFOut != null) {
-					final int tSize = tFOut.amount;
-					tFOut.amount = tSize * 1;
-				}
-
-				final List<ItemStack> overStacks = new ArrayList<>();
-				for (int f = 0; f < tOut.length; f++) {
-					if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-						while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-							final ItemStack tmp = tOut[f].copy();
-							tmp.stackSize = tmp.getMaxStackSize();
-							tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-							overStacks.add(tmp);
-						}
-					}
-				}
-				if (overStacks.size() > 0) {
-					ItemStack[] tmp = new ItemStack[overStacks.size()];
-					tmp = overStacks.toArray(tmp);
-					tOut = ArrayUtils.addAll(tOut, tmp);
-				}
-				final List<ItemStack> tSList = new ArrayList<>();
-				for (final ItemStack tS : tOut) {
-					if (tS.stackSize > 0) {
-						tSList.add(tS);
-					}
-				}
-				tOut = tSList.toArray(new ItemStack[tSList.size()]);
-				this.mOutputItems = tOut;
-				this.mOutputFluids = new FluidStack[]{tFOut};
-				this.updateSlots();
-
-				/* this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-                updateSlots();*/
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 20) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
-		}
+	public boolean checkRecipe(final ItemStack aStack) {
+		return checkRecipeGeneric(2, 100, 40);
 	}
 
 	@Override

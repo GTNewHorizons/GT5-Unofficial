@@ -1,18 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -23,8 +20,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+
 public class GregtechMetaTileEntity_IndustrialPlatePress
 extends GregtechMeta_MultiBlockBase {
+
 	public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -43,15 +43,21 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{"Controller Block for the Material Press",
 				"50% faster than using single block machines of the same voltage",
 				"Circuit for recipe goes in the Input Bus",
+				"Each Input Bus can have a different Circuit!",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
 				"1x Input Bus (anywhere)",
 				"1x Output Bus (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler (anywhere)",
+				"1x Muffler Hatch (anywhere)",
 				"Material Press Machine Casings for the rest (16 at least!)",
 				CORE.GT_Tooltip};
+	}
+
+	@Override
+	public String getSound() {
+		return GregTech_API.sSoundList.get(Integer.valueOf(203));
 	}
 
 	@Override
@@ -78,77 +84,26 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-					} else {
-						tInputList.remove(i--);
-						break;
-					}
+	public boolean checkRecipe(final ItemStack aStack) {
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+			tBus.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tBus)) {
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
 				}
 			}
-		}
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		for (int i = 0; i < (tFluidList.size() - 1); i++) {
-			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-					} else {
-						tFluidList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), GT_Recipe.GT_Recipe_Map.sBenderRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[(byte) Math.max(1, GT_Utility.getTier(this.getMaxInputVoltage()))], tFluids, tInputs), tInputs);
-		Logger.WARNING("Valid Output Slots: "+tValidOutputSlots);
-		//More than or one input
-		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			final long tVoltage = this.getMaxInputVoltage();
-			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBenderRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 50F);
-			if ((tRecipe != null) && (2500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe.mEUt <= 16) {
-					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-				} else {
-					this.mEUt = tRecipe.mEUt;
-					this.mMaxProgresstime = tRecipe.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-					}
-				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-				this.updateSlots();
-				return true;
-			}
+			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{},
+					2, 100, 50, 10000)) return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 20) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
-		}
+	public void startProcess() {
+		this.sendLoopStart((byte) 1);
 	}
 
 	@Override

@@ -3,8 +3,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Utility;
+import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -14,7 +18,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -27,11 +30,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
+
 public abstract class GregtechMeta_MultiBlockBase
 extends
 GT_MetaTileEntity_MultiBlockBase {
 
-	public static boolean disableMaintenance;
+	public GT_Recipe mLastRecipe;
+
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
 
@@ -97,45 +103,211 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 1) {
+			GT_Utility.doSoundAtClient(getSound(), 10, 1.0F, aX, aY, aZ);
+		}
 	}
 
 	public void startProcess() {
+		if(GT_Utility.isStringValid(getSound())) this.sendLoopStart((byte) 1);
 	}
 
-	public int getValidOutputSlots(final IGregTechTileEntity machineCalling,
-			final GT_Recipe sRecipes, final ItemStack[] sInputs) {
-		Logger.WARNING("Finding valid output slots for "
-				+ machineCalling.getInventoryName());
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		final GT_Recipe tRecipe = sRecipes;
-		final int outputItemCount = tRecipe.mOutputs.length;
-		int tValidOutputHatches = 0;
+	public String getSound() { return ""; }
 
-		for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
-			if (!isValidMetaTileEntity(tHatch)) {
+	public boolean canBufferOutputs(final GT_Recipe aRecipe) {
+		// Count slots available in hatches
+		int tEmptySlots = 0;
+		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
+			if (!isValidMetaTileEntity(tBus)) {
 				continue;
 			}
-
-			int tEmptySlots = 0;
-			boolean foundRoom = false;
-			final IInventory tHatchInv = tHatch.getBaseMetaTileEntity();
-			for (int i = 0; (i < tHatchInv.getSizeInventory())
-					&& !foundRoom; ++i) {
-				if (tHatchInv.getStackInSlot(i) != null) {
-					continue;
+			final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+			for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+				if (tBus.getStackInSlot(i) == null) {
+					tEmptySlots++;
 				}
-
-				tEmptySlots++;
-				if (tEmptySlots < outputItemCount) {
-					continue;
-				}
-
-				tValidOutputHatches++;
-				foundRoom = true;
 			}
 		}
 
-		return tValidOutputHatches;
+		// TODO: Check if any of the output stacks can stack with the stacks in the hatches?
+		// Enough open slots?
+		if (tEmptySlots < aRecipe.mOutputs.length) return false;
+
+		// For each output fluid, make sure an output hatch can accept it.
+		for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
+			boolean tCanBufferFluid = false;
+			int tRecipeAmount = tRecipeFluid.amount;
+			for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
+				FluidStack tHatchFluid = tHatch.getFluid();
+				if (tHatchFluid == null) {
+					if(tHatch.getCapacity() > tRecipeAmount) {
+						tCanBufferFluid = true;
+						break;
+					}
+				}
+				else if (tHatchFluid.isFluidEqual(tRecipeFluid) && tHatch.getCapacity() - tHatchFluid.amount > tRecipeAmount) {
+					tCanBufferFluid = true;
+					break;
+				}
+			}
+			if (!tCanBufferFluid) return false;
+		}
+		return true;
+	}
+
+	public boolean checkRecipeGeneric() {
+		return checkRecipeGeneric(1, 100, 0);
+	}
+
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent) {
+		return checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, 10000);
+	}
+
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+	}
+
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {
+
+
+		// Based on the Processing Array. A bit overkill, but very flexible.
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+
+		int parallelRecipes = 0;
+
+		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
+				getBaseMetaTileEntity(), mLastRecipe, false,
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+
+		// Remember last recipe - an optimization for findRecipe()
+		this.mLastRecipe = tRecipe;
+
+		if (tRecipe == null) {
+			return false;
+		}
+
+		if (!this.canBufferOutputs(tRecipe)) {
+			return false;
+		}
+
+		// Convert speed bonus to duration multiplier
+		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
+		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
+
+		// EU discount
+		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
+		float tTotalEUt = 0.0f;
+
+		this.mEUt = 0;
+
+		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+				break;
+			}
+			tTotalEUt += tRecipeEUt;
+		}
+
+		this.mEUt = (int)Math.ceil(tTotalEUt);
+
+		if (parallelRecipes == 0) {
+			return false;
+		}
+
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+
+		// Overclock
+		if (this.mEUt <= 16) {
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+		} else {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+		}
+
+		if (this.mEUt > 0) {
+			this.mEUt = (-this.mEUt);
+		}
+
+		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+		// Collect fluid outputs
+		FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
+		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
+			if (tRecipe.getFluidOutput(h) != null) {
+				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
+				tOutputFluids[h].amount *= parallelRecipes;
+			}
+		}
+
+		// Collect output item types
+		ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
+		for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+			if (tRecipe.getOutput(h) != null) {
+				tOutputItems[h] = tRecipe.getOutput(h).copy();
+				tOutputItems[h].stackSize = 0;
+			}
+		}
+
+		// Set output item stack sizes (taking output chance into account)
+		for (int f = 0; f < tOutputItems.length; f++) {
+			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
+				for (int g = 0; g < parallelRecipes; g++) {
+					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
+						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+				}
+			}
+		}
+
+		tOutputItems = removeNulls(tOutputItems);
+
+		// Sanitize item stack size, splitting any stacks greater than max stack size
+		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
+		for (ItemStack tItem : tOutputItems) {
+			while (tItem.getMaxStackSize() < tItem.stackSize) {
+				ItemStack tmp = tItem.copy();
+				tmp.stackSize = tmp.getMaxStackSize();
+				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
+				splitStacks.add(tmp);
+			}
+		}
+
+		if (splitStacks.size() > 0) {
+			ItemStack[] tmp = new ItemStack[splitStacks.size()];
+			tmp = splitStacks.toArray(tmp);
+			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
+		}
+
+		// Strip empty stacks
+		List<ItemStack> tSList = new ArrayList<ItemStack>();
+		for (ItemStack tS : tOutputItems) {
+			if (tS.stackSize > 0) tSList.add(tS);
+		}
+		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+
+		// Commit outputs
+		this.mOutputItems = tOutputItems;
+		this.mOutputFluids = tOutputFluids;
+		updateSlots();
+
+		// Play sounds (GT++ addition - GT multiblocks play no sounds)
+		startProcess();
+
+		return true;
 	}
 
 	public GT_Recipe reduceRecipeTimeByPercentage(final GT_Recipe tRecipe,
