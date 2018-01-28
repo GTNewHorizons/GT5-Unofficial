@@ -22,11 +22,10 @@ public class MathUtils {
 	 * @return Integer between min and max, inclusive.
 	 * @see java.util.Random#nextInt(int)
 	 */
+
+	final static Random rand = CSPRNG.generate(CORE.RANDOM);
+
 	public static int randInt(final int min, final int max) {
-
-		// Usually this can be a field rather than a method variable
-		final Random rand = CSPRNG.generate(CORE.RANDOM);
-
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
 		final int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -51,9 +50,6 @@ public class MathUtils {
 	 * @see java.util.Random#nextLong(long)
 	 */
 	public static long randLong(final long min, final long max) {
-		// Usually this can be a field rather than a method variable
-		final Random rand = CSPRNG.generate(CORE.RANDOM);
-
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
 		final long randomNum = MathUtils.nextLong(rand,(max - min) + 1) + min;
@@ -82,9 +78,6 @@ public class MathUtils {
 	 * @see java.util.Random#nextDouble(double)
 	 */
 	public static double randDouble(final double min, final double max) {
-		// Usually this can be a field rather than a method variable
-		final Random rand = CSPRNG.generate(CORE.RANDOM);
-
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
 		final double randomNum = MathUtils.nextDouble(rand,(max - min) + 1) + min;
@@ -112,9 +105,6 @@ public class MathUtils {
 	 * @see java.util.Random#nextFloat(float)
 	 */
 	public static float randFloat(final float min, final float max) {
-		// Usually this can be a field rather than a method variable
-		final Random rand = CSPRNG.generate(CORE.RANDOM);
-
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
 		final float randomNum = MathUtils.nextFloat(rand,(max - min) + 1) + min;
