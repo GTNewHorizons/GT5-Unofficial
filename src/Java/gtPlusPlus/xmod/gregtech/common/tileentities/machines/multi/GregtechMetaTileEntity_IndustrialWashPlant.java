@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -8,12 +7,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
@@ -28,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechMetaTileEntity_IndustrialWashPlant
 extends GregtechMeta_MultiBlockBase {
 
-	public GT_Recipe mLastRecipe;
 
 	public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -86,70 +82,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
-		ArrayList<ItemStack> tInputList = getStoredInputs();
-		ArrayList<FluidStack> tFluidInputs = getStoredFluids();
-		for (ItemStack tInput : tInputList) {
-
-			if (tInput.stackSize >= 2){
-
-				long tVoltage = getMaxInputVoltage();
-				byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-				GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{tInput});
-
-				if ((tRecipe == null && !mRunningOnLoad)) {
-					this.mLastRecipe = null;
-					return false;
-				}
-
-				if (tRecipe != null) {
-					FluidStack[] mFluidInputList = new FluidStack[tFluidInputs.size()];
-					int tri = 0;
-					for (FluidStack f : tFluidInputs){
-						mFluidInputList[tri] = f;
-						tri++;
-					}
-					if (tRecipe.isRecipeInputEqual(true, mFluidInputList, tInput)) {
-						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-						this.mEfficiencyIncrease = 10000;
-						this.mEUt = tRecipe.mEUt;
-
-						if (tRecipe.mEUt <= 16) {
-							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-							this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-						} else {
-							this.mEUt = tRecipe.mEUt;
-							this.mMaxProgresstime = tRecipe.mDuration;
-							while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-								this.mEUt *= 4;
-								this.mMaxProgresstime /= 2;
-							}
-						}
-						if (this.mEUt > 0) {
-							this.mEUt = (-this.mEUt);
-						}
-						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-						if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, mFluidInputList, new ItemStack[]{tInput})) {
-							Logger.WARNING("Recipe Complete.");
-							this.mLastRecipe = tRecipe;
-							this.mEUt = MathUtils.findPercentageOfInt(this.mLastRecipe.mEUt, 80);
-							this.mMaxProgresstime = MathUtils.findPercentageOfInt(this.mLastRecipe.mDuration, 20);
-							this.mEfficiencyIncrease = 10000;
-							this.addOutput(tRecipe.getOutput(0));
-							this.addOutput(tRecipe.getOutput(0));
-							this.addOutput(tRecipe.getOutput(1));
-							this.addOutput(tRecipe.getOutput(1));
-							mRunningOnLoad = false;	
-							this.updateSlots();
-							return true;
-						}
-
-					}
-				}
-			}
-		}
-		return false;
+	public boolean checkRecipe(final ItemStack aStack) {
+		return checkRecipeGeneric(2, 100, 80);
 	}
 
 	@Override
@@ -246,7 +180,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 20;
+		return 0;
 	}
 
 	@Override

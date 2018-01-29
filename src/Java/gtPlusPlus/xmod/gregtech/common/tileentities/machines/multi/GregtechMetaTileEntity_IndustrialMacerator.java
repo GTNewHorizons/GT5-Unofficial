@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import gregtech.api.GregTech_API;
@@ -26,6 +27,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.ArrayUtils;
+
+import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
 
 public class GregtechMetaTileEntity_IndustrialMacerator
 extends GregtechMeta_MultiBlockBase {
@@ -62,6 +67,11 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
 				CORE.GT_Tooltip};
+	}
+
+	@Override
+	public String getSound() {
+		return GregTech_API.sSoundList.get(Integer.valueOf(201));
 	}
 
 	@Override
@@ -102,76 +112,12 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 1) {
-			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(201)), 10, 1.0F, aX, aY, aZ);
-		}
-	}
-
-	@Override
-	public void startProcess() {
-		this.sendLoopStart((byte) 1);
-	}
-
-	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		byte tTier = (byte)Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
-		//int processing = 8*tTier;
-		int processing = 1;
-		//Get inputs.
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-					} else {
-						tInputList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
+		final long tVoltage = getMaxInputVoltage();
+		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		final int maxParallelRecipes = Math.max(1, 8 * tTier);
 
-		//Temp var
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-		//Don't check the recipe if someone got around the output bus size check.
-		if (this.mOutputBusses.size() != 5){
-			return false;
-		}
-		for (int rx=0;rx<processing;rx++){
-			//Make a recipe instance for the rest of the method.
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
-
-			final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-			Logger.WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
-
-			//More than or one input
-			if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-				if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
-					if (processRecipeXTimes(processing, tRecipe)){
-						
-						//final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
-						
-						
-						
-						//this.mOutputItems = outputs;
-						this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
-						this.mEfficiencyIncrease = 10000;
-
-						this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * tTier / 2);
-						this.mMaxProgresstime = Math.max(1, 256 / (1 << tTier - 1));
-					}
-					//this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration));
-					this.sendLoopStart((byte) 20);
-					this.updateSlots();
-				}
-			}
-		}		
-		return false;
+		return checkRecipeGeneric(maxParallelRecipes, 100, 60, 7500);
 	}
 
 	@Override
@@ -262,29 +208,4 @@ extends GregtechMeta_MultiBlockBase {
 		return true;
 	}
 
-	private boolean processRecipeXTimes(int times, GT_Recipe tRecipe){
-
-		byte tTier = (byte)Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
-		int j = 0;
-		this.mOutputItems = new ItemStack[8 * tTier];	
-		
-	      for (int i = 0; (i < 256) && (j < this.mOutputItems.length); ++i) {
-					if (i==0) {
-						Logger.WARNING("Adding the default output");						
-						this.mOutputItems[0] =  tRecipe.getOutput(0);						
-						Logger.INFO("Ading output. "+i+" | "+tRecipe.mOutputs.length + " | "+this.mOutputItems[0].stackSize+" | "+tRecipe.getOutput(0).stackSize);
-					}
-					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
-						Logger.WARNING("Adding a bonus output");
-						this.mOutputItems[i] = tRecipe.getOutput(i);
-					}
-					else {
-						Logger.WARNING("Adding null output");
-						this.mOutputItems[i] = null;	  
-					}
-	        	++j;
-	        }		
-		updateSlots();
-		return true;
-	}
 }

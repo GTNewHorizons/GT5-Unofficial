@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase {
 
-	public GT_Recipe mLastRecipe;
 	public int mEUStore;
 
 	public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {

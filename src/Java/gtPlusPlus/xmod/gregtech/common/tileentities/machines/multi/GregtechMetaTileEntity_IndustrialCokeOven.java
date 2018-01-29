@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -11,7 +8,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -19,7 +15,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialCokeOven
 extends GregtechMeta_MultiBlockBase {
@@ -42,6 +37,8 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
 				"Controller Block for the Industrial Coke Oven",
+				"Process 12x materials with Heat Resistant Casings",
+				"Or 24x materials with Heat Proof Casings",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front middle at bottom)",
 				"8x Heat Resistant/Proof Coke Oven Casings (middle Layer, hollow)",
@@ -49,11 +46,16 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output Hatch (one of bottom)",
 				"1x Input Bus (one of bottom)",
 				"1x Output Bus (one of bottom)",
-				"1x Energy Hatch (one of bottom)",
+				"1x Energy Hatch (one of bottom) [EV or better recommended]",
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
 				"Structural Coke Oven Casings for the rest",
 				CORE.GT_Tooltip};
+	}
+
+	@Override
+	public String getSound() {
+		return GregTech_API.sSoundList.get(Integer.valueOf(207));
 	}
 
 	@Override
@@ -74,19 +76,6 @@ extends GregtechMeta_MultiBlockBase {
 		return Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes;
 
 	}
-	
-	@Override
-	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(207)), 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-	public void startProcess() {
-        sendLoopStart((byte) 1);
-}
 
 	/* @Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -100,96 +89,8 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
-					} else {
-						tInputList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		for (int i = 0; i < (tFluidList.size() - 1); i++) {
-			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-					} else {
-						tFluidList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[(byte) Math.max(1, GT_Utility.getTier(this.getMaxInputVoltage()))], tFluids, tInputs), tInputs);
-		Logger.WARNING("Valid Output Hatches: "+tValidOutputSlots);
-
-		//More than or one input
-		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			final long tVoltage = this.getMaxInputVoltage();
-			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			if ((tRecipe != null) && (this.mLevel >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe.mEUt <= 16) {
-					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-				} else {
-					this.mEUt = tRecipe.mEUt;
-					this.mMaxProgresstime = tRecipe.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-					}
-				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-				this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-				this.updateSlots();
-				//Utils.LOG_INFO("Coke oven: True");
-				return true;
-			}
-		}
-		//Utils.LOG_INFO("Coke oven: False");
-		return false;
+		return checkRecipeGeneric(this.mLevel * 12, 100, 0);
 	}
-	/*public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        if (!tInputList.isEmpty()) {
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
-
-            int j = 0;
-            this.mOutputItems = new ItemStack[12 * this.mLevel];
-            for (int i = 0; (i < 100) && (j < this.mOutputItems.length); i++) {
-                if (null != (this.mOutputItems[j] = GT_ModHandler.getSmeltingOutput((ItemStack) tInputList.get(i % tInputList.size()), true, null))) {
-                    j++;
-                }
-            }
-            if (j > 0) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-
-                this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * this.mLevel);
-                this.mMaxProgresstime = Math.max(1, 512 / (1 << tTier - 1));
-            }
-            updateSlots();
-            return true;
-        }
-        return false;
-    }*/
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
@@ -212,7 +113,6 @@ extends GregtechMeta_MultiBlockBase {
 		default:
 			return false;
 		}
-		this.mOutputItems = new ItemStack[12 * this.mLevel];
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((i != 0) || (j != 0)) {

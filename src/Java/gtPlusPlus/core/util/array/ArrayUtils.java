@@ -1,6 +1,11 @@
 package gtPlusPlus.core.util.array;
 
+import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ArrayUtils {
 
@@ -20,5 +25,10 @@ public class ArrayUtils {
 		return r.get();
 	}*/
 
+	public static ItemStack[] removeNulls(final ItemStack[] v) {
+		List<ItemStack> list = new ArrayList<ItemStack>(Arrays.asList(v));
+		list.removeAll(Collections.singleton((ItemStack)null));
+		return list.toArray(new ItemStack[list.size()]);
+	}
 }
 

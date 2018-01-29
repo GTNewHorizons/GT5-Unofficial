@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.ArrayList;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -11,7 +9,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -20,7 +17,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialCuttingMachine
 extends GregtechMeta_MultiBlockBase {
@@ -78,53 +74,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		for (final ItemStack tInput : tInputList) {
-			for (final FluidStack tFluid : tFluidList) {
-				final long tVoltage = this.getMaxInputVoltage();
-				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-				GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCutterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluid}, new ItemStack[]{tInput});
-				//tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
-				if (tRecipe != null) {
-
-					//More than or one input
-					if (tInputList.size() > 0) {
-
-						if (tRecipe.isRecipeInputEqual(true, new FluidStack[]{tFluid}, new ItemStack[]{tInput})) {
-							this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-							this.mEfficiencyIncrease = 10000;
-							if (tRecipe.mEUt <= 16) {
-								this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-								this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-							} else {
-								this.mEUt = tRecipe.mEUt;
-								this.mMaxProgresstime = tRecipe.mDuration;
-								while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-									this.mEUt *= 4;
-									this.mMaxProgresstime /= 2;
-								}
-							}
-							if (this.mEUt > 0) {
-								this.mEUt = (-this.mEUt);
-							}
-							this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-							ItemStack[] mOutputStacks = new ItemStack[9];
-							for (int i=0;i<9;i++){
-								if (tRecipe.getOutput(i) != null){
-									mOutputStacks[i] = tRecipe.getOutput(i);
-								}
-							}
-							this.mOutputItems = mOutputStacks.clone();
-							//this.updateSlots();
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
+		return checkRecipeGeneric(2, 100, 60);
 	}
 
 	@Override
@@ -217,7 +167,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 80;
+		return 0;
 	}
 
 	@Override
