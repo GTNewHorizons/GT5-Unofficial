@@ -1,6 +1,5 @@
 package gtPlusPlus.core.world.darkworld.gen.gt;
 
-import gregtech.api.GregTech_API;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 import java.util.List;

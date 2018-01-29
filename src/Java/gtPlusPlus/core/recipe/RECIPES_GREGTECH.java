@@ -473,7 +473,7 @@ public class RECIPES_GREGTECH {
 					}, //Output Array of Items - Upto 9
 					30*20, //Time in ticks
 					30); //EU
-		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("[cellSulfuricLithium] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			ItemStack cells = ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemCellEmpty", "Empty Fluid Cells", 0, 12);
@@ -499,7 +499,7 @@ public class RECIPES_GREGTECH {
 					75*20, //Time in ticks
 					1000); //EU
 
-		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("[dustLepidolite] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			CORE.RA.addDehydratorRecipe(
@@ -516,7 +516,7 @@ public class RECIPES_GREGTECH {
 					150*20, //Time in ticks
 					2000); //EU
 
-		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("[dustUraniumTetrafluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
 			CORE.RA.addDehydratorRecipe(
@@ -533,7 +533,7 @@ public class RECIPES_GREGTECH {
 					300*20, //Time in ticks
 					4000); //EU
 
-		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("[dustUraniumHexafluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 		//Raisins from Grapes
 		try {
@@ -551,7 +551,7 @@ public class RECIPES_GREGTECH {
 					10*20, //Time in ticks
 					8); //EU
 
-		}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}catch (final NullPointerException e){Logger.INFO("[foodRaisins] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 		//Calcium Hydroxide
 		if ((ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() != ModItems.AAA_Broken) || LoadedMods.IHL){
@@ -570,7 +570,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						120); //EU
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[dustCalciumHydroxide] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//2 LiOH + CaCO3
 			try {
@@ -589,7 +589,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						1000); //EU
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[dustLi2CO3CaOH2] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//LiOH Liquid to Dust
 			try {
@@ -607,7 +607,7 @@ public class RECIPES_GREGTECH {
 						1*20, //Time in ticks
 						64); //EU
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[dustLithiumHydroxide] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//Zirconium Chloride -> TetraFluoride
 			try {
@@ -627,7 +627,7 @@ public class RECIPES_GREGTECH {
 						120*20, //Time in ticks
 						500); //EU
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[dustZrF4] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
 			try {
@@ -651,7 +651,7 @@ public class RECIPES_GREGTECH {
 						10*60*20, //Time in ticks
 						230); //EU
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[dustFluorite] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
 			try {
@@ -671,7 +671,7 @@ public class RECIPES_GREGTECH {
 						64); //EU				
 
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[ammoniumtetrafluoroberyllate] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//(NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
 			try {
@@ -690,8 +690,33 @@ public class RECIPES_GREGTECH {
 						5*60*20, //Time in ticks
 						120); //EU				
 
-			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			}catch (final NullPointerException e){Logger.INFO("[cellBerylliumFluoride] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
+			//Process Waste Water
+			try {
+
+				CORE.RA.addDehydratorRecipe(
+						null, //Item input (Array, up to 2)
+						FluidUtils.getFluidStack("sludge", 1000), //Fluid input (slot 1)
+						FluidUtils.getFluidStack("nitricacid", 10), //Fluid output (slot 2)
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIron", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCopper", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyNickel", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCobalt", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAluminium", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinySilver", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyGold", 1),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIridium", 1)
+						}, //Output Array of Items - Upto 9,
+						new int[]{10, 5, 5, 4, 4, 3, 2, 2, 1},
+						2*20, //Time in ticks
+						500); //EU
+
+			}catch (final NullPointerException e){Logger.INFO("[sludge] FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+
+			
 		}
 
 	}

@@ -12,6 +12,10 @@ item.itemBedLocator_Base.name=Bed Locator [NBT Test]
 item.itemBaseItemWithCharge.name=Base Chargeable Item
 item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
+//Fluids
+tile.fluidSludge.name=Stagnant Waste Water
+tile.fluidSludge.0.name=Stagnant Waste Water
+
 //Death Messages
 death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.

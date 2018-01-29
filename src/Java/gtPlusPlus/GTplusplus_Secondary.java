@@ -52,7 +52,6 @@ public class GTplusplus_Secondary implements ActionListener {
 		getDarkBiome().instance = instance;
 		DarkWorld_Dimension.instance = instance;
 		getDarkBiome().preInit(event);
-		DarkWorld_Dimension.preInit(event);
 		
 		//Load/Set Custom Ore Gen
 		HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
@@ -128,7 +127,6 @@ public class GTplusplus_Secondary implements ActionListener {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		getDarkBiome().serverLoad(event);
-		DarkWorld_Dimension.serverLoad(event);
 	}
 
 	/*@Override

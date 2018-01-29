@@ -276,13 +276,13 @@ public class blockDarkWorldPortal extends BlockBreakable {
 		if ((par5Entity.ridingEntity == null) && (par5Entity.riddenByEntity == null) && ((par5Entity instanceof EntityPlayerMP))) {
 			EntityPlayerMP thePlayer = (EntityPlayerMP) par5Entity;
 			if (thePlayer.timeUntilPortal > 0) {
-				thePlayer.timeUntilPortal = 10;
+				thePlayer.timeUntilPortal = 100;
 			} else if (thePlayer.dimension != Dimension_DarkWorld.DIMID) {
-				thePlayer.timeUntilPortal = 10;
+				thePlayer.timeUntilPortal = 100;
 				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, Dimension_DarkWorld.DIMID,
 						new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(Dimension_DarkWorld.DIMID)));
 			} else {
-				thePlayer.timeUntilPortal = 10;
+				thePlayer.timeUntilPortal = 100;
 				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0,
 						new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
 			}
