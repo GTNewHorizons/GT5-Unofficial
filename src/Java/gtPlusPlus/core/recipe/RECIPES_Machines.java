@@ -1015,6 +1015,8 @@ public class RECIPES_Machines {
 						null, "plateIncoloy020", null,
 						GregtechItemList.Casing_Power_SubStation.get(Casing_Amount));
 
+				ItemStack mBattery = (!CORE.GTNH ? ItemList.Energy_LapotronicOrb2.get(1) : ItemList.ZPM2.get(1));
+				
 				RecipeUtils.recipeBuilder(
 						"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
 						GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -45,17 +46,27 @@ extends MetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{"Sloooowly, Skip the Bronze age, Get some Steel!",
-				"Multiblock: 3x3x5 hollow with opening on top",
-				"40 Iron Plated Bricks required",
-				"----",
-				"Even though Iron melts hotter than bronze,",
-				"this machine is to help players skip looking",
-				"for tin and copper, which are not as common",
-				"as Iron is. This machine takes 5x longer than the bronze",
-				"blast furnace as a result.",
-				"----",
-				CORE.GT_Tooltip};
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return new String[]{"Iron is a much better furnace material!",
+					"Can be Automated",
+					"Multiblock: 3x3x5 hollow with opening on top",
+					"Same shape as Bronze/Bricked blast furnace, except one ring of 8 taller.",
+					"40 Iron Plated Bricks required",
+					CORE.GT_Tooltip};
+		}
+		else {
+			return new String[]{"Sloooowly, Skip the Bronze age, Get some Steel!",
+					"Multiblock: 3x3x5 hollow with opening on top",
+					"40 Iron Plated Bricks required",
+					"----",
+					"Even though Iron melts hotter than bronze,",
+					"this machine is to help players skip looking",
+					"for tin and copper, which are not as common",
+					"as Iron is. This machine takes 5x longer than the bronze",
+					"blast furnace as a result.",
+					"----",
+					CORE.GT_Tooltip};
+		}
 	}
 
 	@Override
@@ -231,7 +242,7 @@ extends MetaTileEntity {
 						this.mProgresstime = 0;
 						this.mMaxProgresstime = 0;
 						try {
-							//  GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
+							GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
 						} catch (final Exception e) {
 						}
 					}
@@ -287,7 +298,17 @@ extends MetaTileEntity {
 		return false;
 	}
 
-	private boolean checkRecipe() {
+	private int getProperTime(int time) {		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return (int) (time/3);
+		}
+		else {
+			return time;
+		}		
+	}
+	
+	private boolean checkRecipe() {		
+		
 		if (!this.mMachine) {
 			return false;
 		}
@@ -296,57 +317,57 @@ extends MetaTileEntity {
 				if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 4) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 4*3);
-					this.mMaxProgresstime = 36000;
+					this.mMaxProgresstime = getProperTime(36000);
 					return true;
 				}
 				if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 2) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 2*3);
-					this.mMaxProgresstime = 4800*5;
+					this.mMaxProgresstime = getProperTime(4800);
 					return true;
 				}
 				if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 9);
 					this.getBaseMetaTileEntity().decrStackSize(1, 4*3);
-					this.mMaxProgresstime = 64800*5;
+					this.mMaxProgresstime = getProperTime(64800);
 					return true;
 				}
 			} else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "dustSteel")) {
 				if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 2) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 2*3);
-					this.mMaxProgresstime = 3600*5;
+					this.mMaxProgresstime = getProperTime(3600);
 					return true;
 				}
 				if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 1) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 2L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 1*3);
-					this.mMaxProgresstime = 2400*5;
+					this.mMaxProgresstime = getProperTime(2400);
 					return true;
 				}
 				if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 2) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 9);
 					this.getBaseMetaTileEntity().decrStackSize(1, 2*3);
-					this.mMaxProgresstime = 32400*5;
+					this.mMaxProgresstime = getProperTime(32400);
 					return true;
 				}
 			} else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "blockIron")) {
 				if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 36) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 64);
-					this.mMaxProgresstime = 64800*9;
+					this.mMaxProgresstime = getProperTime(64800);
 					return true;
 				}
 				if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 18) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 18*3);
-					this.mMaxProgresstime = 43200*5;
+					this.mMaxProgresstime = getProperTime(43200);
 					return true;
 				}
 				if (((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (this.spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
 					this.getBaseMetaTileEntity().decrStackSize(0, 1);
 					this.getBaseMetaTileEntity().decrStackSize(1, 4*3);
-					this.mMaxProgresstime = 64800*5;
+					this.mMaxProgresstime = getProperTime(64800);
 					return true;
 				}
 			}

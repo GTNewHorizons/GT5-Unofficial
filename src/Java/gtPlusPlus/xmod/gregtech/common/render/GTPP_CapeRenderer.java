@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class GTPP_CapeRenderer
         extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/DevCapeHD.png")};
+    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/DevCapeHD.png"), new ResourceLocation("miscutils:textures/PatreonCapeHD.png")};
     private final Collection<String> mCapeList;
 
     public GTPP_CapeRenderer(Collection<String> aCapeList) {
@@ -29,6 +29,14 @@ public class GTPP_CapeRenderer
      private final String[] mTestCapes = {"123_456_789", "doomsquirter", "ukdunc"}; //TesterCape.png
      private final String[] mBlueCapes = {"fobius", "cantankerousrex", "stephen_2015", "Dyonovan", "Bear989Sr", "CrazyJ1984", "AndreyKV"}; //Fancycape.png
      private final String[] mDevCapes = {"draknyte1", "redmage17"}; //Capes for Developers
+     
+     
+     /**
+      * Patreon capes
+      * 
+      */
+     
+     private final String[] mPatreonCapes = {"Schadenfreude"}; //Capes for Patrons
     
     
     public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
@@ -65,6 +73,11 @@ public class GTPP_CapeRenderer
             for (String mName : mDevCapes){
             	if (mName.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
                     tResource = this.mCapes[3];
+                }
+            }
+            for (String mName : mPatreonCapes){
+            	if (mName.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+                    tResource = this.mCapes[4];
                 }
             }
             

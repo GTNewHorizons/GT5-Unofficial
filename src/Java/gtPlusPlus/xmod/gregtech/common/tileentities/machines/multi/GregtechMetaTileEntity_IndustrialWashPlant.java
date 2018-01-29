@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -10,6 +11,7 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -44,6 +46,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
 				"80% faster than using single block machines of the same voltage",
+				"Processes one item per voltage tier",
 				"Size: 7x3x5 [WxHxL] (open)",
 				"X     X",
 				"X     X",
@@ -83,7 +86,10 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(2, 100, 80);
+		if (checkForWater()) {
+			return checkRecipeGeneric((1*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 80);
+		}
+		return false;
 	}
 
 	@Override
@@ -308,13 +314,13 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		if ((tAmount == 45)){
+		if ((tAmount >= 45)){
 			Logger.WARNING("Filled structure.");
 		}
 		else {
 			Logger.WARNING("Did not fill structure.");
 		}
-		return (tAmount == 45);
+		return (tAmount >= 45);
 	}
 
 }

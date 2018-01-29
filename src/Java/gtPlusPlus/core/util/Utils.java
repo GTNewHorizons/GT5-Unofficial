@@ -566,7 +566,7 @@ public class Utils {
 
 	}
 
-	public static int calculateVoltageTier(final int Voltage) {
+	public static int calculateVoltageTier(final long Voltage) {
 		int V;
 		if (Voltage == 8) {
 			V = 0;

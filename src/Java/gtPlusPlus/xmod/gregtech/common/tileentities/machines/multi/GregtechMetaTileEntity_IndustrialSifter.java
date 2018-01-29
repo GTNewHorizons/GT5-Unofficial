@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -43,6 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
 				"400% faster than single-block machines of the same voltage",
+				"Processes two items per voltage tier",
 				"Increased output chances",
 				"Size[WxHxL]: 5x3x5",
 				"Controller (Center Bottom)",
@@ -104,7 +106,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(2, 100, 400, 8800);
+		return checkRecipeGeneric((2*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 400, 8800);
 	}
 
 	@Override
