@@ -257,59 +257,40 @@ extends GregtechMeta_MultiBlockBase {
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * mCurrentDirectionZ;
 
 		int tAmount = 0;
-		for (int i = mOffsetX_Lower; i <=mOffsetX_Upper; ++i) {
-			for (int j = mOffsetZ_Lower; j <= mOffsetZ_Upper; ++j) {
-				for (int h = -1; h < 2; ++h) {
-					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
-								zDir + j);
-						if (!addToMachineList(tTileEntity)) {
-							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if ((tBlock != getCasingBlock()) && (tMeta != getCasingMeta())) {
-								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
-										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
-									if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water){
-										if (this.getStoredFluids() != null){
-											for (FluidStack stored : this.getStoredFluids()){
-												if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))){
-													if (stored.amount >= 1000){
-														//Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
-														stored.amount -= 1000;
-														Block fluidUsed = null;
-														if (tBlock == Blocks.air || tBlock == Blocks.flowing_water){
-															fluidUsed = Blocks.water;
-														}
-														if (tBlock == Blocks.water){
-															fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
-														}
-														aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir + i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir + j, fluidUsed);
-
-
-
-													}
-												}
-											}
+		for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
+			for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
+				for (int h = 0; h < 2; ++h) {
+					Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+					byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+					if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
+						if (this.getStoredFluids() != null) {
+							for (FluidStack stored : this.getStoredFluids()) {
+								if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
+									if (stored.amount >= 1000) {
+										//Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
+										stored.amount -= 1000;
+										Block fluidUsed = null;
+										if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
+											fluidUsed = Blocks.water;
 										}
-									}
-									if (tBlock == Blocks.water){
-										++tAmount;
-										//Utils.LOG_WARNING("Found Water");
-									}
-									else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)){
-										++tAmount;
-										++tAmount;
-										//Utils.LOG_WARNING("Found Distilled Water");										
-									}
-								}
-								else {
-									//Utils.LOG_WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
-									//Utils.LOG_WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
-									return false;
-								}
+										if (tBlock == Blocks.water) {
+											fluidUsed = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+										}
+										aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord() + xDir + i, aBaseMetaTileEntity.getYCoord() + h, aBaseMetaTileEntity.getZCoord() + zDir + j, fluidUsed);
 
+
+									}
+								}
 							}
 						}
+					}
+					if (tBlock == Blocks.water) {
+						++tAmount;
+						//Utils.LOG_WARNING("Found Water");
+					} else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
+						++tAmount;
+						++tAmount;
+						//Utils.LOG_WARNING("Found Distilled Water");
 					}
 				}
 			}
