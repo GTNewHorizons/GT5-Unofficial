@@ -249,19 +249,12 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
 	@Override
 	public boolean isPlayerCreated() {
-		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+		return false;
 	}
 
 	@Override
 	public void setPlayerCreated(boolean p_70849_1_) {
-		byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-
-		if (p_70849_1_) {
-			this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 | 1)));
-		}
-		else {
-			this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 & -2)));
-		}
+		
 	}
 
 	/**
@@ -488,7 +481,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		/* float f = 12.0F;
         this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);*/
 
-		final float f = 16F;		
+		final float f = 6.5F;		
 		ExplosionHandler explode = new ExplosionHandler();
 		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);	
 		

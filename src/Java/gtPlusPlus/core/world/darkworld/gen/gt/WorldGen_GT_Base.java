@@ -63,7 +63,6 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 	// private static boolean gcAsteroids = true;
 
 	public WorldGen_GT_Base() {
-		GameRegistry.registerWorldGenerator(this, 7735);
 		if (debugWorldGen) {
 			GT_Log.out.println("GTPP_Worldgenerator created");
 		}
@@ -99,18 +98,6 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 					break;
 				}
 		}
-	}
-
-	private void generateEnd(World world, Random random, int x, int z) {
-		// ...
-	}
-
-	private void generateSurface(World world, Random random, int x, int z) {
-		// ...
-	}
-
-	private void generateNether(World world, Random random, int x, int z) {
-		// ...
 	}
 
 	private synchronized void generateDarkWorld(Random aRandom, int aX, int aZ, World aWorld,
@@ -396,7 +383,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 										// 32, instead of 64
 			}
 			else {
-				oreveinMaxSize = 24;
+				oreveinMaxSize = 48;
 			}
 
 			int wXbox = this.mX - (oreveinMaxSize / 16);

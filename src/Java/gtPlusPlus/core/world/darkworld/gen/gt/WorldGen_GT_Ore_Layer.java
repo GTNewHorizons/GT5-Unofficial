@@ -75,8 +75,8 @@ extends WorldGen_GT {
 		//this.mMoon = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
 		//this.mMars = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
 		//this.mAsteroid = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
-		this.mMinY = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
-		short mMaxY = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
+		this.mMinY = 5;
+		short mMaxY = 14;
 		if (mMaxY < (this.mMinY + 7))    {
 			GT_Log.out.println(
 					"Oremix " + this.mWorldGenName +
@@ -186,7 +186,7 @@ extends WorldGen_GT {
 			return NO_OVERLAP;
 		}
 		// Adjust the density down the more chunks we are away from the oreseed.  The 5 chunks surrounding the seed should always be max density due to truncation of Math.sqrt().
-		int localDensity = Math.max(1, this.mDensity / ((int)Math.sqrt(2 + Math.pow(aChunkX/16 - aSeedX/16, 2) + Math.pow(aChunkZ/16 - aSeedZ/16, 2))) );
+		int localDensity = (Math.max(1, this.mDensity / ((int)Math.sqrt(2 + Math.pow(aChunkX/16 - aSeedX/16, 2) + Math.pow(aChunkZ/16 - aSeedZ/16, 2))))/2);
 
 		// To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll 1 pass through the loop
 		// Now we do bottom-level-first oregen, and work our way upwards.
