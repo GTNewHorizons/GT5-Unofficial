@@ -2,7 +2,6 @@ package gtPlusPlus.core.world.explosions;
 
 import java.util.*;
 
-import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
 import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -22,7 +21,7 @@ public class MiningExplosion extends Explosion {
 	/** whether or not this explosion spawns smoke particles */
 	public boolean isSmoking = true;
 	private final int field_77289_h = 16;
-	private final Random explosionRNG = CSPRNG_DO_NOT_USE.generate(new XSTR());
+	private final Random explosionRNG = new XSTR();
 	private final World worldObj;
 	public double explosionX;
 	public double explosionY;

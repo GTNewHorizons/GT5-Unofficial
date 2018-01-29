@@ -5,6 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.world.TeleporterDimensionMod;
@@ -17,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,7 +33,7 @@ public class blockDarkWorldPortal extends BlockBreakable {
 		this.setLightLevel(0.75F);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockName("blockDarkWorldPortal");
-		LanguageRegistry.addName(this, "Portal to the Dark World");
+		LanguageRegistry.addName(this, "A Glimpse of the Toxic Everglades");
 		
 	}
 
@@ -302,27 +304,27 @@ public class blockDarkWorldPortal extends BlockBreakable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		if (par5Random.nextInt(100) == 0) {
+		if (CORE.RANDOM.nextInt(100) == 0) {
 			par1World.playSound(par2 + 0.5D, par3 + 0.5D, par4 + 0.5D, "portal.portal", 0.5F,
-					par5Random.nextFloat() * 0.4F + 0.8F, false);
+					CORE.RANDOM.nextFloat() * 0.4F + 0.8F, false);
 		}
 		for (int l = 0; l < 4; ++l) {
-			double d0 = par2 + par5Random.nextFloat();
-			double d1 = par3 + par5Random.nextFloat();
-			double d2 = par4 + par5Random.nextFloat();
+			double d0 = par2 + CORE.RANDOM.nextFloat();
+			double d1 = par3 + CORE.RANDOM.nextFloat();
+			double d2 = par4 + CORE.RANDOM.nextFloat();
 			double d3 = 0.0D;
 			double d4 = 0.0D;
 			double d5 = 0.0D;
-			int i1 = par5Random.nextInt(2) * 2 - 1;
-			d3 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-			d4 = (par5Random.nextFloat() - 0.5D) * 0.5D;
-			d5 = (par5Random.nextFloat() - 0.5D) * 0.5D;
+			int i1 = CORE.RANDOM.nextInt(2) * 2 - 1;
+			d3 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
+			d4 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
+			d5 = (CORE.RANDOM.nextFloat() - 0.5D) * 0.5D;
 			if (par1World.getBlock(par2 - 1, par3, par4) != this && par1World.getBlock(par2 + 1, par3, par4) != this) {
 				d0 = par2 + 0.5D + 0.25D * i1;
-				d3 = par5Random.nextFloat() * 2.0F * i1;
+				d3 = CORE.RANDOM.nextFloat() * 2.0F * i1;
 			} else {
 				d2 = par4 + 0.5D + 0.25D * i1;
-				d5 = par5Random.nextFloat() * 2.0F * i1;
+				d5 = CORE.RANDOM.nextFloat() * 2.0F * i1;
 			}
 			par1World.spawnParticle("reddust", d0+0.1D, d1, d2, d3, d4, d5);
 			par1World.spawnParticle("smoke", d0, d1+0.1D, d2, 0, 0, 0);
@@ -348,12 +350,17 @@ public class blockDarkWorldPortal extends BlockBreakable {
 	
 	@Override
 	public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4){
-		return Utils.rgbtoHexValue(255, 255, 0);
+		return Utils.rgbtoHexValue(0, 255, 0);
 	}
 
 	@Override
 	public int getRenderColor(final int aMeta) {
-		return Utils.rgbtoHexValue(255, 255, 0);
+		return Utils.rgbtoHexValue(0, 255, 0);
+	}
+
+	@Override
+	public String getLocalizedName() {
+		return EnumChatFormatting.OBFUSCATED+super.getLocalizedName();
 	}
 }
 

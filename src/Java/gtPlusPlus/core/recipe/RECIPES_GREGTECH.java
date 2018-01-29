@@ -63,7 +63,23 @@ public class RECIPES_GREGTECH {
 		advancedMixerRecipes();
 		sifterRecipes();
 		electroMagneticSeperatorRecipes();
+		extruderRecipes();
 		addFuels();
+	}
+
+	private static void extruderRecipes() {
+		//Osmium Credits
+		if (GT_Values.RA.addExtruderRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("blockOsmium", 4),
+				ItemList.Shape_Mold_Credit.get(0),
+				ItemList.Credit_Greg_Osmium.get(0),
+				(int) Math.max(Materials.Osmium.getMass() * 2L * 1, 1),
+				4 * Materials.Osmium.mDensityMultiplier)){
+			Logger.WARNING("Extruder Recipe: Osmium Credit - Success");
+		}
+		else {
+			Logger.WARNING("Extruder Recipe: Osmium Credit - Failed");
+		}
 	}
 
 	private static void blastSmelterRecipes() {
@@ -1166,7 +1182,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void electroMagneticSeperatorRecipes(){
-		//Bauxite
+		//Zirconium
 		GT_Values.RA.addElectromagneticSeparatorRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
@@ -1174,17 +1190,15 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
 				new int[]{10000, 2500, 4000},
 				20*20,
-				24);
+				24);		
 
-		
-		
 		//Trinium
 		GT_Values.RA.addElectromagneticSeparatorRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedNaquadah", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustNaquadah", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallEnrichedNaquadah", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallNaquadahEnriched", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
-				new int[]{10000, 2500, 4000},
+				new int[]{10000, 2500, 5000},
 				20*20,
 				24);
 
@@ -1194,7 +1208,17 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallOsmium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
-				new int[]{10000, 2500, 4000},
+				new int[]{10000, 2500, 5000},
+				20*20,
+				24);
+
+		//Trinium
+		GT_Values.RA.addElectromagneticSeparatorRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedWulfenite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustWulfenite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
+				new int[]{10000, 3000, 3000},
 				20*20,
 				24);
 	}

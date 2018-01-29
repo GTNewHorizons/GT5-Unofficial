@@ -14,6 +14,7 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -103,8 +104,6 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
-
-
 		//Iron bars
 		final ItemStack ironBars;
 		if (CORE.GTNH) {
@@ -132,6 +131,21 @@ public class RECIPES_General {
 		}
 
 
+		//Set Shards
+		ItemStack shardAer = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Air Shard", 0, 1);
+		ItemStack shardIgnis = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Fire Shard", 1, 1);
+		ItemStack shardAqua = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Warer Shard", 2, 1);
+		ItemStack shardTerra = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Earth Shard", 3, 1);
+		
+		//Mystic Frame
+		if (RecipeUtils.recipeBuilder(
+				shardAer, shardIgnis, shardAqua,
+				shardTerra, "gemRuby", shardTerra,
+				shardAqua, shardIgnis, shardAer,
+				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame))){
+			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
+		}
+		
 		//Alkalus Coin
 		if (RecipeUtils.recipeBuilder(
 				"gemExquisiteRuby", "gemFlawlessDiamond", "gemExquisiteDiamond",
