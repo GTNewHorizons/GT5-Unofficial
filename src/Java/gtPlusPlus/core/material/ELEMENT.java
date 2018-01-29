@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
@@ -9,6 +10,10 @@ import gtPlusPlus.core.util.materials.MaterialUtils;
 public final class ELEMENT {
 
 	private static final ELEMENT thisClass = new ELEMENT();
+	
+	static {
+		Logger.MATERIALS("Initialising Base Elements.");
+	}
 
 	public ELEMENT(){
 		

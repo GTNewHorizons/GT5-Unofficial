@@ -3,6 +3,7 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import gregtech.api.enums.*;
 import gtPlusPlus.api.objects.Logger;
@@ -10,6 +11,9 @@ import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.ArrayUtils;
+import gtPlusPlus.core.util.array.AutoMap;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
@@ -20,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import scala.xml.dtd.ELEMENTS;
 
 public class Material {
 
@@ -27,6 +32,11 @@ public class Material {
 	private String localizedName;
 
 	private MaterialState materialState;
+	private TextureSet textureSet;
+
+	public synchronized final TextureSet getTextureSet() {
+		return textureSet;
+	}
 
 	private Fluid vMoltenFluid;
 	private Fluid vPlasma;
@@ -66,19 +76,23 @@ public class Material {
 	public static Map<Integer, Materials> invalidMaterials = new HashMap<Integer, Materials>();
 
 	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
-		this (materialName, defaultState, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
+		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);
 	}	
 
 	public Material(String materialName, MaterialState defaultState, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
-			this (materialName, defaultState, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
+		this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
 	
+	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
+		this(materialName, defaultState, set, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
+	}
+
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){
 		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
 	}
 
-	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, boolean generateCells, final MaterialStack... inputs){
-		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, generateCells, inputs);
+	public Material(final String materialName, final MaterialState defaultState, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, boolean generateCells, final MaterialStack... inputs){
+		this(materialName, defaultState, null, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, generateCells, inputs);
 	}
 
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, final MaterialStack... inputs){
@@ -94,229 +108,256 @@ public class Material {
 	}	
 
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean addCells,final MaterialStack... inputs) {
-		this (materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, addCells, inputs);
+		this (materialName, defaultState, null, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, addCells, inputs);
 	}
 
 	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
-		this (materialName, defaultState, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, true, inputs);
+		this (materialName, defaultState, null, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, true, inputs);
 	}
 
-	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, final MaterialStack... inputs){
+	public Material(final String materialName, final MaterialState defaultState, final TextureSet set, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, final MaterialStack... inputs){
 		try {
-		this.unlocalizedName = Utils.sanitizeString(materialName);
-		this.localizedName = materialName;
-		
-		this.materialState = defaultState;
-		Logger.MATERIALS(this.getLocalizedName()+" is "+defaultState.name()+".");
-		
-		this.RGBA = rgba;
-		this.vGenerateCells = generateCells;
+			this.unlocalizedName = Utils.sanitizeString(materialName);
+			this.localizedName = materialName;
 
-		//Add Components to an array.
-		if (inputs == null){
-			this.vMaterialInput = null;
-		}
-		else {
-			if (inputs.length != 0){
-				for (int i=0; i < inputs.length; i++){
-					if (inputs[i] != null){
-						this.vMaterialInput.add(i, inputs[i]);
-					}
-				}
-			}
-		}
+			this.materialState = defaultState;
 
+			Logger.MATERIALS(this.getLocalizedName()+" is "+defaultState.name()+".");
 
-		//Set Melting/Boiling point, if value is -1 calculate it from compound inputs.
-		if (meltingPoint != -1){
-			this.meltingPointC = meltingPoint;
-		}
-		else {
-			this.meltingPointC = this.calculateMeltingPoint();
-		}
-		if (boilingPoint != -1){
-			if (boilingPoint != 0){
-				this.boilingPointC = boilingPoint;
+			this.RGBA = rgba;
+			this.vGenerateCells = generateCells;
+
+			//Add Components to an array.
+			if (inputs == null){
+				this.vMaterialInput = null;
 			}
 			else {
-				this.boilingPointC = meltingPoint*4;
-			}
-		}
-		else {
-			this.boilingPointC = this.calculateMeltingPoint();
-		}
-
-		this.meltingPointK = (int) MathUtils.celsiusToKelvin(this.meltingPointC);
-		this.boilingPointK = (int) MathUtils.celsiusToKelvin(this.boilingPointC);
-
-		//Set Proton/Neutron count, if value is -1 calculate it from compound inputs.
-		if (protons != -1){
-			this.vProtons = protons;
-		}
-		else {
-			this.vProtons = this.calculateProtons();
-		}
-		if (boilingPoint != -1){
-			this.vNeutrons = neutrons;
-		}
-		else {
-			this.vNeutrons = this.calculateNeutrons();
-		}
-
-
-
-
-		this.vMass = this.getMass();
-
-		//Sets tool Durability
-		if (durability != 0){
-			this.vDurability = durability;
-		}
-		else {
-			if (inputs != null){
-				long durabilityTemp = 0;
-				int counterTemp = 0;
-				for (final MaterialStack m : inputs){
-					if (m.getStackMaterial() != null){
-						if (m.getStackMaterial().vDurability != 0){
-							durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
-							counterTemp++;
-
+				if (inputs.length != 0){
+					for (int i=0; i < inputs.length; i++){
+						if (inputs[i] != null){
+							this.vMaterialInput.add(i, inputs[i]);
 						}
 					}
 				}
-				if ((durabilityTemp != 0) && (counterTemp != 0)){
-					this.vDurability = (durabilityTemp/counterTemp);
+			}
+			this.textureSet = setTextureSet(set);
+
+
+			//Set Melting/Boiling point, if value is -1 calculate it from compound inputs.
+			if (meltingPoint != -1){
+				this.meltingPointC = meltingPoint;
+			}
+			else {
+				this.meltingPointC = this.calculateMeltingPoint();
+			}
+			if (boilingPoint != -1){
+				if (boilingPoint != 0){
+					this.boilingPointC = boilingPoint;
 				}
 				else {
-					this.vDurability = 8196;
+					this.boilingPointC = meltingPoint*4;
 				}
 			}
 			else {
-				this.vDurability = 0;
+				this.boilingPointC = this.calculateMeltingPoint();
 			}
-		}
 
-		if ((this.vDurability >= 0) && (this.vDurability < 64000)){
-			this.vToolQuality = 1;
-			this.vHarvestLevel = 2;
-		}
-		else if ((this.vDurability >= 64000) && (this.vDurability < 128000)){
-			this.vToolQuality = 2;
-			this.vHarvestLevel = 2;
-		}
-		else if ((this.vDurability >= 128000) && (this.vDurability < 256000)){
-			this.vToolQuality = 3;
-			this.vHarvestLevel = 2;
-		}
-		else if ((this.vDurability >= 256000) && (this.vDurability < 512000)){
-			this.vToolQuality = 3;
-			this.vHarvestLevel = 3;
-		}
-		else if ((this.vDurability >= 512000) && (this.vDurability <= Integer.MAX_VALUE)){
-			this.vToolQuality = 4;
-			this.vHarvestLevel = 4;
-		}
-		else {
-			this.vToolQuality = 0;
-			this.vHarvestLevel = 0;
-		}
+			this.meltingPointK = (int) MathUtils.celsiusToKelvin(this.meltingPointC);
+			this.boilingPointK = (int) MathUtils.celsiusToKelvin(this.boilingPointC);
 
-		//Sets the Rad level
-		if (radiationLevel > 0){
-			Logger.MATERIALS(this.getLocalizedName()+" is radioactive. Level: "+radiationLevel+".");
-			this.isRadioactive = true;
-			this.vRadiationLevel = (byte) radiationLevel;
-		}
-		else {
-			Logger.MATERIALS(this.getLocalizedName()+" is not radioactive.");
-			this.isRadioactive = false;
-			this.vRadiationLevel = 0;
-		}
-
-		//Sets the materials 'tier'. Will probably replace this logic.
-		this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
-
-		this.usesBlastFurnace = blastFurnace;
-		this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 60 : 15;
-
-		this.vComponentCount = this.getComponentCount(inputs);
-		this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
-		int tempSmallestSize = 0;
-
-		if (this.vSmallestRatio != null){
-			for (int v=0;v<this.vSmallestRatio.length;v++){
-				tempSmallestSize=(int) (tempSmallestSize+this.vSmallestRatio[v]);
-			}
-			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
-		}
-		else {
-			this.smallestStackSizeWhenProcessing = 1; //Valid stacksizes
-		}
-
-
-		//Makes a Fancy Chemical Tooltip
-		this.vChemicalSymbol = chemicalSymbol;
-		if (this.vMaterialInput != null){
-			this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
-		}
-		else if (!this.vChemicalSymbol.equals("")){
-			Logger.INFO("materialInput is null, using a valid chemical symbol.");
-			this.vChemicalFormula = this.vChemicalSymbol;
-		}
-		else{
-			Logger.INFO("MaterialInput == null && chemicalSymbol probably equals nothing");
-			this.vChemicalFormula = "??";
-		}
-
-
-		final Materials isValid = Materials.get(this.getLocalizedName());
-		if (FluidUtils.getFluidStack(localizedName, 1) != null){
-			this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
-		}
-		else if (isValid == null || isValid == Materials._NULL){
-			this.vMoltenFluid = this.generateFluid();
-		}
-		else {
-			if (isValid.mFluid != null){
-				this.vMoltenFluid = isValid.mFluid;
-			}
-			else if (isValid.mGas != null){
-				this.vMoltenFluid = isValid.mGas;
+			//Set Proton/Neutron count, if value is -1 calculate it from compound inputs.
+			if (protons != -1){
+				this.vProtons = protons;
 			}
 			else {
+				this.vProtons = this.calculateProtons();
+			}
+			if (boilingPoint != -1){
+				this.vNeutrons = neutrons;
+			}
+			else {
+				this.vNeutrons = this.calculateNeutrons();
+			}
+
+
+
+
+			this.vMass = this.getMass();
+
+			//Sets tool Durability
+			if (durability != 0){
+				this.vDurability = durability;
+			}
+			else {
+				if (inputs != null){
+					long durabilityTemp = 0;
+					int counterTemp = 0;
+					for (final MaterialStack m : inputs){
+						if (m.getStackMaterial() != null){
+							if (m.getStackMaterial().vDurability != 0){
+								durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
+								counterTemp++;
+
+							}
+						}
+					}
+					if ((durabilityTemp != 0) && (counterTemp != 0)){
+						this.vDurability = (durabilityTemp/counterTemp);
+					}
+					else {
+						this.vDurability = 8196;
+					}
+				}
+				else {
+					this.vDurability = 0;
+				}
+			}
+
+			if ((this.vDurability >= 0) && (this.vDurability < 64000)){
+				this.vToolQuality = 1;
+				this.vHarvestLevel = 2;
+			}
+			else if ((this.vDurability >= 64000) && (this.vDurability < 128000)){
+				this.vToolQuality = 2;
+				this.vHarvestLevel = 2;
+			}
+			else if ((this.vDurability >= 128000) && (this.vDurability < 256000)){
+				this.vToolQuality = 3;
+				this.vHarvestLevel = 2;
+			}
+			else if ((this.vDurability >= 256000) && (this.vDurability < 512000)){
+				this.vToolQuality = 3;
+				this.vHarvestLevel = 3;
+			}
+			else if ((this.vDurability >= 512000) && (this.vDurability <= Integer.MAX_VALUE)){
+				this.vToolQuality = 4;
+				this.vHarvestLevel = 4;
+			}
+			else {
+				this.vToolQuality = 0;
+				this.vHarvestLevel = 0;
+			}
+
+			//Sets the Rad level
+			if (radiationLevel > 0){
+				Logger.MATERIALS(this.getLocalizedName()+" is radioactive. Level: "+radiationLevel+".");
+				this.isRadioactive = true;
+				this.vRadiationLevel = (byte) radiationLevel;
+			}
+			else {
+				Logger.MATERIALS(this.getLocalizedName()+" is not radioactive.");
+				this.isRadioactive = false;
+				this.vRadiationLevel = 0;
+			}
+
+			//Sets the materials 'tier'. Will probably replace this logic.
+			this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
+
+			this.usesBlastFurnace = blastFurnace;
+			this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 60 : 15;
+
+			this.vComponentCount = this.getComponentCount(inputs);
+			this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
+			int tempSmallestSize = 0;
+
+			if (this.vSmallestRatio != null){
+				for (int v=0;v<this.vSmallestRatio.length;v++){
+					tempSmallestSize=(int) (tempSmallestSize+this.vSmallestRatio[v]);
+				}
+				this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
+			}
+			else {
+				this.smallestStackSizeWhenProcessing = 1; //Valid stacksizes
+			}
+
+
+			//Makes a Fancy Chemical Tooltip
+			this.vChemicalSymbol = chemicalSymbol;
+			if (this.vMaterialInput != null){
+				this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+			}
+			else if (!this.vChemicalSymbol.equals("")){
+				Logger.INFO("materialInput is null, using a valid chemical symbol.");
+				this.vChemicalFormula = this.vChemicalSymbol;
+			}
+			else{
+				Logger.INFO("MaterialInput == null && chemicalSymbol probably equals nothing");
+				this.vChemicalFormula = "??";
+			}
+
+
+			final Materials isValid = Materials.get(this.getLocalizedName());
+			if (FluidUtils.getFluidStack(localizedName, 1) != null){
+				this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
+			}
+			else if (isValid == null || isValid == Materials._NULL){
 				this.vMoltenFluid = this.generateFluid();
 			}
-		}
-
-		this.vPlasma = this.generatePlasma();
-
-		String ratio = "";
-		if (this.vSmallestRatio != null) {
-			for (int hu=0;hu<this.vSmallestRatio.length;hu++){
-				if (ratio.equals("")){
-					ratio = String.valueOf(this.vSmallestRatio[hu]);
+			else {
+				if (isValid.mFluid != null){
+					this.vMoltenFluid = isValid.mFluid;
+				}
+				else if (isValid.mGas != null){
+					this.vMoltenFluid = isValid.mGas;
 				}
 				else {
-					ratio = ratio + ":" +this.vSmallestRatio[hu];
+					this.vMoltenFluid = this.generateFluid();
 				}
 			}
-		}
 
-		Logger.INFO("Creating a Material instance for "+materialName);
-		Logger.INFO("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
-		Logger.INFO("Protons: "+this.vProtons);
-		Logger.INFO("Neutrons: "+this.vNeutrons);
-		Logger.INFO("Mass: "+this.vMass+"/units");
-		Logger.INFO("Melting Point: "+this.meltingPointC+"C.");
-		Logger.INFO("Boiling Point: "+this.boilingPointC+"C.");
+			this.vPlasma = this.generatePlasma();
+
+			String ratio = "";
+			if (this.vSmallestRatio != null) {
+				for (int hu=0;hu<this.vSmallestRatio.length;hu++){
+					if (ratio.equals("")){
+						ratio = String.valueOf(this.vSmallestRatio[hu]);
+					}
+					else {
+						ratio = ratio + ":" +this.vSmallestRatio[hu];
+					}
+				}
+			}
+
+			Logger.INFO("Creating a Material instance for "+materialName);
+			Logger.INFO("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
+			Logger.INFO("Protons: "+this.vProtons);
+			Logger.INFO("Neutrons: "+this.vNeutrons);
+			Logger.INFO("Mass: "+this.vMass+"/units");
+			Logger.INFO("Melting Point: "+this.meltingPointC+"C.");
+			Logger.INFO("Boiling Point: "+this.boilingPointC+"C.");
 		}
 		catch (Throwable t){
 			t.printStackTrace();
 		}
-	}	
+	}
 
-	
+	private TextureSet setTextureSet(TextureSet set) {
+		if (set != null) {
+			 return set;			
+		}
+		else {
+			// build hash table with count
+			AutoMap<Material> sets = new AutoMap<Material>();
+			if (this.vMaterialInput != null) {				
+				for (MaterialStack r : this.vMaterialInput) {
+					if (r.getStackMaterial().getTextureSet().mSetName.toLowerCase().contains("fluid")) {
+						sets.put(ELEMENT.getInstance().GOLD);
+					}
+					else {
+						sets.put(r.getStackMaterial());
+					}
+				}				
+				TextureSet mostUsedTypeTextureSet = (TextureSet) MaterialUtils.getMostCommonTextureSet(new ArrayList(sets.values()));		        
+				if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
+					Logger.MATERIALS("Set textureset for "+this.localizedName+" to be "+mostUsedTypeTextureSet.mSetName+".");
+					return mostUsedTypeTextureSet;
+				}		        
+			}
+		}
+		Logger.MATERIALS("Set textureset for "+this.localizedName+" to be "+Materials.Iron.mIconSet.mSetName+". [Fallback]");
+		return Materials.Iron.mIconSet;		
+	}
 
 	public final String getLocalizedName(){
 		if (this.localizedName != null) {
@@ -342,7 +383,7 @@ public class Material {
 		}
 		return new short[] {255,0,0};
 	}
-	
+
 	final public short[] getRGBA(){
 		if (this.RGBA != null) {
 			if (this.RGBA.length == 4){
@@ -475,12 +516,12 @@ public class Material {
 	public final ItemStack getNugget(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+this.unlocalizedName, stacksize);
 	}
-	
+
 	/**
 	 * Ore Components
 	 * @return
 	 */
-	
+
 	public final ItemStack getOre(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.getUnlocalizedName()), stacksize);
 	}
@@ -494,11 +535,11 @@ public class Material {
 			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
 			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
 			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
-			
-		Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
-		if (x != null){
-			return x;
-		}
+
+			Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
+			if (x != null){
+				return x;
+			}
 		}
 		catch (Throwable t){
 			t.printStackTrace();
@@ -585,7 +626,6 @@ public class Material {
 	}
 
 
-	@SuppressWarnings("static-method")
 	public final long[] getSmallestRatio(final ArrayList<MaterialStack> tempInput){
 		if (tempInput != null){
 			if (!tempInput.isEmpty()){
@@ -687,7 +727,7 @@ public class Material {
 		if (this.materialState == MaterialState.ORE){
 			return null;
 		}
-		
+
 		final Materials isValid = Materials.get(this.getLocalizedName());
 		Logger.INFO("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
 		if (isValid != Materials._NULL){
@@ -922,33 +962,5 @@ public class Material {
 			return 75;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

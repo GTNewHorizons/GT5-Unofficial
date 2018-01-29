@@ -14,5 +14,11 @@ public class ArrayUtils {
 		series[series.length - 1] = newValueToAdd;
 		return series;
 	}
+	
+	/*public static <V> Object getMostCommonElement(List<V> list) {
+		Optional r = list.stream().map(V::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
+		return r.get();
+	}*/
 
 }
+

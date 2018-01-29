@@ -6,6 +6,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
@@ -224,6 +225,19 @@ public class RecipeGen_DustGeneration  implements Runnable{
 					input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
 					input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
+					if (inputStacks.length == 1) {
+						input2 = CI.getNumberedCircuit(20);
+					}
+					else if (inputStacks.length == 2) {
+						input3 = CI.getNumberedCircuit(20);
+						
+					}
+					else if (inputStacks.length == 3) {
+						input4 = CI.getNumberedCircuit(20);
+						
+					}
+					
+					
 					//Add mixer Recipe
 
 					FluidStack oxygen = GT_Values.NF;

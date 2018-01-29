@@ -40,77 +40,79 @@ public class RecipeGen_Fluids  implements Runnable{
 				Utils.LOG_WARNING("144l fluid extractor from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}*/
 
-			//Ingot
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), //Input
-					null, //Input 2
-					material.getFluid(144), //Fluid Output
-					0, //Chance
-					1*20, //Duration
-					16 //Eu Tick
-					)){
-				Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+			if (!material.requiresBlastFurnace()) {
 
-			//Plate
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), //Input
-					null, //Input 2
-					material.getFluid(144), //Fluid Output
-					0, //Chance
-					1*20, //Duration
-					16 //Eu Tick
-					)){
-				Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+				//Ingot
+				if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), //Input
+						null, //Input 2
+						material.getFluid(144), //Fluid Output
+						0, //Chance
+						1*20, //Duration
+						16 //Eu Tick
+						)){
+					Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
+				}
 
-			//Double Plate
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), //Input
-					null, //Input 2
-					material.getFluid(288), //Fluid Output
-					0, //Chance
-					1*20, //Duration
-					16 //Eu Tick
-					)){
-				Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+				//Plate
+				if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), //Input
+						null, //Input 2
+						material.getFluid(144), //Fluid Output
+						0, //Chance
+						1*20, //Duration
+						16 //Eu Tick
+						)){
+					Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
+				}
 
-			//Nugget
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), //Input
-					null, //Input 2
-					material.getFluid(16), //Fluid Output
-					0, //Chance
-					16, //Duration
-					8 //Eu Tick
-					)){
-				Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+				//Double Plate
+				if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), //Input
+						null, //Input 2
+						material.getFluid(288), //Fluid Output
+						0, //Chance
+						1*20, //Duration
+						16 //Eu Tick
+						)){
+					Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");
+				}
 
-			//Block
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), //Input
-					null, //Input 2
-					material.getFluid(144*9), //Fluid Output
-					0, //Chance
-					288, //Duration
-					16 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+				//Nugget
+				if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), //Input
+						null, //Input 2
+						material.getFluid(16), //Fluid Output
+						0, //Chance
+						16, //Duration
+						8 //Eu Tick
+						)){
+					Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
+				}
 
+				//Block
+				if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), //Input
+						null, //Input 2
+						material.getFluid(144*9), //Fluid Output
+						0, //Chance
+						288, //Duration
+						16 //Eu Tick
+						)){
+					Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
+				}
 
+			}
 
 
 

@@ -61,7 +61,7 @@ public class MaterialEIO {
 			10,
 			10,
 			10,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
@@ -77,7 +77,7 @@ public class MaterialEIO {
 			10,
 			10,
 			10,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
@@ -94,7 +94,7 @@ public class MaterialEIO {
 			10,
 			10,
 			10,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			false, //Generates a cell
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{

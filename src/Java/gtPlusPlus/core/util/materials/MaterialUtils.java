@@ -1,6 +1,10 @@
 package gtPlusPlus.core.util.materials;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -44,6 +48,7 @@ public class MaterialUtils {
 		final long protons = material.getProtons();
 		final long neutrons = material.getNeutrons();
 		final boolean blastFurnace = material.mBlastFurnaceRequired;
+		final TextureSet iconSet = material.mIconSet;
 		final int durability = material.mDurability;
 		boolean mGenerateCell = false;
 		MaterialState materialState;
@@ -99,7 +104,7 @@ public class MaterialUtils {
 		if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell);
+			return new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell);
 		}
 		else {
 			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
@@ -235,5 +240,14 @@ public class MaterialUtils {
 		}
 		return mName;
 	}
+	
+	public static TextureSet getMostCommonTextureSet(List<Material> list) {
+		Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
+		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
+		return o;
+		}
+	
+	
+	}
 
-}
+

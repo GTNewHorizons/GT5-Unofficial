@@ -34,7 +34,7 @@ import net.minecraft.world.IBlockAccess;
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
 	private final Material blockMaterial;
-
+	
 	public BlockBaseOre(final Material material, final BlockTypes blockType, final int colour) {
 		super(Utils.sanitizeString(material.getUnlocalizedName()), net.minecraft.block.material.Material.rock);
 		this.blockMaterial = material;
@@ -96,7 +96,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
 	public ITexture[] getTexture(Block block, byte side) {
 		if (this.blockMaterial != null){
-			GT_RenderedTexture aIconSet = new GT_RenderedTexture(Materials.Iron.mIconSet.mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
+			GT_RenderedTexture aIconSet = new GT_RenderedTexture(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], this.blockMaterial.getRGBA());
 			if (aIconSet != null){
 				//Logger.INFO("[Render] Good Overlay.");
 				return new ITexture[]{new GT_CopiedBlockTexture(Blocks.stone, 0, 0), aIconSet};				

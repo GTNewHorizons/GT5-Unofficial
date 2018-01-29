@@ -58,10 +58,10 @@ public class ItemBlockOre extends ItemBlock{
 		 * Tooltip Handler for Ores
 		 */		
 		if (this.mThisMaterial == FLUORIDES.FLUORITE){
-			list.add("Mined from Sandstone and Limestone.");			
+			list.add("Mined from Sandstone with a 1/"+CORE.ConfigSwitches.chanceToDropFluoriteOre+" chance, or Limestone with a 1/"+(CORE.ConfigSwitches.chanceToDropFluoriteOre*20)+" chance.");			
 		}	
 		else if (this.mThisMaterial != FLUORIDES.FLUORITE){
-			list.add("Mined from the Dark Dimension.");			
+			list.add("Mined from the Toxic Everglades.");			
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
