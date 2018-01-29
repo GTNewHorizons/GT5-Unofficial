@@ -41,7 +41,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "GT-PlusPlus"
-version = "1.6.110-prerelease"
+version = "1.7.0-prerelease"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 
