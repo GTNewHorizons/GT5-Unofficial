@@ -79,9 +79,9 @@ public class GregtechConduits {
 			customWireFactory(ALLOY.LEAGRISIUM, 512, BaseWireID + 56, 1, 2, 2);
 			customWireFactory(ELEMENT.getInstance().ZIRCONIUM, 128, BaseWireID + 67, 1, 2, 2);
 			customWireFactory(ALLOY.HG1223, 32768, BaseWireID + 78, 2, 8, 4);
+			customWireFactory(ALLOY.TRINIUM_TITANIUM, 2048, BaseWireID + 89, 1, 2, 16);
 		}
 		
-		customWireFactory(ALLOY.TRINIUM_TITANIUM, 2048, BaseWireID + 89, 1, 2, 16);
 
 		//superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
 		if (LoadedMods.Thaumcraft){

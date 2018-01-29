@@ -60,7 +60,6 @@ public class CORE {
 	public static final int GREG_FIRST_ID = 760;
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
-	public static IGregtech_RecipeAdder RA;
 
 	//GT++ Fake Player Profile
 	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
@@ -101,6 +100,7 @@ public class CORE {
 
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
+	public static IGregtech_RecipeAdder RA;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
