@@ -95,7 +95,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 					break;
 				}
 				else {
-					//generateDarkWorld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+					generateDarkWorld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 					break;
 				}
 		}

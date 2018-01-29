@@ -5,6 +5,8 @@ import static gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_GT_Base.debugWorld
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.Materials;
@@ -311,20 +313,39 @@ extends WorldGen_GT {
 		// Something (at least the bottom layer must have 1 block) must have been placed, return true
 		return ORE_PLACED;
 	}
-
+	
+	private String fString = "unset", ore1String = "unset", ore2String = "unset", ore3String = "unset", ore4String = "unset";
+	Map<Materials, String> gtOreMap = new HashMap<Materials, String>();
+	
 	@SuppressWarnings("deprecation")
 	public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, Block aMetaData, boolean isSmallOre,
 			boolean air) {
 		if (!air) {
 			aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
-		}
-
+		}		
+		
 		//Set GT ORE
-		if (aMetaData instanceof GT_Block_Ores){
+		if (aMetaData instanceof GT_Block_Ores){			
+			if (ore1String.equals("unset")) {
+				ore1String = Utils.sanitizeString(this.mPrimary.getLocalizedName().toLowerCase());
+			}
+			if (ore2String.equals("unset")) {
+				ore2String = Utils.sanitizeString(this.mSecondaryMeta.getLocalizedName().toLowerCase());
+			}
+			if (ore3String.equals("unset")) {
+				ore3String = Utils.sanitizeString(this.mBetweenMeta.getLocalizedName().toLowerCase());
+			}
+			if (ore4String.equals("unset")) {
+				ore4String = Utils.sanitizeString(this.mSporadicMeta.getLocalizedName().toLowerCase());
+			}
 
 			if (this.mPrimaryMeta == aMetaData){
 				for (Materials f : Materials.values()){
-					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mPrimary.getLocalizedName().toLowerCase()))){
+					if (!gtOreMap.containsKey(f)) {
+						gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+					}
+					fString = gtOreMap.get(f);
+					if (fString.contains(ore1String)){
 						int r = f.mMetaItemSubID;					
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
 							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
@@ -335,7 +356,11 @@ extends WorldGen_GT {
 			}
 			if (this.mSecondaryMeta == aMetaData){
 				for (Materials f : Materials.values()){
-					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mSecondary.getLocalizedName().toLowerCase()))){
+					if (!gtOreMap.containsKey(f)) {
+						gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+					}
+					fString = gtOreMap.get(f);
+					if (fString.contains(ore2String)){
 						int r = f.mMetaItemSubID;				
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
 							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
@@ -346,7 +371,11 @@ extends WorldGen_GT {
 			}
 			if (this.mBetweenMeta == aMetaData){
 				for (Materials f : Materials.values()){
-					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mBetween.getLocalizedName().toLowerCase()))){
+					if (!gtOreMap.containsKey(f)) {
+						gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+					}
+					fString = gtOreMap.get(f);
+					if (fString.contains(ore3String)){
 						int r = f.mMetaItemSubID;				
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){	
 							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
@@ -357,7 +386,11 @@ extends WorldGen_GT {
 			}
 			if (this.mSporadicMeta == aMetaData){
 				for (Materials f : Materials.values()){
-					if (Utils.sanitizeString(f.name().toLowerCase()).contains(Utils.sanitizeString(this.mSporadic.getLocalizedName().toLowerCase()))){
+					if (!gtOreMap.containsKey(f)) {
+						gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+					}
+					fString = gtOreMap.get(f);
+					if (fString.contains(ore4String)){
 						int r = f.mMetaItemSubID;						
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
 							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
@@ -377,7 +410,6 @@ extends WorldGen_GT {
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt) ||
-				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockTopLayer) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondLayer) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockMainFiller) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondaryFiller) ||

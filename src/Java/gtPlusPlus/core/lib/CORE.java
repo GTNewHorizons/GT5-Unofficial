@@ -33,7 +33,7 @@ public class CORE {
 
 	//Math Related
 	public static final float PI = (float) Math.PI;
-	public static volatile Random RANDOM = CSPRNG_DO_NOT_USE.generate(new XSTR());
+	public static volatile Random RANDOM = new XSTR();
 
 	//Env. Variables
 	public static Configuration Config;

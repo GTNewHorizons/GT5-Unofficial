@@ -22,7 +22,7 @@ public class MathUtils {
 	 * @see java.util.Random#nextInt(int)
 	 */
 
-	final static Random rand = CSPRNG_DO_NOT_USE.generate(CORE.RANDOM);
+	final static Random rand = CORE.RANDOM;
 
 	public static int randInt(final int min, final int max) {
 		// nextInt is normally exclusive of the top value,
