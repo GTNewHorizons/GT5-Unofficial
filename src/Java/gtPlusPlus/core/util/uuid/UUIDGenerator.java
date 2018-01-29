@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.util.Random;
 import java.util.UUID;
 
-import gtPlusPlus.api.objects.CSPRNG;
+import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
 
 /**
  * 
@@ -106,7 +106,7 @@ public class UUIDGenerator {
 		}
 		// note that secure random is very slow the first time
 		// it is used; consider switching to a standard random
-		RANDOM = CSPRNG.generate();
+		RANDOM = CSPRNG_DO_NOT_USE.generate();
 		_seq = (short) RANDOM.nextInt(MAX_14BIT);
 
 		byte[] ip = null;

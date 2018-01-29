@@ -2,8 +2,8 @@ package gtPlusPlus.core.client.renderer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.CSPRNG;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 
 import java.util.Random;
@@ -40,7 +40,7 @@ public class RenderPlasmaBolt extends Render {
 		double[] adouble1 = new double[8];
 		double d3 = 0.0D;
 		double d4 = 0.0D;
-		Random random = CSPRNG.generate(new Random(p_76986_1_.boltVertex));
+		Random random = new XSTR(p_76986_1_.boltVertex);
 
 		for (int i = 7; i >= 0; --i) {
 			adouble[i] = d3;
@@ -50,7 +50,7 @@ public class RenderPlasmaBolt extends Render {
 		}
 
 		for (int k1 = 0; k1 < 4; ++k1) {
-			Random random1 = CSPRNG.generate(new Random(p_76986_1_.boltVertex));
+			Random random1 = new XSTR(p_76986_1_.boltVertex);
 
 			for (int j = 0; j < 3; ++j) {
 				int k = 7;

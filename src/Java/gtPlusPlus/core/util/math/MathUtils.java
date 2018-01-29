@@ -4,9 +4,8 @@ import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.GT_Values;
-import gtPlusPlus.api.objects.CSPRNG;
+import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
@@ -23,7 +22,7 @@ public class MathUtils {
 	 * @see java.util.Random#nextInt(int)
 	 */
 
-	final static Random rand = CSPRNG.generate(CORE.RANDOM);
+	final static Random rand = CSPRNG_DO_NOT_USE.generate(CORE.RANDOM);
 
 	public static int randInt(final int min, final int max) {
 		// nextInt is normally exclusive of the top value,

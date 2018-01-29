@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.GregTech_API;
-import gtPlusPlus.api.objects.CSPRNG;
+import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
 import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
@@ -33,7 +33,7 @@ public class CORE {
 
 	//Math Related
 	public static final float PI = (float) Math.PI;
-	public static volatile Random RANDOM = CSPRNG.generate(new XSTR());
+	public static volatile Random RANDOM = CSPRNG_DO_NOT_USE.generate(new XSTR());
 
 	//Env. Variables
 	public static Configuration Config;

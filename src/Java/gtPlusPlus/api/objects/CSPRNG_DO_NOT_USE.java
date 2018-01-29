@@ -86,7 +86,7 @@ import gtPlusPlus.core.util.Utils;
  * @version 3 -- 06-Jul-2005
  *
  */
-public class CSPRNG extends Random implements IRandomGenerator {
+public class CSPRNG_DO_NOT_USE extends Random implements IRandomGenerator {
 
     // pre-compute a few values
     private static final BigInteger two = BigInteger.valueOf(2L);
@@ -147,7 +147,7 @@ public class CSPRNG extends Random implements IRandomGenerator {
      *
      * @param bits number of bits
      */
-    public CSPRNG(int bits) {
+    public CSPRNG_DO_NOT_USE(int bits) {
 	this(bits, new Random());
     }
 
@@ -157,7 +157,7 @@ public class CSPRNG extends Random implements IRandomGenerator {
      * @param bits
      * @param rand
      */
-    public CSPRNG(int bits, Random rand) {
+    public CSPRNG_DO_NOT_USE(int bits, Random rand) {
 	this(generateN(bits, rand));
     }
 
@@ -169,7 +169,7 @@ public class CSPRNG extends Random implements IRandomGenerator {
      * @param n
      *            The n-value.
      */
-    public CSPRNG(BigInteger n) {
+    public CSPRNG_DO_NOT_USE(BigInteger n) {
 	this(n, SecureRandom.getSeed(n.bitLength() / 8));
     }
 
@@ -182,7 +182,7 @@ public class CSPRNG extends Random implements IRandomGenerator {
      * @param seed
      *            The seed value using a byte[] array.
      */
-    public CSPRNG(BigInteger n, byte[] seed) {
+    public CSPRNG_DO_NOT_USE(BigInteger n, byte[] seed) {
 	this.n = n;
 	setSeed(seed);
     }
@@ -217,44 +217,44 @@ public class CSPRNG extends Random implements IRandomGenerator {
     }
     
 
-    public static CSPRNG generate(){
+    public static CSPRNG_DO_NOT_USE generate(){
     	return generate(512);
     }
     
     /**
-     * @return CSPRNG
+     * @return CSPRNG_DO_NOT_USE
      * @Author Draknyte1/Alkalus
      */
-    public static CSPRNG generate(int bitsize){
+    public static CSPRNG_DO_NOT_USE generate(int bitsize){
     	// First use the internal, stock "true" random number
     	// generator to get a "true random seed"
     	SecureRandom r = Utils.generateSecureRandom();
     	r.nextInt(); // need to do something for SR to be triggered.
     	// Use this seed to generate a n-value for Blum-Blum-Shub
     	// This value can be re-used if desired.
-    	BigInteger nval = CSPRNG.generateN(bitsize, r);
+    	BigInteger nval = CSPRNG_DO_NOT_USE.generateN(bitsize, r);
     	// now get a seed
     	byte[] seed = new byte[bitsize/8];
     	r.nextBytes(seed);
     	// now create an instance of BlumBlumShub
-    	CSPRNG bbs = new CSPRNG(nval, seed);    	
+    	CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(nval, seed);    	
     	return bbs;
     }
     
     
     /**
-     * @return CSPRNG
+     * @return CSPRNG_DO_NOT_USE
      * @Author Draknyte1/Alkalus
      */
-    public static CSPRNG generate(Random aRandom){
+    public static CSPRNG_DO_NOT_USE generate(Random aRandom){
     	return generate(512, aRandom);
     }
     
     /**
-     * @return CSPRNG
+     * @return CSPRNG_DO_NOT_USE
      * @Author Draknyte1/Alkalus
      */
-    public static CSPRNG generate(int aBitSize, Random aRandom){
+    public static CSPRNG_DO_NOT_USE generate(int aBitSize, Random aRandom){
     	// First use the internal, stock "true" random number
     	// generator to get a "true random seed"
     	SecureRandom r = Utils.generateSecureRandom();
@@ -264,7 +264,7 @@ public class CSPRNG extends Random implements IRandomGenerator {
     	int bitsize = aBitSize;
     	// now create an instance of BlumBlumShub
     	// do everything almost automatically
-    	CSPRNG bbs = new CSPRNG(bitsize, aRandom);
+    	CSPRNG_DO_NOT_USE bbs = new CSPRNG_DO_NOT_USE(bitsize, aRandom);
     	return bbs;
     }
 
