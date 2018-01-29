@@ -1178,25 +1178,25 @@ public class RECIPES_GREGTECH {
 
 		
 		
-		/*//Trinium
+		//Trinium
 		GT_Values.RA.addElectromagneticSeparatorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedNaquadah", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustNaquadah", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallEnrichedNaquadah", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
 				new int[]{10000, 2500, 4000},
 				20*20,
 				24);
 
 		//Trinium
 		GT_Values.RA.addElectromagneticSeparatorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIridium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallOsmium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTrinium", 1),
 				new int[]{10000, 2500, 4000},
 				20*20,
-				24);*/
+				24);
 	}
 
 	private static void advancedMixerRecipes(){
