@@ -36,7 +36,7 @@ public class GTPP_CapeRenderer
       * 
       */
      
-     private final String[] mPatreonCapes = {"Schadenfreude"}; //Capes for Patrons
+     private final String[] mPatreonCapes = {"Traumeister"}; //Capes for Patrons
     
     
     public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
