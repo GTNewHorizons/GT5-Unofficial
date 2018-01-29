@@ -86,19 +86,16 @@ extends GregtechMeta_MultiBlockBase {
 		return checkRecipeGeneric(4, 100, 40);
 	}
 
-	@SuppressWarnings("static-method")
 	public Block getCasingBlock() {
 		return ModBlocks.blockCasingsMisc;
 	}
 
-	@SuppressWarnings("static-method")
 	public byte getCasingMeta() {
 		return 0;
 	}
 
-	@SuppressWarnings("static-method")
 	public byte getCasingTextureIndex() {
-		return 0;
+		return (byte) TAE.GTPP_INDEX(0);
 	}
 
 	@Override
