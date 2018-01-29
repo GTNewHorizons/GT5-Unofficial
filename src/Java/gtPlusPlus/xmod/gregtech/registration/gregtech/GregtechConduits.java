@@ -64,20 +64,24 @@ public class GregtechConduits {
 	}
 
 	private static void run1(){
+		
 		if (LoadedMods.Big_Reactors){
 			wireFactory("Blutonium", 8196, BaseWireID, 8, 32, 2, new short[]{28, 28, 218, 0});
 			wireFactory("Cyanite", 512, BaseWireID+15, 2, 16, 4, new short[]{27, 130, 178, 0});
 			wireFactory("Yellorium", 2048, BaseWireID+30, 4, 16, 2, new short[]{150, 195, 54, 0});
 		}
+		
 		if (LoadedMods.EnderIO){
 			wireFactory("RedstoneAlloy", 32, BaseWireID+45, 0, 2, 1, new short[]{178,34,34, 0});
 		}
 
 		if(!GTNH) {
-			customWireFactory(ALLOY.LEAGRISIUM, 512, BaseWireID + 45 + 11, 1, 2, 2);
+			customWireFactory(ALLOY.LEAGRISIUM, 512, BaseWireID + 56, 1, 2, 2);
 			customWireFactory(ELEMENT.getInstance().ZIRCONIUM, 128, BaseWireID + 67, 1, 2, 2);
 			customWireFactory(ALLOY.HG1223, 32768, BaseWireID + 78, 2, 8, 4);
 		}
+		
+		customWireFactory(ALLOY.TRINIUM_TITANIUM, 2048, BaseWireID + 89, 1, 2, 16);
 
 		//superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
 		if (LoadedMods.Thaumcraft){
@@ -106,6 +110,7 @@ public class GregtechConduits {
 		}
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
+		
 	}
 
 	private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps, final short[] rgb){
@@ -234,7 +239,7 @@ public class GregtechConduits {
 	}
 
 	private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
-		final int transferRatePerTick = transferRatePerSec/20;
+		final int transferRatePerTick = transferRatePerSec/10;
 		long mass;
 		long voltage;
 		if (myMaterial != null){

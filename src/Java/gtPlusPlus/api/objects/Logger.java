@@ -8,6 +8,10 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.proxy.ClientProxy;
 
 public class Logger {
+	
+	public Logger(String string) {
+		
+	}
 
 	// Logging Functions
 	public static final org.apache.logging.log4j.Logger modLogger = Logger.makeLogger();

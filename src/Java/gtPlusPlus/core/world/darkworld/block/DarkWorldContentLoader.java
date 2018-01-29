@@ -38,16 +38,15 @@ public class DarkWorldContentLoader {
 	}
 
 	public synchronized static boolean initItems(){
-		portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
-		GameRegistry.registerItem(portalItem, "dimensionDarkWorld_trigger");	
-
+		portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("everglades.trigger"));
+		GameRegistry.registerItem(portalItem, "everglades.trigger");	
 		return true;
 	}
 
 	public synchronized static boolean initBlocks(){		
 
 		//Create Block Instances
-		blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, blockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f).setLightOpacity(1).setBlockName("blockDarkWorldSludgeFluid");
+		blockFluidLakes = new BlockBaseFluid("Sludge", SLUDGE, blockDarkWorldSludgeFluid.SLUDGE).setLightLevel(2f).setLightOpacity(1).setBlockName("fluidSludge");
 		portalBlock = new blockDarkWorldPortal();
 		blockTopLayer = new blockDarkWorldGround();
 		blockSecondLayer = new blockDarkWorldPollutedDirt();

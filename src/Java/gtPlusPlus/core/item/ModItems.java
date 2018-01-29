@@ -274,7 +274,7 @@ public final class ModItems {
 
 	public static Item itemRope;
 	public static Item itemFiber;
-	
+
 	public static Item itemDragonJar;
 
 	public static final void init(){
@@ -346,27 +346,27 @@ public final class ModItems {
 
 
 		try{
-			
+
 			/**
 			 * Try generate dusts for missing rare earth materials if they don't exist
 			 */
 
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
+				ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
+				ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
+				ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
+				ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
 			}
 			/*if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
 		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", "", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
 			}*/
-			
+
 
 			//Elements generate first so they can be used in compounds.
 			//Missing Elements
@@ -513,16 +513,18 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.HG1223, false, false);
 
 			//Generate Fictional Materials
-			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
-			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
+			if (!CORE.GTNH) {
+				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
+				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
+			}
 			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);			
 
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
-			
-			
+
+
 			//Ores
 			MaterialGenerator.generateOreMaterial(FLUORIDES.FLUORITE);
 			GTplusplus_Secondary.GenerateOreMaterials();
@@ -692,7 +694,7 @@ public final class ModItems {
 		itemLavaFilter = new ItemLavaFilter();
 
 		itemGrindleTablet = new BaseItemGrindle();
-		
+
 		itemDragonJar = new ItemEntityCatcher();
 
 		//Chemistry

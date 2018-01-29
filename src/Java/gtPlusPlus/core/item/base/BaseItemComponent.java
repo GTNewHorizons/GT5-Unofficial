@@ -3,6 +3,9 @@ package gtPlusPlus.core.item.base;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -10,13 +13,16 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
+import gtPlusPlus.core.util.input.KeyboardUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BaseItemComponent extends Item{
@@ -28,6 +34,9 @@ public class BaseItemComponent extends Item{
 	public final int componentColour;
 	public Object extraData;
 
+	protected IIcon base;
+	protected IIcon overlay;
+
 	public BaseItemComponent(final Material material, final ComponentTypes componentType) {
 		this.componentMaterial = material;
 		this.unlocalName = "item"+componentType.COMPONENT_NAME+material.getUnlocalizedName();
@@ -36,7 +45,7 @@ public class BaseItemComponent extends Item{
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(this.unlocalName);
 		this.setMaxStackSize(64);
-		this.setTextureName(this.getCorrectTextures());
+		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
@@ -62,46 +71,19 @@ public class BaseItemComponent extends Item{
 		if (!CORE.ConfigSwitches.useGregtechTextures){
 			return CORE.MODID + ":" + "item"+this.componentType.COMPONENT_NAME;
 		}
-		if (this.componentType == ComponentTypes.GEAR){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGt";
-		}
-		else if (this.componentType == ComponentTypes.SMALLGEAR){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGtSmall";
-		}
-		else if (this.componentType == ComponentTypes.ROD){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "stick";
-		}
-		else if (this.componentType == ComponentTypes.RODLONG){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "stickLong";
-		}
-		else if (this.componentType == ComponentTypes.PLATEDOUBLE){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "plateDouble";
-		}
-		else if (this.componentType == ComponentTypes.CELL){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "cell";
-		}
-		else if (this.componentType == ComponentTypes.PLASMACELL){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "cellPlasma";
-		}
-		else if (this.componentType == ComponentTypes.BOLT){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "bolt";
-		}
-		else if (this.componentType == ComponentTypes.RING){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "ring";
-		}
-		else if (this.componentType == ComponentTypes.ROTOR){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "rotor";
-		}
-		else if (this.componentType == ComponentTypes.SCREW){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "screw";
-		}
-		else if (this.componentType == ComponentTypes.INGOT){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "ingot";
-		}
-		else if (this.componentType == ComponentTypes.HOTINGOT){
-			return "gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot";
-		}
-		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME.toLowerCase();
+		String metType = "9j4852jyo3rjmh3owlhw9oe"; 
+		if (this.componentMaterial != null) {
+			TextureSet u = this.componentMaterial.getTextureSet();
+			if (u != null) {
+				metType = u.mSetName;				
+			}
+		}		
+		metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);		
+		return "gregtech" + ":" + "materialicons/"+metType+"/" + this.componentType.getOreDictName();
+
+
+
+		//return "gregtech" + ":" + "materialicons/"+metType+"/" + this.componentType.COMPONENT_NAME.toLowerCase();
 	}
 
 	@Override
@@ -128,42 +110,6 @@ public class BaseItemComponent extends Item{
 		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && (this.componentMaterial != null)){
 
 
-			if (this.componentType == ComponentTypes.DUST){
-				//list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
-			}
-			if (this.componentType == ComponentTypes.INGOT){
-				//list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");
-				if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("ingothot")){
-					list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
-				}
-			}
-			if (this.componentType == ComponentTypes.PLATE){
-				//list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.PLATEDOUBLE){
-				//list.add(EnumChatFormatting.GRAY+"A double plate of " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.ROD){
-				//list.add(EnumChatFormatting.GRAY+"A 40cm Rod of " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.RODLONG){
-				//list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.ROTOR){
-				//list.add(EnumChatFormatting.GRAY+"A Rotor made out of " + materialName + ". ");
-			}
-			if (this.componentType == ComponentTypes.BOLT){
-				//list.add(EnumChatFormatting.GRAY+"A small Bolt, constructed from " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.SCREW){
-				//list.add(EnumChatFormatting.GRAY+"A 8mm Screw, fabricated out of some " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.GEAR){
-				//list.add(EnumChatFormatting.GRAY+"A large Gear, constructed from " + materialName + ".");
-			}
-			if (this.componentType == ComponentTypes.RING){
-				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
-			}
 			if (this.componentMaterial != null){
 				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
 					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
@@ -172,17 +118,31 @@ public class BaseItemComponent extends Item{
 				if (this.componentMaterial.isRadioactive){
 					list.add(CORE.GT_Tooltip_Radioactive);
 				}
+
+				if (this.componentType == ComponentTypes.INGOT){
+					if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("ingothot")){
+						list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
+					}
+				}
 			}
+
+			//Hidden Tooltip
+			if (KeyboardUtils.isCtrlKeyDown()) {
+				if (this.componentMaterial != null) {
+					String type = this.componentMaterial.getTextureSet().mSetName;
+					String output = type.substring(0, 1).toUpperCase() + type.substring(1);
+					list.add(EnumChatFormatting.GRAY+"Material Type: "+output+".");
+					list.add(EnumChatFormatting.GRAY+"Material State: "+this.componentMaterial.getState().name()+".");
+					list.add(EnumChatFormatting.GRAY+"Radioactivity Level: "+this.componentMaterial.vRadiationLevel+".");
+				}
+			}
+			else {
+				list.add(EnumChatFormatting.DARK_GRAY+"Hold Ctrl to show additional info.");				
+			}			
 
 		}
 
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
-
-	@Override
-	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-		return this.componentColour;
 	}
 
 	@Override
@@ -197,8 +157,52 @@ public class BaseItemComponent extends Item{
 	}
 
 
+	/**
+	 * 
+	 * Handle Custom Rendering
+	 *
+	 */
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses(){
+		return (CORE.ConfigSwitches.useGregtechTextures ? true : false);
+	}
 
+	@Override
+	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
+		if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
+			return Utils.rgbtoHexValue(255, 255, 255);
+		}
+		if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
+			return Utils.rgbtoHexValue(255, 255, 255);
+		}
+		return this.componentColour;
+	}
+
+	@Override
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+		if (CORE.ConfigSwitches.useGregtechTextures) {
+			if(pass == 0) {
+				return this.base;
+			}
+			return this.overlay;			
+		}
+		return this.base;
+	}
+
+	@Override
+	public void registerIcons(final IIconRegister i) {
+
+		if (CORE.ConfigSwitches.useGregtechTextures){
+			this.base = i.registerIcon(getCorrectTextures());
+			this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
+		}
+		else {
+			this.base = i.registerIcon(getCorrectTextures());
+			//this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
+		}
+	}
 
 
 
@@ -211,7 +215,7 @@ public class BaseItemComponent extends Item{
 		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"),
 		ROD("Rod", " Rod", "stick"),
 		RODLONG("RodLong", " Long Rod", "stickLong"),
-		GEAR("Gear", " Gear", "gear"),
+		GEAR("Gear", " Gear", "gearGt"),
 		SMALLGEAR("SmallGear", " Gear", "gearGtSmall"), //TODO
 		SCREW("Screw", " Screw", "screw"),
 		BOLT("Bolt", " Bolt", "bolt"),

@@ -20,7 +20,6 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
@@ -40,7 +39,6 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
-import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
 

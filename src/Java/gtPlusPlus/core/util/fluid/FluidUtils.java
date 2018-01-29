@@ -442,14 +442,17 @@ public class FluidUtils {
 					ItemList.Cell_Empty.get(1L, new Object[0]),
 					1000);
 
-			GT_Values.RA.addFluidExtractionRecipe(
+			//Disable this, not sure why it exists //TODO
+			/*GT_Values.RA.addFluidExtractionRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1), //Input
 					null, //Input 2
 					FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
 					0, //Chance
 					1*20, //Duration
 					16 //Eu Tick
-					);
+					);*/
+			
+			
 			return gtFluid;
 		}
 		Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName);

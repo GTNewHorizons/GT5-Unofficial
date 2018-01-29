@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material;
 
+import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.state.MaterialState;
 
 public final class ORES {
@@ -7,6 +8,7 @@ public final class ORES {
 	public static final Material GEIKIELITE = new Material(
 			"Geikielite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_GEM_HORIZONTAL, //Texture Set
 			new short[]{187, 193, 204, 0}, //Material Colour
 			500,
 			1500,
@@ -22,6 +24,7 @@ public final class ORES {
 	public static final Material ZIMBABWEITE = new Material(
 			"Zimbabweite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{193, 187, 131, 0}, //Material Colour
 			500,
 			1500,
@@ -42,6 +45,7 @@ public final class ORES {
 	public static final Material TITANITE = new Material(
 			"Titanite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{184, 198, 105, 0}, //Material Colour
 			500,
 			1500,
@@ -59,6 +63,7 @@ public final class ORES {
 	public static final Material ZIRCONILITE = new Material(
 			"Zirconolite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{45, 26, 0, 0}, //Material Colour
 			500,
 			1500,
@@ -76,6 +81,7 @@ public final class ORES {
 	public static final Material CROCROITE = new Material(
 			"Crocoite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_GEM_VERTICAL, //Texture Set
 			new short[]{255, 143, 84, 0}, //Material Colour
 			500,
 			1500,
@@ -91,6 +97,7 @@ public final class ORES {
 	public static final Material NICHROMITE = new Material(
 			"Nichromite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{22, 19, 19, 0}, //Material Colour
 			500,
 			1500,
@@ -106,9 +113,10 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 8)
 			});	
 
-	public static final Material YTTRIAITE = new Material(
+	public static final Material YTTRIAITE = new Material( //TODO
 			"Yttriaite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{255, 143, 84, 0}, //Material Colour
 			500,
 			1500,
@@ -124,6 +132,7 @@ public final class ORES {
 	public static final Material SAMARSKITE_Y = new Material(
 			"Samarskite (Y)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{65, 163, 164, 0}, //Material Colour
 			500,
 			1500,
@@ -143,6 +152,7 @@ public final class ORES {
 	public static final Material SAMARSKITE_YB = new Material(
 			"Samarskite (Yb)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{95, 193, 194, 0}, //Material Colour
 			500,
 			1500,
@@ -161,6 +171,7 @@ public final class ORES {
 	public static final Material ZIRCON = new Material(
 			"Zircon", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_GEM_VERTICAL, //Texture Set
 			new short[]{195, 19, 19, 0}, //Material Colour
 			500,
 			1500,
@@ -177,6 +188,7 @@ public final class ORES {
 	public static final Material GADOLINITE_CE = new Material(
 			"Gadolinite (Ce)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{15, 159, 59, 0}, //Material Colour
 			500,
 			1500,
@@ -198,6 +210,7 @@ public final class ORES {
 	public static final Material GADOLINITE_Y = new Material(
 			"Gadolinite (Y)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{35, 189, 99, 0}, //Material Colour
 			500,
 			1500,
@@ -218,6 +231,7 @@ public final class ORES {
 	public static final Material LEPERSONNITE = new Material(
 			"Lepersonnite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_EMERALD, //Texture Set
 			new short[]{175, 175, 20, 0}, //Material Colour
 			500,
 			1500,
@@ -236,6 +250,7 @@ public final class ORES {
 	public static final Material XENOTIME = new Material(
 			"Xenotime", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_OPAL, //Texture Set
 			new short[]{235, 89, 199, 0}, //Material Colour
 			500,
 			1500,
@@ -251,6 +266,7 @@ public final class ORES {
 	public static final Material YTTRIALITE = new Material(
 			"Yttrialite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_RUBY, //Texture Set
 			new short[]{35, 189, 99, 0}, //Material Colour
 			500,
 			1500,
@@ -267,6 +283,7 @@ public final class ORES {
 	public static final Material YTTROCERITE = new Material(
 			"Yttrocerite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_DIAMOND, //Texture Set
 			new short[]{35, 19, 199, 0}, //Material Colour
 			500,
 			1500,
@@ -283,6 +300,7 @@ public final class ORES {
 	public static final Material POLYCRASE = new Material(
 			"Polycrase", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_ROUGH, //Texture Set
 			new short[]{51, 0, 11, 0}, //Material Colour
 			500,
 			1500,
@@ -304,6 +322,7 @@ public final class ORES {
 	public static final Material ZIRCOPHYLLITE = new Material(
 			"Zircophyllite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FIERY, //Texture Set
 			new short[]{30, 0, 6, 0}, //Material Colour
 			500,
 			1500,
@@ -326,6 +345,7 @@ public final class ORES {
 	public static final Material ZIRKELITE = new Material(
 			"Zirkelite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_GEM_HORIZONTAL, //Texture Set
 			new short[]{229, 208, 48, 0}, //Material Colour
 			500,
 			1500,
@@ -345,6 +365,7 @@ public final class ORES {
 	public static final Material LANTHANITE_LA = new Material(
 			"Lanthanite (La)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{219, 160, 214, 0}, //Material Colour
 			500,
 			1500,
@@ -362,6 +383,7 @@ public final class ORES {
 	public static final Material LANTHANITE_CE = new Material(
 			"Lanthanite (Ce)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{186, 113, 179, 0}, //Material Colour
 			500,
 			1500,
@@ -379,6 +401,7 @@ public final class ORES {
 	public static final Material LANTHANITE_ND = new Material(
 			"Lanthanite (Nd)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{153, 76, 145, 0}, //Material Colour
 			500,
 			1500,
@@ -396,6 +419,7 @@ public final class ORES {
 	public static final Material HIBONITE = new Material(
 			"Hibonite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{58, 31, 0, 0}, //Material Colour
 			500,
 			1500,
@@ -414,6 +438,7 @@ public final class ORES {
 	public static final Material CERITE = new Material(
 			"Cerite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{68, 13, 0, 0}, //Material Colour
 			500,
 			1500,
@@ -434,6 +459,7 @@ public final class ORES {
 	public static final Material AGARDITE_Y = new Material(
 			"Agardite (Y)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{210, 232, 44, 0}, //Material Colour
 			500,
 			1500,
@@ -452,6 +478,7 @@ public final class ORES {
 	public static final Material AGARDITE_CD = new Material(
 			"Agardite (Cd)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{170, 188, 33, 0}, //Material Colour
 			500,
 			1500,
@@ -470,6 +497,7 @@ public final class ORES {
 	public static final Material AGARDITE_LA = new Material(
 			"Agardite (La)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{206, 232, 9, 0}, //Material Colour
 			500,
 			1500,
@@ -488,6 +516,7 @@ public final class ORES {
 	public static final Material AGARDITE_ND = new Material(
 			"Agardite (Nd)", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{225, 244, 78, 0}, //Material Colour
 			500,
 			1500,
@@ -506,6 +535,7 @@ public final class ORES {
 	public static final Material FLUORCAPHITE = new Material(
 			"Fluorcaphite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
 			new short[]{255, 255, 30, 0}, //Material Colour
 			500,
 			1500,
@@ -525,6 +555,7 @@ public final class ORES {
 	public static final Material FLORENCITE = new Material(
 			"Florencite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
 			new short[]{249, 249, 124, 0}, //Material Colour
 			500,
 			1500,
@@ -542,6 +573,7 @@ public final class ORES {
 	public static final Material CRYOLITE = new Material(
 			"Cryolite", //Material Name
 			MaterialState.ORE, //State
+			TextureSet.SET_SHINY, //Texture Set
 			new short[]{205, 205, 255, 0}, //Material Colour
 			500,
 			1500,

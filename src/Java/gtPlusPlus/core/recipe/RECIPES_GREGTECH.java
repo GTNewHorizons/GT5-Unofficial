@@ -636,7 +636,7 @@ public class RECIPES_GREGTECH {
 						230); //EU
 
 			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
-			
+
 			//Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
 			try {
 				CORE.RA.addDehydratorRecipe(
@@ -653,7 +653,7 @@ public class RECIPES_GREGTECH {
 						new int[]{0, 0, 0},
 						32*20, //Time in ticks
 						64); //EU				
-				
+
 
 			}catch (final NullPointerException e){Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
@@ -903,7 +903,7 @@ public class RECIPES_GREGTECH {
 				chances,
 				30*20,
 				240);
-		
+
 		GT_Values.RA.addChemicalBathRecipe(
 				FLUORIDES.FLUORITE.getCrushed(2), 
 				FluidUtils.getFluidStack("hydrogen", 2000),
@@ -1166,6 +1166,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void electroMagneticSeperatorRecipes(){
+		//Bauxite
 		GT_Values.RA.addElectromagneticSeparatorRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
@@ -1174,6 +1175,28 @@ public class RECIPES_GREGTECH {
 				new int[]{10000, 2500, 4000},
 				20*20,
 				24);
+
+		
+		
+		/*//Trinium
+		GT_Values.RA.addElectromagneticSeparatorRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
+				new int[]{10000, 2500, 4000},
+				20*20,
+				24);
+
+		//Trinium
+		GT_Values.RA.addElectromagneticSeparatorRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
+				new int[]{10000, 2500, 4000},
+				20*20,
+				24);*/
 	}
 
 	private static void advancedMixerRecipes(){

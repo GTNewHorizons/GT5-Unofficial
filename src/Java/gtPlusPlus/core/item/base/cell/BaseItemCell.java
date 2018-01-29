@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class BaseItemCell extends BaseItemComponent{
 
-	private IIcon base;
-	private IIcon overlay;
 	ComponentTypes Cell = ComponentTypes.CELL;
 
 	public BaseItemCell(final Material material) {
@@ -37,12 +35,6 @@ public class BaseItemCell extends BaseItemComponent{
 		super(unlocalName, localName, RGBa);
 		this.fluidColour = RGBa;
 		FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(cellFluid, 1000), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses(){
-		return true;
 	}
 
 	@Override
@@ -71,15 +63,6 @@ public class BaseItemCell extends BaseItemComponent{
 			return Utils.rgbtoHexValue(230, 230, 230);
 		}
 		return this.componentColour;
-	}
-
-
-	@Override
-	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-		if(pass == 0) {
-			return this.base;
-		}
-		return this.overlay;
 	}
 
 }

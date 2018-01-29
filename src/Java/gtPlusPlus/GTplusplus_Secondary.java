@@ -1,18 +1,17 @@
 package gtPlusPlus;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
-import cofh.mod.ChildMod;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.CustomProperty;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Config;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.*;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
@@ -26,15 +25,12 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
 @MCVersion(value = "1.7.10")
-@ChildMod(parent = CORE.MODID, mod = @Mod(modid = "GT++DarkWorld",
-name = "GT++ Dark World",
-version = CORE.VERSION,
-dependencies = "after:Miscutils;after:Gregtech",
-customProperties = @CustomProperty(k = "cofhversion", v = "true")))
-public class GTplusplus_Secondary {
+@Mod(modid = Everglades.MODID, name = Everglades.NAME, version = Everglades.VERSION, dependencies = "required-after:Forge; after:dreamcraft; after:IC2; after:ihl; required-after:gregtech; required-after:miscutils;")
+public class GTplusplus_Secondary implements ActionListener {
 
-	public static final String MODID2 = "GT++ Dark World";
-	public static final String VERSION2 = "0.1";
+	//Mod Instance
+	@Mod.Instance(Everglades.MODID)
+	public static GTplusplus_Secondary instance;
 
 	// Dark World Handler
 	protected static volatile Biome_DarkWorld DarkWorld_Biome;
@@ -44,7 +40,7 @@ public class GTplusplus_Secondary {
 	// Pre-Init
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
-		Logger.INFO("Loading " + MODID2 + " V" + VERSION2);
+		Logger.INFO("Loading " + Everglades.MODID + " V" + Everglades.VERSION);
 
 		//Setup
 		setVars(event);
@@ -53,8 +49,8 @@ public class GTplusplus_Secondary {
 		DarkWorld_Dimension = new Dimension_DarkWorld();
 		
 		// Load Dark World
-		getDarkBiome().instance = GTplusplus.instance;
-		DarkWorld_Dimension.instance = GTplusplus.instance;
+		getDarkBiome().instance = instance;
+		DarkWorld_Dimension.instance = instance;
 		getDarkBiome().preInit(event);
 		DarkWorld_Dimension.preInit(event);
 		
@@ -65,26 +61,22 @@ public class GTplusplus_Secondary {
 
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
-		Logger.INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
+		Logger.INFO("Begin resource allocation for " + Everglades.MODID + " V" +Everglades.VERSION);
 		
 		//Load Dark World and Biome
-		//GameRegistry.registerFuelHandler(this);
-		GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), 50);
+		GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
 		getDarkBiome().load();
 		DarkWorld_Dimension.load();
 
 	}
 	
 	public static void GenerateOreMaterials() {
-		//Lot 1
 		MaterialGenerator.generateOreMaterial(ORES.CROCROITE);
 		MaterialGenerator.generateOreMaterial(ORES.GEIKIELITE);
 		MaterialGenerator.generateOreMaterial(ORES.NICHROMITE);
 		MaterialGenerator.generateOreMaterial(ORES.TITANITE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIMBABWEITE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIRCONILITE);
-
-		//Lot 2
 		MaterialGenerator.generateOreMaterial(ORES.GADOLINITE_CE);
 		MaterialGenerator.generateOreMaterial(ORES.GADOLINITE_Y);
 		MaterialGenerator.generateOreMaterial(ORES.LEPERSONNITE);
@@ -95,8 +87,6 @@ public class GTplusplus_Secondary {
 		MaterialGenerator.generateOreMaterial(ORES.YTTRIALITE);
 		MaterialGenerator.generateOreMaterial(ORES.YTTROCERITE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIRCON);
-		
-		//Lot 3
 		MaterialGenerator.generateOreMaterial(ORES.POLYCRASE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIRCOPHYLLITE);
 		MaterialGenerator.generateOreMaterial(ORES.ZIRKELITE);
@@ -111,8 +101,7 @@ public class GTplusplus_Secondary {
 		MaterialGenerator.generateOreMaterial(ORES.CERITE);
 		MaterialGenerator.generateOreMaterial(ORES.FLUORCAPHITE);
 		MaterialGenerator.generateOreMaterial(ORES.FLORENCITE);
-		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);
-		
+		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);		
 	}
 
 	void setVars(FMLPreInitializationEvent event){
@@ -127,13 +116,12 @@ public class GTplusplus_Secondary {
 		 * Set World Generation Values
 		 */
 		WorldGen_Ores.generateValidOreVeins();
-		WorldGen_GT_Base.oreveinPercentage = 75;
-		WorldGen_GT_Base.oreveinAttempts = 64;
-		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 8;	
+		WorldGen_GT_Base.oreveinPercentage = 64;
+		WorldGen_GT_Base.oreveinAttempts = 32;
+		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 6;	
 		if (CORE.DEBUG || CORE.DEVENV){
 			WorldGen_GT_Base.debugWorldGen = true;
-		}
-		
+		}		
 		DarkWorldContentLoader.run();
 	}
 
@@ -173,7 +161,7 @@ public class GTplusplus_Secondary {
 
 	@EventHandler
 	public static void postInit(final FMLPostInitializationEvent e) {
-		Logger.INFO("Finished loading Dark World plugin for GT++.");
+		Logger.INFO("Finished loading Toxic Everglades plugin for GT++.");
 	}
 
 	public static synchronized Biome_DarkWorld getDarkBiome() {
@@ -182,6 +170,12 @@ public class GTplusplus_Secondary {
 
 	public static synchronized void setDarkBiome(Biome_DarkWorld darkWorld_Biome) {
 		DarkWorld_Biome = darkWorld_Biome;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

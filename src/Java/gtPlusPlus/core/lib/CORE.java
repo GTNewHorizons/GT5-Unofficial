@@ -76,55 +76,53 @@ public class CORE {
 	public static boolean BRC = false;
 
 
-	
+
 	/**
 	 * Lists/Maps
 	 */
 
-	 //Burnables List
-	 public static List<Pair<Integer, ItemStack>> burnables = new ArrayList<Pair<Integer, ItemStack>>();
+	//Burnables List
+	public static List<Pair<Integer, ItemStack>> burnables = new ArrayList<Pair<Integer, ItemStack>>();
 
 
-	 //TesseractMapss
-	 public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
-	 public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
+	//TesseractMapss
+	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
+	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
 
-	 //BookMap
-	 public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
+	//BookMap
+	public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
 
 
-	 
-	 
+
+
 	/**
 	 * Some Gregtech Material and Recipe Variables
 	 */
-	 
-	 @Deprecated
-	 public static IGregtech_RecipeAdder sRecipeAdder;
-	 public static GregtechRecipe GT_Recipe = new GregtechRecipe();
-	 public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-	 /**
-	  * File Paths and Resource Paths
-	  */
+	@Deprecated
+	public static IGregtech_RecipeAdder sRecipeAdder;
+	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
+	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-	 public static final String
-	 TEX_DIR = "textures/",
-	 TEX_DIR_GUI = TEX_DIR + "gui/",
-	 TEX_DIR_ITEM = TEX_DIR + "items/",
-	 TEX_DIR_BLOCK = TEX_DIR + "blocks/",
-	 TEX_DIR_ENTITY = TEX_DIR + "entity/",
-	 TEX_DIR_ASPECTS = TEX_DIR + "aspects/",
-	 TEX_DIR_FLUIDS = TEX_DIR_BLOCK + "fluids/",
-	 RES_PATH = MODID + ":" + TEX_DIR,
-	 RES_PATH_GUI = MODID + ":" + TEX_DIR_GUI,
-	 RES_PATH_ITEM = MODID + ":" + TEX_DIR_ITEM,
-	 RES_PATH_BLOCK = MODID + ":" + TEX_DIR_BLOCK,
-	 RES_PATH_ENTITY = MODID + ":" + TEX_DIR_ENTITY,
-	 RES_PATH_ASPECTS = MODID + ":" + TEX_DIR_ASPECTS,
-	 RES_PATH_FLUIDS = MODID + ":" + TEX_DIR_FLUIDS;
+	/**
+	 * File Paths and Resource Paths
+	 */
 
-
+	public static final String
+	TEX_DIR = "textures/",
+	TEX_DIR_GUI = TEX_DIR + "gui/",
+	TEX_DIR_ITEM = TEX_DIR + "items/",
+	TEX_DIR_BLOCK = TEX_DIR + "blocks/",
+	TEX_DIR_ENTITY = TEX_DIR + "entity/",
+	TEX_DIR_ASPECTS = TEX_DIR + "aspects/",
+	TEX_DIR_FLUIDS = TEX_DIR_BLOCK + "fluids/",
+	RES_PATH = MODID + ":" + TEX_DIR,
+	RES_PATH_GUI = MODID + ":" + TEX_DIR_GUI,
+	RES_PATH_ITEM = MODID + ":" + TEX_DIR_ITEM,
+	RES_PATH_BLOCK = MODID + ":" + TEX_DIR_BLOCK,
+	RES_PATH_ENTITY = MODID + ":" + TEX_DIR_ENTITY,
+	RES_PATH_ASPECTS = MODID + ":" + TEX_DIR_ASPECTS,
+	RES_PATH_FLUIDS = MODID + ":" + TEX_DIR_FLUIDS;
 
 
 
@@ -134,88 +132,96 @@ public class CORE {
 
 
 
-	 /*
-	  * Config Switch Class
-	  */
-
-	 public static class ConfigSwitches {
-
-		 //Updates
-		 public static boolean enableUpdateChecker = true;
-
-		 //Debug
-		 public static boolean disableEnderIOIntegration = false;
-		 public static boolean MACHINE_INFO = true;
-		 public static boolean showHiddenNEIItems = false;
-
-		 //Tools
-		 public static boolean enableSkookumChoochers = true;
-		 public static boolean enableMultiSizeTools = true;
-
-		 //Block Drops
-		 public static int chanceToDropDrainedShard = 196;
-		 public static int chanceToDropFluoriteOre = 32;
-
-		 //Machine Related
-		 public static boolean enableAlternativeBatteryAlloy = false;
-		 public static boolean enableThaumcraftShardUnification = false;
-		 public static boolean disableIC2Recipes = false;
-		 public static boolean enableAlternativeDivisionSigilRecipe = false;
-		 public static int boilerSteamPerSecond = 750;
-
-		 //Feature Related
-		 public static boolean enableCustomCapes = false;
-		 public static boolean enableCustomCircuits = true;
-		 public static boolean enableOldGTcircuits = false;
-		 public static boolean disableZombieReinforcement = false;
-
-		 //GT Fixes
-		 public static boolean enableNitroFix = false;
-
-		 //Single Block Machines
-		 public static boolean enableMachine_SolarGenerators = false;
-		 public static boolean enableMachine_Safes = true;
-		 public static boolean enableMachine_Dehydrators = true;
-		 public static boolean enableMachine_SteamConverter = true;
-		 public static boolean enableMachine_FluidTanks = true;
-		 public static boolean enableMachine_RocketEngines = true;
-		 public static boolean enableMachine_GeothermalEngines = true;
-		 public static boolean enableMachine_WorldAccelerators = true;
-		 public static boolean enableMachine_Tesseracts = true;
-		 public static boolean enableMachine_SimpleWasher = true;
-		 public static boolean enableMachine_Pollution = true;
-		 public static boolean enableCustom_Pipes = true;
-		 public static boolean enableCustom_Cables = true;
-
-		 //Multiblocks
-		 public static boolean enableMultiblock_AlloyBlastSmelter = true;
-		 public static boolean enableMultiblock_IndustrialCentrifuge = true;
-		 public static boolean enableMultiblock_IndustrialCokeOven = true;
-		 public static boolean enableMultiblock_IndustrialElectrolyzer = true;
-		 public static boolean enableMultiblock_IndustrialMacerationStack = true;
-		 public static boolean enableMultiblock_IndustrialPlatePress = true;
-		 public static boolean enableMultiblock_IndustrialWireMill = true;
-		 public static boolean enableMultiblock_IronBlastFurnace = true;
-		 public static boolean enableMultiblock_MatterFabricator = true;
-		 public static boolean enableMultiblock_MultiTank = true;
-		 public static boolean enableMultiblock_PowerSubstation = true;
-		 public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
-		 public static boolean enableMultiblock_NuclearFuelRefinery = true;
-		 public static boolean enableMultiblock_TreeFarmer = true;
-		 public static boolean enableMultiblock_IndustrialSifter = true;
-		 public static boolean enableMultiblock_IndustrialThermalCentrifuge = true;
-		 public static boolean enableMultiblock_IndustrialWashPlant = true;
-		 public static boolean enableMultiblock_LargeAutoCrafter = true;
-		 public static boolean enableMultiblock_ThermalBoiler = true;
-		 public static boolean enableMultiblock_IndustrialCuttingMachine = true;
-
-		 //Visuals
-		 public static boolean enableTreeFarmerParticles = true;
-		 public static boolean useGregtechTextures = true;
 
 
+	/*
+	 * Config Switch Class
+	 */
+
+	public static class ConfigSwitches {
+
+		//Updates
+		public static boolean enableUpdateChecker = true;
+
+		//Debug
+		public static boolean disableEnderIOIntegration = false;
+		public static boolean MACHINE_INFO = true;
+		public static boolean showHiddenNEIItems = false;
+
+		//Tools
+		public static boolean enableSkookumChoochers = true;
+		public static boolean enableMultiSizeTools = true;
+
+		//Block Drops
+		public static int chanceToDropDrainedShard = 196;
+		public static int chanceToDropFluoriteOre = 32;
+
+		//Machine Related
+		public static boolean enableAlternativeBatteryAlloy = false;
+		public static boolean enableThaumcraftShardUnification = false;
+		public static boolean disableIC2Recipes = false;
+		public static boolean enableAlternativeDivisionSigilRecipe = false;
+		public static int boilerSteamPerSecond = 750;
+
+		//Feature Related
+		public static boolean enableCustomCapes = false;
+		public static boolean enableCustomCircuits = true;
+		public static boolean enableOldGTcircuits = false;
+		public static boolean disableZombieReinforcement = false;
+
+		//GT Fixes
+		public static boolean enableNitroFix = false;
+
+		//Single Block Machines
+		public static boolean enableMachine_SolarGenerators = false;
+		public static boolean enableMachine_Safes = true;
+		public static boolean enableMachine_Dehydrators = true;
+		public static boolean enableMachine_SteamConverter = true;
+		public static boolean enableMachine_FluidTanks = true;
+		public static boolean enableMachine_RocketEngines = true;
+		public static boolean enableMachine_GeothermalEngines = true;
+		public static boolean enableMachine_WorldAccelerators = true;
+		public static boolean enableMachine_Tesseracts = true;
+		public static boolean enableMachine_SimpleWasher = true;
+		public static boolean enableMachine_Pollution = true;
+		public static boolean enableCustom_Pipes = true;
+		public static boolean enableCustom_Cables = true;
+
+		//Multiblocks
+		public static boolean enableMultiblock_AlloyBlastSmelter = true;
+		public static boolean enableMultiblock_IndustrialCentrifuge = true;
+		public static boolean enableMultiblock_IndustrialCokeOven = true;
+		public static boolean enableMultiblock_IndustrialElectrolyzer = true;
+		public static boolean enableMultiblock_IndustrialMacerationStack = true;
+		public static boolean enableMultiblock_IndustrialPlatePress = true;
+		public static boolean enableMultiblock_IndustrialWireMill = true;
+		public static boolean enableMultiblock_IronBlastFurnace = true;
+		public static boolean enableMultiblock_MatterFabricator = true;
+		public static boolean enableMultiblock_MultiTank = true;
+		public static boolean enableMultiblock_PowerSubstation = true;
+		public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
+		public static boolean enableMultiblock_NuclearFuelRefinery = true;
+		public static boolean enableMultiblock_TreeFarmer = true;
+		public static boolean enableMultiblock_IndustrialSifter = true;
+		public static boolean enableMultiblock_IndustrialThermalCentrifuge = true;
+		public static boolean enableMultiblock_IndustrialWashPlant = true;
+		public static boolean enableMultiblock_LargeAutoCrafter = true;
+		public static boolean enableMultiblock_ThermalBoiler = true;
+		public static boolean enableMultiblock_IndustrialCuttingMachine = true;
+
+		//Visuals
+		public static boolean enableTreeFarmerParticles = true;
+		public static boolean useGregtechTextures = true;
 
 
-	 }
+
+
+	}
+
+	public static class Everglades{
+		public static final String MODID = "ToxicEverglades";
+		public static final String NAME = "GT++ Toxic Everglades";
+		public static final String VERSION = "0.1";
+	}
 
 }

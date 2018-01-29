@@ -73,6 +73,12 @@ public class CommonProxy {
 		registerTileEntities();
 		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
+		
+		//Moved from Init after Debug Loading.
+		//29/01/18 - Alkalus
+		ModItems.init();
+		ModBlocks.init();
+		CI.Init();
 
 
 	}
@@ -82,9 +88,6 @@ public class CommonProxy {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerHandlers();
 		}
-		ModItems.init();
-		ModBlocks.init();
-		CI.Init();
 
 		/**
 		 * Register the Event Handlers.

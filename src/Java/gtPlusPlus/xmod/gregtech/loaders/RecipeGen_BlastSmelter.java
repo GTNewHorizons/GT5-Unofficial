@@ -123,15 +123,15 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						if (GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1), null, M.getFluid(16), 100, duration/9, 120)){
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluid(16), 100, duration/9, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
+						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100, duration/9, 120)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-						}
+						}*/
 					}
 				}
 				else {
@@ -146,18 +146,15 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration/2, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						final ItemStack tempitem = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1);
-						if (tempitem != null){
-							if (GT_Values.RA.addFluidExtractionRecipe(tempitem, null, M.getFluid(16), 100, duration/2/9, 60)){
-								Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-							}
+						if (GT_Values.RA.addFluidExtractionRecipe(M.getNugget(1), null, M.getFluid(16), 100, duration/2/9, 60)){
+							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
-						if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/2/4, 60)){
+						/*if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/2/4, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100, duration/2/9, 60)){
 							Logger.WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-						}
+						}*/
 					}
 				}
 				else {

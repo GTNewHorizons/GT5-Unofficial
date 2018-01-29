@@ -137,7 +137,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			this.mIsGenerating = true;
 			Logger.WORLD("Setting Generation to true.");
 			int mList_sS = WorldGen_GT_Base.mList.size();
-			mList_sS = Math.min(mList_sS, 5); // Run a maximum of 5 chunks at a
+			mList_sS = Math.min(mList_sS, 3); // Run a maximum of 3 chunks at a
 												// time through worldgen. Extra
 												// chunks get done later.
 			for (int i = 0; i < mList_sS; i++) {
@@ -377,6 +377,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 					case WorldGen_GT_Ore_Layer.NO_OVERLAP:
 						if (debugWorldGen)
 							GT_Log.out.println(" No overlap");
+						break;
 				}
 			}
 		}
@@ -391,11 +392,11 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			// For now, manually reducing oreveinMaxSize when not in the
 			// Underdark for performance
 			if (this.mWorld.provider.getDimensionName().equals("Underdark")) {
-				oreveinMaxSize = 32; // Leave Deep Dark/Underdark max oregen at
+				oreveinMaxSize = 24; // Leave Deep Dark/Underdark max oregen at
 										// 32, instead of 64
 			}
 			else {
-				oreveinMaxSize = 32;
+				oreveinMaxSize = 24;
 			}
 
 			int wXbox = this.mX - (oreveinMaxSize / 16);

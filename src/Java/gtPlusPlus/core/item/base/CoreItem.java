@@ -155,7 +155,7 @@ public class CoreItem extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add(this.descColour+this.itemDescription);
+		//list.add(this.descColour+this.itemDescription);
 		//super.addInformation(stack, aPlayer, list, bool);
 	}
 
