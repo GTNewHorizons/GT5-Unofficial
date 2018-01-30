@@ -19,7 +19,7 @@ apply plugin: "forge"
 
 sourceSets {
     main {
-        java { srcDirs = ["$projectDir/src/java"] }
+        java { srcDirs = ["$projectDir/src/Java"] }
         resources { srcDirs = ["$projectDir/src/resources"] }
     }
 }
