@@ -125,11 +125,11 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         if (getLocalizedVeinName(oreLayer).length>1) {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
         if (getLocalizedVeinName(oreLayer).length>2) {
-        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[1], 2, 30, 0x404040, false);
-        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[2], 2, 40, 0x404040, false);
+        	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
+        	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[2]), 2, 40, 0x404040, false);
         }
         else
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[1], 2, 30, 0x404040, false);
+        GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
         }
         else
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
@@ -210,15 +210,15 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     	}
     	h.toArray(splt);*/
     	
-    	String[] ret = {oreLayer.veinName.replace("ore.mix.custom.", "")," "," "};
+    	String[] ret = {oreLayer.veinName.replace("ore.mix.custom.", "")+" "," "," "};
     	for (int i=0; i < splt.length;i++) {
     		//FMLLog.info("Split:"+splt[i]);
     		//FMLLog.info("I:"+Integer.toString(i));
     	if(ret[0].length()+splt[i].length()<=20)
         	ret[0]=ret[0]+splt[i]+" ";
-    	if((ret[0].length()+splt[i].length()>20)&&ret[1].length()+splt[i].length()<=20&&!ret[0].contains(splt[i]))
+    	if((ret[0].length()+splt[i].length()>20)&&ret[1].length()+splt[i].length()<=70&&!ret[0].contains(splt[i]))
     		ret[1]=ret[1]+splt[i]+" ";
-    	if((ret[0].length()+splt[i].length()>20)&&(ret[1].length()+splt[i].length()>20)&&ret[2].length()+splt[i].length()<=20&&!ret[1].contains(splt[i]))
+    	if((ret[0].length()+splt[i].length()>20)&&(ret[1].length()+splt[i].length()>70)&&ret[2].length()+splt[i].length()<=70&&!ret[1].contains(splt[i]))
     		ret[2]=ret[2]+splt[i]+" ";
     	}		
     	for (int i=0; i < ret.length;i++) {
@@ -226,7 +226,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     	}
     	
     	if(ret[2].isEmpty()&&!ret[1].isEmpty())
-    		if(ret[1].length()<=15)
+    		if(ret[1].length()<=65)
     			ret[1]=ret[1]+" Vein";
     		else
     			ret[2]=ret[2]+"Vein";

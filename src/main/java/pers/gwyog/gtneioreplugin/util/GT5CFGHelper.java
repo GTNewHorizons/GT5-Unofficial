@@ -50,9 +50,9 @@ public class GT5CFGHelper {
 	    			//FMLLog.info("MIXst: "+st);
 	    			if (st != null && st.trim().equals(Veinname+" {")) {
 	    			//FMLLog.info("VEINNAMEst: "+st);
-	    				while (!((st == null)||((st != null)&&found[0]))){
+	    				while (!((st == null)||((st != null) && found[0]))){
 	    					st = reader.readLine();
-	    					if (st.trim().equals("}"))
+	    					if ((!(st == null)) && st.trim().equals("}"))
 	    						found[0] = true;
 	    					//FMLLog.info("dritte");
 	    					//add everything below Veinname { undtil } to raw
@@ -76,7 +76,7 @@ public class GT5CFGHelper {
 	    						//FMLLog.info("VEINNAMEst: "+st);
 	    						while (!((st == null)||((st != null)&&found[1]))){
 	    							st = reader.readLine();
-	    							if (st.trim().equals("}"))
+	    							if ((!(st == null)) && st.trim().equals("}"))
 	    								found[1] = true;
 	    							//FMLLog.info("vierte");
 	    							//add everything below Veinname { undtil } to raw

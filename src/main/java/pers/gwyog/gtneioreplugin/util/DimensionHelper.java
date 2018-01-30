@@ -46,16 +46,16 @@ public class DimensionHelper {
     "Underdark"};
 	
 	public static String[] DimNameDisplayed =
-		{
+		{// first 2 letters if one word else 1 letter of every word, execpt capital letter in name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
 	"EA",
-    "MO",
-    "AS",
-    "MA",
+    "Mo",
+    "As",
+    "Ma",
     "BC",
     "BE",
     "BF",
     "Ca",
-    "CeA",
+    "CA",
     "Ce",
     "De",
     "En",
@@ -69,7 +69,7 @@ public class DimensionHelper {
     "Mi",
     "Ob",
     "Ph",
-    "Pu",
+    "Pl",
     "Pr",
     "TE",
     "Ti",
@@ -77,8 +77,8 @@ public class DimensionHelper {
     "VB",
     "Ve",
     "Ne",
-    "OW",
-    "EN",
+    "Ow",
+    "EN",//End = EN bc En = Encalus
     "VA",
     "TF",
     "DD"};
