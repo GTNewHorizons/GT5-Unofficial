@@ -5,6 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
@@ -23,7 +24,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class blockDarkWorldPortal extends BlockBreakable {
+public class blockDarkWorldPortal extends BlockBreakable implements ITileTooltip{
 	IIcon gor = null, dol = null, st1 = null, st2 = null, st3 = null, st4 = null;
 
 	public blockDarkWorldPortal() {
@@ -361,6 +362,11 @@ public class blockDarkWorldPortal extends BlockBreakable {
 	@Override
 	public String getLocalizedName() {
 		return EnumChatFormatting.OBFUSCATED+super.getLocalizedName();
+	}
+
+	@Override
+	public int getTooltipID() {
+		return 1;
 	}
 }
 

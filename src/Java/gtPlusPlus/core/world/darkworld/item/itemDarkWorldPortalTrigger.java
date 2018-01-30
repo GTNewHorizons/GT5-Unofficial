@@ -46,7 +46,8 @@ public class itemDarkWorldPortalTrigger extends Item {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add(EnumChatFormatting.GREEN+"A key for entering the Dark World.");
+		list.add(EnumChatFormatting.GREEN+"Shines the way, towards the far away Everglades.");
+		list.add(EnumChatFormatting.GREEN+"This item produces such a temperature, that you'd hate to use it incorrectly.");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

@@ -3,12 +3,13 @@ package gtPlusPlus.core.world.darkworld.block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 
-public class blockDarkWorldPollutedDirt extends BlockDirt {
+public class blockDarkWorldPollutedDirt extends BlockDirt implements ITileTooltip{
 
 	public blockDarkWorldPollutedDirt() {
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
@@ -61,6 +62,11 @@ public class blockDarkWorldPollutedDirt extends BlockDirt {
 		}
 
 		return (l / 9 & 255) << 16 | (i1 / 9 & 255) << 8 | j1 / 9 & 255;
+	}
+
+	@Override
+	public int getTooltipID() {
+		return 3;
 	}
 
 }
