@@ -130,19 +130,12 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Mining Explosives.");
 		}
 
-
-		//Set Shards
-		ItemStack shardAer = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Air Shard", 0, 1);
-		ItemStack shardIgnis = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Fire Shard", 1, 1);
-		ItemStack shardAqua = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Warer Shard", 2, 1);
-		ItemStack shardTerra = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Earth Shard", 3, 1);
-		
 		//Mystic Frame
 		if (RecipeUtils.recipeBuilder(
-				shardAer, shardIgnis, shardAqua,
-				shardTerra, "gemRuby", shardTerra,
-				shardAqua, shardIgnis, shardAer,
-				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame))){
+				CI.sensor_HV, CI.fieldGenerator_MV, CI.sensor_HV,
+				CI.craftingToolHammer_Hard, ItemList.Casing_SolidSteel, CI.craftingToolSolderingIron,
+				CI.emitter_HV, CI.fieldGenerator_MV, CI.emitter_HV,
+				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame, 2))){
 			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
 		}
 		

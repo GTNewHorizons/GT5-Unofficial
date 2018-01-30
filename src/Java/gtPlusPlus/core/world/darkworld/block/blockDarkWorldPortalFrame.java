@@ -15,7 +15,7 @@ public class blockDarkWorldPortalFrame extends Block implements ITileTooltip{
 		this.setBlockName("blockDarkWorldPortalFrame");
 		this.setHardness(3.0F);
 		this.setLightLevel(0.5F);
-		this.setBlockTextureName(CORE.MODID + ":" + "SwirlYellow");
+		this.setBlockTextureName(CORE.MODID + ":" + "metro/TEXTURE_TECH_PANEL_A");
 		LanguageRegistry.addName(this, "Containment Frame");
 
 	}
