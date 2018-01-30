@@ -25,6 +25,8 @@ public class ConfigHandler {
 				"Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false,
 				"Disables EnderIO Integration.");
+		disableEnderIOIngotTooltips = config.getBoolean("disableEnderIOIngotTooltips", "debug", false,
+				"Disables EnderIO Ingot Tooltips. These apparently may cause issues for a very small number of users.");
 		MACHINE_INFO = config.getBoolean("enableMachineInfoLogging", "debug", false,
 				"Makes many machines display lots of debug logging.");
 		showHiddenNEIItems = config.getBoolean("showHiddenNEIItems", "debug", false,

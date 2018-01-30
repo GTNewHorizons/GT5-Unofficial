@@ -145,6 +145,7 @@ public class CORE {
 
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
+		public static boolean disableEnderIOIngotTooltips = false;
 		public static boolean MACHINE_INFO = true;
 		public static boolean showHiddenNEIItems = false;
 

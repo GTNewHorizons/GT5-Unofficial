@@ -1,13 +1,13 @@
 package gtPlusPlus.xmod.eio.handler;
 
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltips;
+
 import java.lang.reflect.Field;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ public class HandlerTooltip_EIO {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){
 		//Is EIO loaded?
-		if (LoadedMods.EnderIO){
+		if (disableEnderIOIngotTooltips && LoadedMods.EnderIO){
 
 			//Is the EIO Ingot Item null?
 			//If it is, reflect in.

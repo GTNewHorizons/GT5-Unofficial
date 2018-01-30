@@ -54,10 +54,10 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 	// put into hashtable when there will be no ores in a vein.
 	public static WorldGen_GT_Ore_Layer noOresInVein = new WorldGen_GT_Ore_Layer("vein0", 0, 255, 0, 0,
 			0, ELEMENT.getInstance().ALUMINIUM, ELEMENT.getInstance().ALUMINIUM, ELEMENT.getInstance().ALUMINIUM,	ELEMENT.getInstance().ALUMINIUM);
-	
+
 	public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<Long, WorldGen_GT_Ore_Layer>(
 			1024);
-	
+
 	public boolean mIsGenerating = false;
 	public static final Object listLock = new Object();
 	// private static boolean gcAsteroids = true;
@@ -125,8 +125,8 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			Logger.WORLD("Setting Generation to true.");
 			int mList_sS = WorldGen_GT_Base.mList.size();
 			mList_sS = Math.min(mList_sS, 3); // Run a maximum of 3 chunks at a
-												// time through worldgen. Extra
-												// chunks get done later.
+			// time through worldgen. Extra
+			// chunks get done later.
 			for (int i = 0; i < mList_sS; i++) {
 				WorldGenContainer toRun = (WorldGenContainer) WorldGen_GT_Base.mList.get(0);
 				if (debugWorldGen)
@@ -210,27 +210,27 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			// for dimension.
 			long oreveinSeed = (this.mWorld.getSeed() << 16) ^ ((this.mWorld.provider.dimensionId & 0xffL) << 56
 					| ((oreseedX & 0x000000000fffffffL) << 28) | (oreseedZ & 0x000000000fffffffL)); // Use
-																									// an
-																									// RNG
-																									// that
-																									// is
-																									// identical
-																									// every
-																									// time
-																									// it
-																									// is
-																									// called
-																									// for
-																									// this
-																									// oreseed.
+			// an
+			// RNG
+			// that
+			// is
+			// identical
+			// every
+			// time
+			// it
+			// is
+			// called
+			// for
+			// this
+			// oreseed.
 			XSTR oreveinRNG = new XSTR(oreveinSeed);
 			int oreveinPercentageRoll = oreveinRNG.nextInt(100); // Roll the
-																	// dice, see
-																	// if we get
-																	// an
-																	// orevein
-																	// here at
-																	// all
+			// dice, see
+			// if we get
+			// an
+			// orevein
+			// here at
+			// all
 			int noOrePlacedCount = 0;
 			String tDimensionName = "";
 			if (debugWorldGen) {
@@ -246,8 +246,8 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			Logger.INFO("[World Generation Debug] !validOreveins.containsKey(oreveinSeed) | oreveinSeed: "+oreveinSeed);
 			// Search for a valid orevein for this dimension
 			if (!validOreveins.containsKey(oreveinSeed)) {
-				
-				
+
+
 				Logger.INFO("[World Generation Debug] oreveinPercentageRoll < oreveinPercentage? "+((oreveinPercentageRoll < oreveinPercentage)));
 				Logger.INFO("[World Generation Debug] WorldGen_GT_Ore_Layer.sWeight > 0? "+(WorldGen_GT_Ore_Layer.sWeight > 0));
 				Logger.INFO("[World Generation Debug] WorldGen_GT_Ore_Layer.sList.size() > 0? "+(WorldGen_GT_Ore_Layer.sList.size() > 0));
@@ -302,6 +302,27 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 											// Orevein didn't reach this chunk,
 											// can't add it yet to the hash
 											Logger.INFO("[World Generation Debug] NO_OVERLAP");
+											if (debugWorldGen) GT_Log.out.println(
+													" Added far oreveinSeed=" + oreveinSeed + " " +
+															( tWorldGen).mWorldGenName +
+															" tries at oremix=" + i +
+															" placementAttempts=" + placementAttempts +
+															" dimensionName=" + tDimensionName
+													);
+											validOreveins.put(oreveinSeed, tWorldGen);
+											oreveinFound = true;
+											break;
+										case WorldGen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK:
+											if (debugWorldGen) GT_Log.out.println(
+													" No overlap and air block in test spot=" + oreveinSeed + " " +
+															( tWorldGen).mWorldGenName +
+															" tries at oremix=" + i +
+															" placementAttempts=" + placementAttempts +
+															" dimensionName=" + tDimensionName
+													);
+											// SHould do retry in this case until out of chances
+											Logger.INFO("[World Generation Debug] NO_OVERLAP_AIR_BLOCK");
+											placementAttempts++;
 											break;
 									}
 									break; // Try the next orevein
@@ -341,18 +362,18 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 							+ validOreveins.size() + " ");
 				WorldGen_GT_Ore_Layer tWorldGen = validOreveins.get(oreveinSeed);
 				oreveinRNG.setSeed(oreveinSeed ^ (Block.getIdFromBlock(tWorldGen.mPrimaryMeta))); // Reset
-																			// RNG
-																			// to
-																			// only
-																			// be
-																			// based
-																			// on
-																			// oreseed
-																			// X/Z
-																			// and
-																			// type
-																			// of
-																			// vein
+				// RNG
+				// to
+				// only
+				// be
+				// based
+				// on
+				// oreseed
+				// X/Z
+				// and
+				// type
+				// of
+				// vein
 				int placementResult = tWorldGen.executeWorldgenChunkified(this.mWorld, oreveinRNG, this.mBiome,
 						this.mDimensionType, this.mX * 16, this.mZ * 16, oreseedX * 16, oreseedZ * 16,
 						this.mChunkGenerator, this.mChunkProvider);
@@ -380,7 +401,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 			// Underdark for performance
 			if (this.mWorld.provider.getDimensionName().equals("Underdark")) {
 				oreveinMaxSize = 24; // Leave Deep Dark/Underdark max oregen at
-										// 32, instead of 64
+				// 32, instead of 64
 			}
 			else {
 				oreveinMaxSize = 48;
@@ -388,9 +409,9 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 
 			int wXbox = this.mX - (oreveinMaxSize / 16);
 			int eXbox = this.mX + (oreveinMaxSize / 16 + 1); // Need to add 1
-																// since it is
-																// compared
-																// using a <
+			// since it is
+			// compared
+			// using a <
 			int nZbox = this.mZ - (oreveinMaxSize / 16);
 			int sZbox = this.mZ + (oreveinMaxSize / 16 + 1);
 

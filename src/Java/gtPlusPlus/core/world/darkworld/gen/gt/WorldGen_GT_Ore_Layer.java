@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.common.blocks.GT_Block_Ores;
@@ -54,7 +55,7 @@ extends WorldGen_GT {
 	public static final int NO_ORE_IN_BOTTOM_LAYER=2;
 	public static final int NO_OVERLAP=3;
 	public static final int ORE_PLACED=4;
-
+	public static final int NO_OVERLAP_AIR_BLOCK=5;
 
 	//public final boolean mMoon;
 	//public final boolean mMars;
@@ -160,14 +161,21 @@ extends WorldGen_GT {
 		int wX = Math.max( wXVein, aChunkX + 2);  // Bias placement by 2 blocks to prevent worldgen cascade.
 		int eX = Math.min( eXVein, aChunkX + 2 + 16);
 		if (wX >= eX) {  //No overlap between orevein and this chunk exists in X
-			/*
-            if (debugWorldGen) {
-                GT_Log.out.println(
-                    "No X overlap"
-                );
-            }
-			 */
-			return NO_OVERLAP;
+			Block tBlock = aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8);
+			if (tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.stone) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Dimension_DarkWorld.blockSecondLayer) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Dimension_DarkWorld.blockMainFiller) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Dimension_DarkWorld.blockSecondaryFiller) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.netherrack) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.end_stone) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites) ||
+					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones) ) {
+				// Didn't reach, but could have placed. Save orevein for future use.
+				return NO_OVERLAP;
+			} else {
+				// Didn't reach, but couldn't place in test spot anywys, try for another orevein
+				return NO_OVERLAP_AIR_BLOCK;
+			}
 		}
 		// Determine North/Sound ends of orevein
 		int nZVein = aSeedZ - aRandom.nextInt(mSize);
@@ -176,17 +184,35 @@ extends WorldGen_GT {
 		int nZ = Math.max(nZVein, aChunkZ + 2);  // Bias placement by 2 blocks to prevent worldgen cascade.
 		int sZ = Math.min(sZVein, aChunkZ + 2 + 16);
 		if (nZ >= sZ) { //No overlap between orevein and this chunk exists in Z
-			/*
-            if (debugWorldGen) {
-                GT_Log.out.println(
-                    "No Z overlap"
-                );
-            }
-			 */
-			return NO_OVERLAP;
+			Block tBlock = aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8);
+			            if (tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.stone) ||
+			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.netherrack) ||
+			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.end_stone) ||
+			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites) ||
+			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones) ) {
+			                // Didn't reach, but could have placed. Save orevein for future use.
+			                return NO_OVERLAP;
+			            } else {
+			                // Didn't reach, but couldn't place in test spot anywys, try for another orevein
+			                return NO_OVERLAP_AIR_BLOCK;
+			             }
+			            
+			        }
+			
+			        if (debugWorldGen) {
+			            String tDimensionName = aWorld.provider.getDimensionName();
+			            GT_Log.out.print(
+			                            "Trying Orevein:" + this.mWorldGenName +
+			                            " Dimension=" + tDimensionName +
+			                            " mX="+aChunkX/16+
+			                            " mZ="+aChunkZ/16+
+			                            " oreseedX="+ aSeedX/16 +
+			                            " oreseedZ="+ aSeedZ/16 +
+			                            " cY="+tMinY
+			                            );
 		}
 		// Adjust the density down the more chunks we are away from the oreseed.  The 5 chunks surrounding the seed should always be max density due to truncation of Math.sqrt().
-		int localDensity = (Math.max(1, this.mDensity / ((int)Math.sqrt(2 + Math.pow(aChunkX/16 - aSeedX/16, 2) + Math.pow(aChunkZ/16 - aSeedZ/16, 2))))/2);
+		int localDensity = (Math.max(1, this.mDensity / ((int)Math.sqrt(2 + Math.pow(aChunkX/16 - aSeedX/16, 2) + Math.pow(aChunkZ/16 - aSeedZ/16, 2)))));
 
 		// To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll 1 pass through the loop
 		// Now we do bottom-level-first oregen, and work our way upwards.
@@ -313,17 +339,17 @@ extends WorldGen_GT {
 		// Something (at least the bottom layer must have 1 block) must have been placed, return true
 		return ORE_PLACED;
 	}
-	
+
 	private String fString = "unset", ore1String = "unset", ore2String = "unset", ore3String = "unset", ore4String = "unset";
 	Map<Materials, String> gtOreMap = new HashMap<Materials, String>();
-	
+
 	@SuppressWarnings("deprecation")
 	public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, Block aMetaData, boolean isSmallOre,
 			boolean air) {
 		if (!air) {
 			aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
 		}		
-		
+
 		//Set GT ORE
 		if (aMetaData instanceof GT_Block_Ores){			
 			if (ore1String.equals("unset")) {
@@ -410,10 +436,13 @@ extends WorldGen_GT {
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites) ||
+				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondLayer) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockMainFiller) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondaryFiller) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
+
 			if (aWorld.setBlock(aX, aY, aZ, tOreBlock, 0, 3)){
 				Logger.WORLD("[World Generation Debug] Set "+tOreBlock.getLocalizedName()+" at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 				return true;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -448,16 +449,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 			//Output Power
 			if (this.mActualStoredEU > 0){
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
-				addEnergyOutput(1);	
+				addEnergyOutput(1);
 			}
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -503,24 +495,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return true;
 		long nStoredPower = this.getEUVar();
 		int hatchCount = 0;
-		//Utils.LOG_INFO("Charge Hatches: "+this.mChargeHatches.size());
 		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
-			//Utils.LOG_INFO("Storing Power in a Charge Hatch");
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.maxEUInput(), false))) {
 				this.setEUVar(this.getEUVar()-(tHatch.maxEUInput()));
 				this.mTotalEnergyConsumed+=(tHatch.maxEUInput());
-				//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*2, false);
-				//Utils.LOG_INFO("Hatch "+hatchCount+" has "+tHatch.getEUVar()+"eu stored. Avg used is "+(this.mAverageEuUsage));
 			}
 			hatchCount++;
 		}
 		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
-			//Utils.LOG_INFO("Storing Power in a Dynamo Hatch");
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*2, false))) {
-				this.setEUVar(this.getEUVar()-(tHatch.getOutputTier()*2));
-				this.mTotalEnergyConsumed+=(tHatch.getOutputTier()*2);
-				//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*2, false);
-				//Utils.LOG_INFO("Hatch "+hatchCount+" has "+tHatch.getEUVar()+"eu stored. Avg used is "+(this.mAverageEuUsage));
+			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(GT_Values.V[(int) tHatch.getOutputTier()], false))) {
+				this.setEUVar(this.getEUVar()-(GT_Values.V[(int) tHatch.getOutputTier()]));
+				this.mTotalEnergyConsumed+=(GT_Values.V[(int) tHatch.getOutputTier()]);
 			}
 			hatchCount++;
 		}
@@ -542,8 +527,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return 0;
 	}
 
-	//mAverageEuUsage
-
 	@Override
 	public String[] getInfoData() {
 
@@ -554,8 +537,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7*weeks);
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
-
-
 
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
