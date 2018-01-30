@@ -474,7 +474,7 @@ public class Material {
 	}
 
 	public final ItemStack getGear(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gear"+this.unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGt"+this.unlocalizedName, stacksize);
 	}
 
 	public final ItemStack getRod(final int stacksize){
