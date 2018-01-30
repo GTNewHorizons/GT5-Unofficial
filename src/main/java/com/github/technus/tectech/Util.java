@@ -237,7 +237,7 @@ public final class Util {
                     if (block < ' ') {//Control chars allow skipping
                         b -= block;
                         break;
-                    } else if (block > '@') //characters allow to skip check a-1 skip, b-2 skips etc.
+                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
                     {
                         a += block - '@';
                     }//else if (block < '+')//used to mark THINGS

@@ -17,15 +17,25 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
  * Created by danie_000 on 24.12.2017.
  */
 public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behaviour {
-    private static final double MAX_RCF = (float) (Math.pow(Math.E, 15) * 12);
-    private final float radius, maxRPM, maxForce, maxCapacity;
+    private final float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private final byte tier;
+
+    private static final double[/*tier+5*/][/*outputHatches+2*/] MIXING_FACTORS =new double[][]{
+            {.45,.85,.95,1,1,},
+            {.4 ,.75,.9,.95,1,},
+            {.35,.45,.75,.9,.95,},
+            {.25,.3,.45,.75,.9,},
+            {.2,.25,.3,.45,.75,},
+            {.1,.15,.2,.3,.45,},
+            {.05,.1,.15,.2,.25,},
+            {.01,.05,.1,.15,.2,},
+    };
 
     //6 to 12 recommended
     public Behaviour_Centrifuge(int desiredTier) {
         tier = (byte) desiredTier;
         radius = 0.5f - (12 - tier) / 64f;
-        float maxRCF = (float) (Math.pow(Math.E, tier) * 12);
+        maxRCF = (float) (Math.pow(Math.E, tier) * 12);
         maxRPM = (float) Math.sqrt(maxRCF / (0.001118 * radius));
         float maxSafeMass = dAtomDefinition.getSomethingHeavy().getMass() * (1 << tier);
         maxForce = maxSafeMass * maxRCF;// (eV/c^2 * m/s) / g
@@ -45,7 +55,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
         if (RPM > maxRPM) {
             te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
             te.setParameterOut(0, 0, maxRPM);//rpm
-            te.setParameterOut(0, 1, getRCF(maxRPM));//rcf
+            te.setParameterOut(0, 1, maxRCF);//rcf
             check=false;
         } else if (RPM > maxRPM / 3f * 2f) {
             te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
@@ -87,7 +97,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
         }
 
         te.setParameterOut(3,0,(int) (Math.pow(parametersToCheckAndFix[0] / maxRPM, 3f) * V[tier]));//max eut
-        te.setParameterOut(3,1,(int) (20 * (MAX_RCF / getRCF(RPM)) * (fractionCount - 1)));//max time
+        te.setParameterOut(3,1,(int) (20 * (fractionCount - 1)));//max time
 
         return check;
     }
@@ -128,10 +138,16 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
             outputs[i] = new cElementalInstanceStackMap();
         }
 
+        //mixing factor...
+        double mixingFactor=Math.min(1d-(RCF/maxRCF)*(1d-MIXING_FACTORS[tier-5][fractionCount-2]),1);
+        if(DEBUG_MODE){
+            TecTech.Logger.info("mixingFactor "+mixingFactor);
+        }
+
         int mEut = (int) (Math.pow(checkedAndFixedParameters[0] / maxRPM, 3f) * V[tier]);
         mEut = Math.max(mEut, 512);
         mEut = -mEut;
-        int mTicks = (int) (20 * (MAX_RCF / RCF) * (inputMass / maxCapacity) * (fractionCount - 1));
+        int mTicks = (int) (20 * (inputMass / maxCapacity) * (fractionCount - 1));
         mTicks=Math.max(mTicks,20);
 
 
@@ -151,11 +167,18 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
 
             double absMassPerOutput = 0;//"volume"
             for (cElementalInstanceStack stack : stacks) {
-                absMassPerOutput += Math.abs(stack.getMass());
+                double tempMass=Math.abs(stack.getMass());
+                if(tempMass!=0) {
+                    long amount = stack.amount;
+                    stack.amount *= mixingFactor;
+                    addRandomly(stack, outputs, fractionCount);
+                    stack.amount = amount - stack.amount;
+                    absMassPerOutput += tempMass;
+                }
             }
-            if(DEBUG_MODE){
-                TecTech.Logger.info("absMass "+absMassPerOutput);
-            }
+            //if(DEBUG_MODE){
+            //    TecTech.Logger.info("absMass "+absMassPerOutput);
+            //}
             absMassPerOutput /= fractionCount;
             if(DEBUG_MODE){
                 TecTech.Logger.info("absMassPerOutput "+absMassPerOutput);
@@ -179,13 +202,13 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
                             stacks[stackNo] = null;
                         } else if (amount >= stacks[stackNo].amount) {
                             remaining -= stackMass;
-                            outputs[fraction].putReplace(stacks[stackNo]);
+                            outputs[fraction].putUnify(stacks[stackNo]);
                             stacks[stackNo] = null;
                         } else if (amount > 0) {
                             remaining -= amount * stacks[stackNo].definition.getMass();
                             cElementalInstanceStack clone = stacks[stackNo].clone();
                             clone.amount = amount;
-                            outputs[fraction].putReplace(clone);
+                            outputs[fraction].putUnify(clone);
                             stacks[stackNo].amount-=amount;
                             //if(DEBUG_MODE){
                             //    TecTech.Logger.info("remainingAfter "+remaining);
@@ -200,7 +223,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
             //add remaining
             for (cElementalInstanceStack stack : stacks) {
                 if (stack != null) {
-                    outputs[fractionCount - 1].putReplace(stack);
+                    outputs[fractionCount - 1].putUnify(stack);
                 }
             }
         } else {
