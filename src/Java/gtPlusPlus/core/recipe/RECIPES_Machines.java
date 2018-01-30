@@ -902,13 +902,13 @@ public class RECIPES_Machines {
 
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
-						"gearTitanium", "circuitElite", "gearTitanium",
+						"gearGtTitanium", "circuitElite", "gearGtTitanium",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
 
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
-						"gearTungstenSteel", "circuitElite", "gearTungstenSteel",
+						"gearGtTungstenSteel", "circuitElite", "gearGtTungstenSteel",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
 
@@ -945,7 +945,7 @@ public class RECIPES_Machines {
 				}
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
-						"gearTalonite", CI.fieldGenerator_ULV, "gearTalonite",
+						"gearGtTalonite", CI.fieldGenerator_ULV, "gearGtTalonite",
 						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
 						RECIPE_LFTRInnerCasing);
 
@@ -965,7 +965,7 @@ public class RECIPES_Machines {
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
 						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
-						"gearStellite", CI.machineHull_LuV, "gearStellite",
+						"gearGtStellite", CI.machineHull_LuV, "gearGtStellite",
 						GregtechItemList.Industrial_FuelRefinery.get(1));
 
 				ItemStack mInnerTank;
@@ -980,7 +980,7 @@ public class RECIPES_Machines {
 				//Incoloy Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
-						"gearIncoloyDS", mInnerTank, "gearIncoloyDS",
+						"gearGtIncoloyDS", mInnerTank, "gearGtIncoloyDS",
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
 						GregtechItemList.Casing_Refinery_Internal.get(Casing_Amount));
 
@@ -993,7 +993,7 @@ public class RECIPES_Machines {
 
 				//Hastelloy-X Structural Casing
 				RecipeUtils.addShapedGregtechRecipe(
-						"ringInconel792", "gearHastelloyX", CI.component_Plate[5],
+						"ringInconel792", "gearGtHastelloyX", CI.component_Plate[5],
 						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
 						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));
@@ -1034,7 +1034,7 @@ public class RECIPES_Machines {
 				RecipeUtils.recipeBuilder(
 						"plateRedSteel","circuitData","plateRedSteel",
 						"stickTalonite",GregtechItemList.Casing_ThermalCentrifuge.get(1),"stickTalonite",
-						"plateRedSteel","gearTalonite","plateRedSteel",
+						"plateRedSteel","gearGtTalonite","plateRedSteel",
 						GregtechItemList.Industrial_ThermalCentrifuge.get(1));
 			}
 			
