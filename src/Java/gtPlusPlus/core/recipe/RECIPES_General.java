@@ -126,14 +126,14 @@ public class RECIPES_General {
 				CI.explosiveITNT, CI.explosiveTNT, CI.explosiveITNT,
 				CI.explosiveTNT, "frameGtWroughtIron", CI.explosiveTNT,
 				"dustSulfur", CI.explosiveTNT, "dustSulfur",
-				ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive))){
+				ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3))){
 			Logger.INFO("Added a recipe for Mining Explosives.");
 		}
 
 		//Mystic Frame
 		if (RecipeUtils.recipeBuilder(
 				CI.sensor_HV, CI.fieldGenerator_MV, CI.sensor_HV,
-				CI.craftingToolHammer_Hard, ItemList.Casing_SolidSteel, CI.craftingToolSolderingIron,
+				CI.craftingToolHammer_Hard, ItemList.Casing_SolidSteel.get(1), CI.craftingToolSolderingIron,
 				CI.emitter_HV, CI.fieldGenerator_MV, CI.emitter_HV,
 				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame, 2))){
 			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
