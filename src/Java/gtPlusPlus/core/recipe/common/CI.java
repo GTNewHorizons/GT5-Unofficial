@@ -171,20 +171,7 @@ public class CI {
 	public static ItemStack explosiveTNT;
 	public static ItemStack explosiveITNT;
 
-	public static void Init(){
-		
-		//Set Explosives
-		if (ItemList.valueOf("Block_Powderbarrel") != null){
-			explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1);
-		}
-		else {
-			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder);
-		}
-		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt);
-		explosiveITNT = Ic2Items.industrialTnt.copy();
-		
-		
-		
+	public static void preInit(){	
 
 		//Tiered Components
 		component_Plate = new String[]{
@@ -241,39 +228,7 @@ public class CI {
 		circuitTier7 = getTieredCircuit(7);
 		circuitTier8 = getTieredCircuit(8);
 		circuitTier9 = getTieredCircuit(9);
-
-		//Machine Components
-		LOADER_Machine_Components.initialise();
-
-		//Machine Casings
-		machineCasing_ULV = ItemList.Casing_ULV.get(1);
-		machineCasing_LV = ItemList.Casing_LV.get(1);
-		machineCasing_MV = ItemList.Casing_MV.get(1);
-		machineCasing_HV = ItemList.Casing_HV.get(1);
-		machineCasing_EV = ItemList.Casing_EV.get(1);
-		machineCasing_IV = ItemList.Casing_IV.get(1);
-		machineCasing_LuV = ItemList.Casing_LuV.get(1);
-		machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
-		machineCasing_UV = ItemList.Casing_UV.get(1);
-		machineCasing_MAX = ItemList.Casing_MAX.get(1);
-
-		//Machine Hulls
-		machineHull_ULV = ItemList.Hull_ULV.get(1);
-		machineHull_LV = ItemList.Hull_LV.get(1);
-		machineHull_MV = ItemList.Hull_MV.get(1);
-		machineHull_HV = ItemList.Hull_HV.get(1);
-		machineHull_EV = ItemList.Hull_EV.get(1);
-		machineHull_IV = ItemList.Hull_IV.get(1);
-		machineHull_LuV = ItemList.Hull_LuV.get(1);
-		machineHull_ZPM = ItemList.Hull_ZPM.get(1);
-		machineHull_UV = ItemList.Hull_UV.get(1);
-		machineHull_MAX = ItemList.Hull_MAX.get(1);
-
-		//Gear box Casings
-		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
-		gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
-		gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
-		gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
+		
 	}	
 
 	public static Object getTieredCircuit(int tier){
@@ -499,6 +454,51 @@ public class CI {
 		else {
 			return machineCasing_MAX;			
 		}
+	}
+	
+	public static void init() {		
+		//Set Explosives
+		if (ItemList.valueOf("Block_Powderbarrel") != null){
+			explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1);
+		}
+		else {
+			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder);
+		}
+		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt);
+		explosiveITNT = Ic2Items.industrialTnt.copy();
+		
+		//Machine Casings
+				machineCasing_ULV = ItemList.Casing_ULV.get(1);
+				machineCasing_LV = ItemList.Casing_LV.get(1);
+				machineCasing_MV = ItemList.Casing_MV.get(1);
+				machineCasing_HV = ItemList.Casing_HV.get(1);
+				machineCasing_EV = ItemList.Casing_EV.get(1);
+				machineCasing_IV = ItemList.Casing_IV.get(1);
+				machineCasing_LuV = ItemList.Casing_LuV.get(1);
+				machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
+				machineCasing_UV = ItemList.Casing_UV.get(1);
+				machineCasing_MAX = ItemList.Casing_MAX.get(1);
+
+				//Machine Hulls
+				machineHull_ULV = ItemList.Hull_ULV.get(1);
+				machineHull_LV = ItemList.Hull_LV.get(1);
+				machineHull_MV = ItemList.Hull_MV.get(1);
+				machineHull_HV = ItemList.Hull_HV.get(1);
+				machineHull_EV = ItemList.Hull_EV.get(1);
+				machineHull_IV = ItemList.Hull_IV.get(1);
+				machineHull_LuV = ItemList.Hull_LuV.get(1);
+				machineHull_ZPM = ItemList.Hull_ZPM.get(1);
+				machineHull_UV = ItemList.Hull_UV.get(1);
+				machineHull_MAX = ItemList.Hull_MAX.get(1);
+
+				//Gear box Casings
+				gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+				gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
+				gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
+				gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
+
+				//Machine Components
+				LOADER_Machine_Components.initialise();
 	}
 
 }

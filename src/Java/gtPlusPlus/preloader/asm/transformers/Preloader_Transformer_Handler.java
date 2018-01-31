@@ -21,7 +21,8 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		if(transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {
 			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Transforming %s", transformedName);
 			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new GT_MetaTile_Visitor(classWriter), 0);
+			ClassReader x = new ClassReader(basicClass);
+			x.accept(new GT_MetaTile_Visitor(classWriter), ClassReader.EXPAND_FRAMES);
 			return classWriter.toByteArray();
 		}
 		return basicClass;

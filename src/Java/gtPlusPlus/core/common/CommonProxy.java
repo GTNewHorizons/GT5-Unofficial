@@ -78,7 +78,7 @@ public class CommonProxy {
 		//29/01/18 - Alkalus
 		ModItems.init();
 		ModBlocks.init();
-		CI.Init();
+		CI.preInit();
 
 
 	}
@@ -88,6 +88,8 @@ public class CommonProxy {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerHandlers();
 		}
+		
+		CI.init();
 
 		/**
 		 * Register the Event Handlers.

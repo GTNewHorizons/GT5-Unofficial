@@ -16,14 +16,16 @@ public class ReflectionUtils {
 
 	public static Field getField(final Class clazz, final String fieldName) throws NoSuchFieldException {
 		try {
-			return clazz.getDeclaredField(fieldName);
+			Field k = clazz.getDeclaredField(fieldName);
+			makeAccessible(k);
+			return k;
 		} catch (final NoSuchFieldException e) {
 			final Class<?> superClass = clazz.getSuperclass();
 			if (superClass == null) {
-				//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+".");
+				Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+".");
 				throw e;
 			}
-			//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+". Trying super class.");
+			Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+". Trying super class.");
 			return getField(superClass, fieldName);
 		}
 	}
