@@ -56,7 +56,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
         super(aName);
     }
 
-    @SideOnly(Side.CLIENT)
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_hi_freq");
 
     @Override

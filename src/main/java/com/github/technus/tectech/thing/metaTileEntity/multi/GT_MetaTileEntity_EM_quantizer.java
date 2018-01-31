@@ -69,8 +69,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
-
-    @SideOnly(Side.CLIENT)
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_mid_freq");
 
     @Override

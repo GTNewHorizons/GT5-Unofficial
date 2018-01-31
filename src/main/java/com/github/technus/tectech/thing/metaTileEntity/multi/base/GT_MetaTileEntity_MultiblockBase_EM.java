@@ -57,8 +57,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
-    @SideOnly(Side.CLIENT)
+
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_lo_freq");
+
     @SideOnly(Side.CLIENT)
     private SoundLoop activitySoundLoop;
 
