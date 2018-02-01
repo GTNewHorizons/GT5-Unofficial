@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -23,21 +24,22 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 	public static void generateRecipes(final Material material){
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
-		
-		//Nuggets
-		GT_ModHandler.addShapelessCraftingRecipe(
-				material.getIngot(1),
-				new Object[]{
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1),
-						material.getNugget(1)
-						});
+		if (!CORE.GTNH) {
+			//Nuggets
+			GT_ModHandler.addShapelessCraftingRecipe(
+					material.getIngot(1),
+					new Object[]{
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1),
+							material.getNugget(1)
+					});
+		}
 		
 		//Plates
 		
