@@ -107,40 +107,43 @@ public class BaseItemComponent extends Item{
 	@Override
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
-		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && (this.componentMaterial != null)){
+		try {
+			if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && (this.componentMaterial != null)){
 
 
-			if (this.componentMaterial != null){
-				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
-					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-				}
+				if (this.componentMaterial != null){
+					if ((!this.componentMaterial.vChemicalFormula.equals("??")) && (!this.componentMaterial.vChemicalFormula.equals("?")) && (this.componentMaterial.getState() != MaterialState.PURE_LIQUID)) {
+						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+					}
 
-				if (this.componentMaterial.isRadioactive){
-					list.add(CORE.GT_Tooltip_Radioactive);
-				}
+					if (this.componentMaterial.isRadioactive){
+						list.add(CORE.GT_Tooltip_Radioactive);
+					}
 
-				if (this.componentType == ComponentTypes.INGOT){
-					if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("ingothot")){
-						list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
+					if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT){
+						if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && this.unlocalName.toLowerCase().contains("hot")){
+							list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");
+						}
 					}
 				}
-			}
 
-			//Hidden Tooltip
-			if (KeyboardUtils.isCtrlKeyDown()) {
-				if (this.componentMaterial != null) {
-					String type = this.componentMaterial.getTextureSet().mSetName;
-					String output = type.substring(0, 1).toUpperCase() + type.substring(1);
-					list.add(EnumChatFormatting.GRAY+"Material Type: "+output+".");
-					list.add(EnumChatFormatting.GRAY+"Material State: "+this.componentMaterial.getState().name()+".");
-					list.add(EnumChatFormatting.GRAY+"Radioactivity Level: "+this.componentMaterial.vRadiationLevel+".");
+				//Hidden Tooltip
+				if (KeyboardUtils.isCtrlKeyDown()) {
+					if (this.componentMaterial != null) {
+						String type = this.componentMaterial.getTextureSet().mSetName;
+						String output = type.substring(0, 1).toUpperCase() + type.substring(1);
+						list.add(EnumChatFormatting.GRAY+"Material Type: "+output+".");
+						list.add(EnumChatFormatting.GRAY+"Material State: "+this.componentMaterial.getState().name()+".");
+						list.add(EnumChatFormatting.GRAY+"Radioactivity Level: "+this.componentMaterial.vRadiationLevel+".");
+					}
 				}
-			}
-			else {
-				list.add(EnumChatFormatting.DARK_GRAY+"Hold Ctrl to show additional info.");				
-			}			
+				else {
+					list.add(EnumChatFormatting.DARK_GRAY+"Hold Ctrl to show additional info.");				
+				}			
 
+			}
 		}
+		catch (Throwable t) {}
 
 		super.addInformation(stack, aPlayer, list, bool);
 	}
