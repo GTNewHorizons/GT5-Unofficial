@@ -15,6 +15,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
 public class RECIPES_Machines {
 
 	//Outputs
@@ -763,11 +765,20 @@ public class RECIPES_Machines {
 				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
 				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(Casing_Amount);
 				//Industrial Tree Farm Controller
-				RecipeUtils.addShapedGregtechRecipe(
-						"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
-						"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
-						"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
-						RECIPE_TreeFarmController);
+				if (!CORE.GTNH) {
+					RecipeUtils.addShapedGregtechRecipe(
+							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
+							"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
+							"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
+							RECIPE_TreeFarmController);
+				}
+				if (CORE.GTNH) {
+					RecipeUtils.addShapedGregtechRecipe(
+							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
+							"cableGt02Silver", "pipeMediumStainlessSteel", "cableGt02Silver",
+							"plateEglinSteel", CI.machineCasing_HV, "plateEglinSteel",
+							RECIPE_TreeFarmController);
+				}
 				//Industrial Tree Farm Frame
 				RecipeUtils.addShapedGregtechRecipe(
 						ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt),
