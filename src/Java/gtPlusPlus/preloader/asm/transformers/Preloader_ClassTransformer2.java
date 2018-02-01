@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class Preloader_ClassTransformer2 {
 
 	private final static Class<BaseMetaTileEntity> customTransformer2 = BaseMetaTileEntity.class;
+	
+	NBTTagCompound mItemStorageNBT = new NBTTagCompound();
 
 	public static ArrayList<ItemStack> getDrops(BaseMetaTileEntity o) {
 		Logger.INFO("DROP!");

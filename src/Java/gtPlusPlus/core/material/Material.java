@@ -348,7 +348,7 @@ public class Material {
 						sets.put(r.getStackMaterial());
 					}
 				}				
-				TextureSet mostUsedTypeTextureSet = (TextureSet) MaterialUtils.getMostCommonTextureSet(new ArrayList(sets.values()));		        
+				TextureSet mostUsedTypeTextureSet = (TextureSet) MaterialUtils.getMostCommonTextureSet(new ArrayList<Material>(sets.values()));		        
 				if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
 					Logger.MATERIALS("Set textureset for "+this.localizedName+" to be "+mostUsedTypeTextureSet.mSetName+".");
 					return mostUsedTypeTextureSet;
@@ -611,6 +611,10 @@ public class Material {
 	}
 
 	private final short getComponentCount(final MaterialStack[] inputs){
+		
+		if (inputs == null || inputs.length < 1) {
+			return 1;
+		}
 		int counterTemp = 0;
 		for (final MaterialStack m : inputs){
 			if (m.getStackMaterial() != null){
@@ -729,7 +733,7 @@ public class Material {
 		}
 
 		final Materials isValid = Materials.get(this.getLocalizedName());
-		Logger.INFO("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
+		//Logger.MATERIALS("Is "+this.getLocalizedName()+" a Gregtech material? "+(isValid != null && isValid != Materials._NULL)+" | Found "+isValid.mDefaultLocalName);
 		if (isValid != Materials._NULL){
 			for (Materials m : invalidMaterials.values()){
 				if (isValid == m){
@@ -800,7 +804,7 @@ public class Material {
 		//Generate a Cell if we need to
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){			
 			if (this.vGenerateCells){
-				final Item temp = new BaseItemCell(this);
+				new BaseItemCell(this);
 				Logger.INFO("Generated a cell for "+this.getUnlocalizedName());
 			}
 			else {
