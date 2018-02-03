@@ -31,7 +31,7 @@ extends GregtechRocketFuelGeneratorBase {
 	
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick", CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "Generates power at " + (this.getEfficiency() * 2) + "% Efficiency per tick", CORE.GT_Tooltip};
 	}
 
 	@Override
