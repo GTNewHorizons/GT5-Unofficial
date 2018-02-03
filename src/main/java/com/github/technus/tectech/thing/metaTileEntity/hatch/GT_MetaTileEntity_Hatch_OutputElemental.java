@@ -46,7 +46,9 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         byte color = getBaseMetaTileEntity().getColorization();
-        if (color < 0) return;
+        if (color < 0) {
+            return;
+        }
         byte front = aBaseMetaTileEntity.getFrontFacing();
         byte opposite = GT_Utility.getOppositeSide(front);
         for (byte dist = 1; dist < 16; dist++) {
@@ -61,10 +63,18 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
                         content.clear();
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_EM) {
-                        if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount > 2) return;
-                    } else return;
-                } else return;
-            } else return;
+                        if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount > 2) {
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
         }
     }
 

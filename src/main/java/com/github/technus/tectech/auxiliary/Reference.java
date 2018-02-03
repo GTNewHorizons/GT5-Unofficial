@@ -9,4 +9,6 @@ public final class Reference {
     public static final String SERVERSIDE = "com.github.technus.tectech.proxy.CommonProxy";
     public static final String COFHCORE = "CoFHCore";
     public static final String THAUMCRAFT = "Thaumcraft";
+
+    private Reference() {}
 }

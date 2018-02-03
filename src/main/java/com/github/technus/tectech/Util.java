@@ -10,6 +10,8 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,16 +32,19 @@ import static gregtech.api.enums.GT_Values.E;
 /**
  * Created by Tec on 21.03.2017.
  */
-public class Util {
+public final class Util {
+    private Util() {}
+
     public static String intBitsToString(int number) {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder(16);
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? "1" : "0");
 
-            if (i % 8 == 0)
-                result.append(" ");
+            if (i % 8 == 0) {
+                result.append(' ');
+            }
         }
         result.replace(result.length() - 1, result.length(), "");
 
@@ -47,14 +52,15 @@ public class Util {
     }
 
     public static String intBitsToShortString(int number) {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder(16);
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? ":" : ".");
 
-            if (i % 8 == 0)
-                result.append("|");
+            if (i % 8 == 0) {
+                result.append('|');
+            }
         }
         result.replace(result.length() - 1, result.length(), "");
 
@@ -70,12 +76,14 @@ public class Util {
                                            IGregTechTileEntity aBaseMetaTileEntity,
                                            boolean forceCheck) {
         World world = aBaseMetaTileEntity.getWorld();
-        if (world.isRemote) return false;
+        if (world.isRemote) {
+            return false;
+        }
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -94,12 +102,14 @@ public class Util {
                         b -= block;
                         break;
                     } if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
+                    {
                         a += block - '@';
-                    else if (block < '+')//used to mark THINGS
+                    } else if (block < '+')//used to mark THINGS
+                    {
                         a++;
-                    else if (block=='.')
+                    } else if (block=='.') {
                         a++;
-                    else {
+                    } else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -138,34 +148,42 @@ public class Util {
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if (y < 0 || y >= 256) return false;
+                        if (y < 0 || y >= 256) {
+                            return false;
+                        }
 
                         //Check block
                         if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
                             switch (block) {
                                 case '-'://must be air
-                                    if (world.getBlock(x, y, z).getMaterial() != Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() != Material.air) {
                                         return false;
+                                    }
                                     break;
                                 case '+'://must not be air
-                                    if (world.getBlock(x, y, z).getMaterial() == Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() == Material.air) {
                                         return false;
+                                    }
                                     break;
                                 default: //check for block (countable)
                                     pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
                                     if (world.getBlock(x, y, z) != blockType[pointer]) {
-                                        if (DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockType[pointer].getUnlocalizedName());
+                                        if (DEBUG_MODE) {
+                                            TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                        }
                                         return false;
                                     }
                                     if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
-                                        if (DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
+                                        if (DEBUG_MODE) {
+                                            TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                        }
                                         return false;
                                     }
                             }
-                        } else if (forceCheck) return false;
+                        } else if (forceCheck) {
+                            return false;
+                        }
                         a++;//block in horizontal layer
                     }
                 }
@@ -191,7 +209,9 @@ public class Util {
             IGregTechTileEntity aBaseMetaTileEntity,
             boolean forceCheck) {
         World world = aBaseMetaTileEntity.getWorld();
-        if (world.isRemote) return false;
+        if (world.isRemote) {
+            return false;
+        }
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
@@ -199,7 +219,7 @@ public class Util {
         IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -217,13 +237,14 @@ public class Util {
                     if (block < ' ') {//Control chars allow skipping
                         b -= block;
                         break;
-                    } else if (block > '@') //characters allow to skip check a-1 skip, b-2 skips etc.
+                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
+                    {
                         a += block - '@';
-                  //else if (block < '+')//used to mark THINGS
+                    }//else if (block < '+')//used to mark THINGS
                   //    a++;
-                    else if (block=='.')
+                    else if (block=='.') {
                         a++;
-                    else {
+                    } else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -262,30 +283,36 @@ public class Util {
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if (y < 0 || y >= 256) return false;
+                        if (y < 0 || y >= 256) {
+                            return false;
+                        }
 
                         //Check block
                         if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
                             switch (block) {
                                 case '-'://must be air
-                                    if (world.getBlock(x, y, z).getMaterial() != Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() != Material.air) {
                                         return false;
+                                    }
                                     break;
                                 case '+'://must not be air
-                                    if (world.getBlock(x, y, z).getMaterial() == Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() == Material.air) {
                                         return false;
+                                    }
                                     break;
                                 default://check for block (countable)
                                     if ((pointer = block - '0') >= 0) {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
-                                            if (DEBUG_MODE)
-                                                TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockType[pointer].getUnlocalizedName());
+                                            if (DEBUG_MODE) {
+                                                TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                            }
                                             return false;
                                         }
                                         if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
-                                            if (DEBUG_MODE)
-                                                TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
+                                            if (DEBUG_MODE) {
+                                                TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                            }
                                             return false;
                                         }
                                     } else if ((pointer = block - ' ') >= 0) {
@@ -293,23 +320,29 @@ public class Util {
                                         try {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
-                                                    if (DEBUG_MODE)
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockTypeFallback[pointer].getUnlocalizedName());
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockTypeFallback[pointer].getUnlocalizedName());
+                                                    }
                                                     return false;
                                                 }
                                                 if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
-                                                    if (DEBUG_MODE)
-                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMetaFallback[pointer]);
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                    }
                                                     return false;
                                                 }
                                             }
                                         } catch (InvocationTargetException | IllegalAccessException e) {
-                                            if (DEBUG_MODE) e.printStackTrace();
+                                            if (DEBUG_MODE) {
+                                                e.printStackTrace();
+                                            }
                                             return false;
                                         }
                                     }
                             }
-                        } else if (forceCheck) return false;
+                        } else if (forceCheck) {
+                            return false;
+                        }
                         a++;//block in horizontal layer
                     }
                 }
@@ -337,14 +370,18 @@ public class Util {
                                            byte[] blockMeta,//use numbers 0-9 for casing types
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            TileEntity tileEntity, int facing, boolean hintsOnly) {
-        if(!tileEntity.hasWorldObj()) return false;
+        if(!tileEntity.hasWorldObj()) {
+            return false;
+        }
         World world = tileEntity.getWorldObj();
-        if (!world.isRemote && hintsOnly) return false;
+        if (!world.isRemote && hintsOnly) {
+            return false;
+        }
 
         //TE Rotation
 
         int x, y, z, a, b, c, pointer;
-        final int
+        int
                 baseX=tileEntity.xCoord,
                 baseZ=tileEntity.zCoord,
                 baseY=tileEntity.yCoord;
@@ -362,12 +399,14 @@ public class Util {
                         b -= block;
                         break;
                     } if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
+                    {
                         a += block - '@';
-                  //else if (block < '+')//used to mark THINGS
+                    }//else if (block < '+')//used to mark THINGS
                   //    a++;
                     else if (block=='.')// this TE
+                    {
                         a++;
-                    else {
+                    } else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -406,7 +445,9 @@ public class Util {
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if (y < 0 || y >= 256) return false;
+                        if (y < 0 || y >= 256) {
+                            return false;
+                        }
 
                         //Check block
                         if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded
@@ -420,15 +461,18 @@ public class Util {
                                     break;
                                 default: //check for block
                                     if ((pointer = block - '0') >= 0) {
-                                        if(world.getBlock(x,y,z)!=blockType[pointer] || world.getBlockMetadata(x,y,z)!=blockMeta[pointer])
-                                            TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
-                                    } else if ((pointer = block - ' ') >= 0) {
-                                        switch(pointer){
-                                            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
-                                                TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, pointer); break;
-                                            default:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
+                                        if(world.getBlock(x,y,z)!=blockType[pointer] || world.getBlockMetadata(x,y,z)!=blockMeta[pointer]) {
+                                            TecTech.proxy.hint_particle(world, x, y, z, blockType[pointer], blockMeta[pointer]);
                                         }
-                                    } else TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        if(pointer>=0 && pointer<12) {
+                                            TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, pointer);
+                                        } else {
+                                            TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
+                                        }
+                                    } else {
+                                        TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
+                                    }
                                 }
                             }else{
                                 switch (block) {
@@ -441,13 +485,15 @@ public class Util {
                                 default: //check for block
                                     if ((pointer = block - '0') >= 0) {
                                         world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
-                                    } else if ((pointer = block - ' ') >= 0) {
+                                    } else if (block - ' ' < 0) {
+                                        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15, 2);
+                                    } //else {
                                         //switch(pointer){
                                         //    case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
                                         //        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
                                         //    default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
                                         //}
-                                    } else world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15,2);
+                                    //}
                                 }
                             }
                         }
@@ -467,12 +513,14 @@ public class Util {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world = aBaseMetaTileEntity.getWorld();
-        if (world.isRemote) return new String[]{"Not at Client m8"};
+        if (world.isRemote) {
+            return new String[]{"Not at Client m8"};
+        }
 
         ItemStack[] array = new ItemStack[10];
 
         int x, y, z, a, b, c;
-        final int
+        int
                 baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
@@ -525,7 +573,9 @@ public class Util {
                     }
 
                     //that must be here since in some cases other axis (b,c) controls y
-                    if (y < 0 || y >= 256) return new String[]{"Invalid position"};
+                    if (y < 0 || y >= 256) {
+                        return new String[]{"Invalid position"};
+                    }
 
                     //Check block
                     Block block = world.getBlock(x, y, z);
@@ -533,7 +583,7 @@ public class Util {
 
                     if (!block.hasTileEntity(meta) && block.getMaterial() != Material.air) {
                         boolean err = true;
-                        final ItemStack is = new ItemStack(block, 1, meta);
+                        ItemStack is = new ItemStack(block, 1, meta);
                         for (int i = 0; i < array.length; i++) {
                             if (array[i] == null) {
                                 array[i] = is;
@@ -544,7 +594,9 @@ public class Util {
                                 break;
                             }
                         }
-                        if (err) return new String[]{"Too much different blocks"};
+                        if (err) {
+                            return new String[]{"Too much different blocks"};
+                        }
                     }
 
                     a++;//block in horizontal layer
@@ -556,8 +608,8 @@ public class Util {
 
         List<String> output = new ArrayList<>();
 
-        output.add("Offsets: " + horizontalOffset + " " + verticalOffset + " " + depthOffset);
-        output.add("Sizes: " + horizontalSize + " " + verticalSize + " " + depthSize);
+        output.add("Offsets: " + horizontalOffset + ' ' + verticalOffset + ' ' + depthOffset);
+        output.add("Sizes: " + horizontalSize + ' ' + verticalSize + ' ' + depthSize);
         output.add("");
 
         output.add("ID[]: Name[]");
@@ -572,7 +624,7 @@ public class Util {
         output.add("");
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
-                output.add(i + ": " + array[i].getItem().getUnlocalizedName() + " " + array[i].getItemDamage());
+                output.add(i + ": " + array[i].getItem().getUnlocalizedName() + ' ' + array[i].getItemDamage());
             }
         }
         output.add("");
@@ -582,10 +634,10 @@ public class Util {
         c = -depthOffset;
         for (int cz = 0; cz < depthSize; cz++) {//front to back
             b = verticalOffset;
-            String addMe = "{";
+            StringBuilder addMe = new StringBuilder().append('{');
             for (int by = 0; by < verticalSize; by++) {//top to bottom
                 a = -horizontalOffset;
-                String line = "";
+                StringBuilder line = new StringBuilder();
                 for (int az = 0; az < horizontalSize; az++) {//left to right
                     //get x y z from rotation
                     switch (facing) {//translation
@@ -629,11 +681,11 @@ public class Util {
                     int meta = world.getBlockMetadata(x, y, z);
 
                     if (a == 0 && b == 0 && c == 0) {
-                        line += '.';
+                        line.append('.');
                     } else if (block.getMaterial() == Material.air) {
-                        line += '-';
+                        line.append('-');
                     } else if (block.hasTileEntity(meta)) {
-                        line += '*';
+                        line.append('*');
                     } else {
                         ItemStack stack = new ItemStack(block, 1, meta);
                         String str = "?";//OH YEAH NPEs
@@ -643,73 +695,81 @@ public class Util {
                                 break;
                             }
                         }
-                        line += str;
+                        line.append(str);
                     }
                     a++;//block in horizontal layer
                 }
                 if (ignoreAir) {
-                    String l = "";
+                    StringBuilder builder = new StringBuilder();
                     char temp = '@';
-                    for (char ch : line.toCharArray()) {
+                    for (char ch : line.toString().toCharArray()){
                         if (ch == '-') {
                             temp += 1;
                             if (temp == '~') {
-                                l += '~';
+                                builder.append('~');
                                 temp = '@';
                             }
                         } else {
                             if (temp > '@') {
-                                l += temp;
+                                builder.append(temp);
                                 temp = '@';
                             }
-                            l += ch;
+                            builder.append(ch);
                         }
                     }
-                    while (l.length() > 0 && l.toCharArray()[l.length() - 1] == '~')
-                        l = l.substring(0, l.length() - 1);
-                    if (l.length() == 0)
-                        l = "E,";
-                    else {
-                        l = "\"" + l + "\",";
+                    while (builder.length()>0 && builder.charAt(builder.length() - 1) == '~') {
+                        builder.deleteCharAt(builder.length() - 1);
                     }
-                    addMe += l;
+                    if (builder.length()==0) {
+                        builder.append("E,");
+                    } else {
+                        builder.insert(0,'"');
+                        builder.append('"').append(',');
+                    }
+                    addMe.append(builder);
                 } else {
-                    if (line.length() == 0)
-                        line = "E,";
-                    else {
-                        line = "\"" + line + "\",";
+                    if (line.length()==0) {
+                        line.append("E,");
+                    } else {
+                        line.insert(0,'"');
+                        line.append('"').append(',');
                     }
-                    addMe += line;
+                    addMe.append(line);
                 }
                 b--;//horizontal layer
             }
             //region less verbose
-            addMe=(addMe + "},").replaceAll("(E,)+(?=})",E/*Remove Empty strings at end*/);
-            Matcher m = matchE_.matcher(addMe);
-            while (m.find()) {
-                byte lenEE = (byte)(m.group(1).length()>>1);
-                addMe=addMe.replaceFirst("E,(E,)+","\"\\\\u00"+String.format("%02X", lenEE-1)+"\",");
-                //addMe=addMe.replaceFirst("E,(E,)+\"","\"\\\\u00"+String.format("%02X", lenEE));
+            addMe.append('}').append(',');
+            String builtStr=addMe.toString().replaceAll("(E,)+(?=})",E/*Remove Empty strings at end*/);
+            Matcher matcher = matchE_.matcher(builtStr);
+            while (matcher.find()) {
+                byte lenEE = (byte)(matcher.group(1).length()>>1);
+                builtStr=builtStr.replaceFirst("E,(E,)+","\"\\\\u00"+String.format("%02X", lenEE-1)+"\",");
+                //builtStr=builtStr.replaceFirst("E,(E,)+\"","\"\\\\u00"+String.format("%02X", lenEE));
             }
             //endregion
-            output.add(addMe);
+            output.add(builtStr);
             c++;//depth
         }
         output.add("}");
-        return output.toArray(new String[0]);
+        return output.toArray(new String[output.size()]);
     }
 
     private static final Pattern matchE_ = Pattern.compile("(E,(E,)+)");
 
     public static boolean isInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] requiredFluidInputs, ItemStack[] requiredInputs, FluidStack[] givenFluidInputs, ItemStack... givenInputs) {
-        if (!GregTech_API.sPostloadFinished) return false;
-        if (requiredFluidInputs.length > 0 && givenFluidInputs == null) return false;
+        if (!GregTech_API.sPostloadFinished) {
+            return false;
+        }
+        if (requiredFluidInputs.length > 0 && givenFluidInputs == null) {
+            return false;
+        }
         int amt;
-        for (FluidStack tFluid : requiredFluidInputs)
+        for (FluidStack tFluid : requiredFluidInputs) {
             if (tFluid != null) {
                 boolean temp = true;
                 amt = tFluid.amount;
-                for (FluidStack aFluid : givenFluidInputs)
+                for (FluidStack aFluid : givenFluidInputs) {
                     if (aFluid != null && aFluid.isFluidEqual(tFluid)) {
                         if (aDontCheckStackSizes) {
                             temp = false;
@@ -721,16 +781,22 @@ public class Util {
                             break;
                         }
                     }
-                if (temp) return false;
+                }
+                if (temp) {
+                    return false;
+                }
             }
+        }
 
-        if (requiredInputs.length > 0 && givenInputs == null) return false;
+        if (requiredInputs.length > 0 && givenInputs == null) {
+            return false;
+        }
         for (ItemStack tStack : requiredInputs) {
             if (tStack != null) {
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : givenInputs) {
-                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                    if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
                         if (aDontCheckStackSizes) {
                             temp = false;
                             break;
@@ -742,7 +808,9 @@ public class Util {
                         }
                     }
                 }
-                if (temp) return false;
+                if (temp) {
+                    return false;
+                }
             }
         }
 
@@ -762,7 +830,6 @@ public class Util {
                                     aFluid.amount = 0;
                                 } else {
                                     aFluid.amount -= amt;
-                                    amt = 0;
                                     break;
                                 }
                             }
@@ -776,7 +843,7 @@ public class Util {
                     if (tStack != null) {
                         amt = tStack.stackSize;
                         for (ItemStack aStack : givenInputs) {
-                            if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
+                            if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true)) {
                                 if (aDontCheckStackSizes) {
                                     aStack.stackSize -= amt;
                                     break;
@@ -786,7 +853,6 @@ public class Util {
                                     aStack.stackSize = 0;
                                 } else {
                                     aStack.stackSize -= amt;
-                                    amt = 0;
                                     break;
                                 }
                             }
@@ -800,7 +866,7 @@ public class Util {
     }
 
     public static String getUniqueIdentifier(ItemStack is) {
-        return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ":" + is.getUnlocalizedName();
+        return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
     }
 
 
@@ -808,16 +874,16 @@ public class Util {
     public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 2097152L, 8388608L, 33554432L, 134217728L, 536870912L, 1073741824L, Integer.MAX_VALUE-7};
 
     public static byte getTier(long l) {
-        byte i = -1;
+        byte b = -1;
 
         do {
-            ++i;
-            if (i >= V.length) {
-                return i;
+            ++b;
+            if (b >= V.length) {
+                return b;
             }
-        } while(l > V[i]);
+        } while(l > V[b]);
 
-        return i;
+        return b;
     }
 
     public static String[] splitButDifferent(String string,String delimiter){
@@ -833,13 +899,68 @@ public class Util {
     }
 
     public static String[] infoFromNBT(NBTTagCompound nbt) {
-        final String[] strings = new String[nbt.getInteger("i")];
-        for (int i = 0; i < strings.length; i++)
+        String[] strings = new String[nbt.getInteger("i")];
+        for (int i = 0; i < strings.length; i++) {
             strings[i] = nbt.getString(Integer.toString(i));
+        }
         return strings;
     }
 
     public static boolean areBitsSet(int setBits,int testedValue){
         return (testedValue&setBits)==setBits;
+    }
+
+    public static class TT_ItemStack implements Comparable<TT_ItemStack>{
+        public final Item mItem;
+        public final int mStackSize;
+        public final int mMetaData;
+
+        public TT_ItemStack(Item aItem, long aStackSize, long aMetaData) {
+            this.mItem = aItem;
+            this.mStackSize = (byte)((int)aStackSize);
+            this.mMetaData = (short)((int)aMetaData);
+        }
+
+        public TT_ItemStack(ItemStack aStack) {
+            if(aStack==null){
+                mItem=null;
+                mStackSize=mMetaData=0;
+            }else{
+                mItem=aStack.getItem();
+                mStackSize=aStack.stackSize;
+                mMetaData=Items.feather.getDamage(aStack);
+            }
+        }
+
+        @Override
+        public int compareTo(TT_ItemStack o) {
+            if(mMetaData>o.mMetaData) return 1;
+            if(mMetaData<o.mMetaData) return -1;
+            if(mStackSize>o.mStackSize) return 1;
+            if(mStackSize<o.mStackSize) return -1;
+            if(mItem!=null && o.mItem!=null) return mItem.getUnlocalizedName().compareTo(o.mItem.getUnlocalizedName());
+            if(mItem==null && o.mItem==null) return 0;
+            if(mItem!=null) return 1;
+            return -1;
+        }
+
+        @Override
+        public boolean equals(Object aStack) {
+            return aStack == this ||
+                    (aStack instanceof TT_ItemStack &&
+                            ((mItem==((TT_ItemStack) aStack).mItem) || ((TT_ItemStack) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
+                            ((TT_ItemStack) aStack).mStackSize == this.mStackSize &&
+                            ((TT_ItemStack) aStack).mMetaData == this.mMetaData);
+        }
+
+        @Override
+        public int hashCode() {
+            return (mItem!=null?mItem.getUnlocalizedName().hashCode():0) ^ (mMetaData << 16) ^ (mStackSize<<24);
+        }
+
+        @Override
+        public String toString() {
+            return Integer.toString(hashCode())+' '+(mItem==null?"null":mItem.getUnlocalizedName())+' '+mMetaData+' '+mStackSize;
+        }
     }
 }

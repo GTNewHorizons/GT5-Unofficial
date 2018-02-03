@@ -11,6 +11,7 @@ public class Dispatcher extends PacketDispatcher {
         super(Reference.MODID);
     }
 
+    @Override
     public void registerPackets() {
         //this.registerMessage(SpawnParticleFXMessage.SpawnParticleFXMessageHandler.class, SpawnParticleFXMessage.class);
     }

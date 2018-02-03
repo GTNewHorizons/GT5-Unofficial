@@ -14,26 +14,29 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
         super(new GT_Container_Uncertainty(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Uncertainty.png");
     }
 
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         proxy.renderUnicodeString("Schr\u00F6dinger", 46, 7, 167, 0xffffff);
-        if (this.mContainer != null && ((GT_Container_Uncertainty) this.mContainer).status == 0)
+        if (mContainer != null && ((GT_Container_Uncertainty) mContainer).status == 0) {
             proxy.renderUnicodeString("Status: OK", 46, 16, 167, 0xffffff);
-        else
+        } else {
             proxy.renderUnicodeString("Status: NG", 46, 16, 167, 0xffffff);
+        }
     }
 
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-        if (this.mContainer != null && ((GT_Container_Uncertainty) this.mContainer).matrix != null) {
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
+        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        if (mContainer != null && ((GT_Container_Uncertainty) mContainer).matrix != null) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            final short bU = 0, rU = 70, fU = 192, V = 210, Vs = 216;
+            short bU = 0, rU = 70, fU = 192, V = 210, Vs = 216;
             x += 52;
             y += 33;
-            final int state = ((GT_Container_Uncertainty) this.mContainer).status;
-            switch (((GT_Container_Uncertainty) this.mContainer).mode) {
+            int state = ((GT_Container_Uncertainty) mContainer).status;
+            switch (((GT_Container_Uncertainty) mContainer).mode) {
                 case 1://ooo oxo ooo
                     drawTexturedModalRect(x + 12, y + 12,
                             rU + (state == 0 ? 76 : 12),
@@ -95,12 +98,13 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
             }
             x -= 6;
             y -= 6;
-            for (int i = 0; i < 16; i++)
-                if (TecTech.Rnd.nextInt(1000) < ((GT_Container_Uncertainty) this.mContainer).matrix[i])
-                    drawTexturedModalRect(x + 12 * (i / 4), y + 12 * (i % 4),
-                            fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
-            if (((GT_Container_Uncertainty) this.mContainer).selection > -1) {
-                int sel = ((GT_Container_Uncertainty) this.mContainer).selection;
+            for (int i = 0; i < 16; i++) {
+                if (TecTech.Rnd.nextInt(1000) < ((GT_Container_Uncertainty) mContainer).matrix[i]) {
+                    drawTexturedModalRect(x + 12 * (i / 4), y + 12 * (i % 4), fU + 12 * (i / 4), V + 12 * (i % 4), 10, 10);
+                }
+            }
+            if (((GT_Container_Uncertainty) mContainer).selection > -1) {
+                int sel = ((GT_Container_Uncertainty) mContainer).selection;
                 drawTexturedModalRect(x + 12 * (sel / 4), y + 12 * (sel % 4),
                         bU + 12 * (sel / 4), V + 12 * (sel % 4), 10, 10);
             }

@@ -2,8 +2,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
@@ -12,14 +13,19 @@ import com.github.technus.tectech.elementalMatter.core.transformations.bTransfor
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
@@ -63,8 +69,17 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
+    public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_mid_freq");
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return activitySound;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_quantizer(this.mName);
+        return new GT_MetaTileEntity_EM_quantizer(mName);
     }
 
     @Override
@@ -92,60 +107,64 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {//TODO implement by item quantization, implement instance quantization
+    public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement instance quantization
         if (GregTech_API.sPostloadFinished) {
-            ItemStack[] inI = getStoredInputs().toArray(new ItemStack[0]);
+            ArrayList<ItemStack> storedInputs = getStoredInputs();
+            ItemStack[] inI = storedInputs.toArray(new ItemStack[storedInputs.size()]);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     //ITEM STACK quantization
                     aItemQuantizationInfo aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, false, null));
                     if (aIQI == null) {
-                        aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, true, null));
+                        aIQI = bTransformationInfo.itemQuantization.get(new aItemQuantizationInfo(is, true, null));//todo check if works?
                     }
                     if (aIQI == null) {
-                        //ORE DICT quantization
+                        //ORE DICT quantization //todo fix for uranium?
                         int[] oreIDs = OreDictionary.getOreIDs(is);
                         for (int ID : oreIDs) {
-                            if (DEBUG_MODE)
-                                TecTech.Logger.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage() + " " + OreDictionary.getOreName(ID));
+                            if (DEBUG_MODE) {
+                                TecTech.Logger.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
+                            }
                             aOredictQuantizationInfo aOQI = bTransformationInfo.oredictQuantization.get(ID);
-                            if (aOQI == null) continue;
+                            if (aOQI == null) {
+                                continue;
+                            }
                             iHasElementalDefinition into = aOQI.output();
-                            if (into != null && isInputEqual(true, false,
-                                    nothingF, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
+                            if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aOQI.amount, is.getItemDamage())}, null, inI)) {
                                 startRecipe(into);
                                 return true;
                             }
                         }
                     } else {
                         //Do ITEM STACK quantization
-                        if (DEBUG_MODE)
-                            TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage());
+                        if (DEBUG_MODE) {
+                            TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
+                        }
                         iHasElementalDefinition into = aIQI.output();
-                        if (into != null && isInputEqual(true, false,
-                                nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
+                        if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {
                             startRecipe(into);
                             return true;
                         }
                     }
                 }
             }
-            FluidStack[] inF = getStoredFluids().toArray(new FluidStack[0]);
+            ArrayList<FluidStack> storedFluids = getStoredFluids();
+            FluidStack[] inF = storedFluids.toArray(new FluidStack[storedFluids.size()]);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
                     aFluidQuantizationInfo aFQI = bTransformationInfo.fluidQuantization.get(fs.getFluid().getID());
-                    if (aFQI == null) continue;
+                    if (aFQI == null) {
+                        continue;
+                    }
                     iHasElementalDefinition into = aFQI.output();
                     if (into != null && fs.amount >= aFQI.input().amount && isInputEqual(true, false,
-                            new FluidStack[]{aFQI.input()}, nothingI, inF, (ItemStack[]) null)) {
+                            new FluidStack[]{aFQI.input()}, GT_MetaTileEntity_MultiblockBase_EM.nothingI, inF, (ItemStack[]) null)) {
                         startRecipe(into);
                         return true;
                     }
                 }
             }
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 

@@ -14,10 +14,11 @@ import java.util.List;
  * Created by Bass on 28/07/2017.
  */
 public class TurretBaseItemEM extends ItemBlock {
-    public TurretBaseItemEM(Block b) {
-        super(b);
+    public TurretBaseItemEM(Block block) {
+        super(block);
     }
 
+    @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
         list.add(CommonValues.TEC_MARK_EM);
         list.add("");

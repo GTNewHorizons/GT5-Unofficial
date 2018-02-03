@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.core.interfaces;
+package com.github.technus.tectech.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 

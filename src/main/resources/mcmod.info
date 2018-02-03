@@ -1,15 +1,15 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "tectech",
+  "name": "TecTech",
+  "description": "TecTech - Tec Technology Interdimensional! Replace UUMatter with something overly complicated and annoying! (GT5u Addon)",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
+  "authorList": ["_Technus_"],
   "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "logoFile": "TecTechIcon.png",
   "screenshots": [],
   "dependencies": []
 }

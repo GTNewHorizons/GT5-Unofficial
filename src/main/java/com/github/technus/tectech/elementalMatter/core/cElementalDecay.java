@@ -26,7 +26,7 @@ public final class cElementalDecay {
         for (int i = 0; i < outArr.length; i++) {
             outArr[i] = new cElementalDefinitionStack(outSafe[i], 1);
         }
-        this.outputStacks = new cElementalDefinitionStackMap(outArr);
+        outputStacks = new cElementalDefinitionStackMap(outArr);
         this.probability = probability;
     }
 
@@ -35,7 +35,7 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStack... out) {
-        this.outputStacks = new cElementalDefinitionStackMap(out);
+        outputStacks = new cElementalDefinitionStackMap(out);
         this.probability = probability;
     }
 
@@ -44,17 +44,23 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStackMap tree) {
-        this.outputStacks = tree;
+        outputStacks = tree;
         this.probability = probability;
     }
 
     public cElementalInstanceStackMap getResults(float lifeMult, long age, long energy, long amountDecaying) {
         cElementalInstanceStackMap decayResult = new cElementalInstanceStackMap();
-        if (outputStacks == null) return decayResult;//This is to prevent null pointer exceptions.
+        if (outputStacks == null) {
+            return decayResult;//This is to prevent null pointer exceptions.
+        }
         //Deny decay code is in instance!
         long qtty = 0;
-        for (cElementalDefinitionStack stack : outputStacks.values()) qtty += stack.amount;
-        if (qtty <= 0) return decayResult;
+        for (cElementalDefinitionStack stack : outputStacks.values()) {
+            qtty += stack.amount;
+        }
+        if (qtty <= 0) {
+            return decayResult;
+        }
         //energy /= qtty;
         //lifeMult /= (float) qtty;
         for (cElementalDefinitionStack stack : outputStacks.values()) {

@@ -1,9 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalInstanceContainer;
+import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
 import cpw.mods.fml.relauncher.Side;
@@ -43,7 +42,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     private byte deathDelay = 2;
     public final int eTier;
 
-    public GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
+    protected GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
         eTier=aTier;
     }
@@ -53,7 +52,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     //    eTier=aTier;
     //}
 
-    public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, int eTier, String aDescription, ITexture[][][] aTextures) {
+    protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, int eTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         this.eTier=eTier;
     }
@@ -97,8 +96,12 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         try {
             content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-            if (content == null) content = new cElementalInstanceStackMap();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
+            if (content == null) {
+                content = new cElementalInstanceStackMap();
+            }
         }
     }
 
@@ -116,29 +119,37 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 } else {
                     if (deathDelay == 1) {
                         IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
-                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
+                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental)) {
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
-                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
+                        }
+                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental)) {
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
-                        if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental)) {
-                            GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
+                        }
+                        if (tGTTileEntity != null && tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental) {
+                            GT_MetaTileEntity_Hatch_OverflowElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_OverflowElemental) tGTTileEntity.getMetaTileEntity();
                             if (aMetaTileEntity.addOverflowMatter(overflowMatter)) {
-                                if (TecTech.ModConfig.BOOM_ENABLE) tGTTileEntity.doExplosion(V[14]);
-                                else
-                                    TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                                if (TecTech.ModConfig.BOOM_ENABLE) {
+                                    tGTTileEntity.doExplosion(V[14]);
+                                } else {
+                                    TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                                }
                             }
                             deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
                             overflowMatter = 0F;
                         }
                     } else if (deathDelay < 1) {
-                        if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[14]);
-                        else
-                            TecTech.proxy.broadcast("Container0 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                        if (TecTech.ModConfig.BOOM_ENABLE) {
+                            getBaseMetaTileEntity().doExplosion(V[14]);
+                        } else {
+                            TecTech.proxy.broadcast("Container0 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+                        }
                     }
                     deathDelay--;
                 }
             } else if (MOVE_AT == Tick) {
-                if (content.hasStacks()) moveAround(aBaseMetaTileEntity);
+                if (content.hasStacks()) {
+                    moveAround(aBaseMetaTileEntity);
+                }
                 getBaseMetaTileEntity().setActive(content.hasStacks());
             }
         }
@@ -214,26 +225,30 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public String[] getInfoData() {
         if(TecTech.ModConfig.EASY_SCAN) {
             if (id > 0) {
-                if (content == null || content.size() == 0)
+                if (content == null || content.size() == 0) {
                     return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
-                else {
-                    final String[] lines = content.getElementalInfo();
-                    final String[] output = new String[lines.length + 1];
+                } else {
+                    String[] lines = content.getElementalInfo();
+                    String[] output = new String[lines.length + 1];
                     output[0] = "ID: " + EnumChatFormatting.AQUA + id;
                     System.arraycopy(lines, 0, output, 1, lines.length);
                     return output;
                 }
             }
-            if (content == null || content.size() == 0) return new String[]{"No Stacks"};
+            if (content == null || content.size() == 0) {
+                return new String[]{"No Stacks"};
+            }
             return content.getElementalInfo();
         } else {
             if(id>0){
-                if (content == null || content.size() == 0)
+                if (content == null || content.size() == 0) {
                     return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
+                }
                 return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Contains EM"};
             }
-            if (content == null || content.size() == 0) 
+            if (content == null || content.size() == 0) {
                 return new String[]{"No Stacks"};
+            }
             return new String[]{"Contains EM"};
         }
     }
@@ -245,7 +260,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_EM,
+                TEC_MARK_EM,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),
@@ -260,9 +275,12 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public void onRemoval() {
-        if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive())
-            if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[15]);
-            else
-                TecTech.proxy.broadcast("BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+        if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
+            if (TecTech.ModConfig.BOOM_ENABLE) {
+                getBaseMetaTileEntity().doExplosion(V[15]);
+            } else {
+                TecTech.proxy.broadcast("BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+            }
+        }
     }
 }

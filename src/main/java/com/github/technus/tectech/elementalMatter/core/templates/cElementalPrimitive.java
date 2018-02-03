@@ -25,9 +25,13 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
  */
 public abstract class cElementalPrimitive extends cElementalDefinition {
-    private static final byte nbtType = (byte) 'p';
+    public static final byte nbtType = (byte) 'p';
 
-    public static final Map<Integer, iElementalDefinition> bindsBO = new HashMap<>();
+    private static final Map<Integer, cElementalPrimitive> bindsBO = new HashMap<>();
+
+    public static Map<Integer, cElementalPrimitive> getBindsPrimitive() {
+        return bindsBO;
+    }
 
     public final String name;
     public final String symbol;
@@ -60,17 +64,18 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         this.charge = (byte) charge;
         this.color = (byte) color;
         this.ID = ID;
-        if (bindsBO.put(ID, this) != null)
+        if (bindsBO.put(ID, this) != null) {
             Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition", new tElementalException("Duplicate ID")));
+        }
     }
 
     //
     protected void init(cElementalPrimitive antiParticle, float rawLifeTime, int naturalInstant, int energeticInstant, cElementalDecay... elementalDecaysArray) {
-        this.anti = antiParticle;
+        anti = antiParticle;
         this.rawLifeTime = rawLifeTime;
-        this.naturalDecayInstant = (byte) naturalInstant;
-        this.energeticDecayInstant = (byte) energeticInstant;
-        this.elementalDecays = elementalDecaysArray;
+        naturalDecayInstant = (byte) naturalInstant;
+        energeticDecayInstant = (byte) energeticInstant;
+        elementalDecays = elementalDecaysArray;
     }
 
     @Override
@@ -105,19 +110,23 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
-        if (naturalDecayInstant < 0) return elementalDecays;
+        if (naturalDecayInstant < 0) {
+            return elementalDecays;
+        }
         return new cElementalDecay[]{elementalDecays[naturalDecayInstant]};
     }
 
     @Override
     public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
-        if (energeticDecayInstant < 0) return elementalDecays;
+        if (energeticDecayInstant < 0) {
+            return elementalDecays;
+        }
         return new cElementalDecay[]{elementalDecays[energeticDecayInstant]};
     }
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -168,8 +177,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound content) {
-        iElementalDefinition primitive = bindsBO.get(content.getInteger("c"));
+    public static cElementalPrimitive fromNBT(NBTTagCompound content) {
+        cElementalPrimitive primitive = bindsBO.get(content.getInteger("c"));
         return primitive == null ? null__ : primitive;
     }
 
@@ -180,18 +189,22 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getName());
             lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" eV");
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
-            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
             lines.add((isTimeSpanHalfLife()?"HALF LIFE = ":"LIFE TIME = ")+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");
@@ -202,18 +215,25 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-128);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
-        if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+(-128));
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Registered Elemental Matter Class: Primitive " + nbtType + ' ' + -128);
+        }
     }
 
     @Override
     public final int compareTo(iElementalDefinition o) {
         if (getClassType() == o.getClassType()) {
             int oID = ((cElementalPrimitive) o).ID;
-            if (ID > oID) return 1;
-            if (ID < oID) return -1;
+            if (ID > oID) {
+                return 1;
+            }
+            if (ID < oID) {
+                return -1;
+            }
             return 0;
         }
         return compareClassID(o);

@@ -1,6 +1,4 @@
-package com.github.technus.tectech.elementalMatter.core.interfaces;
-
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+package com.github.technus.tectech.elementalMatter.core;
 
 /**
  * Created by danie_000 on 25.01.2017.

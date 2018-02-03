@@ -2,7 +2,6 @@ package com.github.technus.tectech.elementalMatter.definitions.complex.hadron;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.cElementalMutableDefinitionStackMap;
@@ -38,6 +37,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3, hadron_p5;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
+    private static final float actualProtonMass=938272081.3f;
+    private static final float actualNeutronMass=939565413.3f;
 
     //float-mass in eV/c^2
     public final float mass;
@@ -75,8 +76,10 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     private dHadronDefinition(boolean check, cElementalDefinitionStackMap quarks) throws tElementalException {
-        if (check && !canTheyBeTogether(quarks)) throw new tElementalException("Hadron Definition error");
-        this.quarkStacks = quarks;
+        if (check && !canTheyBeTogether(quarks)) {
+            throw new tElementalException("Hadron Definition error");
+        }
+        quarkStacks = quarks;
 
         byte amount = 0;
         int charge = 0;
@@ -88,26 +91,32 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             mass += quarkStack.getMass();
             charge += quarkStack.getCharge();
             type = Math.max(Math.abs(quarkStack.definition.getType()), type);
-            if (quarkStack.definition.getType() < 0) containsAnti = true;
+            if (quarkStack.definition.getType() < 0) {
+                containsAnti = true;
+            }
         }
         this.amount = amount;
         this.charge = charge;
-        this.type = containsAnti ? (byte) (-type) : (byte) type;
+        this.type = containsAnti ? (byte) -type : (byte) type;
         int mult = this.amount * this.amount * (this.amount - 1);
-        this.mass = mass * 5.543F * (float) mult;//yes it becomes heavier
+        mass = mass * 5.543F * (float) mult;//yes it becomes heavier
 
-        if (this.mass == protonMass && this.amount == 3) this.rawLifeTime = STABLE_RAW_LIFE_TIME;
-        else if (this.mass == neutronMass && this.amount == 3) this.rawLifeTime = 882F;
-        else {
+        if (mass == protonMass && this.amount == 3) {
+            rawLifeTime = iElementalDefinition.STABLE_RAW_LIFE_TIME;
+            mass=actualProtonMass;
+        } else if (mass == neutronMass && this.amount == 3) {
+            rawLifeTime = 882F;
+            mass=actualNeutronMass;
+        } else {
             if (this.amount == 3) {
-                this.rawLifeTime = (1.34F / this.mass) * (float) Math.pow(9.81, charge);
+                rawLifeTime = 1.34F / mass * (float) Math.pow(9.81, charge);
             } else if (this.amount == 2) {
-                this.rawLifeTime = (1.21F / this.mass) / (float) Math.pow(19.80, charge);
+                rawLifeTime = 1.21F / mass / (float) Math.pow(19.80, charge);
             } else {
-                this.rawLifeTime = (1.21F / this.mass) / (float) Math.pow(9.80, charge);
+                rawLifeTime = 1.21F / mass / (float) Math.pow(9.80, charge);
             }
         }
-
+        this.mass=mass;
         hash=super.hashCode();
     }
 
@@ -115,7 +124,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         long amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
-            if (!(quarks.definition instanceof eQuarkDefinition)) return false;
+            if (!(quarks.definition instanceof eQuarkDefinition)) {
+                return false;
+            }
             amount += quarks.amount;
         }
         return amount >= 2 && amount <= 12;
@@ -150,11 +161,13 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public String getSymbol() {
-        String symbol = "";
-        for (cElementalDefinitionStack quark : quarkStacks.values())
-            for (int i = 0; i < quark.amount; i++)
-                symbol += quark.definition.getSymbol();
-        return symbol;
+        StringBuilder symbol = new StringBuilder(8);
+        for (cElementalDefinitionStack quark : quarkStacks.values()) {
+            for (int i = 0; i < quark.amount; i++) {
+                symbol.append(quark.definition.getSymbol());
+            }
+        }
+        return symbol.toString();
     }
 
     @Override
@@ -170,8 +183,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
-        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
+        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {
             return cElementalDecay.noProduct;
+        }
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();
         for (cElementalDefinitionStack quarks : quarkStacks) {
             if (quarks.definition.getType() == 1 || quarks.definition.getType() == -1) {
@@ -191,14 +205,15 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
-        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
+        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {
             return cElementalDecay.noProduct;
+        }
         return new cElementalDecay[]{new cElementalDecay(0.75F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
     }
 
     @Override
     public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
-        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+        return iElementalDefinition.DEFAULT_ENERGY_REQUIREMENT *(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -209,16 +224,17 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public cElementalDecay[] getDecayArray() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
-        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
+        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {
             return cElementalDecay.noProduct;
-        else if (amount != 3)
+        } else if (amount != 3) {
             return new cElementalDecay[]{new cElementalDecay(0.95F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
-        else {
-            ArrayList<eQuarkDefinition> newBaryon = new ArrayList<eQuarkDefinition>();
+        } else {
+            ArrayList<eQuarkDefinition> newBaryon = new ArrayList<>();
             iElementalDefinition[] Particles = new iElementalDefinition[2];
             for (cElementalDefinitionStack quarks : quarkStacks) {
-                for (int i = 0; i < quarks.amount; i++)
+                for (int i = 0; i < quarks.amount; i++) {
                     newBaryon.add((eQuarkDefinition) quarks.definition);
+                }
             }
             //remove last
             eQuarkDefinition lastQuark = newBaryon.remove(2);
@@ -243,7 +259,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
                         new cElementalDecay(0.001F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
                         eBosonDefinition.deadEnd};
             } catch (tElementalException e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
                 return new cElementalDecay[]{eBosonDefinition.deadEnd};
             }
         }
@@ -292,12 +310,15 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public iElementalDefinition getAnti() {
         cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-        for (cElementalDefinitionStack stack : quarkStacks.values())
+        for (cElementalDefinitionStack stack : quarkStacks.values()) {
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+        }
         try {
             return new dHadronDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -323,19 +344,23 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         nbt.setByte("t", nbtType);
         cElementalDefinitionStack[] quarkStacksValues = quarkStacks.values();
         nbt.setInteger("i", quarkStacksValues.length);
-        for (int i = 0; i < quarkStacksValues.length; i++)
+        for (int i = 0; i < quarkStacksValues.length; i++) {
             nbt.setTag(Integer.toString(i), quarkStacksValues[i].toNBT());
+        }
         return nbt;
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
+    public static dHadronDefinition fromNBT(NBTTagCompound nbt) {
         cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < stacks.length; i++)
+        for (int i = 0; i < stacks.length; i++) {
             stacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+        }
         try {
             return new dHadronDefinition(stacks);
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -346,14 +371,16 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
             hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(2), eQuarkDefinition.quark_d.getStackForm(1)));
-            hadron_p_ = (dHadronDefinition) (hadron_p.getAnti());
+            hadron_p_ = (dHadronDefinition) hadron_p.getAnti();
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
-            hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
+            hadron_n_ = (dHadronDefinition) hadron_n.getAnti();
         } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
             protonMass = -1;
             neutronMass = -1;
         }
@@ -368,15 +395,18 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
         }
-        if(DEBUG_MODE)
-            TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
+        if(DEBUG_MODE) {
+            TecTech.Logger.info("Registered Elemental Matter Class: Hadron " + nbtType + ' ' + -64);
+        }
     }
 
     public static void setTransformations(){
         //Added to atom map, but should be in its own
-        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(dHadronDefinition.hadron_n, 100000);
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(hadron_n, 100000);
         transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
         bTransformationInfo.oredictQuantization.put(
                 OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
@@ -396,18 +426,22 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
-        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
-            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {
+            lines.add("CLASS = " + nbtType + ' ' + getClassType());
+        }
         if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS|SCAN_GET_TIMESPAN_INFO, capabilities)) {
             lines.add("NAME = "+getSimpleName());
             //lines.add("SYMBOL = "+getSymbol());
         }
-        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
-            lines.add("CHARGE = "+getCharge()/3f+" eV");
-        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
-        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
-            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)) {
+            lines.add("CHARGE = " + getCharge() / 3f + " e");
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)) {
+            lines.add(getColor() < 0 ? "COLORLESS" : "CARRIES COLOR");
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)) {
+            lines.add("MASS = " + getMass() + " eV/c\u00b2");
+        }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
             lines.add("HALF LIFE = "+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");

@@ -19,12 +19,11 @@ public class TurretBaseEM extends BlockAbstractTurretBase {
     public static TurretBaseEM INSTANCE;
 
     public TurretBaseEM(){
-        super();
         setCreativeTab(TecTech.mainTab);
-        this.setResistance(16);
-        this.setBlockName("turretBaseEM");
-        this.setStepSound(Block.soundTypeMetal);
-        this.setBlockTextureName(Reference.MODID+":turretBaseEM");
+        setResistance(16);
+        setBlockName("turretBaseEM");
+        setStepSound(Block.soundTypeMetal);
+        setBlockTextureName(Reference.MODID+":turretBaseEM");
     }
 
     @Override
@@ -32,9 +31,10 @@ public class TurretBaseEM extends BlockAbstractTurretBase {
         return new TileTurretBaseEM(MaxCharge,MaxIO);
     }
 
+    @Override
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
-        this.blockIcon = p_149651_1_.registerIcon(Reference.MODID+":turretBaseEM");
+        blockIcon = p_149651_1_.registerIcon(Reference.MODID+":turretBaseEM");
     }
 
     public static void run() {

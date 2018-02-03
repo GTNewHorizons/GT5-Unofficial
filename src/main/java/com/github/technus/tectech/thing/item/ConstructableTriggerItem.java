@@ -31,13 +31,12 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ConstructableTriggerItem extends Item {
+public final class ConstructableTriggerItem extends Item {
     public static ConstructableTriggerItem INSTANCE;
 
     public static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
-        super();
         setUnlocalizedName("em.debugBuilder");
         setTextureName(MODID + ":itemDebugBuilder");
     }
@@ -45,7 +44,9 @@ public class ConstructableTriggerItem extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if(tTileEntity==null || aPlayer instanceof FakePlayer) return aPlayer instanceof EntityPlayerMP;
+        if(tTileEntity==null || aPlayer instanceof FakePlayer) {
+            return aPlayer instanceof EntityPlayerMP;
+        }
         if (aPlayer instanceof EntityPlayerMP) {
             //struct gen
             if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
@@ -150,9 +151,9 @@ public class ConstructableTriggerItem extends Item {
         });
     }
 
-    public abstract static class MultiblockInfoContainer {
-        public abstract void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide);
+    public interface MultiblockInfoContainer {
+        void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide);
         @SideOnly(Side.CLIENT)
-        public abstract String[] getDescription(int stackSize);
+        String[] getDescription(int stackSize);
     }
 }

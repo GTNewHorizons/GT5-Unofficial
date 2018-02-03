@@ -24,7 +24,7 @@ public final class QuantumGlassBlock extends BlockBase {
 
     public QuantumGlassBlock() {
         super(Material.iron);
-        this.setBlockBounds(0, 0, 0, 1, 1, 1);
+        setBlockBounds(0, 0, 0, 1, 1, 1);
         setBlockName("quantumGlass");
         setHarvestLevel("wrench", 3);
         setHardness(50);
@@ -59,11 +59,13 @@ public final class QuantumGlassBlock extends BlockBase {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 1;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
@@ -77,14 +79,14 @@ public final class QuantumGlassBlock extends BlockBase {
 
     @Override
     public int getRenderType() {
-        return QuantumGlassBlock.renderID;
+        return renderID;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
-        stuff = this.blockIcon;
+        stuff = blockIcon;
     }
 
     public static void run() {

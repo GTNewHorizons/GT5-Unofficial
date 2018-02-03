@@ -16,17 +16,21 @@ public class Vec3pos implements Comparable<Vec3pos> {
     }
 
     public Vec3pos(IGregTechTileEntity te) {
-        this.x = te.getXCoord();
-        this.y = te.getYCoord();
-        this.z = te.getZCoord();
+        x = te.getXCoord();
+        y = te.getYCoord();
+        z = te.getZCoord();
     }
 
     @Override
     public int compareTo(Vec3pos o) {
         int tmp=y-o.y;
-        if (tmp!=0) return tmp;
+        if (tmp!=0) {
+            return tmp;
+        }
         tmp=x-o.x;
-        if (tmp!=0) return tmp;
+        if (tmp!=0) {
+            return tmp;
+        }
         return z-o.z;
     }
 

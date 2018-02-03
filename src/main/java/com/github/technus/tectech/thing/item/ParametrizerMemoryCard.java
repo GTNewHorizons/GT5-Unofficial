@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,16 +24,16 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
 
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ParametrizerMemoryCard extends Item {
+public final class ParametrizerMemoryCard extends Item {
     public static ParametrizerMemoryCard INSTANCE;
     public static IIcon locked,unlocked;
 
     private ParametrizerMemoryCard() {
-        super();
         setMaxStackSize(1);
         setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
@@ -44,30 +45,53 @@ public class ParametrizerMemoryCard extends Item {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
-            if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
+            if (tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null && metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
-                    GT_MetaTileEntity_Hatch_Param parametrizer = ((GT_MetaTileEntity_Hatch_Param) metaTE);
-                    if(aStack.getTagCompound()==null) aStack.setTagCompound(new NBTTagCompound());
-                    NBTTagCompound tNBT=aStack.getTagCompound();
-                    if (aStack.getItemDamage()==1) {
-                        //write to parametrizer
-                        parametrizer.param = tNBT.getInteger("param");
-                        if(parametrizer.setUsingFloats(tNBT.getBoolean("usesFloats"))) {
-                            parametrizer.value0i = (int)Float.intBitsToFloat(tNBT.getInteger("value0i"));
-                            parametrizer.value1i = (int)Float.intBitsToFloat(tNBT.getInteger("value1i"));
-                        }else{
-                            parametrizer.value0i = tNBT.getInteger("value0i");
-                            parametrizer.value1i = tNBT.getInteger("value1i");
+                if (metaTE != null) {
+                    if (metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
+                        GT_MetaTileEntity_Hatch_Param parametrizer = (GT_MetaTileEntity_Hatch_Param) metaTE;
+                        if (aStack.getTagCompound() == null) {
+                            aStack.setTagCompound(new NBTTagCompound());
                         }
-                    } else {
-                        //read from parametrizer
-                        tNBT.setInteger("param", parametrizer.param);
-                        tNBT.setBoolean("usesFloats", parametrizer.isUsingFloats());
-                        tNBT.setInteger("value0i", parametrizer.value0i);
-                        tNBT.setInteger("value1i", parametrizer.value1i);
+                        NBTTagCompound tNBT = aStack.getTagCompound();
+                        if (aStack.getItemDamage() == 1) {
+                            //write to parametrizer
+                            parametrizer.param = tNBT.getInteger("param");
+                            if (parametrizer.setUsingFloats(tNBT.getBoolean("usesFloats"))) {
+                                parametrizer.value0i = (int) Float.intBitsToFloat(tNBT.getInteger("value0i"));
+                                parametrizer.value1i = (int) Float.intBitsToFloat(tNBT.getInteger("value1i"));
+                            } else {
+                                parametrizer.value0i = tNBT.getInteger("value0i");
+                                parametrizer.value1i = tNBT.getInteger("value1i");
+                            }
+                        } else {
+                            //read from parametrizer
+                            tNBT.setInteger("param", parametrizer.param);
+                            tNBT.setBoolean("usesFloats", parametrizer.isUsingFloats());
+                            tNBT.setInteger("value0i", parametrizer.value0i);
+                            tNBT.setInteger("value1i", parametrizer.value1i);
+                        }
+                        return true;
+                    }else if(metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM){
+                        GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) metaTE;
+                        if (aStack.getTagCompound() == null) {
+                            aStack.setTagCompound(new NBTTagCompound());
+                        }
+                        NBTTagCompound tNBT = aStack.getTagCompound();
+                        if(aStack.getItemDamage()== 1){
+                            //write to base
+                            if(tNBT.getBoolean("usesFloats")){
+                                base.setParameterPairIn_ClearOut(tNBT.getInteger("param"),true
+                                        ,Float.intBitsToFloat(tNBT.getInteger("value0i"))
+                                        ,Float.intBitsToFloat(tNBT.getInteger("value1i")));
+                            }else{
+                                base.setParameterPairIn_ClearOut(tNBT.getInteger("param"),false
+                                        ,tNBT.getInteger("value0i")
+                                        ,tNBT.getInteger("value1i"));
+                            }
+                            return true;
+                        }
                     }
-                    return true;
                 }
             }
         }
@@ -95,9 +119,9 @@ public class ParametrizerMemoryCard extends Item {
         aList.add("Stores Parameters");
 
         if(aStack.getItemDamage()==1) {
-            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to configure it");
+            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer/Controller to configure it");
         }else{
-            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to save parameters");
+            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to store parameters");
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
@@ -120,13 +144,14 @@ public class ParametrizerMemoryCard extends Item {
     public static void run() {
         INSTANCE = new ParametrizerMemoryCard();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
+        parametrizerMemory.set(INSTANCE);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        locked=iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
-        unlocked=this.itemIcon = iconRegister.registerIcon(this.getIconString());
+        locked =iconRegister.registerIcon(MODID + ":itemParametrizerMemoryCardLocked");
+        unlocked = itemIcon = iconRegister.registerIcon(getIconString());
     }
 
     @Override

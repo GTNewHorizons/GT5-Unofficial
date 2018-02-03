@@ -25,20 +25,22 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
     @Override
     public boolean check(GT_MetaTileEntity_MultiblockBase_EM meta) {
         TileEntity tile =meta.getBaseMetaTileEntity().getTileEntityAtSide(meta.getBaseMetaTileEntity().getBackFacing());
-        return tile!=null && (tile instanceof TileEssentiaReservoir) || (tile instanceof TileJarFillable);
+        return tile instanceof TileEssentiaReservoir || tile instanceof TileJarFillable;
     }
 
     @Override
     public TileEntity getContainer(GT_MetaTileEntity_MultiblockBase_EM meta) {
         TileEntity tile =meta.getBaseMetaTileEntity().getTileEntityAtSide(meta.getBaseMetaTileEntity().getBackFacing());
-        return tile!=null && !tile.isInvalid() && (tile instanceof TileEssentiaReservoir) || (tile instanceof TileJarFillable)?tile:null;
+        return tile!=null && !tile.isInvalid() && tile instanceof TileEssentiaReservoir || tile instanceof TileJarFillable ?tile:null;
     }
 
     @Override
     public boolean putElementalInstanceStack(TileEntity container,cElementalInstanceStack stack){
-        if(container==null || container.isInvalid())return false;
-        if((container instanceof IAspectContainer) && (stack.definition instanceof iElementalAspect)){
-            Aspect aspect=(Aspect)(((iElementalAspect) stack.definition).materializeIntoAspect());
+        if(container==null || container.isInvalid()) {
+            return false;
+        }
+        if(container instanceof IAspectContainer && stack.definition instanceof iElementalAspect){
+            Aspect aspect=(Aspect) ((iElementalAspect) stack.definition).materializeIntoAspect();
             if(aspect!=null){
                 ((IAspectContainer) container).addToContainer(aspect,1);
                 return true;
@@ -49,7 +51,9 @@ public class EssentiaCompatEnabled extends EssentiaCompat {
 
     @Override
     public cElementalInstanceStack getFromContainer(TileEntity container){
-        if(container==null || container.isInvalid())return null;
+        if(container==null || container.isInvalid()) {
+            return null;
+        }
         if(container instanceof IAspectContainer){
             AspectList aspects=((IAspectContainer) container).getAspects();
             if(aspects!=null){

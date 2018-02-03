@@ -16,8 +16,8 @@ import static com.github.technus.tectech.CommonValues.TEC_MARK_GENERAL;
 public class ReactorSimItem extends ItemBlock {
     public static QuantumGlassItem INSTANCE;
 
-    public ReactorSimItem(Block b) {
-        super(b);
+    public ReactorSimItem(Block block) {
+        super(block);
     }
 
     @Override

@@ -18,27 +18,16 @@ import net.minecraftforge.fluids.FluidStack;
 public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
     private boolean hadRedstone =true;
 
-    public ReactorSimTileEntity() {
-        super();
-        //this.updateTicker = IC2.random.nextInt(this.getTickRate());
-        //this.inputTank = new FluidTank(10000);
-        //this.outputTank = new FluidTank(10000);
-        //this.reactorSlot = new InvSlotReactor(this, "reactor", 0, 54);
-        //this.coolantinputSlot = new InvSlotConsumableLiquidByList(this, "coolantinputSlot", 55, InvSlot.Access.I, 1, InvSlot.InvSide.ANY, InvSlotConsumableLiquid.OpType.Drain, BlocksItems.getFluid(InternalName.fluidCoolant));
-        //this.hotcoolinputSlot = new InvSlotConsumableLiquidByTank(this, "hotcoolinputSlot", 56, InvSlot.Access.I, 1, InvSlot.InvSide.ANY, InvSlotConsumableLiquid.OpType.Fill, this.outputTank);
-        //this.coolantoutputSlot = new InvSlotOutput(this, "coolantoutputSlot", 57, 1);
-        //this.hotcoolantoutputSlot = new InvSlotOutput(this, "hotcoolantoutputSlot", 58, 1);
-    }
-
     @Override
     public void onLoaded() {
         super.onLoaded();
-        if(IC2.platform.isSimulating() && this.addedToEnergyNet) {
+        if(IC2.platform.isSimulating() && addedToEnergyNet) {
             MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
             //this.addedToEnergyNet = false;
         }
     }
 
+    @Override
     public void onUnloaded() {
         addedToEnergyNet=false;
         super.onUnloaded();
@@ -100,7 +89,7 @@ public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
 
     @Override
     public double getReactorEUEnergyOutput() {
-        return (double)(this.getReactorEnergyOutput() * 5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"));
+        return (double)(getReactorEnergyOutput() * 5.0F * ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear"));
     }
 
     //public List<TileEntity> getSubTiles() {
@@ -153,10 +142,11 @@ public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
 
     @Override
     protected void updateEntityServer() {
-        if(this.updateTicker++ % this.getTickRate() == 0) {
-            if (!worldObj.isRemote && this.worldObj.doChunksNearChunkExist(this.xCoord, this.yCoord, this.zCoord, 2)) {
-                if(hadRedstone && !receiveredstone()) hadRedstone=false;
-                else if(!hadRedstone && receiveredstone()){
+        if(updateTicker++ % getTickRate() == 0) {
+            if (!worldObj.isRemote && worldObj.doChunksNearChunkExist(xCoord, yCoord, zCoord, 2)) {
+                if(hadRedstone && !receiveredstone()) {
+                    hadRedstone = false;
+                } else if(!hadRedstone && receiveredstone()){
                     doUpdates();
                     hadRedstone=true;
                 }
@@ -203,10 +193,10 @@ public class ReactorSimTileEntity extends TileEntityNuclearReactorElectric {
 
     @Override
     public boolean calculateHeatEffects() {
-        if(this.heat >= 4000 && IC2.platform.isSimulating()) {
-            float power = (float)this.heat / (float)this.maxHeat;
+        if(heat >= 4000 && IC2.platform.isSimulating()) {
+            float power = (float) heat / (float) maxHeat;
             if(power >= 1.0F) {
-                this.explode();//ding
+                explode();//ding
                 return true;
             } else {
                 //int[] coord;

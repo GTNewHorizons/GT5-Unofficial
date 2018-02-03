@@ -132,8 +132,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_bhg(this.mName);
+        return new GT_MetaTileEntity_EM_bhg(mName);
     }
 
     @Override
@@ -152,8 +153,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        if((stackSize &1)==1) StructureBuilder(shape, blockType, blockMeta,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
-        else StructureBuilder(shape2, blockType2, blockMeta2,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
+        if((stackSize &1)==1) {
+            StructureBuilder(shape, blockType, blockMeta, 16, 16, 0, getBaseMetaTileEntity(), hintsOnly);
+        } else {
+            StructureBuilder(shape2, blockType2, blockMeta2, 16, 16, 0, getBaseMetaTileEntity(), hintsOnly);
+        }
     }
 
     @Override

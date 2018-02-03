@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != aFacing) ? (aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier]) : GENNY};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier] : GENNY};
     }
 
     @Override
@@ -111,7 +111,9 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -129,8 +131,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                this.mDescription,
+                CommonValues.TEC_MARK_GENERAL, mDescription,
                 EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
                 EnumChatFormatting.BLUE + "Since i wanted one..."
         };

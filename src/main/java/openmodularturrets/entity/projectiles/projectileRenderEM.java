@@ -18,11 +18,8 @@ import org.lwjgl.opengl.GL11;
 public class projectileRenderEM extends Render {
     private static final ResourceLocation textures = new ResourceLocation(Reference.MODID + ":textures/entity/projectileEM.png");
 
-    public projectileRenderEM() {
-    }
-
     private void render(projectileEM entity, double par2, double par4, double par6, float par9) {
-        this.bindEntityTexture(entity);
+        bindEntityTexture(entity);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4 + 0.3F, (float)par6);
         GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9 - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -37,8 +34,8 @@ public class projectileRenderEM extends Render {
         GL11.glEnable('\u803a');
         float f11 = - par9;
         if(f11 > 0.0F) {
-            float i = -MathHelper.sin(f11 * 3.0F) * f11;
-            GL11.glRotatef(i, 0.0F, 0.0F, 1.0F);
+            float f = -MathHelper.sin(f11 * 3.0F) * f11;
+            GL11.glRotatef(f, 0.0F, 0.0F, 1.0F);
         }
 
         GL11.glDisable(2896);
@@ -64,10 +61,12 @@ public class projectileRenderEM extends Render {
         GL11.glPopMatrix();
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity) {
         return textures;
     }
 
+    @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
         render((projectileEM)par1Entity, par2, par4, par6, par9);
     }

@@ -5,6 +5,7 @@ import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPowerGenerator;
@@ -16,6 +17,7 @@ import static com.github.technus.tectech.thing.CustomItemList.*;
  * Created by danie_000 on 16.11.2016.
  */
 public class MachineLoader implements Runnable {
+    @Override
     public void run() {
         // ===================================================================================================
         // eM IN
@@ -65,22 +67,22 @@ public class MachineLoader implements Runnable {
         // eM Waste OUT
         // ===================================================================================================
 
-        eM_muffler_UV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15020, "hatch.emmuffler.tier.08", "UV Overflow Output Hatch", 8, 1e10f).getStackForm(1L));
 
-        eM_muffler_UHV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UHV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15021, "hatch.emmuffler.tier.09", "UHV Overflow Output Hatch", 9, 5e10f).getStackForm(1L));
 
-        eM_muffler_UEV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UEV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15022, "hatch.emmuffler.tier.10", "UEV Overflow Output Hatch", 10, 25e10f).getStackForm(1L));
 
-        eM_muffler_UIV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UIV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15023, "hatch.emmuffler.tier.11", "UIV Overflow Output Hatch", 11, 125e10f).getStackForm(1L));
 
-        eM_muffler_UMV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UMV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15024, "hatch.emmuffler.tier.12", "UMV Overflow Output Hatch", 12, 125e11f).getStackForm(1L));
 
-        eM_muffler_UXV.set(new GT_MetaTileEntity_Hatch_MufflerElemental(
+        eM_muffler_UXV.set(new GT_MetaTileEntity_Hatch_OverflowElemental(
                 15025, "hatch.emmuffler.tier.13", "UXV Overflow Output Hatch", 13, 125e12f).getStackForm(1L));
 
         // ===================================================================================================

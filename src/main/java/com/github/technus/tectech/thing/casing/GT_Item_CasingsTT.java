@@ -21,8 +21,11 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if(aStack.getItemDamage()>0 && aStack.getItemDamage()<15) aList.add(TEC_MARK_EM);
-        else aList.add(TEC_MARK_GENERAL);
+        if(aStack.getItemDamage()>0 && aStack.getItemDamage()<15) {
+            aList.add(TEC_MARK_EM);
+        } else {
+            aList.add(TEC_MARK_GENERAL);
+        }
         switch (aStack.getItemDamage()) {
             case 0://"High Power Casing"
                 aList.add("Well suited for high power applications.");

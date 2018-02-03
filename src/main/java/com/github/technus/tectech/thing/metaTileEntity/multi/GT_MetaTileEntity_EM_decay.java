@@ -13,6 +13,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -66,8 +67,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_decay(this.mName);
+        return new GT_MetaTileEntity_EM_decay(mName);
     }
 
     @Override
@@ -111,21 +113,23 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         cElementalInstanceStackMap map= getInputsClone_EM();
         if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()< STABLE_RAW_LIFE_TIME){
             return startRecipe(map.getFirst());
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 
     private float m1,m2,m3;
     private boolean startRecipe(cElementalInstanceStack input) {
         m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
-        if(m3<1) explodeMultiblock();
-        if(m3>=Integer.MAX_VALUE) return false;
+        if(m3<1) {
+            explodeMultiblock();
+        }
+        if(m3>=Integer.MAX_VALUE) {
+            return false;
+        }
         mMaxProgresstime = 1;//(int)m3;
         mEfficiencyIncrease = 10000;
         m1 = input.getMass()/input.amount;
@@ -141,13 +145,13 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
@@ -170,7 +174,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
-                m1+" "+m2+" "+m3
+                m1+" "+m2+ ' ' +m3
         };
     }
 }

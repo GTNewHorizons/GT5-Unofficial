@@ -23,6 +23,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Locale;
+
 import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
 import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
@@ -32,7 +34,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 /**
  * Created by danie_000 on 12.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_Hatch {
+public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon MufflerEM;
@@ -42,7 +44,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     private final float overflowDisperse;
     private final int eTier;
 
-    public GT_MetaTileEntity_Hatch_MufflerElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
         super(aID, aName, aNameRegional, aTier, 0, "Disposes excess elemental Matter");
         overflowMatter = max / 2;
         overflowMax = max;
@@ -58,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     //    eTier=aTier;
     //}
 
-    public GT_MetaTileEntity_Hatch_MufflerElemental(String aName, int aTier, int eTier, float max, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, int eTier, float max, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         overflowMatter = max / 2;
         overflowMax = max;
@@ -91,8 +93,8 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c^2",
-                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c^2)/s",
+                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
                 "DO NOT OBSTRUCT THE OUTPUT!"
         };
     }
@@ -119,7 +121,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_MufflerElemental(mName, mTier, eTier, overflowMax, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OverflowElemental(mName, mTier, eTier, overflowMax, mDescription, mTextures);
     }
 
     @Override
@@ -146,10 +148,13 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20) == DISPERSE_AT) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
-                overflowMatter -= overflowDisperse;
-                if (overflowMatter < 0) {
+                if (overflowMatter > overflowDisperse) {
+                    //todo add full dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
+                    overflowMatter -= overflowDisperse;
+                } else {
+                    //todo add partial dose of dispersed pollution (reduced by tier, or make recycler machine only capable of reduction?)
                     overflowMatter = 0;
                     aBaseMetaTileEntity.setActive(false);
                     aBaseMetaTileEntity.setLightValue((byte) 0);
@@ -197,18 +202,21 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     public String[] getInfoData() {
         return new String[]{
                 "Contained mass:",
-                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c^2 /",
-                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c^2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c^2)/s"
+                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
+                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
     @Override
     public void onRemoval() {
-        if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive())
-            if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[15]);
-            else
-                TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+        if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
+            if (TecTech.ModConfig.BOOM_ENABLE) {
+                getBaseMetaTileEntity().doExplosion(V[15]);
+            } else {
+                TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+            }
+        }
     }
 
     //Return - Should Explode

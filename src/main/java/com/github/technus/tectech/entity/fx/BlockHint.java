@@ -21,16 +21,18 @@ public class BlockHint extends EntityFX {
         prevPosY = posY;
         prevPosZ = posZ;
         noClip = true;
-        particleMaxAge = 200 + TecTech.Rnd.nextInt(200);
-        for (int i = 0; i < 6; i++) icons[i] = block.getIcon(i, meta);
+        particleMaxAge = 2000 + TecTech.Rnd.nextInt(200);
+        for (int i = 0; i < 6; i++) {
+            icons[i] = block.getIcon(i, meta);
+        }
     }
 
     @Override
     public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         float size = .5f;
-        float X = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) subTickTime - interpPosX);
-        float Y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) subTickTime - interpPosY) - size / 2;
-        float Z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) subTickTime - interpPosZ);
+        float X = (float) (prevPosX + (posX - prevPosX) * (double) subTickTime - EntityFX.interpPosX);
+        float Y = (float) (prevPosY + (posY - prevPosY) * (double) subTickTime - EntityFX.interpPosY) - size / 2;
+        float Z = (float) (prevPosZ + (posZ - prevPosZ) * (double) subTickTime - EntityFX.interpPosZ);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
         tes.setColorRGBA_F(.9F, .95F, 1F, .75f);
@@ -38,7 +40,9 @@ public class BlockHint extends EntityFX {
         //var8, var9 - X U
         //var 10, var 11 - Y V
         for(int i=0;i<6;i++){
-            if(icons[i]==null) continue;
+            if(icons[i]==null) {
+                continue;
+            }
             double u=icons[i].getMinU();
             double U=icons[i].getMaxU();
             double v=icons[i].getMinV();

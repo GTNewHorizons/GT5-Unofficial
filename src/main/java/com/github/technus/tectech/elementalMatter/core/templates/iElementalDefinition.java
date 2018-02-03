@@ -64,11 +64,12 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract NBTTagCompound toNBT();
 
-    public abstract cElementalDefinitionStack getStackForm(int i);
+    public abstract cElementalDefinitionStack getStackForm(long i);
 
+    @Override
     public abstract iElementalDefinition clone();
 
-    final int compareClassID(iElementalDefinition obj) {
-        return ((int) getClassType()) - obj.getClassType();
+    final /*default*/ int compareClassID(iElementalDefinition obj) {
+        return (int) getClassType() - obj.getClassType();
     }
 }

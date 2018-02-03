@@ -97,7 +97,9 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         //if(aBaseMetaTileEntity.isActive())
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
         //else if(heat>0)

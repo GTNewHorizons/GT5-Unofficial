@@ -47,8 +47,9 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_stabilizer(this.mName);
+        return new GT_MetaTileEntity_EM_stabilizer(mName);
     }
 
     @Override

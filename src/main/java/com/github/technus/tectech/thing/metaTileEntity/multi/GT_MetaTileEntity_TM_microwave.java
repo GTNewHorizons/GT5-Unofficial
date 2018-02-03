@@ -3,9 +3,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -35,10 +35,8 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    public final static int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
-    private int powerSetting = POWER_SETTING_DEFAULT;
-    private int timerSetting = TIMER_SETTING_DEFAULT;
-    private int timerValue = 0;
+    public static final int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
+    private int powerSetting,timerSetting,timerValue;
     private boolean hasBeenPausedThisCycle=false;
     private boolean flipped=false;
 
@@ -80,8 +78,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TM_microwave(this.mName);
+        return new GT_MetaTileEntity_TM_microwave(mName);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png", false, false, true);//todo texture
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", false, false, true);//todo texture
     }
 
     @Override
@@ -135,8 +134,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        if((stackSize &0x1)==1) StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
-        else StructureBuilder(shapeFlipped, blockType, blockMeta,2, 1, 0, getBaseMetaTileEntity(),hintsOnly);
+        if((stackSize &0x1)==1) {
+            StructureBuilder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), hintsOnly);
+        } else {
+            StructureBuilder(shapeFlipped, blockType, blockMeta, 2, 1, 0, getBaseMetaTileEntity(), hintsOnly);
+        }
     }
 
     @Override
@@ -155,13 +157,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         hasBeenPausedThisCycle =false;
-        if(noParametrizers){
-            powerSetting=POWER_SETTING_DEFAULT;
-            timerSetting=TIMER_SETTING_DEFAULT;
+        if(powerSetting<300 || timerSetting<=0 || timerSetting>3000) {
+            return false;
         }
-        if(powerSetting<300 || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
             timerValue=timerSetting;
         }
@@ -174,7 +174,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void outputAfterRecipe_EM() {
-        if(hasBeenPausedThisCycle) return;//skip timer and actions if paused
+        if(hasBeenPausedThisCycle) {
+            return;//skip timer and actions if paused
+        }
         timerValue--;
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
@@ -217,8 +219,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                             ((EntityItem) entity).delayBeforeCanPickup=2;
                             ((EntityItem) entity).setDead();
                         } else if (entity instanceof EntityLivingBase) {
-                            if(!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity))
+                            if(!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity)) {
                                 ((EntityLivingBase) entity).attackEntityFrom(microwaving, damagingFactor);
+                            }
                         }
                     }
                 }
@@ -232,7 +235,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             damagingFactor>>=1;
         } while(damagingFactor>0);
 
-        mOutputItems=itemsToOutput.toArray(new ItemStack[0]);
+        mOutputItems= itemsToOutput.toArray(new ItemStack[itemsToOutput.size()]);
 
         if(timerValue<=0) {
             mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
@@ -241,33 +244,55 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void updateParameters_EM(boolean machineIsBusy) {
+    protected void parametersLoadDefault_EM() {
+        powerSetting = POWER_SETTING_DEFAULT;
+        timerSetting = TIMER_SETTING_DEFAULT;
+        setParameterPairIn_ClearOut(0,false, POWER_SETTING_DEFAULT, TIMER_SETTING_DEFAULT);
+    }
+
+    @Override
+    protected void parametersInRead_EM() {
+        powerSetting = (int) getParameterIn(0, 0);
+        timerSetting = (int) getParameterIn(0, 1);
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double powerParameter = getParameterIn(0, 0);
-        if (powerParameter < 300) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-        else if (powerParameter < 1000) setStatusOfParameterIn(0, 0, STATUS_LOW);
-        else if (powerParameter == 1000) setStatusOfParameterIn(0, 0, STATUS_OK);
-        else if (powerParameter == Double.POSITIVE_INFINITY) setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-        else if (Double.isNaN(powerParameter)) setStatusOfParameterIn(0, 0, STATUS_WRONG);
-        else setStatusOfParameterOut(0, 0, STATUS_HIGH);
+        if (powerParameter < 300) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        } else if (powerParameter < 1000) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+        } else if (powerParameter == 1000) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        } else if (powerParameter == Double.POSITIVE_INFINITY) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+        } else if (Double.isNaN(powerParameter)) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        } else {
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+        }
 
         double timerParameter = getParameterIn(0, 1);
-        if (timerParameter <= 1) setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-        else if (timerParameter <= 3000) setStatusOfParameterIn(0, 0, STATUS_OK);
-        else if (Double.isNaN(timerParameter)) setStatusOfParameterIn(0, 1, STATUS_WRONG);
-        else setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
+        if (timerParameter <= 1) {
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+        } else if (timerParameter <= 3000) {
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+        } else if (Double.isNaN(timerParameter)) {
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+        } else {
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+        }
 
         setParameterOut(0, 0, timerValue);
         setParameterOut(0, 1, timerSetting - timerValue);
-
-        if (machineIsBusy) return;
-
-        powerSetting = (int) powerParameter;
-        timerSetting = (int) timerParameter;
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if(eSafeVoid) hasBeenPausedThisCycle =true;
+        if(eSafeVoid) {
+            hasBeenPausedThisCycle = true;
+        }
         return hasBeenPausedThisCycle || super.onRunningTick(aStack);//consume eu and other resources if not paused
     }
 

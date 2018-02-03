@@ -55,7 +55,9 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
+        if (mTier >= 10) {
+            return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
+        }
         return new GT_GUIContainer_Uncertainty(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -115,25 +117,29 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         return false;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mSel", selection);
         aNBT.setByte("mMode", mode);
         aNBT.setByte("mStatus", status);
         NBTTagCompound mat = new NBTTagCompound();
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++) {
             mat.setShort(Integer.toString(i), matrix[i]);
+        }
         aNBT.setTag("mMat", mat);
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         selection = aNBT.getByte("mSel");
         mode = aNBT.getByte("mMode");
         status = aNBT.getByte("mStatus");
         NBTTagCompound mat = aNBT.getCompoundTag("mMat");
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++) {
             matrix[i] = mat.getShort(Integer.toString(i));
+        }
     }
 
     @Override
@@ -163,7 +169,9 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -182,12 +190,13 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         for (int i = 0; i < masses.length >> 1; i++) {
             inequality += Math.abs(masses[i] - masses[masses.length - i - 1]);
         }
-        return inequality < (masses.length << 7);
+        return inequality < masses.length << 7;
     }
 
     public void regenerate() {
-        for (int i = 0; i < matrix.length; i++)
+        for (int i = 0; i < matrix.length; i++) {
             matrix[i] = (short) TecTech.Rnd.nextInt(1000);
+        }
     }
 
     public byte compute() {
@@ -260,16 +269,23 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     private void shift() {
-        final int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
-        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * j >> 5;
+        int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
+        matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
         matrix[i] += j == 0 ? 1 : 0;
-        if (matrix[i] < 0) matrix[i] = 0;
-        else if (matrix[i] > 1000) matrix[i] = 999;
+        if (matrix[i] < 0) {
+            matrix[i] = 0;
+        } else if (matrix[i] > 1000) {
+            matrix[i] = 999;
+        }
     }
 
     public byte update(int newMode) {
-        if (newMode == mode) return status;
-        if (newMode < 0 || newMode > 5) newMode = 0;
+        if (newMode == mode) {
+            return status;
+        }
+        if (newMode < 0 || newMode > 5) {
+            newMode = 0;
+        }
         mode = (byte) newMode;
         regenerate();
         compute();

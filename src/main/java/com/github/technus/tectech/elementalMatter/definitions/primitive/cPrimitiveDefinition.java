@@ -15,7 +15,7 @@ public final class cPrimitiveDefinition extends cElementalPrimitive {
             magic = new cPrimitiveDefinition("Magic", "Ma", 4, 1e5F, 0, 0, 1),
             magic_ = new cPrimitiveDefinition("Antimagic", "~Ma", -4, 1e5F, 0, 0, 2);
 
-    protected cPrimitiveDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
+    private cPrimitiveDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);
     }
 

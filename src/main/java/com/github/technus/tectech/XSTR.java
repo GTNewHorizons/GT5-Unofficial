@@ -1,23 +1,23 @@
 package com.github.technus.tectech;
-/**
- * A subclass of java.util.random that implements the Xorshift random number
- * generator
- * <p>
- * - it is 30% faster than the generator from Java's library - it produces
- * random sequences of higher quality than java.util.Random - this class also
- * provides a clone() function
- * <p>
- * Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt();
- * //pull a random number
- * <p>
- * To use the class in legacy code, you may also instantiate an XSRandom object
- * and assign it to a java.util.Random object: java.util.Random rand = new
- * XSRandom();
- * <p>
- * for an explanation of the algorithm, see
- * http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
- *
- * @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs
+/*
+  A subclass of java.util.random that implements the Xorshift random number
+  generator
+  <p>
+  - it is 30% faster than the generator from Java's library - it produces
+  random sequences of higher quality than java.util.Random - this class also
+  provides a clone() function
+  <p>
+  Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt();
+  //pull a random number
+  <p>
+  To use the class in legacy code, you may also instantiate an XSRandom object
+  and assign it to a java.util.Random object: java.util.Random rand = new
+  XSRandom();
+  <p>
+  for an explanation of the algorithm, see
+  http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
+
+  @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs
  * http://www.elmenreich.tk
  * <p>
  * This code is released under the GNU Lesser General Public License Version 3
@@ -37,18 +37,18 @@ public class XSTR extends Random {
 
     private static final long serialVersionUID = 6208727693524452904L;
     private long seed;
-    private long last;
     private static final long GAMMA = 0x9e3779b97f4a7c15L;
     private static final int PROBE_INCREMENT = 0x9e3779b9;
     private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
     private static final double DOUBLE_UNIT = 0x1.0p-53;  // 1.0  / (1L << 53)
     private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
-    public final static XSTR XSTR_INSTANCE=new XSTR(){
+    public static final XSTR XSTR_INSTANCE=new XSTR(){
         @Override
         public synchronized void setSeed(long seed) {
-            if(!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
+            if(!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName())) {
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
+            }
         }
     };
 
@@ -69,7 +69,7 @@ public class XSTR extends Random {
     private static long seedUniquifier() {
         // L'Ecuyer, "Tables of Linear Congruential Generators of
         // Different Sizes and Good Lattice Structure", 1999
-        for (; ; ) {
+        while (true) {
             long current = seedUniquifier.get();
             long next = current * 181783497276652981L;
             if (seedUniquifier.compareAndSet(current, next)) {
@@ -88,12 +88,14 @@ public class XSTR extends Random {
         this.seed = seed;
     }
 
+    @Override
     public boolean nextBoolean() {
         return next(1) != 0;
     }
 
+    @Override
     public double nextDouble() {
-        return (((long) (next(26)) << 27) + next(27)) * DOUBLE_UNIT;
+        return (((long) next(26) << 27) + next(27)) * DOUBLE_UNIT;
     }
 
     /**
@@ -112,6 +114,7 @@ public class XSTR extends Random {
      *
      * @param seed the new seed
      */
+    @Override
     public synchronized void setSeed(long seed) {
         this.seed = seed;
     }
@@ -129,35 +132,37 @@ public class XSTR extends Random {
      * 30% faster and better quality than the built-in java.util.random see also
      * see http://www.javamex.com/tutorials/random_numbers/xorshift.shtml
      *
-     * @param nbits
-     * @return
+     * @param nbits will shift nbits bits
+     * @return next seed
      */
+    @Override
     public int next(int nbits) {
         long x = seed;
-        x ^= (x << 21);
-        x ^= (x >>> 35);
-        x ^= (x << 4);
+        x ^= x << 21;
+        x ^= x >>> 35;
+        x ^= x << 4;
         seed = x;
-        x &= ((1L << nbits) - 1);
+        x &= (1L << nbits) - 1;
         return (int) x;
     }
 
     private boolean haveNextNextGaussian = false;
     private double nextNextGaussian = 0;
 
-    synchronized public double nextGaussian() {
+    @Override
+    public synchronized double nextGaussian() {
         // See Knuth, ACP, Section 3.4.1 Algorithm C.
         if (haveNextNextGaussian) {
             haveNextNextGaussian = false;
             return nextNextGaussian;
         } else {
-            double v1, v2, s;
+            double v1, v2, vs;
             do {
                 v1 = 2 * nextDouble() - 1; // between -1 and 1
                 v2 = 2 * nextDouble() - 1; // between -1 and 1
-                s = v1 * v1 + v2 * v2;
-            } while (s >= 1 || s == 0);
-            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
+                vs = v1 * v1 + v2 * v2;
+            } while (vs >= 1 || vs == 0);
+            double multiplier = StrictMath.sqrt(-2 * StrictMath.log(vs) / vs);
             nextNextGaussian = v2 * multiplier;
             haveNextNextGaussian = true;
             return v1 * multiplier;
@@ -219,6 +224,7 @@ public class XSTR extends Random {
      * @throws IllegalArgumentException if bound is not positive
      * @since 1.2
      */
+    @Override
     public int nextInt(int bound) {
         //if (bound <= 0) {
         //throw new RuntimeException("BadBound");
@@ -237,32 +243,36 @@ public class XSTR extends Random {
         }
         return r;*/
         //speedup, new nextInt ~+40%
-        last = seed ^ (seed << 21);
-        last ^= (last >>> 35);
-        last ^= (last << 4);
+        long last = seed ^ seed << 21;
+        last ^= last >>> 35;
+        last ^= last << 4;
         seed = last;
         int out = (int) last % bound;
-        return (out < 0) ? -out : out;
+        return out < 0 ? -out : out;
     }
 
+    @Override
     public int nextInt() {
         return next(32);
     }
 
+    @Override
     public float nextFloat() {
         return next(24) * FLOAT_UNIT;
     }
 
+    @Override
     public long nextLong() {
         // it's okay that the bottom word remains signed.
-        return ((long) (next(32)) << 32) + next(32);
+        return ((long) next(32) << 32) + next(32);
     }
 
+    @Override
     public void nextBytes(byte[] bytes_arr) {
-        for (int iba = 0, lenba = bytes_arr.length; iba < lenba; )
-            for (int rndba = nextInt(),
-                 nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE);
-                 nba-- > 0; rndba >>= Byte.SIZE)
+        for (int iba = 0, lenba = bytes_arr.length; iba < lenba; ) {
+            for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE); nba-- > 0; rndba >>= Byte.SIZE) {
                 bytes_arr[iba++] = (byte) rndba;
+            }
+        }
     }
 }

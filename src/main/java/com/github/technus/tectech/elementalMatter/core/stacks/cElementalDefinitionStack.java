@@ -1,6 +1,5 @@
 package com.github.technus.tectech.elementalMatter.core.stacks;
 
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,12 +14,12 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     public final long amount;
 
     public cElementalDefinitionStack(iElementalDefinition def, long amount) {
-        this.definition = def == null ? null__ : def;
+        definition = def == null ? null__ : def;
         this.amount = amount;
     }
 
     @Override
-    public final cElementalDefinitionStack clone() {
+    public cElementalDefinitionStack clone() {
         return this;//IMMUTABLE
     }
 
@@ -34,10 +33,12 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         return amount;
     }
 
+    @Override
     public long getCharge() {
         return definition.getCharge() * amount;
     }
 
+    @Override
     public float getMass() {
         return definition.getMass() * amount;
     }
@@ -56,16 +57,21 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(long amount) {
-        if(amount==0) return this;
+        if(amount==0) {
+            return this;
+        }
         return new cElementalDefinitionStack(definition, amount + this.amount);
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
-        if (other == null || other.length == 0) return this;
-        long i = 0;
-        for (cElementalDefinitionStack stack : other)
-            i += stack.amount;
-        return addAmountIntoNewInstance(i);
+        if (other == null || other.length == 0) {
+            return this;
+        }
+        long l = 0;
+        for (cElementalDefinitionStack stack : other) {
+            l += stack.amount;
+        }
+        return addAmountIntoNewInstance(l);
     }
 
     @Override
@@ -75,10 +81,12 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof iElementalDefinition)
+        if (obj instanceof iElementalDefinition) {
             return definition.compareTo((iElementalDefinition) obj) == 0;
-        if (obj instanceof iHasElementalDefinition)
+        }
+        if (obj instanceof iHasElementalDefinition) {
             return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        }
         return false;
     }
 

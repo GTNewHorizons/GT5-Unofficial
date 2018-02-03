@@ -13,21 +13,23 @@ public class GT_GUIContainer_DebugPowerGenerator extends GT_GUIContainerMetaTile
         super(new GT_Container_DebugPowerGenerator(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Teleporter.png");
     }
 
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("PowerThing", 46, 8, 16448255);
-        if (this.mContainer != null) {
+        fontRendererObj.drawString("PowerThing", 46, 8, 16448255);
+        if (mContainer != null) {
             GT_Container_DebugPowerGenerator dpg = (GT_Container_DebugPowerGenerator) mContainer;
-            this.fontRendererObj.drawString("EUT: " + dpg.EUT, 46, 24, 16448255);
-            this.fontRendererObj.drawString("TIER: " + VN[Util.getTier(dpg.EUT<0?-dpg.EUT:dpg.EUT)], 46, 32, 16448255);
-            this.fontRendererObj.drawString("AMP: " + dpg.AMP, 46, 40, 16448255);
-            this.fontRendererObj.drawString("SUM: " + (long)dpg.AMP*dpg.EUT, 46, 48, 16448255);
+            fontRendererObj.drawString("EUT: " + dpg.EUT, 46, 24, 16448255);
+            fontRendererObj.drawString("TIER: " + VN[Util.getTier(dpg.EUT<0?-dpg.EUT:dpg.EUT)], 46, 32, 16448255);
+            fontRendererObj.drawString("AMP: " + dpg.AMP, 46, 40, 16448255);
+            fontRendererObj.drawString("SUM: " + (long)dpg.AMP*dpg.EUT, 46, 48, 16448255);
         }
     }
 
+    @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
+        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
     }
 }

@@ -51,7 +51,10 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (delDelay) delDelay = false;
-        else q = null;
+        if (delDelay) {
+            delDelay = false;
+        } else {
+            q = null;
+        }
     }
 }

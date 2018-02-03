@@ -26,7 +26,7 @@ import static com.github.technus.tectech.Util.StructureWriter;
  */
 public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
     private static GT_RenderedTexture MARK;
-    public short numbers[] = new short[6];
+    public short[] numbers = new short[6];
     public boolean size = false;
     public String[] result = new String[]{"Undefined"};
 
@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != aFacing) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
     }
 
     @Override
@@ -102,23 +102,27 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
-            result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            for (String s : result)
+            result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
+            for (String s : result) {
                 TecTech.Logger.info(s);
+            }
             aBaseMetaTileEntity.disableWorking();
         }
     }
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        for (String s : result)
+        result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
+        for (String s : result) {
             TecTech.Logger.info(s);
+        }
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
         aBaseMetaTileEntity.openGUI(aPlayer);
         //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
         //    TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
@@ -143,8 +147,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK_GENERAL,
-                this.mDescription,
+                CommonValues.TEC_MARK_GENERAL, mDescription,
                 EnumChatFormatting.BLUE + "Prints Multiblock NonTE structure check code",
                 EnumChatFormatting.BLUE + "ABC axises aligned to machine front"
         };

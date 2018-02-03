@@ -9,6 +9,7 @@ public class NEI_TT_Config implements IConfigureNEI {//must be NEI*Config
     public static TT_NEI_ResearchHandler TT_RH;
     public static TT_NEI_ScannerHandler TT_SH;
 
+    @Override
     public void loadConfig() {
         sIsAdded = false;
         if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
@@ -18,10 +19,12 @@ public class NEI_TT_Config implements IConfigureNEI {//must be NEI*Config
         sIsAdded = true;
     }
 
+    @Override
     public String getName() {
         return "TecTech NEI Plugin";
     }
 
+    @Override
     public String getVersion() {
         return "(1.0)";
     }

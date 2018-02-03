@@ -110,30 +110,34 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
             if ((aTick & 31) == 31) {
                 mConnections = 0;
                 connectionCount = 0;
-                if (aBaseMetaTileEntity.getColorization() < 0) return;
-                for (byte i = 0, j; i < 6; i++) {
-                    j = GT_Utility.getOppositeSide(i);
-                    //if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(i).alwaysLookConnected(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
+                if (aBaseMetaTileEntity.getColorization() < 0) {
+                    return;
+                }
+                for (byte b0 = 0, b1; b0 < 6; b0++) {
+                    b1 = GT_Utility.getOppositeSide(b0);
+                    //if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(b0).alwaysLookConnected(b0, aBaseMetaTileEntity.getCoverIDAtSide(b0), aBaseMetaTileEntity.getCoverDataAtSide(b0), aBaseMetaTileEntity)) {
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(b0);
                     if (tTileEntity instanceof IColoredTileEntity) {
                         //if (aBaseMetaTileEntity.getColorization() >= 0) {
                         byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                        if (tColor != aBaseMetaTileEntity.getColorization()) continue;
+                        if (tColor != aBaseMetaTileEntity.getColorization()) {
+                            continue;
+                        }
                         //}
                     }
-                    if (tTileEntity instanceof iConnectsToEMpipe && (((iConnectsToEMpipe) tTileEntity).canConnect(j))) {
-                        mConnections |= (1 << i);
+                    if (tTileEntity instanceof iConnectsToEMpipe && ((iConnectsToEMpipe) tTileEntity).canConnect(b1)) {
+                        mConnections |= 1 << b0;
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToEMpipe) {
-                        if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) ||
-                                ((iConnectsToEMpipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
-                            mConnections |= (1 << i);
+                        if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
+                                ((iConnectsToEMpipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                            mConnections |= 1 << b0;
                             connectionCount++;
                         }
                     }
                     //}
                     //else {
-                    //    mConnections |= (1 << i);
+                    //    mConnections |= (1 << b0);
                     //    if (mOld != mConnections) {
                     //        connectionCount++;
                     //        mOld = mConnections;
@@ -170,19 +174,33 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
         if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
 
         byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if((tConn & (1 << ForgeDirection.DOWN.ordinal()) ) != 0) tSide0 = 0f;
-        if((tConn & (1 << ForgeDirection.UP.ordinal())   ) != 0) tSide1 = 1f;
-        if((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-        if((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-        if((tConn & (1 << ForgeDirection.WEST.ordinal()) ) != 0) tSide4 = 0f;
-        if((tConn & (1 << ForgeDirection.EAST.ordinal()) ) != 0) tSide5 = 1f;
+        if((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
+            tSide0 = 0f;
+        }
+        if((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
+            tSide1 = 1f;
+        }
+        if((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
+            tSide2 = 0f;
+        }
+        if((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
+            tSide3 = 1f;
+        }
+        if((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
+            tSide4 = 0f;
+        }
+        if((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
+            tSide5 = 1f;
+        }
 
         return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override
     public float getThickNess() {
-        if(GT_Mod.instance.isClientSide() && GT_Client.hideValue==1) return 0.0625F;
+        if(GT_Mod.instance.isClientSide() && GT_Client.hideValue==1) {
+            return 0.0625F;
+        }
         return 0.5f;
     }
 }

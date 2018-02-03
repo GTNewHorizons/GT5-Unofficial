@@ -1,6 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
@@ -9,8 +10,6 @@ import com.github.technus.tectech.thing.block.QuantumStuffRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -27,12 +26,6 @@ import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
     @Override
-    public void addTexturePage(byte page){
-        if(Textures.BlockIcons.casingTexturePages[page]==null)
-            Textures.BlockIcons.casingTexturePages[page]=new ITexture[128];
-    }
-
-    @Override
     public void registerRenderInfo() {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassBlock.renderID, new QuantumGlassRender());
@@ -40,7 +33,9 @@ public class ClientProxy extends CommonProxy {
         QuantumStuffBlock.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumStuffBlock.renderID, new QuantumStuffRender());
 
-        if(Loader.isModLoaded("openmodularturrets")) new TT_turret_loader().run();
+        if(Loader.isModLoaded("openmodularturrets")) {
+            new TT_turret_loader().run();
+        }
     }
 
     @Override
@@ -85,7 +80,7 @@ public class ClientProxy extends CommonProxy {
 
         boolean origFont = fontRenderer.getUnicodeFlag();
 
-        if ((mc.gameSettings.guiScale) == 3) {
+        if (mc.gameSettings.guiScale == 3) {
             fontRenderer.setUnicodeFlag(true);
             float dist = 0.08F;
             y--;
@@ -101,8 +96,9 @@ public class ClientProxy extends CommonProxy {
                 dist = -dist;
             }
             fontRenderer.setUnicodeFlag(origFont);
-        } else
+        } else {
             fontRenderer.drawSplitString(str, x, y, maxWidth, color);
+        }
     }
 
     @Override
@@ -111,5 +107,10 @@ public class ClientProxy extends CommonProxy {
         for (String s : strings) {
             chat.printChatMessage(new ChatComponentText(s));
         }
+    }
+
+    @Override
+    public void playSound(IGregTechTileEntity base,String name) {
+        base.getWorld().playSoundEffect(base.getXCoord(),base.getYCoord(),base.getZCoord(), Reference.MODID+':'+name, 1, 1);
     }
 }

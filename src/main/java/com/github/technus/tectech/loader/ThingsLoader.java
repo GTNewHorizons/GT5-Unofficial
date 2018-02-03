@@ -9,14 +9,23 @@ import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import openmodularturrets.blocks.turretbases.TurretBaseEM;
 import openmodularturrets.blocks.turretheads.TurretHeadEM;
+
+import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
 public class ThingsLoader implements Runnable {
+    @Override
     public void run() {
+        if(Textures.BlockIcons.casingTexturePages[tectechTexturePage1]==null) {
+            Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
+        }
+        TecTech.Logger.info("Added texture page if was null");
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.Logger.info("Elemental Casing registered");
         TT_Container_Casings.sHintCasingsTT = new GT_Block_HintTT();

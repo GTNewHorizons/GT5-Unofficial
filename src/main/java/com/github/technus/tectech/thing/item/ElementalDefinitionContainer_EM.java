@@ -20,11 +20,10 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ElementalDefinitionContainer_EM extends Item {
+public final class ElementalDefinitionContainer_EM extends Item {
     public static ElementalDefinitionContainer_EM INSTANCE;
 
     private ElementalDefinitionContainer_EM() {
-        super();
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
         setTextureName(MODID + ":itemDefinitionContainer");
@@ -34,14 +33,18 @@ public class ElementalDefinitionContainer_EM extends Item {
     public static cElementalDefinitionStackMap setContent(ItemStack containerItem, cElementalDefinitionStackMap definitions){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
             NBTTagCompound tNBT = containerItem.stackTagCompound;
-            if (tNBT == null) tNBT=containerItem.stackTagCompound=new NBTTagCompound();
+            if (tNBT == null) {
+                tNBT = containerItem.stackTagCompound = new NBTTagCompound();
+            }
 
             cElementalDefinitionStackMap oldMap=null;
             if (tNBT.hasKey("content")) {
                 try {
                     oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
                 } catch (tElementalException e) {
-                    if (DEBUG_MODE) e.printStackTrace();
+                    if (DEBUG_MODE) {
+                        e.printStackTrace();
+                    }
                 }
             }
             tNBT.setTag("info", definitions.getInfoNBT());
@@ -55,11 +58,15 @@ public class ElementalDefinitionContainer_EM extends Item {
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
 
-            if (tNBT == null || !tNBT.hasKey("content")) return null;
+            if (tNBT == null || !tNBT.hasKey("content")) {
+                return null;
+            }
             try {
                 return cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
             } catch (tElementalException e) {
-                if (DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
             }
         }
         return null;
@@ -68,14 +75,18 @@ public class ElementalDefinitionContainer_EM extends Item {
     public static cElementalDefinitionStackMap clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
-            if (tNBT == null) return null;
+            if (tNBT == null) {
+                return null;
+            }
 
             cElementalDefinitionStackMap oldMap=null;
             if (tNBT.hasKey("content")) {
                 try {
                     oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
                 } catch (tElementalException e) {
-                    if (DEBUG_MODE) e.printStackTrace();
+                    if (DEBUG_MODE) {
+                        e.printStackTrace();
+                    }
                 }
             }
             tNBT.removeTag("info");

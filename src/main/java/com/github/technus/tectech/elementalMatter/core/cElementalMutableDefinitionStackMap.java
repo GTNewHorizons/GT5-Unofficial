@@ -1,12 +1,11 @@
 package com.github.technus.tectech.elementalMatter.core;
 
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -80,25 +79,28 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     public void removeAll(iElementalDefinition... definitions) {
-        for (iElementalDefinition def : definitions)
+        for (iElementalDefinition def : definitions) {
             map.remove(def);
+        }
     }
 
     @Deprecated
-    public void removeAll(iHasElementalDefinition... hasElementals) {
-        for (iHasElementalDefinition has : hasElementals)
+    public void removeAll(iHasElementalDefinition... hasElementalDefinition) {
+        for (iHasElementalDefinition has : hasElementalDefinition) {
             map.remove(has.getDefinition());
+        }
     }
 
     //Remove amounts
     public boolean removeAmount(boolean testOnly, cElementalInstanceStack instance) {
-        final cElementalDefinitionStack target = map.get(instance.definition);
-        if (target == null)
+        cElementalDefinitionStack target = map.get(instance.definition);
+        if (target == null) {
             return false;
-        if (testOnly)
+        }
+        if (testOnly) {
             return target.amount >= instance.amount;
-        else {
-            final long diff = target.amount - instance.amount;
+        } else {
+            long diff = target.amount - instance.amount;
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
@@ -111,13 +113,14 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     public boolean removeAmount(boolean testOnly, iHasElementalDefinition stack) {
-        final cElementalDefinitionStack target = map.get(stack.getDefinition());
-        if (target == null)
+        cElementalDefinitionStack target = map.get(stack.getDefinition());
+        if (target == null) {
             return false;
-        if (testOnly)
+        }
+        if (testOnly) {
             return target.amount >= stack.getAmount();
-        else {
-            final long diff = target.amount - stack.getAmount();
+        } else {
+            long diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
@@ -136,41 +139,50 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStack... instances) {
         boolean test = true;
-        for (cElementalInstanceStack stack : instances)
+        for (cElementalInstanceStack stack : instances) {
             test &= removeAmount(true, stack);
-        if (testOnly || !test) return test;
-        for (cElementalInstanceStack stack : instances)
+        }
+        if (testOnly || !test) {
+            return test;
+        }
+        for (cElementalInstanceStack stack : instances) {
             removeAmount(false, stack);
+        }
         return true;
     }
 
     public boolean removeAllAmounts(boolean testOnly, iHasElementalDefinition... stacks) {
         boolean test = true;
-        for (iHasElementalDefinition stack : stacks)
+        for (iHasElementalDefinition stack : stacks) {
             test &= removeAmount(true, stack);
-        if (testOnly || !test) return test;
-        for (iHasElementalDefinition stack : stacks)
+        }
+        if (testOnly || !test) {
+            return test;
+        }
+        for (iHasElementalDefinition stack : stacks) {
             removeAmount(false, stack);
+        }
         return true;
     }
 
     @Deprecated
     public boolean removeAllAmounts(boolean testOnly, iElementalDefinition... definitions) {
-        final cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[definitions.length];
-        for (int i = 0; i < stacks.length; i++)
+        cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[definitions.length];
+        for (int i = 0; i < stacks.length; i++) {
             stacks[i] = new cElementalDefinitionStack(definitions[i], 1);
+        }
         return removeAllAmounts(testOnly, stacks);
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
         boolean test=true;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry : container.map.entrySet()) {
             test &= removeAmount(true, entry.getValue());
         }
-        if (testOnly || !test) return test;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+        if (testOnly || !test) {
+            return test;
+        }
+        for (Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry : container.map.entrySet()) {
             removeAmount(false, entry.getValue());
         }
         return true;
@@ -178,13 +190,13 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
         boolean test=true;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+        for (Map.Entry<iElementalDefinition, cElementalInstanceStack> entry : container.map.entrySet()) {
             test &= removeAmount(true, entry.getValue());
         }
-        if (testOnly || !test) return test;
-        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
-            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+        if (testOnly || !test) {
+            return test;
+        }
+        for (Map.Entry<iElementalDefinition, cElementalInstanceStack> entry : container.map.entrySet()) {
             test &= removeAmount(false, entry.getValue());
         }
         return true;
@@ -196,18 +208,21 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     public void putReplaceAll(cElementalDefinitionStack... defStacks) {
-        for (cElementalDefinitionStack defStack : defStacks)
-            this.map.put(defStack.definition, defStack);
+        for (cElementalDefinitionStack defStack : defStacks) {
+            map.put(defStack.definition, defStack);
+        }
     }
 
     public void putReplaceAll(cElementalStackMap inContainerUnsafe) {
-        this.map.putAll(inContainerUnsafe.map);
+        map.putAll(inContainerUnsafe.map);
     }
 
     //Put unify
     public cElementalDefinitionStack putUnify(cElementalDefinitionStack def) {
-        final cElementalDefinitionStack stack=map.get(def.definition);
-        if(stack==null) return map.put(def.definition,def);
+        cElementalDefinitionStack stack=map.get(def.definition);
+        if(stack==null) {
+            return map.put(def.definition, def);
+        }
         return map.put(def.definition, stack.addAmountIntoNewInstance(def.amount));
     }
 
@@ -217,39 +232,46 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     public void putUnifyAll(cElementalDefinitionStack... defs) {
-        for (cElementalDefinitionStack def : defs)
+        for (cElementalDefinitionStack def : defs) {
             putUnify(def);
+        }
     }
 
     @Deprecated
     public void putUnifyAll(iElementalDefinition... defs) {
-        for (iElementalDefinition def : defs)
+        for (iElementalDefinition def : defs) {
             putUnify(def);
+        }
     }
 
     private void putUnifyAll(Map<iElementalDefinition, cElementalDefinitionStack> inTreeUnsafe) {
-        for (cElementalDefinitionStack in : inTreeUnsafe.values())
+        for (cElementalDefinitionStack in : inTreeUnsafe.values()) {
             putUnify(in);
+        }
     }
 
     public void putUnifyAll(cElementalStackMap containerUnsafe) {
-        for (cElementalDefinitionStack in : containerUnsafe.map.values())
+        for (cElementalDefinitionStack in : containerUnsafe.map.values()) {
             putUnify(in);
+        }
     }
 
     public static cElementalMutableDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
-        final cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
+        cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
         for (int i = 0; i < defStacks.length; i++) {
             defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-            if (defStacks[i].definition.equals(nbtE__))
+            if (defStacks[i].definition.equals(nbtE__)) {
                 throw new tElementalException("Something went Wrong");
+            }
         }
         return new cElementalMutableDefinitionStackMap(defStacks);
     }
 
     public void cleanUp(){
         for(Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry:map.entrySet()){
-            if(entry.getValue().amount<=0) map.remove(entry.getKey());
+            if(entry.getValue().amount<=0) {
+                map.remove(entry.getKey());
+            }
         }
     }
 }

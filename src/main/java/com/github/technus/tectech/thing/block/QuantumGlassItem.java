@@ -16,8 +16,8 @@ import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
 public class QuantumGlassItem extends ItemBlock {
     public static QuantumGlassItem INSTANCE;
 
-    public QuantumGlassItem(Block b) {
-        super(b);
+    public QuantumGlassItem(Block block) {
+        super(block);
     }
 
     @Override

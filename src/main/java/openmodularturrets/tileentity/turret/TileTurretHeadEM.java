@@ -19,48 +19,55 @@ import openmodularturrets.util.TurretHeadUtil;
 public class TileTurretHeadEM extends TurretHead{
     private cElementalInstanceStackMap hatchContentPointer;
 
-    public TileTurretHeadEM() {
-    }
-
+    @Override
     public int getTurretRange() {
         return ConfigHandler.getLaserTurretSettings().getRange()<<1;
     }
 
+    @Override
     public int getTurretPowerUsage() {
         return ConfigHandler.getLaserTurretSettings().getPowerUsage()<<4;
     }
 
+    @Override
     public int getTurretFireRate() {
         return (int)Math.ceil(ConfigHandler.getLaserTurretSettings().getFireRate()/2f);
     }
 
+    @Override
     public double getTurretAccuracy() {
         return (int)Math.ceil(ConfigHandler.getLaserTurretSettings().getAccuracy() / 10.0F);
     }
 
     @Override
     public void updateEntity() {
-        if(!worldObj.isRemote && base instanceof TileTurretBaseEM)
-            hatchContentPointer =((TileTurretBaseEM) base).getContainerHandler();
+        if(!worldObj.isRemote && base instanceof TileTurretBaseEM) {
+            hatchContentPointer = ((TileTurretBaseEM) base).getContainerHandler();
+        }
         super.updateEntity();
     }
 
+    @Override
     public boolean requiresAmmo() {
         return hatchContentPointer == null || !hatchContentPointer.hasStacks();
     }
 
+    @Override
     public boolean requiresSpecificAmmo() {
         return true;//to enable failure in shooting when there is no EM to use
     }
 
+    @Override
     public Item getAmmo() {
         return DebugElementalInstanceContainer_EM.INSTANCE;//Placeholder item that cannot be achieved, yet still usable for debug
     }
 
+    @Override
     public final TurretProjectile createProjectile(World world, Entity target, ItemStack ammo) {
         return new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), hatchContentPointer);
     }
 
+    @Override
     public String getLaunchSoundEffect() {
         return "laser";
     }

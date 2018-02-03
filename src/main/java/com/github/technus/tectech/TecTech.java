@@ -2,14 +2,16 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.core.commands.ListEM;
+import com.github.technus.tectech.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.loader.MainLoader;
+import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
@@ -33,99 +35,115 @@ public class TecTech {
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
 
-    @Instance(Reference.MODID)
+    @Mod.Instance(Reference.MODID)
     public static TecTech instance;
 
     public static final XSTR Rnd = XSTR.XSTR_INSTANCE;
     public static final LogHelper Logger = new LogHelper(Reference.MODID);
-    private static IngameErrorLog Module_AdminErrorLogs = null;
-    public static MainLoader GTCustomLoader = null;
+    private static IngameErrorLog Module_AdminErrorLogs;
+    public static MainLoader GTCustomLoader;
     public static TecTechConfig ModConfig;
-    public static CreativeTabs mainTab = null;
+    public static CreativeTabs mainTab;
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
 
     public static final byte tectechTexturePage1=8;
 
     public static void AddLoginError(String pMessage) {
-        if (Module_AdminErrorLogs != null)
+        if (Module_AdminErrorLogs != null) {
             Module_AdminErrorLogs.AddErrorLogOnAdminJoin(pMessage);
+        }
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
 
-        if (!ModConfig.LoadConfig())
+        if (!ModConfig.LoadConfig()) {
             Logger.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
+        }
 
         if (ModConfig.ModAdminErrorLogs_Enabled) {
             Logger.debug("Module_AdminErrorLogs is enabled");
             Module_AdminErrorLogs = new IngameErrorLog();
         }
 
-        proxy.addTexturePage(tectechTexturePage1);
-
         GTCustomLoader = new MainLoader();
 
-        TecTech.Logger.info("Added Atom Overrider");
+        Logger.info("Added Atom Overrider");
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void Load(FMLInitializationEvent event) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
         hasThaumcraft = Loader.isModLoaded(Reference.THAUMCRAFT);
 
         GTCustomLoader.load();
 
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ModGuiHandler());
         proxy.registerRenderInfo();
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         GTCustomLoader.postLoad();
-        if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
+        if (ModConfig.NERF_FUSION) {
+            FixBrokenFusionRecipes();
+        }
         fixBlocks();
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
+        if(DEBUG_MODE) {
+            pEvent.registerServerCommand(new GiveEM());
+            pEvent.registerServerCommand(new ListEM());
+        }
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent ev) {
     }
 
     private void FixBrokenFusionRecipes() {
         HashMap<Fluid, Fluid> binds = new HashMap<>();
-        for (Materials m : Materials.values()) {
-            FluidStack p = m.getPlasma(1);
+        for (Materials material : Materials.values()) {
+            FluidStack p = material.getPlasma(1);
             if (p != null) {
-                if (DEBUG_MODE)
-                    TecTech.Logger.info("Found Plasma of " + m.mName);
-                if (m.mElement != null &&
-                        (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
-                                -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
-                                m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
-                                -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (DEBUG_MODE)
-                        TecTech.Logger.info("Attempting to bind " + m.mName);
-                    if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
-                    else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
-                    else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());
-                    else binds.put(p.getFluid(), Materials.Iron.getMolten(1).getFluid());
+                if (DEBUG_MODE) {
+                    Logger.info("Found Plasma of " + material.mName);
+                }
+                if (material.mElement != null &&
+                        (material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                                -material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                                material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
+                                -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                    if (DEBUG_MODE) {
+                        Logger.info("Attempting to bind " + material.mName);
+                    }
+                    if (material.getMolten(1) != null) {
+                        binds.put(p.getFluid(), material.getMolten(1).getFluid());
+                    } else if (material.getGas(1) != null) {
+                        binds.put(p.getFluid(), material.getGas(1).getFluid());
+                    } else if (material.getFluid(1) != null) {
+                        binds.put(p.getFluid(), material.getFluid(1).getFluid());
+                    } else {
+                        binds.put(p.getFluid(), Materials.Iron.getMolten(1).getFluid());
+                    }
                 }
             }
         }
         for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList) {
-            Fluid f = binds.get(r.mFluidOutputs[0].getFluid());
-            if (f != null) {
-                if (DEBUG_MODE)
-                    TecTech.Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
-                r.mFluidOutputs[0] = new FluidStack(f, r.mFluidInputs[0].amount);
+            Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
+                }
+                r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
             }
         }
     }
@@ -167,9 +185,10 @@ public class TecTech {
             modId = GameRegistry.findUniqueIdentifierFor(block).modId;
             if (modIDs.contains(modId)) {//Full Whitelisted Mods
                 continue;
-            } else if (modId.equals("OpenBlocks")) {
-                if (GameRegistry.findUniqueIdentifierFor(block).name.equals("grave"))
+            } else if ("OpenBlocks".equals(modId)) {
+                if ("grave".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
                     continue;
+                }
             }
             block.setResistance(6);
         }

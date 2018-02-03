@@ -2,19 +2,22 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iExchangeInfo;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.transformations.iExchangeInfo;
+import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -63,8 +66,15 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         super(aName);
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return GT_MetaTileEntity_EM_quantizer.activitySound;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_dequantizer(this.mName);
+        return new GT_MetaTileEntity_EM_dequantizer(mName);
     }
 
     @Override
@@ -83,7 +93,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             cElementalInstanceStackMap map = in.getContainerHandler();
             for (cElementalInstanceStack stack : map.values()) {
@@ -109,7 +119,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
-                        if (items != null && items.size() > 0) {
+                        if (items != null && !items.isEmpty()) {
                             mOutputItems = new ItemStack[]{items.get(0)};
                             startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                             return true;
@@ -118,8 +128,6 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 }
             }
         }
-        mEfficiencyIncrease = 0;
-        mMaxProgresstime = 0;
         return false;
     }
 

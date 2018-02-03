@@ -64,8 +64,9 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_wormhole(this.mName);
+        return new GT_MetaTileEntity_EM_wormhole(mName);
     }
 
     @Override
