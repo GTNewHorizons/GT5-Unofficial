@@ -153,13 +153,48 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //just some info - private so hidden
     private boolean explodedThisTick=false;
 
-    //init param states in constructor, or implement it in checkrecipe/outputfunction
+    //endregion
 
-    //METHODS TO OVERRIDE
+    protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+        parametersLoadDefault_EM();
+    }
 
-    // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
-    // Set mEUt, Efficiencies, required computation, time, check input etc.
+    protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
+        super(aName);
+        parametersLoadDefault_EM();
+    }
 
+    //region SUPER STRUCT CHECKERS
+
+    //can be used to check structures of multi-blocks larger than one chunk, but...
+    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
+    @Deprecated
+    public final boolean structureCheck_EM(
+            String[][] structure,//0-9 casing, +- air no air, a-z ignore
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset) {
+        return StructureChecker(structure, blockType, blockMeta,
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+    }
+
+    public final boolean structureCheck_EM(
+            String[][] structure,//0-9 casing, +- air no air, a-z ignore
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            String[] addingMethods,
+            short[] casingTextures,
+            Block[] blockTypeFallback,//use numbers 0-9 for casing types
+            byte[] blockMetaFallback,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset) {
+        return StructureCheckerAdvanced(structure, blockType, blockMeta, adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+    }
+
+    //endregion
+
+    //region METHODS TO OVERRIDE - general functionality, recipe check, output
 
     /**
      * Check structure here, also add hatches
@@ -184,6 +219,348 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
+     * Put EM stuff from outputEM into EM output hatches here
+     * or do other stuff - it is basically on recipe succeded
+     *
+     * based on "machine state" do output,
+     * this must move to outputEM to EM output hatches
+     * and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
+     * (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
+     * Setting available data processing
+     */
+    public void outputAfterRecipe_EM() {}
+
+    /**
+     * to add fluids into hatches
+     * @param mOutputFluids
+     */
+    @Override
+    protected void addFluidOutputs(FluidStack[] mOutputFluids) {
+        int min=mOutputFluids.length>mOutputHatches.size()?mOutputHatches.size():mOutputFluids.length;
+        for (int i = 0; i < min; ++i) {
+            if (mOutputHatches.get(i) != null && mOutputFluids[i] != null && GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(mOutputHatches.get(i))) {
+                mOutputHatches.get(i).fill(mOutputFluids[i], true);
+            }
+        }
+    }
+
+    //endregion
+
+    //region tooltip and scanner result
+
+    /**
+     * TOOLTIP
+     * @return strings in tooltip
+     */
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                TEC_MARK_GENERAL,
+                "Nothing special just override me."
+        };
+    }
+
+    /**
+     * scanner gives it
+     * @return
+     */
+    @Override
+    public String[] getInfoData() {//TODO Do it
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+                "Progress:",
+                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
+                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+                "Energy Hatches:",
+                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
+                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
+                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
+                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
+                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
+                "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET
+        };
+    }
+
+    /**
+     * should it work with scanner? HELL YES
+     * @return
+     */
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    //endregion
+
+    //region GUI/SOUND
+
+    /**
+     * Server side container
+     * @param aID
+     * @param aPlayerInventory
+     * @param aBaseMetaTileEntity
+     * @return
+     */
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity);
+    }
+
+    /**
+     * Client side gui
+     * @param aID
+     * @param aPlayerInventory
+     * @param aBaseMetaTileEntity
+     * @return
+     */
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png");
+    }
+
+
+    /**
+     * add more textures
+     * @param aBlockIconRegister
+     */
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    /**
+     * actually use textures
+     * @param aBaseMetaTileEntity
+     * @param aSide
+     * @param aFacing
+     * @param aColorIndex
+     * @param aActive
+     * @param aRedstone
+     * @return
+     */
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
+    }
+
+    /**
+     * should return your activity sound
+     * @return
+     */
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySound(){
+        return activitySound;
+    }
+
+    /**
+     * plays the sounds auto magically
+     * @param activitySound
+     */
+    @SideOnly(Side.CLIENT)
+    protected void soundMagic(ResourceLocation activitySound){
+        if(getBaseMetaTileEntity().isActive()){
+            if(activitySoundLoop==null){
+                activitySoundLoop =new SoundLoop(activitySound,getBaseMetaTileEntity(),false,true);
+                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+            }
+        }else {
+            if(activitySoundLoop!=null) {
+                activitySoundLoop = null;
+            }
+        }
+    }
+
+    //endregion
+
+    //region PARAMETERS AND STATUSES - actually use it to work with parameters in other overrides
+
+    public final boolean setParameterPairIn_ClearOut(int hatchNo, boolean usesFloats, double value0, double value1) {
+        if (mMaxProgresstime > 0) {
+            return false;
+        }
+        bParamsAreFloats[hatchNo] = usesFloats;
+        if (usesFloats) {
+            iParamsIn[hatchNo] = Float.floatToIntBits((float) value0);
+            iParamsIn[hatchNo + 10] = Float.floatToIntBits((float) value1);
+        } else {
+            iParamsIn[hatchNo] = (int) value0;
+            iParamsIn[hatchNo + 10] = (int) value1;
+        }
+        iParamsOut[hatchNo] = 0;
+        iParamsOut[hatchNo + 10] = 0;
+        return true;
+    }
+
+    public final boolean isParametrizerUsingFloat(int hatchNo){
+        return bParamsAreFloats[hatchNo];
+    }
+
+    public final double getParameterIn(int hatchNo, int paramID){
+        return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]):iParamsIn[hatchNo+10*paramID];
+    }
+
+    public final int getParameterInInt(int hatchNo, int paramID){
+        if(bParamsAreFloats[hatchNo]) {
+            return (int) Float.intBitsToFloat(iParamsIn[hatchNo + 10 * paramID]);
+        }
+        return iParamsIn[hatchNo+10*paramID];
+    }
+
+    //public final int getParameterInIntRaw(int hatchNo, int paramID){
+    //    return iParamsIn[hatchNo+10*paramID];
+    //}
+
+    //public final float getParameterInFloatRaw(int hatchNo, int paramID){
+    //    return Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]);
+    //}
+
+    public final void setParameterOut(int hatchNo, int paramID, double value){
+        if(bParamsAreFloats[hatchNo]) {
+            iParamsOut[hatchNo+10*paramID]=Float.floatToIntBits((float) value);
+        }else{
+            iParamsOut[hatchNo+10*paramID]=(int)value;
+        }
+    }
+
+    //public final boolean setParameterOutInt(int hatchNo, int paramID, int value){
+    //    if(bParamsAreFloats[hatchNo]) return false;
+    //    iParamsOut[hatchNo+10*paramID]=value;
+    //    return true;
+    //}
+
+    //public final boolean setParameterOutFloat(int hatchNo, int paramID, float value){
+    //    if(bParamsAreFloats[hatchNo]) {
+    //        iParamsOut[hatchNo + 10 * paramID] = Float.floatToIntBits(value);
+    //        return true;
+    //    }
+    //    return false;
+    //}
+
+    public final void setStatusOfParameterIn(int hatchNo, int paramID, byte status){
+        eParamsInStatus[hatchNo+10*paramID]=status;
+    }
+
+    public final void setStatusOfParameterOut(int hatchNo, int paramID, byte status){
+        eParamsOutStatus[hatchNo+10*paramID]=status;
+    }
+
+    //endregion
+
+    //region Methods to maybe override (if u implement certain stuff)
+
+    /**
+     * is the thing inside controller a valid item to make the machine work
+     * @param itemStack
+     * @return
+     */
+    @Override
+    public boolean isCorrectMachinePart(ItemStack itemStack) {
+        return true;
+    }
+
+    /**
+     * how much damage to apply to thing in controller - not sure how it does it
+     * @param itemStack
+     * @return
+     */
+    @Override
+    public int getDamageToComponent(ItemStack itemStack) {
+        return 0;
+    }
+
+    /**
+     * called when removing from map - not when unloading? //todo check
+     */
+    @Override
+    public void onRemoval() {
+        try {
+            if (eOutputHatches != null) {
+                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eOutputHatches) {
+                    hatch_elemental.id = -1;
+                }
+                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches) {
+                    hatch_elemental.id = -1;
+                }
+                for (GT_MetaTileEntity_Hatch_OutputData hatch_data : eOutputData) {
+                    hatch_data.id = -1;
+                    hatch_data.q = null;
+                }
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
+                    hatch_data.id = -1;
+                }
+                for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches) {
+                    hatch.getBaseMetaTileEntity().setActive(false);
+                }
+                for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                    hatch.getBaseMetaTileEntity().setActive(false);
+                }
+            }
+            if (ePowerPass && getEUVar()>V[3] || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
+                explodeMultiblock();
+            }
+            if (outputEM != null) {
+                for (cElementalInstanceStackMap output : outputEM) {
+                    if (output != null && output.hasStacks()) {
+                        explodeMultiblock();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            if (DEBUG_MODE) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * prevents spontaneous explosions when the chunks unloading would cause them
+     * should cover 3 chunks radius
+     * @return
+     */
+    protected boolean areChunksAroundLoaded_EM(){
+        if(GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
+            IGregTechTileEntity base=getBaseMetaTileEntity();
+            return base.getWorld().doChunksNearChunkExist(base.getXCoord(),base.getYCoord(),base.getZCoord(),3);
+            //todo check if it is actually checking if chunks are loaded
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * loads default parameters in CONSTRUCTOR! FUCKING ONCE
+     */
+    protected void parametersLoadDefault_EM(){
+        //load default parameters with setParameterPairIn_ClearOut
+    }
+
+    /**
      * This is called automatically when there is new parameters data, copy it to your variables for safe storage
      * although the base code only downloads the values from parametrizers when machines is NOT OPERATING
      *
@@ -203,18 +580,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy){}
 
     /**
-     * Put EM stuff from outputEM into EM output hatches here
-     * or do other stuff - it is basically on recipe succeded
-     *
-     * based on "machine state" do output,
-     * this must move to outputEM to EM output hatches
-     * and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
-     * (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
-     * Setting available data processing
-     */
-    public void outputAfterRecipe_EM() {}
-
-    /**
      * For extra types of hatches initiation, LOOK HOW IT IS CALLED! in onPostTick
      * @param mMachine was the machine considered complete at that point in onPostTick
      */
@@ -225,11 +590,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     protected void extraExplosions_EM() {}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
-    //Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
-
     /**
-     *
-     * @return
+     * Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
+     * @return available data
      */
     protected long getAvailableData_EM() {
         long result = 0;
@@ -242,167 +605,48 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return result;
     }
 
-    //Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk)
-    //BUT NEEDED WHEN - machine blocks are not touching each other ot they don't implement IMachineBlockUpdateable (ex. air)
+    /**
+     * Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk)
+     * BUT NEEDED WHEN - machine blocks are not touching each other ot they don't implement IMachineBlockUpdateable (ex. air)
+     */
     protected boolean cyclicUpdate_EM() {
         return mUpdate <= -1000;//set to false to disable cyclic update
         //default is once per 50s; mUpdate is decremented every tick
     }
 
+    /**
+     * get pollution per tick
+     * @param itemStack what is in controller
+     * @return how much pollution is produced
+     */
     @Override
     public int getPollutionPerTick(ItemStack itemStack) {
         return 0;
     }
 
+    /**
+     * EM pollution per tick
+     * @param itemStack - item in controller
+     * @return how much excess matter is there
+     */
     public float getExcessMassPerTick_EM(ItemStack itemStack) {
         return 0f;
     }
 
-    //helper method so i don't have to set that params to nothing at all times
-    protected void afterRecipeCheckFailed(){
-        if (outputEM != null) {
-            float mass = 0;
-            for (cElementalInstanceStackMap tree : outputEM) {
-                if (tree != null) {
-                    mass += tree.getMass();
-                }
-            }
-            if (mass > 0) {
-                if (eMufflerHatches.size() < 1) {
-                    explodeMultiblock();
-                } else {
-                    mass /= eMufflerHatches.size();
-                    for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                        if (dump.addOverflowMatter(mass)) {
-                            explodeMultiblock();
-                        }
-                    }
-                }
-            }
-            outputEM = null;
-        }
-
-        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
-            data.q = null;
-        }
-
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEfficiency = 0;
-        mEfficiencyIncrease = 0;
-        mProgresstime = 0;
-        //mMaxProgresstime = 0; //Done after this - cos it is VITAL!
-        eAvailableData = 0;
-        //getBaseMetaTileEntity().disableWorking();
-        //hatchesStatusUpdate_EM(); //called always after recipe checks
-    }
-
-    //triggered if machine is not allowed to work after completing a recipe, override to make it not shutdown for instance (like turbines).
+    /**
+     * triggered if machine is not allowed to work after completing a recipe, override to make it not shutdown for instance (like turbines).
+     * bu just replacing it with blank - active transformer is doing it
+     *
+     * CALLED DIRECTLY when soft hammered to offline state - usually should stop the machine unless some other mechanics should do it
+     */
     protected void notAllowedToWork_stopMachine_EM(){
         stopMachine();
     }
 
-    //Override if needed but usually call super method at start!
-    //On machine stop - NOT called directly when softhammered to offline state! - it SHOULD cause a full stop like power failure does
-    @Override
-    public void stopMachine() {
-        if (outputEM != null) {
-            float mass = 0;
-            for (cElementalInstanceStackMap tree : outputEM) {
-                if (tree != null) {
-                    mass += tree.getMass();
-                }
-            }
-            if (mass > 0) {
-                if (eMufflerHatches.size() < 1) {
-                    explodeMultiblock();
-                } else {
-                    mass /= eMufflerHatches.size();
-                    for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                        if (dump.addOverflowMatter(mass)) {
-                            explodeMultiblock();
-                        }
-                    }
-                }
-            }
-            outputEM = null;
-        }
-
-        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
-            data.q = null;
-        }
-
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEfficiency = 0;
-        mEfficiencyIncrease = 0;
-        mProgresstime = 0;
-        mMaxProgresstime = 0;
-        eAvailableData = 0;
-        hatchesStatusUpdate_EM();
-        getBaseMetaTileEntity().disableWorking();
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                TEC_MARK_GENERAL,
-                "Nothing special just override me."
-        };
-    }
-
-    //RATHER LEAVE ALONE Section
-    protected boolean areChunksAroundLoaded_EM(){
-        if(GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
-            IGregTechTileEntity base=getBaseMetaTileEntity();
-            return base.getWorld().doChunksNearChunkExist(base.getXCoord(),base.getYCoord(),base.getZCoord(),3);
-            //todo check if it is actually checking if chunks are loaded
-        }else {
-            return false;
-        }
-    }
-
-    protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-        parametersLoadDefault_EM();
-    }
-
-    protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
-        super(aName);
-        parametersLoadDefault_EM();
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
-        }
-        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
-    }
-
-    @Override
-    public byte getTileEntityBaseType() {
-        return 3;
-    }
-
+    /**
+     * store data
+     * @param aNBT
+     */
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -491,6 +735,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setTag("eParamsOutS", paramOs);
     }
 
+    /**
+     * load data
+     * @param aNBT
+     */
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -574,6 +822,117 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
+    /**
+     * if u want to use gt recipes maps...
+     * @return
+     */
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return null;
+    }
+
+    /**
+     * does some validation and cleaning,, dont touch i think
+     */
+    @Override
+    public void updateSlots() {
+        super.updateSlots();
+        purgeAllOverflowEM_EM();
+    }
+
+    //endregion
+
+    //region RATHER LEAVE ALONE Section
+
+    /**
+     * Override if needed but usually call super method at start!
+     * On machine stop - NOT called directly when soft hammered to offline state! - it SHOULD cause a full stop like power failure does
+     */
+    @Override
+    public void stopMachine() {
+        if (outputEM != null) {
+            float mass = 0;
+            for (cElementalInstanceStackMap tree : outputEM) {
+                if (tree != null) {
+                    mass += tree.getMass();
+                }
+            }
+            if (mass > 0) {
+                if (eMufflerHatches.size() < 1) {
+                    explodeMultiblock();
+                } else {
+                    mass /= eMufflerHatches.size();
+                    for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
+                        if (dump.addOverflowMatter(mass)) {
+                            explodeMultiblock();
+                        }
+                    }
+                }
+            }
+            outputEM = null;
+        }
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
+            data.q = null;
+        }
+
+        mOutputItems = null;
+        mOutputFluids = null;
+        mEfficiency = 0;
+        mEfficiencyIncrease = 0;
+        mProgresstime = 0;
+        mMaxProgresstime = 0;
+        eAvailableData = 0;
+        hatchesStatusUpdate_EM();
+        getBaseMetaTileEntity().disableWorking();
+    }
+
+    /**
+     * After recipe check failed
+     * helper method so i don't have to set that params to nothing at all times
+     */
+    protected void afterRecipeCheckFailed(){
+        if (outputEM != null) {
+            float mass = 0;
+            for (cElementalInstanceStackMap tree : outputEM) {
+                if (tree != null) {
+                    mass += tree.getMass();
+                }
+            }
+            if (mass > 0) {
+                if (eMufflerHatches.size() < 1) {
+                    explodeMultiblock();
+                } else {
+                    mass /= eMufflerHatches.size();
+                    for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
+                        if (dump.addOverflowMatter(mass)) {
+                            explodeMultiblock();
+                        }
+                    }
+                }
+            }
+            outputEM = null;
+        }
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
+            data.q = null;
+        }
+
+        mOutputItems = null;
+        mOutputFluids = null;
+        mEfficiency = 0;
+        mEfficiencyIncrease = 0;
+        mProgresstime = 0;
+        //mMaxProgresstime = 0; //Done after this - cos it is VITAL!
+        eAvailableData = 0;
+        //getBaseMetaTileEntity().disableWorking();
+        //hatchesStatusUpdate_EM(); //called always after recipe checks
+    }
+
+    /**
+     * cyclic check even when not working, called LESS frequently
+     * @return
+     */
     private boolean cyclicUpdate() {
         if (cyclicUpdate_EM()) {
             mUpdate = 0;
@@ -582,113 +941,109 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
-    //Param methods
-    //called in creator
-    protected void parametersLoadDefault_EM(){
-        //load default parameters with setParameterPairIn_ClearOut
+    /**
+     * mining level...
+     * @return
+     */
+    @Override
+    public byte getTileEntityBaseType() {
+        return 3;
     }
 
-    public final boolean setParameterPairIn_ClearOut(int hatchNo, boolean usesFloats, double value0, double value1) {
-        if (mMaxProgresstime > 0) {
-            return false;
-        }
-        bParamsAreFloats[hatchNo] = usesFloats;
-        if (usesFloats) {
-            iParamsIn[hatchNo] = Float.floatToIntBits((float) value0);
-            iParamsIn[hatchNo + 10] = Float.floatToIntBits((float) value1);
-        } else {
-            iParamsIn[hatchNo] = (int) value0;
-            iParamsIn[hatchNo + 10] = (int) value1;
-        }
-        iParamsOut[hatchNo] = 0;
-        iParamsOut[hatchNo + 10] = 0;
-        return true;
-    }
+    //endregion
 
-    public final boolean isParametrizerUsingFloat(int hatchNo){
-        return bParamsAreFloats[hatchNo];
-    }
+    //region internal
 
-    public final double getParameterIn(int hatchNo, int paramID){
-        return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]):iParamsIn[hatchNo+10*paramID];
-    }
-
-    public final int getParameterInInt(int hatchNo, int paramID){
-        if(bParamsAreFloats[hatchNo]) {
-            return (int) Float.intBitsToFloat(iParamsIn[hatchNo + 10 * paramID]);
-        }
-        return iParamsIn[hatchNo+10*paramID];
-    }
-
-    //public final int getParameterInIntRaw(int hatchNo, int paramID){
-    //    return iParamsIn[hatchNo+10*paramID];
-    //}
-
-    //public final float getParameterInFloatRaw(int hatchNo, int paramID){
-    //    return Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]);
-    //}
-
-    public final void setParameterOut(int hatchNo, int paramID, double value){
-        if(bParamsAreFloats[hatchNo]) {
-            iParamsOut[hatchNo+10*paramID]=Float.floatToIntBits((float) value);
-        }else{
-            iParamsOut[hatchNo+10*paramID]=(int)value;
-        }
-    }
-
-    //public final boolean setParameterOutInt(int hatchNo, int paramID, int value){
-    //    if(bParamsAreFloats[hatchNo]) return false;
-    //    iParamsOut[hatchNo+10*paramID]=value;
-    //    return true;
-    //}
-
-    //public final boolean setParameterOutFloat(int hatchNo, int paramID, float value){
-    //    if(bParamsAreFloats[hatchNo]) {
-    //        iParamsOut[hatchNo + 10 * paramID] = Float.floatToIntBits(value);
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    public final void setStatusOfParameterIn(int hatchNo, int paramID, byte status){
-        eParamsInStatus[hatchNo+10*paramID]=status;
-    }
-
-    public final void setStatusOfParameterOut(int hatchNo, int paramID, byte status){
-        eParamsOutStatus[hatchNo+10*paramID]=status;
-    }
-
+    /**
+     * internal check machine
+     * @param iGregTechTileEntity
+     * @param itemStack
+     * @return
+     */
     @Override
     public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return checkMachine_EM(iGregTechTileEntity, itemStack);
     }
 
-    //can be used to check structures of multi-blocks larger than one chunk, but...
-    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
+    /**
+     * internal check recipe
+     * @param itemStack
+     * @return
+     */
+    @Override
+    public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
+        hatchesStatusUpdate_EM();
+        boolean result= checkRecipe_EM(itemStack);//if had no - set default params
+        hatchesStatusUpdate_EM();
+        return result;
+    }
+
+    private void hatchesStatusUpdate_EM() {
+        boolean busy=mMaxProgresstime>0;
+        if (busy) {//write from buffer to hatches only
+            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
+                    continue;
+                }
+                int paramID = hatch.param;
+                if(bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
+                    hatch.input0i = iParamsOut[paramID];
+                    hatch.input1i = iParamsOut[paramID + 10];
+                }else if(hatch.isUsingFloats()){
+                    hatch.input0i = Float.floatToIntBits((float)iParamsOut[paramID]);
+                    hatch.input1i = Float.floatToIntBits((float)iParamsOut[paramID + 10]);
+                }else {
+                    hatch.input0i = (int)Float.intBitsToFloat(iParamsOut[paramID]);
+                    hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
+                }
+            }
+            parametersInRead_EM();
+        } else {//if has nothing to do update all
+            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
+                    continue;
+                }
+                int paramID = hatch.param;
+                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                iParamsIn[paramID] = hatch.value0i;
+                iParamsIn[paramID + 10] = hatch.value1i;
+                hatch.input0i = iParamsOut[paramID];
+                hatch.input1i = iParamsOut[paramID + 10];
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches) {
+            eCertainStatus = uncertainty.update(eCertainMode);
+        }
+        eAvailableData = getAvailableData_EM();
+        parametersOutAndStatusesWrite_EM(busy);
+    }
+
     @Deprecated
-    public final boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureChecker(structure, blockType, blockMeta,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+    public final int getAmountOfOutputs() {
+        throw new NoSuchMethodError("Deprecated Do not use");
+    }
+    //endregion
+
+    //region TICKING functions
+    /**
+     * called every tick the machines is active
+     * @param aStack
+     * @return
+     */
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (eRequiredData > eAvailableData) {
+            if(energyFlowOnRunningTick(aStack,false)) {
+                stopMachine();
+            }
+            return false;
+        }
+        return energyFlowOnRunningTick(aStack,true);
     }
 
-    public final boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            String[] addingMethods,
-            short[] casingTextures,
-            Block[] blockTypeFallback,//use numbers 0-9 for casing types
-            byte[] blockMetaFallback,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerAdvanced(structure, blockType, blockMeta, adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
-    }
-
-    //CAREFUL!!! it calls most of the callbacks
+    /**
+     * CAREFUL!!! it calls most of the callbacks, like everything else in here
+     */
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -1083,39 +1438,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound(){
-        return activitySound;
-    }
+    //endregion
 
-    @SideOnly(Side.CLIENT)
-    protected void soundMagic(ResourceLocation activitySound){
-        if(getBaseMetaTileEntity().isActive()){
-            if(activitySoundLoop==null){
-                activitySoundLoop =new SoundLoop(activitySound,getBaseMetaTileEntity(),false,true);
-                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
-            }
-        }else {
-            if(activitySoundLoop!=null) {
-                activitySoundLoop = null;
-            }
-        }
-    }
-
-    @Deprecated
-    public final int getAmountOfOutputs() {
-        throw new NoSuchMethodError("Deprecated Do not use");
-    }
-
-    @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids) {
-        int min=mOutputFluids.length>mOutputHatches.size()?mOutputHatches.size():mOutputFluids.length;
-        for (int i = 0; i < min; ++i) {
-            if (mOutputHatches.get(i) != null && mOutputFluids[i] != null && GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(mOutputHatches.get(i))) {
-                mOutputHatches.get(i).fill(mOutputFluids[i], true);
-            }
-        }
-    }
+    //region EFFICIENCY AND FIXING LIMITS
 
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
@@ -1132,16 +1457,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return super.getRepairStatus() + (eCertainStatus == 0 ? 1 : 0) + (eParameters ? 1 : 0);
     }
 
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (eRequiredData > eAvailableData) {
-            if(energyFlowOnRunningTick(aStack,false)) {
-                stopMachine();
-            }
-            return false;
-        }
-        return energyFlowOnRunningTick(aStack,true);
-    }
+    //endregion
+
+    //region ENERGY!!!!
 
     //new method
     private boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
@@ -1157,7 +1475,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return true;
     }
 
-    //region energy
     //public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
     //    long temp = eu * ampere;//quick scope sign
     //    if (temp > 0) {
@@ -1384,6 +1701,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //endregion
 
+    //region convinience copies input and output EM
     //new Method
     public final cElementalInstanceStackMap getInputsClone_EM(){
         cElementalInstanceStackMap in=new cElementalInstanceStackMap();
@@ -1401,17 +1719,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         return out.hasStacks()?out:null;
     }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
-    }
-
-    @Override
-    public void updateSlots() {
-        super.updateSlots();
-        purgeAllOverflowEM_EM();
-    }
+    //endregion
 
     //region em cleaning
     private void purgeAllOverflowEM_EM() {
@@ -1508,63 +1816,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
     //endregion
 
-    @Override
-    public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
-        hatchesStatusUpdate_EM();
-        boolean result= checkRecipe_EM(itemStack);//if had no - set default params
-        hatchesStatusUpdate_EM();
-        return result;
-    }
-
-    private void hatchesStatusUpdate_EM() {
-        boolean busy=mMaxProgresstime>0;
-        if (busy) {//write from buffer to hatches only
-            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
-                    continue;
-                }
-                int paramID = hatch.param;
-                if(bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
-                    hatch.input0i = iParamsOut[paramID];
-                    hatch.input1i = iParamsOut[paramID + 10];
-                }else if(hatch.isUsingFloats()){
-                    hatch.input0i = Float.floatToIntBits((float)iParamsOut[paramID]);
-                    hatch.input1i = Float.floatToIntBits((float)iParamsOut[paramID + 10]);
-                }else {
-                    hatch.input0i = (int)Float.intBitsToFloat(iParamsOut[paramID]);
-                    hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
-                }
-            }
-            parametersInRead_EM();
-        } else {//if has nothing to do update all
-            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
-                    continue;
-                }
-                int paramID = hatch.param;
-                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
-                iParamsIn[paramID] = hatch.value0i;
-                iParamsIn[paramID + 10] = hatch.value1i;
-                hatch.input0i = iParamsOut[paramID];
-                hatch.input1i = iParamsOut[paramID + 10];
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches) {
-            eCertainStatus = uncertainty.update(eCertainMode);
-        }
-        eAvailableData = getAvailableData_EM();
-        parametersOutAndStatusesWrite_EM(busy);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
+    //region EXPLOSIONS
 
     @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
@@ -1645,47 +1897,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         explodeMultiblock();
         super.doExplosion(aExplosionPower);
     }//Redirecting to explodemultiblock
-
-    @Override
-    public void onRemoval() {
-        try {
-            if (eOutputHatches != null) {
-                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eOutputHatches) {
-                    hatch_elemental.id = -1;
-                }
-                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches) {
-                    hatch_elemental.id = -1;
-                }
-                for (GT_MetaTileEntity_Hatch_OutputData hatch_data : eOutputData) {
-                    hatch_data.id = -1;
-                    hatch_data.q = null;
-                }
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData) {
-                    hatch_data.id = -1;
-                }
-                for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches) {
-                    hatch.getBaseMetaTileEntity().setActive(false);
-                }
-                for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
-                    hatch.getBaseMetaTileEntity().setActive(false);
-                }
-            }
-            if (ePowerPass && getEUVar()>V[3] || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
-                explodeMultiblock();
-            }
-            if (outputEM != null) {
-                for (cElementalInstanceStackMap output : outputEM) {
-                    if (output != null && output.hasStacks()) {
-                        explodeMultiblock();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
-    }
+    //endregion
 
     //region adder methods
     @Override
@@ -2170,7 +2382,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         return false;
     }
-    //endregion
 
     public static void run() {
         try {
@@ -2202,7 +2413,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
-    //CALLBACK
+    //CALLBACK from hatcher adders
     public boolean addThing(String methodName, IGregTechTileEntity igt, int casing) {
         try {
             return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
@@ -2214,45 +2425,5 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
-    @Override
-    public String[] getInfoData() {//TODO Do it
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
-            }
-        }
-
-        return new String[]{
-                "Progress:",
-                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
-                "Energy Hatches:",
-                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
-                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
-                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
-                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
-                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
-                "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
-                "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
-                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
-                "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET
-        };
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
+    //endregion
 }
