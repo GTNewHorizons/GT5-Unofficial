@@ -19,10 +19,11 @@ public class GT_GUIContainer_DebugStructureWriter extends GT_GUIContainerMetaTil
             if (dsw.numbers == null) {
                 return;
             }
-            fontRendererObj.drawString(dsw.size ? "Size" : "Offset", 46, 16, 16448255);
-            fontRendererObj.drawString("A: " + dsw.numbers[dsw.size ? 3 : 0], 46, 24, 16448255);
-            fontRendererObj.drawString("B: " + dsw.numbers[dsw.size ? 4 : 1], 46, 32, 16448255);
-            fontRendererObj.drawString("C: " + dsw.numbers[dsw.size ? 5 : 2], 46, 40, 16448255);
+            fontRendererObj.drawString(dsw.size ? "Structure size" : "My position", 46, 16, 16448255);
+            fontRendererObj.drawString(dsw.size ? "(Changing scan size)" : "(Moving origin point)", 46,24, 16448255);
+            fontRendererObj.drawString("A: " + dsw.numbers[dsw.size ? 3 : 0], 46, 32, 16448255);
+            fontRendererObj.drawString("B: " + dsw.numbers[dsw.size ? 4 : 1], 46, 40, 16448255);
+            fontRendererObj.drawString("C: " + dsw.numbers[dsw.size ? 5 : 2], 46, 48, 16448255);
         }
     }
 
