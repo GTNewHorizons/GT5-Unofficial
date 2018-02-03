@@ -4,17 +4,13 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GT_ItemStack;
-import gregtech.common.blocks.GT_Block_Machines;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -40,10 +36,10 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     private static final String[][] shape = new String[][]{
             {"B0", "A   ", "0 - 0", "A   ", "B0",},
             {"A000", "00000", "00.00", "00000", "A000",},
-            {"A121", "1C1", "2C2", "1C1", "A121",},
-            {"A131", "1C1", "3C3", "1C1", "A131",},
-            {"A121", "1C1", "2C2", "1C1", "A121",},
-            {"A000", "00000", "00A00", "00000", "A000",},
+            {"A121", "1---1", "2---2", "1---1", "A121",},
+            {"A131", "1---1", "3-A-3", "1---1", "A131",},
+            {"A121", "1---1", "2---2", "1---1", "A121",},
+            {"A000", "00000", "00-00", "00000", "A000",},
             {"B0", "A!!!", "0!!!0", "A!!!", "B0",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 5, 6};
@@ -72,7 +68,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1) && eInputHatches.size() == 1 && iGregTechTileEntity.getBlockAtSideAndDistance(iGregTechTileEntity.getBackFacing(), 5) instanceof GT_Block_Machines;
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 1);
     }
 
     @Override

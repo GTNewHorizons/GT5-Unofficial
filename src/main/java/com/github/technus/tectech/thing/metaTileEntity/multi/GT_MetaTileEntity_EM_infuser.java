@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         eDismantleBoom=true;
     }
 
-    @SideOnly(Side.CLIENT)
+
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_whooum");
 
     @Override

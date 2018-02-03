@@ -69,7 +69,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         eDismantleBoom=true;
     }
 
-    @SideOnly(Side.CLIENT)
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_noise");
 
     @Override

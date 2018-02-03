@@ -66,7 +66,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
     //Sound resource - same as with screen but override getActivitySound
-    @SideOnly(Side.CLIENT)
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_lo_freq");
     @SideOnly(Side.CLIENT)
     private SoundLoop activitySoundLoop;
@@ -100,7 +99,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private final int[] iParamsIn = new int[20];//number I from parametrizers
     private final int[] iParamsOut = new int[20];//number O to parametrizers
     private final boolean[] bParamsAreFloats = new boolean[10];
-
 
     final byte[] eParamsInStatus = new byte[20];//LED status for I
     final byte[] eParamsOutStatus = new byte[20];//LED status for O
@@ -155,9 +153,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //just some info - private so hidden
     private boolean explodedThisTick=false;
 
-    //endregion
+    //init param states in constructor, or implement it in checkrecipe/outputfunction
 
-    //region METHODS TO OVERRIDE
+    //METHODS TO OVERRIDE
 
     // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
     // Set mEUt, Efficiencies, required computation, time, check input etc.
