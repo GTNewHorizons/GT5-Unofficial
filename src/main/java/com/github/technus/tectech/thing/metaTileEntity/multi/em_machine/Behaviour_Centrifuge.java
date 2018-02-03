@@ -18,14 +18,14 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
  */
 public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behaviour {
     private static final double MAX_RCF = (float) (Math.pow(Math.E, 15) * 12);
-    private final float radius, maxRPM, maxForce, maxCapacity;
+    private final float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private final byte tier;
 
     //6 to 12 recommended
     public Behaviour_Centrifuge(int desiredTier) {
         tier = (byte) desiredTier;
         radius = 0.5f - (12 - tier) / 64f;
-        float maxRCF = (float) (Math.pow(Math.E, tier) * 12);
+        maxRCF = (float) (Math.pow(Math.E, tier) * 12);
         maxRPM = (float) Math.sqrt(maxRCF / (0.001118 * radius));
         float maxSafeMass = dAtomDefinition.getSomethingHeavy().getMass() * (1 << tier);
         maxForce = maxSafeMass * maxRCF;// (eV/c^2 * m/s) / g
@@ -149,6 +149,10 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
                 }
             });
 
+            //output sorting bleeding
+            float bleedingMod=0.5f-((float)(RCF/maxRCF)*(tier/25f));
+
+
             double absMassPerOutput = 0;//"volume"
             for (cElementalInstanceStack stack : stacks) {
                 absMassPerOutput += Math.abs(stack.getMass());
@@ -156,6 +160,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
             if(DEBUG_MODE){
                 TecTech.Logger.info("absMass "+absMassPerOutput);
             }
+
             absMassPerOutput /= fractionCount;
             if(DEBUG_MODE){
                 TecTech.Logger.info("absMassPerOutput "+absMassPerOutput);

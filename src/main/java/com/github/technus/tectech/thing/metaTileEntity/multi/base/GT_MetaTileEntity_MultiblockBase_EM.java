@@ -46,38 +46,61 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase {
-    protected static final Map<String, Method> adderMethodMap = new HashMap<>();
-    private static Method adderMethod;
-
-    protected cElementalInstanceStackMap[] outputEM;
-
+    //region Constants
+    //Placeholers for nothing feel free to use
     public static final ItemStack[] nothingI = new ItemStack[0];
     public static final FluidStack[] nothingF = new FluidStack[0];
+    //endregion
 
+    //region Reflection based hatch adding...
+    //Example how to add custom method is in computer and research station
+    protected static final Map<String, Method> adderMethodMap = new HashMap<>();
+    private static Method adderMethod;
+    //endregion
+
+    //region Client side variables (static - one per class)
+
+    //Front icon holders - static so it is default one for my blocks
+    //just add new static ones in your class and and override getTexture
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
+    //Sound resource - same as with screen but override getActivitySound
     @SideOnly(Side.CLIENT)
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_lo_freq");
     @SideOnly(Side.CLIENT)
     private SoundLoop activitySoundLoop;
+    //endregion
 
+    //region HATCHES ARRAYS - they hold info about found hatches, add hatches to them... (auto structure magic does it tho)
+
+    //HATCHES!!!, should be added and removed in check machine
+
+    //EM in/out
     protected ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
+    //EM overflow output
     protected ArrayList<GT_MetaTileEntity_Hatch_OverflowElemental> eMufflerHatches = new ArrayList<>();
+    //extra hatches
     protected ArrayList<GT_MetaTileEntity_Hatch_Param> eParamHatches = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_Uncertainty> eUncertainHatches = new ArrayList<>();
+    //multi amp hatches in/out
     protected ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> eEnergyMulti = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> eDynamoMulti = new ArrayList<>();
+    //data hatches
     protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
+    //endregion
+
+    //region PARAMETERS! GO AWAY and use proper get/set methods
     // 0 and 10 are from first parametrizer
     // 1 and 11 are from second etc...
 
     private final int[] iParamsIn = new int[20];//number I from parametrizers
     private final int[] iParamsOut = new int[20];//number O to parametrizers
     private final boolean[] bParamsAreFloats = new boolean[10];
+
 
     final byte[] eParamsInStatus = new byte[20];//LED status for I
     final byte[] eParamsOutStatus = new byte[20];//LED status for O
@@ -88,62 +111,128 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // 0,2,4,6 - ok
     //  1,3,5  - nok
 
-    //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
-    protected boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
-    protected byte eCertainMode = 0, eCertainStatus = 0, minRepairStatus = 3;
+    //endregion
 
-    protected long eMaxAmpereFlow = 0;//don't modify! unless YOU REALLY HAVE TO
-    private long maxEUinputMin = 0, maxEUinputMax = 0;
+    //region Control variables
 
+    //what is the amount of A required
     public long eAmpereFlow = 1; // analogue of EU/t but for amperes used (so eu/t is actually eu*A/t) USE ONLY POSITIVE NUMBERS!
 
-    protected long eRequiredData = 0; // data required to operate
+    //set to what you need it to be in check recipe
+    //data required to operate
+    protected long eRequiredData = 0;
+
+    //storage for output EM that will be auto handled in case of failure to finish recipe
+    //if you succed to use a recipe - be sure to output EM from outputEM to hatches in the output method
+    protected cElementalInstanceStackMap[] outputEM;
+
+    //are parameters correct - change in check recipe/output/update params etc. (maintenance status boolean)
+    protected boolean eParameters = true;
+
+    //what type of certainty inconvenience is used - can be used as in Computer - more info in uncertainty hatch
+    protected byte eCertainMode = 0, eCertainStatus = 0;
+
+    //minimal repair status to make the machine even usable (how much unfixed fixed stuff is needed)
+    //if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
+    protected byte minRepairStatus = 3;
+
+    //endregion
+
+    //region READ ONLY unless u really need to change it
+
+    //functionality toggles - changed by buttons in gui also
+    protected boolean ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
+
+    //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
+    protected long eMaxAmpereFlow = 0;
+
+    //What is the max and minimal tier of eu hatches installed
+    private long maxEUinputMin = 0, maxEUinputMax = 0;
+
+    //read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
 
+    //just some info - private so hidden
     private boolean explodedThisTick=false;
 
-    //init param states in constructor, or implement it in checkrecipe/outputfunction
+    //endregion
 
-    //METHODS TO OVERRIDE
+    //region METHODS TO OVERRIDE
 
-    //if you want to add checks that run periodically when machine works then make onRunningTick better
-    //if you want to add checks that run periodically when machine is built then use check params
-
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        return false;
-    }
     // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
     // Set mEUt, Efficiencies, required computation, time, check input etc.
 
-    protected void parametersInRead_EM(){
 
-    }
-
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-    }
-    // update status of parameters in guis and "machine state"
-    // Called before check recipe, before outputting, and every second the machine is active
-
-    public void outputAfterRecipe_EM() {
-    }
-    // based on "machine state" do output,
-    // this must move to outputEM to EM output hatches
-    // and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
-    // (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
-    // Setting available data processing
-
-    protected void hatchInit_EM(boolean mMachine) {
-    }//For extra types of hatches initiation, LOOK HOW IT IS CALLED! onPostTick
-
-    protected void extraExplosions_EM() {
-    }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
-
-    //machine structure check
+    /**
+     * Check structure here, also add hatches
+     * @param iGregTechTileEntity - the tile entity
+     * @param itemStack - what is in the controller input slot
+     * @return is structure valid
+     */
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return false;
     }
 
+    /**
+     * Checks Recipes (when all machine is complete and can work)
+     *
+     * can get/set Parameters here also
+     *
+     * @param itemStack item in the controller
+     * @return is recipe is valid
+     * */
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        return false;
+    }
+
+    /**
+     * This is called automatically when there is new parameters data, copy it to your variables for safe storage
+     * although the base code only downloads the values from parametrizers when machines is NOT OPERATING
+     *
+     * good place for get Parameters
+     */
+    protected void parametersInRead_EM(){}
+
+    /**
+     * It is automatically called OFTEN
+     * update status of parameters in guis (and "machine state" if u wish)
+     * Called before check recipe, before outputting, and every second the machine is active
+     *
+     * good place for set Parameters
+     *
+     * @param machineBusy is machine doing SHIT
+     */
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy){}
+
+    /**
+     * Put EM stuff from outputEM into EM output hatches here
+     * or do other stuff - it is basically on recipe succeded
+     *
+     * based on "machine state" do output,
+     * this must move to outputEM to EM output hatches
+     * and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
+     * (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
+     * Setting available data processing
+     */
+    public void outputAfterRecipe_EM() {}
+
+    /**
+     * For extra types of hatches initiation, LOOK HOW IT IS CALLED! in onPostTick
+     * @param mMachine was the machine considered complete at that point in onPostTick
+     */
+    protected void hatchInit_EM(boolean mMachine) {}
+
+    /**
+     * called when the multiblock is exploding - if u want to add more EXPLOSIONS, for ex. new types of hatches also have to explode
+     */
+    protected void extraExplosions_EM() {}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
+
     //Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
+
+    /**
+     *
+     * @return
+     */
     protected long getAvailableData_EM() {
         long result = 0;
         Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
@@ -1085,7 +1174,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //}
 
     @Override
-    public final long maxEUStore() {
+    public long maxEUStore() {
         return maxEUinputMin * eMaxAmpereFlow << 3;
     }
 
