@@ -115,8 +115,10 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public String getSound() { return ""; }
 
-	public boolean canBufferOutputs(final GT_Recipe aRecipe) {
-		// Count slots available in hatches
+	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
+		// Count slots available in output buses
+		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
+
 		int tEmptySlots = 0;
 		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
 			if (!isValidMetaTileEntity(tBus)) {
@@ -127,12 +129,26 @@ GT_MetaTileEntity_MultiBlockBase {
 				if (tBus.getStackInSlot(i) == null) {
 					tEmptySlots++;
 				}
+				else {
+					tBusStacks.add(tBus.getStackInSlot(i));
+				}
 			}
 		}
 
-		// TODO: Check if any of the output stacks can stack with the stacks in the hatches?
+		int slotsNeeded = aRecipe.mOutputs.length;
+		for (final ItemStack tRecipeOutput: aRecipe.mOutputs) {
+			int amount = tRecipeOutput.stackSize * aParallelRecipes;
+			for (final ItemStack tBusStack : tBusStacks) {
+				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
+					if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
+						slotsNeeded--;
+						break;
+					}
+				}
+			}
+		}
 		// Enough open slots?
-		if (tEmptySlots < aRecipe.mOutputs.length) return false;
+		if (tEmptySlots < slotsNeeded) return false;
 
 		// For each output fluid, make sure an output hatch can accept it.
 		for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
@@ -176,13 +192,17 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {
-
-
 		// Based on the Processing Array. A bit overkill, but very flexible.
+
+		// Reset outputs and progress stats
+		this.mEUt = 0;
+		this.mMaxProgresstime = 0;
+		this.mOutputItems = new ItemStack[]{};
+		this.mOutputFluids = new FluidStack[]{};
+
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		int parallelRecipes = 0;
 
 		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
@@ -195,7 +215,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 
-		if (!this.canBufferOutputs(tRecipe)) {
+		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
 			return false;
 		}
 
@@ -203,12 +223,8 @@ GT_MetaTileEntity_MultiBlockBase {
 		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
 		float tTotalEUt = 0.0f;
 
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
-		
+		int parallelRecipes = 0;
+
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
@@ -220,6 +236,9 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (parallelRecipes == 0) {
 			return false;
 		}
+
+		// -- Try not to fail after this point - inputs have already been consumed! --
+
 
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
