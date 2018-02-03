@@ -22,7 +22,14 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Transforming %s", transformedName);
 			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 			ClassReader x = new ClassReader(basicClass);
-			x.accept(new GT_MetaTile_Visitor(classWriter), ClassReader.EXPAND_FRAMES);
+			x.accept(new GT_MetaTile_Visitor(classWriter, false), ClassReader.EXPAND_FRAMES);
+			return classWriter.toByteArray();
+		}
+		if(transformedName.equals("gregtech.common.blocks.GT_Block_Machines")) {
+			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Transforming %s", transformedName);
+			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+			ClassReader x = new ClassReader(basicClass);
+			x.accept(new GT_MetaTile_Visitor(classWriter, true), ClassReader.EXPAND_FRAMES);
 			return classWriter.toByteArray();
 		}
 		return basicClass;

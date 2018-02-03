@@ -75,7 +75,7 @@ public class Logger {
 
 	// ASM Comments
 	public static void LOG_ASM(final String s) {
-		FMLRelaunchLog.info("", s);
+		FMLRelaunchLog.info("[Special ASM Logging] ", s);
 	}
 	
 	

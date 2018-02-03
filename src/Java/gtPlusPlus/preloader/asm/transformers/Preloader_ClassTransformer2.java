@@ -4,29 +4,179 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.*;
-import org.objectweb.asm.commons.GeneratorAdapter;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Preloader_ClassTransformer2 {
 
-	private final static Class<BaseMetaTileEntity> customTransformer2 = BaseMetaTileEntity.class;
-	
+	/**
+	 * 
+	 * So what I'd try is something like patch a new field into BaseMetaTileEntity to hold the ItemNBT, 
+	 * then patch GT_Block_Machines.breakBlock to store the ItemNBT into that field by calling setItemNBT, 
+	 * and then patch BaseMetaTileEntity.getDrops to retrieve that field instead of calling setItemNBT
+	 * But there's probably a simpler solution if all you want to do is fix this 
+	 * for your super tanks rather than for all GT machines 
+	 * (which would only include saving the output count for chest buffers and item distributors...)
+	 *
+	 */ 
+
+
+
+
 	NBTTagCompound mItemStorageNBT = new NBTTagCompound();
+
+	private final static Class<BaseMetaTileEntity> customTransformer2 = BaseMetaTileEntity.class;
+	public static final class GT_MetaTile_Visitor extends ClassVisitor {
+		private boolean isGt_Block_Machines = false;
+		private boolean mHasSetField = false;
+		public GT_MetaTile_Visitor(ClassVisitor cv, boolean isGt_Block_Machines) {
+			super(ASM5, cv);
+			this.isGt_Block_Machines = isGt_Block_Machines;
+		}
+
+		@Override
+		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+			FieldVisitor j =  super.visitField(access, name, desc, signature, value);
+			if (!mHasSetField) {
+				mHasSetField = true;				
+				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Injecting field 'mItemStorageNBT' into BaseMetaTileEntity.java. Access OpCode: "+access);
+				j = cv.visitField(0, "mItemStorageNBT", "Lnet/minecraft/nbt/NBTTagCompound;", null, null);
+				j.visitEnd();
+			}
+			return j;
+		}
+
+		@Override
+		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+
+			if (isGt_Block_Machines) {                      //Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;I)V
+				if(name.equals("breakBlock") && desc.equals("(Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;I)V")) {
+					FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Found target method 'breakBlock' [Unobfuscated]. Access OpCode: "+access);
+					return new swapBreakBlock(methodVisitor);				
+				}
+				else if (name.equals("breakBlock") && !desc.equals("(Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;I)V")) {
+					FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Found target method 'breakBlock' [Obfuscated]. Access OpCode: "+access);
+					return new swapBreakBlock(methodVisitor);	
+				}
+			}
+			else {
+				if(name.equals("getDrops") && desc.equals("()Ljava/util/ArrayList;")) {
+					FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Found target method 'getDrops'. Access OpCode: "+access);
+					return new swapGetDrops(methodVisitor);				
+				}
+			}			
+			return methodVisitor;
+		}
+
+	}
+
+
+
+
+	private static final class swapGetDrops extends MethodVisitor {
+
+		public swapGetDrops(MethodVisitor mv) {
+			super(ASM5, mv);
+		}
+
+		@Override
+		public void visitCode() {
+			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Fixing Greg & Blood's poor attempt at setItemNBT().");
+			super.visitCode();			
+			//ALOAD 0
+			//INVOKESTATIC gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2 getDrops (Lgregtech/api/metatileentity/BaseMetaTileEntity;)Ljava/util/ArrayList;
+			//ARETURN
+
+			super.visitVarInsn(ALOAD, 0);
+			super.visitMethodInsn(INVOKESTATIC,
+					"gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2",
+					"getDrops",
+					"(Lgregtech/api/metatileentity/BaseMetaTileEntity;)Ljava/util/ArrayList;",
+					false);
+			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Method should now be replaced.");
+			//super.visitVarInsn(ARETURN, 0);
+			super.visitInsn(ARETURN);
+		}
+
+	}
+
+	private static final class swapBreakBlock extends MethodVisitor {
+
+		public swapBreakBlock(MethodVisitor mv) {
+			super(ASM5, mv);
+		}
+
+		@Override
+		public void visitCode() {
+			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Fixing breakBlock() in GT_Block_Machines.class");
+			super.visitCode();
+			//super.visitVarInsn(ALOAD, 0);			
+
+			super.visitVarInsn(ALOAD, 1);
+			super.visitVarInsn(ILOAD, 2);
+			super.visitVarInsn(ILOAD, 3);
+			super.visitVarInsn(ILOAD, 4);
+			super.visitVarInsn(ALOAD, 5);
+			super.visitVarInsn(ILOAD, 6);
+
+			super.visitMethodInsn(INVOKESTATIC,
+					"gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2",
+					"breakBlock",
+					"(Lnet/minecraft/world/World;IIILnet/minecraft/block/Block;I)V",
+					false);
+			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Method should now be replaced.");
+			super.visitInsn(RETURN);
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public static ArrayList<ItemStack> getDrops(BaseMetaTileEntity o) {
 		Logger.INFO("DROP!");
@@ -44,7 +194,7 @@ public class Preloader_ClassTransformer2 {
 			FluidStack tFluid = null;
 			if (GT_MetaTileEntity_BasicTank.class.isInstance(o)) {
 				try {
-				 tFluid = (FluidStack) ReflectionUtils.getField(GT_MetaTileEntity_BasicTank.class, "mFluid").get(o);	
+					tFluid = (FluidStack) ReflectionUtils.getField(GT_MetaTileEntity_BasicTank.class, "mFluid").get(o);	
 				}
 				catch (Throwable t) {
 					Logger.REFLECTION("mFluid was not set.");					
@@ -65,7 +215,7 @@ public class Preloader_ClassTransformer2 {
 			Logger.REFLECTION("tCoverSides: "+(tCoverSides != null));
 			Logger.REFLECTION("tCoverData: "+(tCoverData != null));
 			Logger.REFLECTION("tMetaTileEntity: "+(tMetaTileEntity != null));
-			
+
 			ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
 			NBTTagCompound tNBT = new NBTTagCompound();
 
@@ -98,7 +248,7 @@ public class Preloader_ClassTransformer2 {
 				catch (Throwable t){
 					Logger.REFLECTION("getDropsHack1");
 					t.printStackTrace();
-					}				
+				}				
 			}
 
 			//Set stack NBT
@@ -114,80 +264,45 @@ public class Preloader_ClassTransformer2 {
 	}
 
 
-	public static final class GT_MetaTile_Visitor extends ClassVisitor {
-
-		public GT_MetaTile_Visitor(ClassVisitor cv) {
-			super(ASM5, cv);
-		}
-
-		@Override
-		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);		
-			if(name.equals("getDrops") && desc.equals("()Ljava/util/ArrayList;")) {
-				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Found target method. Access OpCode: "+access);
-				//return new TrySwapMethod(methodVisitor, access, name, desc);
-				return new SwapTwo(methodVisitor);				
+	public static void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block block,
+			final int meta) {
+		Logger.INFO("BREAK!");
+		GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+		final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+		if (tTileEntity instanceof IGregTechTileEntity) {
+			final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+			final Random tRandom = new XSTR();
+			GT_Block_Machines.mTemporaryTileEntity.set(tGregTechTileEntity);
+			for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); ++i) {
+				final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
+				if (tItem != null && tItem.stackSize > 0 && tGregTechTileEntity.isValidSlot(i)) {
+					final EntityItem tItemEntity = new EntityItem(aWorld,
+							(double) (aX + tRandom.nextFloat() * 0.8f + 0.1f),
+							(double) (aY + tRandom.nextFloat() * 0.8f + 0.1f),
+							(double) (aZ + tRandom.nextFloat() * 0.8f + 0.1f),
+							new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
+					if (tItem.hasTagCompound()) {
+						tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
+					}
+					tItemEntity.motionX = tRandom.nextGaussian() * 0.0500000007450581;
+					tItemEntity.motionY = tRandom.nextGaussian() * 0.0500000007450581 + 0.2000000029802322;
+					tItemEntity.motionZ = tRandom.nextGaussian() * 0.0500000007450581;
+					aWorld.spawnEntityInWorld((Entity) tItemEntity);
+					tItem.stackSize = 0;
+					tGregTechTileEntity.setInventorySlotContents(i, (ItemStack) null);
+				}
 			}
-			return methodVisitor;
 		}
 
+		//gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer2.breakBlockWorld(aWorld, aX, aY, aZ, block, meta);		
+		aWorld.removeTileEntity(aX, aY, aZ);
 	}
 
-	/*private static final class TrySwapMethod extends GeneratorAdapter {
-
-		public TrySwapMethod(MethodVisitor mv, int access, String name, String desc) {
-			super(Opcodes.ASM5, mv, access, name, desc);
-			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Created method swapper for '"+name+"' in 'gregtech/api/metatileentity/BaseMetaTileEntity'. Desc: "+desc);  
+	public static void breakBlockWorld(World world, int aX, int aY, int aZ, Block block, int meta){
+		if (block.hasTileEntity(meta) && !(block instanceof BlockContainer))
+		{
+			world.removeTileEntity(aX, aY, aZ);
 		}
-
-		@Override
-		public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-			//gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer2
-			if(opcode==INVOKESPECIAL && owner.equals("net/minecraft/item/ItemStack")
-					&& name.equals("<init>") && desc.equals("(Lnet/minecraft/block/Block;II)V")) {
-				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Trying to proccess '"+name+"' | Opcode: "+opcode+" | Desc: "+desc+" | Owner: "+owner);
-				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Fixing Greg & Blood's poor attempt at setItemNBT().");
-				// not relaying the original instruction to super effectively removes the original 
-				// instruction, instead we're producing a different instruction:
-				super.visitVarInsn(ALOAD, 0);
-				super.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2",
-						"getDrops", "()Ljava/util/ArrayList;", false);
-				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Method should now be replaced.");
-			}
-			else { // relaying to super will reproduce the same instruction
-				//FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Original method call.");
-				super.visitMethodInsn(opcode, owner, name, desc, itf);
-			}
-		}
-
-		// all other, not overridden visit methods reproduce the original instructions
-	}*/
-
-	private static final class SwapTwo extends MethodVisitor {
-
-		public SwapTwo(MethodVisitor mv) {
-			super(ASM5, mv);
-		}
-
-		@Override
-		public void visitCode() {
-			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Fixing Greg & Blood's poor attempt at setItemNBT().");
-			super.visitCode();			
-			//ALOAD 0
-			//INVOKESTATIC gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2 getDrops (Lgregtech/api/metatileentity/BaseMetaTileEntity;)Ljava/util/ArrayList;
-			//ARETURN
-			
-			super.visitVarInsn(ALOAD, 0);
-			super.visitMethodInsn(INVOKESTATIC,
-					"gtPlusPlus/preloader/asm/transformers/Preloader_ClassTransformer2",
-					"getDrops",
-					"(Lgregtech/api/metatileentity/BaseMetaTileEntity;)Ljava/util/ArrayList;",
-					false);
-			FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Method should now be replaced.");
-			//super.visitVarInsn(ARETURN, 0);
-			super.visitInsn(ARETURN);
-		}
-
 	}
 
 }
