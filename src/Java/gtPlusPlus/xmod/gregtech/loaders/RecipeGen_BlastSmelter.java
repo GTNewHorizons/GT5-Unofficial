@@ -198,9 +198,9 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 								final int r = (int) M.vSmallestRatio[irc];
 								inputStackCount = inputStackCount+r;
 								if ((M.getComposites().get(irc).getStackMaterial().getState() != MaterialState.SOLID) && ((M.getComposites().get(irc).getDustStack(r) == null) || (M.getComposites().get(irc).getDustStack(r) == ItemUtils.getSimpleStack(ModItems.AAA_Broken)))){
-									final int xr = M.getComposites().get(irc).getPartsPerOneHundred();
+									final int xr = r;
 									if ((xr > 0) && (xr <= 100)){
-										final int mathmatics = (xr <= 10 ? 1000 : ((xr/10)*1000));
+										final int mathmatics = (r*1000);
 										componentsFluid = FluidUtils.getFluidStack(M.getComposites().get(irc).getStackMaterial().getFluid(mathmatics), mathmatics);
 									}
 								}
