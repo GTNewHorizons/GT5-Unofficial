@@ -146,6 +146,7 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Plates.generateRecipes(matInfo);
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
 			new RecipeGen_Recycling(matInfo);
 			return true;
 			
@@ -183,6 +184,7 @@ public class MaterialGenerator {
 		//Add A jillion Recipes - old code
 		RecipeGen_DustGeneration.addMixerRecipe_Standalone(matInfo);
 		RecipeGen_Fluids.generateRecipes(matInfo);
+		RecipeGen_MaterialProcessing.generateRecipes(matInfo);
 		//RecipeGen_Recycling.generateRecipes(matInfo);
 	}
 
@@ -221,6 +223,7 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Assembler.generateRecipes(matInfo);
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
 			new RecipeGen_Recycling(matInfo);
 		} catch (final Throwable t){
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
