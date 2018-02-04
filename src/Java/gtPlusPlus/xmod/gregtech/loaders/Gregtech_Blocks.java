@@ -6,6 +6,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
 
 public class Gregtech_Blocks {
 
@@ -19,6 +20,7 @@ public class Gregtech_Blocks {
 		//Casing Blocks
 		ModBlocks.blockCasingsMisc = new GregtechMetaCasingBlocks();
 		ModBlocks.blockCasings2Misc = new GregtechMetaCasingBlocks2();
+		ModBlocks.blockCasings3Misc = new GregtechMetaCasingBlocks3();
 
 	}
 }

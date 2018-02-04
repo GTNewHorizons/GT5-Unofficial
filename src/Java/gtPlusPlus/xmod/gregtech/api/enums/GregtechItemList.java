@@ -281,7 +281,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Battery_Gem_1, Battery_Gem_2, Battery_Gem_3, 
 	
 	//Super Tier Chests
-	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV,
+	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 
+	
+	//Fish Pond
+	Casing_FishPond, Industrial_FishingPond,
 	
 	
 	

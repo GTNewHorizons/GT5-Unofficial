@@ -44,7 +44,6 @@ public class COMPAT_HANDLER {
 
 			//Free IDs
 			/*
-			829
 			---
 			859
 			to
@@ -99,6 +98,7 @@ public class COMPAT_HANDLER {
 			GregtechComponentAssembler.run();
 			GregtechTeslaTower.run();
 			GregtechSuperTanks.run();
+			GregtechIndustrialFishPond.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

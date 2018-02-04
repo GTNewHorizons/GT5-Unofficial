@@ -23,6 +23,7 @@ import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -39,6 +40,7 @@ public final class ModBlocks {
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
 	public static Block blockCasings2Misc;
+	public static Block blockCasings3Misc;
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
 	public static Block blockNHG;
