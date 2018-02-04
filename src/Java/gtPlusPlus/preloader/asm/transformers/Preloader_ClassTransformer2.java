@@ -2,6 +2,7 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import static org.objectweb.asm.Opcodes.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -48,7 +49,7 @@ public class Preloader_ClassTransformer2 {
 
 
 	public static boolean mHasSetField = false;
-	
+
 	private final static Class<BaseMetaTileEntity> customTransformer2 = BaseMetaTileEntity.class;
 	public static final class GT_MetaTile_Visitor extends ClassVisitor {
 		private boolean isGt_Block_Machines = false;
@@ -182,83 +183,9 @@ public class Preloader_ClassTransformer2 {
 		Logger.INFO("DROP!");
 		try {
 			short tID = (short) ReflectionUtils.getField(customTransformer2, "mID").get(o);
-			NBTTagCompound tRecipeStuff = (NBTTagCompound) ReflectionUtils.getField(customTransformer2, "mRecipeStuff").get(o);
-			boolean tMuffler = (boolean) ReflectionUtils.getField(customTransformer2, "mMuffler").get(o);
-			boolean tLockUpgrade = (boolean) ReflectionUtils.getField(customTransformer2, "mLockUpgrade").get(o);
-			boolean tSteamConverter = (boolean) ReflectionUtils.getField(customTransformer2, "mSteamConverter").get(o);
-			byte tColor = (byte) ReflectionUtils.getField(customTransformer2, "mColor").get(o);
-			byte tOtherUpgrades = (byte) ReflectionUtils.getField(customTransformer2, "mOtherUpgrades").get(o);
-			byte tStrongRedstone = (byte) ReflectionUtils.getField(customTransformer2, "mStrongRedstone").get(o);
-			int[] tCoverSides = (int[]) ReflectionUtils.getField(customTransformer2, "mCoverSides").get(o);
-			int[] tCoverData = (int[]) ReflectionUtils.getField(customTransformer2, "mCoverData").get(o);
-			FluidStack tFluid = null;
-			if (GT_MetaTileEntity_BasicTank.class.isInstance(o)) {
-				try {
-					tFluid = (FluidStack) ReflectionUtils.getField(GT_MetaTileEntity_BasicTank.class, "mFluid").get(o);	
-				}
-				catch (Throwable t) {
-					Logger.REFLECTION("mFluid was not set.");					
-				}
-			}
-			else {
-				Logger.REFLECTION("mFluid was not found.");
-			}
-			NBTTagCompound mItemStorageNBT = (NBTTagCompound) ReflectionUtils.getField(customTransformer2, "mItemStorageNBT").get(o);
-			
-			MetaTileEntity tMetaTileEntity = (MetaTileEntity) ReflectionUtils.getField(customTransformer2, "mMetaTileEntity").get(o);
-			//BaseMetaTileEntity tMetaTileEntity = o;
-
-			Logger.REFLECTION("tID: "+(tID != 0));
-			Logger.REFLECTION("tRecipeStuff: "+(tRecipeStuff != null));
-			Logger.REFLECTION("tMuffler: "+(tMuffler != false));
-			Logger.REFLECTION("tLockUpgrade: "+(tLockUpgrade != false));
-			Logger.REFLECTION("tSteamConverter: "+(tSteamConverter != false));
-			Logger.REFLECTION("tColor: "+(tColor != 0));
-			Logger.REFLECTION("tOtherUpgrades: "+(tOtherUpgrades != 0));
-			Logger.REFLECTION("tCoverSides: "+(tCoverSides != null));
-			Logger.REFLECTION("tCoverData: "+(tCoverData != null));
-			Logger.REFLECTION("tMetaTileEntity: "+(tMetaTileEntity != null));
-			Logger.REFLECTION("mItemStorageNBT: "+(mItemStorageNBT != null));
-
-			//mItemStorageNBT
-			
 			ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
 			NBTTagCompound tNBT = new NBTTagCompound();
-
-			if (tRecipeStuff != null && !tRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", tRecipeStuff);
-			if (mItemStorageNBT != null && !mItemStorageNBT.hasNoTags()) tNBT.setTag("GT.ItemNBT", mItemStorageNBT);
-			if (tMuffler) tNBT.setBoolean("mMuffler", tMuffler);
-			if (tLockUpgrade) tNBT.setBoolean("mLockUpgrade", tLockUpgrade);
-			if (tSteamConverter) tNBT.setBoolean("mSteamConverter", tSteamConverter);
-			if (tColor > 0) tNBT.setByte("mColor", tColor);
-			//if (tFluid != null) tFluid.writeToNBT(tNBT);
-			if (tFluid != null) tNBT.setTag("mFluid", tFluid.tag);
-			if (tOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", tOtherUpgrades);
-			if (tStrongRedstone > 0) tNBT.setByte("mStrongRedstone", tStrongRedstone);
-			for (byte i = 0; i < tCoverSides.length; i++) {
-				if (tCoverSides[i] != 0) {
-					tNBT.setIntArray("mCoverData", tCoverData);
-					tNBT.setIntArray("mCoverSides", tCoverSides);
-					break;
-				}
-			}
-
-			/*//Set Item NBT
-			if (!o.isInvalid()){
-				((MetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
-			}
-			else {
-				try {
-					Logger.REFLECTION("Trying to set NBT data to Itemstack from invalid tile, World might explode.");
-					((MetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
-				}
-				catch (Throwable t){
-					Logger.REFLECTION("getDropsHack1");
-					t.printStackTrace();
-				}				
-			}*/
-
-			//Set stack NBT
+			tNBT = generateGetDropsNBT(o);
 			if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
 			return new ArrayList<ItemStack>(Arrays.asList(rStack));
 		}		
@@ -280,14 +207,36 @@ public class Preloader_ClassTransformer2 {
 			final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;			
 			final Random tRandom = new XSTR();
 			GT_Block_Machines.mTemporaryTileEntity.set(tGregTechTileEntity);
+
+			//Try inject this
+			Logger.INFO("Hopefully saving ItemNBT data.");
+
+			NBTTagCompound tNBT = new NBTTagCompound();
+			tNBT = generateGetDropsNBT(tGregTechTileEntity.getMetaTileEntity().getBaseMetaTileEntity());
+			tGregTechTileEntity.getMetaTileEntity().setItemNBT(tNBT);
+			Field fffff;
+			try {
+				fffff = ReflectionUtils.getField(tGregTechTileEntity.getClass(), "mItemStorageNBT");
+				if (fffff == null) {
+					fffff.set(tGregTechTileEntity.getMetaTileEntity(), tNBT);
+					Logger.REFLECTION("Hopefully injected field data.");	
+				}
+				else {
+					Logger.REFLECTION("Injected field is not null.");					
+				}
+			}
+			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+
+
 			for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); ++i) {
 				final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
 				if (tItem != null && tItem.stackSize > 0 && tGregTechTileEntity.isValidSlot(i)) {
-					
-					//Try inject this
-					tGregTechTileEntity.getMetaTileEntity().setItemNBT((NBTTagCompound) tItem.getTagCompound().copy());
-					Logger.INFO("Hopefully saved ItemNBT data.");
-					
+
+
+
 					final EntityItem tItemEntity = new EntityItem(aWorld,
 							(double) (aX + tRandom.nextFloat() * 0.8f + 0.1f),
 							(double) (aY + tRandom.nextFloat() * 0.8f + 0.1f),
@@ -316,5 +265,87 @@ public class Preloader_ClassTransformer2 {
 			world.removeTileEntity(aX, aY, aZ);
 		}
 	}
+
+	public static NBTTagCompound generateGetDropsNBT(IGregTechTileEntity iGregTechTileEntity) {
+			Logger.INFO("DROP!");
+			try {
+				short tID = (short) ReflectionUtils.getField(customTransformer2, "mID").get(iGregTechTileEntity);
+				NBTTagCompound tRecipeStuff = (NBTTagCompound) ReflectionUtils.getField(customTransformer2, "mRecipeStuff").get(iGregTechTileEntity);
+				boolean tMuffler = (boolean) ReflectionUtils.getField(customTransformer2, "mMuffler").get(iGregTechTileEntity);
+				boolean tLockUpgrade = (boolean) ReflectionUtils.getField(customTransformer2, "mLockUpgrade").get(iGregTechTileEntity);
+				boolean tSteamConverter = (boolean) ReflectionUtils.getField(customTransformer2, "mSteamConverter").get(iGregTechTileEntity);
+				byte tColor = (byte) ReflectionUtils.getField(customTransformer2, "mColor").get(iGregTechTileEntity);
+				byte tOtherUpgrades = (byte) ReflectionUtils.getField(customTransformer2, "mOtherUpgrades").get(iGregTechTileEntity);
+				byte tStrongRedstone = (byte) ReflectionUtils.getField(customTransformer2, "mStrongRedstone").get(iGregTechTileEntity);
+				int[] tCoverSides = (int[]) ReflectionUtils.getField(customTransformer2, "mCoverSides").get(iGregTechTileEntity);
+				int[] tCoverData = (int[]) ReflectionUtils.getField(customTransformer2, "mCoverData").get(iGregTechTileEntity);
+
+				NBTTagCompound mItemStorageNBT;
+				MetaTileEntity tMetaTileEntity = (MetaTileEntity) ReflectionUtils.getField(customTransformer2, "mMetaTileEntity").get(iGregTechTileEntity);
+				Field fffff = ReflectionUtils.getField(customTransformer2, "mItemStorageNBT");
+				if (fffff == null) {
+					Logger.REFLECTION("Injected field is null.");
+					mItemStorageNBT =  new NBTTagCompound();
+				}
+				else {
+					Logger.REFLECTION("Injected field exists.");	
+					if (fffff.get(iGregTechTileEntity) != null) {
+						Logger.REFLECTION("Injected field has value.");	
+						mItemStorageNBT = (NBTTagCompound) fffff.get(iGregTechTileEntity);
+					}
+					else {
+						Logger.REFLECTION("Injected field has no value.");	
+						mItemStorageNBT =  new NBTTagCompound();					
+					}
+				}
+
+				//BaseMetaTileEntity tMetaTileEntity = o;
+
+				Logger.REFLECTION("tID: "+(tID != 0));
+				Logger.REFLECTION("tRecipeStuff: "+(tRecipeStuff != null));
+				Logger.REFLECTION("tMuffler: "+(tMuffler != false));
+				Logger.REFLECTION("tLockUpgrade: "+(tLockUpgrade != false));
+				Logger.REFLECTION("tSteamConverter: "+(tSteamConverter != false));
+				Logger.REFLECTION("tColor: "+(tColor != 0));
+				Logger.REFLECTION("tOtherUpgrades: "+(tOtherUpgrades != 0));
+				Logger.REFLECTION("tCoverSides: "+(tCoverSides != null));
+				Logger.REFLECTION("tCoverData: "+(tCoverData != null));
+				Logger.REFLECTION("tMetaTileEntity: "+(tMetaTileEntity != null));
+				Logger.REFLECTION("mItemStorageNBT: "+(mItemStorageNBT != null));
+
+				//mItemStorageNBT
+
+				ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
+				NBTTagCompound tNBT = new NBTTagCompound();
+
+				if (tRecipeStuff != null && !tRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", tRecipeStuff);
+				if (mItemStorageNBT != null && !mItemStorageNBT.hasNoTags()) tNBT.setTag("mItemStorageNBT", mItemStorageNBT);
+				if (tMuffler) tNBT.setBoolean("mMuffler", tMuffler);
+				if (tLockUpgrade) tNBT.setBoolean("mLockUpgrade", tLockUpgrade);
+				if (tSteamConverter) tNBT.setBoolean("mSteamConverter", tSteamConverter);
+				if (tColor > 0) tNBT.setByte("mColor", tColor);
+				//if (tFluid != null) tFluid.writeToNBT(tNBT);
+				//if (tFluid != null) tNBT.setTag("mFluid", tFluid);
+				if (tOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", tOtherUpgrades);
+				if (tStrongRedstone > 0) tNBT.setByte("mStrongRedstone", tStrongRedstone);
+				for (byte i = 0; i < tCoverSides.length; i++) {
+					if (tCoverSides[i] != 0) {
+						tNBT.setIntArray("mCoverData", tCoverData);
+						tNBT.setIntArray("mCoverSides", tCoverSides);
+						break;
+					}
+				}
+
+				//Set stack NBT
+				if (!tNBT.hasNoTags()) {
+					return tNBT;
+				}
+			}		
+			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){
+				Logger.REFLECTION("getDropsHack2");
+				a.printStackTrace();
+			}
+			return new NBTTagCompound();
+		}
 
 }
