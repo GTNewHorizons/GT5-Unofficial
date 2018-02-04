@@ -173,6 +173,8 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Machine_Vent_Fast = Internal_Overlay_Machine_Vent_Fast;
 	private static final CustomIcon Internal_Overlay_Machine_Vent_Adv = new CustomIcon("TileEntities/adv_machine_vent_rotating");
 	public static final CustomIcon Overlay_Machine_Vent_Adv = Internal_Overlay_Machine_Vent_Adv;
+	//Grate Texture
+	public static final CustomIcon OVERLAY_GRATE_A = new CustomIcon("metro/OVERLAY_GRATE_A");
 	//Speaker Texture
 	private static final CustomIcon Internal_Overlay_Machine_Sound = new CustomIcon("TileEntities/audio_out");
 	public static final CustomIcon Overlay_Machine_Sound = Internal_Overlay_Machine_Sound;
@@ -228,5 +230,22 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Oil = Internal_Overlay_Oil;
 	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 	public static final CustomIcon Overlay_UU_Matter = Internal_Overlay_UU_Matter;
+	
+	
+	//Metroid related
+	public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
+	public static final CustomIcon TEXTURE_METAL_PANEL_B = new CustomIcon("metro/TEXTURE_METAL_PANEL_B");
+	public static final CustomIcon TEXTURE_ORGANIC_PANEL_A = new CustomIcon("metro/TEXTURE_ORGANIC_PANEL_A");
+	public static final CustomIcon TEXTURE_STONE_BIRD_A = new CustomIcon("metro/TEXTURE_STONE_BIRD_A");
+	public static final CustomIcon TEXTURE_STONE_BIRD_A_LEFT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_LEFT");
+	public static final CustomIcon TEXTURE_STONE_BIRD_A_RIGHT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_RIGHT");
+	public static final CustomIcon TEXTURE_STONE_BLUE_A = new CustomIcon("metro/TEXTURE_STONE_BLUE_A");
+	public static final CustomIcon TEXTURE_STONE_GREEN_A = new CustomIcon("metro/TEXTURE_STONE_GREEN_A");
+	public static final CustomIcon TEXTURE_STONE_TABLET_A = new CustomIcon("metro/TEXTURE_STONE_TABLET_A");
+	public static final CustomIcon TEXTURE_STONE_TABLET_B = new CustomIcon("metro/TEXTURE_STONE_TABLET_B");
+	public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
+	public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
+	public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
+	public static final CustomIcon TEXTURE_TECH_PANEL_A = new CustomIcon("metro/TEXTURE_TECH_PANEL_A");
 
 }

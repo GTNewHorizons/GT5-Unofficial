@@ -6,6 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
@@ -13,6 +14,8 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.world.darkworld.block.DarkWorldContentLoader;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
@@ -47,6 +50,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Industrial Ore Washing Plant",
 				"80% faster than using single block machines of the same voltage",
 				"Processes one item per voltage tier",
+				"Chance to output Sludge per process",
 				"Size: 7x3x5 [WxHxL] (open)",
 				"X     X",
 				"X     X",
@@ -87,7 +91,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if (checkForWater()) {
-			return checkRecipeGeneric((1*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 80);
+			if (checkRecipeGeneric((1*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 80)) {
+				return addSludge();
+			}
 		}
 		return false;
 	}
@@ -302,6 +308,25 @@ extends GregtechMeta_MultiBlockBase {
 			Logger.WARNING("Did not fill structure.");
 		}
 		return (tAmount >= 45);
+	}
+	
+	public boolean addSludge() {		
+		if (MathUtils.randInt(0, 100) <= 4) {
+			if (this.mOutputHatches.size() > 0) {
+				for (GT_MetaTileEntity_Hatch_Output h : this.mOutputHatches) {
+					if (h.getFluid() == null || h.getFluid().isFluidEqual(FluidUtils.getFluidStack(DarkWorldContentLoader.SLUDGE, 1000))) {
+						FluidStack current = h.mFluid;
+						if (current == null) {
+							h.mFluid = FluidUtils.getFluidStack(DarkWorldContentLoader.SLUDGE, 1000);
+						}
+						else {
+							h.mFluid.amount += 1000;
+						}
+					}
+				}
+			}
+		}		
+		return true;
 	}
 
 }

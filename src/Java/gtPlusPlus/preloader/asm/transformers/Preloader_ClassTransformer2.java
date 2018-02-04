@@ -5,6 +5,8 @@ import static org.objectweb.asm.Opcodes.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.logging.log4j.Level;
@@ -18,6 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -179,13 +182,26 @@ public class Preloader_ClassTransformer2 {
 
 
 	public static ArrayList<ItemStack> getDrops(BaseMetaTileEntity o) {
-		Logger.INFO("getDrops(BaseMetaTileEntity(this))");
+		Logger.INFO("BaseMetaTileEntity.getDrops(BaseMetaTileEntity(this))");
 		try {
 			short tID = (short) ReflectionUtils.getField(customTransformer2, "mID").get(o);
 			ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
-			/*NBTTagCompound tNBT = new NBTTagCompound();
-			tNBT = generateGetDropsNBT(o);
-			if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);*/
+			
+			NBTTagCompound i = new NBTTagCompound();
+
+			i = stupidFuckingNBTMap.get(new BlockPos(o.xCoord, o.yCoord, o.zCoord));
+			Logger.INFO("Got NBT Tag Value from map.");			
+			
+			NBTTagCompound tNBT = i;
+			if (tNBT == null) {
+				Logger.INFO("Map tag was null.");
+				tNBT = generateGetDropsNBT(o);
+			}
+			if (!tNBT.hasNoTags()) {
+				rStack.setTagCompound(tNBT);	
+				Logger.INFO("Iterating rStack NBT.");
+				NBTUtils.tryIterateNBTData(rStack);
+			}
 			return new ArrayList<ItemStack>(Arrays.asList(rStack));
 		}		
 		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){
@@ -196,10 +212,10 @@ public class Preloader_ClassTransformer2 {
 		return u;
 	}
 
-
+	public static Map<BlockPos, NBTTagCompound> stupidFuckingNBTMap = new HashMap<BlockPos, NBTTagCompound>();
 	public static void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block block,
 			final int meta) {
-		Logger.INFO("breakBlock");
+		Logger.INFO("GT_Block_Machines.breakBlock()");
 		GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
 		final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity instanceof IGregTechTileEntity) {
@@ -221,16 +237,14 @@ public class Preloader_ClassTransformer2 {
 				}
 				else {
 					fffff.set(tGregTechTileEntity.getMetaTileEntity().getBaseMetaTileEntity(), tNBT);
-					Logger.REFLECTION("Hopefully injected field data.");				
+					Logger.REFLECTION("Hopefully injected field data.");
+					stupidFuckingNBTMap.put(new BlockPos(aX, aY, aZ), tNBT);		
+					Logger.INFO("Set NBT Tag Value to map.");			
 				}
 			}
 			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-
-			ItemStack xko = ItemUtils.getSimpleStack(Items.apple);
-			xko.setTagCompound(tNBT);
-			NBTUtils.tryIterateNBTData(xko);
 
 			for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); ++i) {
 				final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
@@ -336,10 +350,14 @@ public class Preloader_ClassTransformer2 {
 						break;
 					}
 				}
-
+				
 				//Set stack NBT
 				if (!tNBT.hasNoTags()) {
+					Logger.INFO("Returning Valid NBT data");
 					return tNBT;
+				}
+				else {
+					Logger.INFO("Returning Invalid NBT data");					
 				}
 			}		
 			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){

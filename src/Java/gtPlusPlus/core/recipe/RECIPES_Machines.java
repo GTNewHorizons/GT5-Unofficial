@@ -7,6 +7,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -141,6 +142,7 @@ public class RECIPES_Machines {
 	public static ItemStack EV_MACHINE_Wiremill;
 	public static ItemStack HV_MACHINE_Macerator;
 	public static ItemStack EV_MACHINE_Macerator;
+	public static ItemStack EV_MACHINE_Cutter;
 	public static ItemStack EV_MACHINE_MassFabricator;
 
 
@@ -213,6 +215,7 @@ public class RECIPES_Machines {
 			EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
 			EV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
 			EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
+			EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
 
 
 		}
@@ -1081,6 +1084,21 @@ public class RECIPES_Machines {
 						CI.robotArm_ULV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_ULV,
 						"plateStainlessSteel",CI.emitter_ULV,"plateStainlessSteel",
 						ItemUtils.getSimpleStack(ModBlocks.blockProjectTable));
+			}
+			
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine){
+				ItemStack plate = ALLOY.MARAGING300.getPlate(1);
+				RecipeUtils.recipeBuilder(
+						plate, CI.craftingToolHammer_Hard, plate,
+						"plateStellite", "frameGtTalonite", "plateStellite",
+						plate, CI.craftingToolWrench, plate,
+						GregtechItemList.Casing_CuttingFactoryFrame.get(Casing_Amount));
+
+				RecipeUtils.recipeBuilder( 
+						plate,CI.getTieredCircuit(3),plate,
+						"wireFinePlatinum", EV_MACHINE_Cutter, "wireFinePlatinum",
+						plate,CI.getTieredCircuit(4),plate,
+						GregtechItemList.Industrial_CuttingFactoryController.get(1));
 			}
 			
 			//Wireless Chargers

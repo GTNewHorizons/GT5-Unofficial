@@ -45,7 +45,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Industrial Sifter",
 				"400% faster than single-block machines of the same voltage",
 				"Processes two items per voltage tier",
-				"Increased output chances",
+				"Increased output chances on % outputs",
 				"Size[WxHxL]: 5x3x5",
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any top or bottom edge casing)",

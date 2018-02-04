@@ -50,7 +50,12 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 				//Reactor Casing II
 			case 13:
-				return TexturesGtBlock.Casing_Machine_Ultra.getIcon();
+				if (aSide <2) {
+					return TexturesGtBlock.TEXTURE_TECH_A.getIcon();					
+				}
+				else {
+					return TexturesGtBlock.TEXTURE_TECH_B.getIcon();					
+				}
 			case 14:
 				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 			case 15:
