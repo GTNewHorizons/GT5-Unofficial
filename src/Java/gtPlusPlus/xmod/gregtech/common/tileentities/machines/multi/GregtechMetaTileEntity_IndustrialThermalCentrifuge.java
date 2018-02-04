@@ -60,6 +60,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return false;
+	}
+
+	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "WireFactory.png");
 	}

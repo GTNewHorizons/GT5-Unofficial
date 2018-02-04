@@ -222,6 +222,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+
+	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "TreeFarmer.png");
 	}

@@ -72,6 +72,11 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return false;
+	}
+
+	@Override
 	public String[] getDescription() {
 		String casings = getCasingBlockItem().get(0).getDisplayName();
 		return new String[]{

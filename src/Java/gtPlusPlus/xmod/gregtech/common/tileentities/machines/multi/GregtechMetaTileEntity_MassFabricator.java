@@ -90,6 +90,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return false;
+	}
+
+	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_MatterFab(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MatterFabricator.png");
 	}

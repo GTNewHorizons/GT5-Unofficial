@@ -67,6 +67,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+
+	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "CokeOven.png");
 	}

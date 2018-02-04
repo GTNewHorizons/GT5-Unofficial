@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.GT_Container_MultiMachine;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -19,9 +20,7 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
@@ -57,21 +56,27 @@ GT_MetaTileEntity_MultiBlockBase {
 						.getMetaTileEntity() == aMetaTileEntity)
 				&& !aMetaTileEntity.getBaseMetaTileEntity().isDead();
 	}
+	
+	public abstract boolean hasSlotInGUI();
 
 	@Override
-	public Object getServerGUI(final int aID,
-			final InventoryPlayer aPlayerInventory,
-			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_MultiMachine(aPlayerInventory,
-				aBaseMetaTileEntity);
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		if (hasSlotInGUI()) {
+			return new GT_Container_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
+		}
+		else {
+			return new CONTAINER_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
+		}
 	}
 
 	@Override
-	public Object getClientGUI(final int aID,
-			final InventoryPlayer aPlayerInventory,
-			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity,
-				this.getLocalName(), "MultiblockDisplay.png");
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {		
+		if (hasSlotInGUI()) {
+			return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");			
+		}
+		else {
+			return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");			
+		}		
 	}
 
 	@Override

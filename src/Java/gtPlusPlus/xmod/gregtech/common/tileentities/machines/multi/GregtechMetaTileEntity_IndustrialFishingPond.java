@@ -4,13 +4,11 @@ import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,16 +18,15 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
@@ -37,6 +34,7 @@ import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +43,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechMetaTileEntity_IndustrialFishingPond
 extends GregtechMeta_MultiBlockBase {
 
+	private boolean isUsingControllerCircuit = false;
+	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
 
 	public GregtechMetaTileEntity_IndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -64,9 +64,9 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Fishing Pond",
 				"Size: 9x3x9 [WxHxL] (open)",
-				"X     X",
-				"X     X",
-				"XXXXX",
+				"X           X",
+				"X           X",
+				"XXXXXXXXX",
 				"Put a numbered circuit into the input bus.",
 				"Circuit 14 for Fish",
 				"Circuit 15 for Junk",
@@ -90,8 +90,13 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+
+	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "WireFactory.png");
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "ProcessingArray.png");
 	}
 
 	@Override
@@ -106,6 +111,20 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		if (aStack != null) {
+			Logger.WARNING("Found "+aStack.getDisplayName());
+			if (aStack.getItem() == circuit) {
+				this.isUsingControllerCircuit = true;
+				this.mMode = aStack.getItemDamage();
+				Logger.WARNING("Found Circuit!");
+			}
+			else {
+				this.isUsingControllerCircuit = false;				
+			}
+		}
+		else {
+			this.isUsingControllerCircuit = false;				
+		}
 		if (!hasGenerateRecipes) {
 			Logger.WARNING("Generating Recipes.");
 			generateRecipes();
@@ -115,7 +134,12 @@ extends GregtechMeta_MultiBlockBase {
 			ArrayList<ItemStack> tItems = getStoredInputs();
 			ArrayList<FluidStack> tFluids = getStoredFluids();
 			ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-			FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);			
+			FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+			
+			if (!isUsingControllerCircuit && tItems.size() == 0) {
+				return false;
+			}
+			
 			return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 100, 80, 100);
 		}
 		return true;
@@ -123,7 +147,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-
 		//Get Facing direction
 		int mDirectionX  = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int mCurrentDirectionX;
@@ -170,10 +193,10 @@ extends GregtechMeta_MultiBlockBase {
 								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
 										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
 									if (tBlock == Blocks.air){
-										Logger.INFO("Found Air");
+										Logger.WARNING("Found Air");
 									}
 									else if (tBlock == Blocks.water){
-										Logger.INFO("Found Water");
+										Logger.WARNING("Found Water");
 									}
 								}
 								else {
@@ -181,8 +204,8 @@ extends GregtechMeta_MultiBlockBase {
 
 									}
 									else {
-										Logger.INFO("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j) + " | Special Meta: "+(tTileEntity == null ? "0" : tTileEntity.getMetaTileID()));
-										Logger.INFO("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
+										Logger.WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j) + " | Special Meta: "+(tTileEntity == null ? "0" : tTileEntity.getMetaTileID()));
+										Logger.WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
 										return false;
 									}
 								}
@@ -195,10 +218,10 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((tAmount >= 64)){
-			Logger.INFO("Made structure.");
+			Logger.WARNING("Made structure.");
 		}
 		else {
-			Logger.INFO("Did not make structure.");
+			Logger.WARNING("Did not make structure.");
 		}
 		return (tAmount >= 64);
 	}
@@ -306,11 +329,11 @@ extends GregtechMeta_MultiBlockBase {
 					}
 					if (tBlock == Blocks.water) {
 						++tAmount;
-						//Logger.INFO("Found Water");
+						//Logger.WARNING("Found Water");
 					} else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
 						++tAmount;
 						++tAmount;
-						//Logger.INFO("Found Distilled Water");
+						//Logger.WARNING("Found Distilled Water");
 					}
 				}
 			}
@@ -355,36 +378,38 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	private int getCircuit(ItemStack[] t) {
-		for (ItemStack j : t) {
-			if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
-				//Fish
-				if (j.getItemDamage() == 14) {
-					mMax = 8;	
-					this.mMode = 14;
-					break;
-				}
-				//Junk
-				else if (j.getItemDamage() == 15) {
-					this.mMode = 15;
-					mMax = 4;		
-					break;			
-				}
-				//Loot
-				else if (j.getItemDamage() == 16) {
-					this.mMode = 16;
-					mMax = 4;
-					break;					
+		if (!this.isUsingControllerCircuit) {
+			for (ItemStack j : t) {
+				if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
+					//Fish
+					if (j.getItemDamage() == 14) {
+						mMax = 8;	
+						this.mMode = 14;
+						break;
+					}
+					//Junk
+					else if (j.getItemDamage() == 15) {
+						this.mMode = 15;
+						mMax = 4;		
+						break;			
+					}
+					//Loot
+					else if (j.getItemDamage() == 16) {
+						this.mMode = 16;
+						mMax = 4;
+						break;					
+					}
+					else {
+						this.mMode = 0;
+						mMax = 0;
+						break;
+					}
 				}
 				else {
 					this.mMode = 0;
 					mMax = 0;
 					break;
 				}
-			}
-			else {
-				this.mMode = 0;
-				mMax = 0;
-				break;
 			}
 		}
 		return this.mMode;
@@ -475,11 +500,11 @@ extends GregtechMeta_MultiBlockBase {
 
 		ItemStack[] mFishOutput = generateLoot(this.mMode);
 		Logger.WARNING("Mode: "+this.mMode+" | Is loot valid? "+(mFishOutput != null));
-		
+
 		int jslot = 0;
 		for (ItemStack x : mFishOutput) {
 			if (x != null) {
-				Logger.INFO("Slot "+jslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
+				Logger.WARNING("Slot "+jslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
 			}
 			else {
 				Logger.WARNING("Slot "+jslot+" in mFishOutput was null.");
@@ -497,7 +522,7 @@ extends GregtechMeta_MultiBlockBase {
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
 
-		tTotalEUt = 16;
+		tTotalEUt = 8;
 		Logger.WARNING("Recipe Step. [1]");
 
 		if (parallelRecipes == 0) {
@@ -508,7 +533,7 @@ extends GregtechMeta_MultiBlockBase {
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
 		float tTimeFactor = 100.0f / (100.0f + 0);
-		
+
 		float modeMulti = 1;
 		modeMulti = (this.mMode == 14 ? 5 : (this.mMode == 15 ? 1 : 20));
 		this.mMaxProgresstime = (int)((60*modeMulti) * tTimeFactor);
@@ -539,26 +564,26 @@ extends GregtechMeta_MultiBlockBase {
 		Logger.WARNING("Recipe Step. [3]");
 		// Collect output item types
 		ItemStack[] tOutputItems = mFishOutput;
-		
-		
+
+
 		int rslot = 0;		
 		tOutputItems = removeNulls(mFishOutput);
-		
+
 		for (ItemStack x : tOutputItems) {
 			if (x != null) {
-				Logger.INFO("rSlot "+rslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
+				Logger.WARNING("rSlot "+rslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
 			}
 			else {
-				Logger.INFO("rSlot "+rslot+" in mFishOutput was null.");
+				Logger.WARNING("rSlot "+rslot+" in mFishOutput was null.");
 			}
 			rslot++;
 		}		
-		
+
 		// Commit outputs		
 		for (ItemStack n : tOutputItems) {
 			this.addOutput(n);			
 		}
-		
+
 		//this.mOutputItems = tOutputItems;
 		//updateSlots();
 

@@ -59,6 +59,11 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	}
 
 	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+
+	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ProcessingArray.png");
 	}
