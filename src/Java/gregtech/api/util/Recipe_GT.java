@@ -281,6 +281,8 @@ public class Recipe_GT extends GT_Recipe{
 		
 		//Component Assembler
 		public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gt.recipe.componentassembler", "Component Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sFishPondRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.fishpond", "Zhuhai - Fishing Port", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 1, 0, 0, 1, E, 1, E, true, true);
+       
         
 		
 		/**

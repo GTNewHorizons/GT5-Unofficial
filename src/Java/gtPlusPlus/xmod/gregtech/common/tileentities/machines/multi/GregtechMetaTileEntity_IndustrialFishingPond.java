@@ -1,18 +1,35 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.enums.GT_Values;
+import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
@@ -21,6 +38,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,20 +62,22 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[]{
-				"Controller Block for the Industrial Ore Washing Plant",
-				"80% faster than using single block machines of the same voltage",
-				"Processes one item per voltage tier",
-				"Size: 7x3x5 [WxHxL] (open)",
+				"Controller Block for the Fishing Pond",
+				"Size: 9x3x9 [WxHxL] (open)",
 				"X     X",
 				"X     X",
 				"XXXXX",
+				"Put a numbered circuit into the input bus.",
+				"Circuit 14 for Fish",
+				"Circuit 15 for Junk",
+				"Circuit 16 for Treasure",
 				"Controller (front centered)",
-				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
+				"1x Input Bus (Any casing)",
+				"1x Input Hatch (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				CORE.GT_Tooltip
-
 		};
 	}
 
@@ -76,7 +96,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
+		return Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes;
 	}
 
 	@Override
@@ -86,10 +106,19 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		if (checkForWater()) {
-			return checkRecipeGeneric((1*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 80);
+		if (!hasGenerateRecipes) {
+			Logger.WARNING("Generating Recipes.");
+			generateRecipes();
+		}		
+		if (hasGenerateRecipes && checkForWater()) {
+			Logger.WARNING("Trying to run recipe.");
+			ArrayList<ItemStack> tItems = getStoredInputs();
+			ArrayList<FluidStack> tFluids = getStoredFluids();
+			ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+			FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);			
+			return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 100, 80, 100);
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -97,7 +126,6 @@ extends GregtechMeta_MultiBlockBase {
 
 		//Get Facing direction
 		int mDirectionX  = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-
 		int mCurrentDirectionX;
 		int mCurrentDirectionZ;
 		int mOffsetX_Lower = 0;
@@ -105,28 +133,19 @@ extends GregtechMeta_MultiBlockBase {
 		int mOffsetZ_Lower = 0;
 		int mOffsetZ_Upper = 0;
 
-
-		Logger.WARNING("mDirectionX "+(mDirectionX));
 		if (mDirectionX == 0){
 			mCurrentDirectionX = 2;
 			mCurrentDirectionZ = 3;
-			mOffsetX_Lower = -2;
-			mOffsetX_Upper = 2;
-			mOffsetZ_Lower = -3;
-			mOffsetZ_Upper = 3;
-			Logger.WARNING("Controler is facing Z direction.");
 		}
 		else {
 			mCurrentDirectionX = 3;
 			mCurrentDirectionZ = 2;	
-			mOffsetX_Lower = -3;
-			mOffsetX_Upper = 3;
-			mOffsetZ_Lower = -2;
-			mOffsetZ_Upper = 2;	
-			Logger.WARNING("Controler is facing X direction.");	
 		}
 
-		//if (aBaseMetaTileEntity.fac)
+		mOffsetX_Lower = -4;
+		mOffsetX_Upper = 4;
+		mOffsetZ_Lower = -4;
+		mOffsetZ_Upper = 4;
 
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * mCurrentDirectionX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * mCurrentDirectionZ;
@@ -151,16 +170,21 @@ extends GregtechMeta_MultiBlockBase {
 								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
 										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
 									if (tBlock == Blocks.air){
-										Logger.WARNING("Found Air");
+										Logger.INFO("Found Air");
 									}
 									else if (tBlock == Blocks.water){
-										Logger.WARNING("Found Water");
+										Logger.INFO("Found Water");
 									}
 								}
 								else {
-									Logger.WARNING("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
-									Logger.WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
-									return false;
+									if (tBlock.getLocalizedName().contains("gt.blockmachines") || tBlock == Blocks.water || tBlock == Blocks.flowing_water || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
+
+									}
+									else {
+										Logger.INFO("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j) + " | Special Meta: "+(tTileEntity == null ? "0" : tTileEntity.getMetaTileID()));
+										Logger.INFO("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
+										return false;
+									}
 								}
 
 							}
@@ -170,13 +194,13 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		if ((tAmount >= 8)){
-			Logger.WARNING("Made structure.");
+		if ((tAmount >= 64)){
+			Logger.INFO("Made structure.");
 		}
 		else {
-			Logger.WARNING("Did not make structure.");
+			Logger.INFO("Did not make structure.");
 		}
-		return (tAmount >= 8);
+		return (tAmount >= 64);
 	}
 
 	@Override
@@ -218,8 +242,7 @@ extends GregtechMeta_MultiBlockBase {
 				|| (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex())) 
 				|| (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex())) 
 				|| (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex()))
-				|| (this.addDynamoToMachineList(tTileEntity, this.getCasingTextureIndex())));
+				|| (this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));
 	}
 
 	public boolean checkForWater() {
@@ -234,22 +257,19 @@ extends GregtechMeta_MultiBlockBase {
 		int mOffsetZ_Lower = 0;
 		int mOffsetZ_Upper = 0;
 
+
 		if (mDirectionX == 0){
 			mCurrentDirectionX = 2;
 			mCurrentDirectionZ = 3;
-			mOffsetX_Lower = -2;
-			mOffsetX_Upper = 2;
-			mOffsetZ_Lower = -3;
-			mOffsetZ_Upper = 3;
 		}
 		else {
 			mCurrentDirectionX = 3;
 			mCurrentDirectionZ = 2;	
-			mOffsetX_Lower = -3;
-			mOffsetX_Upper = 3;
-			mOffsetZ_Lower = -2;
-			mOffsetZ_Upper = 2;	
 		}
+		mOffsetX_Lower = -4;
+		mOffsetX_Upper = 4;
+		mOffsetZ_Lower = -4;
+		mOffsetZ_Upper = 4;
 
 		//if (aBaseMetaTileEntity.fac)
 
@@ -286,22 +306,266 @@ extends GregtechMeta_MultiBlockBase {
 					}
 					if (tBlock == Blocks.water) {
 						++tAmount;
-						//Utils.LOG_WARNING("Found Water");
+						//Logger.INFO("Found Water");
 					} else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
 						++tAmount;
 						++tAmount;
-						//Utils.LOG_WARNING("Found Distilled Water");
+						//Logger.INFO("Found Distilled Water");
 					}
 				}
 			}
 		}
-		if ((tAmount >= 45)){
+		if ((tAmount >= 80)){
 			Logger.WARNING("Filled structure.");
 		}
 		else {
 			Logger.WARNING("Did not fill structure.");
 		}
-		return (tAmount >= 45);
+		return (tAmount >= 80);
+	}
+
+	private static AutoMap<AutoMap> categories = new AutoMap<AutoMap>();
+	private static AutoMap<WeightedRandomFishable> categoryFish = new AutoMap<WeightedRandomFishable>();
+	private static AutoMap<WeightedRandomFishable> categoryJunk = new AutoMap<WeightedRandomFishable>();
+	private static AutoMap<WeightedRandomFishable> categoryLoot = new AutoMap<WeightedRandomFishable>();
+	private static boolean hasGenerateRecipes = false;
+	private int mMode = 14;
+	private int mMax = 8;
+
+	private boolean generateRecipes() {
+		if (!hasGenerateRecipes) {
+			categories.put(categoryFish);
+			categories.put(categoryJunk);
+			categories.put(categoryLoot);
+			for (WeightedRandomFishable h : FishPondFakeRecipe.fish) {
+				categoryFish.put(h);
+			}
+			for (WeightedRandomFishable h : FishPondFakeRecipe.junk) {
+				categoryJunk.put(h);
+			}
+			for (WeightedRandomFishable h : FishPondFakeRecipe.treasure) {
+				categoryLoot.put(h);
+			}
+			hasGenerateRecipes = true;			
+			return true;
+		}
+		else {
+			return true;
+		}		
+	}
+
+	private int getCircuit(ItemStack[] t) {
+		for (ItemStack j : t) {
+			if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
+				//Fish
+				if (j.getItemDamage() == 14) {
+					mMax = 8;	
+					this.mMode = 14;
+					break;
+				}
+				//Junk
+				else if (j.getItemDamage() == 15) {
+					this.mMode = 15;
+					mMax = 4;		
+					break;			
+				}
+				//Loot
+				else if (j.getItemDamage() == 16) {
+					this.mMode = 16;
+					mMax = 4;
+					break;					
+				}
+				else {
+					this.mMode = 0;
+					mMax = 0;
+					break;
+				}
+			}
+			else {
+				this.mMode = 0;
+				mMax = 0;
+				break;
+			}
+		}
+		return this.mMode;
+	}
+
+	//reflection map
+	private static Map<WeightedRandomFishable, ItemStack> reflectiveFishMap = new HashMap<WeightedRandomFishable, ItemStack>();
+	private ItemStack reflectiveFish(WeightedRandomFishable y) {
+		if (reflectiveFishMap.containsKey(y)) {
+			return reflectiveFishMap.get(y);
+		}
+		ItemStack t;
+		try {
+			t = (ItemStack) ReflectionUtils.getField(WeightedRandomFishable.class, "field_150711_b").get(y);
+			ItemStack k = ItemUtils.getSimpleStack(t, 1);
+			reflectiveFishMap.put(y, k);
+			return t;
+		}
+		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {}
+		return null;
+	}
+
+	private ItemStack[] generateLoot(int mode) {
+		ItemStack[] mFishOutput = new ItemStack[this.mMax];
+		if (this.mMode == 14) {
+			for (int k=0;k<this.mMax;k++) {
+				if (mFishOutput[k] == null)
+					for (WeightedRandomFishable g : categoryFish.values()) {
+						if (MathUtils.randInt(0, 75) <= 2) {
+							ItemStack t = reflectiveFish(g);
+							if (t != null) {
+								mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
+							}
+						}						
+					}
+			}
+		}
+		else if (this.mMode == 15) {
+			for (int k=0;k<this.mMax;k++) {
+				if (mFishOutput[k] == null)
+					for (WeightedRandomFishable g : categoryJunk.values()) {
+						if (MathUtils.randInt(0, 100) <= 1) {
+							ItemStack t = reflectiveFish(g);
+							if (t != null) {
+								mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
+							}
+						}	
+					}
+			}
+		}
+		else if (this.mMode == 16) {
+			for (int k=0;k<this.mMax;k++) {
+				if (mFishOutput[k] == null)
+					for (WeightedRandomFishable g : categoryLoot.values()) {
+						if (MathUtils.randInt(0, 1000) <= 2) {
+							ItemStack t = reflectiveFish(g);
+							if (t != null) {
+								mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
+							}
+						}	
+					}
+			}
+		}
+		else {
+			mFishOutput = null;
+		}
+		return mFishOutput;
+	}
+
+	@Override
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {
+
+
+
+		// Based on the Processing Array. A bit overkill, but very flexible.
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+
+		int parallelRecipes = 1;
+		getCircuit(aItemInputs);
+
+		/*GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
+				getBaseMetaTileEntity(), mLastRecipe, false,
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);*/
+
+		ItemStack[] mFishOutput = generateLoot(this.mMode);
+		Logger.WARNING("Mode: "+this.mMode+" | Is loot valid? "+(mFishOutput != null));
+		
+		int jslot = 0;
+		for (ItemStack x : mFishOutput) {
+			if (x != null) {
+				Logger.INFO("Slot "+jslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
+			}
+			else {
+				Logger.WARNING("Slot "+jslot+" in mFishOutput was null.");
+			}
+			jslot++;
+		}
+
+		// EU discount
+		float tRecipeEUt = (32 * aEUPercent) / 100.0f;
+		float tTotalEUt = 0.0f;
+
+		// Reset outputs and progress stats
+		this.mEUt = 0;
+		this.mMaxProgresstime = 0;
+		this.mOutputItems = new ItemStack[]{};
+		this.mOutputFluids = new FluidStack[]{};
+
+		tTotalEUt = 16;
+		Logger.WARNING("Recipe Step. [1]");
+
+		if (parallelRecipes == 0) {
+			Logger.WARNING("Recipe Step. [-1]");
+			return false;
+		}
+
+		// Convert speed bonus to duration multiplier
+		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+		float tTimeFactor = 100.0f / (100.0f + 0);
+		
+		float modeMulti = 1;
+		modeMulti = (this.mMode == 14 ? 5 : (this.mMode == 15 ? 1 : 20));
+		this.mMaxProgresstime = (int)((60*modeMulti) * tTimeFactor);
+
+		this.mEUt = (int)Math.ceil(tTotalEUt);
+
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+
+		Logger.WARNING("Recipe Step. [2]");
+		// Overclock
+		if (this.mEUt <= 16) {
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+		} else {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+		}
+
+		if (this.mEUt > 0) {
+			this.mEUt = (-this.mEUt);
+		}
+
+		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+		Logger.WARNING("Recipe Step. [3]");
+		// Collect output item types
+		ItemStack[] tOutputItems = mFishOutput;
+		
+		
+		int rslot = 0;		
+		tOutputItems = removeNulls(mFishOutput);
+		
+		for (ItemStack x : tOutputItems) {
+			if (x != null) {
+				Logger.INFO("rSlot "+rslot+" in mFishOutput contains "+x.stackSize+"x "+x.getDisplayName()+".");				
+			}
+			else {
+				Logger.INFO("rSlot "+rslot+" in mFishOutput was null.");
+			}
+			rslot++;
+		}		
+		
+		// Commit outputs		
+		for (ItemStack n : tOutputItems) {
+			this.addOutput(n);			
+		}
+		
+		//this.mOutputItems = tOutputItems;
+		//updateSlots();
+
+		// Play sounds (GT++ addition - GT multiblocks play no sounds)
+		startProcess();
+
+		return true;
 	}
 
 }

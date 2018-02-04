@@ -9,60 +9,59 @@ public class CasingTextureHandler3 {
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
 			//Centrifuge
-			case 0:
-				return TexturesGtBlock.TEXTURE_METAL_PANEL_B.getIcon();
+			case 0:		
+				return TexturesGtBlock.TEXTURE_METAL_PANEL_B.getIcon();								
 				//Coke Oven Frame
 			case 1:
-				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2:
-				return TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Coke Oven Casing Tier 2
 			case 3:
-				return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Material Press Casings
 			case 4:
-				return TexturesGtBlock.Casing_Material_Grisium.getIcon();				
+				return TexturesGtBlock._PlaceHolder.getIcon();				
 				//Sifter Structural
 			case 5:
-				return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Sifter Sieve
 			case 6:
-				return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
-				
+				return TexturesGtBlock._PlaceHolder.getIcon();				
 				//Vanadium Radox Battery
 			case 7:
-				return TexturesGtBlock.Overlay_Machine_Cyber_B.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Power Sub-Station Casing
 			case 8:
-				return TexturesGtBlock.Casing_Machine_Metal_Sheet_A.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Cyclotron Coil
 			case 9:
-				return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Cyclotron External Casing
 			case 10:
-				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Multitank Exterior Casing
 			case 11:
-				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Reactor Casing I
 			case 12:
-				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Reactor Casing II
 			case 13:
 				if (aSide <2) {
-					return TexturesGtBlock.TEXTURE_TECH_A.getIcon();					
+					return TexturesGtBlock._PlaceHolder.getIcon();					
 				}
 				else {
-					return TexturesGtBlock.TEXTURE_TECH_B.getIcon();					
+					return TexturesGtBlock._PlaceHolder.getIcon();					
 				}
 			case 14:
-				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 15:
-				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon(); //Tree Farmer Textures
+				return TexturesGtBlock._PlaceHolder.getIcon(); //Tree Farmer Textures
 
 			default:
-				return TexturesGtBlock.Overlay_UU_Matter.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 
 			}
 		}

@@ -21,21 +21,21 @@ extends GregtechMetaCasingBlocksAbstract {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing"); 
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Autocrafter Frame");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Tesla Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Casing "); //Tree Farmer Textures
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder");;
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
 		//GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
 		//GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
@@ -56,6 +56,6 @@ extends GregtechMetaCasingBlocksAbstract {
 
 	@Override
 	public IIcon getIcon(final int aSide, final int aMeta) {
-		return CasingTextureHandler2.getIcon(aSide, aMeta);
+		return CasingTextureHandler3.getIcon(aSide, aMeta);
 	}
 }
