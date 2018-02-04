@@ -14,6 +14,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.api.objects.Logger;
@@ -46,13 +47,12 @@ public class Preloader_ClassTransformer2 {
 
 
 
-
-	NBTTagCompound mItemStorageNBT = new NBTTagCompound();
-
+	public static boolean mHasSetField = false;
+	
 	private final static Class<BaseMetaTileEntity> customTransformer2 = BaseMetaTileEntity.class;
 	public static final class GT_MetaTile_Visitor extends ClassVisitor {
 		private boolean isGt_Block_Machines = false;
-		private boolean mHasSetField = false;
+
 		public GT_MetaTile_Visitor(ClassVisitor cv, boolean isGt_Block_Machines) {
 			super(ASM5, cv);
 			this.isGt_Block_Machines = isGt_Block_Machines;
@@ -61,7 +61,7 @@ public class Preloader_ClassTransformer2 {
 		@Override
 		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 			FieldVisitor j =  super.visitField(access, name, desc, signature, value);
-			if (!mHasSetField) {
+			if (!mHasSetField && !isGt_Block_Machines) {
 				mHasSetField = true;				
 				FMLRelaunchLog.log("[GT++ ASM] NBTFixer", Level.INFO, "Injecting field 'mItemStorageNBT' into BaseMetaTileEntity.java. Access OpCode: "+access);
 				j = cv.visitField(0, "mItemStorageNBT", "Lnet/minecraft/nbt/NBTTagCompound;", null, null);
@@ -203,7 +203,10 @@ public class Preloader_ClassTransformer2 {
 			else {
 				Logger.REFLECTION("mFluid was not found.");
 			}
-			BaseMetaTileEntity tMetaTileEntity = o;
+			NBTTagCompound mItemStorageNBT = (NBTTagCompound) ReflectionUtils.getField(customTransformer2, "mItemStorageNBT").get(o);
+			
+			MetaTileEntity tMetaTileEntity = (MetaTileEntity) ReflectionUtils.getField(customTransformer2, "mMetaTileEntity").get(o);
+			//BaseMetaTileEntity tMetaTileEntity = o;
 
 			Logger.REFLECTION("tID: "+(tID != 0));
 			Logger.REFLECTION("tRecipeStuff: "+(tRecipeStuff != null));
@@ -215,11 +218,15 @@ public class Preloader_ClassTransformer2 {
 			Logger.REFLECTION("tCoverSides: "+(tCoverSides != null));
 			Logger.REFLECTION("tCoverData: "+(tCoverData != null));
 			Logger.REFLECTION("tMetaTileEntity: "+(tMetaTileEntity != null));
+			Logger.REFLECTION("mItemStorageNBT: "+(mItemStorageNBT != null));
 
+			//mItemStorageNBT
+			
 			ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
 			NBTTagCompound tNBT = new NBTTagCompound();
 
 			if (tRecipeStuff != null && !tRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", tRecipeStuff);
+			if (mItemStorageNBT != null && !mItemStorageNBT.hasNoTags()) tNBT.setTag("GT.ItemNBT", mItemStorageNBT);
 			if (tMuffler) tNBT.setBoolean("mMuffler", tMuffler);
 			if (tLockUpgrade) tNBT.setBoolean("mLockUpgrade", tLockUpgrade);
 			if (tSteamConverter) tNBT.setBoolean("mSteamConverter", tSteamConverter);
@@ -236,20 +243,20 @@ public class Preloader_ClassTransformer2 {
 				}
 			}
 
-			//Set Item NBT
+			/*//Set Item NBT
 			if (!o.isInvalid()){
-				((IMetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
+				((MetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
 			}
 			else {
 				try {
 					Logger.REFLECTION("Trying to set NBT data to Itemstack from invalid tile, World might explode.");
-					((IMetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
+					((MetaTileEntity) tMetaTileEntity).setItemNBT(tNBT); //Valid? Idk
 				}
 				catch (Throwable t){
 					Logger.REFLECTION("getDropsHack1");
 					t.printStackTrace();
 				}				
-			}
+			}*/
 
 			//Set stack NBT
 			if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
@@ -270,12 +277,17 @@ public class Preloader_ClassTransformer2 {
 		GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
 		final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity instanceof IGregTechTileEntity) {
-			final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+			final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;			
 			final Random tRandom = new XSTR();
 			GT_Block_Machines.mTemporaryTileEntity.set(tGregTechTileEntity);
 			for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); ++i) {
 				final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
 				if (tItem != null && tItem.stackSize > 0 && tGregTechTileEntity.isValidSlot(i)) {
+					
+					//Try inject this
+					tGregTechTileEntity.getMetaTileEntity().setItemNBT((NBTTagCompound) tItem.getTagCompound().copy());
+					Logger.INFO("Hopefully saved ItemNBT data.");
+					
 					final EntityItem tItemEntity = new EntityItem(aWorld,
 							(double) (aX + tRandom.nextFloat() * 0.8f + 0.1f),
 							(double) (aY + tRandom.nextFloat() * 0.8f + 0.1f),

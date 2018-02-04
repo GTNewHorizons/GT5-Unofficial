@@ -19,7 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachineBlock {
 	public int mItemCount = 0;
 	public ItemStack mItemStack = null;
-	private final static double mStorageFactor = (270000.0D/8);
+	private final static double mStorageFactor = (270000.0D/16);
 
 	public GT_MetaTileEntity_TieredChest(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3,

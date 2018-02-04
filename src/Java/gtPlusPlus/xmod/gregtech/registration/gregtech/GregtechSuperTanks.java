@@ -13,7 +13,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_Ti
 public class GregtechSuperTanks {
 
 	public static void run() {
-		int mId = 890;
+		int mId = 946;
 		GregtechItemList.Super_Chest_LV.set((new GT_MetaTileEntity_TieredChest(mId++, "super.chest.tier.01", "Super Chest I", 1)).getStackForm(1L));
 		GregtechItemList.Super_Chest_MV.set((new GT_MetaTileEntity_TieredChest(mId++, "super.chest.tier.02", "Super Chest II", 2)).getStackForm(1L));
 		GregtechItemList.Super_Chest_HV.set((new GT_MetaTileEntity_TieredChest(mId++, "super.chest.tier.03", "Super Chest III", 3)).getStackForm(1L));

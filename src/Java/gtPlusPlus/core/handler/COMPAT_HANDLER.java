@@ -46,17 +46,13 @@ public class COMPAT_HANDLER {
 			/*
 			829
 			---
-			//837
-			//to
-			//839
-			---
-			851
+			859
 			to
 			868
 			---
-			890
+			899
 			to
-			950
+			945
 			*/
 
 			new RECIPES_LaserEngraver();
