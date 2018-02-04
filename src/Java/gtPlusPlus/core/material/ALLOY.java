@@ -9,6 +9,9 @@ public final class ALLOY {
 	//Just some GT Alloys that I need within mine.
 	public static final Material BRONZE = MaterialUtils.generateMaterialFromGtENUM(Materials.Bronze);
 	public static final Material STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.Steel);
+	public static final Material INVAR = MaterialUtils.generateMaterialFromGtENUM(Materials.Invar);
+	public static final Material KANTHAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal);
+	public static final Material NICHROME = MaterialUtils.generateMaterialFromGtENUM(Materials.Nichrome);
 
 	public static final Material ENERGYCRYSTAL = new Material(
 			"Energy Crystal", //Material Name
@@ -99,8 +102,7 @@ public final class ALLOY {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().GOLD, 30),
-					new MaterialStack(ELEMENT.getInstance().GOLD, 40),
+					new MaterialStack(ELEMENT.getInstance().GOLD, 70),
 					new MaterialStack(ELEMENT.getInstance().COPPER, 30)
 			});
 
@@ -142,10 +144,11 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 60),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
-					new MaterialStack(ELEMENT.getInstance().IRON, 10),
-					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10)
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 3),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 7),
+					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10),
+					new MaterialStack(INVAR, 10),
+					new MaterialStack(NICHROME, 13)
 			});
 
 	public static final Material INCONEL_690 = new Material(
@@ -159,10 +162,10 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 60),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 20),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 10),
-					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10)
+					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 10),
+					new MaterialStack(NICHROME, 15)
 			});
 
 	public static final Material INCONEL_792 = new Material(
@@ -176,10 +179,10 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 60),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 10),
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 20),
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 10),
-					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20)
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20),
+					new MaterialStack(NICHROME, 10)
 			});
 
 
@@ -525,8 +528,8 @@ public final class ALLOY {
 			new MaterialStack[]{
 
 					new MaterialStack(ELEMENT.getInstance().IRON, 12),
-					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal), 3),
-					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Invar), 15)
+					new MaterialStack(KANTHAL, 3),
+					new MaterialStack(INVAR, 15)
 			});
 
 	public static final Material EGLIN_STEEL = new Material(
