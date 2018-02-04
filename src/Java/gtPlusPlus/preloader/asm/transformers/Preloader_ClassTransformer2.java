@@ -12,26 +12,25 @@ import org.objectweb.asm.*;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.XSTR;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Preloader_ClassTransformer2 {
 
@@ -180,13 +179,13 @@ public class Preloader_ClassTransformer2 {
 
 
 	public static ArrayList<ItemStack> getDrops(BaseMetaTileEntity o) {
-		Logger.INFO("DROP!");
+		Logger.INFO("getDrops(BaseMetaTileEntity(this))");
 		try {
 			short tID = (short) ReflectionUtils.getField(customTransformer2, "mID").get(o);
 			ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, tID);
-			NBTTagCompound tNBT = new NBTTagCompound();
+			/*NBTTagCompound tNBT = new NBTTagCompound();
 			tNBT = generateGetDropsNBT(o);
-			if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);
+			if (!tNBT.hasNoTags()) rStack.setTagCompound(tNBT);*/
 			return new ArrayList<ItemStack>(Arrays.asList(rStack));
 		}		
 		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){
@@ -200,7 +199,7 @@ public class Preloader_ClassTransformer2 {
 
 	public static void breakBlock(final World aWorld, final int aX, final int aY, final int aZ, final Block block,
 			final int meta) {
-		Logger.INFO("BREAK!");
+		Logger.INFO("breakBlock");
 		GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
 		final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity instanceof IGregTechTileEntity) {
@@ -217,19 +216,21 @@ public class Preloader_ClassTransformer2 {
 			Field fffff;
 			try {
 				fffff = ReflectionUtils.getField(tGregTechTileEntity.getClass(), "mItemStorageNBT");
-				if (fffff == null) {
-					fffff.set(tGregTechTileEntity.getMetaTileEntity(), tNBT);
-					Logger.REFLECTION("Hopefully injected field data.");	
+				if (fffff == null) {	
+					Logger.REFLECTION("Injected field is null.");	
 				}
 				else {
-					Logger.REFLECTION("Injected field is not null.");					
+					fffff.set(tGregTechTileEntity.getMetaTileEntity().getBaseMetaTileEntity(), tNBT);
+					Logger.REFLECTION("Hopefully injected field data.");				
 				}
 			}
 			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 
-
+			ItemStack xko = ItemUtils.getSimpleStack(Items.apple);
+			xko.setTagCompound(tNBT);
+			NBTUtils.tryIterateNBTData(xko);
 
 			for (int i = 0; i < tGregTechTileEntity.getSizeInventory(); ++i) {
 				final ItemStack tItem = tGregTechTileEntity.getStackInSlot(i);
@@ -267,7 +268,7 @@ public class Preloader_ClassTransformer2 {
 	}
 
 	public static NBTTagCompound generateGetDropsNBT(IGregTechTileEntity iGregTechTileEntity) {
-			Logger.INFO("DROP!");
+			Logger.INFO("generateGetDropsNBT()");
 			try {
 				short tID = (short) ReflectionUtils.getField(customTransformer2, "mID").get(iGregTechTileEntity);
 				NBTTagCompound tRecipeStuff = (NBTTagCompound) ReflectionUtils.getField(customTransformer2, "mRecipeStuff").get(iGregTechTileEntity);
@@ -295,7 +296,7 @@ public class Preloader_ClassTransformer2 {
 					}
 					else {
 						Logger.REFLECTION("Injected field has no value.");	
-						mItemStorageNBT =  new NBTTagCompound();					
+						mItemStorageNBT =  null;					
 					}
 				}
 
