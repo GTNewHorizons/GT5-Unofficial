@@ -39,7 +39,7 @@ public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 
 			while (var2.hasNext()) {
 				ICrafting var1 = (ICrafting) var2.next();
-				var1.sendProgressBarUpdate(this, 100, this.mContent & '￿');
+				var1.sendProgressBarUpdate(this, 100, this.mContent & 65535);
 				var1.sendProgressBarUpdate(this, 101, this.mContent >>> 16);
 			}
 
@@ -54,7 +54,7 @@ public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 				this.mContent = this.mContent & -65536 | par2;
 				break;
 			case 101 :
-				this.mContent = this.mContent & '￿' | par2 << 16;
+				this.mContent = this.mContent & 65535 | par2 << 16;
 		}
 
 	}
