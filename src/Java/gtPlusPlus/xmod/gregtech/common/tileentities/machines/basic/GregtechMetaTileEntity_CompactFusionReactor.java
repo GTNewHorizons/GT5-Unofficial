@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import java.util.ArrayList;
 import java.util.Random;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -15,15 +16,15 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeMachine;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_CompactFusionReactor
-extends
-GT_MetaTileEntity_DeluxeMachine {
+public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEntity_DeluxeMachine {
 
 	private boolean mCanProcessRecipe = false;
 	private boolean mCharging = false;
@@ -37,34 +38,26 @@ GT_MetaTileEntity_DeluxeMachine {
 	private int mStartUpCheck = 100, mUpdate = 0;
 	private FluidStack[] mOutputFluids = null;
 
-	public GregtechMetaTileEntity_CompactFusionReactor(int aID, String aName,
-			String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 1, "It's like a midget Ra.", 1,
-				1, "PotionBrewer.png", "");
+	public GregtechMetaTileEntity_CompactFusionReactor(int aID, String aName, String aNameRegional, int aTier) {
+		super(aID, aName, aNameRegional, aTier, 1, "It's like a midget Ra.", 1, 1, "PotionBrewer.png", "");
 	}
 
-	public GregtechMetaTileEntity_CompactFusionReactor(String aName, int aTier,
-			String aDescription, ITexture[][][] aTextures, String aGUIName,
-			String aNEIName) {
-		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName,
-				aNEIName);
+	public GregtechMetaTileEntity_CompactFusionReactor(String aName, int aTier, String aDescription,
+			ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription,
-				"Not Very Fast, but not very big either.",
-				"Each side pair in/out puts to different slots.",
-				"Top & Bottom Sides are Outputs.",
-				"Front & Back are Input Plasma 1.", "Sides are Input Plasma 2.",
-				CORE.GT_Tooltip};
+		return new String[] { this.mDescription, "Not Very Fast, but not very big either.",
+				"Each side pair in/out puts to different slots.", "Top & Bottom Sides are Outputs.",
+				"Front & Back are Input Plasma 1.", "Sides are Input Plasma 2.", CORE.GT_Tooltip };
 	}
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_CompactFusionReactor(this.mName,
-				this.mTier, this.mDescription, this.mTextures, this.mGUIName,
-				this.mNEIName);
+		return new GregtechMetaTileEntity_CompactFusionReactor(this.mName, this.mTier, this.mDescription,
+				this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
 	public int tier() {
@@ -98,15 +91,11 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity,
-			final byte aSide, final byte aFacing, final byte aColorIndex,
-			final boolean aActive, final boolean aRedstone) {
-		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing
-				? 0
-						: aSide == GT_Utility.getOppositeSide(aFacing)
-						? 1
-								: aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-								                                        + 1];
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+				: aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+				                                                                                           + 1];
 	}
 
 	@Override
@@ -120,16 +109,8 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity,
-			int aIndex, byte aSide, ItemStack aStack) {
-		return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
-				&& (getRecipeList().containsInput(aStack));
-	}
-
-	@Override
 	public boolean isFluidInputAllowed(FluidStack aFluid) {
-		return (aFluid.getFluid().getName().contains("plasma"))
-				|| (super.isFluidInputAllowed(aFluid));
+		return (aFluid.getFluid().getName().contains("plasma")) || (super.isFluidInputAllowed(aFluid));
 	}
 
 	@Override
@@ -143,34 +124,37 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	long mFusionPoint = 20000000L;
+
 	@Override
 	public int checkRecipe() {
-		Logger.WARNING("Recipe Tick 1.");
+		Logger.INFO("Recipe Tick 1.");
 		if (!this.mCanProcessRecipe) {
-			Logger.WARNING("Recipe Tick 1.1 - Cannot Process Recipe.");
+			Logger.INFO("Recipe Tick 1.1 - Cannot Process Recipe.");
 			if (this.mChargeConsumed < mFusionPoint) {
-				Logger.WARNING("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
+				Logger.INFO("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
 				this.mCharging = true;
 				this.mCanProcessRecipe = false;
-				if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-						(mFusionPoint / 100), false)) {
-					Logger.WARNING("Recipe Tick 1.3 - Charging Internal storage. "+(mFusionPoint / 100)+"/"+mFusionPoint);
+				if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits((mFusionPoint / 100), false)) {
+					Logger.INFO("Recipe Tick 1.3 - Charging Internal storage. " + (mFusionPoint / 100) + "/"
+							+ mFusionPoint);
 					mChargeConsumed += (mFusionPoint / 100);
 				}
-			} else {
+			}
+			else {
 				mChargeConsumed = 0;
 				this.mCharging = false;
 				this.mCanProcessRecipe = true;
 
 			}
-		} else {
-			Logger.WARNING("Recipe Tick 1.1 - Try to Process Recipe.");
+		}
+		else {
+			Logger.INFO("Recipe Tick 1.1 - Try to Process Recipe.");
 			if (checkRecipeMulti()) {
-				Logger.WARNING("Recipe Tick 1.2 - Process Recipe was Successful.");
+				Logger.INFO("Recipe Tick 1.2 - Process Recipe was Successful.");
 				return 2;
 			}
 		}
-		Logger.WARNING("Recipe Tick 2. - Process Recipe failed.");
+		Logger.INFO("Recipe Tick 2. - Process Recipe failed.");
 		return 0;
 	}
 
@@ -186,14 +170,12 @@ GT_MetaTileEntity_DeluxeMachine {
 		int tFluidList_sS = tFluidList.size();
 		for (int i = 0; i < tFluidList_sS - 1; i++) {
 			for (int j = i + 1; j < tFluidList_sS; j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i),
-						tFluidList.get(j))) {
-					if (tFluidList
-							.get(i).amount >= tFluidList
-									.get(j).amount) {
+				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
 						tFluidList.remove(j--);
 						tFluidList_sS = tFluidList.size();
-					} else {
+					}
+					else {
 						tFluidList.remove(i--);
 						tFluidList_sS = tFluidList.size();
 						break;
@@ -202,23 +184,18 @@ GT_MetaTileEntity_DeluxeMachine {
 			}
 		}
 		if (tFluidList.size() > 1) {
-			FluidStack[] tFluids = tFluidList
-					.toArray(new FluidStack[tFluidList.size()]);
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes
-					.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe,
-							false, GT_Values.V[8], tFluids, new ItemStack[]{});
-			if ((tRecipe == null && !mRunningOnLoad)
-					|| (maxEUStore() < tRecipe.mSpecialValue)) {
+			FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+			GT_Recipe tRecipe = getRecipeList().findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false,
+					GT_Values.V[8], tFluids, new ItemStack[] {});
+			if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
 				this.mLastRecipe = null;
+				Logger.INFO("Just plain bad.");
 				return false;
 			}
-			if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids,
-					new ItemStack[]{})) {
+			if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[] {})) {
 				this.mLastRecipe = tRecipe;
-				this.mEUt = (this.mLastRecipe.mEUt
-						* overclock(this.mLastRecipe.mSpecialValue));
-				this.mMaxProgresstime = this.mLastRecipe.mDuration
-						/ overclock(this.mLastRecipe.mSpecialValue);
+				this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
+				this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
 
 				this.mEfficiencyIncrease = 10000;
 
@@ -279,41 +256,27 @@ GT_MetaTileEntity_DeluxeMachine {
 	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPreTick(aBaseMetaTileEntity, aTick);
 		onRunningTickMulti();
-		if ((aBaseMetaTileEntity.isClientSide())
-				&& (aBaseMetaTileEntity.isActive())
-				&& (aBaseMetaTileEntity.getFrontFacing() != 1)
-				&& (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
+		if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
+				&& (aBaseMetaTileEntity.getFrontFacing() != 1) && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
 				&& (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
 			if (MathUtils.randInt(0, 4) == 4) {
 				final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
 				aBaseMetaTileEntity.getWorld().spawnParticle("magicCrit",
-						(aBaseMetaTileEntity.getXCoord() + 0.8F)
-						- (tRandom.nextFloat() * 0.6F),
-						aBaseMetaTileEntity.getYCoord() + 0.3f
-						+ (tRandom.nextFloat() * 0.2F),
-						(aBaseMetaTileEntity.getZCoord() + 1.2F)
-						- (tRandom.nextFloat() * 1.6F),
-						0.0D, 0.0D, 0.0D);
+						(aBaseMetaTileEntity.getXCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F),
+						aBaseMetaTileEntity.getYCoord() + 0.3f + (tRandom.nextFloat() * 0.2F),
+						(aBaseMetaTileEntity.getZCoord() + 1.2F) - (tRandom.nextFloat() * 1.6F), 0.0D, 0.0D, 0.0D);
 				aBaseMetaTileEntity.getWorld().spawnParticle("magicCrit",
-						(aBaseMetaTileEntity.getXCoord() + 0.4F)
-						- (tRandom.nextFloat() * 0.3F),
-						aBaseMetaTileEntity.getYCoord() + 0.2f
-						+ (tRandom.nextFloat() * 0.1F),
-						(aBaseMetaTileEntity.getZCoord() + 0.8F)
-						- (tRandom.nextFloat() * 0.6F),
-						0.0D, 0.0D, 0.0D);
+						(aBaseMetaTileEntity.getXCoord() + 0.4F) - (tRandom.nextFloat() * 0.3F),
+						aBaseMetaTileEntity.getYCoord() + 0.2f + (tRandom.nextFloat() * 0.1F),
+						(aBaseMetaTileEntity.getZCoord() + 0.8F) - (tRandom.nextFloat() * 0.6F), 0.0D, 0.0D, 0.0D);
 				aBaseMetaTileEntity.getWorld().spawnParticle("magicCrit",
-						(aBaseMetaTileEntity.getXCoord() + 0.6F)
-						- (tRandom.nextFloat() * 0.9F),
-						aBaseMetaTileEntity.getYCoord() + 0.4f
-						+ (tRandom.nextFloat() * 0.3F),
-						(aBaseMetaTileEntity.getZCoord() + 1.8F)
-						- (tRandom.nextFloat() * 2.6F),
-						0.0D, 0.0D, 0.0D);
+						(aBaseMetaTileEntity.getXCoord() + 0.6F) - (tRandom.nextFloat() * 0.9F),
+						aBaseMetaTileEntity.getYCoord() + 0.4f + (tRandom.nextFloat() * 0.3F),
+						(aBaseMetaTileEntity.getZCoord() + 1.8F) - (tRandom.nextFloat() * 2.6F), 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setBoolean("mCanProcessRecipe", this.mCanProcessRecipe);
@@ -358,19 +321,16 @@ GT_MetaTileEntity_DeluxeMachine {
 		String fusionName = "";
 		int powerRequired = 0;
 		if (this.mLastRecipe != null) {
-			fusionName = this.mLastRecipe.mFluidOutputs[0].getLocalizedName()+" Fusion.";
+			fusionName = this.mLastRecipe.mFluidOutputs[0].getLocalizedName() + " Fusion.";
 			powerRequired = this.mLastRecipe.mEUt;
 			if (this.mLastRecipe.getFluidOutput(0) != null) {
-				plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount
-						/ (float) this.mLastRecipe.mDuration;
+				plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
 			}
 		}
 
-		return new String[]{"Fusion Reactor MK " + tier,
-				"EU Required: " + powerRequired + "EU/t",
-				"Stored EU: " + this.getEUVar() + " / " + maxEUStore(),
-				"Plasma Output: " + plasmaOut + "L/t",
-				"Current Recipe: "+fusionName};
+		return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
+				"Stored EU: " + this.getEUVar() + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t",
+				"Current Recipe: " + fusionName };
 	}
 
 	@Override
@@ -379,48 +339,46 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[]{this.getCasingTexture(), new GT_RenderedTexture(
-				TexturesGtBlock.Overlay_MatterFab)};
+		return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab) };
 	}
 
 	public ITexture[] getBack(final byte aColor) {
-		return new ITexture[]{this.getCasingTexture(),new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+		return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
 	}
 
 	public ITexture[] getBottom(final byte aColor) {
-		return new ITexture[]{ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
+		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
 	}
 
 	public ITexture[] getTop(final byte aColor) {
-		return new ITexture[]{ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
+		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
 	}
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[]{this.getCasingTexture(), new GT_RenderedTexture(
-				TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[] { this.getCasingTexture(),
+				new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
 	}
 
 	public ITexture[] getFrontActive(final byte aColor) {
-		return new ITexture[]{this.getCasingTexture(), new GT_RenderedTexture(
-				TexturesGtBlock.Overlay_MatterFab_Active)};
+		return new ITexture[] { this.getCasingTexture(),
+				new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active) };
 	}
 
 	public ITexture[] getBackActive(final byte aColor) {
-		return new ITexture[]{
-				this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+		return new ITexture[] { this.getCasingTexture(), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
 	}
 
 	public ITexture[] getBottomActive(final byte aColor) {
-		return new ITexture[]{ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
+		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
 	}
 
 	public ITexture[] getTopActive(final byte aColor) {
-		return new ITexture[]{ new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
+		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW) };
 	}
 
 	public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{this.getCasingTexture(), new GT_RenderedTexture(
-				TexturesGtBlock.Overlay_Machine_Dimensional_Blue)};
+		return new ITexture[] { this.getCasingTexture(),
+				new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue) };
 	}
 
 	@Override
@@ -429,113 +387,111 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity,
-			long aTick) {
-		//super.onPostTick(aBaseMetaTileEntity, aTick); 
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		// super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
-			Logger.WARNING("1");
+			// Logger.INFO("1");
 			if (mEfficiency < 0)
 				mEfficiency = 0;
 			if (mRunningOnLoad) {
-				Logger.WARNING("2");
+				Logger.INFO("2");
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipeMulti();
 			}
 			if (--mUpdate == 0 || --mStartUpCheck == 0) {
-				Logger.WARNING("3");
+				Logger.INFO("3");
 				mMachine = true;
 			}
 			if (mStartUpCheck < 0) {
-				Logger.WARNING("4");
+				//Logger.INFO("4");
 				if (mMachine) {
-					Logger.WARNING("5");
+					//Logger.INFO("5");
 
-					if (aBaseMetaTileEntity.getStoredEU()
-							+ (2048 * tierOverclock()) < maxEUStore()) {
-						aBaseMetaTileEntity.increaseStoredEnergyUnits(
-								2048 * tierOverclock(), true);
+					if (aBaseMetaTileEntity.getStoredEU() + (2048 * tierOverclock()) < maxEUStore()) {
+						if (aBaseMetaTileEntity.increaseStoredEnergyUnits(2048 * tierOverclock(), true)) {
+							//Logger.INFO("5.5 A");							
+						}
+						else {
+							//Logger.INFO("5.5 B");							
+						}
 					}
 					if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-						Logger.WARNING("6");
+						Logger.INFO("6");
 						stopMachine();
 						this.mLastRecipe = null;
 					}
 					if (mMaxProgresstime > 0) {
-						Logger.WARNING("7");
-						this.getBaseMetaTileEntity()
-						.decreaseStoredEnergyUnits(mEUt, true);
+						Logger.INFO("7");
+						this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
 						if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
 							if (mOutputFluids != null)
 								for (FluidStack tStack : mOutputFluids)
 									if (tStack != null)
 										addOutput(tStack);
-							mEfficiency = Math.max(0,
-									(mEfficiency + mEfficiencyIncrease));
+							mEfficiency = Math.max(0, (mEfficiency + mEfficiencyIncrease));
 							mProgresstime = 0;
 							mMaxProgresstime = 0;
 							mEfficiencyIncrease = 0;
 							if (mOutputFluids != null && mOutputFluids.length > 0) {
-								
+
 							}
-							this.mEUStore = (int) aBaseMetaTileEntity
-									.getStoredEU();
+							this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 							if (aBaseMetaTileEntity.isAllowedToWork())
 								checkRecipeMulti();
 						}
-					} else {
-						Logger.WARNING("8");
-						if (aTick % 100 == 0
-								|| aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-								|| aBaseMetaTileEntity
-								.hasInventoryBeenModified()) {
-							Logger.WARNING("9");
+					}
+					else {
+						//Logger.INFO("8");
+						this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+						if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+								|| aBaseMetaTileEntity.hasInventoryBeenModified()) {
+							Logger.INFO("9");
 							// turnCasingActive(mMaxProgresstime > 0);
 							if (aBaseMetaTileEntity.isAllowedToWork()) {
-								Logger.WARNING("10");
-								this.mEUStore = (int) aBaseMetaTileEntity
-										.getStoredEU();
+								Logger.INFO("10");
 								if (checkRecipeMulti()) {
-									Logger.WARNING("11");
+									Logger.INFO("11");
 									if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
-										Logger.WARNING("12");
+										Logger.INFO("12");
 										mMaxProgresstime = 0;
 										// turnCasingActive(false);
 									}
-									aBaseMetaTileEntity
-									.decreaseStoredEnergyUnits(
-											this.mLastRecipe.mSpecialValue,
-											true);
+									aBaseMetaTileEntity.decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue, true);
 								}
 							}
 							if (mMaxProgresstime <= 0)
 								mEfficiency = Math.max(0, mEfficiency - 1000);
 						}
 					}
-				} else {
+				}
+				else {
 					// turnCasingActive(false);
-					Logger.WARNING("Bad");
+					Logger.INFO("Bad");
 					this.mLastRecipe = null;
 					stopMachine();
 				}
 			}
-			Logger.WARNING("Good");
+			Logger.INFO("Good | "+mMaxProgresstime);
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
 		}
 	}
 
 	public boolean onRunningTickMulti() {
-		if (mEUt < 0) {
-			if (!drainEnergyInput(
-					((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			if (mEUt < 0) {
+				if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
+					this.mLastRecipe = null;
+					stopMachine();
+					Logger.INFO("a1");
+					return false;
+				}
+			}
+			if (this.mEUStore <= 0) {
 				this.mLastRecipe = null;
 				stopMachine();
+				Logger.INFO("a2");
 				return false;
 			}
-		}
-		if (this.mEUStore <= 0) {
-			this.mLastRecipe = null;
-			stopMachine();
-			return false;
 		}
 		return true;
 	}
@@ -563,40 +519,40 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	@Override
 	public boolean isLiquidInput(byte aSide) {
-		switch(aSide) {
-			case 0 :
+		switch (aSide) {
+			case 0:
 				return true;
-			case 1 :
-				return true;			   
-			case 2 :
-				return true;		   
-			case 3 :
-				return false;		   
-			case 4 :
-				return false;		   
-			case 5 :
-				return false;		   
-			default :
+			case 1:
+				return true;
+			case 2:
+				return true;
+			case 3:
+				return false;
+			case 4:
+				return false;
+			case 5:
+				return false;
+			default:
 				return false;
 		}
 	}
 
 	@Override
 	public boolean isLiquidOutput(byte aSide) {
-		switch(aSide) {
-			case 0 :
+		switch (aSide) {
+			case 0:
 				return false;
-			case 1 :
-				return false;			   
-			case 2 :
-				return false;		   
-			case 3 :
-				return true;		   
-			case 4 :
-				return true;		   
-			case 5 :
-				return true;		   
-			default :
+			case 1:
+				return false;
+			case 2:
+				return false;
+			case 3:
+				return true;
+			case 4:
+				return true;
+			case 5:
+				return true;
+			default:
 				return true;
 		}
 	}
@@ -618,7 +574,7 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	@Override
 	public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return false;
 		}
 		else {
@@ -628,7 +584,7 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	@Override
 	public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return super.canDrain(aSide, aFluid);
 		}
 		else {
@@ -637,9 +593,8 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public int fill_default(ForgeDirection aSide, FluidStack aFluid,
-			boolean doFill) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+	public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return 0;
 		}
 		else {
@@ -649,7 +604,7 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	@Override
 	public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return super.fill(aSide, aFluid, doFill);
 		}
 		else {
@@ -658,9 +613,8 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection aSide, FluidStack aFluid,
-			boolean doDrain) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+	public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return super.drain(aSide, aFluid, doDrain);
 		}
 		else {
@@ -669,13 +623,72 @@ GT_MetaTileEntity_DeluxeMachine {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection aSide, int maxDrain,
-			boolean doDrain) {
-		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN){
+	public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
 			return super.drain(aSide, maxDrain, doDrain);
 		}
 		else {
 			return null;
+		}
+	}
+
+	@Override
+	public boolean isOverclockerUpgradable() {
+		return true;
+	}
+
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		// TODO Auto-generated method stub
+		return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+	}
+
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+			float aY, float aZ) {
+		// TODO Auto-generated method stub
+		return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+	}
+
+	@Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		// TODO Auto-generated method stub
+		return super.getServerGUI(aID, aPlayerInventory, aBaseMetaTileEntity);
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		// TODO Auto-generated method stub
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+	}
+
+	@Override
+	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+		return false;
+	}
+
+	@Override
+	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+		return false;
+	}
+
+	@Override
+	public void onExplosion() {
+		// TODO Auto-generated method stub
+		super.onExplosion();
+	}
+
+	@Override
+	public void startProcess() {
+		this.sendLoopStart((byte) 1);
+	}
+
+	@Override
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 1) {
+			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(212)), 10, 1.0F, aX, aY,
+					aZ);
 		}
 	}
 

@@ -32,7 +32,7 @@ public class RECIPES_General {
 	static String RECIPE_LapisDust = "dustLazurite";
 	static ItemStack OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);
 	static ItemStack RECIPE_CraftingTable = ItemUtils.getSimpleStack(Item.getItemFromBlock(Blocks.crafting_table));
-	static String RECIPE_BronzePlate = "plateAnyBronze";
+	static String RECIPE_BronzePlate = "plateBronze";
 	static ItemStack RECIPE_BasicCasingIC2;
 	static ItemStack OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockWorkbench));
 	static ItemStack RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
@@ -119,6 +119,20 @@ public class RECIPES_General {
 				ironBars, ironBars, ironBars,
 				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
 			Logger.INFO("Added a recipe for the Fish Trap.");
+		}
+		
+		
+		String[] ironTypes = {"", "Wrought", "Pig", "Any"};
+		for (int y=0;y<ironTypes.length;y++) {
+			//Iron bars
+			String ironRecipe = "stick"+ironTypes[y]+"Iron";
+			if (RecipeUtils.recipeBuilder(
+					null, CI.craftingToolWrench, null,
+					ironRecipe, ironRecipe, ironRecipe,
+					ironRecipe, ironRecipe, ironRecipe,
+					ItemUtils.getItemStack("minecraft:iron_bars", 8))) {
+				Logger.INFO("Re-added old GT recipe for Iron Bars.");			
+			}
 		}
 
 		//Mining Explosive
