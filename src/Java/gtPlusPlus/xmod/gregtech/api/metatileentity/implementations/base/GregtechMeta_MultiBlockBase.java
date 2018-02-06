@@ -121,6 +121,11 @@ GT_MetaTileEntity_MultiBlockBase {
 	public String getSound() { return ""; }
 
 	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
+		if (aRecipe.mOutputs.length > 16) {
+			// Gendustry custom comb with a billion centrifuge outputs? Do it anyway.
+			return true;
+		}
+		
 		// Count slots available in output buses
 		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
 
