@@ -55,7 +55,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Hatch",
 				"1x Output Hatch",
 				"1x Input Bus",
-				"1x Output Bus",
+				"1x [HV] Output Bus",
 				"1x [EV] Energy Hatch (Can be higher Tier) [Blue]",
 				"Centrifuge Casings for the rest (16 at least)",
 				CORE.GT_Tooltip};
