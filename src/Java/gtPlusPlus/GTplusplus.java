@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
@@ -133,6 +134,7 @@ public class GTplusplus implements ActionListener {
 				+ RegistrationHandler.recipesFailed + " |");
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
+		dumpGtRecipeMap(Recipe_GT.Gregtech_Recipe_Map.sSlowFusion2Recipes);
 	}
 
 	@EventHandler
