@@ -4,6 +4,8 @@ import static gtPlusPlus.core.lib.CORE.DEBUG;
 
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.objects.ChunkManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -25,6 +27,8 @@ import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 
@@ -101,6 +105,10 @@ public class CommonProxy {
 		Utils.registerEvent(new BlockEventHandler());
 		//Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
+		
+		//Register Chunkloader
+		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());
+		Utils.registerEvent(ChunkManager.getInstance());
 
 		if (ConfigSwitches.disableZombieReinforcement){
 			//Make Zombie reinforcements fuck off.

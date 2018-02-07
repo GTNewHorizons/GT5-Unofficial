@@ -284,7 +284,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 
 	
 	//Fish Pond
-	Casing_FishPond, Industrial_FishingPond,
+	Casing_FishPond, Industrial_FishingPond, 
+	
+	//Chunkloader
+	GT_Chunkloader_HV,
 	
 	
 	

@@ -99,6 +99,7 @@ public class COMPAT_HANDLER {
 			GregtechTeslaTower.run();
 			GregtechSuperTanks.run();
 			GregtechIndustrialFishPond.run();
+			GregtechTieredChunkloaders.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();
