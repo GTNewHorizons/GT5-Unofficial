@@ -289,14 +289,20 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 	}
 
 	public void forceChunkLoading(Ticket ticket) {
+		try {
 		setTicket(ticket);
 
 		setupChunks();
 
-		if (chunks != null)
+		if (chunks != null) {
 			for (ChunkCoordIntPair chunk : chunks) {
 				ForgeChunkManager.forceChunk(ticket, chunk);
 			}
+		}
+		}
+		catch (Throwable t){
+			t.printStackTrace();
+		}
 	}
 
 	public void setupChunks() {

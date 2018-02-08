@@ -17,15 +17,21 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_AlloyBlastSmelter
 extends GregtechMeta_MultiBlockBase {
+
 	private int mHeatingCapacity = 0;
+	private int mMode = 0;
+	private boolean isUsingControllerCircuit = false;
+	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
 
 	public GregtechMetaTileEntity_AlloyBlastSmelter(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -75,7 +81,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -90,7 +96,14 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		return true;
+		//Get Controller Circuit
+		if (aStack != null && aStack.getItem() == circuit) {
+			this.mMode = aStack.getItemDamage();	
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
@@ -100,6 +113,10 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+
+		//Get Controller Circuit
+		this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
+
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
@@ -113,6 +130,16 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
+
+		//Validity check
+		if ((isUsingControllerCircuit && tInputList.size() < 1) || (!isUsingControllerCircuit && tInputList.size() < 2)) {
+			return false;
+		}
+		else if (isUsingControllerCircuit  && tInputList.size() >= 1) {
+			tInputList.add(CI.getNumberedCircuit(this.mMode));
+		}
+
+
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
 
 		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();

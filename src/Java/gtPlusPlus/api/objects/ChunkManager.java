@@ -154,8 +154,14 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 
 					if (!mChunkLoaders.isEmpty()) {
 						GregtechMetaTileEntityChunkLoader f = mChunkLoaders.get(tile);
+						try {
 						f.forceChunkLoading(ticket);
 						printAnchor("Force Chunk Loading. Chunk Loader has ID of "+f.getLoaderID()+". ",x,y,z);
+						}
+						catch (Throwable t) {
+							t.printStackTrace();
+							Logger.INFO("Mild problem with chunk loading, nothing to worry about.");
+						}
 					}					
 
 					/*if (tile instanceof IGregTechTileEntity) {
