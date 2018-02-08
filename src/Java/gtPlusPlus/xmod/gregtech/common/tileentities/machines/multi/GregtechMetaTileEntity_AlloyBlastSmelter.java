@@ -96,14 +96,23 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		//Get Controller Circuit
-		if (aStack != null && aStack.getItem() == circuit) {
-			this.mMode = aStack.getItemDamage();	
-			return true;
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			//Get Controller Circuit
+			if (aStack != null && aStack.getItem() == circuit) {
+				this.mMode = aStack.getItemDamage();	
+				return this.isUsingControllerCircuit = true;
+			}
+			else {
+				if (aStack == null) {
+					this.isUsingControllerCircuit = false;
+					return true; //Allowed empty
+				}
+				Logger.WARNING("Not circuit in GUI inputs.");
+				return this.isUsingControllerCircuit = false;
+			}
 		}
-		else {
-			return false;
-		}
+		Logger.WARNING("No Circuit, clientside.");
+		return this.isUsingControllerCircuit = false;
 	}
 
 	@Override
@@ -114,77 +123,80 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
-		//Get Controller Circuit
-		this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			//Get Controller Circuit
+			this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
 
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		for (int i = 0; i < (tInputList.size() - 1); i++) {
-			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-						tInputList.remove(j--);
+			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
+			for (int i = 0; i < (tInputList.size() - 1); i++) {
+				for (int j = i + 1; j < tInputList.size(); j++) {
+					if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+						if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+							tInputList.remove(j--);
+						} else {
+							tInputList.remove(i--);
+							break;
+						}
+					}
+				}
+			}
+
+			//Validity check
+			if ((isUsingControllerCircuit && tInputList.size() < 1) || (!isUsingControllerCircuit && tInputList.size() < 2)) {
+				Logger.WARNING("Not enough inputs.");
+				return false;
+			}
+			else if (isUsingControllerCircuit  && tInputList.size() >= 1) {
+				tInputList.add(CI.getNumberedCircuit(this.mMode));
+			}
+
+
+			final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
+
+			final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+			for (int i = 0; i < (tFluidList.size() - 1); i++) {
+				for (int j = i + 1; j < tFluidList.size(); j++) {
+					if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+						if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
+							tFluidList.remove(j--);
+						} else {
+							tFluidList.remove(i--);
+							break;
+						}
+					}
+				}
+			}
+			final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
+			if (tInputList.size() > 1) {
+				final long tVoltage = this.getMaxInputVoltage();
+				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+				if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+					Logger.WARNING("Found some Valid Inputs.");
+					this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
+					this.mEfficiencyIncrease = 10000;
+					if (tRecipe.mEUt <= 16) {
+						this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
+						this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
 					} else {
-						tInputList.remove(i--);
-						break;
+						this.mEUt = tRecipe.mEUt;
+						this.mMaxProgresstime = tRecipe.mDuration;
+						while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+							this.mEUt *= 4;
+							this.mMaxProgresstime /= 2;
+						}
 					}
+					if (this.mEUt > 0) {
+						this.mEUt = (-this.mEUt);
+					}
+					this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+					this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
+					this.updateSlots();
+					return true;
 				}
 			}
 		}
-
-		//Validity check
-		if ((isUsingControllerCircuit && tInputList.size() < 1) || (!isUsingControllerCircuit && tInputList.size() < 2)) {
-			return false;
-		}
-		else if (isUsingControllerCircuit  && tInputList.size() >= 1) {
-			tInputList.add(CI.getNumberedCircuit(this.mMode));
-		}
-
-
-		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, tInputList.size());
-
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		for (int i = 0; i < (tFluidList.size() - 1); i++) {
-			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-						tFluidList.remove(j--);
-					} else {
-						tFluidList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-		if (tInputList.size() > 1) {
-			final long tVoltage = this.getMaxInputVoltage();
-			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-				Logger.WARNING("Found some Valid Inputs.");
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe.mEUt <= 16) {
-					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-				} else {
-					this.mEUt = tRecipe.mEUt;
-					this.mMaxProgresstime = tRecipe.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-					}
-				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-				this.updateSlots();
-				return true;
-			}
-		}
-		Logger.WARNING("Failed to find some Valid Inputs.");
+		Logger.WARNING("Failed to find some Valid Inputs or Clientside.");
 		return false;
 	}
 
