@@ -1,11 +1,13 @@
 package gtPlusPlus;
 
+import static gtPlusPlus.api.objects.ChunkManager.mChunkLoaderManagerMap;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import java.util.Timer;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,6 +22,8 @@ import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.api.analytics.SegmentHelper;
+import gtPlusPlus.api.objects.ChunkManager;
+import gtPlusPlus.api.objects.DimChunkPos;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
@@ -32,6 +36,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.Triplet;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.networking.NetworkUtils;
@@ -40,8 +45,12 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
@@ -51,7 +60,7 @@ public class GTplusplus implements ActionListener {
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
-	
+
 	//Material Loader
 	public static GT_Material_Loader mGregMatLoader;
 
@@ -149,6 +158,11 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
+		
+		//Chunk Loading
+		Timer h = ChunkManager.createChunkQueue();
+		
+
 	}
 
 	@Mod.EventHandler
@@ -160,7 +174,13 @@ public class GTplusplus implements ActionListener {
 				SegmentAnalytics.LOG("Cleaned up Analytics Data for player "+sa.mLocalName+".");
 			}
 		}
-		
+
+		//Chunkload Handler
+		if (ChunkManager.mChunkLoaderManagerMap.size() > 0) {
+			Logger.INFO("Clearing Chunk Loaders.");
+			ChunkManager.mChunkLoaderManagerMap.clear();
+		}
+
 	}
 
 	@Override
@@ -191,7 +211,7 @@ public class GTplusplus implements ActionListener {
 		}		
 		new SegmentHelper();
 	}
-	
+
 	private static final boolean setupMaterialBlacklist(){		
 		int ID = 0;
 		Material.invalidMaterials.put(ID++, Materials._NULL);
@@ -205,7 +225,7 @@ public class GTplusplus implements ActionListener {
 		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);	
 		Material.invalidMaterials.put(ID++, Materials.InfusedFire);	
 		Material.invalidMaterials.put(ID++, Materials.InfusedWater);
-		
+
 		//EIO Materials
 		Material.invalidMaterials.put(ID++, Materials.SoulSand);
 		Material.invalidMaterials.put(ID++, Materials.EnderPearl);
@@ -214,24 +234,24 @@ public class GTplusplus implements ActionListener {
 		Material.invalidMaterials.put(ID++, Materials.Glowstone);
 		Material.invalidMaterials.put(ID++, Materials.Soularium);
 		Material.invalidMaterials.put(ID++, Materials.PhasedIron);
-				
+
 		if (Material.invalidMaterials.size() > 0){
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	private void setupMaterialWhitelist() {
-		
+
 		mGregMatLoader = new GT_Material_Loader();
-		
+
 		//Non GTNH Materials
 		if (!CORE.GTNH){
 			//Mithril - Random Dungeon Loot
 			mGregMatLoader.enableMaterial(Materials.Mithril);			
 		}	
-		
+
 		//Force - Alloying
 		mGregMatLoader.enableMaterial(Materials.Force);		
 	}

@@ -18,4 +18,8 @@ public class BlockPos {
 		this.dim = dim;
 	}
 	
+	public String getLocationString() {
+		return "[X: "+this.xPos+"][Y: "+this.yPos+"][Z: "+this.zPos+"]";
+	}
+	
 }

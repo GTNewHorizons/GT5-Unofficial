@@ -1,13 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.api.objects.ChunkManager.mChunkLoaders;
-
+import static gtPlusPlus.api.objects.ChunkManager.mChunkLoaderManagerMap;
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import com.google.common.collect.MapMaker;
 
 import gregtech.api.enums.Textures;
@@ -16,12 +15,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_SpawnEventHandler;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.IChunkLoader;
 import gtPlusPlus.api.objects.ChunkManager;
+import gtPlusPlus.api.objects.DimChunkPos;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.array.BlockPos;
+import gtPlusPlus.core.util.array.Triplet;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -113,12 +114,12 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	@Override
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-		registerLoader();
+		validate();
 	}
 
 	@Override
 	public void onRemoval() {
-		ChunkManager.mChunkLoaders.remove(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
+		ChunkManager.mChunkLoaderManagerMap.remove(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
 	}
 
 	@Override
@@ -206,12 +207,36 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 	private short mChunkLoaderMapID = -1;
 
 	public void registerLoader() {
-		short mSize = (short) ChunkManager.mChunkLoaders.size();
+		short mSize = (short) mChunkLoaderManagerMap.size();
 		this.mChunkLoaderMapID = mSize;
-		if (!mChunkLoaders.containsValue(this)) {
-			mChunkLoaders.put(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId),this);
+		if (this != null && this.getBaseMetaTileEntity() != null) {		
+			if (!isRegistered()) {		
+				BlockPos thisPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+				Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos> loaderData = new Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>((int) this.mChunkLoaderMapID, this, new DimChunkPos(this.getBaseMetaTileEntity().getWorld(), thisPos));
+				mChunkLoaderManagerMap.put(thisPos, loaderData);
+				Logger.INFO("[Chunk Loader] Registered Chunk loader ["+this.mChunkLoaderMapID+"]"+thisPos.getLocationString());
+				//mChunkLoaders.put(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId),this);
+			}
 		}
 	}	
+
+
+	public void unregisterLoader() {
+		if (this != null && this.getBaseMetaTileEntity() != null) {		
+			if (isRegistered()) {		
+				BlockPos thisPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+				mChunkLoaderManagerMap.remove(thisPos);
+				Logger.INFO("[Chunk Loader] Removed Chunk loader ["+this.mChunkLoaderMapID+"]"+thisPos.getLocationString());
+				//mChunkLoaders.put(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId),this);
+			}
+		}
+	}
+
+	public boolean isRegistered() {
+		BlockPos j = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+		return mChunkLoaderManagerMap.containsKey(j);		
+		//return mChunkLoaders.containsValue(this);
+	}
 
 	public short getLoaderID() {
 		return this.mChunkLoaderMapID;
@@ -223,15 +248,20 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	public void invalidate() {
 		refreshTicket = true;
+		unregisterLoader();
 	}
 
 	public void validate() {
+		if (!isRegistered()) {
+			registerLoader();
+		}
 		refreshTicket = true;
 	}
 
 	protected void releaseTicket() {
 		refreshTicket = false;
 		setTicket(null);
+		unregisterLoader();
 	}
 
 	protected void requestTicket() {
@@ -242,8 +272,10 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		}
 	}
 
-	protected Ticket getTicketFromForge() {
-		return ForgeChunkManager.requestTicket(GTplusplus.instance, this.getBaseMetaTileEntity().getWorld(), Type.NORMAL);
+	public Ticket getTicketFromForge() {
+		if (this.getBaseMetaTileEntity().getWorld() != null)
+			return ForgeChunkManager.requestTicket(GTplusplus.instance, this.getBaseMetaTileEntity().getWorld(), Type.NORMAL);
+		return null;
 	}
 
 	protected void setTicketData(Ticket chunkTicket) {
@@ -290,15 +322,15 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	public void forceChunkLoading(Ticket ticket) {
 		try {
-		setTicket(ticket);
+			setTicket(ticket);
 
-		setupChunks();
+			setupChunks();
 
-		if (chunks != null) {
-			for (ChunkCoordIntPair chunk : chunks) {
-				ForgeChunkManager.forceChunk(ticket, chunk);
+			if (chunks != null) {
+				for (ChunkCoordIntPair chunk : chunks) {
+					ForgeChunkManager.forceChunk(ticket, chunk);
+				}
 			}
-		}
 		}
 		catch (Throwable t){
 			t.printStackTrace();
@@ -308,39 +340,44 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 	public void setupChunks() {
 		if (!hasTicket)
 			chunks = null;
-		else
-			chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
+		else {
+			if (this.mTier == 3) {
+				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
+			}
+			else if (this.mTier == 4) {
+				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4 >> 4, (this.getBaseMetaTileEntity().getZCoord() >> 4) >> 4, ANCHOR_RADIUS);
+			}
+			else if (this.mTier == 5) {
+				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4 >> 4 >> 4, ((this.getBaseMetaTileEntity().getZCoord() >> 4) >> 4) >> 4, ANCHOR_RADIUS);
+			} 
+		}
 	}
 
 
 	@Override
 	public Chunk loadChunk(World p_75815_1_, int p_75815_2_, int p_75815_3_) throws IOException {
-		// TODO Auto-generated method stub
+		Logger.INFO("1");
 		return null;
 	}
 
 	@Override
 	public void saveChunk(World p_75816_1_, Chunk p_75816_2_) throws MinecraftException, IOException {
-		// TODO Auto-generated method stub
-
+		Logger.INFO("2");
 	}
 
 	@Override
 	public void saveExtraChunkData(World p_75819_1_, Chunk p_75819_2_) {
-		// TODO Auto-generated method stub
-
+		Logger.INFO("3");
 	}
 
 	@Override
 	public void chunkTick() {
-		// TODO Auto-generated method stub
-
+		Logger.INFO("4");
 	}
 
 	@Override
 	public void saveExtraData() {
-		// TODO Auto-generated method stub
-
+		Logger.INFO("5");
 	}
 
 	@Override
@@ -396,6 +433,30 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 				"Ticks Left: "+this.mTicksLeft,
 				"mRange: "+this.mRange,
 				"chunks: "+this.chunks.size()};
+	}
+
+	@Override
+	public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+		validate();
+		super.onCreated(aStack, aWorld, aPlayer);
+	}
+
+	@Override
+	public void onServerStart() {
+		validate();
+		super.onServerStart();
+	}
+
+	@Override
+	public void onWorldLoad(File aSaveDirectory) {
+		validate();
+		super.onWorldLoad(aSaveDirectory);
+	}
+
+	@Override
+	public void onWorldSave(File aSaveDirectory) {
+		validate();
+		super.onWorldSave(aSaveDirectory);
 	}
 
 }
