@@ -118,7 +118,7 @@ public class RecipeGen_MaterialProcessing implements Runnable{
 				}
 
 				try{
-					if (addElectrolyzerRecipe(
+					if (addCentrifgeRecipe(
 							mainDust,
 							emptyCell, //input 2
 							null, //Input fluid 1
@@ -237,6 +237,9 @@ public class RecipeGen_MaterialProcessing implements Runnable{
 		}
 	}
 
+	public static boolean addCentrifgeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
+		return GT_Values.RA.addCentrifugeRecipe(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, aChances, aDuration, aEUt);
+	}
 
 	public static boolean addElectrolyzerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
 		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {

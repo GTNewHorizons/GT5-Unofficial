@@ -52,7 +52,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
 				"20% Faster than the Electric Blast Furnace",
 				"Allows Complex GT++ alloys to be created",
-				"Circuit for recipe goes in the Input Bus",
+				"Circuit for recipe goes in the Input Bus or GUI slot",
 				"Size: 3x3x4 (Hollow)",
 				"Controller (front middle at bottom)",
 				"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
