@@ -10,6 +10,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -112,10 +113,13 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	private static boolean removeNewCircuits(){
 		Logger.INFO("[Old Feature - Circuits] Overriding .28+ circuit values in the GT5u Itemlist with values from GT++.");
 
+		boolean newVersion = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() >= 30;
+		
 		setItemList(ItemList.Circuit_Primitive, GregtechItemList.Old_Circuit_Primitive);
 		setItemList(ItemList.Circuit_Basic, GregtechItemList.Old_Circuit_Basic);
-		setItemList(ItemList.valueOf("Circuit_Integrated_Good"), GregtechItemList.Old_Circuit_Good); //New
-		
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Integrated_Good"), GregtechItemList.Old_Circuit_Good); //New
+		}		
 		setItemList(ItemList.Circuit_Good, GregtechItemList.Old_Circuit_Good);
 		setItemList(ItemList.Circuit_Advanced, GregtechItemList.Old_Circuit_Advanced);
 		//ItemList.Circuit_Data, GregtechItemList.Old_Circuit_Data);
@@ -128,30 +132,62 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		 */
 
 		//Basic
-		setItemList(ItemList.valueOf("Circuit_Microprocessor"), GregtechItemList.Old_Circuit_Basic);	//NEW	
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Microprocessor"), GregtechItemList.Old_Circuit_Basic);	//NEW	
+		}
 		//Good
-		setItemList(ItemList.valueOf("Circuit_Integrated"), GregtechItemList.Old_Circuit_Good);		
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Integrated"), GregtechItemList.Old_Circuit_Good);		
+		}
 		//Advanced
-		setItemList(ItemList.valueOf("Circuit_Nanoprocessor"), GregtechItemList.Old_Circuit_Advanced);		
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Nanoprocessor"), GregtechItemList.Old_Circuit_Advanced);		
+		}
 		//Data
-		setItemList(ItemList.valueOf("Circuit_Quantumprocessor"), GregtechItemList.Old_Circuit_Data);
-		setItemList(ItemList.valueOf("Circuit_Nanocomputer"), GregtechItemList.Old_Circuit_Data);	
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Quantumprocessor"), GregtechItemList.Old_Circuit_Data);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Nanocomputer"), GregtechItemList.Old_Circuit_Data);	
+		}
 		//Elite
-		setItemList(ItemList.valueOf("Circuit_Crystalprocessor"), GregtechItemList.Old_Circuit_Elite);
-		setItemList(ItemList.valueOf("Circuit_Quantumcomputer"), GregtechItemList.Old_Circuit_Elite);
-		setItemList(ItemList.valueOf("Circuit_Elitenanocomputer"), GregtechItemList.Old_Circuit_Elite);		
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Crystalprocessor"), GregtechItemList.Old_Circuit_Elite);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Quantumcomputer"), GregtechItemList.Old_Circuit_Elite);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Elitenanocomputer"), GregtechItemList.Old_Circuit_Elite);		
+		}
 		//Master
-		setItemList(ItemList.valueOf("Circuit_Neuroprocessor"), GregtechItemList.Old_Circuit_Master);
-		setItemList(ItemList.valueOf("Circuit_Masterquantumcomputer"), GregtechItemList.Old_Circuit_Master);	
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Neuroprocessor"), GregtechItemList.Old_Circuit_Master);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Masterquantumcomputer"), GregtechItemList.Old_Circuit_Master);	
+		}
 		//Ultimate
-		setItemList(ItemList.valueOf("Circuit_Wetwarecomputer"), GregtechItemList.Old_Circuit_Ultimate);
-		setItemList(ItemList.valueOf("Circuit_Ultimatecrystalcomputer"), GregtechItemList.Old_Circuit_Ultimate);
-		setItemList(ItemList.valueOf("Circuit_Quantummainframe"), GregtechItemList.Old_Circuit_Ultimate);	
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Wetwarecomputer"), GregtechItemList.Old_Circuit_Ultimate);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Ultimatecrystalcomputer"), GregtechItemList.Old_Circuit_Ultimate);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Quantummainframe"), GregtechItemList.Old_Circuit_Ultimate);	
+		}
 		//Superconductor
-		setItemList(ItemList.valueOf("Circuit_Wetwaresupercomputer"), GregtechItemList.Circuit_IV);
-		setItemList(ItemList.valueOf("Circuit_Crystalmainframe"), GregtechItemList.Circuit_IV);
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Wetwaresupercomputer"), GregtechItemList.Circuit_IV);
+		}
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Crystalmainframe"), GregtechItemList.Circuit_IV);
+		}
 		//Infinite
-		setItemList(ItemList.valueOf("Circuit_Wetwaremainframe"), GregtechItemList.Circuit_LuV);		
+		if (newVersion) {
+			setItemList(ItemList.valueOf("Circuit_Wetwaremainframe"), GregtechItemList.Circuit_LuV);		
+		}
 
 		//set data orbs and sticks to their new replacements
 		setItemList(ItemList.Tool_DataStick, GregtechItemList.Old_Tool_DataStick);
