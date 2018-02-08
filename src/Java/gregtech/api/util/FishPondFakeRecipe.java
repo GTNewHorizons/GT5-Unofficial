@@ -67,7 +67,7 @@ public class FishPondFakeRecipe {
 				new FluidStack[]{null},
 				100, //1 Tick
 				0, //No Eu produced
-				0 //Magic Number
+				circuit //Magic Number
 		);
 		Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes.addRecipe(x);
 	}	
