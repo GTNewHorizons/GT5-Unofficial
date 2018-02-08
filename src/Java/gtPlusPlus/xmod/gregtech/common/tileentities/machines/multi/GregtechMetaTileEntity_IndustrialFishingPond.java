@@ -74,9 +74,10 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller (front centered)",
 				"1x Output Bus (Any casing)",
 				"1x Input Bus (Any casing)",
-				"1x Input Hatch (Any casing)",
+				"1x Input Hatch (Any casing, fill with water)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
+				"Aquatic Casings for the rest",
 				CORE.GT_Tooltip
 		};
 	}

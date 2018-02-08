@@ -140,6 +140,8 @@ public class ConfigHandler {
 				"gregtech", true, "Thermal Boiler from GT4. Can Filter Lava for resources.");
 		enableMultiblock_IndustrialCuttingMachine = config.getBoolean("enableMultiblock_IndustrialCuttingMachine",
 				"gregtech", true, "Very fast and efficient Cutting Machine.");
+		enableMultiblock_IndustrialFishingPort = config.getBoolean("enableMultiblock_IndustrialFishingPort",
+				"gregtech", true, "Fish the seas, except on land.");
 	
 		// Options
 		rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000,

@@ -209,10 +209,12 @@ public class CORE {
 		public static boolean enableMultiblock_LargeAutoCrafter = true;
 		public static boolean enableMultiblock_ThermalBoiler = true;
 		public static boolean enableMultiblock_IndustrialCuttingMachine = true;
+		public static boolean enableMultiblock_IndustrialFishingPort = true;
 
 		//Visuals
 		public static boolean enableTreeFarmerParticles = true;
 		public static boolean useGregtechTextures = true;
+
 
 
 

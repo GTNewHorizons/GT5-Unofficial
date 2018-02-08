@@ -210,12 +210,14 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		short mSize = (short) mChunkLoaderManagerMap.size();
 		this.mChunkLoaderMapID = mSize;
 		if (this != null && this.getBaseMetaTileEntity() != null) {		
-			if (!isRegistered()) {		
-				BlockPos thisPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
-				Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos> loaderData = new Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>((int) this.mChunkLoaderMapID, this, new DimChunkPos(this.getBaseMetaTileEntity().getWorld(), thisPos));
-				mChunkLoaderManagerMap.put(thisPos, loaderData);
-				Logger.INFO("[Chunk Loader] Registered Chunk loader ["+this.mChunkLoaderMapID+"]"+thisPos.getLocationString());
-				//mChunkLoaders.put(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId),this);
+			if (!isRegistered()) {
+				if (this.xCoord != 0 && this.yCoord != 0 && this.zCoord != 0) {
+					BlockPos thisPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+					Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos> loaderData = new Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>((int) this.mChunkLoaderMapID, this, new DimChunkPos(this.getBaseMetaTileEntity().getWorld(), thisPos));
+					mChunkLoaderManagerMap.put(thisPos, loaderData);
+					Logger.INFO("[Chunk Loader] Registered Chunk loader ["+this.mChunkLoaderMapID+"]"+thisPos.getLocationString());
+					//mChunkLoaders.put(new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId),this);
+				}
 			}
 		}
 	}	
@@ -341,7 +343,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		if (!hasTicket)
 			chunks = null;
 		else {
-			if (this.mTier == 3) {
+			/*if (this.mTier == 3) {
 				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
 			}
 			else if (this.mTier == 4) {
@@ -349,7 +351,8 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 			}
 			else if (this.mTier == 5) {
 				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4 >> 4 >> 4, ((this.getBaseMetaTileEntity().getZCoord() >> 4) >> 4) >> 4, ANCHOR_RADIUS);
-			} 
+			} */
+			chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
 		}
 	}
 

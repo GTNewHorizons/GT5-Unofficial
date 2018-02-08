@@ -1085,7 +1085,7 @@ public class RECIPES_Machines {
 						"plateStainlessSteel",CI.emitter_ULV,"plateStainlessSteel",
 						ItemUtils.getSimpleStack(ModBlocks.blockProjectTable));
 			}
-			
+
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine){
 				ItemStack plate = ALLOY.MARAGING300.getPlate(1);
 				RecipeUtils.recipeBuilder(
@@ -1099,6 +1099,21 @@ public class RECIPES_Machines {
 						"wireFinePlatinum", EV_MACHINE_Cutter, "wireFinePlatinum",
 						plate,CI.getTieredCircuit(4),plate,
 						GregtechItemList.Industrial_CuttingFactoryController.get(1));
+			}
+			
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort){
+				ItemStack plate = ALLOY.INCONEL_792.getPlate(1);
+				RecipeUtils.recipeBuilder(
+						plate, CI.craftingToolHammer_Hard, plate,
+						"plateEglinSteel", "frameGtEglinSteel", "plateEglinSteel",
+						plate, CI.craftingToolWrench, plate,
+						GregtechItemList.Casing_FishPond.get(Casing_Amount));
+
+				RecipeUtils.recipeBuilder( 
+						plate,CI.getTieredCircuit(3),plate,
+						"wireFineElectrum", ItemUtils.getSimpleStack(ModBlocks.blockFishTrap), "wireFineElectrum",
+						plate,CI.getTieredCircuit(2),plate,
+						GregtechItemList.Industrial_FishingPond.get(1));
 			}
 			
 			//Wireless Chargers
