@@ -99,65 +99,73 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		generateTradeRecipes();
 		return true;
 	}
+	
+	private static boolean setItemList(ItemList Set, GregtechItemList Get) {
+		try{
+			Set.set(Get.get(1));
+			return true;
+		}
+		catch (Throwable t) {}
+		return false;
+	}
 
 	private static boolean removeNewCircuits(){
 		Logger.INFO("[Old Feature - Circuits] Overriding .28+ circuit values in the GT5u Itemlist with values from GT++.");
 
-		ItemList.Circuit_Primitive.set(GregtechItemList.Old_Circuit_Primitive.get(1));
-		ItemList.Circuit_Basic.set(GregtechItemList.Old_Circuit_Basic.get(1));
-		if (ItemList.valueOf("Circuit_Integrated_Good") != null){
-			ItemList.valueOf("Circuit_Integrated_Good").set(GregtechItemList.Old_Circuit_Good.get(1));
-		}
-		ItemList.Circuit_Good.set(GregtechItemList.Old_Circuit_Good.get(1));
-		ItemList.Circuit_Advanced.set(GregtechItemList.Old_Circuit_Advanced.get(1));
-		//ItemList.Circuit_Data.set(GregtechItemList.Old_Circuit_Data.get(1));
-		ItemList.Circuit_Elite.set(GregtechItemList.Old_Circuit_Elite.get(1));
-		ItemList.Circuit_Master.set(GregtechItemList.Old_Circuit_Master.get(1));
-		ItemList.Circuit_Ultimate.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
+		setItemList(ItemList.Circuit_Primitive, GregtechItemList.Old_Circuit_Primitive);
+		setItemList(ItemList.Circuit_Basic, GregtechItemList.Old_Circuit_Basic);
+		setItemList(ItemList.valueOf("Circuit_Integrated_Good"), GregtechItemList.Old_Circuit_Good); //New
 		
+		setItemList(ItemList.Circuit_Good, GregtechItemList.Old_Circuit_Good);
+		setItemList(ItemList.Circuit_Advanced, GregtechItemList.Old_Circuit_Advanced);
+		//ItemList.Circuit_Data, GregtechItemList.Old_Circuit_Data);
+		setItemList(ItemList.Circuit_Elite, GregtechItemList.Old_Circuit_Elite);
+		setItemList(ItemList.Circuit_Master, GregtechItemList.Old_Circuit_Master);
+		setItemList(ItemList.Circuit_Ultimate, GregtechItemList.Old_Circuit_Ultimate);
+
 		/**
 		 * Try Set New circuits to have old replacements
 		 */
-				
+
 		//Basic
-		ItemList.valueOf("Circuit_Microprocessor").set(GregtechItemList.Old_Circuit_Basic.get(1));		
+		setItemList(ItemList.valueOf("Circuit_Microprocessor"), GregtechItemList.Old_Circuit_Basic);	//NEW	
 		//Good
-		ItemList.valueOf("Circuit_Integrated").set(GregtechItemList.Old_Circuit_Good.get(1));		
+		setItemList(ItemList.valueOf("Circuit_Integrated"), GregtechItemList.Old_Circuit_Good);		
 		//Advanced
-		ItemList.valueOf("Circuit_Nanoprocessor").set(GregtechItemList.Old_Circuit_Advanced.get(1));		
+		setItemList(ItemList.valueOf("Circuit_Nanoprocessor"), GregtechItemList.Old_Circuit_Advanced);		
 		//Data
-		ItemList.valueOf("Circuit_Quantumprocessor").set(GregtechItemList.Old_Circuit_Data.get(1));
-		ItemList.valueOf("Circuit_Nanocomputer").set(GregtechItemList.Old_Circuit_Data.get(1));	
+		setItemList(ItemList.valueOf("Circuit_Quantumprocessor"), GregtechItemList.Old_Circuit_Data);
+		setItemList(ItemList.valueOf("Circuit_Nanocomputer"), GregtechItemList.Old_Circuit_Data);	
 		//Elite
-		ItemList.valueOf("Circuit_Crystalprocessor").set(GregtechItemList.Old_Circuit_Elite.get(1));
-		ItemList.valueOf("Circuit_Quantumcomputer").set(GregtechItemList.Old_Circuit_Elite.get(1));
-		ItemList.valueOf("Circuit_Elitenanocomputer").set(GregtechItemList.Old_Circuit_Elite.get(1));		
+		setItemList(ItemList.valueOf("Circuit_Crystalprocessor"), GregtechItemList.Old_Circuit_Elite);
+		setItemList(ItemList.valueOf("Circuit_Quantumcomputer"), GregtechItemList.Old_Circuit_Elite);
+		setItemList(ItemList.valueOf("Circuit_Elitenanocomputer"), GregtechItemList.Old_Circuit_Elite);		
 		//Master
-		ItemList.valueOf("Circuit_Neuroprocessor").set(GregtechItemList.Old_Circuit_Master.get(1));
-		ItemList.valueOf("Circuit_Masterquantumcomputer").set(GregtechItemList.Old_Circuit_Master.get(1));	
+		setItemList(ItemList.valueOf("Circuit_Neuroprocessor"), GregtechItemList.Old_Circuit_Master);
+		setItemList(ItemList.valueOf("Circuit_Masterquantumcomputer"), GregtechItemList.Old_Circuit_Master);	
 		//Ultimate
-		ItemList.valueOf("Circuit_Wetwarecomputer").set(GregtechItemList.Old_Circuit_Ultimate.get(1));
-		ItemList.valueOf("Circuit_Ultimatecrystalcomputer").set(GregtechItemList.Old_Circuit_Ultimate.get(1));
-		ItemList.valueOf("Circuit_Quantummainframe").set(GregtechItemList.Old_Circuit_Ultimate.get(1));	
+		setItemList(ItemList.valueOf("Circuit_Wetwarecomputer"), GregtechItemList.Old_Circuit_Ultimate);
+		setItemList(ItemList.valueOf("Circuit_Ultimatecrystalcomputer"), GregtechItemList.Old_Circuit_Ultimate);
+		setItemList(ItemList.valueOf("Circuit_Quantummainframe"), GregtechItemList.Old_Circuit_Ultimate);	
 		//Superconductor
-		ItemList.valueOf("Circuit_Wetwaresupercomputer").set(GregtechItemList.Circuit_IV.get(1));
-		ItemList.valueOf("Circuit_Crystalmainframe").set(GregtechItemList.Circuit_IV.get(1));
+		setItemList(ItemList.valueOf("Circuit_Wetwaresupercomputer"), GregtechItemList.Circuit_IV);
+		setItemList(ItemList.valueOf("Circuit_Crystalmainframe"), GregtechItemList.Circuit_IV);
 		//Infinite
-		ItemList.valueOf("Circuit_Wetwaremainframe").set(GregtechItemList.Circuit_LuV.get(1));		
+		setItemList(ItemList.valueOf("Circuit_Wetwaremainframe"), GregtechItemList.Circuit_LuV);		
 
 		//set data orbs and sticks to their new replacements
-		ItemList.Tool_DataStick.set(GregtechItemList.Old_Tool_DataStick.get(1));
-		ItemList.Tool_DataOrb.set(GregtechItemList.Old_Tool_DataOrb.get(1));
+		setItemList(ItemList.Tool_DataStick, GregtechItemList.Old_Tool_DataStick);
+		setItemList(ItemList.Tool_DataOrb, GregtechItemList.Old_Tool_DataOrb);
 
-		ItemList.Circuit_Board_Basic.set(GregtechItemList.Old_Circuit_Board_Basic.get(1));
-		ItemList.Circuit_Board_Advanced.set(GregtechItemList.Old_Circuit_Board_Advanced.get(1));
-		ItemList.Circuit_Board_Elite.set(GregtechItemList.Old_Circuit_Board_Elite.get(1));
-		ItemList.Circuit_Parts_Advanced.set(GregtechItemList.Old_Circuit_Parts_Advanced.get(1));
-		ItemList.Circuit_Parts_Wiring_Basic.set(GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1));
-		ItemList.Circuit_Parts_Wiring_Advanced.set(GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.get(1));
-		ItemList.Circuit_Parts_Wiring_Elite.set(GregtechItemList.Old_Circuit_Parts_Wiring_Elite.get(1));
-		ItemList.Circuit_Parts_Crystal_Chip_Elite.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1));
-		ItemList.Circuit_Parts_Crystal_Chip_Master.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(1));
+		setItemList(ItemList.Circuit_Board_Basic, GregtechItemList.Old_Circuit_Board_Basic);
+		setItemList(ItemList.Circuit_Board_Advanced, GregtechItemList.Old_Circuit_Board_Advanced);
+		setItemList(ItemList.Circuit_Board_Elite, GregtechItemList.Old_Circuit_Board_Elite);
+		setItemList(ItemList.Circuit_Parts_Advanced, GregtechItemList.Old_Circuit_Parts_Advanced);
+		setItemList(ItemList.Circuit_Parts_Wiring_Basic, GregtechItemList.Old_Circuit_Parts_Wiring_Basic);
+		setItemList(ItemList.Circuit_Parts_Wiring_Advanced, GregtechItemList.Old_Circuit_Parts_Wiring_Advanced);
+		setItemList(ItemList.Circuit_Parts_Wiring_Elite, GregtechItemList.Old_Circuit_Parts_Wiring_Elite);
+		setItemList(ItemList.Circuit_Parts_Crystal_Chip_Elite, GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite);
+		setItemList(ItemList.Circuit_Parts_Crystal_Chip_Master, GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master);
 
 		return true;
 	}

@@ -30,9 +30,9 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 		super(aName, aTier, 3, aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+	/*public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
-	}
+	}*/
 
 	public boolean isSimpleMachine() {
 		return true;
@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_TieredChest(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return new GT_MetaTileEntity_TieredChest(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {

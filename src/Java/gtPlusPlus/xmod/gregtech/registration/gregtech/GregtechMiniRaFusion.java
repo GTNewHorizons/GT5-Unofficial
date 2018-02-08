@@ -60,7 +60,7 @@ public class GregtechMiniRaFusion {
 		return false;
 	}
 
-	private static void addFusionReactorRecipe(Materials molten, int amnt, Materials gas, int amnt2, FluidStack plasma, int i, int j, int k) {
+	private static void addFusionReactorRecipe(Materials molten, int amnt, Materials gas, int amnt2, FluidStack plasma, int i, int j, int k) {/*
 		Materials Fusion[] = new Materials[2];
 		int amount[] = new int[2];
 		int emptyAmount = 0;
@@ -163,11 +163,11 @@ public class GregtechMiniRaFusion {
 				) != null){
 			mRecipeCount++;					
 		}
-	}
+	*/}
 
 
 	public static int mRecipeCount = 0;
-	private static void addFusionReactorRecipe(Materials molten, int amnt, Materials gas, int amnt2, Materials output, int amnt3, int i, int j, int k) {
+	private static void addFusionReactorRecipe(Materials molten, int amnt, Materials gas, int amnt2, Materials output, int amnt3, int i, int j, int k) {/*
 		Materials Fusion[] = new Materials[3];
 		int amount[] = new int[3];
 		int emptyAmount = 0;
@@ -291,6 +291,6 @@ public class GregtechMiniRaFusion {
 				) != null){
 			mRecipeCount++;					
 		}
-	}
+	*/}
 	
 }
