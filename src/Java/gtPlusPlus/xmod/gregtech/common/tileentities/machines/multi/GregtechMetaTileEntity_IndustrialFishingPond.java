@@ -579,13 +579,9 @@ extends GregtechMeta_MultiBlockBase {
 			rslot++;
 		}		
 
-		// Commit outputs		
-		for (ItemStack n : tOutputItems) {
-			this.addOutput(n);			
-		}
-
-		//this.mOutputItems = tOutputItems;
-		//updateSlots();
+		// Commit outputs
+		this.mOutputItems = tOutputItems;
+		updateSlots();
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();

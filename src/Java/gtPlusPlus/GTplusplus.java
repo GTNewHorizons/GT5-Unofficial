@@ -36,6 +36,7 @@ import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -108,6 +109,7 @@ public class GTplusplus implements ActionListener {
 
 
 		proxy.preInit(event);
+		Core_Manager.preInit();
 	}
 
 	// Init
@@ -121,6 +123,7 @@ public class GTplusplus implements ActionListener {
 		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
 		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
+		Core_Manager.init();
 
 	}
 
@@ -129,6 +132,7 @@ public class GTplusplus implements ActionListener {
 	public void postInit(final FMLPostInitializationEvent event) {
 		proxy.postInit(event);
 		BookHandler.runLater();
+		Core_Manager.postInit();
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
