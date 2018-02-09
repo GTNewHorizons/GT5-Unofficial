@@ -16,7 +16,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -26,8 +25,6 @@ import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -102,7 +99,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes;
+		return null;
 	}
 
 	@Override
@@ -305,7 +302,7 @@ extends GregtechMeta_MultiBlockBase {
 			for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
 				for (int h = 0; h < 2; ++h) {
 					Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-					byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+					//byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 					if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
 						if (this.getStoredFluids() != null) {
 							for (FluidStack stored : this.getStoredFluids()) {
@@ -348,7 +345,7 @@ extends GregtechMeta_MultiBlockBase {
 		return (tAmount >= 80);
 	}
 
-	private static AutoMap<AutoMap> categories = new AutoMap<AutoMap>();
+	private static AutoMap<AutoMap<WeightedRandomFishable>> categories = new AutoMap<AutoMap<WeightedRandomFishable>>();
 	private static AutoMap<WeightedRandomFishable> categoryFish = new AutoMap<WeightedRandomFishable>();
 	private static AutoMap<WeightedRandomFishable> categoryJunk = new AutoMap<WeightedRandomFishable>();
 	private static AutoMap<WeightedRandomFishable> categoryLoot = new AutoMap<WeightedRandomFishable>();
@@ -514,7 +511,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		// EU discount
-		float tRecipeEUt = (32 * aEUPercent) / 100.0f;
+		//float tRecipeEUt = (32 * aEUPercent) / 100.0f;
 		float tTotalEUt = 0.0f;
 
 		// Reset outputs and progress stats
