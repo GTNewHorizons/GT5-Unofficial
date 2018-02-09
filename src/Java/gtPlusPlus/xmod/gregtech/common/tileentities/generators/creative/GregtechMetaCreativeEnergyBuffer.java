@@ -11,6 +11,7 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +42,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+		return new String[] {this.mDescription, CORE.GT_Tooltip};
 	}
 
 	/*
@@ -75,16 +76,6 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 				this.mTextures, this.mInventory.length);
 	}
 
-	@Override public boolean isSimpleMachine()						{return false;}
-	@Override public boolean isElectric()							{return true;}
-	@Override public boolean isValidSlot(final int aIndex)				{return true;}
-	@Override public boolean isFacingValid(final byte aFacing)			{return true;}
-	@Override public boolean isEnetInput() 							{return true;}
-	@Override public boolean isEnetOutput() 						{return true;}
-	@Override public boolean isInputFacing(final byte aSide)				{return aSide!=this.getBaseMetaTileEntity().getFrontFacing();}
-	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getFrontFacing();}
-	@Override public boolean isTeleporterCompatible()				{return false;}
-
 	@Override
 	public long getMinimumStoredEU() {
 		return 0;
@@ -107,19 +98,16 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public long maxAmperesIn() {
-		return this.mChargeableCount * 16;
+		return 16;
 	}
 
 	@Override
 	public long maxAmperesOut() {
-		return this.mChargeableCount * 16;
+		return 16;
 	}
-	@Override public int rechargerSlotStartIndex()					{return 0;}
-	@Override public int dechargerSlotStartIndex()					{return 0;}
-	@Override public int rechargerSlotCount()						{return this.mCharge?this.mInventory.length:0;}
-	@Override public int dechargerSlotCount()						{return this.mDecharge?this.mInventory.length:0;}
+
 	@Override public int getProgresstime()							{return Integer.MAX_VALUE;}
-	@Override public int maxProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyCapacity();}
+	@Override public int maxProgresstime()							{return Integer.MAX_VALUE;}
 	@Override public boolean isAccessAllowed(final EntityPlayer aPlayer)	{return true;}
 
 	@Override
@@ -153,31 +141,14 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	}
 
 	@Override
-	public long[] getStoredEnergy(){
-		long tScale = this.getBaseMetaTileEntity().getEUCapacity();
-		long tStored = this.getBaseMetaTileEntity().getStoredEU();
-		//this.setEUVar(Long.MAX_VALUE);
-		return new long[] { tStored, tScale };
-	}
-
-	private long count=0;
-	private long mStored=0;
-	private long mMax=0;
-
-	@Override
 	public String[] getInfoData() {
-		this.count++;
-		if((this.mMax==0)||((this.count%20)==0)){
-			final long[] tmp = this.getStoredEnergy();
-			this.mStored=tmp[0];
-			this.mMax=tmp[1];
-		}
-
+		String[] infoData = super.getInfoData();
 		return new String[] {
-				this.getLocalName(),
+				infoData[0],
 				"THIS IS A CREATIVE ITEM - FOR TESTING",
-				GT_Utility.formatNumbers(this.mStored)+" EU /",
-				GT_Utility.formatNumbers(this.mMax)+" EU"};
+				infoData[1],
+				infoData[2]
+		};
 	}
 
 	@Override
