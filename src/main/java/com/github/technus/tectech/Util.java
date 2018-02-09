@@ -321,7 +321,7 @@ public final class Util {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockTypeFallback[pointer].getUnlocalizedName());
+                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                     }
                                                     return false;
                                                 }
