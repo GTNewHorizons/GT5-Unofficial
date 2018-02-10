@@ -48,6 +48,7 @@ public class ThingsLoader implements Runnable {
         TecTech.Logger.info("Reactor Simulator registered");
 
         ConstructableTriggerItem.run();
+        FrontRotationTriggerItem.run();
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
         TecTech.Logger.info("Useful Items registered");

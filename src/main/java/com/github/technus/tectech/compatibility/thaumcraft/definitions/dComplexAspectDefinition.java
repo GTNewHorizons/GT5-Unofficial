@@ -182,6 +182,16 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
+    public boolean usesMultipleDecayCalls(long energyLevel) {
+        return false;
+    }
+
+    @Override
+    public boolean decayMakesEnergy(long energyLevel) {
+        return false;
+    }
+
+    @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         return noDecay;
     }

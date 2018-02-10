@@ -135,6 +135,16 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
+    public boolean usesMultipleDecayCalls(long energyLevel) {
+        return false;
+    }
+
+    @Override
+    public boolean decayMakesEnergy(long energyLevel) {
+        return false;
+    }
+
+    @Override
     public cElementalDecay[] getDecayArray() {
         return elementalDecays;
     }

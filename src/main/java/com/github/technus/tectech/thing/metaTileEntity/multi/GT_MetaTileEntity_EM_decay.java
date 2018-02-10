@@ -5,7 +5,9 @@ import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMa
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -14,7 +16,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.VN;
-import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -33,6 +33,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+    private cElementalInstanceStackMap contents=new cElementalInstanceStackMap();
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -83,7 +84,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
     }
@@ -115,28 +116,44 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         cElementalInstanceStackMap map= getInputsClone_EM();
-        if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()< STABLE_RAW_LIFE_TIME){
+        if(map!=null && map.hasStacks()){
+            for(GT_MetaTileEntity_Hatch_InputElemental i:eInputHatches){
+                i.getContainerHandler().clear();
+            }
             return startRecipe(map.getFirst());
+        }else if(eSafeVoid){
+            contents.clear();
+        }else if(contents.hasStacks()){
+            startRecipe(null);
         }
         return false;
     }
 
-    private float m1,m2,m3;
     private boolean startRecipe(cElementalInstanceStack input) {
-        m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
-        if(m3<1) {
-            explodeMultiblock();
+        if(input!=null) {
+            contents.putUnify(input);
         }
-        if(m3>=Integer.MAX_VALUE) {
-            return false;
-        }
-        mMaxProgresstime = 1;//(int)m3;
+
+        mMaxProgresstime = 20;//(int)m3;
         mEfficiencyIncrease = 10000;
-        m1 = input.getMass()/input.amount;
-        cElementalInstanceStackMap decayed=input.decay();
-        m2 = decayed.getMass()/input.amount;
-        //TecTech.Logger.info("I " + input.toString());
-        //TecTech.Logger.info("O " + decayed.toString());
+
+        float mass=contents.getMass();
+
+        System.out.println("INPUT");
+        for(cElementalInstanceStack stack:contents.values()){
+            System.out.println(stack.definition.getSymbol()+" "+stack.amount);
+        }
+
+        contents.tickContent(1,0,1);
+
+        System.out.println("MASS DIFF = " +(mass-contents.getMass()));
+
+        //todo remove not actually decaying crap
+
+        //for(cElementalInstanceStack stack:contents.values()){
+        //    System.out.println(stack.definition.getSymbol()+" "+stack.amount);
+        //}
+
         return true;
     }
 
@@ -174,7 +191,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
-                m1+" "+m2+ ' ' +m3
         };
     }
 }

@@ -1,6 +1,7 @@
 package com.github.technus.tectech;
 
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -67,6 +68,7 @@ public final class Util {
         return result.toString();
     }
 
+    /*
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
     public static boolean StructureChecker(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
@@ -219,8 +221,7 @@ public final class Util {
         IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
-        int
-                baseX=aBaseMetaTileEntity.getXCoord(),
+        int     baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
@@ -321,7 +322,264 @@ public final class Util {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockTypeFallback[pointer].getUnlocalizedName());
+                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                    }
+                                                    return false;
+                                                }
+                                                if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                    }
+                                                    return false;
+                                                }
+                                            }
+                                        } catch (InvocationTargetException | IllegalAccessException e) {
+                                            if (DEBUG_MODE) {
+                                                e.printStackTrace();
+                                            }
+                                            return false;
+                                        }
+                                    }
+                            }
+                        } else if (forceCheck) {
+                            return false;
+                        }
+                        a++;//block in horizontal layer
+                    }
+                }
+                b--;//horizontal layer
+            }
+            c++;//depth
+        }
+        return true;
+    }
+    */
+
+    //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
+    //This only checks for REGULAR BLOCKS!
+    public static boolean StructureCheckerExtreme(
+            String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            Method adder,
+            String[] addingMethods,
+            short[] casingTextures,
+            Block[] blockTypeFallback,//use numbers 0-9 for casing types
+            byte[] blockMetaFallback,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset,
+            IGregTechTileEntity aBaseMetaTileEntity,
+            IFrontRotation frontRotation,
+            boolean forceCheck) {
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) {
+            return false;
+        }
+        //TE Rotation
+        int facingAndRotation = aBaseMetaTileEntity.getFrontFacing() + (frontRotation==null?0:(frontRotation.getFrontRotation()<<3));
+
+        IGregTechTileEntity igt;
+        IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
+
+        int x, y, z, a, b, c, pointer;
+        int     baseX=aBaseMetaTileEntity.getXCoord(),
+                baseZ=aBaseMetaTileEntity.getZCoord(),
+                baseY=aBaseMetaTileEntity.getYCoord();
+        //a,b,c - relative to block face!
+        //x,y,z - relative to block position on map!
+        //yPos  - absolute height of checked block
+
+        //perform your duties
+        c = -depthOffset;
+        for (String[] _structure : structure) {//front to back
+            b = verticalOffset;
+            for (String __structure : _structure) {//top to bottom
+                a = -horizontalOffset;
+                for (char block : __structure.toCharArray()) {//left to right
+                    if (block < ' ') {//Control chars allow skipping
+                        b -= block;
+                        break;
+                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
+                    {
+                        a += block - '@';
+                    }//else if (block < '+')//used to mark THINGS
+                    //    a++;
+                    else if (block=='.') {
+                        a++;
+                    } else {
+                        //get x y z from rotation
+                        switch (facingAndRotation) {//translation
+                            case 4:
+                                x = baseX + c;
+                                z = baseZ + a;
+                                y = baseY + b;
+                                break;
+                            case 12:
+                                x = baseX + c;
+                                y = baseY - a;
+                                z = baseZ + b;
+                                break;
+                            case 20:
+                                x = baseX + c;
+                                z = baseZ - a;
+                                y = baseY - b;
+                                break;
+                            case 28:
+                                x = baseX + c;
+                                y = baseY + a;
+                                z = baseZ - b;
+                                break;
+
+                            case 3:
+                                x = baseX + a;
+                                z = baseZ - c;
+                                y = baseY + b;
+                                break;
+                            case 11:
+                                y = baseY - a;
+                                z = baseZ - c;
+                                x = baseX + b;
+                                break;
+                            case 19:
+                                x = baseX - a;
+                                z = baseZ - c;
+                                y = baseY - b;
+                                break;
+                            case 27:
+                                y = baseY + a;
+                                z = baseZ - c;
+                                x = baseX - b;
+                                break;
+
+                            case 5:
+                                x = baseX - c;
+                                z = baseZ - a;
+                                y = baseY + b;
+                                break;
+                            case 13:
+                                x = baseX - c;
+                                y = baseY - a;
+                                z = baseZ - b;
+                                break;
+                            case 21:
+                                x = baseX - c;
+                                z = baseZ + a;
+                                y = baseY - b;
+                                break;
+                            case 29:
+                                x = baseX - c;
+                                y = baseY + a;
+                                z = baseZ + b;
+                                break;
+
+                            case 2:
+                                x = baseX - a;
+                                z = baseZ + c;
+                                y = baseY + b;
+                                break;
+                            case 10:
+                                y = baseY - a;
+                                z = baseZ + c;
+                                x = baseX - b;
+                                break;
+                            case 18:
+                                x = baseX + a;
+                                z = baseZ + c;
+                                y = baseY - b;
+                                break;
+                            case 26:
+                                y = baseY + a;
+                                z = baseZ + c;
+                                x = baseX + b;
+                                break;
+                            //Things get odd if the block faces up or down...
+                            case 1:
+                                x = baseX + a;
+                                z = baseZ - b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 9:
+                                z = baseZ + a;
+                                x = baseX + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 17:
+                                x = baseX - a;
+                                z = baseZ + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 25:
+                                z = baseZ - a;
+                                x = baseX - b;
+                                y = baseY - c;
+                                break;//similar to 3
+
+                            case 0:
+                                x = baseX - a;
+                                z = baseZ - b;
+                                y = baseY + c;
+                                break;//similar to 2
+                            case 8:
+                                z = baseZ + a;
+                                x = baseX - b;
+                                y = baseY + c;
+                                break;
+                            case 16:
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY + c;
+                                break;
+                            case 24:
+                                z = baseZ - a;
+                                x = baseX + b;
+                                y = baseY + c;
+                                break;
+                            default:
+                                if(DEBUG_MODE) {
+                                    TecTech.Logger.info("facing = " + facingAndRotation);
+                                }
+                                return false;
+                        }
+
+                        //that must be here since in some cases other axis (b,c) controls y
+                        if (y < 0 || y >= 256) {
+                            return false;
+                        }
+
+                        //Check block
+                        if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
+                            switch (block) {
+                                case '-'://must be air
+                                    if (world.getBlock(x, y, z).getMaterial() != Material.air) {
+                                        return false;
+                                    }
+                                    break;
+                                case '+'://must not be air
+                                    if (world.getBlock(x, y, z).getMaterial() == Material.air) {
+                                        return false;
+                                    }
+                                    break;
+                                default://check for block (countable)
+                                    if ((pointer = block - '0') >= 0) {
+                                        //countable air -> net.minecraft.block.BlockAir
+                                        if (world.getBlock(x, y, z) != blockType[pointer]) {
+                                            if (DEBUG_MODE) {
+                                                TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                            }
+                                            return false;
+                                        }
+                                        if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
+                                            if (DEBUG_MODE) {
+                                                TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                            }
+                                            return false;
+                                        }
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        igt = aBaseMetaTileEntity.getIGregTechTileEntity(x, y, z);
+                                        try {
+                                            if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
+                                                if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                     }
                                                     return false;
                                                 }
@@ -359,17 +617,37 @@ public final class Util {
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            IGregTechTileEntity aBaseMetaTileEntity, boolean hintsOnly) {
         byte facing = aBaseMetaTileEntity.getFrontFacing();
-        return StructureBuilder(structure,blockType,blockMeta,
+        return StructureBuilderExtreme(structure,blockType,blockMeta,
                 horizontalOffset,verticalOffset,depthOffset,
-                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),
+                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),null,
+                facing,hintsOnly);
+    }
+
+    public static boolean StructureBuilderExtreme(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                           Block[] blockType,//use numbers 0-9 for casing types
+                                           byte[] blockMeta,//use numbers 0-9 for casing types
+                                           int horizontalOffset, int verticalOffset, int depthOffset,
+                                           IGregTechTileEntity aBaseMetaTileEntity, IFrontRotation frontRotation, boolean hintsOnly) {
+        byte facing = aBaseMetaTileEntity.getFrontFacing();
+        return StructureBuilderExtreme(structure,blockType,blockMeta,
+                horizontalOffset,verticalOffset,depthOffset,
+                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),frontRotation,
                 facing,hintsOnly);
     }
 
     public static boolean StructureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                            Block[] blockType,//use numbers 0-9 for casing types
+                                            byte[] blockMeta,//use numbers 0-9 for casing types
+                                            int horizontalOffset, int verticalOffset, int depthOffset,
+                                            TileEntity tileEntity, int facing, boolean hintsOnly){
+        return StructureBuilderExtreme(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,tileEntity,null,facing,hintsOnly);
+    }
+
+    public static boolean StructureBuilderExtreme(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
                                            Block[] blockType,//use numbers 0-9 for casing types
                                            byte[] blockMeta,//use numbers 0-9 for casing types
                                            int horizontalOffset, int verticalOffset, int depthOffset,
-                                           TileEntity tileEntity, int facing, boolean hintsOnly) {
+                                           TileEntity tileEntity, IFrontRotation frontRotation, int facing, boolean hintsOnly) {
         if(!tileEntity.hasWorldObj()) {
             return false;
         }
@@ -387,6 +665,9 @@ public final class Util {
                 baseY=tileEntity.yCoord;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
+        if(frontRotation!=null) {
+            facing += frontRotation.getFrontRotation() << 3;
+        }
 
         //perform your duties
         c = -depthOffset;
@@ -408,39 +689,136 @@ public final class Util {
                         a++;
                     } else {
                         //get x y z from rotation
-                        switch (facing) {//translation
+                        switch (facing) {
                             case 4:
                                 x = baseX + c;
                                 z = baseZ + a;
                                 y = baseY + b;
                                 break;
+                            case 12:
+                                x = baseX + c;
+                                y = baseY - a;
+                                z = baseZ + b;
+                                break;
+                            case 20:
+                                x = baseX + c;
+                                z = baseZ - a;
+                                y = baseY - b;
+                                break;
+                            case 28:
+                                x = baseX + c;
+                                y = baseY + a;
+                                z = baseZ - b;
+                                break;
+
                             case 3:
                                 x = baseX + a;
                                 z = baseZ - c;
                                 y = baseY + b;
                                 break;
+                            case 11:
+                                y = baseY - a;
+                                z = baseZ - c;
+                                x = baseX + b;
+                                break;
+                            case 19:
+                                x = baseX - a;
+                                z = baseZ - c;
+                                y = baseY - b;
+                                break;
+                            case 27:
+                                y = baseY + a;
+                                z = baseZ - c;
+                                x = baseX - b;
+                                break;
+
                             case 5:
                                 x = baseX - c;
                                 z = baseZ - a;
                                 y = baseY + b;
                                 break;
+                            case 13:
+                                x = baseX - c;
+                                y = baseY - a;
+                                z = baseZ - b;
+                                break;
+                            case 21:
+                                x = baseX - c;
+                                z = baseZ + a;
+                                y = baseY - b;
+                                break;
+                            case 29:
+                                x = baseX - c;
+                                y = baseY + a;
+                                z = baseZ + b;
+                                break;
+
                             case 2:
                                 x = baseX - a;
                                 z = baseZ + c;
                                 y = baseY + b;
                                 break;
+                            case 10:
+                                y = baseY - a;
+                                z = baseZ + c;
+                                x = baseX - b;
+                                break;
+                            case 18:
+                                x = baseX + a;
+                                z = baseZ + c;
+                                y = baseY - b;
+                                break;
+                            case 26:
+                                y = baseY + a;
+                                z = baseZ + c;
+                                x = baseX + b;
+                                break;
                             //Things get odd if the block faces up or down...
                             case 1:
                                 x = baseX + a;
+                                z = baseZ - b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 9:
+                                z = baseZ + a;
+                                x = baseX + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 17:
+                                x = baseX - a;
                                 z = baseZ + b;
                                 y = baseY - c;
                                 break;//similar to 3
+                            case 25:
+                                z = baseZ - a;
+                                x = baseX - b;
+                                y = baseY - c;
+                                break;//similar to 3
+
                             case 0:
                                 x = baseX - a;
                                 z = baseZ - b;
                                 y = baseY + c;
                                 break;//similar to 2
+                            case 8:
+                                z = baseZ + a;
+                                x = baseX - b;
+                                y = baseY + c;
+                                break;
+                            case 16:
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY + c;
+                                break;
+                            case 24:
+                                z = baseZ - a;
+                                x = baseX + b;
+                                y = baseY + c;
+                                break;
                             default:
+                                if(DEBUG_MODE) {
+                                    TecTech.Logger.info("facing = " + facing);
+                                }
                                 return false;
                         }
 
@@ -506,6 +884,7 @@ public final class Util {
         }
         return true;
     }
+
 
     public static String[] StructureWriter(IGregTechTileEntity aBaseMetaTileEntity,
                                            int horizontalOffset, int verticalOffset, int depthOffset,

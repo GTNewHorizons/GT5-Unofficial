@@ -185,7 +185,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x, int y, int i, int j, byte status) {
         int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
-            case STATUS_WRONG: {//fallthrough
+            case STATUS_WRONG: //fallthrough
                 if (counter < 2) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
@@ -193,7 +193,6 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
-            }
             case STATUS_OK://ok
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);
                 break;

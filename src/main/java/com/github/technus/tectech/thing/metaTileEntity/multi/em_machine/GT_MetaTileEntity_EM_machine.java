@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         if(aBaseMetaTileEntity.isServerSide()) {
             quantumStuff(aBaseMetaTileEntity.isActive());
         }

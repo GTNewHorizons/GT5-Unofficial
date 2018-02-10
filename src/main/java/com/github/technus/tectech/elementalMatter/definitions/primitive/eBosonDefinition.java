@@ -36,6 +36,6 @@ public final class eBosonDefinition extends cElementalPrimitive {
 
     @Override
     public boolean isTimeSpanHalfLife() {
-        return false;
+        return this==boson_H__;
     }
 }

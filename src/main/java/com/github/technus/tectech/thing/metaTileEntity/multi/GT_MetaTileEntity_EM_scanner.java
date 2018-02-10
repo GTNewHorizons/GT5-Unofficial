@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         if(aBaseMetaTileEntity.isServerSide()) {
             if (totalComputationRemaining > 0 && objectResearched!=null) {
                 eRecipe = null;

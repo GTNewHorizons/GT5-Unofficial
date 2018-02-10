@@ -7,6 +7,7 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -17,7 +18,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity(),hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity(),this,hintsOnly);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         if(aBaseMetaTileEntity.isServerSide()) {
             if (computationRemaining > 0) {
                 aRecipe = null;
@@ -334,15 +334,15 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
     }
 
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing >= 2;
-    }
+    //@Override
+    //public boolean isFacingValid(byte aFacing) {
+    //    return aFacing >= 2;
+    //}
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new GT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedTexture(aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }

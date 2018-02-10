@@ -1216,6 +1216,28 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
+    public boolean usesMultipleDecayCalls(long energyLevel) {
+        if(!iaeaDefinitionExistsAndHasEnergyLevels) return false;
+        iaeaNuclide.energeticState state;
+        if(energyLevel>iaea.energeticStatesArray.length) {
+            state = iaea.energeticStatesArray[iaea.energeticStatesArray.length - 1];
+        } else if(energyLevel<=0) {
+            state = iaea.energeticStatesArray[0];
+        } else {
+            state = iaea.energeticStatesArray[(int) energyLevel];
+        }
+        for (iaeaNuclide.iaeaDecay decay:state.decaymodes){
+            if(decay.decayName.contains("F")) return true;//if is fissile
+        }
+        return false;
+    }
+
+    @Override
+    public boolean decayMakesEnergy(long energyLevel) {
+        return iaeaDefinitionExistsAndHasEnergyLevels;
+    }
+
+    @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         //disembody
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();

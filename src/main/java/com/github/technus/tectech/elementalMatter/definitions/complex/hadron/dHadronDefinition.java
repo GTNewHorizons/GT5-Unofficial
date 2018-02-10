@@ -222,6 +222,16 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
+    public boolean usesMultipleDecayCalls(long energyLevel) {
+        return false;
+    }
+
+    @Override
+    public boolean decayMakesEnergy(long energyLevel) {
+        return false;
+    }
+
+    @Override
     public cElementalDecay[] getDecayArray() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType()) {

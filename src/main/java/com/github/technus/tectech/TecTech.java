@@ -2,11 +2,12 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.elementalMatter.core.commands.GiveEM;
+import com.github.technus.tectech.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -83,6 +84,7 @@ public class TecTech {
 
         GTCustomLoader.load();
 
+        new RotationPacketDispatcher();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ModGuiHandler());
         proxy.registerRenderInfo();

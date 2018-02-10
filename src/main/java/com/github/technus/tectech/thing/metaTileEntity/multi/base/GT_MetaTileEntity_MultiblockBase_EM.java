@@ -7,7 +7,11 @@ import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMa
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationMessage;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -17,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
@@ -45,7 +48,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase {
+public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IFrontRotation {
     //region Constants
     //Placeholers for nothing feel free to use
     public static final ItemStack[] nothingI = new ItemStack[0];
@@ -153,6 +156,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //just some info - private so hidden
     private boolean explodedThisTick=false;
 
+    //front rotation val
+    private byte frontRotation = 0;
+
     //endregion
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
@@ -165,19 +171,44 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         parametersLoadDefault_EM();
     }
 
-    //region SUPER STRUCT CHECKERS
+    //region SUPER STRUCT
+
+    @Override
+    public boolean isFrontRotationValid(byte frontRotation, byte frontFacing){
+        return true;
+    }
+
+    public boolean isFacingValid_EM(byte aFacing){
+        return true;
+    }
+
+    @Override
+    public void rotateAroundFrontPlane(boolean direction) {
+        if(direction){
+            frontRotation++;
+            if(frontRotation>3) frontRotation=0;
+        }else {
+            frontRotation--;
+            if(frontRotation<0) frontRotation=3;
+        }
+        if (isFrontRotationValid(frontRotation, getBaseMetaTileEntity().getFrontFacing())) {
+            updateRotationOnClients();
+        } else {
+            rotateAroundFrontPlane(direction);
+        }
+    }
 
     //can be used to check structures of multi-blocks larger than one chunk, but...
     //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
-    @Deprecated
-    public final boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureChecker(structure, blockType, blockMeta,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
-    }
+    //@Deprecated
+    //public final boolean structureCheck_EM(
+    //        String[][] structure,//0-9 casing, +- air no air, a-z ignore
+    //        Block[] blockType,//use numbers 0-9 for casing types
+    //        byte[] blockMeta,//use numbers 0-9 for casing types
+    //        int horizontalOffset, int verticalOffset, int depthOffset) {
+    //    return StructureChecker(structure, blockType, blockMeta,
+    //            horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+    //}
 
     public final boolean structureCheck_EM(
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
@@ -188,8 +219,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerAdvanced(structure, blockType, blockMeta, adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+        return StructureCheckerExtreme(structure, blockType, blockMeta, adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), this, !mMachine);
     }
 
     //endregion
@@ -312,7 +343,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //endregion
 
-    //region GUI/SOUND
+    //region GUI/SOUND/RENDER
 
     /**
      * Server side container
@@ -364,7 +395,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
@@ -660,6 +691,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
+        aNBT.setByte("eRotation",frontRotation);
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("eVoid", eSafeVoid);
@@ -752,6 +784,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
         minRepairStatus = aNBT.getByte("eMinRepair");
+        frontRotation = aNBT.getByte("eRotation");
         eParameters = aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         eSafeVoid = aNBT.getBoolean("eVoid");
@@ -954,6 +987,40 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region internal
 
+    @Override
+    public final byte getFrontRotation() {
+        return frontRotation;
+    }
+
+    @Override
+    public final void forceSetRotationDoRender(byte rotation) {
+        frontRotation = rotation;
+        IGregTechTileEntity base=getBaseMetaTileEntity();
+        if(base.isClientSide()) {
+            base.getWorld().markBlockRangeForRenderUpdate(base.getXCoord(), base.getYCoord(), base.getZCoord(), base.getXCoord(), base.getYCoord(), base.getZCoord());
+        }
+    }
+
+    protected final void updateRotationOnClients(){
+        if(getBaseMetaTileEntity().isServerSide()){
+            IGregTechTileEntity base=getBaseMetaTileEntity();
+            RotationPacketDispatcher.INSTANCE.sendToAllAround(new RotationMessage.RotationData(this),
+                    base.getWorld().provider.dimensionId,
+                    base.getXCoord(),
+                    base.getYCoord(),
+                    base.getZCoord(),
+                    256);
+        }
+    }
+
+    @Override
+    public final boolean isFacingValid(byte aFacing) {
+        if (!isFrontRotationValid(frontRotation, aFacing)) {
+            rotateAroundFrontPlane(false);
+        }
+        return isFacingValid_EM(aFacing);
+    }
+
     /**
      * internal check machine
      * @param iGregTechTileEntity
@@ -1025,6 +1092,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //endregion
 
     //region TICKING functions
+
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity){}
+
+    @Override
+    public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        isFacingValid(aBaseMetaTileEntity.getFrontFacing());
+        if(getBaseMetaTileEntity().isClientSide()){
+            RotationPacketDispatcher.INSTANCE.sendToServer(new RotationMessage.RotationQuery(this));
+        }
+        onFirstTick_EM(aBaseMetaTileEntity);
+    }
+
     /**
      * called every tick the machines is active
      * @param aStack

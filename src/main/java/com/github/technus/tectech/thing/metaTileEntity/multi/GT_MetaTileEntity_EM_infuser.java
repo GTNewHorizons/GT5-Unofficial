@@ -71,7 +71,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid_EM(byte aFacing) {
         return aFacing >= 2;
     }
 
