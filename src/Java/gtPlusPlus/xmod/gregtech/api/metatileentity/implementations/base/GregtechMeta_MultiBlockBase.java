@@ -20,6 +20,7 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -27,6 +28,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
@@ -36,6 +38,7 @@ extends
 GT_MetaTileEntity_MultiBlockBase {
 
 	public GT_Recipe mLastRecipe;
+	private boolean mInternalCircuit = false;
 
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
@@ -404,6 +407,29 @@ GT_MetaTileEntity_MultiBlockBase {
 			tTileEntity = localIterator.next();
 		}
 		super.explodeMultiblock();
+	}
+	
+	protected int getGUICircuit(ItemStack[] t) {
+		Item g = CI.getNumberedCircuit(0).getItem();
+		ItemStack guiSlot = this.mInventory[1];
+		int mMode = -1;		
+		if (guiSlot != null && guiSlot.getItem() == g) {
+			this.mInternalCircuit = true;	
+			return guiSlot.getItemDamage();
+		}
+		else {
+			this.mInternalCircuit = false;
+		}
+		
+		if (!this.mInternalCircuit) {
+			for (ItemStack j : t) {
+				if (j.getItem() == g) {
+						mMode = j.getItemDamage();
+						break;
+				}
+			}
+		}
+		return mMode;
 	}
 
 	@Override
