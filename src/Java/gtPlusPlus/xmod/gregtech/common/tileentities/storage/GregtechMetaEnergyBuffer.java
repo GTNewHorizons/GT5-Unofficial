@@ -31,9 +31,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	 * setCreativeTab(GregTech_API.TAB_GREGTECH); }
 	 */
 
-	public boolean mCharge = false, mDecharge = false;
-	public int mBatteryCount = 1, mChargeableCount = 1;
-
 	public GregtechMetaEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
 	}
@@ -195,17 +192,17 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public long maxAmperesIn() {
-		return this.mChargeableCount * 4;
+		return 4;
 	}
 
 	@Override
 	public long maxAmperesOut() {
-		return this.mChargeableCount * 4;
+		return 4;
 	}
 	@Override public int rechargerSlotStartIndex()					{return 0;}
 	@Override public int dechargerSlotStartIndex()					{return 0;}
-	@Override public int rechargerSlotCount()						{return this.mCharge?this.mInventory.length:0;}
-	@Override public int dechargerSlotCount()						{return this.mDecharge?this.mInventory.length:0;}
+	@Override public int rechargerSlotCount()						{return 0;}
+	@Override public int dechargerSlotCount()						{return 0;}
 	@Override public int getProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyStored();}
 	@Override public int maxProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyCapacity();}
 	@Override public boolean isAccessAllowed(final EntityPlayer aPlayer)	{return true;}
@@ -235,10 +232,10 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	}
 
 	private void showEnergy(final World worldIn, final EntityPlayer playerIn){
-		final long tempStorage = this.getStoredEnergy()[0];
+		final long tempStorage = this.getBaseMetaTileEntity().getStoredEU();
 		final double c = ((double) tempStorage / this.maxEUStore()) * 100;
 		final double roundOff = Math.round(c * 100.00) / 100.00;
-		PlayerUtils.messagePlayer(playerIn, "Energy: " + tempStorage + " EU at "+V[this.mTier]+"v ("+roundOff+"%)");
+		PlayerUtils.messagePlayer(playerIn, "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at "+V[this.mTier]+"v ("+roundOff+"%)");
 
 	}
 	//Utils.LOG_WARNING("Begin Show Energy");
@@ -270,11 +267,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	}
 
 	@Override
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-
-	}
-
-	@Override
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		return false;
 	}
@@ -284,54 +276,19 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		return false;
 	}
 
-	public long[] getStoredEnergy(){
-		long tScale = this.getBaseMetaTileEntity().getEUCapacity();
-		long tStored = this.getBaseMetaTileEntity().getStoredEU();
-		if (this.mInventory != null) {
-			for (final ItemStack aStack : this.mInventory) {
-				if (GT_ModHandler.isElectricItem(aStack)) {
-
-					if (aStack.getItem() instanceof GT_MetaBase_Item) {
-						final Long[] stats = ((GT_MetaBase_Item) aStack.getItem())
-								.getElectricStats(aStack);
-						if (stats != null) {
-							tScale = tScale + stats[0];
-							tStored = tStored
-									+ ((GT_MetaBase_Item) aStack.getItem())
-									.getRealCharge(aStack);
-						}
-					} else if (aStack.getItem() instanceof IElectricItem) {
-						tStored = tStored
-								+ (long) ic2.api.item.ElectricItem.manager
-								.getCharge(aStack);
-						tScale = tScale
-								+ (long) ((IElectricItem) aStack.getItem())
-								.getMaxCharge(aStack);
-					}
-				}
-			}
-
-		}
-		return new long[] { tStored, tScale };
-	}
-
-	private long count=0;
-	private long mStored=0;
-	private long mMax=0;
-
 	@Override
 	public String[] getInfoData() {
-		this.count++;
-		if((this.mMax==0)||((this.count%20)==0)){
-			final long[] tmp = this.getStoredEnergy();
-			this.mStored=tmp[0];
-			this.mMax=tmp[1];
-		}
+		String cur = GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getStoredEU());
+		String max = GT_Utility.formatNumbers(this.getBaseMetaTileEntity().getEUCapacity());
+
+		// Right-align current storage with maximum storage
+		String fmt = String.format("%%%ds", max.length());
+		cur = String.format(fmt, cur);
 
 		return new String[] {
 				this.getLocalName(),
-				GT_Utility.formatNumbers(this.mStored)+" EU /",
-				GT_Utility.formatNumbers(this.mMax)+" EU"};
+				cur+" EU stored",
+				max+" EU capacity"};
 	}
 
 	@Override

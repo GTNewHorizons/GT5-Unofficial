@@ -16,6 +16,10 @@ buildscript {
 }
 
 apply plugin: "forge"
+apply plugin: "idea"
+
+idea { module { inheritOutputDirs = true } }
+
 
 sourceSets {
     main {
