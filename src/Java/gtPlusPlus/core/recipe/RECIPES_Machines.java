@@ -251,7 +251,7 @@ public class RECIPES_Machines {
 					"circuitMaster",ItemList.Cover_Screen.get(1),CI.getDataOrb(),
 					GregtechItemList.Gregtech_Computer_Cube.get(1));
 
-			RecipeUtils.addShapedGregtechRecipe(
+			/*RecipeUtils.addShapedGregtechRecipe(
 					CI.electricPiston_EV, OrePrefixes.circuit.get(Materials.Ultimate), CI.electricPiston_EV,
 					CI.electricMotor_EV, CI.machineCasing_EV, CI.electricMotor_EV,
 					"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
@@ -265,7 +265,7 @@ public class RECIPES_Machines {
 					CI.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), CI.electricPiston_LuV,
 					CI.electricMotor_LuV, CI.machineCasing_LuV, CI.electricMotor_LuV,
 					"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
-					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));
+					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));*/
 
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(

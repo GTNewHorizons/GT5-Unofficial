@@ -28,6 +28,7 @@ import gtPlusPlus.api.objects.GenericStack;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.array.Pair;
@@ -114,7 +115,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	public ItemStack getScrapPile() {
@@ -147,13 +148,45 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		Logger.INFO("Doing Recipe.");
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
 
-		if (tItems.size() == 0) {
-			return false;
+		if (tItems.size() == 0 && tFluids.size() == 0) {
+			if (this.mMode != PRODUCE_UUM) {
+				Logger.INFO("Not Processing.");
+				return false;
+			}
+		}
+		else {
+			if (tItems.size() != 0 && tFluids.size() == 0) {
+
+				int yu = 0;
+
+				for (ItemStack h : tItems) {
+					if (h != null) {
+						if (h.getItem() != getScrapPile().getItem() && h.getItem() != getScrapBox().getItem() && h.getItem() != CI.getNumberedCircuit(0).getItem()) {
+							yu++;
+							Logger.INFO("Found "+h.getDisplayName()+"++");
+						}
+						else {
+							Logger.INFO("Found "+h.getDisplayName());							
+							if (h.getItem() == CI.getNumberedCircuit(0).getItem()) {								
+								this.mMode = getGUICircuit(new ItemStack[] {h});
+							}
+							
+						}
+					}
+				}
+
+				if (yu == 0 && this.mMode != PRODUCE_UUM) {
+					Logger.INFO("Not Processing.");
+					return false;
+				}
+
+			}
 		}
 
 		return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 500, 75, 100);
@@ -316,11 +349,14 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		FluidStack fluidIn = null;
 		FluidStack fluidOut = null;		
 		Pair<Integer, ItemStack[]> K = new Pair<Integer, ItemStack[]>(mode, aItemInputs);
-		if (mCachedRecipeMap.containsKey(K.hashCode())) {
-			return mCachedRecipeMap.get(K.hashCode());
+		int mapKey = ((K.getValue().length < 1 || K.getValue() == null) ? -1 : K.hashCode());
+		if (mCachedRecipeMap.containsKey(mapKey)) {
+			Logger.INFO("2.x. Returning Cached Result.");			
+			return mCachedRecipeMap.get(mapKey);
 		}
 
 		final boolean oldRecipe = Utils.invertBoolean(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK);
+		Logger.INFO("2.x.1");			
 
 		int baseEuCost = 0;
 		int baseTimeCost = 0;
@@ -334,20 +370,27 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		final Item SP = this.getScrapPile().getItem();
 		final Item SB = this.getScrapBox().getItem();
+		final Item CR = CI.getNumberedCircuit(0).getItem();
+		Logger.INFO("2.x.2");			
 
 		/**
 		 * Count Inputs
 		 */	
 
+		ItemStack[] mStrippedInputs = new ItemStack[aItemInputs.length];
+		int mStrippedIndex = 0;
+
 		int inputCount = 0;
 		if (aItemInputs.length > 0) {
 			for (int y=0;y<aItemInputs.length;y++) {
-				if (aItemInputs[y].getItem() != SP && aItemInputs[y].getItem() != SB) {
+				if (aItemInputs[y].getItem() != SP && aItemInputs[y].getItem() != SB && aItemInputs[y].getItem() != CR) {
 					inputCount += aItemInputs[y].stackSize;
+					mStrippedInputs[mStrippedIndex++] = aItemInputs[y].copy();
 				}
 			}
 		}
 
+		Logger.INFO("2.x.3");			
 
 		/**
 		 * Set Inputs and Outputs depending on mode.
@@ -355,8 +398,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		//Recycler mode
 		if (mode == JUNK_TO_SCRAP) {
-			if (aItemInputs.length > 0) {
-				inputs = aItemInputs;
+			if (mStrippedInputs.length > 0) {
+				Logger.INFO("2.x.4.1");	
+				inputs = mStrippedInputs;
 				outputs = getScrapPiles(inputCount);
 				baseEuCost = mEuPerRecycleOperation;
 				baseTimeCost = mTicksPerRecycleOperation;
@@ -365,8 +409,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		//Hybrid mode
 		else if (mode == JUNK_TO_UUA) {
-			if (aItemInputs.length > 0) {
-				inputs = aItemInputs;
+			if (mStrippedInputs.length > 0) {
+				Logger.INFO("2.x.4.2");	
+				inputs = mStrippedInputs;
 				GenericStack x = getUUAFromScrapStack(getScrapPiles(inputCount));
 				outputs = new ItemStack[]{x.getItemStack()};
 				fluidOut = x.getFluidStack();
@@ -377,8 +422,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		//Amplifabricator mode
 		else if (mode == SCRAP_UUA) {
-			if (aItemInputs.length > 0) {				
-				inputs = aItemInputs;
+			if (mStrippedInputs.length > 0) {
+				Logger.INFO("2.x.4.3");					
+				inputs = mStrippedInputs;
 				GenericStack x = getUUAFromScrapStack(inputs);
 				outputs = new ItemStack[]{x.getItemStack()};
 				fluidOut = x.getFluidStack();				
@@ -389,6 +435,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		//Matter Fabricator mode
 		else if (mode == PRODUCE_UUM) {
+			Logger.INFO("2.x.4.4");	
 			if (sDurationMultiplier != 0) {
 				baseTimeCost = sDurationMultiplier;
 			}
@@ -408,15 +455,17 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			baseEuCost = mEuPerMatterFabOperation;
 			baseTimeCost =  (fluidIn == GT_Values.NF ? mTicksPerMatterFabOperation: mTicksPerMatterFabOperation/sUUASpeedBonus);			
 		}
+		Logger.INFO("2.x.5");			
 
 
 		//Pre 5.09 compat
 		if (oldRecipe) {
 			baseEuCost = (baseEuCost/8);
 		}
-
-
-		Recipe_GT B = new Recipe_GT(
+		
+		Recipe_GT B = null;
+		try {
+		B = new Recipe_GT(
 				true,
 				inputs, //Inputs
 				outputs, //Outputs
@@ -427,42 +476,82 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				baseTimeCost, //duration
 				baseEuCost, //eu/t
 				0);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 
-		mCachedRecipeMap.put(K.hashCode(), B);		
+		Logger.INFO("2.x.6");	
+		//Map Key
+		mCachedRecipeMap.put(B == null ? -1 : mapKey, B);	
+		Logger.INFO("2.x.7");		
 		Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.add(B);
+		Logger.INFO("2.x.8");	
 
 		//The Recipe Itself.
 		return B;
 	}
 
 	private ItemStack[] getScrapPiles(int inputSize) {
+
+		if (inputSize < 1) {
+			Logger.INFO("2.x.4.x.x");	
+			return null;
+		}
+
+		Logger.INFO("2.x.4.x.1");	
+
 		//Generate Trash
 		ItemStack[] mOutputs;
 		AutoMap<ItemStack> mTemp = new AutoMap<ItemStack>();
 		for (int r=0;r<inputSize;r++) {
-			if (MathUtils.randInt(0, 5) == 5) {
+			Logger.INFO("2.x.4.x.1.0");	
+			if (MathUtils.randInt(0, 5) != 6) {
 				mTemp.put(getScrapPile());
 			}
 		}
-		int mSlots = (int) Math.ceil((mTemp.size()/64) / 100.0);
-		mOutputs = new ItemStack[mSlots];
+		Logger.INFO("2.x.4.x.2");	
+		//int mSlots = (int) Math.ceil((mTemp.size()/64) / 100.0);
+		int mSlots = (int) (mTemp.size()/64);
+		Logger.INFO("2.x.4.x.3 | mSlots: "+mSlots);	
+		mOutputs = new ItemStack[(mSlots > 0 ? mSlots : 1)];
+		Logger.INFO("2.x.4.x.4 | mOutputs: "+mOutputs.length);	
 		int totalScrap = mTemp.size();
+		Logger.INFO("2.x.4.x.5");	
 		int index = 0;		
-		while (totalScrap > 0) {
-			if (mOutputs[index].stackSize == 64) {
-				index++;
-			}
-			else {
-				if (mOutputs[index] == null) {
-					mOutputs[index] = getScrapPile();
-					totalScrap--;
-				}
-				else {
-					mOutputs[index].stackSize++;
-					totalScrap--;
+		Logger.INFO("2.x.4.x.6");
+		try {
+			if (totalScrap > 0) {	
+				Logger.INFO("2.x.4.x.6.x | "+totalScrap);
+				while (totalScrap > 0) {
+					Logger.INFO("2.x.4.x.6.xx | "+index);
+					//if (index < mOutputs.length) {					
+						if (mOutputs[index] == null) { //TODO
+							Logger.WARNING("2.x.4.x.6.1");	
+							mOutputs[index] = getScrapPile();
+							totalScrap--;
+						}						
+						else {
+							Logger.WARNING("2.x.4.x.6.2");	
+							if (mOutputs[index].stackSize < 64) {
+								mOutputs[index].stackSize++;
+								totalScrap--;								
+							}
+						}
+						
+						if (mOutputs[index] != null && mOutputs[index].stackSize >= 64) {
+							Logger.WARNING("2.x.4.x.6.0");	
+							index++;
+						}	
+					//}
 				}
 			}
 		}
+		catch (Throwable t) {
+			t.printStackTrace();
+
+		}
+		Logger.WARNING("2.x.4.x.7");	
 		return mOutputs;
 	}
 
@@ -494,19 +583,24 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	private GT_Recipe getFakeRecipeForMode(ItemStack[] aItemInputs) {		
-		if (this.mMode == JUNK_TO_SCRAP) {			
+		if (this.mMode == JUNK_TO_SCRAP) {
+			Logger.WARNING("2.1");			
 			return generateCustomRecipe(JUNK_TO_SCRAP, aItemInputs);
 		}
 		else if (this.mMode == JUNK_TO_UUA) {
+			Logger.WARNING("2.2");
 			return generateCustomRecipe(JUNK_TO_UUA, aItemInputs);			
 		}
 		else if (this.mMode == SCRAP_UUA) {
+			Logger.WARNING("2.3");
 			return generateCustomRecipe(SCRAP_UUA, aItemInputs);		
 		}
 		else if (this.mMode == PRODUCE_UUM) {
+			Logger.WARNING("2.4");
 			return generateCustomRecipe(PRODUCE_UUM, aItemInputs);		
 		}
 		else {
+			Logger.WARNING("2.5");
 			return null;
 		}		
 	}
@@ -557,12 +651,15 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		this.mMaxProgresstime = 0;
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
-		//Set Mode
-		this.mMode = getGUICircuit(aItemInputs);
+
+		Logger.INFO("1.");
+		Logger.INFO("2.");
 		mFakeRecipe = getFakeRecipeForMode(aItemInputs);
+		Logger.INFO("3.");
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		Logger.INFO("4.");
 
 		GT_Recipe tRecipe = mFakeRecipe;
 
@@ -570,10 +667,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		this.mLastRecipe = tRecipe;
 
 		if (tRecipe == null) {
+			Logger.INFO("Bad Recipe Generated.");
 			return false;
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+			Logger.INFO("Cannot buffer output.");
 			return false;
 		}
 
