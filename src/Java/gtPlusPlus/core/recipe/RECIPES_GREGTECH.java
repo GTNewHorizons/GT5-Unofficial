@@ -40,7 +40,7 @@ public class RECIPES_GREGTECH {
 
 	private static void execute(){
 		cokeOvenRecipes();
-		matterFabRecipes();
+		//matterFabRecipes();
 		assemblerRecipes();
 		fluidcannerRecipes();
 		distilleryRecipes();
