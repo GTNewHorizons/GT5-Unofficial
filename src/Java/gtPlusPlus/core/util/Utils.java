@@ -2,9 +2,14 @@ package gtPlusPlus.core.util;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -14,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.EnumUtils;
 
@@ -820,5 +827,39 @@ public class Utils {
 		} 
 	}	
 	
+
+	public static String calculateChecksumMD5(Object bytes) {  
+		byte[] result = new byte[] {};
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		try {
+		  out = new ObjectOutputStream(bos);   
+		  out.writeObject(bytes);
+		  out.flush();
+		  result = bos.toByteArray();
+		}
+		catch (IOException e) {
+		} finally {
+		    try {
+				bos.close();
+			}
+			catch (IOException e) {}
+		}		
+		return calculateChecksumMD5(result);
+	}
+	
+	public static String calculateChecksumMD5(byte[] bytes) {        
+	    MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		    md.update(bytes);
+		    byte[] digest = md.digest();
+		    String myHash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+		    return myHash;
+		}
+		catch (NoSuchAlgorithmException e) {
+			return null;
+		}
+	}
 
 }

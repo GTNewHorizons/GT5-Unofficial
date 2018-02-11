@@ -32,6 +32,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.array.Triplet;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -176,7 +177,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 							if (h.getItem() == CI.getNumberedCircuit(0).getItem()) {								
 								this.mMode = getGUICircuit(new ItemStack[] {h});
 							}
-							
+
 						}
 					}
 				}
@@ -337,26 +338,27 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return new GregtechMetaTileEntity_MassFabricator(this.mName);
 	}
 
-	public static Map<Integer, GT_Recipe> mCachedRecipeMap = new ConcurrentHashMap<Integer, GT_Recipe>();
+	public static Map<String, GT_Recipe> mCachedRecipeMap = new ConcurrentHashMap<String, GT_Recipe>();
 
 	/**
 	 * Special Recipe Generator
 	 */
 
-	private GT_Recipe generateCustomRecipe(int mode, ItemStack[] aItemInputs) {
+	private GT_Recipe generateCustomRecipe(int mode, ItemStack[] aItemInputs, FluidStack[] aFluidInputs) {
 		ItemStack[] inputs = null;
 		ItemStack[] outputs = null;
 		FluidStack fluidIn = null;
 		FluidStack fluidOut = null;		
-		Pair<Integer, ItemStack[]> K = new Pair<Integer, ItemStack[]>(mode, aItemInputs);
-		int mapKey = ((K.getValue().length < 1 || K.getValue() == null) ? -1 : K.hashCode());
+		Triplet<Integer, ItemStack[], FluidStack[]> K = new Triplet<Integer, ItemStack[], FluidStack[]>(mode, aItemInputs, aFluidInputs);
+		//int mapKey = ((K == null || aItemInputs == null || aItemInputs.length < 1) ? -1 : K.hashCode());
+		String mapKey = Utils.calculateChecksumMD5(K);
 		if (mCachedRecipeMap.containsKey(mapKey)) {
 			Logger.INFO("2.x. Returning Cached Result.");			
 			return mCachedRecipeMap.get(mapKey);
 		}
 
 		final boolean oldRecipe = Utils.invertBoolean(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK);
-		Logger.INFO("2.x.1");			
+		Logger.INFO("2.x.1 | "+mapKey);			
 
 		int baseEuCost = 0;
 		int baseTimeCost = 0;
@@ -462,31 +464,30 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		if (oldRecipe) {
 			baseEuCost = (baseEuCost/8);
 		}
-		
+
 		Recipe_GT B = null;
 		try {
-		B = new Recipe_GT(
-				true,
-				inputs, //Inputs
-				outputs, //Outputs
-				null, // Special?
-				new int[] {10000}, //Chances
-				new FluidStack[] {fluidIn}, //Fluid Inputs
-				new FluidStack[] {fluidOut}, //Fluid Outputs
-				baseTimeCost, //duration
-				baseEuCost, //eu/t
-				0);
+			B = new Recipe_GT(
+					true,
+					inputs, //Inputs
+					outputs, //Outputs
+					null, // Special?
+					new int[] {10000}, //Chances
+					new FluidStack[] {fluidIn}, //Fluid Inputs
+					new FluidStack[] {fluidOut}, //Fluid Outputs
+					baseTimeCost, //duration
+					baseEuCost, //eu/t
+					0);
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
 
-		Logger.INFO("2.x.6");	
-		//Map Key
-		mCachedRecipeMap.put(B == null ? -1 : mapKey, B);	
-		Logger.INFO("2.x.7");		
-		Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.add(B);
-		Logger.INFO("2.x.8");	
+		//Cache generated recipe
+		if (B != null) {
+			mCachedRecipeMap.put(mapKey, B);
+			Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.add(B);
+		}	
 
 		//The Recipe Itself.
 		return B;
@@ -526,23 +527,23 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				while (totalScrap > 0) {
 					Logger.INFO("2.x.4.x.6.xx | "+index);
 					//if (index < mOutputs.length) {					
-						if (mOutputs[index] == null) { //TODO
-							Logger.WARNING("2.x.4.x.6.1");	
-							mOutputs[index] = getScrapPile();
-							totalScrap--;
-						}						
-						else {
-							Logger.WARNING("2.x.4.x.6.2");	
-							if (mOutputs[index].stackSize < 64) {
-								mOutputs[index].stackSize++;
-								totalScrap--;								
-							}
+					if (mOutputs[index] == null) { //TODO
+						Logger.WARNING("2.x.4.x.6.1");	
+						mOutputs[index] = getScrapPile();
+						totalScrap--;
+					}						
+					else {
+						Logger.WARNING("2.x.4.x.6.2");	
+						if (mOutputs[index].stackSize < 64) {
+							mOutputs[index].stackSize++;
+							totalScrap--;								
 						}
-						
-						if (mOutputs[index] != null && mOutputs[index].stackSize >= 64) {
-							Logger.WARNING("2.x.4.x.6.0");	
-							index++;
-						}	
+					}
+
+					if (mOutputs[index] != null && mOutputs[index].stackSize >= 64) {
+						Logger.WARNING("2.x.4.x.6.0");	
+						index++;
+					}	
 					//}
 				}
 			}
@@ -582,22 +583,22 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return mOutput;
 	}
 
-	private GT_Recipe getFakeRecipeForMode(ItemStack[] aItemInputs) {		
+	private GT_Recipe getFakeRecipeForMode(ItemStack[] aItemInputs, FluidStack[] aFluidInputs) {		
 		if (this.mMode == JUNK_TO_SCRAP) {
 			Logger.WARNING("2.1");			
-			return generateCustomRecipe(JUNK_TO_SCRAP, aItemInputs);
+			return generateCustomRecipe(JUNK_TO_SCRAP, aItemInputs, aFluidInputs);
 		}
 		else if (this.mMode == JUNK_TO_UUA) {
 			Logger.WARNING("2.2");
-			return generateCustomRecipe(JUNK_TO_UUA, aItemInputs);			
+			return generateCustomRecipe(JUNK_TO_UUA, aItemInputs, aFluidInputs);			
 		}
 		else if (this.mMode == SCRAP_UUA) {
 			Logger.WARNING("2.3");
-			return generateCustomRecipe(SCRAP_UUA, aItemInputs);		
+			return generateCustomRecipe(SCRAP_UUA, aItemInputs, aFluidInputs);		
 		}
 		else if (this.mMode == PRODUCE_UUM) {
 			Logger.WARNING("2.4");
-			return generateCustomRecipe(PRODUCE_UUM, aItemInputs);		
+			return generateCustomRecipe(PRODUCE_UUM, aItemInputs, aFluidInputs);		
 		}
 		else {
 			Logger.WARNING("2.5");
@@ -654,7 +655,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 		Logger.INFO("1.");
 		Logger.INFO("2.");
-		mFakeRecipe = getFakeRecipeForMode(aItemInputs);
+		mFakeRecipe = getFakeRecipeForMode(aItemInputs, aFluidInputs);
 		Logger.INFO("3.");
 
 		long tVoltage = getMaxInputVoltage();
