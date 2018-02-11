@@ -3,11 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,7 +20,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -32,7 +28,6 @@ import gtPlusPlus.api.objects.GenericStack;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.array.Pair;
@@ -42,8 +37,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -71,8 +64,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	public static boolean sRequiresUUA = false;
 	private static FluidStack[] mUU = new FluidStack[2];
-	private static ItemStack mScrap[] = new ItemStack[2];	
-	private static final Item circuit = CI.getNumberedCircuit(0).getItem();
+	private static ItemStack mScrap[] = new ItemStack[2];
 	private static Block IC2Glass = Block.getBlockFromItem(ItemUtils.getItem("IC2:blockAlloyGlass"));
 
 	private GT_Recipe mFakeRecipe;
@@ -693,26 +685,49 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		this.mOutputFluids = tOutputFluids;
 		updateSlots();
 
-		for (int u=0;u<tRecipe.mFluidOutputs.length;u++) {
-			if (tRecipe.mFluidOutputs[u].isFluidEqual(mUU[0])) {
-				if (tRecipe.mFluidOutputs[u].amount > 0) {
-					mAmplifierUsed += tRecipe.mFluidOutputs[u].amount;
+		/**
+		 * Amp Stat Recording
+		 */
+
+		for (int u=0;u<tRecipe.mFluidInputs.length;u++) {
+			if (tRecipe.mFluidInputs[u].isFluidEqual(mUU[0])) {
+				if (tRecipe.mFluidInputs[u].amount > 0) {
+					mAmplifierUsed += tRecipe.mFluidInputs[u].amount;
 				}
 			}
-		}
-		
+		}		
 		for (int u=0;u<tOutputFluids.length;u++) {
+			if (tOutputFluids[u].isFluidEqual(mUU[0])) {
+				mAmplifierProduced += tOutputFluids[u].amount;
+			}
+			/**
+			 * UUM Stat Recording
+			 */	
 			if (tOutputFluids[u].isFluidEqual(mUU[1])) {
-				mMatterProduced++;
+				mMatterProduced += tOutputFluids[u].amount;
 			}
 		}
-		
+
+		/**
+		 * Scrap Stat Recording
+		 */
+		for (int u=0;u<tRecipe.mInputs.length;u++) {
+			if (tRecipe.mInputs[u].getItem() == getScrapPile().getItem()) {
+				mScrapUsed += tRecipe.mInputs[u].stackSize;
+			}
+		}		
+		for (int u=0;u<tOutputItems.length;u++) {
+			if (tOutputItems[u].getItem() == getScrapPile().getItem()) {
+				mScrapProduced += tOutputItems[u].stackSize;
+			}
+		}
+
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
 		return true;
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setInteger("mScrapProduced", mScrapProduced);
