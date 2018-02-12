@@ -57,7 +57,6 @@ public class GT5OreSmallHelper {
     }
     
     private static void checkExtraSupport() {
-        if (GTNEIOrePlugin.GTVersion.equals("GT5")) {
             Class clazzGTOreSmall = null;
             try {
                 clazzGTOreSmall = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_SmallPieces");
@@ -72,8 +71,7 @@ public class GT5OreSmallHelper {
                     Field fieldGCMars = clazzGTOreSmall.getField("mMars");
                     gcBasicSupport = true;
                 } catch (Exception e) {}
-            }
-        }   
+            } 
     }
     
     public static Materials[] getDroppedDusts() {

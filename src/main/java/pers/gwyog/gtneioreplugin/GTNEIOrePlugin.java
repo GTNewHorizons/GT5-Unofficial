@@ -12,9 +12,7 @@ import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 public class GTNEIOrePlugin {
     public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
-    public static final String VERSION = "1.0.5-GTNH";
-    
-    public static String GTVersion = "GT5";
+    public static final String VERSION = "@version@";
     
     @Mod.Instance(MODID)
     public static GTNEIOrePlugin instance;

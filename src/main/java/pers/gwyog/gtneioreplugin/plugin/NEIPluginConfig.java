@@ -23,7 +23,6 @@ public class NEIPluginConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        if (GTNEIOrePlugin.GTVersion.equals("GT5")) {
             PluginGT5VeinStat pluginVeinStat = new PluginGT5VeinStat();
             //PluginGT5AsteroidStat pluginAsteriodStat = new PluginGT5AsteroidStat();
             PluginGT5SmallOreStat pluginSmallOreStat = new PluginGT5SmallOreStat();
@@ -33,6 +32,5 @@ public class NEIPluginConfig implements IConfigureNEI {
             //API.registerUsageHandler(pluginAsteriodStat);
             API.registerRecipeHandler(pluginSmallOreStat);
             API.registerUsageHandler(pluginSmallOreStat);
-            }
         }
     }
