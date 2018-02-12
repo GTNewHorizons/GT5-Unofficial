@@ -12,10 +12,12 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "de.undercouch:gradle-download-task:3.1.2"
     }
 }
 
 apply plugin: 'forge'
+import de.undercouch.gradle.tasks.download.Download
 
 version = "1.7.10-1.0.5-GT-NH"
 group= "pers.gwyog.gtneioreplugin"
@@ -26,16 +28,46 @@ targetCompatibility = 1.7
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
+    replaceIn "GTNEIOrePlugin.java"
+    replace "@version@", project.version
     runDir = "eclipse"
 }
 
-dependencies {
-    // You should put the dev builds of NEI (with its dependencies), GregTech5 and GregTech6 in the /libs folder manually
-    // to make the gradlew build working properly. 	
-    // compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
-    // compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
-    // compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
 }
+
+repositories {
+    mavenLocal()
+    maven {
+        name "ChickenBones"
+        url "http://chickenbones.net/maven/"
+    }
+}
+
+dependencies {
+    //compile "codechicken:ForgeMultipart:${config.minecraft.version}-${config.fmp.version}:dev"
+    compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:dev"
+    compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.ccc.version}:dev"
+    compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+}
+
+task getGregTech(type: Download) {
+    onlyIf {
+        !file("libs/gregtech-${config.gregtech.version}-dev.jar").exists()
+    }
+    src "http://jenkins.usrv.de:8081/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
+    dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}
+
+tasks.setupCIWorkspace.dependsOn getGregTech
+tasks.setupDevWorkspace.dependsOn getGregTech
+tasks.setupDecompWorkspace.dependsOn getGregTech
+tasks.compileJava.dependsOn getGregTech
 
 processResources
 {
