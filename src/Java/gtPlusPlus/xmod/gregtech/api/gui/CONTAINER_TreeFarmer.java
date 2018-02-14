@@ -58,7 +58,7 @@ public class CONTAINER_TreeFarmer extends GT_ContainerMetaTile_Machine {
 		super.detectAndSendChanges();
 		for(final ICrafting crafting : (List<ICrafting>)this.crafters) {
 			crafting.sendProgressBarUpdate(this, 100, (int) ((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).maxEUStore());
-			crafting.sendProgressBarUpdate(this, 101, (int) ((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).getStoredInternalPower());
+			crafting.sendProgressBarUpdate(this, 101, (int) ((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).getEUVar());
 			if (((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).isCorrectMachinePart(this.mTileEntity.getStackInSlot(1))){	
 				this.mTileEntity.markDirty();
 				}

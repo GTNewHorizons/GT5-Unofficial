@@ -59,8 +59,12 @@ public class CasingTextureHandler2 {
 			case 14:
 				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 			case 15:
-				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon(); //Tree Farmer Textures
-
+				if (aSide <2) {
+					return TexturesGtBlock.Casing_Machine_Acacia_Log.getIcon();					
+				}
+				else {
+					return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();					
+				}
 			default:
 				return TexturesGtBlock.Overlay_UU_Matter.getIcon();
 

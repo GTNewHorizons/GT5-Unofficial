@@ -4,6 +4,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import gregtech.api.util.GT_Utility;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,6 +31,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
 
@@ -39,6 +41,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public GT_Recipe mLastRecipe;
 	private boolean mInternalCircuit = false;
+	protected long mTotalRunTime = 0;
 
 	public ArrayList<GT_MetaTileEntity_Hatch_InputBattery> mChargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_InputBattery>();
 	public ArrayList<GT_MetaTileEntity_Hatch_OutputBattery> mDischargeHatches = new ArrayList<GT_MetaTileEntity_Hatch_OutputBattery>();
@@ -59,7 +62,7 @@ GT_MetaTileEntity_MultiBlockBase {
 						.getMetaTileEntity() == aMetaTileEntity)
 				&& !aMetaTileEntity.getBaseMetaTileEntity().isDead();
 	}
-	
+
 	public abstract boolean hasSlotInGUI();
 
 	@Override
@@ -83,11 +86,35 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getInfoData() {
-		return new String[]{"Progress:", (this.mProgresstime / 20) + "secs",
-				(this.mMaxProgresstime / 20) + "secs", "Efficiency:",
-				(this.mEfficiency / 100.0F) + "%", "Problems:",
-				"" + (this.getIdealStatus() - this.getRepairStatus())};
+	public String[] getInfoData() {		
+
+		long seconds = (this.mTotalRunTime/20);
+		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
+		int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
+		long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7*weeks);
+		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
+		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+
+		String[] g = {
+				"Progress:", 
+				(this.mProgresstime / 20) + "secs",				
+				(this.mMaxProgresstime / 20) + "secs",
+				"Efficiency:",
+				(this.mEfficiency / 100.0F) + "%",
+				"Problems:",
+				"" + (this.getIdealStatus() - this.getRepairStatus()),
+				"Total Time Since Build: ",
+				""+weeks+" Weeks.",
+				""+days+" Days.",
+				""+hours+" Hours.",
+				""+minutes+" Minutes.",
+				""+second+" Seconds.",
+				"Total Time in ticks: "+this.mTotalRunTime};
+		
+		return g;
+
+
+
 	}
 
 	@Override
@@ -128,7 +155,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			// Gendustry custom comb with a billion centrifuge outputs? Do it anyway.
 			return true;
 		}
-		
+
 		// Count slots available in output buses
 		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
 
@@ -353,16 +380,16 @@ GT_MetaTileEntity_MultiBlockBase {
 		GT_Recipe cloneRecipe = null;
 
 		baseRecipe = tRecipe.copy();
-		if ((cloneRecipe != baseRecipe) || (cloneRecipe == null)) {
+		if ((baseRecipe != null) && ((cloneRecipe != baseRecipe) || (cloneRecipe == null))) {
 			cloneRecipe = baseRecipe.copy();
 			Logger.WARNING("Setting Recipe");
 		}
-		if ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0)) {
+		if ((baseRecipe != null) && ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0))) {
 			cloneTime = baseRecipe.mDuration;
 			Logger.WARNING("Setting Time");
 		}
 
-		if (cloneRecipe.mDuration > 0) {
+		if ((cloneRecipe != null) && cloneRecipe.mDuration > 0) {
 			final int originalTime = cloneRecipe.mDuration;
 			final int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration,
 					(100 - percentage));
@@ -385,6 +412,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity,
 			final long aTick) {
+		
+		//Time Counter
+		if (aBaseMetaTileEntity.isServerSide()){
+			this.mTotalRunTime++;
+		}
+		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		//this.mChargeHatches.clear();
 		//this.mDischargeHatches.clear();
@@ -408,7 +441,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		super.explodeMultiblock();
 	}
-	
+
 	protected int getGUICircuit(ItemStack[] t) {
 		Item g = CI.getNumberedCircuit(0).getItem();
 		ItemStack guiSlot = this.mInventory[1];
@@ -420,12 +453,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		else {
 			this.mInternalCircuit = false;
 		}
-		
+
 		if (!this.mInternalCircuit) {
 			for (ItemStack j : t) {
 				if (j.getItem() == g) {
-						mMode = j.getItemDamage();
-						break;
+					mMode = j.getItemDamage();
+					break;
 				}
 			}
 		}
@@ -593,7 +626,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	 * This is the array Used to Store the Tectech Multi-Amp hatches.
 	 */
 
-	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList();	
+	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
 
 	/**
 	 * TecTech Multi-Amp Dynamo Support
@@ -650,6 +683,18 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public int getPollutionPerTick(ItemStack arg0) {
 		return 0;
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+		super.loadNBTData(aNBT);
 	}
 
 }

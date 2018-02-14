@@ -137,7 +137,7 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() < 0)) {
+			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
 				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
 				return false;
 			}
