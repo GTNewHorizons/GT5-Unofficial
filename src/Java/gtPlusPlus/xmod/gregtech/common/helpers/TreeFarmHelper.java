@@ -2,9 +2,14 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,6 +19,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.AutoMap;
+import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -262,7 +270,7 @@ public class TreeFarmHelper {
 		}
 		return SAWTOOL.NONE;
 	}
-	
+
 	public static boolean isHumusLoaded = false;
 	public static boolean isForestryLogsLoaded = false;
 	public static boolean isForestryFenceLoaded = false;
@@ -385,5 +393,179 @@ public class TreeFarmHelper {
 	/*public static boolean isSaplingBlock(Block sapling){
 		return (sapling == Blocks.sapling ? true : (sapling == Blocks.))
 	}*/
+
+	public static BlockPos checkForLogsInGrowArea(final IGregTechTileEntity aBaseMetaTileEntity) {
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+		for (int i = -7; i <= 7; i++) {
+			for (int j = -7; j <= 7; j++) {
+				for (int h = 0; h <= 1; h++) {
+					//Farm Floor inner 14x14
+					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
+						if (h == 1) {
+							if (TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+								Logger.INFO("Found a Log");
+								return new BlockPos(xDir + i, h, zDir + j);
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+
+	public static ItemStack[] findTreeFromBase(World world, BlockPos h) {
+		AutoMap<BlockPos> mResultsAroundBaseLayer = findTreeViaBranching(world, h);
+		AutoMap<AutoMap<BlockPos>> mOtherResults = new AutoMap<AutoMap<BlockPos>>();
+		mOtherResults.put(mResultsAroundBaseLayer);
+		for (BlockPos j : mResultsAroundBaseLayer.values()) {
+			Logger.INFO("Branching.");
+			mOtherResults.put(findTreeViaBranching(world, j));
+		}
+		if (mOtherResults.size() > 0) {
+			TreeCutter harvestManager = new TreeCutter(world);
+			for (AutoMap<BlockPos> a : mOtherResults.values()) {
+				for (BlockPos p : a.values()) {
+					harvestManager.queue(p);					
+				}
+			}
+			
+			if (harvestManager.isValid) {
+				Logger.INFO("Returning Drops from harvestManager Queue.");
+				return harvestManager.getDrops();
+			}
+			
+		}
+		
+		return new ItemStack[] {};
+		
+	}
+
+	public static AutoMap<BlockPos> findTreeViaBranching(World world, BlockPos h) {
+		AutoMap<BlockPos> results = new AutoMap<BlockPos>();
+		final Block block = world.getBlock(h.xPos, h.yPos, h.zPos);	
+		int xRel = h.xPos, yRel = h.yPos, zRel = h.zPos;		
+		if (TreeFarmHelper.isWoodLog(block)) {			
+			for (int a=-2;a<2;a++) {
+				for (int b=-2;b<2;b++) {
+					for (int c=-2;c<2;c++) {						
+						//Check block
+						Block log = world.getBlock(xRel+a, yRel+b, zRel+c);							
+						if (TreeFarmHelper.isWoodLog(log) || TreeFarmHelper.isLeaves(log)) {
+							results.put(new BlockPos(xRel+a, yRel+b, zRel+c));
+						}
+					}
+				}
+			}
+		}
+		if (results.isEmpty()) {
+			Logger.INFO("Returning Empty Iteration.");	
+			return null;
+		}
+		else {
+			Logger.INFO("Returning Valid Iteration.");
+			return results;
+		}
+	}
+
+
+
+	/**
+	 * Tree Cutting
+	 */
+
+	public static class TreeCutter {
+
+		private final World mWorld;
+		private Map<String, BlockPos> mQueue = new ConcurrentHashMap<String, BlockPos>();
+		private AutoMap<ItemStack[]> mDrops = new AutoMap<ItemStack[]>();	
+		private boolean isValid = true;
+
+		public TreeCutter(World world) {
+			this.mWorld = world;
+		}		
+
+		public boolean queue(BlockPos pos) {
+			if (isValid) {
+				String hash = Utils.calculateChecksumMD5(pos);			
+				if ((pos != null && hash != null) && !mQueue.containsKey(hash)) {
+					mQueue.put(hash, pos);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private boolean emptyQueue() {
+			if (isValid) {
+				if (this.mQueue.size() > 0) {				
+					int totalRemoved = 0;
+					for (BlockPos h : mQueue.values()) {
+						final Block block = mWorld.getBlock(h.xPos, h.yPos, h.zPos);
+						if (block != null) {
+							final int dropMeta = mWorld.getBlockMetadata(h.xPos, h.yPos, h.zPos);
+							final ArrayList<ItemStack> blockDrops = block.getDrops(mWorld, h.xPos, h.yPos, h.zPos, dropMeta, 0);
+							final ItemStack[] drops = ItemUtils.getBlockDrops(blockDrops);
+							mDrops.put(drops);
+							//Remove drop that was added to the bus.
+							mWorld.setBlockToAir(h.xPos, h.yPos, h.zPos);
+							new BlockBreakParticles(mWorld, h.xPos, h.yPos, h.zPos, block);
+							totalRemoved++;						
+						}					
+					}				
+					if (totalRemoved > 0 && mDrops.size() > 0) {
+						return true;
+					}				
+				}
+			}
+			return false;
+		}
+
+		public ItemStack[] getDrops() {			
+			//If Queue is successfully cleared and drops are created, let us continue.
+			if (isValid && emptyQueue()) {				
+				AutoMap<ItemStack> mCollective = new AutoMap<ItemStack>();
+				//Iterate ALL of the arrays, add output to a collective.
+				for (ItemStack[] i : this.mDrops) {
+					//Array is not null.
+					if (i != null) {
+						//Iterate this array.
+						for (int d=0;d<i.length;d++) {
+							//Put Output into collective if valid
+							if (i[d] != null && i[d].stackSize > 0) {
+								mCollective.put(i[d]);	
+							}													
+						}
+					}
+				}	
+				//Build an ItemStack array.
+				ItemStack[] drops = new ItemStack[mCollective.size()];
+				for (int m=0;m<drops.length;m++) {
+					drops[m] = mCollective.get(m);
+				}
+				//Return drops array if it's valid.
+				if (drops.length > 0) {
+					isValid = false;
+					return drops;
+				}
+			}			
+			//Invalid or no drops, return empty array.
+			isValid = false;
+			return new ItemStack[] {};
+		}		
+
+	}
+
+
+
+
+
+
+
+
+
 
 }

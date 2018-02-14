@@ -15,6 +15,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
+import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -228,6 +229,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				}	
 			}
 
+			
+			//Try Work
+			BlockPos t;
+			if ((t = TreeFarmHelper.checkForLogsInGrowArea(this.getBaseMetaTileEntity())) != null) {
+				Logger.INFO("Lets try find new logs/branches.");
+				TreeFarmHelper.findTreeFromBase(this.getBaseMetaTileEntity().getWorld(), t);
+			}
 
 
 
