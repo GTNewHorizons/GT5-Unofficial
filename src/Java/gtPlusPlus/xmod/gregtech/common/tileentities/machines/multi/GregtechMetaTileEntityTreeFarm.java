@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.concurrent.TimeUnit;
-
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
@@ -14,10 +14,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.players.FakeFarmer;
+import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
@@ -27,15 +29,23 @@ import net.minecraft.server.MinecraftServer;
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
 	public final static int TEX_INDEX = 31;
-	
+	protected boolean mIsCurrentlyWorking = false;
+
 	/**
 	 * Farm AI
 	 */	
 	private EntityPlayerMP farmerAI;
 	public EntityPlayerMP getFakePlayer() {
-		return this.farmerAI;
+		return this.farmerAI = checkFakePlayer();
 	}
-	
+
+	public EntityPlayerMP checkFakePlayer() {
+		if (this.farmerAI == null) {
+			return new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
+		}
+		return this.farmerAI;		
+	}
+
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -43,6 +53,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	public GregtechMetaTileEntityTreeFarm(final String aName) {
 		super(aName);
+	}
+
+	public boolean isCurrentlyWorking() {
+		return this.mIsCurrentlyWorking;
 	}
 
 	@Override
@@ -73,9 +87,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 0) {
 			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
-			}
+		}
 		if (aSide == 1) {
-			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log), new GT_RenderedTexture(true ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent)};
+			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log), new GT_RenderedTexture(isCurrentlyWorking() ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent)};
 		}
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
 	}
@@ -136,7 +150,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		aBaseMetaTileEntity.openGUI(aPlayer);
 		return true;
 	}
-	
+
 	public Block getCasingBlock() {
 		return ModBlocks.blockCasings2Misc;
 	}
@@ -161,7 +175,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public boolean isGivingInformation() {
 		return true;
 	}
-	
+
 	@Override
 	public String[] getInfoData() {
 		String[] mSuper = super.getInfoData();
@@ -179,6 +193,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 	@Override
 	public boolean onRunningTick(final ItemStack aStack) {
+		//Logger.INFO("s");
+		
 		return super.onRunningTick(aStack);
 	}
 
@@ -186,34 +202,151 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		//Do Main Multi Logic first
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		
+
 		//Do Tree Farm logic next on server side
-		if (aBaseMetaTileEntity.isServerSide()) {
-			
-			
-			//Set Forestry Fake player Sapling Planter
-			if (this.farmerAI == null) {
-				this.farmerAI = new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
+		if (aBaseMetaTileEntity.isServerSide()) {			
+
+			//Simple Repairs for a simple machine
+			if (isCurrentlyWorking()) {
+				this.mSolderingTool = true;
 			}
-			
-			
-			
-			
+
+			if (this.getBaseMetaTileEntity().isServerSide()) {	
+				if (this.mEnergyHatches.size() > 0) {
+					for (GT_MetaTileEntity_Hatch_Energy j : this.mEnergyHatches) {
+						//Logger.INFO(""+j.getInputTier());
+						if (this.getEUVar() <= (this.maxEUStore()-GT_Values.V[(int) j.getInputTier()])) {
+							this.setEUVar(this.getEUVar()+GT_Values.V[(int) j.getInputTier()]);
+							j.setEUVar(j.getEUVar()-GT_Values.V[(int) j.getInputTier()]);
+						}
+						else if (this.getEUVar() > (this.maxEUStore()-GT_Values.V[(int) j.getInputTier()])) {
+							long diff = (this.maxEUStore()-this.getEUVar());
+							this.setEUVar(this.getEUVar()+diff);
+							j.setEUVar(j.getEUVar()-diff);
+						}
+					}
+				}	
+			}
+
+
+
 
 		}
-		//Client Side - do nothing
 	}
 
 
 	@Override
-	public boolean checkRecipe(ItemStack p0) {
+	public boolean checkRecipe(ItemStack p0) {		
+		mIsCurrentlyWorking = (isCorrectMachinePart(p0) && this.getEUVar() > 0);		
+		if (isCurrentlyWorking()) {
+			return true;
+		}		
 		return false;
 	}
 
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity p0, ItemStack p1) {
-		return false;
+	public boolean isCorrectMachinePart(final ItemStack aStack) {
+		boolean isValid = false;
+		final SAWTOOL currentInputItem = TreeFarmHelper.isCorrectMachinePart(aStack);
+		if (currentInputItem != SAWTOOL.NONE){			
+			isValid = true;
+		}
+		return isValid;
+	}
+
+	@Override
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		Logger.WARNING("Step 1");
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+
+		for (int i = -7; i <= 7; i++) {
+			Logger.WARNING("Step 2");
+			for (int j = -7; j <= 7; j++) {
+				Logger.WARNING("Step 3");
+				for (int h = 0; h <= 1; h++) {
+					Logger.WARNING("Step 4");
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+					//Farm Floor inner 14x14
+					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
+						Logger.WARNING("Step 5 - H:"+h);
+						// Farm Dirt Floor and Inner Air/Log space.
+						if (h == 0) {
+							//Dirt Floor
+							if (!TreeFarmHelper.isDirtBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+								Logger.MACHINE_INFO("Dirt like block missing from inner 14x14.");
+								Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								return false;
+							}
+						}
+					}
+					//Dealt with inner 5x5, now deal with the exterior.
+					else {
+						Logger.WARNING("Step 6 - H:"+h);
+						//Deal with all 4 sides (Fenced area)
+						if (h == 1) {
+							if (!TreeFarmHelper.isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+								Logger.MACHINE_INFO("Fence/Gate missing from outside the second layer.");
+								Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								return false;
+							}
+						}
+						//Deal with Bottom edges (Add Hatches/Busses first, othercheck make sure it's dirt) //TODO change the casings to not dirt~?
+						else if (h == 0) {
+							if (tTileEntity != null)
+								if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX)))) {
+									if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
+
+										if (tTileEntity.getMetaTileID() != 752) {
+											Logger.MACHINE_INFO("Farm Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
+											Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" "+tTileEntity.getMetaTileID());
+											return false;
+										}
+										Logger.WARNING("Found a farm keeper.");
+									}
+								}
+						}
+					}
+				}
+			}
+		}
+
+		//Must have at least one energy hatch.
+		if (this.mEnergyHatches != null) {
+			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
+				if (this.mEnergyHatches.get(i).mTier < 1){
+					Logger.MACHINE_INFO("You require at LEAST MV tier Energy Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					return false;
+				}
+			}
+		}
+		//Must have at least one output hatch.
+		if (this.mOutputHatches != null) {
+			for (int i = 0; i < this.mOutputHatches.size(); i++) {
+
+				if (this.mOutputHatches.get(i).mTier < 1){
+					Logger.MACHINE_INFO("You require at LEAST MV tier Output Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					return false;
+				}
+			}
+		}
+		//Must have at least one input hatch.
+		if (this.mInputHatches != null) {
+			for (int i = 0; i < this.mInputHatches.size(); i++) {
+				if (this.mInputHatches.get(i).mTier < 1){
+					Logger.MACHINE_INFO("You require at LEAST MV tier Input Hatches.");
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Logger.MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					return false;
+				}
+			}
+		}
+		Logger.MACHINE_INFO("Multiblock Formed.");
+		return true;
 	}
 
 
@@ -225,7 +358,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public void onServerStart() {
-		// TODO Auto-generated method stub
+		getFakePlayer();
 		super.onServerStart();
 	}
 

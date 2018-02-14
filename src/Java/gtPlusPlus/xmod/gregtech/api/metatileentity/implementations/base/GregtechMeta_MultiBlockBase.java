@@ -96,19 +96,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
 		String[] g = {
-				"Progress:", 
-				(this.mProgresstime / 20) + "secs",				
-				(this.mMaxProgresstime / 20) + "secs",
-				"Efficiency:",
-				(this.mEfficiency / 100.0F) + "%",
-				"Problems:",
-				"" + (this.getIdealStatus() - this.getRepairStatus()),
-				"Total Time Since Build: ",
-				""+weeks+" Weeks.",
-				""+days+" Days.",
-				""+hours+" Hours.",
-				""+minutes+" Minutes.",
-				""+second+" Seconds.",
+				"Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs",
+				"Efficiency: "+(this.mEfficiency / 100.0F) + "%",
+				"Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()),
+				"Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ",
+				""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.",
 				"Total Time in ticks: "+this.mTotalRunTime};
 		
 		return g;
