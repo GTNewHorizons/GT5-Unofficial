@@ -85,6 +85,27 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
+	public boolean drainEnergyInput(final long aEU) {
+		if (aEU <= 0L) {
+			return true;
+		}
+		
+		//Special Override, so that this function uses internally stored power first.
+		if (this.getEUVar() >= aEU) {
+			this.setEUVar(this.getEUVar()-aEU);
+			return true;
+		}
+		
+		for (final GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+			if (isValidMetaTileEntity((MetaTileEntity) tHatch)
+					&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 0) {
 			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
@@ -195,7 +216,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	@Override
 	public boolean onRunningTick(final ItemStack aStack) {
 		//Logger.INFO("s");
-		
+
 		return super.onRunningTick(aStack);
 	}
 
@@ -204,8 +225,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		//Do Main Multi Logic first
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 
-		//Do Tree Farm logic next on server side
-		if (aBaseMetaTileEntity.isServerSide()) {			
+		//Do Tree Farm logic next on server side, once per second
+		if (aBaseMetaTileEntity.isServerSide() && (aTick % 20 == 0)) {			
 
 			//Simple Repairs for a simple machine
 			if (isCurrentlyWorking()) {
@@ -229,14 +250,15 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				}	
 			}
 
-			
-			//Try Work
-			BlockPos t;
-			if ((t = TreeFarmHelper.checkForLogsInGrowArea(this.getBaseMetaTileEntity())) != null) {
-				Logger.INFO("Lets try find new logs/branches.");
-				TreeFarmHelper.findTreeFromBase(this.getBaseMetaTileEntity().getWorld(), t);
-			}
 
+			//Try Work
+			if (this.drainEnergyInput(32)) {
+				BlockPos t;			
+				if ((t = TreeFarmHelper.checkForLogsInGrowArea(this.getBaseMetaTileEntity())) != null) {
+					//Logger.INFO("Lets try find new logs/branches.");
+					TreeFarmHelper.findTreeFromBase(this.getBaseMetaTileEntity().getWorld(), t);
+				}
+			}
 
 
 		}
