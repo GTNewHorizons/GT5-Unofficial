@@ -432,7 +432,9 @@ public class TreeFarmHelper {
 				mOtherResults.put(hash, x);		
 			}			
 		}
+		
 		if (mOtherResults.size() > 0) {
+			Logger.INFO("Queuing "+mOtherResults.size()+" to Harvest Manager.");
 			TreeCutter harvestManager = new TreeCutter(world);
 			for (Map<String, BlockPos> a : mOtherResults.values()) {
 				for (BlockPos p : a.values()) {
@@ -442,7 +444,7 @@ public class TreeFarmHelper {
 			if (harvestManager.isValid) {
 				ItemStack[] loot = harvestManager.getDrops();
 				if (loot.length > 0) {
-					Logger.INFO("Returning Drops from harvestManager Queue.");
+					//Logger.INFO("Returning Drops from harvestManager Queue.");
 					return loot;
 				}
 			}
@@ -453,32 +455,49 @@ public class TreeFarmHelper {
 	public static Map<String, BlockPos> findTreeViaBranching(World world, BlockPos h) {		
 		Map<String, BlockPos> results = new ConcurrentHashMap<String, BlockPos>();
 		final Block block = world.getBlock(h.xPos, h.yPos, h.zPos);	
-		Logger.INFO("Searching around "+h.getLocationString());
+		Logger.INFO("--------------------------" + "Searching around "+h.getLocationString() + "--------------------------");
 		int xRel = h.xPos, yRel = h.yPos, zRel = h.zPos;		
 		//if (TreeFarmHelper.isWoodLog(block)) {			
-		for (int a=-2;a<2;a++) {
-			for (int b=-2;b<2;b++) {
-				for (int c=-2;c<2;c++) {						
+		for (int a=-2;a<3;a++) {
+			for (int b=-2;b<3;b++) {
+				for (int c=-2;c<3;c++) {						
 					//Check block
-					//Logger.INFO("Looking at X: "+(xRel+a)+" | Y: "+(yRel+b)+" | Z: "+(zRel+c));
+					Logger.INFO("Looking at X: "+(xRel+a)+" | Y: "+(yRel+b)+" | Z: "+(zRel+c));
 					Block log = world.getBlock(xRel+a, yRel+b, zRel+c);					
 					BlockPos P = new BlockPos(xRel+a, yRel+b, zRel+c); 
 					String hash = Utils.calculateChecksumMD5(P);
 					if (TreeFarmHelper.isWoodLog(log) || TreeFarmHelper.isLeaves(log)) {	
-						if (hash != null && !results.containsKey(hash)) {
+						Logger.INFO("Was Logs/leaves. "+P.getLocationString());
+						if (hash != null && !results.containsKey(hash)) {	
+							Logger.INFO("Caching result.");
 							results.put(hash, P);
+						}
+						else {
+							if (hash == null) {
+								Logger.INFO("Hash was invalid.");
+								
+							}
+							if (results == null) {
+								Logger.INFO("Results were invalid.");	
+							}
+							if (results.containsKey(hash)) {
+								Logger.INFO("Results were already cached. HASH: "+hash);									
+							}
 						}
 					}
 				}
 			}
 		}
+		
+		Logger.INFO("----------------------------------------------------------");
+		
 		//}
 		if (results.isEmpty()) {
 			//Logger.INFO("Returning Empty Branch Iteration.");	
 			return new HashMap<String, BlockPos>();
 		}
 		else {
-			Logger.INFO("Returning Valid Branch Iteration.");
+			Logger.INFO("Returning Valid Branch Iteration. "+results.size());
 			return results;
 		}
 	}

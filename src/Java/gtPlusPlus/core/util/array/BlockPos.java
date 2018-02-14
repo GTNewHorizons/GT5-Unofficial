@@ -1,7 +1,10 @@
 package gtPlusPlus.core.util.array;
 
-public class BlockPos {
+import java.io.Serializable;
 
+public class BlockPos implements Serializable{
+
+	private static final long serialVersionUID = -7271947491316682006L;
 	public final int xPos;
 	public final int yPos;
 	public final int zPos;
