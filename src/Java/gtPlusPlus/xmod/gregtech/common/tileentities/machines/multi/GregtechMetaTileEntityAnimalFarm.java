@@ -6,7 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlockBase {
+public abstract class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlockBase {
 
 	public GregtechMetaTileEntityAnimalFarm(String aName) {
 		super(aName);

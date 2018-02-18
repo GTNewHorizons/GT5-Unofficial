@@ -47,6 +47,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -142,6 +143,7 @@ public class GTplusplus implements ActionListener {
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
+		RecipeGen_Recycling.executeGenerators();
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");

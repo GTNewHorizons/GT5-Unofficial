@@ -14,6 +14,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -22,6 +23,16 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeGen_Recycling implements Runnable {
 
+	public static AutoMap<Runnable> mQueuedRecyclingGenerators = new AutoMap<Runnable>();
+	
+	public static void executeGenerators() {
+		if (mQueuedRecyclingGenerators.size() > 0) {
+			for (Runnable R : mQueuedRecyclingGenerators.values()) {
+				R.run();
+			}
+		}
+	}
+	
 	final Material toGenerate;
 	public static Map<String, ItemStack> mNameMap;
 
@@ -30,14 +41,14 @@ public class RecipeGen_Recycling implements Runnable {
 		if (mNameMap == null){
 			mNameMap = this.getNameMap();			
 		}
-		if (mNameMap != null){
-			generateRecipes(this.toGenerate);		
-		}
+		mQueuedRecyclingGenerators.put(this);
 	}
 
 	@Override
 	public void run() {
-		
+		if (mNameMap != null){
+			generateRecipes(this.toGenerate);		
+		}
 	}
 
 	public static void generateRecipes(final Material material) {
