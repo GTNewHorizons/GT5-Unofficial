@@ -25,7 +25,7 @@ public class PickaxeBlockBreakEventHandler {
 				if (entity.getClass().getSimpleName().equals("")){
 
 				}
-				if ((entity instanceof BaseTileEntity) && !(entity instanceof BaseMetaPipeEntity)){
+				if ((entity instanceof BaseMetaTileEntity) && !(entity instanceof BaseMetaPipeEntity)){
 					final IMetaTileEntity X = ((BaseMetaTileEntity)entity).getMetaTileEntity();
 					final Block ThisBlock = X.getBaseMetaTileEntity().getBlock(event.x, event.y, event.z);
 					if (X instanceof GregtechMetaSafeBlockBase){
