@@ -1,6 +1,9 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.List;
+
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -15,9 +18,28 @@ import net.minecraft.world.World;
 
 public class ItemBlockNBT extends ItemBlock {
 
+
+	protected final int mID;
+
 	public ItemBlockNBT(final Block block) {
 		super(block);
+		this.mID = ((ITileTooltip) block).getTooltipID();
+	}	
+
+
+	@Override
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		
+		//if ()
+		
+		
+		
+		if (this.mID == 0){ //blockDarkWorldPortalFrame
+			list.add("Assembled in the same shape as the Nether Portal.");			
+		}
 	}
+
+
 
 	@Override
 	public void onCreated(ItemStack item, World world, EntityPlayer player) {
@@ -59,17 +81,13 @@ public class ItemBlockNBT extends ItemBlock {
 	@Override		
 	public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
 			float hitX, float hitY, float hitZ, int aMeta) {
-		
-		
-
 		if (!(aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3))) {
 			return false;
 		}
 		if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
 			this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
 			this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, aMeta);
-		}
-		
+		}		
 		TileEntityBase tTileEntity = (TileEntityBase) aWorld.getTileEntity(aX, aY, aZ);
 		if (tTileEntity != null && aPlayer != null) {
 			if (tTileEntity.isServerSide()){				
@@ -78,7 +96,6 @@ public class ItemBlockNBT extends ItemBlock {
 				tTileEntity.setOwnerInformation(aNBT.getString("mOwner"), aNBT.getString("mUUID"), aNBT.getBoolean("mOP"));
 			}
 		}
-
 		return true;
 	}
 

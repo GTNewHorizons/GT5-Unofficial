@@ -82,7 +82,6 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 	}
 
 	public boolean onPreTick(){
-
 		return true;
 	}
 
@@ -141,10 +140,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 
 	public boolean isServerSide(){
 		if (this.hasWorldObj()){
-			if (this.getWorldObj().isRemote){
-				return false;
-			}
-			else {
+			if (!this.getWorldObj().isRemote){
 				return true;
 			}
 		}

@@ -4,7 +4,11 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cpw.mods.fml.common.Optional;
@@ -403,8 +407,8 @@ public class TreeFarmHelper {
 				for (int h = 0; h <= 1; h++) {
 					//Farm Floor inner 14x14
 					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
-						if (h == 1) {
-							if (TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+						if (h == 1) {														
+							if (!isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) && TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
 								//Logger.INFO("Found a Log");
 								return new BlockPos(aBaseMetaTileEntity.getXCoord()+xDir + i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir + j);
 							}
@@ -419,27 +423,142 @@ public class TreeFarmHelper {
 
 
 	public static ItemStack[] findTreeFromBase(World world, BlockPos h) {
-		Map<String, BlockPos> mResultsAroundBaseLayer = findTreeViaBranching(world, h);		
-		Map<String, Map<String, BlockPos>> mOtherResults = new ConcurrentHashMap<String, Map<String, BlockPos>>();
-		String hash = Utils.calculateChecksumMD5(mResultsAroundBaseLayer);
-		mOtherResults.put(hash, mResultsAroundBaseLayer);		
-		Logger.INFO("Initial Search found "+mResultsAroundBaseLayer.size()+" blocks to search around.");
-		for (BlockPos j : mResultsAroundBaseLayer.values()) {
-			Map<String, BlockPos> x = findTreeViaBranching(world, j);
-			hash = Utils.calculateChecksumMD5(x);
-			if (hash != null && !mOtherResults.containsKey(hash)) {
-				Logger.INFO("Branching.");
-				mOtherResults.put(hash, x);		
-			}			
-		}
-		
-		if (mOtherResults.size() > 0) {
-			Logger.INFO("Queuing "+mOtherResults.size()+" to Harvest Manager.");
-			TreeCutter harvestManager = new TreeCutter(world);
-			for (Map<String, BlockPos> a : mOtherResults.values()) {
-				for (BlockPos p : a.values()) {
-					harvestManager.queue(p);					
+
+		BlockPos mFirstSpot = h;
+		Set<BlockPos> mFirstSearch = new HashSet<BlockPos>();
+		Set<BlockPos> mSecondSearch = new HashSet<BlockPos>();
+		Set<BlockPos> mThirdSearch = new HashSet<BlockPos>();
+		Set<BlockPos> mAllSearched = new HashSet<BlockPos>();
+
+		Set<BlockPos> mTempSearch = new HashSet<BlockPos>();
+
+		mAllSearched.add(mFirstSpot);
+
+		mFirstSearch = findTreeViaBranching(world, h);
+
+		if (mFirstSearch.size() > 0) {
+			Iterator<BlockPos> j = mFirstSearch.iterator();
+			while (j.hasNext()){
+				BlockPos M = j.next();
+				if (!mAllSearched.contains(M)) {
+					mAllSearched.add(M);
+					mTempSearch = findTreeViaBranching(world, M);					
+					if (mTempSearch.size() > 0) {
+						Iterator<BlockPos> D = mTempSearch.iterator();
+						while (D.hasNext()){
+							BlockPos F = D.next();
+							if (!mAllSearched.contains(F))
+								mAllSearched.add(F);
+						}
+					}
+					if (!mSecondSearch.contains(M)) {
+						mSecondSearch.add(M);
+					}
 				}
+			}
+		}
+
+
+		/*if (mFirstSearch.size() > 0) {
+			Iterator<BlockPos> j = mFirstSearch.iterator();
+			while (j.hasNext()){
+				BlockPos M = j.next();
+				if (!mAllSearched.contains(M))
+					mAllSearched.add(M);
+				if (!mSecondSearch.contains(M))
+					mSecondSearch.add(M);
+			}
+		}*/
+		/*if (mSecondSearch.size() > 0) {
+			Iterator<BlockPos> j = mSecondSearch.iterator();
+			while (j.hasNext()){
+				BlockPos M = j.next();
+				if (!mAllSearched.contains(M))
+					mAllSearched.add(M);
+				if (!mThirdSearch.contains(M))
+					mThirdSearch.add(M);				
+			}
+		}*/
+
+		if (mSecondSearch.size() > 0) {
+			Iterator<BlockPos> j = mSecondSearch.iterator();
+			while (j.hasNext()){
+				BlockPos M = j.next();
+				if (!mAllSearched.contains(M)) {
+					mAllSearched.add(M);
+					mTempSearch = findTreeViaBranching(world, M);					
+					if (mTempSearch.size() > 0) {
+						Iterator<BlockPos> D = mTempSearch.iterator();
+						while (D.hasNext()){
+							BlockPos F = D.next();
+							if (!mAllSearched.contains(F))
+								mAllSearched.add(F);
+						}
+					}
+					if (!mThirdSearch.contains(M)) {
+						mThirdSearch.add(M);
+					}
+				}					
+			}
+		}
+
+
+		if (mThirdSearch.size() > 0) {
+			Iterator<BlockPos> j = mThirdSearch.iterator();
+			while (j.hasNext()){
+				BlockPos M = j.next();
+				if (!mAllSearched.contains(M)) {
+					mAllSearched.add(M);
+					mTempSearch = findTreeViaBranching(world, M);					
+					if (mTempSearch.size() > 0) {
+						Iterator<BlockPos> D = mTempSearch.iterator();
+						while (D.hasNext()){
+							BlockPos F = D.next();
+							if (!mAllSearched.contains(F))
+								mAllSearched.add(F);
+						}
+					}
+				}					
+			}
+		}
+
+
+		/*Set<BlockPos> mBaseLayer = new HashSet<BlockPos>();
+		Set<Set<BlockPos>> mAllLayers = new HashSet<Set<BlockPos>>();
+		Set<BlockPos> mFinalSet = new HashSet<BlockPos>();
+
+		mBaseLayer = findTreeViaBranching(world, h);		
+		mAllLayers.add(mBaseLayer);		
+		Logger.INFO("Initial Search found "+mBaseLayer.size()+" blocks to search around.");
+		for (Iterator<BlockPos> flavoursIter = mBaseLayer.iterator(); flavoursIter.hasNext();){
+			Set<BlockPos> x = findTreeViaBranching(world, flavoursIter.next());
+			if (!mAllLayers.contains(x)) {
+				Logger.INFO("Branching.");
+				mAllLayers.add(x);		
+			}			
+		}*/
+
+
+		/*if (mAllLayers.size() > 0) {
+			for (Iterator<Set<BlockPos>> flavoursIter = mAllLayers.iterator(); flavoursIter.hasNext();){
+				for (Iterator<BlockPos> flavoursIter2 = flavoursIter.next().iterator(); flavoursIter2.hasNext();){
+					Set<BlockPos> x = findTreeViaBranching(world, flavoursIter2.next());
+					for (Iterator<BlockPos> flavoursIter3 = x.iterator(); flavoursIter3.hasNext();){
+						if (!mFinalSet.contains(flavoursIter3.next())) {
+							Logger.INFO("Branching II.");
+							mFinalSet.add(flavoursIter3.next());		
+						}
+					}					
+				}
+			}
+		}*/
+
+
+		if (mAllSearched.size() > 0) {
+			Logger.INFO("Queuing "+mAllSearched.size()+" to Harvest Manager.");
+			TreeCutter harvestManager = new TreeCutter(world);
+			for (Iterator<BlockPos> flavoursIter = mAllSearched.iterator(); flavoursIter.hasNext();){
+				harvestManager.queue(flavoursIter.next());
 			}
 			if (harvestManager.isValid) {
 				ItemStack[] loot = harvestManager.getDrops();
@@ -452,49 +571,45 @@ public class TreeFarmHelper {
 		return new ItemStack[] {};
 	}
 
-	public static Map<String, BlockPos> findTreeViaBranching(World world, BlockPos h) {		
-		Map<String, BlockPos> results = new ConcurrentHashMap<String, BlockPos>();
-		final Block block = world.getBlock(h.xPos, h.yPos, h.zPos);	
+	public static Set<BlockPos> findTreeViaBranching(World world, BlockPos h) {	
+
+		Set<BlockPos> results = new HashSet<BlockPos>();
+
+		//Map<String, BlockPos> results = new ConcurrentHashMap<String, BlockPos>();
+		final Block block = world.getBlock(h.xPos, h.yPos, h.zPos);
+
 		Logger.INFO("--------------------------" + "Searching around "+h.getLocationString() + "--------------------------");
 		int xRel = h.xPos, yRel = h.yPos, zRel = h.zPos;		
 		//if (TreeFarmHelper.isWoodLog(block)) {			
-		for (int a=-2;a<3;a++) {
-			for (int b=-2;b<3;b++) {
-				for (int c=-2;c<3;c++) {						
+		for (int a=-4;a<5;a++) {
+			for (int b=-4;b<5;b++) {
+				for (int c=-4;c<5;c++) {						
 					//Check block
 					Logger.INFO("Looking at X: "+(xRel+a)+" | Y: "+(yRel+b)+" | Z: "+(zRel+c));
 					Block log = world.getBlock(xRel+a, yRel+b, zRel+c);					
 					BlockPos P = new BlockPos(xRel+a, yRel+b, zRel+c); 
-					String hash = Utils.calculateChecksumMD5(P);
-					if (TreeFarmHelper.isWoodLog(log) || TreeFarmHelper.isLeaves(log)) {	
+					if ((!isFenceBlock(log)) && (isWoodLog(log) || isLeaves(log))) {	
 						Logger.INFO("Was Logs/leaves. "+P.getLocationString());
-						if (hash != null && !results.containsKey(hash)) {	
+						if (!results.contains(P)) {	
 							Logger.INFO("Caching result.");
-							results.put(hash, P);
+							results.add(P);
 						}
 						else {
-							if (hash == null) {
-								Logger.INFO("Hash was invalid.");
-								
-							}
-							if (results == null) {
-								Logger.INFO("Results were invalid.");	
-							}
-							if (results.containsKey(hash)) {
-								Logger.INFO("Results were already cached. HASH: "+hash);									
+							if (P != null && results.contains(P)) {
+								Logger.INFO("Results were already cached.");									
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
 		Logger.INFO("----------------------------------------------------------");
-		
+
 		//}
 		if (results.isEmpty()) {
-			//Logger.INFO("Returning Empty Branch Iteration.");	
-			return new HashMap<String, BlockPos>();
+			Logger.INFO("Returning Empty Branch Iteration.");	
+			return new HashSet<BlockPos>();
 		}
 		else {
 			Logger.INFO("Returning Valid Branch Iteration. "+results.size());
@@ -521,7 +636,7 @@ public class TreeFarmHelper {
 
 		public boolean queue(BlockPos pos) {
 			if (isValid && pos != null) {
-				Logger.INFO("Queued: "+pos.getLocationString());
+				//Logger.INFO("Queued: "+pos.getLocationString());
 				String hash = Utils.calculateChecksumMD5(pos);			
 				if (hash != null && !mQueue.containsKey(hash)) {
 					mQueue.put(hash, pos);
