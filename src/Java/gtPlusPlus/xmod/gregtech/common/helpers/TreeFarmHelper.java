@@ -7,12 +7,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import gnu.trove.set.hash.THashSet;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -23,6 +31,7 @@ import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.AutoMap;
@@ -37,11 +46,18 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TreeFarmHelper {
@@ -447,12 +463,8 @@ public class TreeFarmHelper {
 						Iterator<BlockPos> D = mTempSearch.iterator();
 						while (D.hasNext()){
 							BlockPos F = D.next();
-							if (!mAllSearched.contains(F))
-								mAllSearched.add(F);
+							onBlockStartBreak(F.xPos, F.yPos, F.zPos, world);
 						}
-					}
-					if (!mSecondSearch.contains(M)) {
-						mSecondSearch.add(M);
 					}
 				}
 			}
@@ -480,7 +492,7 @@ public class TreeFarmHelper {
 			}
 		}*/
 
-		if (mSecondSearch.size() > 0) {
+		/*if (mSecondSearch.size() > 0) {
 			Iterator<BlockPos> j = mSecondSearch.iterator();
 			while (j.hasNext()){
 				BlockPos M = j.next();
@@ -520,7 +532,7 @@ public class TreeFarmHelper {
 					}
 				}					
 			}
-		}
+		}*/
 
 
 		/*Set<BlockPos> mBaseLayer = new HashSet<BlockPos>();
@@ -708,11 +720,270 @@ public class TreeFarmHelper {
 	}
 
 
+	/**
+	 * Farm AI
+	 */	
+	private static EntityPlayerMP farmerAI;
+	public EntityPlayerMP getFakePlayer(World world) {
+		return farmerAI = checkFakePlayer(world);
+	}
+
+	public static EntityPlayerMP checkFakePlayer(World world) {
+		if (farmerAI == null) {
+			return new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(world.provider.dimensionId));
+		}
+		return farmerAI;		
+	}
+	
+	public static boolean onBlockStartBreak (int x, int y, int z, World world){       
+        final Block wood = world.getBlock(x, y, z);
+        if (wood == null){
+        	return false;
+        }
+        if (wood.isWood(world, x, y, z) || wood.getMaterial() == Material.sponge)
+            if(detectTree(world, x,y,z)) {
+                TreeChopTask chopper = new TreeChopTask(new ChunkPosition(x, y, z), checkFakePlayer(world), 128);
+                FMLCommonHandler.instance().bus().register(chopper);
+                // custom block breaking code, don't call vanilla code
+                return true;
+            }
+        //return onBlockStartBreak(stack, x, y, z, player);
+        return false;
+    }
+
+	public static boolean detectTree(World world, int pX, int pY, int pZ) {
+		ChunkPosition pos = null;
+		Stack<ChunkPosition> candidates = new Stack<>();
+		candidates.add(new ChunkPosition(pX, pY, pZ));
+
+		while (!candidates.isEmpty()) {
+			ChunkPosition candidate = candidates.pop();
+			int curX = candidate.chunkPosX, curY = candidate.chunkPosY, curZ = candidate.chunkPosZ;
+
+			Block block = world.getBlock(curX, curY, curZ);
+			if ((pos == null || candidate.chunkPosY > pos.chunkPosY) && block.isWood(world, curX, curY, curZ)) {
+				pos = new ChunkPosition(curX, candidate.chunkPosY + 1, curZ);
+				// go up
+				while (world.getBlock(curX, pos.chunkPosY, curZ).isWood(world, curX, pos.chunkPosY, curZ)) {
+					pos = new ChunkPosition(curX, pos.chunkPosY + 1, curZ);
+				}
+				// check if we still have a way diagonally up
+				candidates.add(new ChunkPosition(curX + 1, pos.chunkPosY + 1, curZ    ));
+				candidates.add(new ChunkPosition(curX    , pos.chunkPosY + 1, curZ + 1));
+				candidates.add(new ChunkPosition(curX - 1, pos.chunkPosY + 1, curZ    ));
+				candidates.add(new ChunkPosition(curX    , pos.chunkPosY + 1, curZ - 1));
+			}
+		}
+
+		// not even one match, so there were no logs.
+		if (pos == null) {
+			return false;
+		}
+
+		// check if there were enough leaves around the last position
+		// pos now contains the block above the topmost log
+		// we want at least 5 leaves in the surrounding 26 blocks
+		int d = 3;
+		int leaves = 0;
+		for (int offX = 0; offX < d; offX++) {
+			for (int offY = 0; offY < d; offY++) {
+				for (int offZ = 0; offZ < d; offZ++) {
+					int xPos = pos.chunkPosX -1 + offX, yPos = pos.chunkPosY - 1 + offY, zPos = pos.chunkPosZ - 1 + offZ;
+					Block leaf = world.getBlock(xPos, yPos, zPos);
+					if (leaf != null && leaf.isLeaves(world, xPos, yPos, zPos)) {
+						if (++leaves >= 5) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		// not enough leaves. sorreh
+		return false;
+	}
+
+    public static class TreeChopTask {
+
+        public final World world;
+        public final EntityPlayer player;
+        public final int blocksPerTick;
+
+        public Queue<ChunkPosition> blocks = Lists.newLinkedList();
+        public Set<ChunkPosition> visited = new THashSet<>();
+
+		public TreeChopTask(ChunkPosition start, EntityPlayer player, int blocksPerTick) {
+			this.world = player.getEntityWorld();
+			this.player = player;
+			this.blocksPerTick = blocksPerTick;
+
+			this.blocks.add(start);
+		}
+
+		private void queueCoordinate(int x, int y, int z) {
+			ChunkPosition pos = new ChunkPosition(x, y, z);
+			if (!visited.contains(pos)) {
+				blocks.add(pos);
+			}
+		}
+
+		@SubscribeEvent
+		public void onWorldTick(TickEvent.WorldTickEvent event) {
+			if (event.side.isClient()) {
+				finish();
+				return;
+			}
+			// only if same dimension
+			if (event.world.provider.dimensionId != world.provider.dimensionId) {
+				return;
+			}
+
+			// setup
+			int left = blocksPerTick;
+			//NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
+
+			// continue running
+			ChunkPosition pos;
+			while (left > 0) {
+				// completely done or can't do our job anymore?!
+				if (blocks.isEmpty()/* || tags.getBoolean("Broken")*/) {
+					finish();
+					return;
+				}
+
+				pos = blocks.remove();
+				if (!visited.add(pos)) {
+					continue;
+				}
+				int x = pos.chunkPosX, y = pos.chunkPosY, z = pos.chunkPosZ;
+
+				Block block = world.getBlock(x, y, z);
+				int meta = world.getBlockMetadata(x, y, z);
+
+				// can we harvest the block and is effective?
+				if (!block.isWood(world, x, y, z) || !isWoodLog(block)) {
+					continue;
+				}
+
+				// save its neighbors
+				queueCoordinate(x + 1, y, z    );
+				queueCoordinate(x,     y, z + 1);
+				queueCoordinate(x - 1, y, z    );
+				queueCoordinate(x,     y, z - 1);
+
+				// also add the layer above.. stupid acacia trees
+				for (int offX = 0; offX < 3; offX++) {
+					for (int offZ = 0; offZ < 3; offZ++) {
+						queueCoordinate(x - 1 + offX, y + 1, z - 1 + offZ);
+					}
+				}
+
+				// break it, wooo!
+				breakExtraBlock(player.worldObj, x, y, z, 0, player, x, y, z);
+				left--;
+			}
+		}
+
+		private void finish() {
+			// goodbye cruel world
+			FMLCommonHandler.instance().bus().unregister(this);
+		}
+}
 
 
+    public static void breakExtraBlock(World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+        // prevent calling that stuff for air blocks, could lead to unexpected behaviour since it fires events
+        if (world.isAirBlock(x, y, z))
+            return;
 
+        // what?
+        if(!(playerEntity instanceof EntityPlayerMP))
+            return;
+        EntityPlayerMP player = (EntityPlayerMP) playerEntity;
 
+        // check if the block can be broken, since extra block breaks shouldn't instantly break stuff like obsidian
+        // or precious ores you can't harvest while mining stone
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
 
+        // only effective materials
+        if (!isWoodLog(block))
+            return;
+
+        Block refBlock = world.getBlock(refX, refY, refZ);
+        float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
+        float strength = ForgeHooks.blockStrength(block, player, world, x,y,z);
+
+        // only harvestable blocks that aren't impossibly slow to harvest
+        if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength/strength > 10f)
+            return;
+
+        // send the blockbreak event
+        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x,y,z);
+        if(event.isCanceled())
+            return;
+
+        if (player.capabilities.isCreativeMode) {
+            block.onBlockHarvested(world, x, y, z, meta, player);
+            if (block.removedByPlayer(world, player, x, y, z, false))
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+
+            // send update to client
+            if (!world.isRemote) {
+                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+            }
+            return;
+        }
+
+        // callback to the tool the player uses. Called on both sides. This damages the tool n stuff.
+        player.getCurrentEquippedItem().func_150999_a(world, block, x, y, z, player);
+
+        // server sided handling
+        if (!world.isRemote) {
+            // serverside we reproduce ItemInWorldManager.tryHarvestBlock
+
+            // ItemInWorldManager.removeBlock
+            block.onBlockHarvested(world, x,y,z, meta, player);
+
+            if(block.removedByPlayer(world, player, x,y,z, true)) // boolean is if block can be harvested, checked above
+            {
+                block.onBlockDestroyedByPlayer( world, x,y,z, meta);
+                block.harvestBlock(world, player, x,y,z, meta);
+                block.dropXpOnBlockBreak(world, x,y,z, event.getExpToDrop());
+            }
+
+            // always send block update to client
+            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+        }
+        // client sided handling
+        else {
+            //PlayerControllerMP pcmp = Minecraft.getMinecraft().playerController;
+            // clientside we do a "this clock has been clicked on long enough to be broken" call. This should not send any new packets
+            // the code above, executed on the server, sends a block-updates that give us the correct state of the block we destroy.
+
+            // following code can be found in PlayerControllerMP.onPlayerDestroyBlock
+            world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
+            if(block.removedByPlayer(world, player, x,y,z, true))
+            {
+                block.onBlockDestroyedByPlayer(world, x,y,z, meta);
+            }
+            // callback to the tool
+            ItemStack itemstack = player.getCurrentEquippedItem();
+            if (itemstack != null)
+            {
+                itemstack.func_150999_a(world, block, x, y, z, player);
+
+                if (itemstack.stackSize == 0)
+                {
+                    player.destroyCurrentEquippedItem();
+                }
+            }
+
+            // send an update to the server, so we get an update back
+            //if(PHConstruct.extraBlockUpdates)
+                //Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, x,y,z, Minecraft.getMinecraft().objectMouseOver.sideHit));
+        }
+    }
 
 
 

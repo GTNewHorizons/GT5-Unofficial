@@ -32,20 +32,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public final static int TEX_INDEX = 31;
 	protected boolean mIsCurrentlyWorking = false;
 
-	/**
-	 * Farm AI
-	 */	
-	private EntityPlayerMP farmerAI;
-	public EntityPlayerMP getFakePlayer() {
-		return this.farmerAI = checkFakePlayer();
-	}
 
-	public EntityPlayerMP checkFakePlayer() {
-		if (this.farmerAI == null) {
-			return new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
-		}
-		return this.farmerAI;		
-	}
 
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
@@ -387,8 +374,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 
 	@Override
-	public void onServerStart() {
-		getFakePlayer();
+	public void onServerStart() {		
 		super.onServerStart();
 	}
 
