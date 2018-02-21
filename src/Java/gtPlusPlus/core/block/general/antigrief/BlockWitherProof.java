@@ -30,9 +30,8 @@ public class BlockWitherProof extends Block{
 		this.setResistance(5000.0F);
 		this.setHarvestLevel("pickaxe", 3);
 		this.setStepSound(soundTypeMetal);
-		LanguageRegistry.addName(this, "Wither Cage");
+		//LanguageRegistry.addName(this, "Wither Cage");
 		GameRegistry.registerBlock(this, Utils.sanitizeString("blockBlackGate"));
-
 	}
 
 	public String GetProperName(){

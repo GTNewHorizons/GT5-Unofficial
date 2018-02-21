@@ -78,7 +78,7 @@ public final class AddGregtechRecipe {
 			FluidStack[] aFluidInputs,
 			ItemStack aOutput, 
 			int aDuration, int aEUt){
-/*
+		/*
 		try {
 			IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
 			if (IGT_RecipeAdder != null){
@@ -95,7 +95,7 @@ public final class AddGregtechRecipe {
 					}
 					//Utils.LOG_INFO("===============================================");
 				}
-				
+
 				try {
 					Method testRA = GT_Values.RA.getClass().getMethod("addAssemblylineRecipe", GT_Values.RA.getClass(), aResearchItem.getClass(), int.class, aInputs.getClass(), aFluidInputs.getClass(), aOutput.getClass(), int.class, int.class);
 				testRA.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
@@ -103,7 +103,7 @@ public final class AddGregtechRecipe {
 				catch (Throwable masndj){
 					masndj.printStackTrace();
 				}
-				
+
 
 				Method addRecipe = classRA.getDeclaredMethod(
 						"addAssemblylineRecipe",
@@ -125,7 +125,7 @@ public final class AddGregtechRecipe {
 			return false;
 		}	
 		Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
-		*/return false;
+		 */return false;
 	}
 
 	public static boolean addCircuitAssemblerRecipe(
@@ -202,5 +202,40 @@ public final class AddGregtechRecipe {
 		}
 		return false;
 	}
+
+
+	public static boolean addChemicalRecipeForBasicMachineOnly(final ItemStack p0, final ItemStack p1, final FluidStack p2, final FluidStack p3, final ItemStack p4, final ItemStack p5, final int p6, final int p7){
+
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			try {
+				IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
+				if (IGT_RecipeAdder != null){
+					Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
+					//final ItemStack p0, final ItemStack p1, final FluidStack p2, final FluidStack p3, final ItemStack p4, final ItemStack p5, final int p6, final int p7
+					Method addRecipe = classRA.getMethod("addChemicalRecipeForBasicMachineOnly", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
+					if (addRecipe != null){
+						return (boolean) addRecipe.invoke(IGT_RecipeAdder, p0, p1, p2, p3, p4, p5, p6, p7);
+					}
+				}
+			}
+			catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+
+			}
+		}
+
+		return GT_Values.RA.addChemicalRecipe(
+				p0,
+				p1,
+				p2,
+				p3,
+				p4,
+				p5,
+				p6,
+				p7);		
+
+	}
+
+
+
 
 }

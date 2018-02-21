@@ -27,7 +27,6 @@ import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -1040,16 +1039,53 @@ public class RECIPES_GREGTECH {
 
 		//LFTR Fuel Related Compounds
 
-		//Hydroxide
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
-				GT_Values.NF,
-				FluidUtils.getFluidStack("hydroxide", 2000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				8*20);
-		//Ammonia
+		if(CORE.GTNH){
+			//Hydroxide
+			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+					GT_Values.NF,
+					FluidUtils.getFluidStack("hydroxide", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					GT_Values.NI,
+					8*20, 30);
+			//Beryllium Hydroxide
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
+					ItemUtils.getGregtechCircuit(3),
+					FluidUtils.getFluidStack("hydroxide", 1000),
+					FluidUtils.getFluidStack("berylliumhydroxide", 2000),
+					GT_Values.NI,
+					8*20);
+			//Ammonium Bifluoride
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+					ItemUtils.getGregtechCircuit(3),
+					FluidUtils.getFluidStack("ammonium", 1000),
+					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+					26*20);
+			//Ammonium
+			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+					GT_Values.NF,
+					FluidUtils.getFluidStack("ammonium", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					GT_Values.NI,
+					20*20, 30);
+		}
+
 		if (!CORE.GTNH) {
+			//Hydroxide
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+					GT_Values.NF,
+					FluidUtils.getFluidStack("hydroxide", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					8*20);
+			//Ammonia (moved to GTNH core mod)
 			GT_Values.RA.addChemicalRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3),
 					ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
@@ -1057,31 +1093,31 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("ammonia", 1000),
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 3),
 					14 * 20);
-		}//moved to GTNH core mod
-		//Ammonium
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
-				GT_Values.NF,
-				FluidUtils.getFluidStack("ammonium", 2000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				20*20);
-		//Ammonium Bifluoride
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
-				GT_Values.NI,
-				FluidUtils.getFluidStack("ammonium", 1000),
-				FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
-				26*20);
-		//Beryllium Hydroxide
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
-				GT_Values.NI,
-				FluidUtils.getFluidStack("hydroxide", 1000),
-				FluidUtils.getFluidStack("berylliumhydroxide", 2000),
-				GT_Values.NI,
-				8*20);
+			//Beryllium Hydroxide
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
+					GT_Values.NI,
+					FluidUtils.getFluidStack("hydroxide", 1000),
+					FluidUtils.getFluidStack("berylliumhydroxide", 2000),
+					GT_Values.NI,
+					8*20);
+			//Ammonium Bifluoride
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+					GT_Values.NI,
+					FluidUtils.getFluidStack("ammonium", 1000),
+					FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+					26*20);
+			//Ammonium
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+					GT_Values.NF,
+					FluidUtils.getFluidStack("ammonium", 2000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					20*20);
+		}
 	}
 
 	private static void blastFurnaceRecipes(){
