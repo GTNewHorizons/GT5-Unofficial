@@ -1,0 +1,100 @@
+//Creative Tabs
+itemGroup.MiscUtilBlockTab=[GT++] Blöcke
+itemGroup.MiscUtilMiscTab=[GT++] Gegenstände
+itemGroup.MiscUtilCombatTab=[GT++] Kampf
+itemGroup.MiscUtilToolsTab=[GT++] Werkzeuge
+itemGroup.MiscUtilMachineTab=[GT++] Maschinen
+itemGroup.MiscUtilOtherTab=[GT++] Gegenstände II
+
+//Debug
+item.AAA_Broken.name=[Nicht implementierter Gegenstand] Bitte melde dieses Rezept auf Github.
+item.itemBedLocator_Base.name=Bett-Lokalisierer [NBT Test]
+item.itemBaseItemWithCharge.name=Aufladbarer Basisgegenstand
+item.miscutils_itemDebugShapeSpawner.name=[Debug] Formen
+
+//Fluids
+tile.fluidSludge.name=Stehendes Abwasser
+tile.fluidSludge.0.name=Stehendes Abwasser
+
+//Death Messages
+death.attack.plasmabolt=%s wurde durch brennend heißes Plasma getötet.
+death.attack.plasmabolt.player=%1$s wurde von %2$s mit Hilfe von Plasma getötet.
+
+//Alternative Materials
+item.itemPlateBatteryAlloy.name=Platte aus Batterie-Legierung
+item.itemIngotBatteryAlloy.name=Barren aus Batterie-Legierung
+item.itemStickyRubber.name=Gumlet aus klebrigem Gummi
+
+//Unused Fuel rods
+item.itemFuelRod_Empty.name=Leeres Brennelement
+item.itemFuelRod_Thorium.name=Thorium-Brennelement
+item.itemFuelRod_Uranium.name=Uran-Brennelement
+item.itemFuelRod_Plutonium.name=Plutonium-Brennelement
+
+//Entities
+entity.constructStaballoy.name=Stablegierungskonstrukt
+entity.sickBlaze.name=Infizierter Fanatiker
+
+//Tile Entities
+tile.blockToolBuilder.name=GregTech Werkzeug-Konstrukteur
+
+//Tools
+item.itemBufferCore.name=Pufferkern
+item.itemStaballoyPickaxe.name=Tunnelgräber
+item.itemStaballoyAxe.name=Baumfäller
+item.itemSandstoneHammer.name=Bruchsteinbrecher
+
+//Thermal Foundation Stuff
+item.MiscUtils.bucket.bucketPyrotheum.name=Eimer mit flammendem Pyrotheum
+item.MiscUtils.bucket.bucketCryotheum.name=Eimer mit gelenem Kryotheum
+item.MiscUtils.bucket.bucketEnder.name=Eimer mit resonantem Ender
+item.MiscUtils.material.dustPyrotheum.name=Pyrotheumstaub
+item.MiscUtils.material.dustCryotheum.name=Kryotheumstaub
+item.MiscUtils.material.rodBlizz.name=Blizzrute
+item.MiscUtils.material.dustBlizz.name=Blizzstaub
+tile.MiscUtils.fluid.pyrotheum.name=Flammendes Pyrotheum
+tile.MiscUtils.fluid.cryotheum.name=Gelenes Kryotheum
+tile.miscutils.fluid.ender.name=Resonantes Ender
+
+//Forestry Stuff
+item.frameAccelerated.name=Beschleunigter Rahmen
+item.frameVoid.name=Nichts-Rahmen
+item.frameMutagenic.name=Erbgutverändernder Rahmen
+item.frameBusy.name=Arbeitender Rahmen
+item.frameChocolate.name=Schokoladiger Rahmen
+item.frameRestraint.name=Zurückhaltender Rahmen
+item.frameSoul.name=Seelen-Rahmen
+item.frameHealing.name=Heilender Rahmen
+item.frameNova.name=Nova-Rahmen
+
+//IC2 stuff
+item.itemEnergeticRotorBlade.name=Rotorblatt aus energischer Legierung
+item.itemTungstenSteelRotorBlade.name=Rotorblatt aus Wolframstahl
+item.itemVibrantRotorBlade.name=Rotorblatt aus schwingender Legierung
+item.itemIridiumRotorBlade.name=Rotorblatt aus Iridium
+item.itemEnergeticShaft.name=Welle aus energischer Legierung
+item.itemTungstenSteelShaft.name=Welle aus Wolframstahl
+item.itemVibrantShaft.name=Welle aus schwingender Legierung
+item.itemIridiumShaft.name=Welle aus Iridium
+item.itemMagnaliumRotorBlade.name=Rotorblatt aus Magnalium
+item.itemUltimetRotorBlade.name=Rotorblatt aus Ultimet
+item.itemMagnaliumShaft.name=Welle aus Magnalium
+item.itemUltimetShaft.name=Welle aus Ultimet
+
+
+//Misc Items
+item.itemPLACEHOLDER_Circuit.name=Quark-Manipulator (UV)
+item.itemPlateEnrichedSoularium.name=Platte aus angereichertem Soularium 
+item.itemHeliumBlob.name=Geheimnisvolle Wasserstoffsubstanz
+item.itemAlkalusDisk.name=Alkalus-Schallplatte
+item.itemHotIngotRaisinBread.name=Heißer Laib Rosinenbrot
+item.itemIngotRaisinBread.name=§5ImQ009's §fRosinenbrot
+
+//Misc Blocks
+tile.blockCompressedObsidian.0.name=Komprimierter Obsidian (9)
+tile.blockCompressedObsidian.1.name=Doppelt-Komprimierter Obsidian (81)
+tile.blockCompressedObsidian.2.name=Dreifach-Komprimierter Obsidian (729)
+tile.blockCompressedObsidian.3.name=Vierfach-Komprimierter Obsidian (6561)
+tile.blockCompressedObsidian.4.name=Fünffach-Komprimierter Obsidian (59049)
+tile.blockCompressedObsidian.5.name=Umgekehrter Obsidian
+tile.blockNet.name=Netz
