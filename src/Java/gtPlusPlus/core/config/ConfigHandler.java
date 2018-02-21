@@ -31,6 +31,8 @@ public class ConfigHandler {
 				"Makes many machines display lots of debug logging.");
 		showHiddenNEIItems = config.getBoolean("showHiddenNEIItems", "debug", false,
 				"Makes all items hidden from NEI display.");
+		dumpItemAndBlockData = config.getBoolean("dumpItemAndBlockData", "debug", false,
+				"Dumps all GT++ and Toxic Everglade Data to en_US.lang in the config folder. This config option can be used by foreign players to generate blank .lang files, which they can populate with their language of choice.");
 	
 	
 		// Machines

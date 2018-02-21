@@ -135,7 +135,11 @@ public class GTplusplus implements ActionListener {
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
 		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
 		Core_Manager.init();
-		LocaleUtils.GenerateFakeLocaleFile();
+
+		//Used by foreign players to generate .lang files for translation.
+		if (CORE.ConfigSwitches.dumpItemAndBlockData) {
+			LocaleUtils.GenerateFakeLocaleFile();
+		}
 
 	}
 
@@ -162,10 +166,10 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
-		
+
 		//Chunk Loading
 		Timer h = ChunkManager.createChunkQueue();
-		
+
 
 	}
 

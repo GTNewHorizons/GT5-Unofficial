@@ -148,6 +148,7 @@ public class CORE {
 		public static boolean disableEnderIOIngotTooltips = false;
 		public static boolean MACHINE_INFO = true;
 		public static boolean showHiddenNEIItems = false;
+		public static boolean dumpItemAndBlockData = false;
 
 		//Tools
 		public static boolean enableSkookumChoochers = true;
