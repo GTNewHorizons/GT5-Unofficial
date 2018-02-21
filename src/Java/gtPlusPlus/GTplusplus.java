@@ -39,6 +39,7 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.locale.LocaleUtils;
 import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
@@ -134,6 +135,7 @@ public class GTplusplus implements ActionListener {
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
 		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
 		Core_Manager.init();
+		LocaleUtils.GenerateFakeLocaleFile();
 
 	}
 

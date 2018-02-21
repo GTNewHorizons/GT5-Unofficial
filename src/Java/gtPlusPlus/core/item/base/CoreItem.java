@@ -194,11 +194,11 @@ public class CoreItem extends Item
 		}
 	}
 
-	@Override
+/*	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
 		if ((this.itemName == null) || this.itemName.equals("")) {
 			return super.getItemStackDisplayName(tItem);
 		}
 		return this.itemName;
-	}
+	}*/
 }

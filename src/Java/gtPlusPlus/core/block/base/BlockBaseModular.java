@@ -53,11 +53,11 @@ public class BlockBaseModular extends BasicBlock{
 		}
 
 		if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())){
-			LanguageRegistry.addName(this, "Block of "+blockMaterial);
+			//LanguageRegistry.addName(this, "Block of "+blockMaterial);
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+"Block of "+blockMaterial);
 		}
 		else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())){
-			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
+			//LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
 

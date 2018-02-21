@@ -86,7 +86,7 @@ public class BaseItemComponent extends Item{
 		//return "gregtech" + ":" + "materialicons/"+metType+"/" + this.componentType.COMPONENT_NAME.toLowerCase();
 	}
 
-	@Override
+	/*@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 
 		if (this.componentType == ComponentTypes.SMALLGEAR){
@@ -97,7 +97,7 @@ public class BaseItemComponent extends Item{
 			return (this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
 		}
 		return this.materialName+" Cell";
-	}
+	}*/
 
 	public final String getMaterialName() {
 		return this.materialName;

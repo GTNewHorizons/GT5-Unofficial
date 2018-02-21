@@ -57,10 +57,10 @@ public class BaseOreComponent extends Item{
 		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME;
 	}
 
-	@Override
+	/*@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 			return (this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
-	}
+	}*/
 
 	public final String getMaterialName() {
 		return this.materialName;

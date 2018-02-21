@@ -32,7 +32,7 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 		}
 	}
 	
-	@Override
+	/*@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
 		String prefix = "Half Complete Casing ";
 		String casingType = "";
@@ -50,7 +50,7 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 		}
 		return (prefix+casingType);
 		
-	}
+	}*/
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {

@@ -32,7 +32,7 @@ public abstract class BlockBaseNBT extends BlockContainer
 		this.setBlockName(unlocalName);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, ItemBlockNBT.class, unlocalName);
-		LanguageRegistry.addName(this, displayName);
+		//LanguageRegistry.addName(this, displayName);
 	}
 
 	/**
