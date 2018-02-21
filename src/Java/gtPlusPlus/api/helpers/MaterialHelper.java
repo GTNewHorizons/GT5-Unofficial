@@ -1,4 +1,4 @@
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.helpers;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

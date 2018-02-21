@@ -3,8 +3,8 @@ package gregtech.api.util;
 import java.util.ArrayList;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.array.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;

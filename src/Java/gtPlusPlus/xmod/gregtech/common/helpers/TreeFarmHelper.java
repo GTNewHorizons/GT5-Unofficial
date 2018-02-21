@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.helpers;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,13 +30,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.AutoMap;
-import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -372,7 +373,7 @@ public class TreeFarmHelper {
 		if (log.getLocalizedName().toLowerCase().contains("leaves")){
 			return true;
 		}
-		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || (log.getMaterial() == Material.leaves);
+		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || log.getMaterial() == Material.leaves || OrePrefixes.treeLeaves.contains(new ItemStack(log, 1)) || log.getMaterial() == Material.vine || OrePrefixes.mushroom.contains(new ItemStack(log, 1)) || log.getMaterial() == Material.cactus;
 	}
 
 	public static boolean isSapling(final Block log){
@@ -397,17 +398,12 @@ public class TreeFarmHelper {
 	}
 
 	public static boolean isAirBlock(final Block air){
-
 		if (air.getLocalizedName().toLowerCase().contains("air")){
 			return true;
 		}
-
 		if (air.getClass().getName().toLowerCase().contains("residual") || air.getClass().getName().toLowerCase().contains("heat")){
 			return true;
 		}
-
-		//Utils.LOG_INFO("Found "+air.getLocalizedName());
-
 		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
 	}
 
@@ -423,9 +419,9 @@ public class TreeFarmHelper {
 				for (int h = 0; h <= 1; h++) {
 					//Farm Floor inner 14x14
 					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
-						if (h == 1) {														
-							if (!isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) && TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								//Logger.INFO("Found a Log");
+						if (h == 1) {
+							if (TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+								Logger.INFO("Found a Log");
 								return new BlockPos(aBaseMetaTileEntity.getXCoord()+xDir + i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir + j);
 							}
 						}
@@ -436,142 +432,68 @@ public class TreeFarmHelper {
 		return null;
 	}
 
-
-
 	public static ItemStack[] findTreeFromBase(World world, BlockPos h) {
-
+		int HARD_LIMIT = 10000;
+		int mCount = 0;	
+		Logger.INFO("Finding Rest of Tree.");
 		BlockPos mFirstSpot = h;
-		Set<BlockPos> mFirstSearch = new HashSet<BlockPos>();
-		Set<BlockPos> mSecondSearch = new HashSet<BlockPos>();
-		Set<BlockPos> mThirdSearch = new HashSet<BlockPos>();
-		Set<BlockPos> mAllSearched = new HashSet<BlockPos>();
+		Set<BlockPos> mSearchedSpaces = new HashSet<BlockPos>();
+		Set<BlockPos> mTreeSet = getConnectedBlocks(world, mFirstSpot, mSearchedSpaces);
+		Set<Set<BlockPos>> mTreeSet2 = new HashSet<Set<BlockPos>>();
+		Set<BlockPos> mFinalTree = new HashSet<BlockPos>();
+		Iterator<BlockPos> it = mTreeSet.iterator();
+		
 
-		Set<BlockPos> mTempSearch = new HashSet<BlockPos>();
+		Logger.INFO("Running first iteration.");
+		while(it.hasNext()){
+			BlockPos G = it.next();
+			mSearchedSpaces.add(G);		
+			mTreeSet2.add(getConnectedBlocks(world, G, mSearchedSpaces));	
+			mCount++;	
+			Logger.INFO("First Search: "+G.getLocationString());
+			if (mCount > HARD_LIMIT) {
+				break;
+			}
+		}
 
-		mAllSearched.add(mFirstSpot);
-
-		mFirstSearch = findTreeViaBranching(world, h);
-
-		if (mFirstSearch.size() > 0) {
-			Iterator<BlockPos> j = mFirstSearch.iterator();
-			while (j.hasNext()){
-				BlockPos M = j.next();
-				if (!mAllSearched.contains(M)) {
-					mAllSearched.add(M);
-					mTempSearch = findTreeViaBranching(world, M);					
-					if (mTempSearch.size() > 0) {
-						Iterator<BlockPos> D = mTempSearch.iterator();
-						while (D.hasNext()){
-							BlockPos F = D.next();
-							onBlockStartBreak(F.xPos, F.yPos, F.zPos, world);
-						}
-					}
+		mCount = 0;	
+		Iterator<Set<BlockPos>> it2 = mTreeSet2.iterator();
+		Iterator<BlockPos> it3;
+		Logger.INFO("Running second iteration.");
+		while(it2.hasNext()){
+			Set<BlockPos> G = it2.next();
+			it3 = G.iterator();
+			while(it3.hasNext()){
+				BlockPos G2 = it3.next();				
+				mSearchedSpaces.add(G2);
+				mFinalTree.add(G2);	
+				mCount++;
+				Logger.INFO("Second Search: "+G2.getLocationString());			
+				if (mCount > HARD_LIMIT) {
+					break;
 				}
-			}
-		}
-
-
-		/*if (mFirstSearch.size() > 0) {
-			Iterator<BlockPos> j = mFirstSearch.iterator();
-			while (j.hasNext()){
-				BlockPos M = j.next();
-				if (!mAllSearched.contains(M))
-					mAllSearched.add(M);
-				if (!mSecondSearch.contains(M))
-					mSecondSearch.add(M);
-			}
-		}*/
-		/*if (mSecondSearch.size() > 0) {
-			Iterator<BlockPos> j = mSecondSearch.iterator();
-			while (j.hasNext()){
-				BlockPos M = j.next();
-				if (!mAllSearched.contains(M))
-					mAllSearched.add(M);
-				if (!mThirdSearch.contains(M))
-					mThirdSearch.add(M);				
-			}
-		}*/
-
-		/*if (mSecondSearch.size() > 0) {
-			Iterator<BlockPos> j = mSecondSearch.iterator();
-			while (j.hasNext()){
-				BlockPos M = j.next();
-				if (!mAllSearched.contains(M)) {
-					mAllSearched.add(M);
-					mTempSearch = findTreeViaBranching(world, M);					
-					if (mTempSearch.size() > 0) {
-						Iterator<BlockPos> D = mTempSearch.iterator();
-						while (D.hasNext()){
-							BlockPos F = D.next();
-							if (!mAllSearched.contains(F))
-								mAllSearched.add(F);
-						}
-					}
-					if (!mThirdSearch.contains(M)) {
-						mThirdSearch.add(M);
-					}
-				}					
-			}
-		}
-
-
-		if (mThirdSearch.size() > 0) {
-			Iterator<BlockPos> j = mThirdSearch.iterator();
-			while (j.hasNext()){
-				BlockPos M = j.next();
-				if (!mAllSearched.contains(M)) {
-					mAllSearched.add(M);
-					mTempSearch = findTreeViaBranching(world, M);					
-					if (mTempSearch.size() > 0) {
-						Iterator<BlockPos> D = mTempSearch.iterator();
-						while (D.hasNext()){
-							BlockPos F = D.next();
-							if (!mAllSearched.contains(F))
-								mAllSearched.add(F);
-						}
-					}
-				}					
-			}
-		}*/
-
-
-		/*Set<BlockPos> mBaseLayer = new HashSet<BlockPos>();
-		Set<Set<BlockPos>> mAllLayers = new HashSet<Set<BlockPos>>();
-		Set<BlockPos> mFinalSet = new HashSet<BlockPos>();
-
-		mBaseLayer = findTreeViaBranching(world, h);		
-		mAllLayers.add(mBaseLayer);		
-		Logger.INFO("Initial Search found "+mBaseLayer.size()+" blocks to search around.");
-		for (Iterator<BlockPos> flavoursIter = mBaseLayer.iterator(); flavoursIter.hasNext();){
-			Set<BlockPos> x = findTreeViaBranching(world, flavoursIter.next());
-			if (!mAllLayers.contains(x)) {
-				Logger.INFO("Branching.");
-				mAllLayers.add(x);		
 			}			
-		}*/
-
-
-		/*if (mAllLayers.size() > 0) {
-			for (Iterator<Set<BlockPos>> flavoursIter = mAllLayers.iterator(); flavoursIter.hasNext();){
-				for (Iterator<BlockPos> flavoursIter2 = flavoursIter.next().iterator(); flavoursIter2.hasNext();){
-					Set<BlockPos> x = findTreeViaBranching(world, flavoursIter2.next());
-					for (Iterator<BlockPos> flavoursIter3 = x.iterator(); flavoursIter3.hasNext();){
-						if (!mFinalSet.contains(flavoursIter3.next())) {
-							Logger.INFO("Branching II.");
-							mFinalSet.add(flavoursIter3.next());		
-						}
-					}					
-				}
+			if (mCount > HARD_LIMIT) {
+				break;
 			}
-		}*/
-
-
-		if (mAllSearched.size() > 0) {
-			Logger.INFO("Queuing "+mAllSearched.size()+" to Harvest Manager.");
+		}
+		
+		
+		if (mFinalTree.size() > 0) {
+			Logger.INFO("Queuing "+mFinalTree.size()+" to Harvest Manager.");
 			TreeCutter harvestManager = new TreeCutter(world);
-			for (Iterator<BlockPos> flavoursIter = mAllSearched.iterator(); flavoursIter.hasNext();){
-				harvestManager.queue(flavoursIter.next());
-			}
+			
+			Iterator<BlockPos> ith = mFinalTree.iterator();
+			while(ith.hasNext()){
+				BlockPos G = ith.next();
+				harvestManager.queue(G);
+				mCount++;
+				Logger.INFO("Queued: "+G.getLocationString());				
+				if (mCount > HARD_LIMIT) {
+					break;
+				}
+			}		
+			
 			if (harvestManager.isValid) {
 				ItemStack[] loot = harvestManager.getDrops();
 				if (loot.length > 0) {
@@ -583,50 +505,162 @@ public class TreeFarmHelper {
 		return new ItemStack[] {};
 	}
 
-	public static Set<BlockPos> findTreeViaBranching(World world, BlockPos h) {	
 
-		Set<BlockPos> results = new HashSet<BlockPos>();
+	public static Set<BlockPos> getConnectedBlocks(World W, BlockPos P, Set<BlockPos> checkedSpaces) {
+		int HARD_LIMIT = 1000;
+		int mCount = 0;	
+		Logger.INFO("Finding blocks connected to "+P.getLocationString()+".");
+		Set<BlockPos> mCheckedSpaces = checkedSpaces;
+		Set<BlockPos> mStartSearch = searchSixFaces(W, P, mCheckedSpaces, false);
+		Set<BlockPos> mSecondSearch = new HashSet<BlockPos>();	
+		Set<BlockPos> mThirdSearch = new HashSet<BlockPos>();
+		Iterator<BlockPos> it = mStartSearch.iterator();
+		while(it.hasNext()){
+			Logger.INFO("Running first iteration. [II]");
+			BlockPos G = it.next();
+			mCheckedSpaces.add(G);
+			Set<BlockPos> mBranchSearch = searchSixFaces(W, G, mCheckedSpaces, true);
+			Iterator<BlockPos> it2 = mBranchSearch.iterator();
+			while(it2.hasNext()){
+				Logger.INFO("Running second iteration. [II]");
+				BlockPos G2 = it2.next();
+				mCheckedSpaces.add(G2);
+				mSecondSearch.add(G2);
+				mCount++;			
+				if (mCount > HARD_LIMIT) {
+					break;
+				}
+			}			
+			if (mCount > HARD_LIMIT) {
+				break;
+			}
+		}
+		mCount = 0;	
+		Iterator<BlockPos> itx = mSecondSearch.iterator();
+		while(itx.hasNext()){
+			BlockPos G = itx.next();
+			mCheckedSpaces.add(G);
+			Set<BlockPos> mBranchSearch = searchSixFaces(W, G, mCheckedSpaces, true);
+			Iterator<BlockPos> it2 = mBranchSearch.iterator();
+			while(it2.hasNext()){
+				BlockPos G2 = it2.next();
+				mCheckedSpaces.add(G2);
+				mThirdSearch.add(G2);
+				mCount++;			
+				if (mCount > HARD_LIMIT) {
+					break;
+				}
+			}			
+			if (mCount > HARD_LIMIT) {
+				break;
+			}			
+		}
+		return mThirdSearch;
+	}
 
-		//Map<String, BlockPos> results = new ConcurrentHashMap<String, BlockPos>();
-		final Block block = world.getBlock(h.xPos, h.yPos, h.zPos);
-
-		Logger.INFO("--------------------------" + "Searching around "+h.getLocationString() + "--------------------------");
-		int xRel = h.xPos, yRel = h.yPos, zRel = h.zPos;		
-		//if (TreeFarmHelper.isWoodLog(block)) {			
-		for (int a=-4;a<5;a++) {
-			for (int b=-4;b<5;b++) {
-				for (int c=-4;c<5;c++) {						
-					//Check block
-					Logger.INFO("Looking at X: "+(xRel+a)+" | Y: "+(yRel+b)+" | Z: "+(zRel+c));
-					Block log = world.getBlock(xRel+a, yRel+b, zRel+c);					
-					BlockPos P = new BlockPos(xRel+a, yRel+b, zRel+c); 
-					if ((!isFenceBlock(log)) && (isWoodLog(log) || isLeaves(log))) {	
-						Logger.INFO("Was Logs/leaves. "+P.getLocationString());
-						if (!results.contains(P)) {	
-							Logger.INFO("Caching result.");
-							results.add(P);
-						}
-						else {
-							if (P != null && results.contains(P)) {
-								Logger.INFO("Results were already cached.");									
-							}
-						}
-					}
+	public static Set<BlockPos> searchSixFaces(World W, BlockPos P, Set<BlockPos> checkedSpaces, boolean checkLeaves) {
+		Set<BlockPos> mConnected = new HashSet<BlockPos>();	
+		int x = P.xPos;
+		int y = P.yPos;
+		int z = P.zPos;
+		if (checkLeaves) {
+			if (isWoodLog(W.getBlock(x-1, y, z)) || isLeaves(W.getBlock(x-1, y, z))) {
+				BlockPos L = new BlockPos(x-1, y, z);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				}
+			}
+			if (isWoodLog(W.getBlock(x+1, y, z)) || isLeaves(W.getBlock(x+1, y, z))) {
+				BlockPos L = new BlockPos(x+1, y, z);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				}
+			}
+			if (isWoodLog(W.getBlock(x, y-1, z)) || isLeaves(W.getBlock(x, y-1, z))) {
+				BlockPos L = new BlockPos(x, y-1, z);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				}
+			}
+			if (isWoodLog(W.getBlock(x, y+1, z)) || isLeaves(W.getBlock(x, y+1, z))) {
+				BlockPos L = new BlockPos(x, y+1, z);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				}
+			}
+			if (isWoodLog(W.getBlock(x, y, z-1)) || isLeaves(W.getBlock(x, y, z-1))) {
+				BlockPos L = new BlockPos(x, y, z-1);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				}
+			}
+			if (isWoodLog(W.getBlock(x, y, z+1)) || isLeaves(W.getBlock(x, y, z+1))) {
+				BlockPos L = new BlockPos(x, y, z+1);
+				if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
 				}
 			}
 		}
-
-		Logger.INFO("----------------------------------------------------------");
-
-		//}
-		if (results.isEmpty()) {
-			Logger.INFO("Returning Empty Branch Iteration.");	
-			return new HashSet<BlockPos>();
-		}
 		else {
-			Logger.INFO("Returning Valid Branch Iteration. "+results.size());
-			return results;
-		}
+			if (isWoodLog(W.getBlock(x-1, y, z))) {
+				BlockPos L = new BlockPos(x-1, y, z);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+			if (isWoodLog(W.getBlock(x+1, y, z))) {
+				BlockPos L = new BlockPos(x+1, y, z);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+			if (isWoodLog(W.getBlock(x, y-1, z))) {
+				BlockPos L = new BlockPos(x, y-1, z);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+			if (isWoodLog(W.getBlock(x, y+1, z))) {
+				BlockPos L = new BlockPos(x, y+1, z);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+			if (isWoodLog(W.getBlock(x, y, z-1))) {
+				BlockPos L = new BlockPos(x, y, z-1);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+			if (isWoodLog(W.getBlock(x, y, z+1))) {
+				BlockPos L = new BlockPos(x, y, z+1);
+				//if (!checkedSpaces.contains(L)) {
+					mConnected.add(L);
+					Logger.INFO("Found Connected. [III]");
+				//}
+			}
+		}		
+		return mConnected;
+	}
+
+	public static <T> Set<T> combineSetData(Set<T> S, Set<T> J) {
+		Set<T> mData = new HashSet<T>();
+		T[] array1 = (T[]) S.toArray();		
+		Collections.addAll(mData, array1);
+		T[] array2 = (T[]) J.toArray();		
+		Collections.addAll(mData, array2);		
+		return mData;
 	}
 
 
@@ -734,22 +768,22 @@ public class TreeFarmHelper {
 		}
 		return farmerAI;		
 	}
-	
+
 	public static boolean onBlockStartBreak (int x, int y, int z, World world){       
-        final Block wood = world.getBlock(x, y, z);
-        if (wood == null){
-        	return false;
-        }
-        if (wood.isWood(world, x, y, z) || wood.getMaterial() == Material.sponge)
-            if(detectTree(world, x,y,z)) {
-                TreeChopTask chopper = new TreeChopTask(new ChunkPosition(x, y, z), checkFakePlayer(world), 128);
-                FMLCommonHandler.instance().bus().register(chopper);
-                // custom block breaking code, don't call vanilla code
-                return true;
-            }
-        //return onBlockStartBreak(stack, x, y, z, player);
-        return false;
-    }
+		final Block wood = world.getBlock(x, y, z);
+		if (wood == null){
+			return false;
+		}
+		if (wood.isWood(world, x, y, z) || wood.getMaterial() == Material.sponge)
+			if(detectTree(world, x,y,z)) {
+				TreeChopTask chopper = new TreeChopTask(new ChunkPosition(x, y, z), checkFakePlayer(world), 128);
+				FMLCommonHandler.instance().bus().register(chopper);
+				// custom block breaking code, don't call vanilla code
+				return true;
+			}
+		//return onBlockStartBreak(stack, x, y, z, player);
+		return false;
+	}
 
 	public static boolean detectTree(World world, int pX, int pY, int pZ) {
 		ChunkPosition pos = null;
@@ -803,14 +837,14 @@ public class TreeFarmHelper {
 		return false;
 	}
 
-    public static class TreeChopTask {
+	public static class TreeChopTask {
 
-        public final World world;
-        public final EntityPlayer player;
-        public final int blocksPerTick;
+		public final World world;
+		public final EntityPlayer player;
+		public final int blocksPerTick;
 
-        public Queue<ChunkPosition> blocks = Lists.newLinkedList();
-        public Set<ChunkPosition> visited = new THashSet<>();
+		public Queue<ChunkPosition> blocks = Lists.newLinkedList();
+		public Set<ChunkPosition> visited = new THashSet<>();
 
 		public TreeChopTask(ChunkPosition start, EntityPlayer player, int blocksPerTick) {
 			this.world = player.getEntityWorld();
@@ -888,103 +922,101 @@ public class TreeFarmHelper {
 			// goodbye cruel world
 			FMLCommonHandler.instance().bus().unregister(this);
 		}
-}
+	}
 
 
-    public static void breakExtraBlock(World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
-        // prevent calling that stuff for air blocks, could lead to unexpected behaviour since it fires events
-        if (world.isAirBlock(x, y, z))
-            return;
+	public static void breakExtraBlock(World world, int x, int y, int z, int sidehit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+		// prevent calling that stuff for air blocks, could lead to unexpected behaviour since it fires events
+		if (world.isAirBlock(x, y, z))
+			return;
 
-        // what?
-        if(!(playerEntity instanceof EntityPlayerMP))
-            return;
-        EntityPlayerMP player = (EntityPlayerMP) playerEntity;
+		// what?
+		if(!(playerEntity instanceof EntityPlayerMP))
+			return;
+		EntityPlayerMP player = (EntityPlayerMP) playerEntity;
 
-        // check if the block can be broken, since extra block breaks shouldn't instantly break stuff like obsidian
-        // or precious ores you can't harvest while mining stone
-        Block block = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
+		// check if the block can be broken, since extra block breaks shouldn't instantly break stuff like obsidian
+		// or precious ores you can't harvest while mining stone
+		Block block = world.getBlock(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
 
-        // only effective materials
-        if (!isWoodLog(block))
-            return;
+		// only effective materials
+		if (!isWoodLog(block))
+			return;
 
-        Block refBlock = world.getBlock(refX, refY, refZ);
-        float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
-        float strength = ForgeHooks.blockStrength(block, player, world, x,y,z);
+		Block refBlock = world.getBlock(refX, refY, refZ);
+		float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
+		float strength = ForgeHooks.blockStrength(block, player, world, x,y,z);
 
-        // only harvestable blocks that aren't impossibly slow to harvest
-        if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength/strength > 10f)
-            return;
+		// only harvestable blocks that aren't impossibly slow to harvest
+		if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength/strength > 10f)
+			return;
 
-        // send the blockbreak event
-        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x,y,z);
-        if(event.isCanceled())
-            return;
+		// send the blockbreak event
+		BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x,y,z);
+		if(event.isCanceled())
+			return;
 
-        if (player.capabilities.isCreativeMode) {
-            block.onBlockHarvested(world, x, y, z, meta, player);
-            if (block.removedByPlayer(world, player, x, y, z, false))
-                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+		if (player.capabilities.isCreativeMode) {
+			block.onBlockHarvested(world, x, y, z, meta, player);
+			if (block.removedByPlayer(world, player, x, y, z, false))
+				block.onBlockDestroyedByPlayer(world, x, y, z, meta);
 
-            // send update to client
-            if (!world.isRemote) {
-                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
-            }
-            return;
-        }
+			// send update to client
+			if (!world.isRemote) {
+				player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+			}
+			return;
+		}
 
-        // callback to the tool the player uses. Called on both sides. This damages the tool n stuff.
-        player.getCurrentEquippedItem().func_150999_a(world, block, x, y, z, player);
+		// callback to the tool the player uses. Called on both sides. This damages the tool n stuff.
+		player.getCurrentEquippedItem().func_150999_a(world, block, x, y, z, player);
 
-        // server sided handling
-        if (!world.isRemote) {
-            // serverside we reproduce ItemInWorldManager.tryHarvestBlock
+		// server sided handling
+		if (!world.isRemote) {
+			// serverside we reproduce ItemInWorldManager.tryHarvestBlock
 
-            // ItemInWorldManager.removeBlock
-            block.onBlockHarvested(world, x,y,z, meta, player);
+			// ItemInWorldManager.removeBlock
+			block.onBlockHarvested(world, x,y,z, meta, player);
 
-            if(block.removedByPlayer(world, player, x,y,z, true)) // boolean is if block can be harvested, checked above
-            {
-                block.onBlockDestroyedByPlayer( world, x,y,z, meta);
-                block.harvestBlock(world, player, x,y,z, meta);
-                block.dropXpOnBlockBreak(world, x,y,z, event.getExpToDrop());
-            }
+			if(block.removedByPlayer(world, player, x,y,z, true)) // boolean is if block can be harvested, checked above
+			{
+				block.onBlockDestroyedByPlayer( world, x,y,z, meta);
+				block.harvestBlock(world, player, x,y,z, meta);
+				block.dropXpOnBlockBreak(world, x,y,z, event.getExpToDrop());
+			}
 
-            // always send block update to client
-            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
-        }
-        // client sided handling
-        else {
-            //PlayerControllerMP pcmp = Minecraft.getMinecraft().playerController;
-            // clientside we do a "this clock has been clicked on long enough to be broken" call. This should not send any new packets
-            // the code above, executed on the server, sends a block-updates that give us the correct state of the block we destroy.
+			// always send block update to client
+			player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+		}
+		// client sided handling
+		else {
+			//PlayerControllerMP pcmp = Minecraft.getMinecraft().playerController;
+			// clientside we do a "this clock has been clicked on long enough to be broken" call. This should not send any new packets
+			// the code above, executed on the server, sends a block-updates that give us the correct state of the block we destroy.
 
-            // following code can be found in PlayerControllerMP.onPlayerDestroyBlock
-            world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
-            if(block.removedByPlayer(world, player, x,y,z, true))
-            {
-                block.onBlockDestroyedByPlayer(world, x,y,z, meta);
-            }
-            // callback to the tool
-            ItemStack itemstack = player.getCurrentEquippedItem();
-            if (itemstack != null)
-            {
-                itemstack.func_150999_a(world, block, x, y, z, player);
+			// following code can be found in PlayerControllerMP.onPlayerDestroyBlock
+			world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
+			if(block.removedByPlayer(world, player, x,y,z, true))
+			{
+				block.onBlockDestroyedByPlayer(world, x,y,z, meta);
+			}
+			// callback to the tool
+			ItemStack itemstack = player.getCurrentEquippedItem();
+			if (itemstack != null)
+			{
+				itemstack.func_150999_a(world, block, x, y, z, player);
 
-                if (itemstack.stackSize == 0)
-                {
-                    player.destroyCurrentEquippedItem();
-                }
-            }
+				if (itemstack.stackSize == 0)
+				{
+					player.destroyCurrentEquippedItem();
+				}
+			}
 
-            // send an update to the server, so we get an update back
-            //if(PHConstruct.extraBlockUpdates)
-                //Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, x,y,z, Minecraft.getMinecraft().objectMouseOver.sideHit));
-        }
-    }
-
-
+			// send an update to the server, so we get an update back
+			//if(PHConstruct.extraBlockUpdates)
+			//Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, x,y,z, Minecraft.getMinecraft().objectMouseOver.sideHit));
+		}
+	}
 
 }

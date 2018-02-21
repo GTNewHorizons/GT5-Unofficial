@@ -6,10 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.GregTech_API;
-import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
-import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.random.CSPRNG_DO_NOT_USE;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.core.util.networking.NetworkUtils;

@@ -7,13 +7,13 @@ import java.util.Map.Entry;
 
 import gregtech.api.enums.*;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.ArrayUtils;
-import gtPlusPlus.core.util.array.AutoMap;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;

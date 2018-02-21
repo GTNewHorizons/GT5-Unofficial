@@ -1,4 +1,4 @@
-package gtPlusPlus.api.analytics;
+package gtPlusPlus.core.handler.analytics;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

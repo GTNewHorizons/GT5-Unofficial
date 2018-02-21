@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Random;
 
 import gregtech.api.enums.GT_Values;
-import gtPlusPlus.api.objects.CSPRNG_DO_NOT_USE;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.CSPRNG_DO_NOT_USE;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 

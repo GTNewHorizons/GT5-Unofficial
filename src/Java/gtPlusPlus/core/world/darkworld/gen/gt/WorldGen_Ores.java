@@ -4,12 +4,12 @@ import java.util.Hashtable;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.api.objects.MaterialHelper;
+import gtPlusPlus.api.helpers.MaterialHelper;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.world.darkworld.object.BoxedQuad;
 import net.minecraft.block.Block;

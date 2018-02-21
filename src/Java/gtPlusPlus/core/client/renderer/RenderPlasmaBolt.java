@@ -3,7 +3,7 @@ package gtPlusPlus.core.client.renderer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 
 import java.util.Random;

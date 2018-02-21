@@ -6,14 +6,14 @@
  * permission unless otherwise specified on the
  * license page at http://railcraft.info/wiki/info:license.
  */
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.objects.minecraft;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.util.array.BlockPos;
-import gtPlusPlus.core.util.array.Triplet;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 
 import java.util.HashSet;

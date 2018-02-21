@@ -19,10 +19,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

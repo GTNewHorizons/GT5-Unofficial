@@ -2,7 +2,7 @@ package gtPlusPlus.plugin.manager;
 
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.array.AutoMap;
+import gtPlusPlus.api.objects.data.AutoMap;
 
 public class Core_Manager {
 

@@ -1,6 +1,6 @@
 package gtPlusPlus;
 
-import static gtPlusPlus.api.objects.ChunkManager.mChunkLoaderManagerMap;
+import static gtPlusPlus.api.objects.minecraft.ChunkManager.mChunkLoaderManagerMap;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
@@ -20,23 +20,23 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.analytics.SegmentAnalytics;
-import gtPlusPlus.api.analytics.SegmentHelper;
-import gtPlusPlus.api.objects.ChunkManager;
-import gtPlusPlus.api.objects.DimChunkPos;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.api.objects.minecraft.ChunkManager;
+import gtPlusPlus.api.objects.minecraft.DimChunkPos;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
+import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
+import gtPlusPlus.core.handler.analytics.SegmentHelper;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.Triplet;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.networking.NetworkUtils;

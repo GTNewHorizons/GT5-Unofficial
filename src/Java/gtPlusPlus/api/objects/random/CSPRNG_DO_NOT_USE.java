@@ -33,7 +33,7 @@
  * http://www.opensource.org/licenses/bsd-license.php
  */
 
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.objects.random;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;

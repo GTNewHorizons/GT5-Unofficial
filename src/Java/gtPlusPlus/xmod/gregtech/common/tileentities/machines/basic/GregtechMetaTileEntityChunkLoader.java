@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.api.objects.ChunkManager.mChunkLoaderManagerMap;
+import static gtPlusPlus.api.objects.minecraft.ChunkManager.mChunkLoaderManagerMap;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -17,11 +18,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.IChunkLoader;
-import gtPlusPlus.api.objects.ChunkManager;
-import gtPlusPlus.api.objects.DimChunkPos;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.array.BlockPos;
-import gtPlusPlus.core.util.array.Triplet;
+import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.api.objects.minecraft.ChunkManager;
+import gtPlusPlus.api.objects.minecraft.DimChunkPos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

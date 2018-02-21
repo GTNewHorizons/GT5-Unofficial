@@ -6,7 +6,7 @@ import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Log;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;

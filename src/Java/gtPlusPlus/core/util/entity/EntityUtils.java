@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.util.array.BlockPos;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;

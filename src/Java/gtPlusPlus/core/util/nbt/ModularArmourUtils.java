@@ -3,7 +3,7 @@ package gtPlusPlus.core.util.nbt;
 import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.api.objects.data.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

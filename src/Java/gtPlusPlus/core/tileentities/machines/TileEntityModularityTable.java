@@ -5,12 +5,12 @@ import java.util.Map.Entry;
 
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.container.Container_ModularityTable;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;

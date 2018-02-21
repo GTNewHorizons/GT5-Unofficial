@@ -2,7 +2,7 @@ package gtPlusPlus.core.world.explosions;
 
 import java.util.*;
 
-import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;

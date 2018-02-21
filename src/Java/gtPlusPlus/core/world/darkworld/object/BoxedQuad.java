@@ -1,6 +1,6 @@
 package gtPlusPlus.core.world.darkworld.object;
 
-import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.api.objects.data.Pair;
 import net.minecraft.block.Block;
 
 public class BoxedQuad<K,V,C,R> {

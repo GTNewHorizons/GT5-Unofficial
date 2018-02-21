@@ -15,7 +15,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.XSTR;
+import gtPlusPlus.api.objects.random.XSTR;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

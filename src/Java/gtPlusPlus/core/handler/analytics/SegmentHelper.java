@@ -1,4 +1,4 @@
-package gtPlusPlus.api.analytics;
+package gtPlusPlus.core.handler.analytics;
 
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Callback;

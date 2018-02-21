@@ -1,4 +1,4 @@
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.objects.minecraft;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;

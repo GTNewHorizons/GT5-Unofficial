@@ -1,4 +1,4 @@
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.objects.random;
 /**
  * A subclass of java.util.random that implements the Xorshift random number
  * generator

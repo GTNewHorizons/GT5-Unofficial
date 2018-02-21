@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import net.minecraft.inventory.IInventory;

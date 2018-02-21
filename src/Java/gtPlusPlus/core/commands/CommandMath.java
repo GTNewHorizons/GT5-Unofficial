@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
@@ -21,61 +24,82 @@ public class CommandMath implements ICommand
 	protected String fullEntityName;
 	protected Entity conjuredEntity;
 
-	public CommandMath()
-	{
+	public CommandMath(){
 		this.aliases = new ArrayList<>();
-
-		this.aliases.add("hometele");
-
-		this.aliases.add("warphome");
-
+		//this.aliases.add("hometele");
+		//this.aliases.add("warphome");
 	}
 
 	@Override
-	public int compareTo(final Object o)
-	{
+	public int compareTo(final Object o){
 		return 0;
 
 	}
 
 	@Override
-	public String getCommandName()
-	{
-		return "bed";
+	public String getCommandName(){
+		return "alkalus";
 
 	}
 
 	@Override
-	public String getCommandUsage(final ICommandSender var1)
-	{
-		return "/bed [Teleports you to your bed for XP]";
+	public String getCommandUsage(final ICommandSender var1){
+		return "/alkalus [Dev Command]";
 
 	}
 
 	@Override
-	public List<String> getCommandAliases()
-	{
+	public List<String> getCommandAliases(){
 		return this.aliases;
 
 	}
 
 	@Override
-	public void processCommand(final ICommandSender S, final String[] argString)
-	{
+	public void processCommand(final ICommandSender S, final String[] argString){
 		final World W = S.getEntityWorld();
-		final CommandUtils C = new CommandUtils();
-		final EntityPlayer P = C.getPlayer(S);
-		//System.out.println(P.getCommandSenderName());
-		//System.out.println(P.getDisplayName());
-		if (W.isRemote)
-
-		{
-
-			System.out.println("Not processing on Client side");
-
+		final EntityPlayer P = CommandUtils.getPlayer(S);
+		if (!W.isRemote){
+			if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {				
+				String[] prefixes = new String[] {
+						"ingot",
+						"plate",
+						"dust",
+						"gearGt",
+						"block",
+						"ore"
+				};
+				String[] loots = new String[] {
+						"Iron",
+						"Iron",
+						"Iron",
+						"Copper",
+						"Copper",
+						"Copper",
+						"Tin",
+						"Mica",
+						"Steel",
+						"Steel",
+						"Steel",
+						"Invar",
+						"Titanium",
+						"Gold",
+						"Silver",
+						"Lead",
+						"Aluminium"
+				};			
+				AutoMap<EntityItem> itemEntities = new AutoMap<EntityItem>();			
+				for (String g : prefixes) {
+					for (String s : loots) {
+						itemEntities.put(new EntityItem(W, P.posX, P.posY, P.posZ, ItemUtils.getItemStackOfAmountFromOreDictNoBroken(g+s, 64)));
+					}}
+				for (EntityItem e : itemEntities.values()) {
+					e.lifespan = 30000;
+				}
+						   
+			}
 		}
 
-		else
+		/*else
 
 		{
 
@@ -167,36 +191,30 @@ public class CommandMath implements ICommand
 				gregtech.api.util.GT_Utility.sendChatToPlayer(P, "You don't feel you're able to do this yet.");
 			}
 
+		}*/
+	}
+
+	@Override
+	public boolean canCommandSenderUseCommand(final ICommandSender var1){
+		final EntityPlayer P = CommandUtils.getPlayer(var1);
+		if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {
+			return true;
 		}
-	}
-
-	@Override
-	public boolean canCommandSenderUseCommand(final ICommandSender var1)
-	{
-		return true;
-
-	}
-
-	@Override
-	public List<?> addTabCompletionOptions(final ICommandSender var1, final String[] var2)
-	{
-		// TODO Auto-generated method stub
-
-		return null;
-
-	}
-
-	@Override
-	public boolean isUsernameIndex(final String[] var1, final int var2)
-	{
-		// TODO Auto-generated method stub
-
 		return false;
-
 	}
 
-	public boolean playerUsesCommand(final World W, final EntityPlayer P, final int cost)
-	{
+	@Override
+	public List<?> addTabCompletionOptions(final ICommandSender var1, final String[] var2){
+		return null;
+	}
+
+	@Override
+	public boolean isUsernameIndex(final String[] var1, final int var2){
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean playerUsesCommand(final World W, final EntityPlayer P, final int cost){
 
 
 		return true;

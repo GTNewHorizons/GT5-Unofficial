@@ -1,4 +1,4 @@
-package gtPlusPlus.api.damage;
+package gtPlusPlus.core.world.damage;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EntityDamageSourceIndirect;

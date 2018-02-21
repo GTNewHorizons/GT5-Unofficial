@@ -1,4 +1,4 @@
-package gtPlusPlus.core.util.array;
+package gtPlusPlus.api.objects.data;
 
 public class Quad<K,V,C,R> {
 

@@ -4,9 +4,9 @@ import java.util.*;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-import gtPlusPlus.api.analytics.SegmentAnalytics;
-import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
+import gtPlusPlus.core.handler.analytics.SegmentHelper;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.proxy.ClientProxy;

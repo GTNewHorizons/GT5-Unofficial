@@ -3,11 +3,11 @@ package gtPlusPlus.core.item.general;
 import java.util.List;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;

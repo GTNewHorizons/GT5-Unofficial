@@ -1,6 +1,6 @@
 package gtPlusPlus.api.interfaces;
 
-import gtPlusPlus.core.util.array.BlockPos;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

@@ -1,6 +1,5 @@
-package gtPlusPlus.api.objects;
+package gtPlusPlus.api.objects.minecraft;
 
-import gtPlusPlus.core.util.array.BlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
