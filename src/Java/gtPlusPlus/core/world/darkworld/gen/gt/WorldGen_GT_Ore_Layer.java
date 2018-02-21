@@ -2,6 +2,7 @@ package gtPlusPlus.core.world.darkworld.gen.gt;
 
 import static gtPlusPlus.core.world.darkworld.gen.gt.WorldGen_GT_Base.debugWorldGen;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import net.minecraft.block.Block;
@@ -44,6 +46,8 @@ extends WorldGen_GT {
 	public final Material mBetween;
 	public final Material mSporadic;
 
+	public static boolean mUpdated = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK;
+	public static final Block mStoneTypes;
 
 	//public final String mBiome;
 	public final String mRestrictBiome;
@@ -61,6 +65,22 @@ extends WorldGen_GT {
 	//public final boolean mMars;
 	//public final boolean mAsteroid;
 	public final String aTextWorldgen = "worldgen.";
+	
+	static {		
+		if (mUpdated) {
+			Object tempBlock = null;
+			try {
+				Field temp = ReflectionUtils.getField(GregTech_API.class, "sBlockStones");
+				tempBlock = temp.get(null);				
+			}
+			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {}
+			mStoneTypes = (Block) tempBlock;	
+		}
+		else {
+			mStoneTypes = null;			
+		}						
+	}
+	
 
 	public WorldGen_GT_Ore_Layer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,  Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
 		this(aName, true, aMinY, aMaxY, aWeight, aDensity, aSize, false, false, false, false, false, false, aPrimary, aSecondary, aBetween, aSporadic);   
@@ -169,7 +189,7 @@ extends WorldGen_GT {
 					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.netherrack) ||
 					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.end_stone) ||
 					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites) ||
-					tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones) ) {
+					(mUpdated && tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, mStoneTypes)) ) {
 				// Didn't reach, but could have placed. Save orevein for future use.
 				return NO_OVERLAP;
 			} else {
@@ -189,7 +209,7 @@ extends WorldGen_GT {
 			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.netherrack) ||
 			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, Blocks.end_stone) ||
 			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockGranites) ||
-			                tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, GregTech_API.sBlockStones) ) {
+			                (mUpdated && tBlock.isReplaceableOreGen(aWorld, aChunkX+8, tMinY, aChunkZ + 8, mStoneTypes)) ) {
 			                // Didn't reach, but could have placed. Save orevein for future use.
 			                return NO_OVERLAP;
 			            } else {
@@ -437,7 +457,7 @@ extends WorldGen_GT {
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sand) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites) ||
-				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones) ||
+				(mUpdated && tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, mStoneTypes)) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondLayer) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockMainFiller) ||
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Dimension_DarkWorld.blockSecondaryFiller) ||

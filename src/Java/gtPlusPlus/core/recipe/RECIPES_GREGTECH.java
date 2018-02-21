@@ -73,7 +73,7 @@ public class RECIPES_GREGTECH {
 				ItemList.Shape_Mold_Credit.get(0),
 				ItemList.Credit_Greg_Osmium.get(0),
 				(int) Math.max(Materials.Osmium.getMass() * 2L * 1, 1),
-				4 * Materials.Osmium.mDensityMultiplier)){
+				(int) (4 * Materials.Osmium.mDensity))){
 			Logger.WARNING("Extruder Recipe: Osmium Credit - Success");
 		}
 		else {
