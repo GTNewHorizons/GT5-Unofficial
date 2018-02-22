@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.UtilsMining;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -101,7 +101,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		if (!currentWorld.isRemote){
 			try {
 				correctTool = currentBlock.getHarvestTool(0);
-				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("pickaxe") || correctTool.equals("null")){
+				if (MiningUtils.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("pickaxe") || correctTool.equals("null")){
 					//Utils.LOG_WARNING(correctTool);
 					return true;}
 			} catch (final NullPointerException e){

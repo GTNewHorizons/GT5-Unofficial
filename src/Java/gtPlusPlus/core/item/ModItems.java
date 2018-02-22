@@ -50,6 +50,7 @@ import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
+import gtPlusPlus.core.item.tool.misc.ConnectedBlockFinder;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
@@ -699,6 +700,8 @@ public final class ModItems {
 
 		//Chemistry
 		CoalTar.run();
+		
+		new ConnectedBlockFinder();
 
 		//Misc Items
 		@SuppressWarnings("unused")

@@ -2,6 +2,8 @@ package gtPlusPlus.api.objects.minecraft;
 
 import java.io.Serializable;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+
 public class BlockPos implements Serializable{
 
 	private static final long serialVersionUID = -7271947491316682006L;
@@ -82,4 +84,40 @@ public class BlockPos implements Serializable{
 		return distanceFrom(x, y, z) <= (range * range);
 	}
 
+	
+	public BlockPos getUp() {
+		return new BlockPos(this.xPos, this.yPos+1, this.zPos, this.dim);
+	}
+	
+	public BlockPos getDown() {
+		return new BlockPos(this.xPos, this.yPos-1, this.zPos, this.dim);
+	}	
+
+	public BlockPos getXPos() {
+		return new BlockPos(this.xPos+1, this.yPos, this.zPos, this.dim);
+	}
+	
+	public BlockPos getXNeg() {
+		return new BlockPos(this.xPos-1, this.yPos, this.zPos, this.dim);
+	}
+	
+	public BlockPos getZPos() {
+		return new BlockPos(this.xPos, this.yPos, this.zPos+1, this.dim);
+	}
+
+	public BlockPos getZNeg() {
+		return new BlockPos(this.xPos, this.yPos, this.zPos-1, this.dim);
+	}
+	
+	public AutoMap<BlockPos> getSurroundingBlocks(){
+		AutoMap<BlockPos> sides = new AutoMap<BlockPos>();
+		sides.put(getUp());
+		sides.put(getDown());
+		sides.put(getXPos());
+		sides.put(getXNeg());
+		sides.put(getZPos());
+		sides.put(getZNeg());		
+		return sides;
+	}
+	
 }

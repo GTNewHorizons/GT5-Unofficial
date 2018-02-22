@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.UtilsMining;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,7 +76,7 @@ public class StaballoySpade extends ItemSpade{
 				//Utils.LOG_WARNING(correctTool);
 
 				Logger.WARNING("Tool for Block: "+correctTool+" | Current block: "+currentBlock.getLocalizedName());
-				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("shovel")){
+				if (MiningUtils.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("shovel")){
 					return true;}
 			} catch (final NullPointerException e){
 				return false;}

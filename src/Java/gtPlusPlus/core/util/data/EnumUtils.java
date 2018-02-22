@@ -3,6 +3,8 @@ package gtPlusPlus.core.util.data;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 
+import gregtech.api.enums.Materials;
+
 public class EnumUtils {
 
 	/** 
@@ -35,6 +37,13 @@ public class EnumUtils {
 	        "There is no value with name '%s' in Enum %s",
 	        name, enumeration.getName()
 	    ));
+	}
+
+	public static Object getValue(Class class1, String materialName, boolean bool) {
+		if (Enum.class.isInstance(class1)){
+			return getValue(class1, materialName);
+		}
+		return null;		
 	}
 	
 	

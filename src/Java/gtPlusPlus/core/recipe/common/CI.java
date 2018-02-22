@@ -20,7 +20,7 @@ public class CI {
 
 	//null
 	public static ItemStack _NULL = ItemUtils.getSimpleStack(ModItems.AAA_Broken);
-	
+
 	//bits
 	public static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
 			| GT_ModHandler.RecipeBits.BUFFERED;
@@ -154,7 +154,7 @@ public class CI {
 	public static String[] component_Plate;
 	public static String[] component_Rod;
 	public static String[] component_Ingot;
-	
+
 	//Crafting Tools
 	public static String craftingToolWrench = "craftingToolWrench";
 	public static String craftingToolHammer_Hard = "craftingToolHardHammer";
@@ -165,7 +165,7 @@ public class CI {
 	public static String craftingToolCrowbar = "craftingToolCrowbar";
 	public static String craftingToolWireCutter = "craftingToolWirecutter";
 	public static String craftingToolSolderingIron = "craftingToolSolderingIron";
-	
+
 	//Explosives
 	public static ItemStack explosivePowderKeg;
 	public static ItemStack explosiveTNT;
@@ -228,7 +228,7 @@ public class CI {
 		circuitTier7 = getTieredCircuit(7);
 		circuitTier8 = getTieredCircuit(8);
 		circuitTier9 = getTieredCircuit(9);
-		
+
 	}	
 
 	public static Object getTieredCircuit(int tier){
@@ -272,11 +272,11 @@ public class CI {
 		}
 		return _NULL;
 	}
-	
+
 	public static ItemStack[] getAllCircuitsOfTier(int tier){		
 		return ItemUtils.getStackOfAllOreDictGroup(getTieredCircuitOreDictName(tier));
 	}
-	
+
 	public static String getTieredCircuitOreDictName(int tier){
 		if (tier == 0){
 			return "circuitPrimitive";
@@ -389,7 +389,7 @@ public class CI {
 			return ItemList.Tool_DataOrb.get(1);				
 		}
 	}
-	
+
 	public static final ItemStack getTieredMachineHull(int tier){
 		if (tier == 0){
 			return machineHull_ULV;
@@ -422,7 +422,7 @@ public class CI {
 			return machineHull_MAX;			
 		}
 	}
-	
+
 	public static final ItemStack getTieredMachineCasing(int tier){
 		if (tier == 0){
 			return machineCasing_ULV;
@@ -455,50 +455,51 @@ public class CI {
 			return machineCasing_MAX;			
 		}
 	}
-	
+
 	public static void init() {		
 		//Set Explosives
-		if (ItemList.valueOf("Block_Powderbarrel") != null){
-			explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1);
+		try {
+			if (ItemList.valueOf("Block_Powderbarrel") != null){
+				explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1).copy();
+			}
+		} catch (java.lang.IllegalArgumentException Y) {
+			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
 		}
-		else {
-			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder);
-		}
-		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt);
+		explosiveTNT = ItemUtils.getSimpleStack(Blocks.tnt).copy();
 		explosiveITNT = Ic2Items.industrialTnt.copy();
-		
+
 		//Machine Casings
-				machineCasing_ULV = ItemList.Casing_ULV.get(1);
-				machineCasing_LV = ItemList.Casing_LV.get(1);
-				machineCasing_MV = ItemList.Casing_MV.get(1);
-				machineCasing_HV = ItemList.Casing_HV.get(1);
-				machineCasing_EV = ItemList.Casing_EV.get(1);
-				machineCasing_IV = ItemList.Casing_IV.get(1);
-				machineCasing_LuV = ItemList.Casing_LuV.get(1);
-				machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
-				machineCasing_UV = ItemList.Casing_UV.get(1);
-				machineCasing_MAX = ItemList.Casing_MAX.get(1);
+		machineCasing_ULV = ItemList.Casing_ULV.get(1);
+		machineCasing_LV = ItemList.Casing_LV.get(1);
+		machineCasing_MV = ItemList.Casing_MV.get(1);
+		machineCasing_HV = ItemList.Casing_HV.get(1);
+		machineCasing_EV = ItemList.Casing_EV.get(1);
+		machineCasing_IV = ItemList.Casing_IV.get(1);
+		machineCasing_LuV = ItemList.Casing_LuV.get(1);
+		machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
+		machineCasing_UV = ItemList.Casing_UV.get(1);
+		machineCasing_MAX = ItemList.Casing_MAX.get(1);
 
-				//Machine Hulls
-				machineHull_ULV = ItemList.Hull_ULV.get(1);
-				machineHull_LV = ItemList.Hull_LV.get(1);
-				machineHull_MV = ItemList.Hull_MV.get(1);
-				machineHull_HV = ItemList.Hull_HV.get(1);
-				machineHull_EV = ItemList.Hull_EV.get(1);
-				machineHull_IV = ItemList.Hull_IV.get(1);
-				machineHull_LuV = ItemList.Hull_LuV.get(1);
-				machineHull_ZPM = ItemList.Hull_ZPM.get(1);
-				machineHull_UV = ItemList.Hull_UV.get(1);
-				machineHull_MAX = ItemList.Hull_MAX.get(1);
+		//Machine Hulls
+		machineHull_ULV = ItemList.Hull_ULV.get(1);
+		machineHull_LV = ItemList.Hull_LV.get(1);
+		machineHull_MV = ItemList.Hull_MV.get(1);
+		machineHull_HV = ItemList.Hull_HV.get(1);
+		machineHull_EV = ItemList.Hull_EV.get(1);
+		machineHull_IV = ItemList.Hull_IV.get(1);
+		machineHull_LuV = ItemList.Hull_LuV.get(1);
+		machineHull_ZPM = ItemList.Hull_ZPM.get(1);
+		machineHull_UV = ItemList.Hull_UV.get(1);
+		machineHull_MAX = ItemList.Hull_MAX.get(1);
 
-				//Gear box Casings
-				gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
-				gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
-				gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
-				gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
+		//Gear box Casings
+		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+		gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
+		gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
+		gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
 
-				//Machine Components
-				LOADER_Machine_Components.initialise();
+		//Machine Components
+		LOADER_Machine_Components.initialise();
 	}
 
 }

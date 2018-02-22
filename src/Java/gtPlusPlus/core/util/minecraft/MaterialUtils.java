@@ -10,6 +10,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.*;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -173,9 +174,19 @@ public class MaterialUtils {
 		}
 	}
 
-	static Class<Materials> materialsEnum = Materials.class;
 	public static Materials getMaterialByName(String materialName) {
-		return EnumUtils.getValue(materialsEnum, materialName);
+		
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return (Materials) EnumUtils.getValue(gregtech.api.enums.Materials.class, materialName, false);			
+		}
+		else {
+			for (Materials m : Materials.values()) {
+				if (MaterialUtils.getMaterialName(m).toLowerCase().equals(materialName.toLowerCase())) {
+					return m;
+				}
+			}
+			return null;
+		}
 	}
 	
 	@SuppressWarnings("deprecation")

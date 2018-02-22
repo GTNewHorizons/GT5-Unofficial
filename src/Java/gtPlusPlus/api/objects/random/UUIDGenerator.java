@@ -1,11 +1,9 @@
-package gtPlusPlus.core.util.data;
+package gtPlusPlus.api.objects.random;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Random;
 import java.util.UUID;
-
-import gtPlusPlus.api.objects.random.CSPRNG_DO_NOT_USE;
 
 /**
  * 

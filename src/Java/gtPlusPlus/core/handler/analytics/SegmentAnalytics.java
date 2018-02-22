@@ -12,10 +12,10 @@ import com.mojang.authlib.GameProfile;
 import com.segment.analytics.Analytics;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.UUIDGenerator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.UUIDGenerator;
 import gtPlusPlus.core.util.data.UUIDUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.IC2;

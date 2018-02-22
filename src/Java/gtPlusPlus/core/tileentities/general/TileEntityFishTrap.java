@@ -243,13 +243,13 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			calculateTickrate = 0;
 		}
 		else if ((this.waterSides > 2) && (this.waterSides < 4)) {
-			calculateTickrate = 3600;
+			calculateTickrate = 4800;
 		}
 		else if ((this.waterSides >= 4) && (this.waterSides < 6)) {
-			calculateTickrate = 2400;
+			calculateTickrate = 3600;
 		}
 		else if (this.waterSides == 6) {
-			calculateTickrate = 1200;
+			calculateTickrate = 2400;
 		}
 		this.baseTickRate = calculateTickrate;
 	}
@@ -387,7 +387,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.fishrap";
+		return this.hasCustomInventoryName() ? this.customName : "container.fishtrap";
 	}
 
 	@Override

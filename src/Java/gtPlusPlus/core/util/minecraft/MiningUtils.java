@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class UtilsMining {
+public class MiningUtils {
 
 	private static boolean durabilityDamage = false;
 	private static ItemStack stack;
