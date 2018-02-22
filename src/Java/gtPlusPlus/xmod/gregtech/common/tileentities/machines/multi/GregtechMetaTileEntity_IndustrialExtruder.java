@@ -7,9 +7,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -19,55 +21,62 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialWireMill
+import java.util.ArrayList;
+
+public class GregtechMetaTileEntity_IndustrialExtruder
 extends GregtechMeta_MultiBlockBase {
-	public GregtechMetaTileEntity_IndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
+
+	public GregtechMetaTileEntity_IndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_IndustrialWireMill(final String aName) {
+	public GregtechMetaTileEntity_IndustrialExtruder(final String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_IndustrialWireMill(this.mName);
+		return new GregtechMetaTileEntity_IndustrialExtruder(this.mName);
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{
-				"Controller Block for the Industrial Wire Factory",
-				"200% faster than using single block machines of the same voltage",
-				"Only uses 75% of the eu/t normally required",
+		return new String[]{"Controller Block for the Material Extruder",
+				"500% faster than using single block machines of the same voltage",
 				"Processes four items per voltage tier",
+				"Extrusion Shape for recipe goes in the Input Bus",
+				"Each Input Bus can have a different Circuit!",
+				"You can use several input busses per multiblock",
 				"Size: 3x3x5 [WxHxL] (Hollow)", "Controller (front centered)",
-				"2x Input Bus (side centered)",
-				"2x Output Bus (side centered)",
-				"1x Energy Hatch (top or bottom centered)",
-				"1x Maintenance Hatch (back centered)",
-				"Wire Factory Casings for the rest (32 at least!)",
-				CORE.GT_Tooltip
-		};
+				"Controller (front centered)",
+				"1x Input Bus (anywhere)",
+				"1x Output Bus (anywhere)",
+				"1x Energy Hatch (anywhere)",
+				"1x Maintenance Hatch (anywhere)",
+				"1x Muffler Hatch (anywhere)",
+				"Material Press Machine Casings for the rest (16 at least!)",
+				CORE.GT_Tooltip};
 	}
 
 	@Override
 	public String getSound() {
-		return GregTech_API.sSoundList.get(Integer.valueOf(204));
+		return GregTech_API.sSoundList.get(Integer.valueOf(203));
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(6)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(33)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(6)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(33)]};
 	}
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -77,7 +86,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
+		return GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
 	}
 
 	@Override
@@ -87,7 +96,26 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric((4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 75, 200);
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+			tBus.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tBus)) {
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+				}
+			}
+
+			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{}, (4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 500, 10000)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void startProcess() {
+		this.sendLoopStart((byte) 1);
 	}
 
 	@Override
@@ -127,7 +155,7 @@ extends GregtechMeta_MultiBlockBase {
 							if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
 								if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 								}
-								else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))))) {
+								else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()))) {
 									Logger.INFO("False 2");
 									return false;
 								}
@@ -142,11 +170,7 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
-				return false;
-			}
-			if ((this.mInputBusses.size() != 2) || (this.mOutputBusses.size() != 2)) {
+			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
 				Logger.INFO("Incorrect amount of Input & Output busses.");
 				return false;
 			}
@@ -161,8 +185,8 @@ extends GregtechMeta_MultiBlockBase {
 					return false;
 				}
 			}
-			if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
-				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
+			if ((this.mMaintenanceHatches.size() != 1)) {
+				Logger.INFO("Incorrect amount of Maintenance hatches.");
 				return false;
 			}
 		} else {
@@ -192,26 +216,17 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
-
+	
 	public Block getCasingBlock() {
-		return ModBlocks.blockCasingsMisc;
+		return ModBlocks.blockCasings3Misc;
 	}
 
 
 	public byte getCasingMeta() {
-		return 6;
+		return 1;
 	}
-
 
 	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(6);
-	}
-
-	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addMaintenanceToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex())));
-	}
-
-	private boolean addEnergyInputToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));
+		return (byte) TAE.GTPP_INDEX(33);
 	}
 }

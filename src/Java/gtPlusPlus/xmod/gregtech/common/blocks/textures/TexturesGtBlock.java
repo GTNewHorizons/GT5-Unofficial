@@ -235,10 +235,15 @@ public class TexturesGtBlock {
 	//Metroid related
 	public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
 	public static final CustomIcon TEXTURE_METAL_PANEL_B = new CustomIcon("metro/TEXTURE_METAL_PANEL_B");
+	public static final CustomIcon TEXTURE_METAL_PANEL_C = new CustomIcon("metro/TEXTURE_METAL_PANEL_C");
+	public static final CustomIcon TEXTURE_METAL_PANEL_D = new CustomIcon("metro/TEXTURE_METAL_PANEL_D");
+	public static final CustomIcon TEXTURE_METAL_PANEL_E = new CustomIcon("metro/TEXTURE_METAL_PANEL_E");
+	public static final CustomIcon TEXTURE_MAGIC_PANEL_A = new CustomIcon("metro/TEXTURE_MAGIC_A");
 	public static final CustomIcon TEXTURE_ORGANIC_PANEL_A = new CustomIcon("metro/TEXTURE_ORGANIC_PANEL_A");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A = new CustomIcon("metro/TEXTURE_STONE_BIRD_A");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A_LEFT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_LEFT");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A_RIGHT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_RIGHT");
+	public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
 	public static final CustomIcon TEXTURE_STONE_BLUE_A = new CustomIcon("metro/TEXTURE_STONE_BLUE_A");
 	public static final CustomIcon TEXTURE_STONE_GREEN_A = new CustomIcon("metro/TEXTURE_STONE_GREEN_A");
 	public static final CustomIcon TEXTURE_STONE_TABLET_A = new CustomIcon("metro/TEXTURE_STONE_TABLET_A");

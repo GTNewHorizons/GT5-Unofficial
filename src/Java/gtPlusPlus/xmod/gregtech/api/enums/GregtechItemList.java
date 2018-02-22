@@ -287,7 +287,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_FishPond, Industrial_FishingPond, 
 	
 	//Chunkloader
-	GT_Chunkloader_HV, GT_Chunkloader_EV, GT_Chunkloader_IV,
+	GT_Chunkloader_HV, GT_Chunkloader_EV, GT_Chunkloader_IV, 
+	
+	//Large Extruder
+	Industrial_Extruder, Casing_Extruder,
 	
 	
 	

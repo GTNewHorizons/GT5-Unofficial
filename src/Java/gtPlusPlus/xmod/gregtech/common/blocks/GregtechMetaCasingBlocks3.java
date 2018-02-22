@@ -21,7 +21,7 @@ extends GregtechMetaCasingBlocksAbstract {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder");
@@ -37,7 +37,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
-		//GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
+		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
 		//GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
 		//GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
 		//GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
