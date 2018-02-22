@@ -6,10 +6,12 @@ import java.net.*;
 import org.apache.http.client.utils.URIBuilder;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 
 public class GeoUtils {
 
 	public static String determineUsersCountry(){
+		if (!CORE.DEBUG && !CORE.DEVENV) {
 		try {
 		if (NetworkUtils.checkNetworkIsAvailableWithValidInterface()){
 			return getUsersCountry();			
@@ -20,6 +22,10 @@ public class GeoUtils {
 		} catch (Throwable T){
 			Logger.INFO("Failed to initialise GeoUtils.");
 			return "Failed.";
+		}
+		}
+		else {
+			return "Debug/Dev";
 		}
 	}
 

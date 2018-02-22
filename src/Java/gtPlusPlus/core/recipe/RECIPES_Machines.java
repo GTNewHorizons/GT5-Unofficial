@@ -144,6 +144,7 @@ public class RECIPES_Machines {
 	public static ItemStack EV_MACHINE_Macerator;
 	public static ItemStack EV_MACHINE_Cutter;
 	public static ItemStack EV_MACHINE_MassFabricator;
+	public static ItemStack EV_MACHINE_Extruder;
 
 
 	//Cables
@@ -216,6 +217,7 @@ public class RECIPES_Machines {
 			EV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
 			EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
 			EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
+			EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
 
 
 		}
@@ -1099,6 +1101,22 @@ public class RECIPES_Machines {
 						"wireFinePlatinum", EV_MACHINE_Cutter, "wireFinePlatinum",
 						plate,CI.getTieredCircuit(4),plate,
 						GregtechItemList.Industrial_CuttingFactoryController.get(1));
+			}
+			
+			//EV_MACHINE_Extruder
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine){
+				ItemStack plate = ALLOY.INCONEL_690.getPlate(1);
+				RecipeUtils.recipeBuilder(
+						plate, CI.craftingToolHammer_Hard, plate,
+						"plateTalonite", "frameGtStaballoy", "plateTalonite",
+						plate, CI.craftingToolWrench, plate,
+						GregtechItemList.Casing_Extruder.get(Casing_Amount));
+
+				RecipeUtils.recipeBuilder( 
+						plate,CI.getTieredCircuit(4),plate,
+						CI.electricPiston_EV, EV_MACHINE_Extruder, CI.electricPiston_EV,
+						plate,CI.getTieredCircuit(4),plate,
+						GregtechItemList.Industrial_Extruder.get(1));
 			}
 			
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort){

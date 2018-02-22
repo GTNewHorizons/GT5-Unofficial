@@ -50,7 +50,6 @@ import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
-import gtPlusPlus.core.item.tool.misc.ConnectedBlockFinder;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
@@ -277,6 +276,10 @@ public final class ModItems {
 	public static Item itemFiber;
 
 	public static Item itemDragonJar;
+	
+	static {
+		Logger.INFO("Items!");
+	}
 
 	public static final void init(){
 
@@ -702,9 +705,9 @@ public final class ModItems {
 		CoalTar.run();
 
 		//Only used for debugging.
-		if (CORE.DEVENV) {
+		/*if (CORE.DEVENV) {
 			new ConnectedBlockFinder();
-		}
+		}*/
 
 		//Misc Items
 		@SuppressWarnings("unused")

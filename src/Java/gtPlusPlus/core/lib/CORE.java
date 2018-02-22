@@ -186,6 +186,7 @@ public class CORE {
 		public static boolean enableMachine_Tesseracts = true;
 		public static boolean enableMachine_SimpleWasher = true;
 		public static boolean enableMachine_Pollution = true;
+		public static boolean enableMachine_ComponentAssemblers = false;
 		public static boolean enableCustom_Pipes = true;
 		public static boolean enableCustom_Cables = true;
 
@@ -211,10 +212,12 @@ public class CORE {
 		public static boolean enableMultiblock_ThermalBoiler = true;
 		public static boolean enableMultiblock_IndustrialCuttingMachine = true;
 		public static boolean enableMultiblock_IndustrialFishingPort = true;
+		public static boolean enableMultiblock_IndustrialExtrudingMachine = true;
 
 		//Visuals
 		public static boolean enableTreeFarmerParticles = true;
 		public static boolean useGregtechTextures = true;
+
 
 
 

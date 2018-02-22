@@ -47,8 +47,8 @@ public class ConfigHandler {
 		boilerSteamPerSecond = config.getInt("boilerSteamPerSecond", "machines", 750, 0, 10000, "Sets the steam per second value in LV,MV,HV boilers (respectively 1x,2x,3x this number for the tiers)");
 	
 		//Circuits
-		enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,
-				"Adds custom circuits to expand past the Master Tier.");
+		enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", false,
+				"Adds custom circuits to expand past the Master Tier. Only really recommended to enable if enableOldGTcircuits is enabled.");
 		enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
 				"Restores circuits and their recipes from Pre-5.09.28 times.");
 	
@@ -76,7 +76,9 @@ public class ConfigHandler {
 	
 		// Single machines
 		enableMachine_SolarGenerators = config.getBoolean("enableSolarGenerators", "gregtech",
-				false, "These may be overpowered, Consult a local electrician.");
+				false, "These may be overpowered, Consult a local electrician.");		
+		enableMachine_ComponentAssemblers = config.getBoolean("enableComponentAssemblers", "gregtech",
+				true, "These construct machine components.");		
 		enableMachine_Safes = config.getBoolean("enableMachineSafes", "gregtech", true,
 				"These protect your goodies/rare stuff.");
 		enableMachine_Dehydrators = config.getBoolean("enableMachineDehydrators", "gregtech", true,
@@ -144,6 +146,9 @@ public class ConfigHandler {
 				"gregtech", true, "Very fast and efficient Cutting Machine.");
 		enableMultiblock_IndustrialFishingPort = config.getBoolean("enableMultiblock_IndustrialFishingPort",
 				"gregtech", true, "Fish the seas, except on land.");
+		
+		enableMultiblock_IndustrialExtrudingMachine = config.getBoolean("enableMultiblock_IndustrialExtrudingMachine",
+				"gregtech", true, "Very fast and efficient Extruding Machine.");
 	
 		// Options
 		rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000,

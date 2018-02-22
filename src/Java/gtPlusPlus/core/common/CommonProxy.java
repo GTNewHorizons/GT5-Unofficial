@@ -75,14 +75,15 @@ public class CommonProxy {
 		registerEntities();
 		Logger.INFO("[Proxy] Calling Tile Entity registrator.");
 		registerTileEntities();
-		Logger.INFO("[Proxy] Calling Render registrator.");
-		registerRenderThings();
 		
 		//Moved from Init after Debug Loading.
 		//29/01/18 - Alkalus
 		ModItems.init();
 		ModBlocks.init();
 		CI.preInit();
+		
+		Logger.INFO("[Proxy] Calling Render registrator.");
+		registerRenderThings();
 
 
 	}

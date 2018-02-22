@@ -244,10 +244,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		this.mLastRecipe = tRecipe;
 
 		if (tRecipe == null) {
+			Logger.WARNING("BAD RETURN - 1");
 			return false;
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+			Logger.WARNING("BAD RETURN - 2");
 			return false;
 		}
 
@@ -257,15 +259,23 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		int parallelRecipes = 0;
 
+		Logger.WARNING("parallelRecipes: "+parallelRecipes);
+		Logger.WARNING("aMaxParallelRecipes: "+aMaxParallelRecipes);
+		Logger.WARNING("tTotalEUt: "+tTotalEUt);
+		Logger.WARNING("tVoltage: "+tVoltage);
+		Logger.WARNING("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+				Logger.WARNING("Broke at "+parallelRecipes+".");
 				break;
 			}
+			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 			tTotalEUt += tRecipeEUt;
 		}
 
 		if (parallelRecipes == 0) {
+			Logger.WARNING("BAD RETURN - 3");
 			return false;
 		}
 
@@ -362,6 +372,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
+		Logger.WARNING("GOOD RETURN - 1");
 		return true;
 	}
 

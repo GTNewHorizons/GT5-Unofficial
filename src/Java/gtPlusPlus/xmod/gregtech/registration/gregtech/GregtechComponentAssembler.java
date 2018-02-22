@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_ComponentAssemblers;
+
 import java.util.ArrayList;
 
 import gregtech.api.enums.GT_Values;
@@ -20,6 +22,10 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GregtechComponentAssembler {
 
 	public static void run() {
+		
+		if (!enableMachine_ComponentAssemblers) {
+			return;
+		}
 		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			Logger.INFO("Component Assemblers cannot be created in 5.08.33 during the pre-release. Please wait for 1.7.0 release.");

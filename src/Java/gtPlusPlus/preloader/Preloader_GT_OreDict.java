@@ -11,6 +11,11 @@ import net.minecraft.item.ItemStack;
 public class Preloader_GT_OreDict {
 
 	public static boolean shouldPreventRegistration(final String string, final ItemStack bannedItem) {
+		
+		if (bannedItem == null || (!CORE_Preloader.enableOldGTcircuits && !LoadedMods.Mekanism)) {
+			return false;
+		}
+		
 		try {
 			if (CORE_Preloader.enableOldGTcircuits){
 				if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals("gregtech")){

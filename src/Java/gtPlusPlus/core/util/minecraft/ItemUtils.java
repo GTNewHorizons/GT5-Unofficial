@@ -1,7 +1,9 @@
 package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -254,29 +256,42 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDict(final String oredictName, final int amount){
-
 		String mTemp = oredictName;
-
 		//Banned Materials and replacements for GT5.8 compat.		
 		if (oredictName.toLowerCase().contains("rutile")){
 			mTemp = oredictName.replace("Rutile", "Titanium");
 		}
 		if (oredictName.toLowerCase().contains("vanadiumsteel")){
 			mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
-		}
+		}	
 		
-		ItemStack mTempItem = getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
-		if (mTempItem != null) {
-			return mTempItem;
+		//Use Cache
+		if (mDustCache.containsKey(oredictName)) {
+			return getSimpleStack(mDustCache.get(oredictName), amount);
+		}		
+		if (mOreDictCache.containsKey(mTemp)) {
+			return getCachedValue(mTemp, amount);
 		}
 
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
 		if (!oreDictList.isEmpty()){
 			final ItemStack returnValue = oreDictList.get(0).copy();
 			returnValue.stackSize = amount;
+			setCachedValue(mTemp, returnValue);
 			return returnValue;
 		}
+		setCachedValue(oredictName, getSimpleStack(ModItems.AAA_Broken));
 		return getSimpleStack(ModItems.AAA_Broken, amount);
+	}
+
+	private static Map<String, ItemStack> mOreDictCache = new HashMap();
+
+	private static ItemStack getCachedValue(String string, int amount) {
+		return getSimpleStack(mOreDictCache.get(string), amount);
+	}
+
+	private static void setCachedValue(String string, ItemStack stack) {
+		mOreDictCache.put(string, stack);
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(final String oredictName, final int amount){
@@ -286,7 +301,17 @@ public class ItemUtils {
 			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
 			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
 			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
+		}	
+		
+		//Use Cache
+		if (mDustCache.containsKey(oredictName)) {
+			return getSimpleStack(mDustCache.get(oredictName), amount);
+		}	
+		if (mOreDictCache.containsKey(oredictName)) {
+			return getCachedValue(oredictName, amount);
 		}
+		
+
 		try{
 
 			//Adds a check to grab dusts using GT methodology if possible.
@@ -296,28 +321,26 @@ public class ItemUtils {
 				final Materials m = Materials.get(MaterialName);
 				returnValue = getGregtechDust(m, amount);
 				if (returnValue != null){
+					setCachedValue(oredictName, returnValue);
 					return returnValue;
-				}
-				else {
-					returnValue = getGregtechDust(oredictName, amount);
-					if (returnValue != null) {
-						return returnValue;						
-					}
 				}
 			}
 
 			if (returnValue == null){
 				returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 				if (returnValue != null){
-					if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){						
+					if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
+						setCachedValue(oredictName, returnValue);
 						return returnValue.copy();
 					}
 				}
 			}
 			Logger.WARNING(oredictName+" was not valid.");
+			setCachedValue(oredictName, null);
 			return null;
 		}
 		catch (final Throwable t){
+			setCachedValue(oredictName, null);
 			return null;
 		}
 	}
@@ -625,29 +648,50 @@ public class ItemUtils {
 		return outputs;
 	}
 
-	private static String getModId(final Item item) {
+	private static Map<Item, String> mModidCache = new HashMap<Item, String>();
+
+	private static String getModId(final Item item) {		
+		if (mModidCache.containsKey(item)) {
+			return mModidCache.get(item);
+		}
+		String value = "";
 		try {
 			final GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
-			final String modname = (id.modId == null ? id.name : id.modId);
-			return (id == null) || id.modId.equals("") ? "minecraft" : modname;
+			if (id != null) {
+				final String modname = (id.modId == null ? id.name : id.modId);
+				value = ((id == null) || id.modId.equals("")) ? "minecraft" : modname;
+			}
 		} catch (final Throwable t){
 			try {
 				final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
-				final String modname = (t2.modId == null ? t2.name : t2.modId);
-				return (t2 == null) || t2.modId.equals("") ? "minecraft" : modname;
+				if (t2 != null) {
+					final String modname = (t2.modId == null ? t2.name : t2.modId);
+					value = ((t2 == null) || t2.modId.equals("")) ? "minecraft" : modname;
+				}
 			}
 			catch (final Throwable t3){
-				return "bad modid";
+				value = "bad modid";
 			}
 		}
+		if (!mModidCache.containsKey(item)) {
+			return mModidCache.put(item, value);
+		}
+		return value;
 	}
 
 	public static String getModId(final ItemStack key) {
 		return getModId(key.getItem());
 	}
 
+	private static Map<String, ItemStack> mDustCache = new HashMap<String, ItemStack>();
+	
 	//Take 2 - GT/GT++ Dusts
 	public static ItemStack getGregtechDust(final String oredictName, final int amount){
+		
+		if (mDustCache.containsKey(oredictName)) {
+			return getSimpleStack(mDustCache.get(oredictName), amount);
+		}
+		
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		if (!oreDictList.isEmpty()){
 			ItemStack returnvalue;
@@ -655,6 +699,7 @@ public class ItemUtils {
 				final String modid = getModId(oreDictList.get(xrc).getItem());
 				if (modid.equals("gregtech") || modid.equals(CORE.MODID)){
 					returnvalue = oreDictList.get(xrc).copy();
+					mDustCache.put(oredictName, returnvalue);
 					returnvalue.stackSize = amount;
 					return returnvalue;
 				}
@@ -665,6 +710,11 @@ public class ItemUtils {
 
 	//Anything But Tinkers Dust
 	public static ItemStack getNonTinkersDust(final String oredictName, final int amount){
+		
+		if (mDustCache.containsKey(oredictName)) {
+			return getSimpleStack(mDustCache.get(oredictName), amount);
+		}
+		
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		if (!oreDictList.isEmpty()){
 			ItemStack returnvalue;
@@ -672,6 +722,7 @@ public class ItemUtils {
 				final String modid = getModId(oreDictList.get(xrc).getItem());
 				if (!modid.equals("tconstruct")){
 					returnvalue = oreDictList.get(xrc).copy();
+					mDustCache.put(oredictName, returnvalue);
 					returnvalue.stackSize = amount;
 					return returnvalue;
 				}
@@ -694,7 +745,7 @@ public class ItemUtils {
 		//Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
 		return (gregstack);
 	}
-	
+
 
 	public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
 

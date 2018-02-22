@@ -11,7 +11,7 @@ public class GregtechIndustrialExtruder {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Logger.INFO("Gregtech5u Content | Registering Industrial Extrusion Multiblock.");
-			if (CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine) {
 				run1();
 			}
 		}

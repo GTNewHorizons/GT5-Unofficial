@@ -45,10 +45,10 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Material Extruder",
-				"500% faster than using single block machines of the same voltage",
+				"250% faster than using single block machines of the same voltage",
 				"Processes four items per voltage tier",
 				"Extrusion Shape for recipe goes in the Input Bus",
-				"Each Input Bus can have a different Circuit!",
+				"Each Input Bus can have a different shape!",
 				"You can use several input busses per multiblock",
 				"Size: 3x3x5 [WxHxL] (Hollow)", "Controller (front centered)",
 				"Controller (front centered)",
@@ -104,11 +104,21 @@ extends GregtechMeta_MultiBlockBase {
 					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
 						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
 				}
-			}
-
-			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{}, (4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 500, 10000)) {
-				return true;
-			}
+			}			
+			ItemStack[] inputs = new ItemStack[tBusItems.size()];
+			int slot = 0;
+			for (ItemStack g : tBusItems) {
+				inputs[slot++] = g;
+			}			
+			if (inputs.length > 0) {				
+				int para = (4*Utils.calculateVoltageTier(this.getMaxInputVoltage()));
+				Logger.WARNING("Recipe. ["+inputs.length+"]["+para+"]");				
+				if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
+					Logger.WARNING("Recipe 2.");
+					return true;
+				}
+			}			
+			
 		}
 		return false;
 	}
@@ -133,7 +143,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 			if (tAirCount != 10) {
-				Logger.INFO("False 1");
+				Logger.WARNING("False 1");
 				return false;
 			}
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
@@ -156,14 +166,14 @@ extends GregtechMeta_MultiBlockBase {
 								if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 								}
 								else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()))) {
-									Logger.INFO("False 2");
+									Logger.WARNING("False 2");
 									return false;
 								}
 							}
 							else if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 							}
 							else {
-								Logger.INFO("False 3");
+								Logger.WARNING("False 3");
 								return false;
 							}
 						}
@@ -171,7 +181,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				Logger.INFO("Incorrect amount of Input & Output busses.");
+				Logger.WARNING("Incorrect amount of Input & Output busses.");
 				return false;
 			}
 			this.mMaintenanceHatches.clear();
@@ -181,19 +191,19 @@ extends GregtechMeta_MultiBlockBase {
 					this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 					((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
 				} else {
-					Logger.INFO("Maintenance hatch must be in the middle block on the back.");
+					Logger.WARNING("Maintenance hatch must be in the middle block on the back.");
 					return false;
 				}
 			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
-				Logger.INFO("Incorrect amount of Maintenance hatches.");
+				Logger.WARNING("Incorrect amount of Maintenance hatches.");
 				return false;
 			}
 		} else {
-			Logger.INFO("False 5");
+			Logger.WARNING("False 5");
 			return false;
 		}
-		Logger.INFO("True");
+		Logger.WARNING("True");
 		return true;
 	}
 
