@@ -5,7 +5,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_MachineComponents {

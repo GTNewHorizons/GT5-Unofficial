@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

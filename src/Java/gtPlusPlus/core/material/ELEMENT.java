@@ -4,8 +4,8 @@ import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.StringUtils;
-import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class ELEMENT {
 
@@ -15,18 +15,16 @@ public final class ELEMENT {
 		Logger.MATERIALS("Initialising Base Elements.");
 	}
 
-	public ELEMENT(){
-		
+	public ELEMENT(){		
 		//GTNH Trinium Handling		
 		if (CORE.GTNH){
-			TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(Materials.valueOf("Trinium"));
+			TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(MaterialUtils.getMaterialByName("Trinium"));
 			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
 		}
 		else {
 			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
 			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
-		}
-		
+		}		
 	}
 
 	public static ELEMENT getInstance(){

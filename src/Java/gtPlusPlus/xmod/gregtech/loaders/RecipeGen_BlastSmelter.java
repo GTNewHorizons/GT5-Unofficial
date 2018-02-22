@@ -13,8 +13,8 @@ import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

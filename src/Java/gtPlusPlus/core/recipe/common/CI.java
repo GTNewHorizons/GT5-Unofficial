@@ -9,7 +9,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;

@@ -10,7 +10,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.events.CustomMovementHandler;
 import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

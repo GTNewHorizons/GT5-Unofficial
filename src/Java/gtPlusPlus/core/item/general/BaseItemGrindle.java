@@ -10,7 +10,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;

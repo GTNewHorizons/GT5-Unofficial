@@ -7,8 +7,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {

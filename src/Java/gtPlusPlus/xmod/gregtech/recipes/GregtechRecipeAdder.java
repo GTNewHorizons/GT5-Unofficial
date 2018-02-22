@@ -5,7 +5,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;

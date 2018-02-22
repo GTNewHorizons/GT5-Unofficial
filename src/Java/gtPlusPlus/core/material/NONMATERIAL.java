@@ -1,7 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
-import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class NONMATERIAL {
 	

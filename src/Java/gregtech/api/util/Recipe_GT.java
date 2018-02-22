@@ -11,7 +11,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Assembler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

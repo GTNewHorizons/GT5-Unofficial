@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
-import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

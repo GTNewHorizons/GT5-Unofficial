@@ -5,7 +5,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_ShapedCrafting  implements Runnable{

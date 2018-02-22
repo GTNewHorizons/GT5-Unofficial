@@ -6,7 +6,7 @@ import java.util.UUID;
 import gtPlusPlus.api.damage.DamageTeslaTower;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.util.entity.EntityUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityWeatherEffect;

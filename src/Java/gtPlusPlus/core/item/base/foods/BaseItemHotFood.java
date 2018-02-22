@@ -4,8 +4,8 @@ import java.util.List;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

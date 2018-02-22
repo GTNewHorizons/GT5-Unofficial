@@ -2,8 +2,8 @@ package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

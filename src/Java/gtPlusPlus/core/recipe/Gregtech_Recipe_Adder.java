@@ -3,7 +3,7 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

@@ -3,8 +3,8 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 

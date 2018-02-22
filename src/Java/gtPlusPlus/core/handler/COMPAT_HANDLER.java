@@ -14,8 +14,8 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.*;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
 import net.minecraft.item.ItemStack;
 

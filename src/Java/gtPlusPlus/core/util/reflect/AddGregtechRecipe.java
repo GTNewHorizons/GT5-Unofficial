@@ -8,8 +8,8 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

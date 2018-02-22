@@ -17,7 +17,7 @@ import forestry.core.genetics.alleles.AlleleHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;

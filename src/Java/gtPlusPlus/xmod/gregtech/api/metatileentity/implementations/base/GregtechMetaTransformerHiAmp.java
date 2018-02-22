@@ -6,7 +6,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;

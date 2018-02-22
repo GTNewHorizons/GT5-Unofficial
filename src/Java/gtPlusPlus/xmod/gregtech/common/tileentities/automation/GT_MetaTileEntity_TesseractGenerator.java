@@ -15,7 +15,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 import net.minecraft.entity.player.EntityPlayer;

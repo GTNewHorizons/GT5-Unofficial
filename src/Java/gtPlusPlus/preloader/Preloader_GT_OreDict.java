@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Level;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class Preloader_GT_OreDict {

@@ -13,7 +13,7 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
 import net.minecraft.block.BlockContainer;

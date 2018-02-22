@@ -12,7 +12,7 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;

@@ -6,7 +6,7 @@ import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;

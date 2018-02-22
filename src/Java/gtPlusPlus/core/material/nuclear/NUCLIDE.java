@@ -3,7 +3,7 @@ package gtPlusPlus.core.material.nuclear;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.StringUtils;
+import gtPlusPlus.core.util.data.StringUtils;
 
 
 public final class NUCLIDE {

@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 

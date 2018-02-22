@@ -3,8 +3,8 @@ package gtPlusPlus.core.tileentities.general;
 import org.lwjgl.input.Keyboard;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.enchanting.EnchantingUtils;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.EnchantingUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

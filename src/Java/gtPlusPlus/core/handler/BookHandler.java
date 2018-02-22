@@ -5,8 +5,8 @@ import java.util.Map;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 

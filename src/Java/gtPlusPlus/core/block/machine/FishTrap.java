@@ -10,7 +10,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.util.inventory.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

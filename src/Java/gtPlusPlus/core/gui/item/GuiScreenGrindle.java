@@ -12,7 +12,7 @@ import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;

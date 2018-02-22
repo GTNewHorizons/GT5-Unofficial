@@ -12,7 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

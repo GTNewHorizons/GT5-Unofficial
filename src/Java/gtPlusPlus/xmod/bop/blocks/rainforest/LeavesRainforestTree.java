@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.bop.blocks.rainforest;
 
 import java.util.Random;
 
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.bop.blocks.base.LeavesBase;
 import net.minecraft.init.Items;

@@ -15,9 +15,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.player.PlayerUtils;
-import gtPlusPlus.core.util.uuid.UUIDGenerator;
-import gtPlusPlus.core.util.uuid.UUIDUtils;
+import gtPlusPlus.core.util.data.UUIDGenerator;
+import gtPlusPlus.core.util.data.UUIDUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
 

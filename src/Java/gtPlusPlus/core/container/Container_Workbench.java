@@ -8,7 +8,7 @@ import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;

@@ -12,7 +12,7 @@ public enum UtilsText {
 	}
 
 	public String colour() {
-		return "�" + this.colourValue;
+		return "§" + this.colourValue;
 	}
 
 }

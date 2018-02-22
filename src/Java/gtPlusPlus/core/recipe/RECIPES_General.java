@@ -1,6 +1,6 @@
 package gtPlusPlus.core.recipe;
 
-import static gtPlusPlus.core.util.item.ItemUtils.getSimpleStack;
+import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
@@ -12,8 +12,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import net.minecraft.init.Blocks;

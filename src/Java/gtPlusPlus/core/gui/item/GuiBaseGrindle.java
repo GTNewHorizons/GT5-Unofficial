@@ -11,7 +11,7 @@ import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;

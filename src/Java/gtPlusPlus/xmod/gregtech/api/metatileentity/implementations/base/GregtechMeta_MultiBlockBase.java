@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,8 +34,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
 
 public abstract class GregtechMeta_MultiBlockBase
 extends

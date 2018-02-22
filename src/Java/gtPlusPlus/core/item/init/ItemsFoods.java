@@ -5,7 +5,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 

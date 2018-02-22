@@ -28,7 +28,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
-import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
+import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;

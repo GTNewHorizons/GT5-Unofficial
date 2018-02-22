@@ -10,7 +10,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.world.darkworld.object.BoxedQuad;
 import net.minecraft.block.Block;
 

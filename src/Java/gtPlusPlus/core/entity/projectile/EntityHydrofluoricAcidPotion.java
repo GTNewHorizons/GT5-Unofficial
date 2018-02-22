@@ -2,8 +2,8 @@ package gtPlusPlus.core.entity.projectile;
 
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

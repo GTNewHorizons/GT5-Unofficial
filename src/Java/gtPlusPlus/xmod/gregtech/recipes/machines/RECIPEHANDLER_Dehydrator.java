@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

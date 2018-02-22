@@ -8,7 +8,7 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.entity.EntityUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

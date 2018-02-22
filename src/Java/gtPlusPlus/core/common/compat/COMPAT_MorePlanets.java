@@ -1,6 +1,6 @@
 package gtPlusPlus.core.common.compat;
 
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class COMPAT_MorePlanets {
 

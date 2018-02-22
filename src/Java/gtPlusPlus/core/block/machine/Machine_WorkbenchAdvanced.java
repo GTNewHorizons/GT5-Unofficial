@@ -10,7 +10,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.item.tool.ItemToolWrench;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

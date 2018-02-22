@@ -3,7 +3,7 @@ package gtPlusPlus.core.item.base.plates;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class BaseItemPlate extends BaseItemComponent{
 

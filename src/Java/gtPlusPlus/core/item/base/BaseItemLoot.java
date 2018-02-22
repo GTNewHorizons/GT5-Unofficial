@@ -3,10 +3,10 @@ package gtPlusPlus.core.item.base;
 import java.util.List;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.enums.Quality;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Quality;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

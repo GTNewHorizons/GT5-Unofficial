@@ -6,7 +6,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

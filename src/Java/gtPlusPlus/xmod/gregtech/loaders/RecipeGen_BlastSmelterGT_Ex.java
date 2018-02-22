@@ -4,8 +4,8 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

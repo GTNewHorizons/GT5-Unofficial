@@ -14,7 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;

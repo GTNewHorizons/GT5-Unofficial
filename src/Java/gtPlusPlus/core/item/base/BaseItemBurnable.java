@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 

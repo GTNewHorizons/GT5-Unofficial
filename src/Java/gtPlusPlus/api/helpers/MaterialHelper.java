@@ -3,7 +3,7 @@ package gtPlusPlus.api.helpers;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class MaterialHelper {

@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import static gtPlusPlus.core.util.array.ArrayUtils.removeNulls;
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +21,9 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
