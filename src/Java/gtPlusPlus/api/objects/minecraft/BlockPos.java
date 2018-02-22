@@ -1,8 +1,13 @@
 package gtPlusPlus.api.objects.minecraft;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import gtPlusPlus.api.objects.data.AutoMap;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class BlockPos implements Serializable{
 
@@ -11,6 +16,7 @@ public class BlockPos implements Serializable{
 	public final int yPos;
 	public final int zPos;
 	public final int dim;
+	public final World world;
 
 	public BlockPos(int x, int y, int z){
 		this(x, y, z, 0);
@@ -21,6 +27,7 @@ public class BlockPos implements Serializable{
 		this.yPos = y;
 		this.zPos = z;
 		this.dim = dim;
+		this.world = DimensionManager.getWorld(dim);
 	}
 
 	public String getLocationString() {
@@ -118,6 +125,89 @@ public class BlockPos implements Serializable{
 		sides.put(getZPos());
 		sides.put(getZNeg());		
 		return sides;
+	}
+	
+	public Block getBlockAtPos() {
+		return getBlockAtPos(this);
+	}
+	
+	public Block getBlockAtPos(BlockPos pos) {
+		return getBlockAtPos(world, pos);
+	}
+	
+	public Block getBlockAtPos(World world, BlockPos pos) {
+		return world.getBlock(pos.xPos, pos.yPos, pos.zPos);
+	}
+	
+	public int getMetaAtPos() {
+		return getMetaAtPos(this);
+	}
+	
+	public int getMetaAtPos(BlockPos pos) {
+		return getMetaAtPos(world, pos);
+	}
+	
+	public int getMetaAtPos(World world, BlockPos pos) {
+		return world.getBlockMetadata(pos.xPos, pos.yPos, pos.zPos);
+	}
+	
+	public boolean hasSimilarNeighbour() {
+		return hasSimilarNeighbour(false);
+	}	
+	
+	/**
+	 * @param strict - Does this check Meta Data?
+	 * @return - Does this block have a neighbour that is the same?
+	 */
+	public boolean hasSimilarNeighbour(boolean strict) {		
+		for (BlockPos g : getSurroundingBlocks().values()) {
+			if (getBlockAtPos(g) == getBlockAtPos()) {
+				if (!strict) {
+					return true;
+				}
+				else {
+					if (getMetaAtPos() == getMetaAtPos(g)) {
+						return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+	
+	public AutoMap<BlockPos> getSimilarNeighbour() {
+		return getSimilarNeighbour(false);
+	}	
+	
+	/**
+	 * @param strict - Does this check Meta Data?
+	 * @return - Does this block have a neighbour that is the same?
+	 */
+	public AutoMap<BlockPos> getSimilarNeighbour(boolean strict) {
+		AutoMap<BlockPos> sides = new AutoMap<BlockPos>();		
+		for (BlockPos g : getSurroundingBlocks().values()) {
+			if (getBlockAtPos(g) == getBlockAtPos()) {
+				if (!strict) {
+					sides.put(g);
+				}
+				else {
+					if (getMetaAtPos() == getMetaAtPos(g)) {
+						sides.put(g);
+					}
+				}
+			}
+		}		
+		return sides;
+	}
+	
+	public Set<BlockPos> getValidNeighboursAndSelf(){
+		AutoMap<BlockPos> h = getSimilarNeighbour(true);
+		h.put(this);		
+		Set<BlockPos> result = new HashSet<BlockPos>();
+		for (BlockPos f : h.values()) {
+			result.add(f);
+		}		
+		return result;
 	}
 	
 }

@@ -48,8 +48,8 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
-				"80% faster than using single block machines of the same voltage",
-				"Processes one item per voltage tier",
+				"400% faster than using single block machines of the same voltage",
+				"Processes four item per voltage tier",
 				"Chance to output Sludge per process",
 				"Size: 7x3x5 [WxHxL] (open)",
 				"X     X",
@@ -96,7 +96,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if (checkForWater()) {
-			if (checkRecipeGeneric((1*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 80)) {
+			if (checkRecipeGeneric((4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 400)) {
 				return addSludge();
 			}
 		}

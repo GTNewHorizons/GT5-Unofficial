@@ -44,7 +44,8 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
 				"400% faster than single-block machines of the same voltage",
-				"Processes two items per voltage tier",
+				"Only uses 75% of the eu/t normally required",
+				"Processes four items per voltage tier",
 				"Increased output chances on % outputs",
 				"Size[WxHxL]: 5x3x5",
 				"Controller (Center Bottom)",
@@ -111,7 +112,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric((2*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 400, 8800);
+		return checkRecipeGeneric((4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 75, 400, 8800);
 	}
 
 	@Override

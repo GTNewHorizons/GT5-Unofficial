@@ -5,7 +5,9 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ArrayUtils {
 
@@ -30,5 +32,17 @@ public class ArrayUtils {
 		list.removeAll(Collections.singleton((ItemStack)null));
 		return list.toArray(new ItemStack[list.size()]);
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Set<T> combineSetData(Set<T> S, Set<T> J) {
+		Set<T> mData = new HashSet<T>();
+		T[] array1 = (T[]) S.toArray();		
+		Collections.addAll(mData, array1);
+		T[] array2 = (T[]) J.toArray();		
+		Collections.addAll(mData, array2);		
+		return mData;
+	}
+
+
 }
 

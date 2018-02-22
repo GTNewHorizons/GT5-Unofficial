@@ -654,14 +654,7 @@ public class TreeFarmHelper {
 		return mConnected;
 	}
 
-	public static <T> Set<T> combineSetData(Set<T> S, Set<T> J) {
-		Set<T> mData = new HashSet<T>();
-		T[] array1 = (T[]) S.toArray();		
-		Collections.addAll(mData, array1);
-		T[] array2 = (T[]) J.toArray();		
-		Collections.addAll(mData, array2);		
-		return mData;
-	}
+	
 
 
 

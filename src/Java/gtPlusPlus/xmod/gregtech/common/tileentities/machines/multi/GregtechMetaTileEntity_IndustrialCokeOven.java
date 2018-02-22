@@ -10,6 +10,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -37,6 +38,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
 				"Controller Block for the Industrial Coke Oven",
+				"Gain 4% speed bonus per voltage tier increased",
 				"Process 12x materials with Heat Resistant Casings",
 				"Or 24x materials with Heat Proof Casings",
 				"Size: 3x3x3 (Hollow)",
@@ -94,7 +96,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(this.mLevel * 12, 100, 0);
+		return checkRecipeGeneric(this.mLevel * 12, (100-(Utils.calculateVoltageTier(this.getMaxInputVoltage())*4)), 0);
 	}
 
 	@Override

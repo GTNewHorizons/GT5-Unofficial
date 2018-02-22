@@ -700,8 +700,11 @@ public final class ModItems {
 
 		//Chemistry
 		CoalTar.run();
-		
-		new ConnectedBlockFinder();
+
+		//Only used for debugging.
+		if (CORE.DEVENV) {
+			new ConnectedBlockFinder();
+		}
 
 		//Misc Items
 		@SuppressWarnings("unused")

@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -47,7 +48,9 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
-				"40% faster than using single block machines of the same voltage",
+				"125% faster than using single block machines of the same voltage",
+				"Only uses 90% of the eu/t normally required",
+				"Processes six items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (Front Center) [Orange]",
 				"1x Maintenance Hatch (Rear Center) [Green]",
@@ -88,7 +91,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(4, 100, 40);
+		return checkRecipeGeneric(6*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 125);
 	}
 
 	public Block getCasingBlock() {

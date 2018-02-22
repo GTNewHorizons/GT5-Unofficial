@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -34,7 +35,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Industrial Electrolyzer",
-				"40% faster than using single block machines of the same voltage",
+				"180% faster than using single block machines of the same voltage",
+				"Only uses 90% of the eu/t normally required",
+				"Processes two items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
 				"1x Input Bus (anywhere)",
@@ -78,7 +81,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(2, 100, 40);
+		return checkRecipeGeneric(2*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 180);
 	}
 
 	@Override

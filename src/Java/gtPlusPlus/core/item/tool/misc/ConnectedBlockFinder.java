@@ -7,6 +7,7 @@ import java.util.Set;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
@@ -74,67 +75,57 @@ public class ConnectedBlockFinder extends BaseItemWithDamageValue{
 			float hitX, float hitY, float hitZ) {
 
 		BlockPos mStartPoint = new BlockPos(x,y,z);
-
 		Block mBlockType = world.getBlock(x, y, z);
 		int mBlockMeta = mBlockType.getDamageValue(world, x, y, z);
 
+		//Return if Air.
+		if (world.isAirBlock(x, y, z)) {
+			return false;
+		}
+
+		int breaker = 0;
 		Set<BlockPos> mTotalIndex = new HashSet<BlockPos>();
+
 		Set<BlockPos> mFirstSearch = new HashSet<BlockPos>();
 		Set<BlockPos> mSearch_A = new HashSet<BlockPos>();
+
 		Set<BlockPos> mSearch_B = new HashSet<BlockPos>();
 		Set<BlockPos> mSearch_C = new HashSet<BlockPos>();
+		Set<BlockPos> mSearch_D = new HashSet<BlockPos>();
 
-		for (BlockPos b : mStartPoint.getSurroundingBlocks().values()) {
-			if (world.getBlock(b.xPos, b.yPos, b.zPos) == mBlockType) {
-				if (mBlockType.getDamageValue(world, b.xPos, b.yPos, b.zPos) == mBlockMeta) {
-					if (mFirstSearch.add(b)) {
-						if (mTotalIndex.add(b)) {
-							world.setBlock(b.xPos, b.yPos, b.zPos, Blocks.emerald_ore);		
-						}
-					}
-				}
-			}
-		}
+		mFirstSearch.add(mStartPoint);
+		mTotalIndex.add(mStartPoint);
 
-		for (BlockPos b : mFirstSearch) {
-			if (world.getBlock(b.xPos, b.yPos, b.zPos) == mBlockType) {
-				if (mBlockType.getDamageValue(world, b.xPos, b.yPos, b.zPos) == mBlockMeta) {
-					if (mSearch_A.add(b)) {
-						if (mTotalIndex.add(b)) {
-							world.setBlock(b.xPos, b.yPos, b.zPos, Blocks.emerald_ore);		
-						}
-					}
-				}
-			}
-		}
-
-		for (BlockPos b : mSearch_A) {
-			if (world.getBlock(b.xPos, b.yPos, b.zPos) == mBlockType) {
-				if (mBlockType.getDamageValue(world, b.xPos, b.yPos, b.zPos) == mBlockMeta) {
-					if (mSearch_B.add(b)) {
-						if (mTotalIndex.add(b)) {
-							world.setBlock(b.xPos, b.yPos, b.zPos, Blocks.emerald_ore);		
-						}
-					}
-				}
-			}
-		}
 		
-		for (BlockPos b : mSearch_B) {
-			if (world.getBlock(b.xPos, b.yPos, b.zPos) == mBlockType) {
-				if (mBlockType.getDamageValue(world, b.xPos, b.yPos, b.zPos) == mBlockMeta) {
-					if (mSearch_C.add(b)) {
-						if (mTotalIndex.add(b)) {
-							world.setBlock(b.xPos, b.yPos, b.zPos, Blocks.emerald_ore);		
-						}
-					}
-				}
+
+
+		for (BlockPos G : mSearch_D) {
+			if (!world.isAirBlock(G.xPos, G.yPos, G.zPos)) {
+				world.setBlock(G.xPos, G.yPos, G.zPos, Blocks.diamond_ore);
 			}
 		}
+
+
 
 		return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 	}	
-
+	
+	public Set<BlockPos> getValidNeighboursForSet(Set<BlockPos> set){
+		Set<BlockPos> results = set;		
+		for (BlockPos F : set) {
+			results.addAll(F.getValidNeighboursAndSelf());
+		}
+		return results;		
+	}
+	
+	public Set<BlockPos> getExtraNeighboursForSet(Set<BlockPos> set){
+		Set<BlockPos> results = set;		
+		for (BlockPos F : set) {
+			results.addAll(F.getValidNeighboursAndSelf());
+		}
+		return results;		
+	}
+	
 	@Override
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
 		// TODO Auto-generated method stub

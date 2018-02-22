@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -41,7 +42,8 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Material Press",
-				"50% faster than using single block machines of the same voltage",
+				"500% faster than using single block machines of the same voltage",
+				"Processes four items per voltage tier",
 				"Circuit for recipe goes in the Input Bus",
 				"Each Input Bus can have a different Circuit!",
 				"Size: 3x3x3 (Hollow)",
@@ -101,7 +103,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 
 			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{},
-					2, 100, 50, 10000)) return true;
+					(4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 500, 10000)) return true;
 		}
 		return false;
 	}
