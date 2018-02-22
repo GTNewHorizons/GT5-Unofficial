@@ -259,10 +259,15 @@ public class ItemUtils {
 
 		//Banned Materials and replacements for GT5.8 compat.		
 		if (oredictName.toLowerCase().contains("rutile")){
-			mTemp.replace("Rutile", "Titanium");
+			mTemp = oredictName.replace("Rutile", "Titanium");
 		}
 		if (oredictName.toLowerCase().contains("vanadiumsteel")){
-			mTemp.replace("VanadiumSteel", "StainlessSteel");
+			mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
+		}
+		
+		ItemStack mTempItem = getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
+		if (mTempItem != null) {
+			return mTempItem;
 		}
 
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
@@ -293,12 +298,18 @@ public class ItemUtils {
 				if (returnValue != null){
 					return returnValue;
 				}
+				else {
+					returnValue = getGregtechDust(oredictName, amount);
+					if (returnValue != null) {
+						return returnValue;						
+					}
+				}
 			}
 
 			if (returnValue == null){
 				returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 				if (returnValue != null){
-					if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
+					if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){						
 						return returnValue.copy();
 					}
 				}
