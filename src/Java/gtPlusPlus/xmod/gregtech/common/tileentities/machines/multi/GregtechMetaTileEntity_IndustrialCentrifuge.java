@@ -66,7 +66,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[TAE.GTPP_INDEX(0)][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
 	}
 
 	@Override
@@ -129,7 +129,7 @@ extends GregtechMeta_MultiBlockBase {
 
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						//Utils.LOG_WARNING("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
-						if ((!this.addMaintenanceToMachineList(tTileEntity, 57)) && (!this.addInputToMachineList(tTileEntity, 57)) && (!this.addOutputToMachineList(tTileEntity, 57)) && (!this.addEnergyInputToMachineList(tTileEntity, 57))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getCasingTextureIndex()))) {
 
 							//Maintenance Hatch
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
