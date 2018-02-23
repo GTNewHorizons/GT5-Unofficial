@@ -266,25 +266,25 @@ public class ItemUtils {
 		}			
 		//Use Cache		
 		if (mOreDictCache.containsKey(mTemp) && mOreDictCache.get(mTemp) != null) {
-			Logger.INFO("[ODC] Returning mOreDictCache value.");
+			//Logger.INFO("[ODC] Returning mOreDictCache value.");
 			return getCachedValue(mTemp, amount);
 		}
 		else if (mDustCache.containsKey(oredictName) && mDustCache.get(mTemp) != null) {
-			Logger.INFO("[ODC] Returning mDustCache value.");
+			//Logger.INFO("[ODC] Returning mDustCache value.");
 			return getSimpleStack(mDustCache.get(oredictName), amount);
 		}
 		else {
-			Logger.INFO("[ODC] Setting mOreDictCache value.");
+			//Logger.INFO("[ODC] Setting mOreDictCache value.");
 			final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
 			if (!oreDictList.isEmpty()){
 				final ItemStack returnValue = oreDictList.get(0).copy();
 				returnValue.stackSize = amount;
 				setCachedValue(mTemp, returnValue);
-				Logger.INFO("[ODC] Setting and Returning mOreDictCache value.");
+				//Logger.INFO("[ODC] Setting and Returning mOreDictCache value.");
 				return returnValue;
 			}
 			setCachedValue(oredictName, getSimpleStack(ModItems.AAA_Broken));
-			Logger.INFO("[ODC] Returning AAA_Broken.");
+			//Logger.INFO("[ODC] Returning AAA_Broken.");
 			return getSimpleStack(ModItems.AAA_Broken, amount);
 		}
 		
@@ -703,7 +703,7 @@ public class ItemUtils {
 			ItemStack returnvalue;
 			for (int xrc=0;xrc<oreDictList.size();xrc++){
 				final String modid = getModId(oreDictList.get(xrc).getItem());
-				if (modid.equals("gregtech") || modid.equals(CORE.MODID)){
+				if (modid != null && (modid.equals("gregtech") || modid.equals(CORE.MODID))){
 					returnvalue = oreDictList.get(xrc).copy();
 					mDustCache.put(oredictName, returnvalue);
 					returnvalue.stackSize = amount;
@@ -726,7 +726,7 @@ public class ItemUtils {
 			ItemStack returnvalue;
 			for (int xrc=0;xrc<oreDictList.size();xrc++){
 				final String modid = getModId(oreDictList.get(xrc).getItem());
-				if (!modid.equals("tconstruct")){
+				if (modid  != null && !modid.equals("tconstruct")){
 					returnvalue = oreDictList.get(xrc).copy();
 					mDustCache.put(oredictName, returnvalue);
 					returnvalue.stackSize = amount;

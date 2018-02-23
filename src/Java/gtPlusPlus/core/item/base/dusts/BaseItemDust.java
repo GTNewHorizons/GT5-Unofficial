@@ -131,11 +131,11 @@ public class BaseItemDust extends Item{
 		if (stack.getDisplayName().equalsIgnoreCase("fluorite")){
 			list.add("Mined from Sandstone and Limestone.");
 		}
-		if (this.sRadiation > 0){
-			list.add(CORE.GT_Tooltip_Radioactive);
-		}
 		if (this.dustInfo != null){
 			list.add(this.dustInfo.vChemicalFormula);
+		}
+		if (this.sRadiation > 0){
+			list.add(CORE.GT_Tooltip_Radioactive);
 		}
 
 
