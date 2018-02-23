@@ -22,7 +22,6 @@ public class BaseItemWithDamageValue extends Item{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add(EnumChatFormatting.GOLD+"");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 }

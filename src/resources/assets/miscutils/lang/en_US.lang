@@ -1621,6 +1621,7 @@ item.itemBoilerChassis_0.name=Advanced Boiler Chassis [Tier 1]
 item.itemDehydratorCoilWire_0.name=Coil Wire [EV]
 item.itemDehydratorCoil_0.name=Dehydrator Coil [EV]
 item.itemAirFilter_0.name=Air Filter
+item.itemAirFilter_1.name=Air Filter
 item.itemLavaFilter.name=Lava Filter
 item.itemGrindleTablet.name=Git
 item.itemDragonJar.name=Dragon Capture Jar

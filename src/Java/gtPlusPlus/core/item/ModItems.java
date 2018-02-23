@@ -874,7 +874,7 @@ public final class ModItems {
 		for(int i=1; i<=10; i++){
 			//Utils.LOG_INFO(""+i);
 			itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
-			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
+			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName());
 			//System.out.println("Buffer Core registration count is: "+i);
 		}
 

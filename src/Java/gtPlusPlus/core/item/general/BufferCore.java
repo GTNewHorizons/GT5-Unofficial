@@ -40,7 +40,6 @@ public class BufferCore extends BaseItemWithDamageValue{
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		list.add(EnumChatFormatting.GRAY+"A key crafting component for making energy buffers.");
-		super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	public final int getCoreTier() {
