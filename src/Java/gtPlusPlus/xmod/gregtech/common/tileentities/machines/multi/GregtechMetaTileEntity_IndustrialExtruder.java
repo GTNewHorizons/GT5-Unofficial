@@ -52,12 +52,13 @@ extends GregtechMeta_MultiBlockBase {
 				"You can use several input busses per multiblock",
 				"Size: 3x3x5 [WxHxL] (Hollow)", "Controller (front centered)",
 				"Controller (front centered)",
+				"Busses & Hatches cannot replace edge casings",
 				"1x Input Bus (anywhere)",
 				"1x Output Bus (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler Hatch (anywhere)",
-				"Material Press Machine Casings for the rest (16 at least!)",
+				"1x Muffler Hatch (Back Center)",
+				"Inconel Reinforced Casings for the rest (28 at least!)",
 				CORE.GT_Tooltip};
 	}
 

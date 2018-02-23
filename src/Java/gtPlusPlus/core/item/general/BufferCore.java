@@ -18,7 +18,7 @@ public class BufferCore extends BaseItemWithDamageValue{
 	public int coreTier = 0;
 
 	public BufferCore(final String unlocalizedName, final int i) {
-		super(unlocalizedName);
+		super(unlocalizedName+i);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
 		this.setMaxStackSize(2);
 		this.coreTier = i;
@@ -26,7 +26,7 @@ public class BufferCore extends BaseItemWithDamageValue{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack stack) {
-		return super.getItemStackDisplayName(stack)+" ["+GT_Values.VN[this.coreTier-1]+"].";
+		return super.getItemStackDisplayName(stack)/*+" ["+GT_Values.VN[this.coreTier-1]+"]."*/;
 	}
 
 	@Override
