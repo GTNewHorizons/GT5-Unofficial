@@ -6,7 +6,6 @@ import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
 import java.util.ArrayList;
 
 import gregtech.api.enums.*;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -20,7 +19,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.*;
 import net.minecraft.item.ItemStack;
@@ -276,8 +274,8 @@ public class GregtechConduits {
 
 		Logger.INFO("Generating "+output+" pipes & respective recipes.");
 
-		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+output, 1);
-		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+output, 1);
+		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDict("ingot"+output, 1);
+		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDict("plate"+output, 1);
 
 		if (pipeIngot == null){
 			if (pipePlate != null){
@@ -349,6 +347,7 @@ public class GregtechConduits {
 				4*20, eut);
 
 		if ((eut < 512) && !output.equals("Void")){
+			try {
 			final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
 			if (pipePlateDouble != null) {
 				RecipeUtils.recipeBuilder(
@@ -358,6 +357,10 @@ public class GregtechConduits {
 						ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
 			} else {
 				Logger.INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
+			}
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
 			}
 		}
 
@@ -384,7 +387,7 @@ public class GregtechConduits {
 		String tName = aName.toString();
 		if (GT_Utility.isStringInvalid(tName))
 			return false;
-		ArrayList tList = GT_OreDictUnificator.getOres(tName);
+		ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(tName);
 		for (int i = 0; i < tList.size(); ++i)
 			if (GT_Utility.areStacksEqual((ItemStack) tList.get(i), aStack, true))
 				return false;

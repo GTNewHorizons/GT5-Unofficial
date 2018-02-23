@@ -263,25 +263,31 @@ public class ItemUtils {
 		}
 		if (oredictName.toLowerCase().contains("vanadiumsteel")){
 			mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
-		}	
-		
-		//Use Cache
-		if (mDustCache.containsKey(oredictName)) {
-			return getSimpleStack(mDustCache.get(oredictName), amount);
-		}		
-		if (mOreDictCache.containsKey(mTemp)) {
+		}			
+		//Use Cache		
+		if (mOreDictCache.containsKey(mTemp) && mOreDictCache.get(mTemp) != null) {
+			Logger.INFO("[ODC] Returning mOreDictCache value.");
 			return getCachedValue(mTemp, amount);
 		}
-
-		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
-		if (!oreDictList.isEmpty()){
-			final ItemStack returnValue = oreDictList.get(0).copy();
-			returnValue.stackSize = amount;
-			setCachedValue(mTemp, returnValue);
-			return returnValue;
+		else if (mDustCache.containsKey(oredictName) && mDustCache.get(mTemp) != null) {
+			Logger.INFO("[ODC] Returning mDustCache value.");
+			return getSimpleStack(mDustCache.get(oredictName), amount);
 		}
-		setCachedValue(oredictName, getSimpleStack(ModItems.AAA_Broken));
-		return getSimpleStack(ModItems.AAA_Broken, amount);
+		else {
+			Logger.INFO("[ODC] Setting mOreDictCache value.");
+			final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
+			if (!oreDictList.isEmpty()){
+				final ItemStack returnValue = oreDictList.get(0).copy();
+				returnValue.stackSize = amount;
+				setCachedValue(mTemp, returnValue);
+				Logger.INFO("[ODC] Setting and Returning mOreDictCache value.");
+				return returnValue;
+			}
+			setCachedValue(oredictName, getSimpleStack(ModItems.AAA_Broken));
+			Logger.INFO("[ODC] Returning AAA_Broken.");
+			return getSimpleStack(ModItems.AAA_Broken, amount);
+		}
+		
 	}
 
 	private static Map<String, ItemStack> mOreDictCache = new HashMap();

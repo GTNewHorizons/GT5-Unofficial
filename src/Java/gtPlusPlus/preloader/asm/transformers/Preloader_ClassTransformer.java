@@ -15,7 +15,7 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Preloader_ClassTransformer {
 
-	public boolean getConfig(){
+	public static boolean getConfig(){
 		final Configuration config = new Configuration(	new File(Utils.getMcDir(), "config/GTplusplus/GTplusplus.cfg"));
 		if (config != null){		
 			config.load();
