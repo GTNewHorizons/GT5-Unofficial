@@ -69,7 +69,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"Outputs U233 every 10 seconds, on average",
 				"Input Fluorine and Helium for bonus byproducts",
 				"Input Li2BeF4 and a molten salt as fuel.",
-				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235"
+				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235",
 				CORE.GT_Tooltip};
 	}
 
