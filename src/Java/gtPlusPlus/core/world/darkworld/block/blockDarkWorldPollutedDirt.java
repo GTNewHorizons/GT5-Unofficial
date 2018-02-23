@@ -18,7 +18,7 @@ public class blockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
 		this.setBlockTextureName("minecraft" + ":" + "dirt");
 		LanguageRegistry.addName(this, "Polluted Soil");
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()

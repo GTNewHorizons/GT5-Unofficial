@@ -21,6 +21,7 @@ public class ItemBlockToxicEverglades extends ItemBlock {
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (this.mID == 0){ //blockDarkWorldPortalFrame
+			list.add("Use this to access the Toxic Everglades.");
 			list.add("Assembled in the same shape as the Nether Portal.");			
 		}
 		else if (this.mID == 1){ //blockDarkWorldPortal
@@ -30,7 +31,10 @@ public class ItemBlockToxicEverglades extends ItemBlock {
 			list.add("Will burn very quickly if it happens to catch fire.");			
 		}
 		else if (this.mID == 3){ //blockDarkWorldPollutedDirt
-			list.add("Maybe you can do something with this?.");			
+			list.add("Maybe you can do something with this?.");		
+			if (stack.getItemDamage() > 0) {
+				list.add("This smells worse than a bean fart...");	
+			}
 		}
 	}
 	

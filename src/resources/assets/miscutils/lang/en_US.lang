@@ -111,6 +111,11 @@ item.Fertiliser.name=Fertiliser Cell
 item.UN32Fertiliser.name=UN-32 Fertiliser Cell
 item.UN18Fertiliser.name=UN-18 Fertiliser Cell
 item.RaisinJuice.name=Raisin Juice Cell
+item.BerylliumHydroxide.name=Beryllium Hydroxide Cell
+item.AmmoniumBifluoride.name=Ammonium Bifluoride Cell
+item.Hydroxide.name=Hydroxide Cell
+item.Ammonium.name=Ammonium Cell
+item.AmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Cell
 
 //Resources
 item.itemStickyRubber.name=Gumlet of Sticky Rubber
@@ -1606,16 +1611,16 @@ item.TungstenCarbideMultispade.name=Tungsten Carbide Multispade
 item.TantalumCarbideMultipick.name=Tantalum Carbide Multipick
 item.TantalumCarbideMultispade.name=Tantalum Carbide Multispade
 
-item.mobessence.name=mobessence Cell
+item.mobessence.name=Mob Essence Cell
 item.itemPlateClay.name=Clay Plate
 item.itemPlateDoubleClay.name=Double Clay Plate
-item.itemSmallGearWroughtIron.name=Small WroughtIron Gear
+item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
 item.itemPlateLithium.name=Lithium Plate
 item.itemPlateDoubleEuropium.name=Double Europium Plate
 item.itemBoilerChassis_0.name=Advanced Boiler Chassis [Tier 1]
 item.itemDehydratorCoilWire_0.name=Coil Wire [EV]
 item.itemDehydratorCoil_0.name=Dehydrator Coil [EV]
-item.itemAirFilter_0.name=Air Filter [Tier 1]
+item.itemAirFilter_0.name=Air Filter
 item.itemLavaFilter.name=Lava Filter
 item.itemGrindleTablet.name=Git
 item.itemDragonJar.name=Dragon Capture Jar
@@ -1714,7 +1719,7 @@ tile.blockRainforestOakSapling.name=Rainforest Oak Sapling
 
 //TC Stuff
 tile.blockFastAlchemyFurnace.0.name=Broken
-tile.blockFastArcaneAlembic.0.name=Broken
+tile.blockFastArcaneAlembic.1.name=Broken
 
 //Frame Boxes
 tile.Block of Selenium.name=Block of Selenium
@@ -1894,7 +1899,8 @@ tile.blockTankXpConverter.name=Experience Converter
 
 //Everglades Blocks
 tile.fluidSludge.0.name=Stagnant Waste Water
-tile.blockDarkWorldPortal.name=tile.blockDarkWorldPortal.name
-tile.blockDarkWorldGround.name=tile.blockDarkWorldGround.name
-tile.blockDarkWorldGround2.name=tile.blockDarkWorldGround2.name
-tile.blockDarkWorldPortalFrame.name=tile.blockDarkWorldPortalFrame.name
+tile.blockDarkWorldPortal.name=A Glimpse of the Future
+tile.blockDarkWorldGround.name=Unstable Earth
+tile.blockDarkWorldGround2.name=Polluted Soil
+tile.blockDarkWorldGround2.2.name=Highly Polluted Soil
+tile.blockDarkWorldPortalFrame.name=Containment Frame
