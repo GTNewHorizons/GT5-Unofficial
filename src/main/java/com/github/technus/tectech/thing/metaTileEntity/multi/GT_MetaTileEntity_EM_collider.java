@@ -21,7 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -113,11 +113,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean isFacingValid_EM(byte aFacing) {
-        return aFacing >= 2;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("eTier", eTier);
@@ -183,9 +178,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             }
         }
         if ((stackSize & 1) == 1) {
-            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity, hintsOnly);
+            StructureBuilderExtreme(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,this, hintsOnly);
         } else {
-            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity, hintsOnly);
+            StructureBuilderExtreme(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity,this, hintsOnly);
         }
     }
 

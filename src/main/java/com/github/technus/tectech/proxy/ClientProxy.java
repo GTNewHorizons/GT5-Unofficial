@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityExplodeFX;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -59,6 +60,13 @@ public class ClientProxy extends CommonProxy {
         float xSpd = 0;
         float zSpd = 0;
         EntityFX particle = new EntityExplodeFX(aMuffler.getWorld(), xPos + TecTech.Rnd.nextFloat() * 0.5F, yPos + TecTech.Rnd.nextFloat() * 0.5F, zPos + TecTech.Rnd.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
+        particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+    }
+
+    @Override
+    public void em_particle(World w,double x,double y,double z) {//CUTE!
+        EntityFX particle = new EntityExplodeFX(w, x + TecTech.Rnd.nextFloat() * 0.5F, y + TecTech.Rnd.nextFloat() * 0.5F, z + TecTech.Rnd.nextFloat() * 0.5F, 0, 0, 0);
         particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
@@ -112,5 +120,22 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void playSound(IGregTechTileEntity base,String name) {
         base.getWorld().playSoundEffect(base.getXCoord(),base.getYCoord(),base.getZCoord(), Reference.MODID+':'+name, 1, 1);
+    }
+
+    @Override
+    public void renderAABB(World w,AxisAlignedBB box) {
+        em_particle(w,box.minX,box.minY,box.minZ);
+        em_particle(w,box.minX,box.minY,box.maxZ);
+        em_particle(w,box.minX,box.maxY,box.maxZ);
+        em_particle(w,box.minX,box.maxY,box.minZ);
+        em_particle(w,box.maxX,box.maxY,box.minZ);
+        em_particle(w,box.maxX,box.maxY,box.maxZ);
+        em_particle(w,box.maxX,box.minY,box.maxZ);
+        em_particle(w,box.maxX,box.minY,box.minZ);
+    }
+
+    @Override
+    public void renderAABB(AxisAlignedBB box) {
+        renderAABB(Minecraft.getMinecraft().theWorld,box);
     }
 }

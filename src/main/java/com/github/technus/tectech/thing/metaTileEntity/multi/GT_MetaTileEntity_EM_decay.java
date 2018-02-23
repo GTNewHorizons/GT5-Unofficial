@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.Util.VN;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -96,7 +96,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
     }
 
     @Override
@@ -124,9 +124,14 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         }else if(eSafeVoid){
             contents.clear();
         }else if(contents.hasStacks()){
-            startRecipe(null);
+            return startRecipe(null);
         }
         return false;
+    }
+
+    @Override
+    protected void afterRecipeCheckFailed() {
+        super.afterRecipeCheckFailed();
     }
 
     private boolean startRecipe(cElementalInstanceStack input) {
@@ -134,7 +139,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             contents.putUnify(input);
         }
 
-        mMaxProgresstime = 20;//(int)m3;
+        mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
 
         float mass=contents.getMass();

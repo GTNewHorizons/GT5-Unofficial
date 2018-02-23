@@ -184,12 +184,15 @@ public class TecTech {
         ));
         String modId;
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
-            modId = GameRegistry.findUniqueIdentifierFor(block).modId;
-            if (modIDs.contains(modId)) {//Full Whitelisted Mods
-                continue;
-            } else if ("OpenBlocks".equals(modId)) {
-                if ("grave".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
+            GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
+            if (uniqueIdentifier != null) {
+                modId = uniqueIdentifier.modId;
+                if (modIDs.contains(modId)) {//Full Whitelisted Mods
                     continue;
+                } else if ("OpenBlocks".equals(modId)) {
+                    if ("grave".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
+                        continue;
+                    }
                 }
             }
             block.setResistance(6);

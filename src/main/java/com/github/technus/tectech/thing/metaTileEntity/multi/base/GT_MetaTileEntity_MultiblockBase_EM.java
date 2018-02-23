@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -196,6 +197,172 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         } else {
             rotateAroundFrontPlane(direction);
         }
+    }
+
+    /**
+     * Gets AABB based on abc and not xyz, without offsetting to controller position!!!
+     * @param minA
+     * @param minB
+     * @param minC
+     * @param maxA
+     * @param maxB
+     * @param maxC
+     * @return
+     */
+    public final AxisAlignedBB getBoundingBox(int minA,int minB,int minC,int maxA,int maxB,int maxC){
+        double[] offSetsMin= getTranslatedOffsets(minA,minB,minC);
+        double[] offSetsMax= getTranslatedOffsets(maxA,maxB,maxC);
+        for (int i=0;i<3;i++){
+            if(offSetsMax[i]<offSetsMin[i]){
+                double temp=offSetsMax[i];
+                offSetsMax[i]=offSetsMin[i];
+                offSetsMin[i]=temp;
+            }
+        }
+        return AxisAlignedBB.getBoundingBox(
+                offSetsMin[0],offSetsMin[1],offSetsMin[2],
+                offSetsMax[0],offSetsMax[1],offSetsMax[2]
+        );
+    }
+
+    /**
+     * Translates relative axis coordinates abc to absolute axis coordinates xyz
+     * abc from the CONTROLLER!
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
+    public final double[] getTranslatedOffsets(double a, double b, double c){
+        double[] result=new double[3];
+        switch (getBaseMetaTileEntity().getFrontFacing() +(frontRotation<<3)){
+            case 4:
+                result[0]=  c;
+                result[2]=  a;
+                result[1]=- b;
+                break;
+            case 12:
+                result[0]=  c;
+                result[1]=- a;
+                result[2]=- b;
+                break;
+            case 20:
+                result[0]=  c;
+                result[2]=- a;
+                result[1]=  b;
+                break;
+            case 28:
+                result[0]=  c;
+                result[1]=  a;
+                result[2]=  b;
+                break;
+
+            case 3:
+                result[0]=  a;
+                result[2]=- c;
+                result[1]=- b;
+                break;
+            case 11:
+                result[1]=- a;
+                result[2]=- c;
+                result[0]=- b;
+                break;
+            case 19:
+                result[0]=- a;
+                result[2]=- c;
+                result[1]=  b;
+                break;
+            case 27:
+                result[1]=  a;
+                result[2]=- c;
+                result[0]=  b;
+                break;
+
+            case 5:
+                result[0]=- c;
+                result[2]=- a;
+                result[1]=- b;
+                break;
+            case 13:
+                result[0]=- c;
+                result[1]=- a;
+                result[2]=  b;
+                break;
+            case 21:
+                result[0]=- c;
+                result[2]=  a;
+                result[1]=  b;
+                break;
+            case 29:
+                result[0]=- c;
+                result[1]=  a;
+                result[2]=- b;
+                break;
+
+            case 2:
+                result[0]=- a;
+                result[2]=  c;
+                result[1]=- b;
+                break;
+            case 10:
+                result[1]=- a;
+                result[2]=  c;
+                result[0]=  b;
+                break;
+            case 18:
+                result[0]=  a;
+                result[2]=  c;
+                result[1]=  b;
+                break;
+            case 26:
+                result[1]=  a;
+                result[2]=  c;
+                result[0]=- b;
+                break;
+            //Things get odd if the block faces up or down...
+            case 1:
+                result[0]=  a;
+                result[2]=  b;
+                result[1]=- c;
+                break;//similar to 3
+            case 9:
+                result[2]=  a;
+                result[0]=- b;
+                result[1]=- c;
+                break;//similar to 3
+            case 17:
+                result[0]=- a;
+                result[2]=- b;
+                result[1]=- c;
+                break;//similar to 3
+            case 25:
+                result[2]=- a;
+                result[0]=  b;
+                result[1]=- c;
+                break;//similar to 3
+
+            case 0:
+                result[0]=- a;
+                result[2]=  b;
+                result[1]=  c;
+                break;//similar to 2
+            case 8:
+                result[2]=  a;
+                result[0]=  b;
+                result[1]=  c;
+                break;
+            case 16:
+                result[0]=  a;
+                result[2]=- b;
+                result[1]=  c;
+                break;
+            case 24:
+                result[2]=- a;
+                result[0]=- b;
+                result[1]=+ c;
+                break;
+        }
+        return result;
     }
 
     //can be used to check structures of multi-blocks larger than one chunk, but...
@@ -1974,6 +2141,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void doExplosion(long aExplosionPower) {
         explodeMultiblock();
+        if (!TecTech.ModConfig.BOOM_ENABLE) {
+            TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
+            StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+            TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + ste[2].toString());
+            return;
+        }
         super.doExplosion(aExplosionPower);
     }//Redirecting to explodemultiblock
     //endregion

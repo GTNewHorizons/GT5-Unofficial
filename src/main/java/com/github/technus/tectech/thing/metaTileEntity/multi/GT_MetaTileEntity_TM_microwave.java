@@ -22,12 +22,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
@@ -38,7 +37,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public static final int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
     private int powerSetting,timerSetting,timerValue;
     private boolean hasBeenPausedThisCycle=false;
-    private boolean flipped=false;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -49,13 +47,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             {"0---0", "0---0", "0---0", " 000 ",},
             {"00000", "00000", "00000", "0   0",},
     };
-    private static final String[][] shapeFlipped = new String[][]{
-            {shape[0][3],shape[0][2],shape[0][1],shape[0][0],},
-            {shape[1][3],shape[1][2],shape[1][1],shape[1][0],},
-            {shape[2][3],shape[2][2],shape[2][1],shape[2][0],},
-            {shape[3][3],shape[3][2],shape[3][1],shape[3][0],},
-            {shape[4][3],shape[4][2],shape[4][1],shape[4][0],},
-    };
     private static final Block[] blockType = new Block[]{sBlockCasings4};
     private static final byte[] blockMeta = new byte[]{1};
 
@@ -65,7 +56,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaFallback = new byte[]{1};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic Hatches or High Power Casing",
+            "1 - Classic Hatches or Clean Stainless Steel Casing",
             "Also acts like a hopper so give it an Output Bus",
     };
     //endregion
@@ -95,50 +86,22 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, false, true);
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, false, true, true);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", false, false, true);//todo texture
-    }
-
-    @Override
-    public boolean isFacingValid_EM(byte aFacing) {
-        return aFacing >= 2;
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "EMDisplay.png", false, true, true);//todo texture
     }
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if(flipped){//some optimization
-            if(structureCheck_EM(shapeFlipped, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0)){
-                flipped=true;
-                return true;
-            }
-            if(structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)){
-                flipped=false;
-                return true;
-            }
-        }else{
-            if(structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)){
-                flipped=false;
-                return true;
-            }
-            if(structureCheck_EM(shapeFlipped, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0)){
-                flipped=true;
-                return true;
-            }
-        }
-        return false;
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
     }
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        if((stackSize &0x1)==1) {
-            StructureBuilder(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(), hintsOnly);
-        } else {
-            StructureBuilder(shapeFlipped, blockType, blockMeta, 2, 1, 0, getBaseMetaTileEntity(), hintsOnly);
-        }
+        StructureBuilderExtreme(shape, blockType, blockMeta, 2, 2, 0, getBaseMetaTileEntity(),this, hintsOnly);
     }
 
     @Override
@@ -179,27 +142,25 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         }
         timerValue--;
         IGregTechTileEntity mte=getBaseMetaTileEntity();
-        int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
-        int zDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetZ*2;
-        float xPos=mte.getXCoord()+0.5f;
-        float yPos=mte.getYCoord()+0.5f;
-        float zPos=mte.getZCoord()+0.5f;
-        ArrayList<ItemStack> itemsToOutput=new ArrayList<>();
-        HashSet<Entity> tickedStuff=new HashSet<>();
-
-        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(
-                xPos-1.5+xDirShift,
-                yPos-(flipped?2.5:.5),
-                zPos-1.5+zDirShift,
-                xPos+1.5+xDirShift,
-                yPos+(flipped?.5:2.5),
-                zPos+1.5+zDirShift);
+        double[] xyzOffsets= getTranslatedOffsets(0,-1,2);
+        double xPos=mte.getXCoord()+0.5f+xyzOffsets[0];
+        double yPos=mte.getYCoord()+0.5f+xyzOffsets[1];
+        double zPos=mte.getZCoord()+0.5f+xyzOffsets[2];
+        AxisAlignedBB aabb=getBoundingBox(-2,-2,-2,2,2,2).offset(xPos,yPos,zPos);
+        xyzOffsets= getTranslatedOffsets(0,-4,0);
+        double[] xyzExpansion= getTranslatedOffsets(1.5,0,1.5);
+        for(int i=0;i<3;i++){//gets ABS from translated to get expansion values
+            if(xyzExpansion[i]<0)xyzExpansion[i]=-xyzExpansion[i];
+        }
 
         int damagingFactor =
                 Math.min(powerSetting >> 6,8)+
                 Math.min(powerSetting >> 8,24)+
                 Math.min(powerSetting >> 12,48)+
                         (powerSetting >> 18);
+
+        ArrayList<ItemStack> itemsToOutput=new ArrayList<>();
+        HashSet<Entity> tickedStuff=new HashSet<>();
 
         boolean inside=true;
         do {
@@ -226,11 +187,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                     }
                 }
             }
-            aabb.offset(0,flipped?-3:3,0);
-            aabb.minX-=.5f;
-            aabb.maxX+=.5f;
-            aabb.minZ-=.5f;
-            aabb.maxZ+=.5f;
+            aabb.offset(xyzOffsets[0],xyzOffsets[1],xyzOffsets[2]);
+            aabb=aabb.expand(xyzExpansion[0],xyzExpansion[1],xyzExpansion[2]);
             inside=false;
             damagingFactor>>=1;
         } while(damagingFactor>0);
@@ -277,7 +235,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         if (timerParameter <= 1) {
             setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else if (timerParameter <= 3000) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         } else if (Double.isNaN(timerParameter)) {
             setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
         } else {

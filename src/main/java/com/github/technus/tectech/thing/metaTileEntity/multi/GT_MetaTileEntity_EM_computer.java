@@ -28,7 +28,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -320,16 +320,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt=getBaseMetaTileEntity();
-        StructureBuilder(front, blockType, blockMeta, 1, 2, 0, igt,hintsOnly);
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, -1, igt,hintsOnly);
+        StructureBuilderExtreme(front, blockType, blockMeta, 1, 2, 0, igt,this,hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt,this,hintsOnly);
 
         byte offset=-2;
         for (int rackSlices = stackSize >12?12: stackSize; rackSlices>0 ; rackSlices--) {
-            StructureBuilder(slice, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
+            StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
         }
 
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
-        StructureBuilder(terminator, blockType, blockMeta, 1, 2, offset,igt,hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
+        StructureBuilderExtreme(terminator, blockType, blockMeta, 1, 2, offset,igt,this,hintsOnly);
     }
 
     @Override
@@ -351,11 +351,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 Util.intBitsToString(TecTech.Rnd.nextInt()),
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
         };
-    }
-
-    @Override
-    public boolean isFacingValid_EM(byte aFacing) {
-        return aFacing >= 2;
     }
 
     //NEW METHOD

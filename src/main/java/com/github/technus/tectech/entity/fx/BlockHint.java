@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -13,6 +14,10 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class BlockHint extends EntityFX {
     private IIcon[] icons = new IIcon[6];
+
+    public BlockHint(World world){
+        this(world,0,0,0, Blocks.stone,0);
+    }
 
     public BlockHint(World world, int x, int y, int z, Block block, int meta) {
         super(world, x+.25, y+.5, z+.25);
