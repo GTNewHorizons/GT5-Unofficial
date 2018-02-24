@@ -62,7 +62,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -137,8 +137,8 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
+			if ((this.mOutputHatches.size() != 0)) {
+				Logger.INFO("Use Busses, Not Hatches for Output.");
 				return false;
 			}
 			if ((this.mInputBusses.size() != 2) || (this.mOutputBusses.size() != 2)) {
