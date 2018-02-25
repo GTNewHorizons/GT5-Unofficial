@@ -668,10 +668,14 @@ public final class ModItems {
 			FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[]{50, 150, 50, 100});
 		}
 
-		//Just an unusual plate needed for some black magic.
-		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
-		itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
-
+		//Just an unusual plate needed for some black magic.		
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateClay", 1) == null){
+			itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
+		}
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleClay", 1) == null){
+			itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
+		}
+		
 		//A small gear needed for wizardry.
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGtSmallWroughtIron", 1) == null){
 			itemSmallWroughtIronGear = new BaseItemSmallGear(MaterialUtils.generateMaterialFromGtENUM(Materials.WroughtIron));
@@ -764,7 +768,7 @@ public final class ModItems {
 			Logger.INFO("BigReactors Found - Loading Resources.");
 			//Item Init
 			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Blutonium", "Blutonium", new short[]{0, 0, 255}, 0);
-			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
+			itemPlateCyanite = ItemUtils.generateSpecialUsePlate("Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
 			itemPlateLudicrite = ItemUtils.generateSpecialUsePlate("Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 0);
 		}
 		else {

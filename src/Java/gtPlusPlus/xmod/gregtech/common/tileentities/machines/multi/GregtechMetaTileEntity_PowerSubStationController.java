@@ -97,10 +97,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-
-
-
-		return false;
+		return (this.mActualStoredEU >= 0);
 	}
 
 	@Override
@@ -418,7 +415,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		if (this.getBaseMetaTileEntity().isAllowedToWork()){
 
 			//Input Power
-			if (this.mActualStoredEU < this.maxEUStore() && mMaxProgresstime > 0){
+			if (this.mActualStoredEU < this.maxEUStore()){
 				if (this.getBaseMetaTileEntity().isAllowedToWork()){
 					this.getBaseMetaTileEntity().enableWorking();
 				}
