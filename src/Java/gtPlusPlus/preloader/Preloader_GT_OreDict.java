@@ -60,7 +60,7 @@ public class Preloader_GT_OreDict {
 					if (isInstanceOf(MekCircuit, bannedItem.getItem())) {
 						for (int r=0;r<4;r++){
 							if (bannedItem.getItemDamage() == r){
-								FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+								FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 								return true;
 							}
 						}
@@ -71,7 +71,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemIngot");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 1){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -81,7 +81,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemDirtyDust");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 2){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -91,7 +91,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemDust");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 2){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -101,7 +101,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemCrystal");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 2){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -111,7 +111,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemShard");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 2){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -121,7 +121,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekIngot = Class.forName("mekanism.common.item.ItemClump");
 					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
 						if (bannedItem.getItemDamage() == 2){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -131,7 +131,7 @@ public class Preloader_GT_OreDict {
 					final Class<?> MekOre = Class.forName("mekanism.common.item.ItemBlockOre");
 					if (isInstanceOf(MekOre, bannedItem.getItem()) || (bannedItem == ItemUtils.simpleMetaStack("Mekanism:OreBlock", 0, 1))) {
 						if (bannedItem.getItemDamage() == 0){
-							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing %s from the OreDictionary to balance Mekanism.", bannedItem.getDisplayName());
 							return true;
 						}
 					}
@@ -139,11 +139,11 @@ public class Preloader_GT_OreDict {
 			}
 
 		} catch (final Throwable e) {
-			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "A mod tried to register an invalid item with the OreDictonary.");
+			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "A mod tried to register an invalid item with the OreDictionary.");
 			if (bannedItem != null){
-				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Please report this issue to the authors of "+ItemUtils.getModId(bannedItem));
+				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Please report this issue to the authors of %s", ItemUtils.getModId(bannedItem));
 			}
-			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, e.getMessage());
+			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "%s", e.getMessage());
 		}
 		return false;
 	}
