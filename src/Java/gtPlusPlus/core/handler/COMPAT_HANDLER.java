@@ -55,6 +55,7 @@ public class COMPAT_HANDLER {
 			*/
 
 			new RECIPES_LaserEngraver();
+			new RECIPES_Extruder();
 			GregtechEnergyBuffer.run();
 			GregtechLFTR.run();
 			GregtechSteamCondenser.run();

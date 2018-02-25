@@ -83,8 +83,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Unused Machine Coils
 	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_BlastSmelter, Casing_BlastSmelter,
 
-	//Windmill Shaft Shape for Extruder
+	//Shapes for Extruder
 	Shape_Extruder_WindmillShaft,
+	Shape_Extruder_SmallGear,
 
 	//Batteries
 	Battery_RE_EV_Sodium, Battery_RE_EV_Cadmium, Battery_RE_EV_Lithium,
