@@ -13,13 +13,21 @@ import net.minecraft.world.World;
 public class BasicBlock extends BlockContainer {
 
 	public BasicBlock(final String unlocalizedName, final Material material) {
-		this(unlocalizedName, material, 2);
+		this(BlockTypes.STANDARD, unlocalizedName, material, 2);
 	}
 
-	public BasicBlock(final String unlocalizedName, final Material material, final int harvestLevel) {
+	public BasicBlock(final BlockTypes type, final String unlocalizedName, final Material material) {
+		this(type, unlocalizedName, material, 2);
+	}
+
+	public BasicBlock(BlockTypes type, final String unlocalizedName, final Material material, final int harvestLevel) {
 		super(material);
 		this.setBlockName(Utils.sanitizeString(unlocalizedName));
-		this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+
+		if (type != BlockTypes.ORE) {
+			this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+		}
+
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setHardness(2.0F);
 		this.setResistance(6.0F);

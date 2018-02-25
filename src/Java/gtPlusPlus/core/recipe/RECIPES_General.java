@@ -45,7 +45,6 @@ public class RECIPES_General {
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();
 			addCompressedObsidian();
-			addFluoriteFix();
 		}
 	}
 
@@ -107,6 +106,12 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
+
+		// Try fix this ore
+		if (ModBlocks.blockOreFluorite != null){
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
+		}
+		
 		//Iron bars
 		final ItemStack ironBars;
 		if (CORE.GTNH) {
@@ -163,7 +168,7 @@ public class RECIPES_General {
 		//Alkalus Coin
 		if (RecipeUtils.recipeBuilder(
 				"gemExquisiteRuby", "gemFlawlessDiamond", "gemExquisiteDiamond",
-				"gemFlawlessRuby", ItemList.Credit_Greg_Naquadah.get(1), "gemFlawlessSapphire",
+				"gemFlawlessRuby", ItemList.Credit_Greg_Osmium.get(1), "gemFlawlessSapphire",
 				"gemExquisiteEmerald", "gemFlawlessEmerald", "gemExquisiteSapphire",
 				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk))){
 			Logger.INFO("Added a recipe for The Alkalus Disk.");
@@ -196,46 +201,25 @@ public class RECIPES_General {
 				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
 				ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1));
 
-		//Alkalus Coin
-		/*AddGregtechRecipe.addAssemblylineRecipe(
-				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk),
-				288000,
-				new ItemStack[]{
-				ItemUtils.getSimpleStack(gemShards[0], 10),
-				ItemUtils.getSimpleStack(gemShards[1], 10),
-				ItemUtils.getSimpleStack(gemShards[2], 10),
-				ItemUtils.getSimpleStack(gemShards[3], 10),
-        		GT_OreDictUnificator.get(OrePrefixes.block, Materials.NeodymiumMagnetic, 1L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
-        		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)},
-				new FluidStack[]{
-        		Materials.Osmium.getMolten(144*32),
-        		Materials.Europium.getFluid(144*8)},
-				ItemUtils.getSimpleStack(Dimension_DarkWorld.portalItem),
-				30*20*60,
-				100000);*/
-
+		
+		
+		
+		// Rope/Fiber/Net
 		RecipeUtils.addShapelessGregtechRecipe(
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Items.reeds)},
 				ItemUtils.getSimpleStack(ModItems.itemFiber, 16)
 				);
-
 		RecipeUtils.addShapelessGregtechRecipe(
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Blocks.sapling)},
 				ItemUtils.getSimpleStack(ModItems.itemFiber, 32)
 				);
-
 		RecipeUtils.recipeBuilder(
 				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
 				ItemUtils.getSimpleStack(ModItems.itemFiber, 1), CI.craftingToolKnife, ItemUtils.getSimpleStack(ModItems.itemFiber, 1),
 				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
 				ItemUtils.getSimpleStack(ModItems.itemRope, 3));
-
 		RecipeUtils.recipeBuilder(
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
@@ -277,12 +261,6 @@ public class RECIPES_General {
 		return true;
 	}
 
-	private static boolean addFluoriteFix(){
-		if (ModBlocks.blockOreFluorite != null){
-			return RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
-		}
-		return false;
-	}
 
 }
 

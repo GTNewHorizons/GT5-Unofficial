@@ -3,16 +3,12 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 
 import java.util.*;
-import java.util.Map.Entry;
-
 import gregtech.api.enums.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -24,7 +20,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import scala.xml.dtd.ELEMENTS;
 
 public class Material {
 

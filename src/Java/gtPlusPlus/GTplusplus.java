@@ -1,6 +1,5 @@
 package gtPlusPlus;
 
-import static gtPlusPlus.api.objects.minecraft.ChunkManager.mChunkLoaderManagerMap;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
@@ -18,12 +17,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.Recipe_GT;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
-import gtPlusPlus.api.objects.minecraft.DimChunkPos;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
@@ -46,13 +42,9 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
@@ -149,13 +141,13 @@ public class GTplusplus implements ActionListener {
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
-		RecipeGen_Recycling.executeGenerators();
+		RecipeGen_Recycling.executeGenerators();	
+		
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
-		dumpGtRecipeMap(Recipe_GT.Gregtech_Recipe_Map.sSlowFusion2Recipes);
 	}
 
 	@EventHandler

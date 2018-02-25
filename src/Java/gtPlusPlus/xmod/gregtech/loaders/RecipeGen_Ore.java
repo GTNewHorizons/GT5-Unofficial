@@ -48,10 +48,15 @@ public class RecipeGen_Ore implements Runnable{
 			}
 			if (material.getComposites().size() >= 1 && material.getComposites().get(1) != null){
 				bonusB = material.getComposites().get(1).getStackMaterial();
-			}
-			else if (material.getComposites().get(0) != null){
-				bonusB = material.getComposites().get(0).getStackMaterial();
-			}
+			}			
+			else if (material.getComposites().size() >= 1 && material.getComposites().get(1) == null){
+				if (material.getComposites().get(0) != null){
+					bonusB = material.getComposites().get(0).getStackMaterial();
+				}
+				else {
+					bonusB = ELEMENT.getInstance().CHROMIUM;
+				}
+			}			
 			else {
 				//Ultra Bonus
 				bonusB = ELEMENT.getInstance().GALLIUM;
@@ -65,6 +70,9 @@ public class RecipeGen_Ore implements Runnable{
 				}
 			}
 
+			if (bonusA == null || bonusB == null) {
+				return;
+			}
 			/**
 			 * Macerate
 			 */

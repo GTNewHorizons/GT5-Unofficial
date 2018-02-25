@@ -1,12 +1,12 @@
-package gtPlusPlus.plugin.fishing;
+package gtPlusPlus.api.plugin;
 
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
-public class Core_Fishing implements IPlugin {
+public class Sample_Plugin implements IPlugin {
 
-	Core_Fishing() {
-		Core_Manager.registerPlugin(this);
+	private Sample_Plugin() {
+		Core_Manager.registerPlugin(this); //This must be called, else it won't load.
 	}
 	
 	@Override
@@ -26,7 +26,7 @@ public class Core_Fishing implements IPlugin {
 
 	@Override
 	public String getPluginName() {
-		return "GT++ Fishing Module";
+		return "Sample Plugin";
 	}
 
 }

@@ -3,6 +3,7 @@ package gtPlusPlus.core.material.nuclear;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class FLUORIDES {
 
@@ -22,8 +23,9 @@ public class FLUORIDES {
 			false, //Generate cells
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 24),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 72),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Galena), 4)
 			});
 
 	//ThF4

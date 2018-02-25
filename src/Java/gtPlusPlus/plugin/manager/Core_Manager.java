@@ -8,6 +8,7 @@ public class Core_Manager {
 
 	public static AutoMap<IPlugin> mPlugins = new AutoMap<IPlugin>();
 	public static void registerPlugin(IPlugin plug) {
+		Logger.INFO("[Plugin] " + "Registered "+plug.getPluginName()+".");
 		mPlugins.put(plug);
 	}	
 	public static boolean preInit() {
