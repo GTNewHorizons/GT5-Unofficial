@@ -55,6 +55,7 @@ extends GregtechMeta_MultiBlockBase {
 				"5x Output Bus (Any casing besides bottom layer)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
+				"1x Muffler Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
 				CORE.GT_Tooltip};
 	}
@@ -130,7 +131,7 @@ extends GregtechMeta_MultiBlockBase {
 					if (!((i == 0) && (j == 0) && ((h > 0) && (h < 5))))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
 					{
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) &&(!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								Logger.INFO("Returned False 1");
 								return false;
@@ -145,7 +146,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		if ((this.mOutputHatches.size() != 0) || (this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 5)) {
+		if ((this.mOutputHatches.size() != 0) ||(this.mMufflerHatches.size() == 0) || (this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 5)) {
 			Logger.INFO("Returned False 3");
 			return false;
 		}
@@ -168,7 +169,7 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = 0; i < tmpHatches.length; i++) {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
-		return tAmount >= 26;
+		return tAmount >= 24;
 	}
 
 	public boolean ignoreController(final Block tTileEntity) {
@@ -185,7 +186,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 100;
 	}
 
 	@Override

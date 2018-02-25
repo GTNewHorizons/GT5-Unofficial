@@ -205,7 +205,6 @@ GT_MetaTileEntity_Hatch {
 			if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
 				MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();				
 				if (mMetaTileEntity.dechargerSlotCount() > 0 && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
-					Logger.INFO("3");
 					for (int i = mMetaTileEntity.dechargerSlotStartIndex(), k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
 						if (mMetaTileEntity.mInventory[i] != null && mMetaTileEntity.getEUVar() < aBaseMetaTileEntity.getEUCapacity()) {
 							aBaseMetaTileEntity.increaseStoredEnergyUnits(GT_ModHandler.dischargeElectricItem(mMetaTileEntity.mInventory[i], (int) Math.min(V[mTier] * 15, aBaseMetaTileEntity.getEUCapacity() - aBaseMetaTileEntity.getStoredEU()), (int) Math.min(Integer.MAX_VALUE, mMetaTileEntity.getInputTier()), true, false, false), true);

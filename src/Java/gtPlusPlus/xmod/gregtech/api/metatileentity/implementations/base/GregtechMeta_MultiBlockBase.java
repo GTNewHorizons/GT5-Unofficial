@@ -421,9 +421,14 @@ GT_MetaTileEntity_MultiBlockBase {
 			this.mTotalRunTime++;
 		}
 		
+		if (aBaseMetaTileEntity.isServerSide()) {
+			if (mUpdate == 0 || --this.mStartUpCheck == 0) {
+				this.mChargeHatches.clear();
+				this.mDischargeHatches.clear();
+			}
+		}
+		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-		//this.mChargeHatches.clear();
-		//this.mDischargeHatches.clear();
 	}
 
 	@Override
@@ -504,17 +509,20 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
+			Logger.REFLECTION("Found GT_MetaTileEntity_Hatch_InputBattery");
 			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
+			Logger.REFLECTION("Found GT_MetaTileEntity_Hatch_OutputBattery");
 			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
 		if (LoadedMods.TecTech){
 			if (isThisHatchMultiDynamo()) {
+				Logger.REFLECTION("Found isThisHatchMultiDynamo");
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return this.mMultiDynamoHatches.add(
 						(GT_MetaTileEntity_Hatch) aMetaTileEntity);
@@ -595,21 +603,47 @@ GT_MetaTileEntity_MultiBlockBase {
 	 */
 
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
-		try {
+		try { //gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
+			
+			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			if (aMetaTileEntity == null) {
+				return false;
+			}			
 			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
 			if (mProper != null){
-				if (aTileEntity instanceof GT_MetaTileEntity_Hatch){				
+				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
 					mProper.setAccessible(true);
-					mProper.invoke(this, aCasingID);
+					mProper.invoke(aMetaTileEntity, aCasingID);
+					Logger.REFLECTION("Good Method Call for updateTexture.");
 					return true;
-				}					
+				}
+						
 			}
 			else {
-				return false;
+				Logger.REFLECTION("Bad Method Call for updateTexture.");
+				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
+					if (aCasingID <= Byte.MAX_VALUE) {
+						((GT_MetaTileEntity_Hatch) aTileEntity.getMetaTileEntity()).mMachineBlock = (byte) aCasingID;
+						Logger.REFLECTION("Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
+						return true;
+					}
+					else {
+						Logger.REFLECTION("updateTexture returning false. 1.2");
+					}
+				}
+				else {
+					Logger.REFLECTION("updateTexture returning false. 1.3");
+				}
 			}
+			Logger.REFLECTION("updateTexture returning false. 1");
+			return false;
 		}
-		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}		
-		return false;
+		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {Logger.REFLECTION("updateTexture returning false.");
+		Logger.REFLECTION("updateTexture returning false. 2");
+		e.printStackTrace();
+		return false;	
+		}	
+		
 	}
 
 

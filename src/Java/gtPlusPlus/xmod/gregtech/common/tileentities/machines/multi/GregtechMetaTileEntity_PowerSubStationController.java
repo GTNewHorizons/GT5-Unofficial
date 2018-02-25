@@ -35,10 +35,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
-	protected long mTotalRunTime = 0;
 	
 	//TecTech Support
-	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList();
+	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -106,12 +105,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Logger.MACHINE_INFO("Checking structure for Industrial Power Sub-Station.");
+		Logger.INFO("Checking structure for Industrial Power Sub-Station.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 
 		/*if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			Utils.LOG_MACHINE_INFO("Don't know why this exists?");
+			Utils.LOG_INFO("Don't know why this exists?");
 			return false;
 		}*/
 
@@ -132,12 +131,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 							if (h == 2 || h == 1){						
 								//If not a hatch, continue, else add hatch and continue.
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Logger.MACHINE_INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
-									Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
+									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
-									Logger.MACHINE_INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 							}
@@ -145,12 +144,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 								if (h==0){
 									if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-											Logger.MACHINE_INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3.");
-											Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+											Logger.INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3.");
+											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 											return false;
 										}
 										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-											Logger.MACHINE_INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+											Logger.INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 											return false;
 										}
 										tAmount++;
@@ -159,12 +158,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 								if (h==3){
 									if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-											Logger.MACHINE_INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
-											Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+											Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
+											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 											return false;
 										}
 										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-											Logger.MACHINE_INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+											Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 											return false;
 										}
 										tAmount++;
@@ -182,13 +181,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 							if (h == 3){
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the top layer edge. 3");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 3");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the top layer edge. 3");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 3");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
@@ -197,13 +196,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 							else if (h == 2){
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the top layer edge. 2");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 2");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the top layer edge. 2");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 2");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
@@ -212,13 +211,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 							else {
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the second layer. 1");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the second layer. 1");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-										Logger.MACHINE_INFO("Station Casings Missing from somewhere in the second layer. 1");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casings Missing from somewhere in the second layer. 1");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
@@ -232,13 +231,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Logger.MACHINE_INFO("Station Casing(s) Missing from one of the edges on the top layer.");
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casing(s) Missing from one of the edges on the top layer.");
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-										Logger.MACHINE_INFO("Station Casing(s) Missing from one of the edges on the top layer. "+h);
-										Logger.MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Station Casing(s) Missing from one of the edges on the top layer. "+h);
+										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										if (h ==0){
 											if (tTileEntity instanceof GregtechMetaTileEntity_PowerSubStationController){
 
@@ -275,12 +274,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		if ((this.mChargeHatches.size() < 1) || (this.mDischargeHatches.size() < 1)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
 				|| (this.mAllDynamoHatches.size() < 1)) {
-			Logger.MACHINE_INFO("Returned False 3");
-			Logger.MACHINE_INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: 1 | "+(this.mChargeHatches.size() != 1));
-			Logger.MACHINE_INFO("Discharge Buses: "+this.mDischargeHatches.size()+" | expected: 1 | "+(this.mDischargeHatches.size() != 1));
-			Logger.MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
-			Logger.MACHINE_INFO("Dynamo Hatches: "+this.mAllDynamoHatches.size()+" | expected: >= 1 | "+(this.mAllDynamoHatches.size() < 1));
-			Logger.MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
+			Logger.INFO("Returned False 3");
+			Logger.INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: >= 1 | "+(this.mChargeHatches.size() >= 1));
+			Logger.INFO("Discharge Buses: "+this.mDischargeHatches.size()+" | expected: >= 1 | "+(this.mDischargeHatches.size() >= 1));
+			Logger.INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
+			Logger.INFO("Dynamo Hatches: "+this.mAllDynamoHatches.size()+" | expected: >= 1 | "+(this.mAllDynamoHatches.size() < 1));
+			Logger.INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
 			return false;
 		}
 
@@ -398,10 +397,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		}
 		if (this.getEUVar() < 0){
 			this.setEUVar(0);
-		}
-
-		if (aBaseMetaTileEntity.isServerSide()){
-			this.mTotalRunTime++;
 		}
 
 		//Handle Progress Time
