@@ -159,6 +159,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//Extruder Shape
 		GregtechItemList.Shape_Extruder_WindmillShaft.set(this.addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
+		
+		//GTNH Already adds this.
+		if (!CORE.GTNH)
 		GregtechItemList.Shape_Extruder_SmallGear.set(this.addItem(221, "Extruder Shape (Small Gear)", "Extruder Shape for making small gears", new Object[0]));
 
 

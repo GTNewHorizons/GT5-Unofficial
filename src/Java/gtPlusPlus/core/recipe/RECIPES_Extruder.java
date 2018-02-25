@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SubTag;
@@ -19,9 +20,9 @@ public class RECIPES_Extruder implements IOreRecipeRegistrator {
 
 	public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
 			final String aModName, final ItemStack aStack) {
-		if ((aMaterial == Materials.Glass || aMaterial == Materials.WroughtIron
+		if (!CORE.GTNH && ((aMaterial == Materials.Glass || aMaterial == Materials.WroughtIron
 				|| GT_OreDictUnificator.get(OrePrefixes.ingot, (Object) aMaterial, 1L) != null)
-				&& !aMaterial.contains(SubTag.NO_SMELTING)) {
+				&& !aMaterial.contains(SubTag.NO_SMELTING))) {
 			final long aMaterialMass = aMaterial.getMass();
 			final int tAmount = (int) (aPrefix.mMaterialAmount / 3628800L);
 			if (tAmount > 0 && tAmount <= 64 && aPrefix.mMaterialAmount % 3628800L == 0L) {
