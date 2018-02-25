@@ -125,7 +125,9 @@ public class RECIPES_General {
 		}
 		
 		//Small Gear Extruder Shape
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Shape_Extruder_SmallGear.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Gear, Character.valueOf('X'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('S'), OrePrefixes.screw.get(Materials.Steel)});
+		if (!CORE.GTNH) {
+			GT_ModHandler.addCraftingRecipe(GregtechItemList.Shape_Extruder_SmallGear.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Gear, Character.valueOf('X'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('S'), OrePrefixes.screw.get(Materials.Steel)});
+		}
 		
 		String[] ironTypes = {"", "Wrought", "Pig", "Any"};
 		for (int y=0;y<ironTypes.length;y++) {

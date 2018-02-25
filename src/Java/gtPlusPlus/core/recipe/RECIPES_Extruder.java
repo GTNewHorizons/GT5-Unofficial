@@ -4,6 +4,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class RECIPES_Extruder implements IOreRecipeRegistrator {
 						GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
 						((int) Math.max(aMaterialMass * 5L * tAmount, tAmount)/4), 8 * tVoltageMultiplier);
 				GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}),
-						GregtechItemList.Shape_Extruder_SmallGear.get(0L, new Object[0]),
+						ItemList.Shape_Mold_Gear_Small.get(0L, new Object[0]),
 						GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, (Object) aMaterial.mSmeltInto, (long) tAmount),
 						((int) Math.max(aMaterialMass * 10L * tAmount, tAmount)/4), 2 * tVoltageMultiplier);
 				
