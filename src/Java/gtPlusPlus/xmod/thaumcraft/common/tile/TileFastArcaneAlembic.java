@@ -17,13 +17,6 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.tiles.TileAlembic;
 
 public class TileFastArcaneAlembic extends TileAlembic {
-	public Aspect aspect;
-	public Aspect aspectFilter;
-	public int amount;
-	public int maxAmount;
-	public int facing;
-	public boolean aboveAlembic;
-	public boolean aboveFurnace;
 	ForgeDirection fd;
 
 	public TileFastArcaneAlembic() {

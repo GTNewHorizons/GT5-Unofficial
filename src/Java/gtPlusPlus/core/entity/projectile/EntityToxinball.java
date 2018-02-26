@@ -19,12 +19,8 @@ public abstract class EntityToxinball extends EntityFireball {
 	protected int entityZ = -1;
 	private Block block;
 	private boolean inGround;
-	public EntityLivingBase shootingEntity;
 	private int ticksAlive;
 	private int ticksInAir;
-	public double accelerationX;
-	public double accelerationY;
-	public double accelerationZ;
 
 	public EntityToxinball(World world) {
 		super(world);

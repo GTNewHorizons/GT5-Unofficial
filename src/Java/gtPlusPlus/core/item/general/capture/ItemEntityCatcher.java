@@ -182,7 +182,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
 		if (hasEntity(p_77624_1_)){
 			String mName = NBTUtils.getString(p_77624_1_,"mEntityName");
-			if (mName != null && !mName.equals("") && mName != ""){
+			if (mName != null && !mName.equals("")){
 				p_77624_3_.add(EnumChatFormatting.GRAY+"Contains a "+mName+".");				
 			}
 		}

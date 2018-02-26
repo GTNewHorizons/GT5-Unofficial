@@ -198,7 +198,7 @@ public class MaterialUtils {
 		catch (IllegalArgumentException | IllegalAccessException e) {
 			mName = mat.name();
 		}
-		if (mName == null || mName.equals("") || mName == ""){
+		if (mName == null || mName.equals("")){
 			mName = mat.name();
 		}
 		return mName;

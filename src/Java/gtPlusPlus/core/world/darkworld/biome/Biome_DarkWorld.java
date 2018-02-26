@@ -99,7 +99,7 @@ public class Biome_DarkWorld {
 				if (mTempList != null){
 					mTempList[CORE.DARKBIOME_ID] = this;
 					mInternalBiomeList.set(null, mTempList);
-					if (mClone != mInternalBiomeList && mClone.hashCode() != mInternalBiomeList.hashCode()){
+					if (mTempList != mInternalBiomeList.get(null)){
 						ReflectionUtils.setFinalStatic(mInternalBiomeList, mTempList);
 						Logger.REFLECTION("Set Biome ID for Dark World Biome internally in 'biomeList' field from "+BiomeGenBase.class.getCanonicalName()+".");						
 						return true;

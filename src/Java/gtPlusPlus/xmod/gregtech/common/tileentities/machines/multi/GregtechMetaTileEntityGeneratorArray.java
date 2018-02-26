@@ -21,8 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBlockBase {
 
-	GT_Recipe mLastRecipe;
-
 	public GregtechMetaTileEntityGeneratorArray(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}

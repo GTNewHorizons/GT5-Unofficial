@@ -52,7 +52,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		return mInternalMap.size();
 	}
 	
-	public synchronized int hashcode(){
+	public synchronized int hashCode(){
 		return mInternalMap.hashCode();
 	}
 	

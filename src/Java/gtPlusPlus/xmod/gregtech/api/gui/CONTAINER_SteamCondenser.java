@@ -44,7 +44,7 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 	public int mSteamAmount = 0;
 	public int mProcessingEnergy = 0;
 	public int mTemperature = 2;
-	private final int mSteamCapacity;
+	public int mSteamCapacity;
 	public long mTickingTime = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).RI;
 
 	@Override
@@ -55,6 +55,7 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 			return;
 		}
 		this.mTemperature = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mTemperature;
+		this.mSteamCapacity = (int) ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).maxSteamStore();
 		this.mProcessingEnergy = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;
 		this.mSteamAmount = (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mSteam == null ? 0 : ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mSteam.amount);
 		this.mWaterAmount = (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid.amount);

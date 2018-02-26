@@ -22,78 +22,7 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     /** The world the BiomeDecorator is currently decorating */
     public World currentWorld;
     /** The Biome Decorator's random number generator. */
-    public Random randomGenerator;
-    /** The X-coordinate of the chunk currently being decorated */
-    public int chunk_X;
-    /** The Z-coordinate of the chunk currently being decorated */
-    public int chunk_Z;
-    /** The clay generator. */
-    public WorldGenerator clayGen = new WorldGenClay(4);
-    /** The sand generator. */
-    public WorldGenerator sandGen;
-    /** The gravel generator. */
-    public WorldGenerator gravelAsSandGen;
-    /** The dirt generator. */
-    public WorldGenerator dirtGen;
-    public WorldGenerator gravelGen;
-    public WorldGenerator coalGen;
-    public WorldGenerator ironGen;
-    /** Field that holds gold WorldGenMinable */
-    public WorldGenerator goldGen;
-    /** Field that holds redstone WorldGenMinable */
-    public WorldGenerator redstoneGen;
-    /** Field that holds diamond WorldGenMinable */
-    public WorldGenerator diamondGen;
-    /** Field that holds Lapis WorldGenMinable */
-    public WorldGenerator lapisGen;
-    public WorldGenFlowers yellowFlowerGen;
-    /** Field that holds mushroomBrown WorldGenFlowers */
-    public WorldGenerator mushroomBrownGen;
-    /** Field that holds mushroomRed WorldGenFlowers */
-    public WorldGenerator mushroomRedGen;
-    /** Field that holds big mushroom generator */
-    public WorldGenerator bigMushroomGen;
-    /** Field that holds WorldGenReed */
-    public WorldGenerator reedGen;
-    /** Field that holds WorldGenCactus */
-    public WorldGenerator cactusGen;
-    /** The water lily generation! */
-    public WorldGenerator waterlilyGen;
-    /** Amount of waterlilys per chunk. */
-    public int waterlilyPerChunk;
-    /** The number of trees to attempt to generate per chunk. Up to 10 in forests, none in deserts. */
-    public int treesPerChunk;
-    /**
-     * The number of yellow flower patches to generate per chunk. The game generates much less than this number, since
-     * it attempts to generate them at a random altitude.
-     */
-    public int flowersPerChunk;
-    /** The amount of tall grass to generate per chunk. */
-    public int grassPerChunk;
-    /** The number of dead bushes to generate per chunk. Used in deserts and swamps. */
-    public int deadBushPerChunk;
-    /**
-     * The number of extra mushroom patches per chunk. It generates 1/4 this number in brown mushroom patches, and 1/8
-     * this number in red mushroom patches. These mushrooms go beyond the default base number of mushrooms.
-     */
-    public int mushroomsPerChunk;
-    /** The number of reeds to generate per chunk. Reeds won't generate if the randomly selected placement is unsuitable. */
-    public int reedsPerChunk;
-    /** The number of cactus plants to generate per chunk. Cacti only work on sand. */
-    public int cactiPerChunk;
-    /** The number of sand patches to generate per chunk. Sand patches only generate when part of it is underwater. */
-    public int sandPerChunk;
-    /**
-     * The number of sand patches to generate per chunk. Sand patches only generate when part of it is underwater. There
-     * appear to be two separate fields for this.
-     */
-    public int sandPerChunk2;
-    /** The number of clay patches to generate per chunk. Only generates when part of it is underwater. */
-    public int clayPerChunk;
-    /** Amount of big mushrooms per chunk */
-    public int bigMushroomsPerChunk;
-    /** True if decorator should generate surface lava & water */
-    public boolean generateLakes;
+    public Random randomGenerator;    
     
     public WorldGenerator fluoriteGen;
 

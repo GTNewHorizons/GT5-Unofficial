@@ -49,7 +49,7 @@ public class AC_Helper_Utils {
 	public final static boolean removeCrafter(GT4Entity_AutoCrafter AC) {		
 		if (!sAutocrafterMap.isEmpty()){
 			if (sAutocrafterMap.containsValue(AC)){
-				sAutocrafterMap.remove(AC);
+				sAutocrafterMap.remove(getIDByCrafter(AC));
 				return true;
 			}
 		}

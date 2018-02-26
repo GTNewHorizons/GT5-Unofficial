@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 {
 	/** How long the fuse is */
-	public int fuse;
 	private EntityLivingBase tntPlacedBy;
 
 	public EntityPrimedMiningExplosive(final World world){

@@ -16,20 +16,10 @@ import net.minecraft.util.*;
 import net.minecraft.world.*;
 
 public class MiningExplosion extends Explosion {
-	/** whether or not the explosion sets fire to blocks around it */
-	public boolean isFlaming = false;
-	/** whether or not this explosion spawns smoke particles */
-	public boolean isSmoking = true;
 	private final int field_77289_h = 16;
 	private final Random explosionRNG = new XSTR();
 	private final World worldObj;
-	public double explosionX;
-	public double explosionY;
-	public double explosionZ;
-	public Entity exploder;
-	public float explosionSize;
-	/** A list of ChunkPositions of blocks affected by this explosion */
-	public List<ChunkPosition> affectedBlockPositions = new ArrayList<>();
+
 	private final Map<Entity, Vec3> field_77288_k = new HashMap<>();
 	public MiningExplosion(final World worldObj, final Entity entityObj, final double x, final double y, final double z, final float size)
 	{

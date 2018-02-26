@@ -68,18 +68,18 @@ extends GTPP_Worldgen {
 		this.mWeight = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
 		this.mDensity = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
 		this.mSize = ((short) Math.max(1, sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
-		/* this.mPrimaryMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
-         this.mSecondaryMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
-         this.mBetweenMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
-         this.mSporadicMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
+		/*this.mPrimaryMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
+		this.mSecondaryMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
+		this.mBetweenMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
+		this.mSporadicMeta = ((short) sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
 		 */this.mRestrictBiome = sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
 
 		 if (this.mEnabled) {
-			 GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, false, false, false);
+			 /* GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)], aMinY, aMaxY, aWeight, false, false, false);
 			 GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)], aMinY, aMaxY, aWeight, false, false, false);
 			 GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mBetweenMeta % 1000)], aMinY, aMaxY, aWeight, false, false, false);
 			 GT_Achievements.registerOre(GregTech_API.sGeneratedMaterials[(mSporadicMeta % 1000)], aMinY, aMaxY, aWeight, false, false, false);
-			 sWeight += this.mWeight;            
+			  */ sWeight += this.mWeight;            
 		 }
 	}
 
@@ -141,20 +141,25 @@ extends GTPP_Worldgen {
 			}		
 		}
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			try {
-				return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta, bool);
-			} 
-			catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
-				return false;
+		if (mSetOre != null) {
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				try {
+					return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta, bool);
+				} 
+				catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
+					return false;
+				}
+			}
+			else {
+				try {
+					return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta);
+				} 
+				catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
+					return false;}
 			}
 		}
 		else {
-			try {
-				return (boolean) mSetOre.invoke(world, x, y, z, secondarymeta);
-			} 
-			catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException t) {
-				return false;}
+			return false;
 		}
 	}
 }

@@ -84,7 +84,7 @@ public class EntityUtils {
 	/**
 	 * Static Version of the method used in {@code doFireDamage(entity, int)} to save memory.
 	 */
-	private static volatile Method dealFireDamage;
+	private static volatile Method dealFireDamage = null;
 
 	/**
 	 * Reflective Call to do Fire Damage to an entity (Does not set entity on fire though)

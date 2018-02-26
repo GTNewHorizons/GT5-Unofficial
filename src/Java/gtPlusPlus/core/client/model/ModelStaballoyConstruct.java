@@ -11,20 +11,7 @@ import net.minecraft.entity.monster.EntityIronGolem;
 @SideOnly(Side.CLIENT)
 public class ModelStaballoyConstruct extends ModelIronGolem
 {
-    /** The head model for the iron golem. */
-    public ModelRenderer ironGolemHead;
-    /** The body model for the iron golem. */
-    public ModelRenderer ironGolemBody;
-    /** The right arm model for the iron golem. */
-    public ModelRenderer ironGolemRightArm;
-    /** The left arm model for the iron golem. */
-    public ModelRenderer ironGolemLeftArm;
-    /** The left leg model for the Iron Golem. */
-    public ModelRenderer ironGolemLeftLeg;
-    /** The right leg model for the Iron Golem. */
-    public ModelRenderer ironGolemRightLeg;
-    private static final String __OBFID = "CL_00000863";
-
+   
     public ModelStaballoyConstruct()
     {
         this(0.0F);

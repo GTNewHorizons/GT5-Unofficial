@@ -52,6 +52,11 @@ public class ItemAirFilter extends Item {
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
+		
+		if (tItem == null) {
+			return "Air Filter";
+		}
+		
 		String itemName = tItem == null ? "Air Filter" : super.getItemStackDisplayName(tItem);
 		String suffixName = "";
 		if (tItem.getItemDamage() == 0){

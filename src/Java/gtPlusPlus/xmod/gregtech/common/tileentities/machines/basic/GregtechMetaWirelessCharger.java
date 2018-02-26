@@ -447,11 +447,12 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	}
 
 	public double getDistanceBetweenTwoPositions(BlockPos objectA, BlockPos objectB){
-		int[] objectArray1 = new int[]{objectA.xPos, objectA.yPos, objectA.zPos};
-		int[] objectArray2 = new int[]{objectB.xPos, objectB.yPos, objectB.zPos};
 		if (objectA == null || objectB == null){
 			return 0f;
 		}
+		int[] objectArray1 = new int[]{objectA.xPos, objectA.yPos, objectA.zPos};
+		int[] objectArray2 = new int[]{objectB.xPos, objectB.yPos, objectB.zPos};
+		
 		final double distance = Math.sqrt(
 				(objectArray2[0]-objectArray1[0])*(objectArray2[0]-objectArray1[0])
 				+(objectArray2[1]-objectArray1[1])*(objectArray2[1]-objectArray1[1])

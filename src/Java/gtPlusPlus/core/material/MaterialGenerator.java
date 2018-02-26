@@ -233,11 +233,23 @@ public class MaterialGenerator {
 	@SuppressWarnings("unused")
 	public static void generateOreMaterial(final Material matInfo){
 		try {
+			
+			if (matInfo == null){
+				Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
+				return;
+			}
+			
 			final String unlocalizedName = matInfo.getUnlocalizedName();
 			final String materialName = matInfo.getLocalizedName();
 			final short[] C = matInfo.getRGBA();
 			final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
+			
+			if (Colour == null){
+				Logger.DEBUG_MATERIALS("Invalid Material while constructing "+materialName+".");
+				return;
+			}
+			
 			int sRadiation = 0;
 			if (matInfo.vRadiationLevel > 0){
 				sRadiation = matInfo.vRadiationLevel;
@@ -246,9 +258,7 @@ public class MaterialGenerator {
 			Item temp;
 			Block tempBlock;
 			
-			if (matInfo == null || Colour == null){
-				Logger.DEBUG_MATERIALS("Invalid Material while constructing "+materialName+".");
-			}
+			
 
 			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());			
 
@@ -264,7 +274,7 @@ public class MaterialGenerator {
 			RecipeGen_Ore.generateRecipes(matInfo);
 			
 		} catch (final Throwable t){
-			Logger.MATERIALS("[Error] "+matInfo.getLocalizedName()+" failed to generate.");
+			Logger.MATERIALS("[Error] "+(matInfo != null ? matInfo.getLocalizedName() : "Null Material")+" failed to generate.");
 			t.printStackTrace();
 		}
 	}
