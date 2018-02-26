@@ -19,7 +19,7 @@ public class RECIPES_Shapeless {
 	static String circuitUltimate = "circuitUltimate";
 	static ItemStack gearboxCasing_Tier_1;
 
-	public static final void RECIPES_LOAD(){
+	public static final void loadRecipes(){
 		//run();
 		Logger.INFO("Loading Shapeless Recipes.");
 	}

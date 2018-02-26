@@ -241,7 +241,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer
 		return this.colorSpots;
 	}
 
-	public void setEntityToSpawnName(final String parEntityToSpawnName){
+	public final void setEntityToSpawnName(final String parEntityToSpawnName){
 		this.entityToSpawnName = parEntityToSpawnName;
 		this.entityToSpawnNameFull = this.entityMODID+"."+this.entityToSpawnName;
 	}

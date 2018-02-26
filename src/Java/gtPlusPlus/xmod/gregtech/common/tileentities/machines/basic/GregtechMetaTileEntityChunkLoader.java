@@ -180,7 +180,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-		return null;
+		return new ITexture[0][0][0];
 	}
 
 	@Override

@@ -24,17 +24,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class blockDarkWorldPortal extends BlockBreakable implements ITileTooltip{
+public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip{
 	IIcon gor = null, dol = null, st1 = null, st2 = null, st3 = null, st4 = null;
 
-	public blockDarkWorldPortal() {
+	public BlockDarkWorldPortal() {
 		super("portal", Material.portal, false);
 		this.setTickRandomly(true);
 		this.setHardness(-1.0F);
 		this.setLightLevel(0.75F);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockName("blockDarkWorldPortal");
-		LanguageRegistry.addName(this, "A Glimpse of the Toxic Everglades");
 		
 	}
 

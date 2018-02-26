@@ -3,7 +3,7 @@ package gtPlusPlus.core.world.darkworld.block;
 import net.minecraft.block.material.*;
 import net.minecraftforge.fluids.Fluid;
 
-public class blockDarkWorldSludgeFluid extends Fluid {
+public class BlockDarkWorldSludgeFluid extends Fluid {
 
 
 	public static final Material SLUDGE = new MaterialLiquid(MapColor.dirtColor);
@@ -15,11 +15,11 @@ public class blockDarkWorldSludgeFluid extends Fluid {
 	protected static Material material = SLUDGE;
 
 
-	public blockDarkWorldSludgeFluid(String fluidName, int rgbColour) {
+	public BlockDarkWorldSludgeFluid(String fluidName, int rgbColour) {
 		this(fluidName, rgbColour, null);
 	}
 	
-	public blockDarkWorldSludgeFluid(String fluidName, int rgbColour, Float overlayAlpha) {
+	public BlockDarkWorldSludgeFluid(String fluidName, int rgbColour, Float overlayAlpha) {
 		super(fluidName);
 		setColor(rgbColour);
 		if (overlayAlpha != null){
@@ -36,7 +36,7 @@ public class blockDarkWorldSludgeFluid extends Fluid {
 		return mapColor;
 	}
 
-	public blockDarkWorldSludgeFluid setColor(int parColor)
+	public BlockDarkWorldSludgeFluid setColor(int parColor)
 	{
 		mapColor = parColor;
 		return this;
@@ -47,7 +47,7 @@ public class blockDarkWorldSludgeFluid extends Fluid {
 		return overlayAlpha;
 	}
 
-	public blockDarkWorldSludgeFluid setAlpha(float parOverlayAlpha)
+	public BlockDarkWorldSludgeFluid setAlpha(float parOverlayAlpha)
 	{
 		overlayAlpha = parOverlayAlpha;
 		return this;
@@ -77,7 +77,7 @@ public class blockDarkWorldSludgeFluid extends Fluid {
 		return fillSound;
 	}*/
 
-	public blockDarkWorldSludgeFluid setMaterial(Material parMaterial)
+	public BlockDarkWorldSludgeFluid setMaterial(Material parMaterial)
 	{
 		material = parMaterial;
 		return this;

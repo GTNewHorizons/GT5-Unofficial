@@ -130,7 +130,7 @@ public class GTplusplus implements ActionListener {
 
 		//Used by foreign players to generate .lang files for translation.
 		if (CORE.ConfigSwitches.dumpItemAndBlockData) {
-			LocaleUtils.GenerateFakeLocaleFile();
+			LocaleUtils.generateFakeLocaleFile();
 		}
 
 	}

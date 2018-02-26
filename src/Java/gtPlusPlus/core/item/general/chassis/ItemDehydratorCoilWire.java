@@ -12,14 +12,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class itemDehydratorCoil extends Item {
+public class ItemDehydratorCoilWire extends Item {
 
 	public IIcon[] icons = new IIcon[1];
 
-	public itemDehydratorCoil() {
+	public ItemDehydratorCoilWire() {
 		super();
 		this.setHasSubtypes(true);
-		String unlocalizedName = "itemDehydratorCoil";
+		String unlocalizedName = "itemDehydratorCoilWire";
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		GameRegistry.registerItem(this, unlocalizedName);
@@ -27,7 +27,7 @@ public class itemDehydratorCoil extends Item {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemDehydratorCoil");
+		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemDehydratorCoilWire");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class itemDehydratorCoil extends Item {
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
-		String itemName = "Dehydrator Coil";
+		String itemName = "Coil Wire";
 		String suffixName = "";
 		if (tItem.getItemDamage() == 0){
 			suffixName = " [EV]";

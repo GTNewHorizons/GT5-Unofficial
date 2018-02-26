@@ -14,12 +14,12 @@ public class RegistrationHandler {
 	}
 
 	private final static void init(){
-		RECIPES_Tools.RECIPES_LOAD();
-		RECIPES_Machines.RECIPES_LOAD();
-		RECIPES_Shapeless.RECIPES_LOAD();
-		RECIPES_MachineComponents.RECIPES_LOAD();
-		RECIPE_Batteries.RECIPES_LOAD();
-		RECIPES_General.RECIPES_LOAD();
+		RECIPES_Tools.loadRecipes();
+		RECIPES_Machines.loadRecipes();
+		RECIPES_Shapeless.loadRecipes();
+		RECIPES_MachineComponents.loadRecipes();
+		RECIPE_Batteries.loadRecipes();
+		RECIPES_General.loadRecipes();
 		//RECIPES_MTWRAPPER.run();
 		Logger.INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 		COMPAT_HANDLER.areInitItemsLoaded = true;

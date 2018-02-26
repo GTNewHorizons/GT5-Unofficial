@@ -248,7 +248,7 @@ public class SegmentAnalytics {
 	}
 
 
-	public Timer initTimer(EntityPlayer mPlayer) {
+	public final Timer initTimer(EntityPlayer mPlayer) {
 		Timer timer;
 		timer = new Timer();
 		timer.schedule(new initPlayer(mPlayer), 2 * 1000);

@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 public class LocaleUtils {
 
-	public static boolean GenerateFakeLocaleFile() {
+	public static boolean generateFakeLocaleFile() {
 		for (ModContainer modcontainer : Loader.instance().getModList()){	
 			if (modcontainer.getModId().toLowerCase().equals("miscutils")) {
 				String S = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";

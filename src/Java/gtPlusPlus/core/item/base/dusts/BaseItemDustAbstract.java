@@ -17,7 +17,7 @@ public abstract class BaseItemDustAbstract extends Item{
 	public BaseItemDustAbstract(final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
-		if (pileSize.toLowerCase().equals("dust")){
+		if (pileSize.equalsIgnoreCase("dust")){
 			this.setTextureName(CORE.MODID + ":" + "dust");
 		}
 		else{
@@ -37,6 +37,6 @@ public abstract class BaseItemDustAbstract extends Item{
 	public abstract String getMaterialName();
 
 	@Override
-	public abstract int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF);
+	public abstract int getColorFromItemStack(ItemStack stack, int hex);
 
 }

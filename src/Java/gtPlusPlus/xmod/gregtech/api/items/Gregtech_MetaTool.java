@@ -232,7 +232,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 				return new Long[]{aNBT.getLong("MaxCharge"), aNBT.getLong("Voltage"), aNBT.getLong("Tier"), aNBT.getLong("SpecialData")};
 			}
 		}
-		return null;
+		return new Long[] {};
 	}
 
 	@Override

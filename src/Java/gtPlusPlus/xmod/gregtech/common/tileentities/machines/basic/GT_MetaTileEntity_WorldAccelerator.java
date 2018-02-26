@@ -83,7 +83,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 
 	@Override
 	public ITexture[][][] getTextureSet(ITexture[] pTextures) {
-		return null;
+		return new ITexture[0][0][0];
 	}
 
 	@Override

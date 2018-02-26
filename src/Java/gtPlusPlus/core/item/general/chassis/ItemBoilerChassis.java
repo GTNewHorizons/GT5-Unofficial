@@ -11,11 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class itemBoilerChassis extends Item {
+public class ItemBoilerChassis extends Item {
 
 	public IIcon[] icons = new IIcon[1];
 
-	public itemBoilerChassis() {
+	public ItemBoilerChassis() {
 		super();
 		this.setHasSubtypes(true);
 		String unlocalizedName = "itemBoilerChassis";

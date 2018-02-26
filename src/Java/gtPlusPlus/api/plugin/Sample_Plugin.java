@@ -3,9 +3,9 @@ package gtPlusPlus.api.plugin;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
-public class Sample_Plugin implements IPlugin {
+public final class Sample_Plugin implements IPlugin {
 
-	private Sample_Plugin() {
+	public Sample_Plugin() {
 		Core_Manager.registerPlugin(this); //This must be called, else it won't load.
 	}
 	

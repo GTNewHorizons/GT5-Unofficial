@@ -27,14 +27,11 @@ public class MathUtils {
 	public static int randInt(final int min, final int max) {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
-		final int randomNum = rand.nextInt((max - min) + 1) + min;
-
-		return randomNum;
+		return rand.nextInt((max - min) + 1) + min;
 	}
 
 	public static double getChanceOfXOverYRuns(final double x, final double y){
-		final double z = (1-Math.pow((1-x), y));
-		return z;
+		return (1-Math.pow((1-x), y));
 	}
 
 
@@ -51,9 +48,7 @@ public class MathUtils {
 	public static long randLong(final long min, final long max) {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
-		final long randomNum = MathUtils.nextLong(rand,(max - min) + 1) + min;
-
-		return randomNum;
+		return MathUtils.nextLong(rand,(max - min) + 1) + min;
 	}
 	private static long nextLong(final Random rng, final long n) {
 		// error checking and 2^x checking removed for simplicity.
@@ -79,8 +74,7 @@ public class MathUtils {
 	public static double randDouble(final double min, final double max) {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
-		final double randomNum = MathUtils.nextDouble(rand,(max - min) + 1) + min;
-		return randomNum;
+		return MathUtils.nextDouble(rand,(max - min) + 1) + min;
 	}
 
 	private static double nextDouble(final Random rng, final double n) {
@@ -106,8 +100,7 @@ public class MathUtils {
 	public static float randFloat(final float min, final float max) {
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
-		final float randomNum = MathUtils.nextFloat(rand,(max - min) + 1) + min;
-		return randomNum;
+		return MathUtils.nextFloat(rand,(max - min) + 1) + min;
 	}
 
 	private static float nextFloat(final Random rng, final float n) {
@@ -131,9 +124,7 @@ public class MathUtils {
 	 * @return double between min and max, inclusive.
 	 */
 	public static double findPercentage(final double current, final double max){
-		final double c = (current / max) * 100;
-		final double roundOff = Math.round(c * 100.00) / 100.00;
-		return roundOff;
+		return Math.round(((current / max) * 100) * 100.00) / 100.00;
 	}
 	
 	public static int findPercentageOfInt(long input, float percentage){
@@ -284,8 +275,7 @@ public class MathUtils {
 	 * @return hexInteger between min and max, inclusive.
 	 */
 	public static int generateRandomHexValue(final int min, final int max){
-		final int result = getHexNumberFromInt(randInt(min, max));
-		return result;
+		return getHexNumberFromInt(randInt(min, max));
 	}
 
 
@@ -327,7 +317,7 @@ public class MathUtils {
 		if (outputArray.length > 0) {
 			return outputArray;
 		}
-		return null;
+		return new long[] {};
 	}
 
 	private static long gcd(long a, long b){
@@ -349,12 +339,8 @@ public class MathUtils {
 	}
 
 	final public static int getRgbAsHex(final short[] RGBA){
-
 		final int returnValue = Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
-		if (returnValue == 0){
-			return 0;
-		}
-		return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
+		return (returnValue == 0) ? 0 : returnValue;
 	}
 
 

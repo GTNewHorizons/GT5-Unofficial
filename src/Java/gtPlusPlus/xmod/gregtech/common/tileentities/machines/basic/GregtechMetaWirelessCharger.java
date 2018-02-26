@@ -267,7 +267,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-		return null;
+		return new int[] {};
 	}
 
 	@Override

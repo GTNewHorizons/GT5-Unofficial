@@ -125,7 +125,7 @@ public class RECIPES_Tools {
 	public static String plateDoubleNiChrome = "plateDoubleNichrome";
 	public static String plateIridiumAlloy = "plateAlloyIridium";
 
-	public static final void RECIPES_LOAD(){
+	public static final void loadRecipes(){
 
 
 		run();

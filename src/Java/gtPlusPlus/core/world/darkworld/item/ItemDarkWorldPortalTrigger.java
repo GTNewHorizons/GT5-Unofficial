@@ -14,8 +14,8 @@ import net.minecraft.item.*;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class itemDarkWorldPortalTrigger extends Item {
-	public itemDarkWorldPortalTrigger() {
+public class ItemDarkWorldPortalTrigger extends Item {
+	public ItemDarkWorldPortalTrigger() {
 		super();
 		this.maxStackSize = 1;
 		setMaxDamage(64);

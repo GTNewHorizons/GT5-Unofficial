@@ -330,7 +330,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 				&& ((tTileEntity instanceof IDigitalChest))) {
 			return ((IDigitalChest) tTileEntity).getStoredItemData();
 		}
-		return null;
+		return new ItemStack[] {};
 	}
 
 	@Override

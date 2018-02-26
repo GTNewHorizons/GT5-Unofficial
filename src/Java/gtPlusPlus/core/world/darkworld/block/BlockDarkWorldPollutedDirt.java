@@ -9,9 +9,9 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 
-public class blockDarkWorldPollutedDirt extends BlockDirt implements ITileTooltip{
+public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileTooltip{
 
-	public blockDarkWorldPollutedDirt() {
+	public BlockDarkWorldPollutedDirt() {
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		this.setBlockName("blockDarkWorldGround2");
 		this.setHardness(0.5F);

@@ -186,7 +186,7 @@ public class RECIPES_Machines {
 	        
 	
 	
-        public static final void RECIPES_LOAD(){
+        public static final void loadRecipes(){
 		run();
 		Logger.INFO("Loading Recipes for the Various machine blocks.");
 	}

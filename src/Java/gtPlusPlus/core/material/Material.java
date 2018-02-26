@@ -661,7 +661,7 @@ public class Material {
 				}
 			}
 		}
-		return null;
+		return new long[] {};
 	}
 
 	public final String getToolTip(final String chemSymbol, final long aMultiplier, final boolean aShowQuestionMarks) {

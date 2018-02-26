@@ -38,7 +38,7 @@ public class GregtechConduits {
 			try {
 				cableGt16=(OrePrefixes) GT_Utility.getField(OrePrefixes.class,"cableGt16").get(null);
 			}catch (IllegalAccessException | NullPointerException e){
-				throw new Error(e);
+				e.printStackTrace();
 			}
 		}
 	}

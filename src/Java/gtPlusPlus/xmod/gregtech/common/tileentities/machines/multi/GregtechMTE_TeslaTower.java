@@ -92,7 +92,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
 	}
 
-	private void initFields() {
+	private final void initFields() {
 		casingBlock = ModBlocks.blockCasings2Misc;
 		casingMeta = getCasingBlockItem().get(0).getItemDamage();
 		int frameId = 4096 + getFrameMaterial().mMetaItemSubID;

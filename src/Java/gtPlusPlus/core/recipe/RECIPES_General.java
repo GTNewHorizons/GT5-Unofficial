@@ -40,7 +40,7 @@ public class RECIPES_General {
 	static ItemStack OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockWorkbench));
 	static ItemStack RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
 
-	public static void RECIPES_LOAD(){
+	public static void loadRecipes(){
 		if (LoadedMods.Gregtech){
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();

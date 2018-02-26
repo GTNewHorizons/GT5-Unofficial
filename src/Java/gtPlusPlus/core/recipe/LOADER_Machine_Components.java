@@ -96,8 +96,8 @@ public class LOADER_Machine_Components {
 		CI.sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		CI.sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
 
-		registerComponent_ULV();
-		registerComponent_MAX();
+		registerComponentsULV();
+		registerComponentsMAX();
 	}
 
 	private static void registerGTStandardComponents(){
@@ -134,7 +134,7 @@ public class LOADER_Machine_Components {
 		CI.sensor_UV = GregtechItemList.Sensor_UV.get(1);
 		CI.sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
 
-		registerComponent_ULV();
+		registerComponentsULV();
 	}
 
 	private static void registerGTNHComponents(){
@@ -171,11 +171,11 @@ public class LOADER_Machine_Components {
 		CI.sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		CI.sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
 
-		registerComponent_ULV();
-		registerComponent_MAX();
+		registerComponentsULV();
+		registerComponentsMAX();
 	}
 
-	private static boolean registerComponent_ULV(){
+	private static boolean registerComponentsULV(){
 
 		CI.electricMotor_ULV = GregtechItemList.Electric_Motor_ULV.get(1);
 		CI.electricPump_ULV = GregtechItemList.Electric_Pump_ULV.get(1);
@@ -188,7 +188,7 @@ public class LOADER_Machine_Components {
 		return true;
 	}
 
-	private static boolean registerComponent_MAX(){
+	private static boolean registerComponentsMAX(){
 		//Max Tier Components Blood Never added... Useless, lol.
 		CI.electricMotor_MAX = GregtechItemList.Electric_Motor_MAX.get(1);
 		CI.electricPump_MAX = GregtechItemList.Electric_Pump_MAX.get(1);

@@ -47,7 +47,7 @@ class LibProxy1 extends LibraryProxy {
 	@Override
 	public boolean addSmeltingAndAlloySmeltingRecipe(final ItemStack aInput, final ItemStack aOutput) {
 		try {
-			Logger.INFO("Trying with Gt 5.7/5.8 Method.");
+			//Logger.INFO("Trying with Gt 5.7/5.8 Method.");
 			return (boolean) this.m1.invoke(null, aInput, aOutput);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
@@ -65,7 +65,7 @@ class LibProxy2 extends LibraryProxy {
 	@Override
 	public boolean addSmeltingAndAlloySmeltingRecipe(final ItemStack aInput, final ItemStack aOutput) {
 		try {
-			Logger.INFO("Trying with Gt 5.9 Method.");
+			//Logger.INFO("Trying with Gt 5.9 Method.");
 			return (boolean) this.m2.invoke(null, aInput, aOutput, true);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);

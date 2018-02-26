@@ -15,7 +15,7 @@ public class BaseItemBurnable extends CoreItem {
 		super(unlocalizedName, creativeTab, stackSize, maxDmg, description);
 		this.itemName = displayName;
 		this.meta = meta;
-		if (!oredictName.equals("") || oredictName != null){
+		if (oredictName != null && !oredictName.equals("")){
 			registerOrdictionary(oredictName);
 		}		
 		registerFuel(burnTime);
@@ -26,7 +26,7 @@ public class BaseItemBurnable extends CoreItem {
 		CORE.burnables.add(new Pair<Integer, ItemStack>(burn, ItemUtils.getSimpleStack(this, 1)));
 	}
 	
-	public void registerOrdictionary(String name){
+	public final void registerOrdictionary(String name){
 		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), name);		
 	}
 

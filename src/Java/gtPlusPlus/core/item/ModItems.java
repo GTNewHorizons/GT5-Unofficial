@@ -43,9 +43,9 @@ import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
-import gtPlusPlus.core.item.general.chassis.itemBoilerChassis;
-import gtPlusPlus.core.item.general.chassis.itemDehydratorCoil;
-import gtPlusPlus.core.item.general.chassis.itemDehydratorCoilWire;
+import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
+import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
+import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
 import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
@@ -245,9 +245,9 @@ public final class ModItems {
 	public static BaseItemPlate itemPlateEuropium;
 	public static BaseItemPlateDouble itemDoublePlateEuropium;
 
-	public static itemBoilerChassis itemBoilerChassis;
-	public static itemDehydratorCoilWire itemDehydratorCoilWire;
-	public static itemDehydratorCoil itemDehydratorCoil;
+	public static ItemBoilerChassis itemBoilerChassis;
+	public static ItemDehydratorCoilWire itemDehydratorCoilWire;
+	public static ItemDehydratorCoil itemDehydratorCoil;
 
 	public static Item itemLavaFilter;
 	public static Item itemAirFilter;
@@ -694,9 +694,9 @@ public final class ModItems {
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 
-		itemBoilerChassis = new itemBoilerChassis();
-		itemDehydratorCoilWire = new itemDehydratorCoilWire();
-		itemDehydratorCoil = new itemDehydratorCoil();
+		itemBoilerChassis = new ItemBoilerChassis();
+		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
+		itemDehydratorCoil = new ItemDehydratorCoil();
 
 		itemAirFilter = new ItemAirFilter();
 		itemLavaFilter = new ItemLavaFilter();

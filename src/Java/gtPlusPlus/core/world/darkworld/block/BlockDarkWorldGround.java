@@ -5,9 +5,9 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import net.minecraft.block.BlockGrass;
 
-public class blockDarkWorldGround extends BlockGrass implements ITileTooltip{
+public class BlockDarkWorldGround extends BlockGrass implements ITileTooltip{
 
-	public blockDarkWorldGround() {
+	public BlockDarkWorldGround() {
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		this.setBlockName("blockDarkWorldGround");
 		this.setHardness(1.0F);

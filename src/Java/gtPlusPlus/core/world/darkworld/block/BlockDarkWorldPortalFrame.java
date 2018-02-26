@@ -7,9 +7,9 @@ import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class blockDarkWorldPortalFrame extends Block implements ITileTooltip{
+public class BlockDarkWorldPortalFrame extends Block implements ITileTooltip{
 
-	public blockDarkWorldPortalFrame() {
+	public BlockDarkWorldPortalFrame() {
 		super(Material.iron);
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		this.setBlockName("blockDarkWorldPortalFrame");

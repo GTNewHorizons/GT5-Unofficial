@@ -93,7 +93,7 @@ public class RECIPES_MachineComponents {
 	public static String smallGearTier9 = "gearGtSmallOsmium";
 	public static String smallGearTier10 = "gearGtSmallNeutronium";
 
-	public static final void RECIPES_LOAD(){
+	public static final void loadRecipes(){
 		Logger.INFO("Loading Recipes for the Various Circuits and Machine components.");
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			run();
@@ -102,7 +102,7 @@ public class RECIPES_MachineComponents {
 			onlyULVComponents();
 			onlyMaxComponents();
 		}
-		GregtechMachinePhase();
+		gregtechMachinePhase();
 	}
 
 	private static void run(){
@@ -381,7 +381,7 @@ public class RECIPES_MachineComponents {
 				CI.sensor_MAX);
 	}
 
-	private static void GregtechMachinePhase(){
+	private static void gregtechMachinePhase(){
 		if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
 			Logger.INFO("Adding Gregtech machine recipes for the circuits.");
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_IV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), 32, 256);

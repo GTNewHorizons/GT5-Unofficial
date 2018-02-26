@@ -18,7 +18,7 @@ public class RECIPE_Batteries {
 	static ItemStack GT_Battery_Lithium = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32538, 1);
 	static ItemStack machineTransformer_EV;
 
-	public static void RECIPES_LOAD(){
+	public static void loadRecipes(){
 
 		if (LoadedMods.Gregtech){
 			machineTransformer_EV = ItemList.Transformer_EV_HV.get(1);
