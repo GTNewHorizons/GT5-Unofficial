@@ -2,11 +2,14 @@ package gtPlusPlus.core.world.darkworld.world;
 
 import java.util.*;
 
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.WorldServer;
+
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 
 public class TeleporterDimensionMod extends Teleporter {
 

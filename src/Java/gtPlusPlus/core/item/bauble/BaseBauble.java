@@ -7,17 +7,10 @@ import java.util.UUID;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import baubles.common.container.InventoryBaubles;
-import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +18,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 @Optional.InterfaceList(value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),

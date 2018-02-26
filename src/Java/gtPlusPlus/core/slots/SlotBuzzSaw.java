@@ -1,11 +1,12 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
 
 public class SlotBuzzSaw extends Slot {
 

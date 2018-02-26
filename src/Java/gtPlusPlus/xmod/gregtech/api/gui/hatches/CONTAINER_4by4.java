@@ -1,9 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.gui.hatches;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class CONTAINER_4by4 extends GT_ContainerMetaTile_Machine {
 

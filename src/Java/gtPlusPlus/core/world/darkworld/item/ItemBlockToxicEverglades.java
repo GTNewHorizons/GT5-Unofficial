@@ -2,12 +2,12 @@ package gtPlusPlus.core.world.darkworld.item;
 
 import java.util.List;
 
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTooltip;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
 
 public class ItemBlockToxicEverglades extends ItemBlock {
 	

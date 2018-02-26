@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.thaumcraft.common.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,6 +14,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.EnumSkyBlock;
+
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;

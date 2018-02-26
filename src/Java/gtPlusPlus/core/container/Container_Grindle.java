@@ -1,12 +1,13 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.core.inventories.BaseInventoryGrindle;
-import gtPlusPlus.core.slots.SlotDataStick;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.inventories.BaseInventoryGrindle;
+import gtPlusPlus.core.slots.SlotDataStick;
 
 public class Container_Grindle extends Container
 {

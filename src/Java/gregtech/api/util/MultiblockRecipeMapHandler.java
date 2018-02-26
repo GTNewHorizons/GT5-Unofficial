@@ -3,12 +3,13 @@ package gregtech.api.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import gregtech.api.util.GT_Recipe;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 

@@ -1,7 +1,8 @@
 package gtPlusPlus.nei;
 
-import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.CustomRecipeMap;
+
+import codechicken.nei.api.IConfigureNEI;
 
 public class NEI_GT_Config
 implements IConfigureNEI {

@@ -2,9 +2,10 @@ package gtPlusPlus.core.world.darkworld.gen.gt;
 
 import java.util.Hashtable;
 
+import net.minecraft.block.Block;
+
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.api.helpers.MaterialHelper;
+
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
@@ -12,7 +13,6 @@ import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.world.darkworld.object.BoxedQuad;
-import net.minecraft.block.Block;
 
 public class WorldGen_Ores {
 	

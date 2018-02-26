@@ -4,12 +4,15 @@ import java.util.Iterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_Base;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_Boiler_Base;
 
 public class CONTAINER_AdvancedBoiler
         extends GT_ContainerMetaTile_Machine {
@@ -49,6 +52,12 @@ public class CONTAINER_AdvancedBoiler
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
             return;
         }
+        
+        if (this.mSteamCapacity <= 0) {
+            this.mSteamCapacity = (int) ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).maxSteamStore();
+        	
+        }
+        
         this.maxStorage = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).getCapacity();
         this.mTemperature = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mTemperature;
         this.mProcessingEnergy = ((GT_MetaTileEntity_Boiler_Base) this.mTileEntity.getMetaTileEntity()).mProcessingEnergy;

@@ -4,10 +4,14 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.*;
 
 public class IC2_ItemGradual
 extends CoreItem

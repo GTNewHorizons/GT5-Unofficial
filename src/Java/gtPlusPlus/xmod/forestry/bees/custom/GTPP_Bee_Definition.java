@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import net.minecraft.item.ItemStack;
+
 import forestry.api.apiculture.*;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
@@ -19,7 +21,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.BiomeDictionary.Type;
 
 public enum GTPP_Bee_Definition implements IBeeDefinition {

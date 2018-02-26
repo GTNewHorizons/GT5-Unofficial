@@ -2,10 +2,6 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
-import gregtech.api.enums.ItemList;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -13,6 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+
+import gregtech.api.enums.ItemList;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.lib.CORE;
 
 public class ItemLavaFilter extends CoreItem {
 

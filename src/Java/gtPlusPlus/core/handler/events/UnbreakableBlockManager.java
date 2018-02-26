@@ -1,12 +1,16 @@
 package gtPlusPlus.core.handler.events;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.*;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.BaseTileEntity;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 
 public class UnbreakableBlockManager{
 

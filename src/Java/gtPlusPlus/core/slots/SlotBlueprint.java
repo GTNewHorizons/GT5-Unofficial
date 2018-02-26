@@ -1,10 +1,11 @@
 package gtPlusPlus.core.slots;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.interfaces.IItemBlueprint;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.interfaces.IItemBlueprint;
 
 public class SlotBlueprint extends Slot {
 

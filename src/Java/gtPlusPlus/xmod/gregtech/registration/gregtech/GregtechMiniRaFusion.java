@@ -4,14 +4,9 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.base.cell.BaseItemCell;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.data.ArrayUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMiniRaFusion {

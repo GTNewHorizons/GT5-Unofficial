@@ -1,16 +1,18 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 	public RECIPES_LaserEngraver() {

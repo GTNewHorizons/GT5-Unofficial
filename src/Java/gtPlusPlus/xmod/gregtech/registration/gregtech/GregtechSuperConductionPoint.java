@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
 public class GregtechSuperConductionPoint {
 
 	public static void run() {

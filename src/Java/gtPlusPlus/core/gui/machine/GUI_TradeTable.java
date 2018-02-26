@@ -4,14 +4,16 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.container.Container_TradeTable;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.container.Container_TradeTable;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 
 @SideOnly(Side.CLIENT)
 public class GUI_TradeTable extends GuiContainer {

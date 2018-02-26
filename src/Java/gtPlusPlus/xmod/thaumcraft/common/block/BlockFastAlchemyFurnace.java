@@ -7,11 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.xmod.thaumcraft.common.ItemBlockThaumcraft;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -25,6 +21,12 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.xmod.thaumcraft.common.ItemBlockThaumcraft;
+import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.common.lib.utils.InventoryUtils;
 

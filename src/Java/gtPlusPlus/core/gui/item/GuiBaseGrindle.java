@@ -1,28 +1,22 @@
 package gtPlusPlus.core.gui.item;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Utility.ItemNBT;
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.container.Container_Grindle;
-import gtPlusPlus.core.inventories.BaseInventoryBackpack;
-import gtPlusPlus.core.inventories.BaseInventoryGrindle;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+
+import gregtech.api.util.GT_Utility.ItemNBT;
+
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.inventories.BaseInventoryGrindle;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 public class GuiBaseGrindle extends GuiContainer {
 

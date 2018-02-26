@@ -1,5 +1,8 @@
 package gtPlusPlus.core.material;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -10,11 +13,7 @@ import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
-import gtPlusPlus.core.item.base.ore.BaseItemCentrifugedCrushedOre;
-import gtPlusPlus.core.item.base.ore.BaseItemCrushedOre;
-import gtPlusPlus.core.item.base.ore.BaseItemImpureDust;
-import gtPlusPlus.core.item.base.ore.BaseItemPurifiedCrushedOre;
-import gtPlusPlus.core.item.base.ore.BaseItemPurifiedDust;
+import gtPlusPlus.core.item.base.ore.*;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -27,8 +26,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.loaders.*;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 
 public class MaterialGenerator {
 

@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.thaumcraft.common;
 
-import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
 
 public class ItemBlockThaumcraft extends ItemBlockEntityBase{
 

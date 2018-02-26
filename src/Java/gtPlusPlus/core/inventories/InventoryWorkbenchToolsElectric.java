@@ -1,14 +1,16 @@
 package gtPlusPlus.core.inventories;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.core.slots.SlotGtToolElectric;
-import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gregtech.api.items.GT_MetaGenerated_Tool;
+
+import gtPlusPlus.core.slots.SlotGtToolElectric;
+import ic2.api.item.IElectricItem;
 
 public class InventoryWorkbenchToolsElectric implements IInventory{
 

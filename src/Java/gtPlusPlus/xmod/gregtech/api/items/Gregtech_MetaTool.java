@@ -1,24 +1,18 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
-import mods.railcraft.api.core.items.IToolCrowbar;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +23,19 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+
+import buildcraft.api.tools.IToolWrench;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraftforge.event.world.BlockEvent;
 
 /**

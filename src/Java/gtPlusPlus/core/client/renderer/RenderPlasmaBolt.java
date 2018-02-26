@@ -1,17 +1,20 @@
 package gtPlusPlus.core.client.renderer;
 
+import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 
-import java.util.Random;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 
 @SideOnly(Side.CLIENT)
 public class RenderPlasmaBolt extends Render {

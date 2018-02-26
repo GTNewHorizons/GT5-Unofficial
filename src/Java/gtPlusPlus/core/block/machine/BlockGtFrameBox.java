@@ -1,11 +1,12 @@
 package gtPlusPlus.core.block.machine;
 
-import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
-import gtPlusPlus.core.block.base.MetaBlock;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
+
+import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
+import gtPlusPlus.core.block.base.MetaBlock;
+import gtPlusPlus.core.lib.CORE;
 
 public class BlockGtFrameBox extends MetaBlock {
 

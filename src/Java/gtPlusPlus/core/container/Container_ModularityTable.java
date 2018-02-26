@@ -1,17 +1,20 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
-import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
-import gtPlusPlus.core.slots.*;
-import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
+import gtPlusPlus.core.slots.SlotModularBauble;
+import gtPlusPlus.core.slots.SlotModularBaubleUpgrades;
+import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 
 public class Container_ModularityTable extends Container {
 

@@ -1,11 +1,12 @@
 package gtPlusPlus.core.world.darkworld;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.world.darkworld.block.BlockDarkWorldPortal;
 import gtPlusPlus.core.world.darkworld.item.ItemDarkWorldPortalTrigger;
 import gtPlusPlus.core.world.darkworld.world.WorldProviderMod;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.common.DimensionManager;
 
 public class Dimension_DarkWorld {

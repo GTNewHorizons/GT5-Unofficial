@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.ic2.item;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.LoadedMods;
 import ic2.core.IC2;
 import ic2.core.init.InternalName;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class IC2_Items {
 

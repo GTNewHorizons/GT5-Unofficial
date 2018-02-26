@@ -1,9 +1,5 @@
 package gtPlusPlus.core.common;
 
-import api.player.client.ClientPlayerAPI;
-import api.player.client.ClientPlayerBase;
-import gtPlusPlus.core.handler.events.CustomMovementHandler;
-import gtPlusPlus.core.handler.events.SneakManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -13,6 +9,11 @@ import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.ResourceLocation;
+
+import api.player.client.ClientPlayerAPI;
+import api.player.client.ClientPlayerBase;
+import gtPlusPlus.core.handler.events.CustomMovementHandler;
+import gtPlusPlus.core.handler.events.SneakManager;
 
 public class BasePlayer extends ClientPlayerBase
 {

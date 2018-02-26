@@ -1,13 +1,15 @@
 package gtPlusPlus.core.item.init;
 
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+
 import gregtech.api.util.GT_OreDictUnificator;
+
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 
 public class ItemsFoods {
 

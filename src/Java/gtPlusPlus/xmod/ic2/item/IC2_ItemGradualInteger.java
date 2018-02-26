@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.ic2.item;
 
-import ic2.api.item.ICustomDamageItem;
-import ic2.core.util.StackUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import ic2.api.item.ICustomDamageItem;
+import ic2.core.util.StackUtil;
 
 public class IC2_ItemGradualInteger
 extends IC2_ItemGradual

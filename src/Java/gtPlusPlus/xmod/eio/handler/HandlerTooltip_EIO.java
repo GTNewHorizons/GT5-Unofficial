@@ -5,12 +5,15 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltip
 import java.lang.reflect.Field;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.Materials;
+
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class HandlerTooltip_EIO {

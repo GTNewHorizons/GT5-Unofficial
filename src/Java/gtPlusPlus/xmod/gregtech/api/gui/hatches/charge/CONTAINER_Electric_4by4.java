@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.gui.hatches.charge;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 import gtPlusPlus.core.slots.SlotElectric;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_4by4;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class CONTAINER_Electric_4by4 extends CONTAINER_4by4{
 

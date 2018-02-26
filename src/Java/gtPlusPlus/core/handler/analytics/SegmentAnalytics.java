@@ -1,15 +1,13 @@
 package gtPlusPlus.core.handler.analytics;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Phaser;
 
 import com.mojang.authlib.GameProfile;
 import com.segment.analytics.Analytics;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.random.UUIDGenerator;
@@ -19,7 +17,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.UUIDUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.IC2;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class SegmentAnalytics {	
 

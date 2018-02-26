@@ -2,11 +2,12 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import java.util.List;
 
-import gtPlusPlus.api.interfaces.ITileTooltip;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
 
 public class ItemBlockBasicTooltip extends ItemBlock{
 

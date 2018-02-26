@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_AdvancedBoiler
         extends GT_GUIContainerMetaTile_Machine {

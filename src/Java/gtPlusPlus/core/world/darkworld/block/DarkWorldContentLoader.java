@@ -3,12 +3,13 @@ package gtPlusPlus.core.world.darkworld.block;
 import static gtPlusPlus.core.world.darkworld.Dimension_DarkWorld.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.init.Blocks;
+
 import gtPlusPlus.core.block.base.BlockBaseFluid;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTooltip;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.item.ItemBlockToxicEverglades;
 import gtPlusPlus.core.world.darkworld.item.ItemDarkWorldPortalTrigger;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class DarkWorldContentLoader {

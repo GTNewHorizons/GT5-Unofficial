@@ -1,13 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
+
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class GregtechMetaCasingBlocks2
 extends GregtechMetaCasingBlocksAbstract {

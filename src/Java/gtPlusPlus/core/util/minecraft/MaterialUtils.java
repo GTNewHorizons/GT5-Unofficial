@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -16,7 +19,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {

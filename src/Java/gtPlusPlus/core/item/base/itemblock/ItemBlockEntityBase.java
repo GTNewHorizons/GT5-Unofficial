@@ -2,13 +2,14 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import java.util.List;
 
-import gtPlusPlus.core.block.general.BlockTankXpConverter;
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import gtPlusPlus.core.block.general.BlockTankXpConverter;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class ItemBlockEntityBase extends ItemBlock {
 

@@ -11,10 +11,14 @@
 package gtPlusPlus.xmod.forestry.bees.items;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+
 import forestry.core.utils.StringUtil;
 import gtPlusPlus.core.lib.LoadedMods;
-import net.minecraft.item.*;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
 public class FR_ItemRegistry {

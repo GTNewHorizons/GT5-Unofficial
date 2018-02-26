@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.render;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import java.util.Collection;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -10,10 +11,12 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import org.lwjgl.opengl.GL11;
 
-import java.util.Collection;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+
+import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class GTPP_CapeRenderer
         extends RenderPlayer {

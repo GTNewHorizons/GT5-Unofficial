@@ -3,18 +3,20 @@ package gtPlusPlus.core.world.darkworld.gen.gt;
 import java.util.*;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GT_Log;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+
+import gregtech.api.util.GT_Log;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 public class WorldGen_GT_Base implements IWorldGenerator {
 

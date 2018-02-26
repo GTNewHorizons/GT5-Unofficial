@@ -7,18 +7,20 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.entity.monster.EntitySickBlaze;
-import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 

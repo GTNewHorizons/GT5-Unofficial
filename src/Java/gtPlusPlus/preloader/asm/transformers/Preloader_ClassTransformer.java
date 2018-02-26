@@ -5,9 +5,12 @@ import static org.objectweb.asm.Opcodes.*;
 import java.io.File;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;

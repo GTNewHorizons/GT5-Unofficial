@@ -1,21 +1,22 @@
 package gtPlusPlus.core.handler.events;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
-import gtPlusPlus.core.handler.analytics.SegmentHelper;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
-import ic2.core.IC2;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 public class LoginEventHandler {
 

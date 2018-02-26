@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.forestry.bees.custom;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+
 import gtPlusPlus.core.util.Utils;
 
 public enum CustomCombs {    

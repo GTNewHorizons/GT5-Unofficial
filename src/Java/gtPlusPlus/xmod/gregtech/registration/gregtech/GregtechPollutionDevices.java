@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.*;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
 
 public class GregtechPollutionDevices {
 

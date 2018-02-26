@@ -1,7 +1,8 @@
 package gtPlusPlus.core.handler.events;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.client.Minecraft;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class SneakManager {
 

@@ -2,11 +2,6 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import java.util.List;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +10,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ItemBlockNBT extends ItemBlock {
 

@@ -2,11 +2,10 @@ package gtPlusPlus.xmod.gregtech.api.items.types;
 
 import java.util.List;
 
-import gregtech.api.enums.SubTag;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.*;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +13,11 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.SubTag;
+
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
 
 public class ToolType_Base implements Interface_ItemBehaviour<Gregtech_MetaItem_Base> {
 	@Override

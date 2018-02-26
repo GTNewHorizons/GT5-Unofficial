@@ -1,15 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SafeBlock;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaSafeBlock
 extends GregtechMetaSafeBlockBase {

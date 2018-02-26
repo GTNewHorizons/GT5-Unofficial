@@ -1,15 +1,16 @@
 package gtPlusPlus.core.container;
 
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryFishTrap;
-import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.InventoryFishTrap;
+import gtPlusPlus.core.slots.SlotNoInput;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 
 public class Container_FishTrap extends Container {
 

@@ -3,10 +3,11 @@ package gtPlusPlus.core.util.player;
 import java.io.*;
 import java.util.*;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 
 public class PlayerCache {
 

@@ -1,10 +1,12 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.enums.ItemList;
-import ic2.core.Ic2Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.ItemList;
+
+import ic2.core.Ic2Items;
 
 public class SlotFuelRod extends Slot {
 

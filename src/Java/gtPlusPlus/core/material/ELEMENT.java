@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.state.MaterialState;

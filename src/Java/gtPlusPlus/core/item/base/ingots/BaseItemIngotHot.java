@@ -2,19 +2,22 @@ package gtPlusPlus.core.item.base.ingots;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.GT_Values;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.base.BaseItemComponent;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemIngotHot extends BaseItemIngot{
 

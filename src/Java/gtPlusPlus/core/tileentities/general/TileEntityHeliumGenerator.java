@@ -1,14 +1,15 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gregtech.api.enums.GT_Values;
-import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import gregtech.api.enums.GT_Values;
+
+import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityHeliumGenerator extends TileEntity{
 

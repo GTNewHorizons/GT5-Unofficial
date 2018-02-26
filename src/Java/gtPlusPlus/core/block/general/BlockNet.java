@@ -4,12 +4,14 @@ import java.util.Random;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
+
 import net.minecraft.block.BlockWeb;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 
 public class BlockNet extends BlockWeb{
 

@@ -1,7 +1,10 @@
 package gtPlusPlus.xmod.bop.blocks;
 
-import gtPlusPlus.xmod.bop.blocks.rainforest.*;
 import net.minecraft.block.Block;
+
+import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
+import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
+import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
 
 public class BOP_Block_Registrator {
 

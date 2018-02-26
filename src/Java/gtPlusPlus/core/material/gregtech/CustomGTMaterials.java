@@ -1,20 +1,5 @@
 package gtPlusPlus.core.material.gregtech;
 
-import static gregtech.api.enums.Materials.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.objects.MaterialStack;
-import gtPlusPlus.core.util.Utils;
-
 public class CustomGTMaterials {
 
 	//public static Materials Fireclay = new MaterialBuilder(626, TextureSet.SET_ROUGH, "Fireclay").addDustItems().setRGB(173, 160, 155).setColor(Dyes.dyeBrown).setMaterialList(new MaterialStack(Brick, 1)).constructMaterial();

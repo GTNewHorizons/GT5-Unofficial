@@ -2,11 +2,12 @@ package gtPlusPlus.core.util.debug;
 
 import java.util.concurrent.TimeUnit;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class DEBUG_TimerThread implements Runnable {

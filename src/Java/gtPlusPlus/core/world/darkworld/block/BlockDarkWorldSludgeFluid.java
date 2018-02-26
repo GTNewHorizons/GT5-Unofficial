@@ -1,6 +1,9 @@
 package gtPlusPlus.core.world.darkworld.block;
 
-import net.minecraft.block.material.*;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
+
 import net.minecraftforge.fluids.Fluid;
 
 public class BlockDarkWorldSludgeFluid extends Fluid {

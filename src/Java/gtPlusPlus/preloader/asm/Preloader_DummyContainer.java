@@ -7,10 +7,13 @@ import java.util.List;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.preloader.CORE_Preloader;
 import net.minecraftforge.common.config.Configuration;

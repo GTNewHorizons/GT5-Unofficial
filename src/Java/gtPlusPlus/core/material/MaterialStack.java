@@ -3,10 +3,11 @@ package gtPlusPlus.core.material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
 

@@ -4,12 +4,14 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 
 @SideOnly(Side.CLIENT)
 public class GUI_WorkbenchAdvanced extends GuiContainer {

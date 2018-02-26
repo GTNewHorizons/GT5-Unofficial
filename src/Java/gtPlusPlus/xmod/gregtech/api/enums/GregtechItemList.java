@@ -2,12 +2,16 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.W;
 
-import gregtech.api.util.*;
-import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraftforge.fluids.Fluid;
 
 /**

@@ -2,10 +2,9 @@ package gregtech.api.enums;
 
 import java.lang.reflect.Field;
 
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.objects.GT_RenderedTexture;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;

@@ -3,8 +3,6 @@ package gtPlusPlus.core.world.darkworld.chunk;
 import java.util.List;
 import java.util.Random;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -17,9 +15,16 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.structure.*;
+import net.minecraft.world.gen.structure.MapGenMineshaft;
+import net.minecraft.world.gen.structure.MapGenScatteredFeature;
+import net.minecraft.world.gen.structure.MapGenVillage;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.*;
+import net.minecraftforge.event.terraingen.ChunkProviderEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class ChunkProviderModded implements IChunkProvider {
 	private Random rand;

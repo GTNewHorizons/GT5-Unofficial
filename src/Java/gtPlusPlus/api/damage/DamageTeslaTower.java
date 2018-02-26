@@ -1,10 +1,11 @@
 package gtPlusPlus.api.damage;
 
-import gtPlusPlus.core.world.damage.BaseCustomDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+
+import gtPlusPlus.core.world.damage.BaseCustomDamageSource;
 
 public class DamageTeslaTower extends BaseCustomDamageSource{
 

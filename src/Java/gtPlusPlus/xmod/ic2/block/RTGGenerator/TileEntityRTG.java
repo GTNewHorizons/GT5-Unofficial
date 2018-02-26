@@ -2,6 +2,11 @@ package gtPlusPlus.xmod.ic2.block.RTGGenerator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+
 import gtPlusPlus.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RTG;
 import gtPlusPlus.xmod.ic2.block.RTGGenerator.gui.GUI_RTG;
 import ic2.core.ContainerBase;
@@ -9,9 +14,6 @@ import ic2.core.Ic2Items;
 import ic2.core.block.generator.tileentity.TileEntityRTGenerator;
 import ic2.core.block.invslot.InvSlotConsumable;
 import ic2.core.block.invslot.InvSlotConsumableId;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 
 public class TileEntityRTG
 extends TileEntityRTGenerator

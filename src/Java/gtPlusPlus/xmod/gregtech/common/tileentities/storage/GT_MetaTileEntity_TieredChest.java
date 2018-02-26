@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -7,14 +12,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_Container_QuantumChest;
-import gregtech.common.gui.GT_GUIContainer_QuantumChest;
+
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachineBlock {
 	public int mItemCount = 0;

@@ -5,7 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.GregTech_API;
+
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.util.Utils;
@@ -17,8 +21,6 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
 public class CORE {

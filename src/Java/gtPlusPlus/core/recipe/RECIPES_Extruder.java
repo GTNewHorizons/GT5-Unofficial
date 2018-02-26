@@ -1,16 +1,14 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.*;
+import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 
 public class RECIPES_Extruder implements IOreRecipeRegistrator {
 	

@@ -2,11 +2,6 @@ package gtPlusPlus.xmod.ic2.item;
 
 import java.util.List;
 
-import ic2.api.item.IKineticRotor;
-import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
-import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
-import ic2.core.init.InternalName;
-import ic2.core.util.StackUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import ic2.api.item.IKineticRotor;
+import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
+import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
+import ic2.core.init.InternalName;
+import ic2.core.util.StackUtil;
 
 public class RotorIridium extends RotorBase{
 

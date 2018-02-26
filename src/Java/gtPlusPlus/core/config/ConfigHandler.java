@@ -8,6 +8,7 @@ import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_Met
 import java.io.File;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {

@@ -1,24 +1,20 @@
 package gtPlusPlus.core.handler.events;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
-import gtPlusPlus.core.handler.analytics.SegmentHelper;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.math.MathUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;

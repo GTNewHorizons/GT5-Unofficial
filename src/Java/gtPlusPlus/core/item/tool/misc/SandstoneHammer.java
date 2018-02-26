@@ -4,12 +4,14 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.lib.CORE;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
+import gtPlusPlus.core.lib.CORE;
 
 public class SandstoneHammer extends BaseItemWithDamageValue{
 

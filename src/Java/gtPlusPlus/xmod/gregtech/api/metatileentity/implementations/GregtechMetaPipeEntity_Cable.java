@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
+import static gregtech.api.enums.GT_Values.VN;
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
+import net.minecraft.util.EnumChatFormatting;
+
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
@@ -11,13 +13,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.util.EnumChatFormatting;
-
-import static gregtech.api.enums.GT_Values.VN;
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
-import gregtech.api.enums.Dyes;
 
 public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implements IMetaTileEntityCable {
 	private static Textures.BlockIcons INSULATION_MEDIUM_PLUS;

@@ -5,9 +5,6 @@ import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.Ev
 
 import java.util.Random;
 
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.world.darkworld.gen.WorldGenDeadLilly;
-import gtPlusPlus.core.world.darkworld.gen.WorldGenMinable_Custom;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -15,8 +12,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.*;
+
+import gtPlusPlus.core.world.darkworld.gen.WorldGenDeadLilly;
+import gtPlusPlus.core.world.darkworld.gen.WorldGenMinable_Custom;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.*;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class BiomeGenerator_Custom extends BiomeDecorator {
     /** The world the BiomeDecorator is currently decorating */

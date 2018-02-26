@@ -2,22 +2,24 @@ package gtPlusPlus.core.block.base;
 
 import java.util.Random;
 
-import cofh.lib.render.particle.EntityDropParticleFX;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cofh.lib.render.particle.EntityDropParticleFX;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;

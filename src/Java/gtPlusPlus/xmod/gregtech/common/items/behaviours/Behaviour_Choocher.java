@@ -2,13 +2,14 @@ package gtPlusPlus.xmod.gregtech.common.items.behaviours;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class Behaviour_Choocher
 extends Behaviour_None {

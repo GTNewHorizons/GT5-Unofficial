@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraftforge.common.DimensionManager;
 
 public class BlockPos implements Serializable{

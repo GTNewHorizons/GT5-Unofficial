@@ -3,18 +3,15 @@ package gtPlusPlus.core.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 
 public class CommandMath implements ICommand

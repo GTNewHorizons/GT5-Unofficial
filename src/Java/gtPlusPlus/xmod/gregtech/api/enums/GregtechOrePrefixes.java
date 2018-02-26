@@ -5,18 +5,24 @@ import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
 import java.util.*;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.interfaces.*;
+import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.ICondition;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 

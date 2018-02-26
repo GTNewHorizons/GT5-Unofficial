@@ -1,6 +1,7 @@
 package gtPlusPlus.core.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;

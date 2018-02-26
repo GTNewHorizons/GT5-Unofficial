@@ -2,10 +2,11 @@ package gtPlusPlus.core.tileentities.general;
 
 import java.util.Random;
 
-import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+
+import gtPlusPlus.core.block.ModBlocks;
 
 
 

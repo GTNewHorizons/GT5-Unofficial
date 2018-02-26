@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_MassFabricator;
-import net.minecraft.entity.player.InventoryPlayer;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

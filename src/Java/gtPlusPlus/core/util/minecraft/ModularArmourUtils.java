@@ -1,11 +1,13 @@
 package gtPlusPlus.core.util.minecraft;
 
-import baubles.api.BaubleType;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import gregtech.api.util.GT_Utility;
+
+import baubles.api.BaubleType;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
 
 public class ModularArmourUtils {
 

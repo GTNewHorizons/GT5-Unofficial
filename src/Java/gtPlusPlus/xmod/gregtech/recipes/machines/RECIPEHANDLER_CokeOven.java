@@ -1,7 +1,8 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPEHANDLER_CokeOven {

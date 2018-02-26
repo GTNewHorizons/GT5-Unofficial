@@ -4,12 +4,15 @@ import java.util.Iterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
 
 public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 {

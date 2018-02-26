@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Plates implements Runnable{
 

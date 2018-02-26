@@ -1,11 +1,10 @@
 package gtPlusPlus.core.handler.analytics;
 
+import java.util.Map;
+
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Callback;
-import com.segment.analytics.messages.Message;
-import com.segment.analytics.messages.TrackMessage;
 import com.segment.analytics.messages.*;
-import java.util.Map;
  
 public class SegmentHelper implements Callback {
 	

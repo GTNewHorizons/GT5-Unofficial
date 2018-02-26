@@ -1,8 +1,9 @@
 package gtPlusPlus.core.util.minecraft.particles;
 
-import gtPlusPlus.xmod.forestry.HANDLER_FR;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+
+import gtPlusPlus.xmod.forestry.HANDLER_FR;
 
 public class BlockBreakParticles {
 

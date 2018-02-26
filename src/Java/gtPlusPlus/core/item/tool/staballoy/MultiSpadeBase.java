@@ -3,14 +3,16 @@ package gtPlusPlus.core.item.tool.staballoy;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
 
 public class MultiSpadeBase extends StaballoySpade{
 

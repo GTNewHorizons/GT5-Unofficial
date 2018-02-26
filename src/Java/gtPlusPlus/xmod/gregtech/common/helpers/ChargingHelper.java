@@ -1,12 +1,22 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.*;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -17,9 +27,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaW
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class ChargingHelper {

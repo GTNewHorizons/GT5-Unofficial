@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.init;
 
 import gregtech.api.enums.Materials;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;

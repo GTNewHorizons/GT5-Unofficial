@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.StatCollector;
 
 public class GUI_SuperChest extends GT_GUIContainerMetaTile_Machine {
 	private final String mName;

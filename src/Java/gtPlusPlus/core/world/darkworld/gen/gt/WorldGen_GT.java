@@ -1,13 +1,14 @@
 package gtPlusPlus.core.world.darkworld.gen.gt;
 
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 public abstract class WorldGen_GT {
 	public final String mWorldGenName;

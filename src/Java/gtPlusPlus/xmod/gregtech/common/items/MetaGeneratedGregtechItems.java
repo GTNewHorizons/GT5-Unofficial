@@ -2,19 +2,22 @@ package gtPlusPlus.xmod.gregtech.common.items;
 
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
-import codechicken.nei.api.API;
-import cpw.mods.fml.common.Loader;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.*;
 import gregtech.api.util.*;
-import gregtech.common.covers.*;
+import gregtech.common.covers.GT_Cover_Arm;
+import gregtech.common.covers.GT_Cover_Conveyor;
+import gregtech.common.covers.GT_Cover_Pump;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -23,9 +26,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	public MetaGeneratedGregtechItems INSTANCE;

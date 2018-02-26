@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_Texture;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 
 public class GregtechTextures {
 	public enum BlockIcons implements Interface_IconContainer, Runnable {

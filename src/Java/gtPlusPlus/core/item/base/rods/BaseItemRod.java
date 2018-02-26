@@ -1,10 +1,12 @@
 package gtPlusPlus.core.item.base.rods;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
-import net.minecraft.item.ItemStack;
 
 public class BaseItemRod extends BaseItemComponent{
 

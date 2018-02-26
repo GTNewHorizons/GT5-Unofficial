@@ -1,13 +1,12 @@
 package gtPlusPlus.core.inventories.modulartable;
 
-import gtPlusPlus.core.slots.SlotModularBauble;
-import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 
 public class InventoryModularMain implements IInventory{
 

@@ -1,10 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
+
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Assembler  implements Runnable{
 

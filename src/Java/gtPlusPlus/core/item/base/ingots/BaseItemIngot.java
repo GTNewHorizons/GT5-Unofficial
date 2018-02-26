@@ -1,11 +1,13 @@
 package gtPlusPlus.core.item.base.ingots;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_ModHandler;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class BaseItemIngot extends BaseItemComponent{
 

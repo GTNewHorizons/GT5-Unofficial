@@ -1,9 +1,6 @@
 package gtPlusPlus.core.handler.analytics;
 
-import com.segment.analytics.Analytics;
-import com.segment.analytics.Callback;
-import com.segment.analytics.Log;
-import com.segment.analytics.Plugin;
+import com.segment.analytics.*;
 import com.segment.analytics.messages.Message;
 
 import gtPlusPlus.api.objects.Logger;

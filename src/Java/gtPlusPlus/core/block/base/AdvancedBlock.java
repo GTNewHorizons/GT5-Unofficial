@@ -1,6 +1,5 @@
 package gtPlusPlus.core.block.base;
 
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,6 +7,8 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.lib.CORE;
 
 public class AdvancedBlock extends Block {
 

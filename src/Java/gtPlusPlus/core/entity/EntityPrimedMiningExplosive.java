@@ -1,11 +1,12 @@
 package gtPlusPlus.core.entity;
 
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 
 public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 {

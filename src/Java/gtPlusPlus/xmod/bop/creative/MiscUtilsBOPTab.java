@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.bop.creative;
 
-import gtPlusPlus.core.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+
+import gtPlusPlus.core.item.ModItems;
 
 public class MiscUtilsBOPTab extends CreativeTabs {
 

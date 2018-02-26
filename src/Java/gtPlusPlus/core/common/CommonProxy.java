@@ -4,6 +4,9 @@ import static gtPlusPlus.core.lib.CORE.DEBUG;
 
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.entity.Entity;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
@@ -26,9 +29,7 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 

@@ -4,11 +4,14 @@ import java.util.Iterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
 
 public class CONTAINER_SolarGenerator
 extends GT_ContainerMetaTile_Machine {

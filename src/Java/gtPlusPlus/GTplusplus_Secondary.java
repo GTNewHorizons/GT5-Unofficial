@@ -9,9 +9,10 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.CORE.*;
+import gtPlusPlus.core.lib.CORE.Everglades;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;

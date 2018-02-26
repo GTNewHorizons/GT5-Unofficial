@@ -1,8 +1,9 @@
 package gtPlusPlus.api.interfaces;
 
+import net.minecraft.block.Block;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
-import net.minecraft.block.Block;
 
 public interface ITexturedBlock extends ITexturedTileEntity{
 

@@ -11,6 +11,7 @@
 package gtPlusPlus.xmod.forestry.bees.gui;
 
 import net.minecraft.entity.player.InventoryPlayer;
+
 import forestry.apiculture.gui.ContainerBeeHelper;
 import forestry.apiculture.gui.IContainerBeeHousing;
 import forestry.apiculture.tiles.TileBeeHousingBase;

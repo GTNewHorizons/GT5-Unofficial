@@ -1,9 +1,9 @@
 package gtPlusPlus.core.lib;
 
-import static gtPlusPlus.core.lib.CORE.BRC;
-import static gtPlusPlus.core.lib.CORE.GTNH;
+import static gtPlusPlus.core.lib.CORE.*;
 
 import cpw.mods.fml.common.Loader;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;

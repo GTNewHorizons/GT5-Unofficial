@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;
@@ -9,11 +11,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SolarGenerator;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaSolarGenerator;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGenerator {
 

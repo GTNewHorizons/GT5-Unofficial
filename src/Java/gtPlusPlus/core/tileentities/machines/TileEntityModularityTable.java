@@ -1,9 +1,18 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.ItemList;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.container.Container_ModularityTable;
@@ -15,11 +24,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityModularityTable extends TileEntityBase implements ISidedInventory{
 

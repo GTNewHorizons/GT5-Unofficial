@@ -2,11 +2,12 @@ package gtPlusPlus.xmod.ic2.item;
 
 import java.util.List;
 
-import ic2.core.item.block.ItemBlockIC2;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import ic2.core.item.block.ItemBlockIC2;
 
 public class ItemGenerators
 extends ItemBlockIC2

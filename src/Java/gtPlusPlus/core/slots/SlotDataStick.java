@@ -1,12 +1,14 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.enums.ItemList;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.ItemList;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 
 public class SlotDataStick extends Slot {
 

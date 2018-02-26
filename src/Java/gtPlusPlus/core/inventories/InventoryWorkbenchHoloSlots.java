@@ -1,12 +1,13 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class InventoryWorkbenchHoloSlots implements IInventory{
 

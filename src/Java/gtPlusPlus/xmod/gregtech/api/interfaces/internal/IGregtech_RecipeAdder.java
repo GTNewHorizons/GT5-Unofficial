@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IGregtech_RecipeAdder {

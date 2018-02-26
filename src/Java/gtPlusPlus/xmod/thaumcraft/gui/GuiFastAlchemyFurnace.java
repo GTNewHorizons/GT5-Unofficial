@@ -4,9 +4,11 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
 import thaumcraft.client.lib.UtilsFX;
 
 @SideOnly(Side.CLIENT)

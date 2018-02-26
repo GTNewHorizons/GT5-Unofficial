@@ -2,8 +2,10 @@ package gregtech.api.util;
 
 import java.util.Collection;
 
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
 import net.minecraftforge.fluids.FluidStack;
 
 public class EmptyRecipeMap extends GT_Recipe_Map{

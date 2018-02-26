@@ -2,12 +2,13 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generat
 
 import static gregtech.api.enums.GT_Values.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_BasicTank {
 

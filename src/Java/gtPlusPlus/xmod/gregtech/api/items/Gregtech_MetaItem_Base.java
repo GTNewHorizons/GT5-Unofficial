@@ -1,15 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import gregtech.api.enums.SubTag;
-import gregtech.api.util.*;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
-import ic2.api.item.*;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +17,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.SubTag;
+import gregtech.api.util.*;
+
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
+import ic2.api.item.*;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 

@@ -1,11 +1,12 @@
 package gtPlusPlus.core.inventories;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gregtech.api.items.GT_MetaGenerated_Tool;
 
 public class InventoryWorkbenchTools implements IInventory{
 

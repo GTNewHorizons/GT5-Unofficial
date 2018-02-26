@@ -3,11 +3,6 @@ package gtPlusPlus.xmod.gregtech.api.items.types;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.*;
-import ic2.api.tile.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +10,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+
+import ic2.api.tile.IWrenchable;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class ToolType_Wrench

@@ -3,17 +3,19 @@ package gtPlusPlus.xmod.ic2.block.kieticgenerator;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.core.block.BlockMultiID;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityManualKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.init.InternalName;
 import ic2.core.item.block.ItemKineticGenerator;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class IC2_BlockKineticGenerator
 extends BlockMultiID

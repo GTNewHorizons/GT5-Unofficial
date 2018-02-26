@@ -1,10 +1,12 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.items.GT_MetaGenerated_Tool;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class SlotGtTool extends Slot {
 

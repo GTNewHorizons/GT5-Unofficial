@@ -2,8 +2,11 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.ArrayList;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -15,7 +18,6 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelter  implements Runnable{

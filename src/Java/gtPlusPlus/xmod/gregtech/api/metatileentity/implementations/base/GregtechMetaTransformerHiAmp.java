@@ -1,15 +1,17 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 
 public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer {
 

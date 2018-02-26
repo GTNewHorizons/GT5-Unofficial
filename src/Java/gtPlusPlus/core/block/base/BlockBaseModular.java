@@ -3,7 +3,12 @@ package gtPlusPlus.core.block.base;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.world.IBlockAccess;
+
 import gregtech.api.util.GT_OreDictUnificator;
+
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtFrameBox;
 import gtPlusPlus.core.lib.CORE;
@@ -11,8 +16,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.world.IBlockAccess;
 
 public class BlockBaseModular extends BasicBlock {
 

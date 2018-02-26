@@ -1,6 +1,7 @@
 package gtPlusPlus.core.slots;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

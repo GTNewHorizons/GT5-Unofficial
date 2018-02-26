@@ -5,8 +5,11 @@ import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.*;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
@@ -17,7 +20,6 @@ import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_HANDLER {
 

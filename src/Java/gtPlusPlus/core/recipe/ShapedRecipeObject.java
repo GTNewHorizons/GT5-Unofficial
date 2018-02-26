@@ -1,8 +1,9 @@
 package gtPlusPlus.core.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import net.minecraft.item.ItemStack;
 
 public class ShapedRecipeObject {
 

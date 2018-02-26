@@ -2,7 +2,9 @@ package gtPlusPlus.core.handler.workbench;
 
 import java.util.Comparator;
 
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 
 public class Workbench_RecipeSorter implements Comparator<Object>
 {

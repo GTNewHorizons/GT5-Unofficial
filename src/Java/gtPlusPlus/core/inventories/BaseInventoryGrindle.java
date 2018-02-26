@@ -2,12 +2,13 @@ package gtPlusPlus.core.inventories;
 
 import java.util.UUID;
 
-import gtPlusPlus.core.item.base.BaseItemBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gtPlusPlus.core.item.base.BaseItemBackpack;
 import net.minecraftforge.common.util.Constants;
 
 public class BaseInventoryGrindle implements IInventory{

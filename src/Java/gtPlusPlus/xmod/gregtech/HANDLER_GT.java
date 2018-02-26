@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.util.GT_Config;
+
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -15,7 +16,9 @@ import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.*;
+import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
+import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_Ex;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
 

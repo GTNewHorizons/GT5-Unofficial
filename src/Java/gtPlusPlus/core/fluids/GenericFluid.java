@@ -1,9 +1,11 @@
 package gtPlusPlus.core.fluids;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.block.Block;
+
 import gtPlusPlus.core.item.base.itemblock.ItemBlockFluid;
 import gtPlusPlus.core.material.Material;
-import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 

@@ -1,17 +1,22 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntityDoubleFuelGeneratorBase
 extends GregtechRocketFuelGeneratorBase {

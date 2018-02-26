@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.objects;
 
 import gregtech.api.GregTech_API;
+
 import gtPlusPlus.core.lib.CORE;
 import net.minecraftforge.fluids.Fluid;
 

@@ -2,10 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
 import java.util.List;
 
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IToolStats;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -13,6 +9,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import net.minecraftforge.event.world.BlockEvent;
 
 /**

@@ -3,11 +3,12 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 
 public class COMPAT_IC2 {

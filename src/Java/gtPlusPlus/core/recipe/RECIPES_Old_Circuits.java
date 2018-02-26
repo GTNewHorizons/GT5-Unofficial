@@ -1,11 +1,16 @@
 package gtPlusPlus.core.recipe;
 
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.*;
-import gregtech.common.GT_Proxy;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
+import codechicken.nei.api.API;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -14,7 +19,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	public RECIPES_Old_Circuits() {

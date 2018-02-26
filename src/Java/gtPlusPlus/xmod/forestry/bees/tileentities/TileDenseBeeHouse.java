@@ -10,23 +10,15 @@
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.tileentities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
+import cpw.mods.fml.common.Optional;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.common.Optional;
-
-import forestry.api.apiculture.IBeeHousingInventory;
-import forestry.api.apiculture.IBeeListener;
-import forestry.api.apiculture.IBeeModifier;
-import forestry.api.apiculture.IHiveFrame;
+import buildcraft.api.statements.ITriggerExternal;
+import forestry.api.apiculture.*;
 import forestry.apiculture.ApiaryBeeListener;
 import forestry.apiculture.ApiaryBeeModifier;
 import forestry.apiculture.IApiary;
@@ -36,7 +28,7 @@ import forestry.apiculture.tiles.TileBeeHousingBase;
 import forestry.apiculture.trigger.ApicultureTriggers;
 import gtPlusPlus.xmod.forestry.bees.gui.ContainerBeeHouse;
 import gtPlusPlus.xmod.forestry.bees.gui.GuiBeeHouse;
-import buildcraft.api.statements.ITriggerExternal;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileDenseBeeHouse extends TileBeeHousingBase implements IApiary {
 	private final IBeeModifier beeModifier = new ApiaryBeeModifier();

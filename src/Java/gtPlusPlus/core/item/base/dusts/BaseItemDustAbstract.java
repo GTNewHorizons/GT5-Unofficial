@@ -3,10 +3,12 @@ package gtPlusPlus.core.item.base.dusts;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.lib.CORE;
 
 public abstract class BaseItemDustAbstract extends Item{
 

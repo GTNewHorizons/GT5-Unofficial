@@ -1,16 +1,13 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
-import net.minecraft.item.ItemStack;
 
 public class NewHorizonsAccelerator {
 

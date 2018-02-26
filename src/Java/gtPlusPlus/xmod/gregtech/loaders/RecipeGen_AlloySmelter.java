@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+
 import gtPlusPlus.core.material.Material;
 
 public class RecipeGen_AlloySmelter  implements Runnable{

@@ -1,9 +1,5 @@
 package gtPlusPlus.core.entity.projectile;
 
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -11,6 +7,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class EntitySulfuricAcidPotion extends EntityThrowable {
 

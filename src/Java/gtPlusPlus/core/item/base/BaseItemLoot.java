@@ -2,16 +2,18 @@ package gtPlusPlus.core.item.base;
 
 import java.util.List;
 
-import gregtech.api.enums.Materials;
-import gtPlusPlus.api.enums.Quality;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gregtech.api.enums.Materials;
+
+import gtPlusPlus.api.enums.Quality;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemLoot extends Item{
 

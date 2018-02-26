@@ -6,10 +6,11 @@
 
 package gtPlusPlus.core.handler.render;
 
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+
+import gtPlusPlus.core.lib.CORE;
 
 public class FirepitModel extends ModelBase
 {

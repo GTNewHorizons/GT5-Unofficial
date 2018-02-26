@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.enums.ItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_SemiFluidGenerator;
 

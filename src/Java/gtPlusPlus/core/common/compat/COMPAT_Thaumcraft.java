@@ -1,9 +1,10 @@
 package gtPlusPlus.core.common.compat;
 
 import gregtech.api.util.GT_OreDictUnificator;
+
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class COMPAT_Thaumcraft {
 

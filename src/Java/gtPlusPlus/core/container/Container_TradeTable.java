@@ -1,5 +1,12 @@
 package gtPlusPlus.core.container;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
@@ -7,12 +14,6 @@ import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
 import gtPlusPlus.core.slots.SlotGeneric;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class Container_TradeTable extends Container {
 

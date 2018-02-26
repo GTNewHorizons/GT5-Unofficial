@@ -2,7 +2,7 @@ package gtPlusPlus.core.entity.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -12,6 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 
 public class EntitySickBlaze extends EntityMob {
 	/** Random offset used in floating behaviour */

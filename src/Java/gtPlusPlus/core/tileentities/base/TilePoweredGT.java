@@ -1,29 +1,25 @@
 package gtPlusPlus.core.tileentities.base;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GT_Packet;
-import gregtech.api.net.GT_Packet_Block_Event;
-import gregtech.api.net.GT_Packet_TileEntity;
-import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.interfaces.IGregtechPower;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import ic2.api.info.Info;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_Block_Event;
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.interfaces.IGregtechPower;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TilePoweredGT extends TileEntityBase implements IGregtechPower {

@@ -2,10 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 
 import java.util.*;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.objects.GT_ArrayList;
+
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import net.minecraft.item.ItemStack;
 
 public class GregtechItemData {
 	private static final GregtechMaterialStack[] EMPTY_GT_MaterialStack_ARRAY = new GregtechMaterialStack[0];

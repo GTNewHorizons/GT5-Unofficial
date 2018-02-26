@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPEHANDLER_AssemblyLine {

@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.world;
 
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
-import net.minecraft.block.Block;
-
 import static gtPlusPlus.xmod.gregtech.HANDLER_GT.sCustomWorldgenFile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import net.minecraft.block.Block;
+
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 public abstract class GTPP_Worldgen_Ore extends GTPP_Worldgen {
     public final int mBlockMeta, mAmount, mSize, mMinY, mMaxY, mProbability, mDimensionType;

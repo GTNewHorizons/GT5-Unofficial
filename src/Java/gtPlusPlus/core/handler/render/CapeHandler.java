@@ -4,10 +4,6 @@ import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,6 +11,12 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.core.lib.CORE;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class CapeHandler extends RenderPlayer {

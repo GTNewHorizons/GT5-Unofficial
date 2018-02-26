@@ -2,15 +2,17 @@ package gtPlusPlus.xmod.gregtech.api.gui;
 
 import java.util.UUID;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
-import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.core.util.player.PlayerCache;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.gui.GT_ContainerMetaTile_Machine;
+import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import gtPlusPlus.core.util.player.PlayerCache;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 
 public class CONTAINER_SafeBlock
 extends GT_ContainerMetaTile_Machine {

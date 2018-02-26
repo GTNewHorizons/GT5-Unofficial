@@ -5,9 +5,12 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gtPlusPlus.api.objects.Logger;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
+
+import gregtech.api.GregTech_API;
+
+import gtPlusPlus.api.objects.Logger;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class Meta_GT_Proxy {

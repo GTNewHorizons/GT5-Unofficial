@@ -1,12 +1,18 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import gregtech.api.enums.*;
+import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {

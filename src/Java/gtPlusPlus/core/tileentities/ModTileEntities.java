@@ -1,18 +1,11 @@
 package gtPlusPlus.core.tileentities;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
-import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
-import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
-import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
+import gtPlusPlus.core.tileentities.general.*;
+import gtPlusPlus.core.tileentities.machines.*;
 import gtPlusPlus.xmod.thaumcraft.common.tile.TCTileEntities;
 
 public class ModTileEntities {

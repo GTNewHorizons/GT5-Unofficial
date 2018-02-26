@@ -1,6 +1,8 @@
 package gtPlusPlus.core.util.sys;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.*;
 
 import org.apache.http.client.utils.URIBuilder;

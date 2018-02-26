@@ -1,8 +1,9 @@
 package gtPlusPlus.core.creative.tabs;
 
-import gtPlusPlus.core.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+
+import gtPlusPlus.core.item.ModItems;
 
 public class MiscUtilCreativeTabMisc extends CreativeTabs {
 

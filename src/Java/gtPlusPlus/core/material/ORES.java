@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.TextureSet;
+
 import gtPlusPlus.core.material.state.MaterialState;
 
 public final class ORES {

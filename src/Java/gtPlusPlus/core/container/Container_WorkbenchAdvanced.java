@@ -1,6 +1,14 @@
 package gtPlusPlus.core.container;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.world.World;
+
 import gregtech.api.gui.GT_Slot_Holo;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
@@ -9,12 +17,6 @@ import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.world.World;
 
 public class Container_WorkbenchAdvanced extends Container {
 

@@ -4,15 +4,17 @@ import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
 import java.util.Map;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class NBTUtils {
 

@@ -1,14 +1,20 @@
 package cofh.mod;
 
-import cofh.mod.updater.IUpdatableMod;
-import cofh.mod.updater.ModRange;
-import cofh.mod.updater.ModVersion;
+import java.io.*;
+import java.util.*;
+import java.util.Locale;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.helpers.Loader;
+import org.apache.logging.log4j.spi.AbstractLogger;
+
 import com.google.common.base.Strings;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ICrashCallable;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.network.NetworkCheckHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.versioning.InvalidVersionSpecificationException;
@@ -16,33 +22,14 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.client.resources.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringTranslate;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.helpers.Loader;
-import org.apache.logging.log4j.spi.AbstractLogger;
+import cofh.mod.updater.IUpdatableMod;
+import cofh.mod.updater.ModRange;
+import cofh.mod.updater.ModVersion;
 
 public abstract class BaseMod implements IUpdatableMod {
 

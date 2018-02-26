@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.thaumcraft.common.tile;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 

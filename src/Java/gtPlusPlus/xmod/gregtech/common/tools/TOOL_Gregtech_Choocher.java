@@ -3,15 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tools;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.tools.GT_Tool;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -21,7 +12,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.common.tools.GT_Tool;
+
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
 import net.minecraftforge.event.world.BlockEvent;
 
 public class TOOL_Gregtech_Choocher

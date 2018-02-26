@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.forestry.bees.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.core.utils.StringUtil;
-import forestry.plugins.PluginManager;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import forestry.core.utils.StringUtil;
+import forestry.plugins.PluginManager;
 import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class FR_BlockRegistry {

@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.gui.hatches;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GUI_2by2 extends GT_GUIContainerMetaTile_Machine {
 

@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPEHANDLER_Dehydrator {

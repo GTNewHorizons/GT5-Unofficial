@@ -1,12 +1,10 @@
 package gtPlusPlus.core.handler.analytics;
 
-import com.segment.analytics.Analytics;
-import com.segment.analytics.Callback;
-import com.segment.analytics.MessageTransformer;
-import com.segment.analytics.Plugin;
+import java.util.concurrent.Phaser;
+
+import com.segment.analytics.*;
 import com.segment.analytics.messages.Message;
 import com.segment.analytics.messages.MessageBuilder;
-import java.util.concurrent.Phaser;
 
 /**
  * The {@link Analytics} class doesn't come with a blocking {@link Analytics#flush()} implementation

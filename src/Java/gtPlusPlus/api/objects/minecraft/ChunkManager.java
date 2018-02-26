@@ -8,31 +8,25 @@
  */
 package gtPlusPlus.api.objects.minecraft;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
-import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
+import net.minecraftforge.common.ForgeChunkManager.*;
 import net.minecraftforge.event.entity.EntityEvent;
 
 /**

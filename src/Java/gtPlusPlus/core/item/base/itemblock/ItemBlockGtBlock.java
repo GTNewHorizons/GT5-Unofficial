@@ -2,18 +2,17 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import java.util.List;
 
-import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.block.base.BlockBaseModular;
+import gtPlusPlus.core.block.base.BlockBaseOre;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class ItemBlockGtBlock extends ItemBlock{
 

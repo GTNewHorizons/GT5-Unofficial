@@ -3,9 +3,6 @@ package gtPlusPlus.core.gui.item;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.inventories.BaseInventoryBackpack;
-import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,6 +10,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+
+import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.inventories.BaseInventoryBackpack;
+import gtPlusPlus.core.lib.CORE;
 
 public class GuiBaseBackpack extends GuiContainer
 {

@@ -5,6 +5,15 @@ import java.util.Vector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.ChunkCache;
+
 import ic2.api.energy.tile.IKineticSource;
 import ic2.api.item.IKineticRotor;
 import ic2.api.item.IKineticRotor.GearboxType;
@@ -14,13 +23,6 @@ import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.util.Util;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCache;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityKineticWindGenerator

@@ -6,9 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
-import gtPlusPlus.core.lib.CORE;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,6 +18,10 @@ import net.minecraft.init.Items;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
+import gtPlusPlus.core.lib.CORE;
 
 public class MiningExplosives extends BlockTNT {
 	@SideOnly(Side.CLIENT)

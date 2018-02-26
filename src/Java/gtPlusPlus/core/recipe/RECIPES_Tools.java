@@ -1,14 +1,15 @@
 package gtPlusPlus.core.recipe;
 
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_Tools {

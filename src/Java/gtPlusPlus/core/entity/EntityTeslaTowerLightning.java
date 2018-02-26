@@ -3,10 +3,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import gtPlusPlus.api.damage.DamageTeslaTower;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityWeatherEffect;
@@ -16,6 +12,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.damage.DamageTeslaTower;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class EntityTeslaTowerLightning extends EntityWeatherEffect
 {

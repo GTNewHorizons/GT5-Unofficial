@@ -1,13 +1,14 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityTradeTable extends TileEntityBase {
 

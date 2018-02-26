@@ -1,13 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
+
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 
 public class CustomGtTextures {
 	public enum ItemIcons implements IIconContainer, Runnable {

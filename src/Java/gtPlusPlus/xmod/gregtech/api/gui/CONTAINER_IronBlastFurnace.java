@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 
 public class CONTAINER_IronBlastFurnace extends GT_ContainerMetaTile_Machine {
 	public CONTAINER_IronBlastFurnace(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {

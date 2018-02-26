@@ -3,11 +3,13 @@ package gtPlusPlus.core.world.darkworld.block;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.core.creative.AddToCreativeTab;
+
 import net.minecraft.block.BlockDirt;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileTooltip{
 

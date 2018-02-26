@@ -7,14 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_Grindle;
-import gtPlusPlus.core.inventories.BaseInventoryGrindle;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -30,6 +23,15 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.inventories.BaseInventoryGrindle;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenGrindle extends GuiContainer {

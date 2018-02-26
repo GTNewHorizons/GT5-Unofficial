@@ -7,10 +7,12 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import net.minecraft.client.Minecraft;
+
 import gregtech.GT_Mod;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.client.Minecraft;
 
 public class ReflectionUtils {
 

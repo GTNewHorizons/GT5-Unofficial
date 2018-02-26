@@ -4,11 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +12,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+
+import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
@@ -84,7 +86,7 @@ public class EntityUtils {
 	/**
 	 * Static Version of the method used in {@code doFireDamage(entity, int)} to save memory.
 	 */
-	private static volatile Method dealFireDamage = null;
+	private static Method dealFireDamage = null;
 
 	/**
 	 * Reflective Call to do Fire Damage to an entity (Does not set entity on fire though)

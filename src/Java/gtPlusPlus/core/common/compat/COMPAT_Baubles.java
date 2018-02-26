@@ -2,7 +2,9 @@ package gtPlusPlus.core.common.compat;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.general.*;
+import gtPlusPlus.core.item.general.ItemCloakingDevice;
+import gtPlusPlus.core.item.general.ItemHealingDevice;
+import gtPlusPlus.core.item.general.ItemSlowBuildingRing;
 import gtPlusPlus.core.lib.LoadedMods;
 
 public class COMPAT_Baubles {

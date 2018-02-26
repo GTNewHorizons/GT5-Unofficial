@@ -2,9 +2,11 @@ package gtPlusPlus.xmod.gregtech.api.gui.hatches.charge;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_4by4;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_4by4;
 
 public class GUI_Electric_4by4 extends GUI_4by4{
 

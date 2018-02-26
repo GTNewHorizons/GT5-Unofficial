@@ -2,9 +2,6 @@ package gtPlusPlus.core.world.explosions;
 
 import java.util.*;
 
-import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
-import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -13,7 +10,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.random.XSTR;
+import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
+import gtPlusPlus.core.util.math.MathUtils;
 
 public class MiningExplosion extends Explosion {
 	private final int field_77289_h = 16;

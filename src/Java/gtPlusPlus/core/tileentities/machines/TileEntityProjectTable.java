@@ -3,25 +3,6 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.List;
 import java.util.Vector;
 
-import gregtech.api.enums.ItemList;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.bauble.ModularBauble;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import ic2.api.network.INetworkDataProvider;
-import ic2.api.network.INetworkUpdateListener;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -29,6 +10,26 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import gregtech.api.enums.ItemList;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.container.Container_ProjectTable;
+import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
+import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.item.bauble.ModularBauble;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.INetworkUpdateListener;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
 
 public class TileEntityProjectTable extends TileEntity implements INetworkDataProvider, INetworkUpdateListener, IWrenchable{
 

@@ -1,8 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
-import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.enums.OrePrefixes;
+
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public interface Interface_OreRecipeRegistrator_GT {
 	/**

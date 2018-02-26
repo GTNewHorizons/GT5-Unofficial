@@ -2,43 +2,29 @@ package gtPlusPlus.core.handler;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.container.Container_FishTrap;
-import gtPlusPlus.core.container.Container_Grindle;
-import gtPlusPlus.core.container.Container_ModularityTable;
-import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.container.Container_TradeTable;
-import gtPlusPlus.core.container.Container_Workbench;
-import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
+import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
 import gtPlusPlus.core.gui.item.GuiScreenGrindle;
-import gtPlusPlus.core.gui.machine.GUI_FishTrap;
-import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
-import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
-import gtPlusPlus.core.gui.machine.GUI_TradeTable;
-import gtPlusPlus.core.gui.machine.GUI_Workbench;
-import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
+import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
+import gtPlusPlus.core.tileentities.machines.*;
 import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
 import gtPlusPlus.xmod.thaumcraft.gui.ContainerFastAlchemyFurnace;
 import gtPlusPlus.xmod.thaumcraft.gui.GuiFastAlchemyFurnace;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 

@@ -6,15 +6,9 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Multimap;
 
-import baubles.api.BaubleType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
-import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,7 +17,17 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+
+import baubles.api.BaubleType;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ModularBauble extends BaseBauble {
 

@@ -2,14 +2,9 @@ package gtPlusPlus.core.world.darkworld.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
-import gtPlusPlus.core.world.darkworld.world.TeleporterDimensionMod;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -23,6 +18,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.core.world.darkworld.world.TeleporterDimensionMod;
 
 public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip{
 	IIcon gor = null, dol = null, st1 = null, st2 = null, st3 = null, st4 = null;

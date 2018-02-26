@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.autocrafter;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class AC_Helper_Container extends Container
 {

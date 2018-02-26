@@ -1,10 +1,11 @@
 package gtPlusPlus.core.util.minecraft;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import gtPlusPlus.api.objects.Logger;
 
 public class MiningUtils {
 

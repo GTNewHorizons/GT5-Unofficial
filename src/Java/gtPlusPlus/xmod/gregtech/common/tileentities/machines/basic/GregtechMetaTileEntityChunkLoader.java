@@ -8,21 +8,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import com.google.common.collect.MapMaker;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
-import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.interfaces.IChunkLoader;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Triplet;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.objects.minecraft.ChunkManager;
-import gtPlusPlus.api.objects.minecraft.DimChunkPos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +18,21 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.objects.GT_RenderedTexture;
+
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.api.interfaces.IChunkLoader;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.api.objects.minecraft.ChunkManager;
+import gtPlusPlus.api.objects.minecraft.DimChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;

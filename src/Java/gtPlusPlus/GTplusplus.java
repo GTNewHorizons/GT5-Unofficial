@@ -1,7 +1,6 @@
 package gtPlusPlus;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +14,13 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.launchwrapper.Launch;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.commands.CommandMath;
@@ -44,7 +47,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")

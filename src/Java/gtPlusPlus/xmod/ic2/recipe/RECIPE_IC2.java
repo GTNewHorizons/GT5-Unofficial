@@ -1,7 +1,14 @@
 package gtPlusPlus.xmod.ic2.recipe;
 
+import static gtPlusPlus.core.recipe.RECIPES_Tools.*;
+
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.*;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -9,10 +16,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
-import net.minecraft.item.ItemStack;
-
-import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
-import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
 public class RECIPE_IC2 {
 

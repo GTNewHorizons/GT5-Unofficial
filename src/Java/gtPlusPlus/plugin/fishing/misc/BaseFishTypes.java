@@ -5,10 +5,12 @@ import com.google.common.collect.Maps;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.plugin.fishing.item.BaseFish;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import gtPlusPlus.plugin.fishing.item.BaseFish;
 
 public enum BaseFishTypes{
 	

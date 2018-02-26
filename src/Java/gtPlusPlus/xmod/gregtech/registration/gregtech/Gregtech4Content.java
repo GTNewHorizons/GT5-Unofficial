@@ -1,19 +1,14 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_AutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_ThermalBoiler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.*;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class Gregtech4Content {
 

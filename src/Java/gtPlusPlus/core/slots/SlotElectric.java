@@ -1,13 +1,15 @@
 package gtPlusPlus.core.slots;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import ic2.api.info.Info;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+
+import ic2.api.info.Info;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
 
 public class SlotElectric extends Slot {
 	

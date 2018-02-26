@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.fluids.FluidStack;
 
 public class HotFuel {

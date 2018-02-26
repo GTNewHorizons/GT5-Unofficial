@@ -10,19 +10,22 @@ import com.google.common.collect.ImmutableMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.core.Tabs;
-import forestry.api.recipes.RecipeManagers;
-import gregtech.GT_Mod;
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import gregtech.GT_Mod;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+
+import forestry.api.core.Tabs;
+import forestry.api.recipes.RecipeManagers;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomComb extends Item {
 	@SideOnly(Side.CLIENT)

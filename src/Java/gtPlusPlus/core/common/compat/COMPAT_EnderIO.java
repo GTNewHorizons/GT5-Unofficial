@@ -1,9 +1,11 @@
 package gtPlusPlus.core.common.compat;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.util.GT_OreDictUnificator;
+
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_EnderIO {
 

@@ -3,8 +3,6 @@ package gtPlusPlus.core.util.data;
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
 
-import gregtech.api.enums.Materials;
-
 public class EnumUtils {
 
 	/** 

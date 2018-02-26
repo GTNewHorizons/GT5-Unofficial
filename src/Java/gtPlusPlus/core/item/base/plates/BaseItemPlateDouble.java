@@ -1,8 +1,9 @@
 package gtPlusPlus.core.item.base.plates;
 
+import net.minecraft.item.ItemStack;
+
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
-import net.minecraft.item.ItemStack;
 
 public class BaseItemPlateDouble extends BaseItemComponent{
 

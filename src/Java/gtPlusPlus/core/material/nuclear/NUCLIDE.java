@@ -1,7 +1,10 @@
 package gtPlusPlus.core.material.nuclear;
 
 import gregtech.api.enums.Materials;
-import gtPlusPlus.core.material.*;
+
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.data.StringUtils;
 

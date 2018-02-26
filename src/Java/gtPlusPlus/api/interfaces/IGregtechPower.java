@@ -1,16 +1,14 @@
 package gtPlusPlus.api.interfaces;
 
-import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.ITurnable;
-import gtPlusPlus.core.tileentities.base.TilePoweredGT;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import gregtech.api.interfaces.IDescribable;
+import gregtech.api.interfaces.tileentity.*;
+
+import gtPlusPlus.core.tileentities.base.TilePoweredGT;
 
 public abstract interface IGregtechPower extends IGearEnergyTileEntity, ITurnable, IGregTechDeviceInformation, IDescribable, IBasicEnergyContainer {
 

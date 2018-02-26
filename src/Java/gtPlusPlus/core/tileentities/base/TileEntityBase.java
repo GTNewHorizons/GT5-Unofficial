@@ -2,12 +2,13 @@ package gtPlusPlus.core.tileentities.base;
 
 import java.util.UUID;
 
-import gtPlusPlus.api.objects.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import gtPlusPlus.api.objects.Logger;
 
 public abstract class TileEntityBase extends TileEntity implements ISidedInventory {
 

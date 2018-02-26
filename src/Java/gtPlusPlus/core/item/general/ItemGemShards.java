@@ -2,16 +2,14 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
-import gtPlusPlus.core.item.base.BaseItemColourable;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
+
+import gtPlusPlus.core.item.base.BaseItemColourable;
+import gtPlusPlus.core.util.Utils;
 
 public class ItemGemShards extends BaseItemColourable{
 

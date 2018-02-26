@@ -2,12 +2,14 @@ package gtPlusPlus.core.world.darkworld.world;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
-import gtPlusPlus.core.world.darkworld.chunk.ChunkProviderModded;
+
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.core.world.darkworld.chunk.ChunkProviderModded;
 
 public class WorldProviderMod extends WorldProvider {
 

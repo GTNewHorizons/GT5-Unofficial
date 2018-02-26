@@ -5,15 +5,19 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.client.model.ModelStaballoyConstruct;
-import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.lib.CORE;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+
+import gtPlusPlus.core.client.model.ModelStaballoyConstruct;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class RenderStaballoyConstruct extends RenderLiving {

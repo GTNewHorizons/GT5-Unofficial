@@ -1,7 +1,9 @@
 package gtPlusPlus.core.world.darkworld.biome;
 
 import net.minecraft.world.WorldType;
-import net.minecraft.world.gen.layer.*;
+import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
+import net.minecraft.world.gen.layer.GenLayerZoom;
 
 public class GenLayerDarkWorld extends GenLayer {
 

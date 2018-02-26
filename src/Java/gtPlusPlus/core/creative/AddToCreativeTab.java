@@ -1,10 +1,11 @@
 package gtPlusPlus.core.creative;
 
+import net.minecraft.creativetab.CreativeTabs;
+
 import gtPlusPlus.core.creative.tabs.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.bop.creative.MiscUtilsBOPTab;
-import net.minecraft.creativetab.CreativeTabs;
 
 public class AddToCreativeTab {
 

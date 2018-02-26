@@ -1,18 +1,18 @@
 package gtPlusPlus.core.slots;
 
-import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeList;
-import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.*;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class SlotModularBaubleUpgrades extends Slot {
 

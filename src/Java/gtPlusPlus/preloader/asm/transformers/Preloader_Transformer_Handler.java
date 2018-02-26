@@ -5,9 +5,11 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+
+import net.minecraft.launchwrapper.IClassTransformer;
+
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer2.GT_MetaTile_Visitor;
-import net.minecraft.launchwrapper.IClassTransformer;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 

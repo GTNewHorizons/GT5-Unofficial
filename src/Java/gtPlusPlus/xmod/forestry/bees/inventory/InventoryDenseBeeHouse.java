@@ -13,13 +13,14 @@ package gtPlusPlus.xmod.forestry.bees.inventory;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import forestry.api.apiculture.*;
 import forestry.apiculture.InventoryBeeHousing;
 import forestry.apiculture.inventory.IApiaryInventory;
 import forestry.core.access.IAccessHandler;
 import forestry.core.utils.SlotUtil;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class InventoryDenseBeeHouse extends InventoryBeeHousing implements IApiaryInventory {
 	public static final int SLOT_FRAMES_1 = 9;
