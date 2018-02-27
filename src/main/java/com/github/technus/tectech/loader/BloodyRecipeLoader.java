@@ -3,11 +3,13 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Centrifuge;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
@@ -26,11 +28,6 @@ public class BloodyRecipeLoader implements Runnable {
                 CustomItemList.eM_Containment.get(1),
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
         }, Materials.Osmium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000);
-
-        //BLUEprint
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
 
         //region pipes
 
@@ -89,6 +86,37 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 24),
                 ItemList.Field_Generator_IV.get(1)
         }, Materials.Osmium.getMolten(1296), CustomItemList.eM_Containment.get(1), 800, 500000);
+
+        //Hollow Casing
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.eM_Containment.get(1),
+                12000,32, 500000, 6, new ItemStack[]{
+                        CustomItemList.eM_Containment.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Plutonium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 16),
+                }, new FluidStack[]{
+                        Materials.Americium.getMolten(1296),
+                        Materials.Osmium.getMolten(1296),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Argon.getGas(576),
+                }, CustomItemList.eM_Hollow.get(2), 200, 2000000);
+
+        //EM Coil
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.eM_Hollow.get(1),
+                48000,128, 1000000, 16, new ItemStack[]{
+                        CustomItemList.eM_Hollow.get(1),
+                        ItemList.Casing_Fusion_Coil.get(4),
+                        ItemList.Casing_Coil_NaquadahAlloy.get( 4),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 16),
+                }, new FluidStack[]{
+                        Materials.Glass.getMolten(2304),
+                        Materials.Silicone.getMolten(1872),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.Americium.getMolten(1296),
+                }, CustomItemList.eM_Coil.get(4), 800, 2000000);
 
         //endregion
 

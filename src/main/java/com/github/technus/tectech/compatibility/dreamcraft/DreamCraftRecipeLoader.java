@@ -3,11 +3,13 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Centrifuge;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -43,7 +45,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         return (IItemContainer) Enum.valueOf(customItemList, name);
     }
 
-    private static void addAssemblerRecipe(ItemStack[] items, FluidStack fluid, ItemStack output, int time, int eut) {
+    private static void addAssemblerRecipeWithCleanroom(ItemStack[] items, FluidStack fluid, ItemStack output, int time, int eut) {
         try {
             addAssemblerRecipe.invoke(GT_Values.RA, items, fluid, output, time, eut, true);
         } catch (Exception e) {
@@ -60,15 +62,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
         }, getOrDefault("Trinium",Materials.Osmium).getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000);
 
-        //BLUEprint
-        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
-                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
-
         //region pipes
 
         //Data
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 ItemList.Circuit_Parts_GlassFiber.get(8),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silver, 8)
         }, Materials.Polytetrafluoroethylene.getMolten(144), CustomItemList.DATApipe.get(1), 200, 30720);
@@ -105,7 +102,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 1)
         }, Materials.SolderingAlloy.getMolten(1296), CustomItemList.eM_Computer_Vent.get(1), 100, 1920);
         //Advanced Computer Casing
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
@@ -194,14 +191,14 @@ public class DreamCraftRecipeLoader implements Runnable {
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_UMV_UIV.get(1), CustomItemList.eM_energymulti16_UIV.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6)}, Materials.Tungsten.getMolten(8000), CustomItemList.eM_energymulti64_UIV.get(1), 400, 8000000);
 
         //Data Input
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Input_Bus_LuV.get(1),
                 ItemList.Circuit_Crystalcomputer.get(1),
                 CustomItemList.DATApipe.get(2)
         }, Materials.Iridium.getMolten(1296), CustomItemList.dataIn_Hatch.get(1), 200, 122880);
         //Data Output
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Hatch_Output_Bus_LuV.get(1),
                 ItemList.Circuit_Crystalcomputer.get(1),
@@ -209,7 +206,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(1296), CustomItemList.dataOut_Hatch.get(1), 200, 122880);
 
         //Rack
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
                 ItemList.Circuit_Crystalcomputer.get(2),
@@ -242,7 +239,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 new ItemStack(Blocks.stone_button, 16),
         }, Materials.Iridium.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1), 800, 122880);
         //Uncertainty
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1),
                 ItemList.Circuit_Ultimatecrystalcomputer.get(1),
                 CustomItemList.DATApipe.get(16),
@@ -251,21 +248,21 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, Materials.Iridium.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1), 1200, 122880);
 
         //Elemental Input
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),
                 ItemList.Hatch_Input_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
                 ItemList.Sensor_UV.get(1)
         }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_in_UV.get(1), 800, 500000);
         //Elemental Output
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),
                 ItemList.Hatch_Output_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
                 ItemList.Emitter_UV.get(1)
         }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_out_UV.get(1), 800, 500000);
         //Overflow
-        addAssemblerRecipe(new ItemStack[]{
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),
                 ItemList.Hatch_Muffler_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 1),

@@ -36,8 +36,8 @@ public final class ConstructableTriggerItem extends Item {
     private static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
-        setUnlocalizedName("em.debugBuilder");
-        setTextureName(MODID + ":itemDebugBuilder");
+        setUnlocalizedName("em.constructable");
+        setTextureName(MODID + ":itemConstructable");
     }
 
     @Override

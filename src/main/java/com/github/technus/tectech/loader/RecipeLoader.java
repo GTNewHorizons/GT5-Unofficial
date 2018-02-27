@@ -4,9 +4,12 @@ import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoade
 import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.complex.hadron.dHadronDefinition;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
@@ -29,6 +32,11 @@ public class RecipeLoader implements Runnable {
         for(int i=0;i<=15;i++) {
             RA.addAssemblerRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(i), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1)}, Materials.Aluminium.getMolten(864), new ItemStack(TT_Container_Casings.sHintCasingsTT, 1, i), 32, 120);
         }
+
+        //BLUEprint
+        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
 
         if (Loader.isModLoaded("dreamcraft")) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version

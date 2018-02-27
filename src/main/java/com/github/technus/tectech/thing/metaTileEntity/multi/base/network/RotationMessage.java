@@ -17,11 +17,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 public class RotationMessage implements IMessage {
-    protected int mPosX;
-    protected int mPosY;
-    protected int mPosZ;
-    protected int mPosD;
-    protected int mRotF;
+    int mPosX;
+    int mPosY;
+    int mPosZ;
+    int mPosD;
+    int mRotF;
 
     public RotationMessage() {
     }
