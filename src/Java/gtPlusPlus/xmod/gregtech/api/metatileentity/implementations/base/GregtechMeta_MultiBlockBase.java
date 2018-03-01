@@ -422,7 +422,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		
 		if (aBaseMetaTileEntity.isServerSide()) {
-			if (mUpdate == 0 || --this.mStartUpCheck == 0) {
+			if (mUpdate == 0 || this.mStartUpCheck == 0) {
 				this.mChargeHatches.clear();
 				this.mDischargeHatches.clear();
 			}
