@@ -169,6 +169,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		int slotsNeeded = aRecipe.mOutputs.length;
 		for (final ItemStack tRecipeOutput: aRecipe.mOutputs) {
+			if (tRecipeOutput == null) continue;
 			int amount = tRecipeOutput.stackSize * aParallelRecipes;
 			for (final ItemStack tBusStack : tBusStacks) {
 				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
@@ -184,6 +185,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		// For each output fluid, make sure an output hatch can accept it.
 		for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
+			if (tRecipeFluid == null) continue;
 			boolean tCanBufferFluid = false;
 			int tRecipeAmount = tRecipeFluid.amount;
 			for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
