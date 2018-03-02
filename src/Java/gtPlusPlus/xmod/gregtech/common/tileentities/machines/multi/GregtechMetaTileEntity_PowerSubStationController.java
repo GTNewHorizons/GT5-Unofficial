@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,9 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
@@ -39,6 +42,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
+	protected boolean mIsOutputtingPower = false;
 	
 	//TecTech Support
 	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
@@ -55,23 +59,15 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Power Sub-Station",
-				"Stores quite a lot of power",
 				"Consumes 1% of the average voltage of all energy type hatches",
-				"Energy consumed goes to cooling the Vanadium Redox power storage",
-				"Size(WxHxD): 5x4x5, Controller (Bottom, Centre)",
-				"--------------------------------------------------------------------------",
-				"Bottom layer is made up of Sub-Station external casings (5x1x5)",
-				"The inner 3x2x3 area on the next two layers is made up of Vanadium Redox Power Cells",
-				"in total, you require 18x VR Power Cells",
-				"A single layer of Sub-Station casings goes around the outside of this 3x2x3",
-				"On top, another layer of Sub-Station casings",
+				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
+				"Size(WxHxD): External 5x4x5, Sub-Station Casings, Controller (Bottom, Centre)",
+				"Size(WxHxD): Internal 3x2x3, Vanadium Redox Batteries",
 				"Hatches can be placed nearly anywhere",
-				"Minimum 1x Energy Input Hatch",
-				"Minimum 1x Energy Dynamo Hatch",
-				"1x Charge Bus",
-				"1x Discharge Bus",
+				"(Dis) Charging Hatches are valid",
+				"1x Energy Input Hatch (Minimum)",
+				"1x Energy Dynamo Hatch (Minimum)",
 				"1x Maintenance hatch",
-				"--------------------------------------------------------------------------",
 				CORE.GT_Tooltip};
 	}
 
@@ -80,6 +76,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(24)],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)};
+		}
+		if (aSide == this.getBaseMetaTileEntity().getBackFacing()) {
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(24)],
+					mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()] : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()]};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(23)]};
 	}
@@ -272,8 +272,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		}		
 		
 		
-		if ((this.mChargeHatches.size() < 1) || (this.mDischargeHatches.size() < 1)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
+		if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
 				|| (this.mAllDynamoHatches.size() < 1)) {
 			Logger.INFO("Returned False 3");
 			Logger.INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: >= 1 | "+(this.mChargeHatches.size() >= 1));
@@ -365,6 +364,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		aNBT.setLong("mTotalEnergyLost", this.mTotalEnergyLost);
 		aNBT.setLong("mTotalEnergyConsumed", this.mTotalEnergyConsumed);
 		aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
+		aNBT.setBoolean("mIsOutputtingPower", this.mIsOutputtingPower);
 		super.saveNBTData(aNBT);
 	}
 
@@ -380,6 +380,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mTotalEnergyLost = aNBT.getLong("mTotalEnergyLost");
 		this.mTotalEnergyConsumed = aNBT.getLong("mTotalEnergyConsumed");
 		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+		
+		this.mIsOutputtingPower = aNBT.getBoolean("mIsOutputtingPower");
 
 		super.loadNBTData(aNBT);
 	}
@@ -541,6 +543,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
+				"Controller Mode: "+(mIsOutputtingPower ? "Output" : "Input"),
 				"EU Required: "+this.mAverageEuUsage+"EU/t",
 				"Stats for Nerds",
 				"Total Input: "+this.mTotalEnergyAdded+"EU",
@@ -560,6 +563,80 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public boolean isGivingInformation() {
 		return true;
+	}
+
+	@Override
+	public void explodeMultiblock() {
+		// TODO Auto-generated method stub
+		super.explodeMultiblock();
+	}
+
+	@Override
+	public void doExplosion(long aExplosionPower) {
+		// TODO Auto-generated method stub
+		super.doExplosion(aExplosionPower);
+	}
+
+	@Override
+	public long getMaxInputVoltage() {
+		return 32768;
+	}
+
+	@Override
+	public boolean isElectric() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnetInput() {
+		return !mIsOutputtingPower;
+	}
+
+	@Override
+	public boolean isEnetOutput() {
+		return mIsOutputtingPower;
+	}
+
+	@Override
+	public boolean isInputFacing(byte aSide) {
+		return (aSide == this.getBaseMetaTileEntity().getBackFacing() && !mIsOutputtingPower);
+	}
+
+	@Override
+	public boolean isOutputFacing(byte aSide) {
+		return (aSide == this.getBaseMetaTileEntity().getBackFacing() && mIsOutputtingPower);
+	}
+
+	@Override
+	public long maxAmperesIn() {
+		return 32;
+	}
+
+	@Override
+	public long maxAmperesOut() {
+		return 32;
+	}
+
+	@Override
+	public long maxEUInput() {
+		return 32768;
+	}
+
+	@Override
+	public long maxEUOutput() {
+		return 32768;
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mIsOutputtingPower = Utils.invertBoolean(mIsOutputtingPower);
+		if (mIsOutputtingPower) {
+			PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");
+		}
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
+		}
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 }
