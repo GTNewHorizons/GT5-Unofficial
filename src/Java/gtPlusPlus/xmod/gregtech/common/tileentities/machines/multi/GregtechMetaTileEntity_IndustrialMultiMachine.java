@@ -9,22 +9,27 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,7 +39,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine
 extends GregtechMeta_MultiBlockBase {
 
 	protected int mInternalMode = 0;
-	protected GT_Recipe[][] mLastRecipeExtended = new GT_Recipe[3][3];
+	protected GT_Recipe[] mLastRecipeExtended = new GT_Recipe[9];
 	private static final int MODE_COMPRESSOR = 0;
 	private static final int MODE_LATHE = 1;
 	private static final int MODE_MAGNETIC = 2;
@@ -165,7 +170,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		return null;
 	}
-	
+
 	private final int getCircuitID(ItemStack circuit) {
 		int H = circuit.getItemDamage();
 		int T = (H == 20 ? 0 : (H == 21 ? 1 : (H == 22 ? 2 : -1)));
@@ -176,7 +181,7 @@ extends GregtechMeta_MultiBlockBase {
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return null;
 	}
-	
+
 	private final GT_Recipe.GT_Recipe_Map getRecipeMap(ItemStack circuit) {
 		return getRecipeMap(getCircuitID(circuit));
 	}
@@ -230,14 +235,22 @@ extends GregtechMeta_MultiBlockBase {
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
+		//Get Circuit info for this recipe.
 		ItemStack tCircuit = getCircuit(aItemInputs);
+		int tCircuitID = getCircuitID(tCircuit);
+		
+		if (tCircuitID == MODE_REPLICATOR) {
+			return checkReplicatorRecipe(aItemInputs, aFluidInputs);
+		}
+
 		GT_Recipe tRecipe = this.getRecipeMap(tCircuit).findRecipe(
-				getBaseMetaTileEntity(), mLastRecipe, false,
+				getBaseMetaTileEntity(), this.mLastRecipeExtended[tCircuitID], false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
 		// Remember last recipe - an optimization for findRecipe()
 		//this.mLastRecipe = tRecipe; //Let's not do this, it's bad.
-		this.mLastRecipeExtended[this.mInternalMode]
+		//Instead, how about I use a array for types?
+		this.mLastRecipeExtended[tCircuitID] = tRecipe;
 
 		if (tRecipe == null) {
 			Logger.WARNING("BAD RETURN - 1");
@@ -371,4 +384,134 @@ extends GregtechMeta_MultiBlockBase {
 		Logger.WARNING("GOOD RETURN - 1");
 		return true;
 	}
+
+	private FluidStack mReplicatorFluidOutput;
+	//Replicator handling
+	public boolean checkReplicatorRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs) {
+
+		//Must Have An Item and Fluid (Data Orb and UUM)
+		if (aItemInputs.length <= 0 || aFluidInputs.length <= 0) {
+			return false;
+		}
+
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+		ItemStack tDataOrb = null;
+		ItemStack tCellStack = null;
+		ItemStack tReplicatedItem;
+		FluidStack tOutputFluid;
+
+		//Find First Data Orb with Scan Data
+		for (ItemStack I : aItemInputs) {
+			if (ItemList.Tool_DataOrb.isStackEqual((Object) I, false, true) && Behaviour_DataOrb.getDataTitle(I).equals("Elemental-Scan")) {
+				tDataOrb = I.copy();
+				break;
+			}
+		}
+
+		//Find First empty cell stack
+		for (ItemStack I : aItemInputs) {
+			if (ItemList.Cell_Empty.isStackEqual((Object) I)) {
+				tCellStack = I.copy();
+				break;
+			}
+		}
+
+		if (tDataOrb == null) {
+			return false;
+		}
+
+		for (FluidStack F : aFluidInputs) {
+			if (F != null && F.isFluidEqual(Materials.UUMatter.getFluid(1L))) {
+				final FluidStack tFluid = F;
+				final Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials
+						.get(0);
+				final long tMass = tMaterial.getMass();
+				if (tFluid.amount >= tMass && tMass > 0L) {
+					this.mEUt = (int) GT_Values.V[(int) this.getInputTier()];
+					this.mMaxProgresstime = (int) (tMass * 512L / (1 << tTier - 1));
+					if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.dust, (Object) tMaterial, 1L)) == null) {
+						if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.cell, (Object) tMaterial, 1L)) != null) {
+							if ((tOutputFluid = GT_Utility.getFluidForFilledItem(tReplicatedItem, true)) == null) {
+
+								if (ItemList.Cell_Empty.isStackEqual((Object) tCellStack)
+										&& this.canBufferOutput(new ItemStack[]{tReplicatedItem})) {
+									final ItemStack input = tCellStack;
+									--input.stackSize;
+									final FluidStack UUM = tFluid;
+									UUM.amount -= (int) tMass;
+									return true;
+								}
+
+							} else {
+								tReplicatedItem = null;
+								if (this.getDrainableStack() == null
+										|| (this.getDrainableStack().isFluidEqual(tOutputFluid)
+												&& this.getDrainableStack().amount < 16000)) {
+									final FluidStack UUM = tFluid;
+									UUM.amount -= (int) tMass;
+									return true;
+								}
+							}
+						}
+					} else if (this.canBufferOutput(new ItemStack[]{tReplicatedItem})) {
+						final FluidStack UUM = tFluid;
+						UUM.amount -= (int) tMass;
+						return true;
+					}
+				}					
+			}
+		}
+
+
+		return false;
+	}
+
+	private boolean canBufferOutput(ItemStack[] aInputs) {
+		// Count slots available in output buses
+		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
+
+		int tEmptySlots = 0;
+		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
+			if (!isValidMetaTileEntity(tBus)) {
+				continue;
+			}
+			final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+			for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+				if (tBus.getStackInSlot(i) == null) {
+					tEmptySlots++;
+				}
+				else {
+					tBusStacks.add(tBus.getStackInSlot(i));
+				}
+			}
+		}
+
+		int slotsNeeded = aInputs.length;
+		for (final ItemStack tRecipeOutput: aInputs) {
+			if (tRecipeOutput == null) continue;
+			int amount = tRecipeOutput.stackSize;
+			for (final ItemStack tBusStack : tBusStacks) {
+				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
+					if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
+						slotsNeeded--;
+						break;
+					}
+				}
+			}
+		}
+		// Enough open slots?
+		if (tEmptySlots < slotsNeeded) return false;
+		return true;
+
+	}
+
+	public FluidStack getDrainableStack() {
+		return this.mReplicatorFluidOutput;
+	}
+
+	public FluidStack setDrainableStack(final FluidStack aFluid) {
+		return this.mReplicatorFluidOutput = aFluid;
+	}
+
+
 }
