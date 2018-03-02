@@ -191,7 +191,10 @@ public class GregtechMetaTileEntity_CompactFusionReactor extends GT_MetaTileEnti
 			FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 			GT_Recipe tRecipe = getRecipeList().findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false,
 					GT_Values.V[8], tFluids, new ItemStack[] {});
-			if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
+			if (tRecipe == null) {
+				return false;
+			}
+			if ((tRecipe == null && !mRunningOnLoad) || (tRecipe != null && maxEUStore() < tRecipe.mSpecialValue)) {
 				this.mLastRecipe = null;
 				Logger.INFO("Just plain bad.");
 				return false;

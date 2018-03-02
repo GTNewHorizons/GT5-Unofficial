@@ -34,8 +34,8 @@ import net.minecraftforge.fluids.*;
 
 public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_BasicTank {
 
-	public static int TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;
-	public static int TESSERACT_ENERGY_COST = 512;
+	public static int TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
+	public static int TESSERACT_ENERGY_COST = 128;
 	public byte isWorking = 0;
 	public int oFrequency = 0;
 	public int mNeededEnergy = 0;
@@ -168,8 +168,12 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public void onConfigLoad(final GT_Config aConfig) {
-		TESSERACT_ENERGY_COST = 512;
-		TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;
+		int J = 1;
+		if (CORE.GTNH) {
+			J = 4;
+		}		
+		TESSERACT_ENERGY_COST = 128*J;
+		TESSERACT_ENERGY_COST_DIMENSIONAL = 512*J;
 	}
 
 	@Override
@@ -534,8 +538,15 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 		if (!this.getBaseMetaTileEntity().isAllowedToWork()) {
 			return false;
 		}
-		this.mNeededEnergy += (aTerminal.getBaseMetaTileEntity().getWorld() == this.getBaseMetaTileEntity().getWorld()
+		int J = (aTerminal.getBaseMetaTileEntity().getWorld() == this.getBaseMetaTileEntity().getWorld()
 				? TESSERACT_ENERGY_COST : TESSERACT_ENERGY_COST_DIMENSIONAL);
+		
+		if (CORE.GTNH) {
+			J *= 4;
+		}
+		
+		this.mNeededEnergy += J;
+		
 		return true;
 	}
 

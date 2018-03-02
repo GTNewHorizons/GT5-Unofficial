@@ -26,7 +26,7 @@ public class BaseItemPlasmaCell extends BaseItemComponent{
 
 	public BaseItemPlasmaCell(final Material material) {
 		super(material, ComponentTypes.PLASMACELL);
-		this.fluidColour = (short[]) ((material == null) ? this.extraData : material.getRGBA());
+		this.fluidColour = (short[]) material.getRGBA();
 	}
 
 	@Override

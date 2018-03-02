@@ -71,9 +71,7 @@ public class BaseOreComponent extends Item{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-
-		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("") && (this.componentMaterial != null)){
-
+		if (this.materialName != null && !this.materialName.equals("")){
 			if (this.componentMaterial != null){
 				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
 					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));

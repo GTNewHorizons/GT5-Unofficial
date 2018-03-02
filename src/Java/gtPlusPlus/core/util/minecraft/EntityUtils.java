@@ -86,12 +86,12 @@ public class EntityUtils {
 	/**
 	 * Static Version of the method used in {@code doFireDamage(entity, int)} to save memory.
 	 */
-	private static Method dealFireDamage = null;
+	private volatile static Method dealFireDamage = null;
 
 	/**
 	 * Reflective Call to do Fire Damage to an entity (Does not set entity on fire though)
 	 */
-	public static boolean doFireDamage(Entity entity, int amount){
+	public synchronized static boolean doFireDamage(Entity entity, int amount){
 		if (dealFireDamage == null){
 			try {
 				dealFireDamage = Entity.class.getDeclaredMethod("dealFireDamage", int.class);

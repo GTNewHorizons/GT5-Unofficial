@@ -19,7 +19,7 @@ public class BaseItemCell extends BaseItemComponent{
 
 	public BaseItemCell(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.CELL);
-		this.fluidColour = (short[]) ((material == null) ? this.extraData : material.getRGBA());
+		this.fluidColour = (short[]) material.getRGBA();
 		//FluidContainerRegistry.registerFluidContainer(material.getFluid(1000), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
 	}
 	

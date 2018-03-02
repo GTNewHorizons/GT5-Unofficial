@@ -31,6 +31,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 	public UUID mOwner;
 	public boolean mDidWork = false;
 	public static boolean sInterDimensionalTesseractAllowed = true;
+	private static int TESSERACT_ENERGY_COST = 128;
+	private static int TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
 
 	public GT_MetaTileEntity_TesseractTerminal(final int aID, final String aName, final String aNameRegional,
 			final int aTier) {
@@ -79,12 +81,12 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
 	@Override
 	public long getMinimumStoredEU() {
-		return this.getBaseMetaTileEntity().getEUCapacity() / 2;
+		return (this.getBaseMetaTileEntity().getEUCapacity() / 100);
 	}
 
 	@Override
 	public long maxEUInput() {
-		return 128;
+		return TESSERACT_ENERGY_COST_DIMENSIONAL;
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
 	@Override
 	public long maxEUStore() {
-		return 512 * 32;
+		return TESSERACT_ENERGY_COST_DIMENSIONAL * 8 * 32;
 	}
 
 	@Override
@@ -132,6 +134,14 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 	@Override
 	public void onConfigLoad(final GT_Config aConfig) {
 		sInterDimensionalTesseractAllowed = true;
+		if (CORE.GTNH) {
+			TESSERACT_ENERGY_COST = 512;
+			TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;
+		}
+		else {
+			TESSERACT_ENERGY_COST = 128;
+			TESSERACT_ENERGY_COST_DIMENSIONAL = 512;
+		}
 	}
 
 	@Override
@@ -485,7 +495,10 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 	public String[] getDescription() {
 		return new String[] { this.mDescription,
 				"Accesses Tesseract Generators remotely",
-				"Connect with pipes to extract items",
+				"Connect with pipes to extract items or fluids",
+				"Outputs from the back face",
+				"Consumes "+TESSERACT_ENERGY_COST+"EU/t for same dimension transfers",
+				"Consumes "+TESSERACT_ENERGY_COST_DIMENSIONAL+"EU/t for cross dimensional transfers",
 				CORE.GT_Tooltip };
 	}
 

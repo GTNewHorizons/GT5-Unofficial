@@ -324,7 +324,7 @@ public class GregtechConduits {
 		GT_Values.RA.addExtruderRecipe(
 				ItemUtils.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
+				ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe"+"Tiny"+output, 2),
 				5, eut);
 
 		GT_Values.RA.addExtruderRecipe(

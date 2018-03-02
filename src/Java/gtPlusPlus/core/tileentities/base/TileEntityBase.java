@@ -17,7 +17,6 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 	public String mOwnerUUID = "null";	
 	private boolean mIsOwnerOP = false;
 
-	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag){
 		if(!nbt.hasKey(tag))
 		{
@@ -105,8 +104,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 	
 	public boolean processRecipe(){
 		return true;
-	}
-	
+	}	
 
 	@Override
 	public boolean canUpdate() {
@@ -130,8 +128,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 
 	public void setOwnerInformation(String mName, String mUUID, boolean mOP){
 		if (isServerSide()){
-			if (this.mOwnerName.equals("null") || this.mOwnerUUID.equals("null")
-					|| this.mOwnerName == null || this.mOwnerUUID == null){
+			if (this.mOwnerName == null || this.mOwnerUUID == null || this.mOwnerName.equals("null") || this.mOwnerUUID.equals("null")){
 				this.mOwnerName = mName;
 				this.mOwnerUUID = mUUID;
 				this.mIsOwnerOP = mOP;
@@ -158,7 +155,7 @@ public abstract class TileEntityBase extends TileEntity implements ISidedInvento
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.fishrap";
+		return this.hasCustomInventoryName() ? this.customName : "container.tileentity.name";
 	}
 
 	@Override
