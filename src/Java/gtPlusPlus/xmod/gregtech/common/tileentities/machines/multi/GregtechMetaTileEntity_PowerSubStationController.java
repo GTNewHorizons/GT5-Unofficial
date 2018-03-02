@@ -550,7 +550,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Total Output: "+this.mTotalEnergyConsumed+"EU",
 				"Total Wasted: "+this.mTotalEnergyLost+"EU",
 
-				"Total Time Since Build: ",
+				"Total Time Since Built: ",
 				""+weeks+" Weeks.",
 				""+days+" Days.",
 				""+hours+" Hours.",

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
@@ -15,11 +16,12 @@ public class BookHandler {
 
 	public static int mBookKeeperCount = 0;
 
-	public static Map<Integer, BookTemplate> mBookMap = new HashMap();
+	public static Map<Integer, BookTemplate> mBookMap = new HashMap<Integer, BookTemplate>();
 	
 	public static BookTemplate book_ThermalBoiler;
 	public static BookTemplate book_TestNovel;
 	public static BookTemplate book_ModularBauble;
+	public static BookTemplate book_MultiMachineManual;
 	
 	public static void run(){		
 
@@ -70,6 +72,18 @@ public class BookHandler {
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree."});
+		
+		//Test Novel
+		//20/21/22
+		book_MultiMachineManual = writeBookTemplate(
+						"Manual_Multi_Machine", "Multi Machine Manual", "Alkalus", 
+						new String[] {"This Multiblock, depending upon the casings used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
+								"The Mode for the controller can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus.",
+								"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
+								"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Distillery or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Distillery, use No. 21 and for Extractor use No. 22.",
+								"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, a Replicator or an Autoclave. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Replicator use No. 22.",
+								"",
+								"",});
 	}
 
 	
@@ -78,12 +92,17 @@ public class BookHandler {
 	public static ItemStack ItemBookWritten_ThermalBoiler;
 	public static ItemStack ItemBookWritten_ModularBaubles;
 	public static ItemStack ItemBookWritten_Test;
+	public static ItemStack ItemBookWritten_MultiMachineManual;
 	
 	public static void runLater(){
 		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
 		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
 		ItemBookWritten_Test = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
+		ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
+		
+		//Multiblock Manuals
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, ItemBookWritten_ThermalBoiler);
+		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict(CI.craftingToolWrench, 1)}, ItemBookWritten_MultiMachineManual);
 	}
 	
 	private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages){
