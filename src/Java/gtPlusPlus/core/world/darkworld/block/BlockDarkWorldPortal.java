@@ -20,6 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
@@ -35,7 +37,7 @@ public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip
 		this.setLightLevel(0.75F);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockName("blockDarkWorldPortal");
-		
+
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -80,24 +82,22 @@ public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		super.updateTick(par1World, par2, par3, par4, par5Random);
-		/*if (par1World.provider.isSurfaceWorld()) {
-			int l;
-			for (l = par3; !World.doesBlockHaveSolidTopSurface(par1World, par2, l, par4) && l > 0; --l) {
-				;
+	public void updateTick(World par1World, int x, int y, int z, Random par5Random) {
+		super.updateTick(par1World, x, y, z, par5Random);
+
+		int blockCount = 0;
+		BlockPos portal = new BlockPos(x, y, z, par1World.provider.dimensionId);
+
+		for (BlockPos side : portal.getSurroundingBlocks()) {
+			Block b = side.getBlockAtPos();
+			if (b == Dimension_DarkWorld.blockPortalFrame || b == Dimension_DarkWorld.portalBlock) {
+				blockCount++;
 			}
-			if (l > 0 && !par1World.isBlockNormalCubeDefault(par2, l + 1, par4, true)) {
-				Entity entity = ItemMonsterPlacer.spawnCreature(par1World, 65, par2 + 0.5D, l + 1.1D, par4 + 0.5D);
-				if (entity != null && globalDarkWorldPortalSpawnTimer >= 100000) {
-					globalDarkWorldPortalSpawnTimer = 0;
-					if (MathUtils.randInt(0, 100)>=95){
-						entity.timeUntilPortal = entity.getPortalCooldown();						
-					}
-				}
-			}
-		}
-		globalDarkWorldPortalSpawnTimer++;*/
+		}		
+		if (blockCount < 4) {
+			par1World.setBlockToAir(x, y, z);
+		}	
+
 	}
 
 	/**
@@ -203,42 +203,72 @@ public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip
 	 * which neighbor changed (coordinates passed are their own) Args: x, y,
 	 * z, neighbor blockID
 	 */
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
+	public void onNeighborBlockChange(BlockPos pos) {
+		int x = pos.xPos, y = pos.yPos, z = pos.zPos;
+		Logger.INFO("Trigger");
+		int blockCount = 0;
+		BlockPos portal = pos;
+		World par1World = portal.world;
+		for (BlockPos side : portal.getSurroundingBlocks()) {
+			Block b = side.getBlockAtPos();
+			if (b == Dimension_DarkWorld.blockPortalFrame || b == Dimension_DarkWorld.portalBlock) {
+				blockCount++;
+			}
+		}		
+		if (blockCount < 4) {
+			par1World.setBlockToAir(x, y, z);
+			par1World.scheduleBlockUpdate(x, y, z, portal.getBlockAtPos(), 0);
+		}
+
+
+
 		byte b0 = 0;
 		byte b1 = 1;
-		if (par1World.getBlock(par2 - 1, par3, par4) == this || par1World.getBlock(par2 + 1, par3, par4) == this) {
+		if (par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this) {
 			b0 = 1;
 			b1 = 0;
 		}
 		int i1;
-		for (i1 = par3; par1World.getBlock(par2, i1 - 1, par4) == this; --i1) {
+		for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {
 			;
 		}
-		if (par1World.getBlock(par2, i1 - 1, par4) != Dimension_DarkWorld.blockPortalFrame) {
-			par1World.setBlockToAir(par2, par3, par4);
+		if (par1World.getBlock(x, i1 - 1, z) != Dimension_DarkWorld.blockPortalFrame) {
+			par1World.setBlockToAir(x, y, z);
 		} else {
 			int j1;
-			for (j1 = 1; j1 < 4 && par1World.getBlock(par2, i1 + j1, par4) == this; ++j1) {
+			for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {
 				;
 			}
-			if (j1 == 3 && par1World.getBlock(par2, i1 + j1, par4) == Dimension_DarkWorld.blockPortalFrame) {
-				boolean flag = par1World.getBlock(par2 - 1, par3, par4) == this || par1World.getBlock(par2 + 1, par3, par4) == this;
-				boolean flag1 = par1World.getBlock(par2, par3, par4 - 1) == this || par1World.getBlock(par2, par3, par4 + 1) == this;
+			if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == Dimension_DarkWorld.blockPortalFrame) {
+				boolean flag = par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this;
+				boolean flag1 = par1World.getBlock(x, y, z - 1) == this || par1World.getBlock(x, y, z + 1) == this;
 				if (flag && flag1) {
-					par1World.setBlockToAir(par2, par3, par4);
+					par1World.setBlockToAir(x, y, z);
 				} else {
-					if ((par1World.getBlock(par2 + b0, par3, par4 + b1) != Dimension_DarkWorld.blockPortalFrame || par1World
-							.getBlock(par2 - b0, par3, par4 - b1) != this)
-							&& (par1World.getBlock(par2 - b0, par3, par4 - b1) != Dimension_DarkWorld.blockPortalFrame || par1World.getBlock(par2 + b0, par3,
-									par4 + b1) != this)) {
-						par1World.setBlockToAir(par2, par3, par4);
+					if ((par1World.getBlock(x + b0, y, z + b1) != Dimension_DarkWorld.blockPortalFrame || par1World
+							.getBlock(x - b0, y, z - b1) != this)
+							&& (par1World.getBlock(x - b0, y, z - b1) != Dimension_DarkWorld.blockPortalFrame || par1World.getBlock(x + b0, y,
+									z + b1) != this)) {
+						par1World.setBlockToAir(x, y, z);
 					}
 				}
 			} else {
-				par1World.setBlockToAir(par2, par3, par4);
+				par1World.setBlockToAir(x, y, z);
 			}
 		}
 	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z,	Block block) {
+		onNeighborBlockChange(new BlockPos(x, y, z, world.provider.dimensionId));
+		super.onNeighborBlockChange(world, x, y, z, block);
+	}
+
+	/*@Override
+	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+		onNeighborBlockChange(new BlockPos(x, y, z, world.));
+		super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+	}*/
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -329,9 +359,9 @@ public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip
 			}
 			par1World.spawnParticle("reddust", d0+0.1D, d1, d2, d3, d4, d5);
 			par1World.spawnParticle("smoke", d0, d1+0.1D, d2, 0, 0, 0);
-			
+
 			Random R = new Random();
-			
+
 			if (R.nextInt(10) == 0){
 				par1World.spawnParticle("largesmoke", d0, d1, d2, 0, 0+0.2D, 0);
 			}
@@ -348,7 +378,7 @@ public class BlockDarkWorldPortal extends BlockBreakable implements ITileTooltip
 	public int idPicked(World par1World, int par2, int par3, int par4) {
 		return 0;
 	}
-	
+
 	@Override
 	public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4){
 		return Utils.rgbtoHexValue(0, 255, 0);
