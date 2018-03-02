@@ -11,12 +11,12 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
 	/**
 	 * Value between [0 - 9] to describe the Tier of this Machine.
 	 */
-	public final byte mTier;
+	protected byte mTier;
 
 	/**
 	 * A simple Description.
 	 */
-	public final String mDescription;
+	protected final String mDescription;
 
 	/**
 	 * Contains all Textures used by this Block.

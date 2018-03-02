@@ -2,17 +2,31 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 
 /**
@@ -37,7 +51,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Use Screwdriver to change voltage", CORE.GT_Tooltip};
 	}
 
 	/*
@@ -45,14 +59,16 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	 */
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		CustomIcon g = TexturesGtBlock.Casing_Machine_Dimensional_Adv;
+		CustomIcon h = TexturesGtBlock.Casing_Machine_Dimensional;
+		CustomIcon k;
+		boolean j = MathUtils.isNumberEven(this.mTier);
 		final ITexture[][][] rTextures = new ITexture[2][17][];
+		k = j ? g : h;		
 		for (byte i = -1; i < 16; i++) {
-			rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(
-					Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT) };
+			rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(k) };
 			rTextures[1][i + 1] = new ITexture[] {
-					new GT_RenderedTexture(
-							Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT),
-					this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
+					new GT_RenderedTexture(k), this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
 							: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
 		}
 		return rTextures;
@@ -140,7 +156,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 		String[] infoData = super.getInfoData();
 		return new String[] {
 				infoData[0],
-				"THIS IS A CREATIVE ITEM - FOR TESTING",
+				"THIS IS A CREATIVE ITEM - FOR TESTING | Tier: "+this.mTier,
 				infoData[1],
 				infoData[2]
 		};
@@ -149,5 +165,53 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	@Override
 	public boolean isGivingInformation() {
 		return true;
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setByte("mTier", this.mTier);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		this.mTier = aNBT.getByte("mTier");
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		if (this.mTier < 9) {
+			this.mTier++;
+		}
+		else {
+			this.mTier = 0;
+		}
+		/*this.markDirty();
+		try {
+			if (this.getBaseMetaTileEntity().isClientSide()) {
+				Field field = ReflectionUtils.getField(this.getClass(), "mTextures");				
+				field.setAccessible(true);
+				Field modifiersField = Field.class.getDeclaredField("modifiers");
+				modifiersField.setAccessible(true);
+				modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+				ITexture[][][] V = getTextureSet(null);
+				if (V != null) {
+					Logger.REFLECTION("Refreshing Textures on buffer.");
+					field.set(this, V);
+					Logger.REFLECTION("Refreshed Textures on buffer.");
+				}
+				else {
+					Logger.REFLECTION("Bad mTextures setter.");				
+				}
+			}
+		}
+		catch (Throwable t) {
+			//Bad refresh.
+			t.printStackTrace();
+			Logger.REFLECTION("Bad mTextures setter.");
+		}*/
+		PlayerUtils.messagePlayer(aPlayer, "Now running at "+GT_Values.VOLTAGE_NAMES[this.mTier]+". ["+MathUtils.isNumberEven(this.mTier)+"]");
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 }

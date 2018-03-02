@@ -20,6 +20,7 @@ public class ReflectionUtils {
 		try {
 			Field k = clazz.getDeclaredField(fieldName);
 			makeAccessible(k);
+			Logger.REFLECTION("Got Field from Class. "+fieldName+" did exist within "+clazz.getCanonicalName()+".");
 			return k;
 		} catch (final NoSuchFieldException e) {
 			final Class<?> superClass = clazz.getSuperclass();
