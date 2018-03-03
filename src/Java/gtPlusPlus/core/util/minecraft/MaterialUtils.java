@@ -43,10 +43,15 @@ public class MaterialUtils {
 		return null;
 	}
 
+
 	public static Material generateMaterialFromGtENUM(final Materials material){
+		return generateMaterialFromGtENUM(material, null);
+	}
+	
+	public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB){
 		@SuppressWarnings("deprecation")
 		String name = material.name();
-		final short[] rgba = material.mRGBa;
+		final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
 		final int melting = material.mMeltingPoint;
 		final int boiling = material.mBlastFurnaceTemp;
 		final long protons = material.getProtons();

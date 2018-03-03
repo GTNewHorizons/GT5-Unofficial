@@ -1413,6 +1413,13 @@ item.crushedCentrifugedCryolite.name=Centrifuged Crushed Cryolite Ore
 item.crushedPurifiedCryolite.name=Purified Crushed Cryolite Ore
 item.dustImpureCryolite.name=Impure Cryolite Dust
 item.dustPureCryolite.name=Purified Cryolite Dust
+item.itemDustTinyYellorium.name=Tiny Pile of Yellorium Dust
+item.itemDustSmallYellorium.name=Small Pile of Yellorium Dust
+item.crushedYellorium.name=Crushed Yellorium Ore
+item.crushedCentrifugedYellorium.name=Centrifuged Crushed Yellorium Ore
+item.crushedPurifiedYellorium.name=Purified Crushed Yellorium Ore
+item.dustImpureYellorium.name=Impure Yellorium Dust
+item.dustPureYellorium.name=Purified Yellorium Dust
 
 //Shards
 item.itemDrained.name=Drained Shard

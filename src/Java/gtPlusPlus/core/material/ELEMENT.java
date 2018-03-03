@@ -145,7 +145,7 @@ public final class ELEMENT {
 	public final Material AQUA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater);
 	
 	//Fictional	
-	public final Material YELLORIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yellorium);
+	public final Material YELLORIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yellorium, new short[] {255, 242, 10});
 	public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
 	public final Material TRINIUM;
 	public final Material TRINIUM_REFINED;
