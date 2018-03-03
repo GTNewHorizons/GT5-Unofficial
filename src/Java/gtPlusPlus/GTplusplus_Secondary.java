@@ -13,6 +13,8 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Everglades;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
@@ -101,7 +103,12 @@ public class GTplusplus_Secondary implements ActionListener {
 		MaterialGenerator.generateOreMaterial(ORES.CERITE);
 		MaterialGenerator.generateOreMaterial(ORES.FLUORCAPHITE);
 		MaterialGenerator.generateOreMaterial(ORES.FLORENCITE);
-		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);		
+		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);
+		
+		//Custom Ores
+		if (LoadedMods.Big_Reactors) {
+			MaterialGenerator.generateOreMaterial(ELEMENT.getInstance().YELLORIUM, false, false, true, new short[] {255, 242, 10});
+		}
 	}
 
 	void setVars(FMLPreInitializationEvent event){

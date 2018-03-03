@@ -561,6 +561,12 @@ public class Material {
 	}
 	public final ItemStack getDustImpure(final int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustImpure"+this.unlocalizedName, stacksize);
+	}	
+	public final boolean hasSolidForm() {
+		if (this.getDust(1) != null || this.getBlock(1) != null || this.getSmallDust(1) != null || this.getTinyDust(1) != null) {
+			return true;
+		}		
+		return false;
 	}
 
 	final public ItemStack[] getMaterialComposites(){

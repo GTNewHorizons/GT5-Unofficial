@@ -227,8 +227,13 @@ public class MaterialGenerator {
 		}
 	}
 
-	@SuppressWarnings("unused")
+
 	public static void generateOreMaterial(final Material matInfo){
+		generateOreMaterial(matInfo, true, true, true, matInfo.getRGBA());
+	}
+	
+	@SuppressWarnings("unused")
+	public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust, boolean generateSmallTinyDusts, short[] customRGB){
 		try {
 			
 			if (matInfo == null){
@@ -238,7 +243,7 @@ public class MaterialGenerator {
 			
 			final String unlocalizedName = matInfo.getUnlocalizedName();
 			final String materialName = matInfo.getLocalizedName();
-			final short[] C = matInfo.getRGBA();
+			final short[] C = customRGB;
 			final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
 			
@@ -256,12 +261,18 @@ public class MaterialGenerator {
 			Block tempBlock;
 			
 			
+			if (generateOre) {
+			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());		
+			}
 
-			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());			
-
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation, false);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation, false);
+			if (generateDust) {
+				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation, false);
+			}
+			if (generateSmallTinyDusts) {
+				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
+				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation, false);
+			}
+			
 			temp = new BaseItemCrushedOre(matInfo);
 			temp = new BaseItemCentrifugedCrushedOre(matInfo);
 			temp = new BaseItemPurifiedCrushedOre(matInfo);

@@ -48,31 +48,47 @@ public class RecipeGen_Ore implements Runnable{
 			else {
 				return;
 			}
+
+			boolean allFailed = false;
 			if (material.getComposites().size() >= 1 && material.getComposites().get(1) != null){
 				bonusB = material.getComposites().get(1).getStackMaterial();
-			}			
-			else if (material.getComposites().size() >= 1 && material.getComposites().get(1) == null){
-				if (material.getComposites().get(0) != null){
-					bonusB = material.getComposites().get(0).getStackMaterial();
+				//If Secondary Output has no solid output, try the third (If it exists)
+				if (!bonusB.hasSolidForm() && material.getComposites().size() >= 2 && material.getComposites().get(2) != null) {
+					bonusB = material.getComposites().get(2).getStackMaterial();
+					//If Third Output has no solid output, try the Fourth (If it exists)
+					if (!bonusB.hasSolidForm() && material.getComposites().size() >= 3 && material.getComposites().get(3) != null) {
+						bonusB = material.getComposites().get(3).getStackMaterial();
+						//If Fourth Output has no solid output, try the Fifth (If it exists)
+						if (!bonusB.hasSolidForm() && material.getComposites().size() >= 4 && material.getComposites().get(4) != null) {
+							bonusB = material.getComposites().get(4).getStackMaterial();
+							//If Fifth Output has no solid output, default out to Chrome.
+							if (!bonusB.hasSolidForm() && material.getComposites().size() >= 4 && material.getComposites().get(4) != null) {
+								allFailed = true;
+								bonusB = null;
+							}
+						}
+					}
 				}
-				else {
-					bonusB = ELEMENT.getInstance().CHROMIUM;
-				}
-			}			
+			}
 			else {
-				//Ultra Bonus
-				bonusB = ELEMENT.getInstance().GALLIUM;
+				allFailed = true;	
+				bonusB = null;
+			}
+
+			//Default out if it's made of fluids or some shit.
+			if (allFailed) {
+				bonusB = ELEMENT.getInstance().CHROMIUM;
 			}
 
 			AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<Pair<Integer, Material>>();
-
 			for (MaterialStack r : material.getComposites()){
 				if (r != null){
 					componentMap.put(new Pair<Integer, Material>(r.getPartsPerOneHundred(), r.getStackMaterial()));
 				}
 			}
 
-			if (bonusA == null || bonusB == null) {
+			//Need two valid outputs
+			if (bonusA == null || bonusB == null || !bonusA.hasSolidForm() || !bonusB.hasSolidForm()) {
 				return;
 			}
 			/**
@@ -109,7 +125,7 @@ public class RecipeGen_Ore implements Runnable{
 
 
 
-			
+
 
 			/**
 			 * Thermal Centrifuge
@@ -122,15 +138,21 @@ public class RecipeGen_Ore implements Runnable{
 			if (GT_Values.RA.addThermalCentrifugeRecipe(material.getCrushedPurified(1), material.getCrushedCentrifuged(1), bonusA.getTinyDust(1), dustStone, 25*20, 24)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore'");
 			}*/
+
+			Logger.MATERIALS("material.getCrushed(1): "+(material.getCrushed(1) != null));
+			Logger.MATERIALS("material.getCrushedPurified(1): "+(material.getCrushedPurified(1) != null));
+			Logger.MATERIALS("bonusA.getTinyDust(1): "+(bonusA.getTinyDust(1) != null)+" | Material: "+(bonusA != null) + " | Material name: "+(bonusA != null ? bonusA.getLocalizedName() : "invalid material"));
+			Logger.MATERIALS("bonusB.getTinyDust(1): "+(bonusB.getTinyDust(1) != null)+" | Material: "+(bonusB != null) + " | Material name: "+(bonusB != null ? bonusB.getLocalizedName() : "invalid material"));
+
 			//.08 compat
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), bonusB.getTinyDust(1), dustStone)){
-				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore'");
+				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+bonusB.getTinyDust(1).getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
 
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), 200, material.getCrushedCentrifuged(1), bonusA.getTinyDust(1), dustStone)){
-				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore'");
+				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+bonusA.getTinyDust(1).getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
-			
+
 
 			/**
 			 * Forge Hammer
