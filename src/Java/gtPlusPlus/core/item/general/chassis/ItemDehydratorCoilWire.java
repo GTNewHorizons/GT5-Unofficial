@@ -16,7 +16,7 @@ import gtPlusPlus.core.util.Utils;
 
 public class ItemDehydratorCoilWire extends Item {
 
-	public IIcon[] icons = new IIcon[1];
+	public IIcon[] icons = new IIcon[4];
 
 	public ItemDehydratorCoilWire() {
 		super();
@@ -29,12 +29,15 @@ public class ItemDehydratorCoilWire extends Item {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemDehydratorCoilWire");
+		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "dehydrator/itemDehydratorCoilWire_0");
+		this.icons[1] = reg.registerIcon(CORE.MODID + ":" + "dehydrator/itemDehydratorCoilWire_1");
+		this.icons[2] = reg.registerIcon(CORE.MODID + ":" + "dehydrator/itemDehydratorCoilWire_2");
+		this.icons[3] = reg.registerIcon(CORE.MODID + ":" + "dehydrator/itemDehydratorCoilWire_3");
 	}
 
 	@Override
 	public IIcon getIconFromDamage(int meta) {
-		return this.icons[0];
+		return this.icons[meta];
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class ItemDehydratorCoilWire extends Item {
 		
 	}
 
-	@Override
+/*	@Override
 	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
 		int meta = stack.getItemDamage();
 		if (meta == 0){
@@ -85,6 +88,6 @@ public class ItemDehydratorCoilWire extends Item {
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(255,150,50);
 		}
 		return HEX_OxFFFFFF;
-	}
+	}*/
 
 }

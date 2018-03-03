@@ -25,6 +25,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -219,6 +220,8 @@ extends GregtechMeta_MultiBlockBase {
 		}
 	}
 
+	private final AutoMap<ItemStack> mReplicatorOutputMap = new AutoMap<ItemStack>();
+	
 	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
@@ -240,7 +243,7 @@ extends GregtechMeta_MultiBlockBase {
 		int tCircuitID = getCircuitID(tCircuit);
 
 		if (tCircuitID == MODE_REPLICATOR) {
-			return checkReplicatorRecipe(aItemInputs, aFluidInputs);
+			return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 		}
 
 		GT_Recipe tRecipe = this.getRecipeMap(tCircuit).findRecipe(
@@ -398,6 +401,7 @@ extends GregtechMeta_MultiBlockBase {
 		this.mMaxProgresstime = 0;
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
+		this.mReplicatorOutputMap.clear();
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -406,7 +410,7 @@ extends GregtechMeta_MultiBlockBase {
 		ItemStack tCircuit = getCircuit(aItemInputs);
 		int tCircuitID = getCircuitID(tCircuit);
 
-		if (!this.canBufferOutputs(aItemInputs, aMaxParallelRecipes)) {
+		if (canBufferOutputs(aItemInputs, aMaxParallelRecipes)) {
 			Logger.WARNING("BAD RETURN - 2");
 			return false;
 		}
@@ -415,6 +419,9 @@ extends GregtechMeta_MultiBlockBase {
 		ItemStack tCellStack = null;
 		ItemStack tReplicatedItem;
 		FluidStack tOutputFluid;
+		FluidStack tInputFluid;
+		final Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
+		final long tMass = tMaterial.getMass();	
 
 		//Find First Data Orb with Scan Data
 		for (ItemStack I : aItemInputs) {
@@ -432,13 +439,20 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
-		//No Data Orb found?
-		if (tDataOrb == null) {
-			return false;
+		//Find UUM
+		for (FluidStack F : aFluidInputs) {
+			if (F != null && F.isFluidEqual(Materials.UUMatter.getFluid(1L))) {
+				final FluidStack tFluid = F;
+				if (tFluid.amount >= tMass && tMass > 0L) {
+					tInputFluid = tFluid;
+				}
+			}
 		}
 
-		final Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
-		final long tMass = tMaterial.getMass();		
+		//No Data Orb or UUM found?
+		if (tDataOrb == null || tInputFluid == null) {
+			return false;
+		}	
 		//Temp Values
 		int tEUt = (int) GT_Values.V[(int) this.getInputTier()];
 		int tMaxProgresstime = (int) (tMass * 512L / (1 << tTier - 1));	
@@ -494,8 +508,18 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		
+		//Requires a cell? Ok, let's use some.
+		if (COST_CELLS > 0) {
+			this.depleteInput(ItemUtils.getEmptyCell(COST_CELLS));
+		}
+		
+		//Build an output map, for simplicity.
+		for (int r=0;r<parallelRecipes;r++) {
+			this.mReplicatorOutputMap.put(ItemUtils.getSimpleStack(tReplicatedItem, 1));
+		}
+		
 
-
+		ItemStack[] mBuiltOutput = this.mReplicatorOutputMap;
 
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
@@ -528,15 +552,6 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-		// Collect fluid outputs - Not Required?
-		/*FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
-		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
-			if (tRecipe.getFluidOutput(h) != null) {
-				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-				tOutputFluids[h].amount *= parallelRecipes;
-			}
-		}*/
 
 		// Collect output item types
 		ItemStack[] tOutputItems = new ItemStack[1];
@@ -595,6 +610,8 @@ extends GregtechMeta_MultiBlockBase {
 		return true;
 	}
 
+	
+	//Special Space Checking
 	private boolean canBufferOutputs(ItemStack[] aInputs, int aParallelRecipes) {
 		// Count slots available in output buses
 		ArrayList<ItemStack> tBusStacks = new ArrayList<>();

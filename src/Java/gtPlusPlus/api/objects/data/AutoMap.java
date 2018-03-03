@@ -73,5 +73,12 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		this.mInternalMap.clear();
 		return true;
 	}
+	
+	public synchronized V[] toArray() {		
+		Collection<V> col = this.mInternalMap.values();
+		@SuppressWarnings("unchecked")
+		V[] val = (V[]) col.toArray();		
+		return val;
+	}
   
 }
