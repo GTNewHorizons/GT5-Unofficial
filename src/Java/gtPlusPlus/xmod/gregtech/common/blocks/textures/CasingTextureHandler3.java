@@ -15,7 +15,7 @@ public class CasingTextureHandler3 {
 				return TexturesGtBlock.TEXTURE_METAL_PANEL_D.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_METAL_PANEL_C.getIcon();
 				//Coke Oven Casing Tier 2
 			case 3:
 				return TexturesGtBlock._PlaceHolder.getIcon();

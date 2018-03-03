@@ -295,7 +295,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	GT_Chunkloader_HV, GT_Chunkloader_EV, GT_Chunkloader_IV, 
 	
 	//Large Extruder
-	Industrial_Extruder, Casing_Extruder,
+	Industrial_Extruder, Casing_Extruder, 
+	
+	//Multi-Machine
+	Industrial_MultiMachine, Casing_Multi_Use,
 	
 	
 	

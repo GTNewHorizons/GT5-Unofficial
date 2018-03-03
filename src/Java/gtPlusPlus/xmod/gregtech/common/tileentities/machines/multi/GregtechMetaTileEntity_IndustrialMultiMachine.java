@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -31,6 +32,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -74,23 +76,16 @@ extends GregtechMeta_MultiBlockBase {
 				"Processes two items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Input Hatch (anywhere)",
-				"1x Output Hatch (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler (anywhere)",
-				"Multi-Use Casings for the rest (16 at least!)",
+				"Read Multi-Machine Manual for extra information",
 				CORE.GT_Tooltip};
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(5)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getTextureIndex()], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(5)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[getTextureIndex()]};
 	}
 
 	@Override
@@ -110,7 +105,31 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(2*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 180);
+		ArrayList<FluidStack> tFluids = getStoredFluids();	
+		Logger.INFO("1");
+		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
+			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
+			tBus.mRecipeMap = getRecipeMap();
+			Logger.INFO("2");
+			if (isValidMetaTileEntity(tBus)) {
+				Logger.INFO("3");
+				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
+						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+				}
+			}
+
+			Object[] tempArray = tFluids.toArray(new FluidStack[] {});
+			FluidStack[] properArray;
+			properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
+
+			Logger.INFO("4");
+			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), properArray,
+					(2*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 80, 250, 10000)) return true;
+		}
+		return false;
+		
+		//return checkRecipeGeneric(2*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 180);
 	}
 
 	@Override
@@ -126,7 +145,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 2; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(5)))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, getTextureIndex())) && (!this.addMufflerToMachineList(tTileEntity, getTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getTextureIndex()))) {
 							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 2))) {
@@ -138,7 +157,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 16;
+		return tAmount >= 8;
 	}
 
 	@Override
@@ -149,6 +168,10 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
 		return 50;
+	}
+
+	public int getTextureIndex() {
+		return TAE.getIndexFromPage(2, 2);
 	}
 
 	@Override
@@ -227,7 +250,19 @@ extends GregtechMeta_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {
+		
 		// Based on the Processing Array. A bit overkill, but very flexible.
+
+		// Get Circuit info for this recipe.
+		ItemStack tCircuit = getCircuit(aItemInputs);
+		int tCircuitID = getCircuitID(tCircuit);
+		
+		Logger.INFO("Mode: "+tCircuitID);
+
+		// Time to Defer to Special Handling if it's in replicator mode.
+		if (tCircuitID == MODE_REPLICATOR) {
+			return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+		}
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
@@ -235,16 +270,12 @@ extends GregtechMeta_MultiBlockBase {
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
 
+
+
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		//Get Circuit info for this recipe.
-		ItemStack tCircuit = getCircuit(aItemInputs);
-		int tCircuitID = getCircuitID(tCircuit);
 
-		if (tCircuitID == MODE_REPLICATOR) {
-			return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
-		}
 
 		GT_Recipe tRecipe = this.getRecipeMap(tCircuit).findRecipe(
 				getBaseMetaTileEntity(), this.mLastRecipeExtended[tCircuitID], false,
@@ -256,12 +287,19 @@ extends GregtechMeta_MultiBlockBase {
 		this.mLastRecipeExtended[tCircuitID] = tRecipe;
 
 		if (tRecipe == null) {
-			Logger.WARNING("BAD RETURN - 1");
+			Logger.INFO("BAD RETURN - 1|"+tCircuitID);
+			
+			if (aItemInputs.length > 0) {
+				Logger.INFO("Input Items: "+ItemUtils.getArrayStackNames(aItemInputs));
+			}
+			if (aFluidInputs.length > 0) {
+				Logger.INFO("Input Fluids: "+ItemUtils.getFluidArrayStackNames(aFluidInputs));
+			}
 			return false;
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-			Logger.WARNING("BAD RETURN - 2");
+			Logger.INFO("BAD RETURN - 2|"+tCircuitID);
 			return false;
 		}
 
@@ -287,7 +325,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		if (parallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 3");
+			Logger.INFO("BAD RETURN - 3|"+tCircuitID);
 			return false;
 		}
 
@@ -384,7 +422,7 @@ extends GregtechMeta_MultiBlockBase {
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
-		Logger.WARNING("GOOD RETURN - 1");
+		Logger.INFO("GOOD RETURN - 1|"+tCircuitID);
 		return true;
 	}
 
@@ -516,7 +554,7 @@ extends GregtechMeta_MultiBlockBase {
 		for (int r=0;r<parallelRecipes;r++) {
 			this.mReplicatorOutputMap.put(ItemUtils.getSimpleStack(tReplicatedItem, 1));
 		}
-		
+
 		// -- Try not to fail after this point - inputs have already been consumed! --
 		ItemStack[] mBuiltOutput = this.mReplicatorOutputMap.toArray();
 
@@ -771,6 +809,19 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		if (mInternalMode < 1) {
+			mInternalMode++;
+		}
+		else {
+			mInternalMode = 0;
+		}
+		String mModeString = (mInternalMode == 0 ? "Metal" : mInternalMode == 1 ? "Fluid" : mInternalMode == 2 ? "Misc." : "null");
+		PlayerUtils.messagePlayer(aPlayer, "Multi-Machine is now in "+mModeString+" mode.");
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 

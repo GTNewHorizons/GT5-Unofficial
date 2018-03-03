@@ -1134,6 +1134,29 @@ public class RECIPES_Machines {
 						GregtechItemList.Industrial_FishingPond.get(1));
 			}
 			
+			
+
+			
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
+				ItemStack plate = ALLOY.STABALLOY.getPlate(1);
+				ItemStack o_Compressor = ItemList.Machine_HV_Compressor.get(1);
+				ItemStack o_Lathe = ItemList.Machine_HV_Lathe.get(1);
+				ItemStack o_Electromagnet = ItemList.Machine_HV_Polarizer.get(1);
+				ItemStack o_Fermenter = ItemList.Machine_HV_Fermenter.get(1);
+				ItemStack o_Distillery = ItemList.Machine_HV_Distillery.get(1);
+				ItemStack o_Extractor = ItemList.Machine_HV_Extractor.get(1);					
+				RecipeUtils.recipeBuilder(
+						plate, CI.craftingToolHammer_Hard, plate,
+						"plateStainlessSteel", "frameGtZirconiumCarbide", "plateStainlessSteel",
+						plate, CI.craftingToolWrench, plate,
+						GregtechItemList.Casing_Multi_Use.get(Casing_Amount));
+
+				RecipeUtils.recipeBuilder( 
+						o_Compressor, o_Lathe, o_Electromagnet,
+						plate, ItemUtils.getSimpleStack(ModBlocks.blockProjectTable), plate,
+						o_Fermenter, o_Distillery, o_Extractor,
+						GregtechItemList.Industrial_MultiMachine.get(1));
+			}
 			//Wireless Chargers
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.emitter_LV, CI.circuitTier1, CI.emitter_LV,

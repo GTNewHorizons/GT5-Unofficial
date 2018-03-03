@@ -214,10 +214,12 @@ public class CORE {
 		public static boolean enableMultiblock_IndustrialCuttingMachine = true;
 		public static boolean enableMultiblock_IndustrialFishingPort = true;
 		public static boolean enableMultiblock_IndustrialExtrudingMachine = true;
+		public static boolean enableMultiblock_IndustrialMultiMachine = true;
 
 		//Visuals
 		public static boolean enableTreeFarmerParticles = true;
 		public static boolean useGregtechTextures = true;
+
 
 
 

@@ -94,4 +94,11 @@ public class TAE {
 		}
 		return (64+ID);		
 	}
+	
+	public static int getIndexFromPage(int page, int blockMeta) {
+		int id = 64;
+		id += (page == 0 ? 0 : page == 1 ? 16 : page == 2 ? 32 : page == 3 ? 48 : page == 4 ? 64 : 0);
+		id += blockMeta;
+		return id;
+	}
 }
