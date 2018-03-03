@@ -18,6 +18,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
+import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
@@ -221,42 +222,42 @@ public final class ModItems {
 
 	public static Fluid fluidFLiBeSalt;
 
+	
+	//Possibly missing base items that GT may be missing.
 	public static Item itemSmallWroughtIronGear;
 	public static Item itemPlateLithium;
-	public static BaseItemPlate itemPlateEuropium;
-	public static BaseItemPlateDouble itemDoublePlateEuropium;
+	public static Item itemPlateEuropium;
+	public static Item itemPlateVanadium;
+	public static Item itemDoublePlateEuropium;
+	public static Item itemFoilUranium235;
 
-	public static ItemBoilerChassis itemBoilerChassis;
-	public static ItemDehydratorCoilWire itemDehydratorCoilWire;
-	public static ItemDehydratorCoil itemDehydratorCoil;
+	public static Item itemBoilerChassis;
+	public static Item itemDehydratorCoilWire;
+	public static Item itemDehydratorCoil;
 
 	public static Item itemLavaFilter;
 	public static Item itemAirFilter;
 
 	public static Item itemCoalCoke;
 
-	public static CoreItem itemCircuitLFTR;
+	public static Item itemCircuitLFTR;
 
 	public static Item itemDebugAreaClear;
 
 	public static Item itemGemShards;
-
 	public static Item itemHalfCompleteCasings;
-
-	public static Item itemPlateVanadium;
 
 	public static Item itemSulfuricPotion;
 	public static Item itemHydrofluoricPotion;
 
 	public static Item itemModularBauble;
 	public static Item itemCustomBook;
-
+	
 	public static Item itemGrindleTablet;
-
 	public static Item itemRope;
 	public static Item itemFiber;
-
 	public static Item itemDragonJar;
+
 	
 	static {
 		Logger.INFO("Items!");
@@ -655,6 +656,11 @@ public final class ModItems {
 		}
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleClay", 1) == null){
 			itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
+		}
+		
+		//Need this for Mutagenic Frames
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilUranium235", 1) == null){
+			itemFoilUranium235 = new BaseItemFoil(ELEMENT.getInstance().URANIUM235);
 		}
 		
 		//A small gear needed for wizardry.

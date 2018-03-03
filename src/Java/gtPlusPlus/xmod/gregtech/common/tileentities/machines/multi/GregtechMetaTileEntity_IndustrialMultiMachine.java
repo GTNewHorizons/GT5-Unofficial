@@ -221,7 +221,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	private final AutoMap<ItemStack> mReplicatorOutputMap = new AutoMap<ItemStack>();
-	
+
 	@Override
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
@@ -406,24 +406,20 @@ extends GregtechMeta_MultiBlockBase {
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		//Get Circuit info for this recipe.
-		ItemStack tCircuit = getCircuit(aItemInputs);
-		int tCircuitID = getCircuitID(tCircuit);
-
 		if (canBufferOutputs(aItemInputs, aMaxParallelRecipes)) {
-			Logger.WARNING("BAD RETURN - 2");
+			Logger.WARNING("BAD RETURN - 2.0");
 			return false;
 		}
 
 		ItemStack tDataOrb = null;
 		ItemStack tCellStack = null;
 		ItemStack tReplicatedItem;
-		FluidStack tOutputFluid;
-		FluidStack tInputFluid;
+		FluidStack tOutputFluid = null;
+		FluidStack tInputFluid = null;
 		final Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
 		final long tMass = tMaterial.getMass();	
 
-		//Find First Data Orb with Scan Data
+		// Find First Data Orb with Scan Data
 		for (ItemStack I : aItemInputs) {
 			if (ItemList.Tool_DataOrb.isStackEqual((Object) I, false, true) && Behaviour_DataOrb.getDataTitle(I).equals("Elemental-Scan")) {
 				tDataOrb = I.copy();
@@ -431,7 +427,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
-		//Find First empty cell stack
+		// Find First empty cell stack
 		for (ItemStack I : aItemInputs) {
 			if (ItemList.Cell_Empty.isStackEqual((Object) I)) {
 				tCellStack = I.copy();
@@ -439,7 +435,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
-		//Find UUM
+		// Find UUM
 		for (FluidStack F : aFluidInputs) {
 			if (F != null && F.isFluidEqual(Materials.UUMatter.getFluid(1L))) {
 				final FluidStack tFluid = F;
@@ -449,33 +445,18 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
-		//No Data Orb or UUM found?
+		// No Data Orb or UUM found?
 		if (tDataOrb == null || tInputFluid == null) {
 			return false;
 		}	
-		//Temp Values
+		// Temp Values
 		int tEUt = (int) GT_Values.V[(int) this.getInputTier()];
 		int tMaxProgresstime = (int) (tMass * 512L / (1 << tTier - 1));	
 		float tRecipeEUt = (tEUt * aEUPercent) / 100.0f;
 		float tTotalEUt = 0.0f;
 		int parallelRecipes = 0;
 		ItemStack[] expectedInputs = {tDataOrb};
-		FluidStack[] expectedFluidInputs = {Materials.UUMatter.getFluid(tMass)};		
-		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
-			if (!isRecipeInputEqual(true, aFluidInputs, aItemInputs, expectedFluidInputs, expectedInputs)) {
-				Logger.WARNING("Broke at "+parallelRecipes+".");
-				break;
-			}
-			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
-			tTotalEUt += tRecipeEUt;
-		}
-
-		if (parallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 3");
-			return false;
-		}
-
+		FluidStack[] expectedFluidInputs = {Materials.UUMatter.getFluid(tMass)};	
 
 		/**
 		 * Magic
@@ -484,46 +465,60 @@ extends GregtechMeta_MultiBlockBase {
 		int COST_UUM = 0;
 		int COST_CELLS = 0;
 
-		//Determine Output Item
+		// Determine Output Item & Cost.
 		if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.dust, (Object) tMaterial, 1L)) == null) {
 			if ((tReplicatedItem = GT_OreDictUnificator.get(OrePrefixes.cell, (Object) tMaterial, 1L)) != null) {
 				if ((tOutputFluid = GT_Utility.getFluidForFilledItem(tReplicatedItem, true)) == null) {
-					if (ItemList.Cell_Empty.isStackEqual((Object) tCellStack) && this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, parallelRecipes)) {
-						COST_CELLS = 1 * parallelRecipes;
-						COST_UUM = (int) tMass * parallelRecipes;
+					if (ItemList.Cell_Empty.isStackEqual((Object) tCellStack) && this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, 1)) {
+						COST_CELLS = 1;
+						COST_UUM = (int) tMass;
 					}					
 				} else {
 					tReplicatedItem = null;
 					if (this.getDrainableStack() == null || (this.getDrainableStack().isFluidEqual(tOutputFluid) && this.getDrainableStack().amount < 16000)) {
-						COST_UUM = (int) tMass * parallelRecipes;
+						COST_UUM = (int) tMass;
 					}
 				}
 			}
-		} else if (this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, parallelRecipes)) {
-			COST_UUM = (int) tMass * parallelRecipes;
+		} else if (this.canBufferOutputs(new ItemStack[]{tReplicatedItem}, 1)) {
+			COST_UUM = (int) tMass;
 		}
 
-		//Costs no UUM and no valid outputs? Let's bail gracefully before we consume inputs.
+		// Costs no UUM and no valid outputs? Let's bail gracefully before we consume inputs.
 		if (COST_UUM <= 0 || (tReplicatedItem == null && tOutputFluid == null)) {
 			return false;
 		}
-		
-		//Requires a cell? Ok, let's use some.
+
+		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+			if (!isRecipeInputEqual(true, aFluidInputs, aItemInputs, expectedFluidInputs, expectedInputs)) {
+				Logger.WARNING("Broke at "+parallelRecipes+"..0");
+				break;
+			}
+			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+"..0");
+			tTotalEUt += tRecipeEUt;
+		}
+
+		if (parallelRecipes == 0) {
+			Logger.WARNING("BAD RETURN - 3.0");
+			return false;
+		}
+
+		// Set Vars to Parralel amount
+		COST_CELLS *= parallelRecipes;
+
+		// Requires a cell? Ok, let's use some.
 		if (COST_CELLS > 0) {
 			this.depleteInput(ItemUtils.getEmptyCell(COST_CELLS));
 		}
-		
-		//Build an output map, for simplicity.
+
+		// Build an output map, for simplicity.
 		for (int r=0;r<parallelRecipes;r++) {
 			this.mReplicatorOutputMap.put(ItemUtils.getSimpleStack(tReplicatedItem, 1));
 		}
 		
-
-		ItemStack[] mBuiltOutput = this.mReplicatorOutputMap;
-
-
 		// -- Try not to fail after this point - inputs have already been consumed! --
-
+		ItemStack[] mBuiltOutput = this.mReplicatorOutputMap.toArray();
 
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
@@ -556,18 +551,17 @@ extends GregtechMeta_MultiBlockBase {
 		// Collect output item types
 		ItemStack[] tOutputItems = new ItemStack[1];
 		for (int h = 0; h < 1; h++) {
-			if (tRecipe.getOutput(h) != null) {
-				tOutputItems[h] = tRecipe.getOutput(h).copy();
+			if (mBuiltOutput[h] != null) {
+				tOutputItems[h] = mBuiltOutput[h].copy();
 				tOutputItems[h].stackSize = 0;
 			}
 		}
 
 		// Set output item stack sizes (taking output chance into account)
 		for (int f = 0; f < tOutputItems.length; f++) {
-			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
+			if (mBuiltOutput[f] != null && tOutputItems[f] != null) {
 				for (int g = 0; g < parallelRecipes; g++) {
-					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+					tOutputItems[f].stackSize += mBuiltOutput[f].stackSize;
 				}
 			}
 		}
@@ -600,17 +594,17 @@ extends GregtechMeta_MultiBlockBase {
 
 		// Commit outputs
 		this.mOutputItems = tOutputItems;
-		this.mOutputFluids = tOutputFluids;
+		//this.mOutputFluids = tOutputFluids;
 		updateSlots();
 
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
-		Logger.WARNING("GOOD RETURN - 1");
+		Logger.WARNING("GOOD RETURN - 1.0");
 		return true;
 	}
 
-	
+
 	//Special Space Checking
 	private boolean canBufferOutputs(ItemStack[] aInputs, int aParallelRecipes) {
 		// Count slots available in output buses

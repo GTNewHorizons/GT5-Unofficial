@@ -227,6 +227,7 @@ public class BaseItemComponent extends Item{
 		BOLT("Bolt", " Bolt", "bolt"),
 		ROTOR("Rotor", " Rotor", "rotor"),
 		RING("Ring", " Ring", "ring"),
+		FOIL("Foil", " Foil", "foil"),
 		PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma"),
 		CELL("Cell", " Cell", "cell"),
 		NUGGET("Nugget", " Nugget", "nugget"),

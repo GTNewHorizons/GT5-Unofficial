@@ -52,9 +52,12 @@ item.MiscUtils.material.dustPyrotheum.name=Pyrotheum Dust
 item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
 item.MiscUtils.material.dustBlizz.name=Blizz Powder
-tile.MiscUtils.fluid.pyrotheum.name=Blazing Pyrotheum
-tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
+
+//============= 'miscutils' is Case Sensitive Here, unsure why
+tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
+tile.miscutils.fluid.cryotheum.name=Gelid Cryotheum
 tile.miscutils.fluid.ender.name=Resonant Ender
+//==============
 
 //Forestry Stuff
 item.frameAccelerated.name=Accelerated Frame
@@ -107,6 +110,7 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 
 //Cells
 item.SulfurDioxide.name=High Quality Sulfur Dioxide Cell
+item.mobessence.name=Mob Essence Cell
 item.Fertiliser.name=Fertiliser Cell
 item.UN32Fertiliser.name=UN-32 Fertiliser Cell
 item.UN18Fertiliser.name=UN-18 Fertiliser Cell
@@ -1611,12 +1615,21 @@ item.TungstenCarbideMultispade.name=Tungsten Carbide Multispade
 item.TantalumCarbideMultipick.name=Tantalum Carbide Multipick
 item.TantalumCarbideMultispade.name=Tantalum Carbide Multispade
 
-item.mobessence.name=Mob Essence Cell
+
+//Items that Don't fit into another category
+
+//Plates
 item.itemPlateClay.name=Clay Plate
 item.itemPlateDoubleClay.name=Double Clay Plate
-item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
 item.itemPlateLithium.name=Lithium Plate
 item.itemPlateDoubleEuropium.name=Double Europium Plate
+
+//Gears
+item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
+
+//Misc
+item.itemFoilUranium235.name=Uranium 235 Foil
+
 item.itemBoilerChassis_0.name=Advanced Boiler Chassis [Tier 1]
 item.itemDehydratorCoilWire_0.name=Coil Wire [EV]
 item.itemDehydratorCoil_0.name=Dehydrator Coil [EV]
