@@ -59,8 +59,8 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	 */
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-		CustomIcon g = TexturesGtBlock.Casing_Machine_Dimensional_Adv;
-		CustomIcon h = TexturesGtBlock.Casing_Machine_Dimensional;
+		CustomIcon g = TexturesGtBlock.Casing_Material_RedSteel;
+		CustomIcon h = TexturesGtBlock.Casing_Material_Grisium;
 		CustomIcon k;
 		boolean j = MathUtils.isNumberEven(this.mTier);
 		final ITexture[][][] rTextures = new ITexture[2][17][];
@@ -187,30 +187,35 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 		else {
 			this.mTier = 0;
 		}
-		/*this.markDirty();
+		this.markDirty();
 		try {
-			if (this.getBaseMetaTileEntity().isClientSide()) {
-				Field field = ReflectionUtils.getField(this.getClass(), "mTextures");				
-				field.setAccessible(true);
-				Field modifiersField = Field.class.getDeclaredField("modifiers");
-				modifiersField.setAccessible(true);
-				modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-				ITexture[][][] V = getTextureSet(null);
-				if (V != null) {
+			Field field = ReflectionUtils.getField(this.getClass(), "mTextures");				
+			field.setAccessible(true);
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+			modifiersField.setAccessible(true);
+			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			ITexture[][][] V = getTextureSet(null);
+			if (V != null) {
+				Logger.REFLECTION("Got Valid Textures.");	
+				if (this.getBaseMetaTileEntity().isClientSide()) {
+					Logger.REFLECTION("Clientside Call.");	
 					Logger.REFLECTION("Refreshing Textures on buffer.");
 					field.set(this, V);
 					Logger.REFLECTION("Refreshed Textures on buffer.");
 				}
 				else {
-					Logger.REFLECTION("Bad mTextures setter.");				
+					Logger.REFLECTION("Serverside Call.");	
 				}
 			}
+			else {
+				Logger.REFLECTION("Bad mTextures setter.");				
+			}			
 		}
 		catch (Throwable t) {
 			//Bad refresh.
 			t.printStackTrace();
 			Logger.REFLECTION("Bad mTextures setter.");
-		}*/
+		}
 		PlayerUtils.messagePlayer(aPlayer, "Now running at "+GT_Values.VOLTAGE_NAMES[this.mTier]+". ["+MathUtils.isNumberEven(this.mTier)+"]");
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}

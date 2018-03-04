@@ -106,13 +106,13 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		ArrayList<FluidStack> tFluids = getStoredFluids();	
-		Logger.INFO("1");
+		//Logger.INFO("1");
 		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
 			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
 			tBus.mRecipeMap = getRecipeMap();
-			Logger.INFO("2");
+			//Logger.INFO("2");
 			if (isValidMetaTileEntity(tBus)) {
-				Logger.INFO("3");
+				//Logger.INFO("3");
 				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
 					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
 						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
@@ -123,7 +123,7 @@ extends GregtechMeta_MultiBlockBase {
 			FluidStack[] properArray;
 			properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
 
-			Logger.INFO("4");
+			//Logger.INFO("4");
 			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), properArray,
 					(2*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 80, 250, 10000)) return true;
 		}

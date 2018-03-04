@@ -13,6 +13,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -1236,9 +1237,44 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void cyclotronRecipes() {
+		
+		//Polonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.bismuth", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300, 2040,
 				500 * 20);
+
+		//Americium
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
+				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(8) }, null, new int[] { 7500 }, 20 * 300, 1020,
+				500 * 20); //PO Special Value
+		
+		//Strontium u235
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium235", 10),
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300, 1020,
+				500 * 20); //PO Special Value
+
+		//Strontium u233
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium233", 10),
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300, 1020,
+				500 * 20); //PO Special Value
+		
+		//Strontium pu239
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium239", 10),
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300, 1020,
+				500 * 20); //PO Special Value
+		
+		//Plutonium
+		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium238", 1),
+				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300, 1020,
+				500 * 20); //PO Special Value
+		
+		
+		//Neptunium
+		CORE.RA.addCyclotronRecipe(new ItemStack[] {ELEMENT.getInstance().URANIUM238.getDust(1) }, FluidUtils.getFluidStack("deuterium", 400),
+				ItemUtils.getSimpleStack(ModItems.dustNeptunium238), null, new int[] { 500 }, 20 * 5, 500,
+				500 * 20); //PO Special Value
+		
+		
 	}
 
 	private static void sifterRecipes() {

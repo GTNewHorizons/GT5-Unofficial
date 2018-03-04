@@ -91,7 +91,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		//Utils.LOG_INFO("Checking form of Cyclotron.");
+		Logger.INFO("Checking form of Cyclotron.");
 		int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
 		int yCenter = getBaseMetaTileEntity().getYCoord();
 		int zCenter = getBaseMetaTileEntity().getZCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ * 5;
@@ -128,21 +128,21 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
 				if (this.mEnergyHatches.get(i).mTier < tier()){
-					//  Utils.LOG_INFO("bad energy hatch");
+					Logger.INFO("bad energy hatch");
 					return false;
 				}
 			}
 			int mOutputHatches_sS = this.mOutputBusses.size();
 			for (int i = 0; i < mOutputHatches_sS; i++) {
 				if (this.mOutputBusses.get(i).mTier < tier()){
-					// Utils.LOG_INFO("bad output hatch");
+					Logger.INFO("bad output hatch");
 					return false;
 				}
 			}
 			int mInputHatches_sS = this.mInputHatches.size();
 			for (int i = 0; i < mInputHatches_sS; i++) {
 				if (this.mInputHatches.get(i).mTier < tier()){
-					// Utils.LOG_INFO("bad input hatch");
+					Logger.INFO("bad input hatch");
 					return false;
 				}
 			}
@@ -152,11 +152,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			mHardHammer = true;
 			mSolderingTool = true;
 			mCrowbar = true;
-			//Utils.LOG_INFO("Built Cyclotron.");
+			Logger.INFO("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
 		}    
-		//Utils.LOG_INFO("Failed building Cyclotron.");
+		Logger.INFO("Failed building Cyclotron.");
 		return false;
 	}
 
@@ -250,7 +250,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
-				"2-16 Input Busses", 
+				"2-16 Input Hatches", 
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
 				"All Hatches must be IV or better",
@@ -289,7 +289,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		//Utils.LOG_INFO("Recipe Check.");
+		//Logger.INFO("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
 		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
 		ArrayList<FluidStack> tInputList = getStoredFluids();

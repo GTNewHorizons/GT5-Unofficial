@@ -41,6 +41,7 @@ import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
+import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.lib.CORE;
@@ -182,6 +183,8 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dustLi2CO3CaOH2;
 	public static Item dustLi2BeF4;
+	
+	public static Item dustNeptunium238;
 
 	public static Item dustAer;
 	public static Item dustIgnis;
@@ -680,6 +683,8 @@ public final class ModItems {
 		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
+		
+		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")", CORE.GT_Tooltip_Radioactive, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem());
 
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
