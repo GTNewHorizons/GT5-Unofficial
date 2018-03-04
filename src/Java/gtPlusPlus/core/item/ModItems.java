@@ -408,6 +408,7 @@ public final class ModItems {
 			//Plutonium-238 is a very powerful alpha emitter. This makes the plutonium-238 isotope suitable for usage in radioisotope thermoelectric generators (RTGs)
 			//and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM238, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM239, false);
 
 			//RTG Fuel Materials
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().STRONTIUM90, false);
@@ -684,7 +685,7 @@ public final class ModItems {
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 		
-		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")", CORE.GT_Tooltip_Radioactive, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem());
+		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")", CORE.GT_Tooltip_Radioactive, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();

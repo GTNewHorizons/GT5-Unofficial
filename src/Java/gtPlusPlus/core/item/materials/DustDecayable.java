@@ -10,24 +10,26 @@ import net.minecraft.world.World;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.core.item.base.BaseItemTickable;
-import gtPlusPlus.core.item.base.ore.BaseOreComponent.ComponentTypes;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class DustDecayable extends BaseItemTickable {
 
 	private final Item turnsIntoItem;
+	private final int radLevel;
 	
-	public DustDecayable(String unlocal, int colour, int maxTicks, String desc1, String desc2, Item turnsInto) {
+	public DustDecayable(String unlocal, int colour, int maxTicks, String desc1, String desc2, Item turnsInto, int radLevel) {
 		super(true, unlocal, colour, maxTicks, desc1, desc2);
 		this.turnsIntoItem = turnsInto;
+		this.radLevel = radLevel;
 		GT_OreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
 	}
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		String gt = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + ComponentTypes.DUSTIMPURE.getComponent();
+		String gt = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + "dust";
 		this.mIcon[0] = reg.registerIcon(gt);
-		String gt2 = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + ComponentTypes.DUSTIMPURE.getComponent()+"_Overlay";
+		String gt2 = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + "dust" + "_OVERLAY";
 		this.mIcon[1] = reg.registerIcon(gt2);
 	}
 	
@@ -36,6 +38,13 @@ public class DustDecayable extends BaseItemTickable {
 		if (world == null || iStack == null) {
 			return;
 		}	
+		
+		if (entityHolding instanceof EntityPlayer){
+			if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+				EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.radLevel, world, entityHolding);	
+			}
+		}
+		
 		if (!tickItemTag(iStack)) {
 			if (entityHolding instanceof EntityPlayer){
 				ItemStack replacement = ItemUtils.getSimpleStack(turnsIntoItem);
