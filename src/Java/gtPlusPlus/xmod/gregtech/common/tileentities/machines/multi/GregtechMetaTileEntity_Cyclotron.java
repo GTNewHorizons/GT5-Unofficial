@@ -124,7 +124,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				&& (addIfInjector(xCenter - 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
 				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
 				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
-				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 2)) {
+				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 1) && (this.mInputBusses.size() >= 1)) {
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
 				if (this.mEnergyHatches.get(i).mTier < tier()){
@@ -142,6 +142,13 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			int mInputHatches_sS = this.mInputHatches.size();
 			for (int i = 0; i < mInputHatches_sS; i++) {
 				if (this.mInputHatches.get(i).mTier < tier()){
+					Logger.INFO("bad input hatch");
+					return false;
+				}
+			}
+			int mInputBusses_sS = this.mInputBusses.size();
+			for (int i = 0; i < mInputBusses_sS; i++) {
+				if (this.mInputBusses.get(i).mTier < tier()){
 					Logger.INFO("bad input hatch");
 					return false;
 				}
@@ -250,7 +257,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
-				"2-16 Input Hatches", 
+				"1-16 Input Hatches", 
+				"1-16 Input Busses",
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
 				"All Hatches must be IV or better",
