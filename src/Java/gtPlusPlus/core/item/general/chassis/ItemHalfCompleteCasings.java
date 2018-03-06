@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general;
+package gtPlusPlus.core.item.general.chassis;
 
 import java.util.List;
 
@@ -30,25 +30,24 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 		}
 	}
 	
-	/*@Override
+	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
-		String prefix = "Half Complete Casing ";
+		String prefix = super.getItemStackDisplayName(tItem);
 		String casingType = "";
 		if (tItem.getItemDamage() == 0){
-			casingType = "I";
+			casingType = " I";
 		}
 		else if (tItem.getItemDamage() == 1){
-			casingType = "II";
+			casingType = " II";
 		}
 		else if (tItem.getItemDamage() == 2){
-			casingType = "III";
+			casingType = " III";
 		}
 		else if (tItem.getItemDamage() == 3){
-			casingType = "IV";
+			casingType = " IV";
 		}
-		return (prefix+casingType);
-		
-	}*/
+		return (prefix+casingType);		
+	}
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {

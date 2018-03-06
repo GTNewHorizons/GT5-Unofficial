@@ -1245,7 +1245,7 @@ public class RECIPES_GREGTECH {
 
 		//Americium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(8) }, null, new int[] { 7500 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300, 1020,
 				500 * 20); //PO Special Value
 		
 		//Strontium u235

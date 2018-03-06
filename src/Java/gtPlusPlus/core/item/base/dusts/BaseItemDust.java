@@ -100,7 +100,15 @@ public class BaseItemDust extends Item{
 	@Override
 	public String getItemStackDisplayName(final ItemStack iStack) {
 
-		if (this.getUnlocalizedName().contains("DustTiny")){
+		String unlocal = super.getItemStackDisplayName(iStack);
+		if (!unlocal.toLowerCase().contains(".name")) {
+			return unlocal;
+		}
+		else {
+			return unlocal;
+		}
+		
+		/*if (this.getUnlocalizedName().contains("DustTiny")){
 			this.name = "Tiny Pile of "+this.materialName + " Dust";
 		}
 		else if (this.getUnlocalizedName().contains("DustSmall")){
@@ -109,7 +117,7 @@ public class BaseItemDust extends Item{
 		else {
 			this.name = this.materialName + " Dust";
 		}
-		return this.name;
+		return this.name;*/
 	}
 
 	protected final int sRadiation;

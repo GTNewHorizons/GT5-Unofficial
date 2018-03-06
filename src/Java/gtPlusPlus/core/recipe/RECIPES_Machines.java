@@ -84,6 +84,11 @@ public class RECIPES_Machines {
 	public static ItemStack RECIPE_LFTRController;
 	public static ItemStack RECIPE_LFTROuterCasing;
 	public static ItemStack RECIPE_LFTRInnerCasing;
+	
+	//Cyclotron
+	public static ItemStack RECIPE_CyclotronController;
+	public static ItemStack RECIPE_CyclotronOuterCasing;
+	public static ItemStack RECIPE_CyclotronInnerCoil;
 
 
 	//Buffer Cores
@@ -1022,6 +1027,33 @@ public class RECIPES_Machines {
 
 
 
+			}
+			
+
+			//Cyclotron			
+			if (CORE.ConfigSwitches.enableMultiblock_Cyclotron){
+				RECIPE_CyclotronController = GregtechItemList.COMET_Cyclotron.get(1);
+				RECIPE_CyclotronOuterCasing = GregtechItemList.Casing_Cyclotron_External.get(Casing_Amount);
+				RECIPE_CyclotronInnerCoil = GregtechItemList.Casing_Cyclotron_Coil.get(1);
+
+				RecipeUtils.recipeBuilder(
+						"plateIncoloyMA956", "plateIncoloyMA956", "plateIncoloyMA956",
+						"plateIncoloyMA956", "frameGtIncoloy020", "plateIncoloyMA956",
+						"plateIncoloyMA956", "plateIncoloyMA956", "plateIncoloyMA956",
+						RECIPE_CyclotronOuterCasing);
+				
+				RecipeUtils.recipeBuilder(
+						"plateIncoloy020", "plateIncoloy020", "plateIncoloy020",
+						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
+						"plateIncoloy020", "plateIncoloy020", "plateIncoloy020",
+						RECIPE_CyclotronInnerCoil);
+
+				
+				RecipeUtils.recipeBuilder(
+						"plateIncoloy020", CI.getTieredCircuit(6), "plateIncoloy020",
+						RECIPE_CyclotronInnerCoil, CI.machineHull_IV, RECIPE_CyclotronInnerCoil,
+						"plateIncoloy020", "gearIncoloyMA956", "plateIncoloy020",
+						RECIPE_CyclotronController);
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){

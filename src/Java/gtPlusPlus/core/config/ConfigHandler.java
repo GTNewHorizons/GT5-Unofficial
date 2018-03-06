@@ -151,6 +151,8 @@ public class ConfigHandler {
 				"gregtech", true, "Very fast and efficient Extruding Machine.");		
 		enableMultiblock_IndustrialMultiMachine = config.getBoolean("enableMultiblock_IndustrialMultiMachine",
 				"gregtech", true, "Can run recipes for 9 different types of machines.");
+		enableMultiblock_Cyclotron = config.getBoolean("enableMultiblock_Cyclotron",
+				"gregtech", true, "COMET - Scientific Cyclotron."); 
 	
 		// Options
 		rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000,
