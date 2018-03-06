@@ -1,7 +1,7 @@
 package gtPlusPlus.core.handler;
 
-import gtPlusPlus.xmod.Computronics.HANDLER_Computronics;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
+import gtPlusPlus.xmod.computronics.HANDLER_Computronics;
 import gtPlusPlus.xmod.forestry.HANDLER_FR;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.growthcraft.HANDLER_GC;

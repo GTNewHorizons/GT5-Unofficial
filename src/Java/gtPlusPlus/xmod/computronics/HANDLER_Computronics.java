@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.Computronics;
+package gtPlusPlus.xmod.computronics;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;

@@ -50,7 +50,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Extrusion Shape for recipe goes in the Input Bus",
 				"Each Input Bus can have a different shape!",
 				"You can use several input busses per multiblock",
-				"Size: 3x3x5 [WxHxL] (Hollow)", "Controller (front centered)",
+				"Size: 3x3x5 [WxHxL] (Hollow)",
 				"Controller (front centered)",
 				"Busses & Hatches cannot replace edge casings",
 				"1x Input Bus (anywhere)",
