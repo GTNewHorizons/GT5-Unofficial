@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,6 +34,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
@@ -476,7 +478,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public String[] getInfoData() {
-
 		long seconds = (this.mTotalRunTime/20);
 
 		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
@@ -485,14 +486,22 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
+		String mode;
+		if (mIsOutputtingPower) {
+			mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
+		} else {
+			mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
+		}
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
-				"Controller Mode: "+(mIsOutputtingPower ? "Output" : "Input"),
-				"EU Required: "+this.mAverageEuUsage+"EU/t",
+				"Stored EU:" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET,
+				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
+				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mAverageEuUsage) + EnumChatFormatting.RESET + " EU/t",
+				"Controller Mode: " + mode,
 				"Stats for Nerds",
-				"Total Input: "+this.mTotalEnergyAdded+"EU",
-				"Total Output: "+this.mTotalEnergyConsumed+"EU",
-				"Total Wasted: "+this.mTotalEnergyLost+"EU",
+				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
+				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
+				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
 
 				"Total Time Since Built: ",
 				""+weeks+" Weeks.",
@@ -500,7 +509,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				""+hours+" Hours.",
 				""+minutes+" Minutes.",
 				""+second+" Seconds.",
-				"Total Time in ticks: "+this.mTotalRunTime};
+				"Total Time in ticks: "+this.mTotalRunTime
+		};
 
 	};
 
