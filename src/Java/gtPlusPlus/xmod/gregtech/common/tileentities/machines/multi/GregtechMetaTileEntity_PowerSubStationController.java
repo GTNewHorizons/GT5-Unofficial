@@ -96,7 +96,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return (this.mActualStoredEU >= 0);
+		return true;
 	}
 
 	@Override
@@ -316,15 +316,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	//NBT Power Storage handling
 	long mPowerStorageBuffer = 0;
 	int mPowerStorageMultiplier = 32;
-	long mActualStoredEU = 0;
-
 
 	//mTotalEnergyAdded
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mPowerStorageBuffer", this.mPowerStorageBuffer);
 		aNBT.setInteger("mPowerStorageMultiplier", this.mPowerStorageMultiplier);
-		aNBT.setLong("mActualStoredEU", this.mActualStoredEU);
 		aNBT.setInteger("mAverageEuUsage", this.mAverageEuUsage);
 
 		//Usage Stats
@@ -340,7 +337,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mPowerStorageBuffer = aNBT.getLong("mPowerStorageBuffer");
 		this.mPowerStorageMultiplier = aNBT.getInteger("mPowerStorageMultiplier");
-		this.mActualStoredEU = aNBT.getLong("mActualStoredEU");
 		this.mAverageEuUsage = aNBT.getInteger("mAverageEuUsage");
 
 		//Usage Stats
@@ -356,17 +352,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		this.mActualStoredEU = this.getEUVar();
-		
-		if (this.mActualStoredEU < 0){
-			this.mActualStoredEU = 0;
-		}
 		if (this.getEUVar() < 0){
 			this.setEUVar(0);
 		}
 
 		//Handle Progress Time
-		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isAllowedToWork()){
+		if (this.getBaseMetaTileEntity().isAllowedToWork()){
 			this.mProgresstime = 20;
 			this.mMaxProgresstime = 40;	
 			//Use 10% of average EU determined by adding in/output voltage of all hatches and averaging.
@@ -384,7 +375,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		if (this.getBaseMetaTileEntity().isAllowedToWork()){
 
 			//Input Power
-			if (this.mActualStoredEU < this.maxEUStore()){
+			if (this.getEUVar() < this.maxEUStore()){
 				if (this.getBaseMetaTileEntity().isAllowedToWork()){
 					this.getBaseMetaTileEntity().enableWorking();
 				}
@@ -414,9 +405,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			}
 
 			//Output Power
-			if (this.mActualStoredEU > 0){
-				addEnergyOutput(1);
-			}
+			addEnergyOutput(1);
+
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
@@ -428,17 +418,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long nStoredPower = this.getEUVar();
 		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-				if (this.mActualStoredEU<this.maxEUStore()){
 
-				}
 				Logger.INFO("Draining Discharge Hatch #2");
 			}
 		}
 		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-				if (this.mActualStoredEU<this.maxEUStore()){
-					//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false);
-				}
+
 			}
 		}		
 		long nNewStoredPower = this.getEUVar();
