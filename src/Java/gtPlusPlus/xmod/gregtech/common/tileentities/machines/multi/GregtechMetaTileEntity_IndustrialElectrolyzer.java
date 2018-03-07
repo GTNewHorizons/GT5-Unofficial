@@ -11,7 +11,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -83,7 +83,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(2*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 180);
+		return checkRecipeGeneric(2* GT_Utility.getTier(this.getMaxInputVoltage()), 90, 180);
 	}
 
 	@Override

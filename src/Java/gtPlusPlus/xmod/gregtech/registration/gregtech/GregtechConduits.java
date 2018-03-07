@@ -118,7 +118,7 @@ public class GregtechConduits {
 
 	private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps, final short[] rgb){
 		final Materials T = Materials.valueOf(Material);
-		int V = Utils.calculateVoltageTier(Voltage);
+		int V = GT_Utility.getTier(Voltage);
 		if (V == -1){
 			Logger.ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
 			Logger.ERROR(Material+" has defaulted to 8v.");
@@ -151,7 +151,7 @@ public class GregtechConduits {
 	}
 
 	private static void customWireFactory(final Material Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){
-		int V = Utils.calculateVoltageTier(Voltage);
+		int V = GT_Utility.getTier(Voltage);
 		if (V == -1){
 			Logger.ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
 			Logger.ERROR(Material+" has defaulted to 8v.");

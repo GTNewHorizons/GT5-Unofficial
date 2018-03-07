@@ -13,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
@@ -97,7 +97,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if (checkForWater()) {
-			if (checkRecipeGeneric((4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 400)) {
+			if (checkRecipeGeneric((4* GT_Utility.getTier(this.getMaxInputVoltage())), 100, 400)) {
 				return addSludge();
 			}
 		}
