@@ -526,7 +526,7 @@ GT_MetaTileEntity_MultiBlockBase {
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
 		if (LoadedMods.TecTech){
-			if (isThisHatchMultiDynamo()) {
+			if (isThisHatchMultiDynamo(aMetaTileEntity)) {
 				Logger.REFLECTION("Found isThisHatchMultiDynamo");
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return this.mMultiDynamoHatches.add(
@@ -686,19 +686,19 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
-		if (isThisHatchMultiDynamo()) {
+		if (isThisHatchMultiDynamo(aTileEntity)) {
 			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
 		}
 		return false;
 	}
 
-	public boolean isThisHatchMultiDynamo(){
+	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
 		Class mDynamoClass;
 		try {
 			mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
 			if (mDynamoClass != null){
-				if (mDynamoClass.isInstance(this)){
+				if (mDynamoClass.isInstance(aMetaTileEntity)){
 					return true;
 				}
 			}
@@ -710,7 +710,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
 		if (LoadedMods.TecTech){
-			if (isThisHatchMultiDynamo()) {
+			if (isThisHatchMultiDynamo(aTileEntity)) {
 				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 
