@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,13 +40,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
 
-	private static boolean controller;
 	protected int mAverageEuUsage = 0;
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
 	protected boolean mIsOutputtingPower = false;
-	
+
+	private final int ENERGY_TAX = 2;
+
 	//TecTech Support
 	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 
@@ -61,7 +63,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Power Sub-Station",
-				"Consumes 1% of the average voltage of all energy type hatches",
+				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
 				"Size(WxHxD): External 5x4x5, Sub-Station Casings, Controller (Bottom, Centre)",
 				"Size(WxHxD): Internal 3x2x3, Vanadium Redox Batteries",
@@ -97,11 +99,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-		return true;
-	}
-
-	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		Logger.INFO("Checking structure for Industrial Power Sub-Station.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
@@ -112,8 +109,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return false;
 		}*/
 
+		this.mMultiDynamoHatches.clear();
+		this.mAllDynamoHatches.clear();
+
 		int tAmount = 0;
-		controller = false;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 4; h++) {
@@ -279,12 +278,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		//mAverageEuUsage
 		int tempAvg = 0;
 		int hatchCount = 0;
-		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches){
-			tempAvg += re.getInputTier();
+		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches) {
+			tempAvg += re.maxEUInput();
 			hatchCount++;
 		}
-		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches){
-			tempAvg += re.getOutputTier();
+		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches) {
+			tempAvg += re.maxEUOutput();
 			hatchCount++;
 		}
 		if (hatchCount > 0) {
@@ -351,117 +350,88 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (this.getEUVar() < 0){
-			this.setEUVar(0);
+	public boolean checkRecipe(final ItemStack aStack) {
+		this.mProgresstime = 1;
+		this.mMaxProgresstime = 1;
+		this.mEUt = 0;
+		this.mEfficiencyIncrease = 10000;
+		return true;
+	}
+
+	private void drawEnergyFromHatch(MetaTileEntity aHatch)  {
+		if (!isValidMetaTileEntity(aHatch)) return;
+
+		long stored = aHatch.getEUVar();
+		long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
+
+		if (voltage > stored) return;
+
+		if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)) {
+			aHatch.setEUVar((stored - voltage));
+			this.mTotalEnergyAdded += voltage;
+		}
+	}
+
+	private void addEnergyToHatch(MetaTileEntity aHatch) {
+		if (!isValidMetaTileEntity(aHatch)) return;
+
+		long voltage = aHatch.maxEUOutput() * aHatch.maxAmperesOut();
+
+		if (aHatch.getEUVar() > aHatch.maxEUStore() - voltage) return;
+
+		if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(voltage, false)) {
+			aHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
+			this.mTotalEnergyConsumed+=voltage;
 		}
 
-		//Handle Progress Time
-		if (this.getBaseMetaTileEntity().isAllowedToWork()){
-			this.mProgresstime = 20;
-			this.mMaxProgresstime = 40;	
-			//Use 10% of average EU determined by adding in/output voltage of all hatches and averaging.
-			int mDecrease = MathUtils.roundToClosestInt(mAverageEuUsage);
-			this.mTotalEnergyLost+=mDecrease;
-			this.setEUVar(this.getEUVar()-mDecrease);
-			//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mDecrease, false);
+	}
+
+	private long computeEnergyTax() {
+		float mTax = mAverageEuUsage * (ENERGY_TAX / 100f);
+
+		// Increase tax up to 2x if machine is not fully repaired
+		mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
+
+		return MathUtils.roundToClosestInt(mTax);
+	}
+
+	@Override
+	public boolean onRunningTick(ItemStack aStack) {
+		// First, Pay Tax
+		long mDecrease = computeEnergyTax();
+		this.mTotalEnergyLost += Math.min(mDecrease, this.getEUVar());
+		this.setEUVar(Math.max(0, this.getEUVar() - mDecrease));
+
+		// Input Power
+		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
+			drawEnergyFromHatch(tHatch);
 		}
-		else {
-			this.mProgresstime = 0;
-			this.mMaxProgresstime = 0;
+		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+			drawEnergyFromHatch(tHatch);
 		}
 
-		//Do work
-		if (this.getBaseMetaTileEntity().isAllowedToWork()){
+		// Output Power
+		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
+			addEnergyToHatch(tHatch);
+		}
+		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
+			addEnergyToHatch(tHatch);
+		}
 
-			//Input Power
-			if (this.getEUVar() < this.maxEUStore()){
-				if (this.getBaseMetaTileEntity().isAllowedToWork()){
-					this.getBaseMetaTileEntity().enableWorking();
-				}
-				for (GT_MetaTileEntity_Hatch_OutputBattery energy : this.mDischargeHatches){
-					long stored = energy.getEUVar();
-					long voltage = energy.maxEUInput();
-					if (stored > 0){
-						energy.setEUVar((stored-voltage));
-						this.mTotalEnergyAdded+=voltage;
-						if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)){
-							//Utils.LOG_INFO("Draining Discharge Hatch #1");
-						}
-					}
-				}
-				for (GT_MetaTileEntity_Hatch_Energy energy : this.mEnergyHatches){
-					long stored = energy.getEUVar();
-					long voltage = energy.maxEUInput();
-					if (stored > 0){
-						energy.setEUVar((stored-voltage));
-						this.mTotalEnergyAdded+=voltage;
-						this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
-					}
-				}
-			}
-			else {
+		return true;
 
-			}
-
-			//Output Power
-			addEnergyOutput(1);
-
-		}		
-		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
 	@Override
 	public boolean drainEnergyInput(long aEU) {
-		if (aEU <= 0L)
-			return true;
-		long nStoredPower = this.getEUVar();
-		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-
-				Logger.INFO("Draining Discharge Hatch #2");
-			}
-		}
-		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-
-			}
-		}		
-		long nNewStoredPower = this.getEUVar();
-		if (nNewStoredPower < nStoredPower){
-			Logger.ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
-			return true;
-		}
-
-		return false;
+		// Not applicable to this machine
+		return true;
 	}
 
 	@Override
 	public boolean addEnergyOutput(long aEU) {
-		if (aEU <= 0L)
-			return true;
-		long nStoredPower = this.getEUVar();
-		int hatchCount = 0;
-		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.maxEUInput(), false))) {
-				this.setEUVar(this.getEUVar()-(tHatch.maxEUInput()));
-				this.mTotalEnergyConsumed+=(tHatch.maxEUInput());
-			}
-			hatchCount++;
-		}
-		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(GT_Values.V[(int) tHatch.getOutputTier()], false))) {
-				this.setEUVar(this.getEUVar()-(GT_Values.V[(int) tHatch.getOutputTier()]));
-				this.mTotalEnergyConsumed+=(GT_Values.V[(int) tHatch.getOutputTier()]);
-			}
-			hatchCount++;
-		}
-		long nNewStoredPower = this.getEUVar();
-		if (nNewStoredPower < nStoredPower){
-			Logger.ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
-			return true;
-		}
-		return false;
+		// Not applicable to this machine
+		return true;
 	}
 
 	@Override
@@ -494,7 +464,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Ergon Energy - District Sub-Station",
 				"Stored EU:" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET,
 				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
-				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mAverageEuUsage) + EnumChatFormatting.RESET + " EU/t",
+				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.computeEnergyTax()) + EnumChatFormatting.RESET + " EU/t",
 				"Controller Mode: " + mode,
 				"Stats for Nerds",
 				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
