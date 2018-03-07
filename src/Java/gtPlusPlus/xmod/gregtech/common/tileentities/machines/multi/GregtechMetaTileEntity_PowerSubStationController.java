@@ -95,11 +95,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public void onConfigLoad(final GT_Config aConfig) {
-		super.onConfigLoad(aConfig);
-	}
-
-	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		return (this.mActualStoredEU >= 0);
 	}
@@ -303,36 +298,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return tAmount >= 35;
 	}
 
-	public boolean ignoreController(final Block tTileEntity) {
-		if (!controller && (tTileEntity == GregTech_API.sBlockMachines)) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		return true;
-	}
-
 	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
-	}
-
-	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getDamageToComponent(final ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getAmountOfOutputs() {
-		return 1;
 	}
 
 	@Override
@@ -384,11 +352,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mIsOutputtingPower = aNBT.getBoolean("mIsOutputtingPower");
 
 		super.loadNBTData(aNBT);
-	}
-
-	@Override
-	public int maxProgresstime() {
-		return super.maxProgresstime();
 	}
 
 	@Override
@@ -456,11 +419,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			}
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-	}
-
-	@Override
-	public boolean onRunningTick(ItemStack aStack) {
-		return super.onRunningTick(aStack);
 	}
 
 	@Override
