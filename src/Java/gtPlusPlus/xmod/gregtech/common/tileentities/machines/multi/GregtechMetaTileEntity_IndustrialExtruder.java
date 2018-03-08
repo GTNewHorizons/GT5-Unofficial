@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -112,7 +113,7 @@ extends GregtechMeta_MultiBlockBase {
 				inputs[slot++] = g;
 			}			
 			if (inputs.length > 0) {				
-				int para = (4*Utils.calculateVoltageTier(this.getMaxInputVoltage()));
+				int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
 				Logger.WARNING("Recipe. ["+inputs.length+"]["+para+"]");				
 				if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
 					Logger.WARNING("Recipe 2.");

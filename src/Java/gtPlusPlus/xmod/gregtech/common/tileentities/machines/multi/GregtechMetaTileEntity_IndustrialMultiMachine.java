@@ -125,11 +125,11 @@ extends GregtechMeta_MultiBlockBase {
 
 			//Logger.INFO("4");
 			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), properArray,
-					(2*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 80, 250, 10000)) return true;
+					(2*GT_Utility.getTier(this.getMaxInputVoltage())), 80, 250, 10000)) return true;
 		}
 		return false;
 		
-		//return checkRecipeGeneric(2*Utils.calculateVoltageTier(this.getMaxInputVoltage()), 90, 180);
+		//return checkRecipeGeneric(2*GT_Utility.getTier(this.getMaxInputVoltage()), 90, 180);
 	}
 
 	@Override

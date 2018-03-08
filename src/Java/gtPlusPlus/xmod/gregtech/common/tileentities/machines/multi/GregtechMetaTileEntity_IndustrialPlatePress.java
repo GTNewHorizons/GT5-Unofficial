@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -104,7 +105,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 
 			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{},
-					(4*Utils.calculateVoltageTier(this.getMaxInputVoltage())), 100, 500, 10000)) return true;
+					(4* GT_Utility.getTier(this.getMaxInputVoltage())), 100, 500, 10000)) return true;
 		}
 		return false;
 	}

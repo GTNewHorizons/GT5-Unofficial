@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -99,7 +100,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return checkRecipeGeneric(this.mLevel * 12, (100-(Utils.calculateVoltageTier(this.getMaxInputVoltage())*4)), 0);
+		return checkRecipeGeneric(this.mLevel * 12, (100-(GT_Utility.getTier(this.getMaxInputVoltage())*4)), 0);
 	}
 
 	@Override
