@@ -325,8 +325,8 @@ public final class ModItems {
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
 		itemGemShards = new ItemGemShards("itemGemShards", "Gem Shards", AddToCreativeTab.tabMisc, 32, 0, "They glitter in the light", EnumRarity.rare, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(182, 114, 18)).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", "Half Complete Casing", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01/" + "761");
-		itemSulfuricPotion = new ItemSulfuricAcidPotion("itemSulfuricPotion", "Thowable Vial of Sulfuric Acid", "Burn your foes alive!").setTextureName(CORE.MODID + ":itemSulfuricAcidPotion");
+		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01/" + "761");
+		itemSulfuricPotion = new ItemSulfuricAcidPotion("itemSulfuricPotion", "Throwable Vial of Sulfuric Acid", "Burn your foes alive!").setTextureName(CORE.MODID + ":itemSulfuricAcidPotion");
 		itemHydrofluoricPotion = new ItemHydrofluoricAcidPotion("itemHydrofluoricPotion", "Thowable Vial of Hydrofluoric Acid", "They won't see this coming, nor anything after!").setTextureName(CORE.MODID + ":itemPotion");
 		//Start meta Item Generation
 		ItemsFoods.load();

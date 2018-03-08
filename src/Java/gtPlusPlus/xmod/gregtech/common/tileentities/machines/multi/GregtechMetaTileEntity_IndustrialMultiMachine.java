@@ -236,7 +236,7 @@ extends GregtechMeta_MultiBlockBase {
 			return GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;			
 		}
 		else if (aMode == MODE_REPLICATOR) {
-			return GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes;
+			return null;
 		}
 		else {
 			return null;

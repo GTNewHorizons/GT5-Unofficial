@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general.chassis;
+package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
@@ -16,11 +16,6 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 	public ItemHalfCompleteCasings(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg,
 			String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
 		super(unlocalizedName, creativeTab, stackSize, maxDmg, description, regRarity, colour, Effect, rgb);
-	}
-	
-	public ItemHalfCompleteCasings(String unlocalizedName, String displayName, CreativeTabs creativeTab, int stackSize,
-			int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, int rgb) {
-		super(unlocalizedName, displayName, creativeTab, stackSize, maxDmg, description, regRarity, colour, Effect, rgb);
 	}
 	
 	@Override
@@ -64,9 +59,5 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 			return Utils.rgbtoHexValue(77, 175, 182);			
 		}
 	}
-	
-	
-
-	
 
 }
