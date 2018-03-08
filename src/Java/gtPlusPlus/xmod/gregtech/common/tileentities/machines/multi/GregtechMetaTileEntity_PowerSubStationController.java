@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,17 +35,19 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
 
-	private static boolean controller;
 	protected int mAverageEuUsage = 0;
 	protected long mTotalEnergyAdded = 0;
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
 	protected boolean mIsOutputtingPower = false;
-	
+
+	private final int ENERGY_TAX = 2;
+
 	//TecTech Support
 	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();
 
@@ -59,7 +63,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Power Sub-Station",
-				"Consumes 1% of the average voltage of all energy type hatches",
+				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
 				"Size(WxHxD): External 5x4x5, Sub-Station Casings, Controller (Bottom, Centre)",
 				"Size(WxHxD): Internal 3x2x3, Vanadium Redox Batteries",
@@ -95,16 +99,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public void onConfigLoad(final GT_Config aConfig) {
-		super.onConfigLoad(aConfig);
-	}
-
-	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-		return (this.mActualStoredEU >= 0);
-	}
-
-	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		Logger.INFO("Checking structure for Industrial Power Sub-Station.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
@@ -115,8 +109,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return false;
 		}*/
 
+		this.mMultiDynamoHatches.clear();
+		this.mAllDynamoHatches.clear();
+
 		int tAmount = 0;
-		controller = false;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 4; h++) {
@@ -129,47 +125,46 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 						// Station Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
 						if ((h == 0 || h == 3) || (h == 2 || h == 1)) {
 
-							if (h == 2 || h == 1){						
+							if (h == 2 || h == 1) {
 								//If not a hatch, continue, else add hatch and continue.
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 									Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
-									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
-									Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:" + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName() + " with meta:" + aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
-							}
-							else {
-								if (h==0){
+							} else {
+								if (h == 0) {
 									if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 											Logger.INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3.");
-											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+											Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 											return false;
 										}
 										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-											Logger.INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+											Logger.INFO("Station Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:" + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName() + " with meta:" + aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 											return false;
 										}
 										tAmount++;
 									}
 								}
-								if (h==3){
+								if (h == 3) {
 									if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 											Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3.");
-											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+											Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 											return false;
 										}
 										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-											Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+											Logger.INFO("Station Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:" + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName() + " with meta:" + aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 											return false;
 										}
 										tAmount++;
 									}
-								}								
+								}
 							}
 						}
 					}
@@ -179,46 +174,44 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 						//Deal with all 4 sides (Station walls)
 						if ((h == 1) || (h == 2) || (h == 3)) {
-							if (h == 3){
+							if (h == 3) {
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 3");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
 										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 3");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
 								}
-							}
-							else if (h == 2){
+							} else if (h == 2) {
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 2");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
 										Logger.INFO("Station Casings Missing from somewhere in the top layer edge. 2");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
 								}
-							}
-							else {
+							} else {
 								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Logger.INFO("Station Casings Missing from somewhere in the second layer. 1");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
 										Logger.INFO("Station Casings Missing from somewhere in the second layer. 1");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
@@ -233,18 +226,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Logger.INFO("Station Casing(s) Missing from one of the edges on the top layer.");
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-										Logger.INFO("Station Casing(s) Missing from one of the edges on the top layer. "+h);
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										if (h ==0){
-											if (tTileEntity instanceof GregtechMetaTileEntity_PowerSubStationController){
+										Logger.INFO("Station Casing(s) Missing from one of the edges on the top layer. " + h);
+										Logger.INFO("Instead, found " + aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										if (h == 0) {
+											if (tTileEntity instanceof GregtechMetaTileEntity_PowerSubStationController) {
 
 											}
-										}
-										else {
+										} else {
 											return false;
 										}
 									}
@@ -256,83 +248,58 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				}
 			}
 		}
-		
+
 		/**
 		 * TecTech Support, this allows adding Multi-Amp dynamos.
 		 */
-		if (this.mDynamoHatches.size() > 0){
-			for (GT_MetaTileEntity_Hatch_Dynamo o : this.mDynamoHatches){
+		if (this.mDynamoHatches.size() > 0) {
+			for (GT_MetaTileEntity_Hatch_Dynamo o : this.mDynamoHatches) {
 				mAllDynamoHatches.add(o);
 			}
 		}
-		if (LoadedMods.TecTech && this.mMultiDynamoHatches.size() > 0){
-			for (GT_MetaTileEntity_Hatch o : this.mMultiDynamoHatches){
+		if (LoadedMods.TecTech && this.mMultiDynamoHatches.size() > 0) {
+			for (GT_MetaTileEntity_Hatch o : this.mMultiDynamoHatches) {
 				mAllDynamoHatches.add(o);
 			}
-		}		
-		
-		
+		}
+
+
 		if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
 				|| (this.mAllDynamoHatches.size() < 1)) {
 			Logger.INFO("Returned False 3");
-			Logger.INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: >= 1 | "+(this.mChargeHatches.size() >= 1));
-			Logger.INFO("Discharge Buses: "+this.mDischargeHatches.size()+" | expected: >= 1 | "+(this.mDischargeHatches.size() >= 1));
-			Logger.INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
-			Logger.INFO("Dynamo Hatches: "+this.mAllDynamoHatches.size()+" | expected: >= 1 | "+(this.mAllDynamoHatches.size() < 1));
-			Logger.INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
+			Logger.INFO("Charge Buses: " + this.mChargeHatches.size() + " | expected: >= 1 | " + (this.mChargeHatches.size() >= 1));
+			Logger.INFO("Discharge Buses: " + this.mDischargeHatches.size() + " | expected: >= 1 | " + (this.mDischargeHatches.size() >= 1));
+			Logger.INFO("Energy Hatches: " + this.mEnergyHatches.size() + " | expected: >= 1 | " + (this.mEnergyHatches.size() < 1));
+			Logger.INFO("Dynamo Hatches: " + this.mAllDynamoHatches.size() + " | expected: >= 1 | " + (this.mAllDynamoHatches.size() < 1));
+			Logger.INFO("Maint. Hatches: " + this.mMaintenanceHatches.size() + " | expected: 1 | " + (this.mMaintenanceHatches.size() != 1));
 			return false;
 		}
 
 		//mAverageEuUsage
 		int tempAvg = 0;
 		int hatchCount = 0;
-		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches){
-			tempAvg += re.getInputTier();
+		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches) {
+			tempAvg += re.maxEUInput();
 			hatchCount++;
 		}
-		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches){
-			tempAvg += re.getOutputTier();
+		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches) {
+			tempAvg += re.maxEUOutput();
 			hatchCount++;
 		}
-		if (hatchCount > 0){
-			this.mAverageEuUsage = (tempAvg/hatchCount);
+		if (hatchCount > 0) {
+			this.mAverageEuUsage = (tempAvg / hatchCount);
+		} else {
+			this.mAverageEuUsage = 0;
 		}
 
-		Logger.INFO("Structure Built? "+""+tAmount+" | "+(tAmount>=35));
+		Logger.INFO("Structure Built? " + "" + tAmount + " | " + (tAmount >= 35));
 
 		return tAmount >= 35;
-	}
-
-	public boolean ignoreController(final Block tTileEntity) {
-		if (!controller && (tTileEntity == GregTech_API.sBlockMachines)) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		return true;
 	}
 
 	@Override
 	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
-	}
-
-	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getDamageToComponent(final ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getAmountOfOutputs() {
-		return 1;
 	}
 
 	@Override
@@ -348,15 +315,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	//NBT Power Storage handling
 	long mPowerStorageBuffer = 0;
 	int mPowerStorageMultiplier = 32;
-	long mActualStoredEU = 0;
-
 
 	//mTotalEnergyAdded
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mPowerStorageBuffer", this.mPowerStorageBuffer);
 		aNBT.setInteger("mPowerStorageMultiplier", this.mPowerStorageMultiplier);
-		aNBT.setLong("mActualStoredEU", this.mActualStoredEU);
 		aNBT.setInteger("mAverageEuUsage", this.mAverageEuUsage);
 
 		//Usage Stats
@@ -372,7 +336,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public void loadNBTData(NBTTagCompound aNBT) {
 		this.mPowerStorageBuffer = aNBT.getLong("mPowerStorageBuffer");
 		this.mPowerStorageMultiplier = aNBT.getInteger("mPowerStorageMultiplier");
-		this.mActualStoredEU = aNBT.getLong("mActualStoredEU");
 		this.mAverageEuUsage = aNBT.getInteger("mAverageEuUsage");
 
 		//Usage Stats
@@ -380,144 +343,95 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mTotalEnergyLost = aNBT.getLong("mTotalEnergyLost");
 		this.mTotalEnergyConsumed = aNBT.getLong("mTotalEnergyConsumed");
 		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
-		
+
 		this.mIsOutputtingPower = aNBT.getBoolean("mIsOutputtingPower");
 
 		super.loadNBTData(aNBT);
 	}
 
 	@Override
-	public int maxProgresstime() {
-		return super.maxProgresstime();
+	public boolean checkRecipe(final ItemStack aStack) {
+		this.mProgresstime = 1;
+		this.mMaxProgresstime = 1;
+		this.mEUt = 0;
+		this.mEfficiencyIncrease = 10000;
+		return true;
 	}
 
-	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		this.mActualStoredEU = this.getEUVar();
-		
-		if (this.mActualStoredEU < 0){
-			this.mActualStoredEU = 0;
+	private void drawEnergyFromHatch(MetaTileEntity aHatch)  {
+		if (!isValidMetaTileEntity(aHatch)) return;
+
+		long stored = aHatch.getEUVar();
+		long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
+
+		if (voltage > stored) return;
+
+		if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)) {
+			aHatch.setEUVar((stored - voltage));
+			this.mTotalEnergyAdded += voltage;
 		}
-		if (this.getEUVar() < 0){
-			this.setEUVar(0);
+	}
+
+	private void addEnergyToHatch(MetaTileEntity aHatch) {
+		if (!isValidMetaTileEntity(aHatch)) return;
+
+		long voltage = aHatch.maxEUOutput() * aHatch.maxAmperesOut();
+
+		if (aHatch.getEUVar() > aHatch.maxEUStore() - voltage) return;
+
+		if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(voltage, false)) {
+			aHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
+			this.mTotalEnergyConsumed+=voltage;
 		}
 
-		//Handle Progress Time
-		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isAllowedToWork()){
-			this.mProgresstime = 20;
-			this.mMaxProgresstime = 40;	
-			//Use 10% of average EU determined by adding in/output voltage of all hatches and averaging.
-			int mDecrease = MathUtils.roundToClosestInt(mAverageEuUsage);
-			this.mTotalEnergyLost+=mDecrease;
-			this.setEUVar(this.getEUVar()-mDecrease);
-			//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mDecrease, false);
-		}
-		else {
-			this.mProgresstime = 0;
-			this.mMaxProgresstime = 0;
-		}
+	}
 
-		//Do work
-		if (this.getBaseMetaTileEntity().isAllowedToWork()){
+	private long computeEnergyTax() {
+		float mTax = mAverageEuUsage * (ENERGY_TAX / 100f);
 
-			//Input Power
-			if (this.mActualStoredEU < this.maxEUStore()){
-				if (this.getBaseMetaTileEntity().isAllowedToWork()){
-					this.getBaseMetaTileEntity().enableWorking();
-				}
-				for (GT_MetaTileEntity_Hatch_OutputBattery energy : this.mDischargeHatches){
-					long stored = energy.getEUVar();
-					long voltage = energy.maxEUInput();
-					if (stored > 0){
-						energy.setEUVar((stored-voltage));
-						this.mTotalEnergyAdded+=voltage;
-						if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)){
-							//Utils.LOG_INFO("Draining Discharge Hatch #1");
-						}
-					}
-				}
-				for (GT_MetaTileEntity_Hatch_Energy energy : this.mEnergyHatches){
-					long stored = energy.getEUVar();
-					long voltage = energy.maxEUInput();
-					if (stored > 0){
-						energy.setEUVar((stored-voltage));
-						this.mTotalEnergyAdded+=voltage;
-						this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
-					}
-				}
-			}
-			else {
+		// Increase tax up to 2x if machine is not fully repaired
+		mTax = mTax * (1f + (10000f - mEfficiency) / 10000f);
 
-			}
-
-			//Output Power
-			if (this.mActualStoredEU > 0){
-				addEnergyOutput(1);
-			}
-		}		
-		super.onPostTick(aBaseMetaTileEntity, aTick);
+		return MathUtils.roundToClosestInt(mTax);
 	}
 
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
-		return super.onRunningTick(aStack);
+		// First, Pay Tax
+		long mDecrease = computeEnergyTax();
+		this.mTotalEnergyLost += Math.min(mDecrease, this.getEUVar());
+		this.setEUVar(Math.max(0, this.getEUVar() - mDecrease));
+
+		// Input Power
+		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
+			drawEnergyFromHatch(tHatch);
+		}
+		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
+			drawEnergyFromHatch(tHatch);
+		}
+
+		// Output Power
+		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
+			addEnergyToHatch(tHatch);
+		}
+		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
+			addEnergyToHatch(tHatch);
+		}
+
+		return true;
+
 	}
 
 	@Override
 	public boolean drainEnergyInput(long aEU) {
-		if (aEU <= 0L)
-			return true;
-		long nStoredPower = this.getEUVar();
-		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-				if (this.mActualStoredEU<this.maxEUStore()){
-
-				}
-				Logger.INFO("Draining Discharge Hatch #2");
-			}
-		}
-		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
-				if (this.mActualStoredEU<this.maxEUStore()){
-					//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false);
-				}
-			}
-		}		
-		long nNewStoredPower = this.getEUVar();
-		if (nNewStoredPower < nStoredPower){
-			Logger.ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
-			return true;
-		}
-
-		return false;
+		// Not applicable to this machine
+		return true;
 	}
 
 	@Override
 	public boolean addEnergyOutput(long aEU) {
-		if (aEU <= 0L)
-			return true;
-		long nStoredPower = this.getEUVar();
-		int hatchCount = 0;
-		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.maxEUInput(), false))) {
-				this.setEUVar(this.getEUVar()-(tHatch.maxEUInput()));
-				this.mTotalEnergyConsumed+=(tHatch.maxEUInput());
-			}
-			hatchCount++;
-		}
-		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(GT_Values.V[(int) tHatch.getOutputTier()], false))) {
-				this.setEUVar(this.getEUVar()-(GT_Values.V[(int) tHatch.getOutputTier()]));
-				this.mTotalEnergyConsumed+=(GT_Values.V[(int) tHatch.getOutputTier()]);
-			}
-			hatchCount++;
-		}
-		long nNewStoredPower = this.getEUVar();
-		if (nNewStoredPower < nStoredPower){
-			Logger.ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
-			return true;
-		}
-		return false;
+		// Not applicable to this machine
+		return true;
 	}
 
 	@Override
@@ -532,7 +446,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public String[] getInfoData() {
-
 		long seconds = (this.mTotalRunTime/20);
 
 		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
@@ -541,14 +454,22 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
+		String mode;
+		if (mIsOutputtingPower) {
+			mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
+		} else {
+			mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
+		}
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
-				"Controller Mode: "+(mIsOutputtingPower ? "Output" : "Input"),
-				"EU Required: "+this.mAverageEuUsage+"EU/t",
+				"Stored EU:" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET,
+				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
+				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.computeEnergyTax()) + EnumChatFormatting.RESET + " EU/t",
+				"Controller Mode: " + mode,
 				"Stats for Nerds",
-				"Total Input: "+this.mTotalEnergyAdded+"EU",
-				"Total Output: "+this.mTotalEnergyConsumed+"EU",
-				"Total Wasted: "+this.mTotalEnergyLost+"EU",
+				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
+				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
+				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
 
 				"Total Time Since Built: ",
 				""+weeks+" Weeks.",
@@ -556,7 +477,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				""+hours+" Hours.",
 				""+minutes+" Minutes.",
 				""+second+" Seconds.",
-				"Total Time in ticks: "+this.mTotalRunTime};
+				"Total Time in ticks: "+this.mTotalRunTime
+		};
 
 	};
 
