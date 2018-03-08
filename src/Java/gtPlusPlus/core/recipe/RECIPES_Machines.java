@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -1036,23 +1037,26 @@ public class RECIPES_Machines {
 				RECIPE_CyclotronOuterCasing = GregtechItemList.Casing_Cyclotron_External.get(Casing_Amount);
 				RECIPE_CyclotronInnerCoil = GregtechItemList.Casing_Cyclotron_Coil.get(1);
 
-				RecipeUtils.recipeBuilder(
-						"plateIncoloyMA956", "plateIncoloyMA956", "plateIncoloyMA956",
-						"plateIncoloyMA956", "frameGtIncoloy020", "plateIncoloyMA956",
-						"plateIncoloyMA956", "plateIncoloyMA956", "plateIncoloyMA956",
-						RECIPE_CyclotronOuterCasing);
+				GT_Values.RA.addAssemblerRecipe(
+						ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloyMA956", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloy020", 1),
+						FluidUtils.getFluidStack("molten.hg1223", 32),
+						RECIPE_CyclotronOuterCasing,
+						30 * 20,
+						500);
 				
-				RecipeUtils.recipeBuilder(
-						"plateIncoloy020", "plateIncoloy020", "plateIncoloy020",
-						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
-						"plateIncoloy020", "plateIncoloy020", "plateIncoloy020",
-						RECIPE_CyclotronInnerCoil);
-
+				GT_Values.RA.addAssemblerRecipe(
+						ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloyDS", 16),
+						ItemList.Field_Generator_HV.get(1),
+						FluidUtils.getFluidStack("molten.hg1223", 144),
+						RECIPE_CyclotronInnerCoil,
+						90 * 20,
+						1000);
 				
 				RecipeUtils.recipeBuilder(
 						"plateIncoloy020", CI.getTieredCircuit(6), "plateIncoloy020",
 						RECIPE_CyclotronInnerCoil, CI.machineHull_IV, RECIPE_CyclotronInnerCoil,
-						"plateIncoloy020", "gearIncoloyMA956", "plateIncoloy020",
+						"plateIncoloy020", "gearGtIncoloyMA956", "plateIncoloy020",
 						RECIPE_CyclotronController);
 			}
 
