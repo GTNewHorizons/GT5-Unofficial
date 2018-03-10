@@ -240,6 +240,7 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15330, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Research.set(new GT_MetaTileEntity_EM_research(15331, "multimachine.em.research", "Research station").getStackForm(1L));
+        Machine_Multi_DataBank.set(new GT_MetaTileEntity_EM_research(15332, "multimachine.em.databank", "Data Bank").getStackForm(1L));
 
         Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15340, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
 
@@ -298,5 +299,6 @@ public class MachineLoader implements Runnable {
         GT_MetaTileEntity_Hatch_Rack.run();
         GT_MetaTileEntity_EM_computer.run();
         GT_MetaTileEntity_EM_research.run();
+        GT_MEtaTileEntity_EM_dataBank.run();
     }
 }
