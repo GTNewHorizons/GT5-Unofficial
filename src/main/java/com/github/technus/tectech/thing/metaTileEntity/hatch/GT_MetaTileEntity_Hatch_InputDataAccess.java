@@ -3,10 +3,12 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,10 +18,14 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_ACTIVE;
+import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
+import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_SIDES;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_Hatch_DataAccess implements iConnectsToDataPipe {
     private final String mDescription;
-    public boolean delDelay;
+    public boolean delDelay = true;
     private ItemStack[] stacks;
 
     public GT_MetaTileEntity_Hatch_InputDataAccess(int aID, String aName, String aNameRegional, int aTier) {
@@ -30,6 +36,16 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
     public GT_MetaTileEntity_Hatch_InputDataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         mDescription=aDescription;
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_D_CONN)};
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_D_CONN)};
     }
 
     @Override

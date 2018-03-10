@@ -3,7 +3,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.dataFramework.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataAccess;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataAccess;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
@@ -23,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -33,19 +36,20 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     //region Structure
     private static final String[][] shape = new String[][]{
-            {"   "," . ","   ",},
-            {"   "," 0 ","   ",},
-            {"   ","   ","   ",},
+            {"0   0","0 . 0","0   0",},
+            {"0!!!0","01110","0!!!0",},
+            {"0!!!0","0!!!0","0!!!0",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{3};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
-    private static final short[] casingTextures = new short[]{textureOffset+1};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{1};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{2,1};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList","addDataBankHatchToMachineList"};
+    private static final short[] casingTextures = new short[]{textureOffset,textureOffset+1};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0,1};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
-            "1 - Classic/Data Hatches or Computer casing",
+            "1 - Classic Hatches or high power casing",
+            "2 - Data Access/Data Bank Master Hatches or computer casing",
     };
     //endregion
 
@@ -80,12 +84,14 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+        eDataAccessHatches.clear();
+        eStacksDataOutputs.clear();
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0);
     }
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilderExtreme(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta,2, 1, 0, getBaseMetaTileEntity(),this,hintsOnly);
     }
 
     @Override
@@ -95,13 +101,38 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-
+        if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
+            mEUt = -(int) V[7];
+            eAmpereFlow = 1 + (eStacksDataOutputs.size() >> 2) + eDataAccessHatches.size();
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            return true;
+        }
         return false;
     }
 
     @Override
     public void outputAfterRecipe_EM() {
-
+        ArrayList<ItemStack> stacks=new ArrayList<>();
+        for(GT_MetaTileEntity_Hatch_DataAccess dataAccess:eDataAccessHatches){
+            int count=dataAccess.getSizeInventory();
+            for(int i=0;i<count;i++){
+                ItemStack stack=dataAccess.getStackInSlot(i);
+                if(stack!=null){
+                    stacks.add(stack);
+                }
+            }
+        }
+        if(stacks.size()>0){
+            ItemStack[] arr=stacks.toArray(new ItemStack[0]);
+            for(GT_MetaTileEntity_Hatch_OutputDataAccess hatch:eStacksDataOutputs){
+                hatch.q=new InventoryDataPacket(arr);
+            }
+        }else{
+            for(GT_MetaTileEntity_Hatch_OutputDataAccess hatch:eStacksDataOutputs){
+                hatch.q=null;
+            }
+        }
     }
 
     @Override
@@ -114,7 +145,7 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     //NEW METHOD
-    public final boolean addStackDataOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
@@ -125,20 +156,7 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataAccess) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataAccess) aMetaTileEntity);
-        }
-        return false;
-    }
-
-    //NEW METHOD
-    public final boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess) {
+        }else if(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataAccess)){
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
         }
@@ -147,8 +165,7 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     public static void run(){
         try {
-            adderMethodMap.put("addStackDataOutputToMachineList", GT_MEtaTileEntity_EM_dataBank.class.getMethod("addStackDataOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addDataAccessToMachineList", GT_MEtaTileEntity_EM_dataBank.class.getMethod("addDataAccessToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addDataBankHatchToMachineList", GT_MEtaTileEntity_EM_dataBank.class.getMethod("addDataBankHatchToMachineList", IGregTechTileEntity.class, int.class));
         } catch (NoSuchMethodException e) {
             if (TecTechConfig.DEBUG_MODE) {
                 e.printStackTrace();

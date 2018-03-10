@@ -229,6 +229,7 @@ public class MachineLoader implements Runnable {
         Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15310, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
         Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
+        Machine_Multi_DataBank.set(new GT_MEtaTileEntity_EM_dataBank(15313, "multimachine.em.databank", "Data Bank").getStackForm(1L));
 
         Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15320, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
         Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
@@ -240,7 +241,6 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15330, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Research.set(new GT_MetaTileEntity_EM_research(15331, "multimachine.em.research", "Research station").getStackForm(1L));
-        Machine_Multi_DataBank.set(new GT_MetaTileEntity_EM_research(15332, "multimachine.em.databank", "Data Bank").getStackForm(1L));
 
         Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15340, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
 
