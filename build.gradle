@@ -58,14 +58,14 @@ repositories {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
     }
-    ivy {
-        name 'CoFHLib'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name 'CoFHCore'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
-    }
+    //ivy {
+    //    name 'CoFHLib'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
+    //}
+    //ivy {
+    //    name 'CoFHCore'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
+    //}
     maven {
         name = "chickenbones"
         url = "http://chickenbones.net/maven/"
@@ -75,8 +75,8 @@ repositories {
 dependencies {
     compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
-    provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+    //provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+    //provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
     compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
     compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.dataFramework.QuantumDataPacket;
+import com.github.technus.tectech.dataFramework.DataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,12 +24,12 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileEntity_Hatch implements iConnectsToDataPipe {
+public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch implements iConnectsToDataPipe {
     private static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_D_CONN;
 
-    public QuantumDataPacket q;
+    public T q;
 
     public short id = -1;
 
@@ -74,9 +74,11 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
         if (aNBT.hasKey("eDATA")) {
-            q = new QuantumDataPacket(aNBT.getCompoundTag("eDATA"));
+            q = loadPacketFromNBT(aNBT.getCompoundTag("eDATA"));
         }
     }
+
+    protected abstract T loadPacketFromNBT(NBTTagCompound nbt);
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -142,11 +144,11 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public String[] getInfoData() {
         if (id > 0) {
-            return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0), "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),};
+            return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0), "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),};
         }
         return new String[]{
-                "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0),
-                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),
+                "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.getContentString() : 0),
+                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.getTraceSize() : 0),
         };
     }
 

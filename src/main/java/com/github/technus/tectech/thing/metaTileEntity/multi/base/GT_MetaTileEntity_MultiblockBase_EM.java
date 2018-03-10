@@ -359,6 +359,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             case 24:
                 result[2]=- a;
                 result[0]=- b;
+                result[0]=- b;
                 result[1]=+ c;
                 break;
         }
@@ -797,7 +798,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
         for (GT_MetaTileEntity_Hatch_InputData in : eInputData) {
             if (in.q != null) {
-                result += in.q.computationIfNotContained(pos);
+                Long value=in.q.contentIfNotInTrace(pos);
+                if(value!=null) {
+                    result += value;
+                }
             }
         }
         return result;

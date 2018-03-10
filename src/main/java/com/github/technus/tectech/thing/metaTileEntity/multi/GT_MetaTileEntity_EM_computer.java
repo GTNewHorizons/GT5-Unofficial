@@ -166,7 +166,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
-            QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
+            if(pack==null){
+                return;
+            }
             for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
@@ -176,8 +179,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     return;
                 }
             }
-
-            pack.computation /= eOutputData.size();
 
             for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData) {
                 o.q = pack;

@@ -127,7 +127,10 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             }
 
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
-            QuantumDataPacket pack = new QuantumDataPacket(pos, 0);
+            QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
+            if(pack==null) {
+                return;
+            }
             for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
@@ -138,7 +141,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 }
             }
 
-            long remaining = pack.computation;
+            long remaining = pack.getContent();
 
             for (int i = 0; i < 10; i++) {
                 dest= getParameterIn(i,1);
@@ -151,17 +154,17 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
                     if(Double.isInfinite(total)){
                         if(Double.isInfinite(weight)){
-                            out.q = new QuantumDataPacket(pack, remaining);
+                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
                             break;
                         }
                     }else{
-                        long part = (long) Math.floor(pack.computation * weight / total);
+                        long part = (long) Math.floor(pack.getContent() * weight / total);
                         if (part > 0) {
                             remaining -= part;
                             if (remaining > 0) {
-                                out.q = new QuantumDataPacket(pack, part);
+                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
                             } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket(pack, part + remaining);
+                                out.q = new QuantumDataPacket( part + remaining).unifyTraceWith(pack);
                                 break;
                             } else {
                                 break;
