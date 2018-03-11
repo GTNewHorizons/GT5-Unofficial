@@ -54,7 +54,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) {
+        if (mTier > 7) {
             return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         }
         return new GT_Container_Param(aPlayerInventory, aBaseMetaTileEntity);
@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) {
+        if (mTier > 7) {
             return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         }
         return new GT_GUIContainer_Param(aPlayerInventory, aBaseMetaTileEntity);
@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
-        if(mTier>=10) {
+        if(mTier>7) {
             return new String[]{"Parametrizer ID: " + EnumChatFormatting.GREEN + param, "Value 0I: " + EnumChatFormatting.AQUA + value0i, "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i) + ' ' + Util.intBitsToShortString(value0i), "Value 1I: " + EnumChatFormatting.BLUE + value1i, "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i) + ' ' + Util.intBitsToShortString(value1i), "Input 0I: " + EnumChatFormatting.GOLD + input0i, "Input 0FB: " + EnumChatFormatting.GOLD + Float.intBitsToFloat(input0i) + ' ' + Util.intBitsToShortString(input0i), "Input 1I: " + EnumChatFormatting.YELLOW + input1i, "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i) + ' ' + Util.intBitsToShortString(input1i),};
         }
         return new String[]{
@@ -199,12 +199,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     }
 
     public boolean isUsingFloats() {
-        return mTier >= 10 && usesFloat;
+        return mTier > 7 && usesFloat;
     }
 
     //returns - succeded
     public boolean setUsingFloats(boolean value){
-        if(mTier>=10){
+        if(mTier>7){
             usesFloat=value;
             return true;
         }

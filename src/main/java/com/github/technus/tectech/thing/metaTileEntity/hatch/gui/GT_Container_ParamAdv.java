@@ -55,8 +55,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
-        boolean doStuff = true;
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
+            boolean doStuff = true;
             GT_MetaTileEntity_Hatch_Param paramH = (GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity();
             int columnPointer=paramH.pointer &0xff;
             boolean secondRow=(paramH.pointer &0x0100)!=0;
@@ -227,7 +227,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             var1.sendProgressBarUpdate(this, 107, input0f >>> 16);
             var1.sendProgressBarUpdate(this, 108, input1f & 0xFFFF);
             var1.sendProgressBarUpdate(this, 109, input1f >>> 16);
-            var1.sendProgressBarUpdate(this, 110, usesFloats ? pointer + 0x10000 : pointer);
+            var1.sendProgressBarUpdate(this, 110, pointer);
+            var1.sendProgressBarUpdate(this, 111, usesFloats ? 1 : 0);
         }
     }
 
@@ -268,7 +269,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                 return;
             case 110:
                 pointer = par2 & 0xFFFF;
-                usesFloats =par2>=0x10000;
+            case 111:
+                usesFloats = par2 != 0;
             default:
         }
     }
