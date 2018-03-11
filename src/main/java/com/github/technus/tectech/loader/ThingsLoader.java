@@ -51,6 +51,7 @@ public class ThingsLoader implements Runnable {
         FrontRotationTriggerItem.run();
         ParametrizerMemoryCard.run();
         ElementalDefinitionScanStorage_EM.run();
+        EuMeterGT.run();
         TecTech.Logger.info("Useful Items registered");
 
         ElementalDefinitionContainer_EM.run();

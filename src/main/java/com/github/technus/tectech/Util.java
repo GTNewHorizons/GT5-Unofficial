@@ -69,6 +69,7 @@ public final class Util {
         return result.toString();
     }
 
+    //region junk
     /*
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
@@ -355,6 +356,7 @@ public final class Util {
         return true;
     }
     */
+    //endregion
 
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!

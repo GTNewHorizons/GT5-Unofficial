@@ -4,6 +4,11 @@
     "subtitle": "tectech.subtitle.microwave_ding",
     "sounds": [{"name": "microwave_ding","stream": false}]
   },
+  "fx_scan": {
+    "category": "block",
+    "subtitle": "tectech.subtitle.fx_scan",
+    "sounds": [{"name": "fx_scan","stream": false}]
+  },
   "fx_alarm": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_alarm",
