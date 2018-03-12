@@ -112,6 +112,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public cElementalDecay[] getNaturalDecayInstant() {
         if (naturalDecayInstant < 0) {
             return elementalDecays;
+        }else if (naturalDecayInstant>=elementalDecays.length){
+            return cElementalDecay.noProduct;
         }
         return new cElementalDecay[]{elementalDecays[naturalDecayInstant]};
     }
@@ -120,6 +122,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         if (energeticDecayInstant < 0) {
             return elementalDecays;
+        }else if (energeticDecayInstant>=elementalDecays.length){
+            return cElementalDecay.noProduct;
         }
         return new cElementalDecay[]{elementalDecays[energeticDecayInstant]};
     }

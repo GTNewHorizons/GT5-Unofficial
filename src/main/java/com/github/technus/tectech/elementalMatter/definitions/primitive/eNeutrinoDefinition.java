@@ -26,7 +26,7 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        lepton_Ve.init(lepton_Ve_, 1F, 0, 0,
+        lepton_Ve.init(lepton_Ve_, 1F, -1, -1,
                 cElementalDecay.noProduct);
         lepton_Vm.init(lepton_Vm_, 1F, 1, 0,
                 new cElementalDecay(0.825F, nothing),
@@ -35,7 +35,7 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
                 new cElementalDecay(0.75F, nothing),
                 eBosonDefinition.deadEnd);
 
-        lepton_Ve_.init(lepton_Ve, 1F, 0, 0,
+        lepton_Ve_.init(lepton_Ve, 1F, -1, -1,
                 cElementalDecay.noProduct);
         lepton_Vm_.init(lepton_Vm, 1F, 1, 0,
                 new cElementalDecay(0.825F, nothing),

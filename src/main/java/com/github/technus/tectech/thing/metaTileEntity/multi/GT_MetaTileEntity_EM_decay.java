@@ -16,6 +16,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -34,6 +36,11 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private cElementalInstanceStackMap contents=new cElementalInstanceStackMap();
+
+    private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
+    private static final double MASS_TO_EU=ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear")*800000.0/URANIUM_INGOT_MASS_DIFF;//*20
+
+    private float temp=0;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -120,9 +127,10 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             for(GT_MetaTileEntity_Hatch_InputElemental i:eInputHatches){
                 i.getContainerHandler().clear();
             }
-            return startRecipe(map.getFirst());
+            return startRecipe(map);
         }else if(eSafeVoid){
             contents.clear();
+            temp=0;
         }else if(contents.hasStacks()){
             return startRecipe(null);
         }
@@ -134,9 +142,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         super.afterRecipeCheckFailed();
     }
 
-    private boolean startRecipe(cElementalInstanceStack input) {
+    private boolean startRecipe(cElementalInstanceStackMap input) {
         if(input!=null) {
-            contents.putUnify(input);
+            contents.putUnifyAll(input);
         }
 
         mMaxProgresstime = 20;
@@ -146,14 +154,20 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
         System.out.println("INPUT");
         for(cElementalInstanceStack stack:contents.values()){
-            System.out.println(stack.definition.getSymbol()+" "+stack.amount);
+            if(stack.getEnergy()==0 && stack.definition.decayMakesEnergy(1)){
+                stack.setEnergy(1);
+            }
+            //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
+
 
         contents.tickContent(1,0,1);
 
-        System.out.println("MASS DIFF = " +(mass-contents.getMass()));
+        System.out.println("MASS DIFF = " +((mass-contents.getMass())*MASS_TO_EU));
+        temp+=(mass-contents.getMass())*MASS_TO_EU;
+        System.out.println("TOTAL = " +temp);
 
-        //todo remove not actually decaying crap
+        //todo move not actually decaying crap, beware of energy using decays?
 
         //for(cElementalInstanceStack stack:contents.values()){
         //    System.out.println(stack.definition.getSymbol()+" "+stack.amount);

@@ -3,6 +3,7 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
 import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.complex.hadron.dHadronDefinition;
+import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.EuMeterGT;
@@ -52,6 +53,14 @@ public class RecipeLoader implements Runnable {
                         'B', Dyes.dyeBlue,
                         'R', Dyes.dyeRed,
                         'N', Dyes.dyeBlack,});
+
+        //Owner detector
+        GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_OwnerDetector.get(1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{"PPP","GEG","PPP",
+                        'P', OrePrefixes.plate.get(Materials.IronMagnetic),
+                        'G', OrePrefixes.plate.get(Materials.Glass),
+                        'E', OrePrefixes.gem.get(Materials.EnderPearl)});
 
         if (Loader.isModLoaded("dreamcraft")) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version

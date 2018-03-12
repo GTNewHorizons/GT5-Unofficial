@@ -407,7 +407,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
             if (newInstances == null) {
                 instance.nextColor();
             } else {
-                map.remove(instance.definition);
+                removeAmount(false,instance);
                 for (cElementalInstanceStack newInstance : newInstances.values()) {
                     putUnify(newInstance);
                     newInstance.nextColor();

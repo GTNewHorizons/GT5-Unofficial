@@ -141,6 +141,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                         if (TecTech.ModConfig.BOOM_ENABLE) {
                             getBaseMetaTileEntity().doExplosion(V[14]);
                         } else {
+                            deathDelay=3;
+                            overflowMatter=0;
                             TecTech.proxy.broadcast("Container0 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
                         }
                     }

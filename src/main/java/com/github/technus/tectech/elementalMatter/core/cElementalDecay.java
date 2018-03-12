@@ -48,7 +48,7 @@ public final class cElementalDecay {
         this.probability = probability;
     }
 
-    public cElementalInstanceStackMap getResults(float lifeMult, long age, long energy, long amountDecaying) {
+    public cElementalInstanceStackMap getResults(float lifeMult, long age, long energyTotalForProducts, long amountDecaying) {
         cElementalInstanceStackMap decayResult = new cElementalInstanceStackMap();
         if (outputStacks == null) {
             return decayResult;//This is to prevent null pointer exceptions.
@@ -61,12 +61,12 @@ public final class cElementalDecay {
         if (qtty <= 0) {
             return decayResult;
         }
-        //energy /= qtty;
+        //energyTotalForProducts /= qtty;
         //lifeMult /= (float) qtty;
         for (cElementalDefinitionStack stack : outputStacks.values()) {
             decayResult.putUnify(new cElementalInstanceStack(stack.definition,
                     amountDecaying * stack.amount,
-                    lifeMult, age/*new products*/, energy / Math.max(1, stack.amount)));//get instances from stack
+                    lifeMult, age/*new products*/, energyTotalForProducts / Math.max(1, Math.abs(stack.amount))));//get instances from stack
         }
         return decayResult;
     }
