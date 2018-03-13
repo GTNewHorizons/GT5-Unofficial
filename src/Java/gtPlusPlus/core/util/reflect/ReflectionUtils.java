@@ -203,6 +203,56 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
+	
+	public static boolean invokeVoid(Object objectInstance, String methodName, Class[] parameters, Object[] values){
+		if (objectInstance == null || methodName == null || parameters == null || values == null){
+			return false;
+		}		
+		Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+mLocalClass.getCanonicalName()+".");
+		try {
+			Method mInvokingMethod = mLocalClass.getDeclaredMethod(methodName, parameters);
+			if (mInvokingMethod != null){
+				Logger.REFLECTION(methodName+" was not null.");
+				mInvokingMethod.invoke(objectInstance, values);
+					Logger.REFLECTION("Successfully invoked "+methodName+".");
+					return true;				
+			}
+			else {
+				Logger.REFLECTION(methodName+" is null.");				
+			}
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+mLocalClass.getName());
+		}		
+
+		Logger.REFLECTION("Invoke failed or did something wrong.");		
+		return false;
+	}
+	
+	public static Object invokeNonBool(Object objectInstance, String methodName, Class[] parameters, Object[] values){
+		if (objectInstance == null || methodName == null || parameters == null || values == null){
+			return false;
+		}		
+		Class<?> mLocalClass = (objectInstance instanceof Class ? (Class<?>) objectInstance : objectInstance.getClass());
+		Logger.REFLECTION("Trying to invoke "+methodName+" on an instance of "+mLocalClass.getCanonicalName()+".");
+		try {
+			Method mInvokingMethod = mLocalClass.getDeclaredMethod(methodName, parameters);
+			if (mInvokingMethod != null){
+				Logger.REFLECTION(methodName+" was not null.");
+				return mInvokingMethod.invoke(objectInstance, values);	
+			}
+			else {
+				Logger.REFLECTION(methodName+" is null.");				
+			}
+		}
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Logger.REFLECTION("Failed to Dynamically invoke "+methodName+" on an object of type: "+mLocalClass.getName());
+		}		
+
+		Logger.REFLECTION("Invoke failed or did something wrong.");		
+		return null;
+	}
 
 	/*
 	 * @ if (isPresent("com.optionaldependency.DependencyClass")) { // This

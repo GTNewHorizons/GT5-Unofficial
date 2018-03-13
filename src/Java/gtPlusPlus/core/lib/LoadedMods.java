@@ -49,6 +49,7 @@ public class LoadedMods {
 	public static boolean Mekanism = false;
 	public static boolean RedTech = false; //RedMage's Mod
 	public static boolean TecTech = false; //Technus' Mod
+	public static boolean TiCon = false;
 
 
 
@@ -89,6 +90,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("PlayerAPI") == true){
 			PlayerAPI = true;
 			Logger.INFO("Components enabled for: PlayerAPI");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("TConstruct") == true){
+			TiCon = true;
+			Logger.INFO("Components enabled for: Tinkers Construct");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("BuildCraft") == true){
