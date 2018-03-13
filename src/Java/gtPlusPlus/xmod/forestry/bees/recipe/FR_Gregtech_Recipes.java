@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -50,13 +51,18 @@ public class FR_Gregtech_Recipes {
 				rod_LongUranium, foil_Uranium235, rod_LongUranium,
 				rod_Uranium, rod_Uranium, rod_Uranium,
 				hiveFrameMutagenic);
-		
-		RecipeUtils.addShapedGregtechRecipe(
-				"stickLongThaumium", "stickThaumium", "stickLongThaumium",
-				"stickLongThaumium", ItemUtils.getSimpleStack(Items.ender_pearl), "stickLongThaumium",
-				"stickThaumium", "stickThaumium", "stickThaumium",
-				hiveFrameVoid);
-		
+		if (!CORE.GTNH) {
+			RecipeUtils.addShapedGregtechRecipe(
+					"stickLongThaumium", "stickThaumium", "stickLongThaumium",
+					"stickLongThaumium", ItemUtils.getSimpleStack(Items.ender_pearl), "stickLongThaumium",
+					"stickThaumium", "stickThaumium", "stickThaumium",
+					hiveFrameVoid);
+		}
+		else {
+			if (LoadedMods.MagicBees) {
+				RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {hiveFrameVoid}, ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));				
+			}
+		}
 		RecipeUtils.addShapedGregtechRecipe(
 				"stickLongBlueSteel", "stickBlueSteel", "stickLongBlueSteel",
 				"stickLongBlueSteel", ItemUtils.getSimpleStack(Items.nether_star), "stickLongBlueSteel",

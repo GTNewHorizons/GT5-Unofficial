@@ -114,7 +114,7 @@ public class RECIPES_General {
 		if (ModBlocks.blockOreFluorite != null){
 			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(ModBlocks.blockOreFluorite)}, FLUORIDES.FLUORITE.getOre(1));
 		}
-		
+
 		//Iron bars
 		final ItemStack ironBars;
 		if (CORE.GTNH) {
@@ -131,22 +131,23 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
 			Logger.INFO("Added a recipe for the Fish Trap.");
 		}
-		
+
 		//Small Gear Extruder Shape
 		if (!CORE.GTNH) {
 			GT_ModHandler.addCraftingRecipe(GregtechItemList.Shape_Extruder_SmallGear.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Gear, Character.valueOf('X'), OrePrefixes.plate.get(Materials.Steel), Character.valueOf('S'), OrePrefixes.screw.get(Materials.Steel)});
-		}
-		
-		String[] ironTypes = {"", "Wrought", "Pig", "Any"};
-		for (int y=0;y<ironTypes.length;y++) {
-			//Iron bars
-			String ironRecipe = "stick"+ironTypes[y]+"Iron";
-			if (RecipeUtils.recipeBuilder(
-					null, CI.craftingToolWrench, null,
-					ironRecipe, ironRecipe, ironRecipe,
-					ironRecipe, ironRecipe, ironRecipe,
-					ItemUtils.getItemStack("minecraft:iron_bars", 8))) {
-				Logger.INFO("Re-added old GT recipe for Iron Bars.");			
+
+
+			String[] ironTypes = {"", "Wrought", "Pig", "Any"};
+			for (int y=0;y<ironTypes.length;y++) {
+				//Iron bars
+				String ironRecipe = "stick"+ironTypes[y]+"Iron";
+				if (RecipeUtils.recipeBuilder(
+						null, CI.craftingToolWrench, null,
+						ironRecipe, ironRecipe, ironRecipe,
+						ironRecipe, ironRecipe, ironRecipe,
+						ItemUtils.getItemStack("minecraft:iron_bars", 8))) {
+					Logger.INFO("Re-added old GT recipe for Iron Bars.");			
+				}
 			}
 		}
 
@@ -167,7 +168,7 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame, 2))){
 			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
 		}
-		
+
 		//Alkalus Coin
 		if (RecipeUtils.recipeBuilder(
 				"gemExquisiteRuby", "gemFlawlessDiamond", "gemExquisiteDiamond",
@@ -204,9 +205,9 @@ public class RECIPES_General {
 				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
 				ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1));
 
-		
-		
-		
+
+
+
 		// Rope/Fiber/Net
 		RecipeUtils.addShapelessGregtechRecipe(
 				new ItemStack[]{

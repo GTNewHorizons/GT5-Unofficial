@@ -18,7 +18,8 @@ public enum MB_FrameType implements IBeeModifier
 	ACCELERATED("Accelerated", 175, 1f, 1.2f, 0.9f, 1.8f, 1f),
 	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
 	MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 10f, 1f),
-	BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f);
+	BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f),
+	USELESS("Useless", 100, 1f, 0f, 1f, 1f, 1f);
 
 	private final String frameName;
 	public final int maxDamage;

@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 
 import forestry.core.utils.StringUtil;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraftforge.common.ChestGenHooks;
 
@@ -52,8 +53,15 @@ public class FR_ItemRegistry {
 		//frameProven = registerItem(new FR_ItemHiveFrame(720, 0.3f), "frameProven");
 
 		//Magic Bee like Frames
+		
+		if (!CORE.GTNH) {
+			hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare, "Makes your bee die in the blink of an eye.");
+		}
+		else {
+			hiveFrameVoid = new MB_ItemFrame(MB_FrameType.USELESS, EnumRarity.common, "No more cheaty frames for GTNH players.");
+		}
+		
 		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED, "Longevity for bees isn't very common, especially if they're working harder.");
-		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare, "Makes your bee die in the blink of an eye.");
 		hiveFrameMutagenic = new MB_ItemFrame(MB_FrameType.MUTAGENIC, EnumRarity.epic, "Evolution of the fittest, finest and fastest.");
 		hiveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY, "Your bee will work harder and longer than you expected.");
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CORRIDOR, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
