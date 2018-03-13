@@ -11,7 +11,6 @@ import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 
-import gtPlusPlus.GTplusplus_Secondary;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -56,6 +55,7 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -515,7 +515,7 @@ public final class ModItems {
 
 			//Ores
 			MaterialGenerator.generateOreMaterial(FLUORIDES.FLUORITE);
-			GTplusplus_Secondary.GenerateOreMaterials();
+			GTplusplus_Everglades.GenerateOreMaterials();
 
 
 		} catch (final Throwable r){

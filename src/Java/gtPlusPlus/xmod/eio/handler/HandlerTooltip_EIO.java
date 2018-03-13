@@ -18,20 +18,20 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class HandlerTooltip_EIO {
 
-	Item mIngot;
-	ItemStack mPulsatingIron;
-	ItemStack mConductiveIron;
-	ItemStack mRedstoneAlloy;
-	ItemStack mElectricalSteel;
-	ItemStack mEnergeticAlloy;
-	ItemStack mVibrantAlloy;
-	ItemStack mSoularium;
-	ItemStack mDarkIron;
+	private static volatile Item mIngot;
+	private static volatile ItemStack mPulsatingIron;
+	private static volatile ItemStack mConductiveIron;
+	private static volatile ItemStack mRedstoneAlloy;
+	private static volatile ItemStack mElectricalSteel;
+	private static volatile ItemStack mEnergeticAlloy;
+	private static volatile ItemStack mVibrantAlloy;
+	private static volatile ItemStack mSoularium;
+	private static volatile ItemStack mDarkIron;
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){
 		//Is EIO loaded?
-		if (disableEnderIOIngotTooltips && LoadedMods.EnderIO){
+		if (!disableEnderIOIngotTooltips && LoadedMods.EnderIO){
 
 			//Is the EIO Ingot Item null?
 			//If it is, reflect in.

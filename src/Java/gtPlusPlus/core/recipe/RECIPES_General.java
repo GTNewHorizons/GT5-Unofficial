@@ -23,7 +23,7 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -165,7 +165,7 @@ public class RECIPES_General {
 				CI.sensor_HV, CI.fieldGenerator_MV, CI.sensor_HV,
 				CI.craftingToolHammer_Hard, ItemList.Casing_SolidSteel.get(1), CI.craftingToolSolderingIron,
 				CI.emitter_HV, CI.fieldGenerator_MV, CI.emitter_HV,
-				ItemUtils.getSimpleStack(Dimension_DarkWorld.blockPortalFrame, 2))){
+				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2))){
 			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
 		}
 

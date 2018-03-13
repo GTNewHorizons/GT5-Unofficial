@@ -11,7 +11,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
@@ -126,7 +126,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 		}
 		
 	 else if (aOreDictName.equals(OreDictNames.craftingLensOrange.toString())) {
-		 GT_Values.RA.addLaserEngraverRecipe(ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getSimpleStack(Dimension_DarkWorld.portalItem), 360*60*20, 4096);
+		 GT_Values.RA.addLaserEngraverRecipe(ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getSimpleStack(Dimension_Everglades.portalItem), 360*60*20, 4096);
 	 }
 	 
 
