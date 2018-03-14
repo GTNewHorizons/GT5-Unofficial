@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GT_OreDictUnificator;
@@ -23,7 +22,7 @@ public class DustDecayable extends BaseItemTickable {
 	private final int radLevel;
 	
 	public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, Item turnsInto, int radLevel) {
-		super(true, unlocal, colour, maxTicks, desc1);
+		super(true, true, unlocal, colour, maxTicks, desc1);
 		this.turnsIntoItem = turnsInto;
 		this.radLevel = radLevel;
 		GT_OreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
@@ -58,7 +57,7 @@ public class DustDecayable extends BaseItemTickable {
 			}
 		}
 		
-		if (!tickItemTag(iStack)) {
+		if (!tickItemTag(world, iStack)) {
 			if (entityHolding instanceof EntityPlayer){
 				ItemStack replacement = ItemUtils.getSimpleStack(turnsIntoItem);
 				//Logger.INFO("Replacing "+iStack.getDisplayName()+" with "+replacement.getDisplayName()+".");

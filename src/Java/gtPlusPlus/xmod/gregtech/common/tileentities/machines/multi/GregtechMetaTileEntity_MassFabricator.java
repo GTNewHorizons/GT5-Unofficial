@@ -184,7 +184,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			}
 		}
 
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 500, 75, 100);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 75, 500, 100);
 	}		
 
 

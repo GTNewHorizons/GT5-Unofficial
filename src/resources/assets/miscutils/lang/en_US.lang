@@ -90,7 +90,7 @@ item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 item.itemAlkalusDisk.name=Alkalus Disk
-item.itemHotIngotRaisinBread.name= Hot Loaf of Raisin Bread
+item.itemHotIngotRaisinBread.name=Hot Loaf of Raisin Bread
 item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
 
 //Misc Blocks
@@ -163,6 +163,10 @@ item.itemHotFoodCurriedSausages.name=A Serving of Hot Curried Sausages
 
 //Conversion Dusts
 item.dustNeptunium238.name=Neptunium 238 Dust
+item.dustRadium226.name=Radium 226 Dust
+item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
+item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
+item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
 
 //Material Items
 item.itemDustGadolinium.name=Gadolinium Dust

@@ -33,6 +33,7 @@ public class RECIPES_GREGTECH {
 
 	private static void execute() {
 		cokeOvenRecipes();
+		electrolyzerRecipes();
 		// matterFabRecipes();
 		assemblerRecipes();
 		fluidcannerRecipes();
@@ -58,6 +59,23 @@ public class RECIPES_GREGTECH {
 		electroMagneticSeperatorRecipes();
 		extruderRecipes();
 		addFuels();
+	}
+
+	private static void electrolyzerRecipes() {
+		GT_Values.RA.addElectrolyzerRecipe(
+				ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1),
+				null,
+				null,
+				FluidUtils.getFluidStack("radon", 500),
+				null,
+				null, 
+				null, 
+				null,
+				null,
+				null,
+				new int[]{}, 
+				20*90, 
+				240);
 	}
 
 	private static void extruderRecipes() {
@@ -231,7 +249,7 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getFluidStack("molten.tungstencarbide", 2 * 144), 0,
 						MathUtils.findPercentageOfInt(
 								(int) Math.max(Materials.get("TungstenCarbide").getMass() / 40L, 1L)
-										* Materials.get("TungstenCarbide").mBlastFurnaceTemp,
+								* Materials.get("TungstenCarbide").mBlastFurnaceTemp,
 								80),
 						480);
 			}
@@ -339,7 +357,7 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addMatterFabricatorRecipe(Materials.UUAmplifier.getFluid(1L), // Fluid
-																					// Input
+					// Input
 					Materials.UUMatter.getFluid(1L), // Fluid Output
 					800, // Time in ticks
 					32); // EU
@@ -366,23 +384,23 @@ public class RECIPES_GREGTECH {
 		try {
 			// Makes Lithium Carbonate
 			CORE.RA.addDehydratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricLithium", 1), // Item
-																												// Input
+					// Input
 					FluidUtils.getFluidStack("sulfuriclithium", 440), // Fluid
-																		// input
-																		// (slot
-																		// 1)
+					// input
+					// (slot
+					// 1)
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 3) }, // Output
-																							// Array
-																							// of
-																							// Items
-																							// -
-																							// Upto
-																							// 9
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9
 					30 * 20, // Time in ticks
 					30); // EU
 		}
@@ -402,19 +420,19 @@ public class RECIPES_GREGTECH {
 
 			CORE.RA.addDehydratorRecipe(input, // Item input (Array, up to 2)
 					FluidUtils.getFluidStack("sulfuricacid", 10000), // Fluid
-																		// input
-																		// (slot
-																		// 1)
+					// input
+					// (slot
+					// 1)
 					FluidUtils.getFluidStack("sulfuriclithium", 10000), // Fluid
-																		// output
-																		// (slot
-																		// 2)
+					// output
+					// (slot
+					// 2)
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPotassium", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 10),
 							ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 2),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), // LithiumCarbonate
-					}, // Output Array of Items - Upto 9,
+			}, // Output Array of Items - Upto 9,
 					new int[] { 0 }, 75 * 20, // Time in ticks
 					1000); // EU
 
@@ -425,24 +443,24 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addDehydratorRecipe(new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10) }, // Item
-																														// input
-																														// (Array,
-																														// up
-																														// to
-																														// 2)
+					// input
+					// (Array,
+					// up
+					// to
+					// 2)
 					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 1440), // Fluid
-																					// input
-																					// (slot
-																					// 1)
+					// input
+					// (slot
+					// 1)
 					null, // Fluid output (slot 2)
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
 							ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 10) }, // Output
-																									// Array
-																									// of
-																									// Items
-																									// -
-																									// Upto
-																									// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					new int[] { 0 }, 150 * 20, // Time in ticks
 					2000); // EU
 
@@ -453,24 +471,24 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addDehydratorRecipe(new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10) }, // Item
-																														// input
-																														// (Array,
-																														// up
-																														// to
-																														// 2)
+					// input
+					// (Array,
+					// up
+					// to
+					// 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1440), // Fluid
-																					// input
-																					// (slot
-																					// 1)
+					// input
+					// (slot
+					// 1)
 					null, // Fluid output (slot 2)
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
 							ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 10) }, // Output
-																									// Array
-																									// of
-																									// Items
-																									// -
-																									// Upto
-																									// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					new int[] { 0 }, 300 * 20, // Time in ticks
 					4000); // EU
 
@@ -483,20 +501,20 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addDehydratorRecipe(new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cropGrape", 1) }, // Item
-																														// input
-																														// (Array,
-																														// up
-																														// to
-																														// 2)
+					// input
+					// (Array,
+					// up
+					// to
+					// 2)
 					null, // Fluid input (slot 1)
 					null, // Fluid output (slot 2)
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("foodRaisins", 1) }, // Output
-																										// Array
-																										// of
-																										// Items
-																										// -
-																										// Upto
-																										// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					new int[] { 0 }, 10 * 20, // Time in ticks
 					8); // EU
 
@@ -512,21 +530,21 @@ public class RECIPES_GREGTECH {
 
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) }, // Item
-																											// input
-																											// (Array,
-																											// up
-																											// to
-																											// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						FluidUtils.getFluidStack("water", 10000), // Fluid input
-																	// (slot 1)
+						// (slot 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 20) }, // Output
-																													// Array
-																													// of
-																													// Items
-																													// -
-																													// Upto
-																													// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0 }, 120 * 20, // Time in ticks
 						120); // EU
 
@@ -540,21 +558,21 @@ public class RECIPES_GREGTECH {
 
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 5) }, // Item
-																												// input
-																												// (Array,
-																												// up
-																												// to
-																												// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						null, // Fluid input (slot 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3) }, // Output
-																										// Array
-																										// of
-																										// Items
-																										// -
-																										// Upto
-																										// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0 }, 120 * 20, // Time in ticks
 						1000); // EU
 
@@ -567,23 +585,23 @@ public class RECIPES_GREGTECH {
 			try {
 
 				CORE.RA.addDehydratorRecipe(new ItemStack[] { ItemUtils.getGregtechCircuit(0) }, // Item
-																									// input
-																									// (Array,
-																									// up
-																									// to
-																									// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						FluidUtils.getFluidStack("lithiumhydroxide", 144), // Fluid
-																			// input
-																			// (slot
-																			// 1)
+						// input
+						// (slot
+						// 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1) }, // Output
-																													// Array
-																													// of
-																													// Items
-																													// -
-																													// Upto
-																													// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0 }, 1 * 20, // Time in ticks
 						64); // EU
 
@@ -598,24 +616,24 @@ public class RECIPES_GREGTECH {
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 9) }, // Item
-																								// input
-																								// (Array,
-																								// up
-																								// to
-																								// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144), // Fluid
-																				// input
-																				// (slot
-																				// 1)
+						// input
+						// (slot
+						// 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9) }, // Output
-																							// Array
-																							// of
-																							// Items
-																							// -
-																							// Upto
-																							// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0 }, 120 * 20, // Time in ticks
 						500); // EU
 
@@ -630,15 +648,15 @@ public class RECIPES_GREGTECH {
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 16) }, // Item
-																								// input
-																								// (Array,
-																								// up
-																								// to
-																								// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						FluidUtils.getFluidStack("sulfuricacid", 56 * 144), // Fluid
-																			// input
-																			// (slot
-																			// 1)
+						// input
+						// (slot
+						// 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 16),
@@ -646,15 +664,15 @@ public class RECIPES_GREGTECH {
 								ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2) }, // Output
-																								// Array
-																								// of
-																								// Items
-																								// -
-																								// Upto
-																								// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0, 0, 100, 100, 300, 200 }, 10 * 60 * 20, // Time
-																				// in
-																				// ticks
+						// in
+						// ticks
 						230); // EU
 
 			}
@@ -667,24 +685,24 @@ public class RECIPES_GREGTECH {
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumHydroxide", 2),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 4) }, // Item
-																											// input
-																											// (Array,
-																											// up
-																											// to
-																											// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						null, // Fluid input (slot 1)
 						FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 6000), // Fluid
-																						// output
-																						// (slot
-																						// 2)
+						// output
+						// (slot
+						// 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2) }, // Output
-																								// Array
-																								// of
-																								// Items
-																								// -
-																								// Upto
-																								// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0, 0, 0 }, 32 * 20, // Time in ticks
 						64); // EU
 
@@ -697,25 +715,25 @@ public class RECIPES_GREGTECH {
 			try {
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 5) }, // Item
-																										// input
-																										// (Array,
-																										// up
-																										// to
-																										// 2)
+						// input
+						// (Array,
+						// up
+						// to
+						// 2)
 						FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 5000), // Fluid
-																						// input
-																						// (slot
-																						// 1)
+						// input
+						// (slot
+						// 1)
 						null, // Fluid output (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
 								ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1) }, // Output
-																											// Array
-																											// of
-																											// Items
-																											// -
-																											// Upto
-																											// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 0, 0, 0 }, 5 * 60 * 20, // Time in ticks
 						120); // EU
 
@@ -729,10 +747,10 @@ public class RECIPES_GREGTECH {
 
 				CORE.RA.addDehydratorRecipe(null, // Item input (Array, up to 2)
 						FluidUtils.getFluidStack("sludge", 1000), // Fluid input
-																	// (slot 1)
+						// (slot 1)
 						FluidUtils.getFluidStack("nitricacid", 10), // Fluid
-																	// output
-																	// (slot 2)
+						// output
+						// (slot 2)
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIron", 1),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCopper", 1),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
@@ -742,15 +760,15 @@ public class RECIPES_GREGTECH {
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTinySilver", 1),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyGold", 1),
 								ItemUtils.getItemStackOfAmountFromOreDict("dustTinyIridium", 1) }, // Output
-																									// Array
-																									// of
-																									// Items
-																									// -
-																									// Upto
-																									// 9,
+						// Array
+						// of
+						// Items
+						// -
+						// Upto
+						// 9,
 						new int[] { 10, 5, 5, 4, 4, 3, 2, 2, 1 }, 2 * 20, // Time
-																			// in
-																			// ticks
+						// in
+						// ticks
 						500); // EU
 
 			}
@@ -772,20 +790,20 @@ public class RECIPES_GREGTECH {
 		try {
 			// Fli2BeF4 + Thorium TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ThF4UF4".toLowerCase(), 144 * 4), // Fluid
-																											// input
-																											// (slot
-																											// 1)
+					// input
+					// (slot
+					// 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 1200), // Fluid
-																		// output
-																		// (slot
-																		// 2)
+					// output
+					// (slot
+					// 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", (1200 + (144 * 4))), // Output
-																								// Array
-																								// of
-																								// Items
-																								// -
-																								// Upto
-																								// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					300 * 60 * 20, // Time in ticks
 					3500); // EU
 
@@ -796,20 +814,20 @@ public class RECIPES_GREGTECH {
 		try {
 			// Fli2BeF4 + Uranium235 = 1x Uranium233
 			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144 * 16), // Fluid
-																												// input
-																												// (slot
-																												// 1)
+					// input
+					// (slot
+					// 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 144 * 12), // Fluid
-																			// output
-																			// (slot
-																			// 2)
+					// output
+					// (slot
+					// 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 3 * 144), // Output
-																						// Array
-																						// of
-																						// Items
-																						// -
-																						// Upto
-																						// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					120 * 60 * 20, // Time in ticks
 					8000); // EU
 		}
@@ -819,20 +837,20 @@ public class RECIPES_GREGTECH {
 		try {
 			// Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ZrF4UF4".toLowerCase(), 144 * 2), // Fluid
-																											// input
-																											// (slot
-																											// 1)
+					// input
+					// (slot
+					// 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 500), // Fluid
-																		// output
-																		// (slot
-																		// 2)
+					// output
+					// (slot
+					// 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1288), // Output
-																					// Array
-																					// of
-																					// Items
-																					// -
-																					// Upto
-																					// 9,
+					// Array
+					// of
+					// Items
+					// -
+					// Upto
+					// 9,
 					420 * 60 * 20, // Time in ticks
 					4000); // EU
 
@@ -850,68 +868,68 @@ public class RECIPES_GREGTECH {
 			final String salt_LiFBeF2ZrF4UF4 = "LiFBeF2ZrF4UF4".toLowerCase();
 
 			final FluidStack LithiumFluoride = FluidUtils.getFluidStack("molten.lithiumfluoride", 100); // Re-usable
-																										// FluidStacks
+			// FluidStacks
 			final FluidStack BerylliumFluoride = FluidUtils.getFluidStack("molten.berylliumfluoride", 100); // Re-usable
-																											// FluidStacks
+			// FluidStacks
 			final FluidStack ThoriumFluoride = FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 100); // Re-usable
-																												// FluidStacks
+			// FluidStacks
 			final FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("molten.zirconiumtetrafluoride", 100); // Re-usable
-																													// FluidStacks
+			// FluidStacks
 			final FluidStack UraniumTetraFluoride = FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 100); // Re-usable
-																													// FluidStacks
+			// FluidStacks
 			final FluidStack Uranium235 = FluidUtils.getFluidStack("molten.uranium235", 1000); // Re-usable
-																								// FluidStacks
+			// FluidStacks
 
 			final FluidStack LiFBeF2ThF4UF4 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ThF4UF4, 100); // Re-usable
-																												// FluidStacks
+			// FluidStacks
 			final FluidStack LiFBeF2ZrF4U235 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ZrF4U235, 100); // Re-usable
-																												// FluidStacks
+			// FluidStacks
 			final FluidStack LiFBeF2ZrF4UF4 = FluidUtils.getFluidStack("molten." + salt_LiFBeF2ZrF4UF4, 100); // Re-usable
-																												// FluidStacks
+			// FluidStacks
 
 			// 7LiF - BeF2 - ZrF4 - UF4 - 650C
 			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6500), // Input
-																					// A
+					// A
 					FluidUtils.getFluidStack(BerylliumFluoride, 2500), // Input
-																		// B
+					// B
 					FluidUtils.getFluidStack(ZirconiumFluoride, 800), // Input C
 					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
-																			// D
+					// D
 					null, null, null, null, null, // Extra 5 inputs
 					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 10000), // Output
-																		// Fluid
-																		// 1
+					// Fluid
+					// 1
 					null, // Output Fluid 2
 					60 * 60 * 20, // Duration
 					500);
 
 			// 7LiF - BeF2 - ZrF4 - U235 - 590C
 			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 5500), // Input
-																					// A
+					// A
 					FluidUtils.getFluidStack(BerylliumFluoride, 1500), // Input
-																		// B
+					// B
 					FluidUtils.getFluidStack(ZirconiumFluoride, 600), // Input C
 					FluidUtils.getFluidStack(Uranium235, 2400), // Input D
 					null, null, null, null, null, // Extra 5 inputs
 					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 10000), // Output
-																		// Fluid
-																		// 1
+					// Fluid
+					// 1
 					null, // Output Fluid 2
 					45 * 60 * 20, // Duration
 					500);
 
 			// 7liF - BeF2 - ThF4 - UF4 - 566C
 			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6200), // Input
-																					// A
+					// A
 					FluidUtils.getFluidStack(BerylliumFluoride, 2800), // Input
-																		// B
+					// B
 					FluidUtils.getFluidStack(ThoriumFluoride, 700), // Input C
 					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
-																			// D
+					// D
 					null, null, null, null, null, // Extra 5 inputs
 					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), // Output
-																		// Fluid
-																		// 1
+					// Fluid
+					// 1
 					null, // Output Fluid 2
 					60 * 60 * 20, // Duration
 					500);
@@ -1085,26 +1103,26 @@ public class RECIPES_GREGTECH {
 
 	private static void chemicalReactorRecipes() {
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
-																												// Stack
-																												// 1
+				// Stack
+				// 1
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
-																						// Stack
-																						// 2
+				// Stack
+				// 2
 				null, // Fluid Input
 				null, // Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 10), // Output
-																					// Stack
+				// Stack
 				600 * 20);
 
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), // Input
-																												// Stack
-																												// 1
+				// Stack
+				// 1
 				null, // Input Stack 2
 				FluidUtils.getFluidStack("hydrofluoricacid", 5 * 144), // Fluid
-																		// Input
+				// Input
 				FluidUtils.getFluidStack("water", 5 * 144), // Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), // Output
-																						// Stack
+				// Stack
 				600 * 20);
 
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16), null,
@@ -1237,7 +1255,7 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void cyclotronRecipes() {
-		
+
 		//Polonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.bismuth", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300, 2040,
@@ -1247,7 +1265,7 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300, 1020,
 				500 * 20); //PO Special Value
-		
+
 		//Strontium u235
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium235", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300, 1020,
@@ -1257,24 +1275,24 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium233", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300, 1020,
 				500 * 20); //PO Special Value
-		
+
 		//Strontium pu239
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium239", 10),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300, 1020,
 				500 * 20); //PO Special Value
-		
+
 		//Plutonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium238", 1),
 				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300, 1020,
 				500 * 20); //PO Special Value
-		
-		
+
+
 		//Neptunium
 		CORE.RA.addCyclotronRecipe(new ItemStack[] {ELEMENT.getInstance().URANIUM238.getDust(1) }, FluidUtils.getFluidStack("deuterium", 400),
 				ItemUtils.getSimpleStack(ModItems.dustNeptunium238), null, new int[] { 500 }, 20 * 5, 500,
 				500 * 20); //PO Special Value
-		
-		
+
+
 	}
 
 	private static void sifterRecipes() {
@@ -1297,6 +1315,34 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1) },
 				new int[] { 10000, 5000, 1500, 1000, 500, 500 }, 20 * 30, 60);
+
+		// Radium
+		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUranium", 1),
+				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLead", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+				new int[] { 10000, 5000, 1000, 500, 500, 500 }, 20 * 30, 60);
+		// Radium
+		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedUraninite", 1),
+				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustUraninite", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyUranium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+				new int[] { 10000, 5000, 500, 250, 250, 250 }, 20 * 30, 60);
+		// Radium
+		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPitchblende", 1),
+				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPitchblende", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyLead", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustRadium226", 1) },
+				new int[] { 10000, 5000, 500, 250, 250, 250 }, 20 * 30, 60);
 	}
 
 	private static void electroMagneticSeperatorRecipes() {
