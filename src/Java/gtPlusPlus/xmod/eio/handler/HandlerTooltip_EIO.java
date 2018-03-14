@@ -93,8 +93,8 @@ public class HandlerTooltip_EIO {
 
 
 						//If stacks match, add a tooltip.						
-						if (this.mIngot != null){
-							if (event.itemStack.getItem() == this.mIngot){
+						if (mIngot != null){
+							if (event.itemStack.getItem() == mIngot){
 								if (event.itemStack.getItemDamage() == 0){
 									event.toolTip.add(MaterialEIO.ELECTRICAL_STEEL.vChemicalFormula);										
 								}

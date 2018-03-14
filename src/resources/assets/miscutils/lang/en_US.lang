@@ -161,6 +161,8 @@ item.itemFoodCurriedSausages.name=A Serving of Curried Sausages
 item.itemHotFoodCurriedSausages.name=A Serving of Hot Curried Sausages
 
 
+//Conversion Dusts
+item.dustNeptunium238.name=Neptunium 238 Dust
 
 //Material Items
 item.itemDustGadolinium.name=Gadolinium Dust
@@ -1469,6 +1471,15 @@ item.itemDustTinyUN18Fertiliser.name=Tiny Pile of UN-18 Fertiliser Dust
 item.itemDustUN32Fertiliser.name=UN-32 Fertiliser Dust
 item.itemDustSmallUN32Fertiliser.name=Small Pile of UN-32 Fertiliser Dust
 item.itemDustTinyUN32Fertiliser.name=Tiny Pile of UN-32 Fertiliser Dust
+item.itemNuggetPlutonium239.name=Plutonium 239 Nugget
+item.itemCellPlutonium239.name=Plutonium 239 Cell
+item.itemIngotPlutonium239.name=Plutonium 239 Ingot
+item.itemPlatePlutonium239.name=Plutonium 239 Plate
+item.itemPlateDoublePlutonium239.name=Double Plutonium 239 Plate 
+item.itemDustPlutonium239.name=Plutonium 239 Dust
+item.itemDustSmallPlutonium239.name=Small Plutonium 239 Dust 
+item.itemDustTinyPlutonium239.name=Tiny Plutonium 239 Dust
+
 
 //Multitools
 item.AluminiumMultipick.name=Aluminium Multipick
