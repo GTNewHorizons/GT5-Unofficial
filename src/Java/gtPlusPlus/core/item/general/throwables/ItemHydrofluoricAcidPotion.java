@@ -13,7 +13,7 @@ import gtPlusPlus.core.item.base.CoreItem;
 public class ItemHydrofluoricAcidPotion extends CoreItem {
 
 	public ItemHydrofluoricAcidPotion(String unlocalizedName, String displayName, String description) {
-		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, description, EnumRarity.uncommon, EnumChatFormatting.GRAY, false, null);
+		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, new String[] {description}, EnumRarity.uncommon, EnumChatFormatting.GRAY, false, null);
 	}
 	
 	@Override

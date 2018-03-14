@@ -22,8 +22,7 @@ import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 public class BaseItemTickable extends CoreItem {
 
-	public final String descriptionString;
-	public final String descriptionString2;
+	public final String[] descriptionString;
 	public final int itemColour;
 	public final int maxTicks;
 	public final boolean twoRenderPasses;
@@ -31,18 +30,13 @@ public class BaseItemTickable extends CoreItem {
 	public IIcon[] mIcon = new IIcon[2];
 
 	public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks) {
-		this(twoPass, unlocalName, colour, maxTicks, "");
+		this(twoPass, unlocalName, colour, maxTicks, new String[] {});
 	}
 
-	public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks, final String Description) {
-		this(twoPass, unlocalName, colour, maxTicks, "", Description);
-	}
-
-	public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks, final String Description, final String Description2) {
+	public BaseItemTickable(boolean twoPass, final String unlocalName, final int colour, final int maxTicks, final String[] Description) {
 		super(unlocalName, AddToCreativeTab.tabMisc, 1, 999999999, Description, EnumRarity.epic, EnumChatFormatting.DARK_RED, true, null);
 		this.itemColour = colour;
 		this.descriptionString = Description;
-		this.descriptionString2 = Description2;
 		this.maxTicks = maxTicks;
 		this.twoRenderPasses = twoPass;
 		//setGregtechItemList();
@@ -209,6 +203,9 @@ public class BaseItemTickable extends CoreItem {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+		if (this.descriptionString.length > 0) {
+			list.add(EnumChatFormatting.GRAY+this.descriptionString[0]);
+		}
 		EnumChatFormatting durability = EnumChatFormatting.GRAY;
 		if (maxTicks-getFilterDamage(stack) > (maxTicks*0.8)){
 			durability = EnumChatFormatting.GRAY;
@@ -227,11 +224,10 @@ public class BaseItemTickable extends CoreItem {
 		}
 		list.add(durability+""+((maxTicks-getFilterDamage(stack))/20)+EnumChatFormatting.GRAY+" seconds until decay");
 
-		if ((this.descriptionString != "") || !this.descriptionString.equals("")){
-			list.add(EnumChatFormatting.GRAY+this.descriptionString);
-		}
-		if ((this.descriptionString2 != "") || !this.descriptionString2.equals("")){
-			list.add(EnumChatFormatting.GRAY+this.descriptionString2);
+		if (this.descriptionString.length > 1) {
+			for (int h=1;h<this.descriptionString.length;h++) {
+				list.add(EnumChatFormatting.GRAY+this.descriptionString[h]);
+			}
 		}
 
 		//super.addInformation(stack, player, list, bool);

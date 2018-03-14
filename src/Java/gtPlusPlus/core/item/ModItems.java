@@ -15,8 +15,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.*;
-import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
-import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
@@ -67,10 +65,10 @@ public final class ModItems {
 
 	public static Item ZZZ_Empty;
 	public static Item AAA_Broken;
+	
+	
 	public static Item itemAlkalusDisk;
-
 	public static Item itemDebugShapeSpawner;
-
 	public static Item itemBaseSpawnEgg;
 
 	//EnderIO
@@ -141,9 +139,6 @@ public final class ModItems {
 	public static MultiPickaxeBase MP_GTMATERIAL;
 	public static MultiSpadeBase MS_GTMATERIAL;
 
-	public static BaseItemDecidust itemBaseDecidust;
-	public static BaseItemCentidust itemBaseCentidust;
-
 	public static ItemStack FluidCell;
 
 	public static BaseItemBackpack backpack_Red;
@@ -181,8 +176,6 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dustLi2CO3CaOH2;
 	public static Item dustLi2BeF4;
-	
-	public static Item dustNeptunium238;
 
 	public static Item dustAer;
 	public static Item dustIgnis;
@@ -197,7 +190,7 @@ public final class ModItems {
 	public static Item shardAqua;
 
 	//Tc Compat for energy crystal recipes
-	public static BaseItemTCShard shardDull;
+	public static Item shardDull;
 
 	//Lighter
 	public static Item itemBasicFireMaker;
@@ -215,20 +208,20 @@ public final class ModItems {
 
 	public static Item dustCalciumSulfate;
 
-	public static BaseItemPlate itemPlateClay;
-	public static BaseItemPlateDouble itemDoublePlateClay;
-
 	public static Item dustFertUN18;
 	public static Item dustFertUN32;
 
 	public static Fluid fluidFLiBeSalt;
 
-	
+
 	//Possibly missing base items that GT may be missing.
+
 	public static Item itemSmallWroughtIronGear;
+	public static Item itemPlateClay;
 	public static Item itemPlateLithium;
 	public static Item itemPlateEuropium;
 	public static Item itemPlateVanadium;
+	public static Item itemDoublePlateClay;
 	public static Item itemDoublePlateEuropium;
 	public static Item itemFoilUranium235;
 
@@ -253,13 +246,18 @@ public final class ModItems {
 
 	public static Item itemModularBauble;
 	public static Item itemCustomBook;
-	
+
 	public static Item itemGrindleTablet;
 	public static Item itemRope;
 	public static Item itemFiber;
 	public static Item itemDragonJar;
 
-	
+	//Unstable Elements & Related Content
+	public static Item dustNeptunium238;
+	public static Item dustDecayedRadium226;
+	public static Item dustRadium226;
+
+
 	static {
 		Logger.INFO("Items!");
 	}
@@ -406,7 +404,9 @@ public final class ModItems {
 			//Plutonium-238 is a very powerful alpha emitter. This makes the plutonium-238 isotope suitable for usage in radioisotope thermoelectric generators (RTGs)
 			//and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM238, false);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM239, false);
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPlutonium239", 1) == null || Utils.getGregtechVersionAsInt() < 50931) {
+				MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM239, false);
+			}
 
 			//RTG Fuel Materials
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().STRONTIUM90, false);
@@ -512,7 +512,6 @@ public final class ModItems {
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
 
-
 			//Ores
 			MaterialGenerator.generateOreMaterial(FLUORIDES.FLUORITE);
 			GTplusplus_Everglades.GenerateOreMaterials();
@@ -574,7 +573,7 @@ public final class ModItems {
 		fluidFLiBeSalt = FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
 
 		//LFTR Control Circuit
-		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0, "Helps your LFTR not explode", EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
+		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Helps your LFTR not explode"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
 
 		//Zirconium
@@ -659,15 +658,21 @@ public final class ModItems {
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleClay", 1) == null){
 			itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 		}
-		
+
 		//Need this for Mutagenic Frames
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilUranium235", 1) == null){
 			itemFoilUranium235 = new BaseItemFoil(ELEMENT.getInstance().URANIUM235);
 		}
-		
+
 		//A small gear needed for wizardry.
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGtSmallWroughtIron", 1) == null){
 			itemSmallWroughtIronGear = new BaseItemSmallGear(MaterialUtils.generateMaterialFromGtENUM(Materials.WroughtIron));
+		}
+		
+
+		// A plate of Vanadium.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
+			itemPlateVanadium = new BaseItemPlate(ELEMENT.getInstance().VANADIUM);
 		}
 
 		//A plate of Lithium.
@@ -682,9 +687,11 @@ public final class ModItems {
 		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
-		
-		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")", CORE.GT_Tooltip_Radioactive, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 
+		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
+		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", ""+StringUtils.superscript("226Ra"), ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
+		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon 222 ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
+		
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
 		itemDehydratorCoil = new ItemDehydratorCoil();
@@ -693,7 +700,6 @@ public final class ModItems {
 		itemLavaFilter = new ItemLavaFilter();
 
 		itemGrindleTablet = new BaseItemGrindle();
-
 		itemDragonJar = new ItemEntityCatcher();
 
 		//Chemistry
@@ -711,11 +717,6 @@ public final class ModItems {
 		tI = new BaseItemMisc("4000DC's", new short[]{180,100,30}, 1, MiscTypes.BIGKEY, new String[]{"It opens things."});
 		tI = new BaseItemMisc("Dull", new short[]{64,64,64}, 64, MiscTypes.GEM, null);
 		tI = new BaseItemMisc("Forest", new short[]{130,164,96}, 64, MiscTypes.MUSHROOM, new String[]{"You Found this on the ground.", "Definitely not sure if it's worth eating."});
-
-		//Vanadium
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
-			itemPlateVanadium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Vanadium));
-		}
 
 		//Baubles
 		if (LoadedMods.Baubles){
@@ -775,9 +776,7 @@ public final class ModItems {
 				ItemUtils.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
 				itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("Void", "Void", new short[]{82, 17, 82}, 0);
 				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
-			} catch (final NullPointerException e){
-				e.getClass();
-			}
+			} catch (final NullPointerException e){}
 
 		}
 		else {

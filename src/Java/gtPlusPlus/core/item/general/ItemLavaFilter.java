@@ -21,7 +21,7 @@ public class ItemLavaFilter extends CoreItem {
 	public IIcon[] mIcon = new IIcon[1];
 	
 	public ItemLavaFilter() {
-		super("itemLavaFilter", AddToCreativeTab.tabMachines, 1, 100, "Lava Filter", EnumRarity.common,
+		super("itemLavaFilter", AddToCreativeTab.tabMachines, 1, 100,  new String[] {"Lava Filter"}, EnumRarity.common,
 				EnumChatFormatting.BLACK, false, null);
 		setGregtechItemList();
 	}

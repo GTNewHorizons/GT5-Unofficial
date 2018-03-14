@@ -1,15 +1,19 @@
 package gtPlusPlus.core.item.materials;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.core.item.base.BaseItemTickable;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -18,8 +22,8 @@ public class DustDecayable extends BaseItemTickable {
 	private final Item turnsIntoItem;
 	private final int radLevel;
 	
-	public DustDecayable(String unlocal, int colour, int maxTicks, String desc1, String desc2, Item turnsInto, int radLevel) {
-		super(true, unlocal, colour, maxTicks, desc1, desc2);
+	public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, Item turnsInto, int radLevel) {
+		super(true, unlocal, colour, maxTicks, desc1);
 		this.turnsIntoItem = turnsInto;
 		this.radLevel = radLevel;
 		GT_OreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
@@ -31,6 +35,15 @@ public class DustDecayable extends BaseItemTickable {
 		this.mIcon[0] = reg.registerIcon(gt);
 		String gt2 = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + "dust" + "_OVERLAY";
 		this.mIcon[1] = reg.registerIcon(gt2);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+		super.addInformation(stack, player, list, bool);
+		if (this.radLevel > 0) {
+			list.add(CORE.GT_Tooltip_Radioactive);
+		}
 	}
 	
 	@Override

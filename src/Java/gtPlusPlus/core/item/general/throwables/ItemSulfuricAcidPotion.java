@@ -13,7 +13,7 @@ import gtPlusPlus.core.item.base.CoreItem;
 public class ItemSulfuricAcidPotion extends CoreItem {
 
 	public ItemSulfuricAcidPotion(String unlocalizedName, String displayName, String description) {
-		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, description, EnumRarity.common, EnumChatFormatting.GRAY, false, null);
+		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, new String[] {description}, EnumRarity.common, EnumChatFormatting.GRAY, false, null);
 	}
 	
 	@Override
