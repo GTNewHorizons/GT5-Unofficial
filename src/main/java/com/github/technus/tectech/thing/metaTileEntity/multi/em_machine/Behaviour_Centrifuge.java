@@ -16,7 +16,7 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour {
     private final float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private final byte tier;
 

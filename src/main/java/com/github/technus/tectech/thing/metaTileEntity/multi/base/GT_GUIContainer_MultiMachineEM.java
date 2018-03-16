@@ -1,9 +1,14 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.List;
 
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
@@ -13,9 +18,9 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  */
 
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
-    String mName = "";
+    private String mName;
     private static byte counter = 0;
-    public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
+    private final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
 
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
         super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
@@ -73,6 +78,10 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     fontRendererObj.drawString("Running perfectly.", 10, -10, 16448255);
                 }
             }
+
+            int x = (width - xSize) / 2;
+            int y = (height - ySize) / 2;
+            LEDtooltips(par1-x, par2-y+26);
         }
     }
 
@@ -212,6 +221,99 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             case STATUS_HIGH:// too high
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
                 break;
+        }
+    }
+
+    private void LEDtooltips(float x,float y){
+        //drawHoveringText(Arrays.asList(""+x,""+y), -1, -11, fontRendererObj);
+        if(mContainer.mTileEntity!=null){
+            IMetaTileEntity mte=mContainer.mTileEntity.getMetaTileEntity();
+            if(mte instanceof GT_MetaTileEntity_MultiblockBase_EM){
+                int su = 8, sv = 6, u=11,v=96;
+                if(x<u || y<v) return;
+                v+=sv;
+                for(int hatch=0;hatch<10;hatch++){
+                    for(int param=0;param<2;param++){
+                        if(x<(u+=su)){
+                            if(y<v){
+                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionIn(hatch,param), u-su-1, v-11, fontRendererObj);
+                                return;
+                            }else if(y>=v && y<v+sv){
+                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionOut(hatch,param), u-su-1, v+sv-11, fontRendererObj);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void hoveringText(List strings, int x, int y, FontRenderer font) {
+        if (!strings.isEmpty()) {
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            //RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            int k = 0;
+
+            for (Object aP_146283_1_ : strings) {
+                String s = (String) aP_146283_1_;
+                int l = font.getStringWidth(s);
+
+                if (l > k) {
+                    k = l;
+                }
+            }
+
+            int x2 = x + 12;
+            int y2 = y - 12;
+            int i1 = 8;
+
+            if (strings.size() > 1) {
+                i1 += 2 + (strings.size() - 1) * 10;
+            }
+
+            if (x2 + k > this.width) {
+                x2 -= 28 + k;
+            }
+
+            if (y2 + i1 + 6 > this.height) {
+                y2 = this.height - i1 - 6;
+            }
+
+            //this.zLevel = 300.0F;
+            //itemRender.zLevel = 300.0F;
+            int j1 = 0xf0001040;//bg
+            this.drawGradientRect(x2 - 3, y2 - 4, x2 + k + 3, y2 - 3, j1, j1);
+            this.drawGradientRect(x2 - 3, y2 + i1 + 3, x2 + k + 3, y2 + i1 + 4, j1, j1);
+            this.drawGradientRect(x2 - 3, y2 - 3, x2 + k + 3, y2 + i1 + 3, j1, j1);
+            this.drawGradientRect(x2 - 4, y2 - 3, x2 - 3, y2 + i1 + 3, j1, j1);
+            this.drawGradientRect(x2 + k + 3, y2 - 3, x2 + k + 4, y2 + i1 + 3, j1, j1);
+            int k1 = 0x500040ff;//border bright
+            int l1 = (k1 & 0xfefefe) >> 1 | k1 & 0xff000000;//border dark???
+            this.drawGradientRect(x2 - 3, y2 - 3 + 1, x2 - 3 + 1, y2 + i1 + 3 - 1, k1, l1);
+            this.drawGradientRect(x2 + k + 2, y2 - 3 + 1, x2 + k + 3, y2 + i1 + 3 - 1, k1, l1);
+            this.drawGradientRect(x2 - 3, y2 - 3, x2 + k + 3, y2 - 3 + 1, k1, k1);
+            this.drawGradientRect(x2 - 3, y2 + i1 + 2, x2 + k + 3, y2 + i1 + 3, l1, l1);
+
+            for (int i2 = 0; i2 < strings.size(); ++i2) {
+                String s1 = (String) strings.get(i2);
+                font.drawStringWithShadow(s1, x2, y2, -1);
+
+                if (i2 == 0) {
+                    y2 += 2;
+                }
+
+                y2 += 10;
+            }
+
+            //this.zLevel = 0.0F;
+            //itemRender.zLevel = 0.0F;
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            //RenderHelper.enableStandardItemLighting();
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
     }
 }

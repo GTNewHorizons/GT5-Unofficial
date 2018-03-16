@@ -12,7 +12,7 @@ import static com.github.technus.tectech.Util.V;
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_machine.Behaviour {
     private final byte tier;
     private final int ticks;
     private final byte precisionFull;

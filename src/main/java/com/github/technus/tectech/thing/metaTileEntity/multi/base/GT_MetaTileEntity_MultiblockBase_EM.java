@@ -9,9 +9,9 @@ import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstance
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationMessage;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -37,9 +37,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.*;
@@ -446,6 +444,30 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //endregion
 
     //region tooltip and scanner result
+
+    /**
+     *
+     * @param hatchNo
+     * @param paramID
+     * @return
+     */
+    public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID){
+        ArrayList<String> list=new ArrayList<>();
+        list.add("ID" + hatchNo + ":" + paramID + ":I");
+        return list;
+    }
+
+    /**
+     *
+     * @param hatchNo
+     * @param paramID
+     * @return
+     */
+    public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID){
+        ArrayList<String> list=new ArrayList<>();
+        list.add("ID" + hatchNo + ":" + paramID + ":O");
+        return list;
+    }
 
     /**
      * TOOLTIP

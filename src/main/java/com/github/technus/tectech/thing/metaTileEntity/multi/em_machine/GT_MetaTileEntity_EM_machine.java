@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 
@@ -31,6 +32,8 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
     public static final String machine = "EM Machinery";
+
+    private Behaviour currentBehaviour;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -95,11 +98,27 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if(aBaseMetaTileEntity.isActive() && (aTick & 0x2)==0 && aBaseMetaTileEntity.isClientSide()){
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2+aBaseMetaTileEntity.getXCoord();
-            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*2+aBaseMetaTileEntity.getYCoord();
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2+aBaseMetaTileEntity.getZCoord();
-            aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
+        if(aBaseMetaTileEntity.isClientSide() && (aTick & 0x2)==0){
+            currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new Util.TT_ItemStack(mInventory[1]));
+            if(aBaseMetaTileEntity.isActive()){
+                int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*2+aBaseMetaTileEntity.getXCoord();
+                int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*2+aBaseMetaTileEntity.getYCoord();
+                int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*2+aBaseMetaTileEntity.getZCoord();
+                aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
+            }
+        }
+        if(aBaseMetaTileEntity.isServerSide() && (aTick & 0xf)==0){
+            currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new Util.TT_ItemStack(mInventory[1]));
+            if (currentBehaviour == null) {
+                setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(2,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(2,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(3,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+                setStatusOfParameterIn(3,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            }
         }
     }
 
@@ -111,7 +130,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        Behaviour currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new Util.TT_ItemStack(itemStack));
+        currentBehaviour = GT_MetaTileEntity_EM_machine.map.get(new Util.TT_ItemStack(itemStack));
         //TecTech.Logger.info("Looking for "+new Util.TT_ItemStack(itemStack).toString());
         if (currentBehaviour == null) {
             setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
@@ -328,10 +347,34 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         TecTech.Logger.info("Registered EM machine behaviour "+behaviour.getClass().getSimpleName()+' '+new Util.TT_ItemStack(is).toString());
     }
 
-    public interface Behaviour {
-        boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix);
+    public static abstract class Behaviour {
+        public Behaviour(){}
 
-        MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters);
+        public abstract boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix);
+
+        public abstract MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters);
+
+        protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID){}
+
+        protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID){}
+    }
+
+    @Override
+    public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID) {
+        ArrayList<String> base=super.getFullLedDescriptionIn(hatchNo, paramID);
+        if(currentBehaviour!=null){
+            currentBehaviour.getFullLedDescriptionIn(base,hatchNo,paramID);
+        }
+        return base;
+    }
+
+    @Override
+    public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID) {
+        ArrayList<String> base=super.getFullLedDescriptionOut(hatchNo, paramID);
+        if(currentBehaviour!=null){
+            currentBehaviour.getFullLedDescriptionOut(base,hatchNo,paramID);
+        }
+        return base;
     }
 
     private void quantumStuff(boolean shouldExist){

@@ -40,8 +40,6 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
     private static final double MASS_TO_EU=ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear")*800000.0/URANIUM_INGOT_MASS_DIFF;//*20
 
-    private float temp=0;
-
     //region structure
     private static final String[][] shape = new String[][]{
             {"0C0","A   ","A . ","A   ","0C0",},
@@ -130,7 +128,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
             return startRecipe(map);
         }else if(eSafeVoid){
             contents.clear();
-            temp=0;
+            mEUt=0;
         }else if(contents.hasStacks()){
             return startRecipe(null);
         }
@@ -163,9 +161,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
         contents.tickContent(1,0,1);
 
-        System.out.println("MASS DIFF = " +((mass-contents.getMass())*MASS_TO_EU));
-        temp+=(mass-contents.getMass())*MASS_TO_EU;
-        System.out.println("TOTAL = " +temp);
+        mEUt=(int)((mass-contents.getMass())*MASS_TO_EU);
+        System.out.println("EUt = " +mEUt);
+        if(mEUt<0) mEUt=0;
 
         //todo move not actually decaying crap, beware of energy using decays?
 
