@@ -74,7 +74,7 @@ public class RecipeLoader implements Runnable {
                         'B', OrePrefixes.screw.get(Materials.Iridium),
                         'P', OrePrefixes.plate.get(Materials.Iridium),
                         'G', ItemList.Cover_Screen,
-                        'S', ItemList.Sensor_IV,
+                        'S', OrePrefixes.circuit.get(Materials.Elite),
                         'E', ItemList.Hull_IV});
 
         if (Loader.isModLoaded("dreamcraft")) {
