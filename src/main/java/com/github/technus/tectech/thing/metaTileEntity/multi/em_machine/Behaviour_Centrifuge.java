@@ -7,6 +7,7 @@ import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtom
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -19,6 +20,8 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour {
     private final float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private final byte tier;
+    private final static String[] DESCRIPTION_I =new String[]{"RPM Input","Fraction Count Input"};
+    private final static String[] DESCRIPTION_O =new String[]{"RPM Setting","RCF Setting","Radius [mm]","Max RPM","Max Force [eV/c^2 * m/s]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     private static final double[/*tier+5*/][/*outputHatches+2*/] MIXING_FACTORS =new double[][]{
             {.45,.85,.95,1,1,},
@@ -43,6 +46,20 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
     }
 
     @Override
+    protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo==0) {
+            baseDescr.add(DESCRIPTION_I[(hatchNo << 1) + paramID]);
+        }
+    }
+
+    @Override
+    protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo<=2) {
+            baseDescr.add(DESCRIPTION_O[(hatchNo<<1)+paramID]);
+        }
+    }
+
+    @Override
     public boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix) {
         boolean check=true;
 
@@ -50,6 +67,15 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         te.setParameterOut(1, 1, maxRPM);
         te.setParameterOut(2, 0, maxForce * 9.80665);// (eV/c^2 * m/s)
         te.setParameterOut(2, 1, maxCapacity);// eV/c^2
+
+        for(int i=4;i<=9;i++) {
+            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
+        for(int i=1;i<=3;i++) {
+            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
 
         double RPM = parametersToCheckAndFix[0];
         if (RPM > maxRPM) {

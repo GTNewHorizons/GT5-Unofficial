@@ -104,7 +104,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     final byte[] eParamsInStatus = new byte[20];//LED status for I
     final byte[] eParamsOutStatus = new byte[20];//LED status for O
-    public static final byte STATUS_UNUSED = 0,
+    public static final byte STATUS_UNUSED =7, STATUS_NEUTRAL = 0,
             STATUS_TOO_LOW = 1,  STATUS_LOW = 2,
             STATUS_WRONG = 3,    STATUS_OK = 4,
             STATUS_TOO_HIGH = 5, STATUS_HIGH = 6;
@@ -453,7 +453,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID){
         ArrayList<String> list=new ArrayList<>();
-        list.add("ID" + hatchNo + ":" + paramID + ":I");
+        list.add(EnumChatFormatting.WHITE+"ID: " +
+                EnumChatFormatting.AQUA+hatchNo +
+                EnumChatFormatting.YELLOW+ ":" +
+                EnumChatFormatting.AQUA+paramID +
+                EnumChatFormatting.YELLOW+ ":"+
+                EnumChatFormatting.AQUA+"I");
         return list;
     }
 
@@ -465,7 +470,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID){
         ArrayList<String> list=new ArrayList<>();
-        list.add("ID" + hatchNo + ":" + paramID + ":O");
+        list.add(EnumChatFormatting.WHITE+"ID: " +
+                EnumChatFormatting.AQUA+hatchNo +
+                EnumChatFormatting.YELLOW+ ":" +
+                EnumChatFormatting.AQUA+paramID +
+                EnumChatFormatting.YELLOW+ ":"+
+                EnumChatFormatting.AQUA+"O");
         return list;
     }
 
@@ -728,7 +738,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches) {
                     hatch_elemental.id = -1;
                 }
-                for (GT_MetaTileEntity_Hatch_OutputData hatch_data : eOutputData) {
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
                     hatch_data.id = -1;
                     hatch_data.q = null;
                 }

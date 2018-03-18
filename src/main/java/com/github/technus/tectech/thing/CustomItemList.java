@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
-    Machine_OwnerDetector,
+    Machine_OwnerDetector,Machine_DataReader,
     Machine_DebugWriter,Machine_DebugGenny,
     EMpipe, DATApipe, rack_Hatch, holder_Hatch,
 

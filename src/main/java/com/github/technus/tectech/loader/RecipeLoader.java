@@ -23,6 +23,11 @@ import static gregtech.api.enums.GT_Values.RA;
  * Created by danie_000 on 16.11.2016.
  */
 public class RecipeLoader implements Runnable {
+    public static Materials getOrDefault(String name,Materials def){
+        Materials mat=Materials.get(name);
+        return mat == Materials._NULL || mat == null ? def : mat;
+    }
+
     @Override
     public void run() {
         dAtomDefinition.setTransformation();
@@ -61,6 +66,16 @@ public class RecipeLoader implements Runnable {
                         'P', OrePrefixes.plate.get(Materials.IronMagnetic),
                         'G', OrePrefixes.plate.get(Materials.Glass),
                         'E', OrePrefixes.gem.get(Materials.EnderPearl)});
+
+        //Data reader
+        GT_ModHandler.addCraftingRecipe(CustomItemList.Machine_DataReader.get(1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{"BdB","GES","PwP",
+                        'B', OrePrefixes.screw.get(Materials.Iridium),
+                        'P', OrePrefixes.plate.get(Materials.Iridium),
+                        'G', ItemList.Cover_Screen,
+                        'S', ItemList.Sensor_IV,
+                        'E', ItemList.Hull_IV});
 
         if (Loader.isModLoaded("dreamcraft")) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version

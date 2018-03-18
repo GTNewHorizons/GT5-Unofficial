@@ -7,6 +7,8 @@ import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtom
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
+import java.util.ArrayList;
+
 import static com.github.technus.tectech.Util.V;
 
 /**
@@ -20,6 +22,8 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
     private final float maxCapacity;
     private final long maxCharge;
     private final int offsetMax;
+    private final static String[] DESCRIPTION_I =new String[]{"Full Precision Input [e/3]","Minimal Precision Input [e/3]","Offset Input [e/3]",null};
+    private final static String[] DESCRIPTION_O =new String[]{"Full Precision Limit [e/3]","Minimal Precision Limit [e/3]","Offset Limit [e/3]",null,"Max Charge [e/3]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
@@ -65,16 +69,47 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
     }
 
     @Override
+    protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo<=1) {
+            String desc=DESCRIPTION_I[(hatchNo << 1) + paramID];
+            if(desc!=null){
+                baseDescr.add(desc);
+            }
+        }
+    }
+
+    @Override
+    protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo<=3){
+            String desc=DESCRIPTION_O[(hatchNo<<1)+paramID];
+            if(desc!=null){
+                baseDescr.add(desc);
+            }
+        }
+    }
+
+    @Override
     public boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix) {
         boolean check=true;
 
         te.setParameterOut(0,0,precisionFull);
         te.setParameterOut(0,1,precisionMinimal);
         te.setParameterOut(1,0,offsetMax);
+        te.setStatusOfParameterOut(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
         te.setParameterOut(2,0,maxCharge);
         te.setParameterOut(2,1,maxCapacity);
         te.setParameterOut(3,0,V[tier]);
         te.setParameterOut(3,1,ticks);
+
+        for(int i=4;i<=9;i++) {
+            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
+        te.setStatusOfParameterIn(1, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        for(int i=2;i<=3;i++) {
+            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
 
         double full=parametersToCheckAndFix[0];
         if(Double.isInfinite(full) && full>0) {

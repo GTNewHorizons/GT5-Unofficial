@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean isSimpleMachine() {
-        return false;
+        return true;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.item.gui;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -11,6 +10,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
+import static com.github.technus.tectech.auxiliary.Reference.MODID;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -23,15 +23,15 @@ public class ScanDisplayScreen extends GuiScreen {
     private final String[] lines;
     private int firstLine =0;
 
-    private static final ResourceLocation[] BACKGROUNDS =new ResourceLocation[]{new ResourceLocation("tectech:textures/gui/scanDisplayScreen1.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen2.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen3.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen4.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen5.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen6.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen7.png"),
-                                                                                new ResourceLocation("tectech:textures/gui/scanDisplayScreen8.png")};
-    private static final ResourceLocation ITEM =new ResourceLocation("tectech:textures/gui/scanDisplayItem.png");
+    private static final ResourceLocation[] BACKGROUNDS =new ResourceLocation[]{new ResourceLocation(MODID+":textures/gui/scanDisplayScreen1.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen2.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen3.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen4.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen5.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen6.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen7.png"),
+                                                                                new ResourceLocation(MODID+":textures/gui/scanDisplayScreen8.png")};
+    private static final ResourceLocation ITEM =new ResourceLocation(MODID+"::textures/gui/scanDisplayItem.png");
 
     public ScanDisplayScreen(EntityPlayer player){
         lines=ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem());
@@ -149,7 +149,7 @@ public class ScanDisplayScreen extends GuiScreen {
         @Override
         public void func_146113_a(SoundHandler soundHandler)
         {
-            soundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(Reference.MODID+":fx_click"), 1.0F));
+            soundHandler.playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation(MODID+":fx_click"), 1.0F));
         }
     }
 }

@@ -35,16 +35,30 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     }
 
     @Override
+    protected void bindPlayerInventory(InventoryPlayer aInventoryPlayer) {
+        int i;
+        for(i = 0; i < 3; ++i) {
+            for(int j = 0; j < 9; ++j) {
+                this.addSlotToContainer(new Slot(aInventoryPlayer, j + i * 9 + 9, 8 + j * 18, 110 + i * 18));
+            }
+        }
+
+        for(i = 0; i < 9; ++i) {
+            this.addSlotToContainer(new Slot(aInventoryPlayer, i, 8 + i * 18, 168));
+        }
+    }
+
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new Slot(mTileEntity, 1, 152, -21));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, -2, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 15, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 152, 32, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 174, 116, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 174, 132, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(mTileEntity, 2, 174, 148, false, false, 1));
+        addSlotToContainer(new Slot(mTileEntity, 1, 174, 168));
     }
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if (aSlotIndex < 0) {
+        if (aSlotIndex < 0 || aSlotIndex > 2) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
@@ -52,7 +66,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             GT_MetaTileEntity_MultiblockBase_EM mte = (GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity();
             IGregTechTileEntity base = mte.getBaseMetaTileEntity();
             switch (aSlotIndex) {
-                case 1:
+                case 0:
                     if(ePowerPassButton) {
                         TecTech.proxy.playSound(base,"fx_click");
                         mte.ePowerPass ^= true;
@@ -65,13 +79,13 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                         }
                     }
                     break;
-                case 2:
+                case 1:
                     if(eSafeVoidButton) {
                         TecTech.proxy.playSound(base,"fx_click");
                         mte.eSafeVoid ^= true;
                     }
                     break;
-                case 3:
+                case 2:
                     if(allowedToWorkButton) {
                         TecTech.proxy.playSound(base,"fx_click");
                         if (mte.getBaseMetaTileEntity().isAllowedToWork()) {
@@ -128,6 +142,11 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             eSafeVoid = (par2 & 2) == 2;
             allowedToWork = (par2 & 4) == 4;
         }
+    }
+
+    @Override
+    public int getSlotStartIndex() {
+        return 3;
     }
 
     @Override

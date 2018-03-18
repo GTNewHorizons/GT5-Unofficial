@@ -252,7 +252,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         }
 
         if (!machineBusy) {
-            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
         } else if (eAvailableData <= 0) {
             setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else {

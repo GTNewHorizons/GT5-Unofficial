@@ -30,7 +30,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
-public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataAccess> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> eDataAccessHatches = new ArrayList<>();
 
@@ -53,11 +53,11 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     };
     //endregion
 
-    public GT_MEtaTileEntity_EM_dataBank(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_EM_dataBank(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MEtaTileEntity_EM_dataBank(String aName) {
+    public GT_MetaTileEntity_EM_dataBank(String aName) {
         super(aName);
     }
 
@@ -71,7 +71,7 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MEtaTileEntity_EM_dataBank(mName);
+        return new GT_MetaTileEntity_EM_dataBank(mName);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class GT_MEtaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
 
     public static void run(){
         try {
-            adderMethodMap.put("addDataBankHatchToMachineList", GT_MEtaTileEntity_EM_dataBank.class.getMethod("addDataBankHatchToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addDataBankHatchToMachineList", GT_MetaTileEntity_EM_dataBank.class.getMethod("addDataBankHatchToMachineList", IGregTechTileEntity.class, int.class));
         } catch (NoSuchMethodException e) {
             if (TecTechConfig.DEBUG_MODE) {
                 e.printStackTrace();

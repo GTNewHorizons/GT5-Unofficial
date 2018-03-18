@@ -1,10 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemDye;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -28,60 +30,70 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         ePowerPassButton=enablePowerPass;
         eSafeVoidButton=enableSafeVoid;
         allowedToWorkButton=enablePowerButton;
+        ySize= 192;
+        xSize = 198;
     }
 
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
         super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
         mName = aName;
         ePowerPassButton=eSafeVoidButton=allowedToWorkButton=true;
+        ySize= 192;
+        xSize = 198;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        fontRendererObj.drawString(mName, 10, -18, 16448255);
+    public void drawScreen(int mouseX, int mouseY, float par3) {
+        super.drawScreen(mouseX, mouseY, par3);
+        if (mContainer != null) {
+            if (mContainer.mTileEntity != null && mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_MultiblockBase_EM) {
+                LEDtooltips(mouseX, mouseY);
+            }
+        }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        fontRendererObj.drawString(mName, 7, 8, 16448255);
 
         if (mContainer != null) {
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 1) != 0) {
-                fontRendererObj.drawString("Pipe is loose.", 10, -10, 16448255);
+                fontRendererObj.drawString("Pipe is loose.", 7, 16, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 2) != 0) {
-                fontRendererObj.drawString("Screws are loose.", 10, -2, 16448255);
+                fontRendererObj.drawString("Screws are loose.", 7, 24, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 4) != 0) {
-                fontRendererObj.drawString("Something is stuck.", 10, 6, 16448255);
+                fontRendererObj.drawString("Something is stuck.", 7, 32, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 8) != 0) {
-                fontRendererObj.drawString("Plating is dented.", 10, 14, 16448255);
+                fontRendererObj.drawString("Plating is dented.", 7, 40, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 16) != 0) {
-                fontRendererObj.drawString("Circuitry burned out.", 10, 22, 16448255);
+                fontRendererObj.drawString("Circuitry burned out.", 7, 48, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 32) != 0) {
-                fontRendererObj.drawString("That doesn't belong there.", 10, 30, 16448255);
+                fontRendererObj.drawString("That doesn't belong there.", 7, 56, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 64) != 0) {
-                fontRendererObj.drawString("Incomplete Structure.", 10, 38, 16448255);
+                fontRendererObj.drawString("Incomplete Structure.", 7, 64, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 128) != 0) {
-                fontRendererObj.drawString("Too Uncertain.", 10, 46, 16448255);
+                fontRendererObj.drawString("Too Uncertain.", 7, 72, 16448255);
             }
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 256) != 0) {
-                fontRendererObj.drawString("Invalid Parameters.", 10, 54, 16448255);
+                fontRendererObj.drawString("Invalid Parameters.", 7, 80, 16448255);
             }
 
             if (((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachineEM) mContainer).mActive == 0) {
-                    fontRendererObj.drawString("Soft Hammer or press Button", 10, -10, 16448255);
-                    fontRendererObj.drawString("to (re-)start the Machine", 10, -2, 16448255);
-                    fontRendererObj.drawString("if it doesn't start.", 10, 6, 16448255);
+                    fontRendererObj.drawString("Soft Hammer or press Button", 7, 16, 16448255);
+                    fontRendererObj.drawString("to (re-)start the Machine", 7, 24, 16448255);
+                    fontRendererObj.drawString("if it doesn't start.", 7, 32, 16448255);
                 } else {
-                    fontRendererObj.drawString("Running perfectly.", 10, -10, 16448255);
+                    fontRendererObj.drawString("Running perfectly.", 7, 16, 16448255);
                 }
             }
-
-            int x = (width - xSize) / 2;
-            int y = (height - ySize) / 2;
-            LEDtooltips(par1-x, par2-y+26);
         }
     }
 
@@ -90,101 +102,98 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
-        y -= 26;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize + 26);
+        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         if (mContainer != null && ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus != null) {
             counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
-
+            x+= 173;
             if(!ePowerPassButton) {
-                drawTexturedModalRect(x + 151, y + 23, 215, 23, 18, 18);
+                drawTexturedModalRect(x, y + 115, 231, 23, 18, 18);
             } else if (((GT_Container_MultiMachineEM) mContainer).ePowerPass) {
-                drawTexturedModalRect(x + 151, y + 23, 183, 23, 18, 18);
+                drawTexturedModalRect(x, y + 115, 207, 23, 18, 18);
             }
 
             if(!eSafeVoidButton) {
-                drawTexturedModalRect(x + 151, y + 41, 215, 41, 18, 18);
+                drawTexturedModalRect(x, y + 132, 231, 41, 18, 18);
             } else if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid) {
-                drawTexturedModalRect(x + 151, y + 41, 183, 41, 18, 18);
+                drawTexturedModalRect(x, y + 132, 207, 41, 18, 18);
             }
 
             if(!allowedToWorkButton) {
-                drawTexturedModalRect(x + 151, y + 57, 215, 57, 18, 18);
+                drawTexturedModalRect(x, y + 147, 231, 57, 18, 18);
             } else if (((GT_Container_MultiMachineEM) mContainer).allowedToWork) {
-                drawTexturedModalRect(x + 151, y + 57, 183, 57, 18, 18);
+                drawTexturedModalRect(x, y + 147, 207, 57, 18, 18);
             }
-
-            x += 11;
+            x -= 162;
             y += 96;
             for (int i = 0; i < 20; ) {
-                byte b = (byte) (i >>> 1);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[b]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[b]);
-                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[b + 10]);
-                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[b + 10]);
+                byte hatch = (byte) (i >>> 1);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[hatch]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[hatch]);
+                LEDdrawP(x, y, i, 0, ((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[hatch + 10]);
+                LEDdrawP(x, y, i++, 1, ((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[hatch + 10]);
             }
 
-            short rU = 183, Vs = 77;
-            x += 140;
-            y -= 19;
+            short rU = 207, Vs = 77;
+            x += 162;
             byte state = ((GT_Container_MultiMachineEM) mContainer).eCertainStatus;
             switch (((GT_Container_MultiMachineEM) mContainer).eCertainMode) {
                 case 1://ooo oxo ooo
                     drawTexturedModalRect(x + 6, y + 6,
-                            rU + (state == 0 ? 38 : 6),
+                            rU + (state == 0 ? 30 : 6),
                             Vs + 6, 6, 6);
                     break;
                 case 2://ooo xox ooo
                     drawTexturedModalRect(x, y + 6,
-                            rU + ((state & 1) == 0 ? 32 : 0),
+                            rU + ((state & 1) == 0 ? 24 : 0),
                             Vs + 6, 6, 6);
                     drawTexturedModalRect(x + 12, y + 6,
-                            rU + ((state & 2) == 0 ? 44 : 12),
+                            rU + ((state & 2) == 0 ? 36 : 12),
                             Vs + 6, 6, 6);
                     break;
                 case 3://oxo xox oxo
                     drawTexturedModalRect(x + 6, y,
-                            rU + ((state & 1) == 0 ? 38 : 6),
+                            rU + ((state & 1) == 0 ? 30 : 6),
                             Vs, 6, 6);
                     drawTexturedModalRect(x, y + 6,
-                            rU + ((state & 2) == 0 ? 32 : 0),
+                            rU + ((state & 2) == 0 ? 24 : 0),
                             Vs + 6, 6, 6);
                     drawTexturedModalRect(x + 12, y + 6,
-                            rU + ((state & 4) == 0 ? 44 : 12),
+                            rU + ((state & 4) == 0 ? 36 : 12),
                             Vs + 6, 6, 6);
                     drawTexturedModalRect(x + 6, y + 12,
-                            rU + ((state & 8) == 0 ? 38 : 6),
+                            rU + ((state & 8) == 0 ? 30 : 6),
                             Vs + 12, 6, 6);
                     break;
                 case 4://xox ooo xox
                     drawTexturedModalRect(x, y,
-                            rU + ((state & 1) == 0 ? 32 : 0),
+                            rU + ((state & 1) == 0 ? 24 : 0),
                             Vs, 6, 6);
                     drawTexturedModalRect(x + 12, y,
-                            rU + ((state & 2) == 0 ? 44 : 12),
+                            rU + ((state & 2) == 0 ? 36 : 12),
                             Vs, 6, 6);
                     drawTexturedModalRect(x, y + 12,
-                            rU + ((state & 4) == 0 ? 32 : 0),
+                            rU + ((state & 4) == 0 ? 24 : 0),
                             Vs + 12, 6, 6);
                     drawTexturedModalRect(x + 12, y + 12,
-                            rU + ((state & 8) == 0 ? 44 : 12),
+                            rU + ((state & 8) == 0 ? 36 : 12),
                             Vs + 12, 6, 6);
                     break;
                 case 5://xox oxo xox
                     drawTexturedModalRect(x, y,
-                            rU + ((state & 1) == 0 ? 32 : 0),
+                            rU + ((state & 1) == 0 ? 24 : 0),
                             Vs, 6, 6);
                     drawTexturedModalRect(x + 12, y,
-                            rU + ((state & 2) == 0 ? 44 : 12),
+                            rU + ((state & 2) == 0 ? 36 : 12),
                             Vs, 6, 6);
                     drawTexturedModalRect(x + 6, y + 6,
-                            rU + ((state & 4) == 0 ? 38 : 6),
+                            rU + ((state & 4) == 0 ? 30 : 6),
                             Vs + 6, 6, 6);
                     drawTexturedModalRect(x, y + 12,
-                            rU + ((state & 8) == 0 ? 32 : 0),
+                            rU + ((state & 8) == 0 ? 24 : 0),
                             Vs + 12, 6, 6);
                     drawTexturedModalRect(x + 12, y + 12,
-                            rU + ((state & 16) == 0 ? 44 : 12),
+                            rU + ((state & 16) == 0 ? 36 : 12),
                             Vs + 12, 6, 6);
                     break;
             }
@@ -221,10 +230,25 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             case STATUS_HIGH:// too high
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
                 break;
+            case STATUS_UNUSED:
+                if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
+                    int tColor = this.mContainer.mTileEntity.getColorization() & 15;
+                    if (tColor < ItemDye.field_150922_c.length) {
+                        tColor = ItemDye.field_150922_c[tColor];
+                        GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F, (float)(tColor & 255) / 255.0F, 1.0F);
+                    }
+                }
+                drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
+                break;
         }
     }
 
-    private void LEDtooltips(float x,float y){
+    private void LEDtooltips(int x,int y){
+        int renderPosX=x;
+        int renderPosY=y;
+        x-= (width - xSize) / 2;
+        y-= (height - ySize) / 2;
         //drawHoveringText(Arrays.asList(""+x,""+y), -1, -11, fontRendererObj);
         if(mContainer.mTileEntity!=null){
             IMetaTileEntity mte=mContainer.mTileEntity.getMetaTileEntity();
@@ -236,10 +260,16 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     for(int param=0;param<2;param++){
                         if(x<(u+=su)){
                             if(y<v){
-                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionIn(hatch,param), u-su-1, v-11, fontRendererObj);
+                                if(((GT_Container_MultiMachineEM) mContainer).eParamsInStatus[hatch + (10*param)]==STATUS_UNUSED){
+                                    return;
+                                }
+                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionIn(hatch,param), renderPosX, renderPosY, fontRendererObj);
                                 return;
                             }else if(y>=v && y<v+sv){
-                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionOut(hatch,param), u-su-1, v+sv-11, fontRendererObj);
+                                if(((GT_Container_MultiMachineEM) mContainer).eParamsOutStatus[hatch + (10*param)]==STATUS_UNUSED){
+                                    return;
+                                }
+                                hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionOut(hatch,param), renderPosX, renderPosY, fontRendererObj);
                                 return;
                             }
                         }
