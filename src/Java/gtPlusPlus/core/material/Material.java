@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -71,6 +72,8 @@ public class Material {
 	public long vDurability;
 	public int vToolQuality;
 	public int vHarvestLevel;
+	
+	private GTPP_Aspects[] vAspects;
 
 
 	public static Map<Integer, Materials> invalidMaterials = new HashMap<Integer, Materials>();
@@ -180,6 +183,7 @@ public class Material {
 			}
 
 
+			this.vAspects = null;
 
 
 			this.vMass = this.getMass();

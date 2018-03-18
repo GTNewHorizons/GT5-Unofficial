@@ -8,7 +8,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaT
 public class GregtechTieredChunkloaders {
 	public static void run() {
 		if (LoadedMods.Gregtech) {
-			Logger.INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
+			Logger.INFO("Gregtech5u Content | Registering Chunk Loaders.");
 				run1();
 		}
 
