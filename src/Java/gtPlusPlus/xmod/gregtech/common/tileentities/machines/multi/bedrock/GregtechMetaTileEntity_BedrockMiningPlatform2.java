@@ -5,6 +5,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.nuclear.NUCLIDE;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+
 public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaTileEntity_BedrockMiningPlatformBase {
 	public GregtechMetaTileEntity_BedrockMiningPlatform2(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -22,12 +26,12 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaT
 		return (IMetaTileEntity) new GregtechMetaTileEntity_BedrockMiningPlatform2(this.mName);
 	}
 
-	protected ItemList getCasingBlockItem() {
-		return ItemList.Casing_MiningOsmiridium;
+	protected GregtechItemList getCasingBlockItem() {
+		return GregtechItemList.Casing_Reactor_I;
 	}
 
-	protected Materials getFrameMaterial() {
-		return Materials.Osmiridium;
+	protected Material getFrameMaterial() {
+		return NUCLIDE.getInstance().AMERICIUM241;
 	}
 
 	protected int getCasingTextureIndex() {
