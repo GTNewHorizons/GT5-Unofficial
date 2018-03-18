@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.thaumcraft.aspect;
 
 import gregtech.common.GT_ThaumcraftCompat;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
@@ -20,7 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
-public class GTPP_AspectCompat  implements IThaumcraftCompat {
+public class GTPP_AspectCompat implements IThaumcraftCompat {
 	
 	public static volatile Method m = null;
 	
@@ -99,7 +100,7 @@ public class GTPP_AspectCompat  implements IThaumcraftCompat {
 		GT_LanguageManager.addStringLocalization("tc.aspect.custom5", "Heaven");
 	}
 
-	public static synchronized final AspectList getAspectList_Ex(final List<TC_AspectStack_Ex> aAspects) {
+	public static synchronized final AspectList getAspectList(final List<TC_AspectStack_Ex> aAspects) {
 		AspectList o = null;
 		try {
 			if (m == null || (m != null && !m.isAccessible())) {
@@ -110,8 +111,21 @@ public class GTPP_AspectCompat  implements IThaumcraftCompat {
 				o = (AspectList) m.invoke(null, aAspects);				
 			}
 		}
-		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}		
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}		
+		if (o == null) {
+			Logger.REFLECTION("[Aspect] Did not retrieve valid aspect list from reflective invocation.");
+		}
 		return o;
+	}
+	
+	public static synchronized final AspectList getAspectList_Ex(final List<TC_AspectStack_Ex> aAspects) {
+		final AspectList rAspects = new AspectList();
+		for (final TC_AspectStack_Ex tAspect : aAspects) {
+			rAspects.add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount);
+		}
+		return rAspects;
 	}
 
 	@Override

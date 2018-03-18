@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.thaumcraft.util;
 
+import static gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft.sItemsToGetAspects;
 import static gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectCompat.getAspectList_Ex;
 
 import java.util.*;
@@ -14,8 +15,8 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
 import thaumcraft.api.ThaumcraftApi;
@@ -48,8 +49,15 @@ public class ThaumcraftUtils {
 			}
 		}		
 		Pair<ItemStack, TC_AspectStack_Ex[]> k = new Pair<ItemStack, TC_AspectStack_Ex[]>(item, aspects);
-		HANDLER_Thaumcraft.sItemsToGetAspects.put(k);
-		return true;
+		int mSizeA = sItemsToGetAspects.size();
+		sItemsToGetAspects.put(k);
+		if (sItemsToGetAspects.size() > mSizeA) {
+			Logger.INFO("[Aspect] Successfully queued an ItemStack for Aspect addition.");
+			return true;
+		}
+		Logger.INFO("[Aspect] Failed to queue an ItemStack for Aspect addition.");
+		//Logger.INFO("[Aspect] ");
+		return false;
 	}
 	
 	
@@ -181,18 +189,29 @@ public class ThaumcraftUtils {
 
 	public static boolean registerThaumcraftAspectsToItem(final ItemStack aStack,
 			final List<TC_AspectStack_Ex> aAspects, final boolean aAdditive) {
+		try {
 		if (aAspects.isEmpty()) {
 			return false;
 		}
-		if (aAdditive) {
+		AspectList h = getAspectList_Ex(aAspects);
+		if (aAdditive && (h != null && h.size() > 0)) {
 			ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList_Ex(aAspects));
 			return true;
+		}
+		else {
+			Logger.INFO("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
 		}
 		final AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
 		if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
 			ThaumcraftApi.registerObjectTag(aStack, getAspectList_Ex(aAspects));
 		}
 		return true;
+		}
+		catch (Throwable t) {
+			Logger.INFO("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
+			t.printStackTrace();
+			return false;
+		}
 	}
 
 	public static boolean registerPortholeBlacklistedBlock(final Block aBlock) {

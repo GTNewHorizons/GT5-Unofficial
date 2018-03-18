@@ -4,6 +4,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.enums.GT_Values;
 import net.minecraft.tileentity.TileEntity;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+
+import gtPlusPlus.api.objects.Logger;
+
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.api.enums.ItemList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +17,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.util.GT_Recipe;
-import java.util.Iterator;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import net.minecraft.init.Blocks;
 import gregtech.api.util.GT_Utility;
@@ -35,23 +37,30 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GT_MetaTileEntity_MultiBlockBase {
+
+	//
 	private static final ItemStack miningPipe;
 	private static final ItemStack miningPipeTip;
 	private static final Block miningPipeBlock;
 	private static final Block miningPipeTipBlock;
+
 	private final ArrayList<ChunkPosition> oreBlockPositions;
+
 	private Block casingBlock;
 	private int casingMeta;
 	private int frameMeta;
 	private int casingTextureIndex;
+
 	private ForgeDirection back;
+
 	private int xDrill;
 	private int yDrill;
 	private int zDrill;
-	private int xCenter;
-	private int zCenter;
-	private int yHead;
-	private boolean isPickingPipes;
+
+	private int[] xCenter = new int[5];
+	private int[] zCenter = new int[5];
+	private int[] yHead = new int[5];
+	private boolean[] isPickingPipes = new boolean[5];
 
 	public GregtechMetaTileEntity_BedrockMiningPlatformBase(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -71,9 +80,12 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		final int frameId = 4096 + this.getFrameMaterial().mMetaItemSubID;
 		this.frameMeta = ((GregTech_API.METATILEENTITIES[frameId] != null)
 				? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType()
-				: 32767);
+						: 32767);
 		this.casingTextureIndex = this.getCasingTextureIndex();
-		this.isPickingPipes = false;
+
+		for (int g=0;g<5;g++) {
+			this.isPickingPipes[g] = false;
+		}
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -82,7 +94,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex],
 					new GT_RenderedTexture((IIconContainer) (aActive
 							? Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE
-							: Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL))};
+									: Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL))};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex]};
 	}
@@ -95,61 +107,61 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		aNBT.setBoolean("isPickingPipes", this.isPickingPipes);
+
+		for (int g=0;g<5;g++) {
+			aNBT.setBoolean("isPickingPipes"+g, this.isPickingPipes[g]);
+		}
 	}
 
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		this.isPickingPipes = aNBT.getBoolean("isPickingPipes");
+		for (int g=0;g<5;g++) {
+			this.isPickingPipes[g] = aNBT.getBoolean("isPickingPipes"+g);
+		}
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
 		this.setElectricityStats();
-		final int oldYHead = this.yHead;
-		if (!this.checkPipesAndSetYHead() || !this.isEnergyEnough()) {
-			this.stopMachine();
-			return false;
-		}
-		if (this.yHead != oldYHead) {
-			this.oreBlockPositions.clear();
-		}
-		if (this.isPickingPipes) {
-			if (this.tryPickPipe()) {
-				this.mOutputItems = new ItemStack[]{
-						GT_Utility.copyAmount(1L, new Object[]{GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe})};
-				return true;
-			}
-			this.isPickingPipes = false;
-			this.stopMachine();
-			return false;
-		} else {
-			this.putMiningPipesFromInputsInController();
-			if (!this.tryConsumeDrillingFluid()) {
+
+		//Do 5 times for Each Stem mining Down
+		for (int g=0;g<5;g++) {
+
+			final int oldYHead = this.yHead[g];
+			if (!this.checkPipesAndSetYHead() || !this.isEnergyEnough()) {
+				this.stopMachine();
 				return false;
 			}
-			this.fillMineListIfEmpty();
-			if (this.oreBlockPositions.isEmpty()) {
-				if (!this.tryLowerPipe()) {
-					return this.isPickingPipes = true;
+			if (this.yHead[g] != oldYHead) {
+				this.oreBlockPositions.clear();
+			}
+			if (this.isPickingPipes[g]) {
+				if (this.tryPickPipe()) {
+					this.mOutputItems = new ItemStack[]{
+							GT_Utility.copyAmount(1L, new Object[]{GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe})};
+					Logger.INFO("[Bedrock Miner] Success? [0]");
+					return true;
 				}
-				this.fillMineListIfEmpty();
+				this.isPickingPipes[g] = false;
+				this.stopMachine();
+				return false;
+			} else {
+				this.putMiningPipesFromInputsInController();
+				/*if (!this.tryConsumeDrillingFluid()) {
+				return false;
+			}*/
+				//this.fillMineListIfEmpty();
+				if (this.oreBlockPositions.isEmpty()) {
+					Logger.INFO("[Bedrock Miner] No Stored Ores.");
+					if (!this.tryLowerPipe()) {
+						Logger.INFO("[Bedrock Miner] Fail [3]");
+						return this.isPickingPipes[g] = true;
+					}
+					//this.fillMineListIfEmpty();
+				}
 			}
-			ChunkPosition oreBlockPos;
-			Block oreBlock;
-			for (oreBlockPos = null, oreBlock = null; (oreBlock == null || oreBlock == Blocks.air)
-					&& !this.oreBlockPositions.isEmpty(); oreBlock = this.getBaseMetaTileEntity()
-							.getBlock(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ)) {
-				oreBlockPos = this.oreBlockPositions.remove(0);
-			}
-			if (oreBlock != null && oreBlock != Blocks.air) {
-				final ArrayList<ItemStack> oreBlockDrops = this.getBlockDrops(oreBlock, oreBlockPos.chunkPosX,
-						oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
-				this.getBaseMetaTileEntity().getWorld().setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY,
-						oreBlockPos.chunkPosZ);
-				this.mOutputItems = this.getOutputByDrops(oreBlockDrops);
-			}
-			return true;
 		}
+		//Logger.INFO("[Bedrock Miner] Success? [2]");
+		return true;
 	}
 
 	private boolean isEnergyEnough() {
@@ -164,15 +176,17 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	}
 
 	private boolean tryPickPipe() {
-		if (this.yHead == this.yDrill) {
-			return false;
+		for (int g=0;g<5;g++) {
+			if (this.yHead[g] == this.yDrill) {
+				return false;
+			}
+			if (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g] + 1, this.zCenter[g],
+					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767)) {
+				this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g] + 1, this.zCenter[g],
+						GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
+			}
+			this.getBaseMetaTileEntity().getWorld().setBlockToAir(this.xCenter[g], this.yHead[g], this.zCenter[g]);
 		}
-		if (this.checkBlockAndMeta(this.xCenter, this.yHead + 1, this.zCenter,
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767)) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter, this.yHead + 1, this.zCenter,
-					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
-		}
-		this.getBaseMetaTileEntity().getWorld().setBlockToAir(this.xCenter, this.yHead, this.zCenter);
 		return true;
 	}
 
@@ -181,7 +195,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		this.mEfficiencyIncrease = 10000;
 		final int overclock = 1 << GT_Utility.getTier(this.getMaxInputVoltage()) - 1;
 		this.mEUt = -12 * overclock * overclock;
-		this.mMaxProgresstime = (this.isPickingPipes ? 80 : this.getBaseProgressTime()) / overclock;
+		int mCombinedAvgTime = 0;
+		for (int g=0;g<5;g++) {
+			mCombinedAvgTime += (this.isPickingPipes[g] ? 80 : this.getBaseProgressTime()) / overclock;
+		}		
+		this.mMaxProgresstime = mCombinedAvgTime;
 	}
 
 	private ItemStack[] getOutputByDrops(final ArrayList<ItemStack> oreBlockDrops) {
@@ -216,7 +234,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		final ItemData itemData = GT_OreDictUnificator.getItemData(currentItem);
 		return itemData == null
 				|| (itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
-						&& itemData.mPrefix != OrePrefixes.dust && itemData.mMaterial.mMaterial != Materials.Oilsands);
+				&& itemData.mPrefix != OrePrefixes.dust && itemData.mMaterial.mMaterial != Materials.Oilsands);
 	}
 
 	private void multiplyStackSize(final ItemStack itemStack) {
@@ -270,7 +288,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	}
 
 	private void fillMineListIfEmpty() {
-		if (!this.oreBlockPositions.isEmpty()) {
+		/*if (!this.oreBlockPositions.isEmpty()) {
 			return;
 		}
 		this.tryAddOreBlockToMineList(this.xCenter, this.yHead - 1, this.zCenter);
@@ -281,7 +299,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			for (int zOff = -radius; zOff <= radius; ++zOff) {
 				this.tryAddOreBlockToMineList(this.xDrill + xOff, this.yHead, this.zDrill + zOff);
 			}
-		}
+		}*/
 	}
 
 	private void tryAddOreBlockToMineList(final int x, final int y, final int z) {
@@ -307,21 +325,28 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	private boolean tryLowerPipe() {
 		if (!this.isHasMiningPipes()) {
+			Logger.INFO("[Bedrock Miner] No Pipes to Lower.");
 			return false;
 		}
-		if (this.yHead <= 0) {
-			return false;
+
+		for (int g=0;g<5;g++) {
+			if (this.yHead[g] <= 0) {
+				Logger.INFO("[Bedrock Miner] Y Head <= 0.");
+				return false;
+			}
+			if (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g] - 1, this.zCenter[g], Blocks.bedrock, 32767)) {
+				Logger.INFO("[Bedrock Miner] Y Head Y+1 to bedrock.");
+				return false;
+			}
+			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g] - 1, this.zCenter[g],
+					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
+			if (this.yHead[g] != this.yDrill) {
+				this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g], this.zCenter[g],
+						GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock);
+			}
+			this.getBaseMetaTileEntity().decrStackSize(1, 1);
+			Logger.INFO("[Bedrock Miner] Lowered Pipe.");
 		}
-		if (this.checkBlockAndMeta(this.xCenter, this.yHead - 1, this.zCenter, Blocks.bedrock, 32767)) {
-			return false;
-		}
-		this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter, this.yHead - 1, this.zCenter,
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
-		if (this.yHead != this.yDrill) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter, this.yHead, this.zCenter,
-					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock);
-		}
-		this.getBaseMetaTileEntity().decrStackSize(1, 1);
 		return true;
 	}
 
@@ -347,6 +372,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 							&& !this.addInputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addOutputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addEnergyInputToMachineList(tTileEntity, this.casingTextureIndex)) {
+						Logger.INFO("[Bedrock Miner] Found bad block in Structure.");
 						return false;
 					}
 				}
@@ -354,9 +380,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		}
 		if (this.mMaintenanceHatches.isEmpty() || this.mInputHatches.isEmpty() || this.mOutputBusses.isEmpty()
 				|| this.mEnergyHatches.isEmpty()) {
+			Logger.INFO("[Bedrock Miner] Missing Hatches/Busses.");
 			return false;
 		}
 		if (GT_Utility.getTier(this.getMaxInputVoltage()) < this.getMinTier()) {
+			Logger.INFO("[Bedrock Miner] getMaxInputVoltage() < getMinTier().");
 			return false;
 		}
 		for (int yOff = 1; yOff < 4; ++yOff) {
@@ -366,9 +394,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 					|| !this.checkFrameBlock(this.back.offsetX, yOff, this.back.offsetZ + 1)
 					|| !this.checkFrameBlock(this.back.offsetX, yOff, this.back.offsetZ - 1)
 					|| !this.checkFrameBlock(this.back.offsetX, yOff + 3, this.back.offsetZ)) {
+				Logger.INFO("[Bedrock Miner] Missing Frames? yOff = "+yOff);
 				return false;
 			}
 		}
+		Logger.INFO("[Bedrock Miner] Built.");
 		return true;
 	}
 
@@ -377,22 +407,40 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		this.yDrill = this.getBaseMetaTileEntity().getYCoord();
 		this.zDrill = this.getBaseMetaTileEntity().getZCoord();
 		this.back = ForgeDirection.getOrientation((int) this.getBaseMetaTileEntity().getBackFacing());
-		this.xCenter = this.xDrill + this.back.offsetX;
-		this.zCenter = this.zDrill + this.back.offsetZ;
+
+		//Middle
+		this.xCenter[0] = this.xDrill + this.back.offsetX;
+		this.zCenter[0] = this.zDrill + this.back.offsetZ;
+
+		this.xCenter[1] = (this.xDrill + this.back.offsetX) + 1;
+		this.zCenter[1] = this.zDrill + this.back.offsetZ;
+
+		this.xCenter[2] = (this.xDrill + this.back.offsetX) - 1;
+		this.zCenter[2] = this.zDrill + this.back.offsetZ;
+
+		this.xCenter[3] = this.xDrill + this.back.offsetX;
+		this.zCenter[3] = (this.zDrill + this.back.offsetZ) + 1;
+
+		this.xCenter[4] = this.xDrill + this.back.offsetX;
+		this.zCenter[4] = (this.zDrill + this.back.offsetZ) - 1;
+
 	}
 
 	private boolean checkPipesAndSetYHead() {
-		this.yHead = this.yDrill - 1;
-		while (this.checkBlockAndMeta(this.xCenter, this.yHead, this.zCenter,
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767)) {
-			--this.yHead;
+		for (int g=0;g<5;g++) {		
+			this.yHead[g] = this.yDrill - 1;
+			while (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
+					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767)) {
+				--this.yHead[g];
+			}
+			if (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
+					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock, 32767) || ++this.yHead[g] == this.yDrill) {
+				return true;
+			}
+			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g], this.zCenter[g],
+					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
+
 		}
-		if (this.checkBlockAndMeta(this.xCenter, this.yHead, this.zCenter,
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock, 32767) || ++this.yHead == this.yDrill) {
-			return true;
-		}
-		this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter, this.yHead, this.zCenter,
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
 		return true;
 	}
 
@@ -448,7 +496,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	protected String[] getDescriptionInternal(final String tierSuffix) {
 		final String casings = this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName();
-		return new String[]{"Controller Block for the Ore Drilling Plant " + ((tierSuffix != null) ? tierSuffix : ""),
+		return new String[]{"Controller Block for the Experimental Deep Earth Drilling Platform - MK " + ((tierSuffix != null) ? tierSuffix : ""),
 				"Size(WxHxD): 3x7x3, Controller (Front middle bottom)", "3x1x3 Base of " + casings,
 				"1x3x1 " + casings + " pillar (Center of base)",
 				"1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)",

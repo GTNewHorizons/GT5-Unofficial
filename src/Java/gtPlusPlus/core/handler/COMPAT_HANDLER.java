@@ -105,6 +105,7 @@ public class COMPAT_HANDLER {
 			GregtechTieredChunkloaders.run();
 			GregtechIndustrialExtruder.run();
 			GregtechIndustrialMultiMachine.run();
+			GregtechBedrockPlatforms.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

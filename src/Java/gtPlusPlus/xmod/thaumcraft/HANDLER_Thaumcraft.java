@@ -10,6 +10,7 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -44,7 +45,12 @@ public class HANDLER_Thaumcraft {
 				for (Pair<ItemStack, TC_AspectStack_Ex[]> j : sItemsToGetAspects) {
 					if (j .getKey() != null && (j.getValue() != null && j.getValue().length > 0)) {
 						List<TC_AspectStack_Ex> list = Arrays.asList(j.getValue());
-						ThaumcraftUtils.registerThaumcraftAspectsToItem(j.getKey(), list, true);
+						if (ThaumcraftUtils.registerThaumcraftAspectsToItem(j.getKey(), list, true)) {
+							Logger.INFO("[Aspect] Successfully added Aspects to "+j.getKey().getDisplayName()+".");
+						}
+						else {
+							Logger.INFO("[Aspect] Failed adding Aspects to "+j.getKey().getDisplayName()+".");
+						}
 					}
 				}
 			}
