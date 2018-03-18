@@ -31,6 +31,14 @@ public class BlockPos implements Serializable{
 		this.world = DimensionManager.getWorld(dim);
 	}
 
+	public BlockPos(int x, int y, int z, World dim){
+		this.xPos = x;
+		this.yPos = y;
+		this.zPos = z;
+		this.dim = dim.provider.dimensionId;
+		this.world = dim;
+	}
+	
 	public String getLocationString() {
 		return "[X: "+this.xPos+"][Y: "+this.yPos+"][Z: "+this.zPos+"][Dim: "+this.dim+"]";
 	}

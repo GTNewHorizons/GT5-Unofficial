@@ -6,6 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.api.enums.ItemList;
@@ -32,6 +36,8 @@ import gregtech.api.GregTech_API;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraft.world.ChunkPosition;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -45,6 +51,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	private static final Block miningPipeTipBlock;
 
 	private final ArrayList<ChunkPosition> oreBlockPositions;
+	private double mProductionModifier = 100;
 
 	private Block casingBlock;
 	private int casingMeta;
@@ -107,7 +114,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-
+		aNBT.setDouble("mProductionModifier", mProductionModifier);
 		for (int g=0;g<5;g++) {
 			aNBT.setBoolean("isPickingPipes"+g, this.isPickingPipes[g]);
 		}
@@ -115,6 +122,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
+		this.mProductionModifier = aNBT.getDouble("mProductionModifier");
 		for (int g=0;g<5;g++) {
 			this.isPickingPipes[g] = aNBT.getBoolean("isPickingPipes"+g);
 		}
@@ -122,7 +130,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	public boolean checkRecipe(final ItemStack aStack) {
 		this.setElectricityStats();
-		
+
 		boolean[] didWork = new boolean[5];
 
 		final int oldYHead = this.yHead[0];
@@ -133,7 +141,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		if (this.yHead[0] != oldYHead) {
 			this.oreBlockPositions.clear();
 		}
-		
+
 		for (int g=0;g<5;g++) {
 			if (this.isPickingPipes[g]) {
 				if (this.tryPickPipe(g)) {
@@ -146,21 +154,30 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				didWork[g] = false;
 			} else {
 				this.putMiningPipesFromInputsInController();
-				/*if (!this.tryConsumeDrillingFluid()) {
+
+				if (!this.tryConsumeDrillingFluid()) {
 					return false;
-				}*/
+				}
+
 				if (this.oreBlockPositions.isEmpty()) {
+					//Hit bedrock Either retract pipe or Dig!
 					if (!this.tryLowerPipe(g)) {						
-						//Hit bedrock Either retract pipe or Dig!
-						//this.isPickingPipes[g] = true;
-						//didWork[g] = this.isPickingPipes[g];						
-						didWork[g] = true;
+						//Mining Head is too high, we best retract.
+						if (mMiningHeads.get(g).yPos >= 6) {							
+							for (int r=0;r<5;r++) {
+								this.isPickingPipes[r] = true;
+							}							
+							didWork[g] = this.isPickingPipes[g];	
+						}						
+						//Full Power!
+						else {						
+							didWork[g] = true;
+						}						
 					}
-					//this.fillMineListIfEmpty();
 				}
 			}			
 		}
-		
+
 		//Fail recipe handling if one pipe didn't handle properly, to try again next run.
 		for (boolean y : didWork) {
 			if (!y) {
@@ -185,17 +202,18 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	private boolean tryPickPipe(int pipe) {
 		if (this.yHead[pipe] == this.yDrill) {
-				return false;
+			return false;
 		}
 		boolean didWork[] = new boolean[3];			
-		didWork[0] = this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],	GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767);
+		didWork[0] = this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767);
 		if (didWork[0]) {
 			didWork[1] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
 		}
 		if (didWork[1]) {
+			mMiningHeads.put(pipe, new BlockPos(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe], this.getBaseMetaTileEntity().getWorld()));
 			didWork[2] = this.getBaseMetaTileEntity().getWorld().setBlockToAir(this.xCenter[pipe], this.yHead[pipe], this.zCenter[pipe]);	
 		}
-		
+
 		if (didWork[0] && didWork[1] && didWork[2]) {
 			return true;
 		}
@@ -268,7 +286,46 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	}
 
 	private boolean tryConsumeDrillingFluid() {
-		return this.depleteInput(new FluidStack(ItemList.sDrillingFluid, 2000));
+		boolean consumed = false;
+		boolean g = (this.getBaseMetaTileEntity().getWorld().getTotalWorldTime() % 2 == 0);
+		consumed = (g ? tryConsumePyrotheum() : tryConsumeCryotheum());
+		if (consumed) {				
+			increaseProduction(g ? 2 : 1);
+		}
+		else {				
+			lowerProduction(g ? 5 : 3);
+		}				
+		return consumed;
+	}
+
+	private boolean tryConsumePyrotheum() {
+		return this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 2));				
+	}
+
+	private boolean tryConsumeCryotheum() {
+		return this.depleteInput(FluidUtils.getFluidStack("cryotheum", 4));		
+	}
+
+	private boolean lowerProduction(int reduce) {
+		if ((mProductionModifier-reduce) >= 10){
+			this.mProductionModifier -= reduce;
+			return true;
+		}
+		else {
+			this.mProductionModifier = 10;
+			return false;
+		}
+	}
+
+	private boolean increaseProduction(int increase) {
+		if ((mProductionModifier+increase) <= 150){
+			this.mProductionModifier += increase;
+			return true;
+		}
+		else {
+			this.mProductionModifier = 150;
+			return false;
+		}
 	}
 
 	private void putMiningPipesFromInputsInController() {
@@ -335,30 +392,36 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		}
 	}
 
+	private HashMap<Integer, BlockPos> mMiningHeads = new HashMap<Integer, BlockPos>();
+
 	private boolean tryLowerPipe(int pipe) {
 		if (!this.isHasMiningPipes()) {
 			Logger.INFO("[Bedrock Miner] No Pipes to Lower.");
 			return false;
 		}		
-		boolean didWork[] = new boolean[2];	
-		
+		boolean didWork[] = new boolean[3];	
+
 		if (this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], Blocks.bedrock, 32767)) {
 			//Logger.INFO("[Bedrock Miner] Pipe "+pipe+" is at Bedrock.");
 			return false;
 		}
 		didWork[0] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
+		if (didWork[0]) {
+			mMiningHeads.put(pipe, new BlockPos(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], this.getBaseMetaTileEntity().getWorld()));
+		}
+
 		didWork[1] = (this.yHead[pipe] != this.yDrill);
 
 		if (didWork[1]) {
 			didWork[2] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe], this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock);	
 		}
-		
+
 		if (didWork[0] && didWork[1] && didWork[2]) {
 			this.getBaseMetaTileEntity().decrStackSize(1, 1);
 			Logger.INFO("[Bedrock Miner] Lowered Pipe "+pipe+".");
 			return true;
 		}
-		
+
 		Logger.INFO("[Bedrock Miner] Issue when lowering Pipe "+pipe+". 1: "+didWork[0]+" | 2: "+didWork[1]+" | 3: "+didWork[2]);
 		return false;
 	}
@@ -511,20 +574,28 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	protected String[] getDescriptionInternal(final String tierSuffix) {
 		final String casings = this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName();
 		return new String[]{"Controller Block for the Experimental Deep Earth Drilling Platform - MK " + ((tierSuffix != null) ? tierSuffix : ""),
-				"Size(WxHxD): 3x7x3, Controller (Front middle bottom)", "3x1x3 Base of " + casings,
+				"Size(WxHxD): 3x7x3, Controller (Front middle bottom)", 
+				"3x1x3 Base of " + casings,
 				"1x3x1 " + casings + " pillar (Center of base)",
 				"1x3x1 " + this.getFrameMaterial().mName + " Frame Boxes (Each pillar side and on top)",
-				"1x Input Hatch for drilling fluid (Any bottom layer casing)",
+				"2x Input Hatch (Any bottom layer casing)",
 				"1x Input Bus for mining pipes (Any bottom layer casing; not necessary)",
-				"1x Output Bus (Any bottom layer casing)", "1x Maintenance Hatch (Any bottom layer casing)",
+				"1x Output Bus (Any bottom layer casing)", 
+				"1x Maintenance Hatch (Any bottom layer casing)",
 				"1x " + GT_Values.VN[this.getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-				"Radius is " + (this.getRadiusInChunks() << 4) + " blocks"};
+				"Radius is " + (this.getRadiusInChunks() << 4) + " blocks",
+				"Every tick, this machine altenates betweem consumption of Pyrotheum & Cryotheum",
+				"Pyrotheum is used to bore through the Mantle of the world",
+				"Cryotheum is used to keep the internal components cool",
+				CORE.GT_Tooltip};
 	}
 
 	static {
 		miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0L);
 		miningPipeTip = GT_ModHandler.getIC2Item("miningPipeTip", 0L);
-		miningPipeBlock = GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe);
-		miningPipeTipBlock = GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTip);
+		//miningPipeBlock = GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe);
+		//miningPipeTipBlock = GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTip);
+		miningPipeBlock = ModBlocks.blockFakeMiningPipe;
+		miningPipeTipBlock = ModBlocks.blockFakeMiningHead;
 	}
 }

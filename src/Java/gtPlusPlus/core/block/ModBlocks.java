@@ -11,6 +11,8 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.*;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
 import gtPlusPlus.core.block.machine.*;
+import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
+import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -18,6 +20,9 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
 
+	public static Block blockFakeMiningPipe;
+	public static Block blockFakeMiningHead;
+	
 	public static Block blockFishTrap;
 	public static Block blockWorkbench;
 	public static Block blockWorkbenchAdvanced;
@@ -88,6 +93,9 @@ public final class ModBlocks {
 		blockXpConverter = new BlockTankXpConverter();
 		blockCompressedObsidian = new BlockCompressedObsidian();
 		blockNet = new BlockNet();
+
+		blockFakeMiningPipe = new Mining_Pipe_Fake();
+		blockFakeMiningHead = new Mining_Head_Fake();
 
 	}
 
