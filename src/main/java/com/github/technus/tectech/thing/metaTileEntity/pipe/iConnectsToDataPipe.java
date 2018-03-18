@@ -7,4 +7,6 @@ public interface iConnectsToDataPipe {
     boolean canConnect(byte side);
 
     iConnectsToDataPipe getNext(iConnectsToDataPipe source);
+
+    boolean isDataInputFacing(byte side);
 }

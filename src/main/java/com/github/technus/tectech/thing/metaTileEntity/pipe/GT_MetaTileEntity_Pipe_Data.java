@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -172,11 +171,11 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
             }
             IMetaTileEntity meta = next.getMetaTileEntity();
             if (meta instanceof iConnectsToDataPipe && meta != source) {
-                if (meta instanceof GT_MetaTileEntity_Hatch_InputData) {
-                    return (iConnectsToDataPipe) meta;
-                }
                 if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
                         ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
+                    return (iConnectsToDataPipe) meta;
+                }
+                if(((iConnectsToDataPipe) meta).isDataInputFacing(GT_Utility.getOppositeSide(b))){
                     return (iConnectsToDataPipe) meta;
                 }
             }
@@ -230,5 +229,10 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
             return 0.0625F;
         }
         return 0.375f;
+    }
+
+    @Override
+    public boolean isDataInputFacing(byte side) {
+        return true;
     }
 }

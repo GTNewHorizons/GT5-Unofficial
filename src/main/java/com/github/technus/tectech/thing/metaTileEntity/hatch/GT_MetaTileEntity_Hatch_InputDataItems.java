@@ -23,17 +23,17 @@ import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_SIDES;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_Hatch_DataAccess implements iConnectsToDataPipe {
+public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess implements iConnectsToDataPipe {
     private final String mDescription;
     public boolean delDelay = true;
     private ItemStack[] stacks;
 
-    public GT_MetaTileEntity_Hatch_InputDataAccess(int aID, String aName, String aNameRegional, int aTier) {
+    public GT_MetaTileEntity_Hatch_InputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         mDescription="ItemStack Data Input for Multiblocks";
     }
 
-    public GT_MetaTileEntity_Hatch_InputDataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         mDescription=aDescription;
     }
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputDataAccess(this.mName, this.mTier, mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_InputDataItems(this.mName, this.mTier, mDescription, this.mTextures);
     }
 
     @Override
@@ -109,6 +109,11 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
     }
 
     @Override
+    public boolean isDataInputFacing(byte side) {
+        return isInputFacing(side);
+    }
+
+    @Override
     public boolean canConnect(byte side) {
         return isInputFacing(side);
     }
@@ -129,6 +134,11 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
                 stacks=null;
             }
         }
+    }
+
+    @Override
+    public void onRemoval() {
+        stacks=null;
     }
 
     @Override
@@ -182,6 +192,7 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
             } else {
                 setContents(null);
             }
+            aBaseMetaTileEntity.setActive(stacks!=null && stacks.length>0);
         }
     }
 
@@ -192,6 +203,13 @@ public class GT_MetaTileEntity_Hatch_InputDataAccess extends GT_MetaTileEntity_H
                 mDescription,
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"
+        };
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                "Content: Stack Count: "+(stacks==null?0:stacks.length)
         };
     }
 }

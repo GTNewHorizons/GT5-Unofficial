@@ -37,6 +37,11 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
+    public boolean isDataInputFacing(byte side) {
+        return isInputFacing(side);
+    }
+
+    @Override
     public boolean isOutputFacing(byte aSide) {
         return false;
     }

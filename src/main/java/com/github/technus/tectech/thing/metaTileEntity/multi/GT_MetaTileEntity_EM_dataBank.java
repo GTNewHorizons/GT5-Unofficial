@@ -5,8 +5,8 @@ import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.dataFramework.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataAccess;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataAccess;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataItems;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataItems;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
@@ -31,7 +31,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
 public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataAccess> eStacksDataOutputs = new ArrayList<>();
+    private final ArrayList<GT_MetaTileEntity_Hatch_OutputDataItems> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> eDataAccessHatches = new ArrayList<>();
 
     //region Structure
@@ -125,11 +125,11 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         }
         if(stacks.size()>0){
             ItemStack[] arr=stacks.toArray(new ItemStack[0]);
-            for(GT_MetaTileEntity_Hatch_OutputDataAccess hatch:eStacksDataOutputs){
+            for(GT_MetaTileEntity_Hatch_OutputDataItems hatch:eStacksDataOutputs){
                 hatch.q=new InventoryDataPacket(arr);
             }
         }else{
-            for(GT_MetaTileEntity_Hatch_OutputDataAccess hatch:eStacksDataOutputs){
+            for(GT_MetaTileEntity_Hatch_OutputDataItems hatch:eStacksDataOutputs){
                 hatch.q=null;
             }
         }
@@ -153,10 +153,10 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataAccess) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputDataItems) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataAccess) aMetaTileEntity);
-        }else if(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataAccess)){
+            return eStacksDataOutputs.add((GT_MetaTileEntity_Hatch_OutputDataItems) aMetaTileEntity);
+        }else if(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DataAccess && !(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputDataItems)){
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDataAccessHatches.add((GT_MetaTileEntity_Hatch_DataAccess) aMetaTileEntity);
         }

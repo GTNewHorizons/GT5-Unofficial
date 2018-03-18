@@ -13,12 +13,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_MetaTileEntity_Hatch_OutputDataAccess extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
-    public GT_MetaTileEntity_Hatch_OutputDataAccess(int aID, String aName, String aNameRegional, int aTier) {
+public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
+    public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "ItemStack Data Output for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_OutputDataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -34,7 +34,7 @@ public class GT_MetaTileEntity_Hatch_OutputDataAccess extends GT_MetaTileEntity_
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputDataAccess(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputDataItems(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
 
     @Override
@@ -83,6 +83,11 @@ public class GT_MetaTileEntity_Hatch_OutputDataAccess extends GT_MetaTileEntity_
     }
 
     @Override
+    public boolean isDataInputFacing(byte side) {
+        return isInputFacing(side);
+    }
+
+    @Override
     public boolean canConnect(byte side) {
         return isOutputFacing(side);
     }
@@ -92,8 +97,8 @@ public class GT_MetaTileEntity_Hatch_OutputDataAccess extends GT_MetaTileEntity_
         iConnectsToDataPipe current = this, source = this, next;
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
-            if (next instanceof GT_MetaTileEntity_Hatch_InputDataAccess) {
-                ((GT_MetaTileEntity_Hatch_InputDataAccess) next).setContents(q);
+            if (next instanceof GT_MetaTileEntity_Hatch_InputDataItems) {
+                ((GT_MetaTileEntity_Hatch_InputDataItems) next).setContents(q);
                 break;
             }
             source = current;
@@ -115,7 +120,7 @@ public class GT_MetaTileEntity_Hatch_OutputDataAccess extends GT_MetaTileEntity_
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
         if (meta instanceof iConnectsToDataPipe) {
-            if (meta instanceof GT_MetaTileEntity_Hatch_InputDataAccess
+            if (meta instanceof GT_MetaTileEntity_Hatch_InputDataItems
                     && GT_Utility.getOppositeSide(next.getFrontFacing()) == base.getFrontFacing()) {
                 return (iConnectsToDataPipe) meta;
             }

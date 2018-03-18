@@ -77,6 +77,10 @@ public class RecipeLoader implements Runnable {
                         'S', OrePrefixes.circuit.get(Materials.Elite),
                         'E', ItemList.Hull_IV});
 
+        //Data Bank
+        //RA.addAssemblylineRecipe(ItemList.Machine_Multi_Assemblyline.get(1),5000,,,,500,)
+        //CustomItemList.Machine_Multi_DataBank
+
         if (Loader.isModLoaded("dreamcraft")) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version
         } else {

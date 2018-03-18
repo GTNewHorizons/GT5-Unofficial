@@ -272,8 +272,8 @@ public class MachineLoader implements Runnable {
 
         dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15440, "hatch.datain.tier.07", "Optical Slave Connector", 7).getStackForm(1L));
         dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15441, "hatch.dataout.tier.07", "Optical Master Connector", 7).getStackForm(1L));
-        dataInAcc_Hatch.set(new GT_MetaTileEntity_Hatch_InputDataAccess(15442, "hatch.datainass.tier.07", "Assembly line Slave Connector", 7).getStackForm(1L));
-        dataOutAcc_Hatch.set(new GT_MetaTileEntity_Hatch_OutputDataAccess(15443, "hatch.dataoutass.tier.07", "Data Bank Master Connector", 7).getStackForm(1L));
+        dataInAcc_Hatch.set(new GT_MetaTileEntity_Hatch_InputDataItems(15442, "hatch.datainass.tier.07", "Assembly line Slave Connector", 7).getStackForm(1L));
+        dataOutAcc_Hatch.set(new GT_MetaTileEntity_Hatch_OutputDataItems(15443, "hatch.dataoutass.tier.07", "Data Bank Master Connector", 7).getStackForm(1L));
 
         rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
         holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
