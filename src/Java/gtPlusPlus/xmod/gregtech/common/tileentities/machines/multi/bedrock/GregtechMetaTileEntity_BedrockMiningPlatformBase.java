@@ -149,16 +149,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				/*if (!this.tryConsumeDrillingFluid()) {
 					return false;
 				}*/
-				//this.fillMineListIfEmpty();
 				if (this.oreBlockPositions.isEmpty()) {
-					//Logger.INFO("[Bedrock Miner] No Stored Ores.");
-					if (!this.tryLowerPipe(g)) {
-						//Logger.INFO("[Bedrock Miner] Fail [3]");
-						
+					if (!this.tryLowerPipe(g)) {						
 						//Hit bedrock Either retract pipe or Dig!
 						//this.isPickingPipes[g] = true;
-						//didWork[g] = this.isPickingPipes[g];
-						
+						//didWork[g] = this.isPickingPipes[g];						
 						didWork[g] = true;
 					}
 					//this.fillMineListIfEmpty();
@@ -169,10 +164,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		//Fail recipe handling if one pipe didn't handle properly, to try again next run.
 		for (boolean y : didWork) {
 			if (!y) {
+				Logger.INFO("[Bedrock Miner] Fail [x]");
 				return false;
 			}
 		}		
-		//Logger.INFO("[Bedrock Miner] Success? [2]");
+		//Logger.INFO("[Bedrock Miner] Success? [x]");
 		return true;
 	}
 
@@ -344,19 +340,26 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			Logger.INFO("[Bedrock Miner] No Pipes to Lower.");
 			return false;
 		}		
-		boolean didWork[] = new boolean[3];			
-		didWork[0] = this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],	GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767);
-		if (didWork[0]) {
-			didWork[1] = (this.yHead[pipe] != this.yDrill);
-			}
+		boolean didWork[] = new boolean[2];	
+		
+		if (this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], Blocks.bedrock, 32767)) {
+			//Logger.INFO("[Bedrock Miner] Pipe "+pipe+" is at Bedrock.");
+			return false;
+		}
+		didWork[0] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
+		didWork[1] = (this.yHead[pipe] != this.yDrill);
+
 		if (didWork[1]) {
 			didWork[2] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe], this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock);	
 		}
 		
 		if (didWork[0] && didWork[1] && didWork[2]) {
 			this.getBaseMetaTileEntity().decrStackSize(1, 1);
+			Logger.INFO("[Bedrock Miner] Lowered Pipe "+pipe+".");
 			return true;
-		}		
+		}
+		
+		Logger.INFO("[Bedrock Miner] Issue when lowering Pipe "+pipe+". 1: "+didWork[0]+" | 2: "+didWork[1]+" | 3: "+didWork[2]);
 		return false;
 	}
 
