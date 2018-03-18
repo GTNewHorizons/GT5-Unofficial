@@ -4,6 +4,7 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DataReader;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DataReader;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -176,7 +177,9 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         if(renders==null){
             RENDER_REGISTRY.put(stack,renders=new ArrayList<>());
         }
-        render.loadResources();
+        if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            render.loadResources();
+        }
         renders.add(render);
     }
 
