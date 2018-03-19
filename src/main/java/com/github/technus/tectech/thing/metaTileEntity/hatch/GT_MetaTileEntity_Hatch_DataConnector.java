@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.DataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -24,7 +24,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch implements iConnectsToDataPipe {
+public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket> extends GT_MetaTileEntity_Hatch implements IConnectsToDataPipe {
     public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     public static Textures.BlockIcons.CustomIcon EM_D_CONN;
@@ -160,5 +160,10 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"
         };
+    }
+
+    @Override
+    public byte getColorization() {
+        return getBaseMetaTileEntity().getColorization();
     }
 }

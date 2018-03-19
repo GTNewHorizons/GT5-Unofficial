@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.dataFramework.QuantumDataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
-    public boolean delDelay = true;
+    private boolean delDelay = true;
 
     public GT_MetaTileEntity_Hatch_InputData(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Quantum Data Input for Multiblocks");
@@ -52,13 +52,26 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnectData(byte side) {
         return isInputFacing(side);
     }
 
     @Override
-    public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source) {
         return null;
+    }
+
+    public void setContents(QuantumDataPacket qIn){
+        if(qIn==null){
+            this.q=null;
+        }else{
+            if(qIn.getContent()>0) {
+                this.q = qIn;
+                delDelay=true;
+            }else{
+                this.q=null;
+            }
+        }
     }
 
     @Override
@@ -66,7 +79,7 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
         if (delDelay) {
             delDelay = false;
         } else {
-            q = null;
+            setContents(null);
         }
     }
 }

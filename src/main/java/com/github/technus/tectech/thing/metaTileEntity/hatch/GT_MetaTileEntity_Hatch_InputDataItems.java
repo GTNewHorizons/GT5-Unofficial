@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.InventoryDataPacket;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,7 +23,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileE
 import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_SIDES;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess implements iConnectsToDataPipe {
+public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Hatch_DataAccess implements IConnectsToDataPipe {
     private final String mDescription;
     public boolean delDelay = true;
     private ItemStack[] stacks;
@@ -114,21 +114,21 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnectData(byte side) {
         return isInputFacing(side);
     }
 
     @Override
-    public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source) {
         return null;
     }
 
-    public void setContents(InventoryDataPacket q){
-        if(q==null){
+    public void setContents(InventoryDataPacket iIn){
+        if(iIn==null){
             stacks=null;
         }else{
-            if(q.getContent().length>0) {
-                stacks = q.getContent();
+            if(iIn.getContent().length>0) {
+                stacks = iIn.getContent();
                 delDelay=true;
             }else{
                 stacks=null;
@@ -145,7 +145,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagCompound stacksTag=new NBTTagCompound();
-        if(stacks!=null && stacks.length>0){
+        if(stacks!=null){
             stacksTag.setInteger("count",stacks.length);
             for(int i=0;i<stacks.length;i++){
                 stacksTag.setTag(Integer.toString(i),stacks[i].writeToNBT(new NBTTagCompound()));
@@ -187,12 +187,16 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity,aTick);
         if(MOVE_AT == aTick % 20) {
-            if (delDelay) {
-                delDelay = false;
+            if(stacks==null){
+                getBaseMetaTileEntity().setActive(false);
             } else {
-                setContents(null);
+                getBaseMetaTileEntity().setActive(true);
+                if (delDelay) {
+                    delDelay = false;
+                } else {
+                    setContents(null);
+                }
             }
-            aBaseMetaTileEntity.setActive(stacks!=null && stacks.length>0);
         }
     }
 
@@ -207,9 +211,19 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
     public String[] getInfoData() {
         return new String[]{
                 "Content: Stack Count: "+(stacks==null?0:stacks.length)
         };
+    }
+
+    @Override
+    public byte getColorization() {
+        return getBaseMetaTileEntity().getColorization();
     }
 }
