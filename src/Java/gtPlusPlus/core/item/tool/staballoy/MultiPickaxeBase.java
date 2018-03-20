@@ -48,7 +48,6 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		//this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
 		this.setTextureName("minecraft"+":"+"iron_pickaxe");
-		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
 		if ((materialDurability*3) <= Integer.MAX_VALUE){
 			this.setMaxDamage((int) (materialDurability*3));			

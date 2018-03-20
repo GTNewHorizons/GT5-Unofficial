@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -30,13 +31,117 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	public double getDurabilityForDisplay(final ItemStack stack) {
 		return (double)stack.getItemDamageForDisplay() / (double)stack.getMaxDamage();
 	}
+	
+	/**
+	 * Creates an NBT tag for this item if it doesn't have one.
+	 * This also set some default values.
+	 * @param rStack
+	 * @return
+	 */
+	
+	private static boolean createNBT(ItemStack rStack){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		
+		tagNBT.setBoolean("FACING_HORIZONTAL", true);
+		tagNBT.setString("FACING", "north");		
+		tagNBT.setString("lookingDirection", "");
+		
+		tagMain.setTag("PickStats", tagNBT);		
+		rStack.setTagCompound(tagMain);		
+		return true;
+	}
+	
+	/*
+	 * Is the player facing horizontally?
+	 */
+	
+	public static final boolean isFacingHorizontal(final ItemStack aStack) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				return aNBT.getBoolean("FACING_HORIZONTAL");
+			}
+		}
+		else {
+		createNBT(aStack);
+		}
+		return true;
+	}
 
-	protected Boolean FACING_HORIZONTAL = true;
-	protected String FACING = "north";
-	protected EntityPlayer localPlayer;
-	protected String lookingDirection;
-	protected World localWorld;
-	public ItemStack thisPickaxe = null;
+	public static final boolean setFacingHorizontal(final ItemStack aStack, final boolean aFacingHorizontal) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				aNBT.setBoolean("FACING_HORIZONTAL", aFacingHorizontal);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*
+	 * Handles the Direction the player is facing
+	 */
+	
+	public static final String getFacingDirection(final ItemStack aStack) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				return aNBT.getString("FACING");
+			}
+		}
+		else {
+		createNBT(aStack);
+		}
+		return "north";
+	}
+
+	public static final boolean setFacingDirection(final ItemStack aStack, final String aFacingHorizontal) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				aNBT.setString("FACING", aFacingHorizontal);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/*
+	 * The Looking Direction handlers
+	 */
+	
+	public static final String getLookingDirection(final ItemStack aStack) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				return aNBT.getString("lookingDirection");
+			}
+		}
+		else {
+		createNBT(aStack);
+		}
+		return "";
+	}
+
+	public static final boolean setLookingDirection(final ItemStack aStack, final String aFacingHorizontal) {
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag("PickStats");
+			if (aNBT != null) {
+				aNBT.setString("lookingDirection", aFacingHorizontal);
+				return true;
+			}
+		}
+		return false;
+	}
+		
 	protected int miningLevel;
 
 	/*
@@ -51,9 +156,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 	@Override
 	public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer aPlayer) {
-		this.localPlayer = aPlayer;
-		this.localWorld = world;
-		this.thisPickaxe = stack;
 		return super.onItemRightClick(stack, world, aPlayer);
 	}
 
@@ -61,14 +163,11 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 	@Override
 	public boolean onBlockDestroyed(final ItemStack stack, final World world, final Block block, final int X, final int Y, final int Z, final EntityLivingBase entity) {
-		//super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
-		this.localWorld = world;
-		this.thisPickaxe = stack;
-		//checkFacing(world);
 		if (!world.isRemote){
-			this.GetDestroyOrientation(block, this.lookingDirection, world, X, Y, Z, stack);
+			if (entity instanceof EntityPlayer) {
+				this.GetDestroyOrientation((EntityPlayer) entity, block, getLookingDirection(stack), world, X, Y, Z, stack);				
+			}
 		}
-
 		return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
 	}
 
@@ -116,8 +215,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		return false;
 	}
 
-	private void GetDestroyOrientation(final Block block, final String FACING, final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
-		this.localWorld = world;
+	private void GetDestroyOrientation(EntityPlayer entity, final Block block, final String FACING, final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
 		float DURABILITY_LOSS = 0;
 		if (!world.isRemote){
 
@@ -189,7 +287,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			else {
 				//setItemDamage(heldItem, durLeft);
 				Logger.WARNING(""+(durNow-durLeft));
-				this.damageItem(heldItem, (durNow-durLeft)-1, this.localPlayer);
+				this.damageItem(heldItem, (durNow-durLeft)-1, entity);
 			}
 
 
@@ -217,7 +315,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 	//Should clear up blocks quicker if I chain it.
 	public final void removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
-		this.localWorld = world;
 		try {
 			final Block block = world.getBlock(X, Y, Z);
 			final float dur = this.calculateDurabilityLoss(world, X, Y, Z);
@@ -265,10 +362,9 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		}
 	}
 
-	public boolean checkFacing(final World world){
-		this.localWorld = world;
-		if (this.localPlayer != null){
-			final int direction = MathHelper.floor_double((this.localPlayer.rotationYaw * 4F) / 360F + 0.5D) & 3;
+	public boolean checkFacing(final ItemStack aStack, final EntityPlayer aPlayer, final World world){
+		if (aPlayer != null){
+			final int direction = MathHelper.floor_double((aPlayer.rotationYaw * 4F) / 360F + 0.5D) & 3;
 			//Utils.LOG_WARNING("Player - F: "+direction);
 			//Utils.LOG_WARNING("Player - getLookVec(): "+localPlayer.getLookVec().yCoord);
 
@@ -276,7 +372,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 				localPlayer.getLookVec().yCoord;
 			}*/
 
-			final MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, this.localPlayer, false);
+			final MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, aPlayer, false);
 			if (movingobjectposition != null){
 				final int sideHit = movingobjectposition.sideHit;
 				String playerStandingPosition = "";
@@ -286,41 +382,41 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 				if (sideHit == 0){
 					playerStandingPosition = "above";
-					this.FACING_HORIZONTAL = false;
+					setFacingHorizontal(aStack, false);
 				}
 				else if (sideHit == 1){
 					playerStandingPosition = "below";
-					this.FACING_HORIZONTAL = false;
+					setFacingHorizontal(aStack, false);
 				}
 				else if (sideHit == 2){
 					playerStandingPosition = "facingSouth";
-					this.FACING_HORIZONTAL = true;
+					setFacingHorizontal(aStack, true);
 				}
 				else if (sideHit == 3){
 					playerStandingPosition = "facingNorth";
-					this.FACING_HORIZONTAL = true;
+					setFacingHorizontal(aStack, true);
 				}
 				else if (sideHit == 4){
 					playerStandingPosition = "facingEast";
-					this.FACING_HORIZONTAL = true;
+					setFacingHorizontal(aStack, true);
 				}
 				else if (sideHit == 5){
 					playerStandingPosition = "facingWest";
-					this.FACING_HORIZONTAL = true;
+					setFacingHorizontal(aStack, true);
 				}
-				this.lookingDirection = playerStandingPosition;
+				setLookingDirection(aStack, playerStandingPosition);
 
 				if (direction == 0){
-					this.FACING = "south";
+					setFacingDirection(aStack, "south");
 				}
 				else if (direction == 1){
-					this.FACING = "west";
+					setFacingDirection(aStack, "west");
 				}
 				else if (direction == 2){
-					this.FACING = "north";
+					setFacingDirection(aStack, "north");
 				}
 				else if (direction == 3){
-					this.FACING = "east";
+					setFacingDirection(aStack, "east");
 				}
 			}
 
@@ -333,7 +429,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		this.thisPickaxe = stack;
 		list.add(EnumChatFormatting.GRAY+"Mines a 3x3 at 100 durability per block mined.");
 		list.add(EnumChatFormatting.GRAY+"Durability: "+(stack.getMaxDamage()-stack.getItemDamage())+"/"+stack.getMaxDamage());
 		//super.addInformation(stack, aPlayer, list, bool);
@@ -353,9 +448,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 	@Override
 	public boolean onBlockStartBreak(final ItemStack itemstack, final int X, final int Y, final int Z, final EntityPlayer aPlayer) {
-		this.thisPickaxe = itemstack;
-		this.localPlayer = aPlayer;
-		this.checkFacing(this.localPlayer.worldObj);
+		this.checkFacing(itemstack, aPlayer, aPlayer.getEntityWorld());
 		return super.onBlockStartBreak(itemstack, X, Y, Z, aPlayer);
 	}
 
@@ -363,7 +456,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		super(material);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
-		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
 		this.setMaxDamage(3200);
 		this.miningLevel = 5;

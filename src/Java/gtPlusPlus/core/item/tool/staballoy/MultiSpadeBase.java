@@ -36,18 +36,18 @@ public class MultiSpadeBase extends StaballoySpade{
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		//this.setTextureName(CORE.MODID + ":" + "itemShovel");
 		this.setTextureName("minecraft"+":"+"iron_shovel");
-		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
 		this.setMaxDamage(materialDurability*3);
 		this.colour = colour;
 		this.materialName = material.name();
 		this.displayName = unlocalizedName;
 		this.setCreativeTab(AddToCreativeTab.tabTools);
-		try {this.isValid = this.addRecipe();} catch (final Throwable e){}
+		try {
+			this.isValid = this.addRecipe();
+			} 
+		catch (final Throwable e){}
 		if ((colour != 0) && this.isValid){
-			if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null){
-				GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
-			}
+			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
 		}
 	}
 
