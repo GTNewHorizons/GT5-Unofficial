@@ -47,7 +47,17 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
 
 	@Override
 	public String[] getDescription() {
-		String[] g = new String[]{"Generating electric Energy from Multiblocks", "Stores "+maxEUStore()+"EU", "Puts out up to 4 Amps"};
+		String[] g = new String[]{"Generating electric Energy from Multiblocks", "Stores "+maxEUStore()+"EU", "Puts out up to 4 Amps", "Does not accept more than "+this.maxEUOutput()+"EU/t as input", "Large Turbines only supply 1A to this, other Multiblocks can inject more amps"};
 		return g;
+	}
+
+	@Override
+	public long maxAmperesIn() {
+		return 4;
+	}
+
+	@Override
+	public long maxAmperesOut() {
+		return 4;
 	}
 }
