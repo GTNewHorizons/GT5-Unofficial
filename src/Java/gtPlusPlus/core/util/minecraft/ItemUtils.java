@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -41,10 +42,10 @@ public class ItemUtils {
 		return getSimpleStack(x, 1);
 	}
 	public static ItemStack getSimpleStack(final Block x){
-		return getSimpleStack(Item.getItemFromBlock(x), 1);
+		return simpleMetaStack(Item.getItemFromBlock(x), 0, 1);
 	}
-	public static ItemStack getSimpleStack(final Block x, final int i){
-		return getSimpleStack(Item.getItemFromBlock(x), i);
+	public static ItemStack getSimpleStack(final Block x, int meta){
+		return simpleMetaStack(Item.getItemFromBlock(x), meta, 1);
 	}
 	public static ItemStack getSimpleStack(final Item x, final int i){
 		try {

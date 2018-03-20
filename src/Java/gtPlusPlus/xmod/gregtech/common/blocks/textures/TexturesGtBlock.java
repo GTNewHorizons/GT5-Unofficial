@@ -6,6 +6,8 @@ import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.GT_RenderedTexture;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -58,11 +60,38 @@ public class TexturesGtBlock {
 	 * Right?
 	 */
 
+	
 
 	//PlaceHolder Texture
 	private static final CustomIcon Internal_PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");
 	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
+	//Energy overlays
+	public static final CustomIcon OVERLAY_ENERGY_OUT_BUFFER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_BUFFER");
+	public static final CustomIcon OVERLAY_ENERGY_OUT_MULTI_BUFFER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_MULTI_BUFFER");
+	
+	//Overlay Arrays
+	public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER= new ITexture[]{
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{220, 220, 220, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{220, 220, 220, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{255, 100, 0, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{255, 255, 30, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{128, 128, 128, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
+					new short[]{240, 240, 245, 0})}; 
 
 	//Controllers
 	private static final CustomIcon Internal_Casing_Fusion_Simple_Front = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT");

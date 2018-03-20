@@ -57,8 +57,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus (anywhere)",
 				"1x Output Bus (anywhere)",
 				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler Hatch (Back Center)",
+				"1x Muffler Hatch (anywhere)",
+				"1x Maintenance Hatch (Back Center)",
 				"Inconel Reinforced Casings for the rest (28 at least!)",
 				CORE.GT_Tooltip};
 	}

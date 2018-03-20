@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine.bedrock;
 
+import java.util.Random;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,13 +11,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class Mining_Pipe_Fake extends Block{
 
@@ -91,6 +98,36 @@ public class Mining_Pipe_Fake extends Block{
 
 	@Override
 	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
+	}
+	
+	@Override
+	public boolean isCollidable() {
+		return true;
+	}
+
+	@Override
+	public void randomDisplayTick(World world, int posX, int posY, int posZ,
+			Random rand) {
+		Mining_Head_Fake.generateVoidParticlesAroundBlockPos(new BlockPos(posX, posY, posZ, world), 2);
+		super.randomDisplayTick(world, posX, posY, posZ, rand);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World p_149670_1_, int p_149670_2_, int p_149670_3_, int p_149670_4_,	Entity ent) {
+		if (MathUtils.randInt(0, 100) < 5) {
+			EntityUtils.doDamage(ent, DamageSource.outOfWorld, 1);			
+		}
+		super.onEntityCollidedWithBlock(p_149670_1_, p_149670_2_, p_149670_3_, p_149670_4_, ent);
+	}
+
+	@Override
+	protected boolean canSilkHarvest() {
+		return false;
+	}
+
+	@Override
+	public boolean canHarvestBlock(EntityPlayer player, int meta) {
 		return false;
 	}
 

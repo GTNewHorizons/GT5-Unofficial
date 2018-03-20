@@ -47,14 +47,15 @@ public class HANDLER_GT {
 
 	public static void init(){
 
-		//Load General Blocks and set up some Basic Meta Tile Entitie states
+		//Load General Blocks and set up some Basic Meta Tile Entity states
 		Gregtech_Blocks.run();
-
-		//Register Tile Entities
-		COMPAT_HANDLER.registerGregtechMachines();
 
 		//Add Custom Pipes, Wires and Cables.
 		GregtechConduits.run();
+		
+		//Register Tile Entities
+		COMPAT_HANDLER.registerGregtechMachines();
+
 
 		//Only loads if the config option is true (default: true)
 		if (CORE.ConfigSwitches.enableSkookumChoochers){

@@ -25,10 +25,6 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform1 extends GregtechMetaT
 		return (IMetaTileEntity) new GregtechMetaTileEntity_BedrockMiningPlatform1(this.mName);
 	}
 
-	protected GregtechItemList getCasingBlockItem() {
-		return GregtechItemList.Casing_Cyclotron_External;
-	}
-
 	protected Material getFrameMaterial() {
 		return ALLOY.INCONEL_690;
 	}

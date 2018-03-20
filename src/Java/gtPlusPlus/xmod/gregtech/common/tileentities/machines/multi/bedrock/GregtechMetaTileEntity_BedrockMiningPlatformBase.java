@@ -6,6 +6,7 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkPosition;
@@ -28,6 +29,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -421,6 +423,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		for (int xOff = -1 + this.back.offsetX; xOff <= 1 + this.back.offsetX; ++xOff) {
 			for (int zOff = -1 + this.back.offsetZ; zOff <= 1 + this.back.offsetZ; ++zOff) {
 				if (xOff != 0 || zOff != 0) {
+					final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xOff, 0, zOff);
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xOff, 0,
 							zOff);
 					if (!this.checkCasingBlock(xOff, 0, zOff)
@@ -428,7 +431,10 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 							&& !this.addInputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addOutputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addEnergyInputToMachineList(tTileEntity, this.casingTextureIndex)) {
-						Logger.INFO("[Bedrock Miner] Found bad block in Structure.");
+						Logger.INFO("[Bedrock Miner] Found bad blosck in Structure.");
+						if (tBlock != null) {
+							//Logger.INFO("[Bedrock Miner] Found "+(new ItemStack(tBlock, tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), xOff, 0, zOff))).getDisplayName()+", expected "+this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName());
+						}
 						return false;
 					}
 				}
@@ -509,8 +515,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	private boolean checkFrameBlock(final int xOff, final int yOff, final int zOff) {
 		return this.checkBlockAndMetaOffset(xOff, yOff, zOff,
-				GT_Utility.getBlockFromStack(this.getFrameMaterial().getFrameBox(1)),
-				0);
+				Block.getBlockFromItem(this.getFrameMaterial().getFrameBox(1).getItem()), 0);
 	}
 
 	private boolean checkBlockAndMetaOffset(final int xOff, final int yOff, final int zOff, final Block block,
@@ -519,8 +524,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	}
 
 	private boolean checkBlockAndMeta(final int x, final int y, final int z, final Block block, final int meta) {
-		return (meta == 32767 || this.getBaseMetaTileEntity().getMetaID(x, y, z) == meta)
-				&& this.getBaseMetaTileEntity().getBlock(x, y, z) == block;
+		Logger.INFO("Found "+this.getBaseMetaTileEntity().getBlock(x, y, z).getLocalizedName()+":"+this.getBaseMetaTileEntity().getMetaID(x, y, z)+" | Expected: "+block.getUnlocalizedName()+":"+meta);
+		return (this.getBaseMetaTileEntity().getMetaID(x, y, z) == meta) && this.getBaseMetaTileEntity().getBlock(x, y, z) == block;
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -543,7 +548,9 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		return false;
 	}
 
-	protected abstract GregtechItemList getCasingBlockItem();
+	protected GregtechItemList getCasingBlockItem() {
+		return GregtechItemList.Casing_BedrockMiner;
+	}
 
 	protected abstract Material getFrameMaterial();
 

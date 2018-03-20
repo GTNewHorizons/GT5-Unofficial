@@ -26,10 +26,6 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaT
 		return (IMetaTileEntity) new GregtechMetaTileEntity_BedrockMiningPlatform2(this.mName);
 	}
 
-	protected GregtechItemList getCasingBlockItem() {
-		return GregtechItemList.Casing_Reactor_I;
-	}
-
 	protected Material getFrameMaterial() {
 		return NUCLIDE.getInstance().AMERICIUM241;
 	}
