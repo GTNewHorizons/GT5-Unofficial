@@ -266,11 +266,11 @@ public class ItemUtils {
 			mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
 		}			
 		//Use Cache		
-		if (mOreDictCache.containsKey(mTemp) && mOreDictCache.get(mTemp) != null) {
+		if (mOreDictCache.containsKey(mTemp) && mOreDictCache.get(mTemp) != null && mOreDictCache.get(mTemp).getItem() != ModItems.AAA_Broken) {
 			//Logger.INFO("[ODC] Returning mOreDictCache value.");
 			return getCachedValue(mTemp, amount);
 		}
-		else if (mDustCache.containsKey(oredictName) && mDustCache.get(mTemp) != null) {
+		else if (mDustCache.containsKey(oredictName) && mDustCache.get(mTemp) != null && mOreDictCache.get(mTemp).getItem() != ModItems.AAA_Broken) {
 			//Logger.INFO("[ODC] Returning mDustCache value.");
 			return getSimpleStack(mDustCache.get(oredictName), amount);
 		}
@@ -280,7 +280,9 @@ public class ItemUtils {
 			if (!oreDictList.isEmpty()){
 				final ItemStack returnValue = oreDictList.get(0).copy();
 				returnValue.stackSize = amount;
-				setCachedValue(mTemp, returnValue);
+				if (returnValue.getItem() != ModItems.AAA_Broken) {
+					setCachedValue(mTemp, returnValue);
+				}
 				//Logger.INFO("[ODC] Setting and Returning mOreDictCache value.");
 				return returnValue;
 			}
