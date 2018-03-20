@@ -343,11 +343,9 @@ public class ItemUtils {
 				}
 			}
 			Logger.WARNING(oredictName+" was not valid.");
-			setCachedValue(oredictName, null);
 			return null;
 		}
 		catch (final Throwable t){
-			setCachedValue(oredictName, null);
 			return null;
 		}
 	}

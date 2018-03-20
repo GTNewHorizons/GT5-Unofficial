@@ -260,14 +260,12 @@ public final class ModItems {
 
 	static {
 		Logger.INFO("Items!");
+		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
+		AAA_Broken = new BaseItemIngot_OLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
+		ZZZ_Empty = new ItemEmpty();
 	}
 
 	public static final void init(){
-
-		//Default item used when recipes fail, handy for debugging.
-		AAA_Broken = new BaseItemIngot_OLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
-		ZZZ_Empty = new ItemEmpty();
-
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 
 		//Debug Loading

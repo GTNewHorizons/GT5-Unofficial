@@ -68,6 +68,15 @@ public class CommonProxy {
 		else {
 			Logger.WARNING("Development mode not set.");
 		}
+		
+		//Moved from Init after Debug Loading.
+		//29/01/18 - Alkalus
+		//Moved earlier into PreInit, so that Items exist before they're called upon in recipes.
+		//20/03/18 - Alkalus
+		ModItems.init();
+		ModBlocks.init();
+		CI.preInit();
+		
 		AddToCreativeTab.initialiseTabs();
 		COMPAT_IntermodStaging.preInit();
 		BookHandler.run();
@@ -77,11 +86,6 @@ public class CommonProxy {
 		Logger.INFO("[Proxy] Calling Tile Entity registrator.");
 		registerTileEntities();
 		
-		//Moved from Init after Debug Loading.
-		//29/01/18 - Alkalus
-		ModItems.init();
-		ModBlocks.init();
-		CI.preInit();
 		
 		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
