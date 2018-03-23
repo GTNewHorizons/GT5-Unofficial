@@ -923,7 +923,7 @@ public class Material {
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					boilingPoint += part.getStackMaterial().getBoilingPointC();
-					Logger.INFO("Melting Point for "+this.getLocalizedName()+" increased by "+ part.getStackMaterial().getBoilingPointC());
+					Logger.INFO("Boiling Point for "+this.getLocalizedName()+" increased by "+ part.getStackMaterial().getBoilingPointC());
 				}
 				else {
 					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
