@@ -162,7 +162,7 @@ public class Material {
 				}
 			}
 			else {
-				this.boilingPointC = this.calculateMeltingPoint();
+				this.boilingPointC = this.calculateBoilingPoint();
 			}
 
 			this.meltingPointK = (int) MathUtils.celsiusToKelvin(this.meltingPointC);
@@ -901,7 +901,7 @@ public class Material {
 				if (part != null){
 					int incrementor = part.getStackMaterial().getMeltingPointC();
 					meltingPoint += incrementor;
-					Logger.INFO("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+					Logger.INFO("Melting Point for "+this.getLocalizedName()+" increased by "+ incrementor);
 				}
 				else {
 					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
@@ -923,6 +923,7 @@ public class Material {
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					boilingPoint += part.getStackMaterial().getBoilingPointC();
+					Logger.INFO("Melting Point for "+this.getLocalizedName()+" increased by "+ part.getStackMaterial().getBoilingPointC());
 				}
 				else {
 					Logger.MATERIALS(this.getLocalizedName()+" has a really invalid composition.");
