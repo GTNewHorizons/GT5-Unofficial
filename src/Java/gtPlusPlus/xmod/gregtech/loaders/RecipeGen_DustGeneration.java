@@ -232,50 +232,58 @@ public class RecipeGen_DustGeneration  implements Runnable{
 					}
 					else if (inputStacks.length == 2) {
 						input3 = CI.getNumberedCircuit(20);
-						
+
 					}
 					else if (inputStacks.length == 3) {
 						input4 = CI.getNumberedCircuit(20);
-						
+
 					}
-					
-					
+
+
 					//Add mixer Recipe
 
 					FluidStack oxygen = GT_Values.NF;
 					if (material.getComposites() != null){
+						int compSlot = 0;
 						for (final MaterialStack x : material.getComposites()){
 							if (!material.getComposites().isEmpty()){
 								if (x != null){
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
-											if (x.getStackMaterial().getState() == MaterialState.GAS){
-												oxygen = x.getStackMaterial().getFluid(1000);
+											MaterialState f = x.getStackMaterial().getState();
+											if (f == MaterialState.GAS || f == MaterialState.LIQUID || f == MaterialState.PURE_LIQUID){
+												oxygen = x.getStackMaterial().getFluid((int) (material.vSmallestRatio[compSlot] * 1000));
 											}
 										}
 									}
 								}
 							}
+							compSlot++;
 						}
 
 					}
 
 					//Add mixer Recipe
-					if (GT_Values.RA.addMixerRecipe(
-							input1, input2,
-							input3, input4,
-							oxygen,
-							null,
-							outputStacks,
-							(int) Math.max(material.getMass() * 2L * 1, 1),
-							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
-					{
-						Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
-						return true;
+					try {
+						if (GT_Values.RA.addMixerRecipe(
+								input1, input2,
+								input3, input4,
+								oxygen,
+								null,
+								outputStacks,
+								(int) Math.max(material.getMass() * 2L * 1, 1),
+								2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
+						{
+							Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+							return true;
+						}
+						else {
+							Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
+							return false;
+						}
 					}
-					else {
-						Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
-						return false;
+					catch (Throwable t) {
+						t.printStackTrace();
 					}
 				}
 				else {
