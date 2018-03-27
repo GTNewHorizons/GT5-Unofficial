@@ -93,8 +93,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		if (aSide == aFacing) {
 			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex],
 					new GT_RenderedTexture(
-							(IIconContainer) (aActive ? Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE
-									: Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL)) };
+							(IIconContainer) (aActive ? Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE
+									: Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)) };
 		}
 		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[this.casingTextureIndex] };
 	}
@@ -103,6 +103,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
 				"OreDrillingPlant.png");
+	}
+	
+
+	public int getAmountOfOutputs() {
+		return 1;
 	}
 
 	public void saveNBTData(final NBTTagCompound aNBT) {
@@ -221,7 +226,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	}
 
 	private void setElectricityStats() {
-		this.mEfficiency = this.getCurrentEfficiency((ItemStack) null);
+		//this.mEfficiency = this.getCurrentEfficiency((ItemStack) null);
 		this.mEfficiencyIncrease = 10000;
 		final int overclock = 1 << GT_Utility.getTier(this.getMaxInputVoltage()) - 1;
 		this.mEUt = -12 * overclock * overclock;

@@ -20,10 +20,10 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
 		super(aName, aTier, aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_Hatch_DynamoBuffer(final String aName, final int aTier, final String[] aDescription,
+	/*public GT_MetaTileEntity_Hatch_DynamoBuffer(final String aName, final int aTier, final String[] aDescription,
 			final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
-	}
+	}*/
 
 	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
 		return new ITexture[]{aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier]};
@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
 	}
 
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_DynamoBuffer(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_DynamoBuffer(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 	@Override
