@@ -127,8 +127,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                     break;
                                 case 2:
                                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
-                                    if (fStack.amount > 10000) {
-                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) (fStack.amount / 5000));
+                                    if (fStack.amount > 0) {
+                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
                                         packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
                                     }
                                     break;
@@ -170,7 +170,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             {
                 if (!aWorld.isRemote) {
                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                    addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
+                    addChatMassageByValue(aPlayer,fStack.amount,fStack.getLocalizedName());
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
                 }
@@ -190,7 +190,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         if (data < 3)
             if (!aWorld.isRemote) {
                 FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                addChatMassageByValue(aPlayer, fStack.amount / 5000, fStack.getLocalizedName());
+                addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
                 return true;
