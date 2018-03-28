@@ -391,25 +391,25 @@ public final class ModItems {
 			//The large neutron-absorption cross-section of lithium-6 (about 940 barns[5]) as compared with the very small
 			//neutron cross-section of lithium-7 (about 45 millibarns) makes high separation of lithium-7 from natural lithium a
 			//strong requirement for the possible use in lithium fluoride reactors.
-			MaterialGenerator.generate(NUCLIDE.getInstance().LITHIUM7, false);
+			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7, false);
 			//Thorium-232 is the most stable isotope of Thorium, purified for nuclear fuel use in this case.
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().THORIUM232);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().THORIUM232);
 			//Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U as an impurity
 			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
-			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM232);
+			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM232);
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM233);
+			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
 			//Plutonium-238 is a very powerful alpha emitter. This makes the plutonium-238 isotope suitable for usage in radioisotope thermoelectric generators (RTGs)
 			//and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM238, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM238, false);
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPlutonium239", 1) == null || Utils.getGregtechVersionAsInt() < 50931) {
-				MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM239, false);
+				MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM239, false);
 			}
 
 			//RTG Fuel Materials
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().STRONTIUM90, false);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().POLONIUM210, false);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().AMERICIUM241, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
 
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
@@ -686,7 +686,7 @@ public final class ModItems {
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 
-		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, NUCLIDE.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
+		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", ""+StringUtils.superscript("226Ra"), ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
 		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon 222 ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
 		

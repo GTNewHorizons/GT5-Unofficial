@@ -639,7 +639,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			
 			if (MathUtils.randInt(1, 200) == 1){
 				//Utils.LOG_INFO("Adding U233");
-				this.addOutput(NUCLIDE.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
+				this.addOutput(ELEMENT.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
 			}
 			
 			if (this.mDynamoHatches != null) {

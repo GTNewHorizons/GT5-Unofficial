@@ -1,13 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.bedrock;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaTileEntity_BedrockMiningPlatformBase {
 	public GregtechMetaTileEntity_BedrockMiningPlatform2(final int aID, final String aName, final String aNameRegional) {
@@ -27,7 +24,7 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaT
 	}
 
 	protected Material getFrameMaterial() {
-		return NUCLIDE.getInstance().AMERICIUM241;
+		return ELEMENT.getInstance().AMERICIUM241;
 	}
 
 	protected int getCasingTextureIndex() {

@@ -15,7 +15,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -1075,9 +1074,9 @@ public class RECIPES_GREGTECH {
 
 	private static void centrifugeRecipes() {
 		GT_Values.RA.addCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 8), GT_Values.NI,
-				GT_Values.NF, GT_Values.NF, NUCLIDE.getInstance().THORIUM232.getDust(2),
+				GT_Values.NF, GT_Values.NF, ELEMENT.getInstance().THORIUM232.getDust(2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallThorium", 20),
-				NUCLIDE.getInstance().URANIUM232.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI,
+				ELEMENT.getInstance().URANIUM232.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI,
 				new int[] { 0, 0, 10 }, 500 * 20, 2000);
 
 	}
