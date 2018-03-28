@@ -46,6 +46,7 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -188,6 +189,11 @@ public class GTplusplus implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent arg0) {
 
+	}
+	
+	@Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent event) {		
+		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {

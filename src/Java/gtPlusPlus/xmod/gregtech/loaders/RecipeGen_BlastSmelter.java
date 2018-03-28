@@ -43,8 +43,8 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 					FLUORIDES.THORIUM_HEXAFLUORIDE,
 					FLUORIDES.THORIUM_TETRAFLUORIDE,
 					ALLOY.BLOODSTEEL,
-					//ALLOY.BEDROCKIUM,
 					NUCLIDE.LiFBeF2ThF4UF4,
+					NUCLIDE.LiFBeF2ZrF4UF4,
 					NUCLIDE.LiFBeF2ZrF4U235
 			};
 			for (final Material R : badMaterials){

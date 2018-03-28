@@ -16,9 +16,7 @@ import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_Ex;
+import gtPlusPlus.xmod.gregtech.loaders.*;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
 
@@ -69,7 +67,7 @@ public class HANDLER_GT {
 		
 		//Generates recipes for all gregtech smelting and alloy smelting combinations.
 		//RecipeGen_BlastSmelterGT.generateRecipes();
-		new RecipeGen_BlastSmelterGT_Ex();
+		//new RecipeGen_BlastSmelterGT_Ex();
 
 	}
 

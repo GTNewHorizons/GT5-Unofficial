@@ -91,7 +91,7 @@ public class RECIPES_GREGTECH {
 
 	private static void blastSmelterRecipes() {
 
-		// Black Bronze
+		/*// Black Bronze
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[] { ItemUtils.getGregtechCircuit(13),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
@@ -311,7 +311,7 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getFluidStack("molten.vibrantalloy", 144), 0,
 						MathUtils.findPercentageOfInt(16 * 20, 80), 480);
 			}
-		}
+		}*/
 	}
 
 	private static void fluidcannerRecipes() {
