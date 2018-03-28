@@ -10,28 +10,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class ELEMENT {
 
-	private static final ELEMENT thisClass = new ELEMENT();
-	
-	static {
-		Logger.MATERIALS("Initialising Base Elements.");
-	}
-
-	public ELEMENT(){		
-		//GTNH Trinium Handling		
-		if (CORE.GTNH){
-			TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(MaterialUtils.getMaterialByName("Trinium"));
-			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
-		}
-		else {
-			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
-			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
-		}		
-	}
-
-	public static ELEMENT getInstance(){
-		return thisClass;
-	}
-
 	//First 50 Elements
 	public final Material HYDROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Hydrogen);
 	public final Material HELIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Helium);
@@ -150,4 +128,43 @@ public final class ELEMENT {
 	public final Material TRINIUM;
 	public final Material TRINIUM_REFINED;
 	//https://github.com/Blood-Asp/GT5-Unofficial/issues/609
+	
+	
+	//Custom Isotopes
+	public final Material LITHIUM7 = new Material("Lithium 7", MaterialState.LIQUID, Materials.Lithium.mRGBa, Materials.Lithium.mMeltingPoint, Materials.Lithium.mBlastFurnaceTemp, Materials.Lithium.getProtons(), Materials.Lithium.getNeutrons(), Materials.Lithium.mBlastFurnaceRequired, StringUtils.superscript("7Li"), 0, false);//Not a GT Inherited Material
+	public final Material URANIUM232 = new Material("Uranium 232", MaterialState.SOLID, new short[]{88, 220, 103, 0}, 1132, 4131, 92, 140, false, StringUtils.superscript("232U"), 4);//Not a GT Inherited Material
+	public final Material URANIUM233 = new Material("Uranium 233", MaterialState.SOLID, new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, StringUtils.superscript("233U"), 2);//Not a GT Inherited Material
+	public final Material THORIUM232 = new Material("Thorium 232", MaterialState.SOLID, new short[]{15, 60, 15, 0}, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, StringUtils.superscript("232Th"), 1, false);//Not a GT Inherited Material
+	public final Material PLUTONIUM239 = new Material("Plutonium-239", MaterialState.SOLID, Materials.Plutonium.mIconSet, Materials.Plutonium.mDurability, Materials.Plutonium.mRGBa, Materials.Plutonium.mMeltingPoint, Materials.Plutonium.mBlastFurnaceTemp, 94, 145, false, StringUtils.superscript("239Pu"), 4, true);//Not a GT Inherited Material
+	//RTG Fuels
+	public final Material PLUTONIUM238 = new Material("Plutonium-238", MaterialState.SOLID, Materials.Plutonium241.mIconSet, Materials.Plutonium241.mDurability, Materials.Plutonium241.mRGBa, Materials.Plutonium241.mMeltingPoint, Materials.Plutonium241.mBlastFurnaceTemp, 94, 144, false, StringUtils.superscript("238Pu"), 2, false);//Not a GT Inherited Material
+	public final Material STRONTIUM90 = new Material("Strontium-90", MaterialState.SOLID, Materials.Strontium.mIconSet, Materials.Strontium.mDurability, Materials.Strontium.mRGBa, Materials.Strontium.mMeltingPoint, Materials.Strontium.mBlastFurnaceTemp, 38, 52, false, StringUtils.superscript("90Sr"), 2, false);//Not a GT Inherited Material
+	public final Material POLONIUM210 = new Material("Polonium-210", MaterialState.SOLID, Materials.Plutonium241.mIconSet, ELEMENT.getInstance().POLONIUM.vDurability, ELEMENT.getInstance().POLONIUM.getRGBA(), ELEMENT.getInstance().POLONIUM.getMeltingPointK(), ELEMENT.getInstance().POLONIUM.getBoilingPointK(), 84, 126, false, StringUtils.superscript("210Po"), 2, false);//Not a GT Inherited Material
+	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, Materials.Americium.mIconSet, Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2, false);//Not a GT Inherited Material
+
+
+
+	static {
+		Logger.MATERIALS("Initialising Base Elements.");
+	}
+	
+	private static final ELEMENT INSTANCE = new ELEMENT();
+
+	public ELEMENT(){		
+		//GTNH Trinium Handling		
+		if (CORE.GTNH){
+			TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(MaterialUtils.getMaterialByName("Trinium"));
+			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+		}
+		else {
+			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
+			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+		}		
+	}
+
+	public static ELEMENT getInstance(){
+		return INSTANCE;
+	}
+
+
 }

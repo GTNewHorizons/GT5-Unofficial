@@ -9,10 +9,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 
 public class FLUORIDES {
 
-	private static final FLUORIDES thisClass = new FLUORIDES();
-	public FLUORIDES(){}
-	public static FLUORIDES getInstance(){return thisClass;}
-
 	public static final Material FLUORITE = new Material(
 			"Fluorite", //Material Name
 			MaterialState.SOLID, //State
@@ -39,12 +35,12 @@ public class FLUORIDES {
 			new short[]{25, 70, 25, 0}, //Material Colour
 			Materials.Thorium.mMeltingPoint, //Melting Point in C
 			Materials.Thorium.mBlastFurnaceTemp, //Boiling Point in C
-			((NUCLIDE.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*4))/5), //Protons
-			((NUCLIDE.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*4))/5), //Neutrons
+			((ELEMENT.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*4))/5), //Protons
+			((ELEMENT.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*4))/5), //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(NUCLIDE.getInstance().THORIUM232, 1),
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
 			});
 
@@ -55,12 +51,12 @@ public class FLUORIDES {
 			new short[]{10, 50, 10, 0}, //Material Colour
 			Materials.Thorium.mMeltingPoint, //Melting Point in C
 			Materials.Thorium.mBlastFurnaceTemp, //Boiling Point in C
-			((NUCLIDE.getInstance().THORIUM232.getProtons()+NUCLIDE.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/8), //Protons
-			((NUCLIDE.getInstance().THORIUM232.getNeutrons()+NUCLIDE.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/8), //Neutrons
+			((ELEMENT.getInstance().THORIUM232.getProtons()+ELEMENT.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/8), //Protons
+			((ELEMENT.getInstance().THORIUM232.getNeutrons()+ELEMENT.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/8), //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(NUCLIDE.getInstance().THORIUM232, 1),
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 1),
 					new MaterialStack(ELEMENT.getInstance().THORIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 12)
 			});
@@ -72,12 +68,12 @@ public class FLUORIDES {
 			new short[]{50, 240, 50, 0}, //Material Colour
 			Materials.Uranium235.mMeltingPoint, //Melting Point in C
 			Materials.Uranium235.mBlastFurnaceTemp, //Boiling Point in C
-			((NUCLIDE.getInstance().URANIUM233.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*4))/5), //Protons
-			((NUCLIDE.getInstance().URANIUM233.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*4))/5), //Neutrons
+			((ELEMENT.getInstance().URANIUM233.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*4))/5), //Protons
+			((ELEMENT.getInstance().URANIUM233.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*4))/5), //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(NUCLIDE.getInstance().URANIUM233, 1),
+					new MaterialStack(ELEMENT.getInstance().URANIUM233, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
 			});
 
@@ -136,12 +132,12 @@ public class FLUORIDES {
 			new short[]{225, 220, 255, 0}, //Material Colour
 			Materials.Lithium.mMeltingPoint, //Melting Point in C
 			Materials.Lithium.mBlastFurnaceTemp, //Boiling Point in C
-			((NUCLIDE.getInstance().LITHIUM7.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()))/2), //Protons
-			((NUCLIDE.getInstance().LITHIUM7.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()))/2), //Neutrons
+			((ELEMENT.getInstance().LITHIUM7.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()))/2), //Protons
+			((ELEMENT.getInstance().LITHIUM7.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()))/2), //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(NUCLIDE.getInstance().LITHIUM7, 1),
+					new MaterialStack(ELEMENT.getInstance().LITHIUM7, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 1)
 			});
 
@@ -292,5 +288,8 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
 			});
+
+	private static final FLUORIDES INSTANCE = new FLUORIDES();
+	public static FLUORIDES getInstance(){return INSTANCE;}
 
 }

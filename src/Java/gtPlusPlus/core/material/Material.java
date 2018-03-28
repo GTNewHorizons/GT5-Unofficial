@@ -35,10 +35,6 @@ public class Material {
 	private MaterialState materialState;
 	private TextureSet textureSet;
 
-	public synchronized final TextureSet getTextureSet() {
-		return textureSet;
-	}
-
 	private Fluid vMoltenFluid;
 	private Fluid vPlasma;
 
@@ -72,7 +68,7 @@ public class Material {
 	public long vDurability;
 	public int vToolQuality;
 	public int vHarvestLevel;
-	
+
 	private GTPP_Aspects[] vAspects;
 
 
@@ -85,7 +81,7 @@ public class Material {
 	public Material(String materialName, MaterialState defaultState, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
 		this(materialName, defaultState, null, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
-	
+
 	public Material(String materialName, MaterialState defaultState, final TextureSet set, short[] rgba, int j, int k, int l, int m, int radiationLevel, MaterialStack[] materialStacks){
 		this(materialName, defaultState, set, 0, rgba, j, k, l, m, false, "", radiationLevel, false, materialStacks);
 	}
@@ -336,9 +332,15 @@ public class Material {
 		}
 	}
 
+	public final TextureSet getTextureSet() {
+		synchronized(this) {
+			return textureSet;
+		}		
+	}
+
 	private TextureSet setTextureSet(TextureSet set) {
 		if (set != null) {
-			 return set;			
+			return set;			
 		}
 		else {
 			// build hash table with count
@@ -574,29 +576,27 @@ public class Material {
 	}
 
 	final public ItemStack[] getMaterialComposites(){
-		if (this.vMaterialInput != null){
-			if (!this.vMaterialInput.isEmpty()){
-				final ItemStack[] temp = new ItemStack[this.vMaterialInput.size()];
-				for (int i=0;i<this.vMaterialInput.size();i++){
-					//Utils.LOG_INFO("i:"+i);
-					ItemStack testNull = null;
-					try {
-						testNull = this.vMaterialInput.get(i).getValidStack();
-					} catch (final Throwable r){
-						Logger.INFO("Failed gathering material stack for "+this.localizedName+".");
-						Logger.INFO("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
-					}
-					try {
-						if (testNull != null){
-							//Utils.LOG_INFO("not null");
-							temp[i] = this.vMaterialInput.get(i).getValidStack();
-						}
-					} catch (final Throwable r){
-						Logger.INFO("Failed setting slot "+i+", using "+this.localizedName);
-					}
+		if (this.vMaterialInput != null && !this.vMaterialInput.isEmpty()){
+			final ItemStack[] temp = new ItemStack[this.vMaterialInput.size()];
+			for (int i=0;i<this.vMaterialInput.size();i++){
+				//Utils.LOG_INFO("i:"+i);
+				ItemStack testNull = null;
+				try {
+					testNull = this.vMaterialInput.get(i).getValidStack();
+				} catch (final Throwable r){
+					Logger.INFO("Failed gathering material stack for "+this.localizedName+".");
+					Logger.INFO("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
 				}
-				return temp;
+				try {
+					if (testNull != null){
+						//Utils.LOG_INFO("not null");
+						temp[i] = this.vMaterialInput.get(i).getValidStack();
+					}
+				} catch (final Throwable r){
+					Logger.INFO("Failed setting slot "+i+", using "+this.localizedName);
+				}
 			}
+			return temp;			
 		}
 		return new ItemStack[]{};
 	}
@@ -621,7 +621,7 @@ public class Material {
 	}
 
 	private final short getComponentCount(final MaterialStack[] inputs){
-		
+
 		if (inputs == null || inputs.length < 1) {
 			return 1;
 		}
