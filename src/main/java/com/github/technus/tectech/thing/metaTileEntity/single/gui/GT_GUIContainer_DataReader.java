@@ -119,7 +119,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
             for (GT_MetaTileEntity_DataReader.DataRender render : renders) {
                 if (render.canRender(thing, mTier)) {
                     if (!GT_Utility.areStacksEqual(stack, thing, false)) {
-                        render.initRecipe(thing);
+                        render.initRender(thing);
                     }
                     render.renderBackgroundOverlay(thing, mouseX, mouseY, x, y, this);
                     break;

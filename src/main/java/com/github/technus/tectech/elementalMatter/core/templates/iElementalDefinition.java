@@ -17,7 +17,7 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
     public static final float STABLE_RAW_LIFE_TIME =1.5e36f;
     public static final float NO_DECAY_RAW_LIFE_TIME=-1;
     public static final long DEFAULT_ENERGY_LEVEL=0;
-    public static final float DEFAULT_ENERGY_REQUIREMENT=25000f;
+    public static final float DEFAULT_ENERGY_REQUIREMENT=25000;//legit cuz normal atoms should only emit a gamma if they don't have defined energy levels
 
     //Nomenclature
     public abstract String getName();

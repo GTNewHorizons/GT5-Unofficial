@@ -191,7 +191,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         @SideOnly(Side.CLIENT)
         void loadResources();
         @SideOnly(Side.CLIENT)
-        void initRecipe(ItemStack itemStack);
+        void initRender(ItemStack itemStack);
         @SideOnly(Side.CLIENT)
         void renderTooltips(ItemStack itemStack,int mouseX,int mouseY,GT_GUIContainer_DataReader gui);
         @SideOnly(Side.CLIENT)
@@ -218,7 +218,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             }
 
             @Override
-            public void initRecipe(ItemStack itemStack) {
+            public void initRender(ItemStack itemStack) {
                 slots=new HashMap<>();
                 slots2=new HashMap<>();
 

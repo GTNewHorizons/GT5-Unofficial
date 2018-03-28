@@ -158,7 +158,6 @@ public class TecTech {
                 "dreamcraft",
                 "miscutils",
                 "GT++DarkWorld",
-                "TwilightForest",
                 "GalacticraftCore",
                 "GalacticraftMars",
                 "GalaxySpace",
@@ -179,8 +178,8 @@ public class TecTech {
                 "thaumicenergistics",
                 "witchery",
                 "lootgames",
-                Reference.MODID,
-                "utilityworlds"
+                "utilityworlds",
+                Reference.MODID
         ));
         String modId;
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
@@ -193,9 +192,25 @@ public class TecTech {
                     if ("grave".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
                         continue;
                     }
+                } else if ("TwilightForest".equals(modId)){
+                    if ("tile.TFShield".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
+                        block.setResistance(40);
+                        continue;
+                    }else if ("tile.TFThorns".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
+                        block.setResistance(10);
+                        continue;
+                    }else if ("tile.TFTowerTranslucent".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
+                        block.setResistance(30);
+                        continue;
+                    }else if ("tile.TFDeadrock".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
+                        block.setResistance(5);
+                        continue;
+                    } else {
+                        continue;
+                    }
                 }
             }
-            block.setResistance(6);
+            block.setResistance(5);
         }
     }
 }

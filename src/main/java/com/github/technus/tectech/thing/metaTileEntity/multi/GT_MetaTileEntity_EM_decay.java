@@ -35,10 +35,10 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    private cElementalInstanceStackMap contents=new cElementalInstanceStackMap();
 
     private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
-    private static final double MASS_TO_EU=ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear")*800000.0/URANIUM_INGOT_MASS_DIFF;//*20
+    private static final double MASS_TO_EU=ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear")*800000.0/ URANIUM_INGOT_MASS_DIFF;//*20
+    private static final double MASS_TO_EU_INSTANT= MASS_TO_EU*20;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -126,44 +126,38 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 i.getContainerHandler().clear();
             }
             return startRecipe(map);
-        }else if(eSafeVoid){
-            contents.clear();
-            mEUt=0;
-        }else if(contents.hasStacks()){
-            return startRecipe(null);
         }
         return false;
     }
 
-    @Override
-    protected void afterRecipeCheckFailed() {
-        super.afterRecipeCheckFailed();
-    }
-
     private boolean startRecipe(cElementalInstanceStackMap input) {
-        if(input!=null) {
-            contents.putUnifyAll(input);
-        }
-
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
+        outputEM=new cElementalInstanceStackMap[2];
+        outputEM[0]=input;
+        outputEM[1]=new cElementalInstanceStackMap();
 
-        float mass=contents.getMass();
+        float mass=outputEM[0].getMass();
 
-        System.out.println("INPUT");
-        for(cElementalInstanceStack stack:contents.values()){
+        for(cElementalInstanceStack stack:outputEM[0].values()){
             if(stack.getEnergy()==0 && stack.definition.decayMakesEnergy(1)){
-                stack.setEnergy(1);
+                if(getBaseMetaTileEntity().decreaseStoredEnergyUnits((long)(stack.getEnergySettingCost(1)*MASS_TO_EU_INSTANT),false)){
+                    stack.setEnergy(1);
+                }else{
+                    outputEM[1].putReplace(stack);
+                }
+            }else if(stack.definition.decayMakesEnergy(stack.getEnergy())){
+
             }
             //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
 
-        contents.tickContent(1,0,1);
+        outputEM[0].tickContent(1,0,1);
 
-        mEUt=(int)((mass-contents.getMass())*MASS_TO_EU);
-        System.out.println("EUt = " +mEUt);
-        if(mEUt<0) mEUt=0;
+        mEUt=(int)((mass-outputEM[0].getMass())*MASS_TO_EU);
+        mEUt/=getParameterInInt(0,0);
+        eAmpereFlow=getParameterInInt(0,0);
 
         //todo move not actually decaying crap, beware of energy using decays?
 
@@ -209,5 +203,10 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
         };
+    }
+
+    @Override
+    public long maxEUStore() {
+        return super.maxEUStore();
     }
 }

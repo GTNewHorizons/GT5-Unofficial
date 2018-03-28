@@ -13,7 +13,7 @@ import gregtech.common.GT_RecipeAdder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TT_recipeAdder extends GT_RecipeAdder {
+public class  TT_recipeAdder extends GT_RecipeAdder {
     public static final ItemStack[] nullItem=new ItemStack[0];
     public static final FluidStack[] nullFluid=new FluidStack[0];
 

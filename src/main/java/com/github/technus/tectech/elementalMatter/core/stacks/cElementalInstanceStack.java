@@ -98,14 +98,12 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         setLifeTimeMultiplier(getLifeTimeMultiplier());
     }
 
-    @Deprecated //can be done from definition
     public float getEnergySettingCost(long currentEnergyLevel, long newEnergyLevel){
-        return definition.getEnergyDiffBetweenStates(currentEnergyLevel,newEnergyLevel);
+        return definition.getEnergyDiffBetweenStates(currentEnergyLevel,newEnergyLevel)*amount;
     }
 
-    @Deprecated //can be done from definition
     public float getEnergySettingCost(long newEnergyLevel){
-        return definition.getEnergyDiffBetweenStates(energy,newEnergyLevel);
+        return definition.getEnergyDiffBetweenStates(energy,newEnergyLevel)*amount;
     }
 
     public cElementalDefinitionStack getDefinitionStack() {

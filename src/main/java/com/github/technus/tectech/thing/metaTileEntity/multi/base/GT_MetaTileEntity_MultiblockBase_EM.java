@@ -1613,7 +1613,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     }
                                 }
                             }
-                            if (ePowerPass) {
+                            if (ePowerPass && getEUVar()>getMinimumStoredEU()) {
                                 for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
                                     if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput();
@@ -1819,6 +1819,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
+    /**
+     *
+     * @param EU
+     * @param Amperes
+     * @return if was able to put inside the hatches
+     */
     private boolean addEnergyOutput_EM(long EU, long Amperes) {
         if(EU<0) {
             EU = -EU;
@@ -1862,6 +1868,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 }
             }
         }
+        setEUVar(Math.min(getEUVar() + euVar,maxEUStore()));
         return false;
     }
 
