@@ -13,13 +13,12 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.sc2.items.ItemCartModuleEx;
 import vswe.stevescarts.Items.ItemCartModule;
-import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.ModuleData.ModuleDataLoader;
 
 public class HANDLER_SC2 {
 
-	private static final String MODITEMS = "vswe.stevescarts.Items.ModItems.class";
+	private static final String MODITEMS = "vswe.stevescarts.Items.ModItems";
 	private static Class MODITEMSCLASS;
 	public static ItemCartModule modules;
 
@@ -32,6 +31,7 @@ public class HANDLER_SC2 {
 			try {
 				MODITEMSCLASS = Class.forName(MODITEMS);
 				if (MODITEMSCLASS == null) {
+					Logger.REFLECTION("Failed Registering Custom SC2 Modules. [1]");
 					return;
 				}				
 				Field validModulesField = ReflectionUtils.getField(MODITEMSCLASS, "validModules");
@@ -41,10 +41,12 @@ public class HANDLER_SC2 {
 			}
 			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
 				e.printStackTrace();
+				Logger.REFLECTION("Failed Registering Custom SC2 Modules. [2]");
 				return;
 			}
 
 			if (validModulesOld == null) {
+				Logger.REFLECTION("Failed Registering Custom SC2 Modules. [3]");
 				return;
 			}
 			else {
@@ -52,6 +54,7 @@ public class HANDLER_SC2 {
 			}
 
 			if (validModulesNew == null || validModulesNew.isEmpty()) {
+				Logger.REFLECTION("Failed Registering Custom SC2 Modules. [4]");
 				return;
 			}
 
@@ -79,6 +82,10 @@ public class HANDLER_SC2 {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		else {
+			Logger.REFLECTION("Failed Registering Custom SC2 Modules. [0]");
+			return;
 		}
 	}
 

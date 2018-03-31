@@ -2,8 +2,7 @@ package vswe.stevescarts.ModuleData;
 
 import java.util.HashMap;
 
-import net.minecraft.init.Items;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.sc2.modules.workers.tools.ModuleExoticFarmerUpgraded;
 import vswe.stevescarts.Helpers.ComponentTypes;
@@ -19,12 +18,12 @@ import vswe.stevescarts.Modules.ModuleBase;
 public class ModuleDataLoader {	
 
 	static int ID_ExoticFarmer = 0;
-	public static HashMap<Byte, ModuleData> moduleListCustom;
-	
+	public static HashMap<Byte, ModuleData> moduleListCustom = new HashMap<Byte, ModuleData>();
+
 	public synchronized static HashMap<Byte, ModuleData> getList() {
 		return ModuleData.getList();
 	}
-	
+
 	public static void load() {
 		HashMap<Byte, ModuleData> u = getList();
 		if (u.size() < Byte.MAX_VALUE) {
@@ -37,15 +36,22 @@ public class ModuleDataLoader {
 						{ComponentTypes.GALGADORIAN_METAL.getItemStack(),
 							ComponentTypes.GALGADORIAN_METAL.getItemStack(),
 							ComponentTypes.ENHANCED_GALGADORIAN_METAL.getItemStack()},
-					{null, ComponentTypes.HUGE_DYNAMIC_PANE.getItemStack(), null},
-					{ComponentTypes.ADVANCED_PCB.getItemStack(), ItemUtils.getItemStackOfAmountFromOreDict("blockNaquadah", 1),
+						{null, ComponentTypes.HUGE_DYNAMIC_PANE.getItemStack(), null},
+						{ComponentTypes.ADVANCED_PCB.getItemStack(), ItemUtils.getItemStackOfAmountFromOreDict("blockNaquadah", 1),
 							ComponentTypes.GRAPHICAL_INTERFACE.getItemStack()}});			
 			farmerGroup.add(farmerExotic);	
 			moduleListCustom.put((byte) ID_ExoticFarmer, farmerExotic);
 		}
 	}
-	
+
 	public static void load2() {
-		getList().get((byte) ID_ExoticFarmer).addModel("Farmer",	(ModelCartbase) new ModelFarmer(ResourceHelper.getResource("/models/farmerModelGalgadorian.png"))).setModelMult(0.75f);
+		ModuleData y = moduleListCustom.get((byte) ID_ExoticFarmer);
+		if (y != null) {
+			y.addModel("Farmer",	(ModelCartbase) new ModelFarmer(ResourceHelper.getResource("/models/farmerModelGalgadorian.png"))).setModelMult(0.75f);
+		}
+		else {
+			Logger.REFLECTION("Failed getting ModuleData from Local Cache.");
+		}
+
 	}
 }

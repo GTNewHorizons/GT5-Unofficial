@@ -31,7 +31,7 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 	protected boolean isForestryLoaded = false;
 	private final Block forestryHumus;
 
-	private ArrayList<IExoticCropModule> plantModulesExotic;
+	private ArrayList<ICropModule> plantModulesExotic;
 
 	public ModuleExoticFarmer(final MinecartModular cart) {
 		super(cart);
@@ -46,10 +46,10 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 
 	public void init() {
 		super.init();
-		this.plantModulesExotic = new ArrayList<IExoticCropModule>();
+		this.plantModulesExotic = new ArrayList<ICropModule>();
 		for (final ModuleBase module : this.getCart().getModules()) {
 			if (module instanceof ICropModule) {
-				this.plantModulesExotic.add((IExoticCropModule) module);
+				this.plantModulesExotic.add((ICropModule) module);
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 	}
 
 	public boolean isSeedValidHandler(final ItemStack seed) {
-		for (final IExoticCropModule module : this.plantModulesExotic) {
+		for (final ICropModule module : this.plantModulesExotic) {
 			if (module.isSeedValid(seed)) {
 				return true;
 			}
@@ -194,7 +194,7 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 	}
 
 	protected Block getCropFromSeedHandler(final ItemStack seed) {
-		for (final IExoticCropModule module : this.plantModulesExotic) {
+		for (final ICropModule module : this.plantModulesExotic) {
 			if (module.isSeedValid(seed)) {
 				return module.getCropFromSeed(seed);
 			}
@@ -203,7 +203,7 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 	}
 
 	protected boolean isReadyToHarvestHandler(final int x, final int y, final int z) {
-		for (final IExoticCropModule module : this.plantModulesExotic) {
+		for (final ICropModule module : this.plantModulesExotic) {
 			if (module.isReadyToHarvest(x, y, z)) {
 				return true;
 			}
