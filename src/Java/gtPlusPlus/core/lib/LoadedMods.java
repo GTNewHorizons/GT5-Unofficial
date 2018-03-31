@@ -50,6 +50,7 @@ public class LoadedMods {
 	public static boolean RedTech = false; //RedMage's Mod
 	public static boolean TecTech = false; //Technus' Mod
 	public static boolean TiCon = false;
+	public static boolean StevesCarts = false;
 
 
 
@@ -125,6 +126,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("rftools") == true){
 			RFTools = true;
 			Logger.INFO("Components enabled for: RFTools");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("StevesCarts") == true){
+			StevesCarts = true;
+			Logger.INFO("Components enabled for: StevesCarts");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Thaumcraft") == true){
