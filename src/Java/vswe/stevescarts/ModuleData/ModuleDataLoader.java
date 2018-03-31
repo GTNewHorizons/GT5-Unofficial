@@ -27,10 +27,9 @@ public class ModuleDataLoader {
 	public static void load() {
 		HashMap<Byte, ModuleData> u = getList();
 		if (u.size() < Byte.MAX_VALUE) {
-			int mNextFreeID = u.size()+1;
 			ID_ExoticFarmer= 105;
 			final ModuleDataGroup farmerGroup = new ModuleDataGroup(vswe.stevescarts.Helpers.Localization.MODULE_INFO.FARMER_GROUP);
-			final ModuleData farmerExotic = new ModuleDataTool(mNextFreeID, "Exotic Farmer",
+			final ModuleData farmerExotic = new ModuleDataTool(ID_ExoticFarmer, "Exotic Farmer",
 					(Class<? extends ModuleBase>) ModuleExoticFarmerUpgraded.class, 75, true)
 					.addSide(SIDE.FRONT).addRecipe(new Object[][]{
 						{ComponentTypes.GALGADORIAN_METAL.getItemStack(),

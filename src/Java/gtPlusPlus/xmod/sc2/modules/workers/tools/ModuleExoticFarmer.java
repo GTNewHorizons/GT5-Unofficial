@@ -10,7 +10,6 @@ import net.minecraft.world.IBlockAccess;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
-import gtPlusPlus.xmod.sc2.modules.IExoticCropModule;
 import gtPlusPlus.xmod.sc2.slots.SlotExoticSeed;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.IPlantable;

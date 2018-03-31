@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.sc2.items.ItemCartModuleEx;
 import vswe.stevescarts.Items.ItemCartModule;
 import vswe.stevescarts.ModuleData.ModuleData;
 import vswe.stevescarts.ModuleData.ModuleDataLoader;
@@ -19,7 +18,7 @@ import vswe.stevescarts.ModuleData.ModuleDataLoader;
 public class HANDLER_SC2 {
 
 	private static final String MODITEMS = "vswe.stevescarts.Items.ModItems";
-	private static Class MODITEMSCLASS;
+	private static Class<?> MODITEMSCLASS;
 	public static ItemCartModule modules;
 
 	@SuppressWarnings("unchecked")
