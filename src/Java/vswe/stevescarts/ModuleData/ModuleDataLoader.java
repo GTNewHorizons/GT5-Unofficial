@@ -45,9 +45,10 @@ public class ModuleDataLoader {
 	}
 
 	public static void load2() {
-		ModuleData y = moduleListCustom.get((byte) ID_ExoticFarmer);
+		ModuleData y = getList().get((byte) ID_ExoticFarmer);
 		if (y != null) {
-			y.addModel("Farmer",	(ModelCartbase) new ModelFarmer(ResourceHelper.getResource("/models/farmerModelGalgadorian.png"))).setModelMult(0.75f);
+			y.addModel("Farmer",	(ModelCartbase) new ModelFarmer(ResourceHelper.getResource("/models/farmerModelGalgadorian.png"))).setModelMult(0.45f);
+			Logger.REFLECTION("Added Model Data for Exotic Farm Module.");
 		}
 		else {
 			Logger.REFLECTION("Failed getting ModuleData from Local Cache.");

@@ -1,11 +1,8 @@
 package gtPlusPlus.xmod.sc2.items;
 
-import vswe.stevescarts.Modules.ModuleBase;
-import net.minecraft.nbt.NBTTagCompound;
 import vswe.stevescarts.TileEntities.TileEntityCartAssembler;
 import net.minecraft.entity.player.EntityPlayer;
 import java.util.List;
-import java.util.Iterator;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,17 +11,20 @@ import vswe.stevescarts.ModuleData.ModuleDataLoader;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.creativetab.CreativeTabs;
-import vswe.stevescarts.StevesCarts;
 import vswe.stevescarts.Items.ItemCartModule;
 
 import net.minecraft.util.IIcon;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+
 import net.minecraft.item.Item;
 
 public class ItemCartModuleEx extends ItemCartModule {
 	IIcon unknownIcon;
 
 	public ItemCartModuleEx() {
-		
+		this.setCreativeTab(AddToCreativeTab.tabMisc);
 	}
 
 	public String getName(final ItemStack par1ItemStack) {
@@ -46,17 +46,19 @@ public class ItemCartModuleEx extends ItemCartModule {
 
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(final IIconRegister register) {
-		for (final ModuleData module : ModuleData.getList().values()) {
+		for (final ModuleData module : ModuleDataLoader.moduleListCustom.values()) {			
+			final StringBuilder sb = new StringBuilder();
+			String x = (sb.append("stevescarts").append(":").append(module.getRawName()).append("_icon").toString());
+			Logger.REFLECTION("Icon Path for Module: "+x);
 			module.createIcon(register);
 		}
 		final StringBuilder sb = new StringBuilder();
-		StevesCarts.instance.getClass();
 		this.unknownIcon = register
 				.registerIcon(sb.append("stevescarts").append(":").append("unknown_icon").toString());
 	}
 
 	public String getUnlocalizedName() {
-		return "item.SC2:unknownmodule";
+		return "item.SC2:unknownexoticmodule";
 	}
 
 	public String getUnlocalizedName(final ItemStack item) {
@@ -85,7 +87,7 @@ public class ItemCartModuleEx extends ItemCartModule {
 		} else if (par1ItemStack != null && par1ItemStack.getItem() instanceof ItemCartModuleEx) {
 			par3List.add("Module id " + par1ItemStack.getItemDamage());
 		} else {
-			par3List.add("Unknown module id");
+			par3List.add("Unknown exotic module id");
 		}
 	}
 

@@ -58,8 +58,8 @@ public class HANDLER_SC2 {
 				return;
 			}
 
-			modules = new ItemCartModuleEx();
-			GameRegistry.registerItem((Item) modules, "CartModule++");
+			modules = vswe.stevescarts.Items.ModItems.modules;
+			//GameRegistry.registerItem((Item) modules, "CartModule++");
 			ModuleDataLoader.load();
 			for (final ModuleData module : ModuleDataLoader.moduleListCustom.values()) {
 				if (!module.getIsLocked()) {
