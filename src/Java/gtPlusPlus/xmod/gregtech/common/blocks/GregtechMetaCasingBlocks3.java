@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -11,13 +15,41 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
 
+import java.util.List;
+
 public class GregtechMetaCasingBlocks3
 extends GregtechMetaCasingBlocksAbstract {
 
 	CasingTextureHandler3 TextureHandler = new CasingTextureHandler3();
 
+	public static class GregtechMetaCasingItemBlocks3 extends GregtechMetaCasingItems {
+
+		public GregtechMetaCasingItemBlocks3(Block par1) {
+			super(par1);
+		}
+
+		@Override
+		public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+			int meta = aStack.getItemDamage();
+			long capacity = 0;
+			switch (meta) {
+				case 4:
+				case 5:
+				case 6:
+					capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(meta);
+					break;
+				default:
+					break;
+			}
+			if (capacity > 0) {
+				aList.add("Energy Storage: " + GT_Utility.formatNumbers(capacity));
+			}
+			super.addInformation(aStack, aPlayer, aList, aF3_H);
+		}
+	}
+
 	public GregtechMetaCasingBlocks3() {
-		super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.3", GT_Material_Casings.INSTANCE);
+		super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.3", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
@@ -25,9 +57,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Mining Platform Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Placeholder");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Cell (Lapotron Fortified)");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Cell (Naquadah Doped)");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Cell (Neutronium Laced)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder");;
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Placeholder");
@@ -41,6 +73,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_BedrockMiner.set(new ItemStack(this, 1, 3));
+		GregtechItemList.Casing_Vanadium_Redox_T2.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_Vanadium_Redox_T3.set(new ItemStack(this, 1, 5));
+		GregtechItemList.Casing_Vanadium_Redox_T4.set(new ItemStack(this, 1, 6));
 		//GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
 		//GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		//GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));

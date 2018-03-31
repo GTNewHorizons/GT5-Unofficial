@@ -163,6 +163,12 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
 
+	//Redox Cells
+	public static final CustomIcon Casing_Redox_1 = new CustomIcon("redox/redox1");
+	public static final CustomIcon Casing_Redox_2 = new CustomIcon("redox/redox2");
+	public static final CustomIcon Casing_Redox_3 = new CustomIcon("redox/redox3");
+	public static final CustomIcon Casing_Redox_4 = new CustomIcon("redox/redox4");
+
 	//Centrifuge Casing
 	private static final CustomIcon Internal_Casing_Centrifuge = new CustomIcon("TileEntities/MACHINE_CASING_CENTRIFUGE");
 	public static final CustomIcon Casing_Material_Centrifuge = Internal_Casing_Centrifuge;
