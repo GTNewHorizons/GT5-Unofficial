@@ -211,8 +211,8 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 		return false;
 	}
 
-	public boolean isSeedValid(final ItemStack seed) {
-		return seed.getItem() == Items.wheat_seeds || seed.getItem() == Items.potato || seed.getItem() == Items.carrot;
+	public boolean isSeedValid(final ItemStack seed) {			
+		return getBlockFromPams(seed) != null || seed.getItem() == Items.wheat_seeds || seed.getItem() == Items.potato || seed.getItem() == Items.carrot;
 	}
 
 	public Block getCropFromSeed(final ItemStack seed) {
@@ -436,13 +436,6 @@ public abstract class ModuleExoticFarmer extends ModuleFarmer {
 		final Block block = this.getCart().worldObj.getBlock(x, y, z);
 		final int m = this.getCart().worldObj.getBlockMetadata(x, y, z);
 		return block instanceof BlockCrops && m == 7;
-	}
-
-	protected boolean isFarming() {
-		if (this.isPlaceholder()) {
-			return this.getSimInfo().getIsFarming();
-		}
-		return this.getCart().isEngineBurning() && this.getDw(0) != 0;
 	}
 
 }

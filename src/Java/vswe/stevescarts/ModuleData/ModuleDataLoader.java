@@ -11,6 +11,12 @@ import vswe.stevescarts.Modules.ModuleBase;
 
 public class ModuleDataLoader {	
 
+	private static HashMap<Byte, ModuleData> moduleListEx;
+	
+	public static HashMap<Byte, ModuleData> getList() {
+		return moduleListEx;
+	}
+	
 	public static void load() {
 		HashMap<Byte, ModuleData> u = ModuleData.getList();
 		if (u.size() < Byte.MAX_VALUE) {
