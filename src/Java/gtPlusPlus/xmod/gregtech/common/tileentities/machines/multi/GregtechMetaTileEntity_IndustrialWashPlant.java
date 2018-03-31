@@ -52,7 +52,7 @@ extends GregtechMeta_MultiBlockBase {
 				"400% faster than using single block machines of the same voltage",
 				"Processes four item per voltage tier",
 				"Chance to output Sludge per process",
-				"Size: 7x3x5 [WxHxL] (open)",
+				"Size: 5x3x7 [WxHxL] (open)",
 				"X     X",
 				"X     X",
 				"XXXXX",
