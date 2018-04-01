@@ -57,7 +57,17 @@ public class RECIPES_GREGTECH {
 		sifterRecipes();
 		electroMagneticSeperatorRecipes();
 		extruderRecipes();
+		cuttingSawRecipes();
 		addFuels();
+	}
+
+	private static void cuttingSawRecipes() {
+		GT_Values.RA.addCutterRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1), //Input
+				ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 9), //Output
+				null,
+				16, //Time
+				8); //EU
 	}
 
 	private static void electrolyzerRecipes() {
@@ -1218,11 +1228,18 @@ public class RECIPES_GREGTECH {
 	private static void compressorRecipes() {
 		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallClay", 4),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateClay", 1));
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallMeatRaw", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 1));
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9),
+				ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1));
 	}
 
 	private static void macerationRecipes() {
 		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
+		
+		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9));
 		/*
 		 * GT_ModHandler.addPulverisationRecipe( FLUORIDES.FLUORITE.getOre(1),
 		 * FLUORIDES.FLUORITE.getDust(4));

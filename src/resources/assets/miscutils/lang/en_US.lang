@@ -1940,3 +1940,15 @@ tile.blockDarkWorldGround.name=Unstable Earth
 tile.blockDarkWorldGround2.name=Polluted Soil
 tile.blockDarkWorldGround2.2.name=Highly Polluted Soil
 tile.blockDarkWorldPortalFrame.name=Containment Frame
+
+
+//Added 1/4/18
+tile.Block of Plutonium-239.name=Block of Uranium-239
+tile.Fluorite Ore [Old].name=Fluorite Ore [Deprecated]
+tile.blockMiningPipeFake.name=Strengthened Mining Pipe
+tile.blockMiningHeadFake.name=Bedrock Drill
+item.itemCellLiFBeF2ThF4UF4.name=Cell of Molten Salt [LiFBeF2ThF4UF4]
+item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
+item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
+item.itemPlateMeatRaw.name=Fleshy Panel
+tile.Block of MeatRaw.name=Block of Raw Meat

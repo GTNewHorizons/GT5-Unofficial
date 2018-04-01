@@ -9,7 +9,7 @@ implements IConfigureNEI {
 	public static boolean sIsAdded = true;
 
 	@Override
-	public void loadConfig() {
+	public synchronized void loadConfig() {
 		sIsAdded = false;
 		for (final CustomRecipeMap tMap : gregtech.api.util.CustomRecipeMap.sMappings) {
 			if (tMap.mNEIAllowed) {

@@ -18,6 +18,7 @@ import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -481,6 +482,14 @@ public class RecipeUtils {
 
 	public static boolean buildShapelessRecipe(final ItemStack output, final Object[] input){
 		return ShapelessUtils.addShapelessRecipe(output, input);
+	}
+	
+	public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
+		return RecipeUtils.addShapedGregtechRecipe(
+				aStack, null, null,
+				CI.craftingToolMortar, null, null,
+				null, null, null,
+				aOutput);
 	}
 
 }

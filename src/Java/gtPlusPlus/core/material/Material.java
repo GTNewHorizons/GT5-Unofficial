@@ -338,7 +338,7 @@ public class Material {
 		}		
 	}
 
-	private TextureSet setTextureSet(TextureSet set) {
+	public TextureSet setTextureSet(TextureSet set) {
 		if (set != null) {
 			return set;			
 		}

@@ -165,6 +165,7 @@ public class CI {
 	public static String craftingToolHammer_Soft = "craftingToolSoftHammer";
 	public static String craftingToolScrewdriver = "craftingToolScrewdriver";
 	public static String craftingToolFile = "craftingToolFile";
+	public static String craftingToolMortar = "craftingToolMortar";
 	public static String craftingToolKnife = "craftingToolKnife";
 	public static String craftingToolCrowbar = "craftingToolCrowbar";
 	public static String craftingToolSaw = "craftingToolSaw";

@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -727,6 +726,10 @@ public class ItemUtils {
 		else {
 			return null;
 		}
+	}
+	
+	public static boolean registerFuel(ItemStack aBurnable, int burn){
+		return CORE.burnables.add(new Pair<Integer, ItemStack>(burn, aBurnable));
 	}
 
 
