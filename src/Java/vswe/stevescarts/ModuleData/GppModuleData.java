@@ -19,6 +19,7 @@ public class GppModuleData extends ModuleData {
 		super(id, name, moduleClass, modularCost);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadGpp() {
 		try {
 			HashMap<Byte, ModuleData> moduleList =
