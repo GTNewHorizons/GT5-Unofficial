@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.misc;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.*;
@@ -16,7 +17,9 @@ import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
@@ -41,7 +44,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -61,9 +64,9 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(7)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 4)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(7)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 4)]};
 	}
 
 
@@ -78,14 +81,12 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipe(ItemStack aStack) {		
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		AutoMap<ItemStackData> mCompleted = new AutoMap<ItemStackData>();
-		
 		for (ItemStack tInputItem : tItems) {
 			if (tInputItem != null) {
 				mCompleted.put(new ItemStackData(tInputItem));
 				checkRecipe(tInputItem, getGUIItemStack());
 			}
 		}
-		
 		return mCompleted != null && mCompleted.size() > 0;
 	}
 
@@ -163,8 +164,32 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity p0, ItemStack p1) {
-		return false;
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack p1) {
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+			return false;
+		}
+		int tAmount = 0;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				for (int h = -1; h < 2; h++) {
+					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
+						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						if (!this.addToMachineList(tTileEntity, TAE.getIndexFromPage(2, 4))) {
+							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 4))) {
+								return false;
+							}
+							tAmount++;
+						}
+					}
+				}
+			}
+		}
+		return tAmount >= 10;
 	}
 
 	@Override

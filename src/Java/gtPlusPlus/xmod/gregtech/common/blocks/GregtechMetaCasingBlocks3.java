@@ -25,7 +25,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Mining Platform Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Supply Depot Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder");;
@@ -41,7 +41,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_BedrockMiner.set(new ItemStack(this, 1, 3));
-		//GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_AmazonWarehouse.set(new ItemStack(this, 1, 4));
 		//GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		//GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
 		//GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));

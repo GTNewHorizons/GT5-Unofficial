@@ -21,7 +21,7 @@ public class CasingTextureHandler3 {
 				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
 				//Material Press Casings
 			case 4:
-				return TexturesGtBlock._PlaceHolder.getIcon();				
+				return TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();				
 				//Sifter Structural
 			case 5:
 				return TexturesGtBlock._PlaceHolder.getIcon();
