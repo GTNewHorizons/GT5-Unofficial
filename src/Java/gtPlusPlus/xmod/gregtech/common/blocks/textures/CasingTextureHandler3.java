@@ -20,18 +20,20 @@ public class CasingTextureHandler3 {
 				//Trinium Plated Mining Platform Casing
 				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
 			case 4:
-				//Vanadium Redox T2
+				//Vanadium Redox IV
 				return TexturesGtBlock.Casing_Redox_2.getIcon();
 			case 5:
-				//Vanadium Redox T3
+				//Vanadium Redox LuV
 				return TexturesGtBlock.Casing_Redox_3.getIcon();
 			case 6:
-				//Vanadium Redox T4
+				//Vanadium Redox ZPM
 				return TexturesGtBlock.Casing_Redox_4.getIcon();
 			case 7:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				//Vanadium Redox UV
+				return TexturesGtBlock.Casing_Redox_5.getIcon();
 			case 8:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				//Vanadium Redox MAX
+				return TexturesGtBlock.Casing_Redox_6.getIcon();
 			case 9:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 10:

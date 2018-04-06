@@ -31,17 +31,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		@Override
 		public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
 			int meta = aStack.getItemDamage();
-			long capacity = 0;
-			switch (meta) {
-				case 4:
-				case 5:
-				case 6:
-					capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(meta);
-					break;
-				default:
-					break;
-			}
-			if (capacity > 0) {
+			int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
+			if (tier > 0) {
+				long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
 				aList.add("Energy Storage: " + GT_Utility.formatNumbers(capacity));
 			}
 			super.addInformation(aStack, aPlayer, aList, aF3_H);
@@ -57,11 +49,11 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Mining Platform Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Cell (Lapotron Fortified)");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Cell (Naquadah Doped)");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Cell (Neutronium Laced)");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder");;
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Power Cell (IV)");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Power Cell (LuV)");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Power Cell (ZPM)");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (UV)");;
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (MAX)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Placeholder");
@@ -73,9 +65,11 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_BedrockMiner.set(new ItemStack(this, 1, 3));
-		GregtechItemList.Casing_Vanadium_Redox_T2.set(new ItemStack(this, 1, 4));
-		GregtechItemList.Casing_Vanadium_Redox_T3.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_Vanadium_Redox_T4.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Casing_Vanadium_Redox_IV.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_Vanadium_Redox_LuV.set(new ItemStack(this, 1, 5));
+		GregtechItemList.Casing_Vanadium_Redox_ZPM.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Casing_Vanadium_Redox_UV.set(new ItemStack(this, 1, 7));
+		GregtechItemList.Casing_Vanadium_Redox_MAX.set(new ItemStack(this, 1, 8));
 		//GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
 		//GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		//GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));

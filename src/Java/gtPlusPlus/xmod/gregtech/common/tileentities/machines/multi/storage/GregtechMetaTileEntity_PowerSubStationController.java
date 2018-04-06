@@ -109,15 +109,15 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		Logger.INFO("Power Sub-Station problem: " + msg);
 	}
 
-	private int getCellTier(Block aBlock, int aMeta) {
+	public static int getCellTier(Block aBlock, int aMeta) {
 		if (aBlock == ModBlocks.blockCasings2Misc && aMeta == 7) {
-			return 3;
-		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 4) {
 			return 4;
- 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
+		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 4) {
 			return 5;
-		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
+ 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
 			return 6;
+		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
+			return 7;
 		} else {
 			return -1;
 		}
@@ -282,15 +282,15 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		return true;
 	}
 
-	// Define storage capacity of smallest cell tier (HV) and compute higher tiers from it
-	private static final long CELL_TIER_HV_CAPACITY = 10 * 1000 * 1000; // one lapotron crystal
+	// Define storage capacity of smallest cell tier (EV) and compute higher tiers from it
+	private static final long CELL_TIER_EV_CAPACITY = 100 * 1000 * 1000; // one lapotronic orb
 	private static final long CELL_TIER_MULTIPLIER = 4; // each tier's capacity is this many times the previous tier
 
 	public static long getCapacityFromCellTier(int aOverallCellTier) {
 		// Use integer math instead of `Math.pow` to avoid range/precision errors
-		if (aOverallCellTier < 3) return 0;
-		aOverallCellTier -= 3;
-		long capacity = CELL_TIER_HV_CAPACITY;
+		if (aOverallCellTier < 4) return 0;
+		aOverallCellTier -= 4;
+		long capacity = CELL_TIER_EV_CAPACITY;
 		while (aOverallCellTier > 0) {
 			capacity *= CELL_TIER_MULTIPLIER;
 			aOverallCellTier--;
