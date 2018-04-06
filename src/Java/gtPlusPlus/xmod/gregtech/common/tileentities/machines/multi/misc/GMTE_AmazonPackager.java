@@ -102,70 +102,45 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {	
+	public boolean checkRecipe(ItemStack aStack) {		
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		if (this.getGUIItemStack() != null) {
+			tItems.add(this.getGUIItemStack());
 		
-		boolean h[] = new boolean[mInputBusses.size()];
-		int count = 0;
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-			tBus.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tBus)) {
-				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-				}
-			}
-			
-			if (this.getGUIItemStack() != null) {
-				tBusItems.add(this.getGUIItemStack());			
-			}		
+		}
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		boolean state = checkRecipeGeneric(tItemInputs, tFluidInputs, 5 * GT_Utility.getTier(this.getMaxInputVoltage()), 75, 500, 10000);
 
-			ArrayList<FluidStack> tFluids = getStoredFluids();
-			ItemStack[] tItemInputs = tBusItems.toArray(new ItemStack[tBusItems.size()]);
-			FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-			boolean state = checkRecipeGeneric(tItemInputs, tFluidInputs, 5 * GT_Utility.getTier(this.getMaxInputVoltage()), 75, 500, 10000);			
-			if (state) {
-				h[count++] = true;
-				continue;
+
+		if (state) {
+			return true;
+		}
+		else {
+			tItems = getStoredInputs();
+			AutoMap<ItemStackData> mCompleted = new AutoMap<ItemStackData>();
+			AutoMap<ItemStackData> mSchematics = new AutoMap<ItemStackData>();
+			for (ItemStack tInputItem : tItems) {
+				if (tInputItem != null) {					
+					if (ItemList.Schematic_1by1.isStackEqual((Object) tInputItem) || ItemList.Schematic_2by2.isStackEqual((Object) tInputItem) || ItemList.Schematic_3by3.isStackEqual((Object) tInputItem)) {
+						mSchematics.put(new ItemStackData(tInputItem));
+					}
+				}
 			}
-			else {
-				AutoMap<ItemStackData> mCompleted = new AutoMap<ItemStackData>();
-				AutoMap<ItemStackData> mSchematics = new AutoMap<ItemStackData>();
-				for (ItemStack tInputItem : tBusItems) {
-					if (tInputItem != null) {					
-						if (ItemList.Schematic_1by1.isStackEqual((Object) tInputItem) || ItemList.Schematic_2by2.isStackEqual((Object) tInputItem) || ItemList.Schematic_3by3.isStackEqual((Object) tInputItem)) {
-							mSchematics.put(new ItemStackData(tInputItem));
+			if (mSchematics.size() > 0) {
+				for (ItemStackData g : mSchematics) {
+					for (ItemStack tInputItem : tItems) {
+						if (tInputItem != null) {							
+							mCompleted.put(new ItemStackData(tInputItem));
+							checkRecipe(tInputItem, g.getStack());	
 						}
 					}
 				}
-				if (mSchematics.size() > 0) {
-					for (ItemStackData g : mSchematics) {
-						for (ItemStack tInputItem : tBusItems) {
-							if (tInputItem != null) {							
-								mCompleted.put(new ItemStackData(tInputItem));
-								checkRecipe(tInputItem, g.getStack());	
-							}
-						}
-					}
-				}
-				
-				if (mCompleted != null && mCompleted.size() > 0) {
-					h[count++] = true;
-					continue;
-				}
-				else {
-					h[count++] = false;
-					continue;
-				}
-			}	
+			}
 			
-		}
-		for (boolean b : h) {
-			if (!b) {
-				return false;
-			}
-		}
-		return true;		
+			return mCompleted != null && mCompleted.size() > 0;
+		}		
 	}
 
 	public boolean checkRecipe(ItemStack inputStack, ItemStack schematicStack) {		
