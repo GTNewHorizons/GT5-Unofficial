@@ -276,10 +276,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			this.mAverageEuUsage = 0;
 		}
 
-		// Only set these here, after the machine check is 100% passed.
+		// Only set this here, after the machine check is 100% passed.
 
 		this.mBatteryCapacity = getCapacityFromCellTier(tOverallCellTier) * tCellCount;
-		this.setEUVar(Math.min(this.getEUVar(), this.mBatteryCapacity));
 		return true;
 	}
 
@@ -394,7 +393,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
-		// First, Pay Tax
+		// First, decay overcharge (0.1% of stored energy plus 1000 EU per tick)
+		if (this.getEUVar() > this.mBatteryCapacity) {
+			long energy = (long) (this.getEUVar() * 0.999f) - 1000;
+			this.setEUVar(energy);
+		}
+
+		// Pay Tax
 		long mDecrease = computeEnergyTax();
 		this.mTotalEnergyLost += Math.min(mDecrease, this.getEUVar());
 		this.setEUVar(Math.max(0, this.getEUVar() - mDecrease));
@@ -457,9 +462,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		} else {
 			mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
 		}
+
+		String storedEnergyText;
+		if (this.getEUVar() > this.mBatteryCapacity) {
+			storedEnergyText = EnumChatFormatting.RED + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
+		} else {
+			storedEnergyText = EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
+		}
+
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
-				"Stored EU:" + EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET,
+				"Stored EU:" + storedEnergyText,
 				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
 				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.computeEnergyTax()) + EnumChatFormatting.RESET + " EU/t",
 				"Controller Mode: " + mode,
