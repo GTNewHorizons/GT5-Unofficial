@@ -9,7 +9,7 @@ import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 import gtPlusPlus.core.slots.SlotBuzzSaw;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityTreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityTreeFarm;
 
 public class CONTAINER_TreeFarmer extends GT_ContainerMetaTile_Machine {
 

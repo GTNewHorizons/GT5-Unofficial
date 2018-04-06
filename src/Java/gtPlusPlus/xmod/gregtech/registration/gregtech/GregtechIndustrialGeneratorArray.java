@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityGeneratorArray;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntityGeneratorArray;
 
 public class GregtechIndustrialGeneratorArray {
 

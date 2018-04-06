@@ -29,7 +29,7 @@ public class GTPP_CapeRenderer
     }
 
     private final String[] mOrangeCapes = {"ImmortalPharaoh7", "Walmart_Employee", "ArchonCerulean", "asturrial", "netmc"}; //Orange.png
-     private final String[] mTestCapes = {"123_456_789", "doomsquirter", "ukdunc"}; //TesterCape.png
+     private final String[] mTestCapes = {"123_456_789", "doomsquirter", "ukdunc", "JaidenC", "TheGiggitygoo"}; //TesterCape.png
      private final String[] mBlueCapes = {"fobius", "cantankerousrex", "stephen_2015", "Dyonovan", "Bear989Sr", "CrazyJ1984", "AndreyKV"}; //Fancycape.png
      private final String[] mDevCapes = {"draknyte1", "redmage17"}; //Capes for Developers
      

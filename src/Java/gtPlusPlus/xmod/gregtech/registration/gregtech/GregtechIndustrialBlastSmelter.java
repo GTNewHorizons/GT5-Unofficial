@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_AlloyBlastSmelter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_AlloyBlastSmelter;
 
 public class GregtechIndustrialBlastSmelter {
 

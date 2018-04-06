@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_AutoCrafter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GT4Entity_AutoCrafter;
 
 public class AC_Helper_Utils {
 
