@@ -132,6 +132,11 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	@Override
+	public boolean explodesOnComponentBreak(ItemStack p0) {
+		return false;
+	}
+	
+	@Override
 	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
 		super.startSoundLoop(aIndex, aX, aY, aZ);
 		if (aIndex == 1) {
@@ -476,6 +481,11 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		return mMode;
+	}
+	
+	protected ItemStack getGUIItemStack() {
+		ItemStack guiSlot = this.mInventory[1];		
+		return guiSlot;
 	}
 
 	@Override
