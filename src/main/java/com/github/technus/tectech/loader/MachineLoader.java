@@ -232,6 +232,7 @@ public class MachineLoader implements Runnable {
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
         Machine_Multi_Microwave.set(new GT_MetaTileEntity_TM_microwave(15312, "multimachine.tm.microwave", "Microwave Grinder").getStackForm(1L));
         Machine_Multi_DataBank.set(new GT_MetaTileEntity_EM_dataBank(15313, "multimachine.em.databank", "Data Bank").getStackForm(1L));
+        Machine_Multi_teslaCoil.set(new GT_MetaTileEntity_TM_teslaCoil(15314, "multimachine.tm.teslaCoil", "Tesla Coil").getStackForm(1L));
 
         Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15320, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
         Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
@@ -278,6 +279,8 @@ public class MachineLoader implements Runnable {
         rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
         holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
 
+        capacitor_Hatch.set(new GT_MetaTileEntity_Hatch_Capacitor(15452, "hatch.capacitor.tier.05", "Capacitor Hatch", 5, "For Tesla Coil").getStackForm(1L));
+
         // ===================================================================================================
         // Pipes
         // ===================================================================================================
@@ -296,7 +299,7 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Debug Stuff
         // ===================================================================================================
-
+        hatch_CreativeMaitenance.set(new GT_MetaTileEntity_Hatch_CreativeMaintenance(15497, "debug.tt.maintenance", "Debug Maintenance Hatch", 15).getStackForm(1L));
         Machine_DebugGenny.set(new GT_MetaTileEntity_DebugPowerGenerator(15498, "debug.tt.genny", "Debug Power Generator", 15).getStackForm(1L));
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
 
@@ -309,6 +312,7 @@ public class MachineLoader implements Runnable {
         GT_MetaTileEntity_EM_computer.run();
         GT_MetaTileEntity_EM_research.run();
         GT_MetaTileEntity_EM_dataBank.run();
+        GT_MetaTileEntity_TM_teslaCoil.run();
 
         GT_MetaTileEntity_DataReader.run();
     }
