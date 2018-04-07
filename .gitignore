@@ -20,3 +20,5 @@ SetupDevWorkspaces.bat
 *.iws
 *.bat
 .idea/workspace.xml
+*.db
+*.log
