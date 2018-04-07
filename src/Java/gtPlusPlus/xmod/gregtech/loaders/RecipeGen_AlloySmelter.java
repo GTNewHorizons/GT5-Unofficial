@@ -24,7 +24,7 @@ public class RecipeGen_AlloySmelter  implements Runnable{
 		//Nuggets
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(1),
-				ItemList.Shape_Mold_Nugget.get(1),
+				ItemList.Shape_Mold_Nugget.get(0),
 				material.getNugget(9),
 				(int) Math.max(material.getMass() * 2L, 1L),
 				2 * tVoltageMultiplier);
@@ -32,7 +32,7 @@ public class RecipeGen_AlloySmelter  implements Runnable{
 		//Gears
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(8),
-				ItemList.Shape_Mold_Gear.get(1),
+				ItemList.Shape_Mold_Gear.get(0),
 				material.getGear(1),
 				(int) Math.max(material.getMass() * 2L, 1L),
 				2 * tVoltageMultiplier);
@@ -40,7 +40,7 @@ public class RecipeGen_AlloySmelter  implements Runnable{
 		//Ingot
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getNugget(9),
-				ItemList.Shape_Mold_Ingot.get(1),
+				ItemList.Shape_Mold_Ingot.get(0),
 				material.getIngot(1),
 				(int) Math.max(material.getMass() * 2L, 1L),
 				2 * tVoltageMultiplier);
