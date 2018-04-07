@@ -135,12 +135,12 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         float mass = from.getMass();
-        float euMult = mass / refMass;
-        eAmpereFlow = (int) Math.ceil(euMult);
+        float euMult = Math.abs(mass / refMass);
+        eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
-            mEUt = (int) -V[10];
-        } else {
             mEUt = (int) -V[8];
+        } else {
+            mEUt = (int) -V[6];
         }
     }
 

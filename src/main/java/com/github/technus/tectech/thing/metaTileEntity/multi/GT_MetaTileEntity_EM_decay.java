@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
-    private static final double MASS_TO_EU=ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear")*800000.0/ URANIUM_INGOT_MASS_DIFF;//*20
+    private static final double MASS_TO_EU= ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3000000.0 / URANIUM_INGOT_MASS_DIFF;//*20
     private static final double MASS_TO_EU_INSTANT= MASS_TO_EU*20;
 
     //region structure
@@ -154,11 +154,10 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
 
         outputEM[0].tickContent(1,0,1);
-
-        mEUt=(int)((mass-outputEM[0].getMass())*MASS_TO_EU);
-        mEUt/=getParameterInInt(0,0);
+        double energyDose=((mass-outputEM[0].getMass())*MASS_TO_EU);
+        mEUt=(int)(energyDose/getParameterInInt(0,0));
         eAmpereFlow=getParameterInInt(0,0);
-
+        
         //todo move not actually decaying crap, beware of energy using decays?
 
         //for(cElementalInstanceStack stack:contents.values()){

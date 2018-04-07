@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -172,12 +173,12 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         float mass = into.getMass();
-        float euMult = mass / refMass;
-        eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < 1.5e25f) {
-            mEUt = (int) -V[10];
-        } else {
+        float euMult = Math.abs(mass / refMass);
+        eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
+        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < STABLE_RAW_LIFE_TIME) {
             mEUt = (int) -V[8];
+        } else {
+            mEUt = (int) -V[6];
         }
         outputEM = new cElementalInstanceStackMap[]{
                 into instanceof cElementalInstanceStack ?
