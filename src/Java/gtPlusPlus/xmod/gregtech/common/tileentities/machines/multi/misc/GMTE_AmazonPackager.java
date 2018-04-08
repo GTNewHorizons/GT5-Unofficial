@@ -237,11 +237,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 2; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if (!this.addToMachineList(tTileEntity, TAE.getIndexFromPage(2, 4))) {
+						if (!this.addToMachineList(tTileEntity, TAE.getIndexFromPage(2, 9))) {
 							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 4))) {
+							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 9))) {
 								return false;
 							}
 							tAmount++;

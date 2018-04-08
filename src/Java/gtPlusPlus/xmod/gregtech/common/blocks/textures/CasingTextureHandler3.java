@@ -21,7 +21,7 @@ public class CasingTextureHandler3 {
 				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
 				//Material Press Casings
 			case 4:
-				return TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();				
+				return TexturesGtBlock._PlaceHolder.getIcon();				
 				//Sifter Structural
 			case 5:
 				return TexturesGtBlock._PlaceHolder.getIcon();
@@ -36,7 +36,7 @@ public class CasingTextureHandler3 {
 				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Cyclotron Coil
 			case 9:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();
 				//Cyclotron External Casing
 			case 10:
 				return TexturesGtBlock._PlaceHolder.getIcon();
