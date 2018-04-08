@@ -371,13 +371,17 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             return this;
         }
         //returns with the definition from the first object passed
-        long energy = this.energy * amount;
+        double energy = this.energy * amount;
+        long maxEnergy=this.energy;
         float lifeTimeMul = lifeTimeMult;
 
         for (cElementalInstanceStack instance : instances) {
             if (instance != null && compareTo(instance) == 0) {
                 amount += instance.amount;
                 energy += instance.energy * instance.amount;
+                if(instance.energy>maxEnergy){
+                    maxEnergy=instance.energy;
+                }
                 lifeTimeMul = Math.min(lifeTimeMul, instance.lifeTimeMult);
                 age = Math.max(age, instance.age);
             }
@@ -386,7 +390,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if (amount != 0) {
             energy /= Math.abs(amount);
         }
-        setEnergy(energy);
+
+        double wholeParts=Math.floor(energy);
+        energy=Math.min(energy-wholeParts,1);
+        setEnergy(Math.min(maxEnergy,(long)wholeParts+(energy>TecTech.Rnd.nextDouble()?1:0)));
         return this;
     }
 
