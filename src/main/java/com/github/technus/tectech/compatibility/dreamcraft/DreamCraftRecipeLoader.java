@@ -27,22 +27,14 @@ import static com.github.technus.tectech.loader.RecipeLoader.getOrDefault;
  */
 public class DreamCraftRecipeLoader implements Runnable {
     //region reflect a bit
-    private static final Class CUSTOM_ITEM_LIST;
-    private static final Method ADD_ASSEMBLER_RECIPE;
-    static {
-        try {
-            CUSTOM_ITEM_LIST = Class.forName("com.dreammaster.gthandler.CustomItemList");
-            ADD_ASSEMBLER_RECIPE = GT_Values.RA.getClass().getMethod("addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class, boolean.class);
-        } catch (Exception e) {
-            throw new Error(e);
-        }
-    }
+    private Class CUSTOM_ITEM_LIST;
+    private Method ADD_ASSEMBLER_RECIPE;
 
     private IItemContainer getItemContainer(String name) {
         return (IItemContainer) Enum.valueOf(CUSTOM_ITEM_LIST, name);
     }
 
-    private static void addAssemblerRecipeWithCleanroom(ItemStack[] items, FluidStack fluid, ItemStack output, int time, int eut) {
+    private void addAssemblerRecipeWithCleanroom(ItemStack[] items, FluidStack fluid, ItemStack output, int time, int eut) {
         try {
             ADD_ASSEMBLER_RECIPE.invoke(GT_Values.RA, items, fluid, output, time, eut, true);
         } catch (Exception e) {
@@ -53,6 +45,13 @@ public class DreamCraftRecipeLoader implements Runnable {
 
     @Override
     public void run() {
+        try {
+            CUSTOM_ITEM_LIST = Class.forName("com.dreammaster.gthandler.CustomItemList");
+            ADD_ASSEMBLER_RECIPE = GT_Values.RA.getClass().getMethod("addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class, boolean.class);
+        } catch (Exception e) {
+            throw new Error(e);
+        }
+
         //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1),
