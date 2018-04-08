@@ -137,34 +137,38 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         outputEM[0]=input;
         outputEM[1]=new cElementalInstanceStackMap();
 
-        float mass=outputEM[0].getMass();
 
         for(cElementalInstanceStack stack:outputEM[0].values()){
             if(stack.getEnergy()==0 && stack.definition.decayMakesEnergy(1)){
                 if(getBaseMetaTileEntity().decreaseStoredEnergyUnits((long)(stack.getEnergySettingCost(1)*MASS_TO_EU_INSTANT),false)){
                     stack.setEnergy(1);
                 }else{
+                    outputEM[0].remove(stack.definition);
                     outputEM[1].putReplace(stack);
                 }
-            }else if(stack.definition.decayMakesEnergy(stack.getEnergy())){
-
+            }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
+                outputEM[0].remove(stack.definition);
+                outputEM[1].putReplace(stack);
             }
             //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
         }
 
 
+        float preMass=outputEM[0].getMass();
         outputEM[0].tickContent(1,0,1);
-        double energyDose=((mass-outputEM[0].getMass())*MASS_TO_EU);
+        double energyDose=((preMass-outputEM[0].getMass())*MASS_TO_EU);
         mEUt=(int)(energyDose/getParameterInInt(0,0));
         eAmpereFlow=getParameterInInt(0,0);
-        
-        //todo move not actually decaying crap, beware of energy using decays?
 
-        //for(cElementalInstanceStack stack:contents.values()){
-        //    System.out.println(stack.definition.getSymbol()+" "+stack.amount);
-        //}
+        return outputEM[0].hasStacks();
+    }
 
-        return true;
+    @Override
+    public void outputAfterRecipe_EM() {
+        for(int i=0;i<2&&i<eOutputHatches.size();i++){
+            eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+            outputEM[i]=null;
+        }
     }
 
     @Override

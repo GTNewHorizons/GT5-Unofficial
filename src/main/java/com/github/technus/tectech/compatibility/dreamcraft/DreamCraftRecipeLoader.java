@@ -45,12 +45,14 @@ public class DreamCraftRecipeLoader implements Runnable {
 
     @Override
     public void run() {
+        //region reflect a bit
         try {
             CUSTOM_ITEM_LIST = Class.forName("com.dreammaster.gthandler.CustomItemList");
             ADD_ASSEMBLER_RECIPE = GT_Values.RA.getClass().getMethod("addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class, boolean.class);
         } catch (Exception e) {
             throw new Error(e);
         }
+        //endregion
 
         //Quantum Glass
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{

@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
 
 public class GtppAtomLoader implements Runnable{
+    //region reflect a bit
     private Class ELEMENT;
     private Object ELEMENT_INSTANCE;
     private Method getUnlocalizedName,getFluid,generate;
@@ -37,9 +38,11 @@ public class GtppAtomLoader implements Runnable{
             throw new Error(e);
         }
     }
+    //endregion
 
     @Override
     public void run() {
+        //region reflect a bit
         try{
             ELEMENT=Class.forName("gtPlusPlus.core.material.ELEMENT");
             ELEMENT_INSTANCE=ELEMENT.getMethod("getInstance").invoke(null);
@@ -53,6 +56,7 @@ public class GtppAtomLoader implements Runnable{
         }catch (Exception e){
             throw new Error(e);
         }
+        //endregion
 
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(10), 144), getFluid("NEON",144));
         generate("GERMANIUM",true,true);
