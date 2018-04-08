@@ -26,7 +26,7 @@ public class GregtechAdvancedMixer {
 			GT_Recipe_Map oldMap = GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 			GT_Recipe_Map map = Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes;
 			final Collection<GT_Recipe> x = oldMap.mRecipeList;
-			Logger.INFO("Generating " + map.mUnlocalizedName + " Recipes.");
+			//Logger.INFO("Generating " + map.mUnlocalizedName + " Recipes.");
 			for (final GT_Recipe g : x) {
 				Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.add(g);
 			}

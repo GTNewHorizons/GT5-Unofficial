@@ -3,9 +3,11 @@ package gtPlusPlus.xmod.forestry.bees.recipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
@@ -23,7 +25,6 @@ public class FR_Gregtech_Recipes {
 	private static ItemStack hiveFrameVoid = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameVoid);
 	private static ItemStack hiveFrameBusy = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameBusy);
 
-
 	private static ItemStack hiveFrameCocoa = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameCocoa);
 	private static ItemStack hiveFrameCaged = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameCaged);
 	private static ItemStack hiveFrameSoul = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameSoul);
@@ -36,9 +37,12 @@ public class FR_Gregtech_Recipes {
 	private static ItemStack itemClayDust = new ItemStack(Items.clay_ball, 1);
 	private static ItemStack itemCocoaBeans = new ItemStack(Items.dye, 1, 3);
 
-
-	public static void registerItems(){
-
+	private static ItemStack hiveFrameDecay = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameDecay);
+	private static ItemStack hiveFrameSlow = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameSlow);
+	private static ItemStack hiveFrameStalilize = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameStalilize);
+	private static ItemStack hiveFrameArborist = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameArborist);
+	
+	public static void registerItems(){	
 		//Magic Bee Like Frames
 		RecipeUtils.addShapedGregtechRecipe(
 				rod_LongElectrum, rod_Electrum, rod_LongElectrum,
@@ -95,9 +99,31 @@ public class FR_Gregtech_Recipes {
 					null, itemClayDust, null,
 					hiveFrameClay);
 		}
-
-
-
+		
+		// Frame Items added by bartimaeusnek
+				RecipeUtils.addShapedGregtechRecipe(
+						ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),foil_Electrum,ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+						hiveFrameSlow);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"stickLongWroughtIron","stickWroughtIron","stickLongWroughtIron",
+						"stickLongWroughtIron","foilWroughtIron","stickLongWroughtIron",
+						"stickWroughtIron","stickWroughtIron","stickWroughtIron",
+						hiveFrameDecay);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"stickLongOsmiridium","stickOsmiridium","stickLongOsmiridium",
+						"stickLongOsmiridium","foilOsmiridium","stickLongOsmiridium",
+						"stickOsmiridium","stickOsmiridium","stickOsmiridium",
+						hiveFrameStalilize);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"stickLongWoodSealed","stickWoodSealed","stickLongWoodSealed",
+						"stickLongWoodSealed",Items.paper,"stickLongWoodSealed",
+						"stickWoodSealed","stickWoodSealed","stickWoodSealed",
+						hiveFrameArborist);
 	}
 
 }

@@ -35,7 +35,8 @@ public class CasingTextureHandler3 {
 				//Vanadium Redox MAX
 				return TexturesGtBlock.Casing_Redox_6.getIcon();
 			case 9:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+        //Amazon Warehouse Casing
+				return TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();
 			case 10:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 11:

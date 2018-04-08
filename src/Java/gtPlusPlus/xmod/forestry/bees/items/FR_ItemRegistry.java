@@ -42,8 +42,13 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameSoul;
 	public static MB_ItemFrame hiveFrameClay;
 	public static MB_ItemFrame hiveFrameNova;
-
-
+	
+	// Frame Items added by bartimaeusnek
+	public static MB_ItemFrame hiveFrameDecay; 
+	public static MB_ItemFrame hiveFrameSlow;
+	public static MB_ItemFrame hiveFrameStalilize;
+	public static MB_ItemFrame hiveFrameArborist;
+	
 	@Optional.Method(modid = "Forestry")
 	public static void Register() {
 
@@ -81,10 +86,14 @@ public class FR_ItemRegistry {
 			hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
 			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
 		}
-
-
-
-
+		
+		// Frame Items added by bartimaeusnek
+		hiveFrameDecay = new MB_ItemFrame(MB_FrameType.DECAYING, EnumRarity.uncommon, "Who really needs stable genetics?");
+		hiveFrameSlow = new MB_ItemFrame(MB_FrameType.SLOWING, EnumRarity.common, "The journey is its own reward.");
+		hiveFrameStalilize = new MB_ItemFrame(MB_FrameType.STABILIZING, EnumRarity.rare, "If you wish your bees to keep their form.");
+		hiveFrameArborist = new MB_ItemFrame(MB_FrameType.ARBORISTS, EnumRarity.common, "Who need Bees when you can have Trees?");
+		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameArborist), 1, 4, 24));
+		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(hiveFrameSlow), 1, 4, 24));
 	}
 
 	protected static <T extends Item> T registerItem(final T item, final String name) {

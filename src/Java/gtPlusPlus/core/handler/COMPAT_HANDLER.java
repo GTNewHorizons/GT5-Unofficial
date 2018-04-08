@@ -51,9 +51,9 @@ public class COMPAT_HANDLER {
 			to
 			868
 			---
-			899
+			910
 			to
-			945
+			942
 			*/
 
 			new RECIPES_LaserEngraver();
@@ -107,6 +107,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialMultiMachine.run();
 			GregtechBedrockPlatforms.run();
 			GregtechBufferDynamos.run();
+			GregtechAmazonWarehouse.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

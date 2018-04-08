@@ -244,12 +244,14 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		Logger.WARNING("Running checkRecipeGeneric(0)");
 
 
 		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
+		Logger.WARNING("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 

@@ -69,6 +69,11 @@ item.frameRestraint.name=Restraining Frame
 item.frameSoul.name=Soul Frame
 item.frameHealing.name=Healing Frame
 item.frameNova.name=Nova Frame
+item.frameArborists.name=Arborist Frame
+item.frameDecaying.name=Decaying Frame
+item.frameSlowing.name=Slowing Frame
+item.frameStabilizing.name=Stabilizing Frame
+item.frameUseless.name=Useless Frame
 
 //IC2 stuff
 item.itemEnergeticRotorBlade.name=Energetic Alloy Rotor Blade

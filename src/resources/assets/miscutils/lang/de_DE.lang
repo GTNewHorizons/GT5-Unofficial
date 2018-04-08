@@ -69,6 +69,11 @@ item.frameRestraint.name=Zurückhaltender Rahmen
 item.frameSoul.name=Seelen-Rahmen
 item.frameHealing.name=Heilender Rahmen
 item.frameNova.name=Nova-Rahmen
+item.frameArborists.name=Försters Rahmen
+item.frameDecaying.name=Zersetzender Rahmen
+item.frameSlowing.name=Lähmender Rahmen
+item.frameStabilizing.name=Stabilisierender Rahmen
+item.frameUseless.name=Nutzloser Ramen
 
 //IC2 stuff
 item.itemEnergeticRotorBlade.name=Rotorblatt aus energischer Legierung
