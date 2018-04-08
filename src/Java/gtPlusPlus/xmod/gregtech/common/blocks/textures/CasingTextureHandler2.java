@@ -33,7 +33,7 @@ public class CasingTextureHandler2 {
 
 					//Vanadium Radox Battery
 				case 7:
-					return TexturesGtBlock.Overlay_Machine_Cyber_B.getIcon();
+					return TexturesGtBlock.Casing_Redox_1.getIcon();
 					//Power Sub-Station Casing
 				case 8:
 					return TexturesGtBlock.Casing_Machine_Metal_Sheet_A.getIcon();

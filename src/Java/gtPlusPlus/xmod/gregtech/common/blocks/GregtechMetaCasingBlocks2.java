@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -11,13 +15,33 @@ import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
 
+import java.util.List;
+
 public class GregtechMetaCasingBlocks2
 extends GregtechMetaCasingBlocksAbstract {
 
 	CasingTextureHandler2 TextureHandler = new CasingTextureHandler2();
 
+	public static class GregtechMetaCasingItemBlocks2 extends GregtechMetaCasingItems {
+
+		public GregtechMetaCasingItemBlocks2(Block par1) {
+			super(par1);
+		}
+
+		@Override
+		public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+			int meta = aStack.getItemDamage();
+			int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
+			if (tier > 0) {
+				long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
+				aList.add("Energy Storage: " + GT_Utility.formatNumbers(capacity));
+			}
+			super.addInformation(aStack, aPlayer, aList, aF3_H);
+		}
+	}
+
 	public GregtechMetaCasingBlocks2() {
-		super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.2", GT_Material_Casings.INSTANCE);
+		super(GregtechMetaCasingItemBlocks2.class, "gtplusplus.blockcasings.2", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
@@ -28,7 +52,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell (EV)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing"); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
