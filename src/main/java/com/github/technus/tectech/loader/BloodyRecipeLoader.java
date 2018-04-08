@@ -80,7 +80,7 @@ public class BloodyRecipeLoader implements Runnable {
         //Molecular Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Power.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 16),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 12),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 24),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 24),
@@ -91,7 +91,7 @@ public class BloodyRecipeLoader implements Runnable {
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.eM_Containment.get(1),
                 12000,32, 500000, 6, new ItemStack[]{
                         CustomItemList.eM_Containment.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 2),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Plutonium, 2),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 8),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 16),
@@ -109,7 +109,7 @@ public class BloodyRecipeLoader implements Runnable {
                         CustomItemList.eM_Hollow.get(1),
                         ItemList.Casing_Fusion_Coil.get(4),
                         ItemList.Casing_Coil_NaquadahAlloy.get( 4),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 16),
                 }, new FluidStack[]{
                         Materials.Glass.getMolten(2304),
