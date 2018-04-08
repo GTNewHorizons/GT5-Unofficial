@@ -13,13 +13,19 @@ public enum MB_FrameType implements IBeeModifier
 	CLAY("Healing",    240, 1.0f, 0.5f, 1.50f, 0.75f, 1f),
 	NOVA("Nova",       240, 1.0f, 100.0f, 0.0001f, 1.00f, 1f),
 
-
+	
 	//Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
 	ACCELERATED("Accelerated", 175, 1f, 1.2f, 0.9f, 1.8f, 1f),
 	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
 	MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 10f, 1f),
 	BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f),
-	USELESS("Useless", 100, 1f, 0f, 1f, 1f, 1f);
+	USELESS("Useless", 100, 1f, 0f, 1f, 1f, 1f),
+	
+	// Frame Items added by bartimaeusnek
+	DECAYING("Decaying", 240, 1f, 1f, 1f, 1f, 10f), //enhanches decay to 10x
+	SLOWING("Slowing", 175, 1f, 0.5f, 2f, 0.5f, 1f), //reduces mutation, production rate and enhanches lifespan
+	STABILIZING("Stabilizing", 60, 1f, 0.1f, 1f, 0.1f, 0.5f), //reduces mutation, production and decay
+	ARBORISTS("Arborists", 240, 3f, 0f, 3f, 0f, 1f); //3x territory and lifespan, sets mutation and production to zero
 
 	private final String frameName;
 	public final int maxDamage;
