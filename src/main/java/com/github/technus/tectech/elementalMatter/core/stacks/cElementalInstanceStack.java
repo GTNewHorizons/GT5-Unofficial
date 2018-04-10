@@ -392,7 +392,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         }
 
         double wholeParts=Math.floor(energy);
-        energy=Math.min(energy-wholeParts,1);
+        energy=Math.min(energy-wholeParts,1)+(wholeParts>=0?-0.11709966304863834:0.11709966304863834);
         setEnergy(Math.min(maxEnergy,(long)wholeParts+(energy>TecTech.Rnd.nextDouble()?1:0)));
         return this;
     }
