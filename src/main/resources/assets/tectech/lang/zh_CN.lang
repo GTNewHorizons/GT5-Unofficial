@@ -1,0 +1,13 @@
+itemGroup.TecTech=泛次元钛克科技黑洞研究所
+tile.quantumGlass.name=量子玻璃
+tile.quantumStuff.name=量子物质
+item.em.debugContainer.name=调试用 EM容器
+item.em.definitionContainer.name=EM配方指引
+item.em.debugBuilder.name=多方块机器蓝图
+item.em.parametrizerMemoryCard.name=参量机记忆卡
+
+death.attack.microwaving=%1$s 被辐射脱水
+death.attack.microwaving.player=%1$s 在与 %2$s 战斗中被辐射脱水
+
+death.attack.elementalPollution=%1$s 被蒸发了
+death.attack.elementalPollution.player=%1$s 在与 %2$s 战斗中被蒸发了
