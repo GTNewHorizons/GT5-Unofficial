@@ -17,6 +17,7 @@ import gregtech.nei.GT_NEI_DefaultHandler;
 
 import codechicken.nei.PositionedStack;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -843,7 +844,7 @@ public class Recipe_GT extends GT_Recipe{
 
 		public GT_Recipe_Map_LargeCentrifuge() {
 			super(new HashSet<GT_Recipe>(2000), "gt.recipe.largecentrifuge", "Large Centrifuge", null,
-					"gregtech:textures/gui/basicmachines/Default", GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT,
+					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeCentrifuge.INPUT_COUNT,
 					GT_Recipe_Map_LargeCentrifuge.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
@@ -921,8 +922,13 @@ public class Recipe_GT extends GT_Recipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			return this.addRecipe(new GT_Recipe_LargeCentrifuge(aOptimize, aInputs, aOutputs, aSpecial,
-					aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+			GT_Recipe mNew = new GT_Recipe_LargeCentrifuge(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+		 	if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
+		 		return this.addRecipe(mNew);
+		 	}
+		 	else {
+		 		return null;
+		 	}	
 		}
 
 		static {
@@ -965,18 +971,29 @@ public class Recipe_GT extends GT_Recipe{
 
 			@Override
 			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				final int itemLimit = Math.min(this.mOutputs.length, GT_Recipe_Map_LargeCentrifuge.OUTPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidOutputs.length,
-						GT_Recipe_Map_LargeCentrifuge.FLUID_OUTPUT_COUNT);
-				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
+				final int itemLimit = Math.max(this.mOutputs.length, 0);
+				final int fluidLimit = Math.max(this.mFluidOutputs.length, 0);
+				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
+				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
 				for (int i = 0; i < itemLimit; ++i) {
-					outputStacks.add((PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
-							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5));
-				}
+					mNEIMap.put((Object) this.mOutputs[i].copy());
+				}				
 				for (int i = 0; i < fluidLimit; ++i) {
-					outputStacks.add((PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
-							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23));
+					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
 				}
+				int xPos[] = new int[] {102, 120, 138};
+				int yPos[] = new int[] {5, 23, 41, 59};			
+				int mRow = 0;
+				int mColumn = 0;
+				for (int i = 0; i < mNEIMap.size(); ++i) {					
+					if (mColumn >= 3) {
+						mColumn = 0;
+						mRow++;
+					}					
+					outputStacks.add(
+							(PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
+							(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow]));
+				}				
 				return outputStacks;
 			}
 		}
@@ -990,7 +1007,7 @@ public class Recipe_GT extends GT_Recipe{
 
 		public GT_Recipe_Map_LargeElectrolyzer() {
 			super(new HashSet<GT_Recipe>(2000), "gt.recipe.largeelectrolyzer", "Large Electrolyzer", null,
-					"gregtech:textures/gui/basicmachines/Default", GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT,
+					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_LargeElectrolyzer.INPUT_COUNT,
 					GT_Recipe_Map_LargeElectrolyzer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
@@ -1067,9 +1084,14 @@ public class Recipe_GT extends GT_Recipe{
 				adjustedFluidOutputs.add(fluidOutput);
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
-			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			return this.addRecipe(new GT_Recipe_LargeElectrolyzer(aOptimize, aInputs, aOutputs, aSpecial,
-					aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);			
+			GT_Recipe mNew = new GT_Recipe_LargeElectrolyzer(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+		 	if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
+		 		return this.addRecipe(mNew);
+		 	}
+		 	else {
+		 		return null;
+		 	}			
 		}
 
 		static {
@@ -1112,18 +1134,29 @@ public class Recipe_GT extends GT_Recipe{
 
 			@Override
 			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				final int itemLimit = Math.min(this.mOutputs.length, GT_Recipe_Map_LargeElectrolyzer.OUTPUT_COUNT);
-				final int fluidLimit = Math.min(this.mFluidOutputs.length,
-						GT_Recipe_Map_LargeElectrolyzer.FLUID_OUTPUT_COUNT);
-				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
+				final int itemLimit = Math.max(this.mOutputs.length, 0);
+				final int fluidLimit = Math.max(this.mFluidOutputs.length, 0);
+				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
+				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
 				for (int i = 0; i < itemLimit; ++i) {
-					outputStacks.add((PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
-							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5));
-				}
+					mNEIMap.put((Object) this.mOutputs[i].copy());
+				}				
 				for (int i = 0; i < fluidLimit; ++i) {
-					outputStacks.add((PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
-							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23));
+					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
 				}
+				int xPos[] = new int[] {102, 120, 138};
+				int yPos[] = new int[] {5, 23, 41, 59};		
+				int mRow = 0;
+				int mColumn = 0;
+				for (int i = 0; i < mNEIMap.size(); ++i) {					
+					if (mColumn >= 3) {
+						mColumn = 0;
+						mRow++;
+					}					
+					outputStacks.add(
+							(PositionedStack) new GT_NEI_DefaultHandler.FixedPositionedStack(
+							(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow]));
+				}				
 				return outputStacks;
 			}
 		}
@@ -1137,7 +1170,7 @@ public class Recipe_GT extends GT_Recipe{
 
 		public GT_Recipe_Map_AdvancedVacuumFreezer() {
 			super(new HashSet<GT_Recipe>(2000), "gt.recipe.advfreezer", "Adv. Cryogenic Freezer", null,
-					"gregtech:textures/gui/basicmachines/Default", GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT,
+					RES_PATH_GUI + "basicmachines/FissionFuel", GT_Recipe_Map_AdvancedVacuumFreezer.INPUT_COUNT,
 					GT_Recipe_Map_AdvancedVacuumFreezer.OUTPUT_COUNT, 0, 0, 1, "", 1, "", true, true);
 		}
 
@@ -1216,7 +1249,7 @@ public class Recipe_GT extends GT_Recipe{
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
 			
-			GT_Recipe mNew = new Recipe_GT(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+			GT_Recipe mNew = new GT_Recipe_AdvFreezer(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
 		 	if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 		 		return this.addRecipe(mNew);
 		 	}
