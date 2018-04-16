@@ -40,6 +40,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
@@ -202,16 +203,25 @@ public class GTplusplus implements ActionListener {
     public void onLoadComplete(FMLLoadCompleteEvent event) {		
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 		FishPondFakeRecipe.generateFishPondRecipes();
-		
+
+		//Large Centrifuge generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
 			if (x != null) {
 				CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mDuration, x.mEUt);
 			}
 		}
-		
+
+		//Large Electrolyzer generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
 			if (x != null) {
 				CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mDuration, x.mEUt);
+			}
+		}
+		
+		//Advanced Vacuum Freezer generation
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
+			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {			
+				CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, (x.mDuration/2), x.mEUt);
 			}
 		}
 		

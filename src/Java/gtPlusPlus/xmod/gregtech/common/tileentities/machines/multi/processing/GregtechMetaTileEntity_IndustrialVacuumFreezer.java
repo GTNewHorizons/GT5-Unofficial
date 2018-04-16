@@ -11,6 +11,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 
 import net.minecraft.item.ItemStack;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.Recipe_GT;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import net.minecraft.entity.player.InventoryPlayer;
 import gregtech.api.interfaces.IIconContainer;
@@ -53,8 +54,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				"Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)", 
-				"1x Input Hatch (Any casing)",
-				"1x Output Hatch (Any casing)", 
+				"1x Input Hatch (Any casing, optional)",
+				"1x Output Hatch (Any casing, optional)", 
 				"1x Maintenance Hatch (Any casing)", 
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (10 at least!)"};
@@ -78,7 +79,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+		return Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes;
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -90,7 +91,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-		return this.checkRecipeGeneric(4, 100, 200);
+		return this.checkRecipeGeneric(4, 100, 100);
 	}
 
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {

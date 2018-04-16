@@ -505,8 +505,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     	return true;
 	}
 	
-	
-	
+
+	 public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick) {
+	 if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
+ 		return false;
+ 	}
+ 	if (aEUtick <= 0) {
+ 		return false;
+ 	}
+ 	Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+ 	return true;
+	}
 	
 	
 	

@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
@@ -490,6 +493,23 @@ public class RecipeUtils {
 				CI.craftingToolMortar, null, null,
 				null, null, null,
 				aOutput);
+	}
+
+	public static boolean doesGregtechRecipeHaveEqualCells(GT_Recipe x) {
+			if (x.mInputs.length < 1) {
+				return false;
+			}
+			final int tInputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mInputs);
+			final int tOutputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mOutputs);
+			if (tInputAmount < tOutputAmount) {
+				if (!Materials.Tin.contains(x.mInputs)) {
+					return false;
+				}
+			} else if (tInputAmount > tOutputAmount && !Materials.Tin.contains(x.mOutputs)) {
+				return false;
+			}	
+			
+			return true;
 	}
 
 }
