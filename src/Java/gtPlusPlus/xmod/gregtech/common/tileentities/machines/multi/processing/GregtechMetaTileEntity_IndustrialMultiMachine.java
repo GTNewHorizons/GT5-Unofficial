@@ -30,7 +30,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -76,6 +75,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Processes two items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
+				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
 				CORE.GT_Tooltip};
 	}
@@ -145,7 +145,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 2; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, getTextureIndex())) && (!this.addMufflerToMachineList(tTileEntity, getTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getTextureIndex()))) {
+						if (!this.addToMachineList(tTileEntity, getTextureIndex())) {
 							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 2))) {
@@ -157,7 +157,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 8;
+		return tAmount >= 6;
 	}
 
 	@Override

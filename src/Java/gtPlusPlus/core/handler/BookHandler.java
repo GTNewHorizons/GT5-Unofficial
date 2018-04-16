@@ -78,7 +78,7 @@ public class BookHandler {
 		book_MultiMachineManual = writeBookTemplate(
 						"Manual_Multi_Machine", "Multi Machine Manual", "Alkalus", 
 						new String[] {"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
-								"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings. Any Casing can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Maint. Hatch or Energy Injector Hatch",
+								"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
 								"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus. Mode 3 is currently disabled, as each machine requires special handling.",
 								"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
 								"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Distillery or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Distillery, use No. 21 and for Extractor use No. 22.",
