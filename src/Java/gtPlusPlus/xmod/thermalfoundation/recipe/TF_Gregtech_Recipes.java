@@ -9,6 +9,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import cofh.lib.util.helpers.ItemHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
@@ -28,16 +29,16 @@ public class TF_Gregtech_Recipes {
 		final ItemStack dust_Blizz = TF_Items.itemDustBlizz.copy();
 		final ItemStack dust_Blizz3 = ItemUtils.simpleMetaStack(TF_Items.itemMaterial, 2, 3);
 		final ItemStack rod_Blizz = TF_Items.itemRodBlizz.copy();
-		final FluidStack moltenRedstone = getFluidStack("molten.redstone", 250);
+		final FluidStack moltenBlaze = getFluidStack("molten.blaze", 1440);
 
 		//Gelid Cryotheum
 		Logger.INFO("Adding Recipes for Gelid Cryotheum");
-		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 10000, 200, 240);
-		GT_Values.RA.addChemicalBathRecipe((GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L)), getFluidStack("cryotheum", 200), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L), GT_Values.NI, GT_Values.NI, null, 400, 30);
+		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 144), 10000, 200, 240);
+		GT_Values.RA.addChemicalBathRecipe((GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L)), getFluidStack("cryotheum", 144), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L), GT_Values.NI, GT_Values.NI, null, 400, 30);
 
 		//Blizz Powder
 		Logger.INFO("Adding Recipes for Blizz Powder");
-		GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.snowball, 4), moltenRedstone, dust_Blizz, GT_Values.NI, GT_Values.NI, null, 400, 240);
+		GT_Values.RA.addChemicalBathRecipe(new ItemStack(Items.snowball, 4), moltenBlaze, dust_Blizz, GT_Values.NI, GT_Values.NI, null, 400, 240);
 
 		//Blizz Rod
 		Logger.INFO("Adding Recipes for Blizz Rod");
@@ -47,6 +48,42 @@ public class TF_Gregtech_Recipes {
 		//Blazing Pyrotheum
 		Logger.INFO("Adding Recipes for Blazing Pyrotheum");
 		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);
+		
+
+		
+		GT_Values.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBlaze", 1), //Input
+				null, //F in
+				null, //F out
+				ItemHelper.cloneStack(dust_Pyrotheum, 1), //Output
+				20*8,
+				120);
+		
+		GT_Values.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSaltpeter", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSnow", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1), //Input
+				null, //F in
+				null, //F out
+				ItemHelper.cloneStack(dust_Cryotheum, 1), //Output
+				20*8,
+				120);
+		
+		GT_Values.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustNitor", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSnow", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1), //Input
+				null, //F in
+				null, //F out
+				ItemHelper.cloneStack(dust_Cryotheum, 1), //Output
+				20*8,
+				120);
+		
 
 	}
 

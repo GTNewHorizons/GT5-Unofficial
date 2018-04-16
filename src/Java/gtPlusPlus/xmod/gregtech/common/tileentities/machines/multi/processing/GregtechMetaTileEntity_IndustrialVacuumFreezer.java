@@ -21,21 +21,21 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta_MultiBlockBase {
-	
+
 	public static int CASING_TEXTURE_ID;
 	public static String mCryoFuelName = "Gelid Cryotheum";
 	public static String mCasingName = "Advanced Crygenic Casing";
-	
+
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
 		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
 	}
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final String aName) {
 		super(aName);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
 		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
 	}
@@ -63,12 +63,12 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[106],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
 					new GT_RenderedTexture((IIconContainer) (aActive
 							? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE
-							: Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER))};
+									: Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER))};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[106]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
 	}
 
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
@@ -106,12 +106,8 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 					if (h != 0 || ((xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
 								.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if (!this.addMaintenanceToMachineList(tTileEntity, CASING_TEXTURE_ID)
-								&& !this.addInputToMachineList(tTileEntity, CASING_TEXTURE_ID)
-								&& !this.addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID)
-								&& !this.addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID)) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
-									zDir + j) != ModBlocks.blockCasings3Misc) {
+						if (!this.addToMachineList(tTileEntity, CASING_TEXTURE_ID)) {
+							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) != ModBlocks.blockCasings3Misc) {
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 10) {
