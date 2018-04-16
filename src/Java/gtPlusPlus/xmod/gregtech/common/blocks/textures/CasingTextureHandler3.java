@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.Textures;
+
 public class CasingTextureHandler3 {
 
 	public static  IIcon getIcon(final int aSide, final int aMeta) { //Texture ID's. case 0 == ID[57]
@@ -38,7 +40,7 @@ public class CasingTextureHandler3 {
 				//Amazon Warehouse Casing
 				return TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();
 			case 10:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_CASING_ADVANCED_CRYOGENIC.getIcon();
 			case 11:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 12:

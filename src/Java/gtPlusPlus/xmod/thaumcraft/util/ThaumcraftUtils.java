@@ -52,10 +52,10 @@ public class ThaumcraftUtils {
 		int mSizeA = sItemsToGetAspects.size();
 		sItemsToGetAspects.put(k);
 		if (sItemsToGetAspects.size() > mSizeA) {
-			Logger.INFO("[Aspect] Successfully queued an ItemStack for Aspect addition.");
+			Logger.MATERIALS("[Aspect] Successfully queued an ItemStack for Aspect addition.");
 			return true;
 		}
-		Logger.INFO("[Aspect] Failed to queue an ItemStack for Aspect addition.");
+		Logger.MATERIALS("[Aspect] Failed to queue an ItemStack for Aspect addition.");
 		//Logger.INFO("[Aspect] ");
 		return false;
 	}
@@ -199,7 +199,7 @@ public class ThaumcraftUtils {
 			return true;
 		}
 		else {
-			Logger.INFO("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
+			Logger.MATERIALS("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
 		}
 		final AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
 		if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
@@ -208,7 +208,7 @@ public class ThaumcraftUtils {
 		return true;
 		}
 		catch (Throwable t) {
-			Logger.INFO("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
+			Logger.MATERIALS("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
 			t.printStackTrace();
 			return false;
 		}
