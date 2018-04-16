@@ -38,6 +38,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Param(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "For parametrization of Multiblocks");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_Param(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

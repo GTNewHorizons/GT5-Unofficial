@@ -23,8 +23,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
-import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;

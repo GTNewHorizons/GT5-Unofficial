@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
 
 /**
@@ -42,6 +42,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
         super(aID,aName,aNameRegional,aTier,1,"Reads Data Sticks and Orbs",1,1,"dataReader.png","");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_DataReader(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

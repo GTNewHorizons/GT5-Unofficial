@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.dataFramework.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class GT_MetaTileEntity_Hatch_OutputDataItems extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
     public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "ItemStack Data Output for Multiblocks");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

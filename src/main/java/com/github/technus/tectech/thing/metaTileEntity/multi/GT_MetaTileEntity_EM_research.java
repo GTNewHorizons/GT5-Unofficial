@@ -31,7 +31,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.*;
+import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.CommonValues.VN;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;

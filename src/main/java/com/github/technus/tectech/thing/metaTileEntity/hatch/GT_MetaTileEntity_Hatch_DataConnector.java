@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.dataFramework.DataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
@@ -35,6 +36,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
 
     protected GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
+        Util.setTier(aTier,this);
     }
 
     protected GT_MetaTileEntity_Hatch_DataConnector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

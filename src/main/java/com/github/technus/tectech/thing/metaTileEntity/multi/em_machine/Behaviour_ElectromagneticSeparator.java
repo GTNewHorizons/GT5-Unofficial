@@ -9,7 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockCont
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.CommonValues.V;
 
 /**
  * Created by danie_000 on 24.12.2017.

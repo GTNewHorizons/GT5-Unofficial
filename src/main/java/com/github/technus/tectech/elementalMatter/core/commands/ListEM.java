@@ -2,7 +2,6 @@ package com.github.technus.tectech.elementalMatter.core.commands;
 
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
-import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;

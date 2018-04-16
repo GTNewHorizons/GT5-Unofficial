@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
 import cpw.mods.fml.relauncher.Side;
@@ -26,6 +27,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 1, descr);
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_Holder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

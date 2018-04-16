@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.compatibility.dreamcraft.NoDreamCraftMachineLoader;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaDequantizer;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
@@ -12,6 +13,7 @@ import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_OwnerDetector;
+import cpw.mods.fml.common.Loader;
 
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
@@ -315,5 +317,9 @@ public class MachineLoader implements Runnable {
         GT_MetaTileEntity_TM_teslaCoil.run();
 
         GT_MetaTileEntity_DataReader.run();
+
+        if (!Loader.isModLoaded("dreamcraft")) {
+            new NoDreamCraftMachineLoader().run();
+        }
     }
 }

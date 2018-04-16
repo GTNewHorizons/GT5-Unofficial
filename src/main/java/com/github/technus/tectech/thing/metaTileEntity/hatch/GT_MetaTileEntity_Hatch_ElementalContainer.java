@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
@@ -21,7 +22,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -40,21 +40,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public float overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
-    public final int eTier;
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
-        eTier=aTier;
+        Util.setTier(aTier,this);
     }
 
-    //public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-    //    super(aName, aTier, 0, aDescription, aTextures);
-    //    eTier=aTier;
-    //}
-
-    protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, int eTier, String aDescription, ITexture[][][] aTextures) {
+    protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        this.eTier=eTier;
     }
 
     @Override
@@ -206,11 +199,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return eTier * 2;
+        return mTier * 2;
     }
 
     public int getMaxStackSize() {
-        return eTier * (eTier - 7) * 1000;
+        return mTier * (mTier - 7) * 1000;
     }
 
     @Override

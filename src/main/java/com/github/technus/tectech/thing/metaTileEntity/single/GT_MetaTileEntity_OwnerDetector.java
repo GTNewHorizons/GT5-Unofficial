@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -30,6 +31,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
 
     public GT_MetaTileEntity_OwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Screwdrive to change mode");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_OwnerDetector(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

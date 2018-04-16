@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1252,19 +1254,15 @@ public final class Util {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
     }
 
-
-    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UEV", "UIV", "UMV", "UXV", "OpV", "MAX"};
-    public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 2097152L, 8388608L, 33554432L, 134217728L, 536870912L, 1073741824L, Integer.MAX_VALUE - 7};
-
     public static byte getTier(long l) {
         byte b = -1;
 
         do {
             ++b;
-            if (b >= V.length) {
+            if (b >= CommonValues.V.length) {
                 return b;
             }
-        } while (l > V[b]);
+        } while (l > CommonValues.V[b]);
 
         return b;
     }
@@ -1345,6 +1343,16 @@ public final class Util {
         @Override
         public String toString() {
             return Integer.toString(hashCode()) + ' ' + (mItem == null ? "null" : mItem.getUnlocalizedName()) + ' ' + mMetaData + ' ' + mStackSize;
+        }
+    }
+
+    public static void setTier(int tier,Object me){
+        try{
+            Field field=GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
+            field.setAccessible(true);
+            field.set(me,(byte)tier);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

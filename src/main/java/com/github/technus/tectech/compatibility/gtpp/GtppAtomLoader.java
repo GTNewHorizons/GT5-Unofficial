@@ -2,7 +2,6 @@ package com.github.technus.tectech.compatibility.gtpp;
 
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import gregtech.api.enums.OrePrefixes;
-import gtPlusPlus.core.material.Material;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
@@ -52,7 +51,7 @@ public class GtppAtomLoader implements Runnable{
             getFluid=clazz.getMethod("getFluid", int.class);
 
             clazz=Class.forName("gtPlusPlus.core.material.MaterialGenerator");
-            generate=clazz.getMethod("generate", Material.class, boolean.class, boolean.class);
+            generate=clazz.getMethod("generate", Class.forName("gtPlusPlus.core.material.Material"), boolean.class, boolean.class);
         }catch (Exception e){
             throw new Error(e);
         }

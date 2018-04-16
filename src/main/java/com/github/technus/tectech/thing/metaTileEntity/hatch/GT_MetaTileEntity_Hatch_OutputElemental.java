@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,19 +14,20 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
     public GT_MetaTileEntity_Hatch_OutputElemental(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Elemental Output for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
+        Util.setTier(aTier,this);
     }
 
     //public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
     //    super(aName, aTier, aDescription, aTextures);
     //}
 
-    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, int eTier,String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, eTier, aDescription, aTextures);
+    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, eTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier,  mDescription, mTextures);
     }
 
     @Override

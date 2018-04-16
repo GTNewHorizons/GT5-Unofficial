@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**

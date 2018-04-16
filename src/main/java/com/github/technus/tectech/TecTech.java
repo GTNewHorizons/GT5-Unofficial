@@ -17,6 +17,7 @@ import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
@@ -58,6 +60,11 @@ public class TecTech {
 
     @Mod.EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
+        for(int i=0;i<16;i++){
+            GT_Values.V[i]=V[i];
+            GT_Values.VN[i]=VN[i];
+            GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
+        }
         Logger.setDebugOutput(true);
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,

@@ -37,10 +37,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.Util.*;
+import static com.github.technus.tectech.Util.StructureCheckerExtreme;
+import static com.github.technus.tectech.Util.getTier;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
