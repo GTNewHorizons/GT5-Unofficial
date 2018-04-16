@@ -91,7 +91,7 @@ public class GTplusplus implements ActionListener {
 		}
 
 		//Give this a go mate.
-		initAnalytics();
+		//initAnalytics();
 		setupMaterialBlacklist();
 		//setupMaterialWhitelist();
 
