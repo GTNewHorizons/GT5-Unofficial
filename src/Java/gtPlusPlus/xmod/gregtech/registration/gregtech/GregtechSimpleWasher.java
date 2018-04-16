@@ -37,7 +37,7 @@ public class GregtechSimpleWasher {
 			if (dustClean != null && dustDirty != null) {
 				Recipe_GT.Gregtech_Recipe_Map.sSimpleWasherRecipes.addRecipe(false, new ItemStack[] { dustDirty },
 						new ItemStack[] { dustClean }, null,
-						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 20, 8, 0);
+						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 5, 8, 0);
 			}
 		}	
 		
@@ -58,7 +58,7 @@ public class GregtechSimpleWasher {
 			if (crushedClean != null && crushedDirty != null) {
 				Recipe_GT.Gregtech_Recipe_Map.sSimpleWasherRecipes.addRecipe(false, new ItemStack[] { crushedDirty },
 						new ItemStack[] { crushedClean }, null,
-						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 20, 8, 0);
+						new FluidStack[] { FluidUtils.getFluidStack("water", 100) }, null, 5, 8, 0);
 			}
 		}
 

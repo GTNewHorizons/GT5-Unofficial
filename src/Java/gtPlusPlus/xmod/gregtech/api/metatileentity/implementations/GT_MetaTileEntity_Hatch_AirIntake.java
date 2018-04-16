@@ -1,0 +1,199 @@
+package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
+
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.world.World;
+import net.minecraft.item.ItemStack;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+
+import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.entity.player.EntityPlayer;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.XSTR;
+
+public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_Input {
+	private static XSTR floatGen;
+
+	public GT_MetaTileEntity_Hatch_AirIntake(final int aID, final String aName, final String aNameRegional,
+			final int aTier) {
+		super(aID, aName, aNameRegional, aTier);
+	}
+
+	public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String aDescription,
+			final ITexture[][][] aTextures) {
+		super(aName, aTier, aDescription, aTextures);
+	}
+
+	public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String[] aDescription,
+			final ITexture[][][] aTextures) {
+		super(aName, aTier, aDescription, aTextures);
+	}
+
+	public String[] getDescription() {
+		final String[] desc = new String[this.mDescriptionArray.length + 3];
+		System.arraycopy(this.mDescriptionArray, 0, desc, 0, this.mDescriptionArray.length);
+		desc[this.mDescriptionArray.length] = "DO NOT OBSTRUCT THE INPUT!";
+		desc[this.mDescriptionArray.length + 1] = "Draws in Air from the surrounding environment.";
+		desc[this.mDescriptionArray.length + 2] = "Creates 1000L of Air every 4 ticks";
+		return desc;
+	}
+
+	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
+		return new ITexture[]{aBaseTexture,
+				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER)};
+	}
+
+	public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
+		return new ITexture[]{aBaseTexture,
+				new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER)};
+	}
+
+	public boolean isSimpleMachine() {
+		return true;
+	}
+
+	public boolean isFacingValid(final byte aFacing) {
+		return true;
+	}
+
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
+		return true;
+	}
+
+	public boolean isValidSlot(final int aIndex) {
+		return false;
+	}
+
+	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GT_MetaTileEntity_Hatch_AirIntake(this.mName, this.mTier, this.mDescription, this.mTextures);
+	}
+
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
+		return false;
+	}
+
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
+		return false;
+	}
+
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);	
+		if (addAirToHatch(aTick)) {
+			if (aBaseMetaTileEntity.isClientSide()) {					
+				this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), "crit");
+			}
+		}
+	}
+
+	public void pollutionParticles(final World aWorld, final String name) {
+
+		final float ran1 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
+		float ran2 = 0.0f;
+		float ran3 = 0.0f;
+		ran2 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
+		ran3 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
+
+		final IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
+		final ForgeDirection aDir = ForgeDirection.getOrientation((int) aMuffler.getFrontFacing());
+		final float xPos = aDir.offsetX * 0.76f + aMuffler.getXCoord() + 0.25f;
+		final float yPos = aDir.offsetY * 0.76f + aMuffler.getYCoord() + 1.15f;
+		final float zPos = aDir.offsetZ * 0.76f + aMuffler.getZCoord() + 0.25f;
+		final float ySpd = aDir.offsetY * 0.1f + 0.2f + 0.1f * GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
+		float xSpd;
+		float zSpd;
+		if (aDir.offsetY == -1) {
+			final float temp = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 2.0f * 3.1415927f;
+			xSpd = (float) Math.sin(temp) * 0.1f;
+			zSpd = (float) Math.cos(temp) * 0.1f;
+		} else {
+			xSpd = aDir.offsetX * (0.1f + 0.2f * GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat());
+			zSpd = aDir.offsetZ * (0.1f + 0.2f * GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat());
+		}
+
+		aWorld.spawnParticle(name, (double) (xPos + ran1 * 0.5f),
+				(double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+				(double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f), (double) xSpd,
+				(double) -ySpd, (double) zSpd);
+		aWorld.spawnParticle(name, (double) (xPos + ran2 * 0.5f),
+				(double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+				(double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f), (double) xSpd,
+				(double) -ySpd, (double) zSpd);
+		aWorld.spawnParticle(name, (double) (xPos + ran3 * 0.5f),
+				(double) (yPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f),
+				(double) (zPos + GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat() * 0.5f), (double) xSpd,
+				(double) -ySpd, (double) zSpd);		
+	}
+
+	static {
+		GT_MetaTileEntity_Hatch_AirIntake.floatGen = new XSTR();
+	}
+
+	public int getTankPressure() {
+		return 100;
+	}
+
+	public int getCapacity() {
+		return 128000;
+	}
+
+	@Override
+	public boolean canTankBeEmptied() {
+		return true;
+	}
+
+	public boolean addAirToHatch(long aTick) {		
+		if (!this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing())) {
+			return false;
+		}		
+		boolean a1 = canTankBeFilled();
+		if (aTick % 4 != 0 && a1) {
+			return true;
+		}
+		else if (aTick % 4 != 0 && !a1) {
+			return false;
+		}
+		else {
+			if (this.mFluid != null && a1) {
+				this.mFluid.amount += 1000;
+				return true;
+			}
+			else if (this.mFluid != null && !a1) {
+				return false;
+			}
+			else {
+				if (this.mFluid == null) {
+					this.mFluid = FluidUtils.getFluidStack("air", 1000);
+					return true;
+				}
+				else {
+					//Not sure how any other fluid got in here
+					return false;
+				}
+			}
+		}		
+	}
+
+	@Override
+	public boolean canTankBeFilled() {
+		if (this.mFluid == null || (this.mFluid != null && ((this.mFluid.amount+1000) <= this.getCapacity()))) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean doesEmptyContainers() {
+		return false;
+	}
+
+	@Override
+	public boolean doesFillContainers() {
+		return true;
+	}
+}

@@ -316,7 +316,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Amazon_Warehouse_Controller, Casing_AmazonWarehouse, 
 	
 	//Advanced Vacuum Freezer
-	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum,
+	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum, 
+	
+	
+	Hatch_Air_Intake,
 	
 	
 	
