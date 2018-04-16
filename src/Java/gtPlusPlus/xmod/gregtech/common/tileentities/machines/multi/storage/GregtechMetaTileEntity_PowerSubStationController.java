@@ -118,6 +118,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return 6;
 		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
 			return 7;
+		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 7) {
+			return 8;
+		} else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 8) {
+			return 9;
 		} else {
 			return -1;
 		}

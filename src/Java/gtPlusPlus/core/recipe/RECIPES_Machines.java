@@ -85,7 +85,7 @@ public class RECIPES_Machines {
 	public static ItemStack RECIPE_LFTRController;
 	public static ItemStack RECIPE_LFTROuterCasing;
 	public static ItemStack RECIPE_LFTRInnerCasing;
-	
+
 	//Cyclotron
 	public static ItemStack RECIPE_CyclotronController;
 	public static ItemStack RECIPE_CyclotronOuterCasing;
@@ -187,12 +187,12 @@ public class RECIPES_Machines {
 	public static ItemStack INPUT_RCCokeOvenBlock;
 	public static ItemStack INPUT_IECokeOvenBlock;
 
-        //Output Determiner
+	//Output Determiner
 	public static int Casing_Amount;
-	        
-	
-	
-        public static final void loadRecipes(){
+
+
+
+	public static final void loadRecipes(){
 		run();
 		Logger.INFO("Loading Recipes for the Various machine blocks.");
 	}
@@ -242,16 +242,15 @@ public class RECIPES_Machines {
 
 	private static void runModRecipes(){
 		if (LoadedMods.Gregtech){
-
 			//Determines Casing Recipe Output
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			Casing_Amount=2;
-		         }
-	                else {
-			Casing_Amount=1;
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
+				Casing_Amount=2;
 			}
-			
-			
+			else {
+				Casing_Amount=1;
+			}
+
+
 			//Computer Cube
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.getDataOrb(),ItemList.Cover_Screen.get(1),"circuitMaster",
@@ -671,7 +670,7 @@ public class RECIPES_Machines {
 						"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
 						RECIPE_IndustrialMultiTankController);
 			}
-			
+
 			ItemStack mSemiFluidgen = ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);
 			//Semi-Fluid Generators
 			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_LV.get(1L, new Object[0]), CI.bitsd,
@@ -839,7 +838,7 @@ public class RECIPES_Machines {
 						"dustCarbon", "dustCarbon", "dustCarbon",
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
-				
+
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						"cellLithiumPeroxide", "dustCarbon", "cellLithiumPeroxide",
@@ -1029,7 +1028,7 @@ public class RECIPES_Machines {
 
 
 			}
-			
+
 
 			//Cyclotron			
 			if (CORE.ConfigSwitches.enableMultiblock_Cyclotron){
@@ -1044,7 +1043,7 @@ public class RECIPES_Machines {
 						RECIPE_CyclotronOuterCasing,
 						30 * 20,
 						500);
-				
+
 				GT_Values.RA.addAssemblerRecipe(
 						ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloyDS", 16),
 						ItemList.Field_Generator_HV.get(1),
@@ -1052,7 +1051,7 @@ public class RECIPES_Machines {
 						RECIPE_CyclotronInnerCoil,
 						90 * 20,
 						1000);
-				
+
 				RecipeUtils.recipeBuilder(
 						"plateIncoloy020", CI.getTieredCircuit(6), "plateIncoloy020",
 						RECIPE_CyclotronInnerCoil, CI.machineHull_IV, RECIPE_CyclotronInnerCoil,
@@ -1068,14 +1067,14 @@ public class RECIPES_Machines {
 						GregtechItemList.Casing_Power_SubStation.get(Casing_Amount));
 
 				ItemStack mBattery = (!CORE.GTNH ? ItemList.Energy_LapotronicOrb2.get(1) : ItemList.ZPM2.get(1));
-				
+
 				RecipeUtils.recipeBuilder(
 						"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
 						GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
 						"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
 						GregtechItemList.PowerSubStation.get(1));
 			}
-			
+
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge){
 				RecipeUtils.recipeBuilder(
 						"plateRedSteel", CI.craftingToolHammer_Hard, "plateRedSteel",
@@ -1089,7 +1088,7 @@ public class RECIPES_Machines {
 						"plateRedSteel","gearGtTalonite","plateRedSteel",
 						GregtechItemList.Industrial_ThermalCentrifuge.get(1));
 			}
-			
+
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant){
 				RecipeUtils.recipeBuilder(
 						"plateGrisium", CI.craftingToolHammer_Hard, "plateGrisium",
@@ -1103,7 +1102,7 @@ public class RECIPES_Machines {
 						"plateGrisium","circuitData","plateGrisium",
 						GregtechItemList.Industrial_WashPlant.get(1));
 			}
-			
+
 			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter){
 				RecipeUtils.recipeBuilder(
 						"plateStainlessSteel", CI.craftingToolHammer_Hard, "plateStainlessSteel",
@@ -1116,7 +1115,7 @@ public class RECIPES_Machines {
 						"wireFineOsmium",GregtechItemList.Gregtech_Computer_Cube.get(1), "wireFineOsmium",
 						"plateStainlessSteel",CI.emitter_EV,"plateStainlessSteel",
 						GregtechItemList.GT4_Multi_Crafter.get(1));
-				
+
 				RecipeUtils.recipeBuilder( 
 						"plateStainlessSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
 						CI.robotArm_ULV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_ULV,
@@ -1138,7 +1137,7 @@ public class RECIPES_Machines {
 						plate,CI.getTieredCircuit(4),plate,
 						GregtechItemList.Industrial_CuttingFactoryController.get(1));
 			}
-			
+
 			//EV_MACHINE_Extruder
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine){
 				ItemStack plate = ALLOY.INCONEL_690.getPlate(1);
@@ -1154,7 +1153,7 @@ public class RECIPES_Machines {
 						plate,CI.getTieredCircuit(4),plate,
 						GregtechItemList.Industrial_Extruder.get(1));
 			}
-			
+
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort){
 				ItemStack plate = ALLOY.INCONEL_792.getPlate(1);
 				RecipeUtils.recipeBuilder(
@@ -1169,10 +1168,10 @@ public class RECIPES_Machines {
 						plate,CI.getTieredCircuit(2),plate,
 						GregtechItemList.Industrial_FishingPond.get(1));
 			}
-			
-			
 
-			
+
+
+
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
 				ItemStack plate = ALLOY.STABALLOY.getPlate(1);
 				ItemStack o_Compressor = ItemList.Machine_HV_Compressor.get(1);
