@@ -202,6 +202,19 @@ public class GTplusplus implements ActionListener {
     public void onLoadComplete(FMLLoadCompleteEvent event) {		
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 		FishPondFakeRecipe.generateFishPondRecipes();
+		
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
+			if (x != null) {
+				CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mDuration, x.mEUt);
+			}
+		}
+		
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
+			if (x != null) {
+				CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mDuration, x.mEUt);
+			}
+		}
+		
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {

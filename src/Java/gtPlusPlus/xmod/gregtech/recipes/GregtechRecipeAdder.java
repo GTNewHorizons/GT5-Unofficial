@@ -481,6 +481,44 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				null, new FluidStack[] { aFluidInput }, null, aDuration, aEUt, 0);
 		return true;
 	}
+	
+	
+	public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
+    	if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
+    		return false;
+    	}
+    	if (aEUtick <= 0) {
+    		return false;
+    	}
+        Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+    	return true;
+	}
+	
+	public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
+    	if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
+    		return false;
+    	}
+    	if (aEUtick <= 0) {
+    		return false;
+    	}
+    	Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+    	return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
 		boolean itemsNull = true;
