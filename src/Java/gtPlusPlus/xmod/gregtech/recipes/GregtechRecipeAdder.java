@@ -5,10 +5,12 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraftforge.fluids.FluidStack;
@@ -481,53 +483,47 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				null, new FluidStack[] { aFluidInput }, null, aDuration, aEUt, 0);
 		return true;
 	}
-	
-	
-	public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
-    	if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
-    		return false;
-    	}
-    	if (aEUtick <= 0) {
-    		return false;
-    	}
-        Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
-    	return true;
-	}
-	
-	public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
-    	if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
-    		return false;
-    	}
-    	if (aEUtick <= 0) {
-    		return false;
-    	}
-    	Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
-    	return true;
-	}
-	
 
-	 public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick) {
-	 if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)) {
- 		return false;
- 	}
- 	if (aEUtick <= 0) {
- 		return false;
- 	}
- 	Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
- 	return true;
+
+	public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
+		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+		Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+		return true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick){
+		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+		Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+		return true;
+	}
+
+
+	public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick) {
+		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+		if (Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0) != null) {
+			return true;
+		}
+		return false;	
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
 		boolean itemsNull = true;

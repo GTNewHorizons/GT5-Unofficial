@@ -341,12 +341,12 @@ public class RecipeUtils {
 		boolean[] hasMultiStack = new boolean[9];
 		boolean inUse[] = {false, false, false};		
 		ItemStack array[][] = new ItemStack[3][9];
-		
+
 		Object[] inputs = {
 				InputItem1, InputItem2, InputItem3,
 				InputItem4, InputItem5, InputItem6, 
 				InputItem7, InputItem8, InputItem9};
-		
+
 		for (Object o : inputs){
 			if (o.getClass().isArray()){
 				if (inUse[using] == false){
@@ -361,10 +361,10 @@ public class RecipeUtils {
 			}
 			recipeSlotCurrent++;
 		}
-		
+
 		int using2 = 0;
 		for (boolean t : inUse){
-			
+
 			if (t){
 				if (array[using2] != null){
 					//addShapedGregtechRecipe
@@ -372,8 +372,8 @@ public class RecipeUtils {
 			}
 			using2++;
 		}
-		
-		
+
+
 		return false;
 	}
 
@@ -486,7 +486,7 @@ public class RecipeUtils {
 	public static boolean buildShapelessRecipe(final ItemStack output, final Object[] input){
 		return ShapelessUtils.addShapelessRecipe(output, input);
 	}
-	
+
 	public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
 		return RecipeUtils.addShapedGregtechRecipe(
 				aStack, null, null,
@@ -496,20 +496,27 @@ public class RecipeUtils {
 	}
 
 	public static boolean doesGregtechRecipeHaveEqualCells(GT_Recipe x) {
-			if (x.mInputs.length < 1) {
+		if (x.mInputs.length == 0 && x.mOutputs.length == 0) {
+			return true;
+		}
+
+		final int tInputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mInputs);
+		final int tOutputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mOutputs);
+
+		if (tInputAmount < tOutputAmount) {
+			if (!Materials.Tin.contains(x.mInputs)) {
 				return false;
 			}
-			final int tInputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mInputs);
-			final int tOutputAmount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(x.mOutputs);
-			if (tInputAmount < tOutputAmount) {
-				if (!Materials.Tin.contains(x.mInputs)) {
-					return false;
-				}
-			} else if (tInputAmount > tOutputAmount && !Materials.Tin.contains(x.mOutputs)) {
-				return false;
-			}	
-			
-			return true;
+			else {
+				return true;
+			}
+		} 
+		else if (tInputAmount > tOutputAmount && !Materials.Tin.contains(x.mOutputs)) {
+			return false;
+		}	
+		else {
+			return true;				
+		}
 	}
 
 }

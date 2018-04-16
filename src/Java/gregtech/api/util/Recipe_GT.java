@@ -17,6 +17,7 @@ import gregtech.nei.GT_NEI_DefaultHandler;
 
 import codechicken.nei.PositionedStack;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -1214,8 +1215,14 @@ public class Recipe_GT extends GT_Recipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			return this.addRecipe(new GT_Recipe_AdvFreezer(aOptimize, aInputs, aOutputs, aSpecial,
-					aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+			
+			GT_Recipe mNew = new Recipe_GT(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+		 	if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
+		 		return this.addRecipe(mNew);
+		 	}
+		 	else {
+		 		return null;
+		 	}
 		}
 
 		static {
