@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.launchwrapper.Launch;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
@@ -191,9 +192,16 @@ public class GTplusplus implements ActionListener {
 
 	}
 	
+	
+	/**
+	 * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods executes successfully.
+	 * {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to inject recipe generation after Gregtech and all other mods are entirely loaded and initialized.
+	 * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s {@link #instance}.
+	 */
 	@Mod.EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {		
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
+		FishPondFakeRecipe.generateFishPondRecipes();
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {

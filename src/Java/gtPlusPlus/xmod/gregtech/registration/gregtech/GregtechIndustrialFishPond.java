@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.util.FishPondFakeRecipe;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_IndustrialFishingPond;
@@ -11,8 +9,7 @@ public class GregtechIndustrialFishPond {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Logger.INFO("Gregtech5u Content | Registering Industrial Fishing Pond Multiblock.");
-			//if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
-			FishPondFakeRecipe.generateFishPondRecipes();
+			//if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {			
 			run1();
 			//}
 		}

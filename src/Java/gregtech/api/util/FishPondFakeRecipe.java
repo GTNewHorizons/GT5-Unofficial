@@ -8,35 +8,36 @@ import net.minecraft.util.WeightedRandomFishable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.common.FishingHooks;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FishPondFakeRecipe {
-	
+
 	public static ArrayList<WeightedRandomFishable> fish = new ArrayList<WeightedRandomFishable>();
 	public static ArrayList<WeightedRandomFishable> junk = new ArrayList<WeightedRandomFishable>();
 	public static ArrayList<WeightedRandomFishable> treasure = new ArrayList<WeightedRandomFishable>();
-	
+
 	@SuppressWarnings("unchecked")
 	public static boolean generateFishPondRecipes() {
-	    
-	    try {
+
+		try {
 			fish = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "fish").get(null);
 			junk = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "junk").get(null);
-		    treasure = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "treasure").get(null);
-	    }
+			treasure = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "treasure").get(null);
+		}
 		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
 			Logger.INFO("Error generating Fish Pond Recipes. [1]");
 			e.printStackTrace();
 		}
-	    
-	    AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<ArrayList<WeightedRandomFishable>>();
-	    mega.put(fish);
-	    mega.put(junk);
-	    mega.put(treasure);
-	    
-	    int mType = 14;
+
+		AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<ArrayList<WeightedRandomFishable>>();
+		mega.put(fish);
+		mega.put(junk);
+		mega.put(treasure);
+
+		int mType = 14;
 		for (ArrayList<WeightedRandomFishable> f : mega.values()) {
 			for (int e=0;e<f.size();e++) {
 				if (f.get(e) != null) {
@@ -53,9 +54,9 @@ public class FishPondFakeRecipe {
 			}
 			mType++;
 		}		
-		
+
 		return true;
-	}	 
+	}
 
 	public static void addNewFishPondLoot(int circuit, ItemStack[] outputItems, int[] chances) {
 		GT_Recipe x = new GT_Recipe(
@@ -69,8 +70,11 @@ public class FishPondFakeRecipe {
 				100, //1 Tick
 				0, //No Eu produced
 				circuit //Magic Number
-		);
-		Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes.addRecipe(x);
+				);
+		if (x != null) {
+			Logger.INFO("Fishing ["+circuit+"]: "+ItemUtils.getArrayStackNames(outputItems));
+			Recipe_GT.Gregtech_Recipe_Map.sFishPondRecipes.addRecipe(x);
+		}
 	}	
-	
+
 }
