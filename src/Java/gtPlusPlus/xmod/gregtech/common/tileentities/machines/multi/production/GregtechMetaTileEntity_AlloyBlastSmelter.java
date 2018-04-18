@@ -55,7 +55,7 @@ extends GregtechMeta_MultiBlockBase {
 				"20% Faster than the Electric Blast Furnace",
 				"Allows Complex GT++ alloys to be created",
 				"Circuit for recipe goes in the Input Bus or GUI slot",
-				"Size: 3x3x4 (Hollow)",
+				"Size: 3x4x3 (Hollow)",
 				"Controller (front middle at bottom)",
 				"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
 				"1x Input bus (one of bottom)",
