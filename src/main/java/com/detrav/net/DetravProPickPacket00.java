@@ -140,22 +140,16 @@ public class DetravProPickPacket00 extends DetravPacket {
                             Materials tMaterial = null;
                             gtPlusPlus.core.material.Material pMaterial = null;
                             try {
-                            	if (meta>10000 || meta<7000) {
+                            	if (meta<7000||meta>7500) {
                             		tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
                             	} else {
                             		short l = (short) (meta-7000);
-                            		for (Field g : gtPlusPlus.core.material.ORES.class.getFields()) {
-                            			if (g.get(g) instanceof gtPlusPlus.core.material.Material) {
-                            				gtPlusPlus.core.material.Material p = (Material) g.get(g);
-                            				if ((short)p.calculateProtons() == l)
-                            					pMaterial = p;
-                            			}
-                            		}
+                            		pMaterial = (Material) gtPlusPlus.core.material.ORES.class.getFields()[l].get(gtPlusPlus.core.material.ORES.class.getFields()[l]);
                             	}
                             } catch (Exception e) {
                                 tMaterial = null;
                             }
-                            if (meta>10000 || meta<7000) {
+                            if (meta<7000||meta>7500) {
                             if (tMaterial == null) {
                                 exception++;
                                 continue;

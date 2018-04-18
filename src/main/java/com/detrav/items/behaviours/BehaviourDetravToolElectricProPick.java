@@ -35,7 +35,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         super(aCosts);
     }
 
-    public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+	public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
         if (!aWorld.isRemote) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
@@ -113,9 +113,18 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                             }
                                         }
                                     }
-                                   else if (tBlock instanceof BlockBaseOre) {
-                                    	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, new Short((short) (7000+(short) ((BlockBaseOre) tBlock).getMaterialEx().calculateProtons())));
-                                   }
+                                    else if (tBlock instanceof BlockBaseOre) {
+                                    	short num=0;
+                                    	for (byte n=0;n<gtPlusPlus.core.material.ORES.class.getFields().length;++n)
+											try {
+												if (gtPlusPlus.core.material.ORES.class.getFields()[n].get(gtPlusPlus.core.material.ORES.class.getFields()[n]).equals(((BlockBaseOre) tBlock).getMaterialEx())) {
+													num = n;
+													break;
+												}
+											} catch (Exception e) {}
+                                    			
+                                       	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) (7000+num));
+                                    	}
                                     else if (data == 1) {
                                         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
