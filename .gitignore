@@ -1,5 +1,4 @@
 .gradle
-build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -75,3 +74,13 @@ tmp/
 libsrc/
 out/
 *.bat
+.classpath
+.settings
+libs/
+build/*
+bin/
+'.classpath'
+"
+.classpath"
+*
+.classpath

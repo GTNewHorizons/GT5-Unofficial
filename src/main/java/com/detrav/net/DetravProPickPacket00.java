@@ -9,9 +9,12 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.ORES;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 
@@ -24,7 +27,7 @@ public class DetravProPickPacket00 extends DetravPacket {
     public int size;
     public int ptype;
     HashMap<Byte,Short>[][] map = null;
-
+    
     @Override
     public int getPacketID() {
         return 0;
@@ -96,10 +99,12 @@ public class DetravProPickPacket00 extends DetravPacket {
     }
 
     public void addBlock(int x, int y, int z, short metaData) {
-        if(map == null) map = new HashMap[(size*2+1)*16][(size*2+1)*16];
+        if(map == null)
+        	map = new HashMap[(size*2+1)*16][(size*2+1)*16];
         int aX = x - (chunkX-size)*16;
         int aZ = z - (chunkZ-size)*16;
-        if(map[aX][aZ] == null) map[aX][aZ] = new HashMap<Byte, Short>();
+        if(map[aX][aZ] == null)
+        	map[aX][aZ] = new HashMap<Byte, Short>();
         map[aX][aZ].put((byte)y,metaData);
         //String key = String.format(("x_y"))
     }
@@ -133,11 +138,24 @@ public class DetravProPickPacket00 extends DetravPacket {
                             String name;
                             short[] rgba;
                             Materials tMaterial = null;
+                            gtPlusPlus.core.material.Material pMaterial = null;
                             try {
-                                tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                            	if (meta>10000 || meta<7000) {
+                            		tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                            	} else {
+                            		short l = (short) (meta-7000);
+                            		for (Field g : gtPlusPlus.core.material.ORES.class.getFields()) {
+                            			if (g.get(g) instanceof gtPlusPlus.core.material.Material) {
+                            				gtPlusPlus.core.material.Material p = (Material) g.get(g);
+                            				if ((short)p.calculateProtons() == l)
+                            					pMaterial = p;
+                            			}
+                            		}
+                            	}
                             } catch (Exception e) {
                                 tMaterial = null;
                             }
+                            if (meta>10000 || meta<7000) {
                             if (tMaterial == null) {
                                 exception++;
                                 continue;
@@ -145,13 +163,31 @@ public class DetravProPickPacket00 extends DetravPacket {
                             rgba = tMaterial.getRGBA();
                             //ores.put(GT_Ore)
                             name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
-
+                            
                             raster.setSample(i, j, 0, rgba[0]);
                             raster.setSample(i, j, 1, rgba[1]);
                             raster.setSample(i, j, 2, rgba[2]);
                             raster.setSample(i, j, 3, 255);
                             if (!ores.containsKey(name))
                                 ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+                            }
+                            else{
+                                if (pMaterial == null) {
+                                    exception++;
+                                    continue;
+                                }
+                                rgba = pMaterial.getRGBA();
+                                //ores.put(GT_Ore)
+                                name = pMaterial.getLocalizedName() + " Ore";
+                                
+                                raster.setSample(i, j, 0, rgba[0]);
+                                raster.setSample(i, j, 1, rgba[1]);
+                                raster.setSample(i, j, 2, rgba[2]);
+                                raster.setSample(i, j, 3, 255);
+                                if (!ores.containsKey(name))
+                                    ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+                                }
+                            	
                         }
                     }
                     if (playerI == i || playerJ == j) {

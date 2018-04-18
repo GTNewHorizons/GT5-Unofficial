@@ -10,6 +10,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -112,6 +113,9 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                             }
                                         }
                                     }
+                                   else if (tBlock instanceof BlockBaseOre) {
+                                    	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, new Short((short) (7000+(short) ((BlockBaseOre) tBlock).getMaterialEx().calculateProtons())));
+                                   }
                                     else if (data == 1) {
                                         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
