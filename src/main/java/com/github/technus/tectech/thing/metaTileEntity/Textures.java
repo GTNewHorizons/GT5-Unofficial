@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
+package com.github.technus.tectech.thing.metaTileEntity;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
@@ -10,17 +10,6 @@ import static gregtech.api.enums.Dyes.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class Textures {
-    static{
-        dyeLightBlue.mRGBa[0]=96;
-        dyeLightBlue.mRGBa[1]=128;
-        dyeLightBlue.mRGBa[2]=255;
-        dyeBlue.mRGBa[0]=0;
-        dyeBlue.mRGBa[1]=32;
-        dyeBlue.mRGBa[2]=255;
-        MACHINE_METAL.mRGBa[0]=210;
-        MACHINE_METAL.mRGBa[1]=220;
-        MACHINE_METAL.mRGBa[2]=255;
-    }
     private static IIconContainer OVERLAY_ENERGY_IN_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_POWER");
     private static IIconContainer OVERLAY_ENERGY_OUT_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_POWER");
     private static IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");

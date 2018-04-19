@@ -7,6 +7,7 @@ import com.github.technus.tectech.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
+import com.github.technus.tectech.thing.metaTileEntity.Textures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -31,6 +32,10 @@ import java.util.HashSet;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static gregtech.api.GregTech_API.sGTBlockIconload;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.api.enums.Dyes.dyeBlue;
+import static gregtech.api.enums.Dyes.dyeLightBlue;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
         + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;")
@@ -66,6 +71,27 @@ public class TecTech {
             GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
         }
         Logger.setDebugOutput(true);
+
+        dyeLightBlue.mRGBa[0]=96;
+        dyeLightBlue.mRGBa[1]=128;
+        dyeLightBlue.mRGBa[2]=255;
+        dyeBlue.mRGBa[0]=0;
+        dyeBlue.mRGBa[1]=32;
+        dyeBlue.mRGBa[2]=255;
+        MACHINE_METAL.mRGBa[0]=210;
+        MACHINE_METAL.mRGBa[1]=220;
+        MACHINE_METAL.mRGBa[2]=255;
+
+        try {
+            sGTBlockIconload.add(new Runnable() {
+                @Override
+                public void run() {
+                    new Textures();
+                }
+            });
+        }catch (Throwable t){
+            Logger.error("Loading textures...",t);
+        }
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);

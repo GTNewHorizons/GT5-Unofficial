@@ -9,7 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.gui.Textures.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
 
 public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_Transformer {
     public GT_MetaTileEntity_WetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {

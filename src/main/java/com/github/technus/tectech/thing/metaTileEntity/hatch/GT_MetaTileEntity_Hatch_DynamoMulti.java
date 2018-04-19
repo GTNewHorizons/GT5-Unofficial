@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.gui.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
 
 /**
  * Created by danie_000 on 16.12.2016.
