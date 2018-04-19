@@ -480,24 +480,26 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		} else {
 			storedEnergyText = EnumChatFormatting.GREEN + GT_Utility.formatNumbers(this.getEUVar()) + EnumChatFormatting.RESET;
 		}
+		
+		int errorCode = this.getBaseMetaTileEntity().getErrorDisplayID();
+		boolean mMaint = (errorCode != 0);
 
 		return new String[]{
 				"Ergon Energy - District Sub-Station",
-				"Stored EU:" + storedEnergyText,
+				"Stored EU: " + storedEnergyText,
 				"Capacity: " + EnumChatFormatting.YELLOW + GT_Utility.formatNumbers(this.maxEUStore()) + EnumChatFormatting.RESET,
 				"Running Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.computeEnergyTax()) + EnumChatFormatting.RESET + " EU/t",
 				"Controller Mode: " + mode,
+				"Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)+ mMaint + EnumChatFormatting.RESET +" | Code: ["+(!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + errorCode + EnumChatFormatting.RESET +"]",
+				"----------------------",
 				"Stats for Nerds",
 				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
 				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
 				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
 
 				"Total Time Since Built: ",
-				""+weeks+" Weeks.",
-				""+days+" Days.",
-				""+hours+" Hours.",
-				""+minutes+" Minutes.",
-				""+second+" Seconds.",
+				""+weeks+" Weeks, "+days+" Days,",
+				""+hours+" Hours, "+minutes+" Minutes, "+second+" Seconds.",
 				"Total Time in ticks: "+this.mTotalRunTime
 		};
 

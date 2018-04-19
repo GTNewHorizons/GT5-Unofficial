@@ -11,6 +11,7 @@ import gtPlusPlus.core.slots.SlotNoInput;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class CONTAINER_PowerSubStation extends GT_Container_MultiMachine {
+	
 	public CONTAINER_PowerSubStation(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
 	}
@@ -23,6 +24,11 @@ public class CONTAINER_PowerSubStation extends GT_Container_MultiMachine {
 	public void addSlots(final InventoryPlayer aInventoryPlayer) {
 		this.addSlotToContainer(new Slot((IInventory) this.mTileEntity, 1, 155, 5));
 		this.addSlotToContainer(new SlotNoInput((IInventory) this.mTileEntity, 2, 155, 23));
+		
+		for (int i = 0; i < 9; ++i) {
+			this.addSlotToContainer(new Slot((IInventory) aInventoryPlayer, i, 8 + i * 18, 167));
+		}
+		
 	}
 
 	public int getSlotCount() {
