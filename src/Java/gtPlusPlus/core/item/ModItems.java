@@ -672,6 +672,10 @@ public final class ModItems {
 		//Special Sillyness
 		if (true) {
 			
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null){
+				new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Sodium));
+			}
+			
 			Material meatRaw = MaterialUtils.generateMaterialFromGtENUM(Materials.MeatRaw);
 			meatRaw.setTextureSet(TextureSet.SET_ROUGH);
 			// A plate of Meat.

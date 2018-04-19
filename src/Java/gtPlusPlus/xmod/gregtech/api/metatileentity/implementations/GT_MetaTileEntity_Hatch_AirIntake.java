@@ -45,8 +45,9 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 	public synchronized String[] getDescription() {
 		try {
 			if (F == null || S == null) {
-				if (ReflectionUtils.getField(this.getClass(), "mDescriptionArray") != null) {
-					F = ReflectionUtils.getField(this.getClass(), "mDescriptionArray");
+				Field t = ReflectionUtils.getField(this.getClass(), "mDescriptionArray");
+				if (t != null) {
+					F = t;
 				}
 				else {
 					F = ReflectionUtils.getField(this.getClass(), "mDescription");

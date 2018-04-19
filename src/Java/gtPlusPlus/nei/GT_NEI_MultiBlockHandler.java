@@ -832,18 +832,27 @@ extends TemplateRecipeHandler {
 	public static Map<GT_ItemStack, List<ItemStack>> sItemToDataTable;
 	public static Field sFields[] = new Field[3];
 	public static Method sMethods[] = new Method[2];
+	public static boolean hasLooked = false;
 
 	@SuppressWarnings("unchecked")
-	private static final void setVars() {
+	private static synchronized final void setVars() {
 		try {			
 			//Set Fields
 			for (int u=0;u<3;u++) {
 				if (sFields[u] == null) {
-					if (u==0) {
-						sFields[0] = ReflectionUtils.getField(GT_OreDictUnificator.class, "sUnificationTable");
+					if (u==0) {						
+						for (Field f : GT_OreDictUnificator.class.getDeclaredFields()) {
+							ReflectionUtils.makeAccessible(f);
+							if (f.getName().equalsIgnoreCase("sUnificationTable")) {
+								hasLooked = true;
+							}
+						}						
+						if (sFields[0] == null && hasLooked) {
+							sFields[0] = ReflectionUtils.getField(GT_OreDictUnificator.class, "sUnificationTable");
+						}						
 						if (sFields[0] == null) {
-							ReflectionUtils.getField(GregtechOreDictUnificator.class, "sUnificationTable");
-						}
+							sFields[0] = ReflectionUtils.getField(GregtechOreDictUnificator.class, "sUnificationTable");
+						}						
 					}
 					else if (u==1) {
 						sFields[1] = ReflectionUtils.getField(GT_OreDictUnificator.class, "sName2StackMap");
