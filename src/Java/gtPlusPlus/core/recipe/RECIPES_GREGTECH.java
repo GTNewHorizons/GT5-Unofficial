@@ -955,17 +955,17 @@ public class RECIPES_GREGTECH {
 		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateVanadium", 32),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtVanadiumSteel", 8),
 				FluidUtils.getFluidStack("oxygen", 8000),
-				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4), 16, 64);
+				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4), 16, 60);
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateVanadiumGallium", 8),
 				FluidUtils.getFluidStack("molten.tantalum", 144 * 4),
-				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 128);
+				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 120);
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("nitrogen", 1000),
-				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 256);
+				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 240);
 		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
-				GregtechItemList.Casing_Power_SubStation.get(4), 80, 128);
+				GregtechItemList.Casing_Power_SubStation.get(4), 80, 120);
 	}
 
 	private static boolean addAR(final ItemStack inputA, final ItemStack inputB, final ItemStack outputA,
