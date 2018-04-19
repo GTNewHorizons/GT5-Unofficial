@@ -1,6 +1,10 @@
 package com.detrav.items.behaviours;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import com.detrav.items.DetravMetaGeneratedTool01;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -12,6 +16,7 @@ import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_None;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +27,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -137,6 +139,15 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                     }
                                 }
                             }
+                        } else if (tBlock instanceof BlockBaseOre) {
+                        	String name = tBlock.getLocalizedName();
+                        	if (!ores.containsKey(name))
+                                ores.put(name, 1);
+                            else {
+                                int val = ores.get(name);
+                                ores.put(name, val + 1);
+                            }
+                        	
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {

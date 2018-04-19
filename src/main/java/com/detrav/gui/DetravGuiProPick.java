@@ -1,16 +1,18 @@
 package com.detrav.gui;
 
-import com.detrav.gui.textures.DetravMapTexture;
-import cpw.mods.fml.client.GuiScrollingList;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import com.detrav.gui.textures.DetravMapTexture;
+
+import cpw.mods.fml.client.GuiScrollingList;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Created by wital_000 on 21.03.2016.

@@ -1,15 +1,17 @@
 package com.detrav.gui.textures;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+
+import org.lwjgl.opengl.GL11;
+
 import com.detrav.net.DetravProPickPacket00;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 /**
  * Created by wital_000 on 21.03.2016.
