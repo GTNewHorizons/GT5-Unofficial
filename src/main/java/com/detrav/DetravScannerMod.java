@@ -1,8 +1,13 @@
 package com.detrav;
 
+import org.apache.logging.log4j.LogManager;
+
+import com.detrav.net.DetravNetwork;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
-import com.detrav.net.DetravNetwork;
+import com.detrav.utils.GTppHelper;
+
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -14,14 +19,16 @@ import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech")
+@Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech;after:miscutils")
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "1.3";
+    public static final String VERSION = "1.4.2";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
+    public static final org.apache.logging.log4j.Logger Logger = LogManager.getLogger("GT Scanner Mod");
+    
     @SidedProxy(clientSide = "com.detrav.proxies.ClientProxy", serverSide = "com.detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
 
@@ -64,6 +71,8 @@ public class DetravScannerMod
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
+        if (Loader.isModLoaded("miscutils"))
+        	GTppHelper.generate_OreIDs();
     }
 
 }

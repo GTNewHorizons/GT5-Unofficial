@@ -1,6 +1,10 @@
 package com.detrav.items.behaviours;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import com.detrav.items.DetravMetaGeneratedTool01;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -23,9 +27,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Created by wital_000 on 19.03.2016.

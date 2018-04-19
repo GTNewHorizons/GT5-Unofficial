@@ -3,6 +3,7 @@ package com.detrav.net;
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.gui.textures.DetravMapTexture;
+import com.detrav.utils.GTppHelper;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -143,8 +144,8 @@ public class DetravProPickPacket00 extends DetravPacket {
                             	if (meta<7000||meta>7500) {
                             		tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
                             	} else {
-                            		short l = (short) (meta-7000);
-                            		pMaterial = (Material) gtPlusPlus.core.material.ORES.class.getFields()[l].get(gtPlusPlus.core.material.ORES.class.getFields()[l]);
+                            		Short l = (short) (meta-7000);
+                            		pMaterial = GTppHelper.decodeoresGTpp.get(l);
                             	}
                             } catch (Exception e) {
                                 tMaterial = null;

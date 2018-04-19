@@ -1,8 +1,15 @@
 package com.detrav.items.behaviours;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
 import com.detrav.net.DetravProPickPacket00;
+import com.detrav.utils.GTppHelper;
+
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -11,6 +18,7 @@ import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gtPlusPlus.core.block.base.BlockBaseOre;
+import gtPlusPlus.core.material.Material;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,10 +30,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Created by wital_000 on 19.03.2016.
  */
@@ -36,7 +40,6 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
     }
 
 	public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-
         if (!aWorld.isRemote) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             if (aPlayer.isSneaking()) {
@@ -89,7 +92,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                         int ySize = c.getHeightValue(x, z);//(int)aPlayer.posY;//c.getHeightValue(x, z);
                         for (int y = 1; y < ySize; y++) {
                             switch (data) {
-                                case 0:
+                                case 0: 
                                 case 1:
                                     Block tBlock = c.getBlock(x,y,z);
                                     short tMetaID = (short)c.getBlockMetadata(x,y,z);
@@ -114,16 +117,15 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                         }
                                     }
                                     else if (tBlock instanceof BlockBaseOre) {
-                                    	short num=0;
-                                    	for (byte n=0;n<gtPlusPlus.core.material.ORES.class.getFields().length;++n)
-											try {
-												if (gtPlusPlus.core.material.ORES.class.getFields()[n].get(gtPlusPlus.core.material.ORES.class.getFields()[n]).equals(((BlockBaseOre) tBlock).getMaterialEx())) {
-													num = n;
-													break;
-												}
-											} catch (Exception e) {}
-                                    			
-                                       	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) (7000+num));
+                                    	Short packaged = 0;
+                                    	Material m = ((BlockBaseOre) tBlock).getMaterialEx();
+                                    	packaged = GTppHelper.encodeoresGTpp.get(m);
+                                    	try {
+                                    	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) (packaged+7000));
+                                    	}
+                                        catch(Exception e) {
+                                        	
+                                        }
                                     	}
                                     else if (data == 1) {
                                         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
@@ -155,7 +157,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                     packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
                                     break;
                             }
-                            if (data > 1) break;
+                            if (data > 1) 
+                            	break;
                         }
                     }
             }
