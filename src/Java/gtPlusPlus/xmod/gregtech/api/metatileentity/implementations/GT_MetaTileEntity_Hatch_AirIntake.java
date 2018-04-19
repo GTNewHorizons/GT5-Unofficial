@@ -7,10 +7,14 @@ import net.minecraft.item.ItemStack;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import java.lang.reflect.Field;
+
 import net.minecraft.entity.player.EntityPlayer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -30,18 +34,51 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_I
 		super(aName, aTier, aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String[] aDescription,
+	/*public GT_MetaTileEntity_Hatch_AirIntake(final String aName, final int aTier, final String[] aDescription,
 			final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
-	}
+	}*/
 
-	public String[] getDescription() {
-		final String[] desc = new String[this.mDescriptionArray.length + 3];
-		System.arraycopy(this.mDescriptionArray, 0, desc, 0, this.mDescriptionArray.length);
-		desc[this.mDescriptionArray.length] = "DO NOT OBSTRUCT THE INPUT!";
-		desc[this.mDescriptionArray.length + 1] = "Draws in Air from the surrounding environment.";
-		desc[this.mDescriptionArray.length + 2] = "Creates 1000L of Air every 4 ticks";
-		return desc;
+	private static String[] S;
+	private static Field F;
+
+	public synchronized String[] getDescription() {
+		try {
+			if (F == null || S == null) {
+				if (ReflectionUtils.getField(this.getClass(), "mDescriptionArray") != null) {
+					F = ReflectionUtils.getField(this.getClass(), "mDescriptionArray");
+				}
+				else {
+					F = ReflectionUtils.getField(this.getClass(), "mDescription");
+				}
+				if (S == null && F != null) {
+					Object o = F.get(this);
+					if (o instanceof String[]) {
+						S = (String[]) o;
+					}
+					else if (o instanceof String) {
+						S = new String[] {(String) o};
+					}
+				}
+
+			}
+		}
+		catch (Throwable t) {
+
+		}
+		if (S != null) {
+			final String[] desc = new String[S.length + 3];
+			System.arraycopy(S, 0, desc, 0, S.length);
+			desc[S.length] = "DO NOT OBSTRUCT THE INPUT!";
+			desc[S.length + 1] = "Draws in Air from the surrounding environment";
+			desc[S.length + 2] = "Creates 1000L of Air every 4 ticks";
+			return desc;
+		}
+		else {
+			return new String[] {"DO NOT OBSTRUCT THE INPUT!", "Draws in Air from the surrounding environment", "Creates 1000L of Air every 4 ticks"};
+		}
+
+
 	}
 
 	public ITexture[] getTexturesActive(final ITexture aBaseTexture) {

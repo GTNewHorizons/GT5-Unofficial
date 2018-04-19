@@ -1,6 +1,7 @@
 package gtPlusPlus.nei;
 
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 
 import codechicken.nei.api.IConfigureNEI;
 
@@ -14,6 +15,11 @@ implements IConfigureNEI {
 		for (final CustomRecipeMap tMap : gregtech.api.util.CustomRecipeMap.sMappings) {
 			if (tMap.mNEIAllowed) {
 				new GT_NEI_DefaultHandler(tMap);
+			}
+		}
+		for (final Gregtech_Recipe_Map tMap : gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sMappings) {
+			if (tMap.mNEIAllowed) {
+				new GT_NEI_MultiBlockHandler(tMap);
 			}
 		}
 		sIsAdded = true;
