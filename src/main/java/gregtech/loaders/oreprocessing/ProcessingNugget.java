@@ -13,6 +13,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L), new Object[]{"sI ", 'I', OrePrefixes.ingot.get(aMaterial)});
         if (aMaterial == Materials.Iron)
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.WroughtIron, 1L));
         GT_Values.RA.addAlloySmelterRecipe(GT_Utility.copyAmount(9L, new Object[]{aStack}), aMaterial.contains(SubTag.SMELTING_TO_GEM) ? ItemList.Shape_Mold_Ball.get(0L, new Object[0]) : ItemList.Shape_Mold_Ingot.get(0L, new Object[0]), GT_OreDictUnificator.get(aMaterial.contains(SubTag.SMELTING_TO_GEM) ? OrePrefixes.gem : OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 200, 2);
@@ -24,9 +25,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GT_RecipeRegistrator.registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             GT_Values.RA.addAlloySmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), ItemList.Shape_Mold_Nugget.get(0L, new Object[0]), GT_Utility.copyAmount(9L, new Object[]{aStack}), 100, 1);
-            if ((GT_ModHandler.getSmeltingOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), false, null) == null) && (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L) != null) && (!GT_ModHandler.addSmeltingRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), GT_Utility.copyAmount(9L, new Object[]{aStack})))) {
+            //if ((GT_ModHandler.getSmeltingOutput(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), false, null) == null) && (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mSmeltInto, 1L) != null) && (!GT_ModHandler.addSmeltingRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), GT_Utility.copyAmount(9L, new Object[]{aStack})))) {
 //                GT_ModHandler.addShapelessCraftingRecipe(GT_Utility.copyAmount(9L, new Object[]{aStack}), new Object[]{aOreDictName});
-            }
+            //}
         }
     }
 }
