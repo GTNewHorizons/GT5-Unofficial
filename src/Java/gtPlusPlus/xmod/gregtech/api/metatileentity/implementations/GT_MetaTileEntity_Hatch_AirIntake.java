@@ -4,7 +4,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
@@ -16,7 +16,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.XSTR;
 
 public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_Input {
 	private static XSTR floatGen;

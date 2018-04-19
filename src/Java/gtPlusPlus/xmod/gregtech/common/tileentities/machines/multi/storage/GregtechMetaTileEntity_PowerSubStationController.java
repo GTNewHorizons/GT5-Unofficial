@@ -27,7 +27,8 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_PowerSubStation;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -63,6 +64,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
+				"Redox Cells can be upgraded via the GUI without having to deconstruct the multiblock",
 				"Size(WxHxD): External 5xHx5, Sub-Station Casings, Controller (Bottom, Centre)",
 				"Size(WxHxD): Internal 3x(H-2)x3, Energy Storage Cells",
 				"Number and quality of cells determines power storage",
@@ -89,12 +91,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MatterFabricator.png");
+		return new GUI_PowerSubStation(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "Ergon Energy - Sub Station");
+	}
+
+	@Override
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new CONTAINER_PowerSubStation(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
