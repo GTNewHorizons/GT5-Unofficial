@@ -152,12 +152,18 @@ public class Textures {
     };
 
     public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[16][17];
-    static{
+
+    public Textures(){
         for (byte i = 0; i < MACHINE_CASINGS_TT.length; i++) {
             for (byte j = 0; j < MACHINE_CASINGS_TT[i].length; j++) {
                 MACHINE_CASINGS_TT[i][j] = new GT_SidedTexture(MACHINECASINGS_BOTTOM_TT[i], MACHINECASINGS_TOP_TT[i], MACHINECASINGS_SIDE_TT[i], Dyes.getModulation(j - 1, MACHINE_METAL.mRGBa));
             }
         }
+        //for (byte i = 0; i < MACHINE_CASINGS.length; i++) {
+        //    for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) {
+        //        MACHINE_CASINGS_TT[i][j] = MACHINE_CASINGS[i][j];
+        //    }
+        //}
         MACHINE_CASINGS=MACHINE_CASINGS_TT;
     }
 }

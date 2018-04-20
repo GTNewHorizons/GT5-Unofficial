@@ -32,10 +32,7 @@ import java.util.HashSet;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static gregtech.api.GregTech_API.sGTBlockIconload;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.enums.Dyes.dyeBlue;
-import static gregtech.api.enums.Dyes.dyeLightBlue;
+import static gregtech.api.enums.Dyes.*;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
         + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;")
@@ -83,12 +80,7 @@ public class TecTech {
         MACHINE_METAL.mRGBa[2]=255;
 
         try {
-            sGTBlockIconload.add(new Runnable() {
-                @Override
-                public void run() {
-                    new Textures();
-                }
-            });
+            new Textures();
         }catch (Throwable t){
             Logger.error("Loading textures...",t);
         }
