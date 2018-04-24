@@ -19,9 +19,9 @@ buildscript {
 apply plugin: 'forge'
 import de.undercouch.gradle.tasks.download.Download
 
-version = "1.7.10-1.0.5-GT-NH"
+version = "1.7.10-1.0.6-GT-NH"
 group= "pers.gwyog.gtneioreplugin"
-archivesBaseName = "gtneioreplugin-csv"
+archivesBaseName = "gtneioreplugin"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
