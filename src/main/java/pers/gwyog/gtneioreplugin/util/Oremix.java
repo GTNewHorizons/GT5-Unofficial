@@ -285,7 +285,7 @@ public class Oremix {
 
 	@CsvCustomBindByName(column = "End Asteroids", required = false, converter = XtoBool.class)
 	public boolean ea;
-	@CsvCustomBindByName(column = "Astroids", required = false, converter = XtoBool.class)
+	@CsvCustomBindByName(column = "AstroidBelt", required = false, converter = XtoBool.class)
 	public boolean as;
 	@CsvCustomBindByName(column = "Barnard C", required = false, converter = XtoBool.class)
 	public boolean bc;

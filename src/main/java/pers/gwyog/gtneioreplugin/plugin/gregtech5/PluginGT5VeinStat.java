@@ -124,7 +124,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         
         String Dims = getDims(oreLayer); 
         
-        if (getLocalizedVeinName(oreLayer).length>1) {
+        /*if (getLocalizedVeinName(oreLayer).length>1) {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
         if (getLocalizedVeinName(oreLayer).length>2) {
         	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
@@ -133,10 +133,13 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         else
         GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
         }
+        else*/
+        if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Ore"))
+        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Ore")[0] + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+        else if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Sand"))
+            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Sand")[0] + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);   
         else
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
-        
-        
+        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]) + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]), 2, 50, 0x404040, false);
         
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[1]), 2, 60, 0x404040, false);

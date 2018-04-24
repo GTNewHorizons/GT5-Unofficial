@@ -32,6 +32,7 @@ public class GTNEIOrePlugin {
     	Config c = new Config(event, this.MODID+".cfg");
     	csv = c.tConfig.getBoolean("print csv","ALL", false, "princsv, you need apache commons collections to be injected in the minecraft jar.");
     	CSVname = c.tConfig.getString("CSV_name", "ALL", event.getModConfigurationDirectory()+"/GTNH-Oresheet.csv", "rename the oresheet here, it will appear in /config");
+    	c.save();
     }
     
     @EventHandler
