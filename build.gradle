@@ -21,7 +21,7 @@ import de.undercouch.gradle.tasks.download.Download
 
 version = "1.7.10-1.0.5-GT-NH"
 group= "pers.gwyog.gtneioreplugin"
-archivesBaseName = "gtneioreplugin"
+archivesBaseName = "gtneioreplugin-csv"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -52,6 +52,7 @@ dependencies {
     compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.ccl.version}:dev"
     compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.ccc.version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+    compile "com.opencsv:opencsv:4.0"
 }
 
 task getGregTech(type: Download) {

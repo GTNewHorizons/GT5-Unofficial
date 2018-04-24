@@ -48,4 +48,5 @@ public class PluginBase extends TemplateRecipeHandler {
     public int getGuiWidth() {
         return 166;
     }
+    
 }

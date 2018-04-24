@@ -1,14 +1,7 @@
 package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
-import java.awt.Rectangle;
-
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 
 public class PluginGT5Base extends PluginBase {
@@ -23,7 +16,7 @@ public class PluginGT5Base extends PluginBase {
             return 5;
     }
     
-    public String getGTOreLocalizedName(short index) {
+    public static String getGTOreLocalizedName(short index) {
     	
     	if (!Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index%1000).contains("Awakened"))
         return Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(index)), index%1000);
@@ -31,7 +24,7 @@ public class PluginGT5Base extends PluginBase {
     	return "Aw. Draconium Ore";
     }
     
-    public String getGTOreUnlocalizedName(short index) {
+    public static String getGTOreUnlocalizedName(short index) {
         return "gt.blockores." + index + ".name";
     }
 
