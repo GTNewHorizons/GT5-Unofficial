@@ -53,13 +53,7 @@ public class GT5OreLayerHelper {
                 Map.Entry pair = (Map.Entry)it.next();
                 String Dims = PluginGT5VeinStat.getDims((OreLayerWrapper)pair.getValue()); 
                 OreLayerWrapper oreLayer = (OreLayerWrapper) pair.getValue();
-                if (PluginGT5VeinStat.getLocalizedVeinName(oreLayer).length>2)
-                	oremix.setOreName(PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[0]+PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[1]+PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[2]);
-                else if (PluginGT5VeinStat.getLocalizedVeinName(oreLayer).length>1)
-                	oremix.setOreName(PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[0]+PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[1]);
-                else
-                	oremix.setOreName(PluginGT5VeinStat.getLocalizedVeinName(oreLayer)[0]);
-                
+                oremix.setOreName(oreLayer.veinName.split("\\.")[2]);
                 oremix.setPrimary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[0]));
                 oremix.setSecondary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[1]));
                 oremix.setInbetween(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[2]));
@@ -68,7 +62,7 @@ public class GT5OreLayerHelper {
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
-                oremix.setMix("\'"+Integer.toString(oreLayer.Meta[0])+"|"+Integer.toString(oreLayer.Meta[1])+"|"+Integer.toString(oreLayer.Meta[2])+"|"+Integer.toString(oreLayer.Meta[3])+"\'");
+                oremix.setMix(Integer.toString(oreLayer.Meta[0])+"|"+Integer.toString(oreLayer.Meta[1])+"|"+Integer.toString(oreLayer.Meta[2])+"|"+Integer.toString(oreLayer.Meta[3]));
                 oremix.as=Dims.contains("As");
                 oremix.bc=Dims.contains("BC");
                 oremix.be=Dims.contains("BE");
