@@ -67,7 +67,7 @@ public class GalacticGreg {
 		if (!GalacticGregRegistry.InitRegistry())
 			throw new RuntimeException("GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
 	
-		new WorldGenGaGT().run();
+		//new WorldGenGaGT().run(); DO NOT UNCOMMENT, was moved to gregtech.loaders.postload.GT_Worldgenloader
 		
 		GalacticConfig.serverPostInit();
 		

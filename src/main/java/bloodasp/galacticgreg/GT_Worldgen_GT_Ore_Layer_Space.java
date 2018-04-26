@@ -58,6 +58,28 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 
 	}
 
+	public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight, int pDensity, int pSize, short pPrimary, short pSecondary, short pBetween, short pSporadic) {
+		super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
+		mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
+		mMaxY = ((short) Math.max(this.mMinY + 5, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
+		mWeight = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "RandomWeight", pWeight));
+		mDensity = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Density", pDensity));
+		mSize = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Size", pSize)));
+		mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OrePrimaryLayer", pPrimary));
+		mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary));
+		mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween));
+		mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic));
+
+		_mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
+		_mDynWorldConfig.InitDynamicConfig();
+
+		GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
+
+		if (mEnabled)
+			sWeight += this.mWeight;
+
+	}
+
 	/**
 	 * Check if *this* orelayer is enabled for pDimensionDef
 	 * @param pDimensionDef the ChunkProvider in question
