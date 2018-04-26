@@ -1,31 +1,31 @@
 package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
-import java.awt.Rectangle;
-import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
-import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import pers.gwyog.gtneioreplugin.util.GT5CFGHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
+import pers.gwyog.gtneioreplugin.util.Oremix;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 
@@ -122,7 +122,9 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
         
-        if (getLocalizedVeinName(oreLayer).length>1) {
+        String Dims = getDims(oreLayer); 
+        
+        /*if (getLocalizedVeinName(oreLayer).length>1) {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
         if (getLocalizedVeinName(oreLayer).length>2) {
         	GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
@@ -131,31 +133,45 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         else
         GuiDraw.drawString(I18n.format(getLocalizedVeinName(oreLayer)[1]), 2, 30, 0x404040, false);
         }
+        else*/
+        if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Ore"))
+        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Ore")[0] + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
+        else if (getGTOreLocalizedName(oreLayer.Meta[0]).contains("Sand"))
+            GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]).split("Sand")[0] + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);   
         else
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer)[0], 2, 20, 0x404040, false);
+        	GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]) + " " +I18n.format("gtnop.gui.nei.vein"), 2, 20, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[0]), 2, 50, 0x404040, false);
+        
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[1]), 2, 60, 0x404040, false);
+        
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[2]), 2, 70, 0x404040, false);
+        
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + getGTOreLocalizedName(oreLayer.Meta[3]), 2, 80, 0x404040, false);
+        
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 90, 0x404040, false);
+       
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + Integer.toString(oreLayer.randomWeight), 100, 90, 0x404040, false);
+        
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": ", 2, 100, 0x404040, false);
-        if (getDims(oreLayer).length()>36) {
-        GuiDraw.drawString(I18n.format("") + getDims(oreLayer).substring(0, 36), 2, 110, 0x404040, false);
-        	if (getDims(oreLayer).length()>70) {
-        	GuiDraw.drawString(I18n.format("") + getDims(oreLayer).substring(36, 70), 2, 120, 0x404040, false);
-        	GuiDraw.drawString(I18n.format("") + getDims(oreLayer).substring(70, getDims(oreLayer).length()-1), 2, 130, 0x404040, false);
+        if (Dims.length()>36) {
+        GuiDraw.drawString(I18n.format("") + Dims.substring(0, 36), 2, 110, 0x404040, false);
+        	if (Dims.length()>70) {
+        	GuiDraw.drawString(I18n.format("") + Dims.substring(36, 70), 2, 120, 0x404040, false);
+        	GuiDraw.drawString(I18n.format("") + Dims.substring(70, Dims.length()-1), 2, 130, 0x404040, false);
         }
         else
-        GuiDraw.drawString(I18n.format("") + getDims(oreLayer).substring(36, getDims(oreLayer).length()-1), 2, 120, 0x404040, false);
+        GuiDraw.drawString(I18n.format("") + Dims.substring(36, Dims.length()-1), 2, 120, 0x404040, false);
         }
         else
-        GuiDraw.drawString(I18n.format("") + getDims(oreLayer).substring(0, getDims(oreLayer).length()-1), 2, 110, 0x404040, false);
+        GuiDraw.drawString(I18n.format("") + Dims.substring(0, Dims.length()-1), 2, 110, 0x404040, false);
+            
+        
         //if (GT5OreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
         GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
+        
     }
     
-    public String[] getLocalizedVeinName(OreLayerWrapper oreLayer) {
+    public static String[] getLocalizedVeinName(OreLayerWrapper oreLayer) {
     	
     	String unlocalizedName = oreLayer.veinName;
         if (unlocalizedName.startsWith("ore.mix.custom."))
@@ -164,7 +180,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             return new String[] {I18n.format("gtnop." + unlocalizedName) + I18n.format("gtnop.ore.vein.name")};
     }
     
-    public String coustomVeinRenamer(OreLayerWrapper oreLayer) {
+    public static String coustomVeinRenamer(OreLayerWrapper oreLayer) {
     	Set<String> s = new HashSet<String>();
     	for (int i=0; i < 4; i++)
     		s.add(getGTOreLocalizedName(oreLayer.Meta[i]).replaceAll(" ", ""));
@@ -197,11 +213,11 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         return weightedChance;
     }*/
     
-    public String getDims(OreLayerWrapper oreLayer)  {
+    public static String getDims(OreLayerWrapper oreLayer)  {
     	return GT5CFGHelper.GT5CFG(GregTech_API.sWorldgenFile.mConfig.getConfigFile(), oreLayer.veinName.replace("ore.mix.custom.", "").replace("ore.mix.", ""));
     }
     
-    public String[] get_Cnames(OreLayerWrapper oreLayer) {
+    public static String[] get_Cnames(OreLayerWrapper oreLayer) {
     	
     	String[] splt = coustomVeinRenamer(oreLayer).split("\\s");
     	/*HashSet<String> h = new HashSet<String>();

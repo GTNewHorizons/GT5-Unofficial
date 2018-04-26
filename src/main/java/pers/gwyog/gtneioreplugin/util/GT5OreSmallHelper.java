@@ -32,6 +32,8 @@ public class GT5OreSmallHelper {
             if (worldGen.mWorldGenName.startsWith("ore.small.") && worldGen instanceof GT_Worldgen_GT_Ore_SmallPieces) {
                 GT_Worldgen_GT_Ore_SmallPieces worldGenSmallPieces = (GT_Worldgen_GT_Ore_SmallPieces)worldGen;
                 meta = worldGenSmallPieces.mMeta;
+                if (meta<0)
+                	break;
                 material = GregTech_API.sGeneratedMaterials[meta];
                 mapOreSmallWrapper.put(worldGen.mWorldGenName, new OreSmallWrapper(worldGenSmallPieces));
                 if (!mapOreMetaToOreDrops.keySet().contains(meta)) {

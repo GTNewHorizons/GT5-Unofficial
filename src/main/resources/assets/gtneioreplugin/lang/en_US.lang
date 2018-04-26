@@ -28,7 +28,7 @@ gtnop.gui.nei.ieVeinComponent=Vein components
 gtnop.gui.nei.fromMod=From mod
 
 gtnop.gui.nei.seeAll=See All
-
+gtnop.gui.nei.vein=Vein
 gtnop.gui.nei.oreOthers=Other ore
 gtnop.nei.genPosition=Position
 gtnop.nei.genPositionInfo=In the center of each chunk
@@ -55,45 +55,3 @@ gtnop.ore.null.name=None
 gtnop.ore.vein.name=Vein 
 gtnop.ore.asteroid.name=Asteriod
 gtnop.ore.custom.name=Custom
-
-
-# vein names
-gtnop.ore.mix.naquadah=Naquadah
-gtnop.ore.mix.lignite=Lignite
-gtnop.ore.mix.coal=Coal
-gtnop.ore.mix.magnetite=Magnetite
-gtnop.ore.mix.gold=Gold
-gtnop.ore.mix.iron=Iron
-gtnop.ore.mix.cassiterite=Cassiterite
-gtnop.ore.mix.tetrahedrite=Tetrahedrite
-gtnop.ore.mix.netherquartz=Nether Quartz
-gtnop.ore.mix.sulfur=Sulfur
-gtnop.ore.mix.copper=Copper
-gtnop.ore.mix.bauxite=Bauxite
-gtnop.ore.mix.salts=Salts
-gtnop.ore.mix.redstone=Redstone
-gtnop.ore.mix.soapstone=Soapstone
-gtnop.ore.mix.nickel=Nickel
-gtnop.ore.mix.platinum=Platinum
-gtnop.ore.mix.pitchblende=Pitchblends
-gtnop.ore.mix.uranium=Uranium
-gtnop.ore.mix.monazite=Monazite
-gtnop.ore.mix.molybdenum=Molybdenum
-gtnop.ore.mix.tungstate=Tungstate
-gtnop.ore.mix.sapphire=Sapphire
-gtnop.ore.mix.manganese=Manganese
-gtnop.ore.mix.quartz=Quartz
-gtnop.ore.mix.diamond=Diamond
-gtnop.ore.mix.olivine=Olivine
-gtnop.ore.mix.apatite=Apatite
-gtnop.ore.mix.galena=Galena
-gtnop.ore.mix.lapis=Lapis
-gtnop.ore.mix.beryllium=Beryllium
-gtnop.ore.mix.oilsand=Oilsand
-gtnop.ore.mix.plutonium=Plutonium
-gtnop.ore.mix.iodinesalt=Iodinesalt
-gtnop.ore.mix.rocksalt=Rocksalt
-gtnop.ore.mix.asbestos=Asbestos
-gtnop.ore.mix.titanium=Titanium
-gtnop.ore.mix.garnet=Garnet
-gtnop.ore.mix.dolamide=Dolamide

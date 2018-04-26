@@ -6,6 +6,8 @@ bin/
 eclipse/
 .classpath
 .project
+libs/
+libs2/
 
 # Compiled class file
 *.class
@@ -20,7 +22,6 @@ eclipse/
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
