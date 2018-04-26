@@ -9,14 +9,13 @@ import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.EuMeterGT;
 import com.github.technus.tectech.thing.item.FrontRotationTriggerItem;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.enums.GT_Values.RA;
 
@@ -87,8 +86,20 @@ public class RecipeLoader implements Runnable {
                         'E', ItemList.Hull_IV});
 
         //Data Bank
-        //RA.addAssemblylineRecipe(ItemList.Machine_Multi_Assemblyline.get(1),5000,,,,500,)
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
+                CustomItemList.Machine_Multi_Switch.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                ItemList.Tool_DataOrb.get(1),
+                ItemList.Cover_Screen.get(1),
+        }, new FluidStack[]{
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                Materials.Hydrogen.getGas(1000),
+        }, CustomItemList.Machine_Multi_DataBank.get(1), 12000, 14000);
         //CustomItemList.Machine_Multi_DataBank
+
+        //recipe for ass line data hatches
+        RA.addAssemblerRecipe(ItemList.Hatch_DataAccess_EV.get(1), CustomItemList.dataIn_Hatch.get(1), CustomItemList.dataInAss_Hatch.get(1), 2048, 12000);
+        RA.addAssemblerRecipe(ItemList.Hatch_DataAccess_EV.get(1), CustomItemList.dataOut_Hatch.get(1), CustomItemList.dataOutAss_Hatch.get(1), 2048, 12000);
 
         if (Loader.isModLoaded("dreamcraft")) {
             new DreamCraftRecipeLoader().run();//init recipes for GTNH version

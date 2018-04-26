@@ -292,7 +292,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Network Switch
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
-                ItemList.Circuit_Ultimatecrystalcomputer.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 64),
                 CustomItemList.DATApipe.get(4),
