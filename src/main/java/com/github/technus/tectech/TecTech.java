@@ -206,28 +206,26 @@ public class TecTech {
                 "utilityworlds",
                 Reference.MODID
         ));
-        String modId;
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
             GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
             if (uniqueIdentifier != null) {
-                modId = uniqueIdentifier.modId;
-                if (modIDs.contains(modId)) {//Full Whitelisted Mods
+                if (modIDs.contains(uniqueIdentifier.modId)) {//Full Whitelisted Mods
                     continue;
-                } else if ("OpenBlocks".equals(modId)) {
-                    if ("grave".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
+                } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
+                    if ("grave".equals(uniqueIdentifier.name)) {
                         continue;
                     }
-                } else if ("TwilightForest".equals(modId)){
-                    if ("tile.TFShield".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
-                        block.setResistance(40);
-                        continue;
-                    }else if ("tile.TFThorns".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
-                        block.setResistance(10);
-                        continue;
-                    }else if ("tile.TFTowerTranslucent".equals(GameRegistry.findUniqueIdentifierFor(block).name)){
+                } else if ("TwilightForest".equals(uniqueIdentifier.modId)){
+                    if ("tile.TFShield".equals(uniqueIdentifier.name)){
                         block.setResistance(30);
                         continue;
-                    }else if ("tile.TFDeadrock".equals(GameRegistry.findUniqueIdentifierFor(block).name)) {
+                    }else if ("tile.TFThorns".equals(uniqueIdentifier.name)){
+                        block.setResistance(10);
+                        continue;
+                    }else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)){
+                        block.setResistance(30);
+                        continue;
+                    }else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
                         block.setResistance(5);
                         continue;
                     } else {
