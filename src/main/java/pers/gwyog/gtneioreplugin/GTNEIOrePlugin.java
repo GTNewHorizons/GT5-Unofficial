@@ -19,7 +19,7 @@ public class GTNEIOrePlugin {
     public static final String MODID = "gtneioreplugin";
     public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
     public static final String VERSION = "@version@";
-    public static boolean csv;
+    public static boolean csv = false;
     public static String CSVname; 
     public static List<Oremix> OreVeins=new ArrayList();
     public static HashSet OreV=new HashSet();
@@ -38,8 +38,10 @@ public class GTNEIOrePlugin {
     @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         if (event.getSide() == Side.CLIENT) {
-                new GT5OreLayerHelper();
+        	GT5OreLayerHelper h = new GT5OreLayerHelper();
                 new GT5OreSmallHelper();
+                if (csv)
+                	h.make_csv();
             	}
             }
 

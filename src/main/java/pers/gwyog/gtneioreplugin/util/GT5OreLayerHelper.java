@@ -44,8 +44,53 @@ public class GT5OreLayerHelper {
     		DimIDs[i]=0;
         for (GT_Worldgen_GT_Ore_Layer tWorldGen: GT_Worldgen_GT_Ore_Layer.sList)
             mapOreLayerWrapper.put(tWorldGen.mWorldGenName, new OreLayerWrapper(tWorldGen));
+  }
+    
+    public class OreLayerWrapper {
+        public String veinName,worldGenHeightRange, weightedIEChance;
+        public short[] Meta = new short[4];
+        public short randomWeight, size, density;
+        public List<Integer> Weight = new ArrayList<Integer>();
         
-        if (GTNEIOrePlugin.csv) {
+        public OreLayerWrapper(GT_Worldgen_GT_Ore_Layer worldGen) {
+            this.veinName = worldGen.mWorldGenName;
+            this.Meta[0] = worldGen.mPrimaryMeta;
+            this.Meta[1] = worldGen.mSecondaryMeta;
+            this.Meta[2] = worldGen.mBetweenMeta;
+            this.Meta[3] = worldGen.mSporadicMeta;
+            this.size = worldGen.mSize;
+            this.density = worldGen.mDensity;
+            this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
+            this.randomWeight = worldGen.mWeight;
+            }
+        }
+    
+    public static <T> List<Oremix> Combsort(List<Oremix> liste) {
+    	List<Oremix> liste2 = new ArrayList<Oremix>(liste.size());
+    	for (Oremix element : liste) {
+    		liste2.add(element);
+    	}
+    	
+    	int schritt = liste2.size();
+    	boolean vertauscht = false;
+    	do {
+    		vertauscht = false;
+    		if (schritt > 1) {
+    			schritt = (int) (schritt / 1.3);
+    		}
+    		for (int i = 0; i < liste2.size() - schritt; i++) {
+    			if (liste2.get(i).getOreName().substring(0, 3).compareTo((liste2.get(i + schritt).getOreName().substring(0, 3))) > 0) {
+    				T tmp = (T) liste2.get(i);
+    				liste2.set(i, liste2.get(i + schritt));
+    				liste2.set(i + schritt, (Oremix) tmp);
+    				vertauscht = true;
+    			}
+    		}
+    	} while (vertauscht || schritt > 1);
+    	return liste2;
+    }
+    
+    public static void make_csv() {
         	Iterator it = mapOreLayerWrapper.entrySet().iterator();
         	while (it.hasNext()) {
         		Oremix oremix = new Oremix();
@@ -133,51 +178,6 @@ public class GT5OreLayerHelper {
         					// TODO Auto-generated catch block
         					e.printStackTrace();
         				}       
-        }
-  }
-    
-    public class OreLayerWrapper {
-        public String veinName,worldGenHeightRange, weightedIEChance;
-        public short[] Meta = new short[4];
-        public short randomWeight, size, density;
-        public List<Integer> Weight = new ArrayList<Integer>();
-        
-        public OreLayerWrapper(GT_Worldgen_GT_Ore_Layer worldGen) {
-            this.veinName = worldGen.mWorldGenName;
-            this.Meta[0] = worldGen.mPrimaryMeta;
-            this.Meta[1] = worldGen.mSecondaryMeta;
-            this.Meta[2] = worldGen.mBetweenMeta;
-            this.Meta[3] = worldGen.mSporadicMeta;
-            this.size = worldGen.mSize;
-            this.density = worldGen.mDensity;
-            this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
-            this.randomWeight = worldGen.mWeight;
-            }
-        }
-    
-    public static <T> List<Oremix> Combsort(List<Oremix> liste) {
-    	List<Oremix> liste2 = new ArrayList<Oremix>(liste.size());
-    	for (Oremix element : liste) {
-    		liste2.add(element);
     	}
-    	
-    	int schritt = liste2.size();
-    	boolean vertauscht = false;
-    	do {
-    		vertauscht = false;
-    		if (schritt > 1) {
-    			schritt = (int) (schritt / 1.3);
-    		}
-    		for (int i = 0; i < liste2.size() - schritt; i++) {
-    			if (liste2.get(i).getOreName().substring(0, 3).compareTo((liste2.get(i + schritt).getOreName().substring(0, 3))) > 0) {
-    				T tmp = (T) liste2.get(i);
-    				liste2.set(i, liste2.get(i + schritt));
-    				liste2.set(i + schritt, (Oremix) tmp);
-    				vertauscht = true;
-    			}
-    		}
-    	} while (vertauscht || schritt > 1);
-    	return liste2;
-    }
     }
     
