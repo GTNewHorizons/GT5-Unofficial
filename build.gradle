@@ -16,15 +16,22 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'signing'
+
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
 
 // Never remove the MC version or you will break autobuild!
 // New 3-segment versioning. 0.9 MUST remain static, as this indicates "GT5" mode of this mod
-version = "1.7.10-0.9.8"
+version = "${config.galactigreg.version}"
 group= "bloodasp.galactigreg" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GalacticGreg"
 
 minecraft {
-    version = "1.7.10-10.13.2.1291"
+    version = "${config.forge.version}-${config.minecraft.version}"
     runDir = "eclipse"
     
     replaceIn "src/main/java/bloodasp/galacticgreg/GalacticGreg.java"
@@ -81,4 +88,19 @@ task sourceJar(type: Jar, dependsOn:classes) {
 artifacts {
     archives deobfJar
     archives sourceJar
+}
+
+task signJar(dependsOn: 'reobf'){
+    doLast {
+        ant.signjar(
+            destDir: jar.destinationDir,
+            jar: jar.getArchivePath(),
+            alias: findProperty('keyStoreAlias') ?: '',
+            keystore: findProperty('keyStore') ?: '',
+            storepass: findProperty('keyStorePass') ?: '',
+            digestalg: findProperty('signDigestAlg') ?: '',
+            tsaurl: findProperty('signTSAurl') ?: '',
+            verbose: true
+            )
+    }
 }
