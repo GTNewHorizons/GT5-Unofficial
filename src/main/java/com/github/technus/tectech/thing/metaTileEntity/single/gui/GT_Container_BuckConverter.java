@@ -102,7 +102,7 @@ public class GT_Container_BuckConverter
                     break;
                 default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
-            buck.enabled =(long)AMP*EUT>=0;
+            buck.getBaseMetaTileEntity().setActive((long)AMP*EUT>=0);
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -118,7 +118,7 @@ public class GT_Container_BuckConverter
         GT_MetaTileEntity_BuckConverter buck = (GT_MetaTileEntity_BuckConverter) mTileEntity.getMetaTileEntity();
         EUT=buck.EUT;
         AMP=buck.AMP;
-        buck.enabled =(long)AMP*EUT>=0;
+        buck.getBaseMetaTileEntity().setActive((long)AMP*EUT>=0);
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;

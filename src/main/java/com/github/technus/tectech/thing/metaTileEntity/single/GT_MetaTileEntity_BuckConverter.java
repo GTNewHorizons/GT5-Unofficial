@@ -27,7 +27,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMachineBlock {
     private static GT_RenderedTexture BUCK,BUCK_ACTIVE;
     public int EUT=0,AMP=0;
-    public boolean enabled = true;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
@@ -94,8 +93,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     public void loadNBTData(NBTTagCompound aNBT) {
         EUT=aNBT.getInteger("eEUT");
         AMP=aNBT.getInteger("eAMP");
-        enabled = (long)AMP*EUT >=0;
-        getBaseMetaTileEntity().setActive(enabled);
+        getBaseMetaTileEntity().setActive((long)AMP*EUT >=0);
     }
 
     @Override
@@ -118,7 +116,6 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
             if(aBaseMetaTileEntity.isActive()) {
                 aBaseMetaTileEntity.decreaseStoredEnergyUnits(CommonValues.V[mTier] >> 2, true);
             }
-            aBaseMetaTileEntity.setActive(enabled);
         }
     }
 
@@ -163,7 +160,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public boolean isOutputFacing(byte aSide) {
-        return enabled && aSide != getBaseMetaTileEntity().getFrontFacing() && aSide != getBaseMetaTileEntity().getBackFacing();
+        return getBaseMetaTileEntity().isActive() && aSide != getBaseMetaTileEntity().getFrontFacing() && aSide != getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -173,7 +170,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxAmperesOut() {
-        return enabled?Math.min(Math.abs(AMP),64):0;
+        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(AMP),64):0;
     }
 
     @Override
@@ -183,7 +180,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
 
     @Override
     public long maxEUOutput() {
-        return enabled?Math.min(Math.abs(EUT),maxEUInput()):0;
+        return getBaseMetaTileEntity().isActive()?Math.min(Math.abs(EUT),maxEUInput()):0;
     }
 
     @Override
