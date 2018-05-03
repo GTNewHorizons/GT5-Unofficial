@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.single.gui;
 
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPowerGenerator;
+import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_BuckConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
@@ -12,11 +12,11 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class GT_Container_DebugPowerGenerator
+public class GT_Container_BuckConverter
         extends GT_ContainerMetaTile_Machine {
     public int EUT=0,AMP=0;
 
-    public GT_Container_DebugPowerGenerator(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+    public GT_Container_BuckConverter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
 
@@ -50,59 +50,59 @@ public class GT_Container_DebugPowerGenerator
         }
         Slot tSlot = (Slot) inventorySlots.get(aSlotIndex);
         if (tSlot != null && mTileEntity.getMetaTileEntity() != null) {
-            GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
+            GT_MetaTileEntity_BuckConverter buck = (GT_MetaTileEntity_BuckConverter) mTileEntity.getMetaTileEntity();
             switch (aSlotIndex) {
                 case 0:
-                    dpg.EUT -= aShifthold == 1 ? 512 : 64;
+                    buck.EUT -= aShifthold == 1 ? 512 : 64;
                     break;
                 case 1:
-                    dpg.EUT /= aShifthold == 1 ? 512 : 64;
+                    buck.EUT /= aShifthold == 1 ? 512 : 64;
                     break;
                 case 2:
-                    dpg.AMP -= aShifthold == 1 ? 512 : 64;
+                    buck.AMP -= aShifthold == 1 ? 512 : 64;
                     break;
                 case 3:
-                    dpg.AMP /= aShifthold == 1 ? 512 : 64;
+                    buck.AMP /= aShifthold == 1 ? 512 : 64;
                     break;
                 case 4:
-                    dpg.EUT -= aShifthold == 1 ? 16 : 1;
+                    buck.EUT -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 5:
-                    dpg.EUT /= aShifthold == 1 ? 16 : 2;
+                    buck.EUT /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 6:
-                    dpg.AMP -= aShifthold == 1 ? 16 : 1;
+                    buck.AMP -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 7:
-                    dpg.AMP /= aShifthold == 1 ? 16 : 2;
+                    buck.AMP /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 8:
-                    dpg.EUT += aShifthold == 1 ? 512 : 64;
+                    buck.EUT += aShifthold == 1 ? 512 : 64;
                     break;
                 case 9:
-                    dpg.EUT *= aShifthold == 1 ? 512 : 64;
+                    buck.EUT *= aShifthold == 1 ? 512 : 64;
                     break;
                 case 10:
-                    dpg.AMP += aShifthold == 1 ? 512 : 64;
+                    buck.AMP += aShifthold == 1 ? 512 : 64;
                     break;
                 case 11:
-                    dpg.AMP *= aShifthold == 1 ? 512 : 64;
+                    buck.AMP *= aShifthold == 1 ? 512 : 64;
                     break;
                 case 12:
-                    dpg.EUT += aShifthold == 1 ? 16 : 1;
+                    buck.EUT += aShifthold == 1 ? 16 : 1;
                     break;
                 case 13:
-                    dpg.EUT *= aShifthold == 1 ? 16 : 2;
+                    buck.EUT *= aShifthold == 1 ? 16 : 2;
                     break;
                 case 14:
-                    dpg.AMP += aShifthold == 1 ? 16 : 1;
+                    buck.AMP += aShifthold == 1 ? 16 : 1;
                     break;
                 case 15:
-                    dpg.AMP *= aShifthold == 1 ? 16 : 2;
+                    buck.AMP *= aShifthold == 1 ? 16 : 2;
                     break;
                 default: return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
             }
-            dpg.producing=(long)AMP*EUT>=0;
+            buck.enabled =(long)AMP*EUT>=0;
             return null;
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -115,10 +115,10 @@ public class GT_Container_DebugPowerGenerator
             return;
         }
 
-        GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
-        EUT=dpg.EUT;
-        AMP=dpg.AMP;
-        dpg.producing =(long)AMP*EUT>=0;
+        GT_MetaTileEntity_BuckConverter buck = (GT_MetaTileEntity_BuckConverter) mTileEntity.getMetaTileEntity();
+        EUT=buck.EUT;
+        AMP=buck.AMP;
+        buck.enabled =(long)AMP*EUT>=0;
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;

@@ -546,6 +546,14 @@ public class BloodyRecipeLoader implements Runnable {
 
         //endregion
 
+        //ha trafos
+        //if(Loader.isModLoaded("miscutils")){
+        //    GT_Values.RA.addAssemblerRecipe(CustomItemList.HA)
+        //}
+
+        //power trafos
+        //GT_Values.RA.addAssemblerRecipe()
+
         register_machine_EM_behaviours();
     }
 

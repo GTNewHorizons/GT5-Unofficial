@@ -1,11 +1,17 @@
 package com.github.technus.tectech.compatibility.dreamcraft;
 
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class NoDreamCraftMachineLoader implements Runnable{
 
@@ -74,31 +80,76 @@ public class NoDreamCraftMachineLoader implements Runnable{
         if (Loader.isModLoaded("miscutils")) {
             try {
                 Class clazz = Class.forName("gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp");
-                Constructor<MetaTileEntity> constructor=clazz.getConstructor(int.class,String.class,String.class,int.class,String.class);
-                CustomItemList.Transformer_HA_UEV_UHV.set(
-                        (constructor.newInstance(
-                                11989, "transformer.ha.tier.09", "Highly Ultimate Hi-Amp Transformer", 9,
-                                "UEV -> UHV (Use Soft Mallet to invert)")).getStackForm(1));
-                CustomItemList.Transformer_HA_UIV_UEV.set(
-                        (constructor.newInstance(
-                                11910, "transformer.ha.tier.10", "Extremely Ultimate Hi-Amp Transformer", 10,
-                                "UIV -> UEV (Use Soft Mallet to invert)")).getStackForm(1));
-                CustomItemList.Transformer_HA_UMV_UIV.set(
-                        (constructor.newInstance(
-                                11911, "transformer.ha.tier.11", "Insanely Ultimate Hi-Amp Transformer", 11,
-                                "UMV -> UIV (Use Soft Mallet to invert)")).getStackForm(1));
-                CustomItemList.Transformer_HA_UXV_UMV.set(
-                        (constructor.newInstance(
-                                11912, "transformer.ha.tier.12", "Mega Ultimate Hi-Amp Transformer", 12,
-                                "UXV -> UMV (Use Soft Mallet to invert)")).getStackForm(1));
-                CustomItemList.Transformer_HA_OPV_UXV.set(
-                        (constructor.newInstance(
-                                11913, "transformer.ha.tier.13", "Extended Mega Ultimate Hi-Amp Transformer", 13,
-                                "OPV -> UXV (Use Soft Mallet to invert)")).getStackForm(1));
-                CustomItemList.Transformer_HA_MAXV_OPV.set(
-                        (constructor.newInstance(
-                                11914, "transformer.ha.tier.14", "Overpowered Hi-Amp Transformer", 14,
-                                "MAX -> OPV (Use Soft Mallet to invert)")).getStackForm(1));
+                Constructor<MetaTileEntity> constructor = clazz.getConstructor(int.class, String.class, String.class, int.class, String.class);
+
+                Method method = null;
+                Field field = null;
+                Object iTexture=new ITexture[0];
+                if (GT_Values.GT.isClientSide()) {
+                    method = GT_MetaTileEntity_TieredMachineBlock.class.getMethod("getTextureSet", ITexture[].class);
+                    field = GT_MetaTileEntity_TieredMachineBlock.class.getField("mTextures");
+                    field.setAccessible(true);
+                }
+
+                MetaTileEntity temp = constructor.newInstance(
+                        11989, "transformer.ha.tier.09", "Highly Ultimate Hi-Amp Transformer", 9,
+                        "UEV -> UHV (Use Soft Mallet to invert)");
+                //Util.setTier(9, temp);
+                //if (GT_Values.GT.isClientSide()) {
+                //    field.set(temp,
+                //            method.invoke(temp, iTexture));
+                //}
+                CustomItemList.Transformer_HA_UEV_UHV.set(temp.getStackForm(1));
+
+                temp = constructor.newInstance(
+                        11910, "transformer.ha.tier.10", "Extremely Ultimate Hi-Amp Transformer", 10,
+                        "UIV -> UEV (Use Soft Mallet to invert)");
+                Util.setTier(10, temp);
+                if (GT_Values.GT.isClientSide()) {
+                    field.set(temp,
+                            method.invoke(temp, iTexture));
+                }
+                CustomItemList.Transformer_HA_UIV_UEV.set(temp.getStackForm(1));
+
+                temp = constructor.newInstance(
+                        11911, "transformer.ha.tier.11", "Insanely Ultimate Hi-Amp Transformer", 11,
+                        "UMV -> UIV (Use Soft Mallet to invert)");
+                Util.setTier(11, temp);
+                if (GT_Values.GT.isClientSide()) {
+                    field.set(temp,
+                            method.invoke(temp, iTexture));
+                }
+                CustomItemList.Transformer_HA_UMV_UIV.set(temp.getStackForm(1));
+
+                temp = constructor.newInstance(
+                        11912, "transformer.ha.tier.12", "Mega Ultimate Hi-Amp Transformer", 12,
+                        "UXV -> UMV (Use Soft Mallet to invert)");
+                Util.setTier(12, temp);
+                if (GT_Values.GT.isClientSide()) {
+                    field.set(temp,
+                            method.invoke(temp, iTexture));
+                }
+                CustomItemList.Transformer_HA_UXV_UMV.set(temp.getStackForm(1));
+
+                temp = constructor.newInstance(
+                        11913, "transformer.ha.tier.13", "Extended Mega Ultimate Hi-Amp Transformer", 13,
+                        "OPV -> UXV (Use Soft Mallet to invert)");
+                Util.setTier(13, temp);
+                if (GT_Values.GT.isClientSide()) {
+                    field.set(temp,
+                            method.invoke(temp, iTexture));
+                }
+                CustomItemList.Transformer_HA_OPV_UXV.set(temp.getStackForm(1));
+
+                temp = constructor.newInstance(
+                        11914, "transformer.ha.tier.14", "Overpowered Hi-Amp Transformer", 14,
+                        "MAX -> OPV (Use Soft Mallet to invert)");
+                Util.setTier(14, temp);
+                if (GT_Values.GT.isClientSide()) {
+                    field.set(temp,
+                            method.invoke(temp, iTexture));
+                }
+                CustomItemList.Transformer_HA_MAXV_OPV.set(temp.getStackForm(1));
             } catch (Exception e) {
                 e.printStackTrace();
             }

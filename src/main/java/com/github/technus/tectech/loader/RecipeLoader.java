@@ -86,7 +86,7 @@ public class RecipeLoader implements Runnable {
                         'E', ItemList.Hull_IV});
 
         //Data Bank
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
+        RA.addAssemblylineRecipe(ItemList.Hatch_DataAccess_EV.get(1), 20000, new ItemStack[]{
                 CustomItemList.Machine_Multi_Switch.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
                 ItemList.Tool_DataOrb.get(1),
@@ -96,6 +96,9 @@ public class RecipeLoader implements Runnable {
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_DataBank.get(1), 12000, 14000);
         //CustomItemList.Machine_Multi_DataBank
+
+        //Bucks
+        //RA.addAssemblerRecipe(CustomItemList.)
 
         //recipe for ass line data hatches
         RA.addAssemblerRecipe(ItemList.Hatch_DataAccess_EV.get(1), CustomItemList.dataIn_Hatch.get(1), CustomItemList.dataInAss_Hatch.get(1), 2048, 12000);

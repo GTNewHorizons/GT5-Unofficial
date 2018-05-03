@@ -159,11 +159,11 @@ public class Textures {
                 MACHINE_CASINGS_TT[i][j] = new GT_SidedTexture(MACHINECASINGS_BOTTOM_TT[i], MACHINECASINGS_TOP_TT[i], MACHINECASINGS_SIDE_TT[i], Dyes.getModulation(j - 1, MACHINE_METAL.mRGBa));
             }
         }
-        //for (byte i = 0; i < MACHINE_CASINGS.length; i++) {
-        //    for (byte j = 0; j < MACHINE_CASINGS[i].length; j++) {
-        //        MACHINE_CASINGS_TT[i][j] = MACHINE_CASINGS[i][j];
-        //    }
-        //}
         MACHINE_CASINGS=MACHINE_CASINGS_TT;
+
+        OVERLAYS_ENERGY_IN=OVERLAYS_ENERGY_IN_TT;
+        OVERLAYS_ENERGY_OUT=OVERLAYS_ENERGY_OUT_TT;
+        OVERLAYS_ENERGY_IN_MULTI=OVERLAYS_ENERGY_IN_MULTI_TT;
+        OVERLAYS_ENERGY_OUT_MULTI=OVERLAYS_ENERGY_OUT_MULTI_TT;
     }
 }

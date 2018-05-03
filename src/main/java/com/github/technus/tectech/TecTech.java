@@ -60,13 +60,16 @@ public class TecTech {
         }
     }
 
-    @Mod.EventHandler
-    public void PreLoad(FMLPreInitializationEvent PreEvent) {
+    static {
         for(int i=0;i<16;i++){
             GT_Values.V[i]=V[i];
             GT_Values.VN[i]=VN[i];
             GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
         }
+    }
+
+    @Mod.EventHandler
+    public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
 
         dyeLightBlue.mRGBa[0]=96;

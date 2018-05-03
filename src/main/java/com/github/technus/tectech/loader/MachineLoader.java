@@ -9,10 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEnt
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DataReader;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugPowerGenerator;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugStructureWriter;
-import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_OwnerDetector;
+import com.github.technus.tectech.thing.metaTileEntity.single.*;
 import cpw.mods.fml.common.Loader;
 
 import static com.github.technus.tectech.thing.CustomItemList.*;
@@ -297,6 +294,16 @@ public class MachineLoader implements Runnable {
 
         Machine_OwnerDetector.set(new GT_MetaTileEntity_OwnerDetector(15480, "machine.tt.ownerdetector", "Owner detector", 3).getStackForm(1L));
         Machine_DataReader.set(new GT_MetaTileEntity_DataReader(15481, "machine.tt.datareader", "Data Reader", 5).getStackForm(1L));
+
+        Machine_BuckConverter_IV.set(new GT_MetaTileEntity_BuckConverter(15485, "machine.tt.buck", "Insane Buck Converter", 5).getStackForm(1L));
+        Machine_BuckConverter_LuV.set(new GT_MetaTileEntity_BuckConverter(15486, "machine.tt.buck", "Ludicrous Buck Converter", 6).getStackForm(1L));
+        Machine_BuckConverter_ZPM.set(new GT_MetaTileEntity_BuckConverter(15487, "machine.tt.buck", "ZPM Voltage Buck Converter", 7).getStackForm(1L));
+        Machine_BuckConverter_UV.set(new GT_MetaTileEntity_BuckConverter(15488, "machine.tt.buck", "Ultimate Power Buck Converter", 8).getStackForm(1L));
+        Machine_BuckConverter_UHV.set(new GT_MetaTileEntity_BuckConverter(15489, "machine.tt.buck", "Highly Ultimate Buck Converter", 9).getStackForm(1L));
+        Machine_BuckConverter_UEV.set(new GT_MetaTileEntity_BuckConverter(15490, "machine.tt.buck", "Extremely Ultimate Buck Converter", 10).getStackForm(1L));
+        Machine_BuckConverter_UIV.set(new GT_MetaTileEntity_BuckConverter(15491, "machine.tt.buck", "Insanely Ultimate Buck Converter", 11).getStackForm(1L));
+        Machine_BuckConverter_UMV.set(new GT_MetaTileEntity_BuckConverter(15492, "machine.tt.buck", "Mega Ultimate Buck Converter", 12).getStackForm(1L));
+        Machine_BuckConverter_UXV.set(new GT_MetaTileEntity_BuckConverter(15493, "machine.tt.buck", "Extended Mega Ultimate Buck Converter", 13).getStackForm(1L));
 
         // ===================================================================================================
         // Debug Stuff
