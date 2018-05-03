@@ -1,8 +1,6 @@
 package pers.gwyog.gtneioreplugin;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -12,7 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.init.Items;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-import pers.gwyog.gtneioreplugin.util.Oremix;
 
 @Mod(modid = GTNEIOrePlugin.MODID, name = GTNEIOrePlugin.NAME, version = GTNEIOrePlugin.VERSION, dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
@@ -21,7 +18,6 @@ public class GTNEIOrePlugin {
     public static final String VERSION = "@version@";
     public static boolean csv = false;
     public static String CSVname; 
-    public static List<Oremix> OreVeins=new ArrayList();
     public static HashSet OreV=new HashSet();
     
     @Mod.Instance(MODID)
@@ -38,10 +34,11 @@ public class GTNEIOrePlugin {
     @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         if (event.getSide() == Side.CLIENT) {
-        	GT5OreLayerHelper h = new GT5OreLayerHelper();
-                new GT5OreSmallHelper();
-                if (csv)
-                	h.make_csv();
+        	new GT5OreLayerHelper();
+            new GT5OreSmallHelper();
+                if (csv) {
+                	new pers.gwyog.gtneioreplugin.util.CSVMaker().run();
+                }
             	}
             }
 
