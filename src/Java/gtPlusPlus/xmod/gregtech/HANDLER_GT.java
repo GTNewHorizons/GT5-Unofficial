@@ -29,7 +29,6 @@ public class HANDLER_GT {
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
 
 	public static void preInit(){
-		new MetaGeneratedGregtechItems();
 		
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
