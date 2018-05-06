@@ -27,11 +27,11 @@ public class MaterialUtils {
 
 	@SuppressWarnings({ "rawtypes", "unused" })
 	private static Class[][] commonTypes =
-{{Materials.class, int.class, TextureSet.class, float.class, int.class,
-	int.class, int.class, int.class, int.class, int.class, int.class,
-	String.class, int.class, int.class, int.class, int.class, boolean.class,
-	boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
-	List.class , List.class}};
+			{{Materials.class, int.class, TextureSet.class, float.class, int.class,
+					int.class, int.class, int.class, int.class, int.class, int.class,
+					String.class, int.class, int.class, int.class, int.class, boolean.class,
+					boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
+					List.class , List.class}};
 
 	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;
@@ -47,7 +47,7 @@ public class MaterialUtils {
 	public static Material generateMaterialFromGtENUM(final Materials material){
 		return generateMaterialFromGtENUM(material, null);
 	}
-	
+
 	public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB){
 		@SuppressWarnings("deprecation")
 		String name = material.name();
@@ -60,6 +60,7 @@ public class MaterialUtils {
 		final TextureSet iconSet = material.mIconSet;
 		final int durability = material.mDurability;
 		boolean mGenerateCell = false;
+		boolean mGenerateFluid = true;
 		MaterialState materialState;
 		String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
 		final Element element = material.mElement;
@@ -67,12 +68,12 @@ public class MaterialUtils {
 		if (material.isRadioactive()){
 			radioactivity = 1;
 		}
-		
+
 		//Weird Blacklist of Bad Chemical Strings
 		if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar){
 			chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
 		}
-		
+
 		//Determine default state
 		Logger.MATERIALS("[Debug] Setting State of GT generated material. "+material.mDefaultLocalName);
 		if (material.getMolten(1) != null || material.getSolid(1) != null){
@@ -101,8 +102,9 @@ public class MaterialUtils {
 			materialState = MaterialState.PLASMA;
 		}*/
 		else {
-			Logger.MATERIALS("[Debug] State set as solid.");
+			Logger.MATERIALS("[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
 			materialState = MaterialState.SOLID;
+			mGenerateFluid = false;
 		}
 
 
@@ -113,7 +115,7 @@ public class MaterialUtils {
 		if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell);
+			return new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell, mGenerateFluid);
 		}
 		else {
 			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
@@ -138,10 +140,10 @@ public class MaterialUtils {
 		return temp;
 	}
 
-	public static boolean hasValidRGBA(final short[] rgba){		
+	public static boolean hasValidRGBA(final short[] rgba){
 		if (rgba == null || rgba.length < 3 || rgba.length > 4){
 			return false;
-		}		
+		}
 		return true;
 	}
 
@@ -182,9 +184,9 @@ public class MaterialUtils {
 	}
 
 	public static Materials getMaterialByName(String materialName) {
-		
+
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			return (Materials) EnumUtils.getValue(gregtech.api.enums.Materials.class, materialName, false);			
+			return (Materials) EnumUtils.getValue(gregtech.api.enums.Materials.class, materialName, false);
 		}
 		else {
 			for (Materials m : Materials.values()) {
@@ -195,7 +197,7 @@ public class MaterialUtils {
 			return null;
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(Materials mat){
 		String mName;
@@ -210,14 +212,12 @@ public class MaterialUtils {
 		}
 		return mName;
 	}
-	
+
 	public static TextureSet getMostCommonTextureSet(List<Material> list) {
 		Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
 		return o;
-		}
-	
-	
 	}
 
 
+}
