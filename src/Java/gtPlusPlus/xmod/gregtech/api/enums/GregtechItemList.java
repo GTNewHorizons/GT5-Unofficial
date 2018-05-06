@@ -322,6 +322,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Air_Intake,
 	
 	
+	//ULV Generators
+	Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Steam_Turbine_ULV
+	
+	
 	
 	
 	;
