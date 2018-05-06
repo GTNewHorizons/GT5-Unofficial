@@ -177,7 +177,9 @@ public class CI {
 	public static ItemStack explosiveTNT;
 	public static ItemStack explosiveITNT;
 
-	public static void preInit(){	
+	public static void preInit(){
+	    //Put these here, because we need them for everything.
+		new MetaGeneratedGregtechItems();
 
 		//Tiered Components
 		component_Plate = new String[]{
