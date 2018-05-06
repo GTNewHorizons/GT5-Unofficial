@@ -1,15 +1,15 @@
-package openmodularturrets;
+package com.github.technus.tectech.compatibility.openmodularturrets;
 
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileRenderEM;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
-import openmodularturrets.blocks.turretheads.TurretHeadEM;
-import openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
-import openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
-import openmodularturrets.entity.projectiles.projectileEM;
-import openmodularturrets.entity.projectiles.projectileRenderEM;
-import openmodularturrets.tileentity.turret.TileTurretHeadEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 
 public class TT_turret_loader implements Runnable {
     @Override

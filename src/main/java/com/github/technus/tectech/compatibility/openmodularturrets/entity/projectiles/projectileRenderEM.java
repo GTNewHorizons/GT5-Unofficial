@@ -1,4 +1,4 @@
-package openmodularturrets.entity.projectiles;
+package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
 import com.github.technus.tectech.Reference;
 import cpw.mods.fml.relauncher.Side;

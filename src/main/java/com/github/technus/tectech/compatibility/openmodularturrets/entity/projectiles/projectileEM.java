@@ -1,4 +1,4 @@
-package openmodularturrets.entity.projectiles;
+package com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
@@ -11,19 +11,24 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import openmodularturrets.entity.projectiles.LaserProjectile;
 import openmodularturrets.entity.projectiles.damagesources.NormalDamageSource;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turretbase.TurretBase;
+import openmodularturrets.util.PlayerUtil;
+import openmodularturrets.util.TurretHeadUtil;
 
 
 /**
  * Created by Bass on 27/07/2017.
  */
-public class projectileEM extends TurretProjectile {
+public class projectileEM extends LaserProjectile {
     public float gravity=0;
     private TurretBase turretBase;
 
-    private boolean exotic, antiMatter;
+    private boolean exotic, antiMatter,isAmped;
+
+    private int ampLevel;
 
     private float massFactor;
 
@@ -33,6 +38,11 @@ public class projectileEM extends TurretProjectile {
 
     public projectileEM(World par1World, TurretBase turretBase) {
         super(par1World, turretBase);
+        int amp=TurretHeadUtil.getAmpLevel(turretBase);
+        if (amp > 0) {
+            this.isAmped = true;
+            this.ampLevel = amp;
+        }
     }
 
     public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStackMap avalableEM) {
@@ -87,7 +97,7 @@ public class projectileEM extends TurretProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.blockX + 0.5D,
                                 movingobjectposition.blockY + 0.5D,
-                                movingobjectposition.blockZ + 0.5D, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.blockZ + 0.5D, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
                     } else {
                         return;
                     }
@@ -97,7 +107,7 @@ public class projectileEM extends TurretProjectile {
             if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
                 worldObj.playSoundEffect(posX, posY, posZ, "openmodularturrets:laserHit", ConfigHandler.getTurretSoundVolume(), TecTech.RANDOM.nextFloat() + 0.5F);
                 if(movingobjectposition.entityHit != null && !worldObj.isRemote) {
-                    float damage = (exotic?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1);
+                    float damage = (exotic?10:1) * TecTech.configTecTech.TURRET_DAMAGE_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1);
 
                     if(movingobjectposition.entityHit instanceof EntityPlayer) {
                         if(canDamagePlayer((EntityPlayer)movingobjectposition.entityHit)) {
@@ -123,7 +133,7 @@ public class projectileEM extends TurretProjectile {
                         worldObj.createExplosion(null,
                                 movingobjectposition.entityHit.posX,
                                 movingobjectposition.entityHit.posY,
-                                movingobjectposition.entityHit.posZ, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? amp_level*.1f +1:1) * (ticksExisted/250f), true);
+                                movingobjectposition.entityHit.posZ, (exotic?10:1) * TecTech.configTecTech.TURRET_EXPLOSION_FACTOR * massFactor * (isAmped? ampLevel*.1f +1:1) * (ticksExisted/250f), true);
                     }
                 }
             }
@@ -131,10 +141,19 @@ public class projectileEM extends TurretProjectile {
         }
     }
 
+    public boolean canDamagePlayer(EntityPlayer entityPlayer) {
+        return ConfigHandler.turretDamageTrustedPlayers || this.turretBase.getTrustedPlayer(entityPlayer.getUniqueID()) == null && !PlayerUtil.getPlayerUIDUnstable(this.turretBase.getOwner()).equals(entityPlayer.getUniqueID());
+    }
+
     @Override
     public void onEntityUpdate() {
         if(ticksExisted >= 75) {
             setDead();
         }
+    }
+
+    @Override
+    protected float getGravityVelocity() {
+        return gravity;
     }
 }

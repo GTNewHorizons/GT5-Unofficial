@@ -22,7 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import openmodularturrets.TT_turret_loader;
+import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {

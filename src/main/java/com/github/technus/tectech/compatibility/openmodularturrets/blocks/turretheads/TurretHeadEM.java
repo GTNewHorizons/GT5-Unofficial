@@ -1,4 +1,4 @@
-package openmodularturrets.blocks.turretheads;
+package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -8,13 +8,13 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import openmodularturrets.tileentity.turret.TileTurretHeadEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
- * Created by Bass on 27/07/2017.
+ * Created by Tec on 27/07/2017.
  */
 public class TurretHeadEM extends Block implements ITileEntityProvider {
     public static TurretHeadEM INSTANCE;

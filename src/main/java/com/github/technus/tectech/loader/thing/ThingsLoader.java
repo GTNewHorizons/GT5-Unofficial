@@ -13,8 +13,8 @@ import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import openmodularturrets.blocks.turretbases.TurretBaseEM;
-import openmodularturrets.blocks.turretheads.TurretHeadEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases.TurretBaseEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
 
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 

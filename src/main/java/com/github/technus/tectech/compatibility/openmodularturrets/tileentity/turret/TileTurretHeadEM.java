@@ -1,5 +1,7 @@
-package openmodularturrets.tileentity.turret;
+package com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret;
 
+import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
@@ -7,9 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import openmodularturrets.entity.projectiles.TurretProjectile;
-import openmodularturrets.entity.projectiles.projectileEM;
 import openmodularturrets.handler.ConfigHandler;
-import openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
 

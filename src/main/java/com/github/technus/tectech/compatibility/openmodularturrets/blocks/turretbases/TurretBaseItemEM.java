@@ -1,4 +1,4 @@
-package openmodularturrets.blocks.turretbases;
+package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases;
 
 import com.github.technus.tectech.CommonValues;
 import net.minecraft.block.Block;
@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 import java.util.List;
 
 /**
- * Created by Bass on 28/07/2017.
+ * Created by Tec on 28/07/2017.
  */
 public class TurretBaseItemEM extends ItemBlock {
     public TurretBaseItemEM(Block block) {

@@ -1,8 +1,8 @@
-package openmodularturrets.blocks.turretheads;
+package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
 import openmodularturrets.client.render.renderers.blockitem.LaserTurretRenderer;
 
 /**
- * Created by Bass on 28/07/2017.
+ * Created by Tec on 28/07/2017.
  */
 public class TurretHeadRenderEM extends LaserTurretRenderer {}

@@ -1,4 +1,4 @@
-package openmodularturrets.blocks.turretbases;
+package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases;
 
 import com.github.technus.tectech.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -6,13 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import openmodularturrets.blocks.turretbases.BlockAbstractTurretBase;
 import openmodularturrets.handler.ConfigHandler;
-import openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
- * Created by Bass on 27/07/2017.
+ * Created by Tec on 27/07/2017.
  */
 public class TurretBaseEM extends BlockAbstractTurretBase {
     private final int MaxCharge = ConfigHandler.getBaseTierFiveMaxCharge();

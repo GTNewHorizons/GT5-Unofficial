@@ -1,4 +1,4 @@
-package openmodularturrets.blocks.turretheads;
+package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ import java.util.List;
 import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
 
 /**
- * Created by Bass on 28/07/2017.
+ * Created by Tec on 28/07/2017.
  */
 public class TurretHeadItemEM extends ItemBlock {
     private static final DecimalFormat df = new DecimalFormat("0.0");
