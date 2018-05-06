@@ -46,6 +46,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             System.out.println(METATILEENTITIES[12000].getClass().getCanonicalName());
             TecTech.LOGGER.error(e);
             e.printStackTrace();
+            throw new Error(METATILEENTITIES[12000].getClass().getCanonicalName(),e);
         }
 
         CustomItemList.WetTransformer_MV_LV.set(new GT_MetaTileEntity_WetTransformer(
