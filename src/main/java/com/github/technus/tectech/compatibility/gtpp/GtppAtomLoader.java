@@ -1,12 +1,12 @@
 package com.github.technus.tectech.compatibility.gtpp;
 
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
 
-import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
 
 public class GtppAtomLoader implements Runnable{
     //region reflect a bit

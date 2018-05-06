@@ -2,10 +2,10 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -33,8 +33,8 @@ import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.CommonValues.VN;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.Util.areBitsSet;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -266,7 +266,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
                     totalComputationRequired =0;
                     eRequiredData=0;
-                    eAmpereFlow=objectsScanned.size() + TecTech.Rnd.next(objectsScanned.size());
+                    eAmpereFlow=objectsScanned.size() + TecTech.RANDOM.next(objectsScanned.size());
                     mEUt=-(int)V[8];
 
                     //get depth scan complexity array

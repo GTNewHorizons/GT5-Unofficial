@@ -12,7 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by danie_000 on 17.12.2016.

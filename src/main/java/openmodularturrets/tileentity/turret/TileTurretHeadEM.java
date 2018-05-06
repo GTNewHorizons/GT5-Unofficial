@@ -1,6 +1,6 @@
 package openmodularturrets.tileentity.turret;
 
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;

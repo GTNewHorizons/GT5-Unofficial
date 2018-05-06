@@ -1,9 +1,9 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 public class TT_recipe extends GT_Recipe {
     public static final String E_RECIPE_ID = "eRecipeID";

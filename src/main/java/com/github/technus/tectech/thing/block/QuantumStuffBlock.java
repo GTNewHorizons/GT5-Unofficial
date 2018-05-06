@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by danie_000 on 17.12.2016.

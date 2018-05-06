@@ -202,7 +202,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            if (TecTech.ModConfig.BOOM_ENABLE) {
+            if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
                 TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());

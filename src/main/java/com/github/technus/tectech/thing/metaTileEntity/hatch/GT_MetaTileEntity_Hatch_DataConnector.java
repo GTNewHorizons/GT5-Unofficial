@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.dataFramework.DataPacket;
+import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

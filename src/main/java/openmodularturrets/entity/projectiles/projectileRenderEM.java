@@ -1,6 +1,6 @@
 package openmodularturrets.entity.projectiles;
 
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;

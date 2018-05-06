@@ -2,9 +2,9 @@ package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,8 +21,8 @@ import net.minecraft.world.World;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.

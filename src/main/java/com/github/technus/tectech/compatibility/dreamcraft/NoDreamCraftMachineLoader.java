@@ -1,6 +1,8 @@
 package com.github.technus.tectech.compatibility.dreamcraft;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
 import cpw.mods.fml.common.Loader;
@@ -15,6 +17,8 @@ import net.minecraft.util.EnumChatFormatting;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import static gregtech.api.GregTech_API.METATILEENTITIES;
 
 public class NoDreamCraftMachineLoader implements Runnable {
     public final static String imagination=EnumChatFormatting.RESET +
@@ -34,9 +38,15 @@ public class NoDreamCraftMachineLoader implements Runnable {
 
     @Override
     public void run() {
-        CustomItemList.WetTransformer_LV_ULV.set(new GT_MetaTileEntity_WetTransformer(
-                12000, "wettransformer.tier.00", "Ultra Low Voltage Power Transformer", 0,
-                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+        try {
+            CustomItemList.WetTransformer_LV_ULV.set(new GT_MetaTileEntity_WetTransformer(
+                    12000, "wettransformer.tier.00", "Ultra Low Voltage Power Transformer", 0,
+                    "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+        }catch (IllegalArgumentException e){
+            System.out.println(METATILEENTITIES[12000].getClass().getCanonicalName());
+            TecTech.LOGGER.error(e);
+            e.printStackTrace();
+        }
 
         CustomItemList.WetTransformer_MV_LV.set(new GT_MetaTileEntity_WetTransformer(
                 12001, "wetransformer.tier.01", "Low Voltage Power Transformer", 1,
@@ -211,7 +221,7 @@ public class NoDreamCraftMachineLoader implements Runnable {
             CustomItemList.Transformer_MAXV_OPV.set(temp.getStackForm(1L));
 
 
-            if (Loader.isModLoaded("miscutils")) {
+            if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
                 Class clazz = Class.forName("gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp");
                 Constructor<MetaTileEntity> constructor = clazz.getConstructor(int.class, String.class, String.class, int.class, String.class);
 

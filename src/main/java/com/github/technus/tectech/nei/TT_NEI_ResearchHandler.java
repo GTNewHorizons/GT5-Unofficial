@@ -8,7 +8,7 @@ import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
 import codechicken.nei.recipe.*;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.recipe.TT_recipe;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.OrePrefixes;

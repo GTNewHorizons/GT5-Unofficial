@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.tileEntity;
 
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.core.IC2;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;

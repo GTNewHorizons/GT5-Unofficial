@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -50,7 +50,7 @@ public class ScanDisplayScreen extends GuiScreen {
         glDisable(GL_BLEND);
         super.drawScreen(x,y,partialTicks);
 
-        itick=(TecTech.Rnd.nextInt(0x66)<<16)+0x77EEFF;
+        itick=(TecTech.RANDOM.nextInt(0x66)<<16)+0x77EEFF;
         int textBaseX=baseX+20;
         int textBaseXX=baseX+95;
         int textBaseY=baseY+28;

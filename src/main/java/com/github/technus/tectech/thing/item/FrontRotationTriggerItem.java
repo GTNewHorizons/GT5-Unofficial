@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by Tec on 15.03.2017.

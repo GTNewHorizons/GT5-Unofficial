@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
@@ -176,13 +176,13 @@ public final class Util {
                                     //countable air -> net.minecraft.block.BlockAir
                                     if (world.getBlock(x, y, z) != blockType[pointer]) {
                                         if (DEBUG_MODE) {
-                                            TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                            TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                         }
                                         return false;
                                     }
                                     if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                         if (DEBUG_MODE) {
-                                            TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                            TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
                                         }
                                         return false;
                                     }
@@ -310,13 +310,13 @@ public final class Util {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                                TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                             }
                                             return false;
                                         }
                                         if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                                TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
                                             }
                                             return false;
                                         }
@@ -326,13 +326,13 @@ public final class Util {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                        TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                     }
                                                     return false;
                                                 }
                                                 if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                        TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
                                                     }
                                                     return false;
                                                 }
@@ -540,7 +540,7 @@ public final class Util {
                                 break;
                             default:
                                 if (DEBUG_MODE) {
-                                    TecTech.Logger.info("facing = " + facingAndRotation);
+                                    TecTech.LOGGER.info("facing = " + facingAndRotation);
                                 }
                                 return false;
                         }
@@ -568,13 +568,13 @@ public final class Util {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                                TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                             }
                                             return false;
                                         }
                                         if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                                TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
                                             }
                                             return false;
                                         }
@@ -584,13 +584,13 @@ public final class Util {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                        TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                     }
                                                     return false;
                                                 }
                                                 if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                        TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
                                                     }
                                                     return false;
                                                 }
@@ -823,7 +823,7 @@ public final class Util {
                                 break;
                             default:
                                 if (DEBUG_MODE) {
-                                    TecTech.Logger.info("facing = " + facing);
+                                    TecTech.LOGGER.info("facing = " + facing);
                                 }
                                 return false;
                         }

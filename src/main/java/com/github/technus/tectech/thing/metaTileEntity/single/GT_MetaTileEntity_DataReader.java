@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by Tec on 23.03.2017.

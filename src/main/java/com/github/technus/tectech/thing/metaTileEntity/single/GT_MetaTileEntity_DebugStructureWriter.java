@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
             for (String s : result) {
-                TecTech.Logger.info(s);
+                TecTech.LOGGER.info(s);
             }
             aBaseMetaTileEntity.disableWorking();
         }
@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
         for (String s : result) {
-            TecTech.Logger.info(s);
+            TecTech.LOGGER.info(s);
         }
     }
 
@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
         //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
-        //    TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
+        //    TecTech.LOGGER.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 

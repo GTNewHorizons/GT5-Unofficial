@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 /**

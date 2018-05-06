@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.dataFramework.InventoryDataPacket;
+import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;

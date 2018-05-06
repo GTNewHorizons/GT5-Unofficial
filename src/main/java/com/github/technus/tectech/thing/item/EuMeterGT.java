@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 public class EuMeterGT extends Item {
     public static EuMeterGT INSTANCE;

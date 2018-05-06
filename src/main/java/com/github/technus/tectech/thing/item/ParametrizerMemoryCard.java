@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
 
 /**

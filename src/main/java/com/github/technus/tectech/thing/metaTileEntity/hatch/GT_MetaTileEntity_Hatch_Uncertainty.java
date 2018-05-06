@@ -197,7 +197,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     public void regenerate() {
         for (int i = 0; i < matrix.length; i++) {
-            matrix[i] = (short) TecTech.Rnd.nextInt(1000);
+            matrix[i] = (short) TecTech.RANDOM.nextInt(1000);
         }
     }
 
@@ -271,7 +271,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     private void shift() {
-        int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
+        int i = TecTech.RANDOM.nextInt(16), j = TecTech.RANDOM.nextInt(128);
         matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
         matrix[i] += j == 0 ? 1 : 0;
         if (matrix[i] < 0) {

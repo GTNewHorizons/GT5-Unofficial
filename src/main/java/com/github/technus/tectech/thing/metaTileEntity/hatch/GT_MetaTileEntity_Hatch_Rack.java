@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -164,8 +165,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coEff * this.heat / 10000f) * (comp.heat > 0 ? comp.heat * overclock * overclock * overvolt : comp.heat);
                     //=MAX(0;MIN(MIN($B4;1*C$3+C$3-0,25);1+RAND()+(C$3-1)-($B4-1)/2))
-                    if (overvolt * 10f > 7f + TecTech.Rnd.nextFloat()) {
-                        computation += comp.computation * Math.max(0, Math.min(Math.min(overclock, overvolt + overvolt - 0.25), 1 + TecTech.Rnd.nextFloat() + (overvolt - 1) - (overclock - 1) / 2));
+                    if (overvolt * 10f > 7f + TecTech.RANDOM.nextFloat()) {
+                        computation += comp.computation * Math.max(0, Math.min(Math.min(overclock, overvolt + overvolt - 0.25), 1 + TecTech.RANDOM.nextFloat() + (overvolt - 1) - (overclock - 1) / 2));
                     }
                 }
             } else {
@@ -184,7 +185,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     }
 
     public int tickComponents(float oc, float ov) {
-        if (oc > 3 + TecTech.Rnd.nextFloat() || ov > 2 + TecTech.Rnd.nextFloat()) {
+        if (oc > 3 + TecTech.RANDOM.nextFloat() || ov > 2 + TecTech.RANDOM.nextFloat()) {
             getBaseMetaTileEntity().setToFire();
         }
         overClock = oc;
@@ -283,7 +284,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 40f, 5000, false);
         new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 10000, false);//2x oc
 
-        if (Loader.isModLoaded("dreamcraft")) {
+        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new RackComponent("dreamcraft:item.HighEnergyCircuitParts", 3, 2, -.1f, 9001, true);
             new RackComponent("dreamcraft:item.HighEnergyFlowCircuit", 24, 16, -.25f, 10000, true);
             new RackComponent("dreamcraft:item.NanoCircuit", 32, 20, -.15f, 8000, true);
@@ -334,7 +335,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
             if (DEBUG_MODE) {
-                TecTech.Logger.info("Component registered: " + unlocalizedName);
+                TecTech.LOGGER.info("Component registered: " + unlocalizedName);
             }
         }
 

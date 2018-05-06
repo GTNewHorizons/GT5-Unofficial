@@ -2,11 +2,11 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Vec3pos;
-import com.github.technus.tectech.auxiliary.Reference;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationMessage;
@@ -44,7 +44,7 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureCheckerExtreme;
 import static com.github.technus.tectech.Util.getTier;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**
@@ -1909,10 +1909,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EUtTierVoltage > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEffective input
                 (EUtTierVoltage*Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
-                TecTech.Logger.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
-                TecTech.Logger.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
-                TecTech.Logger.debug("L3 " + EUuse + ' ' + eMaxAmpereFlow);
-                TecTech.Logger.debug("L4 " + ((EUuse - 1) / maxEUinputMin + 1) + ' ' + eMaxAmpereFlow + ' ' + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
+                TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
+                TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
+                TecTech.LOGGER.debug("L3 " + EUuse + ' ' + eMaxAmpereFlow);
+                TecTech.LOGGER.debug("L4 " + ((EUuse - 1) / maxEUinputMin + 1) + ' ' + eMaxAmpereFlow + ' ' + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
             return false;
         }
@@ -2121,7 +2121,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             return;
         }
         explodedThisTick=true;
-        if (!TecTech.ModConfig.BOOM_ENABLE) {
+        if (!TecTech.configTecTech.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
             TecTech.proxy.broadcast("Multi Explode BOOM! " + ste[2].toString());
@@ -2187,7 +2187,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public void doExplosion(long aExplosionPower) {
         explodeMultiblock();
-        if (!TecTech.ModConfig.BOOM_ENABLE) {
+        if (!TecTech.configTecTech.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
             TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + ste[2].toString());

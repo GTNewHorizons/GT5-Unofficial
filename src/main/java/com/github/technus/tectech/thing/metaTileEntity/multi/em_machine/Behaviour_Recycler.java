@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
 /**

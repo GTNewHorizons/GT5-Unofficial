@@ -2,14 +2,14 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aOredictQuantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.bTransformationInfo;
+import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aFluidQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aItemQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictQuantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.Util.isInputEqual;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
-import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         int[] oreIDs = OreDictionary.getOreIDs(is);
                         for (int ID : oreIDs) {
                             if (DEBUG_MODE) {
-                                TecTech.Logger.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
+                                TecTech.LOGGER.info("Quantifier-Ore-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage() + ' ' + OreDictionary.getOreName(ID));
                             }
                             aOredictQuantizationInfo aOQI = bTransformationInfo.oredictQuantization.get(ID);
                             if (aOQI == null) {
@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                     } else {
                         //Do ITEM STACK quantization
                         if (DEBUG_MODE) {
-                            TecTech.Logger.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
+                            TecTech.LOGGER.info("Quantifier-Item-recipe " + is.getItem().getUnlocalizedName() + '.' + is.getItemDamage());
                         }
                         iHasElementalDefinition into = aIQI.output();
                         if (into != null && isInputEqual(true, false, GT_MetaTileEntity_MultiblockBase_EM.nothingF, new ItemStack[]{new ItemStack(is.getItem(), aIQI.input().stackSize, is.getItemDamage())}, null, inI)) {

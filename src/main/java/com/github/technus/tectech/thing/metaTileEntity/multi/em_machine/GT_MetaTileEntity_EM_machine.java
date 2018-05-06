@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
@@ -369,7 +369,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     public static void registerBehaviour(Behaviour behaviour, ItemStack is) {
         map.put(new Util.TT_ItemStack(is), behaviour);
-        TecTech.Logger.info("Registered EM machine behaviour "+behaviour.getClass().getSimpleName()+' '+new Util.TT_ItemStack(is).toString());
+        TecTech.LOGGER.info("Registered EM machine behaviour "+behaviour.getClass().getSimpleName()+' '+new Util.TT_ItemStack(is).toString());
     }
 
     public static abstract class Behaviour {

@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
@@ -187,8 +187,8 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
         }
         float excessMass = 0;
         while (inputMass > maxCapacity) {
-            cElementalInstanceStack randomStack = stacks[TecTech.Rnd.nextInt(stacks.length)];
-            int amountToRemove = TecTech.Rnd.nextInt((int) randomStack.getAmount()) + 1;
+            cElementalInstanceStack randomStack = stacks[TecTech.RANDOM.nextInt(stacks.length)];
+            int amountToRemove = TecTech.RANDOM.nextInt((int) randomStack.getAmount()) + 1;
             randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);

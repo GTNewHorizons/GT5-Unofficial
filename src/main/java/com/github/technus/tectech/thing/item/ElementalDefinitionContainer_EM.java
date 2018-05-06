@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +14,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.

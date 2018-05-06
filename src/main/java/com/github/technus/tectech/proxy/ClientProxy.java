@@ -1,7 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
@@ -43,8 +43,8 @@ public class ClientProxy extends CommonProxy {
     public void hint_particle(World world, int x, int y, int z, Block block, int meta) {
         Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(world,x,y,z,block,meta));
 
-        EntityFX particle = new EntityExplodeFX(world, x + TecTech.Rnd.nextFloat() * 0.5F, y + TecTech.Rnd.nextFloat() * 0.5F, z + TecTech.Rnd.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
+        EntityFX particle = new EntityExplodeFX(world, x + TecTech.RANDOM.nextFloat() * 0.5F, y + TecTech.RANDOM.nextFloat() * 0.5F, z + TecTech.RANDOM.nextFloat() * 0.5F, 0, 0, 0);
+        particle.setRBGColorF(0, 0.6F * TecTech.RANDOM.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
@@ -59,15 +59,15 @@ public class ClientProxy extends CommonProxy {
         //aDir.offsetY*0.1F+0.2F+0.1F*floatGen.nextFloat();
         float xSpd = 0;
         float zSpd = 0;
-        EntityFX particle = new EntityExplodeFX(aMuffler.getWorld(), xPos + TecTech.Rnd.nextFloat() * 0.5F, yPos + TecTech.Rnd.nextFloat() * 0.5F, zPos + TecTech.Rnd.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
-        particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
+        EntityFX particle = new EntityExplodeFX(aMuffler.getWorld(), xPos + TecTech.RANDOM.nextFloat() * 0.5F, yPos + TecTech.RANDOM.nextFloat() * 0.5F, zPos + TecTech.RANDOM.nextFloat() * 0.5F, xSpd, ySpd, zSpd);
+        particle.setRBGColorF(0, 0.6F * TecTech.RANDOM.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
     @Override
     public void em_particle(World w,double x,double y,double z) {//CUTE!
-        EntityFX particle = new EntityExplodeFX(w, x + TecTech.Rnd.nextFloat() * 0.5F, y + TecTech.Rnd.nextFloat() * 0.5F, z + TecTech.Rnd.nextFloat() * 0.5F, 0, 0, 0);
-        particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
+        EntityFX particle = new EntityExplodeFX(w, x + TecTech.RANDOM.nextFloat() * 0.5F, y + TecTech.RANDOM.nextFloat() * 0.5F, z + TecTech.RANDOM.nextFloat() * 0.5F, 0, 0, 0);
+        particle.setRBGColorF(0, 0.6F * TecTech.RANDOM.nextFloat(), 0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 

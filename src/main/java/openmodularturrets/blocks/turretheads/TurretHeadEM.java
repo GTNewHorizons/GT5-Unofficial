@@ -1,6 +1,5 @@
 package openmodularturrets.blocks.turretheads;
 
-import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,6 +11,8 @@ import net.minecraft.world.World;
 import openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+
 /**
  * Created by Bass on 27/07/2017.
  */
@@ -20,7 +21,7 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
 
     public TurretHeadEM(){
         super(Material.glass);
-        setCreativeTab(TecTech.mainTab);
+        setCreativeTab(creativeTabTecTech);
         setBlockUnbreakable();
         setResistance(6000000.0F);
         setStepSound(Block.soundTypeMetal);

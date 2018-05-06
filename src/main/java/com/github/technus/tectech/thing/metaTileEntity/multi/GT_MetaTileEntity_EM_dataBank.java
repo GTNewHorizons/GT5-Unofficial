@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.auxiliary.Reference;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.dataFramework.InventoryDataPacket;
+import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.loader.TecTechConfig;
+import com.github.technus.tectech.mechanics.dataTransport.InventoryDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputDataItems;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputDataItems;

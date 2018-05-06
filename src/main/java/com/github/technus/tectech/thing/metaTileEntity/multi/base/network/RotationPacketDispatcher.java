@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base.network;
 
 import eu.usrv.yamcore.network.PacketDispatcher;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 public class RotationPacketDispatcher extends PacketDispatcher {
     public static RotationPacketDispatcher INSTANCE;

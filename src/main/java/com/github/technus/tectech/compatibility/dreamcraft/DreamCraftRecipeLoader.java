@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.Method;
 
-import static com.github.technus.tectech.loader.RecipeLoader.getOrDefault;
+import static com.github.technus.tectech.loader.recipe.RecipeLoader.getOrDefault;
 
 /**
  * Created by Tec on 06.08.2017.

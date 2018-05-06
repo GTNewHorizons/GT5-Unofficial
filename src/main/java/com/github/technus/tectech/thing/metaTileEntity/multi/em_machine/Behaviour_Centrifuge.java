@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import static com.github.technus.tectech.CommonValues.V;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by danie_000 on 24.12.2017.
@@ -141,8 +141,8 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         }
         float excessMass = 0;
         while (inputMass > maxCapacity) {
-            cElementalInstanceStack randomStack = stacks[TecTech.Rnd.nextInt(stacks.length)];
-            int amountToRemove = TecTech.Rnd.nextInt((int) randomStack.getAmount()) + 1;
+            cElementalInstanceStack randomStack = stacks[TecTech.RANDOM.nextInt(stacks.length)];
+            int amountToRemove = TecTech.RANDOM.nextInt((int) randomStack.getAmount()) + 1;
             randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);
@@ -167,7 +167,7 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         //mixing factor...
         double mixingFactor=Math.min(1d-(RCF/maxRCF)*(1d-MIXING_FACTORS[tier-5][fractionCount-2]),1);
         if(DEBUG_MODE){
-            TecTech.Logger.info("mixingFactor "+mixingFactor);
+            TecTech.LOGGER.info("mixingFactor "+mixingFactor);
         }
 
         int mEut = (int) (Math.pow(checkedAndFixedParameters[0] / maxRPM, 3f) * V[tier]);
@@ -203,11 +203,11 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
                 }
             }
             //if(DEBUG_MODE){
-            //    TecTech.Logger.info("absMass "+absMassPerOutput);
+            //    TecTech.LOGGER.info("absMass "+absMassPerOutput);
             //}
             absMassPerOutput /= fractionCount;
             if(DEBUG_MODE){
-                TecTech.Logger.info("absMassPerOutput "+absMassPerOutput);
+                TecTech.LOGGER.info("absMassPerOutput "+absMassPerOutput);
             }
 
             nextFraction:
@@ -218,10 +218,10 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
                         double stackMass = Math.abs(stacks[stackNo].getMass());
                         long amount = (long) (remaining/Math.abs(stacks[stackNo].definition.getMass()));
                         //if(DEBUG_MODE){
-                        //    TecTech.Logger.info("stackMass "+stackMass);
-                        //    TecTech.Logger.info("defMass "+stacks[stackNo].definition.getMass());
-                        //    TecTech.Logger.info("remaining "+remaining);
-                        //    TecTech.Logger.info("amountToMoveAvailable "+amount+"/"+stacks[stackNo].amount);
+                        //    TecTech.LOGGER.info("stackMass "+stackMass);
+                        //    TecTech.LOGGER.info("defMass "+stacks[stackNo].definition.getMass());
+                        //    TecTech.LOGGER.info("remaining "+remaining);
+                        //    TecTech.LOGGER.info("amountToMoveAvailable "+amount+"/"+stacks[stackNo].amount);
                         //}
                         if (stackMass == 0) {
                             addRandomly(stacks[stackNo], outputs, fractionCount);
@@ -237,8 +237,8 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
                             outputs[fraction].putUnify(clone);
                             stacks[stackNo].amount-=amount;
                             //if(DEBUG_MODE){
-                            //    TecTech.Logger.info("remainingAfter "+remaining);
-                            //    TecTech.Logger.info("amountCloneAfter "+clone.amount+"/"+stacks[stackNo].amount);
+                            //    TecTech.LOGGER.info("remainingAfter "+remaining);
+                            //    TecTech.LOGGER.info("amountCloneAfter "+clone.amount+"/"+stacks[stackNo].amount);
                             //}
                         } else {
                             continue nextFraction;
@@ -272,8 +272,8 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         }
         int remainingAmount = (int) (me.amount % fractionCount);
         while (remainingAmount > 0) {
-            int amountToAdd = TecTech.Rnd.nextInt(remainingAmount) + 1;
-            stacks[TecTech.Rnd.nextInt(fractionCount)].amount += amountToAdd;
+            int amountToAdd = TecTech.RANDOM.nextInt(remainingAmount) + 1;
+            stacks[TecTech.RANDOM.nextInt(fractionCount)].amount += amountToAdd;
             remainingAmount -= amountToAdd;
         }
     }

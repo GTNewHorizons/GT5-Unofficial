@@ -2,9 +2,9 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEMpipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +22,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
@@ -121,7 +121,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                         if (tGTTileEntity != null && tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental) {
                             GT_MetaTileEntity_Hatch_OverflowElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_OverflowElemental) tGTTileEntity.getMetaTileEntity();
                             if (aMetaTileEntity.addOverflowMatter(overflowMatter)) {
-                                if (TecTech.ModConfig.BOOM_ENABLE) {
+                                if (TecTech.configTecTech.BOOM_ENABLE) {
                                     tGTTileEntity.doExplosion(V[14]);
                                 } else {
                                     TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());
@@ -131,7 +131,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             overflowMatter = 0F;
                         }
                     } else if (deathDelay < 1) {
-                        if (TecTech.ModConfig.BOOM_ENABLE) {
+                        if (TecTech.configTecTech.BOOM_ENABLE) {
                             getBaseMetaTileEntity().doExplosion(V[14]);
                         } else {
                             deathDelay=3;
@@ -218,7 +218,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if(TecTech.ModConfig.EASY_SCAN) {
+        if(TecTech.configTecTech.EASY_SCAN) {
             if (id > 0) {
                 if (content == null || content.size() == 0) {
                     return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
@@ -271,7 +271,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            if (TecTech.ModConfig.BOOM_ENABLE) {
+            if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
                 TecTech.proxy.broadcast("BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());

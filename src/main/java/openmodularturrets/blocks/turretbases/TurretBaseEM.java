@@ -1,7 +1,6 @@
 package openmodularturrets.blocks.turretbases;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,6 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
+
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
 
 /**
  * Created by Bass on 27/07/2017.
@@ -19,7 +20,7 @@ public class TurretBaseEM extends BlockAbstractTurretBase {
     public static TurretBaseEM INSTANCE;
 
     public TurretBaseEM(){
-        setCreativeTab(TecTech.mainTab);
+        setCreativeTab(creativeTabTecTech);
         setResistance(16);
         setBlockName("turretBaseEM");
         setStepSound(Block.soundTypeMetal);
