@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe.common;
 
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
