@@ -1,6 +1,7 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.dreamcraft.NoDreamCraftBlockLoader;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
@@ -24,6 +25,10 @@ public class ThingsLoader implements Runnable {
     public void run() {
         if(Textures.BlockIcons.casingTexturePages[tectechTexturePage1]==null) {
             Textures.BlockIcons.casingTexturePages[tectechTexturePage1] = new ITexture[128];
+        }
+        if(!Loader.isModLoaded("dreamcraft")){
+            TecTech.Logger.info("Adding basic casings");
+            new NoDreamCraftBlockLoader().run();
         }
         TecTech.Logger.info("Added texture page if was null");
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();

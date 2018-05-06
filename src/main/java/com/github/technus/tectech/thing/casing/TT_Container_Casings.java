@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 public final class TT_Container_Casings {
     public static Block sBlockCasingsTT;
     public static Block sHintCasingsTT;
+    public static Block sBlockCasingsNH;
 
     private TT_Container_Casings() {}
 }
