@@ -5,7 +5,7 @@ GT additions EXTREME
 https://github.com/JALGATeam/TecTechWiki
 
 # Jenkins Builds
-http://jenkins.usrv.de:8081/job/Tec%20Tech/
+http://jenkins.usrv.eu:8080/job/Tec%20Tech/
 https://jenkins.datamats.com/job/TecTech/
 
 # Runtime Dependencies?
