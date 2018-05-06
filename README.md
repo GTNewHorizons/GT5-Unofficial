@@ -6,7 +6,6 @@ https://github.com/JALGATeam/TecTechWiki
 
 # Jenkins Builds
 http://jenkins.usrv.eu:8080/job/Tec%20Tech/
-https://jenkins.datamats.com/job/TecTech/
 
 # Runtime Dependencies?
 https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/tectech/TecTech.java#L37
