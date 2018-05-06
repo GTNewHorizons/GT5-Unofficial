@@ -18,18 +18,6 @@ $RECYCLE.BIN/
 *.json
 *.txt
 *.zip
-.gradle
-.settings
-asm/
-bin/
-config/
-crash-reports/
-gradle/
-logs/
-mods/
-resourcepacks/
-saves/
-VillageWiper/
 
 # Windows shortcuts
 *.lnk
@@ -109,5 +97,23 @@ local.properties
 
 # STS (Spring Tool Suite)
 .springBeans
+
+# IDEA
+.idea/
+*.iml
+
+# Other
 /screenshots
 /world
+.gradle
+.settings
+asm/
+bin/
+config/
+crash-reports/
+gradle/
+logs/
+mods/
+resourcepacks/
+saves/
+VillageWiper/
