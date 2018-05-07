@@ -984,7 +984,8 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 					if (mColumn >= 3) {
 						mColumn = 0;
 						mRow++;
-					}					
+					}		
+					if (mColumn <= 2 && mRow <= 3)
 					outputStacks.add(
 							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
 									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow]));
@@ -1148,7 +1149,8 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 					if (mColumn >= 3) {
 						mColumn = 0;
 						mRow++;
-					}					
+					}		
+					if (mColumn <= 2 && mRow <= 3)					
 					outputStacks.add(
 							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
 									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow]));
