@@ -126,7 +126,7 @@ public final class MainLoader {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 7);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
-        if(!Loader.isModLoaded(Reference.DREAMCRAFT)){
+        if(Loader.isModLoaded(Reference.DREAMCRAFT)){
             try {
                 Class clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
                 TT_Container_Casings.sBlockCasingsNH = (Block)clazz.getField("sBlockCasingsNH").get(null);
