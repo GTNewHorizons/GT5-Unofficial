@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -145,6 +146,7 @@ public class Preloader_GT_OreDict {
 			}
 
 		} catch (final Throwable e) {
+			if (CORE.ConfigSwitches.showHiddenNEIItems) {
 			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "A mod tried to register an invalid item with the OreDictionary.");
 			if (bannedItem != null){
 				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Please report this issue to the authors of %s", ItemUtils.getModId(bannedItem));
@@ -159,6 +161,7 @@ public class Preloader_GT_OreDict {
 				catch (Exception h) {
 					h.printStackTrace();
 				}
+			}
 			}
 			//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "%s", e.getMessage());
 		}
