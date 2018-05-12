@@ -974,23 +974,23 @@ public class RECIPES_GREGTECH {
 		addAR(T1,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 4),
 			FluidUtils.getFluidStack("nitrogen", 2000),
-			T2, 128, 2000);
+			T2, 120, 2000);
 		addAR(T2,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTitanium", 4),
 			FluidUtils.getFluidStack("helium", 2000),
-			T3, 256, 8000);
+			T3, 250, 8000);
 		addAR(T3,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTungsten", 4),
 			FluidUtils.getFluidStack("argon", 4000),
-			T4, 512, 32000);
+			T4, 500, 32000);
 		addAR(T4,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 4),
 			FluidUtils.getFluidStack("radon", 4000),
-			T5, 1024, 128000);
+			T5, 1000, 128000);
 		addAR(T5,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 4),
-			FluidUtils.getFluidStack("krypton", 500),
-			T6, 2048, 512000);
+			FluidUtils.getFluidStack("molten.krypton", 500),
+			T6, 2000, 512000);
 				
 		/*addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
@@ -1088,8 +1088,12 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void fluidExtractorRecipes() {
+		//Ender Fluid
 		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), null,
-				FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);
+				FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);		
+		//FLiBe fuel
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
+				FluidUtils.getFluidStack("molten.li2bef4", 144), 10000, 100, 500);
 	}
 
 	private static void chemicalBathRecipes() {

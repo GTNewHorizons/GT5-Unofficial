@@ -62,10 +62,6 @@ public class BookHandler {
 								" \n"+
 								" \n"+
 								" \n"+
-								" \n"+
-								" \n"+
-								" \n"+
-								" \n"+
 								"So, when it comes to power storage you relaly have three seperate options:\n"+
 								" \n"+
 								"Battery Buffers,\n"+
@@ -167,17 +163,10 @@ public class BookHandler {
 						+ "[ ][ ][ ]\n"
 						,
 						//Page 5
-						" \n"+
-						" \n"+
-						" \n"+
-						" \n"+
-						" \n"+
-						" \n"+
-						" \n"+
-						" \n"+
 						"Fission Fuel\n"+
-						"Processing Plant",
-						"This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor or LFTR."
+						"Processing Plant"+
+						"----------------------\n"+
+						"This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR]."
 						
 				});
 	}
