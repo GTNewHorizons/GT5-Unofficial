@@ -16,6 +16,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
@@ -335,6 +336,15 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("hydrofluoricacid", 250), null);
 		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 				ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 250));
+		
+		if (Utils.getGregtechVersionAsInt() >= 50929) {
+			// Hydrofluoric Acid
+			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
+					ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+					FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250), null);
+			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+					ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250));
+		}
 	}
 
 	private static void cokeOvenRecipes() {
@@ -681,6 +691,21 @@ public class RECIPES_GREGTECH {
 					// 9,
 					new int[] { 0 }, 120 * 20, // Time in ticks
 					500); // EU
+			
+
+			if (Utils.getGregtechVersionAsInt() >= 50929) {
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 9) },
+						FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
+						null,
+						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
+								ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9) },						
+						new int[] { 0 },
+						120 * 20, // Time in ticks
+						500); // EU
+			}
+			
 
 		}
 		catch (final NullPointerException e) {
@@ -1179,7 +1204,7 @@ public class RECIPES_GREGTECH {
 
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16), null,
 				FluidUtils.getFluidStack("sulfuricacid", 144 * 32),
-				FluidUtils.getFluidStack("sulfuricapatite", 144 * 4),
+				FluidUtils.getFluidStack("sulfuricapatite", 144 * 8),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 20 * 20);
 
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1), null,
@@ -1244,17 +1269,14 @@ public class RECIPES_GREGTECH {
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2), 20 * 20);
 		}
 		
-		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
-				// Stack
-				// 1
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
-				// Stack
-				// 2
+		//Refine GT HF into GT++ HF
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydroFluoricAcid", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid_gt5u", 5),
 				null, // Fluid Input
-				null, // Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 10), // Output
-				// Stack
-				600 * 20);
+				FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 12),
+				2 * 20);
 		
 	}
 

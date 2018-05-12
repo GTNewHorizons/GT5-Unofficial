@@ -207,7 +207,7 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {		
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
-		FishPondFakeRecipe.generateFishPondRecipes();
+		FishPondFakeRecipe.generateFishPondRecipes();		
 
 		//Large Centrifuge generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
@@ -315,7 +315,6 @@ public class GTplusplus implements ActionListener {
 		mOrangeCapes.put(new Pair<String, String>("ImmortalPharaoh7", "c8c479b2-7464-4b20-adea-b43ff1c10c53"));
 		mOrangeCapes.put(new Pair<String, String>("Walmart_Employee", "7a56602b-9a67-44e3-95a5-270f887712c6"));
 		mOrangeCapes.put(new Pair<String, String>("ArchonCerulean", "f773e61f-261f-41e7-a221-5dcace291ced"));
-		mOrangeCapes.put(new Pair<String, String>("asturrial", "26c4881f-c708-4c5d-aa76-4419c3a1265b"));
 		mOrangeCapes.put(new Pair<String, String>("netmc", "c3ecbcc3-0d83-4da6-bb89-69f3f1a6e38b"));
 		mOrangeCapes.put(new Pair<String, String>("twinsrock8", "c1239b45b-b3a3-4282-8143-c73778897dda"));
 		mOrangeCapes.put(new Pair<String, String>("Ajes", "b1781fc7-35ca-4255-a21c-cdb1b7ea1853"));
@@ -341,19 +340,20 @@ public class GTplusplus implements ActionListener {
 		mBetaTestCapes.put(new Pair<String, String>("Bear989Sr", "1964e3d1-6500-40e7-9ff2-e6161d41a8c2"));
 		mBetaTestCapes.put(new Pair<String, String>("CrazyJ1984", "d84f9654-87ea-46a9-881f-c6aa45dd5af8"));
 		mBetaTestCapes.put(new Pair<String, String>("AndreyKV", "9550c173-a8c5-4e7f-bf8d-b5ded56921ef"));
-		
+
 		//Dev Capes
 		mDevCapes.put(new Pair<String, String>("draknyte1", "5652713c-668e-47f3-853a-3fa959a9dfd3"));
 		mDevCapes.put(new Pair<String, String>("crimsonhood17", "c4773470-2585-4bd7-82b3-8764ca6acd08"));
 
-		
+
 		/**
 		 * Patreons
 		 */
-		
+
 		mPatreonCapes.put(new Pair<String, String>("Baxterzz", "e8aa5500-7319-4453-822c-b96b29ab5981"));
 		mPatreonCapes.put(new Pair<String, String>("leagris", "09752aa3-8b9c-4f8f-b04f-5421e799547d"));
 		mPatreonCapes.put(new Pair<String, String>("Traumeister", "fd3f46ac-801a-4566-90b5-75cb362d261e"));
+		mPatreonCapes.put(new Pair<String, String>("asturrial", "26c4881f-c708-4c5d-aa76-4419c3a1265b"));
 	}
 
 }

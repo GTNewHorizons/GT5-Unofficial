@@ -22,6 +22,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -37,54 +38,75 @@ extends RenderPlayer {
 		BuildCapeList();
 	}
 
-	public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
-		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;		
-		if (mDevCapes.size() <= 1) {
-			BuildCapeList();
-		}		
+	private static volatile ResourceLocation cachedResource = null;
+	private static boolean hasResourceChecked = false;
+
+	public synchronized void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
+		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
+		ResourceLocation tResource = null;	
+		if (cachedResource != null) {
+			tResource = cachedResource;
+		}
+		else {
+			String mTemp = "";
+			//Make sure we don't keep checking on clients who dont have capes.
+			if (!hasResourceChecked) {
+				//Only run once.
+				hasResourceChecked = true;
+				//If list's have not been built yet for some reason, we best do it now.
+				if (mDevCapes.size() <= 1) {
+					BuildCapeList();
+				}
+
+				//Iterates all players in all lists, caches result.
+				for (Pair<String, String> mName : mOrangeCapes){				
+					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+						tResource = this.mCapes[0];
+					}
+				}
+				for (Pair<String, String> mName : mMiscCapes){
+					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+						tResource = this.mCapes[1];
+					}
+				}
+				for (Pair<String, String> mName : mBetaTestCapes){
+					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+						tResource = this.mCapes[2];
+					}
+				}
+				for (Pair<String, String> mName : mDevCapes){
+					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+						tResource = this.mCapes[3];
+					}
+				}
+				for (Pair<String, String> mName : mPatreonCapes){
+					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
+						tResource = this.mCapes[4];
+					}
+				}
+				if (tResource != null) {
+					cachedResource = tResource;
+				}
+			}
+		}
+
+
 		if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible() || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
 			aEvent.setCanceled(true);
 			return;
 		}
 		float aPartialTicks = aEvent.partialRenderTick;
-		try {
-			ResourceLocation tResource = null;			
-			String mTemp = "";
-			
-			for (Pair<String, String> mName : mOrangeCapes){				
-				mTemp = getPlayerName((String) mName.getKey(), (String) mName.getValue());
-				if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-					tResource = this.mCapes[0];
-				}
-			}
-			for (Pair<String, String> mName : mMiscCapes){
-				mTemp = getPlayerName((String) mName.getKey(), (String) mName.getValue());
-				if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-					tResource = this.mCapes[1];
-				}
-			}
-			for (Pair<String, String> mName : mBetaTestCapes){
-				mTemp = getPlayerName((String) mName.getKey(), (String) mName.getValue());
-				if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-					tResource = this.mCapes[2];
-				}
-			}
-			for (Pair<String, String> mName : mDevCapes){
-				mTemp = getPlayerName((String) mName.getKey(), (String) mName.getValue());
-				if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-					tResource = this.mCapes[3];
-				}
-			}
-			for (Pair<String, String> mName : mPatreonCapes){
-				mTemp = getPlayerName((String) mName.getKey(), (String) mName.getValue());
-				if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-					tResource = this.mCapes[4];
-				}
-			}
-			
-			if (CORE.DEVENV) {
+		try {		
+
+
+			/*if (CORE.DEVENV) {
 				tResource = this.mCapes[3];
-			}
+			}*/
 
 			/*if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
                 tResource = this.mCapes[0];
@@ -97,8 +119,8 @@ extends RenderPlayer {
 				double d1 = aPlayer.field_71096_bN + (aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks - (aPlayer.prevPosY + (aPlayer.posY - aPlayer.prevPosY) * aPartialTicks);
 				double d2 = aPlayer.field_71097_bO + (aPlayer.field_71085_bR - aPlayer.field_71097_bO) * aPartialTicks - (aPlayer.prevPosZ + (aPlayer.posZ - aPlayer.prevPosZ) * aPartialTicks);
 				float f6 = aPlayer.prevRenderYawOffset + (aPlayer.renderYawOffset - aPlayer.prevRenderYawOffset) * aPartialTicks;
-				double d3 = MathHelper.sin(f6 * 3.141593F / 180.0F);
-				double d4 = -MathHelper.cos(f6 * 3.141593F / 180.0F);
+				double d3 = MathHelper.sin(f6 * CORE.PI / 180.0F);
+				double d4 = -MathHelper.cos(f6 * CORE.PI / 180.0F);
 				float f7 = (float) d1 * 10.0F;
 				float f8 = (float) (d0 * d3 + d2 * d4) * 100.0F;
 				float f9 = (float) (d0 * d4 - d2 * d3) * 100.0F;
@@ -131,17 +153,31 @@ extends RenderPlayer {
 	}
 
 	private String getPlayerName(String name, String uuid) {
+		Logger.WORLD("[Capes++] Trying to UUID check "+name+".");
 		if (uuid != null) {    		
 			if (uuid.length() > 0) {
 				UUID g = UUID.fromString(uuid);
 				if (g != null) {
+					Logger.WORLD("[Capes++] Mojang/Cache checking for "+name+".");
 					GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
 					if (profile != null) {
+						Logger.INFO("[Capes++] Found for UUID check: "+profile.getName()+".");
 						return profile.getName();
 					}  
 				}
 			}    		
-		}    	
+		}  
+		if (name != null) {    		
+			if (name.length() > 0) {
+				Logger.WORLD("[Capes++] Mojang/Cache checking for "+name+".");
+				GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+				if (profile != null) {
+					Logger.INFO("[Capes++] Found for name check: "+profile.getName()+".");
+					return profile.getName();
+				} 			
+			}    		
+		}  
+		Logger.WORLD("[Capes++] Failed UUID check for "+name+".");
 		return name;
 	}
 

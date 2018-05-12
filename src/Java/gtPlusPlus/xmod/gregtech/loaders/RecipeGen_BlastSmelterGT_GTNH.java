@@ -35,14 +35,14 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 	private synchronized static FluidStack getFluidFromIngot(final ItemStackData ingot) {
 		ItemStackData h = ingot;		
 		if (mCachedIngotToFluidRegistry.containsKey(h.getUniqueDataIdentifier())) {
-			Logger.INFO("[ABS] mCachedIngotToFluidRegistry contains Output Ingot.");
+			Logger.MACHINE_INFO("[ABS] mCachedIngotToFluidRegistry contains Output Ingot.");
 			return mCachedIngotToFluidRegistry.get(h.getUniqueDataIdentifier());
 		}
 		if (mCachedHotToColdRegistry.containsKey(h.getUniqueDataIdentifier())) {
-			Logger.INFO("[ABS] mCachedHotToColdRegistry contains Output Ingot.");
+			Logger.MACHINE_INFO("[ABS] mCachedHotToColdRegistry contains Output Ingot.");
 			return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(h.getUniqueDataIdentifier()));				
 		}
-		Logger.INFO("[ABS] Neither Cache contains Output Ingot.");
+		Logger.MACHINE_INFO("[ABS] Neither Cache contains Output Ingot.");
 		return null;	
 	}
 
@@ -85,7 +85,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 				if (validInput != null && validOutput != null) {
 					ItemStackData R = new ItemStackData(validInput);
 					setIngotToFluid(R, validOutput);
-					Logger.INFO("[ABS][I2F] Cached "+validInput.getDisplayName()+" to "+validOutput.getLocalizedName()+". Stored Under ID of "+R.getUniqueDataIdentifier());
+					Logger.MACHINE_INFO("[ABS][I2F] Cached "+validInput.getDisplayName()+" to "+validOutput.getLocalizedName()+". Stored Under ID of "+R.getUniqueDataIdentifier());
 				}				
 			}			
 		}
@@ -108,7 +108,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 					ItemStackData R1 = new ItemStackData(validInput);
 					ItemStackData R2 = new ItemStackData(validOutput);
 					setHotToCold(R1, R2);
-					Logger.INFO("[ABS][H2C] Cached "+validInput.getDisplayName()+" to "+validOutput.getDisplayName()+". Stored Under ID of "+R1.getUniqueDataIdentifier()+", links to ID "+R2.getUniqueDataIdentifier());
+					Logger.MACHINE_INFO("[ABS][H2C] Cached "+validInput.getDisplayName()+" to "+validOutput.getDisplayName()+". Stored Under ID of "+R1.getUniqueDataIdentifier()+", links to ID "+R2.getUniqueDataIdentifier());
 				}				
 			}			
 		}
@@ -134,7 +134,7 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 
 				//Check for GTNH, if it's found, continue to next recipe if the Temp is too high.
 				if (CORE.GTNH && special > 3600) {
-					Logger.INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
+					Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
 					continue;
 				}
 				else {
@@ -144,14 +144,14 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 					if (x.mOutputs != null && x.mOutputs[0] != null) {
 						mMoltenCount = x.mOutputs[0].stackSize;
 						ItemStackData R = new ItemStackData(x.mOutputs[0]);
-						Logger.INFO("[ABS] Found "+x.mOutputs[0].getDisplayName()+" as valid EBF output, finding it's fluid from the cache. We will require "+(144*mMoltenCount)+"L. Looking for ID "+R.getUniqueDataIdentifier());
+						Logger.MACHINE_INFO("[ABS] Found "+x.mOutputs[0].getDisplayName()+" as valid EBF output, finding it's fluid from the cache. We will require "+(144*mMoltenCount)+"L. Looking for ID "+R.getUniqueDataIdentifier());
 						FluidStack tempFluid = getFluidFromIngot(R);
 						if (tempFluid != null) {
-							//Logger.INFO("[ABS] Got Fluid from Cache.");
+							//Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
 							mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount*144);
 						}
 						else {
-							Logger.INFO("[ABS] Failed to get Fluid from Cache.");
+							Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
 						}
 					}
 					//If this recipe is enabled and we have a valid molten fluidstack, let's try add this recipe.
@@ -163,41 +163,41 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 							newInput[l++] = y;
 						}
 						newInput[0] = CI.getNumberedCircuit(inputs.length);						
-						//Logger.INFO("[ABS] Generating ABS recipe for "+mMoltenStack.getLocalizedName()+".");
+						//Logger.MACHINE_INFO("[ABS] Generating ABS recipe for "+mMoltenStack.getLocalizedName()+".");
 						if (CORE.RA.addBlastSmelterRecipe(newInput, (inputsF.length > 0 ? inputsF[0] : null), mMoltenStack, 100, MathUtils.roundToClosestInt(time*0.8), voltage, special)) {
-							//Logger.INFO("[ABS] Success.");
+							//Logger.MACHINE_INFO("[ABS] Success.");
 							mSuccess++;
 						}
 						else {
-							Logger.INFO("[ABS] Failure.");
+							Logger.MACHINE_INFO("[ABS] Failure.");
 						}
 					}
 					else {
 						if (!enabled) {
-							Logger.INFO("[ABS] Failure. EBF recipe was not enabled.");
+							Logger.MACHINE_INFO("[ABS] Failure. EBF recipe was not enabled.");
 						}
 						else {
-							Logger.INFO("[ABS] Failure. Invalid Inputs or Outputs.");
+							Logger.MACHINE_INFO("[ABS] Failure. Invalid Inputs or Outputs.");
 							if (inputs == null) {
-								Logger.INFO("[ABS] Inputs were not Valid.");								
+								Logger.MACHINE_INFO("[ABS] Inputs were not Valid.");								
 							}
 							else {
-								Logger.INFO("[ABS] inputs size: "+inputs.length);	
+								Logger.MACHINE_INFO("[ABS] inputs size: "+inputs.length);	
 							}
 							if (outputs == null) {
-								Logger.INFO("[ABS] Outputs were not Valid.");	
+								Logger.MACHINE_INFO("[ABS] Outputs were not Valid.");	
 							}
 							else {
-								Logger.INFO("[ABS] outputs size: "+outputs.length);	
+								Logger.MACHINE_INFO("[ABS] outputs size: "+outputs.length);	
 							}
 							if (inputsF == null) {
-								Logger.INFO("[ABS] Input Fluids were not Valid.");	
+								Logger.MACHINE_INFO("[ABS] Input Fluids were not Valid.");	
 							}
 							else {
-								Logger.INFO("[ABS] inputsF size: "+inputsF.length);	
+								Logger.MACHINE_INFO("[ABS] inputsF size: "+inputsF.length);	
 							}
 							if (mMoltenStack == null) {
-								Logger.INFO("[ABS] Output Fluid were not Valid.");	
+								Logger.MACHINE_INFO("[ABS] Output Fluid were not Valid.");	
 							}
 						}
 					}
@@ -205,7 +205,100 @@ public class RecipeGen_BlastSmelterGT_GTNH {
 			}
 		}
 		else {
-			Logger.INFO("[ABS] Failure. Did not find any EBF recipes to iterate.");			
+			Logger.MACHINE_INFO("[ABS] Failure. Did not find any EBF recipes to iterate.");			
+		}
+
+		Logger.MACHINE_INFO("[ABS] Generating recipes based on existing Alloy Smelter recipes.");
+		//Okay, so now lets Iterate existing EBF recipes.
+		if (GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.mRecipeList.size() > 0) {
+			for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes.mRecipeList) {
+				if (x == null) {
+					continue;
+				}
+				ItemStack[] inputs, outputs;
+				FluidStack[] inputsF;
+				int voltage, time, special;
+				boolean enabled;
+				inputs = x.mInputs;
+				outputs = x.mOutputs;
+				inputsF = x.mFluidInputs;
+				voltage = x.mEUt;
+				time = x.mDuration;
+				enabled = x.mEnabled;
+				special = x.mSpecialValue;
+
+				/*Check for GTNH, if it's found, continue to next recipe if the Temp is too high.
+				if (CORE.GTNH && special > 3600) {
+					Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
+					continue;
+				}*/
+				FluidStack mMoltenStack = null;
+				int mMoltenCount = 0;
+				//If We have a valid Output, let's try use our cached data to get it's molten form.
+				if (x.mOutputs != null && x.mOutputs[0] != null) {
+					mMoltenCount = x.mOutputs[0].stackSize;
+					ItemStackData R = new ItemStackData(x.mOutputs[0]);
+					Logger.MACHINE_INFO("[ABS] Found "+x.mOutputs[0].getDisplayName()+" as valid AS output, finding it's fluid from the cache. We will require "+(144*mMoltenCount)+"L. Looking for ID "+R.getUniqueDataIdentifier());
+					FluidStack tempFluid = getFluidFromIngot(R);
+					if (tempFluid != null) {
+						//Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
+						mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount*144);
+					}
+					else {
+						Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
+					}
+				}
+				//If this recipe is enabled and we have a valid molten fluidstack, let's try add this recipe.
+				if (enabled && isValid(inputs, outputs, inputsF, mMoltenStack)) {						
+					//Build correct input stack
+					ItemStack[] newInput = new ItemStack[inputs.length+1];						
+					int l = 1;
+					for (ItemStack y : inputs) {
+						newInput[l++] = y;
+					}
+					newInput[0] = CI.getNumberedCircuit(19);						
+					//Logger.MACHINE_INFO("[ABS] Generating ABS recipe for "+mMoltenStack.getLocalizedName()+".");
+					if (CORE.RA.addBlastSmelterRecipe(newInput, (inputsF.length > 0 ? inputsF[0] : null), mMoltenStack, 100, MathUtils.roundToClosestInt(time*0.8), voltage, special)) {
+						//Logger.MACHINE_INFO("[ABS] Success.");
+						mSuccess++;
+					}
+					else {
+						Logger.MACHINE_INFO("[ABS] AS Recipe Failure.");
+					}
+				}
+				else {
+					if (!enabled) {
+						Logger.MACHINE_INFO("[ABS] Failure. AS recipe was not enabled.");
+					}
+					else {
+						Logger.MACHINE_INFO("[ABS] Failure. Invalid Inputs or Outputs.");
+						if (inputs == null) {
+							Logger.MACHINE_INFO("[ABS] Inputs were not Valid.");								
+						}
+						else {
+							Logger.MACHINE_INFO("[ABS] inputs size: "+inputs.length);	
+						}
+						if (outputs == null) {
+							Logger.MACHINE_INFO("[ABS] Outputs were not Valid.");	
+						}
+						else {
+							Logger.MACHINE_INFO("[ABS] outputs size: "+outputs.length);	
+						}
+						if (inputsF == null) {
+							Logger.MACHINE_INFO("[ABS] Input Fluids were not Valid.");	
+						}
+						else {
+							Logger.MACHINE_INFO("[ABS] inputsF size: "+inputsF.length);	
+						}
+						if (mMoltenStack == null) {
+							Logger.MACHINE_INFO("[ABS] Output Fluid were not Valid.");	
+						}
+					}
+				}
+			}				
+		}
+		else {
+			Logger.MACHINE_INFO("[ABS] Failure. Did not find any Alloy Smelter recipes to iterate.");			
 		}
 
 		Logger.INFO("[ABS] Processed "+mSuccess+" recipes.");
