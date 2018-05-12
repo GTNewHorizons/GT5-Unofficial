@@ -10,6 +10,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -120,4 +123,9 @@ public class GregtechMetaTileEntity_Adv_Implosion
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
 }

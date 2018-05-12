@@ -5,15 +5,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
+
 import net.minecraft.block.Block;
 
-public class GregtechMetaTileEntity_Advanced_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
+public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
-    public GregtechMetaTileEntity_Advanced_Fusion_MK4(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 6);
     }
 
-    public GregtechMetaTileEntity_Advanced_Fusion_MK4(String aName) {
+    public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
         super(aName);
     }
 
@@ -29,7 +31,7 @@ public class GregtechMetaTileEntity_Advanced_Fusion_MK4 extends GT_MetaTileEntit
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_Advanced_Fusion_MK4(mName);
+        return new GregtechMetaTileEntity_Adv_Fusion_MK4(mName);
     }
 
     @Override

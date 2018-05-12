@@ -18,6 +18,7 @@ import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import ic2.core.Ic2Items;
 
 public class CI {

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -14,6 +15,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -238,5 +244,11 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
         }
         return false;
     }
+
+	@Override
+	public boolean hasSlotInGUI() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
