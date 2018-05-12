@@ -1243,6 +1243,19 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("ammonium", 2000),
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2), 20 * 20);
 		}
+		
+		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
+				// Stack
+				// 1
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
+				// Stack
+				// 2
+				null, // Fluid Input
+				null, // Fluid Output
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 10), // Output
+				// Stack
+				600 * 20);
+		
 	}
 
 	private static void blastFurnaceRecipes() {
