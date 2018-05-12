@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -19,15 +20,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import static gregtech.api.GregTech_API.sBlockCasings4;
 
 public class GregtechMetaTileEntity_Adv_Implosion
         extends GregtechMeta_MultiBlockBase {
+	
+	private String mCasingName = "Robust Tungstensteel Machine Casing";
     public GregtechMetaTileEntity_Adv_Implosion(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
     }
 
     public GregtechMetaTileEntity_Adv_Implosion(String aName) {
         super(aName);
+        mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -43,15 +49,15 @@ public class GregtechMetaTileEntity_Adv_Implosion
                 "1x Maintenance Hatch (Any casing)",
                 "1x Muffler Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
-                "Solid Steel Machine Casings for the rest (16 at least!)",
+                 mCasingName+"s for the rest (16 at least!)",
                 "Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[16], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[16]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48]};
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -93,10 +99,11 @@ public class GregtechMetaTileEntity_Adv_Implosion
                 for (int h = -1; h < 2; h++) {
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 16)) && (!addMufflerToMachineList(tTileEntity, 16)) && (!addInputToMachineList(tTileEntity, 16)) && (!addOutputToMachineList(tTileEntity, 16)) && (!addEnergyInputToMachineList(tTileEntity, 16))) {
+
+                        if ((!addMaintenanceToMachineList(tTileEntity, 48)) && (!addMufflerToMachineList(tTileEntity, 48)) && (!addInputToMachineList(tTileEntity, 48)) && (!addOutputToMachineList(tTileEntity, 48)) && (!addEnergyInputToMachineList(tTileEntity, 48))) {
                             Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                             byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                            if (((tBlock != GregTech_API.sBlockCasings2) || (tMeta != 0)) && ((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 4))) {
+                            if ((tBlock != sBlockCasings4) || (tMeta != 0)) {
                                 return false;
                             }
                             tAmount++;
