@@ -209,6 +209,7 @@ public class TexturesGtBlock {
 
 	public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
+	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
 
 	//Overlays
 	//Fan Textures

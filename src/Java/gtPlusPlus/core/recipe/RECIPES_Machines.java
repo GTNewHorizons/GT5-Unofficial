@@ -13,6 +13,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -859,7 +860,14 @@ public class RECIPES_Machines {
 						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
 						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
 						GregtechItemList.Pollution_Detector.get(1));
-
+				
+				//Air Intake Hatch
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
+						CI.component_Plate[6], ItemList.FluidRegulator_IV.get(1), CI.component_Plate[6],
+						CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
+						GregtechItemList.Hatch_Air_Intake.get(1));
+				
 				//ULV
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[0], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[0],
@@ -1176,58 +1184,79 @@ public class RECIPES_Machines {
 						plate,CI.getTieredCircuit(2),plate,
 						GregtechItemList.Industrial_FishingPond.get(1));
 			}
-			
+
 			if (true) {
+				//Advanced Vacuum Freezer
+				ItemStack plate = ALLOY.HG1223.getPlateDouble(1);
+				ItemStack gear = ALLOY.INCOLOY_MA956.getGear(1);
+				ItemStack frame = ALLOY.INCOLOY_DS.getFrameBox(1);
+				ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
+				ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
 
-			//Advanced Vacuum Freezer
-			ItemStack plate = ALLOY.HASTELLOY_N.getPlateDouble(1);
-			ItemStack gear = ALLOY.HASTELLOY_N.getGear(1);
-			ItemStack frame = ALLOY.HASTELLOY_N.getFrameBox(1);
-			ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
-			ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
-			
-			RecipeUtils.recipeBuilder(
-					plate, gear, plate,
-					cell1, frame, cell2,
-					plate, gear, plate,
-					GregtechItemList.Casing_AdvancedVacuum.get(Casing_Amount));
-			RecipeUtils.recipeBuilder( 
-					gear,CI.getTieredCircuit(6),gear,
-					CI.electricPiston_IV, GregtechItemList.Casing_AdvancedVacuum.get(1), CI.electricPiston_IV,
-					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
-					GregtechItemList.Industrial_Cryogenic_Freezer.get(1));			
+				RecipeUtils.recipeBuilder(
+						plate, gear, plate,
+						cell1, frame, cell2,
+						plate, gear, plate,
+						GregtechItemList.Casing_AdvancedVacuum.get(Casing_Amount));
+				RecipeUtils.recipeBuilder( 
+						gear,CI.getTieredCircuit(6),gear,
+						CI.electricPiston_IV, GregtechItemList.Casing_AdvancedVacuum.get(1), CI.electricPiston_IV,
+						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+						GregtechItemList.Industrial_Cryogenic_Freezer.get(1));			
 
-			//Advanced Blast Furnaace
-			plate = ALLOY.HG1223.getPlateDouble(1);
-			gear = ALLOY.INCOLOY_MA956.getGear(1);
-			frame = ALLOY.INCOLOY_DS.getFrameBox(1);
-			cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
-			cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
-			ItemStack cell3 = ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1);
-			
-			RecipeUtils.recipeBuilder(
-					plate, cell1, plate,
-					cell3, frame, cell2,
-					plate, gear, plate,
-					GregtechItemList.Casing_Adv_BlastFurnace.get(Casing_Amount));
-			RecipeUtils.recipeBuilder( 
-					gear,CI.getTieredCircuit(6),gear,
-					CI.robotArm_IV, GregtechItemList.Casing_Adv_BlastFurnace.get(1), CI.robotArm_IV,
-					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
-					GregtechItemList.Machine_Adv_BlastFurnace.get(1));	
-			
-			//Advanced Implosion Compressor
-			plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);
-			gear = ALLOY.HG1223.getGear(1);
-			frame = ALLOY.HG1223.getFrameBox(1);
-			cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
-			cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
-			
-			RecipeUtils.recipeBuilder( 
-					gear,CI.getTieredCircuit(6),gear,
-					CI.fieldGenerator_IV, CI.machineHull_ZPM, CI.robotArm_IV,
-					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
-					GregtechItemList.Machine_Adv_ImplosionCompressor.get(1));			
+				//Advanced Blast Furnace
+				plate = ALLOY.HASTELLOY_N.getPlateDouble(1);
+				gear = ALLOY.HASTELLOY_W.getGear(1);
+				frame = ALLOY.HASTELLOY_X.getFrameBox(1);
+				cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
+				cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
+				ItemStack cell3 = ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1);
+
+				RecipeUtils.recipeBuilder(
+						plate, cell1, plate,
+						cell3, frame, cell2,
+						plate, gear, plate,
+						GregtechItemList.Casing_Adv_BlastFurnace.get(Casing_Amount));
+				RecipeUtils.recipeBuilder( 
+						gear,CI.getTieredCircuit(6),gear,
+						CI.robotArm_IV, GregtechItemList.Casing_Adv_BlastFurnace.get(1), CI.robotArm_IV,
+						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+						GregtechItemList.Machine_Adv_BlastFurnace.get(1));	
+
+				//Advanced Implosion Compressor
+				plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);
+				gear = ALLOY.LEAGRISIUM.getGear(1);
+				frame = ALLOY.HG1223.getFrameBox(1);
+				cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
+				cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
+
+				RecipeUtils.recipeBuilder( 
+						gear,CI.getTieredCircuit(6),gear,
+						CI.fieldGenerator_IV, CI.machineHull_ZPM, CI.robotArm_IV,
+						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+						GregtechItemList.Machine_Adv_ImplosionCompressor.get(1));	
+				
+				
+				
+				//Supply Depot
+				plate = ALLOY.TUNGSTEN_CARBIDE.getPlateDouble(1);
+				gear = ALLOY.TRINIUM_TITANIUM.getRing(1);
+				frame = ALLOY.TUNGSTEN_CARBIDE.getFrameBox(1);
+				cell1 = CI.conveyorModule_EV;
+				cell2 = CI.electricMotor_IV;
+				ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
+
+				RecipeUtils.recipeBuilder(
+						plate, ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1), plate,
+						cell1, frame, cell2,
+						plate, gear, plate,
+						GregtechItemList.Casing_AmazonWarehouse.get(Casing_Amount));
+				RecipeUtils.recipeBuilder( 
+						casingAmazon, CI.getTieredCircuit(7), casingAmazon,
+						CI.robotArm_LuV, ItemList.Machine_LuV_Unboxinator.get(1), CI.robotArm_LuV,
+						CI.conveyorModule_LuV, GregtechItemList.Gregtech_Computer_Cube.get(1), CI.conveyorModule_LuV,
+						GregtechItemList.Amazon_Warehouse_Controller.get(1));
+				
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
