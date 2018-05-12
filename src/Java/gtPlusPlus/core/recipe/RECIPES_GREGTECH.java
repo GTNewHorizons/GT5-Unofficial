@@ -961,11 +961,41 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("molten.tantalum", 144 * 4),
 				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 120);
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("nitrogen", 1000),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("oxygen", 1000),
 				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 240);
-		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
+				
+		//Tier 2-6
+		ItemStack T1 = GregtechItemList.Casing_Vanadium_Redox.get(1);
+		ItemStack T2 = GregtechItemList.Casing_Vanadium_Redox_IV.get(1);
+		ItemStack T3 = GregtechItemList.Casing_Vanadium_Redox_LuV.get(1);
+		ItemStack T4 = GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1);
+		ItemStack T5 = GregtechItemList.Casing_Vanadium_Redox_UV.get(1);
+		ItemStack T6 = GregtechItemList.Casing_Vanadium_Redox_MAX.get(1);
+		
+		addAR(T1,
+			ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 4),
+			FluidUtils.getFluidStack("nitrogen", 2000),
+			T2, 128, 2000);
+		addAR(T2,
+			ItemUtils.getItemStackOfAmountFromOreDict("plateTitanium", 4),
+			FluidUtils.getFluidStack("helium", 2000),
+			T3, 256, 8000);
+		addAR(T3,
+			ItemUtils.getItemStackOfAmountFromOreDict("plateTungsten", 4),
+			FluidUtils.getFluidStack("argon", 4000),
+			T4, 512, 32000);
+		addAR(T4,
+			ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 4),
+			FluidUtils.getFluidStack("radon", 4000),
+			T5, 1024, 128000);
+		addAR(T5,
+			ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 4),
+			FluidUtils.getFluidStack("krypton", 500),
+			T6, 2048, 512000);
+				
+		/*addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
-				GregtechItemList.Casing_Power_SubStation.get(4), 80, 120);
+				GregtechItemList.Casing_Power_SubStation.get(4), 80, 120);*/
 	}
 
 	private static boolean addAR(final ItemStack inputA, final ItemStack inputB, final ItemStack outputA,

@@ -64,7 +64,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
-				"Redox Cells can be upgraded via the GUI without having to deconstruct the multiblock",
+				"Redox Cells can be upgraded via the GUI without having to deconstruct the multiblock (WIP)",
 				"Size(WxHxD): External 5xHx5, Sub-Station Casings, Controller (Bottom, Centre)",
 				"Size(WxHxD): Internal 3x(H-2)x3, Energy Storage Cells",
 				"Number and quality of cells determines power storage",
