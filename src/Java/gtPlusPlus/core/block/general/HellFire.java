@@ -445,16 +445,22 @@ public class HellFire extends BlockFire {
 
 	@Override
 	public void setFireInfo(final Block block, final int encouragement, final int flammibility) {
+		try {
 		if (block == Blocks.air) {
 			throw new IllegalArgumentException("Tried to set air on fire... This is bad.");
 		}
 		final int id = Block.getIdFromBlock(block);
+		if (id >= 4096) {
+			return;
+		}
 		this.field_149849_a[id] = encouragement;
 		this.field_149848_b[id] = flammibility;
 
 		final FireInfo info = this.getInfo(block, true);
 		info.encouragement = encouragement;
 		info.flammibility = flammibility;
+		}
+		catch (Throwable t) {}
 	}
 
 	private FireInfo getInfo(final Block block, final boolean garentee) {
