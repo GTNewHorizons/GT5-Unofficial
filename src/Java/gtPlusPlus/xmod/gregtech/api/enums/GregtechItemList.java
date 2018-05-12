@@ -313,17 +313,26 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Buffer_Dynamo_ULV, Hatch_Buffer_Dynamo_LV, Hatch_Buffer_Dynamo_MV, Hatch_Buffer_Dynamo_HV, Hatch_Buffer_Dynamo_EV, 
 	Hatch_Buffer_Dynamo_IV, Hatch_Buffer_Dynamo_LuV, Hatch_Buffer_Dynamo_ZPM, Hatch_Buffer_Dynamo_UV, Hatch_Buffer_Dynamo_MAX, 
 	
+	
+	//Large Packager
 	Amazon_Warehouse_Controller, Casing_AmazonWarehouse, 
 	
-	//Advanced Vacuum Freezer
-	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum, 
+	 
 	
 	
 	Hatch_Air_Intake,
 	
 	
 	//ULV Generators
-	Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Steam_Turbine_ULV
+	Generator_Diesel_ULV, Generator_Gas_Turbine_ULV, Generator_Steam_Turbine_ULV, 
+	
+	
+	//Advanced GT vanilla Multis
+	Machine_Adv_BlastFurnace, Casing_Adv_BlastFurnace,
+	Machine_Adv_ImplosionCompressor, 
+	//Advanced Vacuum Freezer
+	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum,
+	FusionComputer_UV2
 	
 	
 	
