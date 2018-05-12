@@ -897,15 +897,15 @@ public class RECIPES_GREGTECH {
 			// FluidStacks
 
 			// 7LiF - BeF2 - ZrF4 - UF4 - 650C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6500), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 650), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 2500), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 250), // Input
 					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 800), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
+					FluidUtils.getFluidStack(ZirconiumFluoride, 80), // Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
 					// D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
@@ -913,14 +913,14 @@ public class RECIPES_GREGTECH {
 					500);
 
 			// 7LiF - BeF2 - ZrF4 - U235 - 590C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 5500), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 550), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 1500), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 150), // Input
 					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 600), // Input C
-					FluidUtils.getFluidStack(Uranium235, 2400), // Input D
+					FluidUtils.getFluidStack(ZirconiumFluoride, 60), // Input C
+					FluidUtils.getFluidStack(Uranium235, 240), // Input D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
@@ -928,15 +928,15 @@ public class RECIPES_GREGTECH {
 					500);
 
 			// 7liF - BeF2 - ThF4 - UF4 - 566C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6200), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 620), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 2800), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 280), // Input
 					// B
-					FluidUtils.getFluidStack(ThoriumFluoride, 700), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
+					FluidUtils.getFluidStack(ThoriumFluoride, 70), // Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
 					// D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
