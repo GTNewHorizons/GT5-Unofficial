@@ -51,6 +51,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	@Override
 	public String[] getDescription() {
 		return new String[]{
+		        "THIS MULTIBLOCK IS DISABLED - DO NOT BUILD",
 				"Controller Block for the Tree Farmer",
 				"How to get your first logs without an axe.",
 				"Size(WxHxD): 15x2x15",

@@ -141,7 +141,7 @@ public class RECIPES_Machines {
 	public static String pipeTier10 = "pipeHuge"+"HastelloyX";
 	public static String pipeTier11 = "pipeHuge"+"Europium";
 
-	//IV MACHINES
+	// EV/IV MACHINES
 	public static ItemStack EV_MACHINE_Electrolyzer;
 	public static ItemStack EV_MACHINE_Centrifuge;
 	public static ItemStack EV_MACHINE_BendingMachine;
@@ -151,6 +151,10 @@ public class RECIPES_Machines {
 	public static ItemStack EV_MACHINE_Cutter;
 	public static ItemStack EV_MACHINE_MassFabricator;
 	public static ItemStack EV_MACHINE_Extruder;
+	public static ItemStack EV_MACHINE_Sifter;
+	public static ItemStack EV_MACHINE_ThermalCentrifuge;
+	public static ItemStack EV_MACHINE_OreWasher;
+	public static ItemStack EV_MACHINE_AlloySmelter;
 
 
 	//Cables
@@ -215,6 +219,8 @@ public class RECIPES_Machines {
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
 			//IV MACHINES
+			
+			if (!CORE.GTNH){			
 			EV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
 			EV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
 			EV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
@@ -224,6 +230,28 @@ public class RECIPES_Machines {
 			EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
 			EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
 			EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
+			EV_MACHINE_Sifter = ItemList.Machine_EV_Sifter.get(1);
+			EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
+			EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
+			EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);  
+			}
+			//Balance or some shit
+			else {			    
+			EV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
+			EV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
+			EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
+			HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
+			EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
+			EV_MACHINE_MassFabricator= ItemList.Machine_LuV_Massfab.get(1);
+			EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
+			EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
+			EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
+			EV_MACHINE_Sifter = ItemList.Machine_IV_Sifter.get(1);
+			EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
+			EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
+			EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);  
+			}
+			
 
 
 		}
@@ -277,7 +305,7 @@ public class RECIPES_Machines {
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
-					CI.circuitPrimitive, IC2MFE, CI.circuitPrimitive,
+					CI.circuitPrimitive, "plateStaballloy", CI.circuitPrimitive,
 					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
 					RECIPE_BufferCore_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
@@ -701,7 +729,7 @@ public class RECIPES_Machines {
 				//Blast Smelter
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateZirconiumCarbide", CI.circuitTier4, "plateZirconiumCarbide",
-						cableTier4, CI.machineCasing_EV, cableTier4,
+						cableTier4, EV_MACHINE_AlloySmelter, cableTier4,
 						"plateZirconiumCarbide", CI.circuitTier3, "plateZirconiumCarbide",
 						RECIPE_IndustrialBlastSmelterController);
 				//Blast Smelter Frame Casing
@@ -753,7 +781,7 @@ public class RECIPES_Machines {
 				//Industrial Sieve
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
-						cableTier3, CI.machineCasing_MV, cableTier3,
+						cableTier3, EV_MACHINE_Sifter, cableTier3,
 						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
 						RECIPE_IndustrialSieveController);
 				//Industrial Sieve Casing
@@ -1061,15 +1089,15 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
 				RecipeUtils.recipeBuilder(
-						null, "plateIncoloy020", null,
+						"screwTitanium", "plateIncoloy020", "screwTitanium",
 						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
-						null, "plateIncoloy020", null,
+						"screwTitanium", "plateIncoloy020", "screwTitanium",
 						GregtechItemList.Casing_Power_SubStation.get(Casing_Amount));
 
-				ItemStack mBattery = (!CORE.GTNH ? ItemList.Energy_LapotronicOrb2.get(1) : ItemList.ZPM2.get(1));
+				ItemStack mBattery = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 
 				RecipeUtils.recipeBuilder(
-						"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
+						"plateIncoloyMA956", mBattery, "plateIncoloyMA956",
 						GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
 						"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
 						GregtechItemList.PowerSubStation.get(1));
@@ -1084,7 +1112,7 @@ public class RECIPES_Machines {
 
 				RecipeUtils.recipeBuilder(
 						"plateRedSteel","circuitData","plateRedSteel",
-						"stickTalonite",GregtechItemList.Casing_ThermalCentrifuge.get(1),"stickTalonite",
+						"stickTalonite",EV_MACHINE_ThermalCentrifuge,"stickTalonite",
 						"plateRedSteel","gearGtTalonite","plateRedSteel",
 						GregtechItemList.Industrial_ThermalCentrifuge.get(1));
 			}
@@ -1098,7 +1126,7 @@ public class RECIPES_Machines {
 
 				RecipeUtils.recipeBuilder( 
 						"plateGrisium",CI.electricPump_MV,"plateGrisium",
-						"plateTalonite",GregtechItemList.Casing_WashPlant.get(1),"plateTalonite",
+						"plateTalonite",EV_MACHINE_OreWasher,"plateTalonite",
 						"plateGrisium","circuitData","plateGrisium",
 						GregtechItemList.Industrial_WashPlant.get(1));
 			}

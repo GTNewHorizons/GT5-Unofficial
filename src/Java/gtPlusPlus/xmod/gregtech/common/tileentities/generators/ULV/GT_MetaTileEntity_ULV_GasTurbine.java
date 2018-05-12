@@ -9,28 +9,24 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_GasTurbine;
 
-public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbine {
-    public GT_MetaTileEntity_ULV_GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-    }
-
-    public GT_MetaTileEntity_ULV_GasTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
+public class GT_MetaTileEntity_ULV_GasTurbine
+        extends GT_MetaTileEntity_GasTurbine {
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    @Override
     public int getCapacity() {
         return 16000;
     }
 
-    @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, 95);
+        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, (100 - 1 * 5));
     }
+
+    public int getEfficiency() {
+        return this.mEfficiency;
+    }
+    
 }

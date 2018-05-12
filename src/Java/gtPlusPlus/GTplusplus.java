@@ -101,7 +101,7 @@ public class GTplusplus implements ActionListener {
 		CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
 
 		// Handle GT++ Config
-		ConfigHandler.handleConfigFile(event);
+		ConfigHandler.handleConfigFile(event);		
 
 		//Check for Dev
 		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -146,8 +146,8 @@ public class GTplusplus implements ActionListener {
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
-		RecipeGen_Recycling.executeGenerators();
-
+		RecipeGen_Recycling.executeGenerators();	
+		
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
@@ -162,9 +162,9 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
-
-		if (CORE.DEVENV)
-			event.registerServerCommand(new CommandMath());
+	    
+	    if (CORE.DEVENV)
+		event.registerServerCommand(new CommandMath());
 
 		//Chunk Loading
 		Timer h = ChunkManager.createChunkQueue();
@@ -194,15 +194,15 @@ public class GTplusplus implements ActionListener {
 	public void actionPerformed(final ActionEvent arg0) {
 
 	}
-
-
+	
+	
 	/**
 	 * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods executes successfully.
 	 * {@link #onLoadComplete(FMLLoadCompleteEvent)} exists to inject recipe generation after Gregtech and all other mods are entirely loaded and initialized.
 	 * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s {@link #instance}.
 	 */
 	@Mod.EventHandler
-	public void onLoadComplete(FMLLoadCompleteEvent event) {
+    public void onLoadComplete(FMLLoadCompleteEvent event) {		
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 		FishPondFakeRecipe.generateFishPondRecipes();
 
@@ -219,14 +219,14 @@ public class GTplusplus implements ActionListener {
 				CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mDuration, x.mEUt);
 			}
 		}
-
+		
 		//Advanced Vacuum Freezer generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
-			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {
+			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {			
 				CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, (x.mDuration/2), x.mEUt);
 			}
 		}
-
+		
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
@@ -249,11 +249,11 @@ public class GTplusplus implements ActionListener {
 		SegmentAnalytics.isEnabled = CORE.ConfigSwitches.enableUpdateChecker;
 		if (!Utils.isServer() && PlayerUtils.isPlayerAlkalus()){
 			SegmentAnalytics.isEnabled = true;
-		}
+		}		
 		new SegmentHelper();
 	}
 
-	private static final boolean setupMaterialBlacklist(){
+	private static final boolean setupMaterialBlacklist(){		
 		int ID = 0;
 		Material.invalidMaterials.put(ID++, Materials._NULL);
 		Material.invalidMaterials.put(ID++, Materials.Clay);
@@ -262,9 +262,9 @@ public class GTplusplus implements ActionListener {
 		Material.invalidMaterials.put(ID++, Materials.Bronze);
 		Material.invalidMaterials.put(ID++, Materials.Hydrogen);
 		//Infused TC stuff
-		Material.invalidMaterials.put(ID++, Materials.InfusedAir);
-		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);
-		Material.invalidMaterials.put(ID++, Materials.InfusedFire);
+		Material.invalidMaterials.put(ID++, Materials.InfusedAir);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);	
+		Material.invalidMaterials.put(ID++, Materials.InfusedFire);	
 		Material.invalidMaterials.put(ID++, Materials.InfusedWater);
 
 		//EIO Materials
@@ -290,10 +290,10 @@ public class GTplusplus implements ActionListener {
 		//Non GTNH Materials
 		if (!CORE.GTNH){
 			//Mithril - Random Dungeon Loot
-			mGregMatLoader.enableMaterial(Materials.Mithril);
-		}
+			mGregMatLoader.enableMaterial(Materials.Mithril);			
+		}	
 
 		//Force - Alloying
-		mGregMatLoader.enableMaterial(Materials.Force);
+		mGregMatLoader.enableMaterial(Materials.Force);		
 	}
 }

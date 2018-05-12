@@ -10,30 +10,24 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamTurbine {
-    public GT_MetaTileEntity_ULV_SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-    }
-
-    public GT_MetaTileEntity_ULV_SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
-
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ULV_SteamTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
-    }
-
-    @Override
-    public int getCapacity() {
-        return 16000;
-    }
     
-    @Override
+    public int getCapacity() {
+        return 12000;
+    }
+
     public void onConfigLoad() {
         this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "SteamTurbine.efficiency.tier." + this.mTier, 6 + 1);
     }
+
+    public int getEfficiency() {
+        return this.mEfficiency;
+    }
+    
+     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_ULV_SteamTurbine(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
 }

@@ -13,30 +13,25 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
 import net.minecraft.item.ItemStack;
 
-public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity_DieselGenerator {
-    public GT_MetaTileEntity_ULV_CombustionGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-    }
+public class GT_MetaTileEntity_ULV_CombustionGenerator
+        extends GT_MetaTileEntity_DieselGenerator {
 
-    public GT_MetaTileEntity_ULV_CombustionGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
 
-    @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ULV_CombustionGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
-    }
-
-    @Override
     public int getCapacity() {
         return 16000;
     }
 
-    @Override
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "DieselGenerator.efficiency.tier." + this.mTier, 95);
+        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "DieselGenerator.efficiency.tier." + this.mTier, (100 - 1 * 5));
+    }
+
+    public int getEfficiency() {
+        return this.mEfficiency;
+    }    
+    
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_ULV_CombustionGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 }

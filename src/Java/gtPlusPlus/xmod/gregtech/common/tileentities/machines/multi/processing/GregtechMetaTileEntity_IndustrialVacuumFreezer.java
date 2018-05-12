@@ -26,7 +26,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 
 	public static int CASING_TEXTURE_ID;
 	public static String mCryoFuelName = "Gelid Cryotheum";
-	public static String mCasingName = "Advanced Crygenic Casing";
+	public static String mCasingName = "Advanced Cryogenic Casing";
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -134,7 +134,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	}
 
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 400;
+		return 50;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {
