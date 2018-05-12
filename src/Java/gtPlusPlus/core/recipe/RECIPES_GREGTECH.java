@@ -101,26 +101,25 @@ public class RECIPES_GREGTECH {
 
 	private static void blastSmelterRecipes() {
 
-		/*// Black Bronze
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(13),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3), },
-				FluidUtils.getFluidStack("molten.blackbronze", 5 * 144), 0, MathUtils.findPercentageOfInt(200 * 20, 80),
-				!CORE.GTNH ? 120 : 480);
-
-		// Black Steel
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 15),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3) },
-				FluidUtils.getFluidStack("molten.blacksteel", 25 * 144), 0, MathUtils.findPercentageOfInt(60 * 20, 80),
-				!CORE.GTNH ? 120 : 480);
-
+		if (!CORE.GTNH) {
+			// Trinium
+			CORE.RA.addBlastSmelterRecipe(
+					new ItemStack[] { 
+							ItemUtils.getGregtechCircuit(8),
+							ELEMENT.getInstance().BISMUTH.getDust(8),
+							ELEMENT.getInstance().IRON.getDust(64),
+							ELEMENT.getInstance().CARBON.getDust(16),
+							ELEMENT.getInstance().GOLD.getDust(16),
+							ELEMENT.getInstance().SILVER.getDust(16),
+							ELEMENT.getInstance().OSMIUM.getDust(4),
+							ELEMENT.getInstance().IRIDIUM.getDust(4),
+							ELEMENT.getInstance().CERIUM.getDust(8)
+							},
+					FluidUtils.getFluidStack("molten.trinium", 136 * 144), 0, 20 * 3000,
+					2040);
+		}
+		
+		/*
 		// Red Steel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[] { ItemUtils.getGregtechCircuit(6),
