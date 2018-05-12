@@ -13,8 +13,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
-
 import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_ULV_CombustionGenerator
