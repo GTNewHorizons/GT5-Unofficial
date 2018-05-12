@@ -97,7 +97,6 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	}
 
 	public static boolean handleCircuits(){
-
 		hideCircuitsNEI();
 		addCircuitRecipes();
 		removeNewCircuits();
@@ -120,10 +119,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		boolean newVersion = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() >= 30;
 		
 		setItemList(ItemList.Circuit_Primitive, GregtechItemList.Old_Circuit_Primitive);
-		setItemList(ItemList.Circuit_Basic, GregtechItemList.Old_Circuit_Basic);
-		if (newVersion) {
-			setItemList(ItemList.valueOf("Circuit_Integrated_Good"), GregtechItemList.Old_Circuit_Good); //New
-		}		
+		setItemList(ItemList.Circuit_Basic, GregtechItemList.Old_Circuit_Basic);		
 		setItemList(ItemList.Circuit_Good, GregtechItemList.Old_Circuit_Good);
 		setItemList(ItemList.Circuit_Advanced, GregtechItemList.Old_Circuit_Advanced);
 		//ItemList.Circuit_Data, GregtechItemList.Old_Circuit_Data);
@@ -141,7 +137,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		}
 		//Good
 		if (newVersion) {
-			setItemList(ItemList.valueOf("Circuit_Integrated"), GregtechItemList.Old_Circuit_Good);		
+			setItemList(ItemList.valueOf("Circuit_Integrated_Good"), GregtechItemList.Old_Circuit_Good); //New
 		}
 		//Advanced
 		if (newVersion) {
@@ -310,7 +306,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 
 
 		//remove a few recipes
-		GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32070", 32070, 1));
+		/*GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32070", 32070, 1));
 		GT_ModHandler.removeRecipeByOutput(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.03:32069", 32069, 1));
 		if (LoadedMods.Extra_Utils){
 			ItemStack EQU = ItemUtils.simpleMetaStack("ExtraUtilities:enderQuarryUpgrade", 0, 1);
@@ -345,7 +341,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 						80*20, 
 						2);
 			}
-		}
+		}*/
 
 		return true;
 	}

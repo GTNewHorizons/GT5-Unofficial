@@ -209,6 +209,7 @@ public class TexturesGtBlock {
 
 	public static final CustomIcon TEXTURE_CASING_AMAZON = new CustomIcon("TileEntities/CASING_AMAZON");
 	public static final CustomIcon TEXTURE_CASING_ADVANCED_CRYOGENIC = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_CRYOGENIC");
+	public static final CustomIcon TEXTURE_CASING_ADVANCED_VOLCNUS = new CustomIcon("TileEntities/MACHINE_CASING_ADVANCED_VOLCANUS");
 
 	//Overlays
 	//Fan Textures
@@ -218,6 +219,8 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Machine_Vent_Fast = Internal_Overlay_Machine_Vent_Fast;
 	private static final CustomIcon Internal_Overlay_Machine_Vent_Adv = new CustomIcon("TileEntities/adv_machine_vent_rotating");
 	public static final CustomIcon Overlay_Machine_Vent_Adv = Internal_Overlay_Machine_Vent_Adv;
+	private static final CustomIcon Internal_Overlay_Machine_Turbine_Active = new CustomIcon("TileEntities/STEAM_TURBINE_SIDE_ACTIVE");
+	public static final CustomIcon Overlay_Machine_Turbine_Active = Internal_Overlay_Machine_Turbine_Active;
 	//Grate Texture
 	public static final CustomIcon OVERLAY_GRATE_A = new CustomIcon("metro/OVERLAY_GRATE_A");
 	//Speaker Texture

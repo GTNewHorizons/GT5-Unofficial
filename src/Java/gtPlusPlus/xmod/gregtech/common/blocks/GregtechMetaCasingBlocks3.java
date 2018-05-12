@@ -56,7 +56,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Vanadium Redox Power Cell (MAX)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Supply Depot Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Advanced Cryogenic Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder");
@@ -72,7 +72,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Vanadium_Redox_MAX.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_AmazonWarehouse.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_AdvancedVacuum.set(new ItemStack(this, 1, 10));
-		//GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
+		GregtechItemList.Casing_Adv_BlastFurnace.set(new ItemStack(this, 1, 11));
 		//GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
 		//GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
 		//GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));

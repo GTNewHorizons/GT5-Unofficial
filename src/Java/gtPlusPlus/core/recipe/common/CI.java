@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe.common;
 
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,7 @@ import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import ic2.core.Ic2Items;
 
 public class CI {
@@ -179,9 +179,7 @@ public class CI {
 	public static ItemStack explosiveITNT;
 
 	public static void preInit(){
-	    //Put these here, because we need them for everything.
-		new MetaGeneratedGregtechItems();
-
+		
 		//Tiered Components
 		component_Plate = new String[]{
 				getTieredComponent(OrePrefixes.plate, 0),

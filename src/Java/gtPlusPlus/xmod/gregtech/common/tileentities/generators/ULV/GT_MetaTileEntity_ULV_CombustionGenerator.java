@@ -1,20 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators.ULV;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
-import net.minecraft.item.ItemStack;
 
 public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity_DieselGenerator {
     public GT_MetaTileEntity_ULV_CombustionGenerator(int aID, String aName, String aNameRegional, int aTier) {

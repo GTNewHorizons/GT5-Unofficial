@@ -14,11 +14,14 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class Preloader_GT_OreDict {
 
 	public static boolean shouldPreventRegistration(final String string, final ItemStack bannedItem) {
-		
-		if (bannedItem == null || (!CORE_Preloader.enableOldGTcircuits && !LoadedMods.Mekanism)) {
+
+		if (bannedItem == null) {
 			return false;
 		}
-		
+		else if (!CORE_Preloader.enableOldGTcircuits && !LoadedMods.Mekanism){
+			return false;
+		}
+
 		try {
 			if (CORE_Preloader.enableOldGTcircuits){
 				if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals("gregtech")){
@@ -145,8 +148,19 @@ public class Preloader_GT_OreDict {
 			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "A mod tried to register an invalid item with the OreDictionary.");
 			if (bannedItem != null){
 				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Please report this issue to the authors of %s", ItemUtils.getModId(bannedItem));
+				try {
+					if (bannedItem.getItemDamage() <= Short.MAX_VALUE-1) {
+						FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Item was not null, but still invalidly registering: %s", bannedItem.getDisplayName() != null ? bannedItem.getDisplayName() : "INVALID ITEM FOUND");
+					}
+					else {
+						FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Item was not null, but still invalidly registering: %s", "Found Wildcard item that is being registered too early.");
+					}
+				}
+				catch (Exception h) {
+					h.printStackTrace();
+				}
 			}
-			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "%s", e.getMessage());
+			//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "%s", e.getMessage());
 		}
 		return false;
 	}

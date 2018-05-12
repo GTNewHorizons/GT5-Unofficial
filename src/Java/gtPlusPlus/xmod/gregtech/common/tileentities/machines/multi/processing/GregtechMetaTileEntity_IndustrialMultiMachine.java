@@ -261,7 +261,8 @@ extends GregtechMeta_MultiBlockBase {
 
 		// Time to Defer to Special Handling if it's in replicator mode.
 		if (tCircuitID == MODE_REPLICATOR) {
-			return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+		    return false;
+		//	return checkReplicatorRecipe(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 		}
 
 		// Reset outputs and progress stats
@@ -813,7 +814,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (mInternalMode < 1) {
+		if (mInternalMode < 2) {
 			mInternalMode++;
 		}
 		else {

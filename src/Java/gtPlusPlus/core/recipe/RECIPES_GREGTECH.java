@@ -101,227 +101,23 @@ public class RECIPES_GREGTECH {
 
 	private static void blastSmelterRecipes() {
 
-		/*// Black Bronze
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(13),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3), },
-				FluidUtils.getFluidStack("molten.blackbronze", 5 * 144), 0, MathUtils.findPercentageOfInt(200 * 20, 80),
-				!CORE.GTNH ? 120 : 480);
-
-		// Black Steel
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 15),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3) },
-				FluidUtils.getFluidStack("molten.blacksteel", 25 * 144), 0, MathUtils.findPercentageOfInt(60 * 20, 80),
-				!CORE.GTNH ? 120 : 480);
-
-		// Red Steel
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(6),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustBismuth", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 10),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustBlackSteel", 20) },
-				FluidUtils.getFluidStack("molten.redsteel", 40 * 144), 0, MathUtils.findPercentageOfInt(65 * 20, 80),
-				!CORE.GTNH ? 120 : 480);
-
-		// Blue Steel
-		CORE.RA.addBlastSmelterRecipe(new ItemStack[] { ItemUtils.getGregtechCircuit(5),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 12),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 18),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 5),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 30),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBlackSteel", 60)
-
-		}, FluidUtils.getFluidStack("molten.bluesteel", 125 * 144), 0, MathUtils.findPercentageOfInt(70 * 20, 80), !CORE.GTNH ? 120 : 480);
-
-		// Stainless Steel
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(14),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 6),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustManganese", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 1) },
-				FluidUtils.getFluidStack("molten.stainlesssteel", 9 * 144), 0,
-				MathUtils.findPercentageOfInt(85 * 20, 80), !CORE.GTNH ? 120 : 480);
-
-		// Eglin
-		CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[] { ItemUtils.getGregtechCircuit(7),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 23),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 3),
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 12) },
-				FluidUtils.getFluidStack("molten.eglinsteel", 48 * 144), 0, MathUtils.findPercentageOfInt(30 * 20, 80),
-				120);
-		if (!CORE.GTNH) {			
-
-			// TungstenSteel
+		if (!CORE.GTNH) {
+			// Trinium
 			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-							ItemUtils.getItemStackOfAmountFromOreDict("ingotTungsten", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("ingotSteel", 1) },
-					FluidUtils.getFluidStack("molten.tungstensteel", 2 * 144), 0,
-					MathUtils.findPercentageOfInt(75 * 20, 80), 480);
-			
-			// HSS-G
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(14),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTungstenSteel", 5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustMolybdenum", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 1) },
-					FluidUtils.getFluidStack("molten.hssg", 9 * 144), 0, MathUtils.findPercentageOfInt(450 * 20, 80),
-					120);
-
-			// HSS-G
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTungsten", 5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustMolybdenum", 4),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 2) },
-					FluidUtils.getFluidStack("molten.hssg", 18 * 144), 0, MathUtils.findPercentageOfInt(900 * 20, 80),
-					120);
-
-			// HSS-E
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(14),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustHSSG", 6),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustCobalt", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustManganese", 1) },
-					FluidUtils.getFluidStack("molten.hsse", 9 * 144), 0, MathUtils.findPercentageOfInt(540 * 20, 80),
-					120);
-
-			// HSS-S
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(3),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustHSSG", 6),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 2) },
-					FluidUtils.getFluidStack("molten.hsss", 9 * 144), 0, MathUtils.findPercentageOfInt(810 * 20, 80),
-					120);
-
-			// Osmiridium
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 3),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1) },
-					Materials.Helium.getGas(1000), FluidUtils.getFluidStack("molten.osmiridium", 4 * 144), 0,
-					MathUtils.findPercentageOfInt(500 * 20, 80), 1920);
-
-			// Naq Alloy
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustNaquadah", 1),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustOsmiridium", 1) },
-					Materials.Argon.getGas(1000), FluidUtils.getFluidStack("molten.naquadahalloy", 2 * 144), 0,
-					MathUtils.findPercentageOfInt(500 * 20, 80), 30720);
-
-			// Nickel-Zinc-Ferrite
-			if (Materials.get("NickelZincFerrite") != null) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustFerriteMixture", 6) },
-						Materials.Oxygen.getGas(2000), FluidUtils.getFluidStack("molten.nickelzincferrite", 2 * 144), 0,
-						MathUtils.findPercentageOfInt(600 * 20, 80), 120);
-			}
-
-			// Gallium-Arsenide
-			if (Materials.get("GalliumArsenide") != null) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustGallium", 1),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustArsenic", 1) },
-						FluidUtils.getFluidStack("molten.galliumarsenide", 2 * 144), 0,
-						MathUtils.findPercentageOfInt(600 * 20, 80), 120);
-			}
-
-			// TungstenCarbide
-			if (Materials.get("TungstenCarbide") != null) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(12),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustTungsten", 1),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 1) },
-						FluidUtils.getFluidStack("molten.tungstencarbide", 2 * 144), 0,
-						MathUtils.findPercentageOfInt(
-								(int) Math.max(Materials.get("TungstenCarbide").getMass() / 40L, 1L)
-								* Materials.get("TungstenCarbide").mBlastFurnaceTemp,
-								80),
-						480);
-			}
-
-			// Vanadium-Gallium
-			if (Materials.get("VanadiumGallium") != null) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(12),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustGallium", 1),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 3) },
-						FluidUtils.getFluidStack("molten.vanadiumgallium", 4 * 144), 0,
-						MathUtils.findPercentageOfInt((int) Math.max(Materials.VanadiumGallium.getMass() / 40L, 1L)
-								* Materials.VanadiumGallium.mBlastFurnaceTemp, 80),
-						480);
-			}
-
-			// EIO
-			// Dark Steel
-			if (ItemUtils.getItemStackOfAmountFromOreDict("dustElectricalSteel", 1) != ItemUtils
-					.getSimpleStack(ModItems.AAA_Broken)) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustElectricalSteel", 1),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustObsidian", 1) },
-						FluidUtils.getFluidStack("molten.darksteel", 2 * 144), 0,
-						MathUtils.findPercentageOfInt(200 * 20, 80), 120);
-			}
-
-			// Pulsating Iron
-			if (ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1) != ItemUtils
-					.getSimpleStack(ModItems.AAA_Broken)) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(2),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
-								ItemUtils.getSimpleStack(Items.ender_pearl) },
-						FluidUtils.getFluidStack("molten.pulsatingiron", 2 * 144), 0,
-						MathUtils.findPercentageOfInt(8 * 20, 80), 120);
-			}
-
-			// Energetic Alloy
-			if (ItemUtils.getItemStackOfAmountFromOreDict("dustEnergeticAlloy", 1) != ItemUtils
-					.getSimpleStack(ModItems.AAA_Broken)) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(12),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
-								ItemUtils.getSimpleStack(Items.glowstone_dust) },
-						FluidUtils.getFluidStack("molten.redstone", 144),
-						FluidUtils.getFluidStack("molten.energeticalloy", 144), 0,
-						MathUtils.findPercentageOfInt(9 * 20, 80), 120);
-			}
-
-			// Vibrant Alloy
-			if (ItemUtils.getItemStackOfAmountFromOreDict("dustVibrantAlloy", 1) != ItemUtils
-					.getSimpleStack(ModItems.AAA_Broken)) {
-				CORE.RA.addBlastSmelterRecipe(
-						new ItemStack[] { ItemUtils.getGregtechCircuit(12),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustEnergeticAlloy", 1),
-								ItemUtils.getSimpleStack(Items.ender_pearl) },
-						FluidUtils.getFluidStack("molten.vibrantalloy", 144), 0,
-						MathUtils.findPercentageOfInt(16 * 20, 80), 480);
-			}
-		}*/
+					new ItemStack[] { 
+							ItemUtils.getGregtechCircuit(8),
+							ELEMENT.getInstance().BISMUTH.getDust(8),
+							ELEMENT.getInstance().IRON.getDust(64),
+							ELEMENT.getInstance().CARBON.getDust(16),
+							ELEMENT.getInstance().GOLD.getDust(16),
+							ELEMENT.getInstance().SILVER.getDust(16),
+							ELEMENT.getInstance().OSMIUM.getDust(4),
+							ELEMENT.getInstance().IRIDIUM.getDust(4),
+							ELEMENT.getInstance().CERIUM.getDust(8)
+							},
+					FluidUtils.getFluidStack("molten.trinium", 136 * 144), 0, 20 * 3000,
+					2040);
+		}
 	}
 
 	private static void fluidcannerRecipes() {
@@ -898,15 +694,15 @@ public class RECIPES_GREGTECH {
 			// FluidStacks
 
 			// 7LiF - BeF2 - ZrF4 - UF4 - 650C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6500), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 650), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 2500), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 250), // Input
 					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 800), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
+					FluidUtils.getFluidStack(ZirconiumFluoride, 80), // Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
 					// D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
@@ -914,14 +710,14 @@ public class RECIPES_GREGTECH {
 					500);
 
 			// 7LiF - BeF2 - ZrF4 - U235 - 590C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 5500), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 550), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 1500), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 150), // Input
 					// B
-					FluidUtils.getFluidStack(ZirconiumFluoride, 600), // Input C
-					FluidUtils.getFluidStack(Uranium235, 2400), // Input D
+					FluidUtils.getFluidStack(ZirconiumFluoride, 60), // Input C
+					FluidUtils.getFluidStack(Uranium235, 240), // Input D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
@@ -929,15 +725,15 @@ public class RECIPES_GREGTECH {
 					500);
 
 			// 7liF - BeF2 - ThF4 - UF4 - 566C
-			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 6200), // Input
+			CORE.RA.addFissionFuel(FluidUtils.getFluidStack(LithiumFluoride, 620), // Input
 					// A
-					FluidUtils.getFluidStack(BerylliumFluoride, 2800), // Input
+					FluidUtils.getFluidStack(BerylliumFluoride, 280), // Input
 					// B
-					FluidUtils.getFluidStack(ThoriumFluoride, 700), // Input C
-					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), // Input
+					FluidUtils.getFluidStack(ThoriumFluoride, 70), // Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 70), // Input
 					// D
 					null, null, null, null, null, // Extra 5 inputs
-					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), // Output
+					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 1000), // Output
 					// Fluid
 					// 1
 					null, // Output Fluid 2
@@ -975,23 +771,23 @@ public class RECIPES_GREGTECH {
 		addAR(T1,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 4),
 			FluidUtils.getFluidStack("nitrogen", 2000),
-			T2, 128, 2000);
+			T2, 120, 2000);
 		addAR(T2,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTitanium", 4),
 			FluidUtils.getFluidStack("helium", 2000),
-			T3, 256, 8000);
+			T3, 250, 8000);
 		addAR(T3,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTungsten", 4),
 			FluidUtils.getFluidStack("argon", 4000),
-			T4, 512, 32000);
+			T4, 500, 32000);
 		addAR(T4,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 4),
 			FluidUtils.getFluidStack("radon", 4000),
-			T5, 1024, 128000);
+			T5, 1000, 128000);
 		addAR(T5,
 			ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 4),
-			FluidUtils.getFluidStack("krypton", 500),
-			T6, 2048, 512000);
+			FluidUtils.getFluidStack("molten.krypton", 500),
+			T6, 2000, 512000);
 				
 		/*addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
@@ -1089,8 +885,12 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void fluidExtractorRecipes() {
+		//Ender Fluid
 		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), null,
-				FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);
+				FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);		
+		//FLiBe fuel
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
+				FluidUtils.getFluidStack("molten.li2bef4", 144), 10000, 100, 500);
 	}
 
 	private static void chemicalBathRecipes() {

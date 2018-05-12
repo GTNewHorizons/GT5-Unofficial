@@ -96,14 +96,14 @@ public class COMPAT_HANDLER {
 			GregtechSemiFluidgenerators.run();
 			GregtechAdvancedMixer.run();
 			GregtechWirelessChargers.run();
-			GregtechIndustrialGeneratorArray.run();
+			//GregtechIndustrialGeneratorArray.run();
 			GregtechIndustrialCuttingFactory.run();
-			GregtechMiniRaFusion.run();
+			//GregtechMiniRaFusion.run();
 			GregtechComponentAssembler.run();
 			GregtechTeslaTower.run();
 			GregtechSuperTanks.run();
 			GregtechIndustrialFishPond.run();
-			GregtechTieredChunkloaders.run();
+			//GregtechTieredChunkloaders.run();
 			GregtechIndustrialExtruder.run();
 			GregtechIndustrialMultiMachine.run();
 			GregtechBedrockPlatforms.run();

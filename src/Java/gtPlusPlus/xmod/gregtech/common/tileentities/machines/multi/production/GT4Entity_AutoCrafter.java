@@ -152,6 +152,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"1x Muffler Hatch",
 				"1x Maintenance Hatch",
 				"1x Energy Hatch",
+				"Rest is Autocrafter Frame",
 				"--------------------------------------",
 				CORE.GT_Tooltip
 		};
@@ -366,26 +367,23 @@ extends GT_MetaTileEntity_MultiBlockBase
 							}
 						}
 					}
+					
 					if (this.mTier > 5) {
 						this.mMaxProgresstime >>= this.mTier - 5;
 					}
-					if (this.mMaxProgresstime <= 20) {
-						return false;
+					inputItem.stackSize--;
+					if (inputItem.stackSize <= 0){
+						tInputs[0] = null;
 					}
-					else {
-						inputItem.stackSize--;
-						if (inputItem.stackSize <= 0){
-							tInputs[0] = null;
-						}
-						this.updateSlots();
-						return true;
-					}
+					this.updateSlots();
+					return true;
+
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	private boolean doesCrafterHave9SlotInput(){
 		GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
 		if (!this.mInputBusses.isEmpty()){

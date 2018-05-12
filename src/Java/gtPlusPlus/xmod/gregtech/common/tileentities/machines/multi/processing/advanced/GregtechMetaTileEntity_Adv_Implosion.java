@@ -18,6 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
 public class GregtechMetaTileEntity_Adv_Implosion
@@ -38,7 +39,10 @@ public class GregtechMetaTileEntity_Adv_Implosion
         return new GregtechMetaTileEntity_Adv_Implosion(this.mName);
     }
 
-    public String[] getDescription() {
+    public String[] getDescription() {    	
+    	if (mCasingName.contains("gt.blockcasings")) {
+            mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
+    	}    	
         return new String[]{
                 "Controller Block for the Advanced Implosion Compressor",
                 "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
@@ -97,6 +101,7 @@ public class GregtechMetaTileEntity_Adv_Implosion
                 for (int h = -1; h < 2; h++) {
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+
                         if ((!addMaintenanceToMachineList(tTileEntity, 48)) && (!addMufflerToMachineList(tTileEntity, 48)) && (!addInputToMachineList(tTileEntity, 48)) && (!addOutputToMachineList(tTileEntity, 48)) && (!addEnergyInputToMachineList(tTileEntity, 48))) {
                             Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                             byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
