@@ -212,46 +212,42 @@ public class RECIPES_Machines {
 		}
 		if (LoadedMods.Gregtech){
 
-
-
-
 			//Lava Boiler
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
 			//IV MACHINES
-			
 			if (!CORE.GTNH){			
-			EV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
-			EV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
-			EV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
-			HV_MACHINE_Macerator= ItemList.Machine_HV_Macerator.get(1);
-			EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
-			EV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
-			EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
-			EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
-			EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
-			EV_MACHINE_Sifter = ItemList.Machine_EV_Sifter.get(1);
-			EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
-			EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
-			EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);  
+				EV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
+				EV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
+				EV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
+				HV_MACHINE_Macerator= ItemList.Machine_HV_Macerator.get(1);
+				EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
+				EV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
+				EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
+				EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
+				EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
+				EV_MACHINE_Sifter = ItemList.Machine_EV_Sifter.get(1);
+				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
+				EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
+				EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);  
 			}
-			//Balance or some shit
+			//Balanced opposites
 			else {			    
-			EV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
-			EV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
-			EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
-			HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
-			EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
-			EV_MACHINE_MassFabricator= ItemList.Machine_LuV_Massfab.get(1);
-			EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
-			EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
-			EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
-			EV_MACHINE_Sifter = ItemList.Machine_IV_Sifter.get(1);
-			EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
-			EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
-			EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);  
+				EV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
+				EV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
+				EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
+				HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
+				EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
+				EV_MACHINE_MassFabricator= ItemList.Machine_LuV_Massfab.get(1);
+				EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
+				EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
+				EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
+				EV_MACHINE_Sifter = ItemList.Machine_IV_Sifter.get(1);
+				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
+				EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
+				EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);  
 			}
-			
+
 
 
 		}
@@ -285,22 +281,6 @@ public class RECIPES_Machines {
 					ItemList.Cover_Screen.get(1),CI.machineHull_EV,ItemList.Cover_Screen.get(1),
 					"circuitMaster",ItemList.Cover_Screen.get(1),CI.getDataOrb(),
 					GregtechItemList.Gregtech_Computer_Cube.get(1));
-
-			/*RecipeUtils.addShapedGregtechRecipe(
-					CI.electricPiston_EV, OrePrefixes.circuit.get(Materials.Ultimate), CI.electricPiston_EV,
-					CI.electricMotor_EV, CI.machineCasing_EV, CI.electricMotor_EV,
-					"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
-					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.electricPiston_IV, OrePrefixes.circuit.get(Materials.Superconductor), CI.electricPiston_IV,
-					CI.electricMotor_IV, CI.machineCasing_IV, CI.electricMotor_IV,
-					"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
-					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), CI.electricPiston_LuV,
-					CI.electricMotor_LuV, CI.machineCasing_LuV, CI.electricMotor_LuV,
-					"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
-					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));*/
 
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(
@@ -1196,9 +1176,59 @@ public class RECIPES_Machines {
 						plate,CI.getTieredCircuit(2),plate,
 						GregtechItemList.Industrial_FishingPond.get(1));
 			}
+			
+			if (true) {
 
+			//Advanced Vacuum Freezer
+			ItemStack plate = ALLOY.HASTELLOY_N.getPlateDouble(1);
+			ItemStack gear = ALLOY.HASTELLOY_N.getGear(1);
+			ItemStack frame = ALLOY.HASTELLOY_N.getFrameBox(1);
+			ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
+			ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
+			
+			RecipeUtils.recipeBuilder(
+					plate, gear, plate,
+					cell1, frame, cell2,
+					plate, gear, plate,
+					GregtechItemList.Casing_AdvancedVacuum.get(Casing_Amount));
+			RecipeUtils.recipeBuilder( 
+					gear,CI.getTieredCircuit(6),gear,
+					CI.electricPiston_IV, GregtechItemList.Casing_AdvancedVacuum.get(1), CI.electricPiston_IV,
+					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+					GregtechItemList.Industrial_Cryogenic_Freezer.get(1));			
 
-
+			//Advanced Blast Furnaace
+			plate = ALLOY.HG1223.getPlateDouble(1);
+			gear = ALLOY.INCOLOY_MA956.getGear(1);
+			frame = ALLOY.INCOLOY_DS.getFrameBox(1);
+			cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
+			cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
+			ItemStack cell3 = ItemUtils.simpleMetaStack("IC2:reactorVentDiamond:1:1", 1, 1);
+			
+			RecipeUtils.recipeBuilder(
+					plate, cell1, plate,
+					cell3, frame, cell2,
+					plate, gear, plate,
+					GregtechItemList.Casing_Adv_BlastFurnace.get(Casing_Amount));
+			RecipeUtils.recipeBuilder( 
+					gear,CI.getTieredCircuit(6),gear,
+					CI.robotArm_IV, GregtechItemList.Casing_Adv_BlastFurnace.get(1), CI.robotArm_IV,
+					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+					GregtechItemList.Machine_Adv_BlastFurnace.get(1));	
+			
+			//Advanced Implosion Compressor
+			plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);
+			gear = ALLOY.HG1223.getGear(1);
+			frame = ALLOY.HG1223.getFrameBox(1);
+			cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
+			cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
+			
+			RecipeUtils.recipeBuilder( 
+					gear,CI.getTieredCircuit(6),gear,
+					CI.fieldGenerator_IV, CI.machineHull_ZPM, CI.robotArm_IV,
+					plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
+					GregtechItemList.Machine_Adv_ImplosionCompressor.get(1));			
+			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
 				ItemStack plate = ALLOY.STABALLOY.getPlate(1);

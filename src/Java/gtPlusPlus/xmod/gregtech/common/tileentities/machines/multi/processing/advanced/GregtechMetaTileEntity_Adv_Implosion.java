@@ -7,7 +7,6 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -40,7 +39,10 @@ public class GregtechMetaTileEntity_Adv_Implosion
         return new GregtechMetaTileEntity_Adv_Implosion(this.mName);
     }
 
-    public String[] getDescription() {
+    public String[] getDescription() {    	
+    	if (mCasingName.contains("gt.blockcasings")) {
+            mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
+    	}    	
         return new String[]{
                 "Controller Block for the Advanced Implosion Compressor",
                 "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
