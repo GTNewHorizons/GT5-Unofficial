@@ -58,21 +58,32 @@ public class BookHandler {
 				"Alkalus", 
 				new String[] {
 								//Page 1
+								" \n"+
+								" \n"+
+								" \n"+
+								" \n"+
+								" \n"+
+								" \n"+
+								" \n"+
+								" \n"+
 								"So, when it comes to power storage you relaly have three seperate options:\n"+
-								"\n",
+								" \n"+
 								"Battery Buffers,\n"+
 								"Energy Buffers,\n"+
 								"The Power Sub-Station\n",
 								//Page 2
-								"The Battery Buffer" + "\n" +
+								"Battery Buffer" + 
+										" \n" +
 								"Is rather portable. Allowing you to throw set one up and insert batteries whevere you need."+"\n"+
 								"They output 1A for each battery stored inside.",
 								//Page 3
-								"The Energy Buffer" + "\n" +
+								"Energy Buffer" + 
+										" \n" +
 								"Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."+"\n"+
 								"Energy Buffers can output 4A from the output side, however accept 16A as input.",
 								//Page 4
-								"The Power Sub-Station"+"\n"+
+								"The Power Sub-Station"+
+										" \n"+
 								"Is used for storing Insane amounts of power later game."+"\n"+
 								"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
 								//Page 5
@@ -86,14 +97,14 @@ public class BookHandler {
 				new String[] {
 						"Concept: This idea came from wanting flexibility. \n" +
 						"First step, Build a Modularity table to begin customisation of your Bauble. \n"
-								+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level /100.",
-								"Defence: \n"
-										+ " Can be upgraded by combining metal plates with the bauble. \n"
-										+ " | +1 | Aluminium Plate \n"
-										+ " | +2 | Stainless Steel Plate \n"
-										+ " | +3 | Tungsten Plate \n"
-										+ " | +4 | TungstenSteel Plate \n"
-										+ " | +5 | Naquadah Plate \n",
+								+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.",
+								"Defence:\n"
+										+ "Can be upgraded by combining metal plates with the bauble. \n"
+										+ " | +1 | Aluminium \n"
+										+ " | +2 | Stainless Steel \n"
+										+ " | +3 | Tungsten \n"
+										+ " | +4 | Tungsten Steel \n"
+										+ " | +5 | Naquadah \n",
 										"There was once a sad and lonely oak tree. \n",
 										"There was once a sad and lonely oak tree. \n",
 				"There was once a sad and lonely oak tree. \n"});
@@ -118,24 +129,23 @@ public class BookHandler {
 						"Fission Fuel Processing Plant\n"
 						+ "Size: 3x9x3 [LxHxW]\n"
 						+ "Controller: Center, Bottom\n"
-						+ "\n"
 						+ "4x Input Hatch\n"
 						+ "2x Output Hatch\n"
 						+ "1x Output Bus\n"
 						+ "1x ZPM+ Muffler\n"
 						+ "1x Maintenance Hatch\n"
-						+ "1x Energy Hatch\n"
-						+ "\n"
-						+ "[1] 7x Hastelloy-X or I/O\n"
+						+ "1x Energy Hatch\n",
+						//Page 2
+						"[1] 7x Hastelloy-X or I/O\n"
 						+ "[2] 5x Incoloy-DS Fluid Containment\n"
 						+ "[3] 4x Zeron-100 Shielding\n"
-						+ "[4] 17x Hastelloy-N Sealant Case",
-						
-						//Page 2
-						"Multiblock Construction\n"
-						+ "Convention is [LxHxW]\n"
+						+ "[4] 17x Hastelloy-N Sealant Case"
 						+ "\n"
-						+ "Layer 1/2:\n"
+						+ "Multiblock Construction\n"
+						+ "Convention is [LxHxW]\n"
+						+ "\n",
+						//Page 3
+						"Layer 1/2:\n"
 						+ "[1][1][1]\n"
 						+ "[1][1][1]\n"
 						+ "[1][1][1]\n"
@@ -144,8 +154,9 @@ public class BookHandler {
 						+ "[ ][4][ ]\n"
 						+ "[4][2][4]\n"
 						+ "[ ][4][ ]\n"
-						+ "\n"
-						+ "Layer 4\n"
+						+ "\n",
+						//Page 4
+						"Layer 4\n"
 						+ "[ ][3][ ]\n"
 						+ "[3][2][3]\n"
 						+ "[ ][3][ ]\n"
@@ -154,8 +165,19 @@ public class BookHandler {
 						+ "[ ][ ][ ]\n"
 						+ "[ ][3][ ]\n"
 						+ "[ ][ ][ ]\n"
-						,				
-						
+						,
+						//Page 5
+						" \n"+
+						" \n"+
+						" \n"+
+						" \n"+
+						" \n"+
+						" \n"+
+						" \n"+
+						" \n"+
+						"Fission Fuel\n"+
+						"Processing Plant",
+						"This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor or LFTR."
 						
 				});
 	}
