@@ -576,7 +576,7 @@ public class RECIPES_GREGTECH {
 		try {
 
 			CORE.RA.addDehydratorRecipe(null, // Item input (Array, up to 2)
-					FluidUtils.getFluidStack("sludge", 1000), // Fluid input
+					FluidUtils.getFluidStack("fluid.sludge", 1000), // Fluid input
 					// (slot 1)
 					FluidUtils.getFluidStack("nitricacid", 10), // Fluid
 					// output
@@ -814,10 +814,10 @@ public class RECIPES_GREGTECH {
 
 		// Makes Styrene
 		CORE.RA.addDehydratorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 4), // Item Input
-				FluidUtils.getFluidStack("fluid.ethylbenzene", 4000), // Fluid				/
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 3),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1) }, // Output		
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 3), // Item Input
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), // Fluid				/
+				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) }, // Output		
 				3 * 20, // Time in ticks
 				30); // EU
 

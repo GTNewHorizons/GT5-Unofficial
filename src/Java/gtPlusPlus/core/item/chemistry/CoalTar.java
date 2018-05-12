@@ -105,6 +105,9 @@ public class CoalTar {
 
 		//Burn the coal gas!
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 64, 1);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), null, 32, 3);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), null, 64, 3);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), null, 192, 3);
 		createRecipes();
 
 
@@ -125,9 +128,28 @@ public class CoalTar {
 		recipeHydrogenPeroxide();
 		recipeLithiumHydroperoxide();
 		recipeLithiumPeroxide();
+		
+		recipeEthylBenzineFuelsIntoHeavyFuel();
 	}
 
 
+
+	private static void recipeEthylBenzineFuelsIntoHeavyFuel() {
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellFuel", 9), 
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 1), 
+					null,
+					FluidUtils.getFluidStack("nitrofuel", 7500),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 10), 
+					100);
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellBioDiesel", 9), 
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 1), 
+					null,
+					FluidUtils.getFluidStack("nitrofuel", 3000),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 10), 
+					300);
+	}
 
 	public static void recipeCreateEthylene(){
 
