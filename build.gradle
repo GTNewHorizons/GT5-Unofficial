@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    compile files('mods/gregtech_1.7.10-5.08.33.jar')
+    compile files('mods/gregtech-5.09.32-dev.jar')
 	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
     fatJar files('libs/Segment-2.1.1.jar')
@@ -45,7 +45,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.0-prerelease-11-final"
+version = "1.7.0-prerelease-14-final"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 
