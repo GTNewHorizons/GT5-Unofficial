@@ -78,6 +78,8 @@ public class CommonProxy {
 		CI.preInit();
 		
 		AddToCreativeTab.initialiseTabs();
+		
+		
 		COMPAT_IntermodStaging.preInit();
 		BookHandler.run();
 		//Registration of entities and renderers
@@ -134,12 +136,6 @@ public class CommonProxy {
 	public void postInit(final FMLPostInitializationEvent e) {
 		Logger.INFO("Cleaning up, doing postInit.");
 		PlayerCache.initCache();
-
-		//Circuits
-		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			RECIPES_Old_Circuits.handleCircuits();
-			new RECIPES_Old_Circuits();
-		}
 
 		//Make Burnables burnable
 		if (!CORE.burnables.isEmpty()){

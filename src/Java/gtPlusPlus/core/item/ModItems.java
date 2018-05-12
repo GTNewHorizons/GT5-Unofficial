@@ -18,6 +18,7 @@ import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.item.base.*;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
@@ -55,6 +56,7 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -277,6 +279,8 @@ public final class ModItems {
 
 		itemDebugAreaClear = new ItemAreaClear();
 
+		//Register meta item, because we need them for everything.
+		MetaGeneratedGregtechItems.INSTANCE.generateMetaItems();
 
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");

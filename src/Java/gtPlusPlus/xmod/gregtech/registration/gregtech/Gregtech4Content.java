@@ -75,6 +75,6 @@ public class Gregtech4Content {
 		// Gregtech 4 Multiblock Auto-Crafter
 		Logger.INFO("Gregtech 4 Content | Registering Multiblock Crafter.");
 		GregtechItemList.GT4_Multi_Crafter.set(
-				new GT4Entity_AutoCrafter(876, "gtplusplus.autocrafter.multi", "Large Scale Auto-Asesembler v1.01").getStackForm(1L));
+				new GT4Entity_AutoCrafter(876, "gtplusplus.autocrafter.multi", "Large Scale Auto-Assembler v1.01").getStackForm(1L));
 	}
 }

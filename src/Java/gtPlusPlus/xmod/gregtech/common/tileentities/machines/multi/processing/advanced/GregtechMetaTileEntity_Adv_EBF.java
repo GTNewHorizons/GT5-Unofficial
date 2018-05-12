@@ -16,6 +16,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -41,16 +42,16 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
     public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
+		mCasingName = GregtechItemList.Casing_Adv_BlastFurnace.get(1).getDisplayName();
     }
 
     public GregtechMetaTileEntity_Adv_EBF(String aName) {
         super(aName);
-		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
+		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
+		mCasingName = GregtechItemList.Casing_Adv_BlastFurnace.get(1).getDisplayName();
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -79,9 +80,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[11], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[11]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
     }
 
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -116,7 +117,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
             return false;
         }
-        if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 11)) {
+        if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), CASING_TEXTURE_ID)) {
             return false;
         }
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
@@ -160,8 +161,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
                     if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
                         return false;
                     }
-                    if (!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), 11)) {
-                    	if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), CASING_TEXTURE_ID)) {
+                    	if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasings3Misc) {
                     		return false;
                     	}
                     	if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 11) {
@@ -175,8 +176,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
             for (int j = -1; j < 2; j++) {
                 if ((xDir + i != 0) || (zDir + j != 0)) {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-                    if ((!addMaintenanceToMachineList(tTileEntity, 11)) && (!addInputToMachineList(tTileEntity, 11)) && (!addOutputToMachineList(tTileEntity, 11)) && (!addEnergyInputToMachineList(tTileEntity, 11))) {
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if ((!addMaintenanceToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addInputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID))) {
+                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasings3Misc) {
                             return false;
                         }
                         if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 11) {
@@ -247,8 +248,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public boolean hasSlotInGUI() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

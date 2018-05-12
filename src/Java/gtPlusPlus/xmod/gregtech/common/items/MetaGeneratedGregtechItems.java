@@ -17,6 +17,7 @@ import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -28,13 +29,22 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
-	public MetaGeneratedGregtechItems INSTANCE;
+
+	public final static MetaGeneratedGregtechItems INSTANCE;
+
+	static {
+		INSTANCE = new MetaGeneratedGregtechItems();
+	}
 
 	public MetaGeneratedGregtechItems() {
-		super("MU-metaitem.01", new OrePrefixes[]{null});
-		this.INSTANCE = this;
-		int tLastID = 0;
+		super("MU-metaitem.01", new OrePrefixes[]{null});		
+	}
 
+	public void generateMetaItems() {
+		int tLastID = 0;		
+
+		OldCircuitHandler.addCircuitItems();
+		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			Logger.INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.)");
 			GregtechItemList.Electric_Pump_LuV.set(this.addItem(tLastID = 0, "Electric Pump (LuV)", "163920 L/sec (as Cover)", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
@@ -159,10 +169,10 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//Extruder Shape
 		GregtechItemList.Shape_Extruder_WindmillShaft.set(this.addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
-		
+
 		//GTNH Already adds this.
 		if (!CORE.GTNH)
-		GregtechItemList.Shape_Extruder_SmallGear.set(this.addItem(221, "Extruder Shape (Small Gear)", "Extruder Shape for making small gears", new Object[0]));
+			GregtechItemList.Shape_Extruder_SmallGear.set(this.addItem(221, "Extruder Shape (Small Gear)", "Extruder Shape for making small gears", new Object[0]));
 
 
 		//Batteries
@@ -178,7 +188,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		/**
 		 * Power Gems
 		 */
-		
+
 		GregtechItemList.Battery_Gem_1.set(this.addItem(tLastID = 66, "Fission Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 24L), getTcAspectStack(TC_Aspects.POTENTIA, 16L)}));
 		this.setElectricStats(32000 + tLastID, 32000000L, GT_Values.V[5], 5L, -3L, false);
 		GregtechItemList.Battery_Gem_2.set(this.addItem(tLastID = 68, "Fusion Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 16L), getTcAspectStack(TC_Aspects.METALLUM, 32L), getTcAspectStack(TC_Aspects.POTENTIA, 32L)}));
@@ -188,8 +198,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_1.get(1), "batteryFutureBasic");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_2.get(1), "batteryFutureGood");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_3.get(1), "batteryFutureAdvanced");
-		
-		
+
+
 		/*GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Acid Battery", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.METALLUM, 1L), getTcAspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);
 
@@ -247,11 +257,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//FOOOOOOOOOOOOOOD
 		GregtechItemList.Food_Baked_Raisin_Bread.set(this.addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
-
-		//Old Circuits
-		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			registerOldCircuits();
-		}
 
 		if (!CORE.GTNH) {
 			GregtechItemList.Fluid_Cell_144L.set(this.addItem(tLastID = 61, "144L Invar Fluid Cell", "Holds exactly one dust worth of liquid.", new Object[]{new ItemData(Materials.Invar, (OrePrefixes.plate.mMaterialAmount * 8L) + (4L * OrePrefixes.ring.mMaterialAmount), new MaterialStack[0]), getTcAspectStack(TC_Aspects.VACUOS, 2L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
@@ -317,7 +322,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		return true;
 	}
 
-	private boolean registerOldCircuits(){
+	public boolean registerOldCircuits(){
 		//Enable Old Circuits
 		Logger.INFO("[Old Feature - Circuits] Enabling Pre-5.09.28 Circuits and Data Storage.");
 

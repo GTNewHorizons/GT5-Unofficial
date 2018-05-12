@@ -14,13 +14,15 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 
 public class OldCircuitHandler {
 
 	public static void preInit(){
 		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			removeCircuitRecipeMap(); //Bye shitty recipes.			
+			removeCircuitRecipeMap(); //Bye shitty recipes.		
 		}	
 	}
 	
@@ -29,7 +31,12 @@ public class OldCircuitHandler {
 	}
 	
 	public static void postInit(){
-		
+		RECIPES_Old_Circuits.handleCircuits();
+		new RECIPES_Old_Circuits();
+	}
+	
+	public static boolean addCircuitItems() {
+		return MetaGeneratedGregtechItems.INSTANCE.registerOldCircuits();
 	}
 
 	private static boolean removeCircuitRecipeMap(){
