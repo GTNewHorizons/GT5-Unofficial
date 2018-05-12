@@ -162,8 +162,8 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
-	    
-	    if (CORE.DEVENV)
+		
+		if (CORE.DEVENV)
 		event.registerServerCommand(new CommandMath());
 
 		//Chunk Loading
