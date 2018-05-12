@@ -56,7 +56,7 @@ public class CommandMath implements ICommand
 		final World W = S.getEntityWorld();
 		final EntityPlayer P = CommandUtils.getPlayer(S);
 		if (!W.isRemote && P != null){
-			if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {				
+			if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {
 				String[] prefixes = new String[] {
 						"ingot",
 						"plate",
@@ -83,8 +83,8 @@ public class CommandMath implements ICommand
 						"Silver",
 						"Lead",
 						"Aluminium"
-				};			
-				AutoMap<EntityItem> itemEntities = new AutoMap<EntityItem>();			
+				};
+				AutoMap<EntityItem> itemEntities = new AutoMap<EntityItem>();
 				for (String g : prefixes) {
 					for (String s : loots) {
 						itemEntities.put(new EntityItem(W, P.posX, P.posY, P.posZ, ItemUtils.getItemStackOfAmountFromOreDictNoBroken(g+s, 64)));
@@ -92,7 +92,7 @@ public class CommandMath implements ICommand
 				for (EntityItem e : itemEntities.values()) {
 					e.lifespan = 30000;
 				}
-						   
+
 			}
 		}
 
@@ -195,7 +195,7 @@ public class CommandMath implements ICommand
 	public boolean canCommandSenderUseCommand(final ICommandSender var1){
 		final EntityPlayer P = CommandUtils.getPlayer(var1);
 		if (P == null){
-		    return false;
+			return false;
 		}
 		if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {
 			return true;
@@ -221,4 +221,3 @@ public class CommandMath implements ICommand
 	}
 
 }
-
