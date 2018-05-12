@@ -6,9 +6,10 @@ import net.minecraft.item.ItemStack;
 
 public class ArrayUtils {
 
-	public static void expandArray(final Object[] someArray, final Object newValueToAdd) {
+	public static Object[] expandArray(final Object[] someArray, final Object newValueToAdd) {
 		Object[] series = someArray;
 		series = addElement(series, newValueToAdd);
+		return series;
 	}
 
 	private static Object[] addElement(Object[] series, final Object newValueToAdd) {

@@ -1271,11 +1271,11 @@ public class RECIPES_GREGTECH {
 		
 		//Refine GT HF into GT++ HF
 		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydroFluoricAcid", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid_gt5u", 5),
 				null, // Fluid Input
 				FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 12),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 7),
 				2 * 20);
 		
 	}

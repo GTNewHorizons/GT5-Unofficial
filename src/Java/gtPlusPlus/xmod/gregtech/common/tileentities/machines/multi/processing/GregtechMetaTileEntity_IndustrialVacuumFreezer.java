@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.TAE;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -27,18 +29,21 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	public static int CASING_TEXTURE_ID;
 	public static String mCryoFuelName = "Gelid Cryotheum";
 	public static String mCasingName = "Advanced Cryogenic Casing";
+	public static FluidStack mFuelStack;
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
+		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
-		mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
+		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
 	}
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final String aName) {
 		super(aName);
+		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
-		mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
+		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
 	}
 
@@ -147,6 +152,16 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return false;
+		return true;
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		/*if (this.getBaseMetaTileEntity().isActive()) {
+			if (!this.depleteInput(mFuelStack.copy())) {
+				this.getBaseMetaTileEntity().setActive(false);
+			}
+		}	*/
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 }

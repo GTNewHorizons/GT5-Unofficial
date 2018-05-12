@@ -40,10 +40,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
@@ -53,6 +52,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 @MCVersion(value = "1.7.10")
@@ -225,8 +225,13 @@ public class GTplusplus implements ActionListener {
 
 		//Advanced Vacuum Freezer generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
-			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {			
-				CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, (x.mDuration/2), x.mEUt);
+			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {	
+				int mTime = (x.mDuration/2);
+				int len = x.mFluidInputs.length;
+				FluidStack[] y = new FluidStack[len + 1];
+				int slot = y.length - 1;				
+				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);
+				CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, mTime, x.mEUt);
 			}
 		}
 
