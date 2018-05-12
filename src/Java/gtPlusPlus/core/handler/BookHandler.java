@@ -22,6 +22,7 @@ public class BookHandler {
 	public static BookTemplate book_MultiPowerStation;
 	public static BookTemplate book_ModularBauble;
 	public static BookTemplate book_MultiMachineManual;
+	public static BookTemplate book_NuclearManual;
 
 	public static void run(){		
 
@@ -29,7 +30,7 @@ public class BookHandler {
 
 		//Thermal Boiler
 		book_ThermalBoiler = writeBookTemplate(
-				"Manual_Thermal_Boiler", "Thermal Boiler Manual", "Alkalus", 
+				"Manual_Thermal_Boiler", "Thermal Boiler Manual", "GregoriusT", 
 				new String[] {
 						"This Book explains how to set up and run your Thermal Boiler. We are not responsible for any Damage done by this Book itself nor its content.", 
 						"First you need to craft the following things for a Thermal Boiler to Function: The Main Boiler Block, 20 Thermal Containment Casings, two Input Hatches, two Output Hatches, a bunch of different Tools and a Maintenance Hatch.",
@@ -56,22 +57,25 @@ public class BookHandler {
 				"Power Storage & You [Version 0.64]",
 				"Alkalus", 
 				new String[] {
-						"So, when it comes to power storage you relaly have three Seperate options. \n"+
-								"Battery Buffers [GT]\n"+
-								"Energy Buffers [GT++]\n"+
-								"The Power Sub-Station [GT++]\n",
-								
+								//Page 1
+								"So, when it comes to power storage you relaly have three seperate options:\n"+
+								"\n",
+								"Battery Buffers,\n"+
+								"Energy Buffers,\n"+
+								"The Power Sub-Station\n",
+								//Page 2
 								"The Battery Buffer" + "\n" +
 								"Is rather portable. Allowing you to throw set one up and insert batteries whevere you need."+"\n"+
 								"They output 1A for each battery stored inside.",
-								
+								//Page 3
 								"The Energy Buffer" + "\n" +
 								"Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."+"\n"+
 								"Energy Buffers can output 4A from the output side, however accept 16A as input.",
-								
+								//Page 4
 								"The Power Sub-Station"+"\n"+
 								"Is used for storing Insane amounts of power later game."+"\n"+
-								"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n"+
+								"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
+								//Page 5
 								"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
 								"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n"
 				});
@@ -80,30 +84,79 @@ public class BookHandler {
 		book_ModularBauble = writeBookTemplate(
 				"Manual_Modular_Bauble", "How to: Modular Baubles", "Alkalus", 
 				new String[] {
-						"Concept: This idea came from wanting flexibility. \n",
-						"First step, Build a Modularity table to begin customisation of your Bauble. \\n"
+						"Concept: This idea came from wanting flexibility. \n" +
+						"First step, Build a Modularity table to begin customisation of your Bauble. \n"
 								+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level /100.",
-								"Defence: \\n"
-										+ " Can be upgraded by combining metal plates with the bauble. \\n"
-										+ " | +1 | Aluminium Plate \\n"
-										+ " | +2 | Stainless Steel Plate \\n"
-										+ " | +3 | Tungsten Plate \\n"
-										+ " | +4 | TungstenSteel Plate \\n"
-										+ " | +5 | Naquadah Plate \\n",
-										"There was once a sad and lonely oak tree. \\n",
+								"Defence: \n"
+										+ " Can be upgraded by combining metal plates with the bauble. \n"
+										+ " | +1 | Aluminium Plate \n"
+										+ " | +2 | Stainless Steel Plate \n"
+										+ " | +3 | Tungsten Plate \n"
+										+ " | +4 | TungstenSteel Plate \n"
+										+ " | +5 | Naquadah Plate \n",
 										"There was once a sad and lonely oak tree. \n",
-				"There was once a sad and lonely oak tree. \\n"});
+										"There was once a sad and lonely oak tree. \n",
+				"There was once a sad and lonely oak tree. \n"});
 
 		//Test Novel
 		//20/21/22
 		book_MultiMachineManual = writeBookTemplate(
 				"Manual_Multi_Machine", "Multi Machine Manual", "Alkalus", 
-				new String[] {"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
+				new String[] {
+						"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
 						"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
 						"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus. Mode 3 is currently disabled, as each machine requires special handling.",
 						"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
 						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Distillery or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Distillery, use No. 21 and for Extractor use No. 22.",
 						"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, a Replicator or an Autoclave. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Replicator use No. 22. REPLICATOR DISABLED.",
+				});
+		
+		book_NuclearManual = writeBookTemplate(
+				"Manual_NuclearStuff_1", "Nuclear Chemistry [FFPP]", "Alkalus", 
+				new String[] {
+						//Page 1
+						"Fission Fuel Processing Plant\n"
+						+ "Size: 3x9x3 [LxHxW]\n"
+						+ "Controller: Center, Bottom\n"
+						+ "\n"
+						+ "4x Input Hatch\n"
+						+ "2x Output Hatch\n"
+						+ "1x Output Bus\n"
+						+ "1x ZPM+ Muffler\n"
+						+ "1x Maintenance Hatch\n"
+						+ "1x Energy Hatch\n"
+						+ "\n"
+						+ "[1] 7x Hastelloy-X or I/O\n"
+						+ "[2] 5x Incoloy-DS Fluid Containment\n"
+						+ "[3] 4x Zeron-100 Shielding\n"
+						+ "[4] 17x Hastelloy-N Sealant Case",
+						
+						//Page 2
+						"Multiblock Construction\n"
+						+ "Convention is [LxHxW]\n"
+						+ "\n"
+						+ "Layer 1/2:\n"
+						+ "[1][1][1]\n"
+						+ "[1][1][1]\n"
+						+ "[1][1][1]\n"
+						+ "\n"
+						+ "Layer 3/5/6\n"
+						+ "[ ][4][ ]\n"
+						+ "[4][2][4]\n"
+						+ "[ ][4][ ]\n"
+						+ "\n"
+						+ "Layer 4\n"
+						+ "[ ][3][ ]\n"
+						+ "[3][2][3]\n"
+						+ "[ ][3][ ]\n"
+						+ "\n"
+						+ "Layer 7/8/9\n"
+						+ "[ ][ ][ ]\n"
+						+ "[ ][3][ ]\n"
+						+ "[ ][ ][ ]\n"
+						,				
+						
+						
 				});
 	}
 
@@ -111,6 +164,7 @@ public class BookHandler {
 
 
 	public static ItemStack ItemBookWritten_ThermalBoiler;
+	public static ItemStack ItemBookWritten_NuclearManual;
 	public static ItemStack ItemBookWritten_ModularBaubles;
 	public static ItemStack ItemBookWritten_MultiPowerStorage;
 	public static ItemStack ItemBookWritten_MultiMachineManual;
@@ -120,11 +174,13 @@ public class BookHandler {
 		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
 		ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
 		ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
+		ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
 
 		//Multiblock Manuals
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, ItemBookWritten_ThermalBoiler);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict(CI.craftingToolWrench, 1)}, ItemBookWritten_MultiMachineManual);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1)}, ItemBookWritten_MultiPowerStorage);
+		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1)}, ItemBookWritten_NuclearManual);
 	}
 
 	private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages){
