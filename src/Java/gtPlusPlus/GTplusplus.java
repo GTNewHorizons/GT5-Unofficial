@@ -36,6 +36,7 @@ import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
 import gtPlusPlus.core.handler.analytics.SegmentHelper;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
+import gtPlusPlus.core.handler.events.MissingMappingsEvent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -115,6 +116,7 @@ public class GTplusplus implements ActionListener {
 
 		// FirstCall();
 		Utils.registerEvent(new LoginEventHandler());
+		Utils.registerEvent(new MissingMappingsEvent());
 		Logger.INFO("Login Handler Initialized");
 
 

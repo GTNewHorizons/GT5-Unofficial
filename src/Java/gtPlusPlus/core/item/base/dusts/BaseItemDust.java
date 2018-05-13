@@ -17,6 +17,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -37,7 +38,6 @@ public class BaseItemDust extends Item{
 	}
 
 	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity, boolean addRecipes) {
-		this.setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
 		this.setTextureName(this.getCorrectTexture(pileSize));
@@ -238,7 +238,7 @@ public class BaseItemDust extends Item{
 				Logger.WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
 				final String tempIngot = temp.replace("ingot", "ingotHot");
 				final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
-				if (null != tempOutputStack){
+				if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
 					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 					this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
 				}
@@ -247,7 +247,7 @@ public class BaseItemDust extends Item{
 			Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a furnace.");
 			final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
-			if (null != tempOutputStack){
+			if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
 				if ((this.mTier < 5) || !this.dustInfo.requiresBlastFurnace()){
 					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
 						Logger.WARNING("Successfully added a furnace recipe for "+this.materialName);
@@ -259,7 +259,7 @@ public class BaseItemDust extends Item{
 				else if ((this.mTier >= 5) || this.dustInfo.requiresBlastFurnace()){
 					Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
 					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName());
-					if (null != tempOutputStack){
+					if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
 						this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
 					}
 					return;

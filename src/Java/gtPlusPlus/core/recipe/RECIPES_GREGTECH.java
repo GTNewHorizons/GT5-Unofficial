@@ -1128,6 +1128,15 @@ public class RECIPES_GREGTECH {
 		//FLiBe fuel
 		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
 				FluidUtils.getFluidStack("molten.li2bef4", 144), 10000, 100, 500);
+		//LFTR Fuel 1
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ZrF4U235", 1), null,
+				FluidUtils.getFluidStack("molten.libef2zrf4u235", 144), 10000, 250, 1000);
+		//LFTR Fuel 2
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ZrF4UF4", 1), null,
+				FluidUtils.getFluidStack("molten.libef2zrf4uf4", 144), 10000, 150, 2000);
+		//LFTR Fuel 2
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLiBeF2ThF4UF4", 1), null,
+				FluidUtils.getFluidStack("molten.libef2thf4uf4", 144), 10000, 200, 1500);
 	}
 
 	private static void chemicalBathRecipes() {
@@ -1144,7 +1153,7 @@ public class RECIPES_GREGTECH {
 
 		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
 				FluidUtils.getFluidStack("hydrofluoricacid", 10 * 144),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), null, null, new int[] {}, 90 * 20,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 10), null, null, new int[] {}, 90 * 20,
 				500);
 
 	}
@@ -1165,26 +1174,11 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null,
 				FluidUtils.getFluidStack("hydrofluoricacid", 144 * 5),
 				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144 * 5), null, 3000, 500);
-		// GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine",
-		// 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1),
-		// null, null, FluidUtils.getFluidStack("molten.uraniumtetrafluoride",
-		// 720), FluidUtils.getFluidStack("molten.uraniumhexafluoride", 288),
-		// null, 5000, 2000);
-		// GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSteel",
-		// 20), ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 1),
-		// ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
-		// ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4), null,
-		// null, ItemUtils.getItemStackOfAmountFromOreDict("dustEglinSteel",
-		// 30), 1200, 60);
 	}
 
 	private static void chemicalReactorRecipes() {
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), // Input
-				// Stack
-				// 1
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), // Input
-				// Stack
-				// 2
 				null, // Fluid Input
 				null, // Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 10), // Output
@@ -1192,8 +1186,6 @@ public class RECIPES_GREGTECH {
 				600 * 20);
 
 		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), // Input
-				// Stack
-				// 1
 				null, // Input Stack 2
 				FluidUtils.getFluidStack("hydrofluoricacid", 5 * 144), // Fluid
 				// Input
@@ -1217,7 +1209,6 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1), 300 * 20);
 
 		// LFTR Fuel Related Compounds
-
 		if (CORE.GTNH) {
 			// Hydroxide
 			AddGregtechRecipe.addChemicalRecipeForBasicMachineOnly(
@@ -1272,7 +1263,7 @@ public class RECIPES_GREGTECH {
 		//Refine GT HF into GT++ HF
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid_gt5u", 5),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid_GT5U", 5),
 				null, // Fluid Input
 				FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 7),

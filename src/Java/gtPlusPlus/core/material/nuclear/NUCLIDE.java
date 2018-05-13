@@ -17,7 +17,7 @@ public final class NUCLIDE {
 			870, //Boiling Point in C
 			150, //Protons
 			150, //Neutrons
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ThF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
@@ -36,7 +36,7 @@ public final class NUCLIDE {
 			940, //Boiling Point in C
 			150, //Protons
 			150, //Neutrons
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
@@ -55,7 +55,7 @@ public final class NUCLIDE {
 			890, //Boiling Point in C
 			150, //Protons
 			150, //Neutrons
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4")+StringUtils.superscript("235U"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.

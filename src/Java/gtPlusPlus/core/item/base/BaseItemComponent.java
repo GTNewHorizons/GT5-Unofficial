@@ -54,6 +54,7 @@ public class BaseItemComponent extends Item{
 		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
+		if (componentType != ComponentTypes.DUST)
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
 			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 1);
@@ -224,6 +225,8 @@ public class BaseItemComponent extends Item{
 
 	public static enum ComponentTypes {
 		DUST("Dust", " Dust", "dust"),
+		DUSTSMALL("DustSmall", " Dust", "dustSmall"),
+		DUSTTINY("DustTiny", " Dust", "dustTiny"),
 		INGOT("Ingot", " Ingot", "ingot"),
 		HOTINGOT("HotIngot", " Hot Ingot", "ingotHot"),
 		PLATE("Plate", " Plate", "plate"),

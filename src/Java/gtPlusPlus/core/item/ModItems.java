@@ -380,7 +380,7 @@ public final class ModItems {
 			//MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FRANCIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADIUM, false);
-			//MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ACTINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROTACTINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false); //LFTR byproduct
@@ -449,9 +449,9 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.SELENIUM_HEXAFLUORIDE);
 
 			//Generate Reactor Fuel Salts
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
-			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4, false);
 
 			//Generate some Alloys
 

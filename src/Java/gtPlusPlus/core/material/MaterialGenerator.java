@@ -9,6 +9,7 @@ import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
+import gtPlusPlus.core.item.base.dusts.BaseItemDustEx;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
@@ -100,7 +101,7 @@ public class MaterialGenerator {
 					Item temp;
 					Block tempBlock;
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-					
+
 					temp = new BaseItemIngot(matInfo);
 					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -129,7 +130,7 @@ public class MaterialGenerator {
 				return true;
 			}
 			else if (matInfo.getState() == MaterialState.ORE){
-					
+
 			}
 
 			//Add A jillion Recipes - old code
@@ -146,9 +147,9 @@ public class MaterialGenerator {
 			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
 			new RecipeGen_Recycling(matInfo);
 			return true;
-			
-			} catch (final Throwable t)
-		
+
+		} catch (final Throwable t)
+
 		{
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
@@ -206,22 +207,28 @@ public class MaterialGenerator {
 			Block tempBlock;
 
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-			temp = new BaseItemIngot(matInfo);
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
+			//temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
-			temp = new BaseItemNugget(matInfo);
-			temp = new BaseItemPlate(matInfo);
-			temp = new BaseItemPlateDouble(matInfo);
 
-			RecipeGen_Plates.generateRecipes(matInfo);
-			RecipeGen_Extruder.generateRecipes(matInfo);
+			temp = new BaseItemDustEx(matInfo);
+			temp = new BaseItemIngot(matInfo);
+			temp = new BaseItemNugget(matInfo);
+			
+			if (generatePlates) {
+				temp = new BaseItemPlate(matInfo);
+				temp = new BaseItemPlateDouble(matInfo);
+				RecipeGen_Plates.generateRecipes(matInfo);
+				RecipeGen_Extruder.generateRecipes(matInfo);
+				RecipeGen_Assembler.generateRecipes(matInfo);
+			}
+
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 			RecipeGen_Fluids.generateRecipes(matInfo);
-			RecipeGen_Assembler.generateRecipes(matInfo);
-			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
-			new RecipeGen_Recycling(matInfo);
+			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+			new RecipeGen_Recycling(matInfo);			
+			
 		} catch (final Throwable t){
 			Logger.WARNING(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
@@ -231,27 +238,27 @@ public class MaterialGenerator {
 	public static void generateOreMaterial(final Material matInfo){
 		generateOreMaterial(matInfo, true, true, true, matInfo.getRGBA());
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust, boolean generateSmallTinyDusts, short[] customRGB){
 		try {
-			
+
 			if (matInfo == null){
 				Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
 				return;
 			}
-			
+
 			final String unlocalizedName = matInfo.getUnlocalizedName();
 			final String materialName = matInfo.getLocalizedName();
 			final short[] C = customRGB;
 			final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
-			
+
 			if (Colour == null){
 				Logger.DEBUG_MATERIALS("Invalid Material while constructing "+materialName+".");
 				return;
 			}
-			
+
 			int sRadiation = 0;
 			if (matInfo.vRadiationLevel > 0){
 				sRadiation = matInfo.vRadiationLevel;
@@ -259,10 +266,10 @@ public class MaterialGenerator {
 
 			Item temp;
 			Block tempBlock;
-			
-			
+
+
 			if (generateOre) {
-			tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());		
+				tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());		
 			}
 
 			if (generateDust) {
@@ -272,7 +279,7 @@ public class MaterialGenerator {
 				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
 				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation, false);
 			}
-			
+
 			temp = new BaseItemCrushedOre(matInfo);
 			temp = new BaseItemCentrifugedCrushedOre(matInfo);
 			temp = new BaseItemPurifiedCrushedOre(matInfo);
@@ -280,7 +287,7 @@ public class MaterialGenerator {
 			temp = new BaseItemPurifiedDust(matInfo);
 
 			RecipeGen_Ore.generateRecipes(matInfo);
-			
+
 		} catch (final Throwable t){
 			Logger.MATERIALS("[Error] "+(matInfo != null ? matInfo.getLocalizedName() : "Null Material")+" failed to generate.");
 			t.printStackTrace();
