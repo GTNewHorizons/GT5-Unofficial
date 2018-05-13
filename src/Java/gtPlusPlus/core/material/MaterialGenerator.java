@@ -9,7 +9,6 @@ import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
-import gtPlusPlus.core.item.base.dusts.BaseItemDustEx;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
@@ -207,11 +206,10 @@ public class MaterialGenerator {
 			Block tempBlock;
 
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-			//temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
 
-			temp = new BaseItemDustEx(matInfo);
 			temp = new BaseItemIngot(matInfo);
 			temp = new BaseItemNugget(matInfo);
 			

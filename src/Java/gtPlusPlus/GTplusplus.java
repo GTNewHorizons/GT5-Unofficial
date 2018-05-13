@@ -22,6 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -237,6 +238,16 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
+		if (MiningUtils.findAndMapOreTypesFromGT()) {
+			int mapKey = 0;
+			for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
+				for (GT_Worldgen_GT_Ore_Layer h : g) {
+					Logger.WORLD("Found Vein "+h.aTextWorldgen + " in map with key: "+mapKey);
+				}
+				mapKey++;
+			}
+		}
+		
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {

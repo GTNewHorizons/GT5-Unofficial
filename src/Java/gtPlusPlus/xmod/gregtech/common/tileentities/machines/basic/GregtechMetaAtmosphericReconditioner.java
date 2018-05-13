@@ -6,6 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -187,7 +188,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										Logger.WARNING("mPollutionReduction[1]:"+mPollutionReduction);
 
 										//I stole this code
-										mPollutionReduction = (MathUtils.safeInt((long)mPollutionReduction*this.mBaseEff)/100000)*mAirSides;
+										mPollutionReduction = (MathUtils.safeInt((long)mPollutionReduction*this.mBaseEff)/100000)*mAirSides*tTier;
 										//Utils.LOG_WARNING("mPollutionReduction[2]:"+mPollutionReduction);
 										//mPollutionReduction = GT_Utility.safeInt((long)mPollutionReduction*this.mOptimalAirFlow/10000);
 										//Utils.LOG_WARNING("mPollutionReduction[3]:"+mPollutionReduction);
@@ -262,18 +263,16 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			if(mInventory[SLOT_ROTOR].getItem() instanceof GT_MetaGenerated_Tool_01 &&
 					((GT_MetaGenerated_Tool) mInventory[SLOT_ROTOR].getItem()).getToolStats(mInventory[SLOT_ROTOR]).getSpeedMultiplier()>0 &&
 					GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[SLOT_ROTOR]).mToolSpeed>0 ) {
-				long damageValue = ((10L*(long) Math.min(-mTier / mDamageFactorLow, Math.pow(-mTier, this.mDamageFactorHigh)))/10);
+				
+				long damageValue = (long) Math.floor(Math.abs(MathUtils.randFloat(1, 2) - MathUtils.randFloat(1, 3)) * (1 + 3 - 1) + 1);
+				double fDam = Math.floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
+				damageValue -= fDam;
+				
+				Logger.INFO("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
+				/*Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]);
+				Materials M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);				
 
-				if (damageValue <= 1){
-					if (this.mOptimalAirFlow > 0){
-						damageValue = (this.mOptimalAirFlow/10/8);
-					}
-					else {
-						return false;
-					}
-				}
-
-				Logger.WARNING("Trying to do "+damageValue+" damage to the rotor.");
+				Logger.INFO("Trying to do "+damageValue+" damage to the rotor. [2]");*/
 
 				//Damage Rotor
 				//int rotorDurability = this.mInventory[this.SLOT_ROTOR].getItemDamage();
@@ -281,7 +280,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(this.mInventory[this.SLOT_ROTOR]);
 				long rotorDurability = (rotorDurabilityMax - rotorDamage);
 				Logger.WARNING("Rotor Damage: "+rotorDamage + " | Max Durability: "+rotorDurabilityMax+" | "+" Remaining Durability: "+rotorDurability);
-				if (rotorDurability > damageValue){
+				if (rotorDurability >= damageValue){
 					Logger.WARNING("Damaging Rotor.");
 					GT_ModHandler.damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
 
