@@ -18,7 +18,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -49,14 +49,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
         super(aID, aName, aNameRegional);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = GregtechItemList.Casing_Adv_BlastFurnace.get(1).getDisplayName();
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
     }
 
     public GregtechMetaTileEntity_Adv_EBF(String aName) {
         super(aName);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
-		mCasingName = GregtechItemList.Casing_Adv_BlastFurnace.get(1).getDisplayName();
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -411,6 +411,19 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		Logger.WARNING("GOOD RETURN - 1");
 		return true;
 		
+	}
+	
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		if (this.getBaseMetaTileEntity().isActive()) {
+			if (this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 1))) {
+				//Nom Fuel
+			}
+			else {
+				this.getBaseMetaTileEntity().setActive(false);
+			}
+		}
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
 }

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -17,6 +18,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
@@ -281,7 +283,7 @@ public class ItemUtils {
 			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
 			Logger.WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
 		}	
-		
+
 		try{
 
 			//Adds a check to grab dusts using GT methodology if possible.
@@ -727,10 +729,40 @@ public class ItemUtils {
 			return null;
 		}
 	}
-	
+
 	public static boolean registerFuel(ItemStack aBurnable, int burn){
 		return CORE.burnables.add(new Pair<Integer, ItemStack>(burn, aBurnable));
 	}
 
+	
+	/**
+	 * Quick Block Name Lookup that is friendly to servers and locale.
+	 */
+	private static volatile Map<String, String> mLocaleCache = new HashMap<String, String>();
+	public static String getLocalizedNameOfBlock(BlockPos pos) {
+		Block block = pos.world.getBlock(pos.xPos, pos.yPos, pos.zPos);
+		int metaData = pos.world.getBlockMetadata(pos.xPos, pos.yPos, pos.zPos);
+		return getLocalizedNameOfBlock(block, metaData);	
+	}
+	
+	public synchronized static String getLocalizedNameOfBlock(Block block, int meta) {
+		if (block == null || meta < 0) {
+			return "Bad Block";
+		}
+		String mCacheKey = block.getUnlocalizedName()+":"+meta;
+		if (mLocaleCache.containsKey(mCacheKey)) {
+			return mLocaleCache.get(mCacheKey);
+		}
+		else {
+			Item item = Item.getItemFromBlock(block);
+			if (item == null) {
+				return "Bad Item";
+			}			
+			String unlocalizedName = item.getUnlocalizedName(new ItemStack(block, 1, meta));
+			String blockName = StatCollector.translateToLocal(unlocalizedName + ".name");
+			mLocaleCache.put(mCacheKey, blockName);
+			return blockName;
+		}				
+	}
 
 }

@@ -28,10 +28,11 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
 	public GT_Recipe mLastRecipe;
 	protected long mEUStore;
@@ -658,6 +659,11 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			this.turnCasingActive(false);
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+	}
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
 	}
 
 }

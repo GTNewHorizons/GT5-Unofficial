@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.TAE;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = mFuelStack.getLocalizedName();
-		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
 	}
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final String aName) {
@@ -44,7 +44,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = mFuelStack.getLocalizedName();
-		mCasingName = GregtechItemList.Casing_AdvancedVacuum.get(1).getDisplayName();
+		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {

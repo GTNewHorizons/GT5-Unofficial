@@ -15,6 +15,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_ThermalBoiler
@@ -160,7 +161,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public int getPollutionPerTick(ItemStack aStack)
 	{
-		return 32;
+		return 0;
 	}
 
 	public int getAmountOfOutputs()
@@ -178,10 +179,8 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Controller (front middle)",
 				"2x Output Hatch/Bus",
 				"2x Input Hatch",
-				"1x Maintenance Hatch (Centre of top)",
+				"1x Maintenance Hatch",
 				"Thermal Containment Casings for the rest",
-				"Input & Output hatches can go be configured how you wish",
-				"Place them in the middle block of the Back, Bottom and Sides",
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
 				CORE.GT_Tooltip};
@@ -197,48 +196,33 @@ extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity arg0, ItemStack arg1) {
-		byte tSide = getBaseMetaTileEntity().getBackFacing();
-		if (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1))
-		{
-			int META = 11;
-			int CASING = TAE.GTPP_INDEX(1);
-			if (((getBaseMetaTileEntity().getBlockAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != ModBlocks.blockCasings2Misc) || (getBaseMetaTileEntity().getMetaIDAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != META)) && 
-					(!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2), CASING))) {
-				return false;
-			}
-			int tX = getBaseMetaTileEntity().getXCoord();int tY = getBaseMetaTileEntity().getYCoord();int tZ = getBaseMetaTileEntity().getZCoord();
-			for (byte i = -1; i < 2; i = (byte)(i + 1)) {
-				for (byte j = -1; j < 2; j = (byte)(j + 1)) {
-					if ((i != 0) || (j != 0)) {
-						for (byte k = 0; k < 3; k = (byte)(k + 1)) {
-							if (((i == 0) || (j == 0)) && (k == 1))
-							{
-								if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == ModBlocks.blockCasings2Misc)
-								{
-									if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
-								}
-								else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)), CASING)) {
-									return false;
-								}
-							}
-							else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == ModBlocks.blockCasings2Misc)
-							{
-								if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
-							}
-							else {							
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack arg1) {
+		final int xDir = ForgeDirection.getOrientation((int) aBaseMetaTileEntity.getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation((int) aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+			return false;
+		}
+		int tAmount = 0;
+		for (int i = -1; i < 2; ++i) {
+			for (int j = -1; j < 2; ++j) {
+				for (int h = -1; h < 2; ++h) {
+					if (h != 0 || ((xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0))) {
+						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+								.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) {
+							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) != ModBlocks.blockCasings2Misc) {
 								return false;
 							}
+							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 11) {
+								return false;
+							}
+							++tAmount;
 						}
 					}
 				}
 			}
 		}
-		else
-		{		
-			return false;
-		}
-		return true;
+		return tAmount >= 10;
 	}
 
 	public boolean damageFilter(){
