@@ -238,7 +238,7 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		if (MiningUtils.findAndMapOreTypesFromGT()) {
+		/*if (MiningUtils.findAndMapOreTypesFromGT()) {
 			int mapKey = 0;
 			for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
 				for (GT_Worldgen_GT_Ore_Layer h : g) {
@@ -246,7 +246,7 @@ public class GTplusplus implements ActionListener {
 				}
 				mapKey++;
 			}
-		}
+		}*/
 		
 	}
 

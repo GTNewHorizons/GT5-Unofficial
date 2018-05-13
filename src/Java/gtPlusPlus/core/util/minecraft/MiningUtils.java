@@ -1,10 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
@@ -14,9 +11,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class MiningUtils {
-
-	private static boolean durabilityDamage = false;
-	private static ItemStack stack;
 
 	public static Boolean canPickaxeBlock(final Block currentBlock, final World currentWorld){
 		String correctTool = "";
@@ -49,102 +43,6 @@ public class MiningUtils {
 
 		}
 	}
-
-	/*public static void customMine(World world, String FACING, EntityPlayer aPlayer){
-
-		float DURABILITY_LOSS = 0;
-		if (!world.isRemote){
-			int X = 0;
-			int Y = 0;
-			int Z = 0;
-
-			if (FACING.equals("below") || FACING.equals("above")){
-
-				//Set Player Facing
-				X = (int) aPlayer.posX;
-				Utils.LOG_WARNING("Setting Variable X: "+X);
-				if (FACING.equals("above")){
-					Z = (int) aPlayer.posY + 1;
-					Utils.LOG_WARNING("Setting Variable Y: "+Y);
-					}
-					else {
-						Z = (int) aPlayer.posY - 1;
-						Utils.LOG_WARNING("Setting Variable Y: "+Y);}
-				Z = (int) aPlayer.posZ;
-				Utils.LOG_WARNING("Setting Variable Z: "+Z);
-
-				DURABILITY_LOSS = 0;
-				for(int i = -2; i < 3; i++) {
-					for(int j = -2; j < 3; j++) {
-						for(int k = -2; k < 3; k++) {
-//							float dur = calculateDurabilityLoss(world, X + i, Y + k, Z + j);
-//							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
-//							Utils.LOG_WARNING("Added Loss: "+dur);
-							removeBlockAndDropAsItem(world, X + i, Y + k, Z + j);
-						}
-					}
-				}
-			}
-
-			else if (FACING.equals("facingEast") || FACING.equals("facingWest")){
-
-				//Set Player Facing
-				Z = (int) aPlayer.posZ;
-				Y = (int) aPlayer.posY;
-				if (FACING.equals("facingEast")){
-					X = (int) aPlayer.posX + 1;}
-					else {
-						X = (int) aPlayer.posX - 1;}
-
-
-				DURABILITY_LOSS = 0;
-				for(int i = -1; i < 2; i++) {
-					for(int j = -1; j < 2; j++) {
-						for(int k = -1; k < 2; k++) {
-							float dur = calculateDurabilityLoss(world, X+k, Y + i, Z + j);
-							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
-							Utils.LOG_WARNING("Added Loss: "+dur);
-							removeBlockAndDropAsItem(world, X+k, Y + i, Z + j);
-						}
-					}
-				}
-			}
-
-			else if (FACING.equals("facingNorth") || FACING.equals("facingSouth")){
-
-				//Set Player Facing
-				X = (int) aPlayer.posX;
-				Y = (int) aPlayer.posY;
-
-				if (FACING.equals("facingNorth")){
-				Z = (int) aPlayer.posZ + 1;}
-				else {
-					Z = (int) aPlayer.posZ - 1;}
-
-				DURABILITY_LOSS = 0;
-				for(int i = -1; i < 2; i++) {
-					for(int j = -1; j < 2; j++) {
-						for(int k = -1; k < 2; k++) {
-							float dur = calculateDurabilityLoss(world, X + j, Y + i, Z+k);
-							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
-							Utils.LOG_WARNING("Added Loss: "+dur);
-							removeBlockAndDropAsItem(world, X + j, Y + i, Z+k);
-						}
-					}
-				}
-			}
-
-			//Set Durability damage to the item
-			if (durabilityDamage == true){
-			Utils.LOG_WARNING("Total Loss: "+(int)DURABILITY_LOSS);
-			if (stack.getItemDamage() < (stack.getMaxDamage()-DURABILITY_LOSS)){
-				stack.damageItem((int) DURABILITY_LOSS, aPlayer);
-			}
-			}
-			DURABILITY_LOSS = 0;
-		}
-	}*/
-
 
 	public static boolean getBlockType(final Block block, final World world, final int[] xyz, final int miningLevel){
 		final String LIQUID = "liquid";
@@ -278,7 +176,7 @@ public class MiningUtils {
 		
 		for (GT_Worldgen_GT_Ore_Layer x : GT_Worldgen_GT_Ore_Layer.sList) {			
 			if (x.mEnabled) {
-				if (x.mOverworld) {
+				/*if (x.mOverworld) {
 					Ores_Overworld.put(x);
 					continue;
 				}
@@ -301,7 +199,7 @@ public class MiningUtils {
 				if (x.mAsteroid) {
 					Ores_Comets.put(x);
 					continue;
-				}
+				}*/
 				Ores_Misc.put(x);
 				continue;
 			}			
