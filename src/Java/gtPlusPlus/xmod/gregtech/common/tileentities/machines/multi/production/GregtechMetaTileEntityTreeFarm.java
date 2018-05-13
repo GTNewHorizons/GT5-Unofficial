@@ -181,22 +181,16 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		return 10000;
 	}
 
-
 	@Override
-	public boolean isGivingInformation() {
-		return true;
-	}
-
-	@Override
-	public String[] getInfoData() {
-		String[] mSuper = super.getInfoData();
+	public String[] getExtraInfoData() {
+		String[] mSuper = new String[0];
 		String[] mDesc = new String[mSuper.length+1];		
 		mDesc[0] = "Yggdrasil"; // Machine name		
 		for (int i=0;i<mSuper.length;i++) {
 			mDesc[i+1] = mSuper[i];
 		}
 		return mDesc;
-	};
+	}
 
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack p0) {

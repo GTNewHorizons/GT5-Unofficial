@@ -462,7 +462,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public String[] getInfoData() {
+	public String[] getExtraInfoData() {
 		String tier = tier() == 5 ? "I" : "II";
 		float plasmaOut = 0;
 		int powerRequired = 0;
@@ -477,11 +477,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"COMET - Compact Cyclotron MK "+tier,
 				"EU Required: "+powerRequired+"EU/t",
 				"Stored EU: "+mEUStore+" / "+maxEUStore()};
-	}
-
-	@Override
-	public boolean isGivingInformation() {
-		return true;
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
@@ -60,19 +61,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public String[] getDescription() {
 		return new String[]{
-				"Controller Block for the Power Sub-Station",
+				"[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)",
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
-				"Power can be Input/Extracted from the rear face at any time, change with screwdriver",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
-				"Redox Cells can be upgraded via the GUI without having to deconstruct the multiblock (WIP)",
+				"Hatches can be placed nearly anywhere",
 				"Size(WxHxD): External 5xHx5, Sub-Station Casings, Controller (Bottom, Centre)",
 				"Size(WxHxD): Internal 3x(H-2)x3, Energy Storage Cells",
-				"Number and quality of cells determines power storage",
-				"Hatches can be placed nearly anywhere",
-				"(Dis) Charging Hatches are valid",
-				"1x Energy Input Hatch (Minimum)",
-				"1x Energy Dynamo Hatch (Minimum)",
-				"1x Maintenance Hatch",
+				"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
 				CORE.GT_Tooltip};
 	}
 
@@ -458,15 +453,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public String[] getInfoData() {
-		long seconds = (this.mTotalRunTime/20);
-
-		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
-		int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
-		long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7*weeks);
-		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
-		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
-
+	public String[] getExtraInfoData() {
 		String mode;
 		if (mIsOutputtingPower) {
 			mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
@@ -496,18 +483,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Total Input: " + EnumChatFormatting.BLUE + GT_Utility.formatNumbers(this.mTotalEnergyAdded) + EnumChatFormatting.RESET + " EU",
 				"Total Output: " + EnumChatFormatting.GOLD + GT_Utility.formatNumbers(this.mTotalEnergyConsumed) + EnumChatFormatting.RESET + " EU",
 				"Total Costs: " + EnumChatFormatting.RED + GT_Utility.formatNumbers(this.mTotalEnergyLost) + EnumChatFormatting.RESET + " EU",
-
-				"Total Time Since Built: ",
-				""+weeks+" Weeks, "+days+" Days,",
-				""+hours+" Hours, "+minutes+" Minutes, "+second+" Seconds.",
-				"Total Time in ticks: "+this.mTotalRunTime
 		};
-
-	}
-
-	@Override
-	public boolean isGivingInformation() {
-		return true;
 	}
 
 	@Override

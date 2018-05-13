@@ -45,9 +45,9 @@ extends GregtechMeta_MultiBlockBase {
 	private int maximumFluidStorage = 128000;
 	private FluidStack internalStorageTank = null;
 	private final NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
-
+	
 	@Override
-	public String[] getInfoData() {
+	public String[] getExtraInfoData() {
 		final ArrayList<GT_MetaTileEntity_Hatch_Energy> mTier = this.mEnergyHatches;
 		if (!mTier.isEmpty()){
 			final int temp = mTier.get(0).mTier;

@@ -79,8 +79,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getInfoData() {
-
+	public String[] getExtraInfoData() {
 		final String tRunning = (this.mMaxProgresstime>0 ? "Reactor running":"Reactor stopped");
 		final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
 
@@ -97,11 +96,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				"Boosted Output: "+this.boostEu+".",
 				"Boosted Output gives 4x EU/t for double fuel usage.",
 				"It requires you to have 100% Efficiency."};
-	}
-
-	@Override
-	public boolean isGivingInformation() {
-		return true;
 	}
 
 	@Override

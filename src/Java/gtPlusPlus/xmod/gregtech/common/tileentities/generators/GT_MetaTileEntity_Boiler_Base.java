@@ -201,14 +201,14 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
-			// Utils.LOG_INFO("Ticking Boiler");
+			// Utils.LOG_MACHINE_INFO("Ticking Boiler");
 
 			//if (aTick % 60L == 0L) {
-				// Utils.LOG_INFO("Temp:"+this.mTemperature);
-				// Utils.LOG_INFO("getCapacity():"+this.getCapacity());
-				// Utils.LOG_INFO("maxProgresstime():"+this.maxProgresstime());
-				// Utils.LOG_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
-				// Utils.LOG_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
+				// Utils.LOG_MACHINE_INFO("Temp:"+this.mTemperature);
+				// Utils.LOG_MACHINE_INFO("getCapacity():"+this.getCapacity());
+				// Utils.LOG_MACHINE_INFO("maxProgresstime():"+this.maxProgresstime());
+				// Utils.LOG_MACHINE_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
+				// Utils.LOG_MACHINE_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
 			//}
 
 			if (this.mTemperature <= 20) {
@@ -247,7 +247,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 							return;
 						}
 						this.mFluid.amount -= (10 * this.mBoilerTier);
-						// Utils.LOG_INFO("Draining "+(10*this.mBoilerTier)+"L
+						// Utils.LOG_MACHINE_INFO("Draining "+(10*this.mBoilerTier)+"L
 						// of water. There is "+this.mFluid.amount+"L left.");
 						if (this.mSteam == null) {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (fuelSlot != null)) {
 
 				if (isInputFuelItem(fuelSlot) && (this.mTemperature < (maxProgresstime() - 250))) {
-					Logger.INFO("Current Heat:" + this.mTemperature + "/" + (maxProgresstime() - 250)
+					Logger.MACHINE_INFO("Current Heat:" + this.mTemperature + "/" + (maxProgresstime() - 250)
 							+ " Burning fuel because not yet at a suitable temp.");
 					useInputFuelItem(aBaseMetaTileEntity, fuelSlot);
 				}
@@ -280,12 +280,12 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 			}
 
 			if ((this.mTemperature < maxProgresstime()) && (this.mProcessingEnergy > 0) && (aTick % 10L == 0L)) {
-				// Utils.LOG_INFO("Adding +1 Temp.");
+				// Utils.LOG_MACHINE_INFO("Adding +1 Temp.");
 				this.mProcessingEnergy -= 2;
 				this.mTemperature += 1;
 			}
 			if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-				// Utils.LOG_INFO("Current Temp is at: "+this.mTemperature+"C");
+				// Utils.LOG_MACHINE_INFO("Current Temp is at: "+this.mTemperature+"C");
 				// GT_Pollution.addPollution(getBaseMetaTileEntity(),
 				// this.mPollutionPerSecond);
 			}

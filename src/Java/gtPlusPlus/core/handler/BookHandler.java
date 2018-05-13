@@ -58,22 +58,18 @@ public class BookHandler {
 				"Alkalus", 
 				new String[] {
 								//Page 1
-								" \n"+
-								" \n"+
-								" \n"+
-								" \n"+
 								"So, when it comes to power storage you relaly have three seperate options:\n"+
 								" \n"+
 								"Battery Buffers,\n"+
 								"Energy Buffers,\n"+
 								"The Power Sub-Station\n",
 								//Page 2
-								"Battery Buffer" + 
+								"Battery Buffer\n" + 
 										" \n" +
-								"Is rather portable. Allowing you to throw set one up and insert batteries whevere you need."+"\n"+
-								"They output 1A for each battery stored inside.",
+								"Is rather portable. Allowing you to throw set one up and insert batteries where ever you may need."+"\n"+
+								"They output 1A for each battery stored inside, upto a maximum of 16A.",
 								//Page 3
-								"Energy Buffer" + 
+								"Energy Buffer\n" + 
 										" \n" +
 								"Is a more optimal choice for storage in your base. Once placed down, they cannot be moved without losing all stored power."+"\n"+
 								"Energy Buffers can output 4A from the output side, however accept 16A as input.",
@@ -84,7 +80,16 @@ public class BookHandler {
 								"Consumes 2% of the average voltage of all energy type hatches every tick."+"\n",
 								//Page 5
 								"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
-								"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n"
+								"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n",
+								//Page 6
+								"Valid Hatches:\n"+
+								"Energy Hatch,\n"+
+								"Dynamo Hatch,\n"+
+								"Charging Bus,\n"+
+								"Discharging Bus,\n"+
+								"Dynamo Buffer,\n"+
+								"Multi-Amp Dynamo Hatch.\n\n\n"+
+								"Structure MUST contain at least one input and one output hatch."
 				});
 
 		//Test Novel
@@ -182,8 +187,8 @@ public class BookHandler {
 
 	public static void runLater(){
 		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
-		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
-		ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
+		ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
+		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
 		ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
 		ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
 

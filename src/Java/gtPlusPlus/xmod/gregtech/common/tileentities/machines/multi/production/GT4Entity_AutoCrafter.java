@@ -15,7 +15,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -27,13 +26,14 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_AutoCrafter
-extends GT_MetaTileEntity_MultiBlockBase
+extends GregtechMeta_MultiBlockBase
 {
 
 	private MODE mMachineMode = MODE.ASSEMBLY;
@@ -367,7 +367,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 							}
 						}
 					}
-					
+
 					if (this.mTier > 5) {
 						this.mMaxProgresstime >>= this.mTier - 5;
 					}
@@ -531,10 +531,8 @@ extends GT_MetaTileEntity_MultiBlockBase
 		return false;
 	}
 
-
 	@Override
-	public String[] getInfoData() {
-
+	public String[] getExtraInfoData() {
 		final String tRunning = (this.mMaxProgresstime>0 ? "Auto-Crafter running":"Auto-Crafter stopped");
 		final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
 		String tSpecialText = ""+(60 + 12 * this.mTier)+"% chance to recover disassembled parts.";
@@ -564,14 +562,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Mode: "+tMode,
 				tSpecialText};
 	}
-
-	@Override
-	public boolean isGivingInformation() {
-		return true;
-	}
-
-
-	//else if (mMachineMode == MODE.ASEEMBLY){
 
 	private String getMode(){
 		return this.mMachineMode.name();
@@ -615,6 +605,11 @@ extends GT_MetaTileEntity_MultiBlockBase
 	public void doExplosion(long aExplosionPower) {
 		AC_Helper_Utils.removeCrafter(this);
 		super.doExplosion(aExplosionPower);
+	}
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
 	}
 
 }

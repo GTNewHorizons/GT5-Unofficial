@@ -29,6 +29,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -88,8 +89,28 @@ GT_MetaTileEntity_MultiBlockBase {
 		}		
 	}
 
+	public String[] getExtraInfoData() {
+		return new String[0];
+	};
+
 	@Override
 	public String[] getInfoData() {		
+
+		AutoMap<String> mInfo = new AutoMap<String>();
+		if (this.getMetaName() != "") {
+			mInfo.put(this.getMetaName());
+		}
+
+		String[] extra = getExtraInfoData();
+
+		if (extra == null) {
+			extra = new String[0];
+		}
+		if (extra.length > 0) {
+			for (String s : extra) {
+				mInfo.put(s);
+			}
+		}
 
 		long seconds = (this.mTotalRunTime/20);
 		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
@@ -98,15 +119,15 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
-		String[] g = {
-				"Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs",
-				"Efficiency: "+(this.mEfficiency / 100.0F) + "%",
-				"Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()),
-				"Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ",
-				""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.",
-				"Total Time in ticks: "+this.mTotalRunTime};
-		
-		return g;
+		mInfo.put("Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs");
+		mInfo.put("Efficiency: "+(this.mEfficiency / 100.0F) + "%");
+		mInfo.put("Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()));
+		mInfo.put("Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ");
+		mInfo.put(""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.");
+		mInfo.put("Total Time in ticks: "+this.mTotalRunTime);
+
+		String[] mInfo2 = mInfo.toArray();		
+		return mInfo2;
 
 
 
@@ -135,7 +156,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	public boolean explodesOnComponentBreak(ItemStack p0) {
 		return false;
 	}
-	
+
 	@Override
 	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
 		super.startSoundLoop(aIndex, aX, aY, aZ);
@@ -427,19 +448,19 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity,
 			final long aTick) {
-		
+
 		//Time Counter
 		if (aBaseMetaTileEntity.isServerSide()){
 			this.mTotalRunTime++;
 		}
-		
+
 		if (aBaseMetaTileEntity.isServerSide()) {
 			if (mUpdate == 0 || this.mStartUpCheck == 0) {
 				this.mChargeHatches.clear();
 				this.mDischargeHatches.clear();
 			}
 		}
-		
+
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
@@ -484,7 +505,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return mMode;
 	}
-	
+
 	protected ItemStack getGUIItemStack() {
 		ItemStack guiSlot = this.mInventory[1];		
 		return guiSlot;
@@ -621,7 +642,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
 		try { //gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
-			
+
 			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 			if (aMetaTileEntity == null) {
 				return false;
@@ -634,7 +655,7 @@ GT_MetaTileEntity_MultiBlockBase {
 					Logger.REFLECTION("Good Method Call for updateTexture.");
 					return true;
 				}
-						
+
 			}
 			else {
 				Logger.REFLECTION("Bad Method Call for updateTexture.");
@@ -660,7 +681,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		e.printStackTrace();
 		return false;	
 		}	
-		
+
 	}
 
 

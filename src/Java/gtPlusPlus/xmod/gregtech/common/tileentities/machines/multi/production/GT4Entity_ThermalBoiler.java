@@ -15,11 +15,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_ThermalBoiler
-extends GT_MetaTileEntity_MultiBlockBase
+extends GregtechMeta_MultiBlockBase
 {
 
 	private int mSuperEfficencyIncrease = 0;
@@ -259,6 +260,11 @@ extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+	}
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
 	}
 
 }
