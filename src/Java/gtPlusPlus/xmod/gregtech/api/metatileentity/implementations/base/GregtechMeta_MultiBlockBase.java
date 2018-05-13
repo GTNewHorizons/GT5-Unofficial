@@ -535,6 +535,47 @@ GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 
+	/**
+	 * Causes a Random Maint. Issue.
+	 * @return {@link boolean} - Returns whether or not an issue was caused, should always be true.
+	 */
+	public boolean causeMaintenanceIssue() {
+		boolean b = false;
+		switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
+			case 0 : {
+				this.mWrench = false;
+				b = true;
+				break;
+			}
+			case 1 : {
+				this.mScrewdriver = false;
+				b = true;
+				break;
+			}
+			case 2 : {
+				this.mSoftHammer = false;
+				b = true;
+				break;
+			}
+			case 3 : {
+				this.mHardHammer = false;
+				b = true;
+				break;
+			}
+			case 4 : {
+				this.mSolderingTool = false;
+				b = true;
+				break;
+			}
+			case 5 : {
+				this.mCrowbar = false;
+				b = true;
+				break;
+			}
+		}
+		return b;
+	}
+
 	@Override
 	public boolean addToMachineList(final IGregTechTileEntity aTileEntity,
 			final int aBaseCasingIndex) {

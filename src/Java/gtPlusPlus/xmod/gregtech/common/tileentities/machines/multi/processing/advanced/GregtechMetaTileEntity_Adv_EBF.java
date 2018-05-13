@@ -413,14 +413,24 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		
 	}
 	
+	private volatile int mGraceTimer = 100;
+	
+	@SuppressWarnings("unused")
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (this.getBaseMetaTileEntity().isActive()) {
-			if (this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 1))) {
-				//Nom Fuel
+		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0) {
+			if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 1))) {
+				if (mGraceTimer-- == 0) {
+					if (this.causeMaintenanceIssue()){
+						this.stopMachine();			
+					}
+					if (false) { //To be replaced with a config option or something
+						this.explodeMultiblock();							
+					}				
+				}
 			}
 			else {
-				this.getBaseMetaTileEntity().setActive(false);
+				mGraceTimer = 100;
 			}
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
