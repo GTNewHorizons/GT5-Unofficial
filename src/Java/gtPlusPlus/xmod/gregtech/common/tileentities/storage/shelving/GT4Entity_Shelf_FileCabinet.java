@@ -5,7 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GT_ItemStack;
 
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -18,12 +17,6 @@ public class GT4Entity_Shelf_FileCabinet extends GT4Entity_Shelf {
 	
 	public GT4Entity_Shelf_FileCabinet(String mName, String mDescriptionArray, ITexture[][][] mTextures) {
 		super(mName, mDescriptionArray, mTextures);
-	}
-
-
-	@Override
-	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-		return aSide != getBaseMetaTileEntity().getFrontFacing();
 	}
 
 	@Override
