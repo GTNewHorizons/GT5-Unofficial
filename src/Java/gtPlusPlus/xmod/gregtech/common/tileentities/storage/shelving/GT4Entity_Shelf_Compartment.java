@@ -14,13 +14,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
-	public static IIcon[] sIconList = new IIcon['?'];
+	public static IIcon[] sIconList = new IIcon[32];
+	
 
 	public GT4Entity_Shelf_Compartment(final int aID, final String aName, final String aNameRegional, final String aDescription) {
 		super(aID, aName, aNameRegional, aDescription);
@@ -36,7 +40,7 @@ public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
 	}
 
 	@Override
-	public boolean allowCoverOnSide(byte aSide, int aCoverID) {
+	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
 		return aSide != getBaseMetaTileEntity().getFrontFacing();
 	}
 
@@ -44,23 +48,26 @@ public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
 			this.mType = ((byte) ((this.mType + 1) % 16));
+			PlayerUtils.messagePlayer(aPlayer, "Set type to "+this.mType+".");
 		}
 	}
 
-	public IIcon getTextureIcon(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-		return aSide == aFacing ? sIconList[this.mType] : null;
-	}
-
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister aBlockIconRegister) {
 		for (int i = 0; i < 32; i++) {
 			sIconList[i] = aBlockIconRegister.registerIcon(CORE.MODID + ":" + "TileEntities/Compartment/" + i);
 		}
-	}
+	}*/
 
 	@Override
-	public void onLeftclick(EntityPlayer aPlayer) {
+	public ITexture[] getFront(final byte aColor) {
+		return new ITexture[]{TexturesGtBlock.OVERLAYS_COMPARTMENT_FRONT[this.mType < 16 ? this.mType : 0]};
+	}
+	
+	@Override
+	public void onLeftclick(IGregTechTileEntity aTile,EntityPlayer aPlayer) {
 		if ((this.mInventory[0] != null) && (this.mInventory[0].stackSize > 0)) {
 			ItemStack tOutput = GT_Utility.copy(new Object[] { this.mInventory[0] });
 			if (!aPlayer.isSneaking()) {
@@ -76,10 +83,11 @@ public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
 			tEntity.motionZ = 0.0D;
 			getBaseMetaTileEntity().getWorld().spawnEntityInWorld(tEntity);
 		}
+		super.onLeftclick(aTile, aPlayer);
 	}
 
 	@Override
-	public void onRightclick(EntityPlayer aPlayer) {
+	public boolean onRightclick(IGregTechTileEntity aTile, EntityPlayer aPlayer) {
 		ItemStack tStack = aPlayer.inventory.getStackInSlot(aPlayer.inventory.currentItem);
 		if (tStack == null) {
 			if ((this.mInventory[0] != null) && (this.mInventory[0].stackSize > 0)) {
@@ -91,26 +99,11 @@ public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
 			aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
 			getBaseMetaTileEntity().setInventorySlotContents(0, tStack);
 		}
-	}
-
-	public boolean allowPullStack(int aIndex, byte aSide, ItemStack aStack) {
-		return aIndex == 0;
+		return super.onRightclick(aTile, aPlayer);
 	}
 
 	@Override
-	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-		final ITexture[][][] rTextures = new ITexture[3][17][];
-		for (byte i = -1; i < 16; ++i) {
-			final ITexture[] tmp0 = { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_STEEL_BOTTOM,
-					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
-			rTextures[0][i + 1] = tmp0;
-			final ITexture[] tmp2 = { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_STEEL_TOP,
-					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
-			rTextures[1][i + 1] = tmp2;
-			final ITexture[] tmp3 = { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_STEEL_SIDE,
-					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
-			rTextures[2][i + 1] = tmp3;
-		}
-		return rTextures;
+	public boolean allowPullStack(IGregTechTileEntity p0, int p1, byte p2, ItemStack p3) {
+		return p1 == 0;
 	}
 }

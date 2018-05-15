@@ -10,10 +10,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 
 public class TexturesGtBlock {
 
+	private static AutoMap<Runnable> mCustomiconMap = new AutoMap<Runnable>();
+	
+	static {
+		
+	}
 
 	//public static ITexture[] CASING_BLOCKS_GTPP = new ITexture[256];
 
@@ -27,6 +33,7 @@ public class TexturesGtBlock {
 
 		public CustomIcon(final String aIconName) {
 			this.mIconName = aIconName;
+			mCustomiconMap.put(this);
 			Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
 		}
@@ -53,12 +60,47 @@ public class TexturesGtBlock {
 		}
 	}
 
+	
+	public static class VanillaIcon implements IIconContainer, Runnable {
+		protected IIcon mIcon;
+		protected String mIconName;
+
+		public VanillaIcon(final String aIconName) {
+			this.mIconName = aIconName;
+			mCustomiconMap.put(this);
+			Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
+			GregTech_API.sGTBlockIconload.add(this);
+		}
+
+		@Override
+		public IIcon getIcon() {
+			return this.mIcon;
+		}
+
+		@Override
+		public IIcon getOverlayIcon() {
+			return null;
+		}
+
+		@Override
+		public void run() {
+			this.mIcon = GregTech_API.sBlockIcons.registerIcon("minecraft" + ":"  + this.mIconName);
+		}
+
+		@Override
+		public ResourceLocation getTextureFile() {
+			return TextureMap.locationBlocksTexture;
+		}
+	}
 
 	/*
 	 * Add Some Custom Textures below.
 	 * I am not sure whether or not I need to declare them as such, but better to be safe than sorry.
 	 * Right?
 	 */
+	
+	//Vanilla Textures
+	public static final VanillaIcon VanillaIcon_OakPlanks = new VanillaIcon("planks_oak");
 
 	
 
@@ -70,8 +112,68 @@ public class TexturesGtBlock {
 	public static final CustomIcon OVERLAY_ENERGY_OUT_BUFFER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_BUFFER");
 	public static final CustomIcon OVERLAY_ENERGY_OUT_MULTI_BUFFER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_MULTI_BUFFER");
 	
+	//Wooden Shelf and Compartment Overlays
+	public static final CustomIcon OVERLAY_WOODEN_SHELF_FRONT = new CustomIcon("TileEntities/Compartment/wood_shelf");
+	public static final CustomIcon OVERLAY_WOODEN_SHELF_CANS_FRONT = new CustomIcon("TileEntities/Compartment/wood_shelf_cans");
+	public static final CustomIcon OVERLAY_WOODEN_SHELF_PAPER_FRONT = new CustomIcon("TileEntities/Compartment/wood_shelf_paper");
+	public static final CustomIcon OVERLAY_CABINET_1 = new CustomIcon("TileEntities/Compartment/0");
+	public static final CustomIcon OVERLAY_CABINET_2 = new CustomIcon("TileEntities/Compartment/1");
+	public static final CustomIcon OVERLAY_CABINET_3 = new CustomIcon("TileEntities/Compartment/2");
+	public static final CustomIcon OVERLAY_CABINET_4 = new CustomIcon("TileEntities/Compartment/3");
+	public static final CustomIcon OVERLAY_CABINET_5 = new CustomIcon("TileEntities/Compartment/4");
+	public static final CustomIcon OVERLAY_CABINET_6 = new CustomIcon("TileEntities/Compartment/5");
+	public static final CustomIcon OVERLAY_CABINET_7 = new CustomIcon("TileEntities/Compartment/6");
+	public static final CustomIcon OVERLAY_CABINET_8 = new CustomIcon("TileEntities/Compartment/7");
+	public static final CustomIcon OVERLAY_CABINET_9 = new CustomIcon("TileEntities/Compartment/8");
+	public static final CustomIcon OVERLAY_CABINET_10 = new CustomIcon("TileEntities/Compartment/9");
+	public static final CustomIcon OVERLAY_CABINET_11 = new CustomIcon("TileEntities/Compartment/10");
+	public static final CustomIcon OVERLAY_CABINET_12 = new CustomIcon("TileEntities/Compartment/11");
+	public static final CustomIcon OVERLAY_CABINET_13 = new CustomIcon("TileEntities/Compartment/12");
+	public static final CustomIcon OVERLAY_CABINET_14 = new CustomIcon("TileEntities/Compartment/13");
+	public static final CustomIcon OVERLAY_CABINET_15 = new CustomIcon("TileEntities/Compartment/14");
+	public static final CustomIcon OVERLAY_CABINET_16 = new CustomIcon("TileEntities/Compartment/15");
+	public static final CustomIcon OVERLAY_COMPARTMENT_1 = new CustomIcon("TileEntities/Compartment/16");
+	public static final CustomIcon OVERLAY_COMPARTMENT_2 = new CustomIcon("TileEntities/Compartment/17");
+	public static final CustomIcon OVERLAY_COMPARTMENT_3 = new CustomIcon("TileEntities/Compartment/18");
+	public static final CustomIcon OVERLAY_COMPARTMENT_4 = new CustomIcon("TileEntities/Compartment/19");
+	public static final CustomIcon OVERLAY_COMPARTMENT_5 = new CustomIcon("TileEntities/Compartment/20");
+	public static final CustomIcon OVERLAY_COMPARTMENT_6 = new CustomIcon("TileEntities/Compartment/21");
+	public static final CustomIcon OVERLAY_COMPARTMENT_7 = new CustomIcon("TileEntities/Compartment/22");
+	public static final CustomIcon OVERLAY_COMPARTMENT_8 = new CustomIcon("TileEntities/Compartment/23");
+	public static final CustomIcon OVERLAY_COMPARTMENT_9 = new CustomIcon("TileEntities/Compartment/24");
+	public static final CustomIcon OVERLAY_COMPARTMENT_10 = new CustomIcon("TileEntities/Compartment/25");
+	public static final CustomIcon OVERLAY_COMPARTMENT_11 = new CustomIcon("TileEntities/Compartment/26");
+	public static final CustomIcon OVERLAY_COMPARTMENT_12 = new CustomIcon("TileEntities/Compartment/27");
+	public static final CustomIcon OVERLAY_COMPARTMENT_13 = new CustomIcon("TileEntities/Compartment/28");
+	public static final CustomIcon OVERLAY_COMPARTMENT_14 = new CustomIcon("TileEntities/Compartment/29");
+	public static final CustomIcon OVERLAY_COMPARTMENT_15 = new CustomIcon("TileEntities/Compartment/30");
+	public static final CustomIcon OVERLAY_COMPARTMENT_16 = new CustomIcon("TileEntities/Compartment/31");
+	
+	
 	//Overlay Arrays
-	public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER= new ITexture[]{
+	public static ITexture[] OVERLAYS_ENERGY_OUT_BUFFER = new ITexture[]{
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{220, 220, 220, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{220, 220, 220, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{255, 100, 0, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{255, 255, 30, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{128, 128, 128, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{240, 240, 245, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_BUFFER,
+					new short[]{240, 240, 245, 0})}; 
+	
+	public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[]{
 			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
 					new short[]{220, 220, 220, 0}),
 			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
@@ -92,6 +194,74 @@ public class TexturesGtBlock {
 					new short[]{240, 240, 245, 0}),
 			new GT_RenderedTexture((IIconContainer) OVERLAY_ENERGY_OUT_MULTI_BUFFER,
 					new short[]{240, 240, 245, 0})}; 
+
+	public static ITexture[] OVERLAYS_CABINET_FRONT = new ITexture[]{
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_1,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_2,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_3,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_4,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_5,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_6,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_7,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_8,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_9,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_10,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_11,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_12,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_13,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_14,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_15,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_CABINET_16,
+					new short[]{255, 255, 255, 0}),}; 
+	
+	public static ITexture[] OVERLAYS_COMPARTMENT_FRONT = new ITexture[]{
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_1,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_2,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_3,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_4,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_5,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_6,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_7,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_8,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_9,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_10,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_11,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_12,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_13,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_14,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_15,
+					new short[]{255, 255, 255, 0}),
+			new GT_RenderedTexture((IIconContainer) OVERLAY_COMPARTMENT_16,
+					new short[]{255, 255, 255, 0}),}; 
 
 	//Controllers
 	private static final CustomIcon Internal_Casing_Fusion_Simple_Front = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT");

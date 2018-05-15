@@ -286,12 +286,12 @@ public class RECIPES_Machines {
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
-					CI.circuitPrimitive, "plateStaballloy", CI.circuitPrimitive,
+					"circuitPrimitive", "plateStaballloy", "circuitPrimitive",
 					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
 					RECIPE_BufferCore_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[2], cableTier2, CI.component_Plate[2],
-					CI.circuitTier1, IC2MFE, CI.circuitTier1,
+					CI.circuitTier1, CI.machineHull_HV, CI.circuitTier1,
 					CI.component_Plate[2], cableTier2, CI.component_Plate[2],
 					RECIPE_BufferCore_LV);
 			RecipeUtils.addShapedGregtechRecipe(

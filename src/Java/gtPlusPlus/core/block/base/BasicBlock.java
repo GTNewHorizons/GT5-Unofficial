@@ -25,7 +25,7 @@ public class BasicBlock extends BlockContainer {
 		super(material);
 		this.setBlockName(Utils.sanitizeString(unlocalizedName));
 
-		if (type != BlockTypes.ORE) {
+		if (type != BlockTypes.ORE && !unlocalizedName.toLowerCase().contains("ore")) {
 			this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
 		}
 

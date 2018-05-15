@@ -268,7 +268,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				double fDam = Math.floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
 				damageValue -= fDam;
 				
-				Logger.INFO("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
+				//Logger.INFO("Trying to do "+damageValue+" damage to the rotor. ["+fDam+"]");
 				/*Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]);
 				Materials M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);				
 

@@ -39,8 +39,8 @@ public class RecipeGen_Ore implements Runnable{
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
 			final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 120 : 30;
 			final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
-			Material bonusA; //Ni
-			Material bonusB; //Tin
+			Material bonusA = null; //Ni
+			Material bonusB = null; //Tin
 
 			if (material.getComposites().get(0) != null){
 				bonusA = material.getComposites().get(0).getStackMaterial();
@@ -50,34 +50,33 @@ public class RecipeGen_Ore implements Runnable{
 			}
 
 			boolean allFailed = false;
-			if (material.getComposites().size() >= 1 && material.getComposites().get(1) != null){
+			if (material.getComposites().size() >= 2 && material.getComposites().get(1) != null){
 				bonusB = material.getComposites().get(1).getStackMaterial();
 				//If Secondary Output has no solid output, try the third (If it exists)
-				if (!bonusB.hasSolidForm() && material.getComposites().size() >= 2 && material.getComposites().get(2) != null) {
+				if (!bonusB.hasSolidForm() && material.getComposites().size() >= 3 && material.getComposites().get(2) != null) {
 					bonusB = material.getComposites().get(2).getStackMaterial();
 					//If Third Output has no solid output, try the Fourth (If it exists)
-					if (!bonusB.hasSolidForm() && material.getComposites().size() >= 3 && material.getComposites().get(3) != null) {
+					if (!bonusB.hasSolidForm() && material.getComposites().size() >= 4 && material.getComposites().get(3) != null) {
 						bonusB = material.getComposites().get(3).getStackMaterial();
 						//If Fourth Output has no solid output, try the Fifth (If it exists)
-						if (!bonusB.hasSolidForm() && material.getComposites().size() >= 4 && material.getComposites().get(4) != null) {
+						if (!bonusB.hasSolidForm() && material.getComposites().size() >= 5 && material.getComposites().get(4) != null) {
 							bonusB = material.getComposites().get(4).getStackMaterial();
 							//If Fifth Output has no solid output, default out to Chrome.
-							if (!bonusB.hasSolidForm() && material.getComposites().size() >= 4 && material.getComposites().get(4) != null) {
+							if (!bonusB.hasSolidForm()) {
 								allFailed = true;
-								bonusB = null;
+								bonusB = ELEMENT.getInstance().PLATINUM;
 							}
 						}
 					}
 				}
 			}
 			else {
-				allFailed = true;	
-				bonusB = null;
+				allFailed = true;
 			}
 
 			//Default out if it's made of fluids or some shit.
-			if (allFailed) {
-				bonusB = ELEMENT.getInstance().CHROMIUM;
+			if (allFailed || bonusB == null) {
+				bonusB = ELEMENT.getInstance().PLATINUM;
 			}
 
 			AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<Pair<Integer, Material>>();
