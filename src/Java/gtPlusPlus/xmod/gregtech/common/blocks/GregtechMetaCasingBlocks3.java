@@ -64,7 +64,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Supply Depot Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Advanced Cryogenic Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Casing MK III");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder");
@@ -97,11 +97,11 @@ extends GregtechMetaCasingBlocksAbstract {
 			final int aSide) {
 		final Block thisBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
 		final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-		if ((tMeta != 12 && tMeta != 13)|| !GregtechMetaCasingBlocks3.mConnectedMachineTextures) {
+		if ((tMeta != 12)|| !GregtechMetaCasingBlocks3.mConnectedMachineTextures) {
 			return getIcon(aSide, tMeta);
 		}
 		final int tStartIndex = 0;
-		if (tMeta == 12 || tMeta == 13) {
+		if (tMeta == 12) {
 			final boolean[] tConnectedSides = {
 					aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,

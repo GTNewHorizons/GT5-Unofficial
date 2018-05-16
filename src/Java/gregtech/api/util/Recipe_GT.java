@@ -971,9 +971,11 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
 				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
 				for (int i = 0; i < itemLimit; ++i) {
+					if (this.mOutputs[i] != null)
 					mNEIMap.put((Object) this.mOutputs[i].copy());
 				}				
 				for (int i = 0; i < fluidLimit; ++i) {
+					if (this.mFluidOutputs[i] != null)
 					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
 				}
 				int xPos[] = new int[] {102, 120, 138};
@@ -1136,9 +1138,11 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);				
 				AutoMap<Object> mNEIMap = new AutoMap<Object>();				
 				for (int i = 0; i < itemLimit; ++i) {
+					if (this.mOutputs[i] != null)
 					mNEIMap.put((Object) this.mOutputs[i].copy());
 				}				
 				for (int i = 0; i < fluidLimit; ++i) {
+					if (this.mFluidOutputs[i] != null)
 					mNEIMap.put((Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true));
 				}
 				int xPos[] = new int[] {102, 120, 138};
@@ -1301,10 +1305,12 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 						GT_Recipe_Map_AdvancedVacuumFreezer.FLUID_OUTPUT_COUNT);
 				final ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
 				for (int i = 0; i < itemLimit; ++i) {
+					if (this.mOutputs[i] != null)
 					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
 							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5));
 				}
 				for (int i = 0; i < fluidLimit; ++i) {
+					if (this.mFluidOutputs[i] != null)
 					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
 							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23));
 				}
