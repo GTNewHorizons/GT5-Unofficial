@@ -59,6 +59,11 @@ public class Gregtech4Content {
 						.getStackForm(1L));
 		GregtechItemList.GT4_Shelf_Compartment.set(new GT4Entity_Shelf_Compartment(874, "gtplusplus.shelf.compartment",
 				"Compartment", "Stores Books & Things").getStackForm(1L));
+		
+		//Custom Storage
+		GregtechItemList.GT4_Shelf_Large.set(
+				new GT4Entity_Shelf_Large(966, "gtplusplus.shelf.large", "Large Shelf", "A spacious shelf", 2048)
+						.getStackForm(1L));
 	}
 
 	private static void thermalBoiler() {

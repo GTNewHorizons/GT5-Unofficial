@@ -14,7 +14,9 @@ import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Large;
 
 public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 	public int mContent = 0;
@@ -32,9 +34,18 @@ public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		if (!this.mTileEntity.isClientSide() && this.mTileEntity.getMetaTileEntity() != null) {
+			
 			if (this.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_TieredChest) {
 				this.mContent = ((GT_MetaTileEntity_TieredChest) this.mTileEntity.getMetaTileEntity()).mItemCount;
-			} else {
+			} 
+			
+			else if (ReflectionUtils.getField(this.mTileEntity, "mItemCount") != null) {
+				this.mContent = ReflectionUtils.getField(this.mTileEntity, "mItemCount");
+			}
+			else if (this.mTileEntity.getMetaTileEntity() instanceof GT4Entity_Shelf_Large) {
+				this.mContent = ((GT4Entity_Shelf_Large) this.mTileEntity.getMetaTileEntity()).mItemCount;
+			}
+			else {
 				this.mContent = 0;
 			}
 

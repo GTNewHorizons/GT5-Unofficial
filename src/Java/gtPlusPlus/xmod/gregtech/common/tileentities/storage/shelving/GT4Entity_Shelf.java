@@ -28,6 +28,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 	public byte mType = 0;
 	public String mOldDesc = "";
 	public boolean mLocked = false;
+	protected byte mIndex = (byte) MathUtils.randInt(1, 3);
 	public static GT_RenderedTexture texBottom =  new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_bottom"));
 	public static GT_RenderedTexture texTop =  new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_top"));
 	public static GT_RenderedTexture texSide =  new GT_RenderedTexture(new CustomIcon("TileEntities/gt4/machine_side"));
@@ -92,7 +93,10 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 	}
 
 	@Override
-	public boolean onRightclick(IGregTechTileEntity aTile, EntityPlayer aPlayer) {
+	public boolean onRightclick(IGregTechTileEntity aTile, EntityPlayer aPlayer) {	
+		if (aTile.isClientSide()) {
+			return true;
+		}
 		ItemStack tStack = aPlayer.inventory.getStackInSlot(aPlayer.inventory.currentItem);
 		if (tStack == null) {
 			if (KeyboardUtils.isCtrlKeyDown()) {
@@ -104,11 +108,11 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 			else {
 				if ((this.mInventory[0] != null) && (this.mInventory[0].stackSize > 0)) {
 					if (!this.mLocked) {
-					PlayerUtils.messagePlayer(aPlayer, "Removed "+this.mInventory[0].getDisplayName()+" x"+this.mInventory[0].stackSize+".");
-					aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, this.mInventory[0]);
-					getBaseMetaTileEntity().setInventorySlotContents(0, null);
-					this.mType = 0;
-					return true;
+						PlayerUtils.messagePlayer(aPlayer, "Removed "+this.mInventory[0].getDisplayName()+" x"+this.mInventory[0].stackSize+".");
+						aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, this.mInventory[0]);
+						getBaseMetaTileEntity().setInventorySlotContents(0, null);
+						this.mType = 0;
+						return true;
 					}
 					else {
 						PlayerUtils.messagePlayer(aPlayer, "This container is locked. It belongs to "+aTile.getOwnerName()+".");
@@ -130,6 +134,9 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 			return true;
 		}
 		else {
+			if (this.mInventory[0] == null) {
+				this.mType = 0;	
+			}
 			return super.onRightclick(aTile, aPlayer);
 		}
 	}
@@ -166,12 +173,20 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 	public void saveNBTData(NBTTagCompound aNBT) {//mLocked
 		aNBT.setInteger("mType", this.mType);
 		aNBT.setBoolean("mLocked", this.mLocked);
+		aNBT.setByte("mIndex", this.mIndex);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		this.mType = ((byte) aNBT.getInteger("mType"));
-		this.mLocked = (aNBT.getBoolean("mLocked"));
+		if (aNBT.hasKey("mIndex")) {
+			this.mType = ((byte) aNBT.getInteger("mType"));
+		}
+		if (aNBT.hasKey("mIndex")) {
+			this.mLocked = (aNBT.getBoolean("mLocked"));
+		}
+		if (aNBT.hasKey("mIndex")) {
+			this.mIndex = aNBT.getByte("mIndex");
+		}
 	}
 
 	@Override
@@ -189,9 +204,9 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 		return new String[] { 
 				mOldDesc,
 				"Decorative Item Storage", 
-				"Right click to store something",
-				"Ctrl + right click to check contents",
-				"Ctrl + right click with a screwdriver to lock",
+				"Right click to store/remove something",
+				"Ctrl + Rmb to check contents",
+				"Ctrl + Rmb with a screwdriver to lock",
 				CORE.GT_Tooltip };
 	}
 
@@ -334,6 +349,11 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 		else {
 			super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		}
+	}
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {	
+		super.onPreTick(aBaseMetaTileEntity, aTick);
 	}
 
 }
