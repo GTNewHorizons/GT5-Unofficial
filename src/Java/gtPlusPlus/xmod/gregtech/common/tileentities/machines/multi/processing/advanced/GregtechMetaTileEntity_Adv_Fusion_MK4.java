@@ -7,6 +7,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
+import gtPlusPlus.core.block.ModBlocks;
+
 import net.minecraft.block.Block;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
@@ -35,18 +37,23 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     }
 
     @Override
+    public Block getCasing() {
+        return getFusionCoil();
+    }
+
+    @Override
     public int getCasingMeta() {
-        return 8;
+        return 12;
     }
 
     @Override
     public Block getFusionCoil() {
-        return GregTech_API.sBlockCasings4;
+        return ModBlocks.blockCasings3Misc;
     }
 
     @Override
     public int getFusionCoilMeta() {
-        return 7;
+        return 13;
     }
 
     public String[] getDescription() {
@@ -63,11 +70,6 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     @Override
     public int tierOverclock() {
         return 6;
-    }
-
-    @Override
-    public Block getCasing() {
-        return GregTech_API.sBlockCasings4;
     }
 
     @Override

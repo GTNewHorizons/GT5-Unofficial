@@ -107,7 +107,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
     }
 
     public boolean checkRecipe(ItemStack aStack) {
-        return checkRecipeGeneric(4, 100, 100); //Will have to clone the logic from parent class to handle heating coil tiers.
+        return checkRecipeGeneric(8, 90, 120); //Will have to clone the logic from parent class to handle heating coil tiers.
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {

@@ -10,7 +10,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
+
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
 
@@ -61,19 +64,19 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 	}
 
 	@Override
-	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-		//Single Block Behaviour
-		//return super.onRightclick(aTile, aPlayer);		
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {		
 		if (aBaseMetaTileEntity.isClientSide()) {
 			return true;
-		}	
-		
-		String itemName = (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing.");
-		String itemAmount = (this.mItemCount > 0 ? ""+this.mItemCount : "bad");
-		String itemMessage = "This container currently holds "+(itemAmount.equalsIgnoreCase("bad") ? "nothing." : itemName+" x"+itemAmount+".");
-		PlayerUtils.messagePlayer(aPlayer, itemMessage);
-	
-		aBaseMetaTileEntity.openGUI(aPlayer);
+		}
+		if (KeyboardUtils.isCtrlKeyDown()) {
+			String itemName = (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing.");
+			String itemAmount = (this.mItemCount > 0 ? ""+this.mItemCount : "bad");
+			String itemMessage = "This container currently holds "+(itemAmount.equalsIgnoreCase("bad") ? "nothing." : itemName+" x"+itemAmount+".");
+			PlayerUtils.messagePlayer(aPlayer, itemMessage);
+		}
+		else {
+			aBaseMetaTileEntity.openGUI(aPlayer);
+		}
 		return true;
 	}
 
@@ -115,7 +118,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {		
 		if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
-
+			try {
 			if (this.mInventory[0] != null) {
 				this.mType = (byte) this.mIndex;		
 			}
@@ -158,6 +161,12 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 			} else {
 				this.mInventory[2] = null;
 			}
+			}
+			catch (Throwable t) {
+				if (t instanceof ArrayIndexOutOfBoundsException) {
+					
+				}
+			}
 		}
 	}
 
@@ -170,8 +179,13 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 	}
 
 	public int getProgresstime() {
+		try {
 		return this.mItemCount + ((this.mInventory[0] == null) ? 0 : this.mInventory[0].stackSize)
 				+ ((this.mInventory[1] == null) ? 0 : this.mInventory[1].stackSize);
+		}
+		catch (Throwable t) {
+			return 0;
+		}
 	}
 
 	public int maxProgresstime() {
@@ -201,6 +215,51 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 				this.getLocalName(),
 				"Storing: "+this.mItemStack.getDisplayName()+" x"+Integer.toString(this.mItemCount),
 				"Space Remaining: "+Integer.toString(this.getMaxItemCount()-this.getItemCount())+"/"+Integer.toString(this.getMaxItemCount())};
+	}
+
+	@Override
+	public String[] getDescription() {
+		String[] mSuper = super.getDescription();
+		String[] desc = new String[mSuper.length+1];
+		for (int i=0;i>mSuper.length;i++) {
+			desc[i] = mSuper[i];
+		}
+		desc[desc.length-1] = "Control + Rmb block to check contents";
+		return desc;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
+		Logger.INFO("1:"+aIndex);
+		if (aIndex == 2) {
+			if (ItemStack.areItemStacksEqual(aStack, mItemStack)) {
+				return true;
+			}
+			else {
+				if (mItemStack == null) {
+					return true;
+				}
+				return false;
+			}
+		}
+		return super.isItemValidForSlot(aIndex, aStack);
+	}
+
+	@Override
+	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+		Logger.INFO("2:"+aIndex);
+		if (aIndex == 0) {
+			if (ItemStack.areItemStacksEqual(aStack, mItemStack)) {
+				return true;
+			}
+			else {
+				if (mItemStack == null) {
+					return true;
+				}
+				return false;
+			}
+		}
+		return super.canInsertItem(aIndex, aStack, aSide);
 	}
 
 

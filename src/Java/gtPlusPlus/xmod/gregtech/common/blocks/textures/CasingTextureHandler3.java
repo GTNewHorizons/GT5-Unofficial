@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import net.minecraft.util.IIcon;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
 
 public class CasingTextureHandler3 {
 
@@ -44,14 +45,9 @@ public class CasingTextureHandler3 {
 				//Adv. EBF
 				return TexturesGtBlock.TEXTURE_CASING_ADVANCED_VOLCNUS.getIcon();
 			case 12:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II.getIcon();
 			case 13:
-				if (aSide <2) {
-					return TexturesGtBlock._PlaceHolder.getIcon();					
-				}
-				else {
-					return TexturesGtBlock._PlaceHolder.getIcon();					
-				}
+				return TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
 			case 14:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 15:
@@ -63,6 +59,10 @@ public class CasingTextureHandler3 {
 			}
 		}
 		return TexturesGtBlock._PlaceHolder.getIcon();
+	}
+
+	static {
+		GregtechMetaCasingBlocks3.mConnectedMachineTextures = true;
 	}
 
 }

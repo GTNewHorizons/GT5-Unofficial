@@ -8,42 +8,43 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+import gtPlusPlus.core.slots.SlotLockedInput;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Large;
 
 public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
+	
 	public int mContent = 0;
+	private ItemStack mLockedSlotStack = null;
 
 	public CONTAINER_SuperChest(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
 	}
 
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
-		this.addSlotToContainer(new Slot(this.mTileEntity, 0, 80, 17));
+		this.addSlotToContainer(new SlotLockedInput(this.mTileEntity, 0, 80, 17, mLockedSlotStack));
 		this.addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 1, 80, 53));
 		this.addSlotToContainer(new GT_Slot_Render(this.mTileEntity, 2, 59, 42));
 	}
 
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		if (!this.mTileEntity.isClientSide() && this.mTileEntity.getMetaTileEntity() != null) {
-			
+		if (!this.mTileEntity.isClientSide() && this.mTileEntity.getMetaTileEntity() != null) {			
 			if (this.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_TieredChest) {
 				this.mContent = ((GT_MetaTileEntity_TieredChest) this.mTileEntity.getMetaTileEntity()).mItemCount;
-			} 
-			
-			else if (ReflectionUtils.getField(this.mTileEntity, "mItemCount") != null) {
-				this.mContent = ReflectionUtils.getField(this.mTileEntity, "mItemCount");
+				mLockedSlotStack =  ((GT_MetaTileEntity_TieredChest) this.mTileEntity.getMetaTileEntity()).mItemStack;
 			}
-			else if (this.mTileEntity.getMetaTileEntity() instanceof GT4Entity_Shelf_Large) {
+			if (this.mTileEntity.getMetaTileEntity() instanceof GT4Entity_Shelf_Large) {
 				this.mContent = ((GT4Entity_Shelf_Large) this.mTileEntity.getMetaTileEntity()).mItemCount;
+				mLockedSlotStack =  ((GT4Entity_Shelf_Large) this.mTileEntity.getMetaTileEntity()).mItemStack;
 			}
 			else {
 				this.mContent = 0;
@@ -56,8 +57,7 @@ public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 				var1.sendProgressBarUpdate(this, 100, this.mContent & 65535);
 				var1.sendProgressBarUpdate(this, 101, this.mContent >>> 16);
 			}
-
-		}
+		}		
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -227,7 +227,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
 				EV_MACHINE_Cutter = ItemList.Machine_EV_Cutter.get(1);
 				EV_MACHINE_Extruder = ItemList.Machine_EV_Extruder.get(1);
-				EV_MACHINE_Sifter = ItemList.Machine_EV_Sifter.get(1);
+				EV_MACHINE_Sifter = ItemList.Machine_HV_Sifter.get(1);
 				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
 				EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
 				EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);  
@@ -243,7 +243,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
 				EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
 				EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
-				EV_MACHINE_Sifter = ItemList.Machine_IV_Sifter.get(1);
+				EV_MACHINE_Sifter = ItemList.Machine_HV_Sifter.get(1);
 				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
 				EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
 				EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);  
@@ -1044,6 +1044,19 @@ public class RECIPES_Machines {
 
 
 			}
+			
+			//Shelves
+			RecipeUtils.addShapedGregtechRecipe(
+					"screwWood", "plateWood", "screwWood",
+					CI.craftingToolHammer_Hard, "frameGtWood", CI.craftingToolHammer_Soft,
+					"plateWood", "plateWood", "plateWood",
+					GregtechItemList.GT4_Shelf.get(2));
+
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {GregtechItemList.GT4_Shelf.get(1)}, GregtechItemList.GT4_Shelf_Compartment.get(1));
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {GregtechItemList.GT4_Shelf_Compartment.get(1)}, GregtechItemList.GT4_Shelf_Desk.get(1));
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {GregtechItemList.GT4_Shelf_Desk.get(1)}, GregtechItemList.GT4_Shelf_Iron.get(1));
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {GregtechItemList.GT4_Shelf_Iron.get(1)}, GregtechItemList.GT4_Shelf_FileCabinet.get(1));
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[] {GregtechItemList.GT4_Shelf_FileCabinet.get(1)}, GregtechItemList.GT4_Shelf.get(1));
 
 
 			//Cyclotron			
