@@ -59,7 +59,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     public String[] getDescription() {
         return new String[]{
         		"HARNESSING THE POWER OF A NEUTRON STAR", 
-        		"Fusion Machine Casings MK III around Advanced Fusion Coil Blocks", 
+        		"Fusion Machine Casings MK III around Advanced Fusion Coils", 
         		"2-16 Input Hatches", 
         		"1-16 Output Hatches", 
         		"1-16 Energy Hatches", 
