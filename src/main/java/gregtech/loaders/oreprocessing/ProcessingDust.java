@@ -127,7 +127,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
                         break;
                     case "Mercury":
-                        System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
+                    //   System.err.println("Quicksilver Dust?, To melt that, you don't even need a Furnace...");
                         break;
                     // case "Tetrahedrite": case "Chalcopyrite": case "Malachite":
                     //    GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Copper, 6L));

@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -10,13 +12,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -25,6 +26,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
+    protected boolean looseFit=false;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -212,11 +214,11 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
         }
 
         String tRunning = mMaxProgresstime>0 ?
-                EnumChatFormatting.GREEN+"Turbine running"+EnumChatFormatting.RESET :
-                EnumChatFormatting.RED+"Turbine stopped"+EnumChatFormatting.RESET;
+                EnumChatFormatting.GREEN+I18n.format("GT5U.turbine.running.true")+EnumChatFormatting.RESET :
+                EnumChatFormatting.RED+I18n.format("GT5U.turbine.running.false")+EnumChatFormatting.RESET;
         String tMaintainance = getIdealStatus() == getRepairStatus() ?
-                EnumChatFormatting.GREEN+"No Maintainance issues"+EnumChatFormatting.RESET :
-                EnumChatFormatting.RED+"Needs Maintainance"+EnumChatFormatting.RESET ;
+                EnumChatFormatting.GREEN+I18n.format("GT5U.turbine.maintenance.false")+EnumChatFormatting.RESET :
+                EnumChatFormatting.RED+I18n.format("GT5U.turbine.maintenance.true")+EnumChatFormatting.RESET ;
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
@@ -231,21 +233,24 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
                 maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
             }
         }
-
-        return new String[]{
-                EnumChatFormatting.BLUE+"Large Turbine"+EnumChatFormatting.RESET,
-                "Stored Energy:",
-                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
-                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
-                tRunning,
-                "Current Output: "+EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t",
-                "Optimal Flow: "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t",
-                "Fuel Remaining: "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L",
-                "Current Speed: "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%",
-                "Turbine Damage: "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%",
-                tMaintainance,
-                "Pollution reduced to: "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+        String[] ret = new String[]{
+                // 8 Lines available for information panels
+                tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t", /* 1 */
+                tMaintainance, /* 2 */
+                I18n.format("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", /* 2 */
+                I18n.format("GT5U.turbine.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ /* 3 */
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU", 
+                I18n.format("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + /* 4 */
+                        EnumChatFormatting.YELLOW+" ("+(looseFit?I18n.format("GT5U.turbine.loose"):I18n.format("GT5U.turbine.tight"))+")", /* 5 */
+                I18n.format("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", /* 6 */
+                I18n.format("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", /* 7 */
+                I18n.format("GT5U.turbine.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" /* 8 */
         };
+        if (!this.getClass().getName().contains("Steam"))
+        	ret[4]=I18n.format("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
+        return ret;
+       
+        	
     }
 
     @Override
