@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -449,9 +450,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 
         return new String[]{
                 EnumChatFormatting.BLUE+"Fusion Reactor MK "+EnumChatFormatting.RESET+tier,
-                "EU Required: "+EnumChatFormatting.RED+powerRequired+EnumChatFormatting.RESET+"EU/t",
-                "Stored EU: "+EnumChatFormatting.GREEN+mEUStore+EnumChatFormatting.RESET+" EU / "+EnumChatFormatting.YELLOW+maxEUStore()+EnumChatFormatting.RESET+" EU",
-                "Plasma Output: "+EnumChatFormatting.YELLOW+plasmaOut+EnumChatFormatting.RESET+"L/t"};
+                
+                I18n.format("GT5U.fusion.req")+": " +EnumChatFormatting.RED+powerRequired+EnumChatFormatting.RESET+"EU/t",
+                I18n.format("GT5U.multiblock.energy")+": " +EnumChatFormatting.GREEN+mEUStore+EnumChatFormatting.RESET+" EU / "+EnumChatFormatting.YELLOW+maxEUStore()+EnumChatFormatting.RESET+" EU",
+                I18n.format("GT5U.fusion.plasma")+": " +EnumChatFormatting.YELLOW+plasmaOut+EnumChatFormatting.RESET+"L/t"};
     }
 
     @Override
