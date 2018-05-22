@@ -86,6 +86,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return new String[]{
 				"Controller Block for the Matter Fabricator",
 				"Produces UU-Matter from UU-Amplifier",
+				"Use numbered circuits in GUI slot to change mode",
+				"[19] Junk Items to Scrap",
+				"[20] Junk Items to UU-A",
+				"[21] Scrap to UU-A",
+				"[22] Produce UU-M",
 				"Size(WxHxD): 5x4x5, Controller (Bottom center)",
 				"3x1x3 Matter Generation Coils (Inside bottom 5x1x5 layer)",
 				"9x Matter Generation Coils (Centered 3x1x3 area in Bottom layer)",

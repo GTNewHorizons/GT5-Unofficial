@@ -764,5 +764,37 @@ public class ItemUtils {
 			return blockName;
 		}				
 	}
+	/**
+	 * 
+	 * @param mInputs
+	 * @return {@link Boolean} - True if {@link ItemStack}[] only contains valid items.
+	 */
+	public static boolean checkForInvalidItems(ItemStack[] mInputs) {
+		if (mInputs == null || mInputs.length == 0) {
+			return false;
+		}
+		for (ItemStack stack : mInputs) {
+			if (stack != null) {
+				if (stack.getItem() != null) {					
+					if (stack.getItem() == ModItems.AAA_Broken || stack.getItem().getClass() == ModItems.AAA_Broken.getClass()){
+						return false;
+					}
+					else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem().getClass() == ModItems.ZZZ_Empty.getClass()){
+						return false;
+					}
+					else {
+						continue;
+					}
+				}
+				else {
+					continue;
+				}
+			}
+			else {
+				continue;
+			}
+		}		
+		return true;
+	}
 
 }

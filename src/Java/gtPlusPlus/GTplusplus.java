@@ -215,14 +215,18 @@ public class GTplusplus implements ActionListener {
 		//Large Centrifuge generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
 			if (x != null) {
-				CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
+					CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				}
 			}
 		}
 
 		//Large Electrolyzer generation
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
 			if (x != null) {
-				CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
+					CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				}
 			}
 		}
 
@@ -234,7 +238,9 @@ public class GTplusplus implements ActionListener {
 				FluidStack[] y = new FluidStack[len + 1];
 				int slot = y.length - 1;				
 				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);
-				CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
+					CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				}
 			}
 		}
 
@@ -247,7 +253,7 @@ public class GTplusplus implements ActionListener {
 				mapKey++;
 			}
 		}*/
-		
+
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
