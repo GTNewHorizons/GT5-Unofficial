@@ -40,6 +40,19 @@ public class GregtechDehydrator {
 		 * 
 		 */
 
+		//Basic
+		GregtechItemList.GT_Dehydrator_MV
+		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(911, "machine.dehydrator.tier.00",
+				"Basic Dehydrator I", 2, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png",
+				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		GregtechItemList.GT_Dehydrator_HV
+		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(912, "machine.dehydrator.tier.01",
+				"Basic Dehydrator II", 3, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png",
+				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
+		
+		//Chemical
 		GregtechItemList.GT_Dehydrator_EV
 				.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(813, "advancedmachine.dehydrator.tier.01",
 						"Chemical Dehydrator I", 4, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
@@ -85,6 +98,26 @@ public class GregtechDehydrator {
 		GT_Values.RA.addAssemblerRecipe(coilWire4, spoolT4, coilT4, 8 * 20, 960);
 
 		// Add recipes for the Dehydrators.
+		
+		//Basic
+		GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Dehydrator_MV.get(1L, new Object[0]),
+				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+				new Object[] { "ECE", "WMW", "GPG", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('P'),
+						ItemList.Robot_Arm_MV, Character.valueOf('E'), OrePrefixes.wireFine.get(Materials.RedAlloy), Character.valueOf('C'),
+						OrePrefixes.circuit.get(Materials.Basic), Character.valueOf('W'),
+						OrePrefixes.cableGt04.get(Materials.Copper), Character.valueOf('G'),
+						OrePrefixes.gearGt.get(Materials.Steel) });
+		GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Dehydrator_HV.get(1L, new Object[0]),
+				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+				new Object[] { "ECE", "WMW", "GPG", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('P'),
+						ItemList.Robot_Arm_HV, Character.valueOf('E'), OrePrefixes.wireFine.get(Materials.Electrum), Character.valueOf('C'),
+						OrePrefixes.circuit.get(Materials.Good), Character.valueOf('W'),
+						OrePrefixes.cableGt04.get(Materials.Silver), Character.valueOf('G'),
+						ALLOY.POTIN.getGear(1) });
+		
+		//Chemical
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Dehydrator_EV.get(1L, new Object[0]),
 				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
 						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,

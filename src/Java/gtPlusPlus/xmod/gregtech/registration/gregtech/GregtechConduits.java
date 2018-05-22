@@ -312,8 +312,7 @@ public class GregtechConduits {
 				pipePlate, "craftingToolWrench", pipePlate,
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1));
 
-		if (pipeIngot != null) {
-
+		if (pipeIngot != null && ItemUtils.checkForInvalidItems(pipeIngot)) {
 			GT_Values.RA.addExtruderRecipe(
 					ItemUtils.getSimpleStack(pipeIngot, 1),
 					ItemList.Shape_Extruder_Pipe_Tiny.get(0),

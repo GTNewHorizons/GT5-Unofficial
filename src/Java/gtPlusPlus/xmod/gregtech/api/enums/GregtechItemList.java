@@ -128,7 +128,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	PowerSubStation,
 
 	//Chemical Dehydrators for nuclear fuels
-	GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM,
+	 GT_Dehydrator_MV, GT_Dehydrator_HV, GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM,
 
 	//Fluid Storage Tanks
 	GT_FluidTank_ULV, GT_FluidTank_LV, GT_FluidTank_MV, GT_FluidTank_HV, GT_FluidTank_EV,
@@ -333,7 +333,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_ImplosionCompressor, 
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum,
-	FusionComputer_UV2, 
+	FusionComputer_UV2,
 	
 	
 	

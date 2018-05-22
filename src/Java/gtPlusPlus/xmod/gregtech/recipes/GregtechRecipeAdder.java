@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
@@ -9,6 +11,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -479,6 +482,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		if ((aDuration = GregTech_API.sRecipeFile.get("machinecomponents", aOutput1, aDuration)) <= 0) {
 			return false;
 		}
+		if (GTNH) {
+			return false;
+		}
 		Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[] { aOutput1 },
 				null, new FluidStack[] { aFluidInput }, null, aDuration, aEUt, 0);
 		return true;
@@ -489,12 +495,19 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
 			return false;
 		}
+
+		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
+			return false;
+		}
 		Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
 		return true;
 	}
 
 	public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial){
 		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
 			return false;
 		}
 		Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
@@ -504,6 +517,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
 		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
+			return false;
+		}
+
+		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
 			return false;
 		}
 		if (Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial) != null) {
