@@ -406,7 +406,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(new ItemStack(GregTech_API.sBlockConcretes, 1, 15), GT_ModHandler.getDistilledWater(250L), new ItemStack(GregTech_API.sBlockConcretes, 1, 7), GT_Values.NI, GT_Values.NI, null, 200, 4);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L), Materials.Concrete.getMolten(144L), ItemList.Block_Plascrete.get(1L, new Object[0]), 200, 48);
         GT_Values.RA.addChemicalBathRecipe(GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), Materials.Concrete.getMolten(144L), ItemList.Block_TungstenSteelReinforced.get(1L, new Object[0]), GT_Values.NI, GT_Values.NI, null, 200, 4);
-        GT_Values.RA.addAssemblerRecipe(ItemList.Casing_Coil_Superconductor.get(1L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Superconductor, 1L), 200, 7000);
+        //GT_Values.RA.addAssemblerRecipe(ItemList.Casing_Coil_Superconductor.get(1L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Superconductor, 1L), 200, 7000);
 
         GT_Values.RA.addAssemblerRecipe(ItemList.Casing_Coil_Cupronickel.get(1L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Cupronickel, 1L), 200, 30);
         GT_Values.RA.addAssemblerRecipe(ItemList.Casing_Coil_Kanthal.get(1L), ItemList.Circuit_Integrated.getWithDamage(0L, 8L), GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Kanthal, 1L), 200, 120);
