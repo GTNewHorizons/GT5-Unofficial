@@ -107,7 +107,7 @@ public class BaseItemDust extends Item{
 		else {
 			return unlocal;
 		}
-		
+
 		/*if (this.getUnlocalizedName().contains("DustTiny")){
 			this.name = "Tiny Pile of "+this.materialName + " Dust";
 		}
@@ -233,14 +233,16 @@ public class BaseItemDust extends Item{
 		}
 		temp = temp.replace("itemDust", "ingot");
 		if ((temp != null) && !temp.equals("")){
-
+			ItemStack mThisStack = ItemUtils.getSimpleStack(this);
 			if (this.dustInfo.requiresBlastFurnace()){
 				Logger.WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
 				final String tempIngot = temp.replace("ingot", "ingotHot");
 				final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 				if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
 					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
-					this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
+					if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
+						this.addBlastFurnaceRecipe(mThisStack, null, tempOutputStack, null, 350*this.mTier);
+					}
 				}
 				return;
 			}
@@ -249,18 +251,22 @@ public class BaseItemDust extends Item{
 			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
 				if ((this.mTier < 5) || !this.dustInfo.requiresBlastFurnace()){
-					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
-						Logger.WARNING("Successfully added a furnace recipe for "+this.materialName);
-					}
-					else {
-						Logger.WARNING("Failed to add a furnace recipe for "+this.materialName);
+					if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
+						if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
+							Logger.WARNING("Successfully added a furnace recipe for "+this.materialName);
+						}
+						else {
+							Logger.WARNING("Failed to add a furnace recipe for "+this.materialName);
+						}
 					}
 				}
 				else if ((this.mTier >= 5) || this.dustInfo.requiresBlastFurnace()){
 					Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
 					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
-						this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
+						if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
+							this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
+						}
 					}
 					return;
 				}

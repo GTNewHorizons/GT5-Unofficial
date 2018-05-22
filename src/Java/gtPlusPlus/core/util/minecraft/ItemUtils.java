@@ -764,6 +764,13 @@ public class ItemUtils {
 			return blockName;
 		}				
 	}
+	
+	
+
+	public static boolean checkForInvalidItems(ItemStack mInput) {
+		return checkForInvalidItems(new ItemStack[] {mInput});
+	}
+	
 	/**
 	 * 
 	 * @param mInputs

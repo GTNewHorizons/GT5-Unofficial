@@ -13,7 +13,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -67,13 +66,13 @@ public class GregtechConduits {
 	}
 
 	private static void run1(){
-		
+
 		if (LoadedMods.Big_Reactors){
 			wireFactory("Blutonium", 8196, BaseWireID, 8, 32, 2, new short[]{28, 28, 218, 0});
 			wireFactory("Cyanite", 512, BaseWireID+15, 2, 16, 4, new short[]{27, 130, 178, 0});
 			wireFactory("Yellorium", 2048, BaseWireID+30, 4, 16, 2, new short[]{150, 195, 54, 0});
 		}
-		
+
 		if (LoadedMods.EnderIO){
 			wireFactory("RedstoneAlloy", 32, BaseWireID+45, 0, 2, 1, new short[]{178,34,34, 0});
 		}
@@ -84,7 +83,7 @@ public class GregtechConduits {
 			customWireFactory(ALLOY.HG1223, 32768, BaseWireID + 78, 2, 8, 4);
 			customWireFactory(ALLOY.TRINIUM_TITANIUM, 2048, BaseWireID + 89, 1, 2, 16);
 		}
-		
+
 
 		//superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
 		if (LoadedMods.Thaumcraft){
@@ -113,10 +112,11 @@ public class GregtechConduits {
 		}
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
-		
+
 	}
 
 	private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps, final short[] rgb){
+		@SuppressWarnings("deprecation")
 		final Materials T = Materials.valueOf(Material);
 		int V = GT_Utility.getTier(Voltage);
 		if (V == -1){
@@ -244,17 +244,11 @@ public class GregtechConduits {
 	private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
 		final int transferRatePerTick = transferRatePerSec/10;
 		long mass;
-		long voltage;
 		if (myMaterial != null){
 			mass = myMaterial.getMass();
-			voltage = myMaterial.vVoltageMultiplier;
-			if (myMaterial.getLocalizedName().equals(ALLOY.POTIN.getLocalizedName())){
-				voltage = 4;
-			}
 		}
 		else {
 			mass = ELEMENT.getInstance().IRON.getMass();
-			voltage = 8;
 		}
 
 		int tVoltageMultiplier = (material.mBlastFurnaceTemp >= 2800) ? 64 : 16;
@@ -296,9 +290,6 @@ public class GregtechConduits {
 		Logger.WARNING("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 
 		int eut = 120;
-		int time;
-
-		time = (int) Math.max(Mass * 8L, 1);
 		eut = (int) (8 * vMulti);
 
 
@@ -321,48 +312,52 @@ public class GregtechConduits {
 				pipePlate, "craftingToolWrench", pipePlate,
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1));
 
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getSimpleStack(pipeIngot, 1),
-				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe"+"Tiny"+output, 2),
-				5, eut);
+		if (pipeIngot != null) {
 
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getSimpleStack(pipeIngot, 1),
-				ItemList.Shape_Extruder_Pipe_Small.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
-				10, eut);
+			GT_Values.RA.addExtruderRecipe(
+					ItemUtils.getSimpleStack(pipeIngot, 1),
+					ItemList.Shape_Extruder_Pipe_Tiny.get(0),
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("pipe"+"Tiny"+output, 2),
+					5, eut);
 
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getSimpleStack(pipeIngot, 3),
-				ItemList.Shape_Extruder_Pipe_Medium.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
-				1*20, eut);
+			GT_Values.RA.addExtruderRecipe(
+					ItemUtils.getSimpleStack(pipeIngot, 1),
+					ItemList.Shape_Extruder_Pipe_Small.get(0),
+					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
+					10, eut);
 
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getSimpleStack(pipeIngot, 6),
-				ItemList.Shape_Extruder_Pipe_Large.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
-				2*20, eut);
+			GT_Values.RA.addExtruderRecipe(
+					ItemUtils.getSimpleStack(pipeIngot, 3),
+					ItemList.Shape_Extruder_Pipe_Medium.get(0),
+					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
+					1*20, eut);
 
-		GT_Values.RA.addExtruderRecipe(
-				ItemUtils.getSimpleStack(pipeIngot, 12),
-				ItemList.Shape_Extruder_Pipe_Huge.get(0),
-				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
-				4*20, eut);
+			GT_Values.RA.addExtruderRecipe(
+					ItemUtils.getSimpleStack(pipeIngot, 6),
+					ItemList.Shape_Extruder_Pipe_Large.get(0),
+					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
+					2*20, eut);
+
+			GT_Values.RA.addExtruderRecipe(
+					ItemUtils.getSimpleStack(pipeIngot, 12),
+					ItemList.Shape_Extruder_Pipe_Huge.get(0),
+					ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
+					4*20, eut);
+
+		}
 
 		if ((eut < 512) && !output.equals("Void")){
 			try {
-			final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
-			if (pipePlateDouble != null) {
-				RecipeUtils.recipeBuilder(
-						pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
-						pipePlateDouble, null, pipePlateDouble,
-						pipePlateDouble, "craftingToolWrench", pipePlateDouble,
-						ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
-			} else {
-				Logger.INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
-			}
+				final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
+				if (pipePlateDouble != null) {
+					RecipeUtils.recipeBuilder(
+							pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
+							pipePlateDouble, null, pipePlateDouble,
+							pipePlateDouble, "craftingToolWrench", pipePlateDouble,
+							ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
+				} else {
+					Logger.INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
+				}
 			}
 			catch (Throwable t) {
 				t.printStackTrace();
@@ -370,16 +365,6 @@ public class GregtechConduits {
 		}
 
 
-	}
-
-	private static ItemStack getOredictStack(final String oredictName, final int amount){
-		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-		if (!oreDictList.isEmpty()){
-			final ItemStack returnValue = oreDictList.get(0).copy();
-			returnValue.stackSize = amount;
-			return returnValue;
-		}
-		return ItemUtils.getSimpleStack(ModItems.AAA_Broken, amount);
 	}
 
 	public static boolean registerOre(OrePrefixes aPrefix, Material aMaterial, ItemStack aStack) {
