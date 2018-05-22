@@ -38,7 +38,6 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 
 	@Override
 	public synchronized N set(N object){
-		raiseInternalID();
 		int newID = getNextFreeMapID();
 		mInternalMapReverseLookup.put(object, newID);
 		return mInternalMap.put(newID, object);
@@ -49,10 +48,42 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 	}
 
 	public synchronized int setInternalMap(N object){
-		raiseInternalID();		
 		int newID = getNextFreeMapID();			
 		mInternalMap.put(newID, object);		
-		return mInternalMapReverseLookup.put(object, newID);
+		mInternalMapReverseLookup.put(object, newID);
+		return newID;
+	}
+
+	public synchronized boolean injectCleanDataToAutoMap(Integer g, N object){
+		if (!mInternalMap.containsKey(g) && !mInternalMapReverseLookup.containsKey(object)) {
+			int a1 = 0, a2 = 0, a11 = 0, a22 = 0;
+			a1 = mInternalMap.size();
+			a2 = mInternalMapReverseLookup.size();
+			a11 = a1;
+			a22 = a2;
+			mInternalMap.put(g, object);	
+			a1 = mInternalMap.size();
+			mInternalMapReverseLookup.put(object, g);
+			a2 = mInternalMapReverseLookup.size();			
+			if (a1 > a11 && a2 > a22)			
+				return true;
+		}
+		return false;
+	}
+
+	public synchronized boolean injectDataToAutoMap(Integer g, N object){
+		int a1 = 0, a2 = 0, a11 = 0, a22 = 0;
+		a1 = mInternalMap.size();
+		a2 = mInternalMapReverseLookup.size();
+		a11 = a1;
+		a22 = a2;
+		mInternalMap.put(g, object);	
+		a1 = mInternalMap.size();
+		mInternalMapReverseLookup.put(object, g);
+		a2 = mInternalMapReverseLookup.size();			
+		if (a1 > a11 && a2 > a22)			
+			return true;		
+		return false;
 	}
 
 	private boolean raiseInternalID() {
@@ -62,33 +93,10 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 	}
 
 	public synchronized int getNextFreeMapID() {
-		if (this.mInternalMap.size() < 1 || this.mInternalMapReverseLookup.size() < 1) {
-			return 0;
+		if (raiseInternalID()) {
+			return mInternalID;
 		}
-		if (this.mInternalMap.size() == getInternalID()-1) {
-			return getInternalID();
-		}		
-		AutoMap<Integer> free = new AutoMap<Integer>();
-		values: for (int d : this.mInternalMapReverseLookup.values()) {
-			sequential: for (int m=0;m<this.mInternalMap.size();m++) {
-
-				//Counter is lower than current ID, keep counting.
-				if (m < d || m == d) {
-					continue sequential;
-				}
-				//Possible that d is missing in sequence i.e.  (m=0,1,2,3 & d=0,1,3,4)
-				else if (m > d) {
-					free.put(m);
-					continue values;
-				}
-			}
-		}		
-		if (free.isEmpty()) {
-			return 0;
-		}
-		else {
-			return free.get(0);
-		}
+		return Short.MIN_VALUE;
 	}
 
 	@Override
@@ -103,6 +111,10 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 	@Override
 	public synchronized Collection<N> values(){
 		return mInternalMap.values();
+	}
+
+	public synchronized Collection<Integer> keys(){
+		return mInternalMapReverseLookup.values();
 	}
 
 	@Override
@@ -151,6 +163,12 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 		Collection<N> col = this.mInternalMap.values();
 		@SuppressWarnings("unchecked")
 		N[] val = (N[]) col.toArray();		
+		return val;
+	}
+
+	public synchronized Integer[] toArrayInternalMap() {		
+		Collection<Integer> col = this.mInternalMapReverseLookup.values();
+		Integer[] val = col.toArray(new Integer[col.size()]);	
 		return val;
 	}
 

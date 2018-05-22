@@ -34,6 +34,7 @@ import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.api.objects.minecraft.DimChunkPos;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
@@ -106,7 +107,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 			return;
 		}
 		
-		if (aTimer % 300 == 0) {
+		if (aTimer % 20 == 0) {
 			if (!isRegistered() && this.getEUVar() > 0) {
 				registerLoader();
 			}
@@ -263,10 +264,16 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 			return;
 		}
 		
+		try {
 		if (this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().getWorld() != null && this.getBaseMetaTileEntity().getWorld().getWorldTime() >= 100) {		
-			if (!mHasID) {
+			if (mChunkLoaderMapID == -1) {
 				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID());
-				mHasID = true;
+				Logger.INFO("["+getUniqueID()+"] Adjusted Chunk Loaders ID from -1 to "+mChunkLoaderMapID+". This chunk loader is not registered to the global list yet.");
+			}
+			else {
+				Logger.INFO("["+getUniqueID()+"] Found cached ID - "+mChunkLoaderMapID);
+				ChunkManager.setIdAndUniqueString(this.mChunkLoaderMapID, getUniqueID());
+				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID()); // Just Incase the ID gets shifted.
 			}
 			if (this != null && this.getBaseMetaTileEntity() != null) {		
 				if (!isRegistered() && !getUniqueID().equalsIgnoreCase("0@0@0@0")) {
@@ -279,6 +286,11 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 				}
 			}
 		}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
 	}	
 
 

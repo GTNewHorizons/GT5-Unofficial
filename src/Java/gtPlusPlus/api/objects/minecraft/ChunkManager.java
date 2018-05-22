@@ -58,11 +58,30 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 		Utils.registerEvent(this);
 	}
 	
+	public static boolean setIdAndUniqueString(int id, String blockposString) {
+		if (mIdToUUIDMap.injectCleanDataToAutoMap(id, blockposString)) {
+			Logger.INFO("Found Cached ID from NBT, cleanly injected into ChunkManager.");
+			return true;
+		}
+		else {
+			Logger.INFO("Creating new Cached ID based on blockpos UID");
+			if (mIdToUUIDMap.injectCleanDataToAutoMap(mIdToUUIDMap.getNextFreeMapID(), blockposString)) {
+				Logger.INFO("Success! Cleanly injected into ChunkManager.");
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	
 	public static int getIdFromUniqueString(String blockposString) {
 		if (mIdToUUIDMap.containsValue(blockposString)) {
+			Logger.INFO("Found Cached ID based on blockpos UID");
 			return mIdToUUIDMap.get(blockposString);
 		}
 		else {
+			Logger.INFO("Creating new Cached ID based on blockpos UID");
 			return mIdToUUIDMap.putToInternalMap(blockposString);
 		}
 	}
