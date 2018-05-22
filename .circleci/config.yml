@@ -40,6 +40,8 @@ jobs:
         
       # run tests!
       - run: gradle test
+      # Build!
+      - run: gradle build
 
 
 
