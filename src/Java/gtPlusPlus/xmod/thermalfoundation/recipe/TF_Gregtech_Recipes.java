@@ -50,40 +50,53 @@ public class TF_Gregtech_Recipes {
 		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);
 		
 
+		ItemStack dustCoal = ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1);
+		ItemStack dustSulfur = ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1);
+		ItemStack dustRedstone = ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1);
+		ItemStack dustBlaze = ItemUtils.getItemStackOfAmountFromOreDict("dustBlaze", 1);
+		ItemStack dustSaltpeter = ItemUtils.getItemStackOfAmountFromOreDict("dustSaltpeter", 1);
+		ItemStack dustSnow = ItemUtils.getItemStackOfAmountFromOreDict("dustSnow", 1);
+		ItemStack dustBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1);
+		ItemStack dustNiter = ItemUtils.getItemStackOfAmountFromOreDict("dustNiter", 1);
 		
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustCoal, dustSulfur, dustRedstone,	dustBlaze})) {
 		GT_Values.RA.addMixerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBlaze", 1), //Input
+				dustCoal,
+				dustSulfur,
+				dustRedstone,
+				dustBlaze, //Input
 				null, //F in
 				null, //F out
 				ItemHelper.cloneStack(dust_Pyrotheum, 1), //Output
 				20*8,
 				120);
-		
+		}
+
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustSaltpeter, dustSnow, dustRedstone,	dustBlizz})) {
 		GT_Values.RA.addMixerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSaltpeter", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSnow", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1), //Input
+				dustSaltpeter,
+				dustSnow,
+				dustRedstone,
+				dustBlizz, //Input
 				null, //F in
 				null, //F out
 				ItemHelper.cloneStack(dust_Cryotheum, 1), //Output
 				20*8,
 				120);
+		}
 		
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {dustNiter, dustSnow, dustRedstone,	dustBlizz})) {
 		GT_Values.RA.addMixerRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustNitor", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSnow", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustRedstone", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1), //Input
+				dustNiter,
+				dustSnow,
+				dustRedstone,
+				dustBlizz, //Input
 				null, //F in
 				null, //F out
 				ItemHelper.cloneStack(dust_Cryotheum, 1), //Output
 				20*8,
 				120);
-		
+		}
 
 	}
 

@@ -214,7 +214,9 @@ public class BaseItemDust extends Item{
 				tempStackOutput2 = null;
 			}
 			if ((null != tempOutputStack) && (null != tempInputStack)){
-				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack.splitStack(1), tempStackOutput2, chance);
+				if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(tempStackOutput2) && ItemUtils.checkForInvalidItems(tempInputStack)) {
+					GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack.splitStack(1), tempStackOutput2, chance);
+				}
 			}
 		}
 	}
