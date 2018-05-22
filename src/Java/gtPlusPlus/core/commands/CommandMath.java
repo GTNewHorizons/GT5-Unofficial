@@ -6,12 +6,11 @@ import java.util.List;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
 
 
 public class CommandMath implements ICommand
@@ -55,7 +54,12 @@ public class CommandMath implements ICommand
 	public void processCommand(final ICommandSender S, final String[] argString){
 		final World W = S.getEntityWorld();
 		final EntityPlayer P = CommandUtils.getPlayer(S);
-		if (!W.isRemote && P != null){
+		if (P.getDisplayName().equalsIgnoreCase("draknyte1")) {
+			Logger.INFO("[Bedrock Miner] OreType Scan");	
+			MiningUtils.iterateAllOreTypes();
+		}
+		
+		/*if (!W.isRemote && P != null){
 			if (P.getDisplayName().toLowerCase().equals("draknyte1") || P.getCommandSenderName().toLowerCase().equals("draknyte1")) {
 				String[] prefixes = new String[] {
 						"ingot",
@@ -94,7 +98,7 @@ public class CommandMath implements ICommand
 				}
 
 			}
-		}
+		}*/
 
 		/*else
 

@@ -18,17 +18,22 @@ public class BlockPos implements Serializable{
 	public final int zPos;
 	public final int dim;
 	public final World world;
+	
+	public static BlockPos generateBlockPos(String sUUID) {
+		String[] s2 = sUUID.split("@");
+		return new BlockPos(s2);
+	}
+	
+	public BlockPos(String[] s){
+		this(Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[0]));
+	}
 
 	public BlockPos(int x, int y, int z){
 		this(x, y, z, 0);
 	}
 
 	public BlockPos(int x, int y, int z, int dim){
-		this.xPos = x;
-		this.yPos = y;
-		this.zPos = z;
-		this.dim = dim;
-		this.world = DimensionManager.getWorld(dim);
+		this(x, y, z, DimensionManager.getWorld(dim));
 	}
 
 	public BlockPos(int x, int y, int z, World dim){
@@ -42,6 +47,11 @@ public class BlockPos implements Serializable{
 	public String getLocationString() {
 		return "[X: "+this.xPos+"][Y: "+this.yPos+"][Z: "+this.zPos+"][Dim: "+this.dim+"]";
 	}
+	
+	public String getUniqueIdentifier() {
+		String S = ""+this.dim+"@"+this.xPos+"@"+this.yPos+"@"+this.zPos;
+		return S;
+	}	
 
 	@Override
 	public  int hashCode() {

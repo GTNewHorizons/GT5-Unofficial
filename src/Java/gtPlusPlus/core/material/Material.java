@@ -3,8 +3,6 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -72,7 +70,7 @@ public class Material {
 	private GTPP_Aspects[] vAspects;
 
 
-	public static Map<Integer, Materials> invalidMaterials = new HashMap<Integer, Materials>();
+	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
 
 	public Material(String materialName, MaterialState defaultState, short[] rgba, int radiationLevel, MaterialStack[] materialStacks) {
 		this(materialName, defaultState, null, 0, rgba, -1, -1, -1, -1, false, "", radiationLevel, false, materialStacks);

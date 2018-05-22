@@ -115,7 +115,6 @@ public class GTplusplus implements ActionListener {
 		}
 		//Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
-		// FirstCall();
 		Utils.registerEvent(new LoginEventHandler());
 		Utils.registerEvent(new MissingMappingsEvent());
 		Logger.INFO("Login Handler Initialized");
@@ -168,9 +167,7 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
-
-		if (CORE.DEVENV)
-			event.registerServerCommand(new CommandMath());
+		event.registerServerCommand(new CommandMath());
 
 		//Chunk Loading
 		Timer h = ChunkManager.createChunkQueue();
@@ -244,15 +241,8 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
-		/*if (MiningUtils.findAndMapOreTypesFromGT()) {
-			int mapKey = 0;
-			for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
-				for (GT_Worldgen_GT_Ore_Layer h : g) {
-					Logger.WORLD("Found Vein "+h.aTextWorldgen + " in map with key: "+mapKey);
-				}
-				mapKey++;
-			}
-		}*/
+		Logger.INFO("[Bedrock Miner] Initial OreType Scan");
+		MiningUtils.iterateAllOreTypes();
 
 	}
 
@@ -280,28 +270,26 @@ public class GTplusplus implements ActionListener {
 		new SegmentHelper();
 	}
 
-	private static final boolean setupMaterialBlacklist(){		
-		int ID = 0;
-		Material.invalidMaterials.put(ID++, Materials._NULL);
-		Material.invalidMaterials.put(ID++, Materials.Clay);
-		Material.invalidMaterials.put(ID++, Materials.Phosphorus);
-		Material.invalidMaterials.put(ID++, Materials.Steel);
-		Material.invalidMaterials.put(ID++, Materials.Bronze);
-		Material.invalidMaterials.put(ID++, Materials.Hydrogen);
+	private static final boolean setupMaterialBlacklist(){	
+		Material.invalidMaterials.put(Materials._NULL);
+		Material.invalidMaterials.put(Materials.Clay);
+		Material.invalidMaterials.put(Materials.Phosphorus);
+		Material.invalidMaterials.put(Materials.Steel);
+		Material.invalidMaterials.put(Materials.Bronze);
+		Material.invalidMaterials.put(Materials.Hydrogen);
 		//Infused TC stuff
-		Material.invalidMaterials.put(ID++, Materials.InfusedAir);	
-		Material.invalidMaterials.put(ID++, Materials.InfusedEarth);	
-		Material.invalidMaterials.put(ID++, Materials.InfusedFire);	
-		Material.invalidMaterials.put(ID++, Materials.InfusedWater);
-
+		Material.invalidMaterials.put(Materials.InfusedAir);	
+		Material.invalidMaterials.put(Materials.InfusedEarth);	
+		Material.invalidMaterials.put(Materials.InfusedFire);	
+		Material.invalidMaterials.put(Materials.InfusedWater);
 		//EIO Materials
-		Material.invalidMaterials.put(ID++, Materials.SoulSand);
-		Material.invalidMaterials.put(ID++, Materials.EnderPearl);
-		Material.invalidMaterials.put(ID++, Materials.EnderEye);
-		Material.invalidMaterials.put(ID++, Materials.Redstone);
-		Material.invalidMaterials.put(ID++, Materials.Glowstone);
-		Material.invalidMaterials.put(ID++, Materials.Soularium);
-		Material.invalidMaterials.put(ID++, Materials.PhasedIron);
+		Material.invalidMaterials.put(Materials.SoulSand);
+		Material.invalidMaterials.put(Materials.EnderPearl);
+		Material.invalidMaterials.put(Materials.EnderEye);
+		Material.invalidMaterials.put(Materials.Redstone);
+		Material.invalidMaterials.put(Materials.Glowstone);
+		Material.invalidMaterials.put(Materials.Soularium);
+		Material.invalidMaterials.put(Materials.PhasedIron);
 
 		if (Material.invalidMaterials.size() > 0){
 			return true;

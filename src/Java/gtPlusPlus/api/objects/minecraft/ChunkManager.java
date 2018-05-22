@@ -15,15 +15,23 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.ReverseAutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.*;
@@ -34,15 +42,125 @@ import net.minecraftforge.event.entity.EntityEvent;
  */
 public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
 
-	private static ChunkManager instance;
+	private static final ChunkManager instance;
+	private static volatile long mInternalTickCounter = 0;	
+	private static ReverseAutoMap<String> mIdToUUIDMap = new ReverseAutoMap<String>();
+	
+	public static ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>> mChunkLoaderManagerMap = new ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>>();
+	
+	
 
-	public static ConcurrentHashMap<BlockPos, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>> mChunkLoaderManagerMap = new ConcurrentHashMap<BlockPos, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>>();
+	static {
+		instance = new ChunkManager();
+	}
 
+	public ChunkManager() {
+		Utils.registerEvent(this);
+	}
+	
+	public static int getIdFromUniqueString(String blockposString) {
+		if (mIdToUUIDMap.containsValue(blockposString)) {
+			return mIdToUUIDMap.get(blockposString);
+		}
+		else {
+			return mIdToUUIDMap.putToInternalMap(blockposString);
+		}
+	}
+	
+	public static String getUniqueStringFromID(int id) {
+		if (mIdToUUIDMap.containsKey(id)) {
+			return mIdToUUIDMap.get(id);
+		}
+		else {
+			return "0@0@0@0";
+		}
+	}
+
+
+	@SubscribeEvent
+	public void serverTick(TickEvent.ServerTickEvent e){
+		mInternalTickCounter++;
+		try {
+			if (mInternalTickCounter % (20*15) == 0) {
+				for (String g : mChunkLoaderManagerMap.keySet()) {	
+					BlockPos i = BlockPos.generateBlockPos(g);				
+					if (i == null) {
+						mChunkLoaderManagerMap.remove(g);
+						Logger.MACHINE_INFO("Bad Mapping: "+g);
+						continue;
+					}
+					else {
+						Logger.MACHINE_INFO("Good Mapping: "+i.getLocationString());					
+					}
+					Block mBlock = i.world.getBlock(i.xPos, i.yPos, i.zPos);
+					TileEntity mTile = i.world.getTileEntity(i.xPos, i.yPos, i.zPos);	
+					IGregTechTileEntity mGTile = null;
+					boolean remove = false;
+					if (((mTile = i.world.getTileEntity(i.xPos, i.yPos, i.zPos)) != null) && (mTile instanceof IGregTechTileEntity)){
+						mGTile = (IGregTechTileEntity) mTile; //943-945
+						if (mGTile instanceof GregtechMetaTileEntityChunkLoader || mGTile.getMetaTileID() == 943 || mGTile.getMetaTileID() == 944 || mGTile.getMetaTileID() == 945) {
+							Logger.MACHINE_INFO("Found Valid Chunk Loader Entity.");
+							continue;
+						}
+						else {
+							Logger.MACHINE_INFO("Found Valid GT Tile which was not a Chunk Loader Entity.");
+							remove = true;
+						}
+					}
+					else if ((mTile = i.world.getTileEntity(i.xPos, i.yPos, i.zPos)) != null){
+						Logger.MACHINE_INFO("Found Valid Tile Entity.");
+						remove = true;
+					}
+					else {
+						mTile = null;
+						remove = true;
+					}
+					if (mBlock == null || mGTile == null || mBlock != GregTech_API.sBlockMachines) {
+						remove = true;
+					}
+
+					if (remove) {						
+						//1
+						if (mBlock != null) {
+							Logger.MACHINE_INFO("Found Block.");
+							//2
+							if (mBlock == GregTech_API.sBlockMachines) {
+								Logger.MACHINE_INFO("Found GT Machine.");								
+								//3
+								if (mTile != null) {									
+									//4
+									if (GregtechMetaTileEntityChunkLoader.class.isInstance(mTile.getClass())) {
+										Logger.MACHINE_INFO("Found Valid Chunk Loader.");
+									}
+									else {
+										Logger.MACHINE_INFO("Tile Entity was not a Chunk Loader.");
+									}//4
+								}
+								else {
+									Logger.MACHINE_INFO("Tile Entity was Null though.");									
+								}//3
+							}
+							else {
+								Logger.MACHINE_INFO("Found Block that was not a GT Machine.");							
+							}//2
+						}
+						else {
+							Logger.MACHINE_INFO("Found Null Block.");							
+						}//1
+					}
+					mChunkLoaderManagerMap.remove(i.getUniqueIdentifier());
+					Logger.INFO("Removing invalid Chunk Loader. Mapping: "+i.getUniqueIdentifier());
+					continue;
+				}
+			}		
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+
+	}
 
 	public static ChunkManager getInstance() {
-		if (instance == null) {
-			instance = new ChunkManager();
-		}
 		return instance;
 	}
 
@@ -142,7 +260,7 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 
 		if (world.isRemote) return;
 
-		//        System.out.println("Callback 2");
+		System.out.println("Callback 2");
 		for (Ticket ticket : tickets) {
 			if (ticket.isPlayerTicket())
 				continue;
@@ -153,17 +271,16 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 				int z = ticket.getModData().getInteger("zCoord");
 
 				if (y >= 0) {
-					BlockPos tile = new BlockPos(x, y, z);
-					
+					BlockPos tile = new BlockPos(x, y, z);					
 					Ticket H = tryForceLoadChunk(new DimChunkPos(world, tile).getChunk());
 
 					int jhg = 0;
 					while (jhg < 50) {
 						jhg++;
 					}
-					
+
 					if (!mChunkLoaderManagerMap.isEmpty()) {						
-						GregtechMetaTileEntityChunkLoader f = mChunkLoaderManagerMap.get(tile).getValue_2();
+						GregtechMetaTileEntityChunkLoader f = mChunkLoaderManagerMap.get(tile.getUniqueIdentifier()).getValue_2();
 						int timeout = 0;
 						while (f == null) {
 							if (timeout > 5000) {
@@ -173,7 +290,7 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 							else {
 								GregtechMetaTileEntityChunkLoader g;
 								if (!mChunkLoaderManagerMap.isEmpty()) {
-									g = mChunkLoaderManagerMap.get(tile).getValue_2();
+									g = mChunkLoaderManagerMap.get(tile.getUniqueIdentifier()).getValue_2();
 									if (g == null) {
 										timeout++;
 									}
@@ -187,12 +304,9 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 						}
 						try {
 							if (f != null) {
-								
-
 								if (H != null) {
 									ForgeChunkManager.releaseTicket(H);
-								}
-								
+								}								
 								f.forceChunkLoading(ticket);
 								printAnchor("Force Chunk Loading. Chunk Loader has ID of "+f.getLoaderID()+". ",x,y,z);
 							}
@@ -204,12 +318,12 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 							t.printStackTrace();
 							Logger.INFO("Mild problem with chunk loading, nothing to worry about.");
 						}
-						
+
 
 						if (H != null) {
 							ForgeChunkManager.releaseTicket(H);
 						}
-						
+
 					}					
 
 					/*if (tile instanceof IGregTechTileEntity) {
@@ -258,14 +372,18 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 	public static Timer createChunkQueue() {
 		return ChunkTimerLoader();
 	}
-	
+
 	public static Ticket tryForceLoadChunk(Chunk c) {
 		Ticket T = getTicketFromForge(c.worldObj);
+		if (T == null) {
+			Logger.INFO("[Chunk Loader] Trying to force load a chunk that holds a chunkloader, however the Chunk Loading Ticket was null.");				
+			return null;
+		}
 		ForgeChunkManager.forceChunk(T, c.getChunkCoordIntPair());
 		Logger.INFO("[Chunk Loader] Trying to force load a chunk that holds a chunkloader.");	
 		return T;
 	}
-	
+
 	public static Ticket getTicketFromForge(World world) {
 		return ForgeChunkManager.requestTicket(GTplusplus.instance, world, Type.NORMAL);
 	}

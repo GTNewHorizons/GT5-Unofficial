@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -139,6 +141,23 @@ public class MiningUtils {
 		}
 		
 	}
+	
+	public static void iterateAllOreTypes() {
+		HashMap<String, Integer> M = new HashMap<String, Integer>();		
+		if (MiningUtils.findAndMapOreTypesFromGT()) {
+			int mapKey = 0;
+			for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
+				for (GT_Worldgen_GT_Ore_Layer h : g) {					
+					//if (M.containsKey(h.aTextWorldgen + h.mWorldGenName)) {
+						M.put(h.aTextWorldgen + h.mWorldGenName, mapKey);
+						Logger.INFO("Found Vein type: " + h.aTextWorldgen + h.mWorldGenName + " in map with key: "+mapKey);
+					//}					
+				}
+				mapKey++;
+			}
+		}
+	}
+	
 	public static AutoMap<GT_Worldgen_GT_Ore_Layer>[] mOreMaps = new AutoMap[7];
 	private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Overworld = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
 	private static AutoMap<GT_Worldgen_GT_Ore_Layer> Ores_Nether = new AutoMap<GT_Worldgen_GT_Ore_Layer>();
@@ -151,7 +170,7 @@ public class MiningUtils {
 	public static boolean findAndMapOreTypesFromGT() {
 		//Gets Moon ID
 		try {
-			if (Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore") != null) {
+			if (Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore") != null && mMoonID == -99) {
 				mMoonID = ReflectionUtils.getField(Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore"), "idDimensionMoon").getInt(null);
 			}
 		}
@@ -159,7 +178,7 @@ public class MiningUtils {
 		
 		//Gets Mars ID
 		try {
-			if (Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars") != null) {
+			if (Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars") != null && mMarsID == -99) {
 				mMarsID = ReflectionUtils.getField(Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars"), "dimensionIDMars").getInt(null);
 			}
 		}
@@ -167,28 +186,33 @@ public class MiningUtils {
 		
 		//Get Comets ID
 		try {
-			if (Class.forName("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids") != null) {
+			if (Class.forName("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids") != null && mCometsID == -99) {
 				mCometsID = ReflectionUtils.getField(Class.forName("micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids"), "dimensionIDAsteroids").getInt(null);
 			}
 		}
 		catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {}
-		
+
+		//Clear Cache
+		Ores_Overworld.clear();
+		Ores_Nether.clear();
+		Ores_End.clear();
+		Ores_Misc.clear();
 		
 		for (GT_Worldgen_GT_Ore_Layer x : GT_Worldgen_GT_Ore_Layer.sList) {			
 			if (x.mEnabled) {
-				/*if (x.mOverworld) {
+				if (x.mOverworld) {
 					Ores_Overworld.put(x);
-					continue;
 				}
 				if (x.mNether) {
 					Ores_Nether.put(x);
-					continue;
 				}
 				if (x.mEnd || x.mEndAsteroid) {
 					Ores_End.put(x);
+				}
+				if (x.mOverworld || x.mNether || (x.mEnd || x.mEndAsteroid)) {
 					continue;
 				}
-				if (x.mMoon) {
+				/*if (x.mMoon) {
 					Ores_Moon.put(x);
 					continue;
 				}
@@ -202,8 +226,13 @@ public class MiningUtils {
 				}*/
 				Ores_Misc.put(x);
 				continue;
-			}			
+			}
+			else {
+				Ores_Comets.put(x);
+			}
 		}	
+		
+		
 		mOreMaps[0] = Ores_Overworld;
 		mOreMaps[1] = Ores_Nether;
 		mOreMaps[2] = Ores_End;

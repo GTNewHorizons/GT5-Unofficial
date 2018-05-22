@@ -8,7 +8,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	/**
 	 * The Internal Map
 	 */
-	private Map<Integer, V> mInternalMap = new HashMap<Integer, V>();
+	protected Map<Integer, V> mInternalMap = new HashMap<Integer, V>();
 	
 	/**
 	 * The Internal ID
@@ -79,6 +79,10 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		@SuppressWarnings("unchecked")
 		V[] val = (V[]) col.toArray();		
 		return val;
+	}
+
+	public synchronized final int getInternalID() {
+		return mInternalID;
 	}
   
 }

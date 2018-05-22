@@ -103,7 +103,7 @@ public class COMPAT_HANDLER {
 			GregtechTeslaTower.run();
 			GregtechSuperTanks.run();
 			GregtechIndustrialFishPond.run();
-			//GregtechTieredChunkloaders.run();
+			GregtechTieredChunkloaders.run();
 			GregtechIndustrialExtruder.run();
 			GregtechIndustrialMultiMachine.run();
 			GregtechBedrockPlatforms.run();
