@@ -1,13 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import net.minecraft.block.Block;
 
@@ -28,7 +31,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 
     @Override
     public long maxEUStore() {
-        return 640010000L * (Math.min(16, this.mEnergyHatches.size())) / 8L;
+        return (640010000L*4) * (Math.min(16, this.mEnergyHatches.size())) / 8L;
     }
 
     @Override
@@ -69,11 +72,46 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 
     @Override
     public int tierOverclock() {
-        return 6;
+        return 8;
     }
 
+    @Override
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		ITexture[] sTexture;
+		if (aSide == aFacing) {
+			sTexture = new ITexture[]{
+					new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+							Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+					new GT_RenderedTexture(this.getIconOverlay())};
+		} else if (!aActive) {
+			sTexture = new ITexture[]{
+					new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
+							Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+		} else {
+			sTexture = new ITexture[]{
+					new GT_RenderedTexture((IIconContainer) TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA,
+							Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+		}
+		return sTexture;
+	}
+    
     @Override
     public IIconContainer getIconOverlay() {
         return Textures.BlockIcons.OVERLAY_FUSION3;
     }
+    
+    @Override
+	public int overclock(final int mStartEnergy) {
+		if (this.tierOverclock() == 1) {
+			return 1;
+		}
+		if (this.tierOverclock() == 2) {
+			return (mStartEnergy < 160000000) ? 2 : 1;
+		}
+		if (this.tierOverclock() == 4) {
+			return (mStartEnergy < 160000000 ? 4 : (mStartEnergy < 320000000 ? 2 : 1));
+		}
+		return (mStartEnergy < 160000000) ? 8 : ((mStartEnergy < 320000000) ? 4 : (mStartEnergy < 640000000) ? 2 : 1);
+	}
 }
