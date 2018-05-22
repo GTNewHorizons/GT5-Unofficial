@@ -333,10 +333,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Adv_ImplosionCompressor, 
 	//Advanced Vacuum Freezer
 	Industrial_Cryogenic_Freezer, Casing_AdvancedVacuum,
-	FusionComputer_UV2,
 	
-	
-	
+	//FusionTek MK IV
+	FusionComputer_UV2, Casing_Fusion_External, Casing_Fusion_Internal,
 	
 	;
 

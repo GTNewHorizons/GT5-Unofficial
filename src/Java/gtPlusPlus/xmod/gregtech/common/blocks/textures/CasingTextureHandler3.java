@@ -49,7 +49,7 @@ public class CasingTextureHandler3 {
 			case 13:
 				return TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
 			case 14:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
 			case 15:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 

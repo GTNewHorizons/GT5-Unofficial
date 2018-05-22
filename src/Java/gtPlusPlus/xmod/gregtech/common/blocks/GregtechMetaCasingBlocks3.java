@@ -66,7 +66,6 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
@@ -80,9 +79,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_AmazonWarehouse.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_AdvancedVacuum.set(new ItemStack(this, 1, 10));
 		GregtechItemList.Casing_Adv_BlastFurnace.set(new ItemStack(this, 1, 11));
-		//GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
-		//GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
-		//GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
+		GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 12));
+		GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 13));
 		//GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); //Tree Farmer Textures
 	}
 
@@ -90,7 +88,7 @@ extends GregtechMetaCasingBlocksAbstract {
 	public IIcon getIcon(final int aSide, final int aMeta) {
 		return CasingTextureHandler3.getIcon(aSide, aMeta);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
@@ -105,15 +103,15 @@ extends GregtechMetaCasingBlocksAbstract {
 			final boolean[] tConnectedSides = {
 					aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta,
-					aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
+							aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta,
-					aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
+							aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta,
-					aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
+							aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta,
-					aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
+							aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
-					aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
+							aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
 							&& aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta};
 			switch (aSide) {
 				case 0 : {
@@ -366,12 +364,6 @@ extends GregtechMetaCasingBlocksAbstract {
 			}
 			return TexturesGtBlock.CONNECTED_FUSION_HULLS[tStartIndex + 7].getIcon();
 		}
-		
-		if (aSide == 2 || aSide == 3) {
-			
-		} else if (aSide == 4 || aSide == 5) {
-			
-		}
 		switch (tMeta) {
 			case 9 : {
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -384,6 +376,9 @@ extends GregtechMetaCasingBlocksAbstract {
 			}
 			case 12 : {
 				return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+			}
+			case 14 : {
+				return TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
 			}
 			default : {
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();

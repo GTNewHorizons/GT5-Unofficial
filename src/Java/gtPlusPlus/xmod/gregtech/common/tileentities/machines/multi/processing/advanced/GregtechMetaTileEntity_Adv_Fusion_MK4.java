@@ -1,11 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
@@ -26,7 +30,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 
     @Override
     public int tier() {
-        return 9;
+        return 8;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
     
     @Override
     public IIconContainer getIconOverlay() {
-        return Textures.BlockIcons.OVERLAY_FUSION3;
+        return this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1;
     }
     
     @Override
@@ -114,4 +118,24 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		}
 		return (mStartEnergy < 160000000) ? 8 : ((mStartEnergy < 320000000) ? 4 : (mStartEnergy < 640000000) ? 2 : 1);
 	}
+    
+	public boolean turnCasingActive(final boolean status) {
+		if (this.mEnergyHatches != null) {
+			for (final GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+				hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+			}
+		}
+		if (this.mOutputHatches != null) {
+			for (final GT_MetaTileEntity_Hatch_Output hatch2 : this.mOutputHatches) {
+				hatch2.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+			}
+		}
+		if (this.mInputHatches != null) {
+			for (final GT_MetaTileEntity_Hatch_Input hatch3 : this.mInputHatches) {
+				hatch3.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+			}
+		}
+		return true;
+	}
+    
 }
