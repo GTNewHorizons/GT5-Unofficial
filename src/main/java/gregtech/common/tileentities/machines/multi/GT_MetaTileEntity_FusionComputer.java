@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -9,22 +11,24 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -451,9 +455,9 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         return new String[]{
                 EnumChatFormatting.BLUE+"Fusion Reactor MK "+EnumChatFormatting.RESET+tier,
                 
-                I18n.format("GT5U.fusion.req")+": " +EnumChatFormatting.RED+powerRequired+EnumChatFormatting.RESET+"EU/t",
-                I18n.format("GT5U.multiblock.energy")+": " +EnumChatFormatting.GREEN+mEUStore+EnumChatFormatting.RESET+" EU / "+EnumChatFormatting.YELLOW+maxEUStore()+EnumChatFormatting.RESET+" EU",
-                I18n.format("GT5U.fusion.plasma")+": " +EnumChatFormatting.YELLOW+plasmaOut+EnumChatFormatting.RESET+"L/t"};
+                StatCollector.translateToLocal("GT5U.fusion.req")+": " +EnumChatFormatting.RED+powerRequired+EnumChatFormatting.RESET+"EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": " +EnumChatFormatting.GREEN+mEUStore+EnumChatFormatting.RESET+" EU / "+EnumChatFormatting.YELLOW+maxEUStore()+EnumChatFormatting.RESET+" EU",
+                StatCollector.translateToLocal("GT5U.fusion.plasma")+": " +EnumChatFormatting.YELLOW+plasmaOut+EnumChatFormatting.RESET+"L/t"};
     }
 
     @Override

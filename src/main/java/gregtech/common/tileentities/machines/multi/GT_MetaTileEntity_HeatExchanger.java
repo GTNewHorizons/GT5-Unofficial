@@ -13,11 +13,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -298,17 +298,17 @@ public class GT_MetaTileEntity_HeatExchanger extends GT_MetaTileEntity_MultiBloc
     @Override
     public String[] getInfoData() {
         return new String[]{
-        		I18n.format("GT5U.multiblock.Progress")+": "+
+        		StatCollector.translateToLocal("GT5U.multiblock.Progress")+": "+
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
                         EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
-                I18n.format("GT5U.multiblock.usage")+" "+I18n.format("GT5U.LHE.steam")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.usage")+" "+StatCollector.translateToLocal("GT5U.LHE.steam")+": "+
                         (superheated?EnumChatFormatting.RED:EnumChatFormatting.YELLOW) + Integer.toString(superheated?-2*mEUt:-mEUt) + EnumChatFormatting.RESET + " EU/t",
-                I18n.format("GT5U.multiblock.problems")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
                         EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
-                " "+I18n.format("GT5U.multiblock.efficiency")+": "+
+                " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
                         EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
-                I18n.format("GT5U.LHE.superheated")+": "+ (superheated?EnumChatFormatting.RED:EnumChatFormatting.BLUE) + superheated + EnumChatFormatting.RESET,
-                I18n.format("GT5U.LHE.superheated")+" "+I18n.format("GT5U.LHE.threshold")+": "+ EnumChatFormatting.GREEN + superheated_threshold + EnumChatFormatting.RESET
+                StatCollector.translateToLocal("GT5U.LHE.superheated")+": "+ (superheated?EnumChatFormatting.RED:EnumChatFormatting.BLUE) + superheated + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.LHE.superheated")+" "+StatCollector.translateToLocal("GT5U.LHE.threshold")+": "+ EnumChatFormatting.GREEN + superheated_threshold + EnumChatFormatting.RESET
         };
     }
 }

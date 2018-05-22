@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.api.enums.GT_Values.VN;
+
+import java.util.ArrayList;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -13,15 +17,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-
-import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_MetaTileEntity_MultiFurnace
         extends GT_MetaTileEntity_MultiBlockBase {
@@ -252,24 +252,24 @@ public class GT_MetaTileEntity_MultiFurnace
         }
 
         return new String[]{
-        		I18n.format("GT5U.multiblock.Progress")+": "+
+        		StatCollector.translateToLocal("GT5U.multiblock.Progress")+": "+
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
                         EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
-                I18n.format("GT5U.multiblock.energy")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": "+
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
                         EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
-                I18n.format("GT5U.multiblock.usage")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.usage")+": "+
                         EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t",
-                I18n.format("GT5U.multiblock.mei")+": "+
-                        EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+" EU/t(*2A) "+I18n.format("GT5U.machines.tier")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.mei")+": "+
+                        EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+" EU/t(*2A) "+StatCollector.translateToLocal("GT5U.machines.tier")+": "+
                         EnumChatFormatting.YELLOW+VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET,
-                I18n.format("GT5U.multiblock.problems")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
                         EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
-                        " "+I18n.format("GT5U.multiblock.efficiency")+": "+
+                        " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
                         EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
-                I18n.format("GT5U.MS.multismelting")+": "+
+                StatCollector.translateToLocal("GT5U.MS.multismelting")+": "+
                         EnumChatFormatting.GREEN+mLevel*8+EnumChatFormatting.RESET+" Discount: (EU/t) / "+EnumChatFormatting.GREEN+mCostDiscount+EnumChatFormatting.RESET,
-                I18n.format("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+                StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
         };
     }
 

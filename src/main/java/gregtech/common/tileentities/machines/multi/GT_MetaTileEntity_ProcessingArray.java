@@ -1,5 +1,15 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -13,21 +23,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -409,26 +410,26 @@ public class GT_MetaTileEntity_ProcessingArray extends GT_MetaTileEntity_MultiBl
         }
 
         return new String[]{
-        		I18n.format("GT5U.multiblock.Progress")+": "+
+        		StatCollector.translateToLocal("GT5U.multiblock.Progress")+": "+
         				EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
                         EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
-                I18n.format("GT5U.multiblock.energy")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": "+
                 		EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
                         EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
-                I18n.format("GT5U.multiblock.usage")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.usage")+": "+
                         EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t",
-                I18n.format("GT5U.multiblock.mei")+": "+
-                        EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+ " EU/t(*2A) "+I18n.format("GT5U.machines.tier")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.mei")+": "+
+                        EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+ " EU/t(*2A) "+StatCollector.translateToLocal("GT5U.machines.tier")+": "+
                         EnumChatFormatting.YELLOW+VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET,
-                I18n.format("GT5U.multiblock.problems")+": "+
+                StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
                         EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
-                        " "+I18n.format("GT5U.multiblock.efficiency")+": "+
+                        " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
                         EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
-                I18n.format("GT5U.PA.machinetier")+": "+
+                StatCollector.translateToLocal("GT5U.PA.machinetier")+": "+
                         EnumChatFormatting.GREEN+tTier+EnumChatFormatting.RESET+
-                        " "+I18n.format("GT5U.PA.discount")+": "+
+                        " "+StatCollector.translateToLocal("GT5U.PA.discount")+": "+
                         EnumChatFormatting.GREEN+(1<<mMult)+EnumChatFormatting.RESET + " x",
-                I18n.format("GT5U.PA.parallel")+": "+EnumChatFormatting.GREEN+((mInventory[1] != null) ? (mInventory[1].stackSize<<mMult) : 0)+EnumChatFormatting.RESET
+                StatCollector.translateToLocal("GT5U.PA.parallel")+": "+EnumChatFormatting.GREEN+((mInventory[1] != null) ? (mInventory[1].stackSize<<mMult) : 0)+EnumChatFormatting.RESET
         };
     }
 
