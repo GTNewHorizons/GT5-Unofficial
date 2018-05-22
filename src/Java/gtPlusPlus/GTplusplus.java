@@ -5,9 +5,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Timer;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -22,8 +19,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
@@ -42,7 +37,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.sys.GeoUtils;
@@ -168,11 +162,6 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
-
-		//Chunk Loading
-		Timer h = ChunkManager.createChunkQueue();
-
-
 	}
 
 	@Mod.EventHandler
@@ -188,7 +177,7 @@ public class GTplusplus implements ActionListener {
 		//Chunkload Handler
 		if (ChunkManager.mChunkLoaderManagerMap.size() > 0) {
 			Logger.INFO("Clearing Chunk Loaders.");
-			ChunkManager.mChunkLoaderManagerMap.clear();
+			ChunkManager.clearInternalMaps();
 		}
 
 	}

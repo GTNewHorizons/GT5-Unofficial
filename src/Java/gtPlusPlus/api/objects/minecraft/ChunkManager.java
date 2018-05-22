@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
@@ -32,6 +34,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.ReverseAutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntityChunkLoader;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.*;
@@ -43,19 +46,24 @@ import net.minecraftforge.event.entity.EntityEvent;
 public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
 
 	private static final ChunkManager instance;
-	private static volatile long mInternalTickCounter = 0;	
 	private static ReverseAutoMap<String> mIdToUUIDMap = new ReverseAutoMap<String>();
-	
-	public static ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>> mChunkLoaderManagerMap = new ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>>();
-	
-	
 
+	public Timer mChunkQueue;
+	public static ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>> mChunkLoaderManagerMap = new ConcurrentHashMap<String, Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>>();
+	private static long mInternalTickCounter = 0;	
+	
 	static {
 		instance = new ChunkManager();
+		Logger.REFLECTION("Created ChunkManager object.");
 	}
 
-	public ChunkManager() {
+	private ChunkManager() {
 		Utils.registerEvent(this);
+	}
+	
+	public static void clearInternalMaps() {
+		mIdToUUIDMap.clear();
+		mChunkLoaderManagerMap.clear();
 	}
 	
 	public static boolean setIdAndUniqueString(int id, String blockposString) {
@@ -64,24 +72,29 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 			return true;
 		}
 		else {
-			Logger.INFO("Creating new Cached ID based on blockpos UID");
-			if (mIdToUUIDMap.injectCleanDataToAutoMap(mIdToUUIDMap.getNextFreeMapID(), blockposString)) {
-				Logger.INFO("Success! Cleanly injected into ChunkManager.");
-				return true;
+			Logger.INFO("ID in use, best try a few times to get a free ID.");
+			for (int u=0;u<mIdToUUIDMap.size()+1;u++) {
+				if (mIdToUUIDMap.injectCleanDataToAutoMap(u, blockposString)) {
+					Logger.INFO("Success! Cleanly injected into ChunkManager.");
+					return true;
+				}
 			}
-			else {
-				return false;
+			for (int u=0;u<50;u++) {
+				if (mIdToUUIDMap.injectCleanDataToAutoMap(MathUtils.randInt(0, 250000), blockposString)) {
+					Logger.INFO("Success! Cleanly injected into ChunkManager.");
+					return true;
+				}
 			}
+			return false;
+			
 		}
 	}
 	
 	public static int getIdFromUniqueString(String blockposString) {
 		if (mIdToUUIDMap.containsValue(blockposString)) {
-			Logger.INFO("Found Cached ID based on blockpos UID");
 			return mIdToUUIDMap.get(blockposString);
 		}
 		else {
-			Logger.INFO("Creating new Cached ID based on blockpos UID");
 			return mIdToUUIDMap.putToInternalMap(blockposString);
 		}
 	}
@@ -95,9 +108,14 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 		}
 	}
 
+	@EventHandler
+	public void serverStarting(final FMLServerStartingEvent event) {
+		//Chunk Loading
+		ChunkManager.getInstance().mChunkQueue = ChunkManager.createChunkQueue();
+	}
 
 	@SubscribeEvent
-	public void serverTick(TickEvent.ServerTickEvent e){
+	public void serverTick(final TickEvent.ServerTickEvent e){
 		mInternalTickCounter++;
 		try {
 			if (mInternalTickCounter % (20*15) == 0) {
@@ -410,7 +428,8 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 	static Timer ChunkTimerLoader() {		
 		Timer timer;
 		timer = new Timer();
-		timer.schedule(new ChunkCache(), 10 * 1000);
+		timer.schedule(new ChunkCache(), 20 * 500);
+		timer.scheduleAtFixedRate(new ChunkCache(), 15000, 60000);
 		return timer;
 	}
 
@@ -429,7 +448,7 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 					T = j.getValue_2().getTicketFromForge();
 					C = j.getValue_3().getChunk();				
 					ForgeChunkManager.forceChunk(T, C.getChunkCoordIntPair());
-					Logger.INFO("[Chunk Loader] Trying to force load a chunk that holds a chunkloader.");
+					Logger.INFO("[Chunk Loader] Trying to force load a chunk that holds a chunkloader. [Timer]");
 				}
 			}
 			else {

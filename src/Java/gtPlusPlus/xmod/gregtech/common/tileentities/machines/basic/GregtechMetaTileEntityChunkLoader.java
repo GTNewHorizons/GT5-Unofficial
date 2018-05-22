@@ -268,12 +268,14 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		if (this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().getWorld() != null && this.getBaseMetaTileEntity().getWorld().getWorldTime() >= 100) {		
 			if (mChunkLoaderMapID == -1) {
 				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID());
-				Logger.INFO("["+getUniqueID()+"] Adjusted Chunk Loaders ID from -1 to "+mChunkLoaderMapID+". This chunk loader is not registered to the global list yet.");
+				Logger.INFO("["+getUniqueID()+"] Adjusted Chunk Loaders ID to "+mChunkLoaderMapID+". This chunk loader is not registered to the global list yet.");
 			}
 			else {
 				Logger.INFO("["+getUniqueID()+"] Found cached ID - "+mChunkLoaderMapID);
 				ChunkManager.setIdAndUniqueString(this.mChunkLoaderMapID, getUniqueID());
-				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID()); // Just Incase the ID gets shifted.
+				 // Just Incase the ID gets shifted.
+				if (this.mChunkLoaderMapID != ChunkManager.getIdFromUniqueString(getUniqueID()))
+				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID());
 			}
 			if (this != null && this.getBaseMetaTileEntity() != null) {		
 				if (!isRegistered() && !getUniqueID().equalsIgnoreCase("0@0@0@0")) {

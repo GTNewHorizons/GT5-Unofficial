@@ -44,15 +44,17 @@ extends RenderPlayer {
 	public synchronized void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
 		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
 		ResourceLocation tResource = null;	
-		if (cachedResource != null) {
-			tResource = cachedResource;
-		}
-		else {
-			String mTemp = "";
-			//Make sure we don't keep checking on clients who dont have capes.
-			if (!hasResourceChecked) {
-				//Only run once.
+
+
+		//Make sure we don't keep checking on clients who dont have capes.
+		if (!hasResourceChecked) {
+			//Give Devs Dev capes.
+			if (CORE.DEVENV) {
+				cachedResource = this.mCapes[4];
 				hasResourceChecked = true;
+			}	
+			else {
+				String mTemp = "";
 				//If list's have not been built yet for some reason, we best do it now.
 				if (mDevCapes.size() <= 1) {
 					BuildCapeList();
@@ -61,40 +63,47 @@ extends RenderPlayer {
 				//Iterates all players in all lists, caches result.
 				for (Pair<String, String> mName : mOrangeCapes){				
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					mCapeList.add(mTemp);
 					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
 						tResource = this.mCapes[0];
 					}
 				}
 				for (Pair<String, String> mName : mMiscCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					mCapeList.add(mTemp);
 					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
 						tResource = this.mCapes[1];
 					}
 				}
 				for (Pair<String, String> mName : mBetaTestCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					mCapeList.add(mTemp);
 					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
 						tResource = this.mCapes[2];
 					}
 				}
 				for (Pair<String, String> mName : mDevCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					mCapeList.add(mTemp);
 					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
 						tResource = this.mCapes[3];
 					}
 				}
 				for (Pair<String, String> mName : mPatreonCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
+					mCapeList.add(mTemp);
 					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
 						tResource = this.mCapes[4];
 					}
-				}
-				if (tResource != null) {
-					cachedResource = tResource;
-				}
-			}
-		}
 
+				}			
+			}
+			if (tResource != null) {
+				cachedResource = tResource;
+			}
+			//Only run once.
+			hasResourceChecked = true;
+		}		
 
 		if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible() || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
 			aEvent.setCanceled(true);
@@ -103,16 +112,8 @@ extends RenderPlayer {
 		float aPartialTicks = aEvent.partialRenderTick;
 		try {		
 
-
-			/*if (CORE.DEVENV) {
-				tResource = this.mCapes[3];
-			}*/
-
-			/*if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
-                tResource = this.mCapes[0];
-            }*/
-			if ((tResource != null) && (!aPlayer.getHideCape())) {
-				bindTexture(tResource);
+			if ((cachedResource != null) && (!aPlayer.getHideCape())) {
+				bindTexture(cachedResource);
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0.0F, 0.0F, 0.125F);
 				double d0 = aPlayer.field_71091_bM + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
