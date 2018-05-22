@@ -6,7 +6,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.*;
 import gtPlusPlus.core.tileentities.machines.*;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TCTileEntities;
 
 public class ModTileEntities {
 
@@ -26,7 +25,7 @@ public class ModTileEntities {
 		
 		//Mod TEs
 		if (LoadedMods.Thaumcraft){
-			TCTileEntities.init();
+			
 		}
 	}
 

@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GT_Utility;
 
@@ -15,7 +14,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
-import gtPlusPlus.xmod.thaumcraft.common.block.TC_BlockHandler;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
 public class HANDLER_Thaumcraft {	
@@ -29,7 +27,6 @@ public class HANDLER_Thaumcraft {
 	
 	public static void preInit(){
 		if (LoadedMods.Thaumcraft){
-			TC_BlockHandler.run();
 		}
 	}
 

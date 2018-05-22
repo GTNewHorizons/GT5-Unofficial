@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+		jcenter()
         mavenCentral()
         maven {
             name = "forge"
@@ -9,14 +10,21 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+		maven {
+			url = "https://plugins.gradle.org/m2/"
+		}
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+		classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.55"
     }
 }
 
 apply plugin: "forge"
 apply plugin: "idea"
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: "se.bjurr.gitchangelog.git-changelog-gradle-plugin"
 
 idea { module { inheritOutputDirs = true } }
 
@@ -29,25 +37,52 @@ sourceSets {
 }
 
 configurations {
-    fatJar
+    //fatJar
 }
 
 dependencies {
-    compile files('mods/gregtech-5.09.32-dev.jar')
-	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
-    fatJar files('libs/Segment-2.1.1.jar')
+	testCompile 'junit:junit:4.12'
+    //fatJar files('libs/Segment-2.1.1.jar')
 }
 
+//Java Version
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
+//Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.0-prerelease-17-early"
+version = "1.7.0-prerelease-19-early-test2"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
+//Gradle Tweak
+//Prevent java 8's strict doclint for javadocs from failing builds
+allprojects {
+	tasks.withType(Javadoc) {
+		options.addStringOption('Xdoclint:none', '-quiet')
+	}
+}
+
+//Maven
+repositories {
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+}
+
+task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("CHANGELOG.md");
+	untaggedName = "Current release ${project.version}"
+	fromCommit = "1e6bf5e889344acabacec633f7be1aabcfbf4e0e"
+	toRef =  "HEAD"
+	templateContent = file('changelog.mustache').getText('UTF-8')
+}
+
+//task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+// file = new File("CHANGELOG.md");
+// templateContent = file('changelog.mustache').getText('UTF-8');
+//}
 
 jar {
     archiveName = archivesBaseName + "-" + version + ".jar"
@@ -55,7 +90,7 @@ jar {
         attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
-    from configurations.fatJar.collect { it.isDirectory() ? it : zipTree(it) }
+    //from configurations.fatJar.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 
@@ -79,16 +114,30 @@ task devJar(type: Jar) {
 
 artifacts {
     archives devJar
+	archives sourceJar
 }
 
+build.finalizedBy(gitChangelogTask)
+
 processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        include 'pack.mcmeta'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        exclude 'pack.mcmeta'
-    }
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		// replace version and mcversion
+		expand 'version':project.version, 'mcversion':project.minecraft.version
+	}
+
+	// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+		exclude '**/*.md'
+	}
+}
+
+def getBuildNumber() {
+	return "$System.env.BUILD_NUMBER" != "null" ? "$System.env.BUILD_NUMBER" : "0"
 }

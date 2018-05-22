@@ -22,9 +22,6 @@ import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.machines.*;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
-import gtPlusPlus.xmod.thaumcraft.gui.ContainerFastAlchemyFurnace;
-import gtPlusPlus.xmod.thaumcraft.gui.GuiFastAlchemyFurnace;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -84,7 +81,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 			else if (ID == GUI8){
-				return new ContainerFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
+				//return new ContainerFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
 			}
 		}
 
@@ -136,7 +133,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
 			else if (ID == GUI8){
-				return new GuiFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
+				//return new GuiFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
 			}
 		}
 
