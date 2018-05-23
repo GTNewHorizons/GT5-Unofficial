@@ -48,7 +48,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 			else {
 				GT_Values.RA.addFluidCannerRecipe(
 						recipe.mInputs[0], //Input
-						recipe.mInputs[1], //Input 2
+						recipe.mOutputs[0], //Input 2
 						recipe.mFluidInputs[0], //Fluid Input
 						recipe.mFluidOutputs[0] //Fluid Output
 						);
