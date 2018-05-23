@@ -16,7 +16,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 	static {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
 	}
-	
+
 	private final GT_Recipe recipe;
 	public RecipeGen_FluidCanning(GT_Recipe g) {
 		this(g, true);
@@ -37,24 +37,24 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 			//Used to store Fluid extraction state
 			if (this.disableOptional) {
 				GT_Values.RA.addFluidExtractionRecipe(
-						recipe.mInputs[0], //Input
-						recipe.mInputs[1], //Input 2
-						recipe.mFluidOutputs[0], //Fluid Output
-						recipe.mSpecialValue, //Chance
-						recipe.mDuration, //Duration
-						recipe.mEUt //Eu Tick
-						);	
+					recipe.mInputs.length == 1 ? recipe.mInputs[0] : null, //Input
+					recipe.mInputs.length == 2 ? recipe.mInputs[1] : null, //Input 2
+					recipe.mFluidOutputs.length == 1 ? recipe.mFluidOutputs[0] : null, //Fluid Output
+					recipe.mSpecialValue, //Chance
+					recipe.mDuration, //Duration
+					recipe.mEUt //Eu Tick
+					);	
 			}
 			else {
 				GT_Values.RA.addFluidCannerRecipe(
-						recipe.mInputs[0], //Input
-						recipe.mOutputs[0], //Input 2
-						recipe.mFluidInputs[0], //Fluid Input
-						recipe.mFluidOutputs[0] //Fluid Output
-						);
-				
+					recipe.mInputs.length == 1 ? recipe.mInputs[0] : null, //Input
+					recipe.mOutputs.length == 1 ? recipe.mOutputs[0] : null, //Input 2
+					recipe.mFluidInputs.length == 1 ? recipe.mFluidInputs[0] : null, //Fluid Input
+					recipe.mFluidOutputs.length == 1 ? recipe.mFluidOutputs[0] : null //Fluid Output
+					);
+
 			}
-			
+
 		}		
 	}
 
