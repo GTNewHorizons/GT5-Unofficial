@@ -20,11 +20,11 @@ buildscript {
     }
 }
 
-apply plugin: "forge"
-apply plugin: "idea"
-apply plugin: "java"
-apply plugin: "maven"
-apply plugin: "se.bjurr.gitchangelog.git-changelog-gradle-plugin"
+apply plugin: 'forge'
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
 idea { module { inheritOutputDirs = true } }
 
