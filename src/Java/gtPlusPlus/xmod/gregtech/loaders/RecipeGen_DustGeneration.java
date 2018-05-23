@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -16,22 +19,27 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_DustGeneration  implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
+	
 	final Material toGenerate;
+	final boolean disableOptional;
 
 	public RecipeGen_DustGeneration(final Material M){
-		this.toGenerate = M;
+		this(M, false);
+	}
+	
+	public RecipeGen_DustGeneration(final Material M, final boolean O){
+		this.toGenerate = M;		
+		this.disableOptional = O;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
 	public void run() {
-		generateRecipes(this.toGenerate);
+		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
-	public static void generateRecipes(final Material material){
-		generateRecipes(material, false);
-	}
-
-	public static void generateRecipes(final Material material, final boolean disableOptional){
+	private void generateRecipes(final Material material, final boolean disableOptional){
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO

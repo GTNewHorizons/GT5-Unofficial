@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
@@ -22,10 +24,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelter  implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
 	final Material toGenerate;
 
 	public RecipeGen_BlastSmelter(final Material M){
 		this.toGenerate = M;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
@@ -33,7 +37,7 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 		generateARecipe(this.toGenerate);
 	}
 
-	public static void generateARecipe(final Material M){
+	private void generateARecipe(final Material M){
 
 		//Add a Blast Smelting Recipe, Let's go!
 		ItemStack tStack;

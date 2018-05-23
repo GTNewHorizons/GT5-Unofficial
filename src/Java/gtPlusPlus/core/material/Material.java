@@ -3,6 +3,8 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -26,6 +28,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Material {
+
+	public static final Set<Material> mMaterialMap = new HashSet<Material>();
 
 	private String unlocalizedName;
 	private String localizedName;
@@ -117,6 +121,11 @@ public class Material {
 	}
 
 	public Material(final String materialName, final MaterialState defaultState, final TextureSet set, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs){
+
+		if (mMaterialMap.add(this)) {
+			//Placeholder
+		}
+
 		try {
 			this.unlocalizedName = Utils.sanitizeString(materialName);
 			this.localizedName = materialName;
@@ -293,7 +302,7 @@ public class Material {
 					this.vMoltenFluid = FluidUtils.getFluidStack(localizedName, 1).getFluid();
 				}
 				else if (isValid == null || isValid == Materials._NULL){
-					this.vMoltenFluid = this.generateFluid();
+					queueFluidGeneration();
 				}
 				else {
 					if (isValid.mFluid != null){
@@ -303,7 +312,7 @@ public class Material {
 						this.vMoltenFluid = isValid.mGas;
 					}
 					else {
-						this.vMoltenFluid = this.generateFluid();
+						queueFluidGeneration();
 					}
 				}
 
@@ -744,6 +753,21 @@ public class Material {
 
 	}
 
+	public final boolean queueFluidGeneration() {
+		return isFluidQueued = true;
+	}
+
+	public final static void generateQueuedFluids() {
+		for (Material m : mMaterialMap) {
+			if (m.isFluidQueued) {
+				m.vMoltenFluid = m.generateFluid();
+			}
+		}
+	}
+
+	//If we need a fluid, let's just queue it for later.
+	public boolean isFluidQueued = false;
+
 	public final Fluid generateFluid(){
 		if (this.materialState == MaterialState.ORE){
 			return null;
@@ -817,6 +841,24 @@ public class Material {
 			}
 		}
 
+		FluidStack aTest1 = FluidUtils.getFluidStack("molten."+Utils.sanitizeString(this.getLocalizedName()), 1);
+		FluidStack aTest2 = FluidUtils.getFluidStack("fluid."+Utils.sanitizeString(this.getLocalizedName()), 1);
+		FluidStack aTest3 = FluidUtils.getFluidStack(Utils.sanitizeString(this.getLocalizedName()), 1);
+
+		if (aTest1 != null) {
+			Logger.INFO("Found FluidRegistry entry for "+"molten."+Utils.sanitizeString(this.getLocalizedName()));
+			return aTest1.getFluid();
+		}
+		if (aTest2 != null) {
+			Logger.INFO("Found FluidRegistry entry for "+"fluid."+Utils.sanitizeString(this.getLocalizedName()));
+			return aTest2.getFluid();
+		}
+		if (aTest3 != null) {
+			Logger.INFO("Found FluidRegistry entry for "+Utils.sanitizeString(this.getLocalizedName()));
+			return aTest3.getFluid();
+		}
+
+
 		Logger.INFO("Generating our own fluid.");
 		//Generate a Cell if we need to
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){
@@ -837,7 +879,7 @@ public class Material {
 					this.materialState.ID(),
 					this.getMeltingPointK(),
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 		}
 		else if (this.materialState == MaterialState.LIQUID){
@@ -848,7 +890,7 @@ public class Material {
 					this.materialState.ID(),
 					this.getMeltingPointK(),
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 		}
 		else if (this.materialState == MaterialState.GAS){
@@ -859,7 +901,7 @@ public class Material {
 					this.materialState.ID(),
 					this.getMeltingPointK(),
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 		}
 		else { //Plasma

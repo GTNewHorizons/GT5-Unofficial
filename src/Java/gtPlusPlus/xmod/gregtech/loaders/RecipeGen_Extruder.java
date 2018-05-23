@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
@@ -11,10 +14,12 @@ import gtPlusPlus.core.material.Material;
 
 public class RecipeGen_Extruder implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
 	final Material toGenerate;
 
 	public RecipeGen_Extruder(final Material M){
 		this.toGenerate = M;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
@@ -22,7 +27,7 @@ public class RecipeGen_Extruder implements Runnable{
 		generateRecipes(this.toGenerate);
 	}
 
-	public static void generateRecipes(final Material material){
+	private void generateRecipes(final Material material){
 
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 		final ItemStack itemIngot = material.getIngot(1);

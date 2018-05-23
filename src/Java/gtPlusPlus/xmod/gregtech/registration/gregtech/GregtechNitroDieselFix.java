@@ -62,7 +62,7 @@ public class GregtechNitroDieselFix {
 							Materials mNitroFix = (Materials) construct.invoke(df);
 							Logger.INFO("[Nitro] Invoked 8 method calls successfully.");	
 
-							GT_Mod.gregtechproxy.addFluid("NitroFuel_Old", "Nitro Diesel [Old]", mNitroFix, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, mNitroFix, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+							GT_Mod.gregtechproxy.addFluid("NitroFuel_Old", "Nitro Diesel [Old]", mNitroFix, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, mNitroFix, 1L), ItemUtils.getEmptyCell(), 1000);
 							Logger.INFO("[Nitro] Added a fluid.");
 
 

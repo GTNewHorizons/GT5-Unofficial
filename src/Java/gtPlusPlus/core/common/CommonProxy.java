@@ -7,6 +7,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
 
+import gregtech.api.enums.ItemList;
+
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
@@ -21,6 +23,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
@@ -34,6 +37,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 public class CommonProxy {
 
 	public static Meta_GT_Proxy GtProxy;
+	private boolean mFluidsGenerated = false;
 
 	public CommonProxy(){
 		//Should Register Gregtech Materials I've Made
@@ -92,7 +96,10 @@ public class CommonProxy {
 		Logger.INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
 
-
+		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
+			Material.generateQueuedFluids();
+			mFluidsGenerated = true;
+		}
 	}
 
 	public void init(final FMLInitializationEvent e) {
@@ -100,7 +107,15 @@ public class CommonProxy {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerHandlers();
 		}
-		
+		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
+			Material.generateQueuedFluids();
+			mFluidsGenerated = true;
+		}
+		else {
+			Logger.INFO("[ERROR] Did not generate fluids at all.");
+			Logger.WARNING("[ERROR] Did not generate fluids at all.");
+			Logger.ERROR("[ERROR] Did not generate fluids at all.");
+		}
 		CI.init();
 
 		/**

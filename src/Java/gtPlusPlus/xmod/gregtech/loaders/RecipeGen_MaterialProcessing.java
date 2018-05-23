@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
@@ -18,10 +21,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_MaterialProcessing implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
+	
 	final Material toGenerate;
 
 	public RecipeGen_MaterialProcessing(final Material M){
 		this.toGenerate = M;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
@@ -29,7 +35,7 @@ public class RecipeGen_MaterialProcessing implements Runnable{
 		generateRecipes(this.toGenerate);
 	}
 
-	public static void generateRecipes(final Material material){
+	private void generateRecipes(final Material material){
 
 		if (material.getMaterialComposites().length > 1){
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");

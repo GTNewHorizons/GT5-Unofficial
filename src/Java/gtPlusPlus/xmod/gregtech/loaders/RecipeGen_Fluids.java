@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 
@@ -8,22 +11,27 @@ import gtPlusPlus.core.material.Material;
 
 public class RecipeGen_Fluids  implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
+	
 	final Material toGenerate;
+	final boolean disableOptional;
 
 	public RecipeGen_Fluids(final Material M){
+		this(M, false);
+	}
+	
+	public RecipeGen_Fluids(final Material M, final boolean dO){
 		this.toGenerate = M;
+		this.disableOptional = dO;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
 	public void run() {
-		generateRecipes(this.toGenerate);
+		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
-	public static void generateRecipes(final Material material){
-		generateRecipes(material, false);
-	}
-
-	public static void generateRecipes(final Material material, final boolean disableOptional){
+	private void generateRecipes(final Material material, final boolean dO){
 
 		//Melting Shapes to fluid
 		if (!material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")){

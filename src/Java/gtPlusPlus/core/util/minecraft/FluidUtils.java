@@ -282,7 +282,7 @@ public class FluidUtils {
 					3,
 					10000,
 					temp,
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 		}
 		return null;
@@ -397,7 +397,7 @@ public class FluidUtils {
 		if (aStack.getItem().hasContainerItem(aStack)) {
 			return aStack.getItem().getContainerItem(aStack);
 		}
-		if (equal(aStack, ItemList.Cell_Empty.get(1), true)) {
+		if (equal(aStack, ItemUtils.getEmptyCell(), true)) {
 			return null;
 		}
 		if (aCheckIFluidContainerItems && (aStack.getItem() instanceof IFluidContainerItem) && (((IFluidContainerItem)aStack.getItem()).getCapacity(aStack) > 0)) {
@@ -436,7 +436,7 @@ public class FluidUtils {
 					4,
 					MeltingPoint,
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 
 			//Disable this, not sure why it exists //TODO
@@ -481,7 +481,7 @@ public class FluidUtils {
 					4,
 					MeltingPoint,
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 
 			if (dustStack != null){
@@ -522,7 +522,7 @@ public class FluidUtils {
 					4,
 					MeltingPoint,
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
+					ItemUtils.getEmptyCell(),
 					1000);
 		}
 		else {

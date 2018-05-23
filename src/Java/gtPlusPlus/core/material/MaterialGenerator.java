@@ -1,9 +1,12 @@
 package gtPlusPlus.core.material;
 
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -29,6 +32,20 @@ import gtPlusPlus.xmod.gregtech.loaders.*;
 
 public class MaterialGenerator {
 
+	public static final AutoMap<Set<Runnable>> mRecipeMapsToGenerate = new AutoMap<Set<Runnable>>();
+	
+	static {
+		mRecipeMapsToGenerate.put(RecipeGen_DustGeneration.mRecipeGenMap);
+		mRecipeMapsToGenerate.put(RecipeGen_MaterialProcessing.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_Fluids.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_ShapedCrafting.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_Assembler.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_Extruder.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_Plates.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_AlloySmelter.mRecipeGenMap);		
+		mRecipeMapsToGenerate.put(RecipeGen_BlastSmelter.mRecipeGenMap);
+	}
+	
 	public static void generate(final Material matInfo){
 		generate(matInfo, true);
 	}
@@ -133,17 +150,18 @@ public class MaterialGenerator {
 			}
 
 			//Add A jillion Recipes - old code
-			RecipeGen_AlloySmelter.generateRecipes(matInfo);
-			RecipeGen_Assembler.generateRecipes(matInfo);
+			new RecipeGen_AlloySmelter(matInfo);
+			new RecipeGen_Assembler(matInfo);
 			if (generateBlastSmelterRecipes){
-				RecipeGen_BlastSmelter.generateARecipe(matInfo);
+				new RecipeGen_BlastSmelter(matInfo);
 			}
-			RecipeGen_DustGeneration.generateRecipes(matInfo);
-			RecipeGen_Extruder.generateRecipes(matInfo);
-			RecipeGen_Fluids.generateRecipes(matInfo);
-			RecipeGen_Plates.generateRecipes(matInfo);
-			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
+			new RecipeGen_Extruder(matInfo);
+			new RecipeGen_Fluids(matInfo);
+			new RecipeGen_Plates(matInfo);
+			new RecipeGen_ShapedCrafting(matInfo);
+			new RecipeGen_MaterialProcessing(matInfo);
+			
+			new RecipeGen_DustGeneration(matInfo);
 			new RecipeGen_Recycling(matInfo);
 			return true;
 
@@ -179,9 +197,16 @@ public class MaterialGenerator {
 		}
 
 		//Add A jillion Recipes - old code
+		try {
 		RecipeGen_DustGeneration.addMixerRecipe_Standalone(matInfo);
-		RecipeGen_Fluids.generateRecipes(matInfo);
-		RecipeGen_MaterialProcessing.generateRecipes(matInfo);
+		new RecipeGen_Fluids(matInfo);
+		new RecipeGen_MaterialProcessing(matInfo);
+		}
+		catch (Throwable t) {
+			Logger.INFO("Failed to generate some recipes for "+materialName);
+			Logger.ERROR("Failed to generate some recipes for "+materialName);
+			t.printStackTrace();
+		}
 		//RecipeGen_Recycling.generateRecipes(matInfo);
 	}
 
@@ -216,15 +241,15 @@ public class MaterialGenerator {
 			if (generatePlates) {
 				temp = new BaseItemPlate(matInfo);
 				temp = new BaseItemPlateDouble(matInfo);
-				RecipeGen_Plates.generateRecipes(matInfo);
-				RecipeGen_Extruder.generateRecipes(matInfo);
-				RecipeGen_Assembler.generateRecipes(matInfo);
+				new RecipeGen_Plates(matInfo);
+				new RecipeGen_Extruder(matInfo);
+				new RecipeGen_Assembler(matInfo);
 			}
 
-			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-			RecipeGen_Fluids.generateRecipes(matInfo);
-			RecipeGen_MaterialProcessing.generateRecipes(matInfo);
-			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+			new RecipeGen_ShapedCrafting(matInfo);
+			new RecipeGen_Fluids(matInfo);
+			new RecipeGen_MaterialProcessing(matInfo);
+			new RecipeGen_DustGeneration(matInfo, true);
 			new RecipeGen_Recycling(matInfo);			
 			
 		} catch (final Throwable t){

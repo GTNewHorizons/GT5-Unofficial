@@ -11,6 +11,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -94,7 +95,10 @@ public class ItemUtils {
 		return getEmptyCell(1);
 	}
 
-	public static ItemStack getEmptyCell(int i){
+	public static ItemStack getEmptyCell(int i){		
+		if (ItemList.Cell_Empty.hasBeenSet()) {
+			return ItemList.Cell_Empty.get(1L, new Object[0]);
+		}		
 		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", i, 0);
 		return temp != null ? temp : null;
 	}
@@ -378,7 +382,7 @@ public class ItemUtils {
 			};
 		}
 
-		RecipeGen_DustGeneration.generateRecipes(material);
+		new RecipeGen_DustGeneration(material);
 
 		return output;
 	}

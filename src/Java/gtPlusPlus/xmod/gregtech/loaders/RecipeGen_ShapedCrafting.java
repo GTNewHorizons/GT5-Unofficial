@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GT_ModHandler;
@@ -12,10 +15,12 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGen_ShapedCrafting  implements Runnable{
 
+	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
 	final Material toGenerate;
 
 	public RecipeGen_ShapedCrafting(final Material M){
 		this.toGenerate = M;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
@@ -23,7 +28,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 		generateRecipes(this.toGenerate);
 	}
 
-	public static void generateRecipes(final Material material){
+	private void generateRecipes(final Material material){
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
 		if (!CORE.GTNH) {
