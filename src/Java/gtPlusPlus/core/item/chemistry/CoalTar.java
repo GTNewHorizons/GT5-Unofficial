@@ -12,6 +12,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -62,7 +63,7 @@ public class CoalTar {
 		else {
 			Toluene = FluidUtils.getFluidStack("liquid_toluene", 1000).getFluid();
 			Item itemCellToluene = new BaseItemComponent("Toluene", "Toluene", new short[]{140, 70, 20, 100});
-			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack("liquid_toluene", 1000), null);
+			MaterialGenerator.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack("liquid_toluene", 1000), null);
 		}
 
 		//Create Coal Tar

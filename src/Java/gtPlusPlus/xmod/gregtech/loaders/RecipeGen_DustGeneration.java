@@ -8,8 +8,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
@@ -17,12 +19,12 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeGen_DustGeneration  implements Runnable{
+public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
-	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
-	
-	final Material toGenerate;
-	final boolean disableOptional;
+	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	static {
+		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+	}
 
 	public RecipeGen_DustGeneration(final Material M){
 		this(M, false);
@@ -307,5 +309,6 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		}
 		return false;
 	}
+	
 }
 

@@ -4,7 +4,13 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.Recipe_GT;
+
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -29,21 +35,45 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.loaders.*;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MaterialGenerator {
 
-	public static final AutoMap<Set<Runnable>> mRecipeMapsToGenerate = new AutoMap<Set<Runnable>>();
+	public static final AutoMap<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new AutoMap<Set<RunnableWithInfo<Material>>>();
+
+	@SuppressWarnings("unused")
+	private static volatile Item temp;
+	@SuppressWarnings("unused")
+	private static volatile Block tempBlock;
 	
-	static {
-		mRecipeMapsToGenerate.put(RecipeGen_DustGeneration.mRecipeGenMap);
-		mRecipeMapsToGenerate.put(RecipeGen_MaterialProcessing.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_Fluids.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_ShapedCrafting.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_Assembler.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_Extruder.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_Plates.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_AlloySmelter.mRecipeGenMap);		
-		mRecipeMapsToGenerate.put(RecipeGen_BlastSmelter.mRecipeGenMap);
+	public static void addFluidExtractionRecipe(ItemStack a, Object b, FluidStack c, int a1, int a2, int a3) {
+		GT_Recipe r = new Recipe_GT(
+				true,
+				new ItemStack[] {a, (ItemStack) b},
+				new ItemStack[] {},
+				null,
+				new int[] {},
+				new FluidStack[] {},
+				new FluidStack[] {c},
+				a2, a3, a1);
+		new RecipeGen_FluidCanning(r, true);
+	}
+	
+	public static void addFluidCannerRecipe(ItemStack aFullContainer, ItemStack aEmpty, FluidStack rFluidIn, FluidStack rFluidOut) {		
+		GT_Recipe r = new Recipe_GT(
+				true,
+				new ItemStack[] {aEmpty},
+				new ItemStack[] {aFullContainer},
+				null,
+				new int[] {},
+				new FluidStack[] {rFluidIn},
+				new FluidStack[] {rFluidOut},
+				0, 0, 0);
+		new RecipeGen_FluidCanning(r, false);
+	}
+	
+	public static void generateFluidExtractorRecipe(GT_Recipe recipe, boolean extracting) {
+		new RecipeGen_FluidCanning(recipe, extracting);
 	}
 	
 	public static void generate(final Material matInfo){
@@ -76,8 +106,6 @@ public class MaterialGenerator {
 			if (matInfo.getState() == MaterialState.SOLID){
 				if (generateEverything == true){
 					if (sRadiation >= 1){
-						Item temp;
-						Block tempBlock;
 						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 						temp = new BaseItemIngot(matInfo);
 
@@ -91,8 +119,6 @@ public class MaterialGenerator {
 					}
 
 					else {
-						Item temp;
-						Block tempBlock;
 						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.FRAME, Colour);
 						temp = new BaseItemIngot(matInfo);
@@ -114,8 +140,6 @@ public class MaterialGenerator {
 						temp = new BaseItemGear(matInfo);
 					}
 				} else {
-					Item temp;
-					Block tempBlock;
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 
 					temp = new BaseItemIngot(matInfo);
@@ -128,9 +152,7 @@ public class MaterialGenerator {
 				}
 			}
 			else if (matInfo.getState() == MaterialState.LIQUID){
-				Item temp;
 				if (generateEverything == true){
-					Block tempBlock;
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 				}
 				temp = new BaseItemIngot(matInfo);
@@ -190,7 +212,6 @@ public class MaterialGenerator {
 		}
 
 		if (matInfo.getState() == MaterialState.SOLID){
-			Item temp;
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation, false);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation, false);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation, false);
@@ -214,7 +235,6 @@ public class MaterialGenerator {
 		generateNuclearMaterial(matInfo, true);
 	}
 
-	@SuppressWarnings("unused")
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
 		try {
 			final String unlocalizedName = matInfo.getUnlocalizedName();
@@ -226,9 +246,6 @@ public class MaterialGenerator {
 			if (matInfo.vRadiationLevel != 0){
 				sRadiation = matInfo.vRadiationLevel;
 			}
-
-			Item temp;
-			Block tempBlock;
 
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);

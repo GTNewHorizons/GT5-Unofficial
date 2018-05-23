@@ -9,12 +9,11 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -22,10 +21,12 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeGen_BlastSmelter  implements Runnable{
+public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
-	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
-	final Material toGenerate;
+	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	static {
+		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+	}
 
 	public RecipeGen_BlastSmelter(final Material M){
 		this.toGenerate = M;
@@ -60,7 +61,6 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 			//Prepare some Variables
 			ItemStack[] components;
 			ArrayList<MaterialStack> tMaterial = new ArrayList<>();
-			short counter=0;
 			int inputStackCount=0;
 			int fluidAmount=0;
 			final boolean doTest = true;
@@ -171,10 +171,7 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 			if (tMaterial != null){
 				//Reset the Variables for compounds if last recipe was a success.
 				inputStackCount=0;
-				counter=0;
-
-
-
+				
 				//If this Material has some kind of compound list, proceed
 				if (mMaterialListSize > 1){
 					final gtPlusPlus.core.material.MaterialStack[] tempStack = new gtPlusPlus.core.material.MaterialStack[mMaterialListSize];

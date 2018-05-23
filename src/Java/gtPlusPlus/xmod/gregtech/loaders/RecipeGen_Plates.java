@@ -10,13 +10,17 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
 
-public class RecipeGen_Plates implements Runnable{
+public class RecipeGen_Plates extends RecipeGen_Base {
 
-	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
-	final Material toGenerate;
+	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	static {
+		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+	}
 
 	public RecipeGen_Plates(final Material M){
 		this.toGenerate = M;

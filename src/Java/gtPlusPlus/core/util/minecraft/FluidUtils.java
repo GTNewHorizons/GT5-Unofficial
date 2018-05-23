@@ -16,6 +16,7 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -233,7 +234,7 @@ public class FluidUtils {
 			}
 		}
 		if ((aFullContainer != null) && (aEmptyContainer != null) && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
-			GT_Values.RA.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
+			MaterialGenerator.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
 		}
 		return rFluid;
 	}
@@ -327,7 +328,7 @@ public class FluidUtils {
 			rFluid.setTemperature((int) (aTemperatureK));
 		}
 		if ((aFullContainer != null) && (aEmptyContainer != null) && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
-			GT_Values.RA.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
+			MaterialGenerator.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
 		}
 		else {
 			//Utils.LOG_INFO("Failed creating recipes to fill/empty cells of "+aName+".");
@@ -440,7 +441,7 @@ public class FluidUtils {
 					1000);
 
 			//Disable this, not sure why it exists //TODO
-			/*GT_Values.RA.addFluidExtractionRecipe(
+			/*MaterialGenerator.addFluidExtractionRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1), //Input
 					null, //Input 2
 					FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
@@ -485,7 +486,7 @@ public class FluidUtils {
 					1000);
 
 			if (dustStack != null){
-				GT_Values.RA.addFluidExtractionRecipe(
+				MaterialGenerator.addFluidExtractionRecipe(
 						dustStack, //Input
 						null, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
@@ -495,7 +496,7 @@ public class FluidUtils {
 						);
 			}
 			if (dustStack2 != null){
-				GT_Values.RA.addFluidExtractionRecipe(
+				MaterialGenerator.addFluidExtractionRecipe(
 						dustStack2, //Input
 						null, //Input 2
 						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output

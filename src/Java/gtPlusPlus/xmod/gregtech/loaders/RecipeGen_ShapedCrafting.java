@@ -7,17 +7,21 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GT_ModHandler;
 
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
-public class RecipeGen_ShapedCrafting  implements Runnable{
+public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
-	public static final Set<Runnable> mRecipeGenMap = new HashSet<Runnable>();
-	final Material toGenerate;
-
+	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	static {
+		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+	}
+	
 	public RecipeGen_ShapedCrafting(final Material M){
 		this.toGenerate = M;
 		mRecipeGenMap.add(this);

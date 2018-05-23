@@ -21,6 +21,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -109,8 +110,8 @@ public class GTPP_Bees {
     	addExtractorRecipe(ItemUtils.getSimpleStack(dropFluorineBlob), FluidUtils.getFluidStack("fluorine", 4));		
     }
     
-    private boolean addExtractorRecipe(ItemStack input, FluidStack output){
-    	return GT_Values.RA.addFluidExtractionRecipe(
+    private void addExtractorRecipe(ItemStack input, FluidStack output){
+    	MaterialGenerator.addFluidExtractionRecipe(
     			input, 
     			null, 
     			output, 
