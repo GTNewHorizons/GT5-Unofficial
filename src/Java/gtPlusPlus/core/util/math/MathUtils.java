@@ -364,4 +364,15 @@ public class MathUtils {
 		return number>GT_Values.V[GT_Values.V.length-1] ? safeInt(GT_Values.V[GT_Values.V.length-1],1) : number<Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
 	}
 
+	public static int getRandomFromArray(int[] mValues) {
+		int[] mLargeChanceArray = new int[mValues.length*1000];
+		int mValueSelection;
+		for (int g = 0; g < mLargeChanceArray.length; g++) {
+			mValueSelection = randInt(0, mValues.length);
+			mLargeChanceArray[g] = mValues[mValueSelection];
+		}
+		return mLargeChanceArray[randInt(0, mLargeChanceArray.length)];
+		
+	}
+
 }

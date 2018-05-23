@@ -28,8 +28,6 @@ import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
-import gtPlusPlus.core.handler.analytics.SegmentHelper;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.handler.events.MissingMappingsEvent;
@@ -166,14 +164,6 @@ public class GTplusplus implements ActionListener {
 
 	@Mod.EventHandler
 	public void serverStopping(final FMLServerStoppingEvent event) {
-		//Flush all data to Server at the end of the day.
-		if (SegmentAnalytics.sAnalyticsMasterList.size() > 0){
-			for (SegmentAnalytics sa : SegmentAnalytics.sAnalyticsMasterList.values()){
-				sa.flushDataFinal();
-				SegmentAnalytics.LOG("Cleaned up Analytics Data for player "+sa.mLocalName+".");
-			}
-		}
-
 		//Chunkload Handler
 		if (ChunkManager.mChunkLoaderManagerMap.size() > 0) {
 			Logger.INFO("Clearing Chunk Loaders.");
@@ -248,15 +238,6 @@ public class GTplusplus implements ActionListener {
 			Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
 			Logger.INFO("========================");
 		}
-	}
-
-
-	private static final void initAnalytics(){
-		SegmentAnalytics.isEnabled = CORE.ConfigSwitches.enableUpdateChecker;
-		if (!Utils.isServer() && PlayerUtils.isPlayerAlkalus()){
-			SegmentAnalytics.isEnabled = true;
-		}		
-		new SegmentHelper();
 	}
 
 	private static final boolean setupMaterialBlacklist(){	

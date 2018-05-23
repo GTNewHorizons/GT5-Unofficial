@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.analytics.SegmentAnalytics;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
@@ -37,10 +36,10 @@ public class LoginEventHandler {
 		}	
 
 		try {			
-			new SegmentAnalytics(event.player);			
+			//new SegmentAnalytics(event.player);			
 		}
 		catch (Throwable t){
-			SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");
+			//SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");
 		}
 
 		try {
