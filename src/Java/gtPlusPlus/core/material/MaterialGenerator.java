@@ -303,10 +303,6 @@ public class MaterialGenerator {
 				sRadiation = matInfo.vRadiationLevel;
 			}
 
-			Item temp;
-			Block tempBlock;
-
-
 			if (generateOre) {
 				tempBlock = new BlockBaseOre(matInfo, BlockTypes.ORE, Colour.intValue());		
 			}

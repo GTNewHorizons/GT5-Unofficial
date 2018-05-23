@@ -44,6 +44,7 @@ import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.*;
+import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -64,7 +65,7 @@ public final class ModItems {
 
 
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
-
+	
 	public static Item ZZZ_Empty;
 	public static Item AAA_Broken;
 
@@ -304,6 +305,9 @@ public final class ModItems {
 		//Register Rope
 		itemFiber = new CoreItem("itemFiber", "Plant Fiber", tabMisc);
 		itemRope = new CoreItem("itemRope", "Rope", tabMisc);
+		
+		//Load Wearable Items
+		WearableLoader.run();
 
 		//Make some backpacks
 		//Primary colours
