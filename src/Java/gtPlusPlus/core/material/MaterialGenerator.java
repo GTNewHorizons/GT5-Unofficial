@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 
@@ -49,7 +48,7 @@ public class MaterialGenerator {
 	public static void addFluidExtractionRecipe(ItemStack a, Object b, FluidStack c, int a1, int a2, int a3) {
 		GT_Recipe r = new Recipe_GT(
 				true,
-				new ItemStack[] {a, (ItemStack) b},
+				new ItemStack[] {a,  b != null ? (ItemStack) b : null},
 				new ItemStack[] {},
 				null,
 				new int[] {},
