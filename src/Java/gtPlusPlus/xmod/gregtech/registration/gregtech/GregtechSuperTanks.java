@@ -8,6 +8,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_ConnectableCrate;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 
 public class GregtechSuperTanks {
@@ -47,6 +48,10 @@ public class GregtechSuperTanks {
 						ItemList.Automation_ChestBuffer_IV, Character.valueOf('D'),
 						OrePrefixes.circuit.get(Materials.Elite), Character.valueOf('P'),
 						OrePrefixes.plate.get(Materials.Tungsten)});
+		
+		//Test Thing
+		GregtechItemList.CrateStorage.set((new GT_MetaTileEntity_ConnectableCrate(GT_MetaTileEntity_ConnectableCrate.mCrateID, "crate.tier.01", "Interconnecting Storage Crate", 0)).getStackForm(1L));
+		
 	}
 
 }

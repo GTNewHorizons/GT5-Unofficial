@@ -4,6 +4,8 @@ import java.util.*;
 
 import net.minecraft.item.ItemStack;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+
 public class ArrayUtils {
 
 	public static Object[] expandArray(final Object[] someArray, final Object newValueToAdd) {
@@ -39,6 +41,16 @@ public class ArrayUtils {
 		return mData;
 	}
 
+	public static <A> AutoMap<A> mergeTwoMaps(AutoMap<A> a, AutoMap<A> b) {
+		AutoMap<A> c = new AutoMap<A>();
+		for (A g : a.values()) {
+			c.put(g);
+		}
+		for (A g : b.values()) {
+			c.put(g);
+		}		
+		return c;
+	}
 
 }
 

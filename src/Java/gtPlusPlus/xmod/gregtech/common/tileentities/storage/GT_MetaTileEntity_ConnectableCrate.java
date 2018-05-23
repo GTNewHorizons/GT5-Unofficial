@@ -19,8 +19,10 @@ import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SuperChest;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SuperChest;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_TieredMachineBlock {
 
@@ -50,15 +52,18 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 	//Neighbour Cache
 	private GT_MetaTileEntity_ConnectableCrate[] mNeighbourCache = new GT_MetaTileEntity_ConnectableCrate[6];
 	//Cached Crate Location
-	private BlockPos mCurrentPos;
+	private BlockPos mCurrentPos = null;
 	//Master Crate Position
-	protected BlockPos mMasterCrateLocation;
+	protected BlockPos mMasterCrateLocation = null;
 	//Is Master?
 	protected boolean mIsMaster = false;
 	//Is Connected?
 	protected boolean mIsConnected[] = new boolean[] {false, false, false, false, false, false};
 	//How many are connected?
 	protected int mConnectedCount = 0;
+	//Map of connected locations
+	protected AutoMap<String> mConnectedCache = new AutoMap<String>();
+	
 
 	public GT_MetaTileEntity_ConnectableCrate(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3,
@@ -130,7 +135,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
 		int e4 = 0;
 		if (mNeighbourCache.length > 0) {
-			for (GT_MetaTileEntity_ConnectableCrate e : mNeighbourCache) {
+			for (GT_MetaTileEntity_ConnectableCrate e : mNeighbourCache) {				
+				this.mConnectedCount = this.mConnectedCache.size();				
 				if (e != null) {
 					//First, we check if this Crate is a Master, if not, continue checking what it is.
 					if (this.mIsMaster) {
@@ -146,7 +152,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 								if (!this.mIsConnected[e4]) {
 									this.mIsConnected[e4] = true;	
 								}
-								this.mConnectedCount += e.mConnectedCount;
+								this.mConnectedCache = ArrayUtils.mergeTwoMaps(this.mConnectedCache, e.mConnectedCache);
 								continue;
 							}
 							//Other crate held more connected, it is now master.
@@ -159,7 +165,9 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 								if (!e.mIsConnected[getOppositeSide(e4)]) {
 									e.mIsConnected[getOppositeSide(e4)] = true;
 								}
-								e.mConnectedCount += this.mConnectedCount;
+								e.mConnectedCache = ArrayUtils.mergeTwoMaps(e.mConnectedCache, this.mConnectedCache);
+								//Best wipe our cache of connected blocks then, since they no longer hold value.
+								mConnectedCache.clear();
 								continue;
 							}
 						}
@@ -183,7 +191,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 										if (!this.mIsConnected[e4]) {
 											this.mIsConnected[e4] = true;	
 										}
-										this.mConnectedCount += gM.mConnectedCount;
+										this.mConnectedCache = ArrayUtils.mergeTwoMaps(this.mConnectedCache, gM.mConnectedCache);
 										continue;
 									}
 									//We lost, time to submit to a new master crate
@@ -196,7 +204,9 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 										if (!e.mIsConnected[getOppositeSide(e4)]) {
 											e.mIsConnected[getOppositeSide(e4)] = true;
 										}
-										gM.mConnectedCount += this.mConnectedCount;
+										gM.mConnectedCache = ArrayUtils.mergeTwoMaps(gM.mConnectedCache, this.mConnectedCache);
+										//Best wipe our cache of connected blocks then, since they no longer hold value.
+										mConnectedCache.clear();
 										continue;
 									}
 								}
@@ -215,8 +225,8 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 									}
 									if (!this.mIsConnected[e4]) {
 										this.mIsConnected[e4] = true;	
-										this.mConnectedCount ++;
 									}
+									mConnectedCache.put(e.mCurrentPos.getUniqueIdentifier());
 									continue;
 								}
 								else {
@@ -231,17 +241,21 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
 					//We are not a Storage Master Crate, into a brave new world we go
 					else {
+						//Best wipe our cache of connected blocks then, since they no longer hold value.
+						mConnectedCache.clear();
+						
 						//Dang, the other crate is a master, time to get incorporated.
 						if (e.mIsMaster) {
 							this.mIsMaster = false;
-							this.mMasterCrateLocation = new BlockPos(e.getBaseMetaTileEntity().getXCoord(), e.getBaseMetaTileEntity().getYCoord(), e.getBaseMetaTileEntity().getZCoord(), e.getBaseMetaTileEntity().getWorld());
+							this.mMasterCrateLocation = e.mCurrentPos;
 							this.mIsConnected[e4] = true;
 							if (!e.mIsConnected[e4]) {
 								e.mIsConnected[e4] = true;
 							}
 							if (e.mMasterCrateLocation == null) {
-								e.mMasterCrateLocation = new BlockPos(e.getBaseMetaTileEntity().getXCoord(), e.getBaseMetaTileEntity().getYCoord(), e.getBaseMetaTileEntity().getZCoord(), e.getBaseMetaTileEntity().getWorld());
+								e.mMasterCrateLocation = e.mCurrentPos;
 							}
+							e.mConnectedCache.put(this.mCurrentPos.getUniqueIdentifier());
 							continue;
 						}
 						//So the Crate we Checked is not a Master, so let's see if it knows where one is
@@ -259,7 +273,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 									if (!e.mIsConnected[getOppositeSide(e4)]) {
 										e.mIsConnected[getOppositeSide(e4)] = true;
 									}
-									gM.mConnectedCount += this.mConnectedCount;
+									gM.mConnectedCache.put(this.mCurrentPos.getUniqueIdentifier());
 									continue;
 								}
 								else {
@@ -279,7 +293,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 								if (!this.mIsConnected[e4]) {
 									this.mIsConnected[e4] = true;	
 								}
-								this.mConnectedCount ++;
+								mConnectedCache.put(e.mCurrentPos.getUniqueIdentifier());
 								continue;
 							}
 						}
@@ -520,15 +534,33 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
 			boolean aActive, boolean aRedstone) {
 		return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
-				? new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+				? new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
 						new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)}
 		: (aSide == aBaseMetaTileEntity.getFrontFacing()
-				? new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+				? new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
 						new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST)}
-		: new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1]});
+		: new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON)});
 	}
 
 	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
 		return new ITexture[0][0][0];
+	}
+
+	@Override
+	public void onExplosion() {
+		// TODO Auto-generated method stub
+		super.onExplosion();
+	}
+
+	@Override
+	public void onRemoval() {
+		// TODO Auto-generated method stub
+		super.onRemoval();
+	}
+
+	@Override
+	public void onMachineBlockUpdate() {
+		// TODO Auto-generated method stub
+		super.onMachineBlockUpdate();
 	}
 }
