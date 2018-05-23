@@ -55,6 +55,11 @@ archivesBaseName = "GT-PlusPlus"
 version = "1.7.0-prerelease-19-early-test2"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "$projectDir"
+}
+
 //Gradle Tweak
 //Prevent java 8's strict doclint for javadocs from failing builds
 allprojects {
