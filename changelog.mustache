@@ -1,6 +1,4 @@
-# Git Changelog Gradle plugin
-
-Changelog of Git Changelog Gradle plugin.
+# Generated via Git Changelog Gradle plugin
 
 {{#tags}}
 ## {{name}}
@@ -18,14 +16,13 @@ Changelog of Git Changelog Gradle plugin.
   {{/hasIssue}}
 
   {{#commits}}
-**{{{messageTitle}}}**
-
+[{{hash}}] | {{authorName}} | {{commitTime}}
+```
+{{{messageTitle}}}
 {{#messageBodyItems}}
- * {{.}} 
+{{.}} 
 {{/messageBodyItems}}
-
-[{{hash}}](https://github.com/tomasbjerre/git-changelog-gradle-plugin/commit/{{hash}}) {{authorName}} *{{commitTime}}*
-
+```
   {{/commits}}
 
  {{/issues}}

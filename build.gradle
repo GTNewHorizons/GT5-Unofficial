@@ -52,7 +52,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.0-prerelease-19-early-test2"
+version = "1.7.0-prerelease-20"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 minecraft {
@@ -77,9 +77,9 @@ repositories {
 }
 
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-	file = new File("CHANGELOG.md");
+	file = new File("CHANGELOG ${project.version}.md");
 	untaggedName = "Current release ${project.version}"
-	fromCommit = "1e6bf5e889344acabacec633f7be1aabcfbf4e0e"
+	fromCommit = "a580c9245097b5bddcfbab0d49d7667aec836b93"
 	toRef =  "HEAD"
 	templateContent = file('changelog.mustache').getText('UTF-8')
 }
