@@ -1,7 +1,5 @@
 package gtPlusPlus.core.item.wearable.armour;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 
@@ -22,7 +20,7 @@ public class ArmourLoader {
 	}
 	
 	private static void glassArmour() {
-		RenderingRegistry.addNewArmourRendererPrefix("ClearGlassArmor");
+		//RenderingRegistry.addNewArmourRendererPrefix("ClearGlassArmor"); This needs to be client side only TODO
 		//ClearGlassHelmet = new ClearGlassArmor(2055, ClearGlassArmor, 5, 0).setUnlocalizedName("amethyst_helmet");
 	}
 	

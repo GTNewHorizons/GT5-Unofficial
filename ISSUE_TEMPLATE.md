@@ -36,11 +36,13 @@ If not using a modpack:
  * Mod List - Upload to Pastie/Pastebin/etc: 
 
 Also include:
+ * Gregtech version:
+ * IC2 version:
  * Java version:
  * Operating System:
 
 ### Misc Info
- Check all that apply 
+ Check all that apply ([ ] -> [x] - use a lowercase x)
  - [ ]    Using GT:NH/GT:New Horizons?
  - [ ]    Single Player?
  - [ ]    Multi Player?
