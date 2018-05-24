@@ -83,7 +83,13 @@ task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 	toRef =  "HEAD"
 	templateContent = file('changelog.mustache').getText('UTF-8')
 }
-
+task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("CHANGELOG Curse ${project.version}.md");
+	untaggedName = "Current Curse release ${project.version}"
+	fromCommit = "1e6bf5e889344acabacec633f7be1aabcfbf4e0e"
+	toRef =  "HEAD"
+	templateContent = file('changelogcurse.mustache').getText('UTF-8')
+}
 //task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 // file = new File("CHANGELOG.md");
 // templateContent = file('changelog.mustache').getText('UTF-8');
@@ -123,6 +129,7 @@ artifacts {
 }
 
 build.finalizedBy(gitChangelogTask)
+build.finalizedBy(curseChangelogTask)
 
 processResources {
 	// this will ensure that this task is redone when the versions change.
