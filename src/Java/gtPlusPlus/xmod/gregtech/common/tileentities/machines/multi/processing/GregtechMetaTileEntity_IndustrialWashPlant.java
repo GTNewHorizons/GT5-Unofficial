@@ -61,6 +61,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
+				"Wash Plant Casings for the rest",
 				CORE.GT_Tooltip
 
 		};

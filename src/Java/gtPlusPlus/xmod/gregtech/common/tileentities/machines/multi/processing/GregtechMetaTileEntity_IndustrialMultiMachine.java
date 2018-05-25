@@ -106,13 +106,13 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		ArrayList<FluidStack> tFluids = getStoredFluids();	
-		//Logger.INFO("1");
+		//Logger.MACHINE_INFO("1");
 		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
 			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
 			tBus.mRecipeMap = getRecipeMap();
-			//Logger.INFO("2");
+			//Logger.MACHINE_INFO("2");
 			if (isValidMetaTileEntity(tBus)) {
-				//Logger.INFO("3");
+				//Logger.MACHINE_INFO("3");
 				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
 					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
 						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
@@ -123,7 +123,7 @@ extends GregtechMeta_MultiBlockBase {
 			FluidStack[] properArray;
 			properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray : new FluidStack[] {});
 
-			//Logger.INFO("4");
+			//Logger.MACHINE_INFO("4");
 			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), properArray,
 					(2*GT_Utility.getTier(this.getMaxInputVoltage())), 80, 250, 10000)) return true;
 		}
@@ -257,7 +257,7 @@ extends GregtechMeta_MultiBlockBase {
 		ItemStack tCircuit = getCircuit(aItemInputs);
 		int tCircuitID = getCircuitID(tCircuit);
 		
-		Logger.INFO("Mode: "+tCircuitID);
+		Logger.MACHINE_INFO("Mode: "+tCircuitID);
 
 		// Time to Defer to Special Handling if it's in replicator mode.
 		if (tCircuitID == MODE_REPLICATOR) {
@@ -288,19 +288,19 @@ extends GregtechMeta_MultiBlockBase {
 		this.mLastRecipeExtended[tCircuitID] = tRecipe;
 
 		if (tRecipe == null) {
-			Logger.INFO("BAD RETURN - 1|"+tCircuitID);
+			Logger.MACHINE_INFO("BAD RETURN - 1|"+tCircuitID);
 			
 			if (aItemInputs.length > 0) {
-				Logger.INFO("Input Items: "+ItemUtils.getArrayStackNames(aItemInputs));
+				Logger.MACHINE_INFO("Input Items: "+ItemUtils.getArrayStackNames(aItemInputs));
 			}
 			if (aFluidInputs.length > 0) {
-				Logger.INFO("Input Fluids: "+ItemUtils.getFluidArrayStackNames(aFluidInputs));
+				Logger.MACHINE_INFO("Input Fluids: "+ItemUtils.getFluidArrayStackNames(aFluidInputs));
 			}
 			return false;
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-			Logger.INFO("BAD RETURN - 2|"+tCircuitID);
+			Logger.MACHINE_INFO("BAD RETURN - 2|"+tCircuitID);
 			return false;
 		}
 
@@ -326,7 +326,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		if (parallelRecipes == 0) {
-			Logger.INFO("BAD RETURN - 3|"+tCircuitID);
+			Logger.MACHINE_INFO("BAD RETURN - 3|"+tCircuitID);
 			return false;
 		}
 
@@ -423,7 +423,7 @@ extends GregtechMeta_MultiBlockBase {
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
-		Logger.INFO("GOOD RETURN - 1|"+tCircuitID);
+		Logger.MACHINE_INFO("GOOD RETURN - 1|"+tCircuitID);
 		return true;
 	}
 

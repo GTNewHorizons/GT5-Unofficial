@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -65,8 +63,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
 				"Hatches can be placed nearly anywhere",
-				"Size(WxHxD): External 5xHx5, Sub-Station Casings, Controller (Bottom, Centre)",
-				"Size(WxHxD): Internal 3x(H-2)x3, Energy Storage Cells",
+				"Controller (Bottom, Centre)",
+				"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
+				"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
 				"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
 				CORE.GT_Tooltip};
 	}
