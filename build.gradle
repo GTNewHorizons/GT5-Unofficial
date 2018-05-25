@@ -79,14 +79,14 @@ repositories {
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG ${project.version}.md");
 	untaggedName = "Current release ${project.version}"
-	fromCommit = "a580c9245097b5bddcfbab0d49d7667aec836b93"
+	fromCommit = "e3a9829150afd77c0a00cb85be8b7c450d120dd1"
 	toRef =  "HEAD"
 	templateContent = file('changelog.mustache').getText('UTF-8')
 }
 task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG Curse ${project.version}.md");
 	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "1e6bf5e889344acabacec633f7be1aabcfbf4e0e"
+	fromCommit = "e3a9829150afd77c0a00cb85be8b7c450d120dd1"
 	toRef =  "HEAD"
 	templateContent = file('changelogcurse.mustache').getText('UTF-8')
 }
