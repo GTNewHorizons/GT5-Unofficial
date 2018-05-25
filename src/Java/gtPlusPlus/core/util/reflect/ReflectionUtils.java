@@ -323,5 +323,17 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	public static Class<?> getClassByName(String string) {
+		if (ReflectionUtils.doesClassExist(string)) {
+			try {
+				return Class.forName(string);
+			}
+			catch (ClassNotFoundException e) {
+				return getNonPublicClass(string);
+			}
+		}
+		return null;
+	}
+
 
 }

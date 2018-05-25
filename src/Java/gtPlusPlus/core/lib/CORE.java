@@ -5,8 +5,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import gregtech.api.GregTech_API;
 
@@ -22,6 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 public class CORE {
 
@@ -64,7 +69,7 @@ public class CORE {
 
 	//GT++ Fake Player Profile
 	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
-	;
+	public static final WeakHashMap<World, EntityPlayerMP> fakePlayerCache = new WeakHashMap<World, EntityPlayerMP>();
 	//Tooltips;
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
@@ -128,7 +133,32 @@ public class CORE {
 
 
 
-
+	/** Used to create a {@link EntityPlayer} instance from {@link FakePlayerFactory}.
+	 * 	If this instance already exists in the cache, we will return that instead.
+	 *  These instances are held via weak reference, if the world object is unloaded, they too will be removed.
+	 *  This is the suggested way to handle them, as suggested by Forge.
+	 * 
+	 * @param world - The {@link World} object for which you want to check for in the cache. 
+	 * This object is used as a weak reference in a {@link WeakHashMap}.
+	 * @return - An {@link EntityPlayerMP} instance, returned either from cache or created and cached prior to return.
+	 */
+	public static EntityPlayerMP getFakePlayer(World world) {
+		if (fakePlayerCache.get(world) == null) {
+			fakePlayerCache.put(world, FakePlayerFactory.get((WorldServer) world, CORE.gameProfile));
+		}
+		return fakePlayerCache.get(world);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 

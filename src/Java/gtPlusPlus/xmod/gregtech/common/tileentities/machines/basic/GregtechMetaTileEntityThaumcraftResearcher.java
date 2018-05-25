@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,22 +10,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTileEntity {
-
-	int mCurrentPollution;
-	int mAveragePollution;
-	int mAveragePollutionArray[] = new int[10];
-	private int mArrayPos = 0;
-	private int mTickTimer = 0;
-	private int mSecondTimer = 0;
 
 	public GregtechMetaTileEntityThaumcraftResearcher(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -39,7 +27,7 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "A useful debug machine to create pollution.", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Generates Thaumcraft research notes, because it's magic.", CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -117,13 +105,6 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (pollutionMultiplier >= 9){
-			pollutionMultiplier = 1;
-		}
-		else {
-			pollutionMultiplier++;
-		}
-		PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now "+pollutionMultiplier+".");	
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
@@ -182,25 +163,6 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 		{
 			return true;
 		}
-		this.showPollution(aPlayer.getEntityWorld(), aPlayer);
-		return true;
-	}
-
-	public int pollutionMultiplier = 1;
-
-	private void showPollution(final World worldIn, final EntityPlayer playerIn){
-		if(!PollutionUtils.mPollution()){
-			PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");		
-		}
-		else {
-			addPollution();
-			PlayerUtils.messagePlayer(playerIn, "This chunk now contains "+getCurrentChunkPollution()+" pollution.");
-			//PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+" pollution.");
-		}
-	}
-
-	private boolean addPollution(){
-		PollutionUtils.addPollution(getBaseMetaTileEntity(), 100000*pollutionMultiplier);
 		return true;
 	}
 
@@ -227,8 +189,7 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 	public String[] getInfoData() {
 		return new String[] {
 				this.getLocalName(),
-				"Current Pollution: "+this.mCurrentPollution,
-				"Average/10 minutes:"+getAveragePollutionOverLastTen()};
+				};
 	}
 
 	@Override
@@ -318,87 +279,28 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 		return false;
 	}
 
-	//int mCurrentPollution;
-	//int mAveragePollution;
-	//int mAveragePollutionArray[] = new int[10];
-
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
-		aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
-		aNBT.setInteger("mAveragePollution", this.mAveragePollution);
+		//aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
+		//aNBT.setInteger("mAveragePollution", this.mAveragePollution);
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
-		this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
-		this.mAveragePollution = aNBT.getInteger("mAveragePollution");
+		//this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
+		//this.mAveragePollution = aNBT.getInteger("mAveragePollution");
 	}
 
 	@Override
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-			if (this.mCurrentPollution == 0) {
-				this.mCurrentPollution = getCurrentChunkPollution();
-			}
-			if (this.mArrayPos < 0 || this.mArrayPos > 9) {
-				this.mArrayPos = 0;
-			}
-			this.mTickTimer = 0;
-		}
+		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
 
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-		super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-			//TickTimer - 20 times a second
-			if (this.mTickTimer >= 0 || this.mTickTimer <= 19){
-				this.mTickTimer++;
-			}
-			else {
-				this.mTickTimer = 0;
-				//Perform pollution update once a second
-				this.mCurrentPollution = getCurrentChunkPollution();
-				this.mSecondTimer++;
-			}
-			//Update Pollution array once a minute
-			if (this.mSecondTimer >= 60){
-				Utils.sendServerMessage("Udating Average of pollution array. Using Array slot"+this.mArrayPos);
-				this.mSecondTimer = 0;
-				if (this.mArrayPos<this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos++;
-				}
-				else if (this.mArrayPos==this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos = 0;
-				}
-			}
-		}		
-	}
-
-	public int getAveragePollutionOverLastTen(){
-		int counter = 0;
-		int total = 0;
-
-		for (int i=0;i<this.mAveragePollutionArray.length;i++){
-			if (this.mAveragePollutionArray[i] != 0){
-				total += this.mAveragePollutionArray[i];
-				counter++;
-			}
-		}
-		int returnValue = 0;
-		if (total > 0 && counter > 0){
-			returnValue = (total/counter);
-			this.mAveragePollution = returnValue;
-		}
-		else {
-			returnValue = getCurrentChunkPollution();
-		}
-		Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
-		return returnValue;
+		super.onPostTick(aBaseMetaTileEntity, aTick);				
 	}
 
 }

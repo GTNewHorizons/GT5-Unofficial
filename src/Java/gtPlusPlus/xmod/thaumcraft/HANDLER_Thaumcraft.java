@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.thaumcraft;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -13,12 +15,14 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
 public class HANDLER_Thaumcraft {	
 
 	public static IThaumcraftCompat sThaumcraftCompat;
+	public static Item mResearchNotes;
 	public static final AutoMap<Pair<ItemStack, TC_AspectStack_Ex[]>> sItemsToGetAspects = new AutoMap<Pair<ItemStack, TC_AspectStack_Ex[]>>();
 
 	static {
@@ -32,7 +36,13 @@ public class HANDLER_Thaumcraft {
 
 	public static void init(){
 		if (LoadedMods.Thaumcraft){
-
+			try {
+				mResearchNotes = (Item) ReflectionUtils.getField(Class.forName("thaumcraft.common.config.ConfigItems"), "itemResearchNotes").get(null);
+			}
+			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
+					| ClassNotFoundException e) {
+				mResearchNotes = Items.paper;
+			}
 		}
 	}
 

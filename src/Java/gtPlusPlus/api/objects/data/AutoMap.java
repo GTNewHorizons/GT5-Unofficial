@@ -8,7 +8,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	/**
 	 * The Internal Map
 	 */
-	protected Map<Integer, V> mInternalMap = new HashMap<Integer, V>();
+	protected final Map<Integer, V> mInternalMap;
 	
 	/**
 	 * The Internal ID
@@ -16,6 +16,15 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	private int mInternalID = 0;
 	private static final long serialVersionUID = 3771412318075131790L;
 
+	
+	public AutoMap() {
+		this(new HashMap<Integer, V>());
+	}
+	
+	public AutoMap(Map<Integer, V> defaultMapType) {
+		mInternalMap = defaultMapType;
+	}
+	
 	@Override
 	public Iterator<V> iterator() {		
 		return values().iterator();

@@ -32,7 +32,8 @@ public class CraftingHelper{
 		mPosY = AC.getBaseMetaTileEntity().getYCoord();
 		mPosZ = AC.getBaseMetaTileEntity().getZCoord();
 		//Create Fake player to handle crating.
-		player = FakePlayerFactory.get((WorldServer) world, CORE.gameProfile);
+		
+		player = CORE.getFakePlayer(world);
 		//Set storage container
 		inventory = new AC_Helper_Container(player.inventory, world, mPosX, mPosY, mPosZ);
 		mInventoryName = inventory.getMatrix().getInventoryName();
