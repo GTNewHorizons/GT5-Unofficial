@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,7 +10,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -55,52 +53,52 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
 
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)};
+		return new ITexture[]{getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_A)};
 	}
 
 
 	public ITexture[] getBack(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return new ITexture[]{getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Metal_Grate_B)};
 	}
 
 
 	public ITexture[] getBottom(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return new ITexture[]{getSides(aColor)[0]};
 	}
 
 
 	public ITexture[] getTop(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return new ITexture[]{getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Blue)};
 	}
 
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Material_RedSteel)};
 	}
 
 
 	public ITexture[] getFrontActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)};
-	}
+		return getFront(aColor);
+		}
 
 
 	public ITexture[] getBackActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
-	}
+		return getBack(aColor);
+		}
 
 
 	public ITexture[] getBottomActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return getBottom(aColor);
 	}
 
 
 	public ITexture[] getTopActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return new ITexture[]{getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
 	}
 
 
 	public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier+3][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
+		return getSides(aColor);
 	}
 
 	@Override
@@ -120,43 +118,21 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 	@Override public boolean isEnetInput() 							{return true;}
 	@Override public boolean isEnetOutput() 						{return false;}
 	@Override public boolean isInputFacing(final byte aSide)				{return aSide!=this.getBaseMetaTileEntity().getFrontFacing();}
-	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getFrontFacing();}
+	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getBackFacing();}
 	@Override public boolean isTeleporterCompatible()				{return false;}
 	@Override public long getMinimumStoredEU()						{return 0;}
-	@Override public long maxEUStore()								{return 0;}
-
-	@Override
-	public int getCapacity() {
-		return 0;
-	}
-
-	@Override
-	public long maxEUInput() {
-		return 0;
-	}
-
-	@Override
-	public long maxEUOutput() {
-		return 0;
-	}
-
-	@Override
-	public long maxAmperesIn() {
-		return 0;
-	}
-
-	@Override
-	public long maxAmperesOut() {
-		return 0;
-	}
+	@Override public long maxEUStore()								{return 512000;}
 	@Override public int rechargerSlotStartIndex()					{return 0;}
 	@Override public int dechargerSlotStartIndex()					{return 0;}
 	@Override public int rechargerSlotCount()						{return 0;}
 	@Override public int dechargerSlotCount()						{return 0;}
-	@Override public int getProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyStored();}
-	@Override public int maxProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyCapacity();}
 	@Override public boolean isAccessAllowed(final EntityPlayer aPlayer)	{return true;}
 
+	@Override
+	public int getCapacity() {
+		return 128000;
+	}	
+	
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide())
@@ -168,22 +144,13 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
 	@Override
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
-		return false;
+		return aSide==this.getBaseMetaTileEntity().getBackFacing();
 	}
 
 	@Override
 	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
-		return false;
+		return true;
 	}
-
-	public int getCurrentChunkPollution(){
-		return getCurrentChunkPollution(this.getBaseMetaTileEntity());
-	}
-
-	public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity){
-		return PollutionUtils.getPollution(aBaseMetaTileEntity);
-	}
-
 
 	@Override
 	public String[] getInfoData() {
@@ -198,75 +165,8 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-		return new int[] {};
-	}
-
-	@Override
-	public boolean canInsertItem(final int p_102007_1_, final ItemStack p_102007_2_, final int p_102007_3_) {
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(final int p_102008_1_, final ItemStack p_102008_2_, final int p_102008_3_) {
-		return false;
-	}
-
-	@Override
 	public int getSizeInventory() {
-		return 0;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(final int p_70301_1_) {
-		return null;
-	}
-
-	@Override
-	public ItemStack decrStackSize(final int p_70298_1_, final int p_70298_2_) {
-		return null;
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {
-	}
-
-	@Override
-	public String getInventoryName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 0;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-		return false;
-	}
-
-	@Override
-	public void openInventory() {
-	}
-
-	@Override
-	public void closeInventory() {
-	}
-
-	@Override
-	public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
-		return false;
+		return 2;
 	}
 
 	@Override
@@ -295,8 +195,6 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
 		super.onFirstTick(aBaseMetaTileEntity);
 	}
-
-
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {

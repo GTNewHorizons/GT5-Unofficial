@@ -338,7 +338,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	FusionComputer_UV2, Casing_Fusion_External, Casing_Fusion_Internal, 
 	
 	//Crate Box
-	CrateStorage,
+	CrateStorage, 
+	
+	Thaumcraft_Researcher,
 	
 	;
 

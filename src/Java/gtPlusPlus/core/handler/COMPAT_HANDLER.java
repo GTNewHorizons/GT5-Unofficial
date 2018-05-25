@@ -115,6 +115,7 @@ public class COMPAT_HANDLER {
 			GregtechBufferDynamos.run();
 			GregtechAmazonWarehouse.run();
 			GregtechIndustrialCryogenicFreezer.run();
+			GregtechThaumcraftDevices.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

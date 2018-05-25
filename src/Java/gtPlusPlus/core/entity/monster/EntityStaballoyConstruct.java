@@ -30,11 +30,11 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 	/*
 	 * Determines whether or not the entity is in a fluid at all.
 	 */
-	private volatile boolean inFluid = false;
-	private volatile boolean mReflectFirstUpdate = true;
-	private volatile boolean isReadyToExplode = false;
-	private volatile int fuse = 60;
-	private volatile int attackTimer;
+	private boolean inFluid = false;
+	private boolean mReflectFirstUpdate = true;
+	private boolean isReadyToExplode = false;
+	private int fuse = 60;
+	private int attackTimer;
 
 	public EntityStaballoyConstruct(World world) {
 		super(world);
@@ -256,7 +256,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
 	@Override
 	public void setPlayerCreated(boolean p_70849_1_) {
-		
+
 	}
 
 	/**
@@ -289,82 +289,100 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			this.isImmuneToFire = true;
 		} 	
 
-		if (this.getHealth() <= (this.getMaxHealth()*MathUtils.randDouble(0.02, 0.15))){
-			float r = MathUtils.randFloat(0, 1);
-			if (r <= 0.1){
-				this.isReadyToExplode = true;
-			}
-		}
-
-		//Handle Exploding
-		if (isReadyToExplode){			
-			if (this.fuse-- <= 0){
-				this.setDead();
-
-				if (!this.worldObj.isRemote)
-				{
-					this.explode();
+		if (!this.worldObj.isRemote) {
+			final float hp = getHealth();
+			final float modifier = MathUtils.randInt(5,10)/100F;
+			final float amountToExplode = (hp*modifier);
+			
+			if (hp <= amountToExplode && !isReadyToExplode){
+				if (this.ticksExisted >= 50) {
+					//Logger.INFO("Construct has low hp, trying to enable explosions. HP: "+this.getHealth()+", Max: "+this.getMaxHealth()+", Mod: "+modifier);
+					//Logger.INFO("Construct required HP to be <= "+amountToExplode);
+					float r = MathUtils.randFloat(0, 10);
+					if (r <= 0.1){
+						this.isReadyToExplode = true;
+						//Logger.INFO("Construct can now explode.");
+					}
 				}
+			}
+			//Handle Exploding
+			else if (hp <= amountToExplode && isReadyToExplode){	
+				//Logger.INFO("Trying to explode. ["+this.fuse+"]");		
+				if (this.fuse-- <= 0){
+					//Logger.INFO("Fuse has run out.");
+					this.setDead();
+					if (!this.worldObj.isRemote)
+					{
+						this.explode();
+					}
+				}
+				else {
+					//Logger.INFO("Ticking fuse and spawning particles.");
+
+					int maxFuse = 60;
+					int fuseUsed = maxFuse-this.fuse;
+					float var2 = (float) (fuseUsed * 0.1);
+
+					this.setSize(1.4F+(var2/2), 2.9F+(var2/2));
+
+					float r = MathUtils.randFloat(0, 1);
+					int r2 = MathUtils.randInt(5, 15);
+					for (int o=0;o<r2;o++){
+						if (r <= 0.3){
+							this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						else if (r <= 0.6){
+							this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						if (r <= 0.3){
+							this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						else if (r <= 0.7){
+							this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						if (r <= 0.2){
+							this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						else if (r <= 0.5){
+							this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+						else if (r <= 0.7){
+							this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+
+						}
+					}
+
+
+				}		
 			}
 			else {
 				
-				int maxFuse = 60;
-				int fuseUsed = maxFuse-this.fuse;
-				float var2 = (float) (fuseUsed * 0.1);
-				
-				this.setSize(1.4F+(var2/2), 2.9F+(var2/2));
-				
-				float r = MathUtils.randFloat(0, 1);
-				int r2 = MathUtils.randInt(5, 15);
-				for (int o=0;o<r2;o++){
-					if (r <= 0.3){
-						this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					else if (r <= 0.6){
-						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					if (r <= 0.3){
-						this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					else if (r <= 0.7){
-						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					if (r <= 0.2){
-						this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					else if (r <= 0.5){
-						this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-					else if (r <= 0.7){
-						this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
-
-					}
-				}
-				
-
-			}		
-		}
-
-		//Get a private field from a super class if it exists.
-		try {
-			if (ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate") != null && mReflectFirstUpdate == true){
-				Field x = ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate");
-				try {
-					this.mReflectFirstUpdate = (boolean) x.get(this);
-					Logger.REFLECTION("Successfully got 'firstUpdate' variable state via reflection.");
-				}
-				catch (IllegalArgumentException | IllegalAccessException e) {}
 			}
+
+			//Get a private field from a super class if it exists.
+			try {
+				if (mFirstUpdateField == null) {
+					mFirstUpdateField = ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate");
+				}			
+				if (mFirstUpdateField != null && mReflectFirstUpdate == true){
+					try {
+						this.mReflectFirstUpdate = (boolean) mFirstUpdateField.get(this);
+					}
+					catch (IllegalArgumentException | IllegalAccessException e) {}
+				}
+			}
+			catch (NoSuchFieldException | ClassNotFoundException e) {}
 		}
-		catch (NoSuchFieldException | ClassNotFoundException e) {}
 		super.onEntityUpdate();
 	}
+
+	private Field mFirstUpdateField;
 
 	@Override
 	public int getMaxSpawnedInChunk() {
@@ -483,43 +501,45 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		/* float f = 12.0F;
         this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);*/
 
-		final float f = 6.5F;		
-		ExplosionHandler explode = new ExplosionHandler();
-		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);	
-		
-		float r = MathUtils.randFloat(0, 1);
-		int r2 = MathUtils.randInt(20, 40);
-		for (int o=0;o<r2;o++){
-			if (r <= 0.3){
-				this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(0, 3), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+		if (!this.worldObj.isRemote) {
+			final float f = 6.5F;		
+			ExplosionHandler explode = new ExplosionHandler();
+			explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);	
 
-			}
-			else if (r <= 0.6){
-				this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+			float r = MathUtils.randFloat(0, 1);
+			int r2 = MathUtils.randInt(20, 40);
+			for (int o=0;o<r2;o++){
+				if (r <= 0.3){
+					this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(0, 3), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
-			}
-			if (r <= 0.3){
-				this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+				}
+				else if (r <= 0.6){
+					this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
-			}
-			else if (r <= 0.7){
-				this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+				}
+				if (r <= 0.3){
+					this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
-			}
-			if (r <= 0.2){
-				this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+				}
+				else if (r <= 0.7){
+					this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
-			}
-			else if (r <= 0.5){
-				this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+				}
+				if (r <= 0.2){
+					this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
-			}
-			else if (r <= 0.7){
-				this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+				}
+				else if (r <= 0.5){
+					this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
 
+				}
+				else if (r <= 0.7){
+					this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(-4, 4), this.posY+MathUtils.randDouble(-4, 4), this.posZ+MathUtils.randDouble(-4, 4), 0.0D, 0.0D, 0.0D);
+
+				}
 			}
 		}
-		
+
 	}
 
 	@Override

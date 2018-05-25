@@ -365,13 +365,13 @@ public class MathUtils {
 	}
 
 	public static int getRandomFromArray(int[] mValues) {
-		int[] mLargeChanceArray = new int[mValues.length*1000];
+		int[] mLargeChanceArray = new int[(mValues.length-1)*1000];
 		int mValueSelection;
 		for (int g = 0; g < mLargeChanceArray.length; g++) {
-			mValueSelection = randInt(0, mValues.length);
+			mValueSelection = randInt(0, mValues.length-1);
 			mLargeChanceArray[g] = mValues[mValueSelection];
 		}
-		return mLargeChanceArray[randInt(0, mLargeChanceArray.length)];
+		return mLargeChanceArray[randInt(0, mLargeChanceArray.length-1)];
 		
 	}
 
