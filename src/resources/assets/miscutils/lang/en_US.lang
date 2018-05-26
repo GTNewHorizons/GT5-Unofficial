@@ -1982,4 +1982,4 @@ entity.throwablePotionSulfuric.name=Flask of Sulfuric Acid
 entity.throwablePotionHydrofluoric.name=Flask of Hydrofluoric Acid
 entity.toxinBall.name=Toxin globule
 entity.plasmaBolt.name=Plasma
-entity.MiningbigChickenFriendlyCharge.name=Giant Chicken
+entity.bigChickenFriendly.name=Giant Chicken
