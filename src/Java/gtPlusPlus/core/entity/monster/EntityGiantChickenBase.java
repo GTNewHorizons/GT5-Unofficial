@@ -84,13 +84,13 @@ public class EntityGiantChickenBase extends EntityChicken {
 
         this.field_70886_e += this.field_70889_i * 2.0F;
 
-        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 0)
+        if (!this.worldObj.isRemote && --this.timeUntilNextEgg <= 0)
         {
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.dropItem(Items.egg, 1);
             this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
         }
-        if (!this.worldObj.isRemote && !this.isChild() && !this.isChickenJockey() && --this.timeUntilNextEgg <= 0)
+        if (!this.worldObj.isRemote && !this.isChild() && --this.timeUntilNextEgg <= 0)
         {
             this.playSound("mob.chicken.plop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.dropItem(ModItems.itemBigEgg, MathUtils.randInt(1, 4));
@@ -254,7 +254,7 @@ public class EntityGiantChickenBase extends EntityChicken {
 
 	@Override
 	public float getRenderSizeModifier() {
-		return 1.5f;
+		return 1.0f;
 	}
 
 	@Override
