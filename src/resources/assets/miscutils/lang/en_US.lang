@@ -1957,3 +1957,29 @@ item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
 item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
 item.itemPlateMeatRaw.name=Fleshy Panel
 tile.Block of MeatRaw.name=Block of Raw Meat
+
+//Added 26/5/18
+item.BurntLiFBeF2ThF4UF4.name=Cell of Used Reactor Fuel [LiFBeF2ThF4UF4]
+item.BurntLiFBeF2ZrF4UF4.name=Cell of Used Reactor Fuel [LiFBeF2ZrF4UF4]
+item.BurntLiFBeF2ZrF4U235.name=Cell of Used Reactor Fuel [LiFBeF2ZrF4U235]
+item.itemBigEgg.name= ounce Chicken Egg
+item.itemPlateSodium.name=Sodium Plate
+
+item.itemNuggetPromethium.name=Promethium Nugget
+item.itemIngotPromethium.name=Promethium Ingot
+item.itemDustSmallPromethium.name=Small Pile of Promethium
+item.itemDustTinyPromethium.name=Tiny Pile of Promethium
+item.itemDustPromethium.name=Promethium Dust
+tile.Block of Promethium.name=Block of Promethium
+
+item.itemCellAmericium241.name=Americium-241 Cell
+item.itemCellPolonium210.name=Polonium-210 Cell
+item.itemCellStrontium90.name=Strontium-90 Cell
+item.itemCellPlutonium238.name=Plutonium-238 Cell
+
+entity.MiningCharge.name=Mining Charge
+entity.throwablePotionSulfuric.name=Flask of Sulfuric Acid
+entity.throwablePotionHydrofluoric.name=Flask of Hydrofluoric Acid
+entity.toxinBall.name=Toxin globule
+entity.plasmaBolt.name=Plasma
+entity.MiningbigChickenFriendlyCharge.name=Giant Chicken
