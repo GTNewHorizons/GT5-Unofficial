@@ -34,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 
-	public GT_Recipe mLastRecipe;
 	protected long mEUStore;
 	protected int fuelConsumption = 0;
 	protected int fuelValue = 0;
@@ -447,6 +446,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 								}
 
 
+								if (this.getBaseMetaTileEntity().getWorld().getTotalWorldTime() % 100 == 0) {
 								//Try Sparge Noble Gases
 								if (this.heliumSparging){
 									if (this.depleteInput(Materials.Helium.getGas(1000L))){
@@ -483,6 +483,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 											}
 										}
 									}
+								}
 								}
 
 

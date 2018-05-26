@@ -321,6 +321,14 @@ public class GTplusplus implements ActionListener {
 		mBetaTestCapes.put(new Pair<String, String>("Bear989Sr", "1964e3d1-6500-40e7-9ff2-e6161d41a8c2"));
 		mBetaTestCapes.put(new Pair<String, String>("CrazyJ1984", "d84f9654-87ea-46a9-881f-c6aa45dd5af8"));
 		mBetaTestCapes.put(new Pair<String, String>("AndreyKV", "9550c173-a8c5-4e7f-bf8d-b5ded56921ef"));
+		
+		//GTNH Beta Testers
+		mBetaTestCapes.put(new Pair<String, String>("bartimaeusnek", "578c2d13-9358-4ae8-95e7-a30ab9f9f3c7"));
+		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
+		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
+		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
+		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
+		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
 
 		//Dev Capes
 		mDevCapes.put(new Pair<String, String>("draknyte1", "5652713c-668e-47f3-853a-3fa959a9dfd3"));

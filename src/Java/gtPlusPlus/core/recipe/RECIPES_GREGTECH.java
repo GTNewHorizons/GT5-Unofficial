@@ -831,71 +831,20 @@ public class RECIPES_GREGTECH {
 			Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 		}
 		try {
-			// Fli2BeF4 + Thorium TetraFluoride = Uranium233
-			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ThF4UF4".toLowerCase(), 144 * 4), // Fluid
-					// input
-					// (slot
-					// 1)
-					FluidUtils.getFluidStack("molten.li2bef4", 1200), // Fluid
-					// output
-					// (slot
-					// 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", (1200 + (144 * 4))), // Output
-					// Array
-					// of
-					// Items
-					// -
-					// Upto
-					// 9,
-					300 * 60 * 20, // Time in ticks
-					3500); // EU
+			
 
 		}
 		catch (final NullPointerException e) {
 			Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 		}
 		try {
-			// Fli2BeF4 + Uranium235 = 1x Uranium233
-			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144 * 16), // Fluid
-					// input
-					// (slot
-					// 1)
-					FluidUtils.getFluidStack("molten.li2bef4", 144 * 12), // Fluid
-					// output
-					// (slot
-					// 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 3 * 144), // Output
-					// Array
-					// of
-					// Items
-					// -
-					// Upto
-					// 9,
-					120 * 60 * 20, // Time in ticks
-					8000); // EU
+			
 		}
 		catch (final NullPointerException e) {
 			Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
 		}
 		try {
-			// Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
-			CORE.RA.addLFTRRecipe(FluidUtils.getFluidStack("molten.LiFBeF2ZrF4UF4".toLowerCase(), 144 * 2), // Fluid
-					// input
-					// (slot
-					// 1)
-					FluidUtils.getFluidStack("molten.li2bef4", 500), // Fluid
-					// output
-					// (slot
-					// 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1288), // Output
-					// Array
-					// of
-					// Items
-					// -
-					// Upto
-					// 9,
-					420 * 60 * 20, // Time in ticks
-					4000); // EU
+			
 
 		}
 		catch (final NullPointerException e) {
