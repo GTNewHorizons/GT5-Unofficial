@@ -308,7 +308,7 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 				int z = ticket.getModData().getInteger("zCoord");
 
 				if (y >= 0) {
-					BlockPos tile = new BlockPos(x, y, z);					
+					BlockPos tile = new BlockPos(x, y, z, world);					
 					Ticket H = tryForceLoadChunk(new DimChunkPos(world, tile).getChunk());
 
 					int jhg = 0;

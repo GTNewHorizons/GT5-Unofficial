@@ -460,7 +460,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	}
 
 	public BlockPos getTileEntityPosition(){
-		return new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
+		return new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld());
 	}
 
 	public BlockPos getPositionOfEntity(Entity mEntity){

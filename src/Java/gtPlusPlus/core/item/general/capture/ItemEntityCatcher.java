@@ -206,7 +206,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 			if (NBTUtils.hasKey(itemstack,"mHasEntity")
 					&& NBTUtils.getBoolean(itemstack,"mHasEntity")) {
 				Logger.WARNING("Trying to release (2)");
-				boolean mDidSpawn =  spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z));
+				boolean mDidSpawn =  spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z, world));
 				
 				if (!mDidSpawn){
 					PlayerUtils.messagePlayer(player, "You failed to release a "+NBTUtils.getString(itemstack,"mEntityName")+".");					

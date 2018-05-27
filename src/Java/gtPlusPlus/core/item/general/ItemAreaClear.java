@@ -113,15 +113,15 @@ public class ItemAreaClear extends CoreItem {
 		int y2 = (y1-10);
 		int z2 = (z1-24);
 
-		removeBlockColumn(world, new BlockPos(x2, y2, z2));
+		removeBlockColumn(world, new BlockPos(x2, y2, z2, world));
 		return true;
 	}
 
 	public boolean removeBlockColumn(World world, BlockPos pos){
 		for (int i=0; i<50; i++){
-			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos-10, pos.zPos+i));
-			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos, pos.zPos+i));
-			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos+10, pos.zPos+i));
+			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos-10, pos.zPos+i, world));
+			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos, pos.zPos+i, world));
+			removeBlockRow(world, new BlockPos(pos.xPos, pos.yPos+10, pos.zPos+i, world));
 		}
 		return true;
 	}
@@ -160,13 +160,13 @@ public class ItemAreaClear extends CoreItem {
 		int y2 = (y1-1);
 		int z2 = (z1-10);
 
-		fillBlockColumn(world, new BlockPos(x2, y2, z2));
+		fillBlockColumn(world, new BlockPos(x2, y2, z2, world));
 		return true;
 	}
 
 	public boolean fillBlockColumn(World world, BlockPos pos){
 		for (int i=0; i<21; i++){
-			fillBlockRow(world, new BlockPos(pos.xPos, pos.yPos, pos.zPos+i));
+			fillBlockRow(world, new BlockPos(pos.xPos, pos.yPos, pos.zPos+i, world));
 		}
 		return true;
 	}

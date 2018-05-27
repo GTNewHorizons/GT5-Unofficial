@@ -50,7 +50,7 @@ extends RenderPlayer {
 		if (!hasResourceChecked) {
 			//Give Devs Dev capes.
 			if (CORE.DEVENV) {
-				cachedResource = this.mCapes[4];
+				cachedResource = this.mCapes[2];
 				hasResourceChecked = true;
 			}	
 			else {

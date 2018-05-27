@@ -415,7 +415,7 @@ public class TreeFarmHelper {
 						if (h == 1) {
 							if (TreeFarmHelper.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
 								Logger.INFO("Found a Log");
-								return new BlockPos(aBaseMetaTileEntity.getXCoord()+xDir + i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir + j);
+								return new BlockPos(aBaseMetaTileEntity.getXCoord()+xDir + i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir + j, aBaseMetaTileEntity.getWorld());
 							}
 						}
 					}
@@ -558,42 +558,42 @@ public class TreeFarmHelper {
 		int z = P.zPos;
 		if (checkLeaves) {
 			if (isWoodLog(W.getBlock(x-1, y, z)) || isLeaves(W.getBlock(x-1, y, z))) {
-				BlockPos L = new BlockPos(x-1, y, z);
+				BlockPos L = new BlockPos(x-1, y, z, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				}
 			}
 			if (isWoodLog(W.getBlock(x+1, y, z)) || isLeaves(W.getBlock(x+1, y, z))) {
-				BlockPos L = new BlockPos(x+1, y, z);
+				BlockPos L = new BlockPos(x+1, y, z, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				}
 			}
 			if (isWoodLog(W.getBlock(x, y-1, z)) || isLeaves(W.getBlock(x, y-1, z))) {
-				BlockPos L = new BlockPos(x, y-1, z);
+				BlockPos L = new BlockPos(x, y-1, z, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				}
 			}
 			if (isWoodLog(W.getBlock(x, y+1, z)) || isLeaves(W.getBlock(x, y+1, z))) {
-				BlockPos L = new BlockPos(x, y+1, z);
+				BlockPos L = new BlockPos(x, y+1, z, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				}
 			}
 			if (isWoodLog(W.getBlock(x, y, z-1)) || isLeaves(W.getBlock(x, y, z-1))) {
-				BlockPos L = new BlockPos(x, y, z-1);
+				BlockPos L = new BlockPos(x, y, z-1, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				}
 			}
 			if (isWoodLog(W.getBlock(x, y, z+1)) || isLeaves(W.getBlock(x, y, z+1))) {
-				BlockPos L = new BlockPos(x, y, z+1);
+				BlockPos L = new BlockPos(x, y, z+1, W);
 				if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
@@ -602,42 +602,42 @@ public class TreeFarmHelper {
 		}
 		else {
 			if (isWoodLog(W.getBlock(x-1, y, z))) {
-				BlockPos L = new BlockPos(x-1, y, z);
+				BlockPos L = new BlockPos(x-1, y, z, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				//}
 			}
 			if (isWoodLog(W.getBlock(x+1, y, z))) {
-				BlockPos L = new BlockPos(x+1, y, z);
+				BlockPos L = new BlockPos(x+1, y, z, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				//}
 			}
 			if (isWoodLog(W.getBlock(x, y-1, z))) {
-				BlockPos L = new BlockPos(x, y-1, z);
+				BlockPos L = new BlockPos(x, y-1, z, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				//}
 			}
 			if (isWoodLog(W.getBlock(x, y+1, z))) {
-				BlockPos L = new BlockPos(x, y+1, z);
+				BlockPos L = new BlockPos(x, y+1, z, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				//}
 			}
 			if (isWoodLog(W.getBlock(x, y, z-1))) {
-				BlockPos L = new BlockPos(x, y, z-1);
+				BlockPos L = new BlockPos(x, y, z-1, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");
 				//}
 			}
 			if (isWoodLog(W.getBlock(x, y, z+1))) {
-				BlockPos L = new BlockPos(x, y, z+1);
+				BlockPos L = new BlockPos(x, y, z+1, W);
 				//if (!checkedSpaces.contains(L)) {
 					mConnected.add(L);
 					Logger.INFO("Found Connected. [III]");

@@ -75,7 +75,7 @@ public class ConnectedBlockFinder extends BaseItemWithDamageValue{
 			int x,	int y, int z, int side,
 			float hitX, float hitY, float hitZ) {
 
-		BlockPos mStartPoint = new BlockPos(x,y,z);
+		BlockPos mStartPoint = new BlockPos(x,y,z, world);
 		Block mBlockType = world.getBlock(x, y, z);
 		int mBlockMeta = mBlockType.getDamageValue(world, x, y, z);
 

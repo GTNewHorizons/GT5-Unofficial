@@ -49,7 +49,7 @@ public class EntityUtils {
 		final int blockX = MathHelper.floor_double(parEntity.posX);
 		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
 		final int blockZ = MathHelper.floor_double(parEntity.posZ);
-		return new BlockPos(blockX, blockY, blockZ);
+		return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
 	}
 
 	//TODO

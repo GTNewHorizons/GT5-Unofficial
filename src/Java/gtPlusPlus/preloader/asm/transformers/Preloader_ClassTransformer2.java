@@ -189,7 +189,7 @@ public class Preloader_ClassTransformer2 {
 			
 			NBTTagCompound i = new NBTTagCompound();
 
-			i = stupidFuckingNBTMap.get(new BlockPos(o.xCoord, o.yCoord, o.zCoord));
+			i = stupidFuckingNBTMap.get(new BlockPos(o.xCoord, o.yCoord, o.zCoord, o.getWorld()));
 			Logger.INFO("Got NBT Tag Value from map.");			
 			
 			NBTTagCompound tNBT = i;
@@ -238,7 +238,7 @@ public class Preloader_ClassTransformer2 {
 				else {
 					fffff.set(tGregTechTileEntity.getMetaTileEntity().getBaseMetaTileEntity(), tNBT);
 					Logger.REFLECTION("Hopefully injected field data.");
-					stupidFuckingNBTMap.put(new BlockPos(aX, aY, aZ), tNBT);		
+					stupidFuckingNBTMap.put(new BlockPos(aX, aY, aZ, tGregTechTileEntity.getMetaTileEntity().getBaseMetaTileEntity().getWorld()), tNBT);		
 					Logger.INFO("Set NBT Tag Value to map.");			
 				}
 			}
