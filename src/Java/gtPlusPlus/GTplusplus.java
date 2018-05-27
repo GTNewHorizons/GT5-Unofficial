@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 
 import gregtech.api.enums.Materials;
@@ -211,9 +212,16 @@ public class GTplusplus implements ActionListener {
 				int len = x.mFluidInputs.length;
 				FluidStack[] y = new FluidStack[len + 1];
 				int slot = y.length - 1;				
-				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);
+				int mr3 = 0;
+				for (FluidStack f : x.mFluidInputs) {
+					if (f != null) {
+						y[mr3] = f;
+					}
+					mr3++;
+				}
+				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
 				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
-					CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+					CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
 				}
 			}
 		}
