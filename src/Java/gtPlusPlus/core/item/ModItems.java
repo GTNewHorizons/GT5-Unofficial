@@ -515,8 +515,8 @@ public final class ModItems {
 			//Generate Fictional Materials
 			if (!CORE.GTNH) {
 				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
-				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
 			}
+			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);			
@@ -585,7 +585,7 @@ public final class ModItems {
 		fluidFLiBeSalt = FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
 
 		//LFTR Control Circuit
-		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Helps your LFTR not explode"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
+		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Control Circuit", AddToCreativeTab.tabMisc, 1, 0,  new String[] {"Keeps Multiblocks Stable"}, EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
 
 		//Zirconium

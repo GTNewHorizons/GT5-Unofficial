@@ -769,7 +769,7 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("radon", 4000),
 				T5, 1000, 128000);
 		addAR(T5,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateIridium", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 4),
 				FluidUtils.getFluidStack("molten.krypton", 500),
 				T6, 2000, 512000);
 

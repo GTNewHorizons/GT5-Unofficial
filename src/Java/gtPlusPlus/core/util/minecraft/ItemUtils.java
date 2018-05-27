@@ -642,6 +642,7 @@ public class ItemUtils {
 				}
 			}
 			catch (final Throwable t3){
+				t3.printStackTrace();
 				value = "bad modid";
 			}
 		}

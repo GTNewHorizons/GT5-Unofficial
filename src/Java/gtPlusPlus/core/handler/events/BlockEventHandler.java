@@ -3,7 +3,6 @@ package gtPlusPlus.core.handler.events;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -21,7 +20,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 public class BlockEventHandler {
-	private final Random random = new Random();
 	public static ArrayList<ItemStack> oreLimestone;
 	public static ArrayList<ItemStack> blockLimestone;
 	public static ItemStack fluoriteOre;
@@ -115,14 +113,16 @@ public class BlockEventHandler {
 					ArrayList<Block> mBlockTypes = new ArrayList<Block>();
 					if (!oreLimestone.isEmpty()){
 						for (int i=0;i<oreLimestone.size();i++){
-							if (!ItemUtils.getModId(oreLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
-								mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
+							if (ItemUtils.getModId(oreLimestone.get(i)) != null && !ItemUtils.getModId(oreLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
+								if (!mBlockTypes.contains(Block.getBlockFromItem(oreLimestone.get(i).getItem()))){
+									mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
+								}
 							}
 						}
 					}
 					if (!blockLimestone.isEmpty()){
 						for (int i=0;i<blockLimestone.size();i++){
-							if (!ItemUtils.getModId(oreLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
+							if (ItemUtils.getModId(blockLimestone.get(i)) != null && !ItemUtils.getModId(blockLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
 								if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
 									mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
 								}

@@ -133,7 +133,7 @@ public class HandlerTooltip_EIO {
 		if (!BlockEventHandler.blockLimestone.isEmpty()) {
 			for (ItemStack h : BlockEventHandler.blockLimestone) {
 				if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
-					if (!ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
+					if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
 						event.toolTip.add("May contain Fluorite Ore");
 					}
 				}
@@ -142,7 +142,7 @@ public class HandlerTooltip_EIO {
 		if (!BlockEventHandler.oreLimestone.isEmpty()) {
 			for (ItemStack h : BlockEventHandler.oreLimestone) {
 				if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
-					if (!ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
+					if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
 						event.toolTip.add("May contain Fluorite Ore");
 					}
 				}

@@ -154,6 +154,7 @@ extends RenderPlayer {
 	}
 
 	private String getPlayerName(String name, String uuid) {
+		try {
 		Logger.WORLD("[Capes++] Trying to UUID check "+name+".");
 		if (uuid != null) {    		
 			if (uuid.length() > 0) {
@@ -179,6 +180,8 @@ extends RenderPlayer {
 			}    		
 		}  
 		Logger.WORLD("[Capes++] Failed UUID check for "+name+".");
+		}
+		catch (Throwable t) {}
 		return name;
 	}
 
