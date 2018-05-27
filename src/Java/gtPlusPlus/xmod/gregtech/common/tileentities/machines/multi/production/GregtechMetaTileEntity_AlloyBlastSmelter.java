@@ -233,7 +233,7 @@ extends GregtechMeta_MultiBlockBase {
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != 14) {
 						return false;
 					}
-					if (!this.addFluidInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), 11)) {
+					if (!this.addFluidInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), TAE.GTPP_INDEX(15))) {
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasingsMisc) {
 							return false;
 						}

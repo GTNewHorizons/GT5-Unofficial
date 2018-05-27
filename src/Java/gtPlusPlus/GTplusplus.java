@@ -45,7 +45,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -324,7 +323,7 @@ public class GTplusplus implements ActionListener {
 		
 		//GTNH Beta Testers
 		mBetaTestCapes.put(new Pair<String, String>("bartimaeusnek", "578c2d13-9358-4ae8-95e7-a30ab9f9f3c7"));
-		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
+		mBetaTestCapes.put(new Pair<String, String>("Prewf", "634433ec-6256-44aa-97b3-a615be18ce23"));
 		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
 		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));
 		//mBetaTestCapes.put(new Pair<String, String>("cantankerousrex", ""));

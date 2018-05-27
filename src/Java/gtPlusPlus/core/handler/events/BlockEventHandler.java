@@ -15,6 +15,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -114,13 +115,17 @@ public class BlockEventHandler {
 					ArrayList<Block> mBlockTypes = new ArrayList<Block>();
 					if (!oreLimestone.isEmpty()){
 						for (int i=0;i<oreLimestone.size();i++){
-							mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
+							if (!ItemUtils.getModId(oreLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
+								mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
+							}
 						}
 					}
 					if (!blockLimestone.isEmpty()){
 						for (int i=0;i<blockLimestone.size();i++){
-							if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
-								mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
+							if (!ItemUtils.getModId(oreLimestone.get(i)).toLowerCase().contains("biomesoplenty")) {
+								if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
+									mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
+								}
 							}
 						}
 					}

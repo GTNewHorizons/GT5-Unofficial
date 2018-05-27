@@ -9,6 +9,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	 * The Internal Map
 	 */
 	protected final Map<Integer, V> mInternalMap;
+	protected final Map<String, Integer> mInternalNameMap;
 	
 	/**
 	 * The Internal ID
@@ -23,6 +24,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	
 	public AutoMap(Map<Integer, V> defaultMapType) {
 		mInternalMap = defaultMapType;
+		mInternalNameMap = new HashMap<String, Integer>();
 	}
 	
 	@Override
@@ -46,6 +48,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	}
 	
 	public synchronized V set(V object){
+		mInternalNameMap.put(""+object.hashCode(), (mInternalID+1));
 		return mInternalMap.put(mInternalID++, object);
 	}
 	
@@ -92,6 +95,13 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 
 	public synchronized final int getInternalID() {
 		return mInternalID;
+	}
+	
+	public synchronized final boolean remove(V value) {
+		if (this.mInternalMap.containsValue(value)) {
+			return this.mInternalMap.remove(mInternalNameMap.get(""+value.hashCode()), value);
+		}
+		return false;
 	}
   
 }

@@ -86,9 +86,13 @@ public class RecipeLoader_LFTR {
 				4096//fuel value
 				);
 
-		mRecipesLFTR.add(LFTR1);
+		/*mRecipesLFTR.add(LFTR1);
 		mRecipesLFTR.add(LFTR2);
-		mRecipesLFTR.add(LFTR3);
+		mRecipesLFTR.add(LFTR3);*/		
+		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR1);
+		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR2);
+		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipesEx.add(LFTR3);
+		
 
 	}
 }

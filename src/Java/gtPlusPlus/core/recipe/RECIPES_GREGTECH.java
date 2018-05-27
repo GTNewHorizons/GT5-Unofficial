@@ -1039,11 +1039,11 @@ public class RECIPES_GREGTECH {
 				new int[] { 2000, 1000, 250, 250, 250, 250, 500 }, 0);
 
 		HotFuel.addNewHotFuel(FluidUtils.getFluidStack("ic2pahoehoelava", 83), GT_Values.NF,
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("nuggetCopper", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTin", 1),
+				new ItemStack[] { 
+						ItemUtils.getItemStackOfAmountFromOreDict("nuggetBronze", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetElectrum", 1),
 						ItemUtils.getSimpleStack(Blocks.obsidian) },
-				new int[] { 1000, 500, 125, 1850 }, 0);
+				new int[] { 750, 250, 1850 }, 0);
 
 		/*
 		 * HotFuel.addNewHotFuel( FluidUtils.getFluidStack("ic2hotcoolant",
