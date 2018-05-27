@@ -15,8 +15,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -38,6 +41,7 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
@@ -159,6 +163,7 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
+		tryPatchTurbineTextures();
 	}
 
 	@Mod.EventHandler
@@ -228,7 +233,34 @@ public class GTplusplus implements ActionListener {
 
 		Logger.INFO("[Bedrock Miner] Initial OreType Scan");
 		MiningUtils.iterateAllOreTypes();
+		tryPatchTurbineTextures();
+	}
 
+	public static void tryPatchTurbineTextures() {
+		if (enableAnimatedTurbines) {
+			BlockIcons h = Textures.BlockIcons.GAS_TURBINE_SIDE_ACTIVE;
+			BlockIcons h2 = Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE;
+			try {		
+				Logger.INFO("Trying to patch GT textures to make Turbines animated.");
+				IIcon aIcon = TexturesGtBlock.Overlay_Machine_Turbine_Active.getIcon();
+				//IIcon aOverlay = TexturesGtBlock.Overlay_Machine_Turbine_Active.getOverlayIcon();
+				if (ReflectionUtils.setField(h, "mIcon", aIcon)) {
+					Logger.INFO("Patched Gas Turbine Icon.");
+					/*if (ReflectionUtils.setField(h, "mOverlay", aOverlay)) {
+					Logger.INFO("Patched Gas Turbine Overlay Icon.");
+				}*/
+				}
+				if (ReflectionUtils.setField(h2, "mIcon", aIcon)) {
+					Logger.INFO("Patched Steam Turbine Icon.");
+					/*if (ReflectionUtils.setField(h2, "mOverlay", aOverlay)) {
+					Logger.INFO("Patched Steam Turbine Overlay Icon.");
+				}*/
+				}
+			}
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected void dumpGtRecipeMap(final GT_Recipe_Map r) {
@@ -328,7 +360,7 @@ public class GTplusplus implements ActionListener {
 		mBetaTestCapes.put(new Pair<String, String>("Bear989Sr", "1964e3d1-6500-40e7-9ff2-e6161d41a8c2"));
 		mBetaTestCapes.put(new Pair<String, String>("CrazyJ1984", "d84f9654-87ea-46a9-881f-c6aa45dd5af8"));
 		mBetaTestCapes.put(new Pair<String, String>("AndreyKV", "9550c173-a8c5-4e7f-bf8d-b5ded56921ef"));
-		
+
 		//GTNH Beta Testers
 		mBetaTestCapes.put(new Pair<String, String>("bartimaeusnek", "578c2d13-9358-4ae8-95e7-a30ab9f9f3c7"));
 		mBetaTestCapes.put(new Pair<String, String>("Prewf", "634433ec-6256-44aa-97b3-a615be18ce23"));

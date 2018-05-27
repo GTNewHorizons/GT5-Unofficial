@@ -62,6 +62,8 @@ public class ConfigHandler {
 		// GT-Fixes
 		enableNitroFix = config.getBoolean("enableNitroFix", "gregtech", false,
 				"Restores the old Nitro-Diesel recipes.");
+		enableAnimatedTurbines = config.getBoolean("enableAnimatedTurbines", "gregtech", true,
+				"Gives GT Gas/Steam turbines animated textures while running.");
 	
 		// Pipes & Cables
 		enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true,
