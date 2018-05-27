@@ -11,6 +11,7 @@ import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
 import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.mechanics.ElementalLoader;
 import com.github.technus.tectech.loader.recipe.RecipeLoader;
+import com.github.technus.tectech.loader.thing.ComponentLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
@@ -76,6 +77,8 @@ public final class MainLoader {
         }catch (Throwable t){
             LOGGER.error("Loading textures...",t);
         }
+
+        new ComponentLoader();
     }
 
     public static void load() {
