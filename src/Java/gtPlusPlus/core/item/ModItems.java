@@ -515,8 +515,8 @@ public final class ModItems {
 			//Generate Fictional Materials
 			if (!CORE.GTNH) {
 				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
+				MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
 			}
-			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);			

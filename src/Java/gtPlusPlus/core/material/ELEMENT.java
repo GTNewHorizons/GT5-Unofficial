@@ -183,12 +183,16 @@ public final class ELEMENT {
 			else {
 				Logger.INFO("[Material] a1 Found "+a1.mName);
 				TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(a1);				
-			}			
+			}		
+			
+			TRINIUM_REFINED = TRINIUM;
+					
 		}
-		else {
-			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
+		else {	
+			TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{70, 110, 30}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material	
+			TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material	
+			
 		}	
-		TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material	
 	}
 
 	public static ELEMENT getInstance(){
