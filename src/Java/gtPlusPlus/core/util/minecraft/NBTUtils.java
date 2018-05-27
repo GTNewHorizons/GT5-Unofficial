@@ -112,8 +112,16 @@ public class NBTUtils {
 		return itemstack;
 	}
 
-	public static ItemStack writeItemsToGtCraftingComponents(ItemStack rStack, ItemStack[] stored, boolean copyTags) {
-
+	public static ItemStack writeItemsToGtCraftingComponents(ItemStack rStack, ItemStack[] input, boolean copyTags) {
+		try {
+		ItemStack stored[] = new ItemStack[9];
+		if (input.length != 9) {
+			for (int e=0;e<input.length;e++) {
+				if (input[e] != null)
+				stored[e] = input[e];
+			}
+		}
+		
 		if (copyTags) {
 			for (int i = 0; i < stored.length; i++) {
 				if (stored[i] != null && stored[i].hasTagCompound()) {
@@ -140,6 +148,10 @@ public class NBTUtils {
 		}
 		rNBT.setTag("GT.CraftingComponents", tNBT);
 		rStack.setTagCompound(rNBT);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 		return rStack;
 	}
 

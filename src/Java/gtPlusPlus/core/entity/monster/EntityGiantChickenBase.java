@@ -81,6 +81,10 @@ public class EntityGiantChickenBase extends EntityChicken {
         {
             this.motionY *= 0.6D;
         }
+        
+        if (MathUtils.randInt(0, 10000) <= 5) {
+        	jump();
+        }
 
         this.field_70886_e += this.field_70889_i * 2.0F;
 
@@ -101,7 +105,13 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * Called when the mob is falling. Calculates and applies fall damage.
      */
-    protected void fall(float p_70069_1_) {}
+    protected void fall(float p_70069_1_) {    	
+
+        if (MathUtils.randInt(0, 10) <= 5) {
+        	jump();
+        }
+    	
+    }
 
     protected Item getDropItem()
     {
@@ -260,6 +270,7 @@ public class EntityGiantChickenBase extends EntityChicken {
 	@Override
 	protected void jump() {
 		this.motionY = 0.68999998688697815D;
+		this.motionY += 0.068999998688697815D;
         if (this.isPotionActive(Potion.jump))
         {
             this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.5F);
@@ -273,6 +284,11 @@ public class EntityGiantChickenBase extends EntityChicken {
         }
 
         this.isAirBorne = true;
+        
+        if (MathUtils.randInt(0, 10) < 10) {
+        	jump();
+        }
+        
         ForgeHooks.onLivingJump(this);
 	}
 

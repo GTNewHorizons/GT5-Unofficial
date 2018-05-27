@@ -14,8 +14,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.ItemList;
+
 import gtPlusPlus.core.entity.item.ItemEntityGiantEgg;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -41,6 +45,7 @@ public class ItemGiantEgg extends BaseItemBurnable {
 	}
 
 	private static ItemStack mCorrectEgg;
+	private static ItemStack mCorrectStemCells;
 
 	@Override
 	public void onUpdate(ItemStack aStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
@@ -49,61 +54,65 @@ public class ItemGiantEgg extends BaseItemBurnable {
 			super.onUpdate(aStack, world, entityHolding, p_77663_4_, p_77663_5_);
 			return;
 		}
+		try {
+			boolean player = (entityHolding != null && entityHolding instanceof EntityPlayer);
 
-		boolean player = (entityHolding != null && entityHolding instanceof EntityPlayer);
+			if (player) {
+				NBTUtils.setBoolean(aStack, "playerHeld", true);
+			}
+			else {
+				NBTUtils.setBoolean(aStack, "playerHeld", false);
+			}		
 
-		if (player) {
-			NBTUtils.setBoolean(aStack, "playerHeld", true);
-		}
-		else {
-			NBTUtils.setBoolean(aStack, "playerHeld", false);
-		}		
+			nbtWork(aStack);
 
-		nbtWork(aStack);
+			int age = NBTUtils.hasKey(aStack, "mAge") ? NBTUtils.getInteger(aStack, "mAge") : 0;
+			if (player) {
+				NBTUtils.setInteger(aStack, "mAge", age+1);
 
-		int age = NBTUtils.hasKey(aStack, "mAge") ? NBTUtils.getInteger(aStack, "mAge") : 0;
-		if (player) {
-			NBTUtils.setInteger(aStack, "mAge", age+1);
-
-			//Set the correct egg for future hatches
-			if (mCorrectEgg == null) {
-				if (NBTUtils.hasKey(aStack, "mAge") && NBTUtils.hasKey(aStack, "mEggAge")) {
-					if (NBTUtils.getInteger(aStack, "mAge") >= NBTUtils.getInteger(aStack, "mEggAge")) {
-						for (int g=0;g<128;g++) {
-							ItemStack mSpawn = ItemUtils.simpleMetaStack(Items.spawn_egg, g, 1);
-							if (mSpawn != null) {
-								String s = ("" + StatCollector.translateToLocal(mSpawn.getUnlocalizedName() + ".name")).trim();
-								String s1 = EntityList.getStringFromID(mSpawn.getItemDamage());
-								if (s1 != null){
-									s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
-									if (s1.equalsIgnoreCase("bigChickenFriendly")) {
-										mCorrectEgg = mSpawn;
-										break;
+				//Set the correct egg for future hatches
+				if (mCorrectEgg == null) {
+					if (NBTUtils.hasKey(aStack, "mAge") && NBTUtils.hasKey(aStack, "mEggAge")) {
+						if (NBTUtils.getInteger(aStack, "mAge") >= NBTUtils.getInteger(aStack, "mEggAge")) {
+							for (int g=0;g<128;g++) {
+								ItemStack mSpawn = ItemUtils.simpleMetaStack(Items.spawn_egg, g, 1);
+								if (mSpawn != null) {
+									String s = ("" + StatCollector.translateToLocal(mSpawn.getUnlocalizedName() + ".name")).trim();
+									String s1 = EntityList.getStringFromID(mSpawn.getItemDamage());
+									if (s1 != null){
+										s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
+										if (s1.equalsIgnoreCase("bigChickenFriendly")) {
+											mCorrectEgg = mSpawn;
+											break;
+										}
 									}
-								}
-							}						
+								}						
+							}
 						}
 					}
 				}
-			}
 
-			if (mCorrectEgg != null) {
-				if (NBTUtils.hasKey(aStack, "mAge") && NBTUtils.hasKey(aStack, "mEggAge")) {
-					if (NBTUtils.getInteger(aStack, "mAge") >= NBTUtils.getInteger(aStack, "mEggAge")) {
-						if (MathUtils.randInt(0, 1000) >= 990) {
-							if (NBTUtils.hasKey(aStack, "size")) {
-								if ((NBTUtils.getInteger(aStack, "size")+1) >= MathUtils.randInt(0, 9)) {
-									((EntityPlayer) entityHolding).inventory.addItemStackToInventory((mCorrectEgg));
-									((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
-								}
-								else {
-									((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);								
-								}
-							}	
+				if (mCorrectEgg != null) {
+					if (NBTUtils.hasKey(aStack, "mAge") && NBTUtils.hasKey(aStack, "mEggAge")) {
+						if (NBTUtils.getInteger(aStack, "mAge") >= NBTUtils.getInteger(aStack, "mEggAge")) {
+							if (MathUtils.randInt(0, 1000) >= 990) {
+								if (NBTUtils.hasKey(aStack, "size")) {
+									if ((NBTUtils.getInteger(aStack, "size")+1) >= MathUtils.randInt(0, 9)) {
+										((EntityPlayer) entityHolding).inventory.addItemStackToInventory((mCorrectEgg));
+										((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
+									}
+									else {
+										((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);								
+									}
+								}	
+							}
 						}
 					}
 				}
 			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
 		}
 
 		super.onUpdate(aStack, world, entityHolding, p_77663_4_, p_77663_5_);
@@ -122,6 +131,45 @@ public class ItemGiantEgg extends BaseItemBurnable {
 			}
 			if (player && !NBTUtils.hasKey(aStack, "mEggAge") && NBTUtils.hasKey(aStack, "size")) {
 				NBTUtils.setInteger(aStack, "mEggAge", ((MathUtils.randInt(8000, 16000)*NBTUtils.getInteger(aStack, "size"))/2));
+			}
+
+			if (player && NBTUtils.getTagCompound(aStack, "GT.CraftingComponents") == null) {
+				if (mCorrectStemCells == null) {
+					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 28) {
+						ItemList xl = ItemList.valueOf("Circuit_Chip_Stemcell");
+						if (xl != null && xl.hasBeenSet()) {
+							mCorrectStemCells = xl.get(1);
+						}
+					}
+					else {
+						mCorrectStemCells = ItemUtils.getSimpleStack(Items.egg, 2);
+					}
+				}
+				if (mCorrectStemCells != null) {
+					int mSize = NBTUtils.getInteger(aStack, "size");
+					float mSizeMod = (MathUtils.randInt(-5, 5)/10);
+					mSize += mSizeMod;
+					mSize = Math.max(mSize, 1);
+					ItemStack eggYolks[] = new ItemStack[mSize];
+					for (int u=0;u<mSize;u++) {
+						eggYolks[u] = ItemUtils.getSimpleStack(mCorrectStemCells, MathUtils.randInt(1, 4));
+					}
+
+					int mexpected = 0;
+					for (ItemStack e : eggYolks) {
+						if (e != null) {
+							mexpected += e.stackSize;
+						}
+					}
+					if (mexpected > 0) {
+						NBTUtils.setInteger(aStack, "mExpected", mexpected);
+					}
+
+					NBTUtils.writeItemsToGtCraftingComponents(aStack, eggYolks, true);					
+				}
+			}
+			if (player && NBTUtils.getTagCompound(aStack, "GT.CraftingComponents") != null) {
+
 			}
 		}		
 	}
@@ -180,7 +228,12 @@ public class ItemGiantEgg extends BaseItemBurnable {
 		if (NBTUtils.hasKey(stack, "mEggAge")){
 			life = NBTUtils.getInteger(stack, "mEggAge");
 		}
+		int expected = 0;
+		if (NBTUtils.hasKey(stack, "mExpected")){
+			expected = NBTUtils.getInteger(stack, "mExpected");
+		}
 		list.add("Egg Size: "+size+" ounces");
+		list.add("Expected Stem Cells: "+expected);
 		list.add("Age: "+(age/20)+"s"+" / "+(life/20)+"s");
 		list.add("Larger eggs take longer to hatch,");
 		list.add("but have a better chance of hatching.");		
