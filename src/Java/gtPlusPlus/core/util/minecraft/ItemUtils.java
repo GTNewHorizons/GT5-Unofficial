@@ -755,6 +755,13 @@ public class ItemUtils {
 		}
 		String mCacheKey = block.getUnlocalizedName()+":"+meta;
 		if (mLocaleCache.containsKey(mCacheKey)) {
+			//Recache the key if it's invalid.
+			if (mLocaleCache.get(mCacheKey).toLowerCase().contains(".name")) {
+				mLocaleCache.remove(mCacheKey);
+				String mNew = ItemUtils.simpleMetaStack(block, meta, 1).getDisplayName();
+				Logger.INFO("Re-caching "+mNew+" into locale cache.");
+				mLocaleCache.put(mCacheKey, mNew);
+			}
 			return mLocaleCache.get(mCacheKey);
 		}
 		else {
@@ -763,7 +770,10 @@ public class ItemUtils {
 				return "Bad Item";
 			}			
 			String unlocalizedName = item.getUnlocalizedName(new ItemStack(block, 1, meta));
-			String blockName = StatCollector.translateToLocal(unlocalizedName + ".name");
+			String blockName = StatCollector.translateToLocal(unlocalizedName + ".name");			
+			if (blockName.toLowerCase().contains(".name")) {
+				blockName = ItemUtils.simpleMetaStack(block, meta, 1).getDisplayName();
+			}			
 			mLocaleCache.put(mCacheKey, blockName);
 			return blockName;
 		}				

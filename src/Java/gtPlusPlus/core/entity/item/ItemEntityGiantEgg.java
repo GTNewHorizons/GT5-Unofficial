@@ -32,48 +32,16 @@ public class ItemEntityGiantEgg extends EntityItem {
 		super(aWorld, aX, aY, aZ, aStack);
 	}
 
-
-	//Large eggs don't despawn, because they will try hatch first.
-	@Override
-	public void onUpdate() {
-		if (this.lifespan != Integer.MAX_VALUE) {
-			this.lifespan = Integer.MAX_VALUE;
-		}
-		
-		if (this.getEntityItem() != null) {
-			ItemStack g = this.getEntityItem();
-			NBTUtils.setInteger(g, "mTicksExisted", this.age);
-			this.setEntityItemStack(g);
-			Logger.INFO("Writing age to NBT of stored stack item.");
-		}
-		else {
-			ItemStack g = ItemUtils.getSimpleStack(ModItems.itemBigEgg);
-			NBTUtils.setInteger(g, "mTicksExisted", this.age);
-			this.setEntityItemStack(g);
-			Logger.INFO("Writing age to NBT of new stack item.");
-			
-		}
-		
-		if (this.age >= 1000) {
-			//Cache the value for efficiency
-			if (mEggSize == -1)
-				mEggSize = (this.getEntityItem() != null ? (this.getEntityItem().hasTagCompound() ? (this.getEntityItem().getTagCompound().hasKey("size") ? this.getEntityItem().getTagCompound().getInteger("size") : 1) : 1) : 1);
-			if (MathUtils.randInt(100*mEggSize, 1000) >= MathUtils.randInt(950, 1000)) {
-				//Spawn Chicken
-				spawnGiantChicken();
-			}
-		}
-		super.onUpdate();
-	}
-
-	private void spawnGiantChicken() {
+	private boolean spawnGiantChicken() {
 		try {
 			EntityGiantChickenBase entitychicken = new EntityGiantChickenBase(this.worldObj);
-			entitychicken.setGrowingAge(-24000);
+			entitychicken.setGrowingAge(-MathUtils.randInt(20000, 40000));
 			entitychicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-			this.worldObj.spawnEntityInWorld(entitychicken);
+			return this.worldObj.spawnEntityInWorld(entitychicken);
 		}
-		catch (Throwable t) {}
+		catch (Throwable t) {
+			return false;
+		}
 	}
 
 	//These eggs also do not combine.
@@ -103,6 +71,44 @@ public class ItemEntityGiantEgg extends EntityItem {
 	@Override
 	public boolean isBurning() {
 		return false;
+	}
+
+	@Override
+	public void onEntityUpdate() {
+		super.onEntityUpdate();
+		Logger.INFO("1");
+		//Large eggs don't despawn, because they will try hatch first.		
+		if (this.lifespan != Integer.MAX_VALUE-1) {
+			this.lifespan = Integer.MAX_VALUE-1;
+		}
+		
+		if (this.getEntityItem() != null) {
+			ItemStack g = this.getEntityItem();
+			NBTUtils.setInteger(g, "mTicksExisted", this.age);
+			NBTUtils.setInteger(g, "lifespan", this.lifespan);
+			this.setEntityItemStack(g);
+			Logger.INFO("Writing age to NBT of stored stack item.");
+		}
+		else {
+			ItemStack g = ItemUtils.getSimpleStack(ModItems.itemBigEgg);
+			NBTUtils.setInteger(g, "mTicksExisted", this.age);
+			NBTUtils.setInteger(g, "lifespan", this.lifespan);
+			this.setEntityItemStack(g);
+			Logger.INFO("Writing age to NBT of new stack item.");
+			
+		}
+		
+		if (this.age >= 1000) {
+			//Cache the value for efficiency
+			if (mEggSize == -1)
+				mEggSize = (this.getEntityItem() != null ? (this.getEntityItem().hasTagCompound() ? (this.getEntityItem().getTagCompound().hasKey("size") ? this.getEntityItem().getTagCompound().getInteger("size") : 1) : 1) : 1);
+			if (MathUtils.randInt(100*mEggSize, 1000) >= MathUtils.randInt(950, 1000)) {
+				//Spawn Chicken
+				if (spawnGiantChicken()) {
+					this.kill();
+				}
+			}
+		}
 	}
 
 
