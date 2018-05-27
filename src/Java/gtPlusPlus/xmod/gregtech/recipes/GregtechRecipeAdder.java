@@ -12,6 +12,7 @@ import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -375,6 +376,11 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 						+ aInput[das].stackSize);
 			}
 		}
+		
+		ArrayUtils.removeNulls(aInput);
+		if (aInput.length <= 1) {
+			return false;
+		}		
 
 		Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, new ItemStack[] { null }, null,
 				new int[] { aChance*10 }, new FluidStack[] { aInputFluid }, new FluidStack[] { aOutput }, aDuration, aEUt,

@@ -23,7 +23,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class GT_MetaTileEntity_Hatch_InputBattery
 extends
 GT_MetaTileEntity_Hatch {
-	public GT_Recipe_Map mRecipeMap = null;
+	public final GT_Recipe_Map mRecipeMap = null;
 
 	public GT_MetaTileEntity_Hatch_InputBattery(int aID, String aName,
 			String aNameRegional, int aTier) {

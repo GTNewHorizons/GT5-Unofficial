@@ -97,7 +97,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	public String[] getInfoData() {		
 
 		AutoMap<String> mInfo = new AutoMap<String>();
-		if (this.getMetaName() != "") {
+		if (!this.getMetaName().equals("")) {
 			mInfo.put(this.getMetaName());
 		}
 
