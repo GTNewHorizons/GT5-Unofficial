@@ -64,6 +64,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
     }
 
     public String[] getDescription() {
+		
+		if (mCasingName.toLowerCase().contains(".name")) {
+			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
+		}
+		if (mHotFuelName.toLowerCase().contains(".")) {
+			mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
+		}
+		
         return new String[]{
                 "Controller Block for the Advanced Electric Blast Furnace",
 				"Consumes 1L of "+mHotFuelName+"/t during operation",

@@ -92,7 +92,7 @@ public class ItemGiantEgg extends BaseItemBurnable {
 					if (NBTUtils.getInteger(aStack, "mAge") >= NBTUtils.getInteger(aStack, "mEggAge")) {
 						if (MathUtils.randInt(0, 1000) >= 990) {
 							if (NBTUtils.hasKey(aStack, "size")) {
-								if (NBTUtils.getInteger(aStack, "size") >= MathUtils.randInt(0, 9)) {
+								if ((NBTUtils.getInteger(aStack, "size")+1) >= MathUtils.randInt(0, 9)) {
 									((EntityPlayer) entityHolding).inventory.addItemStackToInventory((mCorrectEgg));
 									((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
 								}
@@ -121,7 +121,7 @@ public class ItemGiantEgg extends BaseItemBurnable {
 				NBTUtils.setInteger(aStack, "size", MathUtils.randInt(1, 8));
 			}
 			if (player && !NBTUtils.hasKey(aStack, "mEggAge") && NBTUtils.hasKey(aStack, "size")) {
-				NBTUtils.setInteger(aStack, "mEggAge", (MathUtils.randInt(8000, 16000)*NBTUtils.getInteger(aStack, "size")));
+				NBTUtils.setInteger(aStack, "mEggAge", ((MathUtils.randInt(8000, 16000)*NBTUtils.getInteger(aStack, "size"))/2));
 			}
 		}		
 	}
@@ -182,7 +182,8 @@ public class ItemGiantEgg extends BaseItemBurnable {
 		}
 		list.add("Egg Size: "+size+" ounces");
 		list.add("Age: "+(age/20)+"s"+" / "+(life/20)+"s");
-		list.add("Larger eggs take longer to hatch, but have a better chance of hatching.");		
+		list.add("Larger eggs take longer to hatch,");
+		list.add("but have a better chance of hatching.");		
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

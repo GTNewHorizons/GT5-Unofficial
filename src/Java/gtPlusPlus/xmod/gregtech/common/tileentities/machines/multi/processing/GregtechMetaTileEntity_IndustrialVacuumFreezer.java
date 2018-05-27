@@ -52,6 +52,14 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	}
 
 	public String[] getDescription() {
+		
+		if (mCasingName.toLowerCase().contains(".name")) {
+			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
+		}
+		if (mCryoFuelName.toLowerCase().contains(".")) {
+			mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
+		}
+		
 		return new String[]{
 				"Controller Block for the Advanced Cryogenic Freezer",
 				"Super cools hot ingots and cells",
