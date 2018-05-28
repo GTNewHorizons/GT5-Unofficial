@@ -187,66 +187,9 @@ public class GTplusplus implements ActionListener {
 	 * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s {@link #instance}.
 	 */
 	@Mod.EventHandler
-	public void onLoadComplete(FMLLoadCompleteEvent event) {		
-		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
-		FishPondFakeRecipe.generateFishPondRecipes();		
-
-		//Large Centrifuge generation
-		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
-			if (x != null) {
-				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
-					CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
-				}
-				else {
-					Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
-					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
-				}
-			}
-		}
-
-		//Large Electrolyzer generation
-		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
-			if (x != null) {
-				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
-					CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
-				}
-				else {
-					Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
-					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
-				}
-			}
-		}
-
-		//Advanced Vacuum Freezer generation
-		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
-			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {	
-				int mTime = (x.mDuration/2);
-				int len = x.mFluidInputs.length;
-				FluidStack[] y = new FluidStack[len + 1];
-				int slot = y.length - 1;				
-				int mr3 = 0;
-				for (FluidStack f : x.mFluidInputs) {
-					if (f != null) {
-						y[mr3] = f;
-					}
-					mr3++;
-				}
-				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
-				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
-					CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
-				}
-			}
-		}
-
-		Logger.INFO("[Bedrock Miner] Initial OreType Scan");
-		MiningUtils.iterateAllOreTypes();
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		tryPatchTurbineTextures();
+		generateGregtechRecipeMaps();
 	}
 
 	public static void tryPatchTurbineTextures() {
@@ -273,6 +216,91 @@ public class GTplusplus implements ActionListener {
 			catch (Throwable e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	protected void generateGregtechRecipeMaps() {
+
+		int[] mValidCount = new int[] {0, 0, 0};
+		int[] mInvalidCount = new int[] {0, 0, 0};
+		int[] mOriginalCount = new int[] {0, 0, 0};
+
+		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
+		FishPondFakeRecipe.generateFishPondRecipes();		
+
+		//Large Centrifuge generation
+		mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) {
+			if (x != null) {
+				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
+					if (CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
+						mValidCount[0]++;
+					}
+				}
+				else {
+					Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
+					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
+				}
+			}
+			else {
+				mInvalidCount[0]++;
+			}
+		}
+
+		//Large Electrolyzer generation
+		mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
+			if (x != null) {
+				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
+					if (CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
+						mValidCount[1]++;
+					}
+				}
+				else {
+					Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
+					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
+				}
+			}
+			else {
+				mInvalidCount[1]++;
+			}
+		}
+
+		//Advanced Vacuum Freezer generation
+		mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size();
+		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) {
+			if (x != null && RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) {	
+				int mTime = (x.mDuration/2);
+				int len = x.mFluidInputs.length;
+				FluidStack[] y = new FluidStack[len + 1];
+				int slot = y.length - 1;				
+				int mr3 = 0;
+				for (FluidStack f : x.mFluidInputs) {
+					if (f != null) {
+						y[mr3] = f;
+					}
+					mr3++;
+				}
+				y[slot] = FluidUtils.getFluidStack("cryotheum", mTime);				
+				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
+					if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, y, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
+						mValidCount[2]++;
+					}
+				}
+			}
+			else {
+				mInvalidCount[2]++;
+			}
+		}
+		String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
+		for (int i=0;i<3;i++) {
+			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");
 		}
 	}
 

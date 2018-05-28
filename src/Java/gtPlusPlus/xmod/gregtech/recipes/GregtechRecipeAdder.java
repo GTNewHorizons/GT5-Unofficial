@@ -502,7 +502,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			return false;
 		}
 
-		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
+		if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
+			Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
+			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
+			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(aFluidInputs));
+			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(aOutputs));
+			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
 		Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
@@ -513,7 +518,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs) || aEUtick <= 0) {
 			return false;
 		}
-		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
+		if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
+			Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
+			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
+			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(aFluidInputs));
+			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(aOutputs));
+			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
 		Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial);
@@ -526,7 +536,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			return false;
 		}
 
-		if (!ItemUtils.checkForInvalidItems(aInputs) || !ItemUtils.checkForInvalidItems(aOutputs)) {
+		if (!ItemUtils.checkForInvalidItems(aInputs, aOutputs)) {
+			Logger.INFO("[Recipe] Error generating Adv. Vac Freezer recipe.");
+			Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(aInputs));
+			Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(aFluidInputs));
+			Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(aOutputs));
+			Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(aFluidOutputs));
 			return false;
 		}
 		if (Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.addRecipe(true, aInputs, aOutputs, null, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUtick, aSpecial) != null) {
