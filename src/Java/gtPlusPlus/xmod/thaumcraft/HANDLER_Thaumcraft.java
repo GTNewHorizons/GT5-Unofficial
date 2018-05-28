@@ -53,10 +53,10 @@ public class HANDLER_Thaumcraft {
 					if (j .getKey() != null && (j.getValue() != null && j.getValue().length > 0)) {
 						List<TC_AspectStack_Ex> list = Arrays.asList(j.getValue());
 						if (ThaumcraftUtils.registerThaumcraftAspectsToItem(j.getKey(), list, true)) {
-							Logger.INFO("[Aspect] Successfully added Aspects to "+j.getKey().getDisplayName()+".");
+							Logger.WARNING("[Aspect] Successfully added Aspects to "+j.getKey().getDisplayName()+".");
 						}
 						else {
-							Logger.INFO("[Aspect] Failed adding Aspects to "+j.getKey().getDisplayName()+".");
+							Logger.WARNING("[Aspect] Failed adding Aspects to "+j.getKey().getDisplayName()+".");
 						}
 					}
 				}

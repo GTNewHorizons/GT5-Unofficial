@@ -97,7 +97,7 @@ public class ItemUtils {
 
 	public static ItemStack getEmptyCell(int i){		
 		if (ItemList.Cell_Empty.hasBeenSet()) {
-			return ItemList.Cell_Empty.get(1L, new Object[0]);
+			return ItemList.Cell_Empty.get(i);
 		}		
 		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", i, 0);
 		return temp != null ? temp : null;

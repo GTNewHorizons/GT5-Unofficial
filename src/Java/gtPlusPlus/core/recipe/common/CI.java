@@ -509,4 +509,8 @@ public class CI {
 		LOADER_Machine_Components.initialise();
 	}
 
+	public static ItemStack emptyCells(int i) {
+		return ItemUtils.getEmptyCell(i);
+	}
+
 }

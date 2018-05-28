@@ -16,9 +16,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.handler.*;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
-import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
-import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
+import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
@@ -126,6 +124,7 @@ public class CommonProxy {
 		Utils.registerEvent(new PickaxeBlockBreakEventHandler());
 		//Block Handler for all events.
 		Utils.registerEvent(new BlockEventHandler());
+		Utils.registerEvent(new GeneralTooltipEventHandler());
 		//Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		

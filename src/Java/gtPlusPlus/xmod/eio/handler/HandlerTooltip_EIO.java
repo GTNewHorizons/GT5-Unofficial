@@ -6,13 +6,10 @@ import java.lang.reflect.Field;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.Materials;
 
-import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
@@ -129,26 +126,6 @@ public class HandlerTooltip_EIO {
 			catch (ClassNotFoundException e) {
 			}
 		}
-
-		if (!BlockEventHandler.blockLimestone.isEmpty()) {
-			for (ItemStack h : BlockEventHandler.blockLimestone) {
-				if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
-					if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
-						event.toolTip.add("May contain Fluorite Ore");
-					}
-				}
-			}
-		}
-		if (!BlockEventHandler.oreLimestone.isEmpty()) {
-			for (ItemStack h : BlockEventHandler.oreLimestone) {
-				if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
-					if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
-						event.toolTip.add("May contain Fluorite Ore");
-					}
-				}
-			}
-		}
-
 
 	}
 

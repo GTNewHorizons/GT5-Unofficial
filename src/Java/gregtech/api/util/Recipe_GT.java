@@ -922,7 +922,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
-			Recipe_GT mNew = new GT_Recipe_LargeCentrifuge(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+			Recipe_GT mNew = new GT_Recipe_LargeCentrifuge(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -993,7 +993,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 					if (mColumn <= 2 && mRow <= 3)
 					outputStacks.add(
 							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], ((this.mChances.length-1) >= i ? this.mChances[i] : 10000)));
+									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], this.getOutputChance(i)));
 				}				
 				return outputStacks;
 			}
@@ -1087,7 +1087,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			}
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);			
-			Recipe_GT mNew = new GT_Recipe_LargeElectrolyzer(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+			Recipe_GT mNew = new GT_Recipe_LargeElectrolyzer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -1160,7 +1160,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 					if (mColumn <= 2 && mRow <= 3)					
 					outputStacks.add(
 							(PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], ((this.mChances.length-1) >= i ? this.mChances[i] : 10000)));
+									(Object) mNEIMap.get(i), xPos[mColumn++], yPos[mRow], this.getOutputChance(i)));
 				}				
 				return outputStacks;
 			}
@@ -1255,7 +1255,7 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 			aOutputs = adjustedOutputs.toArray(new ItemStack[adjustedOutputs.size()]);
 			aFluidOutputs = adjustedFluidOutputs.toArray(new FluidStack[adjustedFluidOutputs.size()]);
 
-			Recipe_GT mNew = new GT_Recipe_AdvFreezer(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, 0);
+			Recipe_GT mNew = new GT_Recipe_AdvFreezer(aOptimize, aInputs, aOutputs, aSpecial, aOutputChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
 			if (RecipeUtils.doesGregtechRecipeHaveEqualCells(mNew)) {
 				return this.addRecipe(mNew);
 			}
@@ -1310,12 +1310,12 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 				for (int i = 0; i < itemLimit; ++i) {
 					if (this.mOutputs[i] != null)
 					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5, ((this.mChances.length-1) >= i ? this.mChances[i] : 10000)));
+							(Object) this.mOutputs[i].copy(), 102 + i * 18, 5, this.getOutputChance(i)));
 				}
 				for (int i = 0; i < fluidLimit; ++i) {
 					if (this.mFluidOutputs[i] != null)
 					outputStacks.add((PositionedStack) new GT_NEI_MultiBlockHandler.FixedPositionedStack(
-							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23, ((this.mChances.length-1) >= i ? this.mChances[i] : 10000)));
+							(Object) GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23, this.getOutputChance(i)));
 				}
 				return outputStacks;
 			}

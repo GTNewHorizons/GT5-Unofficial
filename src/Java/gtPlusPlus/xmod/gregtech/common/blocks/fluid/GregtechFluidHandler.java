@@ -88,7 +88,7 @@ public class GregtechFluidHandler {
 
 	private static ItemStack generateIC2FluidCell(final String fluidNameWithCaps){
 		Logger.INFO("Adding a Cell for "+fluidNameWithCaps);
-		if (LoadedMods.IndustrialCraft2){
+		if (LoadedMods.IndustrialCraft2 && !LoadedMods.IndustrialCraft2Classic){
 			return Utils.createInternalNameAndFluidCell(fluidNameWithCaps);
 		}
 		return null;
@@ -96,7 +96,7 @@ public class GregtechFluidHandler {
 	
 	private static ItemStack generateIC2FluidCellNoOreDict(final String fluidNameWithCaps){
 		Logger.INFO("Adding a Cell for "+fluidNameWithCaps);
-		if (LoadedMods.IndustrialCraft2){
+		if (LoadedMods.IndustrialCraft2 && !LoadedMods.IndustrialCraft2Classic){
 			return Utils.createInternalNameAndFluidCellNoOreDict(fluidNameWithCaps);
 		}
 		return null;
