@@ -563,6 +563,21 @@ public class ItemUtils {
 		}
 		return sRadiation;
 	}
+	
+	public static String getArrayStackNames(final FluidStack[] aStack){
+		String itemNames = "Fluid Array: ";
+		for (final FluidStack alph : aStack){
+			if (alph != null){
+				final String temp = itemNames;
+				itemNames = temp + ", " + alph.getLocalizedName() + " x" + alph.amount;
+			}
+			else {
+				final String temp = itemNames;
+				itemNames = temp + ", " + "null" + " x" + "0";
+			}
+		}
+		return itemNames;
+	}
 
 	public static String getArrayStackNames(final ItemStack[] aStack){
 		String itemNames = "Item Array: ";
@@ -578,7 +593,6 @@ public class ItemUtils {
 			}
 		}
 		return itemNames;
-
 	}
 
 	public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack){

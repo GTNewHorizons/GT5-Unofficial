@@ -1,7 +1,10 @@
 # Welcome to the GT++ Github!  
 
-### Current Build Status  
-#### CircleCI - [![CircleCI](https://circleci.com/gh/draknyte1/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/draknyte1/GTplusplus/tree/master)   
+## Current Build Status  
+### CircleCI - [![CircleCI](https://circleci.com/gh/draknyte1/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/draknyte1/GTplusplus/tree/master)   
+  
+### Discord  
+[Join the GT++ Channel - Click here](https://discord.gg/YdXJbgb)  
    
 ## Issues & Suggestions  
 [Github Issue Template - Click here](https://github.com/draknyte1/GTplusplus/wiki/Github-Issue-Format)  

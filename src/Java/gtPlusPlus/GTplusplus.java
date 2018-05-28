@@ -13,7 +13,6 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
 
@@ -198,6 +197,13 @@ public class GTplusplus implements ActionListener {
 				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
 					CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
 				}
+				else {
+					Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
+					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
+				}
 			}
 		}
 
@@ -206,6 +212,13 @@ public class GTplusplus implements ActionListener {
 			if (x != null) {
 				if (ItemUtils.checkForInvalidItems(x.mInputs)) {
 					CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue);
+				}
+				else {
+					Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
+					Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
+					Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
+					Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
+					Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs));
 				}
 			}
 		}
