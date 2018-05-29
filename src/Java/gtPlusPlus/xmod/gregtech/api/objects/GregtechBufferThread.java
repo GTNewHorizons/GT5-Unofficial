@@ -7,51 +7,55 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ThreadedBuffer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ThreadedChestBuffer;
 
 public class GregtechBufferThread extends Thread {
 
 	public static final Map<String, GregtechBufferThread> mBufferThreadAllocation = new HashMap<String, GregtechBufferThread>();
-	private final World mWorldRef;
-	private short mLifeCycleTime = 900;
+	private final BlockPos mBlockPos;
+	private int mLifeCycleTime = 300;
+	private final  String mID;
 
-	public static synchronized final GregtechBufferThread getBufferThread(World world) {
-		if (world != null && mBufferThreadAllocation.containsKey(""+world.provider.dimensionId)){
+	public static synchronized final GregtechBufferThread getBufferThread(BlockPos pos) {
+		if (pos != null && mBufferThreadAllocation.containsKey(""+pos.getUniqueIdentifier())){
 			Logger.INFO("[SB] Found an existing thread for this dimension.");
-			return mBufferThreadAllocation.get(""+world.provider.dimensionId);
+			return mBufferThreadAllocation.get(""+pos.getUniqueIdentifier());
 		}
 		else {
-			return new GregtechBufferThread(world);
+			return new GregtechBufferThread(pos);
 		}
 	}
 
-	public GregtechBufferThread(World world) {
+	public GregtechBufferThread(BlockPos pos) {
 		super();
-		int mID = world != null ? world.provider.dimensionId : Short.MIN_VALUE;
-		if (world != null && !mBufferThreadAllocation.containsKey(""+mID)){
-			mWorldRef = world;
-			mBufferThreadAllocation.put(""+mID, this);
+		String aID = pos != null ? pos.getUniqueIdentifier() : ""+Short.MIN_VALUE;
+		this.mID = aID;
+		if (pos != null && !mBufferThreadAllocation.containsKey(mID)){
+			mBlockPos = pos;
+			mBufferThreadAllocation.put(mID, this);
 		}
 		else {
 			this.mLifeCycleTime = 1;
-			mWorldRef = null;
+			mBlockPos = null;
 		}
-		this.setName("GTPP_SuperBuffer-Dim("+mID+")");
-		if (mWorldRef != null && !this.isAlive()) {
-			this.start();
+		this.setName("GTPP-SuperBuffer("+mID+")");
+		if (mBlockPos != null && !this.isAlive()) {
+			start();
 			Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
 		}
 	}
 
 	public synchronized void fillStacksIntoFirstSlots(GT_MetaTileEntity_ThreadedChestBuffer mBuffer) {
-		mLifeCycleTime += 100;
+		if (mLifeCycleTime < (Short.MAX_VALUE-10)){
+			mLifeCycleTime += 10;
+		}
 		for (int i = 0; i < mBuffer.mInventorySynchro.length - 1; ++i) {
 			for (int j = i + 1; j < mBuffer.mInventorySynchro.length - 1; ++j) {
 				if (mBuffer.mInventorySynchro[j] != null && (mBuffer.mInventorySynchro[i] == null
@@ -64,7 +68,9 @@ public class GregtechBufferThread extends Thread {
 	}
 
 	public synchronized boolean moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer, GT_MetaTileEntity_ThreadedBuffer mBuffer) {
-		mLifeCycleTime += 100;
+		if (mLifeCycleTime < (Short.MAX_VALUE-10)){
+			mLifeCycleTime += 10;
+		}
 		final byte mTargetStackSize = (byte) mBuffer.mTargetStackSize;
 		final int tCost = GT_Utility.moveOneItemStack((Object) aBaseMetaTileEntity,
 				(Object) aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
@@ -85,6 +91,10 @@ public class GregtechBufferThread extends Thread {
 				&& (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()
 						|| aTimer % 200L == 0L || mBuffer.mSuccess > 0)) {
 			--mBuffer.mSuccess;
+			if (mLifeCycleTime < (Short.MAX_VALUE-1)){
+				mLifeCycleTime += 1;				
+			}
+			//Logger.INFO("Ticking SB @ "+mBuffer.getLogicThread().mBlockPos.getUniqueIdentifier() + " | Time Left: "+mLifeCycleTime);
 			moveItems(aBaseMetaTileEntity, aTimer, mBuffer);
 			for (byte b = 0; b < 6; ++b) {
 				aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) (mBuffer.bInvert ? 15 : 0));
@@ -168,23 +178,45 @@ public class GregtechBufferThread extends Thread {
 		return 0;
 	}
 
+	//Logic Vars
+	private boolean mRunning = true;
+
 	@Override
-	public void run() {
-		while (mLifeCycleTime > 0) {
-			mLifeCycleTime--;
-			Logger.INFO("[SB] Ticking Thread for dimension. "+mLifeCycleTime);
-			try {
-				this.sleep(1000);
+	public void run() {	
+		//While thread is alive.
+		while (mRunning) {
+			//While thread is active, lets tick it's life down.
+			while (mLifeCycleTime > 0) {
+				//Remove invalid threads
+				if (this.mBlockPos.world == null) {
+					mLifeCycleTime = 0;
+				}
+				//Prevent Overflows
+				if (mLifeCycleTime > Short.MAX_VALUE) {
+					mLifeCycleTime = Short.MAX_VALUE;
+				}			
+				try {
+					sleep(1000);
+					mLifeCycleTime--;
+					Logger.INFO("[SB] Ticking Thread "+mID+" | Remaining: "+mLifeCycleTime+"s");
+				}
+				catch (InterruptedException e) {
+					mLifeCycleTime = 0;
+				}
 			}
-			catch (InterruptedException e) {
-				
+			if (mLifeCycleTime <= 0) {
+				destroy();
 			}
 		}
-		if (mLifeCycleTime <= 0) {
-			int mID = (mWorldRef != null ? mWorldRef.provider.dimensionId : Short.MIN_VALUE);
-			GregtechBufferThread.mBufferThreadAllocation.remove(""+mID, this);
-			Logger.INFO("[SB] Removing Thread for dimension "+mID);
-		}
+	}
+
+	@Override
+	public void destroy() {		
+		GregtechBufferThread.mBufferThreadAllocation.remove(mID, this);
+		Logger.INFO("[SB] Removing Thread "+mID);
+		mRunning = false;
+		mLifeCycleTime = 0;
+		stop();
 	}
 
 

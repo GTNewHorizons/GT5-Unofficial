@@ -44,6 +44,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
+import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -173,6 +174,13 @@ public class GTplusplus implements ActionListener {
 			ChunkManager.clearInternalMaps();
 		}
 
+		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
+			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
+				i.destroy();
+			}
+			GregtechBufferThread.mBufferThreadAllocation.clear();
+		}
+		
 	}
 
 	@Override
@@ -300,7 +308,7 @@ public class GTplusplus implements ActionListener {
 		}
 		String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
 		for (int i=0;i<3;i++) {
-			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");
+			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");
 		}
 	}
 

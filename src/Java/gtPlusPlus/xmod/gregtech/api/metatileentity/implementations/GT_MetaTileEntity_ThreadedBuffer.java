@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity_Buffer {
 
 	protected GregtechBufferThread mLogicThread;
+	protected BlockPos mPos;
 	public final ItemStack[] mInventorySynchro;
 
 	public GT_MetaTileEntity_ThreadedBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -69,7 +71,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 			return mLogicThread;
 		}
 		else {
-			return this.mLogicThread = GregtechBufferThread.getBufferThread(this.getBaseMetaTileEntity().getWorld());
+			return this.mLogicThread = GregtechBufferThread.getBufferThread(mPos);
 		}
 	}
 
@@ -297,8 +299,17 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 	}
 
 	public synchronized void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-		if (aBaseMetaTileEntity.isServerSide())
-			getLogicThread().onPostTick(aBaseMetaTileEntity, aTimer, this);
+		if (aBaseMetaTileEntity.isServerSide()) {
+			if (mPos == null) {
+				mPos = new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld());
+			}			
+			if (mLogicThread == null) {
+				mLogicThread = GregtechBufferThread.getBufferThread(mPos);
+			}
+			if (mLogicThread!= null) {
+				getLogicThread().onPostTick(aBaseMetaTileEntity, aTimer, this);
+			}			
+		}
 	}
 
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
