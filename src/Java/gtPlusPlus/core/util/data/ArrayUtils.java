@@ -8,13 +8,13 @@ import gtPlusPlus.api.objects.data.AutoMap;
 
 public class ArrayUtils {
 
-	public static Object[] expandArray(final Object[] someArray, final Object newValueToAdd) {
-		Object[] series = someArray;
+	public static <V> V[] expandArray(final V[] someArray, final V newValueToAdd) {
+		V[] series = someArray;
 		series = addElement(series, newValueToAdd);
 		return series;
 	}
 
-	private static Object[] addElement(Object[] series, final Object newValueToAdd) {
+	private static <V> V[] addElement(V[] series, final V newValueToAdd) {
 		series  = Arrays.copyOf(series, series.length + 1);
 		series[series.length - 1] = newValueToAdd;
 		return series;

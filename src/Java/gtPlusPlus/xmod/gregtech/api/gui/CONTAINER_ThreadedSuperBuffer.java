@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.gui;
 
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ThreadedBuffer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ThreadedChestBuffer;
 
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 
 public class CONTAINER_ThreadedSuperBuffer extends GT_ContainerMetaTile_Machine {
+	
+	protected int cacheTime = 0;
+	
 	public CONTAINER_ThreadedSuperBuffer(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
+		cacheTime = ((GT_MetaTileEntity_ThreadedBuffer)aTileEntity.getMetaTileEntity()).mThreadTimeLeft;
 	}
 
 	public void addSlots(final InventoryPlayer aInventoryPlayer) {

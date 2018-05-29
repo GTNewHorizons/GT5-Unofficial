@@ -7,6 +7,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -377,5 +378,41 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 		if (aIndex >= 0 && aIndex < getSizeInventory()) {
 			this.mInventorySynchro[aIndex] = aStack;
 		}
+	}
+
+	private synchronized void cleanup() {
+		if (this.mLogicThread != null) {
+			this.mLogicThread.destroy();
+			this.mLogicThread = null;
+		}
+	}
+
+	@Override
+	public void onExplosion() {
+		cleanup();
+		super.onExplosion();
+	}
+
+	@Override
+	public void onRemoval() {
+		cleanup();
+		super.onRemoval();
+	}
+
+	@Override
+	public boolean isGivingInformation() {
+		return true;
+	}
+
+	@Override
+	public String[] getInfoData() {
+		String mResult[] = super.getInfoData();
+		String mAdditive[] = new String[] {
+				"info"
+		};
+		for (String s : mAdditive) {
+			ArrayUtils.expandArray(mResult, s);
+		}
+		return mResult;
 	}
 }

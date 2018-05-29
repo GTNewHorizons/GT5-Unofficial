@@ -14,6 +14,19 @@ public class SystemUtils {
 		}
 	}
 	
+	/**
+	 * Try invoke the runtime's Garbage Collector.
+	 */
+	public static void invokeGC() {
+		try {
+			Runtime r = Runtime.getRuntime();
+			r.gc();
+		}
+		catch (Throwable t) {
+			//Do nothing.
+		}
+	}
+	
 	public static boolean isWindows() {
 		return (getOSString().indexOf("win") >= 0);
 	}

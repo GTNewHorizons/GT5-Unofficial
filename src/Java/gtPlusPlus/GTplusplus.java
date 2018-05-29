@@ -43,6 +43,7 @@ import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.GeoUtils;
 import gtPlusPlus.core.util.sys.NetworkUtils;
+import gtPlusPlus.core.util.sys.SystemUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -178,6 +179,7 @@ public class GTplusplus implements ActionListener {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
 				i.destroy();
 			}
+			SystemUtils.invokeGC();
 		}
 		
 	}

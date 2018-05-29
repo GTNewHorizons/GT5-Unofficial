@@ -26,7 +26,7 @@ public class GregtechBufferThread extends Thread {
 
 	public static synchronized final GregtechBufferThread getBufferThread(BlockPos pos) {
 		if (pos != null && mBufferThreadAllocation.containsKey(""+pos.getUniqueIdentifier())){
-			Logger.INFO("[SB] Found an existing thread for this dimension.");
+			Logger.INFO("[SB] Found an existing thread for this Buffer.");
 			return mBufferThreadAllocation.get(""+pos.getUniqueIdentifier());
 		}
 		else {
@@ -47,12 +47,18 @@ public class GregtechBufferThread extends Thread {
 			mBlockPos = null;
 		}
 		this.setName("GTPP-SuperBuffer("+mID+")");
+		this.setDaemon(true);
 		if (mBlockPos != null && !this.isAlive()) {
-			start();
-			Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
+			try {
+				start();
+				Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
+			}
+			catch (Throwable t_) {
+				//Do nothing.
+			}
 		}
 	}
-	
+
 	public synchronized int getTimeLeft() {
 		return this.mLifeCycleTime;
 	}
@@ -119,11 +125,11 @@ public class GregtechBufferThread extends Thread {
 	 * Some GT logic we'd like to move off thread
 	 */
 
-	public synchronized static boolean areStacksEqual(final ItemStack aStack1, final ItemStack aStack2) {
+	public synchronized boolean areStacksEqual(final ItemStack aStack1, final ItemStack aStack2) {
 		return areStacksEqual(aStack1, aStack2, false);
 	}
 
-	public synchronized static boolean areStacksEqual(final ItemStack aStack1, final ItemStack aStack2, final boolean aIgnoreNBT) {
+	public synchronized boolean areStacksEqual(final ItemStack aStack1, final ItemStack aStack2, final boolean aIgnoreNBT) {
 		return aStack1 != null && aStack2 != null && aStack1.getItem() == aStack2.getItem()
 				&& (aIgnoreNBT || (aStack1.getTagCompound() == null == (aStack2.getTagCompound() == null)
 				&& (aStack1.getTagCompound() == null
@@ -132,7 +138,7 @@ public class GregtechBufferThread extends Thread {
 				|| Items.feather.getDamage(aStack1) == 32767 || Items.feather.getDamage(aStack2) == 32767);
 	}
 
-	public synchronized static byte moveStackFromSlotAToSlotB(final IInventory aTileEntity1, final IInventory aTileEntity2,
+	public synchronized byte moveStackFromSlotAToSlotB(final IInventory aTileEntity1, final IInventory aTileEntity2,
 			final int aGrabFrom, final int aPutTo, byte aMaxTargetStackSize, final byte aMinTargetStackSize,
 			final byte aMaxMoveAtOnce, final byte aMinMoveAtOnce) {
 		if (aTileEntity1 == null || aTileEntity2 == null || aMaxTargetStackSize <= 0 || aMinTargetStackSize <= 0
@@ -183,13 +189,18 @@ public class GregtechBufferThread extends Thread {
 	@Override
 	public void run() {	
 		//While thread is alive.
-		while (mRunning) {
+		run: while (mRunning) {
 			//While thread is active, lets tick it's life down.
-			while (mLifeCycleTime > 0) {
-				//Remove invalid threads
-				if (this.mBlockPos.world == null) {
-					mLifeCycleTime = 0;
+			life: while (mLifeCycleTime > 0) {
+				if (!mRunning) {
+					break life;
 				}
+				
+				//Remove invalid threads
+				if (this.mBlockPos.world == null || this.mBlockPos.getBlockAtPos() == null) {
+					destroy();
+					break run;
+				}				
 				//Prevent Overflows
 				if (mLifeCycleTime > mMaxLife) {
 					mLifeCycleTime = mMaxLife;
@@ -197,7 +208,7 @@ public class GregtechBufferThread extends Thread {
 				try {
 					sleep(1000);
 					mLifeCycleTime--;
-					Logger.INFO("[SB] Ticking Thread "+mID+" | Remaining: "+mLifeCycleTime+"s");
+					Logger.WARNING("[SB] Ticking Thread "+mID+" | Remaining: "+mLifeCycleTime+"s");
 				}
 				catch (InterruptedException e) {
 					mLifeCycleTime = 0;
@@ -205,17 +216,24 @@ public class GregtechBufferThread extends Thread {
 			}
 			if (mLifeCycleTime <= 0) {
 				destroy();
+				break run;
 			}
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void destroy() {		
+		mRunning = false;
 		GregtechBufferThread.mBufferThreadAllocation.remove(mID, this);
 		Logger.INFO("[SB] Removing Thread "+mID);
-		mRunning = false;
-		mLifeCycleTime = 0;
-		stop();
+		try {
+			stop();
+			this.finalize();
+		}
+		catch (Throwable t) {
+			//Do nothing.
+		}
 	}
 
 
