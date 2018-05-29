@@ -21,6 +21,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 	protected GregtechBufferThread mLogicThread;
 	protected BlockPos mPos;
 	public final ItemStack[] mInventorySynchro;
+	public int mThreadTimeLeft = 0;
 
 	public GT_MetaTileEntity_ThreadedBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
 			final int aInvSlotCount, final String aDescription) {
@@ -308,6 +309,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 			}
 			if (mLogicThread!= null) {
 				getLogicThread().onPostTick(aBaseMetaTileEntity, aTimer, this);
+				this.mThreadTimeLeft = this.mLogicThread.getTimeLeft();
 			}			
 		}
 	}

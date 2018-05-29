@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.objects;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -18,9 +18,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity
 
 public class GregtechBufferThread extends Thread {
 
-	public static final Map<String, GregtechBufferThread> mBufferThreadAllocation = new HashMap<String, GregtechBufferThread>();
+	public static final ConcurrentMap<String, GregtechBufferThread> mBufferThreadAllocation = new ConcurrentHashMap<String, GregtechBufferThread>();
 	private final BlockPos mBlockPos;
-	private int mLifeCycleTime = 300;
+	private final int mMaxLife = 300;
+	private int mLifeCycleTime = mMaxLife;
 	private final  String mID;
 
 	public static synchronized final GregtechBufferThread getBufferThread(BlockPos pos) {
@@ -51,11 +52,12 @@ public class GregtechBufferThread extends Thread {
 			Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
 		}
 	}
+	
+	public synchronized int getTimeLeft() {
+		return this.mLifeCycleTime;
+	}
 
 	public synchronized void fillStacksIntoFirstSlots(GT_MetaTileEntity_ThreadedChestBuffer mBuffer) {
-		if (mLifeCycleTime < (Short.MAX_VALUE-10)){
-			mLifeCycleTime += 10;
-		}
 		for (int i = 0; i < mBuffer.mInventorySynchro.length - 1; ++i) {
 			for (int j = i + 1; j < mBuffer.mInventorySynchro.length - 1; ++j) {
 				if (mBuffer.mInventorySynchro[j] != null && (mBuffer.mInventorySynchro[i] == null
@@ -68,9 +70,6 @@ public class GregtechBufferThread extends Thread {
 	}
 
 	public synchronized boolean moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer, GT_MetaTileEntity_ThreadedBuffer mBuffer) {
-		if (mLifeCycleTime < (Short.MAX_VALUE-10)){
-			mLifeCycleTime += 10;
-		}
 		final byte mTargetStackSize = (byte) mBuffer.mTargetStackSize;
 		final int tCost = GT_Utility.moveOneItemStack((Object) aBaseMetaTileEntity,
 				(Object) aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
@@ -91,7 +90,7 @@ public class GregtechBufferThread extends Thread {
 				&& (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()
 						|| aTimer % 200L == 0L || mBuffer.mSuccess > 0)) {
 			--mBuffer.mSuccess;
-			if (mLifeCycleTime < (Short.MAX_VALUE-1)){
+			if (mLifeCycleTime < (mMaxLife-1)){
 				mLifeCycleTime += 1;				
 			}
 			//Logger.INFO("Ticking SB @ "+mBuffer.getLogicThread().mBlockPos.getUniqueIdentifier() + " | Time Left: "+mLifeCycleTime);
@@ -192,8 +191,8 @@ public class GregtechBufferThread extends Thread {
 					mLifeCycleTime = 0;
 				}
 				//Prevent Overflows
-				if (mLifeCycleTime > Short.MAX_VALUE) {
-					mLifeCycleTime = Short.MAX_VALUE;
+				if (mLifeCycleTime > mMaxLife) {
+					mLifeCycleTime = mMaxLife;
 				}			
 				try {
 					sleep(1000);

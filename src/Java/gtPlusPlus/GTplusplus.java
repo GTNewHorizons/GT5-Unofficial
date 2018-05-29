@@ -161,13 +161,13 @@ public class GTplusplus implements ActionListener {
 	}
 
 	@EventHandler
-	public void serverStarting(final FMLServerStartingEvent event) {
+	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
 		tryPatchTurbineTextures();
 	}
 
 	@Mod.EventHandler
-	public void serverStopping(final FMLServerStoppingEvent event) {
+	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
 		//Chunkload Handler
 		if (ChunkManager.mChunkLoaderManagerMap.size() > 0) {
 			Logger.INFO("Clearing Chunk Loaders.");
@@ -178,7 +178,6 @@ public class GTplusplus implements ActionListener {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
 				i.destroy();
 			}
-			GregtechBufferThread.mBufferThreadAllocation.clear();
 		}
 		
 	}

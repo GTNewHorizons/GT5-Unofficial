@@ -18,14 +18,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 public class HandlerTooltip_EIO {
 
 	private static Item mIngot;
-	private static ItemStack mPulsatingIron;
-	private static ItemStack mConductiveIron;
-	private static ItemStack mRedstoneAlloy;
-	private static ItemStack mElectricalSteel;
-	private static ItemStack mEnergeticAlloy;
-	private static ItemStack mVibrantAlloy;
-	private static ItemStack mSoularium;
-	private static ItemStack mDarkIron;
 	Class oMainClass;
 	Class oIngotClass;
 
@@ -41,16 +33,13 @@ public class HandlerTooltip_EIO {
 					oMainClass = Class.forName("crazypants.enderio.EnderIO");
 					oIngotClass = Class.forName("crazypants.enderio.material.ItemAlloy");
 					if (oMainClass != null && oIngotClass != null){
-
 						Field oAlloyField = oMainClass.getDeclaredField("itemAlloy");	
 						oAlloyField.setAccessible(true);						
 						Object oAlloy = oAlloyField.get(oMainClass);
-
 						if (oAlloy != null){							
 							if (oIngotClass.isInstance(oAlloy) || Item.class.isInstance(oAlloy)){
 								mIngot = (Item) oAlloy;									
 							}
-
 						}
 					}					
 				}
@@ -61,36 +50,6 @@ public class HandlerTooltip_EIO {
 			if (mIngot != null){
 				//If the Item is an instance of ItemAlloy.class then proceed
 				if (event.itemStack.getItem() == mIngot || oIngotClass.isInstance(event.itemStack.getItem()) || event.itemStack.getUnlocalizedName().toLowerCase().contains("item.itemAlloy")){
-
-					//If EIO Item Is not Null, see if the ItemStacks for the ingots are null
-					//if they stacks are null, set the stack using the item set via reflection.
-					//The meta data is based on the oridinals of the materials in the EIO enum.
-
-					if (mElectricalSteel == null){
-						mElectricalSteel = ItemUtils.simpleMetaStack(mIngot, 0, 1);
-					}
-					if (mEnergeticAlloy == null){
-						mEnergeticAlloy = ItemUtils.simpleMetaStack(mIngot, 1, 1);
-					}
-					if (mVibrantAlloy == null){
-						mVibrantAlloy = ItemUtils.simpleMetaStack(mIngot, 2, 1);
-					}
-					if (mRedstoneAlloy == null){
-						mRedstoneAlloy = ItemUtils.simpleMetaStack(mIngot, 3, 1);
-					}
-					if (mConductiveIron == null){
-						mConductiveIron = ItemUtils.simpleMetaStack(mIngot, 4, 1);
-					}
-					if (mPulsatingIron == null){
-						mPulsatingIron = ItemUtils.simpleMetaStack(mIngot, 5, 1);
-					}
-					if (mDarkIron == null){
-						mDarkIron = ItemUtils.simpleMetaStack(mIngot, 6, 1);
-					}
-					if (mSoularium == null){
-						mSoularium = ItemUtils.simpleMetaStack(mIngot, 7, 1);
-					}
-
 
 					//If stacks match, add a tooltip.						
 					if (mIngot != null){
