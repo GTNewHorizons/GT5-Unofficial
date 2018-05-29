@@ -20,7 +20,7 @@ public class GregtechBufferThread extends Thread {
 
 	public static final Map<String, GregtechBufferThread> mBufferThreadAllocation = new HashMap<String, GregtechBufferThread>();
 	private final World mWorldRef;
-	private short mLifeCycleTime = 12000;
+	private short mLifeCycleTime = 900;
 
 	public static synchronized final GregtechBufferThread getBufferThread(World world) {
 		if (world != null && mBufferThreadAllocation.containsKey(""+world.provider.dimensionId)){
@@ -33,6 +33,7 @@ public class GregtechBufferThread extends Thread {
 	}
 
 	public GregtechBufferThread(World world) {
+		super();
 		int mID = world != null ? world.provider.dimensionId : Short.MIN_VALUE;
 		if (world != null && !mBufferThreadAllocation.containsKey(""+mID)){
 			mWorldRef = world;
@@ -42,8 +43,11 @@ public class GregtechBufferThread extends Thread {
 			this.mLifeCycleTime = 1;
 			mWorldRef = null;
 		}
-		this.setName("GTPP_SuperBuffer-Dim("+mID+"");
-		Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
+		this.setName("GTPP_SuperBuffer-Dim("+mID+")");
+		if (mWorldRef != null && !this.isAlive()) {
+			this.start();
+			Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
+		}
 	}
 
 	public synchronized void fillStacksIntoFirstSlots(GT_MetaTileEntity_ThreadedChestBuffer mBuffer) {

@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.automation.GT_MetaTileEntity_ChestBuffer;
 
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ThreadedChestBuffer;
 
@@ -36,10 +35,10 @@ public class CONTAINER_ThreadedSuperBuffer extends GT_ContainerMetaTile_Machine 
 				return null;
 			}
 			if (aSlotIndex == 0) {
-				((GT_MetaTileEntity_ChestBuffer) this.mTileEntity
+				((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 						.getMetaTileEntity()).bOutput = !((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 								.getMetaTileEntity()).bOutput;
-				if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bOutput) {
+				if (((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity.getMetaTileEntity()).bOutput) {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("116", "Emit Energy to Outputside"));
 				} else {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("117", "Don't emit Energy"));
@@ -47,10 +46,10 @@ public class CONTAINER_ThreadedSuperBuffer extends GT_ContainerMetaTile_Machine 
 				return null;
 			}
 			if (aSlotIndex == 1) {
-				((GT_MetaTileEntity_ChestBuffer) this.mTileEntity
+				((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 						.getMetaTileEntity()).bRedstoneIfFull = !((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 								.getMetaTileEntity()).bRedstoneIfFull;
-				if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
+				if (((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull) {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("118", "Emit Redstone if no Slot is free"));
 				} else {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("119", "Don't emit Redstone"));
@@ -58,10 +57,10 @@ public class CONTAINER_ThreadedSuperBuffer extends GT_ContainerMetaTile_Machine 
 				return null;
 			}
 			if (aSlotIndex == 2) {
-				((GT_MetaTileEntity_ChestBuffer) this.mTileEntity
+				((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 						.getMetaTileEntity()).bInvert = !((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity
 								.getMetaTileEntity()).bInvert;
-				if (((GT_MetaTileEntity_ChestBuffer) this.mTileEntity.getMetaTileEntity()).bInvert) {
+				if (((GT_MetaTileEntity_ThreadedChestBuffer) this.mTileEntity.getMetaTileEntity()).bInvert) {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("120", "Invert Redstone"));
 				} else {
 					GT_Utility.sendChatToPlayer(aPlayer, this.trans("121", "Don't invert Redstone"));
