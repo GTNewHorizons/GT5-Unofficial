@@ -16,7 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 
 public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity_Buffer {
-	
+
 	protected GregtechBufferThread mLogicThread;
 	public final ItemStack[] mInventorySynchro;
 
@@ -63,7 +63,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 		this.mTargetStackSize = 0;
 		this.mInventorySynchro = new ItemStack[aInvSlotCount];
 	}
-	
+
 	public synchronized final GregtechBufferThread getLogicThread() {
 		if (mLogicThread != null) {
 			return mLogicThread;
@@ -297,7 +297,8 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 	}
 
 	public synchronized void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-		getLogicThread().onPostTick(aBaseMetaTileEntity, aTimer, this);
+		if (aBaseMetaTileEntity.isServerSide())
+			getLogicThread().onPostTick(aBaseMetaTileEntity, aTimer, this);
 	}
 
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
@@ -307,7 +308,8 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 	}
 
 	protected synchronized void moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-		getLogicThread().moveItems(aBaseMetaTileEntity, aTimer, this);
+		if (aBaseMetaTileEntity.isServerSide())
+			getLogicThread().moveItems(aBaseMetaTileEntity, aTimer, this);
 	}
 
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
@@ -323,9 +325,9 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 	public boolean allowGeneralRedstoneOutput() {
 		return true;
 	}
-	
+
 	//Custom inventory handler
-	
+
 	@Override
 	public synchronized ItemStack[] getRealInventory() {
 		return this.mInventorySynchro;

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ThreadedBuffer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_ThreadedChestBuffer;
 
@@ -23,6 +24,7 @@ public class GregtechBufferThread extends Thread {
 
 	public static synchronized final GregtechBufferThread getBufferThread(World world) {
 		if (world != null && mBufferThreadAllocation.containsKey(""+world.provider.dimensionId)){
+			Logger.INFO("[SB] Found an existing thread for this dimension.");
 			return mBufferThreadAllocation.get(""+world.provider.dimensionId);
 		}
 		else {
@@ -31,7 +33,6 @@ public class GregtechBufferThread extends Thread {
 	}
 
 	public GregtechBufferThread(World world) {
-
 		int mID = world != null ? world.provider.dimensionId : Short.MIN_VALUE;
 		if (world != null && !mBufferThreadAllocation.containsKey(""+mID)){
 			mWorldRef = world;
@@ -41,9 +42,12 @@ public class GregtechBufferThread extends Thread {
 			this.mLifeCycleTime = 1;
 			mWorldRef = null;
 		}
+		this.setName("GTPP_SuperBuffer-Dim("+mID+"");
+		Logger.INFO("[SB] Created a SuperBuffer Thread for dimension "+mID+".");
 	}
 
 	public synchronized void fillStacksIntoFirstSlots(GT_MetaTileEntity_ThreadedChestBuffer mBuffer) {
+		mLifeCycleTime += 100;
 		for (int i = 0; i < mBuffer.mInventorySynchro.length - 1; ++i) {
 			for (int j = i + 1; j < mBuffer.mInventorySynchro.length - 1; ++j) {
 				if (mBuffer.mInventorySynchro[j] != null && (mBuffer.mInventorySynchro[i] == null
@@ -56,6 +60,7 @@ public class GregtechBufferThread extends Thread {
 	}
 
 	public synchronized boolean moveItems(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer, GT_MetaTileEntity_ThreadedBuffer mBuffer) {
+		mLifeCycleTime += 100;
 		final byte mTargetStackSize = (byte) mBuffer.mTargetStackSize;
 		final int tCost = GT_Utility.moveOneItemStack((Object) aBaseMetaTileEntity,
 				(Object) aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
@@ -163,9 +168,18 @@ public class GregtechBufferThread extends Thread {
 	public void run() {
 		while (mLifeCycleTime > 0) {
 			mLifeCycleTime--;
+			Logger.INFO("[SB] Ticking Thread for dimension. "+mLifeCycleTime);
+			try {
+				this.sleep(1000);
+			}
+			catch (InterruptedException e) {
+				
+			}
 		}
 		if (mLifeCycleTime <= 0) {
-			GregtechBufferThread.mBufferThreadAllocation.remove(""+(mWorldRef != null ? mWorldRef.provider.dimensionId : Short.MIN_VALUE), this);
+			int mID = (mWorldRef != null ? mWorldRef.provider.dimensionId : Short.MIN_VALUE);
+			GregtechBufferThread.mBufferThreadAllocation.remove(""+mID, this);
+			Logger.INFO("[SB] Removing Thread for dimension "+mID);
 		}
 	}
 

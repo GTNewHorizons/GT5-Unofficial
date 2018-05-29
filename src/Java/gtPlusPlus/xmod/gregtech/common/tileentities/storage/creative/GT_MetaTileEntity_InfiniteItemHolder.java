@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
@@ -23,8 +24,7 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-		
-		if (aPlayer.worldObj.isRemote) {
+		if (aBaseMetaTileEntity.getWorld().isRemote) {
 			return false;
 		}
 		
@@ -33,19 +33,25 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 				if (aPlayer.getHeldItem() != null) {
 					this.mItemStack = aPlayer.getHeldItem().copy();
 					this.mItemCount = Short.MAX_VALUE;
+					aPlayer.setCurrentItemOrArmor(0, null);
+					PlayerUtils.messagePlayer(aPlayer, "Now holding "+this.mItemStack.getDisplayName()+" x"+Short.MAX_VALUE+".");
+					return true;
 				}
 			}
 			else {
 				if (aPlayer.getHeldItem() == null) {
+					aPlayer.entityDropItem(mItemStack, 1);
 					this.mItemStack = null;
 					this.mItemCount = 0;
+					PlayerUtils.messagePlayer(aPlayer, "Emptying.");
+					return true;
 				}
 			}
 		}
-		else {
-			PlayerUtils.messagePlayer(aPlayer, "Currently holding: "+(this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")+" x"+this.mItemCount);
-		}
-		return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+		
+		PlayerUtils.messagePlayer(aPlayer, "Currently holding: "+(this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")+" x"+this.mItemCount);
+		return true;
+		//return super.onRightclick(aBaseMetaTileEntity, aPlayer);
 	}
 
 	@Override
@@ -60,6 +66,9 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+		if (mItemStack != null) {
+			setItemCount(0);
+		}
 		super.onPostTick(aBaseMetaTileEntity, aTimer);
 	}
 
@@ -70,14 +79,16 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		// TODO Auto-generated method stub
-		return super.allowPullStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+		return true;
 	}
 
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		// TODO Auto-generated method stub
-		return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+		return false;
+	}
+	
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GT_MetaTileEntity_InfiniteItemHolder(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 
