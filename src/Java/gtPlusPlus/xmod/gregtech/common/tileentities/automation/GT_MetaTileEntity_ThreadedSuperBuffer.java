@@ -1,11 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
-import gregtech.common.gui.GT_GUIContainer_SuperBuffer;
-
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_ThreadedSuperBuffer;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_ThreadedSuperBuffer;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-import gregtech.common.gui.GT_Container_SuperBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -46,11 +45,11 @@ public class GT_MetaTileEntity_ThreadedSuperBuffer extends GT_MetaTileEntity_Thr
 
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory,
 			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_SuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
+		return new CONTAINER_ThreadedSuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
 			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_SuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
+		return new GUI_ThreadedSuperBuffer(aPlayerInventory, aBaseMetaTileEntity);
 	}
 }
