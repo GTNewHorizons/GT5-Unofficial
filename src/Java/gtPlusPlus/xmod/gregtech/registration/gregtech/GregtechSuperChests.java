@@ -11,7 +11,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_ConnectableCrate;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 
-public class GregtechSuperTanks {
+public class GregtechSuperChests {
 
 	public static void run() {
 		int mId = 946;

@@ -352,6 +352,10 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 	public static final CustomIcon Overlay_UU_Matter = Internal_Overlay_UU_Matter;
 	
+	//Buffer Overlays
+	private static final CustomIcon Internal_OVERLAY_AUTOMATION_SUPERBUFFER = new CustomIcon("iconsets/AUTOMATION_SUPERBUFFER");
+	public static final CustomIcon OVERLAY_AUTOMATION_SUPERBUFFER = Internal_OVERLAY_AUTOMATION_SUPERBUFFER;
+	
 	
 	//Metroid related
 	public static final CustomIcon TEXTURE_METAL_PANEL_A = new CustomIcon("metro/TEXTURE_METAL_PANEL_A");
@@ -493,6 +497,9 @@ public class TexturesGtBlock {
 			TEXTURE_CASING_FUSION_COIL_II_4, TEXTURE_CASING_FUSION_COIL_II_5,	TEXTURE_CASING_FUSION_COIL_II_6, 
 			TEXTURE_CASING_FUSION_COIL_II_7, TEXTURE_CASING_FUSION_COIL_II_8, TEXTURE_CASING_FUSION_COIL_II_9,
 			TEXTURE_CASING_FUSION_COIL_II_10, TEXTURE_CASING_FUSION_COIL_II_11, TEXTURE_CASING_FUSION_COIL_II_12};
+
+
+
 
 	
 }

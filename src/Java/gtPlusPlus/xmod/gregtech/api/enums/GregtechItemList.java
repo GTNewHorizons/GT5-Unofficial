@@ -340,7 +340,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Crate Box
 	CrateStorage, 
 	
-	Thaumcraft_Researcher,
+	Thaumcraft_Researcher, 
+	
+	Automation_Threaded_SuperBuffer_ULV, Automation_Threaded_SuperBuffer_LV, Automation_Threaded_SuperBuffer_MV, Automation_Threaded_SuperBuffer_HV, Automation_Threaded_SuperBuffer_EV,
+	Automation_Threaded_SuperBuffer_IV, Automation_Threaded_SuperBuffer_LuV, Automation_Threaded_SuperBuffer_ZPM, Automation_Threaded_SuperBuffer_UV, Automation_Threaded_SuperBuffer_MAX, 
+	
+	Infinite_Item_Chest,
+	
 	
 	;
 
