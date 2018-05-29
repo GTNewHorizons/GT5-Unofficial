@@ -57,6 +57,7 @@ public final class MainLoader {
             GT_Values.VN[i]=VN[i];
             GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
         }
+        new ComponentLoader();
     }
 
     public static void preLoad(){
@@ -77,8 +78,6 @@ public final class MainLoader {
         }catch (Throwable t){
             LOGGER.error("Loading textures...",t);
         }
-
-        new ComponentLoader();
     }
 
     public static void load() {

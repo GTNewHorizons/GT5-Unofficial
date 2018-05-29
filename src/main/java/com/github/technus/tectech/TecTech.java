@@ -2,6 +2,8 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.loader.TecTechConfig;
+import com.github.technus.tectech.mechanics.ConvertFloat;
+import com.github.technus.tectech.mechanics.ConvertInteger;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.GiveEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.commands.ListEM;
 import com.github.technus.tectech.proxy.CommonProxy;
@@ -80,6 +82,8 @@ public class TecTech {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
+        pEvent.registerServerCommand(new ConvertInteger());
+        pEvent.registerServerCommand(new ConvertFloat());
         pEvent.registerServerCommand(new ListEM());
         if(DEBUG_MODE) {
             pEvent.registerServerCommand(new GiveEM());

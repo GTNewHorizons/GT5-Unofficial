@@ -34,6 +34,7 @@ public class GiveEM implements ICommand {
     public GiveEM(){
         aliases.add("em_give");
         aliases.add("give_em");
+        aliases.add("gib_em");
     }
 
     @Override
@@ -140,7 +141,7 @@ public class GiveEM implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender p_71518_1_) {
-        return "em_give energy count classOrId (count classOrId , ... <) if complex";
+        return "em_give Energy Count ClassOrId (Count ClassOrId ... <)";
     }
 
     @Override
