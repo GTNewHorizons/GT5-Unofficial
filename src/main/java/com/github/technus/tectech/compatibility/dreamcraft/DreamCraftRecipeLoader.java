@@ -70,6 +70,17 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //endregion
 
+        //Tunnel
+        addAssemblerRecipeWithCleanroom(new ItemStack[]{
+                CustomItemList.DATApipe.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 2),
+                ItemList.Field_Generator_MV.get(1),
+                ItemList.Circuit_Quantummainframe.get(1)
+        }, Materials.Osmium.getMolten(288), CustomItemList.EMpipe.get(1), 400, 491520);
+        
+        //endregoin
 
         //region casing
 
