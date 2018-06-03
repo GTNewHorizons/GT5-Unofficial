@@ -11,12 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -24,12 +18,14 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -37,6 +33,11 @@ import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechMeta_MultiBlockBase
@@ -96,9 +97,9 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public String[] getInfoData() {		
 
-		AutoMap<String> mInfo = new AutoMap<String>();
+		ArrayList mInfo = new ArrayList<String>();
 		if (!this.getMetaName().equals("")) {
-			mInfo.put(this.getMetaName());
+			mInfo.add(this.getMetaName());
 		}
 
 		String[] extra = getExtraInfoData();
@@ -108,7 +109,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		if (extra.length > 0) {
 			for (String s : extra) {
-				mInfo.put(s);
+				mInfo.add(s);
 			}
 		}
 
@@ -119,14 +120,15 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
-		mInfo.put("Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs");
-		mInfo.put("Efficiency: "+(this.mEfficiency / 100.0F) + "%");
-		mInfo.put("Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()));
-		mInfo.put("Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ");
-		mInfo.put(""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.");
-		mInfo.put("Total Time in ticks: "+this.mTotalRunTime);
+		mInfo.add("Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs");
+		mInfo.add("Efficiency: "+(this.mEfficiency / 100.0F) + "%");
+		mInfo.add("Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()));
+		mInfo.add("Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ");
+		mInfo.add(""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.");
+		mInfo.add("Total Time in ticks: "+this.mTotalRunTime);
 
-		String[] mInfo2 = mInfo.toArray();		
+		String[] mInfo2 = new String[mInfo.size()];
+		mInfo.toArray(mInfo2);
 		return mInfo2;
 
 
