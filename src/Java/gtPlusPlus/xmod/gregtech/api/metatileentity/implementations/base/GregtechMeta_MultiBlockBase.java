@@ -120,12 +120,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
-		mInfo.add("Progress: " + (this.mProgresstime / 20) +" / "+ (this.mMaxProgresstime / 20) + " secs");
-		mInfo.add("Efficiency: "+(this.mEfficiency / 100.0F) + "%");
-		mInfo.add("Problems: " + "" + (this.getIdealStatus() - this.getRepairStatus()));
-		mInfo.add("Total Time Since Built: " + ""+weeks+" Weeks, " + ""+days+" Days, ");
-		mInfo.add(""+hours+" Hours, " + ""+minutes+" Minutes, " + ""+second+" Seconds.");
-		mInfo.add("Total Time in ticks: "+this.mTotalRunTime);
+		mInfo.add("Progress: " + Integer.toString((this.mProgresstime / 20)) +" / "+ Integer.toString((this.mMaxProgresstime / 20)) + " secs");
+		mInfo.add("Efficiency: " + Float.toString((this.mEfficiency / 100.0F)) + "%");
+		mInfo.add("Problems: " + Integer.toString((this.getIdealStatus() - this.getRepairStatus())));
+		mInfo.add("Total Time Since Built: " + Integer.toString(weeks)+" Weeks, " + Integer.toString(days) + " Days, ");
+		mInfo.add(Long.toString(hours) + " Hours, " + Long.toString(minutes) + " Minutes, " + Long.toString(second) + " Seconds.");
+		mInfo.add("Total Time in ticks: " + Long.toString(this.mTotalRunTime));
 
 		String[] mInfo2 = new String[mInfo.size()];
 		mInfo.toArray(mInfo2);
