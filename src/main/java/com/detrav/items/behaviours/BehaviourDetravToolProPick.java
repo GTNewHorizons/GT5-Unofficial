@@ -2,7 +2,9 @@ package com.detrav.items.behaviours;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.SplittableRandom;
 
+import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 
 import gregtech.api.GregTech_API;
@@ -24,6 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,22 +50,61 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     public BehaviourDetravToolProPick(int aCosts) {
         mCosts = aCosts;
     }
-
+    
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-
+    	
+    	SplittableRandom aRandom =new SplittableRandom();
+    	int chance = ((1+aStack.getItemDamage())*7) > 100 ? 100 :(1+aStack.getItemDamage())*7;
+    	if (aWorld.isRemote)
+    		 return false;
+    	
         if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
         {
-            if (!aWorld.isRemote) {
+            if (!aWorld.isRemote && aRandom.nextInt(100) < chance) {
                 FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
+                addChatMassageByValue(aPlayer,fStack.amount/2,"a Fluid");//fStack.getLocalizedName());
+            	/*boolean fluid = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1)!=null &&GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1).getFluid()!=null;
+            	if (fluid)
+            		aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN+"You found some liquid."));
+            	else
+            		aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED+"You found no liquid."));*/
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
             }
             return true;
         }
-        if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
+        if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.ground || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
             if (!aWorld.isRemote) {
-                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY),40);
+            	int bX = aX;
+            	int bZ = aZ;
+            	
+            	int chunks = (((DetravMetaGeneratedTool01)aItem).getHarvestLevel(aStack, "")+(aStack.getItemDamage()/4));
+            	int half = chunks/2;
+            	
+            	aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Start of Prospectoring"));
+            	for (int x = -half; x<half;++x)
+            		for (int z = -half; z<half;++z) {
+            			aX=aX+(x*16);
+                		aZ=aZ+(z*16);
+                		if (DetravScannerMod.DEBUGBUILD)
+                			aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16)));
+                		processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
+            		}
+            	
+            	/*for (byte b = 0; b<chunks;++b) {
+            		aX=aX+(b*16);
+            		aZ=aZ+(b*16);
+            		bX=bX-(b*16);
+            		bZ=bZ-(b*16);
+            		if (DetravScannerMod.DEBUGBUILD)
+            			aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16)));
+            			processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
+            			if (bX!=aX && bZ != aZ) {
+            				if (DetravScannerMod.DEBUGBUILD)
+            				aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ bX +"|"+bZ+" to "+(bX+16)+"|"+(bZ+16)));
+            				processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(bX, bZ), aWorld.getTileEntity(bX, aY, bZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(bX, aY, bZ), 1, aWorld.getBlockMetadata(bX, aY, bZ))), aRandom, chance);
+            		  }
+            	}*/
                 return true;
             }
             return true;
@@ -70,9 +112,8 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         return false;
     }
 
-    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, ItemData tAssotiation, Random aRandom, int chance)//TileEntity aTileEntity)
+    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, ItemData tAssotiation, SplittableRandom aRandom, int chance)//TileEntity aTileEntity)
     {
-        aRandom.nextInt();
         if (aTileEntity != null) {
             if (aTileEntity instanceof GT_TileEntity_Ores) {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
@@ -83,8 +124,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                     aItem.doDamage(aStack, this.mCosts);
                 return;
             }
-        } else if (tAssotiation!=null)
-        {
+        } else if (tAssotiation!=null){
             //if (aTileEntity instanceof GT_TileEntity_Ores) {
             try {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
@@ -197,7 +237,12 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             }
             return;
         }
-        addChatMassageByValue(aPlayer,0,null);
+        else if (aRandom.nextInt(100) > chance) {
+        	aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED+"You had no luck this time."));
+        	if (!aPlayer.capabilities.isCreativeMode)
+        		aItem.doDamage(aStack, this.mCosts/4);
+        }
+       // addChatMassageByValue(aPlayer,0,null);
     }
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {

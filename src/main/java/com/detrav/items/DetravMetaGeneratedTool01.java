@@ -1,10 +1,13 @@
 package com.detrav.items;
 
+import java.util.List;
+
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravToolDictNames;
-import com.detrav.items.tools.DetravToolLuVElectricProPick;
-import com.detrav.items.tools.DetravToolUVElectricProPick;
-import com.detrav.items.tools.DetravToolZPMElectricProPick;
+import com.detrav.items.tools.DetravProPick;
+import com.detrav.items.tools.DetravToolElectricProPick;
+
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IToolStats;
@@ -17,8 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
-
 /**
  * Created by wital_000 on 19.03.2016.
  */
@@ -28,14 +29,25 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolLuVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolZPMElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolUVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-
+        addTool(0,"Prospector's Scanner(ULV)","", new DetravProPick(0), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(2,"Prospector's Scanner(LV)","", new DetravProPick(1), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(4,"Prospector's Scanner(MV)","", new DetravProPick(2), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(6,"Prospector's Scanner(HV)","", new DetravProPick(3), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(8,"Prospector's Scanner(EV)","", new DetravProPick(4), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(10,"Prospector's Scanner(IV)","", new DetravProPick(5), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(12,"Prospector's Scanner(LuV)","", new DetravProPick(6), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(14,"Prospector's Scanner(ZPM)","", new DetravProPick(7), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(16,"Prospector's Scanner(UV)","", new DetravProPick(8), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(18,"Prospector's Scanner(UHV)","", new DetravProPick(9), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+        addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolElectricProPick(6), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolElectricProPick(7), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolElectricProPick(8), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(106, "Electric Prospector's Scanner (UHV)", "", new DetravToolElectricProPick(9), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
-
+    
+    
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         //getElectricStats()
         //super.addAdditionalToolTips();
@@ -48,19 +60,40 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             String name = aStack.getUnlocalizedName();
             String num = name.substring("gt.detrav.metatool.01.".length());
             int meta = Integer.parseInt(num);
-            switch (meta) {
-                case 0:
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, "Right click on rock for prospecting current chunk!");
-                    aList.add(tOffset + 3, "Right click on bedrock for prospecting oil!");
-                    aList.add(tOffset + 4, "Traces: 1-9");
+            if (meta<100) {
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + Long.toString(tMaxDamage - getToolDamage(aStack)) + " / " + Long.toString(tMaxDamage) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + Integer.toString(getHarvestLevel(aStack, "")+(meta/4))+ "x"+Integer.toString(getHarvestLevel(aStack, "")+(meta/4)) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ "Right click on rock for prospecting current chunk!" + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ "Right click on bedrock for prospecting oil!" + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Chance of a successful scan: "+EnumChatFormatting.RESET+Integer.toString(((((1+meta)*7) <= 100)? ((1+meta)*7) : 100))+EnumChatFormatting.GRAY+"%");
+                    /*aList.add(tOffset + 4, "Traces: 1-9");
                     aList.add(tOffset + 5, "Small: 10-29");
                     aList.add(tOffset + 6, "Medium: 30-59");
                     aList.add(tOffset + 7, "Large: 60-99");
-                    aList.add(tOffset + 8, "Very large: 100-***");
+                    aList.add(tOffset + 8, "Very large: 100-***");*/
+            }else if (meta >=100 && meta<200) {
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "") * 2 + 1) + "x" + (getHarvestLevel(aStack, "") * 2 + 1) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ "Right click on rock for prospecting current chunk!");
+                    aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ "Right click on bedrock for prospecting oil!");
+                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Right click for scanning!");
+            }
+            
+                 /* unused
+                case 106:
+                case 107:
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Loss/Tick EU: " + EnumChatFormatting.GREEN + getElectricStatsLoss(aStack) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, "Can use as normal battery");
+                    aList.add(tOffset + 3, "x4 charge speed for tools");
+                    aList.add(tOffset + 4, "Right click to open GUI");
                     break;
-                case 2:
+                case 108:
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "It can configure any programmed circuit" + EnumChatFormatting.GRAY);
+                    break;
+                case 200:
                     int count;
                     count = ((int)(getLevel(aStack,0)*100)); if(count > 0) {aList.add(tOffset, "Bonus 0 level: +" + count + "%");tOffset++;}
                     count = ((int)(getLevel(aStack,1)*100)); if(count > 0) {aList.add(tOffset, "Bonus 1 level: +" + count + "%");tOffset++;}
@@ -72,9 +105,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     count = ((int)(getLevel(aStack,7)*100)); if(count > 0) {aList.add(tOffset, "Bonus 7 level: +" + count + "%");tOffset++;}
                     count = ((int)(getLevel(aStack,8)*100)); if(count > 0) {aList.add(tOffset, "Bonus 8 level: +" + count + "%");tOffset++;}
                     break;
-                case 4:
-                case 6:
-                case 8:
+                case 220:
                     aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 2, "It can suck in fluid");
@@ -88,31 +119,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                         aList.add(tOffset +3, "Fluid: empty");
                     }
                     break;
-                case 100:
-                case 101:
-                case 102:
-                case 103:
-                case 104:
-                case 105:
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "") * 2 + 1) + "x" + (getHarvestLevel(aStack, "") * 2 + 1) + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 3, "Right click on rock for prospecting current chunk!");
-                    aList.add(tOffset + 4, "Right click on bedrock for prospecting oil!");
-                    aList.add(tOffset + 5, "Right click for scanning!");
-                    break;
-                case 106:
-                case 107:
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Loss/Tick EU: " + EnumChatFormatting.GREEN + getElectricStatsLoss(aStack) + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, "Can use as normal battery");
-                    aList.add(tOffset + 3, "x4 charge speed for tools");
-                    aList.add(tOffset + 4, "Right click to open GUI");
-                    break;
-                case 108:
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "It can configure any programmed circuit" + EnumChatFormatting.GRAY);
-                    break;
-            }
+                   
+            		}
+             */
         }
     }
 
@@ -275,18 +284,71 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         return FluidStack.loadFluidStackFromNBT(detravData);
     }
 
+    //SubItems TODO
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
-		//Electric Scanners TODO
-        dStack = getToolWithStats(100, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, 32768L, 6L, -1L});
+		
+        //Materials at tiers 
+        dStack = getToolWithStats(0,1,Materials.Polycaprolactam,Materials.Polycaprolactam, null);
+        list.add(dStack);
+        dStack = getToolWithStats(2,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(2,1,Materials.Bronze,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(4,1,Materials.Manyullyn,Materials.Aluminium, null);
+        list.add(dStack);
+        dStack = getToolWithStats(6,1,Materials.DamascusSteel,Materials.DamascusSteel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(8,1,Materials.Titanium,Materials.Titanium, null);
+        list.add(dStack);
+        dStack = getToolWithStats(10,1,Materials.TungstenSteel,Materials.TungstenSteel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(12,1,Materials.Iridium,Materials.Iridium, null);
+        list.add(dStack);
+        dStack = getToolWithStats(12,1,Materials.Osmium,Materials.Osmium, null);
+        list.add(dStack);
+        dStack = getToolWithStats(14,1,Materials.Neutronium,Materials.Neutronium, null);
+        list.add(dStack);
+        dStack = getToolWithStats(16,1,Materials.InfinityCatalyst,Materials.InfinityCatalyst, null);
+        list.add(dStack);
+        dStack = getToolWithStats(18,1,Materials.Infinity,Materials.Infinity, null);
+        list.add(dStack);
+        
+        //Steel for comparison
+        dStack = getToolWithStats(0,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(2,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(4,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(6,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(8,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(10,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(12,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(14,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(16,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        dStack = getToolWithStats(18,1,Materials.Steel,Materials.Steel, null);
+        list.add(dStack);
+        
+        //Electric Scanners 
+        dStack = getToolWithStats(100, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, GT_Values.V[6], 6L, -1L});
         setCharge(dStack,102400000L);
         list.add(dStack);
-        dStack = getToolWithStats(102, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, 131072L, 7L, -1L});
+        dStack = getToolWithStats(102, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, GT_Values.V[7], 7L, -1L});
         setCharge(dStack,409600000L);
         list.add(dStack);
-        dStack = getToolWithStats(104, 1, Materials.Osmium, Materials.TungstenSteel, new long[]{1638400000L, 524288L, 8L, -1L});
+        dStack = getToolWithStats(104, 1, Materials.InfinityCatalyst, Materials.TungstenSteel, new long[]{1638400000L, GT_Values.V[8], 8L, -1L});
         setCharge(dStack,1638400000L);
+        list.add(dStack);
+        dStack = getToolWithStats(106, 1, Materials.Infinity, Materials.TungstenSteel, new long[]{6553600000L, GT_Values.V[9], 9L, -1L});
+        setCharge(dStack,6553600000L);
         list.add(dStack);
 
     }

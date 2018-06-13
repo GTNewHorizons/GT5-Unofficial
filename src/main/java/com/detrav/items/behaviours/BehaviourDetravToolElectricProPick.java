@@ -2,9 +2,8 @@ package com.detrav.items.behaviours;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.SplittableRandom;
 
-import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
 import com.detrav.net.DetravProPickPacket00;
@@ -195,7 +194,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             else {
                 //if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
                 if (!aWorld.isRemote) {
-                    processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY), 1000);
+                    processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
                     return true;
                 }
                 return true;

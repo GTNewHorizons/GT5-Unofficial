@@ -24,7 +24,7 @@ public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
     public static final String VERSION = "1.4.2";
-
+    public static final boolean DEBUGBUILD = false;
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
     public static final org.apache.logging.log4j.Logger Logger = LogManager.getLogger("GT Scanner Mod");
