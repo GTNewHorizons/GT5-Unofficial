@@ -8,6 +8,7 @@ itemGroup.MiscUtilCombatTab=[GT++] Kampf
 itemGroup.MiscUtilToolsTab=[GT++] Werkzeuge
 itemGroup.MiscUtilMachineTab=[GT++] Maschinen
 itemGroup.MiscUtilOtherTab=[GT++] Gegenstände II
+itemGroup.MiscUtilBOP=[GT++] Biomes O'Plenty Gegenstände
 
 //Debug
 item.AAA_Broken.name=[Nicht implementierter Gegenstand] Bitte melde dieses Rezept auf Github.

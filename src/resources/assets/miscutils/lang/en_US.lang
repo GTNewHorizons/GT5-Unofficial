@@ -5,6 +5,7 @@ itemGroup.MiscUtilCombatTab=[GT++] Combat
 itemGroup.MiscUtilToolsTab=[GT++] Tools
 itemGroup.MiscUtilMachineTab=[GT++] Machines
 itemGroup.MiscUtilOtherTab=[GT++] Items II
+itemGroup.MiscUtilBOP=[GT++] Biomes O'Plenty Additions
 
 //Debug
 item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
