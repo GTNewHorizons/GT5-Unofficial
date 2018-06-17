@@ -3,16 +3,14 @@ package gtPlusPlus.xmod.growthcraft.fishtrap;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {
 
@@ -96,7 +94,7 @@ public class FishTrapHandler {
 		}
 
 	}
-
+	//FishTrapHandler.pamsHarvestCraftCompat();
 	final static String prefix = "food";
 	final static String suffix = "raw";
 	final static String seaweed = "cropSeaweed";
@@ -109,20 +107,20 @@ public class FishTrapHandler {
 			final String itemName = prefix+harvestcraftFish[i]+suffix;
 			final int lootChance = getLootChance(harvestcraftFish[i]);
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(itemName, 1) != null){
-				addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);
+				//addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);
 				addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 				addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 				addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 			}
 		}
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null){
-			addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));
+			//addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));
 			addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 			addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 			addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 		}
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1) != null){
-			addFish("junk", ItemUtils.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));
+			//addFish("junk", ItemUtils.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));
 		}
 	}
 

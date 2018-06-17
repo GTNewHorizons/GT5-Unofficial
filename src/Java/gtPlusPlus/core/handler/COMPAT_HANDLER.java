@@ -2,15 +2,10 @@ package gtPlusPlus.core.handler;
 
 import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
-
-import net.minecraft.item.ItemStack;
+import java.util.*;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.common.compat.*;
@@ -25,6 +20,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
+import net.minecraft.item.ItemStack;
 
 public class COMPAT_HANDLER {
 
@@ -156,6 +152,9 @@ public class COMPAT_HANDLER {
 		}
 		if (LoadedMods.IndustrialCraft2){
 			COMPAT_IC2.OreDict();
+		}
+		if (LoadedMods.PamsHarvestcraft){
+			COMPAT_HarvestCraft.OreDict();
 		}
 	}
 
