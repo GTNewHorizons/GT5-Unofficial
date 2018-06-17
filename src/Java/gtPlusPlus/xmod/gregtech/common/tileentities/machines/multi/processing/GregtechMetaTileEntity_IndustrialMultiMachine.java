@@ -43,7 +43,7 @@ extends GregtechMeta_MultiBlockBase {
 	private static final int MODE_LATHE = 1;
 	private static final int MODE_MAGNETIC = 2;
 	private static final int MODE_FERMENTER = 3;
-	private static final int MODE_DISTILL = 4;
+	private static final int MODE_FLUIDEXTRACT = 4;
 	private static final int MODE_EXTRACTOR = 5;
 	private static final int MODE_LASER = 6;
 	private static final int MODE_AUTOCLAVE = 7;
@@ -220,8 +220,8 @@ extends GregtechMeta_MultiBlockBase {
 		else if (aMode == MODE_FERMENTER) {
 			return GT_Recipe.GT_Recipe_Map.sFermentingRecipes;			
 		}
-		else if (aMode == MODE_DISTILL) {
-			return GT_Recipe.GT_Recipe_Map.sDistilleryRecipes;			
+		else if (aMode == MODE_FLUIDEXTRACT) {
+			return GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;			
 		}
 		else if (aMode == MODE_EXTRACTOR) {
 			return GT_Recipe.GT_Recipe_Map.sExtractorRecipes;			

@@ -3,14 +3,13 @@ package gtPlusPlus.core.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class BookHandler {
 
@@ -117,9 +116,9 @@ public class BookHandler {
 				new String[] {
 						"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
 						"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
-						"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus. Mode 3 is currently disabled, as each machine requires special handling.",
+						"The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus.",
 						"[Metal Work] Mode A - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
-						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Distillery or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Distillery, use No. 21 and for Extractor use No. 22.",
+						"[Fluid Work] Mode B - Allows the multiblock to function as a Fermenter, a Fluid Extractor or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Fluid Extractor, use No. 21 and for Extractor use No. 22.",
 						"[Misc. Work] Mode C - Allows the multiblock to function as a Laser Engraver, a Replicator or an Autoclave. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Replicator use No. 22. REPLICATOR DISABLED.",
 				});
 		

@@ -1,24 +1,19 @@
 package gtPlusPlus.core.recipe;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class RECIPES_Machines {
 
@@ -1278,7 +1273,7 @@ public class RECIPES_Machines {
 				ItemStack o_Lathe = ItemList.Machine_HV_Lathe.get(1);
 				ItemStack o_Electromagnet = ItemList.Machine_HV_Polarizer.get(1);
 				ItemStack o_Fermenter = ItemList.Machine_HV_Fermenter.get(1);
-				ItemStack o_Distillery = ItemList.Machine_HV_Distillery.get(1);
+				ItemStack o_Distillery = ItemList.Machine_HV_FluidExtractor.get(1);
 				ItemStack o_Extractor = ItemList.Machine_HV_Extractor.get(1);					
 				RecipeUtils.recipeBuilder(
 						plate, CI.craftingToolHammer_Hard, plate,

@@ -1,16 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -18,19 +12,25 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.everglades.block.DarkWorldContentLoader;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialWashPlant
 extends GregtechMeta_MultiBlockBase {
 
+	private boolean mChemicalMode = false;
 
 	public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -49,15 +49,16 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
+				"Can be configured with a screwdriver to also process Chemical Bathing",
 				"400% faster than using single block machines of the same voltage",
 				"Processes four item per voltage tier",
-				"Chance to output Sludge per process",
 				"Size: 5x3x7 [WxHxL] (open)",
 				"X     X",
 				"X     X",
 				"XXXXX",
 				"Controller (front centered)",
 				"1x Input Bus (Any casing)",
+				"1x Input Hatch (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
@@ -87,7 +88,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
+		return mChemicalMode ?  GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes : GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
 	}
 
 	@Override
@@ -318,7 +319,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 	
 	public boolean addSludge() {		
-		if (MathUtils.randInt(0, 100) <= 4) {
+		/*if (MathUtils.randInt(0, 100) <= 4) {
 			if (this.mOutputHatches.size() > 0) {
 				for (GT_MetaTileEntity_Hatch_Output h : this.mOutputHatches) {
 					if (h.getFluid() == null || h.getFluid().isFluidEqual(FluidUtils.getFluidStack(DarkWorldContentLoader.SLUDGE, 1000))) {
@@ -332,8 +333,32 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-		}		
+		}	*/	
 		return true;
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("mChemicalMode", mChemicalMode);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		mChemicalMode = aNBT.getBoolean("mChemicalMode");
+		super.loadNBTData(aNBT);
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mChemicalMode = Utils.invertBoolean(mChemicalMode);		
+		if (mChemicalMode){
+			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");
+		}
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
+		}		
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 }

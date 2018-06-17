@@ -107,7 +107,7 @@ public class GregtechConduits {
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);		
 
-		generateNonGTFluidPipes(GT_Materials.TriniumNaquadahCarbonite, ALLOY.TRINIUM_NAQUADAH_CARBON, 30500, 4, 250000, true);
+		generateNonGTFluidPipes(GT_Materials.TriniumNaquadahCarbonite, ALLOY.TRINIUM_NAQUADAH_CARBON, 30500, 10, 250000, true);
 
 	}
 
