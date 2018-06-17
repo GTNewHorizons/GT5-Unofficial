@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.proxy.ClientProxy;
 
@@ -128,8 +127,8 @@ public class Logger {
 	 * Special Logger for Reflection related content
 	 */
 	public static void REFLECTION(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG)
-		modLogger.info("[Reflection] "+s);
+		//if (CORE.DEVENV || CORE.DEBUG)
+		//modLogger.info("[Reflection] "+s);
 	}
 
 	

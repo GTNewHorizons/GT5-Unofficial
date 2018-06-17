@@ -4,8 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 import java.util.*;
 
-import net.minecraft.item.ItemStack;
-
+import codechicken.nei.PositionedStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -13,7 +12,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
-import codechicken.nei.PositionedStack;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -21,9 +19,8 @@ import gtPlusPlus.api.objects.minecraft.NoConflictGTRecipeMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.nei.GT_NEI_MultiBlockHandler;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.*;
 
 /**
  * Custom GT Recipe Class
@@ -295,6 +292,8 @@ public class Recipe_GT extends GT_Recipe  implements IComparableRecipe{
 		public static final Gregtech_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map_LargeElectrolyzer();
 		public static final Gregtech_Recipe_Map sAdvFreezerRecipes = new GT_Recipe_Map_AdvancedVacuumFreezer();
 		public static final GT_Recipe_Map sAdvFreezerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp", "temp", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GT_Recipe_Map sMultiblockCentrifugeRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp2", "temp2", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
+		public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes_GT = new GT_Recipe_Map(new HashSet<GT_Recipe>(2000), "gt.recipe.temp3", "temp3", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 0, 0, 0, 0, 0, "", 0, "", false, false);
 
 
 		/**

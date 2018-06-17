@@ -5,6 +5,7 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -12,15 +13,10 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.IIcon;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -31,9 +27,7 @@ import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
-import gtPlusPlus.core.handler.events.LoginEventHandler;
-import gtPlusPlus.core.handler.events.MissingMappingsEvent;
+import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -41,9 +35,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.util.sys.GeoUtils;
-import gtPlusPlus.core.util.sys.NetworkUtils;
-import gtPlusPlus.core.util.sys.SystemUtils;
+import gtPlusPlus.core.util.sys.*;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechBufferThread;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -51,6 +43,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -259,6 +253,12 @@ public class GTplusplus implements ActionListener {
 			}
 		}
 
+		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+				Recipe_GT.Gregtech_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a);
+			}
+		}
+		
 		//Large Electrolyzer generation
 		mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size();
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
@@ -278,6 +278,12 @@ public class GTplusplus implements ActionListener {
 			}
 			else {
 				mInvalidCount[1]++;
+			}
+		}
+		
+		if (Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) {
+			for (GT_Recipe a : Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
+				Recipe_GT.Gregtech_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a);
 			}
 		}
 
