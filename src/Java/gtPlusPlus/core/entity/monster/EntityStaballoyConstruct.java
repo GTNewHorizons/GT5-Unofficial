@@ -4,7 +4,10 @@ import java.lang.reflect.Field;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -18,12 +21,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
-
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.core.world.explosions.ExplosionHandler;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -382,7 +379,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		super.onEntityUpdate();
 	}
 
-	private Field mFirstUpdateField;
+	private static Field mFirstUpdateField;
 
 	@Override
 	public int getMaxSpawnedInChunk() {

@@ -2,16 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.W;
 
+import gregtech.api.util.*;
+import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-
-import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -345,7 +341,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Automation_Threaded_SuperBuffer_ULV, Automation_Threaded_SuperBuffer_LV, Automation_Threaded_SuperBuffer_MV, Automation_Threaded_SuperBuffer_HV, Automation_Threaded_SuperBuffer_EV,
 	Automation_Threaded_SuperBuffer_IV, Automation_Threaded_SuperBuffer_LuV, Automation_Threaded_SuperBuffer_ZPM, Automation_Threaded_SuperBuffer_UV, Automation_Threaded_SuperBuffer_MAX, 
 	
-	Infinite_Item_Chest,
+	Infinite_Item_Chest, 
+	
+	Industrial_Mixer,
 	
 	
 	;
