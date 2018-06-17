@@ -5,9 +5,9 @@ import java.util.Set;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 
@@ -186,6 +186,104 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			}
 			else {
 				Logger.WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			
+			
+			
+			if (CORE.GTNH){
+			
+			//GTNH
+			
+			//Shape_Mold_Rod
+			//Shape_Mold_Rod_Long
+		    //Shape_Mold_Bolt,
+		    //Shape_Mold_Screw,
+		    //Shape_Mold_Ring,
+
+				ItemList mold_Rod = ItemList.valueOf("Shape_Mold_Rod");
+				ItemList mold_Rod_Long = ItemList.valueOf("Shape_Mold_Rod_Long");
+				ItemList mold_Bolt = ItemList.valueOf("Shape_Mold_Bolt");
+				ItemList mold_Screw = ItemList.valueOf("Shape_Mold_Screw");
+				ItemList mold_Ring = ItemList.valueOf("Shape_Mold_Ring");
+				
+			//Rod
+			if (mold_Rod != null && GT_Values.RA.addFluidSolidifierRecipe(
+					mold_Rod.get(0), //Item Shape
+					material.getFluid(72), //Fluid Input
+					material.getRod(1), //output
+					150, //Duration
+					24 //Eu Tick
+					)){
+				Logger.WARNING((144*9)+"l fluid molder from 1 rod Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING((144*9)+"l fluid molder from 1 rod Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			//Rod Long
+			if (mold_Rod_Long != null && GT_Values.RA.addFluidSolidifierRecipe(
+					mold_Rod_Long.get(0), //Item Shape
+					material.getFluid(144), //Fluid Input
+					material.getLongRod(1), //output
+					300, //Duration
+					24 //Eu Tick
+					)){
+				Logger.WARNING((144*9)+"l fluid molder from 1 rod long Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING((144*9)+"l fluid molder from 1 rod long Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			//Bolt
+			if (mold_Bolt != null && GT_Values.RA.addFluidSolidifierRecipe(
+					mold_Bolt.get(0), //Item Shape
+					material.getFluid(18), //Fluid Input
+					material.getBolt(1), //output
+					50, //Duration
+					6 //Eu Tick
+					)){
+				Logger.WARNING((144*9)+"l fluid molder from 1 bolt Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING((144*9)+"l fluid molder from 1 bolt Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			//Screw
+			if (mold_Screw != null && GT_Values.RA.addFluidSolidifierRecipe(
+					mold_Screw.get(0), //Item Shape
+					material.getFluid(18), //Fluid Input
+					material.getScrew(1), //output
+					50, //Duration
+					6 //Eu Tick
+					)){
+				Logger.WARNING((144*9)+"l fluid molder from 1 screw Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING((144*9)+"l fluid molder from 1 screw Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			//Ring
+			if (mold_Ring != null && GT_Values.RA.addFluidSolidifierRecipe(
+					mold_Ring.get(0), //Item Shape
+					material.getFluid(36), //Fluid Input
+					material.getRing(1), //output
+					100, //Duration
+					12 //Eu Tick
+					)){
+				Logger.WARNING((144*9)+"l fluid molder from 1 ring Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING((144*9)+"l fluid molder from 1 ring Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			
+			
+			
+			
+			
+			
+			
+			
 			}
 		}
 	}

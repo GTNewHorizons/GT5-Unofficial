@@ -2,10 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -19,9 +15,11 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialSifter
@@ -222,11 +220,11 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
-			Logger.INFO("Returned False 3");
-			Logger.INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
-			Logger.INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
-			Logger.INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
-			Logger.INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
+			Logger.MACHINE_INFO("Returned False 3");
+			Logger.MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
+			Logger.MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
+			Logger.MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
+			Logger.MACHINE_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
@@ -246,7 +244,7 @@ extends GregtechMeta_MultiBlockBase {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
 
-		Logger.INFO("Industrial Sifter - Structure Built? "+(tAmount>=35));
+		Logger.MACHINE_INFO("Industrial Sifter - Structure Built? "+(tAmount>=35));
 
 		return tAmount >= 35;
 	}
