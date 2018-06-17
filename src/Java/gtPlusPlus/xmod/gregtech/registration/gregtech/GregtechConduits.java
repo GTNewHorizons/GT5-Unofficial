@@ -5,27 +5,21 @@ import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.material.ELEMENT;
-import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GregtechConduits {
@@ -111,7 +105,9 @@ public class GregtechConduits {
 			generateGTFluidPipes(Materials.DarkSteel, BasePipeID+60, 2320, 2750, true);
 		}
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
-		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
+		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);		
+
+		generateNonGTFluidPipes(GT_Materials.TriniumNaquadahCarbonite, ALLOY.TRINIUM_NAQUADAH_CARBON, 30500, 4, 250000, true);
 
 	}
 

@@ -5,24 +5,18 @@ import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
 import java.util.*;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.ICondition;
-import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.interfaces.*;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
-
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -361,6 +355,7 @@ public enum GregtechOrePrefixes {
 		MaragingSteel350(46, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 160, 160, 160, 0, "Maraging Steel 350", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
+		TriniumNaquadahCarbonite(48, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 233, 0, 0, "Trinium Naquadah Carbonite", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
 
 		//Radioactive Materials
