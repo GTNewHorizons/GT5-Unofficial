@@ -3,17 +3,8 @@ package gtPlusPlus.core.recipe;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -23,9 +14,12 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_General {
@@ -158,15 +152,6 @@ public class RECIPES_General {
 				"dustSulfur", CI.explosiveTNT, "dustSulfur",
 				ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3))){
 			Logger.INFO("Added a recipe for Mining Explosives.");
-		}
-
-		//Mystic Frame
-		if (RecipeUtils.recipeBuilder(
-				CI.sensor_HV, CI.fieldGenerator_MV, CI.sensor_HV,
-				CI.craftingToolHammer_Hard, ItemList.Casing_SolidSteel.get(1), CI.craftingToolSolderingIron,
-				CI.emitter_HV, CI.fieldGenerator_MV, CI.emitter_HV,
-				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2))){
-			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
 		}
 
 		//Alkalus Coin

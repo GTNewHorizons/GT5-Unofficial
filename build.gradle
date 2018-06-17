@@ -52,7 +52,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.1"
+version = "1.7.1.01-fresh"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 minecraft {

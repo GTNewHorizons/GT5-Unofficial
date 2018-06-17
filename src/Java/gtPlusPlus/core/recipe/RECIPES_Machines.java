@@ -10,6 +10,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1336,6 +1337,19 @@ public class RECIPES_Machines {
 
 
 		}
+		
+
+
+		//Mystic Frame
+		if (RecipeUtils.addShapedGregtechRecipe(
+				"circuitMaster", ItemList.Field_Generator_MV.get(1, CI.circuitTier7), "circuitElite",
+				CI.craftingToolScrewdriver, GregtechItemList.Casing_Multi_Use.get(1), CI.craftingToolWrench,
+				ItemList.Sensor_HV.get(1, CI.circuitTier7), ItemList.Field_Generator_HV.get(1, CI.circuitTier7), ItemList.Emitter_HV.get(1, CI.circuitTier7),
+				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2))){
+			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
+		}
+		
+		
 		Logger.INFO("Done loading recipes for the Various machine blocks.");
 	}
 }
