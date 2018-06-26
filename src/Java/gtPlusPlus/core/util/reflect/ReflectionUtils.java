@@ -1,5 +1,6 @@
 package gtPlusPlus.core.util.reflect;
 
+import java.io.IOException;
 import java.lang.reflect.*;
 import java.net.URL;
 import java.util.HashSet;
@@ -7,10 +8,12 @@ import java.util.Scanner;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.google.common.reflect.ClassPath;
+
 import net.minecraft.client.Minecraft;
 
 import gregtech.GT_Mod;
-
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 
@@ -333,6 +336,25 @@ public class ReflectionUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static boolean dynamicallyLoadClassesInPackage(String aPackageName) {
+		ClassLoader classLoader = GTplusplus.class.getClassLoader();
+		int loaded = 0;
+	    try {
+		    ClassPath path = ClassPath.from(classLoader);
+	    	for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
+		        Class<?> clazz = Class.forName(info.getName(), true, classLoader);
+		        if (clazz != null) {
+		        	loaded++;
+		        	Logger.INFO("Found "+clazz.getCanonicalName()+". ["+loaded+"]");
+		        }
+		    }
+	    } catch (ClassNotFoundException | IOException e) {
+	    	
+	    }
+		
+		return loaded > 0;
 	}
 
 

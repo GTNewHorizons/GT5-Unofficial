@@ -202,6 +202,7 @@ public class CORE {
 
 		//GT Fixes
 		public static boolean enableNitroFix = false;
+		public static boolean enableSulfuricAcidFix = false;
 		public static boolean enableAnimatedTurbines = true;
 
 		//Single Block Machines

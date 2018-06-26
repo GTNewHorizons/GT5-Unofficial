@@ -29,4 +29,9 @@ public final class Sample_Plugin implements IPlugin {
 		return "Sample Plugin";
 	}
 
+	@Override
+	public String getPluginAbbreviation() {
+		return "Test";
+	}
+
 }

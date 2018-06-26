@@ -61,7 +61,9 @@ public class ConfigHandler {
 	
 		// GT-Fixes
 		enableNitroFix = config.getBoolean("enableNitroFix", "gregtech", false,
-				"Restores the old Nitro-Diesel recipes.");
+				"Restores the old Nitro-Diesel recipes.");		
+		enableSulfuricAcidFix = config.getBoolean("enableSulfuricAcidFix", "gregtech", false,
+				"Adds GT6 recipes for Sulfuric Acid. Should remove all pre-existing recipes.");		
 		enableAnimatedTurbines = config.getBoolean("enableAnimatedTurbines", "gregtech", true,
 				"Gives GT Gas/Steam turbines animated textures while running.");
 	

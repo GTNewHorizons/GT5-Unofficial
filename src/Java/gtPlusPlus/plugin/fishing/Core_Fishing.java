@@ -29,4 +29,9 @@ public class Core_Fishing implements IPlugin {
 		return "GT++ Fishing Module";
 	}
 
+	@Override
+	public String getPluginAbbreviation() {
+		return "FISH";
+	}
+
 }

@@ -81,7 +81,8 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		Logger.INFO("Loading " + CORE.name + " V" + CORE.VERSION);
-
+		//Load all class objects within the plugin package.
+		Core_Manager.veryEarlyInit();
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;

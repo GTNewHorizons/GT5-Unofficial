@@ -5,6 +5,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -15,7 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class Core_SulfuricChemistry implements IPlugin {
 
 	final static Core_SulfuricChemistry mInstance;
-	
+	private static boolean shouldLoad = false;
+
 	static {
 		mInstance = new Core_SulfuricChemistry();
 		Core_Manager.registerPlugin(mInstance);
@@ -24,33 +26,45 @@ public class Core_SulfuricChemistry implements IPlugin {
 
 	@Override
 	public boolean preInit() {
-		return true;
+		if (CORE.ConfigSwitches.enableSulfuricAcidFix) {
+			shouldLoad = true;
+		}
+		if (shouldLoad)
+			return true;
+		return false;
 	}
 
 	@Override
 	public boolean init() {
-		return true;
+		if (shouldLoad)
+			return true;
+		return false;
 	}
 
 	@Override
 	public boolean postInit() {		
-		int disabled = disableRecipes();
-		Logger.INFO("[RSCM] Disabled "+disabled+" Sulfuric Chemistry recipes.");
-		int addedNew = addRevisedGT6Recipes();
-		Logger.INFO("[RSCM] Added "+addedNew+" new Sulfuric Chemistry recipes.");
-		return disabled > 0 && addedNew > 0;
+		if (shouldLoad) {
+			int disabled = disableSulfurTrioxide();
+			Logger.INFO("[RSCM] Disabled "+disabled+" Sulfur Trioxide Chemistry recipes.");
+			disabled = disableSulfuricAcid();
+			Logger.INFO("[RSCM] Disabled "+disabled+" Sulfuric Acid Chemistry recipes.");
+			int addedNew = addRevisedGT6Recipes();
+			Logger.INFO("[RSCM] Added "+addedNew+" new Sulfuric Chemistry recipes.");
+			return disabled > 0 && addedNew > 0;
+		}
+		return false;
 	}
 
 	@Override
 	public String getPluginName() {
 		return "GT++ Revised Sulfuric Chemistry Module";
 	}
-	
+
 	public int addRevisedGT6Recipes() {
-		
+
 		String catalyst = "dustPlatinum";
 		int mCountAdded = 0;
-		
+
 		/**
 		 * Sulfur Trioxide Recipes
 		 */		
@@ -75,8 +89,8 @@ public class Core_SulfuricChemistry implements IPlugin {
 				null,
 				16, 
 				16)) {
-					mCountAdded++;
-				}		
+			mCountAdded++;
+		}		
 		//Oxygen
 		if (GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
@@ -87,8 +101,8 @@ public class Core_SulfuricChemistry implements IPlugin {
 				null,
 				16, 
 				16)) {
-					mCountAdded++;
-				}
+			mCountAdded++;
+		}
 		if (GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurDioxide", 3),
@@ -98,13 +112,13 @@ public class Core_SulfuricChemistry implements IPlugin {
 				null,
 				16, 
 				16)) {
-					mCountAdded++;
-				}
-		
+			mCountAdded++;
+		}
+
 		/**
 		 * Sulfuric Acid Recipes
 		 */
-		
+
 		if (GT_Values.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(22),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
@@ -114,8 +128,8 @@ public class Core_SulfuricChemistry implements IPlugin {
 				null,
 				20, 
 				20)) {
-					mCountAdded++;
-				}		
+			mCountAdded++;
+		}		
 		if (GT_Values.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(22),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 3),
@@ -125,14 +139,65 @@ public class Core_SulfuricChemistry implements IPlugin {
 				null,
 				20, 
 				20)) {
-					mCountAdded++;
-				}
-		
+			mCountAdded++;
+		}
+
 		return mCountAdded;
 	}
-	
-	
-	public int disableRecipes() {
+
+
+	public int disableSulfurTrioxide() {
+		int mDisabled = 0;		
+		//Single Block Recipes
+		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
+			for (ItemStack i : r.mOutputs) {
+				i.stackSize = 1;
+				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
+			}
+			for (FluidStack f : r.mFluidOutputs) {
+				if (FluidStack.areFluidStackTagsEqual(f, Materials.SulfurTrioxide.getFluid(1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
+			}
+		}
+
+		//Multi Block Recipes
+		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
+			for (ItemStack i : r.mOutputs) {
+				i.stackSize = 1;
+				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
+			}
+			for (FluidStack f : r.mFluidOutputs) {
+				if (FluidStack.areFluidStackTagsEqual(f, Materials.SulfurTrioxide.getFluid(1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
+			}
+		}
+
+		return mDisabled;
+	}
+
+	public int disableSulfuricAcid() {
 		int mDisabled = 0;		
 		//Single Block Recipes
 		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList) {
@@ -140,6 +205,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				i.stackSize = 1;
 				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
 					r.mEnabled = false;
+					r.mHidden = true;
 					mDisabled++;
 					continue recipe;
 				}
@@ -148,35 +214,43 @@ public class Core_SulfuricChemistry implements IPlugin {
 			for (FluidStack f : r.mFluidOutputs) {
 				if (FluidStack.areFluidStackTagsEqual(f, Materials.SulfuricAcid.getFluid(1))) {
 					r.mEnabled = false;
+					r.mHidden = true;
 					mDisabled++;
 					continue recipe;
 				}
 				continue;
 			}
 		}
-	
-	//Multi Block Recipes
-	recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
-		for (ItemStack i : r.mOutputs) {
-			i.stackSize = 1;
-			if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
-				r.mEnabled = false;
-				mDisabled++;
-				continue recipe;
+
+		//Multi Block Recipes
+		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
+			for (ItemStack i : r.mOutputs) {
+				i.stackSize = 1;
+				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
 			}
-			continue;
-		}
-		for (FluidStack f : r.mFluidOutputs) {
-			if (FluidStack.areFluidStackTagsEqual(f, Materials.SulfuricAcid.getFluid(1))) {
-				r.mEnabled = false;
-				mDisabled++;
-				continue recipe;
+			for (FluidStack f : r.mFluidOutputs) {
+				if (FluidStack.areFluidStackTagsEqual(f, Materials.SulfuricAcid.getFluid(1))) {
+					r.mEnabled = false;
+					r.mHidden = true;
+					mDisabled++;
+					continue recipe;
+				}
+				continue;
 			}
-			continue;
 		}
-	}
-		
+
 		return mDisabled;
+	}
+
+	@Override
+	public String getPluginAbbreviation() {
+		return "RSCM";
 	}
 
 }
