@@ -37,7 +37,7 @@ public class RecipeGen_FluidCanning extends RecipeGen_Base {
 			//Used to store Fluid extraction state
 			if (this.disableOptional) {
 				GT_Values.RA.addFluidExtractionRecipe(
-					recipe.mInputs.length == 1 ? recipe.mInputs[0] : null, //Input
+					recipe.mInputs.length >= 1 ? recipe.mInputs[0] : null, //Input
 					recipe.mInputs.length == 2 ? recipe.mInputs[1] : null, //Input 2
 					recipe.mFluidOutputs.length == 1 ? recipe.mFluidOutputs[0] : null, //Fluid Output
 					recipe.mSpecialValue, //Chance
