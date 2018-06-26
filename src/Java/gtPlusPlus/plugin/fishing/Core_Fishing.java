@@ -5,23 +5,30 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 
 public class Core_Fishing implements IPlugin {
 
+	final static Core_Fishing mInstance;
+
+	static {
+		mInstance = new Core_Fishing();
+		mInstance.log("Preparing "+mInstance.getPluginName()+" for use.");
+	}
+	
 	Core_Fishing() {
 		Core_Manager.registerPlugin(this);
 	}
 	
 	@Override
 	public boolean preInit() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean init() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean postInit() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -31,7 +38,7 @@ public class Core_Fishing implements IPlugin {
 
 	@Override
 	public String getPluginAbbreviation() {
-		return "FISH";
+		return "Fish";
 	}
 
 }

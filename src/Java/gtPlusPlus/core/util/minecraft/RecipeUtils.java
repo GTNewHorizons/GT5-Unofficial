@@ -17,6 +17,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
@@ -523,20 +524,24 @@ public class RecipeUtils {
 		if (m == null) {
 			return new String[] {};
 		}
-		String[] result = new String[10];
-		result[0] = m.toString();
-		result[1] = "Input "+ItemUtils.getArrayStackNames(m.mInputs);
-		result[2] = "Output "+ItemUtils.getArrayStackNames(m.mOutputs);
-		result[3] = "Input "+ItemUtils.getArrayStackNames(m.mFluidInputs);
-		result[4] = "Output "+ItemUtils.getArrayStackNames(m.mFluidOutputs);
-		result[5] = "Can be buffered? "+m.mCanBeBuffered;
-		result[6] = "Duration: "+m.mDuration;
-		result[7] = "EU/t: "+m.mEUt;
-		result[8] = "Is Hidden? "+m.mHidden;
-		result[9] = "Is Enabled? "+m.mEnabled;
-		result[10] = "Special Value: "+m.mSpecialValue;
-		result[11] = "=====================================";		
-		return result;
+		AutoMap<String> result = new AutoMap<String>();
+		result.put(m.toString());
+		result.put("Input "+ItemUtils.getArrayStackNames(m.mInputs));
+		result.put("Output "+ItemUtils.getArrayStackNames(m.mOutputs));
+		result.put("Input "+ItemUtils.getArrayStackNames(m.mFluidInputs));
+		result.put("Output "+ItemUtils.getArrayStackNames(m.mFluidOutputs));
+		result.put("Can be buffered? "+m.mCanBeBuffered);
+		result.put("Duration: "+m.mDuration);
+		result.put("EU/t: "+m.mEUt);
+		result.put("Is Hidden? "+m.mHidden);
+		result.put("Is Enabled? "+m.mEnabled);
+		result.put("Special Value: "+m.mSpecialValue);
+		result.put("=====================================");		
+		String s[] = new String[result.size()];
+		for (int i=0;i<result.size();i++) {
+			s[i] = result.get(i);
+		}		
+		return s;
 	}
 
 }
