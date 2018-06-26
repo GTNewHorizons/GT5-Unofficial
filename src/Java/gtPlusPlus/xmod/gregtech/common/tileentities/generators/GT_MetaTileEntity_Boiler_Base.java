@@ -211,6 +211,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 				// Utils.LOG_MACHINE_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
 			//}
 
+			int mTempSteam = this.mSteam != null ? this.mSteam.amount : 0;
 			if (this.mTemperature <= 20) {
 				this.mTemperature = 20;
 				this.mLossTimer = 0;
@@ -236,7 +237,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 					}
 				}
 			}
-			if (aTick % 10L == 0L) {
+			if (aTick % 20L == 0L) {
 				if (this.mTemperature > 100) {
 					if ((this.mFluid == null) || (!GT_ModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
 						this.mHadNoWater = true;
@@ -246,17 +247,24 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 							aBaseMetaTileEntity.doExplosion(4096L);
 							return;
 						}
-						this.mFluid.amount -= (10 * this.mBoilerTier);
-						// Utils.LOG_MACHINE_INFO("Draining "+(10*this.mBoilerTier)+"L
-						// of water. There is "+this.mFluid.amount+"L left.");
+						
+						//this.mFluid.amount -= (10 * this.mBoilerTier);
+						
+						this.mFluid.amount -= (mSteamPerSecond/160);
+						
+						 Logger.MACHINE_INFO("Draining "+(mSteamPerSecond/160)+"L of water. There is "+this.mFluid.amount+"L left.");
 						if (this.mSteam == null) {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
+							Logger.MACHINE_INFO("Added "+(this.mSteam.amount-mTempSteam)+"L of steam.");
+							
 						}
 						else if (GT_ModHandler.isSteam(this.mSteam)) {
 							this.mSteam.amount += (this.mSteamPerSecond);
+							Logger.MACHINE_INFO("Added "+(this.mSteam.amount-mTempSteam)+"L of steam.");
 						}
 						else {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
+							Logger.MACHINE_INFO("Added "+(this.mSteam.amount-mTempSteam)+"L of steam.");
 						}
 					}
 				}
