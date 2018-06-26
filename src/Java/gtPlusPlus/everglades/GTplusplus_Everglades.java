@@ -47,31 +47,31 @@ public class GTplusplus_Everglades implements ActionListener {
 
 		//Setup
 		setVars(event);
-		
+
 		setEvergladesBiome(new Biome_Everglades());
 		Everglades_Dimension = new Dimension_Everglades();
-		
+
 		// Load Dark World
 		getEvergladesBiome().instance = instance;
 		Everglades_Dimension.instance = instance;
 		getEvergladesBiome().preInit(event);
-		
+
 		//Load/Set Custom Ore Gen
 		HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
-		
+
 	}
 
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
 		Logger.INFO("Begin resource allocation for " + Everglades.MODID + " V" +Everglades.VERSION);
-		
+
 		//Load World and Biome
 		GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
 		getEvergladesBiome().load();
 		Everglades_Dimension.load();
 
 	}
-	
+
 	public static synchronized void GenerateOreMaterials() {
 		MaterialGenerator.generateOreMaterial(ORES.CROCROITE);
 		MaterialGenerator.generateOreMaterial(ORES.GEIKIELITE);
@@ -104,28 +104,30 @@ public class GTplusplus_Everglades implements ActionListener {
 		MaterialGenerator.generateOreMaterial(ORES.FLUORCAPHITE);
 		MaterialGenerator.generateOreMaterial(ORES.FLORENCITE);
 		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);
-		
+
 		//Custom Ores
 		if (LoadedMods.Big_Reactors) {
 			MaterialGenerator.generateOreMaterial(ELEMENT.getInstance().YELLORIUM, false, false, true, new short[] {255, 242, 10});
 		}
-		
-		MaterialGenerator.generateOreMaterial(
-				ELEMENT.getInstance().TRINIUM,
-				true,
-				false,
-				false,
-				ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
+
+		if (!CORE.GTNH) {
+			MaterialGenerator.generateOreMaterial(
+					ELEMENT.getInstance().TRINIUM,
+					true,
+					false,
+					false,
+					ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
+		}
 	}
 
 	protected synchronized void setVars(FMLPreInitializationEvent event){
 		//Init WorldGen config.
-        HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
-		
+		HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
+
 		if (DimensionManager.isDimensionRegistered(Dimension_Everglades.DIMID)){
 			Dimension_Everglades.DIMID = DimensionManager.getNextFreeDimId();
 		}
-		
+
 		/*
 		 * Set World Generation Values
 		 */
@@ -161,7 +163,7 @@ public class GTplusplus_Everglades implements ActionListener {
 		if (world.provider.dimensionId == Dimension_DarkWorld.DIMID) {
 			DarkWorld_Biome.generateSurface(world, random, chunkX, chunkZ);
 		}
-		
+
 		//What does this even do?
 		if (world.provider.dimensionId == -1) {
 			DarkWorld_Biome.generateNether(world, random, chunkX, chunkZ);
@@ -188,7 +190,7 @@ public class GTplusplus_Everglades implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
