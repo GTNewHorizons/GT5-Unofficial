@@ -5,17 +5,20 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
@@ -23,6 +26,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -267,24 +272,24 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		Logger.WARNING("Running checkRecipeGeneric(0)");
+		Logger.MACHINE_INFO("Running checkRecipeGeneric(0)");
 
 
-		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
+		GT_Recipe tRecipe = findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
-		Logger.WARNING("Running checkRecipeGeneric(1)");
+		Logger.MACHINE_INFO("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()
 		this.mLastRecipe = tRecipe;
 
 		if (tRecipe == null) {
-			Logger.WARNING("BAD RETURN - 1");
+			Logger.MACHINE_INFO("BAD RETURN - 1");
 			return false;
 		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-			Logger.WARNING("BAD RETURN - 2");
+			Logger.MACHINE_INFO("BAD RETURN - 2");
 			return false;
 		}
 
@@ -294,23 +299,23 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		int parallelRecipes = 0;
 
-		Logger.WARNING("parallelRecipes: "+parallelRecipes);
-		Logger.WARNING("aMaxParallelRecipes: "+aMaxParallelRecipes);
-		Logger.WARNING("tTotalEUt: "+tTotalEUt);
-		Logger.WARNING("tVoltage: "+tVoltage);
-		Logger.WARNING("tRecipeEUt: "+tRecipeEUt);
+		Logger.MACHINE_INFO("parallelRecipes: "+parallelRecipes);
+		Logger.MACHINE_INFO("aMaxParallelRecipes: "+aMaxParallelRecipes);
+		Logger.MACHINE_INFO("tTotalEUt: "+tTotalEUt);
+		Logger.MACHINE_INFO("tVoltage: "+tVoltage);
+		Logger.MACHINE_INFO("tRecipeEUt: "+tRecipeEUt);
 		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-				Logger.WARNING("Broke at "+parallelRecipes+".");
+				Logger.MACHINE_INFO("Broke at "+parallelRecipes+".");
 				break;
 			}
-			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+			Logger.MACHINE_INFO("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
 			tTotalEUt += tRecipeEUt;
 		}
 
 		if (parallelRecipes == 0) {
-			Logger.WARNING("BAD RETURN - 3");
+			Logger.MACHINE_INFO("BAD RETURN - 3");
 			return false;
 		}
 
@@ -407,7 +412,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		// Play sounds (GT++ addition - GT multiblocks play no sounds)
 		startProcess();
 
-		Logger.WARNING("GOOD RETURN - 1");
+		Logger.MACHINE_INFO("GOOD RETURN - 1");
 		return true;
 	}
 
@@ -544,36 +549,36 @@ GT_MetaTileEntity_MultiBlockBase {
 	public boolean causeMaintenanceIssue() {
 		boolean b = false;
 		switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
-			case 0 : {
-				this.mWrench = false;
-				b = true;
-				break;
-			}
-			case 1 : {
-				this.mScrewdriver = false;
-				b = true;
-				break;
-			}
-			case 2 : {
-				this.mSoftHammer = false;
-				b = true;
-				break;
-			}
-			case 3 : {
-				this.mHardHammer = false;
-				b = true;
-				break;
-			}
-			case 4 : {
-				this.mSolderingTool = false;
-				b = true;
-				break;
-			}
-			case 5 : {
-				this.mCrowbar = false;
-				b = true;
-				break;
-			}
+		case 0 : {
+			this.mWrench = false;
+			b = true;
+			break;
+		}
+		case 1 : {
+			this.mScrewdriver = false;
+			b = true;
+			break;
+		}
+		case 2 : {
+			this.mSoftHammer = false;
+			b = true;
+			break;
+		}
+		case 3 : {
+			this.mHardHammer = false;
+			b = true;
+			break;
+		}
+		case 4 : {
+			this.mSolderingTool = false;
+			b = true;
+			break;
+		}
+		case 5 : {
+			this.mCrowbar = false;
+			b = true;
+			break;
+		}
 		}
 		return b;
 	}
@@ -814,5 +819,176 @@ GT_MetaTileEntity_MultiBlockBase {
 		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
 		super.loadNBTData(aNBT);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Custom Find Recipe with Debugging
+	 */
+
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
+			final boolean aDontCheckStackSizes, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
+				(ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
+			final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
+			final FluidStack[] aFluids, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
+				(ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack aSpecialSlot, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, true, aVoltage, aFluids, aSpecialSlot,
+				aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
+			final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
+		if (this.getRecipeMap().mRecipeList.isEmpty()) {
+			Logger.MACHINE_INFO("No Recipes in Map to search through.");
+			return null;
+		}
+		GT_Recipe mRecipeResult = null;
+		try {
+		if (GregTech_API.sPostloadFinished) {
+			if (this.getRecipeMap().mMinimalInputFluids > 0) {
+				if (aFluids == null) {
+					Logger.MACHINE_INFO("aFluids == null && minFluids > 0");
+					return null;
+				}
+				int tAmount = 0;
+				for (final FluidStack aFluid : aFluids) {
+					if (aFluid != null) {
+						++tAmount;
+					}
+				}
+				if (tAmount < this.getRecipeMap().mMinimalInputFluids) {
+					Logger.MACHINE_INFO("Not enough fluids?");
+					return null;
+				}
+			}
+			if (this.getRecipeMap().mMinimalInputItems > 0) {
+				if (aInputs == null) {
+					Logger.MACHINE_INFO("No inputs and minItems > 0");
+					return null;
+				}
+				int tAmount = 0;
+				for (final ItemStack aInput : aInputs) {
+					if (aInput != null) {
+						++tAmount;
+					}
+				}
+				if (tAmount < this.getRecipeMap().mMinimalInputItems) {
+					Logger.MACHINE_INFO("Not enough items?");
+					return null;
+				}
+			}
+		}
+		else {
+			Logger.MACHINE_INFO("Game Not Loaded properly for recipe lookup.");
+		}
+		if (aNotUnificated) {
+			aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
+		}
+		if (aRecipe != null && !aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
+				&& aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+			mRecipeResult = (aRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= aRecipe.mEUt*/) ? aRecipe : null;
+			Logger.MACHINE_INFO("x) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+			if (mRecipeResult != null) {
+				return mRecipeResult;
+			}
+		}
+		if (mRecipeResult == null && this.getRecipeMap().mUsualInputCount >= 0 && aInputs != null && aInputs.length > 0) {
+			for (final ItemStack tStack : aInputs) {
+				if (tStack != null) {
+					Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeItemMap.get(new GT_ItemStack(tStack));
+					if (tRecipes != null) {
+						for (final GT_Recipe tRecipe : tRecipes) {
+							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+								mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
+										? tRecipe
+												: null;
+								Logger.MACHINE_INFO("1) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+								//return mRecipeResult;
+							}
+						}
+					}
+					tRecipes = this.getRecipeMap().mRecipeItemMap
+							.get(new GT_ItemStack(GT_Utility.copyMetaData(32767L, new Object[]{tStack})));
+					if (tRecipes != null) {
+						for (final GT_Recipe tRecipe : tRecipes) {
+							if (!tRecipe.mFakeRecipe
+									&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+								mRecipeResult = (tRecipe.mEnabled && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt)
+										? tRecipe
+												: null;
+								Logger.MACHINE_INFO("2) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+								//return mRecipeResult;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (mRecipeResult == null && this.getRecipeMap().mMinimalInputItems == 0 && aFluids != null && aFluids.length > 0) {
+			for (final FluidStack aFluid2 : aFluids) {
+				if (aFluid2 != null) {
+					final Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeFluidMap.get(aFluid2.getFluid());
+					if (tRecipes != null) {
+						for (final GT_Recipe tRecipe : tRecipes) {
+							if (!tRecipe.mFakeRecipe
+									&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+								mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
+										? tRecipe
+												: null;
+								Logger.MACHINE_INFO("3) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+								//return mRecipeResult;
+							}
+						}
+					}
+				}
+			}
+		}
+		}
+		catch (Throwable t) {
+			Logger.MACHINE_INFO("Invalid recipe lookup.");			
+		}		
+		if (mRecipeResult == null) {
+		return this.getRecipeMap().findRecipe(aTileEntity, aRecipe,	aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
+		}
+		else {
+			return mRecipeResult;
+		}
+	}
+
+
 
 }
