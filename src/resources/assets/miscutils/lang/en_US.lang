@@ -1984,3 +1984,11 @@ entity.throwablePotionHydrofluoric.name=Flask of Hydrofluoric Acid
 entity.toxinBall.name=Toxin globule
 entity.plasmaBolt.name=Plasma
 entity.bigChickenFriendly.name=Giant Chicken
+
+//Added 26/6/18
+tile.OreTrinium.name=Trinium Ore
+item.crushedTrinium.name=Crushed Trinium Ore
+item.crushedCentrifugedTrinium.name=Centrifuged Crushed Trinium Ore
+item.crushedPurifiedTrinium.name=Purified Crushed Trinium Ore
+item.dustImpureTrinium.name=Impure Trinium Dust
+item.dustPureTrinium.name=Purified Trinium Dust

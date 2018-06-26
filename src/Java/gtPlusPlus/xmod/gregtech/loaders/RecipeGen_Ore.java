@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 
@@ -11,12 +12,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,21 +33,27 @@ public class RecipeGen_Ore implements Runnable{
 	public void run() {
 		generateRecipes(this.toGenerate);
 	}
+	
+	private static Material mStone;
 
 	public static void generateRecipes(final Material material){
 
-		if (material.getMaterialComposites().length > 1){
+		if (mStone == null) {
+			mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
+		}
+		
+		//if (material.getMaterialComposites().length > 1){
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
 			final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 120 : 30;
 			final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
 			Material bonusA = null; //Ni
 			Material bonusB = null; //Tin
 
-			if (material.getComposites().get(0) != null){
+			if (material.getComposites().size() >= 1 && material.getComposites().get(0) != null){
 				bonusA = material.getComposites().get(0).getStackMaterial();
 			}
 			else {
-				return;
+				bonusA = material;
 			}
 
 			boolean allFailed = false;
@@ -64,7 +71,7 @@ public class RecipeGen_Ore implements Runnable{
 							//If Fifth Output has no solid output, default out to Chrome.
 							if (!bonusB.hasSolidForm()) {
 								allFailed = true;
-								bonusB = ELEMENT.getInstance().PLATINUM;
+								bonusB = mStone;
 							}
 						}
 					}
@@ -76,7 +83,7 @@ public class RecipeGen_Ore implements Runnable{
 
 			//Default out if it's made of fluids or some shit.
 			if (allFailed || bonusB == null) {
-				bonusB = ELEMENT.getInstance().PLATINUM;
+				bonusB = tVoltageMultiplier <= 100 ? material : mStone;
 			}
 
 			AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<Pair<Integer, Material>>();
@@ -447,7 +454,7 @@ public class RecipeGen_Ore implements Runnable{
 				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 
-		}
+		//}
 	}
 
 

@@ -109,6 +109,13 @@ public class GTplusplus_Everglades implements ActionListener {
 		if (LoadedMods.Big_Reactors) {
 			MaterialGenerator.generateOreMaterial(ELEMENT.getInstance().YELLORIUM, false, false, true, new short[] {255, 242, 10});
 		}
+		
+		MaterialGenerator.generateOreMaterial(
+				ELEMENT.getInstance().TRINIUM,
+				true,
+				false,
+				false,
+				ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
 	}
 
 	protected synchronized void setVars(FMLPreInitializationEvent event){

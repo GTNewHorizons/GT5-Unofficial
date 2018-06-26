@@ -35,8 +35,12 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 
 	private void generateRecipes(final Material material, final boolean dO){
 
+		if (material == null) {
+			return;
+		}
+		
 		//Melting Shapes to fluid
-		if (!material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")){
+		if (material.getFluid(1) != null && !material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")){
 			
 			if (!material.requiresBlastFurnace()) {
 

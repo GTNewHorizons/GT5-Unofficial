@@ -321,6 +321,7 @@ public class MaterialGenerator {
 			temp = new BaseItemImpureDust(matInfo);
 			temp = new BaseItemPurifiedDust(matInfo);
 
+			Logger.MATERIALS("Generated all ore components for "+matInfo.getLocalizedName()+", now generating processing recipes.");
 			RecipeGen_Ore.generateRecipes(matInfo);
 
 		} catch (final Throwable t){
