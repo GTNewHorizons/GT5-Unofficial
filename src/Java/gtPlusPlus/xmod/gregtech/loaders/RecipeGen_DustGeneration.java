@@ -145,14 +145,25 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					Logger.WARNING(ItemUtils.getArrayStackNames(inputStacks));
 
 					//Get us four ItemStacks to input into the mixer
-					ItemStack input1, input2, input3, input4;
-					input1 = (inputStacks.length >= 1) ? (input1 = (inputStacks[0] == null) ? null : inputStacks[0]) : null;
-					input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
-					input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
-					input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+					ItemStack[] input = new ItemStack[4];
+					
+					/*input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
+					input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
+					input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
+					input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
+					*/
+					
+					for (int g = 0; g<4; g++) {						
+						if(inputStacks.length > g) {
+							input[g] = inputStacks[g] != null ? inputStacks[g] : null;							
+						}
+						else {
+							input[g] = CI.getNumberedCircuit(g+10);
+							break;
+						}												
+					}					
 
 					//Add mixer Recipe
-
 					FluidStack oxygen = GT_Values.NF;
 					if (material.getComposites() != null){
 						for (final MaterialStack x : material.getComposites()){
@@ -160,7 +171,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 								if (x != null){
 									if (x.getStackMaterial() != null){
 										if (x.getStackMaterial().getDust(1) == null){
-											if (x.getStackMaterial().getState() == MaterialState.GAS){
+											if (x.getStackMaterial().getState() == MaterialState.GAS || x.getStackMaterial().getState() == MaterialState.LIQUID || x.getStackMaterial().getState() == MaterialState.PURE_LIQUID){
 												oxygen = x.getStackMaterial().getFluid(1000);
 											}
 										}
@@ -173,8 +184,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 					//Add mixer Recipe
 					if (GT_Values.RA.addMixerRecipe(
-							input1, input2,
-							input3, input4,
+							input[0], input[1],
+							input[2], input[3],
 							oxygen,
 							null,
 							outputStacks,

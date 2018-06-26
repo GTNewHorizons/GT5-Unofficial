@@ -42,7 +42,7 @@ public class RECIPES_GREGTECH {
 		chemicalReactorRecipes();
 		dehydratorRecipes();
 		blastFurnaceRecipes();
-		lftrRecipes();
+		//lftrRecipes();
 		fissionFuelRecipes();
 		autoclaveRecipes();
 		compressorRecipes();
@@ -52,7 +52,7 @@ public class RECIPES_GREGTECH {
 		benderRecipes();
 		cyclotronRecipes();
 		blastSmelterRecipes();
-		advancedMixerRecipes();
+		//advancedMixerRecipes();
 		sifterRecipes();
 		electroMagneticSeperatorRecipes();
 		extruderRecipes();
@@ -774,6 +774,16 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null,
 				FluidUtils.getFluidStack("hydrofluoricacid", 144 * 5),
 				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144 * 5), null, 3000, 500);
+		GT_Values.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),
+				null,
+				ALLOY.HG1223.getFluid(144*16), 
+				CI.emptyCells(1),
+				30 * 20,
+				500);
 	}
 
 	private static void chemicalReactorRecipes() {
@@ -1066,12 +1076,15 @@ public class RECIPES_GREGTECH {
 
 	private static void advancedMixerRecipes() {
 		// HgBa2Ca2Cu3O8
-		CORE.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
+		CORE.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3), FluidUtils.getFluidStack("oxygen", 8000),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),
+				FluidUtils.getFluidStack("oxygen", 8000),
 				null, CI.emptyCells(1), ALLOY.HG1223.getDust(16), null, null,
-				30 * 20, 500);
+				30 * 20, 500);	
+		
 	}
 
 }
