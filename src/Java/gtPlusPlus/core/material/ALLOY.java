@@ -428,6 +428,7 @@ public final class ALLOY {
 			-1,
 			-1,
 			true, //Uses Blast furnace?
+			false, //Generate cells
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
