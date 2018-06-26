@@ -2,13 +2,13 @@ package gtPlusPlus.core.item.general.rfchargingpack;
 
 import java.util.List;
 
+import cofh.api.energy.ItemEnergyContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import cofh.energy.ItemEnergyContainer;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class ChargingPackBase extends ItemEnergyContainer {
