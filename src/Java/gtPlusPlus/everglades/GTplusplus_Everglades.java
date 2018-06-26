@@ -28,7 +28,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
 @MCVersion(value = "1.7.10")
-@Mod(modid = Everglades.MODID, name = Everglades.NAME, version = Everglades.VERSION, dependencies = "required-after:Forge; after:dreamcraft; after:IC2; after:ihl; required-after:gregtech; after:miscutils;")
+@Mod(modid = Everglades.MODID, name = Everglades.NAME, version = Everglades.VERSION, dependencies = "required-after:Forge; after:dreamcraft; after:IC2; after:ihl; required-after:gregtech; required-after:miscutils;")
 public class GTplusplus_Everglades implements ActionListener {
 
 	//Mod Instance
