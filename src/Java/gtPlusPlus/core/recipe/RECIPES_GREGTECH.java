@@ -42,7 +42,7 @@ public class RECIPES_GREGTECH {
 		chemicalReactorRecipes();
 		dehydratorRecipes();
 		blastFurnaceRecipes();
-		//lftrRecipes();
+		largeChemReactorRecipes();
 		fissionFuelRecipes();
 		autoclaveRecipes();
 		compressorRecipes();
@@ -490,17 +490,43 @@ public class RECIPES_GREGTECH {
 		// Makes Styrene
 		CORE.RA.addDehydratorRecipe(
 				CI.emptyCells(3), // Item Input
-				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), // Fluid				/
-				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 1000), // Fluid
+				new ItemStack[] {
+						ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) }, // Output		
 				3 * 20, // Time in ticks
 				30); // EU
 
 	}
 
-	@Deprecated
-	private static void lftrRecipes() {
-
+	private static void largeChemReactorRecipes() {
+		//Styrene
+		GT_Values.RA.addMultiblockChemicalRecipe(
+				new ItemStack[]{GT_Utility.getIntegratedCircuit(24)},
+				new FluidStack[]{
+						FluidUtils.getFluidStack("fluid.ethylbenzene", 1000)
+				},
+				new FluidStack[]{
+						Materials.Styrene.getFluid(1000),
+						Materials.Hydrogen.getGas(2000)
+				},
+				null,
+				30,
+				30);
+		//Short-cut Styrene
+		GT_Values.RA.addMultiblockChemicalRecipe(
+				new ItemStack[]{GT_Utility.getIntegratedCircuit(24)},
+				new FluidStack[]{
+						Materials.Ethylene.getGas(500), 
+						Materials.Benzene.getFluid(500)
+				},
+				new FluidStack[]{
+						Materials.Styrene.getFluid(500),
+						Materials.Hydrogen.getGas(1000)
+				},
+				null,
+				240,
+				120);
 	}
 
 	private static void fissionFuelRecipes() {
@@ -1084,7 +1110,7 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("oxygen", 8000),
 				null, CI.emptyCells(1), ALLOY.HG1223.getDust(16), null, null,
 				30 * 20, 500);	
-		
+
 	}
 
 }
