@@ -519,4 +519,24 @@ public class RecipeUtils {
 		}
 	}
 
+	public static String[] getRecipeInfo(GT_Recipe m) {
+		if (m == null) {
+			return new String[] {};
+		}
+		String[] result = new String[10];
+		result[0] = m.toString();
+		result[1] = "Input "+ItemUtils.getArrayStackNames(m.mInputs);
+		result[2] = "Output "+ItemUtils.getArrayStackNames(m.mOutputs);
+		result[3] = "Input "+ItemUtils.getArrayStackNames(m.mFluidInputs);
+		result[4] = "Output "+ItemUtils.getArrayStackNames(m.mFluidOutputs);
+		result[5] = "Can be buffered? "+m.mCanBeBuffered;
+		result[6] = "Duration: "+m.mDuration;
+		result[7] = "EU/t: "+m.mEUt;
+		result[8] = "Is Hidden? "+m.mHidden;
+		result[9] = "Is Enabled? "+m.mEnabled;
+		result[10] = "Special Value: "+m.mSpecialValue;
+		result[11] = "=====================================";		
+		return result;
+	}
+
 }
