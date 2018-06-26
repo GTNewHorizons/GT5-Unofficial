@@ -39,6 +39,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	public static int CASING_TEXTURE_ID;
 	public static String mHotFuelName = "Blazing Pyrotheum";
 	public static String mCasingName = "Advanced Blast Furnace Casing";
+	public static String mHatchName = "Pyrotheum Hatch";
     
     private int mHeatingCapacity = 0;
     private int controllerY;
@@ -50,6 +51,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
+		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
     }
 
     public GregtechMetaTileEntity_Adv_EBF(String aName) {
@@ -57,6 +59,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 11);
 		mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
+		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -71,12 +74,16 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (mHotFuelName.toLowerCase().contains(".")) {
 			mHotFuelName = FluidUtils.getFluidStack("pyrotheum", 1).getLocalizedName();
 		}
+		if (mHatchName.toLowerCase().contains(".name")) {
+			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
+		}
 		
         return new String[]{
                 "Controller Block for the Advanced Electric Blast Furnace",
 				"Consumes 1L of "+mHotFuelName+"/t during operation",
                 "Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
                 "16x Heating Coils (Two middle Layers, hollow)",
+                "1x " + mHatchName + " (Any bottom layer casing)",
                 "1x Input Hatch/Bus (Any bottom layer casing)",
                 "1x Output Hatch/Bus (Any bottom layer casing)",
                 "1x Energy Hatch (Any bottom layer casing)",

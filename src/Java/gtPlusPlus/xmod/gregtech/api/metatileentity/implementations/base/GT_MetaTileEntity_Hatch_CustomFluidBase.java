@@ -1,7 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -59,11 +61,48 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 		return this.mFluidCapacity;
 	}
 
+	private FluidStack mLockedStack = null;
+	private Integer mLockedTemp = null;
+	private String mTempMod = null;
+	
 	@Override
-	public String[] getDescription() {
+	public String[] getDescription() {		
+		if (mLockedStack == null) {
+			mLockedStack = FluidUtils.getFluidStack(mLockedFluid, 1);
+		}
+		if (mLockedTemp == null) {
+			if (mLockedStack != null) {
+				mLockedTemp = mLockedStack.getFluid().getTemperature();
+			}
+		}
+		if (mLockedTemp != null) {
+			if (mLockedTemp <= -3000) {
+				mTempMod = ""+EnumChatFormatting.DARK_PURPLE;
+			}
+			else if (mLockedTemp >= -2999 && mLockedTemp <= -500) {
+				mTempMod = ""+EnumChatFormatting.DARK_BLUE;
+			}
+			else if (mLockedTemp >= -499 && mLockedTemp <= -50) {
+				mTempMod = ""+EnumChatFormatting.BLUE;
+			}
+			else if (mLockedTemp >= 30 && mLockedTemp <= 300) {
+				mTempMod = ""+EnumChatFormatting.AQUA;
+			}
+			else if (mLockedTemp >= 301 && mLockedTemp <= 800) {
+				mTempMod = ""+EnumChatFormatting.YELLOW;
+			}
+			else if (mLockedTemp >= 801 && mLockedTemp <= 1500) {
+				mTempMod = ""+EnumChatFormatting.GOLD;
+			}
+			else if (mLockedTemp >= 1501) {
+				mTempMod = ""+EnumChatFormatting.RED;
+			}
+		}
+		
 		String[] s2 = new String[]{
 				"Fluid Input for Multiblocks",
-				"Capacity: " + getCapacity()+"L"
+				"Capacity: " + getCapacity()+"L",
+				"Accepted Fluid: " + mTempMod + mLockedStack.getLocalizedName()
 				};		
 		return s2;
 	}
