@@ -343,7 +343,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	Infinite_Item_Chest, 
 	
-	Industrial_Mixer,
+	Industrial_Mixer, 
+	
+	Hatch_Input_Cryotheum, Hatch_Input_Pyrotheum,
 	
 	
 	;

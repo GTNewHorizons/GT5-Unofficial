@@ -52,7 +52,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.1.01-fresh"
+version = "1.7.1.04-fresh"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 minecraft {
@@ -76,17 +76,24 @@ repositories {
 	}
 }
 
+task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+	file = new File("CHANGELOG Basic ${project.version}.txt");
+	untaggedName = "Current Basic release ${project.version}"
+	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
+	toRef =  "HEAD"
+	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
+}
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG ${project.version}.md");
 	untaggedName = "Current release ${project.version}"
-	fromCommit = "e3a9829150afd77c0a00cb85be8b7c450d120dd1"
+	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
 	toRef =  "HEAD"
 	templateContent = file('changelog.mustache').getText('UTF-8')
 }
 task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG Curse ${project.version}.md");
 	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "e3a9829150afd77c0a00cb85be8b7c450d120dd1"
+	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
 	toRef =  "HEAD"
 	templateContent = file('changelogcurse.mustache').getText('UTF-8')
 }
@@ -130,6 +137,7 @@ artifacts {
 
 build.finalizedBy(gitChangelogTask)
 build.finalizedBy(curseChangelogTask)
+build.finalizedBy(discordChangelogTask)
 
 processResources {
 	// this will ensure that this task is redone when the versions change.
