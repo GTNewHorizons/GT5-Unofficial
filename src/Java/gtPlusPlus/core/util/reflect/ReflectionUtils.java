@@ -66,12 +66,14 @@ public class ReflectionUtils {
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
-		while (clazz != null) {
+		if (clazz != null) {
 			try {
-				final Field field = clazz.getDeclaredField(fieldName);
-				makeAccessible(field);
-				field.set(object, fieldValue);
-				return true;
+				final Field field = getField(clazz, fieldName);
+				if (field != null) {
+					makeAccessible(field);
+					field.set(object, fieldValue);
+					return true;
+				}
 			} catch (final NoSuchFieldException e) {
 				Logger.REFLECTION("setField("+object.toString()+", "+fieldName+") failed.");
 				clazz = clazz.getSuperclass();
@@ -175,7 +177,7 @@ public class ReflectionUtils {
 		fieldA.setByte(clazz, newValue);*/
 
 	}
-	
+
 	public static boolean invoke(Object objectInstance, String methodName, Class[] parameters, Object[] values){
 		if (objectInstance == null || methodName == null || parameters == null || values == null){
 			//Logger.REFLECTION("Null value when trying to Dynamically invoke "+methodName+" on an object of type: "+objectInstance.getClass().getName());
@@ -206,7 +208,7 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
-	
+
 	public static boolean invokeVoid(Object objectInstance, String methodName, Class[] parameters, Object[] values){
 		if (objectInstance == null || methodName == null || parameters == null || values == null){
 			return false;
@@ -218,8 +220,8 @@ public class ReflectionUtils {
 			if (mInvokingMethod != null){
 				Logger.REFLECTION(methodName+" was not null.");
 				mInvokingMethod.invoke(objectInstance, values);
-					Logger.REFLECTION("Successfully invoked "+methodName+".");
-					return true;				
+				Logger.REFLECTION("Successfully invoked "+methodName+".");
+				return true;				
 			}
 			else {
 				Logger.REFLECTION(methodName+" is null.");				
@@ -232,7 +234,7 @@ public class ReflectionUtils {
 		Logger.REFLECTION("Invoke failed or did something wrong.");		
 		return false;
 	}
-	
+
 	public static Object invokeNonBool(Object objectInstance, String methodName, Class[] parameters, Object[] values){
 		if (objectInstance == null || methodName == null || parameters == null || values == null){
 			return false;
@@ -337,23 +339,23 @@ public class ReflectionUtils {
 		}
 		return null;
 	}
-	
+
 	public static boolean dynamicallyLoadClassesInPackage(String aPackageName) {
 		ClassLoader classLoader = GTplusplus.class.getClassLoader();
 		int loaded = 0;
-	    try {
-		    ClassPath path = ClassPath.from(classLoader);
-	    	for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
-		        Class<?> clazz = Class.forName(info.getName(), true, classLoader);
-		        if (clazz != null) {
-		        	loaded++;
-		        	Logger.INFO("Found "+clazz.getCanonicalName()+". ["+loaded+"]");
-		        }
-		    }
-	    } catch (ClassNotFoundException | IOException e) {
-	    	
-	    }
-		
+		try {
+			ClassPath path = ClassPath.from(classLoader);
+			for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
+				Class<?> clazz = Class.forName(info.getName(), true, classLoader);
+				if (clazz != null) {
+					loaded++;
+					Logger.INFO("Found "+clazz.getCanonicalName()+". ["+loaded+"]");
+				}
+			}
+		} catch (ClassNotFoundException | IOException e) {
+
+		}
+
 		return loaded > 0;
 	}
 
