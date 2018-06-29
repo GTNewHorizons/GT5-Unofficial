@@ -36,6 +36,21 @@ public class GT_Worldgen_GT_Ore_SmallPieces_Space extends GT_Worldgen {
 		
 		GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
 	}
+	
+	public GT_Worldgen_GT_Ore_SmallPieces_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pAmount, short pPrimary)
+	{
+		super(pName, GalacticGreg.smallOreWorldgenList, pDefault);
+		
+		mMinY = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MinHeight", pMinY));
+		mMaxY = ((short) Math.max(this.mMinY + 1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "MaxHeight", pMaxY)));
+		mAmount = ((short) Math.max(1, GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Amount", pAmount)));
+		mMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "Ore", pPrimary));
+
+		_mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
+		_mDynWorldConfig.InitDynamicConfig();
+		
+		GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
+	}
 
 	/**
 	 * Check if *this* orelayer is enabled for pDimensionDef

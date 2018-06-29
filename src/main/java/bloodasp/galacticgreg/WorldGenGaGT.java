@@ -3,6 +3,7 @@ package bloodasp.galacticgreg;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 
 public class WorldGenGaGT
   implements Runnable
@@ -12,7 +13,7 @@ public class WorldGenGaGT
 	public void run() {
 		new GT_Worldgenerator_Space();
 		
-		new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.copper", true, 60, 120, 32, Materials.Copper);
+	 /*new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.copper", true, 60, 120, 32, Materials.Copper);
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.tin", true, 60, 120, 32, Materials.Tin);
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.bismuth", true, 80, 120, 8, Materials.Bismuth);
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.coal", true, 60, 100, 24, Materials.Coal);
@@ -47,7 +48,21 @@ public class WorldGenGaGT
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.foolsruby", true, 5, 250, 1, Materials.FoolsRuby);
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.garnetred", true, 5, 250, 1, Materials.GarnetRed);
 	 new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.garnetyellow", true, 5, 250, 1, Materials.GarnetYellow);
-				
+				*/
+		/*
+		  * This part here enables every GT Small Ore for Space Dims.
+		  */
+		for (int k=0;k<GT_Worldgen_GT_Ore_SmallPieces.sList.size();++k) {
+	         new GT_Worldgen_GT_Ore_SmallPieces_Space(
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mWorldGenName,
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mEnabled,
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMinY,
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMaxY,
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mAmount,
+	        		 GT_Worldgen_GT_Ore_SmallPieces.sList.get(k).mMeta
+	                 );
+	     }
+		
 	 /*
 	  * This part here enables every GT Ore for Space Dims.
 	  */
@@ -67,7 +82,7 @@ public class WorldGenGaGT
                  );
      }
   
-  int f = 0;
+ /* int f = 0;
   for (int j = GregTech_API.sWorldgenFile.get("worldgen", "AmountOfCustomSmallOreSlots", 16); f < j; f++) {
  new GT_Worldgen_GT_Ore_SmallPieces_Space("ore.small.custom." + (f < 10 ? "0" : "") + f, false, 0, 0, 0, Materials._NULL);
   }
@@ -76,6 +91,7 @@ public class WorldGenGaGT
   for (int j = GregTech_API.sWorldgenFile.get("worldgen", "AmountOfCustomLargeVeinSlots", 16); i < j; i++) {
 	  new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.custom." + (i < 10 ? "0" : "") + i, false, 0, 0, 0, 0, 0, Materials._NULL, Materials._NULL, Materials._NULL, Materials._NULL);
   }
+  */
 	}
   
 }
