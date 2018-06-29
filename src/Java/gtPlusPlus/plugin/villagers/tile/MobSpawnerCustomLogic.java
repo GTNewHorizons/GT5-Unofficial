@@ -1,23 +1,35 @@
 package gtPlusPlus.plugin.villagers.tile;
 
-import net.minecraft.init.Blocks;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
+import gtPlusPlus.core.block.ModBlocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class MobSpawnerCustomLogic extends MobSpawnerBaseLogic {
 
-	private TileEntity mTile;
+	private TileEntityGenericSpawner mTile;
 
-	public MobSpawnerCustomLogic(TileEntity tile) {
+	public MobSpawnerCustomLogic(TileEntityGenericSpawner tile) {
 		if (tile != null) {
 			mTile = tile;
 		}
+		
+		if (TileEntityGenericSpawner.mSpawners.get(mTile.getID()) != null) {
+			Class<Entity> c = TileEntityGenericSpawner.mSpawners.get(mTile.getID());
+			EntityRegistration x = EntityRegistry.instance().lookupModSpawn(c, false);
+			if (x != null) {
+				this.setEntityName(x.getEntityName());
+			}
+		}
+		
 	}
 
 	@Override
 	public void func_98267_a(int eventID) {
-		if (mTile != null) mTile.getWorldObj().addBlockEvent(mTile.xCoord, mTile.yCoord, mTile.zCoord, Blocks.mob_spawner, eventID, 0);
+		if (mTile != null) mTile.getWorldObj().addBlockEvent(mTile.xCoord, mTile.yCoord, mTile.zCoord, ModBlocks.blockCustomMobSpawner, eventID, 0);
 	}
 
 	@Override

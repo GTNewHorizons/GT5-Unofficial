@@ -49,6 +49,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.sys.SystemUtils;
+import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
@@ -826,6 +827,18 @@ public class Utils {
 		catch (NoSuchAlgorithmException e) {
 			return null;
 		}
+	}
+
+	public static void createNewMobSpawner(int aID, Entity aEntity) {
+		Class<Entity> c;		
+		if (aEntity instanceof Entity) {
+			c = (Class<Entity>) aEntity.getClass();
+			TileEntityGenericSpawner.registerNewMobSpawner(aID, c);
+		}
+	}
+	
+	public static void createNewMobSpawner(int aID, Class aEntity) {		
+		TileEntityGenericSpawner.registerNewMobSpawner(aID, aEntity);
 	}
 
 }

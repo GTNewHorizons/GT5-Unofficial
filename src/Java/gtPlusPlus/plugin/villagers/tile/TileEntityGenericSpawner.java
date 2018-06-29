@@ -1,6 +1,5 @@
 package gtPlusPlus.plugin.villagers.tile;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,14 +17,14 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	 */
 
 	/** A HashMap storing string names of classes mapping to the actual java.lang.Class type. */
-	private static Map nameToClassMap_Ex = new HashMap();
+	private static Map<?, ?> nameToClassMap_Ex = new HashMap<Object, Object>();
 	/** A HashMap storing the classes and mapping to the string names (reverse of nameToClassMap). */
-	private static Map classToNameMap_Ex = new HashMap();
+	private static Map<?, ?> classToNameMap_Ex = new HashMap<Object, Object>();
 
 	/**
 	 * The Mob Spawner Map
 	 */
-	public static HashMap<Integer, Entity> mSpawners = new HashMap<Integer, Entity>();
+	public static HashMap<Integer, Class<Entity>> mSpawners = new HashMap<Integer, Class<Entity>>();
 
 	/**
 	 * Registers a New Mob Spawner Type
@@ -35,7 +34,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	 * @param aEntity
 	 *            - the Entity which you'd like to spawn
 	 */
-	public static boolean registerNewMobSpawner(int aID, Entity aEntity) {
+	public static boolean registerNewMobSpawner(int aID, Class<Entity> aEntity) {
 		int registered = mSpawners.size();
 		mSpawners.put(aID, aEntity);
 		return mSpawners.size() > registered;
@@ -48,7 +47,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	/**
 	 * The {@link Entity} type which spawns.
 	 */
-	private final Entity mSpawnType;
+	protected int mID;
+	private final Class mSpawnType;
 	private MobSpawnerCustomLogic spawnerLogic;
 
 	/*
@@ -62,6 +62,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	 *            - The ID in the {@link mSpawners} map.
 	 */
 	public TileEntityGenericSpawner(int aID) {
+		mID = aID;
 		if (mSpawners.get(aID) != null) {
 			mSpawnType = mSpawners.get(aID);
 		} else {
@@ -81,9 +82,10 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	 *            - The {@link Entity} type which will be spawned.
 	 */
 	public TileEntityGenericSpawner(int aID, Entity aEntity) {
+		mID = aID;
 		if (aEntity != null) {
-			mSpawnType = aEntity;
-			registerNewMobSpawner(aID, aEntity);
+			mSpawnType = aEntity.getClass();
+			registerNewMobSpawner(aID, mSpawnType);
 		} else {
 			mSpawnType = null;
 		}
@@ -102,6 +104,10 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	private final void generateLogicObject() {
 		spawnerLogic = new MobSpawnerCustomLogic(this);
 	}
+	
+	public int getID() {
+		return this.mID;
+	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound p_145839_1_) {
@@ -110,6 +116,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 			this.xCoord = p_145839_1_.getInteger("x");
 			this.yCoord = p_145839_1_.getInteger("y");
 			this.zCoord = p_145839_1_.getInteger("z");
+			this.mID = p_145839_1_.getInteger("mID");
 		}
 	}
 
@@ -127,9 +134,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 				p_145841_1_.setInteger("x", this.xCoord);
 				p_145841_1_.setInteger("y", this.yCoord);
 				p_145841_1_.setInteger("z", this.zCoord);
+				p_145841_1_.setInteger("mID", this.mID);
 			}
-
-
 			this.getLogic().writeToNBT(p_145841_1_);
 		}
 	}
@@ -154,10 +160,10 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 		} else {
 			try {
 				if (nameToClassMap_Ex == null) {
-					nameToClassMap_Ex = (Map) ReflectionUtils.getField(getClass(), "nameToClassMap").get(this);
+					nameToClassMap_Ex = (Map<?, ?>) ReflectionUtils.getField(getClass(), "nameToClassMap").get(this);
 				}
 				if (classToNameMap_Ex == null) {
-					classToNameMap_Ex = (Map) ReflectionUtils.getField(getClass(), "classToNameMap").get(this);			
+					classToNameMap_Ex = (Map<?, ?>) ReflectionUtils.getField(getClass(), "classToNameMap").get(this);			
 				}
 				if (nameToClassMap_Ex != null && classToNameMap_Ex != null) {
 					isReady = true;

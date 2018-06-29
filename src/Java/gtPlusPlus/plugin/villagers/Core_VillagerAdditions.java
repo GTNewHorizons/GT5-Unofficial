@@ -7,7 +7,9 @@ import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import net.minecraft.util.ResourceLocation;
 
@@ -33,18 +35,20 @@ public class Core_VillagerAdditions implements IPlugin {
 		if (shouldLoad) {
 
 			//Register all Villager ID's and their Custom Trades.
-			for (Pair<Integer, IVillageTradeHandler> g : mVillagerTrades) {
-				if (g != null && g.getKey() != null) {
-					VillagerRegistry.instance().registerVillagerId(g.getKey());
-					if (g.getValue() != null) {
-						VillagerRegistry.instance().registerVillageTradeHandler(g.getKey(), g.getValue());
-					}
-					if (mVillagerSkins.get(g.getKey()) != null) {
-						VillagerRegistry.instance().registerVillagerSkin(g.getKey(), mVillagerSkins.get(g.getKey()));
+			if (mVillagerTrades.size() > 0) {
+				for (Pair<Integer, IVillageTradeHandler> g : mVillagerTrades) {
+					if (g != null && g.getKey() != null) {
+						VillagerRegistry.instance().registerVillagerId(g.getKey());
+						if (g.getValue() != null) {
+							VillagerRegistry.instance().registerVillageTradeHandler(g.getKey(), g.getValue());
+						}
+						if (mVillagerSkins.get(g.getKey()) != null) {
+							VillagerRegistry.instance().registerVillagerSkin(g.getKey(), mVillagerSkins.get(g.getKey()));
+						}
 					}
 				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -59,9 +63,9 @@ public class Core_VillagerAdditions implements IPlugin {
 	@Override
 	public boolean postInit() {		
 		if (shouldLoad) {
-			
-			
-			
+
+			Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
+
 			return true;
 		}
 		return false;
