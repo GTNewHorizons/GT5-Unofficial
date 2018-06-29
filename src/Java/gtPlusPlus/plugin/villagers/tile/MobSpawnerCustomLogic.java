@@ -7,42 +7,51 @@ import net.minecraft.world.World;
 
 public class MobSpawnerCustomLogic extends MobSpawnerBaseLogic {
 
-	private final TileEntity mTile;
-	
+	private TileEntity mTile;
+
 	public MobSpawnerCustomLogic(TileEntity tile) {
-		mTile = tile;
+		if (tile != null) {
+			mTile = tile;
+		}
 	}
-	
-	
+
 	@Override
-	public void func_98267_a(int p_98267_1_){
-		mTile.getWorldObj().addBlockEvent(
-				mTile.xCoord,
-				mTile.yCoord,
-				mTile.zCoord,
-				Blocks.mob_spawner,
-				p_98267_1_,
-				0);
-    }
+	public void func_98267_a(int eventID) {
+		if (mTile != null) mTile.getWorldObj().addBlockEvent(mTile.xCoord, mTile.yCoord, mTile.zCoord, Blocks.mob_spawner, eventID, 0);
+	}
 
 	@Override
 	public World getSpawnerWorld() {
-		return mTile.getWorldObj();
+		if (mTile != null) return mTile.getWorldObj();
+		return null;
 	}
 
 	@Override
 	public int getSpawnerX() {
-		return mTile.xCoord;
+		if (mTile != null) return mTile.xCoord;
+		return 0;
 	}
 
 	@Override
 	public int getSpawnerY() {
-		return mTile.yCoord;
+		if (mTile != null) return mTile.yCoord;
+		return 0;
 	}
 
 	@Override
 	public int getSpawnerZ() {
-		return mTile.zCoord;
+		if (mTile != null) return mTile.zCoord;
+		return 0;
+	}
+
+	@Override
+	public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart p_98277_1_) {
+		super.setRandomEntity(p_98277_1_);
+		if (mTile != null) {
+			if (this.getSpawnerWorld() != null) {
+				this.getSpawnerWorld().markBlockForUpdate(mTile.xCoord, mTile.yCoord, mTile.zCoord);
+			}
+		}
 	}
 
 }

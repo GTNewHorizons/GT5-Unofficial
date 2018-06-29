@@ -27,7 +27,7 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
-public abstract class EntityBaseVillager extends EntityVillager {
+public class EntityBaseVillager extends EntityVillager {
 
 	// public static final VillagerProfession mProfession;
 
@@ -106,7 +106,9 @@ public abstract class EntityBaseVillager extends EntityVillager {
 		super.setRecipes(p_70930_1_);
 	}
 
-	public abstract boolean shouldAlwaysSprint();
+	public boolean shouldAlwaysSprint() {
+		return false;
+	};
 
 	@Override
 	public void onLivingUpdate() {

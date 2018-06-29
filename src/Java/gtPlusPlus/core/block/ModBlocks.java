@@ -16,6 +16,7 @@ import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
@@ -60,6 +61,8 @@ public final class ModBlocks {
 	public static Block blockXpConverter;
 	public static Block blockCompressedObsidian;
 	public static Block blockNet;
+	
+	public static Block blockCustomMobSpawner;
 
 	public static void init() {
 		Logger.INFO("Initializing Blocks.");
@@ -93,6 +96,8 @@ public final class ModBlocks {
 		blockXpConverter = new BlockTankXpConverter();
 		blockCompressedObsidian = new BlockCompressedObsidian();
 		blockNet = new BlockNet();
+		
+		blockCustomMobSpawner = new BlockGenericSpawner();
 
 		blockFakeMiningPipe = new Mining_Pipe_Fake();
 		blockFakeMiningHead = new Mining_Head_Fake();

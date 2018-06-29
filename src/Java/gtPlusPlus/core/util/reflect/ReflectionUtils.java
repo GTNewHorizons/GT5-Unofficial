@@ -66,12 +66,11 @@ public class ReflectionUtils {
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
-		if (clazz != null) {
+		while (clazz != null) {
 			try {
 				final Field field = getField(clazz, fieldName);
 				if (field != null) {
-					makeAccessible(field);
-					field.set(object, fieldValue);
+					setValue(object, field, fieldValue);					
 					return true;
 				}
 			} catch (final NoSuchFieldException e) {

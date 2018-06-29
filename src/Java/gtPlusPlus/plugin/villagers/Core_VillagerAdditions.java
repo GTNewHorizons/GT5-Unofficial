@@ -58,7 +58,10 @@ public class Core_VillagerAdditions implements IPlugin {
 
 	@Override
 	public boolean postInit() {		
-		if (shouldLoad) {	
+		if (shouldLoad) {
+			
+			
+			
 			return true;
 		}
 		return false;
