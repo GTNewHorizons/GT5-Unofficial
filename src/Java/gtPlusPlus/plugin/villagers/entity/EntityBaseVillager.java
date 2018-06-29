@@ -20,30 +20,29 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Tuple;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
-public abstract class EntityBaseVillager extends EntityVillager{
+public abstract class EntityBaseVillager extends EntityVillager {
 
-	//public static final VillagerProfession mProfession;
+	// public static final VillagerProfession mProfession;
 
 	/*
 	 * 
-	Your problem is that you are extending EntityVillager, 
-	but buyingList and addDefaultEquipment are both PRIVATE members of EntityVillager - 
-	you cannot use or override them without Reflection or ASM.
-
-	What you can do, however, is override getRecipes to return your own list, 
-	but because you override EntityVillager, your mob is still using the villager's 
-	buyingList (which is NULL) when useRecipe or any other villager method is called.
-	You either have to override every method from EntityVillager which interacts with 
-	buyingList and make it use your own list, or you need to not extend EntityVillager and just implement IMerchant instead.
+	 * Your problem is that you are extending EntityVillager, but buyingList and
+	 * addDefaultEquipment are both PRIVATE members of EntityVillager - you cannot
+	 * use or override them without Reflection or ASM.
+	 * 
+	 * What you can do, however, is override getRecipes to return your own list, but
+	 * because you override EntityVillager, your mob is still using the villager's
+	 * buyingList (which is NULL) when useRecipe or any other villager method is
+	 * called. You either have to override every method from EntityVillager which
+	 * interacts with buyingList and make it use your own list, or you need to not
+	 * extend EntityVillager and just implement IMerchant instead.
 	 */
 
 	public EntityBaseVillager(World aWorld, int aID) {
@@ -110,16 +109,16 @@ public abstract class EntityBaseVillager extends EntityVillager{
 	public abstract boolean shouldAlwaysSprint();
 
 	@Override
-	public void onLivingUpdate() {	
+	public void onLivingUpdate() {
 
-		//Set Custom Name
+		// Set Custom Name
 		if (!this.hasCustomNameTag()) {
 			this.setCustomNameTag(NameLists.generateRandomName());
-		}		
+		}
 
-		super.onLivingUpdate();	
+		super.onLivingUpdate();
 
-		//Make these guys always sprint
+		// Make these guys always sprint
 		if (shouldAlwaysSprint()) {
 			if (!this.isSprinting()) {
 				this.setSprinting(true);
@@ -148,11 +147,9 @@ public abstract class EntityBaseVillager extends EntityVillager{
 		super.setSprinting(bool);
 	}
 
-
 	/**
 	 * Custom Shit
 	 */
-
 
 	protected float getField_82191_bN() {
 		Field v82191;
@@ -171,7 +168,8 @@ public abstract class EntityBaseVillager extends EntityVillager{
 	protected void setField_82191_bN(float f) {
 		try {
 			ReflectionUtils.setField(this, "field_82191_bN", f);
-		} catch (IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	protected boolean getNeedsInitilization() {
@@ -191,7 +189,8 @@ public abstract class EntityBaseVillager extends EntityVillager{
 	protected void setNeedsInitilization(boolean f) {
 		try {
 			ReflectionUtils.setField(this, "needsInitilization", f);
-		} catch (IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	protected MerchantRecipeList getBuyingList() {
@@ -213,7 +212,8 @@ public abstract class EntityBaseVillager extends EntityVillager{
 	protected void setBuyingList(MerchantRecipeList f) {
 		try {
 			ReflectionUtils.setField(this, "buyingList", f);
-		} catch (IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	protected Village getVillageObject() {
@@ -244,39 +244,31 @@ public abstract class EntityBaseVillager extends EntityVillager{
 		}
 	}
 
-
-
-
-	public MerchantRecipeList getRecipes(EntityPlayer p_70934_1_){
-		if (getBuyingList() == null){
+	public MerchantRecipeList getRecipes(EntityPlayer p_70934_1_) {
+		if (getBuyingList() == null) {
 			this.addDefaultEquipmentAndRecipies(1);
 		}
 		return getBuyingList();
 	}
 
-
-
 	/**
-	 * Adjusts the probability of obtaining a given recipe being offered by a villager
+	 * Adjusts the probability of obtaining a given recipe being offered by a
+	 * villager
 	 */
-	private float adjustProbability(float p_82188_1_)
-	{
-		float f1 = p_82188_1_ +  getField_82191_bN();
+	private float adjustProbability(float p_82188_1_) {
+		float f1 = p_82188_1_ + getField_82191_bN();
 		return f1 > 0.9F ? 0.9F - (f1 - 0.9F) : f1;
 	}
 
 	/**
-	 * based on the villagers profession add items, equipment, and recipies adds par1 random items to the list of things
-	 * that the villager wants to buy. (at most 1 of each wanted type is added)
+	 * based on the villagers profession add items, equipment, and recipies adds
+	 * par1 random items to the list of things that the villager wants to buy. (at
+	 * most 1 of each wanted type is added)
 	 */
-	private void addDefaultEquipmentAndRecipies(int p_70950_1_)
-	{
-		if (this.getBuyingList() != null)
-		{
-			setField_82191_bN(MathHelper.sqrt_float((float)this.getBuyingList().size()) * 0.2F);
-		}
-		else
-		{
+	private void addDefaultEquipmentAndRecipies(int p_70950_1_) {
+		if (this.getBuyingList() != null) {
+			setField_82191_bN(MathHelper.sqrt_float((float) this.getBuyingList().size()) * 0.2F);
+		} else {
 			setField_82191_bN(0.0F);
 		}
 
@@ -286,129 +278,132 @@ public abstract class EntityBaseVillager extends EntityVillager{
 		int k;
 		label50:
 
-			switch (this.getProfession())
-			{
-			case 0:
-				func_146091_a(merchantrecipelist, Items.wheat, this.rand, this.adjustProbability(0.9F));
-				func_146091_a(merchantrecipelist, Item.getItemFromBlock(Blocks.wool), this.rand, this.adjustProbability(0.5F));
-				func_146091_a(merchantrecipelist, Items.chicken, this.rand, this.adjustProbability(0.5F));
-				func_146091_a(merchantrecipelist, Items.cooked_fished, this.rand, this.adjustProbability(0.4F));
-				func_146089_b(merchantrecipelist, Items.bread, this.rand, this.adjustProbability(0.9F));
-				func_146089_b(merchantrecipelist, Items.melon, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.apple, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.cookie, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.shears, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.flint_and_steel, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.cooked_chicken, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.arrow, this.rand, this.adjustProbability(0.5F));
+		switch (this.getProfession()) {
+		case 0:
+			addPurchaseRecipe(merchantrecipelist, Items.wheat, this.rand, this.adjustProbability(0.9F));
+			addPurchaseRecipe(merchantrecipelist, Item.getItemFromBlock(Blocks.wool), this.rand,
+					this.adjustProbability(0.5F));
+			addPurchaseRecipe(merchantrecipelist, Items.chicken, this.rand, this.adjustProbability(0.5F));
+			addPurchaseRecipe(merchantrecipelist, Items.cooked_fished, this.rand, this.adjustProbability(0.4F));
+			addEmeraldTrade(merchantrecipelist, Items.bread, this.rand, this.adjustProbability(0.9F));
+			addEmeraldTrade(merchantrecipelist, Items.melon, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.apple, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.cookie, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.shears, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.flint_and_steel, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.cooked_chicken, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.arrow, this.rand, this.adjustProbability(0.5F));
 
-				if (this.rand.nextFloat() < this.adjustProbability(0.5F))
-				{
-					merchantrecipelist.add(new MerchantRecipe(new ItemStack(Blocks.gravel, 10), new ItemStack(Items.emerald), new ItemStack(Items.flint, 4 + this.rand.nextInt(2), 0)));
-				}
-
-				break;
-			case 1:
-				func_146091_a(merchantrecipelist, Items.paper, this.rand, this.adjustProbability(0.8F));
-				func_146091_a(merchantrecipelist, Items.book, this.rand, this.adjustProbability(0.8F));
-				func_146091_a(merchantrecipelist, Items.written_book, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Item.getItemFromBlock(Blocks.bookshelf), this.rand, this.adjustProbability(0.8F));
-				func_146089_b(merchantrecipelist, Item.getItemFromBlock(Blocks.glass), this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.compass, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.clock, this.rand, this.adjustProbability(0.2F));
-
-				if (this.rand.nextFloat() < this.adjustProbability(0.07F))
-				{
-					Enchantment enchantment = Enchantment.enchantmentsBookList[this.rand.nextInt(Enchantment.enchantmentsBookList.length)];
-					int i1 = MathHelper.getRandomIntegerInRange(this.rand, enchantment.getMinLevel(), enchantment.getMaxLevel());
-					ItemStack itemstack = Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(enchantment, i1));
-					k = 2 + this.rand.nextInt(5 + i1 * 10) + 3 * i1;
-					merchantrecipelist.add(new MerchantRecipe(new ItemStack(Items.book), new ItemStack(Items.emerald, k), itemstack));
-				}
-
-				break;
-			case 2:
-				func_146089_b(merchantrecipelist, Items.ender_eye, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.experience_bottle, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.redstone, this.rand, this.adjustProbability(0.4F));
-				func_146089_b(merchantrecipelist, Item.getItemFromBlock(Blocks.glowstone), this.rand, this.adjustProbability(0.3F));
-				Item[] aitem = new Item[] {Items.iron_sword, Items.diamond_sword, Items.iron_chestplate, Items.diamond_chestplate, Items.iron_axe, Items.diamond_axe, Items.iron_pickaxe, Items.diamond_pickaxe};
-				Item[] aitem1 = aitem;
-				int j = aitem.length;
-				k = 0;
-
-				while (true)
-				{
-					if (k >= j)
-					{
-						break label50;
-					}
-
-					Item item = aitem1[k];
-
-					if (this.rand.nextFloat() < this.adjustProbability(0.05F))
-					{
-						merchantrecipelist.add(new MerchantRecipe(new ItemStack(item, 1, 0), new ItemStack(Items.emerald, 2 + this.rand.nextInt(3), 0), EnchantmentHelper.addRandomEnchantment(this.rand, new ItemStack(item, 1, 0), 5 + this.rand.nextInt(15))));
-					}
-
-					++k;
-				}
-			case 3:
-				func_146091_a(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
-				func_146091_a(merchantrecipelist, Items.iron_ingot, this.rand, this.adjustProbability(0.5F));
-				func_146091_a(merchantrecipelist, Items.gold_ingot, this.rand, this.adjustProbability(0.5F));
-				func_146091_a(merchantrecipelist, Items.diamond, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.iron_sword, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.diamond_sword, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.iron_axe, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.diamond_axe, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.iron_pickaxe, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.diamond_pickaxe, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.iron_shovel, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_shovel, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.iron_hoe, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_hoe, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.iron_boots, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_boots, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.iron_helmet, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_helmet, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.iron_chestplate, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_chestplate, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.iron_leggings, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.diamond_leggings, this.rand, this.adjustProbability(0.2F));
-				func_146089_b(merchantrecipelist, Items.chainmail_boots, this.rand, this.adjustProbability(0.1F));
-				func_146089_b(merchantrecipelist, Items.chainmail_helmet, this.rand, this.adjustProbability(0.1F));
-				func_146089_b(merchantrecipelist, Items.chainmail_chestplate, this.rand, this.adjustProbability(0.1F));
-				func_146089_b(merchantrecipelist, Items.chainmail_leggings, this.rand, this.adjustProbability(0.1F));
-				break;
-			case 4:
-				func_146091_a(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
-				func_146091_a(merchantrecipelist, Items.porkchop, this.rand, this.adjustProbability(0.5F));
-				func_146091_a(merchantrecipelist, Items.beef, this.rand, this.adjustProbability(0.5F));
-				func_146089_b(merchantrecipelist, Items.saddle, this.rand, this.adjustProbability(0.1F));
-				func_146089_b(merchantrecipelist, Items.leather_chestplate, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.leather_boots, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.leather_helmet, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.leather_leggings, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.cooked_porkchop, this.rand, this.adjustProbability(0.3F));
-				func_146089_b(merchantrecipelist, Items.cooked_beef, this.rand, this.adjustProbability(0.3F));
+			if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
+				merchantrecipelist.add(new MerchantRecipe(new ItemStack(Blocks.gravel, 10),
+						new ItemStack(Items.emerald), new ItemStack(Items.flint, 4 + this.rand.nextInt(2), 0)));
 			}
 
-		if (merchantrecipelist.isEmpty())
-		{
-			func_146091_a(merchantrecipelist, Items.gold_ingot, this.rand, 1.0F);
+			break;
+		case 1:
+			addPurchaseRecipe(merchantrecipelist, Items.paper, this.rand, this.adjustProbability(0.8F));
+			addPurchaseRecipe(merchantrecipelist, Items.book, this.rand, this.adjustProbability(0.8F));
+			addPurchaseRecipe(merchantrecipelist, Items.written_book, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.bookshelf), this.rand,
+					this.adjustProbability(0.8F));
+			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glass), this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.compass, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.clock, this.rand, this.adjustProbability(0.2F));
+
+			if (this.rand.nextFloat() < this.adjustProbability(0.07F)) {
+				Enchantment enchantment = Enchantment.enchantmentsBookList[this.rand
+						.nextInt(Enchantment.enchantmentsBookList.length)];
+				int i1 = MathHelper.getRandomIntegerInRange(this.rand, enchantment.getMinLevel(),
+						enchantment.getMaxLevel());
+				ItemStack itemstack = Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(enchantment, i1));
+				k = 2 + this.rand.nextInt(5 + i1 * 10) + 3 * i1;
+				merchantrecipelist
+						.add(new MerchantRecipe(new ItemStack(Items.book), new ItemStack(Items.emerald, k), itemstack));
+			}
+
+			break;
+		case 2:
+			addEmeraldTrade(merchantrecipelist, Items.ender_eye, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.experience_bottle, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.redstone, this.rand, this.adjustProbability(0.4F));
+			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glowstone), this.rand,
+					this.adjustProbability(0.3F));
+			Item[] aitem = new Item[] { Items.iron_sword, Items.diamond_sword, Items.iron_chestplate,
+					Items.diamond_chestplate, Items.iron_axe, Items.diamond_axe, Items.iron_pickaxe,
+					Items.diamond_pickaxe };
+			Item[] aitem1 = aitem;
+			int j = aitem.length;
+			k = 0;
+
+			while (true) {
+				if (k >= j) {
+					break label50;
+				}
+
+				Item item = aitem1[k];
+
+				if (this.rand.nextFloat() < this.adjustProbability(0.05F)) {
+					merchantrecipelist.add(new MerchantRecipe(new ItemStack(item, 1, 0),
+							new ItemStack(Items.emerald, 2 + this.rand.nextInt(3), 0),
+							EnchantmentHelper.addRandomEnchantment(this.rand, new ItemStack(item, 1, 0),
+									5 + this.rand.nextInt(15))));
+				}
+
+				++k;
+			}
+		case 3:
+			addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
+			addPurchaseRecipe(merchantrecipelist, Items.iron_ingot, this.rand, this.adjustProbability(0.5F));
+			addPurchaseRecipe(merchantrecipelist, Items.gold_ingot, this.rand, this.adjustProbability(0.5F));
+			addPurchaseRecipe(merchantrecipelist, Items.diamond, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_sword, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_sword, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_axe, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_axe, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_pickaxe, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_pickaxe, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_shovel, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_shovel, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_hoe, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_hoe, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_boots, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_boots, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_helmet, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_helmet, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_chestplate, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_chestplate, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.iron_leggings, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.diamond_leggings, this.rand, this.adjustProbability(0.2F));
+			addEmeraldTrade(merchantrecipelist, Items.chainmail_boots, this.rand, this.adjustProbability(0.1F));
+			addEmeraldTrade(merchantrecipelist, Items.chainmail_helmet, this.rand, this.adjustProbability(0.1F));
+			addEmeraldTrade(merchantrecipelist, Items.chainmail_chestplate, this.rand, this.adjustProbability(0.1F));
+			addEmeraldTrade(merchantrecipelist, Items.chainmail_leggings, this.rand, this.adjustProbability(0.1F));
+			break;
+		case 4:
+			addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
+			addPurchaseRecipe(merchantrecipelist, Items.porkchop, this.rand, this.adjustProbability(0.5F));
+			addPurchaseRecipe(merchantrecipelist, Items.beef, this.rand, this.adjustProbability(0.5F));
+			addEmeraldTrade(merchantrecipelist, Items.saddle, this.rand, this.adjustProbability(0.1F));
+			addEmeraldTrade(merchantrecipelist, Items.leather_chestplate, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.leather_boots, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.leather_helmet, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.leather_leggings, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.cooked_porkchop, this.rand, this.adjustProbability(0.3F));
+			addEmeraldTrade(merchantrecipelist, Items.cooked_beef, this.rand, this.adjustProbability(0.3F));
+		}
+
+		if (merchantrecipelist.isEmpty()) {
+			addPurchaseRecipe(merchantrecipelist, Items.gold_ingot, this.rand, 1.0F);
 		}
 
 		Collections.shuffle(merchantrecipelist);
 
-		if (this.getBuyingList() == null)
-		{
+		if (this.getBuyingList() == null) {
 			this.setBuyingList(new MerchantRecipeList());
 		}
 
-		for (int l = 0; l < p_70950_1_ && l < merchantrecipelist.size(); ++l)
-		{
-			this.getBuyingList().addToListWithCheck((MerchantRecipe)merchantrecipelist.get(l));
+		for (int l = 0; l < p_70950_1_ && l < merchantrecipelist.size(); ++l) {
+			this.getBuyingList().addToListWithCheck((MerchantRecipe) merchantrecipelist.get(l));
 		}
 	}
 
@@ -416,17 +411,16 @@ public abstract class EntityBaseVillager extends EntityVillager{
 	 * main AI tick function, replaces updateEntityActionState
 	 */
 	@Override
-	protected void updateAITick(){
-		if (!this.isTrading()){
-			if (this.getNeedsInitilization()){
-				if (this.getBuyingList().size() > 1){
+	protected void updateAITick() {
+		if (!this.isTrading()) {
+			if (this.getNeedsInitilization()) {
+				if (this.getBuyingList().size() > 1) {
 					Iterator<MerchantRecipe> iterator = this.getBuyingList().iterator();
 
-					while (iterator.hasNext()){
-						MerchantRecipe merchantrecipe = (MerchantRecipe)iterator.next();
+					while (iterator.hasNext()) {
+						MerchantRecipe merchantrecipe = (MerchantRecipe) iterator.next();
 
-						if (merchantrecipe.isRecipeDisabled())
-						{
+						if (merchantrecipe.isRecipeDisabled()) {
 							merchantrecipe.func_82783_a(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
 						}
 					}
@@ -435,13 +429,75 @@ public abstract class EntityBaseVillager extends EntityVillager{
 				this.addDefaultEquipmentAndRecipies(1);
 				this.setNeedsInitilization(false);
 
-				if (this.getVillageObject() != null && this.getLastBuyingPlayer() != null){
-					this.worldObj.setEntityState(this, (byte)14);
+				if (this.getVillageObject() != null && this.getLastBuyingPlayer() != null) {
+					this.worldObj.setEntityState(this, (byte) 14);
 					this.getVillageObject().setReputationForPlayer(this.getLastBuyingPlayer(), 1);
 				}
 			}
 		}
 		super.updateAITick();
+	}
+
+	public static void addEmeraldTrade(MerchantRecipeList aRecipeList, Item aItem, Random aRand, float aChance) {
+		if (aRand.nextFloat() < aChance) {
+			int i = getLootAmount_BlacksmithSellingList(aItem, aRand);
+			ItemStack itemstack;
+			ItemStack itemstack1;
+
+			if (i < 0) {
+				itemstack = new ItemStack(Items.emerald, 1, 0);
+				itemstack1 = new ItemStack(aItem, -i, 0);
+			} else {
+				itemstack = new ItemStack(Items.emerald, i, 0);
+				itemstack1 = new ItemStack(aItem, 1, 0);
+			}
+
+			aRecipeList.add(new MerchantRecipe(itemstack, itemstack1));
+		}
+	}
+	
+	public static void addCustomTrade(MerchantRecipeList aRecipeList, ItemStack aItem1, ItemStack aItem2, ItemStack aItem3, Random aRand, float aChance) {
+		if (aRand.nextFloat() < aChance) {			
+			aRecipeList.add(new MerchantRecipe(aItem1, aItem2, aItem3));
+		}
+	}
+
+	private static int getLootAmount_BlacksmithSellingList(Item aItem, Random aRand) {
+		Tuple tuple = (Tuple) blacksmithSellingList.get(aItem);
+		return tuple == null ? 1
+				: (((Integer) tuple.getFirst()).intValue() >= ((Integer) tuple.getSecond()).intValue()
+						? ((Integer) tuple.getFirst()).intValue()
+						: ((Integer) tuple.getFirst()).intValue() + aRand.nextInt(
+								((Integer) tuple.getSecond()).intValue() - ((Integer) tuple.getFirst()).intValue()));
+	}
+
+	public static void addPurchaseRecipe(MerchantRecipeList aTradeList, Item aItem, Random aRand, float aChance) {
+		if (aRand.nextFloat() < aChance) {
+			aTradeList.add(new MerchantRecipe(getSimpleLootStack(aItem, aRand), Items.emerald));
+		}
+	}
+
+	private static ItemStack getSimpleLootStack(Item aItem, Random aRand) {
+		return new ItemStack(aItem, getLootAmount_VillagerSellingList(aItem, aRand), 0);
+	}
+	
+	public static void addPurchaseRecipe(MerchantRecipeList aTradeList, Item aItem, int aMeta, Random aRand, float aChance) {
+		if (aRand.nextFloat() < aChance) {
+			aTradeList.add(new MerchantRecipe(getComplexLootStack(aItem, aMeta, aRand), Items.emerald));
+		}
+	}
+
+	private static ItemStack getComplexLootStack(Item aItem, int aMeta, Random aRand) {
+		return new ItemStack(aItem, getLootAmount_VillagerSellingList(aItem, aRand), aMeta);
+	}
+
+	private static int getLootAmount_VillagerSellingList(Item aItem, Random aRand) {
+		Tuple tuple = (Tuple) villagersSellingList.get(aItem);
+		return tuple == null ? 1
+				: (((Integer) tuple.getFirst()).intValue() >= ((Integer) tuple.getSecond()).intValue()
+						? ((Integer) tuple.getFirst()).intValue()
+						: ((Integer) tuple.getFirst()).intValue() + aRand.nextInt(
+								((Integer) tuple.getSecond()).intValue() - ((Integer) tuple.getFirst()).intValue()));
 	}
 
 }
