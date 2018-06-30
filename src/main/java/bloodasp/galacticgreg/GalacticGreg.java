@@ -18,7 +18,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = GalacticGreg.MODID, version = GalacticGreg.VERSION, dependencies = "required-after:GalacticraftCore; required-after:gregtech;", acceptableRemoteVersions="*")
+@Mod(modid = GalacticGreg.MODID, version = GalacticGreg.VERSION, dependencies = "required-after:GalacticraftCore; required-after:gregtech@5.09.32.30;", acceptableRemoteVersions="*")
 public class GalacticGreg {
 	public static final List<GT_Worldgen_GT_Ore_SmallPieces_Space> smallOreWorldgenList = new ArrayList();
 	public static final List<GT_Worldgen_GT_Ore_Layer_Space> oreVeinWorldgenList = new ArrayList();
