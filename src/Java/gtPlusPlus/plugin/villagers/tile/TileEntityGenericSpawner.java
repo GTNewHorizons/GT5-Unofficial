@@ -3,6 +3,8 @@ package gtPlusPlus.plugin.villagers.tile;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +38,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	 */
 	public static boolean registerNewMobSpawner(int aID, Class<Entity> aEntity) {
 		int registered = mSpawners.size();
+		Logger.INFO("Currently "+registered+" spawners are registered.");
 		mSpawners.put(aID, aEntity);
 		return mSpawners.size() > registered;
 	}
@@ -85,7 +88,9 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 		mID = aID;
 		if (aEntity != null) {
 			mSpawnType = aEntity.getClass();
-			registerNewMobSpawner(aID, mSpawnType);
+			if (mSpawners.containsKey(aID)) {
+				registerNewMobSpawner(aID, mSpawnType);
+			}
 		} else {
 			mSpawnType = null;
 		}
@@ -104,7 +109,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	private final void generateLogicObject() {
 		spawnerLogic = new MobSpawnerCustomLogic(this);
 	}
-	
+
 	public int getID() {
 		return this.mID;
 	}
@@ -123,13 +128,19 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	@Override
 	public void writeToNBT(NBTTagCompound p_145841_1_) {
 		if (hasInternalFieldBeenSet()) {
-
-			String s = (String) classToNameMap_Ex.get(TileEntity.class);
-
+			String s = (String) classToNameMap_Ex.get(mSpawners.get(this.mID));
 			if (s == null){
-				throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
+				//throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
+				s = mSpawners.containsKey(this.mID) ? mSpawners.get(this.mID).getSimpleName() : "bad.class.name";  
+				p_145841_1_.setString("id", s);
+				Logger.WARNING(this.getClass() + " is missing a mapping! This is a bug! Used key: "+s);
+				p_145841_1_.setInteger("x", this.xCoord);
+				p_145841_1_.setInteger("y", this.yCoord);
+				p_145841_1_.setInteger("z", this.zCoord);
+				p_145841_1_.setInteger("mID", this.mID);
 			}
 			else {
+				Logger.WARNING(this.getClass() + " is not missing a mapping! Used key: "+s);
 				p_145841_1_.setString("id", s);
 				p_145841_1_.setInteger("x", this.xCoord);
 				p_145841_1_.setInteger("y", this.yCoord);
@@ -142,12 +153,11 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 
 	@Override
 	public void updateEntity() {
-
-
-
-
-		if (hasInternalFieldBeenSet()) {
-			this.getLogic().updateSpawner();
+		if (Utils.isServer()) {
+			mTicks++;
+			if (hasInternalFieldBeenSet()) {
+				this.getLogic().updateSpawner();
+			}
 		}
 	}
 
@@ -158,18 +168,41 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 		if (isReady && mTicks % 200 != 0) {
 			return true;
 		} else {
-			try {
-				if (nameToClassMap_Ex == null) {
-					nameToClassMap_Ex = (Map<?, ?>) ReflectionUtils.getField(getClass(), "nameToClassMap").get(this);
-				}
-				if (classToNameMap_Ex == null) {
-					classToNameMap_Ex = (Map<?, ?>) ReflectionUtils.getField(getClass(), "classToNameMap").get(this);			
-				}
-				if (nameToClassMap_Ex != null && classToNameMap_Ex != null) {
-					isReady = true;
-					return true;
-				}
-				/*Field mInternalLogicField = ReflectionUtils.getField(getClass(), "field_145882_a");
+
+			if (Utils.isServer()) {
+				try {				
+					Map<?, ?> a1 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "nameToClassMap").get(this);
+					Map<?, ?> a2 = (Map<?, ?>) ReflectionUtils.getField(TileEntity.class, "classToNameMap").get(this);				
+					if (a1 != null) {
+						if (nameToClassMap_Ex == null) {
+							nameToClassMap_Ex = a1;
+						}
+						if (nameToClassMap_Ex != null) {
+							if (nameToClassMap_Ex.size() != a1.size()) {
+								nameToClassMap_Ex = a1;
+							}					
+						}
+					}
+					if (a2 != null) {
+						if (classToNameMap_Ex == null) {
+							classToNameMap_Ex = a2;			
+						}
+						if (classToNameMap_Ex != null) {
+							if (classToNameMap_Ex.size() != a2.size()) {
+								classToNameMap_Ex = a2;
+							}			
+						}
+						if (nameToClassMap_Ex != null && classToNameMap_Ex != null) {
+							//Logger.INFO("nameToClassMap_Ex has a size of "+nameToClassMap_Ex.size()+".");
+							//Logger.INFO("a1 has a size of "+a1.size()+".");
+							//Logger.INFO("classToNameMap_Ex has a size of "+classToNameMap_Ex.size()+".");
+							//Logger.INFO("a2 has a size of "+a2.size()+".");
+							isReady = true;
+							return true;
+						}
+					}				
+
+					/*Field mInternalLogicField = ReflectionUtils.getField(getClass(), "field_145882_a");
 				if (mInternalLogicField != null) {
 					MobSpawnerBaseLogic a = (MobSpawnerBaseLogic) mInternalLogicField.get(this);
 					if (a != null) {
@@ -180,7 +213,8 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 						}
 					}
 				}*/
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+				} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+				}
 			}
 			return false;
 		}

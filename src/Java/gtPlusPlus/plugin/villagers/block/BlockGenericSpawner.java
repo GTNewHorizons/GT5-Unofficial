@@ -4,8 +4,12 @@ import static gtPlusPlus.core.lib.CORE.RANDOM;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
+import gtPlusPlus.plugin.villagers.Core_VillagerAdditions;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,8 +25,11 @@ public class BlockGenericSpawner extends BlockMobSpawner {
 		this.disableStats();
 		this.setHardness(5.0F);
 		this.setStepSound(soundTypeMetal);
-		this.setBlockName("mobSpawner");
+		this.setBlockName("blockMobSpawnerEx");
 		this.setBlockTextureName("mob_spawner");
+		this.setResistance(2000.0F);
+		GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockMobSpawnerEx");
+		Core_VillagerAdditions.mInstance.log("Registered Custom Spawner Block.");
 	}
 	
 	/**
@@ -45,7 +52,7 @@ public class BlockGenericSpawner extends BlockMobSpawner {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
-        for (int i = 0; i < TileEntityGenericSpawner.mSpawners.size(); ++i)
+        for (int i = 0; i < Math.max(1,TileEntityGenericSpawner.mSpawners.size()); ++i)
         {
             p_149666_3_.add(new ItemStack(p_149666_1_, 1, i));
         }

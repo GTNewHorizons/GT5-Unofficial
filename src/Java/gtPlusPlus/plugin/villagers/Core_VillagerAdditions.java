@@ -7,15 +7,19 @@ import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
+import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import net.minecraft.util.ResourceLocation;
 
 public class Core_VillagerAdditions implements IPlugin {
 
-	final static Core_VillagerAdditions mInstance;
+	public final static Core_VillagerAdditions mInstance;
 	private static boolean shouldLoad = false;
 
 	public static final HashMap<Integer, ResourceLocation> mVillagerSkins = new HashMap<Integer, ResourceLocation>();
@@ -32,8 +36,12 @@ public class Core_VillagerAdditions implements IPlugin {
 		if (/*CORE.ConfigSwitches.enableSulfuricAcidFix || */CORE.DEVENV) {
 			shouldLoad = true;
 		}
-		if (shouldLoad) {
-
+		if (shouldLoad) {			
+			//Try register some test spawners
+			Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
+			Utils.createNewMobSpawner(1, EntitySickBlaze.class);
+			Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
+			
 			//Register all Villager ID's and their Custom Trades.
 			if (mVillagerTrades.size() > 0) {
 				for (Pair<Integer, IVillageTradeHandler> g : mVillagerTrades) {
@@ -55,17 +63,16 @@ public class Core_VillagerAdditions implements IPlugin {
 
 	@Override
 	public boolean init() {
-		if (shouldLoad)
+		if (shouldLoad) {
+			ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
 			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean postInit() {		
 		if (shouldLoad) {
-
-			Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
-
 			return true;
 		}
 		return false;

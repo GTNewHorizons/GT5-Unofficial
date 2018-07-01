@@ -95,9 +95,7 @@ public final class ModBlocks {
 		blockWitherGuard = new BlockWitherProof();
 		blockXpConverter = new BlockTankXpConverter();
 		blockCompressedObsidian = new BlockCompressedObsidian();
-		blockNet = new BlockNet();
-		
-		blockCustomMobSpawner = new BlockGenericSpawner();
+		blockNet = new BlockNet();		
 
 		blockFakeMiningPipe = new Mining_Pipe_Fake();
 		blockFakeMiningHead = new Mining_Head_Fake();

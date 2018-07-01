@@ -15,7 +15,8 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -833,12 +834,21 @@ public class Utils {
 		Class<Entity> c;		
 		if (aEntity instanceof Entity) {
 			c = (Class<Entity>) aEntity.getClass();
-			TileEntityGenericSpawner.registerNewMobSpawner(aID, c);
+			createNewMobSpawner(aID, c);
 		}
 	}
 	
-	public static void createNewMobSpawner(int aID, Class aEntity) {		
-		TileEntityGenericSpawner.registerNewMobSpawner(aID, aEntity);
+	public static void createNewMobSpawner(int aID, Class aEntity) {	
+		Logger.INFO("[Spawn] Generating new spawner for entity with class ("+aEntity.getCanonicalName()+").");
+		if (TileEntityGenericSpawner.registerNewMobSpawner(aID, aEntity)) {
+			EntityRegistration x = EntityRegistry.instance().lookupModSpawn(aEntity, false);
+			if (x != null) {
+				Logger.INFO("[Spawn] Registration for "+x.getEntityName()+" successful");
+			}
+		}
+		else {
+			Logger.INFO("[Spawn] Registration for "+aEntity.getName()+" failed");			
+		}
 	}
 
 }
