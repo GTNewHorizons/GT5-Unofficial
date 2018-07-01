@@ -181,7 +181,7 @@ public class EntityBaseVillager extends EntityVillager {
 	protected boolean getNeedsInitilization() {
 		Field v82191;
 		try {
-			v82191 = ReflectionUtils.getField(getClass(), "needsInitilization");
+			v82191 = ReflectionUtils.getField(EntityVillager.class, "needsInitilization");
 			try {
 				return v82191 != null ? v82191.getBoolean(this) : false;
 			} catch (IllegalArgumentException | IllegalAccessException e) {

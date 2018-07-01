@@ -29,7 +29,7 @@ public class StringUtils {
 		str = str.replaceAll("9", "\u2089");
 		return str;
 	}
-	
+
 	public static boolean containsSuperOrSubScript(final String s){
 		if (s.contains(StringUtils.superscript("0"))) {
 			return true;
@@ -110,4 +110,10 @@ public class StringUtils {
 			return "\u00A7"; // Returns §.
 		}
 	}	
+
+	public static String firstLetterCaps(String data) {
+		String firstLetter = data.substring(0,1).toUpperCase();
+		String restLetters = data.substring(1).toLowerCase();
+		return firstLetter + restLetters;
+	}
 }

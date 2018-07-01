@@ -39,7 +39,9 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	public static boolean registerNewMobSpawner(int aID, Class<Entity> aEntity) {
 		int registered = mSpawners.size();
 		Logger.INFO("Currently "+registered+" spawners are registered.");
-		mSpawners.put(aID, aEntity);
+		if (!mSpawners.containsKey(aID) && !mSpawners.containsValue(aEntity)) {
+			mSpawners.put(aID, aEntity);
+		}
 		return mSpawners.size() > registered;
 	}
 
@@ -135,7 +137,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 						Logger.INFO("Found Translation for "+((Class) nameToClassMap_Ex.get(g)).getName()+": "+g);
 					}
 				}
-				
+
 				//throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
 				s = mSpawners.containsKey(this.mID) ? mSpawners.get(this.mID).getSimpleName() : "bad.class.name";  
 				p_145841_1_.setString("id", s);

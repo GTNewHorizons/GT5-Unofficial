@@ -1992,3 +1992,22 @@ item.crushedCentrifugedTrinium.name=Centrifuged Crushed Trinium Ore
 item.crushedPurifiedTrinium.name=Purified Crushed Trinium Ore
 item.dustImpureTrinium.name=Impure Trinium Dust
 item.dustPureTrinium.name=Purified Trinium Dust
+
+//Added 1/7/18
+entity.VillagerV5.name=Wise Villager
+tile.blockMobSpawnerEx.0.name=Monster Spawner
+tile.blockMobSpawnerEx.1.name=Monster Spawner
+tile.blockMobSpawnerEx.2.name=Monster Spawner
+tile.blockMobSpawnerEx.3.name=Monster Spawner
+tile.blockMobSpawnerEx.4.name=Monster Spawner
+tile.blockMobSpawnerEx.5.name=Monster Spawner
+tile.blockMobSpawnerEx.6.name=Monster Spawner
+tile.blockMobSpawnerEx.7.name=Monster Spawner
+tile.blockMobSpawnerEx.8.name=Monster Spawner
+tile.blockMobSpawnerEx.9.name=Monster Spawner
+tile.blockMobSpawnerEx.10.name=Monster Spawner
+tile.blockMobSpawnerEx.11.name=Monster Spawner
+tile.blockMobSpawnerEx.12.name=Monster Spawner
+tile.blockMobSpawnerEx.13.name=Monster Spawner
+tile.blockMobSpawnerEx.14.name=Monster Spawner
+tile.blockMobSpawnerEx.15.name=Monster Spawner
