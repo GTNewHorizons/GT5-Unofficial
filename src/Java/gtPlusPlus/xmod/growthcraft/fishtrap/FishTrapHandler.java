@@ -4,8 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -17,7 +19,7 @@ public class FishTrapHandler {
 	private static final String[] fishTypes = {"fish", "junk", "treasure"};
 	private static Object mFishingRegistry;
 	private static Growthcraft_Old mHandler;
-	
+
 	public static Object getFishingRegistry(){
 		if (mFishingRegistry != null){
 			return mFishingRegistry;
@@ -50,7 +52,7 @@ public class FishTrapHandler {
 		if (mHandler == null){
 			mHandler = new Growthcraft_Old();
 		}
-		
+
 		final String GCVersion = LoadedMods.getModVersion("Growthcraft");
 		final String[] versionString = GCVersion.split("//.");
 
@@ -219,7 +221,12 @@ public class FishTrapHandler {
 
 	private static void addGregtechFluidRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
-			MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, (64/4), 4); //4eu/t  total eu used = 64 so time = 64/4
+			if (CORE.GTNH) {
+				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 50), 10000, 16, 4);
+			}
+			else {
+				MaterialGenerator.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, 16, 4); //4eu/t  total eu used = 64 so time = 64/4
+			}
 		}
 	}
 
