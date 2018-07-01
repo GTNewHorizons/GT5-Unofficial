@@ -239,7 +239,7 @@ public class CI {
 	}	
 
 	public static Object getTieredCircuit(int tier){
-		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
 			if (tier == 0){
 				return GregtechItemList.Old_Circuit_Primitive.get(1);
 			}
@@ -389,7 +389,7 @@ public class CI {
 	}
 
 	public static ItemStack getDataOrb(){
-		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
 			return GregtechItemList.Old_Tool_DataOrb.get(1);
 		}
 		else {

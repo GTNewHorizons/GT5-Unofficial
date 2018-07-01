@@ -21,7 +21,7 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 public class OldCircuitHandler {
 
 	public static void preInit(){
-		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
 			removeCircuitRecipeMap(); //Bye shitty recipes.		
 		}	
 	}

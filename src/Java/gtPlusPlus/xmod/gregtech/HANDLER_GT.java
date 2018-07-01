@@ -34,7 +34,7 @@ public class HANDLER_GT {
 			GT_Materials.init(mMaterialProperties);
 		}
 		
-		if (ConfigSwitches.enableOldGTcircuits){
+		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){
 			OldCircuitHandler.preInit();
 		}
 		
@@ -60,7 +60,7 @@ public class HANDLER_GT {
 			new ProcessingToolHeadChoocher().run();
 		}
 
-		if (ConfigSwitches.enableOldGTcircuits){
+		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){
 			OldCircuitHandler.init();
 		}
 		
@@ -75,7 +75,7 @@ public class HANDLER_GT {
 			GregtechNitroDieselFix.run();
 		}
 
-		if (ConfigSwitches.enableOldGTcircuits){
+		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){
 			OldCircuitHandler.postInit();
 		}
 		

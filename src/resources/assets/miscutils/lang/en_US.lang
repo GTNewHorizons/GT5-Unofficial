@@ -1994,7 +1994,7 @@ item.dustImpureTrinium.name=Impure Trinium Dust
 item.dustPureTrinium.name=Purified Trinium Dust
 
 //Added 1/7/18
-entity.VillagerV5.name=Wise Villager
+entity.WiseVillager.name=Wise Villager
 tile.blockMobSpawnerEx.0.name=Monster Spawner
 tile.blockMobSpawnerEx.1.name=Monster Spawner
 tile.blockMobSpawnerEx.2.name=Monster Spawner

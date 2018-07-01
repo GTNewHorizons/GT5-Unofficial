@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -22,7 +21,6 @@ import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -120,17 +118,20 @@ public class RecipeUtils {
 		}
 
 		try {
-			
+			int size = COMPAT_HANDLER.mRecipesToGenerate.size();
 			COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(validSlots.toArray(), resultItem, false));
-			
+
 			//Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
-			if (!COMPAT_HANDLER.areInitItemsLoaded){
-				RegistrationHandler.recipesSuccess++;
+			if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
+				if (!COMPAT_HANDLER.areInitItemsLoaded){
+					RegistrationHandler.recipesSuccess++;
+				}
+				else {
+					LateRegistrationHandler.recipesSuccess++;
+				}
+				return true;
 			}
-			else {
-				LateRegistrationHandler.recipesSuccess++;
-			}
-			return true;
+			return false;
 		}
 		catch(RuntimeException k){
 			//k.getMessage();
@@ -228,35 +229,35 @@ public class RecipeUtils {
 			array[z].toString();
 			switch(z)
 			{
-				case 0:
-					a = array[z];
-					break;
-				case 1:
-					b = array[z];
-					break;
-				case 2:
-					c = array[z];
-					break;
-				case 3:
-					d = array[z];
-					break;
-				case 4:
-					e = array[z];
-					break;
-				case 5:
-					f = array[z];
-					break;
-				case 6:
-					g = array[z];
-					break;
-				case 7:
-					h = array[z];
-					break;
-				case 8:
-					i = array[z];
-					break;
-				default:
-					break;
+			case 0:
+				a = array[z];
+				break;
+			case 1:
+				b = array[z];
+				break;
+			case 2:
+				c = array[z];
+				break;
+			case 3:
+				d = array[z];
+				break;
+			case 4:
+				e = array[z];
+				break;
+			case 5:
+				f = array[z];
+				break;
+			case 6:
+				g = array[z];
+				break;
+			case 7:
+				h = array[z];
+				break;
+			case 8:
+				i = array[z];
+				break;
+			default:
+				break;
 			}
 			recipeBuilder(a, b, c, d, e, f, g, h, i, outPut);
 		}
@@ -394,11 +395,21 @@ public class RecipeUtils {
 				InputItem4, InputItem5, InputItem6,
 				InputItem7, InputItem8, InputItem9
 		};
-		
+
 		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
 		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
-		return COMPAT_HANDLER.mGtRecipesToGenerate.size() > size;
-		
+
+		if (COMPAT_HANDLER.mGtRecipesToGenerate.size() > size) {
+			if (!COMPAT_HANDLER.areInitItemsLoaded){
+				RegistrationHandler.recipesSuccess++;
+			}
+			else {
+				LateRegistrationHandler.recipesSuccess++;
+			}
+			return true;
+		}
+		return false;	
+
 	}
 
 	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
@@ -429,10 +440,20 @@ public class RecipeUtils {
 			}
 		}
 
-		
+
 		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
 		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(inputs, output, true));
-		return COMPAT_HANDLER.mGtRecipesToGenerate.size() > size;		
+
+		if (COMPAT_HANDLER.mGtRecipesToGenerate.size() > size) {
+			if (!COMPAT_HANDLER.areInitItemsLoaded){
+				RegistrationHandler.recipesSuccess++;
+			}
+			else {
+				LateRegistrationHandler.recipesSuccess++;
+			}
+			return true;
+		}
+		return false;		
 	}
 
 	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
@@ -514,23 +535,148 @@ public class RecipeUtils {
 		}		
 		return s;
 	}
-	
-	
+
+
 	public static class InternalRecipeObject implements RunnableWithInfo<String> {
-		final Object[] mInputs;
 		final ItemStack mOutput;
-		final boolean gtType;
-		
+		final ShapedOreRecipe mRecipe;
+		public final boolean isValid;
+
 		public InternalRecipeObject(Object[] aInputs, ItemStack aOutput, boolean gtRecipe) {
-			mInputs = aInputs;
-			mOutput = aOutput;
-			gtType = gtRecipe;
+
+			mOutput = aOutput != null ? aOutput.copy() : null;			
+			String line1 = "", line2 = "", line3 = "";
+			String h = "abcdefghi";
+			char blank = ' ';
+			int counter = 0;
+			char s[] = new char[9];
+			ItemStack[] vInputs = new ItemStack[9];
+			Object[] tInputs = aInputs.clone();
+			
+			if (tInputs.length >= 8 && aOutput != null) {
+				
+				for (Object o : tInputs) {
+					if (o instanceof String || o instanceof ItemStack) {
+						s[counter] = h.charAt(counter);
+					}
+					else if (o == null) {
+						s[counter] = blank;
+					}				
+					counter++;
+				}			
+
+				for (int y=0;y<9;y++){			
+					if (tInputs.length > y) {
+						if (tInputs[y] instanceof String) {
+							vInputs[y] = ItemUtils.getItemStackOfAmountFromOreDict((String) tInputs[y], 1);
+						}
+						else if (tInputs[y] instanceof ItemStack) {
+							vInputs[y] = (ItemStack) tInputs[y];
+						}	
+						else {
+							vInputs[y] = null;
+							Logger.INFO("[Recipe] Invalid Item in shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "BAD OUTPUT ITEM" + " | Type: "+tInputs[y] != null ? tInputs[y].getClass().getName() : "Unable to determine class of invalid object.");
+						}
+					}
+					else {
+						vInputs[y] = null;
+					}
+				}	
+			}
+
+			for (int i=0;i<3;i++) {
+				line1 = line1 + s[i];
+			}
+			for (int i=3;i<6;i++) {
+				line2 = line2 + s[i];				
+			}
+			for (int i=6;i<9;i++) {
+				line3 = line3 + s[i];				
+			}
+
+			//line1 = StringUtils.join(s, null, 0, 2);
+			//line2 = StringUtils.join(s, null, 3, 5);
+			//line3 = StringUtils.join(s, null, 6, 8);
+			
+
+			Object[] mVarags = new Object[18];
+			int mSlotCount = 0;
+			
+			for (int i=0;i<9;i++) {
+				if (s[i] != ' ') {
+					mVarags[mSlotCount] = String.valueOf(s[i]);
+				}
+				if (vInputs[i] != null) {
+					mVarags[mSlotCount+1] = vInputs[i];
+				}
+				mSlotCount += 2;
+			}
+			
+			int nullCount = 0;
+			
+			for (Object m : mVarags){
+				if (m == null) {
+					nullCount++;
+				}
+			}
+			Object[] mVarags2 = new Object[mVarags.length-nullCount];
+			for (int i=0;i<(mVarags.length-nullCount);i++) {
+				mVarags2[i] = mVarags[i];
+			}			
+
+			ShapedOreRecipe d = new ShapedOreRecipe(
+					aOutput,
+					line1,
+					line2,
+					line3,
+					mVarags2);
+
+
+			if (mOutput == null || counter < 8 || d == null || (line1 == null || line2 == null || line3 == null) || !ItemUtils.checkForInvalidItems(d.getRecipeOutput())) {
+				isValid = false;
+			}
+			else {
+				isValid = true;				
+			}
+
+			mRecipe = d != null ? d : null;
 		}
-		
+
 		@Override
 		public void run() {
-			if (!gtType) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(((ItemStack) mOutput).copy(), mInputs));
+			if (this.isValid) {
+				GameRegistry.addRecipe(mRecipe);
+			}
+			else {
+				Logger.INFO("[Recipe] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
+			}
+
+			/*ItemStack[] vInputs = new ItemStack[9];
+			if (mOutput != null) {
+				for (int y=0;y<9;y++){			
+					if (mInputs.length > y) {
+						if (mInputs[y] instanceof String) {
+							vInputs[y] = ItemUtils.getItemStackOfAmountFromOreDict((String) mInputs[y], 1);
+						}
+						else if (mInputs[y] instanceof ItemStack) {
+							vInputs[y] = (ItemStack) mInputs[y];
+						}	
+						else {
+							Logger.INFO("[Recipe] Invalid Item in shapped recipe outputting "+mOutput.getDisplayName() + " | Type: "+mInputs[y].getClass().getName());
+						}
+					}
+					else {
+						vInputs[y] = null;
+					}
+				}		
+
+				GameRegistry.addRecipe(new ShapedOreRecipe(mOutput.copy(), vInputs));
+			}*/
+
+
+
+			/*if (!gtType) {
+
 			}
 			else {
 				if (GT_ModHandler.addCraftingRecipe(mOutput,
@@ -554,7 +700,8 @@ public class RecipeUtils {
 						mInputs[0], mInputs[0], mInputs[0],
 						mInputs[0], mInputs[0], mInputs[0], 
 						mOutput)){
-					
+					Logger.WARNING("Success! Added a recipe for "+mOutput.getDisplayName());
+					RegistrationHandler.recipesSuccess++;
 				}
 				else {
 					if (mOutput != null){
@@ -562,7 +709,7 @@ public class RecipeUtils {
 					}
 					RegistrationHandler.recipesFailed++;
 				}
-			}
+			}*/
 		}
 
 		@Override
@@ -572,9 +719,9 @@ public class RecipeUtils {
 			}
 			return "";
 		}
-		
+
 	}
-	
-	
+
+
 
 }

@@ -30,7 +30,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 
 	@Override
 	public boolean preInit() {
-		if (/*CORE.ConfigSwitches.enableSulfuricAcidFix || */CORE.DEVENV) {
+		if (/*CORE.ConfigSwitches.enableSulfuricAcidFix || *//*CORE.DEVENV*/false) {
 			shouldLoad = true;
 		}
 		if (shouldLoad)
