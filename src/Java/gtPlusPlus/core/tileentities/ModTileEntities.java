@@ -6,6 +6,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.*;
 import gtPlusPlus.core.tileentities.machines.*;
+import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 
 public class ModTileEntities {
 
@@ -21,6 +22,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityTradeTable.class, "TileTradeTable");		
 		GameRegistry.registerTileEntity(TileEntityModularityTable.class, "TileEntityModularityTable");
 		GameRegistry.registerTileEntity(TileEntityXpConverter.class, "TileEntityXpConverter");
+		GameRegistry.registerTileEntity(TileEntityGenericSpawner.class, "TileEntityGenericSpawner");
 
 		
 		//Mod TEs

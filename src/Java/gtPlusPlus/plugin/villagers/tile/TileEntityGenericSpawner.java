@@ -128,8 +128,14 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 	@Override
 	public void writeToNBT(NBTTagCompound p_145841_1_) {
 		if (hasInternalFieldBeenSet()) {
-			String s = (String) classToNameMap_Ex.get(mSpawners.get(this.mID));
-			if (s == null){
+			String s = (String) classToNameMap_Ex.get(this.getClass());
+			if (s == null){				
+				for (Object g : classToNameMap_Ex.values()) {
+					if (g instanceof String) {
+						Logger.INFO("Found Translation for "+((Class) nameToClassMap_Ex.get(g)).getName()+": "+g);
+					}
+				}
+				
 				//throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
 				s = mSpawners.containsKey(this.mID) ? mSpawners.get(this.mID).getSimpleName() : "bad.class.name";  
 				p_145841_1_.setString("id", s);
@@ -140,7 +146,7 @@ public class TileEntityGenericSpawner extends TileEntityMobSpawner {
 				p_145841_1_.setInteger("mID", this.mID);
 			}
 			else {
-				Logger.WARNING(this.getClass() + " is not missing a mapping! Used key: "+s);
+				Logger.INFO(this.getClass() + " is not missing a mapping! Used key: "+s);
 				p_145841_1_.setString("id", s);
 				p_145841_1_.setInteger("x", this.xCoord);
 				p_145841_1_.setInteger("y", this.yCoord);

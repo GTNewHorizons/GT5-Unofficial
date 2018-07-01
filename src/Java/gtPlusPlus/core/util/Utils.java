@@ -830,25 +830,26 @@ public class Utils {
 		}
 	}
 
-	public static void createNewMobSpawner(int aID, Entity aEntity) {
+	public static boolean createNewMobSpawner(int aID, Entity aEntity) {
 		Class<Entity> c;		
 		if (aEntity instanceof Entity) {
 			c = (Class<Entity>) aEntity.getClass();
-			createNewMobSpawner(aID, c);
+			return createNewMobSpawner(aID, c);
 		}
+		return false;
 	}
 	
-	public static void createNewMobSpawner(int aID, Class aEntity) {	
+	public static boolean createNewMobSpawner(int aID, Class aEntity) {	
 		Logger.INFO("[Spawn] Generating new spawner for entity with class ("+aEntity.getCanonicalName()+").");
 		if (TileEntityGenericSpawner.registerNewMobSpawner(aID, aEntity)) {
 			EntityRegistration x = EntityRegistry.instance().lookupModSpawn(aEntity, false);
 			if (x != null) {
 				Logger.INFO("[Spawn] Registration for "+x.getEntityName()+" successful");
+				return true;
 			}
 		}
-		else {
-			Logger.INFO("[Spawn] Registration for "+aEntity.getName()+" failed");			
-		}
+		Logger.INFO("[Spawn] Mob Spawner creation for "+aEntity.getName()+" failed");	
+		return false;
 	}
 
 }

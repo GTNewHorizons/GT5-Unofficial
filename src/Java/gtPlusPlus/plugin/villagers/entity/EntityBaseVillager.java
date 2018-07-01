@@ -45,6 +45,10 @@ public class EntityBaseVillager extends EntityVillager {
 	 * extend EntityVillager and just implement IMerchant instead.
 	 */
 
+	public EntityBaseVillager(World aWorld){
+        this(aWorld, 0);
+    }
+	
 	public EntityBaseVillager(World aWorld, int aID) {
 		super(aWorld, aID);
 	}

@@ -1,13 +1,17 @@
 package gtPlusPlus.plugin.villagers;
 
+import static gtPlusPlus.plugin.villagers.VillagerUtils.mVillagerMap;
+
 import java.util.HashMap;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
@@ -15,6 +19,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
+import gtPlusPlus.plugin.villagers.entity.EntityBaseVillager;
 import net.minecraft.util.ResourceLocation;
 
 public class Core_VillagerAdditions implements IPlugin {
@@ -37,26 +42,43 @@ public class Core_VillagerAdditions implements IPlugin {
 			shouldLoad = true;
 		}
 		if (shouldLoad) {			
+			//Register Custom Villager Entity
+			EntityRegistry.registerGlobalEntityID(EntityBaseVillager.class, "VillagerV5", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(180, 120, 120), Utils.rgbtoHexValue(0, 0, 0));
+	        
 			//Try register some test spawners
 			Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
 			Utils.createNewMobSpawner(1, EntitySickBlaze.class);
 			Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
+
+			VillagerUtils.registerNewVillager(0, "TESTIFICATE", "TESTIFICATE", "TESTIFICATE", null, null);
+			VillagerUtils.registerNewVillager(1, "TESTIFICATE1", "TESTIFICATE1", "TESTIFICATE1", null, null);
+			VillagerUtils.registerNewVillager(2, "TESTIFICATE2", "TESTIFICATE2", "TESTIFICATE2", null, null);
+			
+			if (mVillagerMap.size() > 0) {
+				for (VillagerObject g : mVillagerMap.values()) {
+					if (g != null && g.mID >= 0) {
+						VillagerRegistry.instance().registerVillagerId(g.mID);		
+						log("Registered a Custom Villager with ID of "+g.mID+".");
+						Utils.createNewMobSpawner(10+g.mID, EntityBaseVillager.class);
+						if (mVillagerSkins.get(g.mID) != null) {
+							VillagerRegistry.instance().registerVillagerSkin(g.mID, mVillagerSkins.get(g.mID));
+							log("Registered a Custom Skin for Villager with ID of "+g.mID+".");
+						}
+					}
+				}
+			}			
 			
 			//Register all Villager ID's and their Custom Trades.
 			if (mVillagerTrades.size() > 0) {
 				for (Pair<Integer, IVillageTradeHandler> g : mVillagerTrades) {
 					if (g != null && g.getKey() != null) {
-						VillagerRegistry.instance().registerVillagerId(g.getKey());
 						if (g.getValue() != null) {
 							VillagerRegistry.instance().registerVillageTradeHandler(g.getKey(), g.getValue());
-						}
-						if (mVillagerSkins.get(g.getKey()) != null) {
-							VillagerRegistry.instance().registerVillagerSkin(g.getKey(), mVillagerSkins.get(g.getKey()));
+							log("Registered a Custom Trade for Villager with ID of "+g.getKey()+".");
 						}
 					}
 				}
-				return true;
-			}
+			}			
 		}
 		return false;
 	}
