@@ -14,7 +14,7 @@ public class MiscUtilCreativeTabMachines extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemPLACEHOLDER_Circuit;
+		return ModItems.itemAlkalusDisk;
 	}
 
 }

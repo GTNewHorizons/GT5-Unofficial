@@ -3,7 +3,8 @@ package gtPlusPlus.xmod.bop.creative;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 
 public class MiscUtilsBOPTab extends CreativeTabs {
 
@@ -13,7 +14,7 @@ public class MiscUtilsBOPTab extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemAlkalusDisk;
+		return ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest).getItem();
 	}
 
 }

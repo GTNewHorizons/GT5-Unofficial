@@ -15,6 +15,9 @@ import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
+import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.item.ModItems;
@@ -28,6 +31,7 @@ import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
+import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -98,13 +102,20 @@ public class CommonProxy {
 			Material.generateQueuedFluids();
 			mFluidsGenerated = true;
 		}
+		
+		//Must be done in pre-init.
+		generateMobSpawners();
+		
 	}
 
 	public void init(final FMLInitializationEvent e) {
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerHandlers();
-		}
+		}		
+
+		ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
+		
 		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
 			Material.generateQueuedFluids();
 			mFluidsGenerated = true;
@@ -159,8 +170,9 @@ public class CommonProxy {
 		}
 
 		//Compat Handling
-		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
+		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
+		COMPAT_HANDLER.runQueuedRecipes();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 		COMPAT_IntermodStaging.postInit();
 	}
@@ -192,6 +204,14 @@ public class CommonProxy {
 	}
 
 	public void generateMysteriousParticles(final Entity entity) {
+		
+	}
+	
+	public void generateMobSpawners() {
+		//Try register some test spawners
+		Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
+		Utils.createNewMobSpawner(1, EntitySickBlaze.class);
+		Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
 	}
 
 }

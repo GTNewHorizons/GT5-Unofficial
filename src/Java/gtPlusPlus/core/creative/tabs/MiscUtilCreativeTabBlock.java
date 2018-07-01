@@ -13,7 +13,7 @@ public class MiscUtilCreativeTabBlock extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(ModBlocks.MatterFabricatorEffectBlock);
+		return Item.getItemFromBlock(ModBlocks.blockCompressedObsidian);
 	}
 
 }

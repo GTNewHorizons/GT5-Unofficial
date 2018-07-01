@@ -13,7 +13,7 @@ public class MiscUtilCreativeTabTools extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemStaballoyAxe;
+		return ModItems.itemStaballoyPickaxe;
 	}
 
 }

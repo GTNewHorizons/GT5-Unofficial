@@ -15,15 +15,13 @@ public class RegistrationHandler {
 
 	private final static void init(){
 		RECIPES_Tools.loadRecipes();
+		RECIPES_General.loadRecipes();
 		RECIPES_Machines.loadRecipes();
 		RECIPES_Shapeless.loadRecipes();
 		RECIPES_MachineComponents.loadRecipes();
 		RECIPE_Batteries.loadRecipes();
-		RECIPES_General.loadRecipes();
-		//RECIPES_MTWRAPPER.run();
 		Logger.INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 		COMPAT_HANDLER.areInitItemsLoaded = true;
-		//Utils.LOG_INFO("MT Loaded: "+RECIPES_MTWRAPPER.MT_RECIPES_LOADED+" MT Failed: "+RECIPES_MTWRAPPER.MT_RECIPES_FAILED);
 	}
 
 }

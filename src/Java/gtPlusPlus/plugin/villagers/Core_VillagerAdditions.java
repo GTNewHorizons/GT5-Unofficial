@@ -46,14 +46,8 @@ public class Core_VillagerAdditions implements IPlugin {
 		}
 		if (shouldLoad) {			
 			//Register Custom Villager Entity
-			EntityRegistry.registerGlobalEntityID(EntityBaseVillager.class, "VillagerV5", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(180, 120, 120), Utils.rgbtoHexValue(0, 0, 0));
-	        
-			//Try register some test spawners
-			Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
-			Utils.createNewMobSpawner(1, EntitySickBlaze.class);
-			Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
-
-			VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
+			EntityRegistry.registerGlobalEntityID(EntityBaseVillager.class, "WiseVillager", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(180, 120, 120), Utils.rgbtoHexValue(0, 0, 0));
+	        VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
 			VillagerUtils.registerNewVillager(1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
 			VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
 			
@@ -81,7 +75,8 @@ public class Core_VillagerAdditions implements IPlugin {
 						}
 					}
 				}
-			}			
+			}	
+			return true;
 		}
 		return false;
 	}
@@ -89,7 +84,6 @@ public class Core_VillagerAdditions implements IPlugin {
 	@Override
 	public boolean init() {
 		if (shouldLoad) {
-			ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
 			return true;
 		}
 		return false;

@@ -15,12 +15,14 @@ public class TradeHandlerTrader extends TradeHandlerBase {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random) {
+		if (villager.getProfession() == 7736) {
 		recipeList.add(new MerchantRecipe(ItemUtils.getItemStackOfAmountFromOreDict("logWood", 32), ELEMENT.getInstance().IRON.getOre(1)));
 		recipeList.add(new MerchantRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRawMeat", 32), ELEMENT.getInstance().COPPER.getOre(1)));
 		recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.obsidian, 6), ELEMENT.getInstance().TIN.getOre(1)));
 		recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.glowstone, 32), ELEMENT.getInstance().SILICON.getOre(1)));
 		recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.piston, 32), ELEMENT.getInstance().ALUMINIUM.getOre(1)));
-		Collections.shuffle(recipeList);		
+		Collections.shuffle(recipeList);	
+		}
 	}
 	
 }

@@ -15,13 +15,14 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -119,7 +120,9 @@ public class RecipeUtils {
 		}
 
 		try {
-			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), validSlots.toArray()));
+			
+			COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(validSlots.toArray(), resultItem, false));
+			
 			//Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesSuccess++;
@@ -391,24 +394,11 @@ public class RecipeUtils {
 				InputItem4, InputItem5, InputItem6,
 				InputItem7, InputItem8, InputItem9
 		};
-
-		if (addShapedGregtechRecipe(o, OutputItem)){
-			return true;
-		}
-		else if (recipeBuilder(
-				InputItem1, InputItem2, InputItem3,
-				InputItem4, InputItem5, InputItem6,
-				InputItem7, InputItem8, InputItem9, 
-				OutputItem)){
-			return true;
-		}
-		else {
-			if (OutputItem != null){
-				Logger.WARNING("Adding recipe for "+OutputItem.getDisplayName()+" failed. Error 62.");
-			}
-			RegistrationHandler.recipesFailed++;
-			return false;
-		}
+		
+		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
+		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
+		return COMPAT_HANDLER.mGtRecipesToGenerate.size() > size;
+		
 	}
 
 	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
@@ -439,29 +429,10 @@ public class RecipeUtils {
 			}
 		}
 
-		if (GT_ModHandler.addCraftingRecipe(output,
-				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
-				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-				new Object[]{"ABC", "DEF", "GHI",
-						'A', inputs[0],
-						'B', inputs[1],
-						'C', inputs[2],
-						'D', inputs[3],
-						'E', inputs[4],
-						'F', inputs[5],
-						'G', inputs[6],
-						'H', inputs[7],
-						'I', inputs[8]})){
-			Logger.WARNING("Success! Added a recipe for "+output.getDisplayName());
-			RegistrationHandler.recipesSuccess++;
-			return true;
-		}
-		else {
-			if (output != null){
-				Logger.WARNING("Adding recipe for "+output.getDisplayName()+" failed. Error 61.");
-			}
-			return false;
-		}
+		
+		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
+		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(inputs, output, true));
+		return COMPAT_HANDLER.mGtRecipesToGenerate.size() > size;		
 	}
 
 	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
@@ -543,5 +514,67 @@ public class RecipeUtils {
 		}		
 		return s;
 	}
+	
+	
+	public static class InternalRecipeObject implements RunnableWithInfo<String> {
+		final Object[] mInputs;
+		final ItemStack mOutput;
+		final boolean gtType;
+		
+		public InternalRecipeObject(Object[] aInputs, ItemStack aOutput, boolean gtRecipe) {
+			mInputs = aInputs;
+			mOutput = aOutput;
+			gtType = gtRecipe;
+		}
+		
+		@Override
+		public void run() {
+			if (!gtType) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(((ItemStack) mOutput).copy(), mInputs));
+			}
+			else {
+				if (GT_ModHandler.addCraftingRecipe(mOutput,
+						GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
+						GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+						new Object[]{"ABC", "DEF", "GHI",
+								'A', mInputs[0],
+								'B', mInputs[1],
+								'C', mInputs[2],
+								'D', mInputs[3],
+								'E', mInputs[4],
+								'F', mInputs[5],
+								'G', mInputs[6],
+								'H', mInputs[7],
+								'I', mInputs[8]})){
+					Logger.WARNING("Success! Added a recipe for "+mOutput.getDisplayName());
+					RegistrationHandler.recipesSuccess++;
+				}
+				else if (recipeBuilder(
+						mInputs[0], mInputs[0], mInputs[0],
+						mInputs[0], mInputs[0], mInputs[0],
+						mInputs[0], mInputs[0], mInputs[0], 
+						mOutput)){
+					
+				}
+				else {
+					if (mOutput != null){
+						Logger.WARNING("Adding recipe for "+mOutput.getDisplayName()+" failed. Error 62.");
+					}
+					RegistrationHandler.recipesFailed++;
+				}
+			}
+		}
+
+		@Override
+		public String getInfoData() {
+			if (mOutput != null && mOutput instanceof ItemStack) {
+				return ((ItemStack) mOutput).getDisplayName();
+			}
+			return "";
+		}
+		
+	}
+	
+	
 
 }
