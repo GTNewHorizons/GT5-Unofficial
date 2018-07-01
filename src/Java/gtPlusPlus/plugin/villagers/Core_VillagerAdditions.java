@@ -50,14 +50,14 @@ public class Core_VillagerAdditions implements IPlugin {
 			Utils.createNewMobSpawner(1, EntitySickBlaze.class);
 			Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
 
-			VillagerUtils.registerNewVillager(0, "TESTIFICATE", "TESTIFICATE", "TESTIFICATE", null, null);
-			VillagerUtils.registerNewVillager(1, "TESTIFICATE1", "TESTIFICATE1", "TESTIFICATE1", null, null);
-			VillagerUtils.registerNewVillager(2, "TESTIFICATE2", "TESTIFICATE2", "TESTIFICATE2", null, null);
+			VillagerUtils.registerNewVillager(0, "TESTIFICATE", "TESTIFICATE", "TESTIFICATE", "trackman", null);
+			VillagerUtils.registerNewVillager(1, "TESTIFICATE1", "TESTIFICATE1", "TESTIFICATE1", "trackman", null);
+			VillagerUtils.registerNewVillager(2, "TESTIFICATE2", "TESTIFICATE2", "TESTIFICATE2", "trackman", null);
 			
 			if (mVillagerMap.size() > 0) {
 				for (VillagerObject g : mVillagerMap.values()) {
 					if (g != null && g.mID >= 0) {
-						VillagerRegistry.instance().registerVillagerId(g.mID);		
+						VillagerRegistry.instance().registerVillagerId(7735+g.mID);	
 						log("Registered a Custom Villager with ID of "+g.mID+".");
 						Utils.createNewMobSpawner(10+g.mID, EntityBaseVillager.class);
 						if (mVillagerSkins.get(g.mID) != null) {

@@ -44,6 +44,8 @@ public class EntityBaseVillager extends EntityVillager {
 	 * interacts with buyingList and make it use your own list, or you need to not
 	 * extend EntityVillager and just implement IMerchant instead.
 	 */
+	
+	private final int mRoleID;
 
 	public EntityBaseVillager(World aWorld){
         this(aWorld, 0);
@@ -51,6 +53,7 @@ public class EntityBaseVillager extends EntityVillager {
 	
 	public EntityBaseVillager(World aWorld, int aID) {
 		super(aWorld, aID);
+		mRoleID = aID;
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class EntityBaseVillager extends EntityVillager {
 
 	@Override
 	public int getProfession() {
-		return super.getProfession();
+		return 7735+mRoleID;
 	}
 
 	@Override
