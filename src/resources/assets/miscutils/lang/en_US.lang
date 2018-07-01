@@ -2011,3 +2011,6 @@ tile.blockMobSpawnerEx.12.name=Monster Spawner
 tile.blockMobSpawnerEx.13.name=Monster Spawner
 tile.blockMobSpawnerEx.14.name=Monster Spawner
 tile.blockMobSpawnerEx.15.name=Monster Spawner
+description.villager.profession.miscutils.banker=Banker
+description.villager.profession.miscutils.technician=GT Technitian
+description.villager.profession.miscutils.trader=Ore Trader

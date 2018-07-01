@@ -20,6 +20,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.plugin.villagers.entity.EntityBaseVillager;
+import gtPlusPlus.plugin.villagers.trade.TradeHandlerBanker;
+import gtPlusPlus.plugin.villagers.trade.TradeHandlerTechnician;
+import gtPlusPlus.plugin.villagers.trade.TradeHandlerTrader;
 import net.minecraft.util.ResourceLocation;
 
 public class Core_VillagerAdditions implements IPlugin {
@@ -50,9 +53,9 @@ public class Core_VillagerAdditions implements IPlugin {
 			Utils.createNewMobSpawner(1, EntitySickBlaze.class);
 			Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
 
-			VillagerUtils.registerNewVillager(0, "TESTIFICATE", "TESTIFICATE", "TESTIFICATE", "trackman", null);
-			VillagerUtils.registerNewVillager(1, "TESTIFICATE1", "TESTIFICATE1", "TESTIFICATE1", "trackman", null);
-			VillagerUtils.registerNewVillager(2, "TESTIFICATE2", "TESTIFICATE2", "TESTIFICATE2", "trackman", null);
+			VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
+			VillagerUtils.registerNewVillager(1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
+			VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
 			
 			if (mVillagerMap.size() > 0) {
 				for (VillagerObject g : mVillagerMap.values()) {
@@ -61,7 +64,7 @@ public class Core_VillagerAdditions implements IPlugin {
 						log("Registered a Custom Villager with ID of "+g.mID+".");
 						Utils.createNewMobSpawner(10+g.mID, EntityBaseVillager.class);
 						if (mVillagerSkins.get(g.mID) != null) {
-							VillagerRegistry.instance().registerVillagerSkin(g.mID, mVillagerSkins.get(g.mID));
+							VillagerRegistry.instance().registerVillagerSkin(7735+g.mID, mVillagerSkins.get(g.mID));
 							log("Registered a Custom Skin for Villager with ID of "+g.mID+".");
 						}
 					}

@@ -100,7 +100,7 @@ public class EntityBaseVillager extends EntityVillager {
 
 	@Override
 	public int getProfession() {
-		return 7735+mRoleID;
+		return super.getProfession();
 	}
 
 	@Override
