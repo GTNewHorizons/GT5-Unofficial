@@ -12,6 +12,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -94,7 +95,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
 				: aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-						+ 1];
+				                                                                                           + 1];
 	}
 
 	public ITexture[] getFront(final byte aColor) {
@@ -204,11 +205,11 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 			// Utils.LOG_MACHINE_INFO("Ticking Boiler");
 
 			//if (aTick % 60L == 0L) {
-				// Utils.LOG_MACHINE_INFO("Temp:"+this.mTemperature);
-				// Utils.LOG_MACHINE_INFO("getCapacity():"+this.getCapacity());
-				// Utils.LOG_MACHINE_INFO("maxProgresstime():"+this.maxProgresstime());
-				// Utils.LOG_MACHINE_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
-				// Utils.LOG_MACHINE_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
+			// Utils.LOG_MACHINE_INFO("Temp:"+this.mTemperature);
+			// Utils.LOG_MACHINE_INFO("getCapacity():"+this.getCapacity());
+			// Utils.LOG_MACHINE_INFO("maxProgresstime():"+this.maxProgresstime());
+			// Utils.LOG_MACHINE_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
+			// Utils.LOG_MACHINE_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
 			//}
 
 			int mTempSteam = this.mSteam != null ? this.mSteam.amount : 0;
@@ -247,16 +248,16 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 							aBaseMetaTileEntity.doExplosion(4096L);
 							return;
 						}
-						
+
 						//this.mFluid.amount -= (10 * this.mBoilerTier);
-						
+
 						this.mFluid.amount -= (mSteamPerSecond/160);
-						
-						 Logger.MACHINE_INFO("Draining "+(mSteamPerSecond/160)+"L of water. There is "+this.mFluid.amount+"L left.");
+
+						Logger.MACHINE_INFO("Draining "+(mSteamPerSecond/160)+"L of water. There is "+this.mFluid.amount+"L left.");
 						if (this.mSteam == null) {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
 							Logger.MACHINE_INFO("Added "+(this.mSteam.amount-mTempSteam)+"L of steam.");
-							
+
 						}
 						else if (GT_ModHandler.isSteam(this.mSteam)) {
 							this.mSteam.amount += (this.mSteamPerSecond);
@@ -352,5 +353,13 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+		if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) {
+			return true;
+		}
+		return super.allowCoverOnSide(aSide, aCover);
 	}
 }

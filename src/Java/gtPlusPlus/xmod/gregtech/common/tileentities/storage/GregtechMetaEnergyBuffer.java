@@ -14,6 +14,7 @@ import gregtech.api.gui.GT_GUIContainer_1by1;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 
@@ -41,6 +42,14 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override
 	public String[] getDescription() {
 		return new String[] {this.mDescription, "Accepts/Outputs 4Amp", CORE.GT_Tooltip};
+	}
+	
+	@Override
+	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+		if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) {
+			return true;
+		}
+		return super.allowCoverOnSide(aSide, aCover);
 	}
 
 	/*

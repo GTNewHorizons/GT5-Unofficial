@@ -12,6 +12,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -78,6 +79,14 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public boolean isOutputFacing(byte aSide) {
 		return (aSide == getBaseMetaTileEntity().getFrontFacing());
+	}
+	
+	@Override
+	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+		if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) {
+			return true;
+		}
+		return super.allowCoverOnSide(aSide, aCover);
 	}
 	
 	@Override
