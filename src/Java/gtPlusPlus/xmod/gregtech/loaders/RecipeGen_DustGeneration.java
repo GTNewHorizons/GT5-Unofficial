@@ -45,19 +45,6 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
-		//Ring Recipe
-
-		if (RecipeUtils.addShapedGregtechRecipe(
-				"craftingToolWrench", null, null,
-				null, material.getRod(1), null,
-				null, null, null,
-				material.getRing(1))){
-			Logger.WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Logger.WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");
-		}
-
 
 		final ItemStack normalDust = material.getDust(1);
 		final ItemStack smallDust = material.getSmallDust(1);

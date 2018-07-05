@@ -3,7 +3,6 @@ package gtPlusPlus.api.objects.minecraft;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -28,20 +27,39 @@ public class ShapedRecipe {
 		char[] aChar = new char[9];
 		String[] aLoggingInfo = new String[9];
 
+		
+		
 		//Just to be safe
 		try {
-
+			Logger.RECIPE("======== B R E A K P O I N T =========");
+			int xSlot = 0;
+			int xNull = 0;
+			for (Object u : aInputs) {
+				String mInfo = "";						
+				if (u instanceof String) {
+					mInfo = (String) u;
+					Logger.RECIPE("Input slot "+xSlot+++" contains "+mInfo);
+				}
+				else if (u instanceof ItemStack) {
+					mInfo = ((ItemStack) u).getDisplayName();
+					Logger.RECIPE("Input slot "+xSlot+++" contains "+mInfo);
+				}
+				else if (u == null) {
+					xNull++;
+				}
+			}
+			Logger.RECIPE("Found "+xNull+" null inputs.");
 			//Check if the output is invalid
-			if (aOutput != null) {
+			if (aOutput != null && xNull < 9) {
 				Object[] mVarags2 = null;
 				Logger.RECIPE("Generating Shaped Crafting Recipe for "+aOutput.getDisplayName());
 
 				if (aInputs.length < 9 || aInputs.length > 9) {
-					Logger.RECIPE("[1234abcd] Recipe for "+aOutput.getDisplayName()+" has incorrect number of inputs. Size: "+aInputs.length+".");
-					Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(1));
-					Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(2));
-					Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(3));
-					Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(4));
+					Logger.RECIPE("[Fix] Recipe for "+aOutput.getDisplayName()+" has incorrect number of inputs. Size: "+aInputs.length+".");
+					//Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(1));
+					//Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(2));
+					//Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(3));
+					//Logger.RECIPE("[1234abcd] Reciped exists at location: "+ReflectionUtils.getMethodName(4));
 					//Logger.RECIPE("Reciped exists at location: "+ReflectionUtils.getMethodName(1));
 				}
 
@@ -53,7 +71,6 @@ public class ShapedRecipe {
 				int aInfoSlot = 0;
 				for (Object stack : aInputs) {
 					if (stack != null) {
-
 						String mInfo = "";						
 						if (stack instanceof String) {
 							mInfo = (String) stack;
@@ -61,7 +78,6 @@ public class ShapedRecipe {
 						else if (stack instanceof ItemStack) {
 							mInfo = ((ItemStack) stack).getDisplayName();
 						}
-
 						aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
 						Logger.RECIPE("Storing '"+CHARS.charAt(aCharSlot)+"' with an object of type "+stack.getClass().getSimpleName()+" and a value of "+mInfo);
 						aChar[aMemSlot++] = CHARS.charAt(aCharSlot);
@@ -97,11 +113,19 @@ public class ShapedRecipe {
 						aGrid[1] = ""+aGridWhole.charAt(3)+aGridWhole.charAt(4)+aGridWhole.charAt(5);
 						aGrid[2] = ""+aGridWhole.charAt(6)+aGridWhole.charAt(7)+aGridWhole.charAt(8);
 					}
+					else {
+						Logger.RECIPE("[Fix] Grid length for recipe outputting "+aOutput.getDisplayName()+" is not 9.");
+					}
 
 					//Rebuild the Map without spaces
 					aRecipePairs.clear();
 					aCharSlot = 0;
-					int counter = 3;
+					
+					//The amount of spaces in the Varags that the Shape strings takes.
+					//Currently they are inserted as a single array into index 0.
+					final int KEY_COUNTER = 1;
+					
+					int counter = KEY_COUNTER;
 					for (Object stack : aInputs) {
 						if (stack != null) {
 							String mInfo = "";						
@@ -118,17 +142,18 @@ public class ShapedRecipe {
 						}
 					}
 
-					Logger.RECIPE("Counter started at 3, counter is now at "+counter+". Trying to create Varag array with a size of "+(3+(counter-3)*2));
+					Logger.RECIPE("Counter started at "+KEY_COUNTER+", counter is now at "+counter+". Trying to create Varag array with a size of "+(KEY_COUNTER+(counter-KEY_COUNTER)*2));
 					//Counter started at 3, counter is now at 4. Trying to create Varag array with a size of 2
 
 					//Register the shaped grid straight to the varags
-					mVarags2 = new Object[(3+(counter-3)*2)];
-					mVarags2[0] = aGrid[0];
+					mVarags2 = new Object[(KEY_COUNTER+(counter-KEY_COUNTER)*2)];
+					/*mVarags2[0] = aGrid[0];
 					mVarags2[1] = aGrid[1];
-					mVarags2[2] = aGrid[2];
+					mVarags2[2] = aGrid[2];*/
+					mVarags2[0] = aGrid;
 
 					//Add Each Char, then Item to the varags, sequentially.
-					int counter2 = 3;		
+					int counter2 = KEY_COUNTER;		
 					for (Pair<Character, Object> r : aRecipePairs) {			
 						char c = r.getKey();
 						Object o = r.getValue();			
@@ -138,19 +163,22 @@ public class ShapedRecipe {
 					}
 					
 					Logger.RECIPE("Recipe Summary");
-					Logger.RECIPE("+=+=+=+");
-					Logger.RECIPE("="+aChar[0]+"="+aChar[1]+"="+aChar[2]+"=");
-					Logger.RECIPE("+=+=+=+");
-					Logger.RECIPE("="+aChar[3]+"="+aChar[4]+"="+aChar[5]+"=");
-					Logger.RECIPE("+=+=+=+");
-					Logger.RECIPE("="+aChar[6]+"="+aChar[7]+"="+aChar[8]+"=");
-					Logger.RECIPE("+=+=+=+");
+					Logger.RECIPE("+ = + = + = +");
+					Logger.RECIPE("= "+aChar[0]+" = "+aChar[1]+" = "+aChar[2]+" =");
+					Logger.RECIPE("+ = + = + = +");
+					Logger.RECIPE("= "+aChar[3]+" = "+aChar[4]+" = "+aChar[5]+" =");
+					Logger.RECIPE("+ = + = + = +");
+					Logger.RECIPE("=" +aChar[6]+" = "+aChar[7]+" = "+aChar[8]+" =");
+					Logger.RECIPE("+ = + = + = +");
 					for (int r=0;r<9;r++) {
 						if (aChar[r] != ' ') {
 							Logger.RECIPE(""+aChar[r]+" : "+aLoggingInfo[r]);
 						}						
 					}
 
+				}
+				else {
+					Logger.RECIPE("[Fix] Recipe for "+aOutput.getDisplayName()+" contains a strange number of inputs.");
 				}
 
 				//Try set the recipe for this object.
@@ -159,12 +187,12 @@ public class ShapedRecipe {
 					testRecipe = new ShapedOreRecipe(aOutput, mVarags2);
 				}
 				catch (Throwable t) {
-					Logger.RECIPE("Error thrown when making a ShapedOreRecipe object.");
+					Logger.RECIPE("[Fix][0] Error thrown when making a ShapedOreRecipe object.");
 					t.printStackTrace();
 				}
 				if (testRecipe == null) {
 					this.mRecipe = null;
-					Logger.RECIPE("Failed to generate a shaped recipe.");
+					Logger.RECIPE("[Fix] Failed to generate a shaped recipe.");
 				}
 				else {
 					this.mRecipe = testRecipe;
@@ -175,14 +203,17 @@ public class ShapedRecipe {
 			//Output was not valid
 			else {			
 				this.mRecipe = null;	
-				Logger.RECIPE("Failed to generate a shaped recipe. Output was not valid.");		
+				Logger.RECIPE("[Fix] Failed to generate a shaped recipe. Output was not valid.");		
 			}
 
 
 		}
 		catch(Throwable t) {
-			this.mRecipe = null;			
+			this.mRecipe = null;	
+			Logger.RECIPE("[Fix][1] Error thrown when making a ShapedOreRecipe object.");
+			t.printStackTrace();		
 		}
+		
 	}
 
 }

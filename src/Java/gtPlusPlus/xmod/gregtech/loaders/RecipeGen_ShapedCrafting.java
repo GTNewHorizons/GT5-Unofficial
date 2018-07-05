@@ -93,7 +93,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 		//Ring Recipe
 		if (!material.isRadioactive && material.getRing(1) != null){
-			if (LoadedMods.DreamCraft){
+			if (CORE.GTNH){
 				if (RecipeUtils.recipeBuilder(
 						"craftingToolHardHammer", null, null,
 						"craftingToolFile", material.getRod(1), null,

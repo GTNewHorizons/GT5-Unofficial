@@ -121,9 +121,11 @@ public class RecipeUtils {
 			}
 		}*/
 
+		Object[] o = new Object[] {slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9};
+		
 		try {
 			int size = COMPAT_HANDLER.mRecipesToGenerate.size();
-			COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(validSlots.toArray(), resultItem, false));
+			COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
 
 			//Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
@@ -551,22 +553,39 @@ public class RecipeUtils {
 			mOutput = aOutput != null ? aOutput.copy() : null;
 			Object[] aFiltered = new Object[9];
 			int aValid = 0;
-			for (Object o : aInputs) {
-				if (o == null) {
-					aFiltered[aValid++] = null;
-				}
-				else if (o instanceof ItemStack) {
+			for (Object o : aInputs) {				
+				if (o instanceof ItemStack) {
 					aFiltered[aValid++] = o;					
 				}
 				else if (o instanceof String) {
 					aFiltered[aValid++] = o;					
 				}
+				else if (o == null) {
+					aFiltered[aValid++] = null;
+				}
 				else {
 					Logger.RECIPE("Cleaned a "+o.getClass().getSimpleName()+" from recipe input.");
 				}
 			}
-
-			ShapedRecipe r = new ShapedRecipe(aFiltered, aOutput);
+			
+			int validCounter = 0, invalidCounter = 0;
+			for (Object p : aFiltered) {
+				if (p instanceof ItemStack) {	
+					validCounter++;
+				}
+				else if (p instanceof String) {	
+					validCounter++;		
+				}
+				else if (p == null) {
+					validCounter++;
+				}
+				else {
+					invalidCounter++;
+				}
+			}
+			
+			Logger.RECIPE("Using "+validCounter+" valid inputs and "+invalidCounter+" invalid inputs.");
+			ShapedRecipe r = new ShapedRecipe(aFiltered, mOutput);
 			if (r != null && r.mRecipe != null) {
 				isValid = true;
 			}
@@ -584,66 +603,6 @@ public class RecipeUtils {
 			else {
 				Logger.INFO("[Recipe] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
 			}
-
-			/*ItemStack[] vInputs = new ItemStack[9];
-			if (mOutput != null) {
-				for (int y=0;y<9;y++){			
-					if (mInputs.length > y) {
-						if (mInputs[y] instanceof String) {
-							vInputs[y] = ItemUtils.getItemStackOfAmountFromOreDict((String) mInputs[y], 1);
-						}
-						else if (mInputs[y] instanceof ItemStack) {
-							vInputs[y] = (ItemStack) mInputs[y];
-						}	
-						else {
-							Logger.INFO("[Recipe] Invalid Item in shapped recipe outputting "+mOutput.getDisplayName() + " | Type: "+mInputs[y].getClass().getName());
-						}
-					}
-					else {
-						vInputs[y] = null;
-					}
-				}		
-
-				GameRegistry.addRecipe(new ShapedOreRecipe(mOutput.copy(), vInputs));
-			}*/
-
-
-
-			/*if (!gtType) {
-
-			}
-			else {
-				if (GT_ModHandler.addCraftingRecipe(mOutput,
-						GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
-						GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-						new Object[]{"ABC", "DEF", "GHI",
-								'A', mInputs[0],
-								'B', mInputs[1],
-								'C', mInputs[2],
-								'D', mInputs[3],
-								'E', mInputs[4],
-								'F', mInputs[5],
-								'G', mInputs[6],
-								'H', mInputs[7],
-								'I', mInputs[8]})){
-					Logger.WARNING("Success! Added a recipe for "+mOutput.getDisplayName());
-					RegistrationHandler.recipesSuccess++;
-				}
-				else if (recipeBuilder(
-						mInputs[0], mInputs[0], mInputs[0],
-						mInputs[0], mInputs[0], mInputs[0],
-						mInputs[0], mInputs[0], mInputs[0], 
-						mOutput)){
-					Logger.WARNING("Success! Added a recipe for "+mOutput.getDisplayName());
-					RegistrationHandler.recipesSuccess++;
-				}
-				else {
-					if (mOutput != null){
-						Logger.WARNING("Adding recipe for "+mOutput.getDisplayName()+" failed. Error 62.");
-					}
-					RegistrationHandler.recipesFailed++;
-				}
-			}*/
 		}
 
 		@Override

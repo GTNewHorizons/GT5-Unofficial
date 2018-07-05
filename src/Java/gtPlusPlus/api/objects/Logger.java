@@ -141,6 +141,7 @@ public class Logger {
 	}
 
 	public static void RECIPE(String string) {
+		if (CORE.DEVENV || CORE.DEBUG)
 		modLogger.info("[Recipe] "+string);		
 	}
 	
