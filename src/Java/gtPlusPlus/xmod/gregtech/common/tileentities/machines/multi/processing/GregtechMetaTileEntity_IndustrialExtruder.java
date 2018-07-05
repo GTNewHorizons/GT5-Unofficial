@@ -60,7 +60,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (anywhere)",
 				"1x Maintenance Hatch (Back Center)",
 				"Inconel Reinforced Casings for the rest (28 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

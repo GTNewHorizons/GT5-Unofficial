@@ -74,7 +74,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller (front centered)",
 				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

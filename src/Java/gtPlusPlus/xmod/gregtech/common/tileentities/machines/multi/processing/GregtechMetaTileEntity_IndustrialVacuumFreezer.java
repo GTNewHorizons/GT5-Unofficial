@@ -64,7 +64,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return new String[]{
 				"Controller Block for the Advanced Cryogenic Freezer",
 				"Super cools hot ingots and cells",
-				"Processes four Vacuum Freezer Recipes at double speed",
+				"Processes four Vacuum Freezer Recipes at 200% speed",
 				"Consumes 1L of "+mCryoFuelName+"/t during operation",
 				"Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
 				"1x Input Bus (Any casing)",
@@ -74,7 +74,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				"1x Maintenance Hatch (Any casing)", 
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (10 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

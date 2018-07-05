@@ -89,7 +89,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
 				"1x Maintenance Hatch (One of base casings)",
 				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

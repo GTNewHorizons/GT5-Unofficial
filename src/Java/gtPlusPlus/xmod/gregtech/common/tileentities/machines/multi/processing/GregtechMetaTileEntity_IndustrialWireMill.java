@@ -50,7 +50,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (top or bottom centered)",
 				"1x Maintenance Hatch (back centered)",
 				"Wire Factory Casings for the rest (32 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

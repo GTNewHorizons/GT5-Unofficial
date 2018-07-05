@@ -65,7 +65,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (top middle)",
 				"1x Fluid Input Hatch (optional, top layer)",
 				"Blast Smelter Casings for the rest",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

@@ -63,7 +63,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"Wash Plant Casings for the rest",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip
 
 		};

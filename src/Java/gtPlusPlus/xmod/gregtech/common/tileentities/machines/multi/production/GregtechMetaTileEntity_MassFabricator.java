@@ -101,7 +101,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				"1x Energy Hatch (Any bottom layer casing)",
 				"24x IC2 Reinforced Glass for the walls",
 				"Matter Fabricator Casings for the edges & top (40 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

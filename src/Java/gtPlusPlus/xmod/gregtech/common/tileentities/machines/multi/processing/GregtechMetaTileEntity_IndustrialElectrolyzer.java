@@ -48,7 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
 				"Electrolyzer Casings for the rest (10 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

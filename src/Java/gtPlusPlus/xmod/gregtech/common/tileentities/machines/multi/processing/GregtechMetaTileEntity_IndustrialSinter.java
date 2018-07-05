@@ -53,7 +53,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"1x Energy Hatch (top or bottom centered)",
 				"1x Maintenance Hatch (back centered)",
 				"Sinter Furnace Casings for the rest (32 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				"Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second",
 				CORE.GT_Tooltip
 		};
 	}

@@ -59,7 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

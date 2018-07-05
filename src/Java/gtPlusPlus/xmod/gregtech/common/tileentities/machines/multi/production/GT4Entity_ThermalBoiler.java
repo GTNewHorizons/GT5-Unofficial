@@ -184,7 +184,7 @@ extends GregtechMeta_MultiBlockBase
 				"Thermal Containment Casings for the rest",
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

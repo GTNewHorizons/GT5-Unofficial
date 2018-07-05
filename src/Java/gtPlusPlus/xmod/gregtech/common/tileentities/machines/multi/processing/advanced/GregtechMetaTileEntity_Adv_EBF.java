@@ -81,6 +81,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		return new String[]{
 				"Controller Block for the Advanced Electric Blast Furnace",
+				"120% faster than using an equal tier EBF",
+				"Only uses 90% of the eu/t normally required",
+				"Processes upto 8 recipes at once",
 				"Consumes 1L of "+mHotFuelName+"/t during operation",
 				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
 				"16x Heating Coils (Two middle Layers, hollow)",
@@ -96,7 +99,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
 				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

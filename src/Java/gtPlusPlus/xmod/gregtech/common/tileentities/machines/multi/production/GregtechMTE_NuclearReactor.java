@@ -69,12 +69,11 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				"2x Maint. Hatch",
 				"--Mufflers go in the top 3x3--",
 				"4x IV+ Mufflers",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				"Outputs U233 every 10 seconds, on average",
 				"Input Fluorine and Helium for bonus byproducts",
 				"Input Li2BeF4 and a molten salt as fuel.",
 				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

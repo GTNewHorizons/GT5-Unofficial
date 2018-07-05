@@ -45,6 +45,7 @@ extends GregtechMeta_MultiBlockBase {
 		}    	
 		return new String[]{
 				"Controller Block for the Advanced Implosion Compressor",
+				"Processes upto ((Tier/2)+1) recipes at once",
 				"Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
@@ -52,8 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (16 at least!)",
-				"Causes " + 20 * getPollutionPerTick(null) + " Pollution per second",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

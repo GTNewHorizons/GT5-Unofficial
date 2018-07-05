@@ -51,7 +51,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (top)",
 				"1x Maintenance Hatch (back centered)",
 				"Cutting Factory Frames for the rest (32 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

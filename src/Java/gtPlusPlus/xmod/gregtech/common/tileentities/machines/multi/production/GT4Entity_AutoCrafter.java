@@ -154,7 +154,7 @@ extends GregtechMeta_MultiBlockBase
 				"1x Energy Hatch",
 				"Rest is Autocrafter Frame",
 				"--------------------------------------",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

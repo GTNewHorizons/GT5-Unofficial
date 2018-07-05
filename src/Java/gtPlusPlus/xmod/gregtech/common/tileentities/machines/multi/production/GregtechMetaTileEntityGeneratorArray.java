@@ -49,7 +49,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 				"1x Energy Hatch (Any casing)",
 				"Robust Tungstensteel Machine Casings for the rest (16 at least!)",
 				"Place up to 16 Single Block GT Generators into the Controller Inventory",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

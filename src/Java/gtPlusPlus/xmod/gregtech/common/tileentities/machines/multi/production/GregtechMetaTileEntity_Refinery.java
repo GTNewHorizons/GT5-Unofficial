@@ -21,10 +21,11 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase {
 
 	public GT_Recipe mLastRecipe;
 	
@@ -51,7 +52,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				"1x Maintenance Hatch (One of base platform)",
 				"1x ZPM or better Muffler (One of base platform)",
 				"1x Energy Hatch (One of base platform)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip
 		};
 	}
@@ -284,6 +285,11 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_Refinery(this.mName);
+	}
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return false;
 	}
 
 }

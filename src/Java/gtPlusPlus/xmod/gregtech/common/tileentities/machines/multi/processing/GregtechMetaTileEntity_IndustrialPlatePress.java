@@ -56,7 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler Hatch (anywhere)",
 				"Material Press Machine Casings for the rest (16 at least!)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

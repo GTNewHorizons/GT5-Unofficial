@@ -56,7 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any top or bottom edge casing)",
 				"18x Sieve Grate (Top and Middle 3x3)",
 				"Sieve Casings for the rest (35 min)",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 

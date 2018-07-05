@@ -31,6 +31,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -838,7 +839,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 	
 	public String getPollutionTooltip() {
-		return "Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second";
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return "Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second";
+		}
+		else {
+			return "";
+		}
 	}
 
 	@Override

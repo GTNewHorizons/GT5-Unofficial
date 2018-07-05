@@ -73,7 +73,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 				"1-16 Energy Hatches", 
 				"All Hatches must be UV or better", 
 				"32768 EU/t and 80mio EU Cap per Energy Hatch",
-				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				"Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
