@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.TAE;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -72,7 +73,9 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				"1x Output Hatch (Any casing, optional)", 
 				"1x Maintenance Hatch (Any casing)", 
 				"1x Energy Hatch (Any casing)",
-				mCasingName+"s for the rest (10 at least!)"};
+				mCasingName+"s for the rest (10 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				CORE.GT_Tooltip};
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -147,7 +150,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	}
 
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 50;
+		return 25;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {

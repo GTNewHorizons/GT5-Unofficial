@@ -28,6 +28,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -87,7 +88,9 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x3x1 " + casings + " pillar (Center of base)",
 				"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
 				"1x Maintenance Hatch (One of base casings)",
-				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
+				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				CORE.GT_Tooltip};
 	}
 
 	private final void initFields() {

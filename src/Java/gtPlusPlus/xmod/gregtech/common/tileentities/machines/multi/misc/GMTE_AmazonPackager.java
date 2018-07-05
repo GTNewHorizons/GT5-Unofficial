@@ -38,12 +38,10 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 
 	public GMTE_AmazonPackager(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		initFields();
 	}
 
 	public GMTE_AmazonPackager(String aName) {
 		super(aName);
-		initFields();
 	}
 
 	@Override
@@ -70,6 +68,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
 				"Supply Depot. Casings for the rest (10 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip
 		};
 	}
@@ -102,11 +101,14 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {		
+	public boolean checkRecipe(ItemStack aStack) {	
+		
+		//Just the best place to check this~
+		initFields();
+		
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		if (this.getGUIItemStack() != null) {
-			tItems.add(this.getGUIItemStack());
-		
+			tItems.add(this.getGUIItemStack());		
 		}
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
@@ -256,6 +258,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	@Override
 	public int getMaxEfficiency(ItemStack p0) {
 		return 10000;
+	}
+
+	@Override
+	public int getPollutionPerTick(ItemStack arg0) {
+		return 2;
 	}
 
 }

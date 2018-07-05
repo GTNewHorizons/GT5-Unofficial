@@ -51,6 +51,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any bottom layer casing)",
 				"Thermal processing Casings for the rest (8 at least!)",
 				"Noise Hazard Sign Blocks also count as valid casings",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip
 				
 		};
@@ -135,7 +136,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 45;
+		return 50;
 	}
 
 	@Override

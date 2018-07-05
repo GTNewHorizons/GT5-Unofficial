@@ -173,8 +173,8 @@ public class CommonProxy {
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
-		COMPAT_HANDLER.runQueuedRecipes();
 		COMPAT_IntermodStaging.postInit();
+		COMPAT_HANDLER.runQueuedRecipes();
 	}
 
 

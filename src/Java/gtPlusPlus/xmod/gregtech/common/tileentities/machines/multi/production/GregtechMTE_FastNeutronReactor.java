@@ -176,6 +176,7 @@ extends GregtechMeta_MultiBlockBase
 				"Harness the power of Nuclear Fission",
 				"------------------------------------------",
 				"Consult user manual for more information",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 

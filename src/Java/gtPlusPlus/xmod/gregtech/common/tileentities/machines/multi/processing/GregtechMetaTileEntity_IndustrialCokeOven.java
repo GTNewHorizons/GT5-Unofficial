@@ -56,6 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
 				"Structural Coke Oven Casings for the rest",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -167,7 +168,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 4;
 	}
 
 	/* @Override

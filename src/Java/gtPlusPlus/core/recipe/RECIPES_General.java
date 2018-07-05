@@ -154,6 +154,7 @@ public class RECIPES_General {
 		}
 
 		//Mining Explosive
+		Logger.RECIPE("[Inspection] Explosives");
 		if (RecipeUtils.recipeBuilder(
 				CI.explosiveITNT, CI.explosiveTNT, CI.explosiveITNT,
 				CI.explosiveTNT, "frameGtWroughtIron", CI.explosiveTNT,
@@ -186,6 +187,7 @@ public class RECIPES_General {
 			l++;
 		}*/
 
+		Logger.RECIPE("[Inspection] Wither Cage");
 		if (RecipeUtils.recipeBuilder(
 				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
 				"plateTungstenSteel", getSimpleStack(Items.nether_star), "plateTungstenSteel",
@@ -194,6 +196,7 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Wither Cages.");
 		}
 
+		Logger.RECIPE("[Inspection] Xp Converter");
 		if (RecipeUtils.recipeBuilder(
 				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
 				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1), getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
@@ -230,6 +233,7 @@ public class RECIPES_General {
 			Logger.INFO("Added a recipe for Rope.");
 		}
 
+		Logger.RECIPE("[Inspection] Net");
 		if (RecipeUtils.recipeBuilder(
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
 				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),

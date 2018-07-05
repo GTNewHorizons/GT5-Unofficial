@@ -48,8 +48,10 @@ extends GregtechMeta_MultiBlockBase {
 				"2x Output Bus (side centered)",
 				"1x Energy Hatch (top or bottom centered)",
 				"1x Input Hatch (top or bottom centered)",
+				"1x Muffler Hatch (top)",
 				"1x Maintenance Hatch (back centered)",
 				"Cutting Factory Frames for the rest (32 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip
 		};
 	}
@@ -158,8 +160,8 @@ extends GregtechMeta_MultiBlockBase {
 					return false;
 				}
 			}
-			if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
-				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
+			if ((this.mMaintenanceHatches.size() != 1) || (this.mMufflerHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
+				Logger.INFO("Incorrect amount of Maintenance or Energy or Muffler hatches.");
 				return false;
 			}
 		} else {
@@ -177,7 +179,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 8;
 	}
 
 	@Override

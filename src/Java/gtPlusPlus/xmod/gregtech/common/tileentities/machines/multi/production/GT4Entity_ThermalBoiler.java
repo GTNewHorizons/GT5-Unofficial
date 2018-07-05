@@ -162,7 +162,7 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public int getPollutionPerTick(ItemStack aStack)
 	{
-		return 0;
+		return 35;
 	}
 
 	public int getAmountOfOutputs()
@@ -184,6 +184,7 @@ extends GregtechMeta_MultiBlockBase
 				"Thermal Containment Casings for the rest",
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 

@@ -41,7 +41,7 @@ public class FR_Gregtech_Recipes {
 	private static ItemStack hiveFrameSlow = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameSlow);
 	private static ItemStack hiveFrameStalilize = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameStalilize);
 	private static ItemStack hiveFrameArborist = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameArborist);
-	
+
 	public static void registerItems(){	
 		//Magic Bee Like Frames
 		RecipeUtils.addShapedGregtechRecipe(
@@ -99,31 +99,31 @@ public class FR_Gregtech_Recipes {
 					null, itemClayDust, null,
 					hiveFrameClay);
 		}
-		
+
 		// Frame Items added by bartimaeusnek
-				RecipeUtils.addShapedGregtechRecipe(
-						ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),foil_Electrum,ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
-						hiveFrameSlow);
-				
-				RecipeUtils.addShapedGregtechRecipe(
-						"stickLongWroughtIron","stickWroughtIron","stickLongWroughtIron",
-						"stickLongWroughtIron","foilWroughtIron","stickLongWroughtIron",
-						"stickWroughtIron","stickWroughtIron","stickWroughtIron",
-						hiveFrameDecay);
-				
-				RecipeUtils.addShapedGregtechRecipe(
-						"stickLongOsmiridium","stickOsmiridium","stickLongOsmiridium",
-						"stickLongOsmiridium","foilOsmiridium","stickLongOsmiridium",
-						"stickOsmiridium","stickOsmiridium","stickOsmiridium",
-						hiveFrameStalilize);
-				
-				RecipeUtils.addShapedGregtechRecipe(
-						"stickLongWoodSealed","stickWoodSealed","stickLongWoodSealed",
-						"stickLongWoodSealed",Items.paper,"stickLongWoodSealed",
-						"stickWoodSealed","stickWoodSealed","stickWoodSealed",
-						hiveFrameArborist);
+		RecipeUtils.addShapedGregtechRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),foil_Electrum,ItemUtils.getItemStackOfAmountFromOreDict("stickLongTumbaga", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),ItemUtils.getItemStackOfAmountFromOreDict("stickTumbaga", 1),
+				hiveFrameSlow);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickLongWroughtIron","stickWroughtIron","stickLongWroughtIron",
+				"stickLongWroughtIron","foilZinc","stickLongWroughtIron",
+				"stickWroughtIron","stickWroughtIron","stickWroughtIron",
+				hiveFrameDecay);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickLongOsmiridium","stickOsmiridium","stickLongOsmiridium",
+				"stickLongOsmiridium","foilOsmiridium","stickLongOsmiridium",
+				"stickOsmiridium","stickOsmiridium","stickOsmiridium",
+				hiveFrameStalilize);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickLongWoodSealed","stickWoodSealed","stickLongWoodSealed",
+				"stickLongWoodSealed",Items.paper,"stickLongWoodSealed",
+				"stickWoodSealed","stickWoodSealed","stickWoodSealed",
+				hiveFrameArborist);
 	}
 
 }

@@ -14,73 +14,76 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionComputer;
 
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import net.minecraft.block.Block;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
-    public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6);
-    }
+	public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional, 6);
+	}
 
-    public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
-        super(aName);
-    }
+	public GregtechMetaTileEntity_Adv_Fusion_MK4(String aName) {
+		super(aName);
+	}
 
-    @Override
-    public int tier() {
-        return 8;
-    }
+	@Override
+	public int tier() {
+		return 8;
+	}
 
-    @Override
-    public long maxEUStore() {
-        return (640010000L*4) * (Math.min(16, this.mEnergyHatches.size())) / 8L;
-    }
+	@Override
+	public long maxEUStore() {
+		return (640010000L*4) * (Math.min(16, this.mEnergyHatches.size())) / 8L;
+	}
 
-    @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_Adv_Fusion_MK4(mName);
-    }
+	@Override
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTileEntity_Adv_Fusion_MK4(mName);
+	}
 
-    @Override
-    public Block getCasing() {
-        return getFusionCoil();
-    }
+	@Override
+	public Block getCasing() {
+		return getFusionCoil();
+	}
 
-    @Override
-    public int getCasingMeta() {
-        return 12;
-    }
+	@Override
+	public int getCasingMeta() {
+		return 12;
+	}
 
-    @Override
-    public Block getFusionCoil() {
-        return ModBlocks.blockCasings3Misc;
-    }
+	@Override
+	public Block getFusionCoil() {
+		return ModBlocks.blockCasings3Misc;
+	}
 
-    @Override
-    public int getFusionCoilMeta() {
-        return 13;
-    }
+	@Override
+	public int getFusionCoilMeta() {
+		return 13;
+	}
 
-    public String[] getDescription() {
-        return new String[]{
-        		"HARNESSING THE POWER OF A NEUTRON STAR", 
-        		"Fusion Machine Casings MK III around Advanced Fusion Coils", 
-        		"2-16 Input Hatches", 
-        		"1-16 Output Hatches", 
-        		"1-16 Energy Hatches", 
-        		"All Hatches must be UV or better", 
-        		"32768 EU/t and 80mio EU Cap per Energy Hatch"};
-    }
+	public String[] getDescription() {
+		return new String[]{
+				"HARNESSING THE POWER OF A NEUTRON STAR", 
+				"Fusion Machine Casings MK III around Advanced Fusion Coils", 
+				"2-16 Input Hatches", 
+				"1-16 Output Hatches", 
+				"1-16 Energy Hatches", 
+				"All Hatches must be UV or better", 
+				"32768 EU/t and 80mio EU Cap per Energy Hatch",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				CORE.GT_Tooltip};
+	}
 
-    @Override
-    public int tierOverclock() {
-        return 8;
-    }
+	@Override
+	public int tierOverclock() {
+		return 8;
+	}
 
-    @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
 			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		ITexture[] sTexture;
 		if (aSide == aFacing) {
@@ -99,13 +102,13 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		}
 		return sTexture;
 	}
-    
-    @Override
-    public IIconContainer getIconOverlay() {
-        return this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1;
-    }
-    
-    @Override
+
+	@Override
+	public IIconContainer getIconOverlay() {
+		return this.mMaxProgresstime > 0 ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1;
+	}
+
+	@Override
 	public int overclock(final int mStartEnergy) {
 		if (this.tierOverclock() == 1) {
 			return 1;
@@ -118,7 +121,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		}
 		return (mStartEnergy < 160000000) ? 8 : ((mStartEnergy < 320000000) ? 4 : (mStartEnergy < 640000000) ? 2 : 1);
 	}
-    
+
 	public boolean turnCasingActive(final boolean status) {
 		if (this.mEnergyHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
@@ -137,5 +140,5 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 		}
 		return true;
 	}
-    
+
 }

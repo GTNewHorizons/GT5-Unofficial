@@ -57,9 +57,11 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Hatch",
 				"1x Output Hatch",
 				"1x Input Bus",
-				"1x [HV] Output Bus",
-				"1x [EV] Energy Hatch (Can be higher Tier) [Blue]",
-				"Centrifuge Casings for the rest (16 at least)",
+				"1x Output Bus",
+				"1x Muffler Hatch",
+				"1x Energy Hatch [Blue]",
+				"Centrifuge Casings for the rest (10 at least)",
+				getPollutionTooltip(),
 				CORE.GT_Tooltip};
 	}
 
@@ -128,7 +130,7 @@ extends GregtechMeta_MultiBlockBase {
 
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						//Utils.LOG_WARNING("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
-						if ((!this.addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getCasingTextureIndex()))) {
+						if ((!this.addToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getCasingTextureIndex()))) {
 
 							//Maintenance Hatch
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
@@ -159,7 +161,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 16;
+		return tAmount >= 10;
 	}
 
 	@Override
@@ -169,7 +171,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 15;
 	}
 
 	@Override

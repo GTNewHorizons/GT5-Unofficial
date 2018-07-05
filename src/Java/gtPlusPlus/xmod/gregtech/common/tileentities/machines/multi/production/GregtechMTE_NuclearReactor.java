@@ -74,6 +74,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				"Input Fluorine and Helium for bonus byproducts",
 				"Input Li2BeF4 and a molten salt as fuel.",
 				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 

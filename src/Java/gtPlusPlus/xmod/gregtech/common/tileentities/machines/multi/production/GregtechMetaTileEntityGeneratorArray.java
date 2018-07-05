@@ -16,6 +16,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -47,7 +48,9 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"Robust Tungstensteel Machine Casings for the rest (16 at least!)",
-		"Place up to 16 Single Block GT Generators into the Controller Inventory"};
+				"Place up to 16 Single Block GT Generators into the Controller Inventory",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

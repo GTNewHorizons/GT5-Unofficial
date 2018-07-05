@@ -124,7 +124,7 @@ extends GregtechMeta_MultiBlockBase
 	@Override
 	public int getPollutionPerTick(ItemStack aStack)
 	{
-		return 200;
+		return 25;
 	}
 
 	public int getAmountOfOutputs()
@@ -154,6 +154,7 @@ extends GregtechMeta_MultiBlockBase
 				"1x Energy Hatch",
 				"Rest is Autocrafter Frame",
 				"--------------------------------------",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip
 		};
 	}

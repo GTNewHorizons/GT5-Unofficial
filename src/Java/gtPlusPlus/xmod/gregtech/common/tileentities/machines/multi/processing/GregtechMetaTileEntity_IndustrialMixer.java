@@ -72,6 +72,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (anywhere)",
 				mCasingName+"s for the rest (16 at least!)",
 				mCasingName2+"s for the internal blocks (2)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -180,7 +181,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 2;
+		return 40;
 	}
 
 	@Override

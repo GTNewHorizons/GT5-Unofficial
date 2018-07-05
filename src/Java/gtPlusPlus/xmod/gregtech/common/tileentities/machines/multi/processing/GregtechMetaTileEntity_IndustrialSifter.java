@@ -52,9 +52,11 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus (Any top or bottom edge casing)",
 				"4x Output Bus (Any top or bottom edge casing)",
 				"1x Maintenance Hatch (Any top or bottom edge casing)",
+				"1x Muffler Hatch (Any top or bottom edge casing)",
 				"1x Energy Hatch (Any top or bottom edge casing)",
 				"18x Sieve Grate (Top and Middle 3x3)",
-				"Sieve Casings for the rest (47)",
+				"Sieve Casings for the rest (35 min)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -263,7 +265,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 2;
 	}
 
 	@Override

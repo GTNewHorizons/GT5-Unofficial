@@ -47,7 +47,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
-				"Electrolyzer Casings for the rest (16 at least!)",
+				"Electrolyzer Casings for the rest (10 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -109,7 +110,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 16;
+		return tAmount >= 10;
 	}
 
 	@Override
@@ -119,7 +120,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 15;
 	}
 
 	@Override

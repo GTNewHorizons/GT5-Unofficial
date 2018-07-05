@@ -28,105 +28,29 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeUtils {
-
+public static int mInvalidID = 1;
 	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, ItemStack resultItem){
-
-		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
-			Logger.INFO("[1234abcd] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+			Logger.INFO("[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
 			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
+			resultItem.setItemDamage(mInvalidID++);
 			RegistrationHandler.recipesFailed++;
 			//return false;
 		}
-
-		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
+		else if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Logger.INFO("[1234abcd] Found a recipe with 0 inputs, yet had a valid output.");
-			Logger.INFO("[1234abcd] Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			Logger.INFO("[Fix] Found a recipe with 0 inputs, yet had a valid output.");
+			Logger.INFO("[Fix] Error found while adding a recipe for: "+resultItem != null ? resultItem.getDisplayName() : "Bad Output Item"+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
-		
-		/*
-		//Utils.LOG_WARNING("Trying to add a recipe for "+resultItem.toString());
-		String a,b,c,d,e,f,g,h,i;
-		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
-		Logger.WARNING(a);
-		if (slot_2 == null){ b = " ";} else { b = "2";validSlots.add('2');validSlots.add(slot_2);}
-		Logger.WARNING(b);
-		if (slot_3 == null){ c = " ";} else { c = "3";validSlots.add('3');validSlots.add(slot_3);}
-		Logger.WARNING(c);
-		if (slot_4 == null){ d = " ";} else { d = "4";validSlots.add('4');validSlots.add(slot_4);}
-		Logger.WARNING(d);
-		if (slot_5 == null){ e = " ";} else { e = "5";validSlots.add('5');validSlots.add(slot_5);}
-		Logger.WARNING(e);
-		if (slot_6 == null){ f = " ";} else { f = "6";validSlots.add('6');validSlots.add(slot_6);}
-		Logger.WARNING(f);
-		if (slot_7 == null){ g = " ";} else { g = "7";validSlots.add('7');validSlots.add(slot_7);}
-		Logger.WARNING(g);
-		if (slot_8 == null){ h = " ";} else { h = "8";validSlots.add('8');validSlots.add(slot_8);}
-		Logger.WARNING(h);
-		if (slot_9 == null){ i = " ";} else { i = "9";validSlots.add('9');validSlots.add(slot_9);}
-		Logger.WARNING(i);
-
-
-		Logger.ERROR("_______");
-		final String lineOne = a+b+c;
-		Logger.ERROR("|"+a+"|"+b+"|"+c+"|");
-		Logger.ERROR("_______");
-		final String lineTwo = d+e+f;
-		Logger.ERROR("|"+d+"|"+e+"|"+f+"|");
-		Logger.ERROR("_______");
-		final String lineThree = g+h+i;
-		Logger.ERROR("|"+g+"|"+h+"|"+i+"|");
-		Logger.ERROR("_______");
-
-		//validSlots.add(0, lineOne);
-		//validSlots.add(1, lineTwo);
-		//validSlots.add(2, lineThree);
-		boolean advancedLog = false;
-		if (CORE.DEBUG){
-			advancedLog = true;
-		}
-		if (advancedLog){
-			int j = 0;
-			final int l = validSlots.size();
-			Logger.WARNING("l:"+l);
-			while (j <= l) {
-				Logger.WARNING("j:"+j);
-				if (j <= 2){
-					Logger.WARNING("ArrayList Values: "+validSlots.get(j));
-					Logger.WARNING("Adding 1.");
-					j++;
-				}
-				else if (j == l){
-					Logger.WARNING("Done iteration.");
-					break;
-				}
-				else {
-					Logger.WARNING("ArrayList Values: '"+validSlots.get(j)+"' "+validSlots.get(j+1));
-					if (j < (l-2)){
-						Logger.WARNING("Adding 2.");
-						j=j+2;
-					}
-					else {
-						Logger.WARNING("Done iteration.");
-						break;
-					}
-				}
-				if ((validSlots.get(j) instanceof String) || (validSlots.get(j) instanceof ItemStack)){
-					//Utils.LOG_WARNING("Is Valid: "+validSlots.get(j));
-				}
-			}
-		}*/
 
 		Object[] o = new Object[] {slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9};
 		
 		try {
 			int size = COMPAT_HANDLER.mRecipesToGenerate.size();
 			COMPAT_HANDLER.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
-
 			//Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (COMPAT_HANDLER.mRecipesToGenerate.size() > size) {
 				if (!COMPAT_HANDLER.areInitItemsLoaded){
@@ -144,7 +68,7 @@ public class RecipeUtils {
 			//k.getClass();
 			//k.printStackTrace();
 			//k.getLocalizedMessage();
-			Logger.INFO("@@@: Invalid Recipe detected for: "+resultItem != null ? resultItem.getUnlocalizedName() : "INVALID OUTPUT ITEM");
+			Logger.INFO("[Fix] Invalid Recipe detected for: "+resultItem != null ? resultItem.getUnlocalizedName() : "INVALID OUTPUT ITEM");
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesFailed++;
 			}
@@ -421,8 +345,7 @@ public class RecipeUtils {
 	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
 
 		if (inputs.length != 9){
-			Logger.WARNING("Input array for "+output.getDisplayName()+" does not equal 9. "+inputs.length+" is the actual size.");
-
+			Logger.RECIPE("[Fix] Input array for "+output.getDisplayName()+" does not equal 9. "+inputs.length+" is the actual size.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
@@ -432,20 +355,18 @@ public class RecipeUtils {
 				inputs[x] = " ";
 				Logger.WARNING("Input slot "+x+" changed from NULL to a blank space.");
 			}
-			else if (!(inputs[x] instanceof ItemStack) && !(inputs[x] instanceof String)){
+			else if (!(inputs[x] instanceof ItemStack) && !(inputs[x] instanceof String) && !(inputs[x] instanceof Item)){
 				if (output != null){
-					Logger.WARNING("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
-
+					Logger.RECIPE("[Fix] Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
 					RegistrationHandler.recipesFailed++;
 					return false;
 				}
 				else {
-					Logger.WARNING("Output is Null for a recipe. Report to Alkalus.");
+					Logger.RECIPE("[Fix] Output is Null for a recipe. Report to Alkalus.");
 					output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
 				}
 			}
 		}
-
 
 		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
 		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(inputs, output, true));
@@ -557,6 +478,9 @@ public class RecipeUtils {
 				if (o instanceof ItemStack) {
 					aFiltered[aValid++] = o;					
 				}
+				else if (o instanceof Item) {
+					aFiltered[aValid++] = ItemUtils.getSimpleStack((Item) o);					
+				}
 				else if (o instanceof String) {
 					aFiltered[aValid++] = o;					
 				}
@@ -571,6 +495,9 @@ public class RecipeUtils {
 			int validCounter = 0, invalidCounter = 0;
 			for (Object p : aFiltered) {
 				if (p instanceof ItemStack) {	
+					validCounter++;
+				}
+				else if (p instanceof Item) {	
 					validCounter++;
 				}
 				else if (p instanceof String) {	

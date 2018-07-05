@@ -60,6 +60,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (anywhere)",
 				"1x Maintenance Hatch (Back Center)",
 				"Inconel Reinforced Casings for the rest (28 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -216,7 +217,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 50;
 	}
 
 	@Override

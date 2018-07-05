@@ -59,6 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -188,7 +189,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 100;
+		return 20;
 	}
 
 	@Override

@@ -1341,6 +1341,7 @@ public class RECIPES_Machines {
 
 
 		//Mystic Frame
+		Logger.RECIPE("[Inspection] Portal Frame");
 		if (RecipeUtils.addShapedGregtechRecipe(
 				"circuitMaster", ItemList.Field_Generator_MV.get(1, CI.circuitTier7), "circuitElite",
 				CI.craftingToolScrewdriver, GregtechItemList.Casing_Multi_Use.get(1), CI.craftingToolWrench,

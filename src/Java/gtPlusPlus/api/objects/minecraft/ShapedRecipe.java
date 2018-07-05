@@ -3,6 +3,12 @@ package gtPlusPlus.api.objects.minecraft;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
+import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
+import gtPlusPlus.xmod.ic2.item.IC2_Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -10,6 +16,8 @@ public class ShapedRecipe {
 
 	private final static String CHARS = "abcdefghijklmnop";
 	public ShapedOreRecipe mRecipe;
+
+	ItemStack[] mBlackList = null;
 
 	public ShapedRecipe(
 			Object aInput1, Object aInput2, Object aInput3,
@@ -27,11 +35,18 @@ public class ShapedRecipe {
 		char[] aChar = new char[9];
 		String[] aLoggingInfo = new String[9];
 
-		
-		
+		if (mBlackList == null) {
+			mBlackList = new ItemStack[] {
+					ItemUtils.getSimpleStack(ModBlocks.blockNet),
+					ItemUtils.getSimpleStack(ModBlocks.blockXpConverter),
+					ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
+					ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive),
+					ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame),
+			};
+		}
+
 		//Just to be safe
 		try {
-			Logger.RECIPE("======== B R E A K P O I N T =========");
 			int xSlot = 0;
 			int xNull = 0;
 			for (Object u : aInputs) {
@@ -40,7 +55,10 @@ public class ShapedRecipe {
 					mInfo = (String) u;
 					Logger.RECIPE("Input slot "+xSlot+++" contains "+mInfo);
 				}
-				else if (u instanceof ItemStack) {
+				else if (u instanceof ItemStack || u instanceof Item) {
+					if (u instanceof Item) {
+						u = ItemUtils.getSimpleStack((Item) u);
+					}
 					mInfo = ((ItemStack) u).getDisplayName();
 					Logger.RECIPE("Input slot "+xSlot+++" contains "+mInfo);
 				}
@@ -51,6 +69,13 @@ public class ShapedRecipe {
 			Logger.RECIPE("Found "+xNull+" null inputs.");
 			//Check if the output is invalid
 			if (aOutput != null && xNull < 9) {
+
+				for (ItemStack q : mBlackList) {
+					if (q.isItemEqual(aOutput)) {
+						Logger.RECIPE("Found recipe Alkalus is Debugging.");	
+					}					
+				}
+				
 				Object[] mVarags2 = null;
 				Logger.RECIPE("Generating Shaped Crafting Recipe for "+aOutput.getDisplayName());
 
@@ -75,7 +100,10 @@ public class ShapedRecipe {
 						if (stack instanceof String) {
 							mInfo = (String) stack;
 						}
-						else if (stack instanceof ItemStack) {
+						else if (stack instanceof ItemStack || stack instanceof Item) {
+							if (stack instanceof Item) {
+								stack = ItemUtils.getSimpleStack((Item) stack);
+							}
 							mInfo = ((ItemStack) stack).getDisplayName();
 						}
 						aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
@@ -120,11 +148,11 @@ public class ShapedRecipe {
 					//Rebuild the Map without spaces
 					aRecipePairs.clear();
 					aCharSlot = 0;
-					
+
 					//The amount of spaces in the Varags that the Shape strings takes.
 					//Currently they are inserted as a single array into index 0.
 					final int KEY_COUNTER = 1;
-					
+
 					int counter = KEY_COUNTER;
 					for (Object stack : aInputs) {
 						if (stack != null) {
@@ -132,7 +160,10 @@ public class ShapedRecipe {
 							if (stack instanceof String) {
 								mInfo = (String) stack;
 							}
-							else if (stack instanceof ItemStack) {
+							else if (stack instanceof ItemStack || stack instanceof Item) {
+								if (stack instanceof Item) {
+									stack = ItemUtils.getSimpleStack((Item) stack);
+								}
 								mInfo = ((ItemStack) stack).getDisplayName();
 							}
 							aRecipePairs.put(new Pair<Character, Object>(CHARS.charAt(aCharSlot), stack));
@@ -156,19 +187,27 @@ public class ShapedRecipe {
 					int counter2 = KEY_COUNTER;		
 					for (Pair<Character, Object> r : aRecipePairs) {			
 						char c = r.getKey();
-						Object o = r.getValue();			
+						Object o = r.getValue();	
+						
+						if (o instanceof ItemStack || o instanceof Item) {
+							if (o instanceof Item) {
+								o = ItemUtils.getSimpleStack((Item) o);
+							}
+							o = ((ItemStack) o).copy();
+						}
+						
 						mVarags2[counter2] = (char) c;
 						mVarags2[counter2+1] = o;	
 						counter2 += 2;
 					}
-					
+
 					Logger.RECIPE("Recipe Summary");
 					Logger.RECIPE("+ = + = + = +");
 					Logger.RECIPE("= "+aChar[0]+" = "+aChar[1]+" = "+aChar[2]+" =");
 					Logger.RECIPE("+ = + = + = +");
 					Logger.RECIPE("= "+aChar[3]+" = "+aChar[4]+" = "+aChar[5]+" =");
 					Logger.RECIPE("+ = + = + = +");
-					Logger.RECIPE("=" +aChar[6]+" = "+aChar[7]+" = "+aChar[8]+" =");
+					Logger.RECIPE("= "+aChar[6]+" = "+aChar[7]+" = "+aChar[8]+" =");
 					Logger.RECIPE("+ = + = + = +");
 					for (int r=0;r<9;r++) {
 						if (aChar[r] != ' ') {
@@ -213,7 +252,7 @@ public class ShapedRecipe {
 			Logger.RECIPE("[Fix][1] Error thrown when making a ShapedOreRecipe object.");
 			t.printStackTrace();		
 		}
-		
+
 	}
 
 }

@@ -262,6 +262,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
 				"All Hatches must be IV or better",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -449,7 +450,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
-		return 50;
+		return 10;
 	}
 
 	@Override

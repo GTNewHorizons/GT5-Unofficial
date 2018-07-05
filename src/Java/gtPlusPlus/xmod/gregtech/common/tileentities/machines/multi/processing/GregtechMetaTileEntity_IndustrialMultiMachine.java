@@ -74,6 +74,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller (front centered)",
 				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
+				"Produces "+this.getPollutionPerTick(null)+" pollution per tick",
 				CORE.GT_Tooltip};
 	}
 
@@ -154,7 +155,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 6;
+		return tAmount >= 6 && this.mMufflerHatches.size() > 0;
 	}
 
 	@Override
@@ -163,8 +164,19 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public int getPollutionPerTick(final ItemStack aStack) {
-		return 50;
+	public int getPollutionPerTick(final ItemStack aStack) {		
+		if (mInternalMode == 0) {
+			return 20;
+		}
+		else if (mInternalMode == 1) {
+			return 20;
+		}
+		else if (mInternalMode == 2) {
+			return 30;
+		}
+		else {
+			return 50;
+		}	
 	}
 
 	public int getTextureIndex() {
