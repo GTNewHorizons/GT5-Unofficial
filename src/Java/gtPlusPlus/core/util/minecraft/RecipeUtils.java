@@ -33,7 +33,7 @@ public class RecipeUtils {
 
 		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
-			Logger.WARNING("Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+			Logger.WARNING("[Recipe] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
 			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
 			RegistrationHandler.recipesFailed++;
 			//return false;
@@ -42,8 +42,8 @@ public class RecipeUtils {
 		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Logger.INFO("Found a recipe with 0 inputs, yet had a valid output.");
-			Logger.INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			Logger.INFO("[Recipe] Found a recipe with 0 inputs, yet had a valid output.");
+			Logger.INFO("[Recipe] Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
@@ -546,165 +546,7 @@ public class RecipeUtils {
 		public final boolean isValid;
 
 		public InternalRecipeObject(Object[] aInputs, ItemStack aOutput, boolean gtRecipe) {
-
 			mOutput = aOutput != null ? aOutput.copy() : null;			
-			/*String line1 = "", line2 = "", line3 = "";
-			String h = "abcdefghi";
-			char blank = ' ';
-			int counter = 0;
-			char s[] = new char[9];
-			ItemStack[] vInputs = new ItemStack[9];
-			Object[] tInputs = aInputs.clone();
-			
-			if (tInputs.length >= 8 && aOutput != null) {
-				
-				for (Object o : tInputs) {
-					if (o instanceof String || o instanceof ItemStack) {
-						s[counter] = h.charAt(counter);
-					}
-					else if (o == null) {
-						s[counter] = blank;
-					}				
-					counter++;
-				}			
-
-				for (int y=0;y<9;y++){			
-					if (tInputs.length > y) {
-						if (tInputs[y] instanceof String) {
-							vInputs[y] = ItemUtils.getItemStackOfAmountFromOreDict((String) tInputs[y], 1);
-						}
-						else if (tInputs[y] instanceof ItemStack) {
-							vInputs[y] = (ItemStack) tInputs[y];
-						}	
-						else {
-							vInputs[y] = null;
-							Logger.INFO("[Recipe] Invalid Item in shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "BAD OUTPUT ITEM" + " | Type: "+tInputs[y] != null ? tInputs[y].getClass().getName() : "Unable to determine class of invalid object.");
-						}
-					}
-					else {
-						vInputs[y] = null;
-					}
-				}	
-			}
-
-			for (int i=0;i<3;i++) {
-				line1 = line1 + s[i];
-			}
-			for (int i=3;i<6;i++) {
-				line2 = line2 + s[i];				
-			}
-			for (int i=6;i<9;i++) {
-				line3 = line3 + s[i];				
-			}
-
-			//line1 = StringUtils.join(s, null, 0, 2);
-			//line2 = StringUtils.join(s, null, 3, 5);
-			//line3 = StringUtils.join(s, null, 6, 8);
-			
-
-			Object[] mVarags = new Object[18];
-			int mSlotCount = 0;
-
-			ItemStack[] a32 = new ItemStack[9];
-			char[] a16 = new char[9];
-			
-			for (mSlotCount=0;mSlotCount<9;mSlotCount++) {				
-				if (mSlotCount >= vInputs.length-1) {
-					mVarags[mSlotCount] = String.valueOf(blank);
-					a16[mSlotCount] = blank;
-					mVarags[mSlotCount+1] = (ItemStack) null;
-					a32[mSlotCount] = (ItemStack) null;					
-				}				
-				else {
-					if (s[mSlotCount] != ' ') {
-						mVarags[mSlotCount] = String.valueOf(s[mSlotCount]);
-						a16[mSlotCount] = Character.valueOf(s[mSlotCount]);
-					}
-					else {
-						mVarags[mSlotCount] = String.valueOf(blank);
-						a16[mSlotCount] = blank;						
-					}
-					if (vInputs[mSlotCount] != null) {
-						mVarags[mSlotCount+1] = vInputs[mSlotCount].copy();
-						a32[mSlotCount] = vInputs[mSlotCount].copy();
-					}
-					else {
-						mVarags[mSlotCount+1] = (ItemStack) null;
-						a32[mSlotCount] = (ItemStack) null;						
-					}
-				}				
-				
-			}
-			
-			int nullCount = 0;
-			
-			for (Object m : mVarags){
-				if (m == null) {
-					nullCount++;
-				}
-			}
-			Object[] mVarags2 = new Object[mVarags.length-nullCount+3];
-			mVarags2[0]=line1;
-			mVarags2[1]=line2;
-			mVarags2[2]=line3;
-			for (int i=3;i<(mVarags.length-nullCount+3);i++) {
-				if (mVarags[i] instanceof String) {
-					mVarags2[i] = (char) ((String) mVarags[i]).charAt(0);
-				}
-				else if (mVarags[i] instanceof ItemStack) {
-					mVarags2[i] = (ItemStack) mVarags[i];					
-				}
-			}			
-			
-			int jhr = 0;
-			for (Object u : mVarags2) {
-				if (u != null) {
-					if (u instanceof ItemStack) {
-						ItemStack g = (ItemStack) u;
-						Logger.INFO("mVarags2: "+(g).getDisplayName());						
-					}
-					else if (u instanceof String) {
-						Logger.INFO("mVarags2: "+(String) u);						
-					}
-					else if (u instanceof Character || u instanceof String) {
-						char n;
-						if (u instanceof String) {
-							n = ((String) u).charAt(0);
-						}
-						else if (u instanceof Character){
-							n = (char) u;
-						}
-						else {
-							n = ' ';
-						}
-						Logger.INFO("mVarags2: "+n);						
-					}
-					else {
-						Logger.INFO("mVarags2: Invalid Type. Type: "+u.getClass().getName());
-					}
-				}
-				jhr++;
-			}
-
-			ShapedOreRecipe d = null;
-			try {
-			d = new ShapedOreRecipe(
-					aOutput,
-					mVarags2);
-			}
-			catch (Throwable t) {
-				
-			}*/
-
-
-			/*if (mOutput == null || d == null || (line1 == null || line2 == null || line3 == null) || !ItemUtils.checkForInvalidItems(d.getRecipeOutput())) {
-				isValid = false;
-			}
-			else {
-				isValid = true;				
-			}*/
-			
-			
 			ShapedRecipe r = new ShapedRecipe(aInputs, aOutput);
 			if (r != null && r.mRecipe != null) {
 				isValid = true;

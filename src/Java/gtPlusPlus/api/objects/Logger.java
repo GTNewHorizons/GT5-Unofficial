@@ -139,6 +139,10 @@ public class Logger {
 		if (CORE.DEVENV || CORE.DEBUG)
 		modLogger.info("[WorldGen] "+s);
 	}
+
+	public static void RECIPE(String string) {
+		modLogger.info("[Recipe] "+string);		
+	}
 	
 	
 
