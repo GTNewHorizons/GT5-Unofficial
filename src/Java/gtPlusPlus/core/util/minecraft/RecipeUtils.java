@@ -17,6 +17,7 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
@@ -28,19 +29,21 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeUtils {
 
-	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, final ItemStack resultItem){
+	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, ItemStack resultItem){
 
 		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
-			Logger.WARNING("Found a recipe with an invalid output, yet had a valid inputs. Skipping.");
-			return false;
+			Logger.WARNING("Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
+			RegistrationHandler.recipesFailed++;
+			//return false;
 		}
 
 		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Logger.WARNING("Found a recipe with 0 inputs, yet had a valid output.");
-			Logger.WARNING("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			Logger.INFO("Found a recipe with 0 inputs, yet had a valid output.");
+			Logger.INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
@@ -138,7 +141,7 @@ public class RecipeUtils {
 			//k.getClass();
 			//k.printStackTrace();
 			//k.getLocalizedMessage();
-			Logger.INFO("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
+			Logger.INFO("@@@: Invalid Recipe detected for: "+resultItem != null ? resultItem.getUnlocalizedName() : "INVALID OUTPUT ITEM");
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesFailed++;
 			}
@@ -545,7 +548,7 @@ public class RecipeUtils {
 		public InternalRecipeObject(Object[] aInputs, ItemStack aOutput, boolean gtRecipe) {
 
 			mOutput = aOutput != null ? aOutput.copy() : null;			
-			String line1 = "", line2 = "", line3 = "";
+			/*String line1 = "", line2 = "", line3 = "";
 			String h = "abcdefghi";
 			char blank = ' ';
 			int counter = 0;
@@ -601,15 +604,36 @@ public class RecipeUtils {
 
 			Object[] mVarags = new Object[18];
 			int mSlotCount = 0;
+
+			ItemStack[] a32 = new ItemStack[9];
+			char[] a16 = new char[9];
 			
-			for (int i=0;i<9;i++) {
-				if (s[i] != ' ') {
-					mVarags[mSlotCount] = String.valueOf(s[i]);
-				}
-				if (vInputs[i] != null) {
-					mVarags[mSlotCount+1] = vInputs[i];
-				}
-				mSlotCount += 2;
+			for (mSlotCount=0;mSlotCount<9;mSlotCount++) {				
+				if (mSlotCount >= vInputs.length-1) {
+					mVarags[mSlotCount] = String.valueOf(blank);
+					a16[mSlotCount] = blank;
+					mVarags[mSlotCount+1] = (ItemStack) null;
+					a32[mSlotCount] = (ItemStack) null;					
+				}				
+				else {
+					if (s[mSlotCount] != ' ') {
+						mVarags[mSlotCount] = String.valueOf(s[mSlotCount]);
+						a16[mSlotCount] = Character.valueOf(s[mSlotCount]);
+					}
+					else {
+						mVarags[mSlotCount] = String.valueOf(blank);
+						a16[mSlotCount] = blank;						
+					}
+					if (vInputs[mSlotCount] != null) {
+						mVarags[mSlotCount+1] = vInputs[mSlotCount].copy();
+						a32[mSlotCount] = vInputs[mSlotCount].copy();
+					}
+					else {
+						mVarags[mSlotCount+1] = (ItemStack) null;
+						a32[mSlotCount] = (ItemStack) null;						
+					}
+				}				
+				
 			}
 			
 			int nullCount = 0;
@@ -619,27 +643,76 @@ public class RecipeUtils {
 					nullCount++;
 				}
 			}
-			Object[] mVarags2 = new Object[mVarags.length-nullCount];
-			for (int i=0;i<(mVarags.length-nullCount);i++) {
-				mVarags2[i] = mVarags[i];
+			Object[] mVarags2 = new Object[mVarags.length-nullCount+3];
+			mVarags2[0]=line1;
+			mVarags2[1]=line2;
+			mVarags2[2]=line3;
+			for (int i=3;i<(mVarags.length-nullCount+3);i++) {
+				if (mVarags[i] instanceof String) {
+					mVarags2[i] = (char) ((String) mVarags[i]).charAt(0);
+				}
+				else if (mVarags[i] instanceof ItemStack) {
+					mVarags2[i] = (ItemStack) mVarags[i];					
+				}
 			}			
+			
+			int jhr = 0;
+			for (Object u : mVarags2) {
+				if (u != null) {
+					if (u instanceof ItemStack) {
+						ItemStack g = (ItemStack) u;
+						Logger.INFO("mVarags2: "+(g).getDisplayName());						
+					}
+					else if (u instanceof String) {
+						Logger.INFO("mVarags2: "+(String) u);						
+					}
+					else if (u instanceof Character || u instanceof String) {
+						char n;
+						if (u instanceof String) {
+							n = ((String) u).charAt(0);
+						}
+						else if (u instanceof Character){
+							n = (char) u;
+						}
+						else {
+							n = ' ';
+						}
+						Logger.INFO("mVarags2: "+n);						
+					}
+					else {
+						Logger.INFO("mVarags2: Invalid Type. Type: "+u.getClass().getName());
+					}
+				}
+				jhr++;
+			}
 
-			ShapedOreRecipe d = new ShapedOreRecipe(
+			ShapedOreRecipe d = null;
+			try {
+			d = new ShapedOreRecipe(
 					aOutput,
-					line1,
-					line2,
-					line3,
 					mVarags2);
+			}
+			catch (Throwable t) {
+				
+			}*/
 
 
-			if (mOutput == null || counter < 8 || d == null || (line1 == null || line2 == null || line3 == null) || !ItemUtils.checkForInvalidItems(d.getRecipeOutput())) {
+			/*if (mOutput == null || d == null || (line1 == null || line2 == null || line3 == null) || !ItemUtils.checkForInvalidItems(d.getRecipeOutput())) {
 				isValid = false;
 			}
 			else {
 				isValid = true;				
+			}*/
+			
+			
+			ShapedRecipe r = new ShapedRecipe(aInputs, aOutput);
+			if (r != null && r.mRecipe != null) {
+				isValid = true;
 			}
-
-			mRecipe = d != null ? d : null;
+			else {
+				isValid = false;
+			}			
+			mRecipe = r != null ? r.mRecipe : null;
 		}
 
 		@Override

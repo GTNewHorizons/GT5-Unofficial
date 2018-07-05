@@ -218,7 +218,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
+		if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 4)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
 			Logger.MACHINE_INFO("Returned False 3");
 			Logger.MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");

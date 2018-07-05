@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.villagers.NameLists;
@@ -44,13 +45,13 @@ public class EntityBaseVillager extends EntityVillager {
 	 * interacts with buyingList and make it use your own list, or you need to not
 	 * extend EntityVillager and just implement IMerchant instead.
 	 */
-	
+
 	private final int mRoleID;
 
 	public EntityBaseVillager(World aWorld){
-        this(aWorld, 0);
-    }
-	
+		this(aWorld, 0);
+	}
+
 	public EntityBaseVillager(World aWorld, int aID) {
 		super(aWorld, aID);
 		mRoleID = aID;
@@ -209,19 +210,23 @@ public class EntityBaseVillager extends EntityVillager {
 			v82191 = ReflectionUtils.getField(getClass(), "buyingList");
 			try {
 				o = (MerchantRecipeList) v82191.get(this);
+				Logger.INFO("Is BuyingList Valid? "+(v82191 != null));
 				return v82191 != null ? o : null;
 			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
 				return null;
 			}
 		} catch (NoSuchFieldException e1) {
+			e1.printStackTrace();
 			return null;
 		}
 	}
 
 	protected void setBuyingList(MerchantRecipeList f) {
 		try {
-			ReflectionUtils.setField(this, "buyingList", f);
+			Logger.INFO("set BuyingList? "+(ReflectionUtils.setField(this, "buyingList", f)));
 		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -287,119 +292,119 @@ public class EntityBaseVillager extends EntityVillager {
 		int k;
 		label50:
 
-		switch (this.getProfession()) {
-		case 0:
-			addPurchaseRecipe(merchantrecipelist, Items.wheat, this.rand, this.adjustProbability(0.9F));
-			addPurchaseRecipe(merchantrecipelist, Item.getItemFromBlock(Blocks.wool), this.rand,
-					this.adjustProbability(0.5F));
-			addPurchaseRecipe(merchantrecipelist, Items.chicken, this.rand, this.adjustProbability(0.5F));
-			addPurchaseRecipe(merchantrecipelist, Items.cooked_fished, this.rand, this.adjustProbability(0.4F));
-			addEmeraldTrade(merchantrecipelist, Items.bread, this.rand, this.adjustProbability(0.9F));
-			addEmeraldTrade(merchantrecipelist, Items.melon, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.apple, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.cookie, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.shears, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.flint_and_steel, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.cooked_chicken, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.arrow, this.rand, this.adjustProbability(0.5F));
+			switch (this.getProfession()) {
+			case 0:
+				addPurchaseRecipe(merchantrecipelist, Items.wheat, this.rand, this.adjustProbability(0.9F));
+				addPurchaseRecipe(merchantrecipelist, Item.getItemFromBlock(Blocks.wool), this.rand,
+						this.adjustProbability(0.5F));
+				addPurchaseRecipe(merchantrecipelist, Items.chicken, this.rand, this.adjustProbability(0.5F));
+				addPurchaseRecipe(merchantrecipelist, Items.cooked_fished, this.rand, this.adjustProbability(0.4F));
+				addEmeraldTrade(merchantrecipelist, Items.bread, this.rand, this.adjustProbability(0.9F));
+				addEmeraldTrade(merchantrecipelist, Items.melon, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.apple, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.cookie, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.shears, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.flint_and_steel, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.cooked_chicken, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.arrow, this.rand, this.adjustProbability(0.5F));
 
-			if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
-				merchantrecipelist.add(new MerchantRecipe(new ItemStack(Blocks.gravel, 10),
-						new ItemStack(Items.emerald), new ItemStack(Items.flint, 4 + this.rand.nextInt(2), 0)));
-			}
-
-			break;
-		case 1:
-			addPurchaseRecipe(merchantrecipelist, Items.paper, this.rand, this.adjustProbability(0.8F));
-			addPurchaseRecipe(merchantrecipelist, Items.book, this.rand, this.adjustProbability(0.8F));
-			addPurchaseRecipe(merchantrecipelist, Items.written_book, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.bookshelf), this.rand,
-					this.adjustProbability(0.8F));
-			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glass), this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.compass, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.clock, this.rand, this.adjustProbability(0.2F));
-
-			if (this.rand.nextFloat() < this.adjustProbability(0.07F)) {
-				Enchantment enchantment = Enchantment.enchantmentsBookList[this.rand
-						.nextInt(Enchantment.enchantmentsBookList.length)];
-				int i1 = MathHelper.getRandomIntegerInRange(this.rand, enchantment.getMinLevel(),
-						enchantment.getMaxLevel());
-				ItemStack itemstack = Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(enchantment, i1));
-				k = 2 + this.rand.nextInt(5 + i1 * 10) + 3 * i1;
-				merchantrecipelist
-						.add(new MerchantRecipe(new ItemStack(Items.book), new ItemStack(Items.emerald, k), itemstack));
-			}
-
-			break;
-		case 2:
-			addEmeraldTrade(merchantrecipelist, Items.ender_eye, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.experience_bottle, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.redstone, this.rand, this.adjustProbability(0.4F));
-			addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glowstone), this.rand,
-					this.adjustProbability(0.3F));
-			Item[] aitem = new Item[] { Items.iron_sword, Items.diamond_sword, Items.iron_chestplate,
-					Items.diamond_chestplate, Items.iron_axe, Items.diamond_axe, Items.iron_pickaxe,
-					Items.diamond_pickaxe };
-			Item[] aitem1 = aitem;
-			int j = aitem.length;
-			k = 0;
-
-			while (true) {
-				if (k >= j) {
-					break label50;
+				if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
+					merchantrecipelist.add(new MerchantRecipe(new ItemStack(Blocks.gravel, 10),
+							new ItemStack(Items.emerald), new ItemStack(Items.flint, 4 + this.rand.nextInt(2), 0)));
 				}
 
-				Item item = aitem1[k];
+				break;
+			case 1:
+				addPurchaseRecipe(merchantrecipelist, Items.paper, this.rand, this.adjustProbability(0.8F));
+				addPurchaseRecipe(merchantrecipelist, Items.book, this.rand, this.adjustProbability(0.8F));
+				addPurchaseRecipe(merchantrecipelist, Items.written_book, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.bookshelf), this.rand,
+						this.adjustProbability(0.8F));
+				addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glass), this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.compass, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.clock, this.rand, this.adjustProbability(0.2F));
 
-				if (this.rand.nextFloat() < this.adjustProbability(0.05F)) {
-					merchantrecipelist.add(new MerchantRecipe(new ItemStack(item, 1, 0),
-							new ItemStack(Items.emerald, 2 + this.rand.nextInt(3), 0),
-							EnchantmentHelper.addRandomEnchantment(this.rand, new ItemStack(item, 1, 0),
-									5 + this.rand.nextInt(15))));
+				if (this.rand.nextFloat() < this.adjustProbability(0.07F)) {
+					Enchantment enchantment = Enchantment.enchantmentsBookList[this.rand
+					                                                           .nextInt(Enchantment.enchantmentsBookList.length)];
+					int i1 = MathHelper.getRandomIntegerInRange(this.rand, enchantment.getMinLevel(),
+							enchantment.getMaxLevel());
+					ItemStack itemstack = Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(enchantment, i1));
+					k = 2 + this.rand.nextInt(5 + i1 * 10) + 3 * i1;
+					merchantrecipelist
+					.add(new MerchantRecipe(new ItemStack(Items.book), new ItemStack(Items.emerald, k), itemstack));
 				}
 
-				++k;
+				break;
+			case 2:
+				addEmeraldTrade(merchantrecipelist, Items.ender_eye, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.experience_bottle, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.redstone, this.rand, this.adjustProbability(0.4F));
+				addEmeraldTrade(merchantrecipelist, Item.getItemFromBlock(Blocks.glowstone), this.rand,
+						this.adjustProbability(0.3F));
+				Item[] aitem = new Item[] { Items.iron_sword, Items.diamond_sword, Items.iron_chestplate,
+						Items.diamond_chestplate, Items.iron_axe, Items.diamond_axe, Items.iron_pickaxe,
+						Items.diamond_pickaxe };
+				Item[] aitem1 = aitem;
+				int j = aitem.length;
+				k = 0;
+
+				while (true) {
+					if (k >= j) {
+						break label50;
+					}
+
+					Item item = aitem1[k];
+
+					if (this.rand.nextFloat() < this.adjustProbability(0.05F)) {
+						merchantrecipelist.add(new MerchantRecipe(new ItemStack(item, 1, 0),
+								new ItemStack(Items.emerald, 2 + this.rand.nextInt(3), 0),
+								EnchantmentHelper.addRandomEnchantment(this.rand, new ItemStack(item, 1, 0),
+										5 + this.rand.nextInt(15))));
+					}
+
+					++k;
+				}
+			case 3:
+				addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
+				addPurchaseRecipe(merchantrecipelist, Items.iron_ingot, this.rand, this.adjustProbability(0.5F));
+				addPurchaseRecipe(merchantrecipelist, Items.gold_ingot, this.rand, this.adjustProbability(0.5F));
+				addPurchaseRecipe(merchantrecipelist, Items.diamond, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_sword, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_sword, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_axe, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_axe, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_pickaxe, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_pickaxe, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_shovel, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_shovel, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_hoe, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_hoe, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_boots, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_boots, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_helmet, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_helmet, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_chestplate, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_chestplate, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.iron_leggings, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.diamond_leggings, this.rand, this.adjustProbability(0.2F));
+				addEmeraldTrade(merchantrecipelist, Items.chainmail_boots, this.rand, this.adjustProbability(0.1F));
+				addEmeraldTrade(merchantrecipelist, Items.chainmail_helmet, this.rand, this.adjustProbability(0.1F));
+				addEmeraldTrade(merchantrecipelist, Items.chainmail_chestplate, this.rand, this.adjustProbability(0.1F));
+				addEmeraldTrade(merchantrecipelist, Items.chainmail_leggings, this.rand, this.adjustProbability(0.1F));
+				break;
+			case 4:
+				addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
+				addPurchaseRecipe(merchantrecipelist, Items.porkchop, this.rand, this.adjustProbability(0.5F));
+				addPurchaseRecipe(merchantrecipelist, Items.beef, this.rand, this.adjustProbability(0.5F));
+				addEmeraldTrade(merchantrecipelist, Items.saddle, this.rand, this.adjustProbability(0.1F));
+				addEmeraldTrade(merchantrecipelist, Items.leather_chestplate, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.leather_boots, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.leather_helmet, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.leather_leggings, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.cooked_porkchop, this.rand, this.adjustProbability(0.3F));
+				addEmeraldTrade(merchantrecipelist, Items.cooked_beef, this.rand, this.adjustProbability(0.3F));
 			}
-		case 3:
-			addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
-			addPurchaseRecipe(merchantrecipelist, Items.iron_ingot, this.rand, this.adjustProbability(0.5F));
-			addPurchaseRecipe(merchantrecipelist, Items.gold_ingot, this.rand, this.adjustProbability(0.5F));
-			addPurchaseRecipe(merchantrecipelist, Items.diamond, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_sword, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_sword, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_axe, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_axe, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_pickaxe, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_pickaxe, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_shovel, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_shovel, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_hoe, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_hoe, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_boots, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_boots, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_helmet, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_helmet, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_chestplate, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_chestplate, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.iron_leggings, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.diamond_leggings, this.rand, this.adjustProbability(0.2F));
-			addEmeraldTrade(merchantrecipelist, Items.chainmail_boots, this.rand, this.adjustProbability(0.1F));
-			addEmeraldTrade(merchantrecipelist, Items.chainmail_helmet, this.rand, this.adjustProbability(0.1F));
-			addEmeraldTrade(merchantrecipelist, Items.chainmail_chestplate, this.rand, this.adjustProbability(0.1F));
-			addEmeraldTrade(merchantrecipelist, Items.chainmail_leggings, this.rand, this.adjustProbability(0.1F));
-			break;
-		case 4:
-			addPurchaseRecipe(merchantrecipelist, Items.coal, this.rand, this.adjustProbability(0.7F));
-			addPurchaseRecipe(merchantrecipelist, Items.porkchop, this.rand, this.adjustProbability(0.5F));
-			addPurchaseRecipe(merchantrecipelist, Items.beef, this.rand, this.adjustProbability(0.5F));
-			addEmeraldTrade(merchantrecipelist, Items.saddle, this.rand, this.adjustProbability(0.1F));
-			addEmeraldTrade(merchantrecipelist, Items.leather_chestplate, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.leather_boots, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.leather_helmet, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.leather_leggings, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.cooked_porkchop, this.rand, this.adjustProbability(0.3F));
-			addEmeraldTrade(merchantrecipelist, Items.cooked_beef, this.rand, this.adjustProbability(0.3F));
-		}
 
 		if (merchantrecipelist.isEmpty()) {
 			addPurchaseRecipe(merchantrecipelist, Items.gold_ingot, this.rand, 1.0F);
@@ -414,6 +419,38 @@ public class EntityBaseVillager extends EntityVillager {
 		for (int l = 0; l < p_70950_1_ && l < merchantrecipelist.size(); ++l) {
 			this.getBuyingList().addToListWithCheck((MerchantRecipe) merchantrecipelist.get(l));
 		}
+
+		try {
+		if (this.getBuyingList() != null) {
+			for (Object g : this.getBuyingList()) {
+				if (g != null) {
+					if (g instanceof MerchantRecipe) {
+						MerchantRecipe m = (MerchantRecipe) g;
+						ItemStack selling = m.getItemToSell();
+						ItemStack[] buying = new ItemStack[] {m.getItemToBuy(), m.getSecondItemToBuy() != null ? m.getSecondItemToBuy() : null};
+						if (selling == null) {
+							Logger.INFO("Villager is Selling an invalid item");
+						}
+						else if (buying[0] == null && buying[1] == null) {
+							Logger.INFO("Villager is buying two invalid items");
+						}
+						else {
+							Logger.INFO("Villager is Selling x"+selling.stackSize+selling.getDisplayName()+" for x"+buying[0].stackSize+" "+buying[0].getDisplayName()+buying[1] != null ? " and for x"+buying[1].stackSize+" "+buying[1].getDisplayName() : "");
+						}
+					}
+					else
+						Logger.INFO("Found: "+g.getClass().getName());
+				}
+			}
+		}
+		else {
+
+		}
+		}
+		catch (Throwable t) {
+			
+		}
+
 	}
 
 	/**
@@ -464,7 +501,7 @@ public class EntityBaseVillager extends EntityVillager {
 			aRecipeList.add(new MerchantRecipe(itemstack, itemstack1));
 		}
 	}
-	
+
 	public static void addCustomTrade(MerchantRecipeList aRecipeList, ItemStack aItem1, ItemStack aItem2, ItemStack aItem3, Random aRand, float aChance) {
 		if (aRand.nextFloat() < aChance) {			
 			aRecipeList.add(new MerchantRecipe(aItem1, aItem2, aItem3));
@@ -475,7 +512,7 @@ public class EntityBaseVillager extends EntityVillager {
 		Tuple tuple = (Tuple) blacksmithSellingList.get(aItem);
 		return tuple == null ? 1
 				: (((Integer) tuple.getFirst()).intValue() >= ((Integer) tuple.getSecond()).intValue()
-						? ((Integer) tuple.getFirst()).intValue()
+				? ((Integer) tuple.getFirst()).intValue()
 						: ((Integer) tuple.getFirst()).intValue() + aRand.nextInt(
 								((Integer) tuple.getSecond()).intValue() - ((Integer) tuple.getFirst()).intValue()));
 	}
@@ -489,7 +526,7 @@ public class EntityBaseVillager extends EntityVillager {
 	private static ItemStack getSimpleLootStack(Item aItem, Random aRand) {
 		return new ItemStack(aItem, getLootAmount_VillagerSellingList(aItem, aRand), 0);
 	}
-	
+
 	public static void addPurchaseRecipe(MerchantRecipeList aTradeList, Item aItem, int aMeta, Random aRand, float aChance) {
 		if (aRand.nextFloat() < aChance) {
 			aTradeList.add(new MerchantRecipe(getComplexLootStack(aItem, aMeta, aRand), Items.emerald));
@@ -504,7 +541,7 @@ public class EntityBaseVillager extends EntityVillager {
 		Tuple tuple = (Tuple) villagersSellingList.get(aItem);
 		return tuple == null ? 1
 				: (((Integer) tuple.getFirst()).intValue() >= ((Integer) tuple.getSecond()).intValue()
-						? ((Integer) tuple.getFirst()).intValue()
+				? ((Integer) tuple.getFirst()).intValue()
 						: ((Integer) tuple.getFirst()).intValue() + aRand.nextInt(
 								((Integer) tuple.getSecond()).intValue() - ((Integer) tuple.getFirst()).intValue()));
 	}

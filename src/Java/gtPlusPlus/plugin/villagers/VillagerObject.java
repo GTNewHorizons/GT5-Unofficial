@@ -20,7 +20,7 @@ public class VillagerObject {
 
 		//Register Custom Trade to Registry.
 		if (aCustomTrade != null) {
-			Core_VillagerAdditions.mVillagerTrades.put(new Pair<Integer, IVillageTradeHandler>(aID, aCustomTrade));
+			Core_VillagerAdditions.mVillagerTrades.put(new Pair<Integer, IVillageTradeHandler>(7735+aID, aCustomTrade));
 		}
 		//Register Skin to Registry.
 		if (aSkin != null) {
