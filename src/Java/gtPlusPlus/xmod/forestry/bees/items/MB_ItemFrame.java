@@ -91,8 +91,12 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 	}
 
 	@Override
-	public boolean isBookEnchantable(final ItemStack itemstack1, final ItemStack itemstack2)
-	{
+	public boolean isBookEnchantable(final ItemStack itemstack1, final ItemStack itemstack2) {
+		return false;
+	}
+
+	@Override
+	public boolean isRepairable() {
 		return false;
 	}
 

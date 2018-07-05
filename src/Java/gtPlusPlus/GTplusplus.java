@@ -395,7 +395,6 @@ public class GTplusplus implements ActionListener {
 		mOrangeCapes.put(new Pair<String, String>("netmc", "c3ecbcc3-0d83-4da6-bb89-69f3f1a6e38b"));
 		mOrangeCapes.put(new Pair<String, String>("twinsrock8", "c1239b45b-b3a3-4282-8143-c73778897dda"));
 		mOrangeCapes.put(new Pair<String, String>("Ajes", "b1781fc7-35ca-4255-a21c-cdb1b7ea1853"));
-		mOrangeCapes.put(new Pair<String, String>("Piky", "7822ae35-9d5a-4fe7-bd5f-d03006932a65"));
 		mOrangeCapes.put(new Pair<String, String>("LAGIdiot", "44f38ff8-aad7-49c3-acb3-d92317af9078"));
 		mOrangeCapes.put(new Pair<String, String>("Snaggerr", "7e553c3b-b259-4c16-992a-c8c107401e74"));
 		mOrangeCapes.put(new Pair<String, String>("Semmelx4", "651b3963-038f-4769-9f75-0eaca0c4e748"));
@@ -417,6 +416,7 @@ public class GTplusplus implements ActionListener {
 		mBetaTestCapes.put(new Pair<String, String>("Bear989Sr", "1964e3d1-6500-40e7-9ff2-e6161d41a8c2"));
 		mBetaTestCapes.put(new Pair<String, String>("CrazyJ1984", "d84f9654-87ea-46a9-881f-c6aa45dd5af8"));
 		mBetaTestCapes.put(new Pair<String, String>("AndreyKV", "9550c173-a8c5-4e7f-bf8d-b5ded56921ef"));
+		mBetaTestCapes.put(new Pair<String, String>("Piky", "7822ae35-9d5a-4fe7-bd5f-d03006932a65"));
 
 		//GTNH Beta Testers
 		mBetaTestCapes.put(new Pair<String, String>("bartimaeusnek", "578c2d13-9358-4ae8-95e7-a30ab9f9f3c7"));
