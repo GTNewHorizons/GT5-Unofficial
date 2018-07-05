@@ -79,21 +79,21 @@ repositories {
 task discordChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG Basic ${project.version}.txt");
 	untaggedName = "Current Basic release ${project.version}"
-	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
+	fromCommit = "c59cff2a8d9f3eea0eaad0c288605491cbab5438"
 	toRef =  "HEAD"
 	templateContent = file('changeloggeneral.mustache').getText('UTF-8')
 }
 task gitChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG ${project.version}.md");
 	untaggedName = "Current release ${project.version}"
-	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
+	fromCommit = "c59cff2a8d9f3eea0eaad0c288605491cbab5438"
 	toRef =  "HEAD"
 	templateContent = file('changelog.mustache').getText('UTF-8')
 }
 task curseChangelogTask(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
 	file = new File("CHANGELOG Curse ${project.version}.md");
 	untaggedName = "Current Curse release ${project.version}"
-	fromCommit = "4e5ee5845b872b09ba95dbcdaacbf7f9fbe0d699"
+	fromCommit = "c59cff2a8d9f3eea0eaad0c288605491cbab5438"
 	toRef =  "HEAD"
 	templateContent = file('changelogcurse.mustache').getText('UTF-8')
 }

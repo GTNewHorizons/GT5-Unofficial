@@ -31,7 +31,7 @@ public class RecipeUtils {
 public static int mInvalidID = 1;
 	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, ItemStack resultItem){
 		if (resultItem == null){
-			Logger.INFO("[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+			Logger.RECIPE("[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
 			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
 			resultItem.setItemDamage(mInvalidID++);
 			RegistrationHandler.recipesFailed++;
@@ -40,8 +40,8 @@ public static int mInvalidID = 1;
 		else if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Logger.INFO("[Fix] Found a recipe with 0 inputs, yet had a valid output.");
-			Logger.INFO("[Fix] Error found while adding a recipe for: "+resultItem != null ? resultItem.getDisplayName() : "Bad Output Item"+" | Please report this issue on Github.");
+			Logger.RECIPE("[Fix] Found a recipe with 0 inputs, yet had a valid output.");
+			Logger.RECIPE("[Fix] Error found while adding a recipe for: "+resultItem != null ? resultItem.getDisplayName() : "Bad Output Item"+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
@@ -68,7 +68,7 @@ public static int mInvalidID = 1;
 			//k.getClass();
 			//k.printStackTrace();
 			//k.getLocalizedMessage();
-			Logger.INFO("[Fix] Invalid Recipe detected for: "+resultItem != null ? resultItem.getUnlocalizedName() : "INVALID OUTPUT ITEM");
+			Logger.RECIPE("[Fix] Invalid Recipe detected for: "+resultItem != null ? resultItem.getUnlocalizedName() : "INVALID OUTPUT ITEM");
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesFailed++;
 			}
@@ -128,7 +128,7 @@ public static int mInvalidID = 1;
 			//GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Output, validSlots.toArray()));
 			//GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
-			Logger.WARNING("Success! Added a recipe for "+Output.getDisplayName());
+			Logger.RECIPE("Success! Added a recipe for "+Output.getDisplayName());
 			RegistrationHandler.recipesSuccess++;
 		}
 		catch(final RuntimeException k){
@@ -136,7 +136,7 @@ public static int mInvalidID = 1;
 			k.getClass();
 			k.printStackTrace();
 			k.getLocalizedMessage();
-			Logger.WARNING("@@@: Invalid Recipe detected for: "+Output.getUnlocalizedName());
+			Logger.RECIPE("[Fix] Invalid Recipe detected for: "+Output.getUnlocalizedName());
 			RegistrationHandler.recipesFailed++;
 		}
 
@@ -207,10 +207,10 @@ public static int mInvalidID = 1;
 		if ((x instanceof Item) || (x instanceof ItemStack)){
 			if (x instanceof Item){
 				final ItemStack r = new ItemStack((Item) x);
-				Logger.WARNING("Removing Recipe for "+r.getUnlocalizedName());
+				Logger.RECIPE("Removing Recipe for "+r.getUnlocalizedName());
 			}
 			else {
-				Logger.WARNING("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
+				Logger.RECIPE("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
 			}
 			if (x instanceof ItemStack){
 				final Item r = ((ItemStack) x).getItem();
@@ -218,49 +218,49 @@ public static int mInvalidID = 1;
 					x = r;
 				}
 				else {
-					Logger.WARNING("Recipe removal failed - Tell Alkalus.");
+					Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
 					return false;
 				}
 			}
 			if (RecipeUtils.attemptRecipeRemoval((Item) x)){
-				Logger.WARNING("Recipe removal successful");
+				Logger.RECIPE("Recipe removal successful");
 				return true;
 			}
-			Logger.WARNING("Recipe removal failed - Tell Alkalus.");
+			Logger.RECIPE("Recipe removal failed - Tell Alkalus.");
 			return false;
 		}
 		return false;
 	}
 
 	private static boolean attemptRecipeRemoval(final Item I){
-		Logger.WARNING("Create list of recipes.");
+		Logger.RECIPE("Create list of recipes.");
 		final List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
 		final Iterator<IRecipe> items = recipes.iterator();
-		Logger.WARNING("Begin list iteration.");
+		Logger.RECIPE("Begin list iteration.");
 		while (items.hasNext()) {
 			final ItemStack is = items.next().getRecipeOutput();
 			if ((is != null) && (is.getItem() == I)){
 				items.remove();
-				Logger.WARNING("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
+				Logger.RECIPE("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
 				continue;
 			}
 		}
-		Logger.WARNING("All recipes should be gone?");
+		Logger.RECIPE("All recipes should be gone?");
 		if (!items.hasNext()){
-			Logger.WARNING("We iterated once, let's try again to double check.");
+			Logger.RECIPE("We iterated once, let's try again to double check.");
 			final Iterator<IRecipe> items2 = recipes.iterator();
 			while (items2.hasNext()) {
 				final ItemStack is = items2.next().getRecipeOutput();
 				if ((is != null) && (is.getItem() == I)){
 					items.remove();
-					Logger.WARNING("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
+					Logger.RECIPE("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
 					return true;
 				}
 			}
-			Logger.WARNING("Should be all gone now after double checking, so return true.");
+			Logger.RECIPE("Should be all gone now after double checking, so return true.");
 			return true;
 		}
-		Logger.WARNING("Return false, because something went wrong.");
+		Logger.RECIPE("Return false, because something went wrong.");
 		return false;
 	}
 
@@ -387,7 +387,7 @@ public static int mInvalidID = 1;
 		//Catch Invalid Recipes
 		if (inputItems.length > 9 || inputItems.length < 1){
 			if (OutputItem != null){
-				Logger.WARNING("Invalid input array for shapeless recipe, which should output "+OutputItem.getDisplayName());
+				Logger.RECIPE("[Fix] Invalid input array for shapeless recipe, which should output "+OutputItem.getDisplayName());
 			}
 			return false;
 		}
@@ -528,7 +528,7 @@ public static int mInvalidID = 1;
 				GameRegistry.addRecipe(mRecipe);
 			}
 			else {
-				Logger.INFO("[Recipe] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
+				Logger.RECIPE("[Fix] Invalid shapped recipe outputting "+mOutput != null ? mOutput.getDisplayName() : "Bad Output Item");
 			}
 		}
 
