@@ -33,7 +33,7 @@ public class RecipeUtils {
 
 		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
-			Logger.WARNING("[Recipe] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
+			Logger.INFO("[1234abcd] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
 			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
 			RegistrationHandler.recipesFailed++;
 			//return false;
@@ -42,12 +42,13 @@ public class RecipeUtils {
 		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Logger.INFO("[Recipe] Found a recipe with 0 inputs, yet had a valid output.");
-			Logger.INFO("[Recipe] Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			Logger.INFO("[1234abcd] Found a recipe with 0 inputs, yet had a valid output.");
+			Logger.INFO("[1234abcd] Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
-
+		
+		/*
 		//Utils.LOG_WARNING("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
@@ -81,9 +82,9 @@ public class RecipeUtils {
 		Logger.ERROR("|"+g+"|"+h+"|"+i+"|");
 		Logger.ERROR("_______");
 
-		validSlots.add(0, lineOne);
-		validSlots.add(1, lineTwo);
-		validSlots.add(2, lineThree);
+		//validSlots.add(0, lineOne);
+		//validSlots.add(1, lineTwo);
+		//validSlots.add(2, lineThree);
 		boolean advancedLog = false;
 		if (CORE.DEBUG){
 			advancedLog = true;
@@ -118,7 +119,7 @@ public class RecipeUtils {
 					//Utils.LOG_WARNING("Is Valid: "+validSlots.get(j));
 				}
 			}
-		}
+		}*/
 
 		try {
 			int size = COMPAT_HANDLER.mRecipesToGenerate.size();
@@ -546,8 +547,26 @@ public class RecipeUtils {
 		public final boolean isValid;
 
 		public InternalRecipeObject(Object[] aInputs, ItemStack aOutput, boolean gtRecipe) {
-			mOutput = aOutput != null ? aOutput.copy() : null;			
-			ShapedRecipe r = new ShapedRecipe(aInputs, aOutput);
+			Logger.RECIPE("===================================");
+			mOutput = aOutput != null ? aOutput.copy() : null;
+			Object[] aFiltered = new Object[9];
+			int aValid = 0;
+			for (Object o : aInputs) {
+				if (o == null) {
+					aFiltered[aValid++] = null;
+				}
+				else if (o instanceof ItemStack) {
+					aFiltered[aValid++] = o;					
+				}
+				else if (o instanceof String) {
+					aFiltered[aValid++] = o;					
+				}
+				else {
+					Logger.RECIPE("Cleaned a "+o.getClass().getSimpleName()+" from recipe input.");
+				}
+			}
+
+			ShapedRecipe r = new ShapedRecipe(aFiltered, aOutput);
 			if (r != null && r.mRecipe != null) {
 				isValid = true;
 			}
