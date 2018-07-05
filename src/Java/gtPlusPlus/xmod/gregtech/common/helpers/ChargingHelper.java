@@ -76,11 +76,10 @@ public class ChargingHelper {
 													long mCurrentEu = mEntityTemp.getEUVar();
 													long mEuUsed = 0;
 													if (mEntityTemp.getMode() == 0){
-
-														/*if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
-														mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
-														mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
-													}*/
+														if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+														}
 													}
 													else if (mEntityTemp.getMode() == 1){
 														if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
@@ -89,10 +88,10 @@ public class ChargingHelper {
 														}
 													}
 													else {
-														/*if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
-														mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
-														mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
-													}*/
+														if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+														}
 														if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
 															mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
 															mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
@@ -352,11 +351,12 @@ public class ChargingHelper {
 					int mMultiVoltage = (int) (mMulti*mVoltageIncrease);
 
 					if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge){
-						Logger.WARNING("6");
-						if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, mTier, true, false) == 0){
-							Logger.WARNING("6.5");
+						Logger.INFO("6");
+						int g = 0;
+						if ((g = GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, Integer.MAX_VALUE, true, false)) > 0){
+							Logger.INFO("6.5 - "+g+" - "+mMulti);
 							for (int i=0; i<mMulti;i++){
-								if (ElectricItem.manager.charge(mTemp, mVoltageIncrease, mTier, false, false) == 0){
+								if (ElectricItem.manager.charge(mTemp, mVoltageIncrease, Integer.MAX_VALUE, false, false) > 0){
 									continue;
 								}
 							}
@@ -368,6 +368,24 @@ public class ChargingHelper {
 							Logger.WARNING("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
 							mChargedItems++;
 						}
+					}
+					
+					//Try top up Item Chrage
+					mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
+					if (mitemCurrentCharge < mItemMaxCharge && mitemCurrentCharge >= (mItemMaxCharge-mVoltage)){						
+						int xDif = (int) (mItemMaxCharge - mitemCurrentCharge);						
+						Logger.INFO("8 - "+xDif);
+						int g = 0;
+						if ((g = GT_ModHandler.chargeElectricItem(mTemp, xDif, Integer.MAX_VALUE, true, false)) >= 0){
+							Logger.INFO("8.5 - "+g);
+							if (ElectricItem.manager.getCharge(mTemp) >= mItemMaxCharge){
+								Logger.INFO("9");
+								mEntity.setEUVar(mEntity.getEUVar()-(xDif));
+								mEuStored = mEntity.getEUVar();
+								Logger.WARNING("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
+								mChargedItems++;
+							}						
+						}						
 					}
 
 

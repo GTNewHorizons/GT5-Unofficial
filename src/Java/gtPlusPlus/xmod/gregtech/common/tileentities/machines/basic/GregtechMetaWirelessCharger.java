@@ -360,9 +360,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-
-		}
+		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
 

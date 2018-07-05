@@ -157,7 +157,7 @@ public class RECIPES_General {
 		Logger.RECIPE("[Inspection] Explosives");
 		if (RecipeUtils.recipeBuilder(
 				CI.explosiveITNT, CI.explosiveTNT, CI.explosiveITNT,
-				CI.explosiveTNT, "frameGtWroughtIron", CI.explosiveTNT,
+				CI.explosiveTNT, "frameGtIron", CI.explosiveTNT,
 				"dustSulfur", CI.explosiveTNT, "dustSulfur",
 				ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3))){
 			Logger.INFO("Added a recipe for Mining Explosives.");
