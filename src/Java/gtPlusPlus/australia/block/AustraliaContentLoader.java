@@ -6,8 +6,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.australia.biome.Biome_AustralianDesert;
-import gtPlusPlus.australia.biome.Biome_AustralianDesert2;
+import gtPlusPlus.australia.biome.type.Biome_AustralianDesert;
+import gtPlusPlus.australia.biome.type.Biome_AustralianDesert2;
 import gtPlusPlus.australia.item.ItemAustraliaPortalTrigger;
 import gtPlusPlus.australia.item.ItemBlockAustralia;
 

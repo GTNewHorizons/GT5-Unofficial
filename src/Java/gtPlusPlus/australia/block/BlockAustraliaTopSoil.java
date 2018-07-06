@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockSand;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -12,11 +13,11 @@ import net.minecraft.world.IBlockAccess;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
-public class BlockAustraliaTopSoil extends BlockDirt implements ITileTooltip{
+public class BlockAustraliaTopSoil extends BlockSand implements ITileTooltip{
 
 	public BlockAustraliaTopSoil() {
 		this.setHardness(0.5F);
-		this.setBlockTextureName("minecraft" + ":" + "sand");
+		this.setBlockTextureName("minecraft" + ":" + "dirt");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockName("blockAustralianTopSoil");
 		LanguageRegistry.addName(this, "Desert Earth");

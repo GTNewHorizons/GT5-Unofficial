@@ -62,6 +62,11 @@ public class CORE {
 	public static int AUSTRALIA_ID = 228;	
 	public static int AUSTRALIA_BIOME_DESERT_1_ID = 239;	
 	public static int AUSTRALIA_BIOME_DESERT_2_ID = 240;	
+	public static int AUSTRALIA_BIOME_DESERT_3_ID = 241;
+	public static int AUSTRALIA_BIOME_PLAINS_ID = 242;	
+	public static int AUSTRALIA_BIOME_OUTBACK_ID = 243;	
+	public static int AUSTRALIA_BIOME_OCEAN_ID = 244;	
+	public static int AUSTRALIA_BIOME_FOREST_ID = 245;		
 
 	//GT Vars;
 	public static final int GREG_FIRST_ID = 760;

@@ -1,4 +1,4 @@
-package gtPlusPlus.australia.biome;
+package gtPlusPlus.australia.biome.type;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -35,7 +35,6 @@ import net.minecraftforge.common.BiomeManager;
 
 public class Biome_AustralianDesert {
 
-	public static BiomeGenAustralianDesert biome = new BiomeGenAustralianDesert();
 
 	public Object instance;
 
@@ -46,8 +45,10 @@ public class Biome_AustralianDesert {
 	public static Block blockFluidLakes;
 
 	public Biome_AustralianDesert() {
+		
 	}
 
+	public static BiomeGenAustralianDesert biome = new BiomeGenAustralianDesert();
 	public void load() {
 		BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DESERT);
 		BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DRY);
@@ -182,7 +183,7 @@ public class Biome_AustralianDesert {
 		}
 
 		class Tree
-		extends WorldGenerator
+		extends WorldGenAbstractTree
 		{
 			private final int minTreeHeight;
 			private final boolean vinesGrow;
@@ -191,7 +192,7 @@ public class Biome_AustralianDesert {
 
 			public Tree()
 			{
-				super();
+				super(false);
 				this.minTreeHeight = 5;
 				this.metaWood = 0;
 				this.metaLeaves = 0;

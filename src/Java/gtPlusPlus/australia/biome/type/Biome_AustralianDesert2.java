@@ -1,4 +1,4 @@
-package gtPlusPlus.australia.biome;
+package gtPlusPlus.australia.biome.type;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -171,17 +172,18 @@ public class Biome_AustralianDesert2 {
 		
 		@Override
 		public WorldGenAbstractTree func_150567_a(Random par1Random){
-		    return (WorldGenAbstractTree)(getRandomWorldGenForTrees(par1Random));
+			boolean a = (MathUtils.randInt(0,  100) < MathUtils.randInt(30, 65));
+			return a ? getRandomWorldGenForTrees(par1Random) : super.func_150567_a(par1Random);		    
 		}
 
 		//TODO - DOES THIS WORK?
-		public WorldGenerator getRandomWorldGenForTrees(Random par1Random)
+		public WorldGenAbstractTree getRandomWorldGenForTrees(Random par1Random)
 		{
 			return new Tree();
 		}
 
 		class Tree
-		extends WorldGenerator
+		extends WorldGenAbstractTree
 		{
 			private final int minTreeHeight;
 			private final boolean vinesGrow;
@@ -190,8 +192,8 @@ public class Biome_AustralianDesert2 {
 
 			public Tree()
 			{
-				super();
-				this.minTreeHeight = 5;
+				super(false);
+				this.minTreeHeight = 3;
 				this.metaWood = 0;
 				this.metaLeaves = 0;
 				this.vinesGrow = false;
