@@ -20,6 +20,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.plugin.villagers.entity.EntityBaseVillager;
+import gtPlusPlus.plugin.villagers.trade.TradeHandlerAboriginal;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerBanker;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTechnician;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTrader;
@@ -50,7 +51,7 @@ public class Core_VillagerAdditions implements IPlugin {
 	        VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
 			VillagerUtils.registerNewVillager(1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
 			VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
-			VillagerUtils.registerNewVillager(3, "Aboriginal", "Aboriginal", "Aboriginal", "aboriginal", new TradeHandlerTrader());
+			VillagerUtils.registerNewVillager(3, "Aboriginal", "Aboriginal", "Aboriginal", "aboriginal", new TradeHandlerAboriginal());
 			
 			if (mVillagerMap.size() > 0) {
 				for (VillagerObject g : mVillagerMap.values()) {

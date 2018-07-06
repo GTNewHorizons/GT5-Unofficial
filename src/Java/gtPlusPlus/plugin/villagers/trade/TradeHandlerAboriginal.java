@@ -1,0 +1,107 @@
+package gtPlusPlus.plugin.villagers.trade;
+
+import static java.util.Collections.shuffle;
+
+import java.util.Collections;
+import java.util.Random;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.village.MerchantRecipe;
+import net.minecraft.village.MerchantRecipeList;
+
+public class TradeHandlerAboriginal extends TradeHandlerBase {
+
+	private final static AutoMap<ItemStack> mOutputs = new AutoMap<ItemStack>();
+	private static boolean initialised = false;
+
+	public static void init() {
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.anvil, 1));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.bookshelf, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.cactus, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.dirt, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.cobblestone, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.mossy_cobblestone, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.pumpkin, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.hardened_clay, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.log, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.obsidian, 8));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.wheat, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.gravel, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Blocks.sand, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.apple, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.emerald, 1));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.diamond, 1));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.baked_potato, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.beef, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.bone, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.bread, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.carrot, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.potato, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.poisonous_potato, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.chicken, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.porkchop, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.cooked_beef, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.cooked_chicken, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.cooked_porkchop, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.fish, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.cooked_fished, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.feather, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.egg, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.gold_nugget, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.leather, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.melon_seeds, 0));
+		mOutputs.put(ItemUtils.getSimpleStack(Items.reeds, 0));
+		initialised = true;
+	}
+
+
+	public TradeHandlerAboriginal() {
+		Logger.INFO("Created Trade Manager for 'Trader' villager profession type.");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random) {		
+		if (!initialised) {
+			init();
+		}	
+		if (initialised) {
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.wooden_door, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log2, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.planks, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sapling, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sandstone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.nether_brick, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.bookshelf, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.crafting_table, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.gravel, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.hardened_clay, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.cactus, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.quartz_block, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.stone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.mossy_cobblestone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			shuffle(recipeList);
+			shuffle(recipeList);
+			shuffle(recipeList);
+			shuffle(recipeList);
+			shuffle(recipeList);
+			shuffle(recipeList);
+		}
+	}
+
+	private ItemStack getOutput() {
+		ItemStack output = mOutputs.get(MathUtils.randInt(0, mOutputs.size()-1));
+		int outputSize = (output.stackSize == 0 ? (MathUtils.randInt(MathUtils.randInt(0, 8), MathUtils.randInt(4, 32))) : output.stackSize);
+		return ItemUtils.getSimpleStack(output, outputSize);
+	}
+
+}
