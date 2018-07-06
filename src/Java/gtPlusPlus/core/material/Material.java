@@ -548,15 +548,15 @@ public class Material {
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.getUnlocalizedName()), stacksize);
 	}
 	public final Block getOreBlock(final int stacksize){
-		Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for '"+"ore"+Utils.sanitizeString(this.getUnlocalizedName())+"'.");
+		//Logger.DEBUG_MATERIALS("Trying to get ore block for "+this.getLocalizedName()+". Looking for '"+"ore"+Utils.sanitizeString(this.getUnlocalizedName())+"'.");
 		try{
 			ItemStack a1 = getOre(1);
 			Item a2 = a1.getItem();
 			Block a3 = Block.getBlockFromItem(a2);
 
-			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
-			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
-			Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
+			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a1 valid? "+(a1 != null));
+			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a2 valid? "+(a2 != null));
+			//Logger.DEBUG_MATERIALS("[Invalid Ore] Is a3 valid? "+(a3 != null));
 
 			Block x = Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ore"+Utils.sanitizeString(this.unlocalizedName), stacksize).getItem());
 			if (x != null){
@@ -566,7 +566,7 @@ public class Material {
 		catch (Throwable t){
 			//t.printStackTrace();
 		}
-		Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
+		//Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
 		return Blocks.stone;
 	}
 	public final ItemStack getCrushed(final int stacksize){

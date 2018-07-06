@@ -88,7 +88,7 @@ extends WorldGen_GT_Australia {
 
 	public WorldGen_GT_Australia_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3,  Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
 		super(aName, sList, aDefault);
-		Logger.WORLD("Creating Ore Layer Object");
+		Logger.WARNING("Creating Ore Layer Object");
 		this.mOverworld = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
 		this.mNether = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
 		this.mEnd = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
@@ -145,7 +145,7 @@ extends WorldGen_GT_Australia {
 			this.mSecondaryMeta = this.mSecondary.getOreBlock(1);
 			this.mBetweenMeta =  this.mBetween.getOreBlock(1);
 			this.mSporadicMeta  = this.mSporadic.getOreBlock(1);
-			Logger.WORLD("[Vein Generator] An Ore in a Vein had defaulted back to a default value, so they have now been reset to correct values.");
+			Logger.WARNING("[Vein Generator] An Ore in a Vein had defaulted back to a default value, so they have now been reset to correct values.");
 		}
 
 		if( mWorldGenName.equals("vein0") ) {
@@ -153,7 +153,7 @@ extends WorldGen_GT_Australia {
 					" NoOresInVein-vein0"
 					);
 			// This is a special empty orevein
-			Logger.WORLD("[World Generation Debug] Special Empty Vein placed.");
+			Logger.WARNING("[World Generation Debug] Special Empty Vein placed.");
 			return ORE_PLACED;
 		}
 		if (aDimensionType != Dimension_Australia.DIMID) {
@@ -164,7 +164,7 @@ extends WorldGen_GT_Australia {
                 );
             }
 			 */
-			Logger.WORLD("[World Generation Debug] Wrong dimension.");
+			Logger.WARNING("[World Generation Debug] Wrong dimension.");
 			return WRONG_DIMENSION;
 		}
 		if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
@@ -254,7 +254,7 @@ extends WorldGen_GT_Australia {
             );
             return NO_ORE_IN_BOTTOM_LAYER;  // Exit early, didn't place anything in the bottom layer
         }*/
-		Logger.WORLD("[World Generation Debug] Trying to set Ores?");
+		Logger.WARNING("[World Generation Debug] Trying to set Ores?");
 		for (level = tMinY; level < (tMinY-1+3); level++) {
 			for (int tX = wX; tX < eX; tX++) {
 				int placeX = Math.max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX))/localDensity);
@@ -390,7 +390,7 @@ extends WorldGen_GT_Australia {
 					if (fString.contains(ore1String)){
 						int r = f.mMetaItemSubID;					
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
-							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							Logger.WARNING("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 							return true;
 						}	
 					}
@@ -405,7 +405,7 @@ extends WorldGen_GT_Australia {
 					if (fString.contains(ore2String)){
 						int r = f.mMetaItemSubID;				
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
-							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							Logger.WARNING("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 							return true;
 						}	
 					}
@@ -420,7 +420,7 @@ extends WorldGen_GT_Australia {
 					if (fString.contains(ore3String)){
 						int r = f.mMetaItemSubID;				
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){	
-							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							Logger.WARNING("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 							return true;
 						}	
 					}
@@ -435,7 +435,7 @@ extends WorldGen_GT_Australia {
 					if (fString.contains(ore4String)){
 						int r = f.mMetaItemSubID;						
 						if (setOreBlock(aWorld, aX, aY, aZ, r, false)){
-							Logger.WORLD("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+							Logger.WARNING("[World Generation Debug] Set "+f.mDefaultLocalName+" Ore at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 							return true;
 						}	
 					}
@@ -460,7 +460,7 @@ extends WorldGen_GT_Australia {
 				tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
 
 			if (aWorld.setBlock(aX, aY, aZ, tOreBlock, 0, 3)){
-				Logger.WORLD("[World Generation Debug] Set "+tOreBlock.getLocalizedName()+" at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
+				Logger.WARNING("[World Generation Debug] Set "+tOreBlock.getLocalizedName()+" at X: "+aX+" | Y: "+aY+" | Z: "+aZ);
 				return true;
 			}			
 		}

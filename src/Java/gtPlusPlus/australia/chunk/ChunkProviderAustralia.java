@@ -1,10 +1,16 @@
 package gtPlusPlus.australia.chunk;
 
+import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.australia.block.AustraliaContentLoader;
+import gtPlusPlus.australia.gen.map.MapGenExtendedVillage;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
@@ -79,11 +85,53 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	double[] doubleArray4;	
 
 	int[][] field_73219_j = new int[32][32];
+	Map map;
+
+	//Some Init Field?
 	{
-		caveGenerator = TerrainGen.getModdedMapGen(caveGenerator,
-				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
+
+
+		List<BiomeGenBase> y = new ArrayList<BiomeGenBase>();		
+		for (Object r : MapGenVillage.villageSpawnBiomes.toArray()) {
+			if (r instanceof BiomeGenBase) {
+				y.add((BiomeGenBase) r);
+			}
+		}		
+		for (BiomeGenBase h : y) {
+			if (!MapGenVillage.villageSpawnBiomes.contains(h)) {
+				if (h instanceof BiomeGenBase) {
+					y.add(h);
+				}
+			}
+		}
+		if (!MapGenVillage.villageSpawnBiomes.toArray().equals(y.toArray())) {
+			MapGenVillage.villageSpawnBiomes = y;
+		}
+
+		/*if (map == null) {
+			map = FlatGeneratorInfo.createFlatGeneratorFromString("abcdefg12345678").getWorldFeatures();
+		}*/
+
+		/*if (map != null && map.containsKey("village")){
+				Map map1 = (Map)map.get("village");
+				if (!map1.containsKey("size"))
+				{
+					map1.put("size", "10");
+				}
+				villageGenerator = new MapGenExtendedVillage(map1);
+				villageGenerator = (MapGenExtendedVillage) TerrainGen.getModdedMapGen(villageGenerator,
+						net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
+				Logger.INFO("Registered Valid Chunk Provider for Custom Villages.");
+		}
+		else {
+			Logger.INFO("Failed to register Valid Chunk Provider for Custom Villages.");			
+		}*/
+
+
 		villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator,
 				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
+		caveGenerator = TerrainGen.getModdedMapGen(caveGenerator,
+				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
 		mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator,
 				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT);
 		scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator,
@@ -234,7 +282,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	      chunk.generateSkylightMap();
 	      return chunk;
 	    }*/
-
+	
 	/**
 	 * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
 	 * specified chunk from the map seed and chunk seed
@@ -248,9 +296,14 @@ public class ChunkProviderAustralia implements IChunkProvider {
 		generateTerrain(x, z, ablock);
 		biomesForGeneration = worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration, x * 16, z * 16, 16, 16);
 		replaceBlocksForBiome(x, z, ablock, abyte, biomesForGeneration);
+
+		caveGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		caveGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		villageGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		mineshaftGenerator.func_151539_a(this, worldObj, x, z, ablock);
 
 		Chunk chunk = new Chunk(worldObj, ablock, abyte, x, z);
 		byte[] abyte1 = chunk.getBiomeArray();
@@ -311,7 +364,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 							for (int k3 = 0; k3 < 4; ++k3)
 								if ((d15 += d16) > 0.0D)
-									par3BlockArray[j3 += short1] = MathUtils.randInt(0, 10) < 9 ? Blocks.stone : AustraliaContentLoader.mValidGenerationBlocks.get(MathUtils.randInt(0, AustraliaContentLoader.mValidGenerationBlocks.size()-1));
+									par3BlockArray[j3 += short1] = Blocks.stone;
 								else if (k2 * 8 + l2 < b0)
 									par3BlockArray[j3 += short1] = Blocks.water;
 								else
@@ -553,6 +606,20 @@ public class ChunkProviderAustralia implements IChunkProvider {
 		boolean flag = false;
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, this.worldObj, this.rand, par2, par3, flag));
+
+		if (true)
+		{
+			this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+			flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+			this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+			if (flag) {
+				Logger.INFO("Did Generate? "+flag);
+			}
+			else {
+				//Logger.INFO("Can village spawn here? "+villageGenerator.villageSpawnBiomes.contains(biomegenbase));
+			}
+		}
+
 		if ((biomegenbase != BiomeGenBase.desert) && (biomegenbase != BiomeGenBase.desertHills) && (!flag)) {
 			if ((this.rand.nextInt(4) == 0) && 
 					(TerrainGen.populate(par1IChunkProvider, this.worldObj, this.rand, par2, par3, flag, PopulateChunkEvent.Populate.EventType.LAKE)))
@@ -578,6 +645,10 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 		biomegenbase.decorate(this.worldObj, this.rand, k, l);
 		SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
+		if (TerrainGen.populate(this, worldObj, rand, par2, par3, flag, ANIMALS))
+		{
+			SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
+		}
 		k += 8;
 		l += 8;
 
@@ -644,8 +715,9 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 	@Override
 	public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_, int p_147416_5_) {
+		Logger.INFO("func_147416_a: "+p_147416_2_);
 		return 
-				"Village".equals(p_147416_2_) &&
+				"ExtendedVillage".equals(p_147416_2_) &&
 				this.villageGenerator != null ?
 						this.villageGenerator.func_151545_a(p_147416_1_,
 								p_147416_3_, p_147416_4_, p_147416_5_) :
@@ -659,6 +731,10 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 	@Override
 	public void recreateStructures(int par1, int par2) {
+		//Logger.INFO("Recreating Structs");
+        this.mineshaftGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
+        this.villageGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
+        this.scatteredFeatureGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
 
 	}
 }

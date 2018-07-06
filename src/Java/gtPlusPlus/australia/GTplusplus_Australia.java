@@ -22,6 +22,7 @@ import gtPlusPlus.australia.block.AustraliaContentLoader;
 import gtPlusPlus.australia.dimension.Dimension_Australia;
 import gtPlusPlus.australia.gen.gt.WorldGen_Australia_Ores;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia_Base;
+import gtPlusPlus.australia.gen.map.structure.StructureManager;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Australia;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
@@ -38,16 +39,16 @@ public class GTplusplus_Australia implements ActionListener {
 	public static GTPP_Config sCustomWorldgenFile = null;
 
 	// Dark World Handler
-	protected static volatile Biome_AustralianDesert Australian_Desert_Biome_1;
-	protected static volatile Biome_AustralianDesert2 Australian_Desert_Biome_2;	
+	//protected static volatile Biome_AustralianDesert Australian_Desert_Biome_1;
+	//protected static volatile Biome_AustralianDesert2 Australian_Desert_Biome_2;	
 
-	protected static volatile Biome_AustralianDesert_Ex Australian_Desert_Biome_3;
-	protected static volatile Biome_AustralianForest Australian_Forest_Biome;
-	protected static volatile Biome_AustralianOcean Australian_Ocean_Biome;
-	protected static volatile Biome_AustralianOutback Australian_Outback_Biome;
-	protected static volatile Biome_AustralianPlains Australian_Plains_Biome;
+	public static volatile Biome_AustralianDesert_Ex Australian_Desert_Biome_3;
+	public static volatile Biome_AustralianForest Australian_Forest_Biome;
+	public static volatile Biome_AustralianOcean Australian_Ocean_Biome;
+	public static volatile Biome_AustralianOutback Australian_Outback_Biome;
+	public static volatile Biome_AustralianPlains Australian_Plains_Biome;
 	
-	protected static volatile Dimension_Australia Australia_Dimension;
+	public static volatile Dimension_Australia Australia_Dimension;
 	public static int globalAustraliaPortalSpawnTimer = 0;
 
 	// Pre-Init
@@ -61,12 +62,12 @@ public class GTplusplus_Australia implements ActionListener {
 		Australia_Dimension = new Dimension_Australia();
 		Australia_Dimension.instance = instance;		
 		
-		Australian_Desert_Biome_1 = (new Biome_AustralianDesert());
-		Australian_Desert_Biome_2 = (new Biome_AustralianDesert2());		
-		Australian_Desert_Biome_1.instance = instance;
-		Australian_Desert_Biome_2.instance = instance;
-		Australian_Desert_Biome_1.preInit(event);
-		Australian_Desert_Biome_2.preInit(event);
+		//Australian_Desert_Biome_1 = (new Biome_AustralianDesert());
+		//Australian_Desert_Biome_2 = (new Biome_AustralianDesert2());		
+		//Australian_Desert_Biome_1.instance = instance;
+		//Australian_Desert_Biome_2.instance = instance;
+		//Australian_Desert_Biome_1.preInit(event);
+		//Australian_Desert_Biome_2.preInit(event);
 		
 
 		Australian_Desert_Biome_3 = (Biome_AustralianDesert_Ex.biome);
@@ -75,6 +76,8 @@ public class GTplusplus_Australia implements ActionListener {
 		Australian_Outback_Biome = (Biome_AustralianOutback.biome);
 		Australian_Plains_Biome = Biome_AustralianPlains.biome;	
 		
+		//Load Villages
+		StructureManager.registerVillageComponents();
 
 		//Load/Set Custom Ore Gen
 		sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "Australia.cfg")));
@@ -88,8 +91,8 @@ public class GTplusplus_Australia implements ActionListener {
 		//Load World and Biome
 		GameRegistry.registerWorldGenerator(new WorldGen_GT_Australia_Base(), Short.MAX_VALUE);
 
-		Australian_Desert_Biome_1.load();
-		Australian_Desert_Biome_2.load();
+		//Australian_Desert_Biome_1.load();
+		//Australian_Desert_Biome_2.load();
 		Australian_Desert_Biome_3.load();
 		Australian_Forest_Biome.load();
 		Australian_Ocean_Biome.load();
@@ -127,8 +130,8 @@ public class GTplusplus_Australia implements ActionListener {
 
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
-		Australian_Desert_Biome_1.serverLoad(event);
-		Australian_Desert_Biome_2.serverLoad(event);
+		//Australian_Desert_Biome_1.serverLoad(event);
+		//Australian_Desert_Biome_2.serverLoad(event);
 	}
 
 	@EventHandler
