@@ -50,6 +50,7 @@ public class Core_VillagerAdditions implements IPlugin {
 	        VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
 			VillagerUtils.registerNewVillager(1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
 			VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
+			VillagerUtils.registerNewVillager(3, "Aboriginal", "Aboriginal", "Aboriginal", "aboriginal", new TradeHandlerTrader());
 			
 			if (mVillagerMap.size() > 0) {
 				for (VillagerObject g : mVillagerMap.values()) {
