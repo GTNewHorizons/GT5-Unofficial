@@ -90,18 +90,13 @@ public class TradeHandlerAboriginal extends TradeHandlerBase {
 			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.stone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
 			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.mossy_cobblestone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
 			shuffle(recipeList);
-			shuffle(recipeList);
-			shuffle(recipeList);
-			shuffle(recipeList);
-			shuffle(recipeList);
-			shuffle(recipeList);
 		}
 	}
 
-	final static int MID_BOUND = 9;	
+	final static int MID_BOUND = 24;	
 	private ItemStack getOutput() {
 		ItemStack output = mOutputs.get(MathUtils.randInt(0, mOutputs.size()-1));
-		int outputSize = (output.stackSize == 0 ? (Math.min(MathUtils.randInt(MathUtils.randInt(1, MID_BOUND), MathUtils.randInt(MID_BOUND, 32)), MathUtils.randInt(MathUtils.randInt(5, MID_BOUND), MathUtils.randInt(MID_BOUND, 48)))) : output.stackSize);
+		int outputSize = (output.stackSize == 0 ? (Math.min(MathUtils.randInt(MathUtils.randInt(1, MID_BOUND), MathUtils.randInt(MID_BOUND, 32)), MathUtils.randInt(MathUtils.randInt(12, MID_BOUND), MathUtils.randInt(MID_BOUND, 48)))) : output.stackSize);
 		return ItemUtils.getSimpleStack(output, outputSize);
 	}
 

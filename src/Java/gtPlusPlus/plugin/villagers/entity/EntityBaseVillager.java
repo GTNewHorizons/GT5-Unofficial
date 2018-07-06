@@ -417,38 +417,43 @@ public class EntityBaseVillager extends EntityVillager {
 		}
 
 		for (int l = 0; l < p_70950_1_ && l < merchantrecipelist.size(); ++l) {
-			this.getBuyingList().addToListWithCheck((MerchantRecipe) merchantrecipelist.get(l));
+			try {
+				this.getBuyingList().addToListWithCheck((MerchantRecipe) merchantrecipelist.get(l));
+			}
+			catch (Throwable t) {
+				Logger.INFO("Villager with ID "+this.entityUniqueID.toString()+" at  |  X: "+this.posX+"   Y: "+this.posY+"   Z: "+this.posZ+" may have corrupt trades, it is advised to remove/kill it.");
+			}
 		}
 
 		try {
-		if (this.getBuyingList() != null) {
-			for (Object g : this.getBuyingList()) {
-				if (g != null) {
-					if (g instanceof MerchantRecipe) {
-						MerchantRecipe m = (MerchantRecipe) g;
-						ItemStack selling = m.getItemToSell();
-						ItemStack[] buying = new ItemStack[] {m.getItemToBuy(), m.getSecondItemToBuy() != null ? m.getSecondItemToBuy() : null};
-						if (selling == null) {
-							Logger.INFO("Villager is Selling an invalid item");
+			if (this.getBuyingList() != null) {
+				for (Object g : this.getBuyingList()) {
+					if (g != null) {
+						if (g instanceof MerchantRecipe) {
+							MerchantRecipe m = (MerchantRecipe) g;
+							ItemStack selling = m.getItemToSell();
+							ItemStack[] buying = new ItemStack[] {m.getItemToBuy(), m.getSecondItemToBuy() != null ? m.getSecondItemToBuy() : null};
+							if (selling == null) {
+								Logger.INFO("Villager is Selling an invalid item");
+							}
+							else if (buying[0] == null && buying[1] == null) {
+								Logger.INFO("Villager is buying two invalid items");
+							}
+							else {
+								Logger.INFO("Villager is Selling x"+selling.stackSize+selling.getDisplayName()+" for x"+buying[0].stackSize+" "+buying[0].getDisplayName()+buying[1] != null ? " and for x"+buying[1].stackSize+" "+buying[1].getDisplayName() : "");
+							}
 						}
-						else if (buying[0] == null && buying[1] == null) {
-							Logger.INFO("Villager is buying two invalid items");
-						}
-						else {
-							Logger.INFO("Villager is Selling x"+selling.stackSize+selling.getDisplayName()+" for x"+buying[0].stackSize+" "+buying[0].getDisplayName()+buying[1] != null ? " and for x"+buying[1].stackSize+" "+buying[1].getDisplayName() : "");
-						}
+						else
+							Logger.INFO("Found: "+g.getClass().getName());
 					}
-					else
-						Logger.INFO("Found: "+g.getClass().getName());
 				}
 			}
-		}
-		else {
+			else {
 
-		}
+			}
 		}
 		catch (Throwable t) {
-			
+
 		}
 
 	}
