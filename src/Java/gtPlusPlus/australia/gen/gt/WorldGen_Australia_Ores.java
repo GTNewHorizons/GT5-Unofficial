@@ -303,7 +303,7 @@ public class WorldGen_Australia_Ores {
 	
 	static long ID = 0;
 	public static void generateValidOreVeins(){
-		validOreveins.put(ID++, BaseVein);
+		validOreveins.put(ID++, BaseVein);/*
 		validOreveins.put(ID++, Vein1);
 		validOreveins.put(ID++, Vein2);
 		validOreveins.put(ID++, Vein3);
@@ -321,7 +321,7 @@ public class WorldGen_Australia_Ores {
 		validOreveins.put(ID++, Vein15);
 		validOreveins.put(ID++, Vein16);
 		validOreveins.put(ID++, Vein17);
-		validOreveins.put(ID++, Vein18);
+		validOreveins.put(ID++, Vein18);*/
 	}
 	
 }

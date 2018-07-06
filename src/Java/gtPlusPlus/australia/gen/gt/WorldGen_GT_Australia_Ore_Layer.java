@@ -20,12 +20,12 @@ import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.australia.GTplusplus_Australia;
 import gtPlusPlus.australia.dimension.Dimension_Australia;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 
 public class WorldGen_GT_Australia_Ore_Layer
 extends WorldGen_GT_Australia {
@@ -89,9 +89,9 @@ extends WorldGen_GT_Australia {
 	public WorldGen_GT_Australia_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2, boolean GC_UNUSED3,  Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
 		super(aName, sList, aDefault);
 		Logger.WORLD("Creating Ore Layer Object");
-		this.mOverworld = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-		this.mNether = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-		this.mEnd = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
+		this.mOverworld = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
+		this.mNether = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
+		this.mEnd = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
 		//this.mMoon = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
 		//this.mMars = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
 		//this.mAsteroid = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
@@ -105,9 +105,9 @@ extends WorldGen_GT_Australia {
 			mMaxY = (short) (this.mMinY + 7);
 		}
 		this.mMaxY = mMaxY;
-		this.mWeight = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-		this.mDensity = ((short) HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-		this.mSize = ((short) Math.max(1, HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+		this.mWeight = ((short) GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
+		this.mDensity = ((short) GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
+		this.mSize = ((short) Math.max(1, GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
 		this.mPrimary = aPrimary;
 		this.mSecondary = aSecondary;
 		this.mBetween =  aBetween;
@@ -116,7 +116,7 @@ extends WorldGen_GT_Australia {
 		this.mSecondaryMeta = aSecondary.getOreBlock(1);
 		this.mBetweenMeta =  aBetween.getOreBlock(1);
 		this.mSporadicMeta  = aSporadic.getOreBlock(1);
-		this.mRestrictBiome = HANDLER_GT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+		this.mRestrictBiome = GTplusplus_Australia.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
 
 		//if (mPrimaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mPrimaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied ID " + mPrimaryMeta + " for " + mWorldGenName + " does not exist");
 		//if (mSecondaryMeta != -1 && GregTech_API.sGeneratedMaterials[(mSecondaryMeta % 1000)] == null) throw new IllegalArgumentException("A Material for the supplied ID " + mSecondaryMeta + " for " + mWorldGenName + " does not exist");
