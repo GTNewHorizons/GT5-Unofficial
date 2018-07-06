@@ -48,6 +48,9 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	}
 	
 	public synchronized V set(V object){
+		if (object == null) {
+			return null;
+		}
 		mInternalNameMap.put(""+object.hashCode(), (mInternalID+1));
 		return mInternalMap.put(mInternalID++, object);
 	}

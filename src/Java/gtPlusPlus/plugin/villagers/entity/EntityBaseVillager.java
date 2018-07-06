@@ -101,7 +101,9 @@ public class EntityBaseVillager extends EntityVillager {
 
 	@Override
 	public int getProfession() {
-		return super.getProfession();
+		int prof = super.getProfession();
+		//Logger.INFO(""+mRoleID);
+		return prof < 7735 ? 7738 : prof;
 	}
 
 	@Override
@@ -132,6 +134,11 @@ public class EntityBaseVillager extends EntityVillager {
 		if (shouldAlwaysSprint()) {
 			if (!this.isSprinting()) {
 				this.setSprinting(true);
+			}
+		}
+		else {
+			if (this.isSprinting()) {
+				this.setSprinting(false);
 			}
 		}
 
@@ -210,7 +217,7 @@ public class EntityBaseVillager extends EntityVillager {
 			v82191 = ReflectionUtils.getField(getClass(), "buyingList");
 			try {
 				o = (MerchantRecipeList) v82191.get(this);
-				Logger.INFO("Is BuyingList Valid? "+(v82191 != null));
+				Logger.WARNING("Is BuyingList Valid? "+(v82191 != null));
 				return v82191 != null ? o : null;
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
@@ -224,7 +231,7 @@ public class EntityBaseVillager extends EntityVillager {
 
 	protected void setBuyingList(MerchantRecipeList f) {
 		try {
-			Logger.INFO("set BuyingList? "+(ReflectionUtils.setField(this, "buyingList", f)));
+			Logger.WARNING("set BuyingList? "+(ReflectionUtils.setField(this, "buyingList", f)));
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -434,17 +441,17 @@ public class EntityBaseVillager extends EntityVillager {
 							ItemStack selling = m.getItemToSell();
 							ItemStack[] buying = new ItemStack[] {m.getItemToBuy(), m.getSecondItemToBuy() != null ? m.getSecondItemToBuy() : null};
 							if (selling == null) {
-								Logger.INFO("Villager is Selling an invalid item");
+								Logger.WARNING("Villager is Selling an invalid item");
 							}
 							else if (buying[0] == null && buying[1] == null) {
-								Logger.INFO("Villager is buying two invalid items");
+								Logger.WARNING("Villager is buying two invalid items");
 							}
 							else {
-								Logger.INFO("Villager is Selling x"+selling.stackSize+selling.getDisplayName()+" for x"+buying[0].stackSize+" "+buying[0].getDisplayName()+buying[1] != null ? " and for x"+buying[1].stackSize+" "+buying[1].getDisplayName() : "");
+								Logger.WARNING("Villager is Selling x"+selling.stackSize+selling.getDisplayName()+" for x"+buying[0].stackSize+" "+buying[0].getDisplayName()+buying[1] != null ? " and for x"+buying[1].stackSize+" "+buying[1].getDisplayName() : "");
 							}
 						}
 						else
-							Logger.INFO("Found: "+g.getClass().getName());
+							Logger.WARNING("Found: "+g.getClass().getName());
 					}
 				}
 			}

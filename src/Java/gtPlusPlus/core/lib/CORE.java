@@ -57,8 +57,11 @@ public class CORE {
 	public static boolean isModUpToDate = Utils.isModUpToDate();
 
 	//Tweakables
-	public static int EVERGLADESBIOME_ID = 238;	
 	public static int EVERGLADES_ID = 227;
+	public static int EVERGLADESBIOME_ID = 238;
+	public static int AUSTRALIA_ID = 228;	
+	public static int AUSTRALIA_BIOME_DESERT_1_ID = 239;	
+	public static int AUSTRALIA_BIOME_DESERT_2_ID = 240;	
 
 	//GT Vars;
 	public static final int GREG_FIRST_ID = 760;
@@ -263,6 +266,12 @@ public class CORE {
 	public static class Everglades{
 		public static final String MODID = "ToxicEverglades";
 		public static final String NAME = "GT++ Toxic Everglades";
+		public static final String VERSION = "0.1";
+	}
+	
+	public static class Australia{
+		public static final String MODID = "Australia";
+		public static final String NAME = "GT++ Australia";
 		public static final String VERSION = "0.1";
 	}
 

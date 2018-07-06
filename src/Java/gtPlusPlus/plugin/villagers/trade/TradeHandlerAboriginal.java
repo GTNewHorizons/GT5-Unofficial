@@ -60,7 +60,7 @@ public class TradeHandlerAboriginal extends TradeHandlerBase {
 		mOutputs.put(ItemUtils.getSimpleStack(Items.leather, 0));
 		mOutputs.put(ItemUtils.getSimpleStack(Items.melon_seeds, 0));
 		mOutputs.put(ItemUtils.getSimpleStack(Items.reeds, 0));
-		mInputs.put(ItemUtils.getSimpleStack(Blocks.wooden_door));
+		mInputs.put(ItemUtils.getSimpleStack(Items.wooden_door));
 		mInputs.put(ItemUtils.getSimpleStack(Blocks.log));
 		mInputs.put(ItemUtils.getSimpleStack(Blocks.log2));
 		mInputs.put(ItemUtils.getSimpleStack(Blocks.planks));

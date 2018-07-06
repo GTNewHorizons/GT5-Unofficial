@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.util.GT_Config;
-
+import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -25,7 +25,8 @@ public class HANDLER_GT {
 	public static GT_Config mMaterialProperties = null;
 	
 	public static GTPP_Config sCustomWorldgenFile = null;
-	public static final List<WorldGen_GT> sWorldgenList = new ArrayList<WorldGen_GT>();
+	public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<WorldGen_GT>();
+	public static final List<WorldGen_GT_Australia> sWorldgenListAustralia = new ArrayList<WorldGen_GT_Australia>();
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
 
 	public static void preInit(){
