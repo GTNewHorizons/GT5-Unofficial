@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import gtPlusPlus.australia.block.AustraliaContentLoader;
+import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -309,7 +311,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 							for (int k3 = 0; k3 < 4; ++k3)
 								if ((d15 += d16) > 0.0D)
-									par3BlockArray[j3 += short1] = Blocks.stone;
+									par3BlockArray[j3 += short1] = MathUtils.randInt(0, 10) < 9 ? Blocks.stone : AustraliaContentLoader.mValidGenerationBlocks.get(MathUtils.randInt(0, AustraliaContentLoader.mValidGenerationBlocks.size()-1));
 								else if (k2 * 8 + l2 < b0)
 									par3BlockArray[j3 += short1] = Blocks.water;
 								else

@@ -13,8 +13,8 @@ public class BlockAustraliaSand extends BlockGrass implements ITileTooltip{
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setBlockName("blockAustralianSand");
 		this.setHardness(0.1F);
-		this.setBlockTextureName("minecraft" + ":" + "grass");
-		LanguageRegistry.addName(this, "Sandy Soil");
+		this.setBlockTextureName("minecraft" + ":" + "red_sand");
+		LanguageRegistry.addName(this, "Sandy Earth");
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
@@ -127,7 +128,7 @@ public class Biome_AustralianDesert2 {
 				Field mClone = mInternalBiomeList;
 				mTempList = (BiomeGenBase[]) mInternalBiomeList.get(null);
 				if (mTempList != null){
-					mTempList[CORE.AUSTRALIA_BIOME_DESERT_1_ID] = this;
+					mTempList[CORE.AUSTRALIA_BIOME_DESERT_2_ID] = this;
 					mInternalBiomeList.set(null, mTempList);
 					if (mTempList != mInternalBiomeList.get(null)){
 						ReflectionUtils.setFinalStatic(mInternalBiomeList, mTempList);
@@ -166,6 +167,11 @@ public class Biome_AustralianDesert2 {
 			//this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
 			this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
 			return true;
+		}
+		
+		@Override
+		public WorldGenAbstractTree func_150567_a(Random par1Random){
+		    return (WorldGenAbstractTree)(getRandomWorldGenForTrees(par1Random));
 		}
 
 		//TODO - DOES THIS WORK?

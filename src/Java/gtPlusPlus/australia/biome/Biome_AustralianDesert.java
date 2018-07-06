@@ -28,6 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
@@ -167,6 +168,12 @@ public class Biome_AustralianDesert {
 			this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
 			return true;
 		}
+		
+		@Override
+		public WorldGenAbstractTree func_150567_a(Random par1Random){
+		    return (WorldGenAbstractTree)(getRandomWorldGenForTrees(par1Random));
+		}
+		
 
 		//TODO - DOES THIS WORK?
 		public WorldGenerator getRandomWorldGenForTrees(Random par1Random)

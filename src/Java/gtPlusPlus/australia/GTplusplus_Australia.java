@@ -19,7 +19,6 @@ import gtPlusPlus.australia.gen.gt.WorldGen_Australia_Ores;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia_Base;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Australia;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;

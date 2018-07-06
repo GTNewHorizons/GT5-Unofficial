@@ -16,10 +16,10 @@ public class BlockAustraliaTopSoil extends BlockDirt implements ITileTooltip{
 
 	public BlockAustraliaTopSoil() {
 		this.setHardness(0.5F);
-		this.setBlockTextureName("minecraft" + ":" + "dirt");
+		this.setBlockTextureName("minecraft" + ":" + "sand");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockName("blockAustralianTopSoil");
-		LanguageRegistry.addName(this, "Desert Soil");
+		LanguageRegistry.addName(this, "Desert Earth");
 	}
 	
 	@Override
