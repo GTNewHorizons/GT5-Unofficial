@@ -74,21 +74,21 @@ public class TradeHandlerAboriginal extends TradeHandlerBase {
 			init();
 		}	
 		if (initialised) {
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.wooden_door, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log2, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.planks, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sapling, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sandstone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.nether_brick, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.bookshelf, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.crafting_table, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.gravel, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.hardened_clay, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.cactus, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.quartz_block, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.stone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
-			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.mossy_cobblestone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(0, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.wooden_door, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.log2, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.planks, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sapling, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.sandstone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.nether_brick, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.bookshelf, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.crafting_table, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.gravel, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.hardened_clay, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.cactus, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.quartz_block, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.stone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
+			recipeList.add(new MerchantRecipe(ItemUtils.getSimpleStack(Blocks.mossy_cobblestone, Math.max(MathUtils.randInt(1, 64), MathUtils.randInt(1, 32))), getOutput()));
 			shuffle(recipeList);
 			shuffle(recipeList);
 			shuffle(recipeList);
@@ -98,9 +98,10 @@ public class TradeHandlerAboriginal extends TradeHandlerBase {
 		}
 	}
 
+	final static int MID_BOUND = 9;	
 	private ItemStack getOutput() {
 		ItemStack output = mOutputs.get(MathUtils.randInt(0, mOutputs.size()-1));
-		int outputSize = (output.stackSize == 0 ? (MathUtils.randInt(MathUtils.randInt(0, 8), MathUtils.randInt(4, 32))) : output.stackSize);
+		int outputSize = (output.stackSize == 0 ? (Math.min(MathUtils.randInt(MathUtils.randInt(1, MID_BOUND), MathUtils.randInt(MID_BOUND, 32)), MathUtils.randInt(MathUtils.randInt(5, MID_BOUND), MathUtils.randInt(MID_BOUND, 48)))) : output.stackSize);
 		return ItemUtils.getSimpleStack(output, outputSize);
 	}
 

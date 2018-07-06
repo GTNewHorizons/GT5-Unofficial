@@ -213,9 +213,14 @@ public class XSTR extends Random {
 	 */
 	@Override
 	public int nextInt(final int bound) {
-		//if (bound <= 0) {
+		final int newBound;
+		if (bound <= 0) {
+			newBound = 1;
 		//throw new RuntimeException("BadBound");
-		//}
+		}
+		else {
+			newBound = bound;
+		}
 
 		/*int r = next(31);
         int m = bound - 1;
@@ -234,7 +239,7 @@ public class XSTR extends Random {
 		this.last ^= (this.last >>> 35);
 		this.last ^= (this.last << 4);
 		this.seed = this.last;
-		final int out = (int) this.last % bound;
+		final int out = (int) this.last % newBound;
 		return (out < 0) ? -out : out;
 	}
 	@Override
