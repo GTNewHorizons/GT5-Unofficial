@@ -9,10 +9,10 @@ import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.australia.block.AustraliaContentLoader;
-import gtPlusPlus.australia.gen.map.MapGenExtendedVillage;
-import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.australia.gen.map.MapGenLargeRavine;
+import gtPlusPlus.australia.gen.map.MapGenVillageLogging;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
@@ -22,6 +22,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
@@ -32,7 +33,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class ChunkProviderAustralia implements IChunkProvider {
+public class ChunkProviderAustralia extends ChunkProviderGenerate implements IChunkProvider {
 	private Random rand;
 	private NoiseGeneratorOctaves noiseGen1;
 	private NoiseGeneratorOctaves noiseGen2;
@@ -65,7 +66,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	/**
 	 * Holds Village Generator
 	 */
-	private MapGenVillage villageGenerator = new MapGenVillage();
+	private MapGenVillageLogging villageGenerator = new MapGenVillageLogging();
 	/**
 	 * Holds Mineshaft Generator
 	 */
@@ -74,7 +75,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	/**
 	 * Holds ravine generator
 	 */
-	private MapGenBase ravineGenerator = new MapGenRavine();
+	private MapGenBase ravineGenerator = new MapGenLargeRavine();
 	/**
 	 * The biomes that are used to generate the chunk
 	 */
@@ -128,7 +129,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 		}*/
 
 
-		villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator,
+		villageGenerator = (MapGenVillageLogging) TerrainGen.getModdedMapGen(villageGenerator,
 				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
 		caveGenerator = TerrainGen.getModdedMapGen(caveGenerator,
 				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
@@ -141,6 +142,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	}
 
 	public ChunkProviderAustralia(World par1World, long par2) {		
+		super(par1World, par2, true);
 		this.worldObj = par1World;
 		this.worldType = par1World.getWorldInfo().getTerrainType();
 		this.rand = new Random(par2);
@@ -260,30 +262,6 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	}
 
 	/**
-	 * Will return back a chunk, if it doesn't exist and its not a MP client
-	 * it will generates all the blocks for the specified chunk from the map
-	 * seed and chunk seed
-	 */
-	/*@Override
-	public Chunk provideChunk(int par1, int par2) {
-	      this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-	      Block[] ablock = new Block[65536];
-	      byte[] abyte = new byte[65536];
-	      func_147424_a(par1, par2, ablock);
-	      this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-
-	      replaceBlocksForBiome(par1, par2, ablock, abyte, this.biomesForGeneration);
-
-	      Chunk chunk = new Chunk(this.worldObj, ablock, abyte, par1, par2);
-	      byte[] abyte1 = chunk.getBiomeArray();
-	      for (int k = 0; k < abyte1.length; k++) {
-	        abyte1[k] = ((byte)this.biomesForGeneration[k].biomeID);
-	      }
-	      chunk.generateSkylightMap();
-	      return chunk;
-	    }*/
-	
-	/**
 	 * Will return back a chunk, if it doesn't exist and its not a MP client it will generates all the blocks for the
 	 * specified chunk from the map seed and chunk seed
 	 */
@@ -301,7 +279,13 @@ public class ChunkProviderAustralia implements IChunkProvider {
 		caveGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		ravineGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		villageGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
+		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		scatteredFeatureGenerator.func_151539_a(this, worldObj, x, z, ablock);
 		mineshaftGenerator.func_151539_a(this, worldObj, x, z, ablock);
 
@@ -587,7 +571,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	 */
 	@Override
 	public boolean chunkExists(int par1, int par2) {
-		return true;
+		return super.chunkExists(par1, par2);
 	}
 
 	/**
@@ -595,7 +579,104 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	 */
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
-		net.minecraft.block.BlockFalling.fallInstantly = false;
+		
+		boolean generateStructures = true;
+		
+        BlockFalling.fallInstantly = true;
+        int x = par2 * 16;
+        int z = par3 * 16;
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
+        this.rand.setSeed(this.worldObj.getSeed());
+        long i1 = this.rand.nextLong() / 2L * 2L + 1L;
+        long j1 = this.rand.nextLong() / 2L * 2L + 1L;
+        this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
+        boolean flag = false;
+
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+
+        if (generateStructures) {
+            this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);        
+            flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+        }
+
+        int k1;
+        int l1;
+        int i2;
+
+
+        if (generateStructures) {
+            if (generateStructures) {
+                // No specific liquid dimlets specified: we generate default lakes (water and lava were appropriate).
+                if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && !flag && this.rand.nextInt(4) == 0
+                        && TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                    k1 = x + this.rand.nextInt(16) + 8;
+                    l1 = this.rand.nextInt(256);
+                    i2 = z + this.rand.nextInt(16) + 8;
+                    (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, k1, l1, i2);
+                }
+
+                if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA) && !flag && this.rand.nextInt(8) == 0) {
+                    k1 = x + this.rand.nextInt(16) + 8;
+                    l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
+                    i2 = z + this.rand.nextInt(16) + 8;
+
+                    if (l1 < 63 || this.rand.nextInt(10) == 0) {
+                        (new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
+                    }
+                }
+            } /*else {
+                // Generate lakes for the specified biomes.
+                for (Block liquid : dimensionInformation.getFluidsForLakes()) {
+                    if (!flag && this.rand.nextInt(4) == 0
+                            && TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE)) {
+                        k1 = x + this.rand.nextInt(16) + 8;
+                        l1 = this.rand.nextInt(256);
+                        i2 = z + this.rand.nextInt(16) + 8;
+                        (new WorldGenLakes(liquid)).generate(this.worldObj, this.rand, k1, l1, i2);
+                    }
+                }
+            }*/
+        }
+
+        boolean doGen = false;
+        if (generateStructures) {
+            doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.DUNGEON);
+            for (k1 = 0; doGen && k1 < 8; ++k1) {
+                l1 = x + this.rand.nextInt(16) + 8;
+                i2 = this.rand.nextInt(256);
+                int j2 = z + this.rand.nextInt(16) + 8;
+                (new WorldGenDungeons()).generate(this.worldObj, this.rand, l1, i2, j2);
+            }
+        }
+
+        biomegenbase.decorate(this.worldObj, this.rand, x, z);
+        if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ANIMALS)) {
+            SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+        }
+        x += 8;
+        z += 8;
+
+        doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE);
+        for (k1 = 0; doGen && k1 < 16; ++k1) {
+            for (l1 = 0; l1 < 16; ++l1) {
+                i2 = this.worldObj.getPrecipitationHeight(x + k1, z + l1);
+
+                if (this.worldObj.isBlockFreezable(k1 + x, i2 - 1, l1 + z)) {
+                    this.worldObj.setBlock(k1 + x, i2 - 1, l1 + z, Blocks.ice, 0, 2);
+                }
+
+                if (this.worldObj.func_147478_e(k1 + x, i2, l1 + z, true)) {
+                    this.worldObj.setBlock(k1 + x, i2, l1 + z, Blocks.snow_layer, 0, 2);
+                }
+            }
+        }
+
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+
+        BlockFalling.fallInstantly = false;
+		//super.populate(par1IChunkProvider, par2, par3);
+		/*net.minecraft.block.BlockFalling.fallInstantly = false;
 		int k = par2 * 16;
 		int l = par3 * 16;
 		BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
@@ -607,18 +688,17 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, this.worldObj, this.rand, par2, par3, flag));
 
-		if (true)
-		{
-			this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-			flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-			this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-			if (flag) {
-				Logger.INFO("Did Generate? "+flag);
-			}
-			else {
-				//Logger.INFO("Can village spawn here? "+villageGenerator.villageSpawnBiomes.contains(biomegenbase));
-			}
+
+		this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+		flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+		this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+		if (flag) {
+			Logger.INFO("Did Generate? "+flag);
 		}
+		else {
+			//Logger.INFO("Can village spawn here? "+villageGenerator.villageSpawnBiomes.contains(biomegenbase));
+		}
+
 
 		if ((biomegenbase != BiomeGenBase.desert) && (biomegenbase != BiomeGenBase.desertHills) && (!flag)) {
 			if ((this.rand.nextInt(4) == 0) && 
@@ -654,7 +734,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(par1IChunkProvider, this.worldObj, this.rand, par2, par3, flag));
 
-		net.minecraft.block.BlockFalling.fallInstantly = false;
+		net.minecraft.block.BlockFalling.fallInstantly = false;*/
 	}
 
 	/**
@@ -664,7 +744,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	 */
 	@Override
 	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) {
-		return true;
+		return super.saveChunks(par1, par2IProgressUpdate);
 	}
 
 	/**
@@ -681,7 +761,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	 */
 	@Override
 	public boolean unloadQueuedChunks() {
-		return false;
+		return super.unloadQueuedChunks();
 	}
 
 	/**
@@ -689,7 +769,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	 */
 	@Override
 	public boolean canSave() {
-		return true;
+		return super.canSave();
 	}
 
 	/**
@@ -716,6 +796,7 @@ public class ChunkProviderAustralia implements IChunkProvider {
 	@Override
 	public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_, int p_147416_5_) {
 		Logger.INFO("func_147416_a: "+p_147416_2_);
+		//return super.func_147416_a(p_147416_1_, p_147416_2_, p_147416_3_, p_147416_4_, p_147416_5_);
 		return 
 				"ExtendedVillage".equals(p_147416_2_) &&
 				this.villageGenerator != null ?
@@ -726,15 +807,15 @@ public class ChunkProviderAustralia implements IChunkProvider {
 
 	@Override
 	public int getLoadedChunkCount() {
-		return 0;
+		return super.getLoadedChunkCount();
 	}
 
 	@Override
 	public void recreateStructures(int par1, int par2) {
-		//Logger.INFO("Recreating Structs");
-        this.mineshaftGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
-        this.villageGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
-        this.scatteredFeatureGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
+		//super.recreateStructures(par1, par2);
+		this.mineshaftGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
+		this.villageGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
+		this.scatteredFeatureGenerator.func_151539_a(this, this.worldObj, par1, par2, (Block[])null);
 
 	}
 }
