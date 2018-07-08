@@ -6,7 +6,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.GT_SidedTexture;
 
-import static gregtech.api.enums.Dyes.*;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 public class Textures {

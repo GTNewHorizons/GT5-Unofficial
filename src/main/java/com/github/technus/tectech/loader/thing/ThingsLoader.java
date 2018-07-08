@@ -1,7 +1,9 @@
 package com.github.technus.tectech.loader.thing;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases.TurretBaseEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
@@ -13,8 +15,6 @@ import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases.TurretBaseEM;
-import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
 
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
 

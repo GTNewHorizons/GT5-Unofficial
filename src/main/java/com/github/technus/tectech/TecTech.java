@@ -10,7 +10,10 @@ import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 
@@ -73,6 +76,7 @@ public class TecTech {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
         MainLoader.load();
+        MainLoader.addAfterPostLoad();
     }
 
     @Mod.EventHandler
@@ -88,10 +92,5 @@ public class TecTech {
         if(DEBUG_MODE) {
             pEvent.registerServerCommand(new GiveEM());
         }
-    }
-
-    @Mod.EventHandler
-    public void onServerAboutToStart(FMLServerAboutToStartEvent ev) {
-
     }
 }

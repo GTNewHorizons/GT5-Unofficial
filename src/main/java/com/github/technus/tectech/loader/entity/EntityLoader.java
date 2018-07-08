@@ -1,9 +1,9 @@
 package com.github.technus.tectech.loader.entity;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 
 /**
  * Created by Tec on 30.07.2017.

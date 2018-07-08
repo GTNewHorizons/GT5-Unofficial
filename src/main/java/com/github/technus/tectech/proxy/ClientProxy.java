@@ -1,7 +1,8 @@
 package com.github.technus.tectech.proxy;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
 import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
@@ -22,7 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loader;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {

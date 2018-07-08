@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     public int EUT=0,AMP=0;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
+        super(aID, aName, aNameRegional, aTier, 0, "Electronic voltage regulator");
         Util.setTier(aTier,this);
     }
 

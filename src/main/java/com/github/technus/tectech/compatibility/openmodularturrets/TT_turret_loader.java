@@ -5,11 +5,11 @@ import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turret
 import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileRenderEM;
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
-import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 
 public class TT_turret_loader implements Runnable {
     @Override

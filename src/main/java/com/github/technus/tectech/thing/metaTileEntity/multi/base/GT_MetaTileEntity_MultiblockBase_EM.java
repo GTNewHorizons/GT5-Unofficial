@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Vec3pos;
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
@@ -52,7 +52,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements IFrontRotation {
     //region Constants
-    //Placeholers for nothing feel free to use
+    //Placeholders for nothing feel free to use
     public static final ItemStack[] nothingI = new ItemStack[0];
     public static final FluidStack[] nothingF = new FluidStack[0];
     //endregion
@@ -118,6 +118,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region Control variables
 
+    //should explode on dismatle?, set it in constructor, if true machine will explode if invalidated structure while active
+    protected boolean eDismantleBoom = false;
+
     //what is the amount of A required
     public long eAmpereFlow = 1; // analogue of EU/t but for amperes used (so eu/t is actually eu*A/t) USE ONLY POSITIVE NUMBERS!
 
@@ -144,7 +147,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //region READ ONLY unless u really need to change it
 
     //functionality toggles - changed by buttons in gui also
-    protected boolean ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
+    protected boolean ePowerPass = false, eSafeVoid = false;
 
     //max amperes machine can take in after computing it to the lowest tier (exchange packets to min tier count)
     protected long eMaxAmpereFlow = 0;
@@ -788,17 +791,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * loads default parameters in CONSTRUCTOR! FUCKING ONCE
+     * loads default parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
      */
     protected void parametersLoadDefault_EM(){
         //load default parameters with setParameterPairIn_ClearOut
     }
 
     /**
-     * This is called automatically when there is new parameters data, copy it to your variables for safe storage
+     * This is called automatically when there was parameters data update, copy it to your variables for safe storage
      * although the base code only downloads the values from parametrizers when machines is NOT OPERATING
      *
-     * good place for get Parameters
+     * good place to get Parameters
      */
     protected void parametersInRead_EM(){}
 
@@ -825,7 +828,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void extraExplosions_EM() {}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
     /**
-     * Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
+     * Get Available data, Override only on data outputters should return mAvailableData that is set in check recipe
      * @return available data
      */
     protected long getAvailableData_EM() {
@@ -844,7 +847,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     /**
      * Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk)
-     * BUT NEEDED WHEN - machine blocks are not touching each other ot they don't implement IMachineBlockUpdateable (ex. air)
+     * BUT NEEDED WHEN - machine blocks are not touching each other or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
      */
     protected boolean cyclicUpdate_EM() {
         return mUpdate <= -1000;//set to false to disable cyclic update
@@ -1062,7 +1065,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * if u want to use gt recipes maps...
+     * if u want to use gt recipe maps...
      * @return
      */
     @Override
@@ -1071,7 +1074,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * does some validation and cleaning,, dont touch i think
+     * does some validation and cleaning, dont touch i think
      */
     @Override
     public void updateSlots() {
@@ -1251,7 +1254,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return result;
     }
 
-    private void hatchesStatusUpdate_EM() {
+    /**
+     * callback for updating parameters, change this if u really need dynamic (inside recipe time) parameter updates
+     */
+    protected void hatchesStatusUpdate_EM() {
         boolean busy=mMaxProgresstime>0;
         if (busy) {//write from buffer to hatches only
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
@@ -1993,7 +1999,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //endregion
 
-    //region convinience copies input and output EM
+    //region convenience copies input and output EM
     //new Method
     public final cElementalInstanceStackMap getInputsClone_EM(){
         cElementalInstanceStackMap in=new cElementalInstanceStackMap();
@@ -2711,7 +2717,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
-    //CALLBACK from hatcher adders
+    //CALLBACK from hatches adders
     public boolean addThing(String methodName, IGregTechTileEntity igt, int casing) {
         try {
             return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);

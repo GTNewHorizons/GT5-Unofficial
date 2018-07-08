@@ -1,9 +1,9 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom;
 
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.XSTR;
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalDefinitionStackMap;

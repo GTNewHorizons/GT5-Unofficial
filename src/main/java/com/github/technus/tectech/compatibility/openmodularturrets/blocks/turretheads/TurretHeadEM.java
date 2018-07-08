@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads;
 
+import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -8,7 +9,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import openmodularturrets.tileentity.turretbase.TurretBase;
 
 import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;

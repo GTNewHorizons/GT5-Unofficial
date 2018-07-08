@@ -22,3 +22,4 @@ SetupDevWorkspaces.bat
 .idea/workspace.xml
 *.db
 *.log
+.idea/

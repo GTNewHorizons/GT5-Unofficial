@@ -16,6 +16,7 @@ import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.Textures;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_collider;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
@@ -27,6 +28,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -34,6 +36,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -125,7 +128,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 7);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if(Loader.isModLoaded(Reference.DREAMCRAFT)){
@@ -161,13 +164,6 @@ public final class MainLoader {
         progressBarPostLoad.step("Register Extra Hazmat Suits");
         registerExtraHazmats();
         TecTech.LOGGER.info("Hazmat additions done");
-
-
-        progressBarPostLoad.step("Nerf fusion recipes");
-        if (TecTech.configTecTech.NERF_FUSION) {
-            FixBrokenFusionRecipes();
-        }
-        TecTech.LOGGER.info("Fusion nerf done");
 
         progressBarPostLoad.step("Nerf blocks blast resistance");
         fixBlocks();
@@ -248,6 +244,18 @@ public final class MainLoader {
         //todo add GC GS stuff
     }
 
+    public static void addAfterPostLoad() {
+        GregTech_API.sAfterGTPostload.add(new Runnable() {
+            @Override
+            public void run() {
+                if(TecTech.configTecTech.NERF_FUSION) {
+                    FixBrokenFusionRecipes();
+                }
+                GT_MetaTileEntity_EM_collider.heliumPlasmaValue = getFuelValue(Materials.Helium.getPlasma(125));
+            }
+        });
+    }
+
     private static void FixBrokenFusionRecipes() {
         HashMap<Fluid, Fluid> binds = new HashMap<>();
         for (Materials material : Materials.values()) {
@@ -285,6 +293,16 @@ public final class MainLoader {
                 r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
             }
         }
+    }
+
+    public static int getFuelValue(FluidStack aLiquid) {
+        if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
+        FluidStack tLiquid;
+        Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
+        if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
+            if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
+                if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
+        return 0;
     }
 
     private static void fixBlocks(){

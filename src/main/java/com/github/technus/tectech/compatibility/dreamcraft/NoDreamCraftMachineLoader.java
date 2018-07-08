@@ -1,8 +1,8 @@
 package com.github.technus.tectech.compatibility.dreamcraft;
 
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
 import cpw.mods.fml.common.Loader;

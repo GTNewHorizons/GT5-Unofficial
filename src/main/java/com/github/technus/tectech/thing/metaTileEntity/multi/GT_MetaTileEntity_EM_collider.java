@@ -32,7 +32,12 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+    public static long heliumPlasmaValue;
+
     private byte eTier = 0;
+
+    protected long startupCost=10_000_000_000L;
+    protected double currentVelocity=-1,targetVelocity=-1;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -115,13 +120,17 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("eTier", eTier);
+        aNBT.setByte("eTier", eTier);//collider tier
+        aNBT.setDouble("eCurrentVelocity",currentVelocity);
+        aNBT.setDouble("eTargetVelocity",targetVelocity);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        eTier = aNBT.getByte("eTier");
+        eTier = aNBT.getByte("eTier");//collider tier
+        currentVelocity=aNBT.getDouble("eCurrentVelocity");
+        targetVelocity=aNBT.getDouble("eTargetVelocity");
     }
 
     @Override
@@ -165,22 +174,86 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public void construct(int stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY*4;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
         if(hintsOnly){
             TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord()+xDir,
-                    iGregTechTileEntity.getYCoord(),
+                    iGregTechTileEntity.getYCoord()+yDir,
                     iGregTechTileEntity.getZCoord()+zDir,
                     TT_Container_Casings.sHintCasingsTT,12);
         } else{
             if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air) {
-                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord(), iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
+                iGregTechTileEntity.getWorld().setBlock(iGregTechTileEntity.getXCoord() + xDir, iGregTechTileEntity.getYCoord()+yDir, iGregTechTileEntity.getZCoord() + zDir, TT_Container_Casings.sHintCasingsTT, 12, 2);
             }
         }
         if ((stackSize & 1) == 1) {
             StructureBuilderExtreme(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,this, hintsOnly);
         } else {
             StructureBuilderExtreme(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity,this, hintsOnly);
+        }
+    }
+
+    @Override
+    protected void parametersLoadDefault_EM() {
+        //setParameterPairIn_ClearOut(0,false,)
+    }
+
+    @Override
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+        //setStatusOfParameterIn(0,0,);
+    }
+
+    @Override
+    public boolean checkRecipe_EM(ItemStack itemStack) {
+        GT_MetaTileEntity_EM_collider partner=getPartner();
+        if(partner==null){
+            return false;
+        }
+        if(isMaster()){
+
+        }else{
+
+        }
+        return false;
+    }
+
+    @Override
+    protected void afterRecipeCheckFailed() {
+        currentVelocity=-1;
+        super.afterRecipeCheckFailed();
+    }
+
+    @Override
+    public void stopMachine() {
+        currentVelocity=-1;
+        super.stopMachine();
+    }
+
+    protected GT_MetaTileEntity_EM_collider getPartner(){
+        IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY*4;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
+        IGregTechTileEntity gregTechTileEntity=iGregTechTileEntity.getIGregTechTileEntityOffset(iGregTechTileEntity.getXCoord()+xDir,
+                iGregTechTileEntity.getYCoord()+yDir,
+                iGregTechTileEntity.getZCoord()+zDir);
+        return gregTechTileEntity instanceof GT_MetaTileEntity_EM_collider && ((GT_MetaTileEntity_EM_collider) gregTechTileEntity).mMachine && gregTechTileEntity.getBackFacing()==iGregTechTileEntity.getFrontFacing() ? (GT_MetaTileEntity_EM_collider)gregTechTileEntity:null;
+    }
+
+    protected final boolean isMaster(){
+        return getBaseMetaTileEntity().getFrontFacing()%2==0;
+    }
+
+    @Override
+    public void outputAfterRecipe_EM(){
+        if(outputEM!=null) {
+            for(int i=0,lim=Math.min(outputEM.length,eOutputHatches.size());i<lim;i++){
+                if(outputEM[i]!=null) {
+                    eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+                    outputEM[i]=null;
+                }
+            }
         }
     }
 
@@ -194,7 +267,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 "Collide matter at extreme velocities.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faster than light!!!"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faster than light*!!!"
         };
     }
 }
