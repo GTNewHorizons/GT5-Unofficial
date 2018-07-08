@@ -4,8 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
@@ -17,27 +15,28 @@ public class MapGenLargeRavine extends MapGenRavine
 	private float[] field_75046_d = new float[1024];
 
 	@Override
-	protected void func_151540_a(long aSeed, int var1, int var2, Block[] aBlocksInChunkOrPassedIn, double p_151540_6_, double p_151540_8_, double p_151540_10_, float p_151540_12_, float p_151540_13_, float p_151540_14_, int p_151540_15_, int p_151540_16_, double p_151540_17_)
+	protected void func_151540_a(long aSeed, int var1, int var2, Block[] aBlocksInChunkOrPassedIn, double p_151540_6_, double p_151540_8_, double p_151540_10_, float p_151540_12_, float p_151540_13_, float p_151540_14_, int possibleCurrentY, int possibleMaxY, double p_151540_17_)
 	{
-		Logger.INFO("Generating Large Ravine.");
-		Random random = new XSTR(aSeed);
-		double d4 = (double)(var1 * 32 + 16);
-		double d5 = (double)(var2 * 32 + 16);
+		//Logger.INFO("Generating Large Ravine.");
+		Random random = CORE.RANDOM;
+		this.range *= 2;
+		double d4 = (double)(var1 * 24 + 16);
+		double d5 = (double)(var2 * 24 + 16);
 		float f3 = 0.0F;
 		float f4 = 0.0F;
 
-		if (p_151540_16_ <= 0)
+		if (possibleMaxY <= 25)
 		{
-			int j1 = this.range * 16 - 16;
-			p_151540_16_ = j1 - random.nextInt(j1 / 4);
+			int j1 = Math.min(this.range * 16 - 32, 200);
+			possibleMaxY = j1 - random.nextInt(j1 / 4);
 		}
 
-		boolean flag1 = false;
+		boolean possibleIsUnderGroundFlag = false;
 
-		if (p_151540_15_ == -1)
+		if (possibleCurrentY <= -1)
 		{
-			p_151540_15_ = p_151540_16_ / 2;
-			flag1 = true;
+			possibleCurrentY = possibleMaxY / 3;
+			possibleIsUnderGroundFlag = true;
 		}
 
 		float f5 = 1.0F;
@@ -52,9 +51,9 @@ public class MapGenLargeRavine extends MapGenRavine
 			this.field_75046_d[k1] = f5 * f5;
 		}
 
-		for (; p_151540_15_ < p_151540_16_; ++p_151540_15_)
+		for (; possibleCurrentY < possibleMaxY; ++possibleCurrentY)
 		{
-			double d12 = 3.5D + (double)(MathHelper.sin((float)p_151540_15_ * CORE.PI / (float)p_151540_16_) * p_151540_12_ * 1.0F);
+			double d12 = 3.5D + (double)(MathHelper.sin((float)possibleCurrentY * CORE.PI / (float)possibleMaxY) * p_151540_12_ * 1.0F);
 			double d6 = d12 * p_151540_17_;
 			d12 *= (double)random.nextFloat() * 0.55D + 0.75D;
 			d6 *= (double)random.nextFloat() * 0.55D + 0.75D;
@@ -71,11 +70,11 @@ public class MapGenLargeRavine extends MapGenRavine
 			f4 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
 			f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
 
-			if (flag1 || random.nextInt(4) != 0)
+			if (possibleIsUnderGroundFlag || random.nextInt(4) != 0)
 			{
 				double d7 = p_151540_6_ - d4;
 				double d8 = p_151540_10_ - d5;
-				double d9 = (double)(p_151540_16_ - p_151540_15_);
+				double d9 = (double)(possibleMaxY - possibleCurrentY);
 				double d10 = (double)(p_151540_12_ + 2.0F + 16.0F);
 
 				if (d7 * d7 + d8 * d8 - d9 * d9 > d10 * d10)
@@ -188,7 +187,7 @@ public class MapGenLargeRavine extends MapGenRavine
 							}
 						}
 
-						if (flag1)
+						if (possibleIsUnderGroundFlag)
 						{
 							break;
 						}

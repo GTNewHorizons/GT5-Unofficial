@@ -2,6 +2,8 @@ package gtPlusPlus.australia.gen.map;
 
 import java.util.Map;
 import java.util.Random;
+
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenVillage;
@@ -24,12 +26,16 @@ public class MapGenVillageLogging extends MapGenVillage {
 
 	@Override
 	protected boolean canSpawnStructureAtCoords(int p_75047_1_, int p_75047_2_) {
-
-		return super.canSpawnStructureAtCoords(p_75047_1_, p_75047_2_);
+		boolean aBool = super.canSpawnStructureAtCoords(p_75047_1_, p_75047_2_);
+		if (aBool) {
+			Logger.INFO("Is Location Valid for Spawning a Village? "+aBool);
+		}
+		return aBool;
 	}
 
 	@Override
 	protected StructureStart getStructureStart(int p_75049_1_, int p_75049_2_) {
+		Logger.INFO("Created MapGenVillageLogging Start Object");
 		return new MapGenVillageLogging.Start(this.worldObj, this.rand, p_75049_1_, p_75049_2_, 0);
 	}
 
@@ -39,10 +45,13 @@ public class MapGenVillageLogging extends MapGenVillage {
 		private static final String __OBFID = "CL_00000515";
 
 		public StartLogging() {
+			super();
+			Logger.INFO("Created StartLogging Object");
 		}
 
 		public StartLogging(World p_i2092_1_, Random p_i2092_2_, int p_i2092_3_, int p_i2092_4_, int p_i2092_5_) {
 			super(p_i2092_1_, p_i2092_2_, p_i2092_3_, p_i2092_4_, p_i2092_5_);
+			Logger.INFO("Created StartLogging Object");
 		}
 
 		/**

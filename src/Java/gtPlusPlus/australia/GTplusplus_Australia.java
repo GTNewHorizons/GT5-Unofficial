@@ -23,6 +23,7 @@ import gtPlusPlus.australia.dimension.Dimension_Australia;
 import gtPlusPlus.australia.gen.gt.WorldGen_Australia_Ores;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia_Base;
 import gtPlusPlus.australia.gen.map.structure.StructureManager;
+import gtPlusPlus.australia.world.AustraliaWorldGenerator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.Australia;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
@@ -49,6 +50,7 @@ public class GTplusplus_Australia implements ActionListener {
 	public static volatile Biome_AustralianPlains Australian_Plains_Biome;
 	
 	public static volatile Dimension_Australia Australia_Dimension;
+	public static AustraliaWorldGenerator Australia_World_Generator;
 	public static int globalAustraliaPortalSpawnTimer = 0;
 
 	// Pre-Init
@@ -78,6 +80,8 @@ public class GTplusplus_Australia implements ActionListener {
 		
 		//Load Villages
 		StructureManager.registerVillageComponents();
+		
+		setupWorldGenerator();
 
 		//Load/Set Custom Ore Gen
 		sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "Australia.cfg")));
@@ -129,9 +133,8 @@ public class GTplusplus_Australia implements ActionListener {
 	}
 
 	@EventHandler
-	public void serverLoad(FMLServerStartingEvent event) {
-		//Australian_Desert_Biome_1.serverLoad(event);
-		//Australian_Desert_Biome_2.serverLoad(event);
+	public void serverLoad(FMLServerStartingEvent event) {	    
+		Australia_World_Generator.initiate();
 	}
 
 	@EventHandler
@@ -143,6 +146,12 @@ public class GTplusplus_Australia implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void setupWorldGenerator() {
+		Logger.INFO("Registering World Generator for Australia.");
+		Australia_World_Generator = new AustraliaWorldGenerator();
+	    GameRegistry.registerWorldGenerator(Australia_World_Generator, 0);	   
 	}
 
 }
