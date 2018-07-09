@@ -60,6 +60,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus (Any casing)",
 				"1x Input Hatch (Any casing)",
 				"1x Output Bus (Any casing)",
+				"1x Muffler Hatch (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"Wash Plant Casings for the rest",
@@ -162,7 +163,10 @@ extends GregtechMeta_MultiBlockBase {
 							Logger.WARNING("X: "+i+" | Z: "+j);
 							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if ((tBlock != getCasingBlock()) && (tMeta != getCasingMeta())) {
+							if ((tBlock == getCasingBlock()) && (tMeta == getCasingMeta())) {
+								++tAmount;
+							}
+							else {
 								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
 										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
 									if (tBlock == Blocks.air){
@@ -177,21 +181,19 @@ extends GregtechMeta_MultiBlockBase {
 									Logger.WARNING("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
 									return false;
 								}
-
 							}
-							++tAmount;
 						}
 					}
 				}
 			}
 		}
-		if ((tAmount >= 8)){
+		if ((tAmount >= 40)){
 			Logger.WARNING("Made structure.");
 		}
 		else {
 			Logger.WARNING("Did not make structure.");
 		}
-		return (tAmount >= 8);
+		return (tAmount >= 40);
 	}
 
 	@Override
@@ -318,7 +320,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		return (tAmount >= 45);
 	}
-	
+
 	public boolean addSludge() {		
 		/*if (MathUtils.randInt(0, 100) <= 4) {
 			if (this.mOutputHatches.size() > 0) {

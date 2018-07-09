@@ -132,6 +132,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		mInfo.add("Progress: " + Integer.toString((this.mProgresstime / 20)) +" / "+ Integer.toString((this.mMaxProgresstime / 20)) + " secs");
 		mInfo.add("Efficiency: " + Float.toString((this.mEfficiency / 100.0F)) + "%");
 		mInfo.add("Problems: " + Integer.toString((this.getIdealStatus() - this.getRepairStatus())));
+		mInfo.add("Pollution: "+this.getPollutionPerTick(null)*20+"/second");
 		mInfo.add("Total Time Since Built: " + Integer.toString(weeks)+" Weeks, " + Integer.toString(days) + " Days, ");
 		mInfo.add(Long.toString(hours) + " Hours, " + Long.toString(minutes) + " Minutes, " + Long.toString(second) + " Seconds.");
 		mInfo.add("Total Time in ticks: " + Long.toString(this.mTotalRunTime));
