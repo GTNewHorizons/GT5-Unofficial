@@ -2,6 +2,9 @@ package gtPlusPlus.australia.biome;
 
 import java.util.Random;
 
+import gtPlusPlus.api.interfaces.IGeneratorWorld;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.australia.GTplusplus_Australia;
 import gtPlusPlus.australia.gen.world.WorldGenAustralianOre;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
@@ -28,21 +31,21 @@ import net.minecraftforge.common.*;
 import net.minecraftforge.event.terraingen.*;
 
 public class CustomDecorator extends BiomeDecorator {
-	
+
 
 	public CustomDecorator() {
 		this.sandGen = new WorldGenSand(Blocks.sand, 10);
 		this.gravelAsSandGen = new WorldGenSand(Blocks.gravel, 6);
 		this.dirtGen = new WorldGenMinable(Blocks.dirt, 16);
 		this.gravelGen = new WorldGenMinable(Blocks.gravel, 16);
-		
+
 		this.coalGen = new WorldGenAustralianOre(Blocks.coal_ore, 4);
 		this.ironGen = new WorldGenAustralianOre(Blocks.clay, 4);
 		this.goldGen = new WorldGenAustralianOre(Blocks.soul_sand, 20);
 		this.redstoneGen = new WorldGenAustralianOre(Blocks.bedrock, 8);
 		this.diamondGen = new WorldGenAustralianOre(Blocks.diamond_ore, 1);
 		this.lapisGen = new WorldGenAustralianOre(Blocks.lava, 16);
-		
+
 		this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);
 		this.mushroomBrownGen = new WorldGenFlowers(Blocks.brown_mushroom);
 		this.mushroomRedGen = new WorldGenFlowers(Blocks.red_mushroom);
@@ -58,16 +61,35 @@ public class CustomDecorator extends BiomeDecorator {
 		this.generateLakes = true;
 	}
 
-	public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_,
-			int p_150512_5_) {
-		if (this.currentWorld != null) {
-			throw new RuntimeException("Already decorating!!");
-		} else {
-			this.currentWorld = p_150512_1_;
-			this.randomGenerator = p_150512_2_;
-			this.chunk_X = p_150512_4_;
-			this.chunk_Z = p_150512_5_;
-			this.genDecorations(p_150512_3_);
+	int mDecoratorTimeout = 0;
+
+	public void decorateChunk(World aWorld, Random aRand, BiomeGenBase aGen, int aX, int aZ) {
+		if (this.currentWorld != null && this.chunk_X == aX && this.chunk_Z == aZ) {			
+			try {
+				while (this.currentWorld != null) {
+					if (mDecoratorTimeout % 1000 == 0) {
+						Logger.WORLD("Waiting for chunk @ "+aX+", "+aZ+" to generate. Waited "+mDecoratorTimeout+"ms already.");
+					}
+					if (this.currentWorld == null) {
+						break;
+					}
+					if (mDecoratorTimeout >= 5000) {
+						throw new RuntimeException("Already decorating!!");						
+					}
+					mDecoratorTimeout++;
+				}
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
+				throw new RuntimeException("Already decorating!!");
+			}			
+		} 
+		if (this.currentWorld == null) {
+			this.currentWorld = aWorld;
+			this.randomGenerator = aRand;
+			this.chunk_X = aX;
+			this.chunk_Z = aZ;
+			this.genDecorations(aGen);
 			this.currentWorld = null;
 			this.randomGenerator = null;
 		}
@@ -240,22 +262,37 @@ public class CustomDecorator extends BiomeDecorator {
 			this.cactusGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
 		}
 
-		doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, LAKE);
-		if (doGen && this.generateLakes) {
-			for (j = 0; j < 50; ++j) {
-				k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-				l = this.randomGenerator.nextInt(this.randomGenerator.nextInt(248) + 8);
-				i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-				(new WorldGenLiquids(Blocks.flowing_water)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
-			}
+		try {
+		int	midX = Math.max(0, 7 / 2);
+		int	midZ = Math.max(0, 7 / 2);
+		int mCurrentBiomeID = Integer.valueOf(currentWorld.getBiomeGenForCoords(chunk_X+midX, chunk_Z+midZ).biomeID);
+		
+		if (mCurrentBiomeID == GTplusplus_Australia.Australian_Outback_Biome.biomeID) {
+			this.generateLakes = false;
+		}
+		
+		if (mCurrentBiomeID != GTplusplus_Australia.Australian_Outback_Biome.biomeID) {
+			doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, LAKE);
+			if (doGen && this.generateLakes) {
+				for (j = 0; j < 50; ++j) {
+					k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
+					l = this.randomGenerator.nextInt(this.randomGenerator.nextInt(248) + 8);
+					i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
+					(new WorldGenLiquids(Blocks.flowing_water)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
+				}
 
-			for (j = 0; j < 20; ++j) {
-				k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-				l = this.randomGenerator
-						.nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
-				i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-				(new WorldGenLiquids(Blocks.flowing_lava)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
+				for (j = 0; j < 20; ++j) {
+					k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
+					l = this.randomGenerator
+							.nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
+					i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
+					(new WorldGenLiquids(Blocks.flowing_lava)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
+				}
 			}
+		}
+		}
+		catch (Throwable t) {
+			
 		}
 
 		MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));
@@ -280,7 +317,7 @@ public class CustomDecorator extends BiomeDecorator {
 		for (int l = 0; l < p_76793_1_; ++l) {
 			int i1 = this.chunk_X + this.randomGenerator.nextInt(16);
 			int j1 = this.randomGenerator.nextInt(p_76793_4_) + this.randomGenerator.nextInt(p_76793_4_)
-					+ (p_76793_3_ - p_76793_4_);
+			+ (p_76793_3_ - p_76793_4_);
 			int k1 = this.chunk_Z + this.randomGenerator.nextInt(16);
 			p_76793_2_.generate(this.currentWorld, this.randomGenerator, i1, j1, k1);
 		}

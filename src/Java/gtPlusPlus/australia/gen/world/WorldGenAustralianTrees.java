@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGenAustralianTrees extends WorldGenTrees {
-	
+
 	/** The minimum height of a generated tree. */
 	private final int minHeight;
 	/** True if this tree should grow Vines. */
@@ -74,12 +74,39 @@ public class WorldGenAustralianTrees extends WorldGenTrees {
 				return false;
 			} else {
 				Block block2 = aWorld.getBlock(aX, aY - 1, aZ);
-
-				boolean isSoil = block2.canSustainPlant(aWorld, aX, aY - 1, aZ, ForgeDirection.UP,
-						(BlockSapling) Blocks.sapling);
+				boolean isSoil = true;				
+				for (int gh = 0; gh < 5; gh++) {					
+					int xMod, zMod;					
+					if (gh == 0) {
+						xMod = 1;
+						zMod = 0;
+					}
+					else if (gh == 1) {
+						xMod = 0;
+						zMod = 1;
+					}
+					else if (gh == 2) {
+						xMod = -1;
+						zMod = 0;
+					}
+					else if (gh == 3) {
+						xMod = 0;
+						zMod = -1;
+					}
+					else {
+						xMod = 0;
+						zMod = 0;
+					}					
+					block2 = aWorld.getBlock(aX+xMod, aY - 1, aZ+zMod);					
+					if (block2 == Blocks.air || !block2.canSustainPlant(aWorld, aX+xMod, aY - 1, aZ+zMod, ForgeDirection.UP, (BlockSapling) Blocks.sapling)) {
+						isSoil = false;
+						break;
+					}
+				}				
+				
 				if (isSoil && aY < 256 - aActualMinHeight - 1) {
 					block2.onPlantGrow(aWorld, aX, aY - 1, aZ, aX, aY, aZ);
-					b0 = 3;
+					b0 = 5;
 					byte b1 = 0;
 					int l1;
 					int i2;
@@ -88,7 +115,7 @@ public class WorldGenAustralianTrees extends WorldGenTrees {
 
 					for (k1 = aY - b0 + aActualMinHeight; k1 <= aY + aActualMinHeight; ++k1) {
 						i3 = k1 - (aY + aActualMinHeight);
-						l1 = b1 + 5 - i3 / 2;
+						l1 = b1 + 3 - i3 / 2;
 
 						for (i2 = aX - l1; i2 <= aX + l1; ++i2) {
 							j2 = i2 - aX;
@@ -112,7 +139,16 @@ public class WorldGenAustralianTrees extends WorldGenTrees {
 						block = aWorld.getBlock(aX, aY + k1, aZ);
 
 						if (block.isAir(aWorld, aX, aY + k1, aZ) || block.isLeaves(aWorld, aX, aY + k1, aZ)) {
+
+							//Set Middle Trunk
 							this.setBlockAndNotifyAdequately(aWorld, aX, aY + k1, aZ, Blocks.log, this.woodMeta);
+							//Set Sides
+							if (k1 < (aActualMinHeight - 2)) {
+								if (aWorld.isAirBlock(aX+1, aY + k1, aZ) || block.isLeaves(aWorld, aX+1, aY + k1, aZ)) this.setBlockAndNotifyAdequately(aWorld, aX+1, aY + k1, aZ, Blocks.log, this.woodMeta);
+								if (aWorld.isAirBlock(aX-1, aY + k1, aZ) || block.isLeaves(aWorld, aX-1, aY + k1, aZ)) this.setBlockAndNotifyAdequately(aWorld, aX-1, aY + k1, aZ, Blocks.log, this.woodMeta);
+								if (aWorld.isAirBlock(aX, aY + k1, aZ+1) || block.isLeaves(aWorld, aX, aY + k1, aZ+1)) this.setBlockAndNotifyAdequately(aWorld, aX, aY + k1, aZ+1, Blocks.log, this.woodMeta);
+								if (aWorld.isAirBlock(aX, aY + k1, aZ-1) || block.isLeaves(aWorld, aX, aY + k1, aZ-1)) this.setBlockAndNotifyAdequately(aWorld, aX, aY + k1, aZ-1, Blocks.log, this.woodMeta);
+							}
 
 							if (this.growVines && k1 > 0) {
 								if (aRand.nextInt(3) > 0 && aWorld.isAirBlock(aX - 1, aY + k1, aZ)) {

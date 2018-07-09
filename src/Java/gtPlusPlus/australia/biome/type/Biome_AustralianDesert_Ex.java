@@ -23,7 +23,7 @@ public class Biome_AustralianDesert_Ex extends BiomeGenDesert {
         this.theBiomeDecorator.treesPerChunk = -999;
         this.theBiomeDecorator.deadBushPerChunk = 2;
         this.theBiomeDecorator.reedsPerChunk = 50;
-        this.theBiomeDecorator.cactiPerChunk = 100;        
+        this.theBiomeDecorator.cactiPerChunk = 20;        
         this.setColor(16421912);
         this.setBiomeName("Australian Desert III");
         this.setDisableRain();

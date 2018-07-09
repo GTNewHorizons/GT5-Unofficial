@@ -68,9 +68,9 @@ public class Biome_AustralianPlains extends BiomeGenPlains
         }
     }
 
-    public void decorate(World p_76728_1_, Random p_76728_2_, int p_76728_3_, int p_76728_4_)
+    public void decorate(World aWorld, Random aRand, int aX, int aZ)
     {
-        double d0 = plantNoise.func_151601_a((double)(p_76728_3_ + 8) / 200.0D, (double)(p_76728_4_ + 8) / 200.0D);
+        double d0 = plantNoise.func_151601_a((double)(aX + 8) / 200.0D, (double)(aZ + 8) / 200.0D);
         int k;
         int l;
         int i1;
@@ -89,10 +89,10 @@ public class Biome_AustralianPlains extends BiomeGenPlains
 
             for (k = 0; k < 7; ++k)
             {
-                l = p_76728_3_ + p_76728_2_.nextInt(16) + 8;
-                i1 = p_76728_4_ + p_76728_2_.nextInt(16) + 8;
-                j1 = p_76728_2_.nextInt(p_76728_1_.getHeightValue(l, i1) + 32);
-                genTallFlowers.generate(p_76728_1_, p_76728_2_, l, j1, i1);
+                l = aX + aRand.nextInt(16) + 8;
+                i1 = aZ + aRand.nextInt(16) + 8;
+                j1 = aRand.nextInt(aWorld.getHeightValue(l, i1) + 32);
+                genTallFlowers.generate(aWorld, aRand, l, j1, i1);
             }
         }
 
@@ -102,14 +102,14 @@ public class Biome_AustralianPlains extends BiomeGenPlains
 
             for (k = 0; k < 10; ++k)
             {
-                l = p_76728_3_ + p_76728_2_.nextInt(16) + 8;
-                i1 = p_76728_4_ + p_76728_2_.nextInt(16) + 8;
-                j1 = p_76728_2_.nextInt(p_76728_1_.getHeightValue(l, i1) + 32);
-                genTallFlowers.generate(p_76728_1_, p_76728_2_, l, j1, i1);
+                l = aX + aRand.nextInt(16) + 8;
+                i1 = aZ + aRand.nextInt(16) + 8;
+                j1 = aRand.nextInt(aWorld.getHeightValue(l, i1) + 32);
+                genTallFlowers.generate(aWorld, aRand, l, j1, i1);
             }
         }
 
-        super.decorate(p_76728_1_, p_76728_2_, p_76728_3_, p_76728_4_);
+        this.theBiomeDecorator.decorateChunk(aWorld, aRand, this, aX, aZ);
     }
 
 	 /**

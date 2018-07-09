@@ -35,6 +35,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         this.setBiomeName("Australian Outback");
         this.field_150626_aH = false;
         this.field_150620_aI = false;
+        this.theBiomeDecorator.generateLakes = false;
         this.setDisableRain();
         this.setTemperatureRainfall(2.0F, 0.0F);
         this.spawnableCreatureList.clear();
@@ -43,7 +44,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         this.fillerBlock = Blocks.stained_hardened_clay;
         this.theBiomeDecorator.deadBushPerChunk = 20;
         this.theBiomeDecorator.reedsPerChunk = 3;
-        this.theBiomeDecorator.cactiPerChunk = 15;
+        this.theBiomeDecorator.cactiPerChunk = 8;
         this.theBiomeDecorator.flowersPerChunk = 0;
         this.spawnableCreatureList.clear();
         this.theBiomeDecorator.treesPerChunk = 5;        
@@ -78,8 +79,8 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         if (this.field_150623_aE == null || this.field_150624_aF == null || this.field_150622_aD != p_150573_1_.getSeed())
         {
             Random random1 = new Random(this.field_150622_aD);
-            this.field_150623_aE = new NoiseGeneratorPerlin(random1, 4);
-            this.field_150624_aF = new NoiseGeneratorPerlin(random1, 2);
+            this.field_150623_aE = new NoiseGeneratorPerlin(random1, 3);
+            this.field_150624_aF = new NoiseGeneratorPerlin(random1, 3);
         }
 
         this.field_150622_aD = p_150573_1_.getSeed();
@@ -114,15 +115,15 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         boolean flag = true;
         Block block = Blocks.stained_hardened_clay;
         Block block2 = this.fillerBlock;
-        int i1 = (int)(p_150573_7_ / 3.3D + 3.2D + p_150573_2_.nextDouble() * 0.25D);
-        boolean flag1 = Math.cos(p_150573_7_ / 2.5D * CORE.PI) > 0.0D;
+        int i1 = (int)(p_150573_7_ / 3.0D + 3.0D + p_150573_2_.nextDouble() * 0.25D);
+        boolean flag1 = Math.cos(p_150573_7_ / 3.0D * Math.PI) > 0.0D;
         int j1 = -1;
         boolean flag2 = false;
         int k1 = p_150573_3_.length / 256;
 
         for (int l1 = 255; l1 >= 0; --l1)
         {
-            int i2 = (l * 8 + k) * k1 + l1;
+            int i2 = (l * 16 + k) * k1 + l1;
 
             if ((p_150573_3_[i2] == null || p_150573_3_[i2].getMaterial() == Material.air) && l1 < (int)d5)
             {
@@ -160,7 +161,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
 
                             if (l1 < 63 && (block == null || block.getMaterial() == Material.air))
                             {
-                                block = Blocks.water;
+                                block = Blocks.sandstone;
                             }
 
                             j1 = i1 + Math.max(0, l1 - 63);
@@ -254,6 +255,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
                 }
             }
         }
+        super.genTerrainBlocks(p_150573_1_, p_150573_2_, p_150573_3_, p_150573_4_, p_150573_5_, p_150573_6_, p_150573_7_);
     }
 
     public void func_150619_a(long p_150619_1_)
