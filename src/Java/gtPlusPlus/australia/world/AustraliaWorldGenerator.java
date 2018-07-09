@@ -93,15 +93,15 @@ public class AustraliaWorldGenerator implements IWorldGenerator {
 					}	
 
 					if (canGenerate) {
-						Logger.WORLD("Running World Generator on Australia.");
+						//Logger.WORLD("Running World Generator on Australia.");
 						boolean a1, a2;
 						a1 = generator.generate(world, random, x, z);
 						a2 = nonInRange(world, x, z, generator.getRange());
-						Logger.INFO("A1: "+a1+" | A2: "+a2);
+						//Logger.INFO("A1: "+a1+" | A2: "+a2);
 						if (a1 && a2) {
 							this.structuresList.add(new ChunkCoordIntPair(x, z));
 							gen = true;
-							Logger.INFO("Generated a structure");
+							//Logger.INFO("Generated a structure");
 							break;
 						}
 					}					

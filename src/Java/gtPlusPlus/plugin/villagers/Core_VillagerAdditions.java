@@ -20,6 +20,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.plugin.villagers.entity.EntityBaseVillager;
+import gtPlusPlus.plugin.villagers.entity.EntityNativeAustralian;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerAboriginal;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerBanker;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTechnician;
@@ -48,6 +49,7 @@ public class Core_VillagerAdditions implements IPlugin {
 		if (shouldLoad) {			
 			//Register Custom Villager Entity
 			EntityRegistry.registerGlobalEntityID(EntityBaseVillager.class, "WiseVillager", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(180, 120, 120), Utils.rgbtoHexValue(0, 0, 0));
+			EntityRegistry.registerGlobalEntityID(EntityNativeAustralian.class, "Aboriginal", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(50, 50, 50), Utils.rgbtoHexValue(25, 25, 25));
 	        VillagerUtils.registerNewVillager(0, "Banker", "Banker", "Banker", "banker", new TradeHandlerBanker());
 			VillagerUtils.registerNewVillager(1, "Technician", "Technician", "Technician", "technician", new TradeHandlerTechnician());
 			VillagerUtils.registerNewVillager(2, "Trader", "Trader", "Trader", "trader", new TradeHandlerTrader());
@@ -58,7 +60,7 @@ public class Core_VillagerAdditions implements IPlugin {
 					if (g != null && g.mID >= 0) {
 						VillagerRegistry.instance().registerVillagerId(7735+g.mID);	
 						log("Registered a Custom Villager with ID of "+g.mID+".");
-						Utils.createNewMobSpawner(10+g.mID, EntityBaseVillager.class);
+						//Utils.createNewMobSpawner(10+g.mID, EntityBaseVillager.class);
 						if (mVillagerSkins.get(g.mID) != null) {
 							VillagerRegistry.instance().registerVillagerSkin(7735+g.mID, mVillagerSkins.get(g.mID));
 							log("Registered a Custom Skin for Villager with ID of "+g.mID+".");

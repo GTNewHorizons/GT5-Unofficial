@@ -6,6 +6,7 @@ import gtPlusPlus.api.interfaces.IGeneratorWorld;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.australia.GTplusplus_Australia;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.plugin.villagers.entity.EntityNativeAustralian;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
@@ -30,6 +31,256 @@ public class ComponentHut extends AustraliaComponent {
 	}
 
 	public boolean addComponentParts(World world, Random random) {
+		
+		BiomeGenBase biom = world.getBiomeGenForCoords(getXWithOffset(0, 0), getZWithOffset(0, 0));
+		int groundAvg = calcGroundHeight(world, this.boundingBox);
+		if (groundAvg < 0) {
+			return true;
+		}
+		this.boundingBox.offset(0, groundAvg - this.boundingBox.maxY + 10 - 1, 0);
+		if ((isWaterBelow(world, 0, -1, 0, this.boundingBox)) || (isWaterBelow(world, 0, -1, 6, this.boundingBox))
+				|| (isWaterBelow(world, 6, -1, 0, this.boundingBox))
+				|| (isWaterBelow(world, 6, -1, 6, this.boundingBox))) {
+			return false;
+		}
+		
+		Block aWall1, aWall2, aRoof, aFloor;
+		
+		if (biom.biomeID == GTplusplus_Australia.Australian_Desert_Biome_3.biomeID) {
+			aWall1 = Blocks.sand;
+			aWall2 = Blocks.sandstone;
+			aRoof = Blocks.sandstone;
+			aFloor = Blocks.sandstone;
+		}
+		else if (biom.biomeID == GTplusplus_Australia.Australian_Outback_Biome.biomeID) {
+			aWall1 = Blocks.clay;
+			aWall2 = Blocks.hardened_clay;
+			aRoof = Blocks.hardened_clay;
+			aFloor = Blocks.stained_hardened_clay;
+		}	
+		else {
+			aWall1 = Blocks.sand;
+			aWall2 = Blocks.sandstone;
+			aRoof = Blocks.sandstone;
+			aFloor = Blocks.sandstone;			
+		}
+		
+		//Empty Area
+		fillWithAir(world, this.boundingBox, 0, 1, 0, 6, 9, 6);
+		
+		//Build Floor
+		fillWithMetadataBlocks(world, this.boundingBox, 0, 0, 0, 6, 0, 6, aFloor, 0, aFloor, 1, false);
+
+		//Layer 2
+		int dir = MathUtils.randInt(0, 3);
+
+		//Door First
+		if (dir == 0) {
+			placeDoorAtCurrentPosition(
+					world, this.boundingBox, random, 0, 1, 3, getMetadataWithOffset(Blocks.wooden_door, 1));
+		}
+		else if (dir == 0) {
+			placeDoorAtCurrentPosition(
+					world, this.boundingBox, random, 3, 1, 6, getMetadataWithOffset(Blocks.wooden_door, 1));
+		}
+		else if (dir == 0) {
+			placeDoorAtCurrentPosition(
+					world, this.boundingBox, random, 6, 1, 3, getMetadataWithOffset(Blocks.wooden_door, 1));
+		}
+		else {
+			placeDoorAtCurrentPosition(
+					world, this.boundingBox, random, 3, 1, 0, getMetadataWithOffset(Blocks.wooden_door, 1));
+		}		
+		
+		//Layer 1
+		//Wall Top
+		place(aWall1, 0, 0, 1, 2, this.boundingBox, world);
+		if (dir != 0) place(aWall1, 0, 0, 1, 3, this.boundingBox, world);
+		place(aWall1, 0, 0, 1, 4, this.boundingBox, world);
+		//Wall Right
+		place(aWall1, 0, 2, 1, 6, this.boundingBox, world);
+		if (dir != 1) place(aWall2, 0, 3, 1, 6, this.boundingBox, world);
+		place(aWall1, 0, 4, 1, 6, this.boundingBox, world);
+		//Wall Bottom
+		place(aWall2, 0, 6, 1, 4, this.boundingBox, world);
+		if (dir != 2) place(aWall1, 0, 6, 1, 3, this.boundingBox, world);
+		place(aWall1, 0, 6, 1, 2, this.boundingBox, world);
+		//Wall Left
+		place(aWall1, 0, 4, 1, 0, this.boundingBox, world);
+		if (dir != 3) place(aWall1, 0, 3, 1, 0, this.boundingBox, world);
+		place(aWall2, 0, 2, 1, 0, this.boundingBox, world);
+		//Corners
+		place(aWall1, 0, 1, 1, 5, this.boundingBox, world);
+		place(aWall2, 0, 5, 1, 5, this.boundingBox, world);
+		place(aWall1, 0, 5, 1, 1, this.boundingBox, world);
+		place(aWall1, 0, 1, 1, 1, this.boundingBox, world);
+		
+		
+		//Wall Top
+		place(aWall1, 0, 0, 2, 2, this.boundingBox, world);
+		//place(aWall1, 0, 0, 2, 3, this.boundingBox, world);
+		place(aWall2, 0, 0, 2, 4, this.boundingBox, world);
+		
+		//Wall Right
+		place(aWall2, 0, 2, 2, 6, this.boundingBox, world);
+		//place(aWall1, 0, 3, 2, 6, this.boundingBox, world);
+		place(aWall1, 0, 4, 2, 6, this.boundingBox, world);
+		
+		//Wall Bottom
+		place(aWall1, 0, 6, 2, 4, this.boundingBox, world);
+		//place(aWall1, 0, 6, 2, 3, this.boundingBox, world);
+		place(aWall2, 0, 6, 2, 2, this.boundingBox, world);
+		
+		//Wall Left
+		place(aWall1, 0, 4, 2, 0, this.boundingBox, world);
+		//place(aWall2, 0, 4, 2, 0, this.boundingBox, world);
+		place(aWall1, 0, 2, 2, 0, this.boundingBox, world);
+		
+		//Corners
+		place(aWall1, 0, 1, 2, 5, this.boundingBox, world);
+		place(aWall1, 0, 5, 2, 5, this.boundingBox, world);
+		place(aWall2, 0, 5, 2, 1, this.boundingBox, world);
+		place(aWall2, 0, 1, 2, 1, this.boundingBox, world);
+		
+		//Layer 3
+		//Wall Top
+		place(aWall2, 0, 0, 3, 2, this.boundingBox, world);
+		place(aWall1, 0, 0, 3, 3, this.boundingBox, world);
+		place(aWall1, 0, 0, 3, 4, this.boundingBox, world);
+		//Wall Right
+		place(aWall1, 0, 2, 3, 6, this.boundingBox, world);
+		place(aWall1, 0, 3, 3, 6, this.boundingBox, world);
+		place(aWall1, 0, 4, 3, 6, this.boundingBox, world);
+		//Wall Bottom
+		place(aWall1, 0, 6, 3, 4, this.boundingBox, world);
+		place(aWall2, 0, 6, 3, 3, this.boundingBox, world);
+		place(aWall1, 0, 6, 3, 2, this.boundingBox, world);
+		//Wall Left
+		place(aWall1, 0, 4, 3, 0, this.boundingBox, world);
+		place(aWall2, 0, 3, 3, 0, this.boundingBox, world);
+		place(aWall1, 0, 2, 3, 0, this.boundingBox, world);
+		//Corners
+		place(aWall1, 0, 1, 3, 5, this.boundingBox, world);
+		place(aWall2, 0, 5, 3, 5, this.boundingBox, world);
+		place(aWall1, 0, 5, 3, 1, this.boundingBox, world);
+		place(aWall1, 0, 1, 3, 1, this.boundingBox, world);
+
+		//Roof
+		//Roof 1 Top
+		place(aRoof, 0, 1, 4, 2, this.boundingBox, world);
+		place(aRoof, 0, 1, 4, 3, this.boundingBox, world);
+		place(aRoof, 0, 1, 4, 4, this.boundingBox, world);
+		//Roof 1 Right
+		place(aRoof, 0, 2, 4, 5, this.boundingBox, world);
+		place(aRoof, 0, 3, 4, 5, this.boundingBox, world);
+		place(aRoof, 0, 4, 4, 5, this.boundingBox, world);
+		//Roof 1 Bottom
+		place(aRoof, 0, 5, 4, 4, this.boundingBox, world);
+		place(aRoof, 0, 5, 4, 3, this.boundingBox, world);
+		place(aRoof, 0, 5, 4, 2, this.boundingBox, world);
+		//Roof 1 Left
+		place(aRoof, 0, 4, 4, 1, this.boundingBox, world);
+		place(aRoof, 0, 3, 4, 1, this.boundingBox, world);
+		place(aRoof, 0, 2, 4, 1, this.boundingBox, world);
+		
+		//Roof 2 Top
+		place(aRoof, 0, 2, 5, 2, this.boundingBox, world);
+		place(aRoof, 0, 2, 5, 3, this.boundingBox, world);
+		place(aRoof, 0, 2, 5, 4, this.boundingBox, world);
+		
+		//Roof 2 Right
+		//place(aWall1, 0, 2, 5, 4, this.boundingBox, world);
+		place(aRoof, 0, 3, 5, 4, this.boundingBox, world);
+		//place(aWall1, 0, 4, 5, 4, this.boundingBox, world);
+		
+		//Roof 2 Bottom
+		place(aRoof, 0, 4, 5, 4, this.boundingBox, world);
+		place(aRoof, 0, 4, 5, 3, this.boundingBox, world);
+		place(aRoof, 0, 4, 5, 2, this.boundingBox, world);
+		
+		//Roof 2 Left
+		//place(aWall1, 0, 4, 5, 2, this.boundingBox, world);
+		place(aRoof, 0, 3, 5, 2, this.boundingBox, world);
+		//place(aWall1, 0, 2, 5, 2, this.boundingBox, world);
+		
+		//Roof 3 Top
+		place(Blocks.glowstone, 0, 3, 5, 3, this.boundingBox, world);
+		/*
+		int logID = MathUtils.randInt(0, 1);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 1, 1, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 2, 1, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 3, 1, this.boundingBox, world);
+
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 1, 5, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 2, 5, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 3, 5, this.boundingBox, world);
+
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 1, 1, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 2, 1, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 3, 1, this.boundingBox, world);
+
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 1, 5, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 2, 5, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 3, 5, this.boundingBox, world);
+
+		int meta = (this.coordBaseMode == 3) || (this.coordBaseMode == 1) ? 4 : 8;
+		
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 4, 2, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 4, 3, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 0, 4, 4, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 4, 2, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 4, 3, this.boundingBox, world);
+		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 4, 4, this.boundingBox, world);		
+		
+		for (int x = -2; x < 9; x++) {
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 3, 0, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 4, 1, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 5, 2, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 5, 3, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 5, 4, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 4, 5, this.boundingBox, world);
+			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 3, 6, this.boundingBox, world);
+		}
+		
+		int glassMeta = Math.min(16, (coordBaseMode+MathUtils.randInt(0, 8)));
+		if (MathUtils.randInt(0, 5) > 4)
+		place(Blocks.stained_glass, glassMeta, 2, 2, 1, this.boundingBox, world);
+		if (MathUtils.randInt(0, 5) > 4)
+		place(Blocks.stained_glass, glassMeta, 2, 2, 5, this.boundingBox, world);
+		if (MathUtils.randInt(0, 5) > 4)
+		place(Blocks.stained_glass, glassMeta, 4, 2, 5, this.boundingBox, world);
+		if (MathUtils.randInt(0, 5) > 4)
+		place(Blocks.stained_glass, glassMeta, 0, 2, 3, this.boundingBox, world);
+		if (MathUtils.randInt(0, 5) > 4)
+		place(Blocks.stained_glass, glassMeta, 6, 2, 3, this.boundingBox, world);
+
+		placeDoorAtCurrentPosition(world, this.boundingBox, random, 4, 1, 1,
+				getMetadataWithOffset(Blocks.wooden_door, 1));
+
+		place(Blocks.leaves, MathUtils.randInt(0, 3), 1, 1, 4, this.boundingBox, world);
+		place(Blocks.torch, 0, 1, 2, 3, this.boundingBox, world);
+		place(Blocks.torch, 0, 3, 2, 2, this.boundingBox, world);
+		if (!this.hasMadeChest) {
+			int ic = getYWithOffset(0);
+			int jc = getXWithOffset(7, 1);
+			int kc = getZWithOffset(7, 1);
+			if (this.boundingBox.isVecInside(jc, ic, kc)) {
+				this.hasMadeChest = true;
+				generateStructureChestContents(world, this.boundingBox, random, 1, 1, 2, shackChestContents,
+						1 + random.nextInt(3));
+			}
+		}*/
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 7; j++) {
+				clearCurrentPositionBlocksUpwards(world, j, 6, i, this.boundingBox);
+				func_151554_b(world, aFloor, 0, j, 0, i, this.boundingBox);
+			}
+		}
+		spawnNatives(world, this.boundingBox, 4, 1, 3, MathUtils.randInt(3, 5));
+
+		return true;
+		
+		/*
 		BiomeGenBase biom = world.getBiomeGenForCoords(getXWithOffset(0, 0), getZWithOffset(0, 0));
 		int groundAvg = calcGroundHeight(world, this.boundingBox);
 		if (groundAvg < 0) {
@@ -84,7 +335,7 @@ public class ComponentHut extends AustraliaComponent {
 		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 4, 3, this.boundingBox, world);
 		place(Blocks.dirt, MathUtils.randInt(0, 1), 6, 4, 4, this.boundingBox, world);		
 		
-		for (int x = 0; x < MathUtils.randInt(5, 9); x++) {
+		for (int x = -2; x < 9; x++) {
 			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 3, 0, this.boundingBox, world);
 			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 4, 1, this.boundingBox, world);
 			place(Blocks.leaves, MathUtils.randInt(0, 3), x, 5, 2, this.boundingBox, world);
@@ -131,7 +382,7 @@ public class ComponentHut extends AustraliaComponent {
 		spawnNatives(world, this.boundingBox, 4, 1, 3, MathUtils.randInt(3, 5));
 
 		return true;
-	}
+	*/}
 
 	private int nativesSpawned = 0;
 
@@ -146,7 +397,7 @@ public class ComponentHut extends AustraliaComponent {
 					break;
 				}
 				if (par1World.rand.nextInt(MathUtils.randInt(3, 5)) != 0) {
-					EntityVillager entityvillager = new EntityVillager(par1World, 7738);
+					EntityNativeAustralian entityvillager = new EntityNativeAustralian(par1World);
 					entityvillager.func_110163_bv();
 					entityvillager.setLocationAndAngles(j1 + 0.5D, k1, l1 + 0.5D, 0.0F, 0.0F);
 					par1World.spawnEntityInWorld(entityvillager);

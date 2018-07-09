@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.general;
 
 import java.util.List;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.common.blocks.GT_Block_Ores;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -130,10 +132,12 @@ public class ItemAreaClear extends CoreItem {
 		for (int j=0; j<20; j++){
 			for (int i=0; i<50; i++){
 
-				if (!(world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) instanceof BlockBaseOre)){				
+				if (!(world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) instanceof BlockBaseOre) &&
+						!(world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) instanceof IGregTechTileEntity) &&
+						!(world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) instanceof GT_Block_Ores)){				
 					if (!world.isAirBlock(pos.xPos+i, pos.yPos+j, pos.zPos) &&
 							world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.bedrock){
-						int chance = MathUtils.randInt(0, 100);
+						int chance = MathUtils.randInt(0, 500);
 						if (chance <= 0){
 							if (pos.yPos+j <= 50){
 								world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.glowstone);	
@@ -141,7 +145,7 @@ public class ItemAreaClear extends CoreItem {
 						}
 						else {
 							if ((world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) == Blocks.glowstone && ((pos.yPos+j) > 50)) || world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.glowstone){
-								world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.air);
+								world.setBlockToAir(pos.xPos+i, pos.yPos+j, pos.zPos);
 							}
 						}
 					}

@@ -96,37 +96,37 @@ public class ComponentShack extends AustraliaComponent {
 		
 		int mStoneMeta = MathUtils.randInt(0, mStone == Blocks.stained_hardened_clay ? 15 : mStone == Blocks.sandstone ? 2 : 3);
 		
-		fillWithAir(world, this.boundingBox, 0, 1, 0, 6, 9, 6);
-		fillWithMetadataBlocks(world, this.boundingBox, 0, 0, 1, 6, 1, 5, mStone, mStoneMeta, mStone, mStoneMeta, false);
-		fillWithMetadataBlocks(world, this.boundingBox, 0, 2, 1, 6, 3, 5, Blocks.planks, mWoodType, Blocks.planks, mWoodType, false);
-		fillWithAir(world, this.boundingBox, 1, 1, 2, 5, 3, 4);
+		fillWithAir(world, this.boundingBox, 0, 0, 0, 7, 7, 7);
+		fillWithMetadataBlocks(world, this.boundingBox, 1, 0, 1, 7, 1, 5, mStone, mStoneMeta, mStone, mStoneMeta, false);
+		fillWithMetadataBlocks(world, this.boundingBox, 1, 2, 1, 7, 3, 5, Blocks.planks, mWoodType, Blocks.planks, mWoodType, false);
+		fillWithAir(world, this.boundingBox, 2, 1, 2, 6, 3, 4);
 
-		place(mLog, logID, 0, 1, 1, this.boundingBox, world);
-		place(mLog, logID, 0, 2, 1, this.boundingBox, world);
-		place(mLog, logID, 0, 3, 1, this.boundingBox, world);
+		place(mLog, logID, 1, 1, 1, this.boundingBox, world);
+		place(mLog, logID, 1, 2, 1, this.boundingBox, world);
+		place(mLog, logID, 1, 3, 1, this.boundingBox, world);
 
-		place(mLog, logID, 0, 1, 5, this.boundingBox, world);
-		place(mLog, logID, 0, 2, 5, this.boundingBox, world);
-		place(mLog, logID, 0, 3, 5, this.boundingBox, world);
+		place(mLog, logID, 1, 1, 5, this.boundingBox, world);
+		place(mLog, logID, 1, 2, 5, this.boundingBox, world);
+		place(mLog, logID, 1, 3, 5, this.boundingBox, world);
 
-		place(mLog, logID, 6, 1, 1, this.boundingBox, world);
-		place(mLog, logID, 6, 2, 1, this.boundingBox, world);
-		place(mLog, logID, 6, 3, 1, this.boundingBox, world);
+		place(mLog, logID, 7, 1, 1, this.boundingBox, world);
+		place(mLog, logID, 7, 2, 1, this.boundingBox, world);
+		place(mLog, logID, 7, 3, 1, this.boundingBox, world);
 
-		place(mLog, logID, 6, 1, 5, this.boundingBox, world);
-		place(mLog, logID, 6, 2, 5, this.boundingBox, world);
-		place(mLog, logID, 6, 3, 5, this.boundingBox, world);
+		place(mLog, logID, 7, 1, 5, this.boundingBox, world);
+		place(mLog, logID, 7, 2, 5, this.boundingBox, world);
+		place(mLog, logID, 7, 3, 5, this.boundingBox, world);
 
 		int meta = (this.coordBaseMode == 3) || (this.coordBaseMode == 1) ? 4 : 8;
 		
-		place(mLog, logID, 0, 4, 2, this.boundingBox, world);
-		place(mLog, logID, 0, 4, 3, this.boundingBox, world);
-		place(mLog, logID, 0, 4, 4, this.boundingBox, world);
-		place(mLog, logID, 6, 4, 2, this.boundingBox, world);
-		place(mLog, logID, 6, 4, 3, this.boundingBox, world);
-		place(mLog, logID, 6, 4, 4, this.boundingBox, world);		
+		place(mLog, logID, 1, 4, 2, this.boundingBox, world);
+		place(mLog, logID, 1, 4, 3, this.boundingBox, world);
+		place(mLog, logID, 1, 4, 4, this.boundingBox, world);
+		place(mLog, logID, 7, 4, 2, this.boundingBox, world);
+		place(mLog, logID, 7, 4, 3, this.boundingBox, world);
+		place(mLog, logID, 7, 4, 4, this.boundingBox, world);		
 		
-		for (int x = 0; x < 7; x++) {
+		for (int x = 0; x < 9; x++) {
 			place(mWoodenStairs, getMetadataWithOffset(Blocks.oak_stairs, 3), x, 3, 0, this.boundingBox, world);
 			place(mWoodenStairs, getMetadataWithOffset(Blocks.oak_stairs, 3), x, 4, 1, this.boundingBox, world);
 			place(mWoodenStairs, getMetadataWithOffset(Blocks.oak_stairs, 3), x, 5, 2, this.boundingBox, world);
@@ -138,38 +138,38 @@ public class ComponentShack extends AustraliaComponent {
 		
 		int glassMeta = Math.min(16, (coordBaseMode+MathUtils.randInt(0, 8)));
 		
-		place(Blocks.stained_glass_pane, glassMeta, 2, 2, 1, this.boundingBox, world);
-		place(Blocks.stained_glass_pane, glassMeta, 2, 2, 5, this.boundingBox, world);
-		place(Blocks.stained_glass_pane, glassMeta, 4, 2, 5, this.boundingBox, world);
-		place(Blocks.stained_glass_pane, glassMeta, 0, 2, 3, this.boundingBox, world);
-		place(Blocks.stained_glass_pane, glassMeta, 6, 2, 3, this.boundingBox, world);
+		place(Blocks.stained_glass_pane, glassMeta, 3, 2, 1, this.boundingBox, world);
+		place(Blocks.stained_glass_pane, glassMeta, 3, 2, 5, this.boundingBox, world);
+		place(Blocks.stained_glass_pane, glassMeta, 5, 2, 5, this.boundingBox, world);
+		place(Blocks.stained_glass_pane, glassMeta, 1, 2, 3, this.boundingBox, world);
+		place(Blocks.stained_glass_pane, glassMeta, 7, 2, 3, this.boundingBox, world);
 
-		placeDoorAtCurrentPosition(world, this.boundingBox, random, 4, 1, 1,
+		placeDoorAtCurrentPosition(world, this.boundingBox, random, 5, 1, 1,
 				getMetadataWithOffset(Blocks.wooden_door, 1));
 
-		place(Blocks.planks, mWoodType, 1, 1, 4, this.boundingBox, world);
-		place(Blocks.torch, 0, 1, 2, 4, this.boundingBox, world);
-		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 1), 1, 1, 3, this.boundingBox, world);
-		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 3), 2, 1, 4, this.boundingBox, world);
-		place(Blocks.fence, 0, 2, 1, 3, this.boundingBox, world);
-		place(Blocks.stone_pressure_plate, 0, 2, 2, 3, this.boundingBox, world);
+		place(Blocks.glowstone, mWoodType, 2, 1, 4, this.boundingBox, world);
+		place(Blocks.torch, 0, 2, 2, 4, this.boundingBox, world);
+		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 1), 2, 1, 3, this.boundingBox, world);
+		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 3), 3, 1, 4, this.boundingBox, world);
+		place(Blocks.fence, 1, 2, 1, 3, this.boundingBox, world);
+		place(Blocks.stone_pressure_plate, 1, 2, 2, 3, this.boundingBox, world);
 		if (!this.hasMadeChest) {
 			int ic = getYWithOffset(0);
 			int jc = getXWithOffset(7, 1);
 			int kc = getZWithOffset(7, 1);
 			if (this.boundingBox.isVecInside(jc, ic, kc)) {
 				this.hasMadeChest = true;
-				generateStructureChestContents(world, this.boundingBox, random, 1, 1, 2, shackChestContents,
+				generateStructureChestContents(world, this.boundingBox, random, 2, 1, 2, shackChestContents,
 						1 + random.nextInt(3));
 			}
 		}
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 7; j++) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
 				clearCurrentPositionBlocksUpwards(world, j, 6, i, this.boundingBox);
 				func_151554_b(world, undergroundID, 0, j, 0, i, this.boundingBox);
 			}
 		}
-		spawnNatives(world, this.boundingBox, 4, 1, 3, MathUtils.randInt(3, 5));
+		spawnNatives(world, this.boundingBox, 3, 2, 3, MathUtils.randInt(3, 5));
 
 		return true;
 	}
@@ -251,7 +251,7 @@ public class ComponentShack extends AustraliaComponent {
 			if ((MathUtils.randInt(0, 100) < (this.chance/5))) {
 				int direction = MathUtils.randInt(0, 3);
 				new ComponentShack(direction, random, x, z).addComponentParts(world, random);
-				Logger.WORLD("NativeHut x: " + x + " | z: " + z + " | Dir: " + direction);
+				Logger.WORLD("NativeShack x: " + x + " | z: " + z + " | dir: " + direction);
 				return true;
 			}
 			return false;
