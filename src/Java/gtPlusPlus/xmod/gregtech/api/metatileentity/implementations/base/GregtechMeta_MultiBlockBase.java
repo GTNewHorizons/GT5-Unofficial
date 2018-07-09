@@ -23,12 +23,14 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -39,6 +41,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -612,6 +615,63 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return b;
 	}
+	
+	
+	public boolean resetRecipeMapForAllInputHatches() {
+		return resetRecipeMapForAllInputHatches(this.getRecipeMap());
+	}
+	
+	public boolean resetRecipeMapForAllInputHatches(GT_Recipe_Map aMap) {
+		int cleared = 0;
+		for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		for (GT_MetaTileEntity_Hatch_InputBus g : this.mInputBusses) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		return cleared > 0;
+	}
+
+	public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			return resetRecipeMapForHatch((IGregTechTileEntity) aMetaTileEntity, aMap);
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean resetRecipeMapForHatch(GT_MetaTileEntity_Hatch aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+			}
+			else {	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;				
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	@Override
 	public boolean addToMachineList(final IGregTechTileEntity aTileEntity,
@@ -1028,6 +1088,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		else {
 			return mRecipeResult;
 		}
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		resetRecipeMapForAllInputHatches();
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 
