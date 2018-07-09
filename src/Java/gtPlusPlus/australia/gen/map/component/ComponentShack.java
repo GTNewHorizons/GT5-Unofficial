@@ -2,15 +2,17 @@ package gtPlusPlus.australia.gen.map.component;
 
 import java.util.Random;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.api.interfaces.IGeneratorWorld;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.australia.GTplusplus_Australia;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -18,15 +20,15 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 public class ComponentShack extends AustraliaComponent {
-	public static final int DIM_X = 7;
+	public static final int DIM_X = 9;
 	public static final int DIM_Y = 10;
-	public static final int DIM_Z = 7;
+	public static final int DIM_Z = 9;
 
 	public ComponentShack() {
 	}
 
 	public ComponentShack(int direction, Random random, int x, int z) {
-		super(direction, random, x, z, 7, 10, 7);
+		super(direction, random, x, z, DIM_X, DIM_Y, DIM_Z);
 	}
 
 	public boolean addComponentParts(World world, Random random) {
@@ -96,7 +98,7 @@ public class ComponentShack extends AustraliaComponent {
 		
 		int mStoneMeta = MathUtils.randInt(0, mStone == Blocks.stained_hardened_clay ? 15 : mStone == Blocks.sandstone ? 2 : 3);
 		
-		fillWithAir(world, this.boundingBox, 0, 0, 0, 7, 7, 7);
+		fillWithAir(world, this.boundingBox, 0, 1, 0, 7, 7, 4);
 		fillWithMetadataBlocks(world, this.boundingBox, 1, 0, 1, 7, 1, 5, mStone, mStoneMeta, mStone, mStoneMeta, false);
 		fillWithMetadataBlocks(world, this.boundingBox, 1, 2, 1, 7, 3, 5, Blocks.planks, mWoodType, Blocks.planks, mWoodType, false);
 		fillWithAir(world, this.boundingBox, 2, 1, 2, 6, 3, 4);
@@ -147,17 +149,17 @@ public class ComponentShack extends AustraliaComponent {
 		placeDoorAtCurrentPosition(world, this.boundingBox, random, 5, 1, 1,
 				getMetadataWithOffset(Blocks.wooden_door, 1));
 
-		place(Blocks.glowstone, mWoodType, 2, 1, 4, this.boundingBox, world);
-		place(Blocks.torch, 0, 2, 2, 4, this.boundingBox, world);
+		place(Blocks.redstone_lamp, mWoodType, 2, 1, 4, this.boundingBox, world);
+		place(Blocks.redstone_torch, 0, 2, 2, 4, this.boundingBox, world);
 		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 1), 2, 1, 3, this.boundingBox, world);
 		place(mWoodenStairs, getMetadataWithOffset(mWoodenStairs, 3), 3, 1, 4, this.boundingBox, world);
-		place(Blocks.fence, 1, 2, 1, 3, this.boundingBox, world);
-		place(Blocks.stone_pressure_plate, 1, 2, 2, 3, this.boundingBox, world);
+		place(Blocks.fence, 0, 3, 1, 3, this.boundingBox, world);
+		place(Blocks.heavy_weighted_pressure_plate, 0, 3, 2, 3, this.boundingBox, world);
 		if (!this.hasMadeChest) {
 			int ic = getYWithOffset(0);
 			int jc = getXWithOffset(7, 1);
 			int kc = getZWithOffset(7, 1);
-			if (this.boundingBox.isVecInside(jc, ic, kc)) {
+			if (this.boundingBox.isVecInside(jc, ic, kc)) {				
 				this.hasMadeChest = true;
 				generateStructureChestContents(world, this.boundingBox, random, 2, 1, 2, shackChestContents,
 						1 + random.nextInt(3));
@@ -197,16 +199,29 @@ public class ComponentShack extends AustraliaComponent {
 		}
 	}
 
+	//Min, max, Weight
 	public static final WeightedRandomChestContent[] shackChestContents = {
-			new WeightedRandomChestContent(Items.glass_bottle, 0, 1, 1, 10),
-			new WeightedRandomChestContent(Items.bread, 0, 1, 3, 15),
-			new WeightedRandomChestContent(Items.apple, 0, 1, 3, 15),
-			new WeightedRandomChestContent(Items.cooked_fished, 0, 1, 3, 10),
-			new WeightedRandomChestContent(Item.getItemFromBlock(Blocks.sapling), 1, 1, 1, 15),
-			// new WeightedRandomChestContent(Witchery.Items.GENERIC,
-			// Witchery.Items.GENERIC.itemRowanBerries.damageValue, 1, 2, 10),
-			new WeightedRandomChestContent(Items.iron_shovel, 0, 1, 1, 5),
-			new WeightedRandomChestContent(Items.iron_pickaxe, 0, 1, 1, 5) };
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("dustIron", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 9), 50),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 6), 50),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("dustTin", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 6), 50),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("dustGold", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 3), 30),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 3), 30),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("gemDiamond", MathUtils.randInt(1, 2)), 0, MathUtils.randInt(1, 2), 5),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("gemEmerald", MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 5),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("gemRuby", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 4), 15),
+			new WeightedRandomChestContent(ItemUtils.getItemStackOfAmountFromOreDict("gemSapphire", MathUtils.randInt(1, 4)), 0, MathUtils.randInt(1, 4), 15),
+			new WeightedRandomChestContent(ItemUtils.getSimpleStack(CI.electricMotor_LV, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 5),
+			new WeightedRandomChestContent(ItemUtils.getSimpleStack(CI.electricPiston_LV, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 5),
+			new WeightedRandomChestContent(ItemUtils.getSimpleStack(CI.robotArm_LV, MathUtils.randInt(1, 2)), 0, MathUtils.randInt(1, 2), 2),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.cableGt01, Materials.Copper, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 25),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.cableGt01, Materials.Tin, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 25),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.wireGt01, Materials.Copper, MathUtils.randInt(2, 5)), 0, MathUtils.randInt(2, 5), 35),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.wireGt01, Materials.Tin, MathUtils.randInt(2, 5)), 0, MathUtils.randInt(2, 5), 35),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.pipeSmall, Materials.Copper, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 25),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.pipeSmall, Materials.Bronze, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 15),
+			new WeightedRandomChestContent(ItemUtils.getGregtechOreStack(OrePrefixes.pipeTiny, Materials.Steel, MathUtils.randInt(1, 3)), 0, MathUtils.randInt(1, 3), 5),
+			};
+	
 	private boolean hasMadeChest;
 	private static final String CHEST_KEY = "AUSShackChest";
 
