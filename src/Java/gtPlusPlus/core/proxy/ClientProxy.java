@@ -7,20 +7,34 @@ import java.util.Scanner;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.entity.Entity;
-
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.australia.entity.model.ModelBoar;
+import gtPlusPlus.australia.entity.model.ModelDingo;
+import gtPlusPlus.australia.entity.model.ModelOctopus;
+import gtPlusPlus.australia.entity.render.RenderAustralianSpider;
+import gtPlusPlus.australia.entity.render.RenderBoar;
+import gtPlusPlus.australia.entity.render.RenderDingo;
+import gtPlusPlus.australia.entity.render.RenderOctopus;
+import gtPlusPlus.australia.entity.type.EntityAustralianSpiderBase;
+import gtPlusPlus.australia.entity.type.EntityBoar;
+import gtPlusPlus.australia.entity.type.EntityDingo;
+import gtPlusPlus.australia.entity.type.EntityOctopus;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
-import gtPlusPlus.core.client.renderer.*;
+import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
+import gtPlusPlus.core.client.renderer.RenderGiantChicken;
+import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
+import gtPlusPlus.core.client.renderer.RenderPlasmaBolt;
+import gtPlusPlus.core.client.renderer.RenderSickBlaze;
+import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
+import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
@@ -38,6 +52,10 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.entity.Entity;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
@@ -81,12 +99,12 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		if (LoadedMods.PlayerAPI){
 			this.init_PlayerAPI_INIT();
 		}
-		
+
 		/**
 		 * Custom Block Renderers
 		 */
 		new CustomOreBlockRenderer();
-		
+
 		super.init(e);
 	}
 
@@ -97,31 +115,40 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 	@Override
 	public void registerRenderThings(){
-		//MinecraftForgeClient.registerItemRenderer(ModItems.FluidCell.getItem(), new RenderLiquidCell());
-		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelMob.class, new RenderBloodSteelMob(new ModelBloodSteelMob(), 0));
-		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class, new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
-		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));		
-		Logger.INFO("Registering Custom Renderer for Mining Explosives.");
+
+		// Standard GT++
+
+		/**
+		 * Entities
+		 */
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
 		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderStaballoyConstruct());
 		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
-		Logger.INFO("Registering Custom Renderer for Sulfuric potion.");
 		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderSnowball(ModItems.itemSulfuricPotion));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHydrofluoricAcidPotion.class, new RenderSnowball(ModItems.itemHydrofluoricPotion));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
-		
-		//Giant Chickens
 		RenderingRegistry.registerEntityRenderingHandler(EntityGiantChickenBase.class, new RenderGiantChicken(new ModelGiantChicken(), 1f));
-		
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
-		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
+
+		/**
+		 * Tiles
+		 */
+
 		Logger.INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
-		
-		//Special Renderers
-		//RenderingRegistry.registerBlockHandler((CustomOreBlockRenderer.mRenderID=RenderingRegistry.getNextAvailableRenderId()), new CustomOreBlockRenderer());
-		
+
+
+		//GT++ Australia
+
+		/**
+		 * Entities
+		 */
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityAustralianSpiderBase.class, new RenderAustralianSpider());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBoar.class, new RenderBoar(new ModelBoar(), new ModelBoar(0.5F), 0.7F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityDingo.class, new RenderDingo(new ModelDingo(), new ModelDingo(), 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityOctopus.class, new RenderOctopus(new ModelOctopus(), 0.7F));
 	}
 
 	@Override
