@@ -2,6 +2,7 @@ package gtPlusPlus.australia.biome.type;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.australia.biome.CustomDecorator;
 import gtPlusPlus.core.lib.CORE;
 
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenMesa;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -41,7 +43,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         this.fillerBlock = Blocks.stained_hardened_clay;
         this.theBiomeDecorator.deadBushPerChunk = 20;
         this.theBiomeDecorator.reedsPerChunk = 3;
-        this.theBiomeDecorator.cactiPerChunk = 5;
+        this.theBiomeDecorator.cactiPerChunk = 15;
         this.theBiomeDecorator.flowersPerChunk = 0;
         this.spawnableCreatureList.clear();
         this.theBiomeDecorator.treesPerChunk = 5;        
@@ -77,7 +79,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         {
             Random random1 = new Random(this.field_150622_aD);
             this.field_150623_aE = new NoiseGeneratorPerlin(random1, 4);
-            this.field_150624_aF = new NoiseGeneratorPerlin(random1, 1);
+            this.field_150624_aF = new NoiseGeneratorPerlin(random1, 2);
         }
 
         this.field_150622_aD = p_150573_1_.getSeed();
@@ -96,7 +98,7 @@ public class Biome_AustralianOutback extends BiomeGenMesa
                 double d2 = 0.001953125D;
                 double d3 = Math.abs(this.field_150624_aF.func_151601_a((double)k * d2, (double)l * d2));
                 d5 = d1 * d1 * 2.5D;
-                double d4 = Math.ceil(d3 * 50.0D) + 14.0D;
+                double d4 = Math.ceil(d3 * 50.0D) + 32.0D;
 
                 if (d5 > d4)
                 {
@@ -112,15 +114,15 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         boolean flag = true;
         Block block = Blocks.stained_hardened_clay;
         Block block2 = this.fillerBlock;
-        int i1 = (int)(p_150573_7_ / 3.0D + 3.0D + p_150573_2_.nextDouble() * 0.25D);
-        boolean flag1 = Math.cos(p_150573_7_ / 3.0D * Math.PI) > 0.0D;
+        int i1 = (int)(p_150573_7_ / 3.3D + 3.2D + p_150573_2_.nextDouble() * 0.25D);
+        boolean flag1 = Math.cos(p_150573_7_ / 2.5D * CORE.PI) > 0.0D;
         int j1 = -1;
         boolean flag2 = false;
         int k1 = p_150573_3_.length / 256;
 
         for (int l1 = 255; l1 >= 0; --l1)
         {
-            int i2 = (l * 16 + k) * k1 + l1;
+            int i2 = (l * 8 + k) * k1 + l1;
 
             if ((p_150573_3_[i2] == null || p_150573_3_[i2].getMaterial() == Material.air) && l1 < (int)d5)
             {
@@ -256,23 +258,23 @@ public class Biome_AustralianOutback extends BiomeGenMesa
 
     public void func_150619_a(long p_150619_1_)
     {
-        this.field_150621_aC = new byte[64];
+        this.field_150621_aC = new byte[128];
         Arrays.fill(this.field_150621_aC, (byte)16);
         Random random = new Random(p_150619_1_);
-        this.field_150625_aG = new NoiseGeneratorPerlin(random, 1);
+        this.field_150625_aG = new NoiseGeneratorPerlin(random, 3);
         int j;
 
-        for (j = 0; j < 64; ++j)
+        for (j = 0; j < 128; ++j)
         {
-            j += random.nextInt(5) + 1;
+            j += random.nextInt(8) + 1;
 
-            if (j < 64)
+            if (j < 128)
             {
                 this.field_150621_aC[j] = 1;
             }
         }
 
-        j = random.nextInt(4) + 2;
+        j = random.nextInt(7) + 2;
         int k;
         int l;
         int i1;
@@ -280,51 +282,51 @@ public class Biome_AustralianOutback extends BiomeGenMesa
 
         for (k = 0; k < j; ++k)
         {
-            l = random.nextInt(3) + 1;
-            i1 = random.nextInt(64);
+            l = random.nextInt(7) + 1;
+            i1 = random.nextInt(128);
 
-            for (j1 = 0; i1 + j1 < 64 && j1 < l; ++j1)
+            for (j1 = 0; i1 + j1 < 128 && j1 < l; ++j1)
             {
                 this.field_150621_aC[i1 + j1] = 4;
             }
         }
 
-        k = random.nextInt(4) + 2;
+        k = random.nextInt(6) + 2;
         int k1;
 
         for (l = 0; l < k; ++l)
         {
-            i1 = random.nextInt(3) + 2;
-            j1 = random.nextInt(64);
+            i1 = random.nextInt(7) + 2;
+            j1 = random.nextInt(128);
 
-            for (k1 = 0; j1 + k1 < 64 && k1 < i1; ++k1)
+            for (k1 = 0; j1 + k1 < 128 && k1 < i1; ++k1)
             {
                 this.field_150621_aC[j1 + k1] = 12;
             }
         }
 
-        l = random.nextInt(4) + 2;
+        l = random.nextInt(7) + 2;
 
         for (i1 = 0; i1 < l; ++i1)
         {
-            j1 = random.nextInt(3) + 1;
-            k1 = random.nextInt(64);
+            j1 = random.nextInt(5) + 1;
+            k1 = random.nextInt(128);
 
-            for (int l1 = 0; k1 + l1 < 64 && l1 < j1; ++l1)
+            for (int l1 = 0; k1 + l1 < 128 && l1 < j1; ++l1)
             {
                 this.field_150621_aC[k1 + l1] = 14;
             }
         }
 
-        i1 = random.nextInt(3) + 3;
+        i1 = random.nextInt(8) + 3;
         j1 = 0;
 
         for (k1 = 0; k1 < i1; ++k1)
         {
             byte b0 = 1;
-            j1 += random.nextInt(16) + 4;
+            j1 += random.nextInt(8) + 4;
 
-            for (int i2 = 0; j1 + i2 < 64 && i2 < b0; ++i2)
+            for (int i2 = 0; j1 + i2 < 128 && i2 < b0; ++i2)
             {
                 this.field_150621_aC[j1 + i2] = 0;
 
@@ -364,5 +366,14 @@ public class Biome_AustralianOutback extends BiomeGenMesa
         int l = (int)Math.round(this.field_150625_aG.func_151601_a((double)p_150618_1_ * 1.0D / 512.0D, (double)p_150618_1_ * 1.0D / 512.0D) * 2.0D);
         return this.field_150621_aC[(p_150618_2_ + l + 64) % 64];
     }
+
+	 /**
+    * Allocate a new BiomeDecorator for this BiomeGenBase
+    */
+	@Override
+   public BiomeDecorator createBiomeDecorator()
+   {
+       return getModdedBiomeDecorator(new CustomDecorator());
+   }
     
 }

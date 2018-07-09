@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
@@ -154,7 +155,7 @@ public class MapGenLargeRavine extends MapGenRavine {
 												flag = true;
 											}
 
-											gtPlusPlus.api.objects.Logger.WORLD("Generating Large Ravine. 2");
+											Logger.WORLD("Generating Large Ravine. 2");
 											digBlock(aBlocksInChunkOrPassedIn, k3, k2, l3, j3, var1, var2, flag);
 										}
 

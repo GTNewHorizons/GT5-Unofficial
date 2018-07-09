@@ -2,9 +2,11 @@ package gtPlusPlus.australia.biome.type;
 
 import java.util.Random;
 
+import gtPlusPlus.australia.biome.CustomDecorator;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.gen.feature.WorldGenDesertWells;
 import net.minecraftforge.common.BiomeDictionary;
@@ -21,7 +23,7 @@ public class Biome_AustralianDesert_Ex extends BiomeGenDesert {
         this.theBiomeDecorator.treesPerChunk = -999;
         this.theBiomeDecorator.deadBushPerChunk = 2;
         this.theBiomeDecorator.reedsPerChunk = 50;
-        this.theBiomeDecorator.cactiPerChunk = 10;        
+        this.theBiomeDecorator.cactiPerChunk = 100;        
         this.setColor(16421912);
         this.setBiomeName("Australian Desert III");
         this.setDisableRain();
@@ -43,7 +45,7 @@ public class Biome_AustralianDesert_Ex extends BiomeGenDesert {
     {
         super.decorate(p_76728_1_, p_76728_2_, p_76728_3_, p_76728_4_);
 
-        if (p_76728_2_.nextInt(1000) == 0)
+        if (p_76728_2_.nextInt(850) == 0)
         {
             int k = p_76728_3_ + p_76728_2_.nextInt(16) + 8;
             int l = p_76728_4_ + p_76728_2_.nextInt(16) + 8;
@@ -51,4 +53,13 @@ public class Biome_AustralianDesert_Ex extends BiomeGenDesert {
             worldgendesertwells.generate(p_76728_1_, p_76728_2_, k, p_76728_1_.getHeightValue(k, l) + 1, l);
         }
     }
+
+	 /**
+    * Allocate a new BiomeDecorator for this BiomeGenBase
+    */
+	@Override
+   public BiomeDecorator createBiomeDecorator()
+   {
+       return getModdedBiomeDecorator(new CustomDecorator());
+   }
 }

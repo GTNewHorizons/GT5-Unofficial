@@ -2,11 +2,13 @@ package gtPlusPlus.australia.biome.type;
 
 import java.util.Random;
 
+import gtPlusPlus.australia.biome.CustomDecorator;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenPlains;
 import net.minecraftforge.common.BiomeDictionary;
@@ -109,4 +111,13 @@ public class Biome_AustralianPlains extends BiomeGenPlains
 
         super.decorate(p_76728_1_, p_76728_2_, p_76728_3_, p_76728_4_);
     }
+
+	 /**
+    * Allocate a new BiomeDecorator for this BiomeGenBase
+    */
+	@Override
+   public BiomeDecorator createBiomeDecorator()
+   {
+       return getModdedBiomeDecorator(new CustomDecorator());
+   }
 }

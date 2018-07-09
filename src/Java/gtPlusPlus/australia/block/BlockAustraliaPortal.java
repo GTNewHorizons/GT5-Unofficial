@@ -205,7 +205,7 @@ public class BlockAustraliaPortal extends BlockBreakable implements ITileTooltip
 	 */
 	public void onNeighborBlockChange(BlockPos pos) {
 		int x = pos.xPos, y = pos.yPos, z = pos.zPos;
-		Logger.INFO("Trigger");
+		//Logger.INFO("Trigger");
 		int blockCount = 0;
 		BlockPos portal = pos;
 		World par1World = portal.world;

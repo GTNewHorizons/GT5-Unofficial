@@ -560,31 +560,39 @@ public class ChunkProviderAustralia extends ChunkProviderGenerate implements ICh
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
 
-		super.populate(par1IChunkProvider, par2, par3);
-
-		//Maybe Custom stuff?
-		boolean doGen = false;
-		boolean flag = false;
-		int k1;
-		int l1;
-		int i2;
-		int x = par2 * 16;
-		int z = par3 * 16;
-		BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
-		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
-		doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.DUNGEON);
-		for (k1 = 0; doGen && k1 < 8; ++k1) {
-			l1 = x + this.rand.nextInt(16) + 8;
-			i2 = this.rand.nextInt(256);
-			int j2 = z + this.rand.nextInt(16) + 8;
-			(new WorldGenDungeons()).generate(this.worldObj, this.rand, l1, i2, j2);
-		}	
-		
-		if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ANIMALS)) {
-			SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
-			SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+		if (this.worldObj.getChunkFromChunkCoords(par2, par3) != null) {
+			super.populate(par1IChunkProvider, par2, par3);			
+			try {
+			//Maybe Custom stuff?
+			boolean doGen = false;
+			boolean flag = false;
+			int k1;
+			int l1;
+			int i2;
+			int x = par2 * 16;
+			int z = par3 * 16;
+			BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
+			MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+			doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.DUNGEON);
+			for (k1 = 0; doGen && k1 < 8; ++k1) {
+				l1 = x + this.rand.nextInt(16) + 8;
+				i2 = this.rand.nextInt(256);
+				int j2 = z + this.rand.nextInt(16) + 8;
+				(new WorldGenDungeons()).generate(this.worldObj, this.rand, l1, i2, j2);
+			}	
+			
+			if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ANIMALS)) {
+				SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+				SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+			}
+			MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
+			}			
 		}
-		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+
+		
 
 		/*boolean generateStructures = true;
 
