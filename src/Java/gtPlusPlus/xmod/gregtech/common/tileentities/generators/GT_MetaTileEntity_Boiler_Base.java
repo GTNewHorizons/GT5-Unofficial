@@ -50,7 +50,10 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Produces "+this.mPollutionPerSecond+" pollution/sec", CORE.GT_Tooltip};
+		return new String[]{
+				this.mDescription,
+				"Consumes "+(mSteamPerSecond/160)+"L of water per second",
+				"Produces "+this.mPollutionPerSecond+" pollution/sec", CORE.GT_Tooltip};
 	}
 
 	public ITexture getOverlayIcon() {
