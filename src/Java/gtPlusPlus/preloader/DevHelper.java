@@ -1,13 +1,15 @@
 package gtPlusPlus.preloader;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.api.objects.data.weakref.WeakAutoMap;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class DevHelper {
-	
+
 	private static final DevHelper mInstance;
 	private static final boolean mIsValidHelper;
 
@@ -20,24 +22,84 @@ public class DevHelper {
 			mIsValidHelper = false;
 		}
 	}
-	
+
 	public DevHelper() {
-		
+
 	}
+
+	public Method getForgeMethod(Class c, String s, Class... varags) {
+		String s1, s2;
+		Method a, b;
+		s1 = s;
+		s2 = getSRG(s);	
+
+		try {
+		a = ReflectionUtils.getMethod(c, s1, varags);
+		if (a != null) {
+			return a;
+		}
+		else {
+			b = ReflectionUtils.getMethod(c, s2, varags);
+			if (b != null) {
+				return b;
+			}
+		}
+		}
+		catch (Exception e) {}
+		return null;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	public static synchronized final DevHelper getInstance() {
 		return mInstance;
 	}
-	
+
 	public static synchronized final boolean isValidHelperObject() {
 		return mIsValidHelper;
+	}
+
+	public String getSRG(String mForgeName) {
+		return DevHelperInternals.forgeToSrg.get(mForgeName);
+	}
+
+	public String getForge(String mSrgName) {
+		return DevHelperInternals.srgToForge.get(mSrgName);		
 	}
 
 	public static class DevHelperInternals {
 		public static Map<String, String> srgToForge = new HashMap<String, String>();
 		public static Map<String, String> forgeToSrg = new HashMap<String, String>();
-		private static AutoMap<Pair<String, String>> mInitMap = new AutoMap<Pair<String, String>>();
+		private static WeakAutoMap<Pair<String, String>> mInitMap = new WeakAutoMap<Pair<String, String>>();
 
 		private static boolean init() {
 			init1();

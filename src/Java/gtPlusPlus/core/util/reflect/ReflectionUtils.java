@@ -275,6 +275,7 @@ public class ReflectionUtils {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@Deprecated
 	public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName,
 			final boolean invoke) throws Exception {
 		final Class<? extends Class> lookup = lookupClass.getClass();
@@ -282,6 +283,31 @@ public class ReflectionUtils {
 		m.setAccessible(true);// Abracadabra
 		if (invoke) {
 			m.invoke(lookup);// now its OK
+		}
+		return m;
+	}
+
+	/**
+	 * Removes final modifier & returns a {@link Method} object.
+	 * @param aClass - Class containing the Method.
+	 * @param aMethodName - Method's name in {@link String} form.
+	 * @param aTypes - Varags Class Types for {@link Method}'s constructor.
+	 * @return - Valid, non-final, {@link Method} object.
+	 */
+	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
+		Method m = null;
+		try {
+			m = aClass.getDeclaredMethod(aMethodName, aTypes);	
+			if (m != null) {
+				m.setAccessible(true);
+				int modifiers = m.getModifiers();
+				Field modifierField = m.getClass().getDeclaredField("modifiers");
+				modifiers = modifiers & ~Modifier.FINAL;
+				modifierField.setAccessible(true);
+				modifierField.setInt(m, modifiers);
+			}
+		}
+		catch (Throwable t) {
 		}
 		return m;
 	}
