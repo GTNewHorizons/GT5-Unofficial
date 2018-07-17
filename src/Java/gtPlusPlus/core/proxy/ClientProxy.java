@@ -59,13 +59,12 @@ import net.minecraft.entity.Entity;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
-	private final HashSet<String> mCapeList = new HashSet<String>();
 	private final GTPP_CapeRenderer mCapeRenderer;
 	@SideOnly(Side.CLIENT)
 	public static boolean mFancyGraphics = false;
 
 	public ClientProxy(){
-		mCapeRenderer = new GTPP_CapeRenderer(mCapeList);
+		mCapeRenderer = new GTPP_CapeRenderer();
 		//Get Graphics Mode.
 		mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 	}
@@ -204,7 +203,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 
 	public void onPreLoad() {
-		if (ConfigSwitches.enableCustomCapes){
+		/*if (ConfigSwitches.enableCustomCapes){
 			String arr$[] = {
 					"draknyte1", "fobius"
 			};
@@ -214,12 +213,12 @@ public class ClientProxy extends CommonProxy implements Runnable{
 				mCapeList.add(tName.toLowerCase());
 			}
 			(new Thread(this)).start();
-		}
+		}*/
 	}
 
 	@Override
 	public void run() {
-		try {
+		/*try {
 			if (ConfigSwitches.enableCustomCapes){
 				Logger.INFO("GT++ Mod: Downloading Cape List.");
 				@SuppressWarnings("resource")
@@ -233,7 +232,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 			}
 		} catch (Throwable e) {
 			Logger.INFO("Failed to download GT++ cape list.");
-		}
+		}*/
 	}
 
 }

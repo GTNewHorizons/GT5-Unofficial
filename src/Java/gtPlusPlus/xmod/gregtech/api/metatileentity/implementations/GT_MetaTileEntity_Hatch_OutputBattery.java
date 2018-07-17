@@ -36,8 +36,21 @@ GT_MetaTileEntity_Hatch {
 
 
 	@Override
-	public String[] getDescription() {
-		return new String[]{this.mDescription, "Capacity: " + getSlots(this.mTier) + " stack"+ (getSlots(this.mTier) >= 2 ? "s" : ""), CORE.GT_Tooltip};
+	public String[] getDescription() {		
+		int mSlots = 0;
+		if (this.mTier == 2) {
+			mSlots = 4;
+		}
+		else if (this.mTier == 4) {
+			mSlots = 16;
+		}
+		else {
+			mSlots = 16;
+		}		
+		return new String[]{
+				this.mDescription,
+				"Capacity: " + mSlots + " slots",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

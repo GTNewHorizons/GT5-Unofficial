@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.render;
 
 import static gtPlusPlus.GTplusplus.*;
 
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
@@ -23,87 +23,84 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class GTPP_CapeRenderer
 extends RenderPlayer {
 	private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/DevCapeHD.png"), new ResourceLocation("miscutils:textures/PatreonCapeHD.png")};
-	private final Collection<String> mCapeList;
+	
+	private static final HashMap<String, ResourceLocation> mLocalClientPlayerCache;
 
-	public GTPP_CapeRenderer(Collection<String> aCapeList) {
-		this.mCapeList = aCapeList;
+	static {
+		mLocalClientPlayerCache = new HashMap<String, ResourceLocation>();		
+	}
+	
+	public GTPP_CapeRenderer() {
 		setRenderManager(RenderManager.instance);
 		BuildCapeList();
 	}
 
-	private static volatile ResourceLocation cachedResource = null;
 	private static boolean hasResourceChecked = false;
 
 	public synchronized void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
 		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
 		ResourceLocation tResource = null;	
+		if (!ConfigSwitches.enableCustomCapes){
+			aEvent.setCanceled(true);
+			return ;
+		}
 
 
 		//Make sure we don't keep checking on clients who dont have capes.
-		if (!hasResourceChecked) {
-			//Give Devs Dev capes.
-			if (CORE.DEVENV) {
-				cachedResource = this.mCapes[2];
-				hasResourceChecked = true;
-			}	
-			else {
+		if (!hasResourceChecked) {			
+			AutoMap<Pair<String, ResourceLocation>> localGatherMap = new AutoMap<Pair<String, ResourceLocation>>();			
 				String mTemp = "";
 				//If list's have not been built yet for some reason, we best do it now.
 				if (mDevCapes.size() <= 1) {
 					BuildCapeList();
 				}
-
 				//Iterates all players in all lists, caches result.
 				for (Pair<String, String> mName : mOrangeCapes){				
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
-					mCapeList.add(mTemp);
-					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-						tResource = this.mCapes[0];
-					}
+					localGatherMap.put(new Pair<String, ResourceLocation>(mTemp, this.mCapes[0]));
 				}
 				for (Pair<String, String> mName : mMiscCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
-					mCapeList.add(mTemp);
-					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-						tResource = this.mCapes[1];
-					}
+					localGatherMap.put(new Pair<String, ResourceLocation>(mTemp, this.mCapes[1]));
 				}
 				for (Pair<String, String> mName : mBetaTestCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
-					mCapeList.add(mTemp);
-					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-						tResource = this.mCapes[2];
-					}
+					localGatherMap.put(new Pair<String, ResourceLocation>(mTemp, this.mCapes[2]));
 				}
 				for (Pair<String, String> mName : mDevCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
-					mCapeList.add(mTemp);
-					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-						tResource = this.mCapes[3];
-					}
+					localGatherMap.put(new Pair<String, ResourceLocation>(mTemp, this.mCapes[3]));
 				}
 				for (Pair<String, String> mName : mPatreonCapes){
 					mTemp = getPlayerName(mName.getKey(), mName.getValue());
-					mCapeList.add(mTemp);
-					if (mTemp.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
-						tResource = this.mCapes[4];
+					localGatherMap.put(new Pair<String, ResourceLocation>(mTemp, this.mCapes[4]));
+				}				
+				if (localGatherMap.size() > 0) {
+					for (Pair<String, ResourceLocation> p : localGatherMap) {
+						if (p != null) {
+							mLocalClientPlayerCache.put(p.getKey().toLowerCase(), p.getValue());
+						}
 					}
-
-				}			
-			}
-			if (tResource != null) {
-				cachedResource = tResource;
-			}
+				}				
 			//Only run once.
 			hasResourceChecked = true;
 		}		
+		
+		if (mLocalClientPlayerCache.size() > 0) {
+			String name = aPlayer.getDisplayName().toLowerCase();
+			if (mLocalClientPlayerCache.containsKey(name)) {
+				tResource = mLocalClientPlayerCache.get(name);
+	    	}			
+		}	
 
 		if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible() || GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
 			aEvent.setCanceled(true);
@@ -112,8 +109,8 @@ extends RenderPlayer {
 		float aPartialTicks = aEvent.partialRenderTick;
 		try {		
 
-			if ((cachedResource != null) && (!aPlayer.getHideCape())) {
-				bindTexture(cachedResource);
+			if ((tResource != null) && (!aPlayer.getHideCape())) {
+				bindTexture(tResource);
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0.0F, 0.0F, 0.125F);
 				double d0 = aPlayer.field_71091_bM + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
