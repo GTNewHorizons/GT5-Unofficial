@@ -620,7 +620,7 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("molten.tantalum", 144 * 4),
 				ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 120);
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("oxygen", 1000),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 4), FluidUtils.getFluidStack("oxygen", 16000),
 				ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 240);
 
 		//Tier 2-6
@@ -632,23 +632,23 @@ public class RECIPES_GREGTECH {
 		ItemStack T6 = GregtechItemList.Casing_Vanadium_Redox_MAX.get(1);
 
 		addAR(T1,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 4),
-				FluidUtils.getFluidStack("nitrogen", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseStainlessSteel", 2),
+				FluidUtils.getFluidStack("nitrogen", 16000),
 				T2, 120, 2000);
 		addAR(T2,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateTitanium", 4),
-				FluidUtils.getFluidStack("helium", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTitanium", 2),
+				FluidUtils.getFluidStack("helium", 8000),
 				T3, 250, 8000);
 		addAR(T3,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateTungsten", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungsten", 2),
 				FluidUtils.getFluidStack("argon", 4000),
 				T4, 500, 32000);
 		addAR(T4,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungstenSteel", 2),
 				FluidUtils.getFluidStack("radon", 4000),
 				T5, 1000, 128000);
 		addAR(T5,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 9),
 				FluidUtils.getFluidStack("molten.krypton", 500),
 				T6, 2000, 512000);
 

@@ -160,4 +160,9 @@ public interface IGregtech_RecipeAdder {
 	 
 	 public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
 	 
+	 
+	 public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, ItemStack aOutput, int a1, int a2);
+	 public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, FluidStack aInputFluid, ItemStack aOutput, int a1, int a2);
+	 
+	 
 }

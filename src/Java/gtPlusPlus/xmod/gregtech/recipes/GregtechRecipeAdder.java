@@ -2,22 +2,23 @@ package gtPlusPlus.xmod.gregtech.recipes;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
@@ -376,7 +377,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 						+ aInput[das].stackSize);
 			}
 		}
-		
+
 		ArrayUtils.removeNulls(aInput);
 		if (aInput.length <= 1) {
 			return false;
@@ -549,6 +550,102 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return false;	
 
+	}
+
+	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, ItemStack aOutput, int a1, int a2) {		
+		if (aInput1 instanceof String || aInput2 instanceof String) {
+			int mCompleted = 0;
+			if (aInput1 instanceof String && aInput2 instanceof String) {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput1, false);
+				List<ItemStack> x1 = OreDictionary.getOres((String) aInput2, false);
+				if (x != null && x.size() > 0 && x1 != null && x1.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						for (ItemStack r1 : x1) {
+							r1.stackSize = aAmount2;
+							if (GT_Values.RA.addAssemblerRecipe(r, r1, aOutput, a1, a2)) {
+								mCompleted++;
+							}
+						}
+					}
+				}
+			}
+			else if (aInput1 instanceof String) {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput1, false);				
+				if (x != null && x.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						if (GT_Values.RA.addAssemblerRecipe(r, (ItemStack) aInput2, aOutput, a1, a2)) {
+							mCompleted++;
+						}
+					}
+				}
+
+			}
+			else {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput2, false);	
+				if (x != null && x.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						if (GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, r, aOutput, a1, a2)) {
+							mCompleted++;
+						}
+					}
+				}
+			}
+			return mCompleted > 0;
+		}
+		else {
+			return GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, (ItemStack) aInput2, aOutput, a1, a2);			
+		}		
+	}
+
+	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, FluidStack aInputFluid, ItemStack aOutput, int a1, int a2) {
+		if (aInput1 instanceof String || aInput2 instanceof String) {
+			int mCompleted = 0;
+			if (aInput1 instanceof String && aInput2 instanceof String) {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput1, false);
+				List<ItemStack> x1 = OreDictionary.getOres((String) aInput2, false);
+				if (x != null && x.size() > 0 && x1 != null && x1.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						for (ItemStack r1 : x1) {
+							r1.stackSize = aAmount2;
+							if (GT_Values.RA.addAssemblerRecipe(r, r1, aInputFluid, aOutput, a1, a2)) {
+								mCompleted++;
+							}
+						}
+					}
+				}
+			}
+			else if (aInput1 instanceof String) {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput1, false);				
+				if (x != null && x.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						if (GT_Values.RA.addAssemblerRecipe(r, (ItemStack) aInput2, aInputFluid, aOutput, a1, a2)) {
+							mCompleted++;
+						}
+					}
+				}
+
+			}
+			else {
+				List<ItemStack> x = OreDictionary.getOres((String) aInput2, false);	
+				if (x != null && x.size() > 0) {
+					for (ItemStack r : x) {
+						r.stackSize = aAmount1;
+						if (GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, r, aInputFluid, aOutput, a1, a2)) {
+							mCompleted++;
+						}
+					}
+				}
+			}
+			return mCompleted > 0;
+		}
+		else {
+			return GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, (ItemStack) aInput2, aInputFluid, aOutput, a1, a2);			
+		}
 	}
 
 

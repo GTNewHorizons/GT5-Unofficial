@@ -1130,21 +1130,21 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter){
 				RecipeUtils.recipeBuilder(
-						"plateStainlessSteel", CI.craftingToolHammer_Hard, "plateStainlessSteel",
-						"plateStellite", "frameGtStainlessSteel", "plateStellite",
-						"plateStainlessSteel", CI.craftingToolWrench, "plateStainlessSteel",
+						"plateTungstenSteel", CI.craftingToolHammer_Hard, "plateTungstenSteel",
+						"plateStellite", ItemList.Block_IridiumTungstensteel.get(1), "plateStellite",
+						"plateTungstenSteel", CI.craftingToolWrench, "plateTungstenSteel",
 						GregtechItemList.Casing_Autocrafter.get(Casing_Amount));
 
 				RecipeUtils.recipeBuilder( 
-						"plateStainlessSteel",CI.sensor_EV,"plateStainlessSteel",
-						"wireFineOsmium",GregtechItemList.Gregtech_Computer_Cube.get(1), "wireFineOsmium",
-						"plateStainlessSteel",CI.emitter_EV,"plateStainlessSteel",
+						"plateTungstenSteel", ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR),"plateTungstenSteel",
+						CI.emitter_IV,GregtechItemList.Gregtech_Computer_Cube.get(1), CI.sensor_IV,
+						"plateTungstenSteel", "cableGt08Osmium","plateTungstenSteel",
 						GregtechItemList.GT4_Multi_Crafter.get(1));
 
 				RecipeUtils.recipeBuilder( 
-						"plateStainlessSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
-						CI.robotArm_ULV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_ULV,
-						"plateStainlessSteel",CI.emitter_ULV,"plateStainlessSteel",
+						"plateTungstenSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
+						CI.robotArm_EV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_EV,
+						"plateStainlessSteel",CI.emitter_EV,"plateTungstenSteel",
 						ItemUtils.getSimpleStack(ModBlocks.blockProjectTable));
 			}
 
