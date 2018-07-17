@@ -5,6 +5,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures.ItemIcons.CustomIcon;
 public class Processing_Textures_Items {
 
 	public static final CustomIcon itemSkookumChoocher = new CustomIcon("iconsets/SKOOKUMCHOOCHER");
+	public static final CustomIcon itemElectricPump = new CustomIcon("iconsets/PUMP");
 
 }
 

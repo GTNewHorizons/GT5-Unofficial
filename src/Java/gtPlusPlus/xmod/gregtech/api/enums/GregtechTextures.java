@@ -111,6 +111,7 @@ public class GregtechTextures {
 		VOID, // The Empty Texture
 		RENDERING_ERROR, //The Purple/Black Texture
 		SKOOKUMCHOOCHER, //The Skookum Tool Texture
+		PUMP, // The Hand Pump Texture
 		TURBINE_SMALL, TURBINE_LARGE, TURBINE_HUGE;
 
 		/* public static final Interface_IconContainer[]
