@@ -43,6 +43,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Bending Machine";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Material Press",
 				"500% faster than using single block machines of the same voltage",
@@ -58,6 +63,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (anywhere)",
 				"Material Press Machine Casings for the rest (16 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

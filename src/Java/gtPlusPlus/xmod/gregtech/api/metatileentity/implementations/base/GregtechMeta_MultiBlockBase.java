@@ -47,6 +47,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechMeta_MultiBlockBase
@@ -98,6 +99,12 @@ GT_MetaTileEntity_MultiBlockBase {
 			return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");			
 		}		
 	}
+	
+	public abstract String getMachineType();
+	
+	public String getMachineTooltip() {
+		return "Machine Type: " + EnumChatFormatting.YELLOW + getMachineType() + EnumChatFormatting.RESET;
+	}
 
 	public String[] getExtraInfoData() {
 		return new String[0];
@@ -106,7 +113,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public String[] getInfoData() {		
 
-		ArrayList mInfo = new ArrayList<String>();
+		ArrayList<String> mInfo = new ArrayList<String>();
 		if (!this.getMetaName().equals("")) {
 			mInfo.add(this.getMetaName());
 		}
@@ -129,6 +136,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
+		mInfo.add(getMachineTooltip());
 		mInfo.add("Progress: " + Integer.toString((this.mProgresstime / 20)) +" / "+ Integer.toString((this.mMaxProgresstime / 20)) + " secs");
 		mInfo.add("Efficiency: " + Float.toString((this.mEfficiency / 100.0F)) + "%");
 		mInfo.add("Problems: " + Integer.toString((this.getIdealStatus() - this.getRepairStatus())));

@@ -52,6 +52,11 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return (IMetaTileEntity) new GregtechMetaTileEntity_IndustrialVacuumFreezer(this.mName);
 	}
 
+	@Override
+	public String getMachineType() {
+		return "Vacuum Freezer";
+	}
+
 	public String[] getDescription() {
 		
 		if (mCasingName.toLowerCase().contains(".name")) {
@@ -75,6 +80,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (10 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

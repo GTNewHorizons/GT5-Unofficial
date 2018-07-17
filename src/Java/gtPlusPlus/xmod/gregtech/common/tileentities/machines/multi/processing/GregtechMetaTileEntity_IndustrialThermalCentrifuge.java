@@ -37,6 +37,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Thermal Centrifuge";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
@@ -52,6 +57,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Thermal processing Casings for the rest (8 at least!)",
 				"Noise Hazard Sign Blocks also count as valid casings",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 				
 		};

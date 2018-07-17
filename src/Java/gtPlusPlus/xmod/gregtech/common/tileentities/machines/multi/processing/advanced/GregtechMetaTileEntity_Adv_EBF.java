@@ -63,6 +63,11 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 	}
 
+	@Override
+	public String getMachineType() {
+		return "Blast Furnace";
+	}
+
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_Adv_EBF(this.mName);
 	}
@@ -100,6 +105,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
 				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

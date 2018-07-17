@@ -65,6 +65,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Nine in One";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Industrial Multi-Machine",
 				"250% faster than using single block machines of the same voltage",
@@ -75,6 +80,7 @@ extends GregtechMeta_MultiBlockBase {
 				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

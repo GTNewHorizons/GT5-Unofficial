@@ -58,6 +58,11 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Fish Trap";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[] { "Controller Block for the Fishing Pond", "Size: 9x3x9 [WxHxL] (open)", "X           X",
 				"X           X", "XXXXXXXXX", "Put a numbered circuit into the input bus.", "Circuit 14 for Fish",
@@ -65,6 +70,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				"1x Output Bus (Any casing)", "1x Input Bus (Any casing)",
 				"1x Input Hatch (Any casing, fill with water)", "1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)", "Aquatic Casings for the rest", getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip };
 	}
 

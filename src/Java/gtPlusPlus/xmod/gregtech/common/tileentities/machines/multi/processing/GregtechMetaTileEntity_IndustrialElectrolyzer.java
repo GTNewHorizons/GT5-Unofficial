@@ -33,6 +33,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Electrolyzer";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Industrial Electrolyzer",
 				"180% faster than using single block machines of the same voltage",
@@ -49,6 +54,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler (anywhere)",
 				"Electrolyzer Casings for the rest (10 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

@@ -45,6 +45,11 @@ extends GregtechMeta_MultiBlockBase {
 	private int maximumFluidStorage = 128000;
 	private FluidStack internalStorageTank = null;
 	private final NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
+
+	@Override
+	public String getMachineType() {
+		return "Fluid Tank";
+	}
 	
 	@Override
 	public String[] getExtraInfoData() {
@@ -213,6 +218,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"Multitank Exterior Casings for the rest (16 at least!)",
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

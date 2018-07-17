@@ -49,6 +49,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Tree Farm";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 		        "THIS MULTIBLOCK IS DISABLED - DO NOT BUILD",
@@ -65,6 +70,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

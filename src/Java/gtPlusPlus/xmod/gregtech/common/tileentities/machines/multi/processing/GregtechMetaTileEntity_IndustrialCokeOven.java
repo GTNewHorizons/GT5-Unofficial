@@ -40,6 +40,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Coke Oven";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
 				"Controller Block for the Industrial Coke Oven",
@@ -58,6 +63,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (top middle)",
 				"Structural Coke Oven Casings for the rest",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

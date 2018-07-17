@@ -44,6 +44,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Extruder";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Material Extruder",
 				"250% faster than using single block machines of the same voltage",
@@ -61,6 +66,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (Back Center)",
 				"Inconel Reinforced Casings for the rest (28 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

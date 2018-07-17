@@ -44,6 +44,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		super(aName);
 	}
 
+	@Override
+	public String getMachineType() {
+		return "Particle Accelerator";
+	}
+
 	public int tier(){
 		return 5;
 	}
@@ -263,6 +268,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"1-16 Energy Hatches", 
 				"All Hatches must be IV or better",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

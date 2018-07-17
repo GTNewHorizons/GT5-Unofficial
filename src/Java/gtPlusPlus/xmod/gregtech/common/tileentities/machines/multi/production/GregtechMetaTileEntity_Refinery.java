@@ -38,6 +38,11 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Fuel Refinery";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Fission Fuel Processing Unit",
@@ -53,6 +58,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				"1x ZPM or better Muffler (One of base platform)",
 				"1x Energy Hatch (One of base platform)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

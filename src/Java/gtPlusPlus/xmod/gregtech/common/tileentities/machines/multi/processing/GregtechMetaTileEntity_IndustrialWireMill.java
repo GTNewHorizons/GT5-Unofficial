@@ -38,6 +38,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Wiremill";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Wire Factory",
@@ -51,6 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (back centered)",
 				"Wire Factory Casings for the rest (32 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

@@ -43,6 +43,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Macerator/Pulverizer";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
@@ -60,6 +65,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

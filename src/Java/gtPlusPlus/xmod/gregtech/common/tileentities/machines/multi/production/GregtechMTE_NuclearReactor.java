@@ -55,6 +55,11 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Reactor";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Liquid Fluoride Thorium Reactor.",
@@ -74,6 +79,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 				"Input Li2BeF4 and a molten salt as fuel.",
 				"LiFBeF2ThF4UF4, LiFBeF2ZrF4UF4 or﻿ LiFBeF2ZrF4U235",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

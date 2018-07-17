@@ -50,6 +50,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Mixer";
+	}
+
+	@Override
 	public String[] getDescription() {
 		
 		if (mCasingName.toLowerCase().contains(".name")) {
@@ -73,6 +78,7 @@ extends GregtechMeta_MultiBlockBase {
 				mCasingName+"s for the rest (16 at least!)",
 				mCasingName2+"s for the internal blocks (2)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

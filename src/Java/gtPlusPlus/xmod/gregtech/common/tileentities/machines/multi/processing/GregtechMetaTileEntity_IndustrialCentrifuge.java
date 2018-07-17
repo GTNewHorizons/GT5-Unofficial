@@ -44,6 +44,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Centrifuge";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
@@ -62,6 +67,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch [Blue]",
 				"Centrifuge Casings for the rest (10 at least)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

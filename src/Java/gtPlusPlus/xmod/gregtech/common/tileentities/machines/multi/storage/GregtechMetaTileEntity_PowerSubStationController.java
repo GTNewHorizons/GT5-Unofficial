@@ -57,6 +57,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Energy Buffer";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)",
@@ -67,6 +72,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
 				"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
 				"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

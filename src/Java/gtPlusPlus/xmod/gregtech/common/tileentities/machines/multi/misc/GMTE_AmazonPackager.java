@@ -45,6 +45,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Packager";
+	}
+
+	@Override
 	public boolean hasSlotInGUI() {
 		return true;
 	}
@@ -69,6 +74,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				"1x Muffler (anywhere)",
 				"Supply Depot. Casings for the rest (10 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 		};
 	}

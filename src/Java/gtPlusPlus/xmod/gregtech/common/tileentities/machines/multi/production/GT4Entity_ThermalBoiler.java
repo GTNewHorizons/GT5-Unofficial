@@ -58,6 +58,11 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Boiler";
+	}
+
+	@Override
 	public int getDamageToComponent(ItemStack aStack){
 		Logger.INFO("Trying to damage component.");
 		return ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack) ? 1 : 0;
@@ -185,6 +190,7 @@ extends GregtechMeta_MultiBlockBase
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

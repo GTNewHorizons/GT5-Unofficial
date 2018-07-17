@@ -71,6 +71,11 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Weaponized Lighting Rod";
+	}
+
+	@Override
 	public boolean hasSlotInGUI() {
 		return false;
 	}
@@ -90,6 +95,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (One of base casings)",
 				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

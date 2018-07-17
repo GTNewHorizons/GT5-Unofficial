@@ -77,6 +77,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Assembler, Disassembler, Autocrafter";
+	}
+
+	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT4Entity_AutoCrafter(this.mName);
 	}
@@ -126,7 +131,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 				"Size: 3x3x3 (Hollow)", "1x Input Bus", "1x Input Hatch", "1x Output Bus", "1x Output Hatch",
 				"1x Muffler Hatch", "1x Maintenance Hatch", "1x Energy Hatch",
 				"Hatches & Busses can be placed anywhere", "Rest is Autocrafter Frame",
-				"--------------------------------------", getPollutionTooltip(), CORE.GT_Tooltip };
+				"--------------------------------------", getPollutionTooltip(),
+				getMachineTooltip(), CORE.GT_Tooltip };
 	}
 
 	@Override

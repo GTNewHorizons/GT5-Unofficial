@@ -39,6 +39,11 @@ extends GregtechMeta_MultiBlockBase {
 		return new GregtechMetaTileEntity_Adv_Implosion(this.mName);
 	}
 
+	@Override
+	public String getMachineType() {
+		return "Implosion Compressor";
+	}
+
 	public String[] getDescription() {    	
 		if (mCasingName.contains("gt.blockcasings")) {
 			mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
@@ -54,6 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (16 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

@@ -32,6 +32,11 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Reactor";
+	}
+
+	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
 	{
 		return new GregtechMTE_FastNeutronReactor(this.mName);
@@ -177,6 +182,7 @@ extends GregtechMeta_MultiBlockBase
 				"------------------------------------------",
 				"Consult user manual for more information",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

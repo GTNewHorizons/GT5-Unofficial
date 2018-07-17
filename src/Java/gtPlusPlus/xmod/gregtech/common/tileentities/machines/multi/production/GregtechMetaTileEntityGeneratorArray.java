@@ -38,6 +38,11 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Processing Array";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Generator Array",
@@ -50,6 +55,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 				"Robust Tungstensteel Machine Casings for the rest (16 at least!)",
 				"Place up to 16 Single Block GT Generators into the Controller Inventory",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

@@ -40,6 +40,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Sifter";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
@@ -57,6 +62,7 @@ extends GregtechMeta_MultiBlockBase {
 				"18x Sieve Grate (Top and Middle 3x3)",
 				"Sieve Casings for the rest (35 min)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

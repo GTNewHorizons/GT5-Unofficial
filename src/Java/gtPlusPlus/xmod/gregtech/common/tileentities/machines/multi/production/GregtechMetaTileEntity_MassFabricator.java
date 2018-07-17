@@ -82,6 +82,11 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Mass Fabricator";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Matter Fabricator",
@@ -102,6 +107,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				"24x IC2 Reinforced Glass for the walls",
 				"Matter Fabricator Casings for the edges & top (40 at least!)",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 

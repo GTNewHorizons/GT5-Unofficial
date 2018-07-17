@@ -49,6 +49,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getMachineType() {
+		return "Alloy Smelter";
+	}
+
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
@@ -66,6 +71,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Fluid Input Hatch (optional, top layer)",
 				"Blast Smelter Casings for the rest",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip};
 	}
 
