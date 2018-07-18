@@ -655,10 +655,10 @@ public final class ModItems {
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 		
 		toolGregtechPump = new GregtechPump();
-		toolGregtechPump.registerPumpType(0, "Simple Hand Pump", 32000, 0);
-		toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 128000, 1);
-		toolGregtechPump.registerPumpType(2, "Super Hand Pump", 512000, 2);
-		toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 1024000, 3);
+		toolGregtechPump.registerPumpType(0, "Simple Hand Pump", 0, 0);
+		toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 32000, 1);
+		toolGregtechPump.registerPumpType(2, "Super Hand Pump", 128000, 2);
+		toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
 		
 		//Create Multi-tools
 		ItemsMultiTools.load();
