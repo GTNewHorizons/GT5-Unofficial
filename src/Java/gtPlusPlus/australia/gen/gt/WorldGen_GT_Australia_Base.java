@@ -55,7 +55,7 @@ public class WorldGen_GT_Australia_Base implements IWorldGenerator {
 	// This is probably not going to work. Trying to create a fake orevein to
 	// put into hashtable when there will be no ores in a vein.
 	public static WorldGen_GT_Australia_Ore_Layer noOresInVein = new WorldGen_GT_Australia_Ore_Layer("vein0", 0, 255, 0, 0,
-			0, ELEMENT.getInstance().ALUMINIUM, ELEMENT.getInstance().ALUMINIUM, ELEMENT.getInstance().ALUMINIUM,	ELEMENT.getInstance().ALUMINIUM);
+			0, ELEMENT.getInstance().IRON, ELEMENT.getInstance().GOLD, ELEMENT.getInstance().LEAD,	ELEMENT.getInstance().TIN);
 
 	public static Hashtable<Long, WorldGen_GT_Australia_Ore_Layer> validOreveins = new Hashtable<Long, WorldGen_GT_Australia_Ore_Layer>(
 			1024);

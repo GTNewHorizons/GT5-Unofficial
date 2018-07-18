@@ -123,7 +123,7 @@ public class GTplusplus_Australia implements ActionListener {
 		 * Set World Generation Values
 		 */
 		WorldGen_Australia_Ores.generateValidOreVeins();
-		WorldGen_GT_Australia_Base.oreveinPercentage = 32;
+		WorldGen_GT_Australia_Base.oreveinPercentage = 16;
 		WorldGen_GT_Australia_Base.oreveinAttempts = 16;
 		WorldGen_GT_Australia_Base.oreveinMaxPlacementAttempts = 2;	
 		if (CORE.DEBUG || CORE.DEVENV){

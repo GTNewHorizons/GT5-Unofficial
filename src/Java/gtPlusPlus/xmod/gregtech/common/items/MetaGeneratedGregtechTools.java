@@ -12,6 +12,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Log;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
@@ -91,7 +92,9 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 		}
 	}
 
+	@Override
 	public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+		Logger.INFO("Item Right Click");
 		this.use(aStack, 0.0D, aPlayer);
 		this.isItemStackUsable(aStack);
 		ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = (ArrayList<IItemBehaviour<GT_MetaBase_Item>>) this.getItemBehaviours().get(Short.valueOf((short) this.getDamage(aStack)));
@@ -103,9 +106,11 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 						if (g instanceof TOOL_Gregtech_Pump) {
 							TOOL_Gregtech_Pump t = (TOOL_Gregtech_Pump) g;
 							if (t != null) {
+								Logger.INFO("Right clicked with Pump tool.");
 								aStack = g.onItemRightClick(this, aStack, aWorld, aPlayer);
 								FluidStack f = t.getBehaviour().getStoredFluid();
 								if (f != null) {
+									Logger.INFO("Found Fluid '"+f.getLocalizedName()+"', trying to set fluid contents of tool.");
 									this.setFluidContent(aStack, f);
 								}
 							}

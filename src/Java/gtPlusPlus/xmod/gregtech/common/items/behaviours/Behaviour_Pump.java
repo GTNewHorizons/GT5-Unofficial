@@ -57,18 +57,17 @@ extends Behaviour_None {
 					Logger.INFO("Trying to find Stored Fluid - Behaviour Class.");
 					FluidStack aStored = getStoredFluidOfGTMachine((IGregTechTileEntity)tTileEntity);
 					if (aStored != null) {
-						if (this.mStoredFluid == null) {
-							this.mStoredFluid = aStored;
-							setStoredFluidOfGTMachine((IGregTechTileEntity)tTileEntity);
-							Logger.INFO("Returning True - Behaviour Class.");
-							return true;
-						}
+						this.mStoredFluid = aStored;
+						boolean b = setStoredFluidOfGTMachine((IGregTechTileEntity)tTileEntity);
+						Logger.INFO("Cleared Tank? "+b);
+						Logger.INFO("Returning True - Behaviour Class.");
+						return true;						
 					}
 					else {
 						Logger.INFO("Found no valid Fluidstack - Behaviour Class.");
 					}
 				}
-				
+
 			}
 		}
 		Logger.INFO("Returning False - Behaviour Class.");
@@ -77,7 +76,7 @@ extends Behaviour_None {
 
 	public List<String> getAdditionalToolTips(final GT_MetaBase_Item aItem, final List<String> aList, final ItemStack aStack) {
 		aList.add(this.mTooltip);
-		aList.add("Stored Fluid: "+(mStoredFluid != null ? mStoredFluid.getLocalizedName() : "None"));		
+		aList.add("Stored Fluid: "+(mStoredFluid != null ? mStoredFluid.getLocalizedName()+" - "+mStoredFluid.amount+"L" : "None"));		
 		return aList;
 	}
 
@@ -113,11 +112,12 @@ extends Behaviour_None {
 
 	public FluidStack getStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity) {	
 		FluidStack f = aTileEntity.mFluid;
-			Logger.INFO("Returning Fluid stack from tile. Found: "+(f != null ? f.getLocalizedName() : "Nothing"));		
-			return f.copy();
+		Logger.INFO("Returning Fluid stack from tile. Found: "+(f != null ? f.getLocalizedName()+" - "+f.amount+"L" : "Nothing"));		
+		return f.copy();
 	}
 
 	public boolean setStoredFluidOfGTMachine(IGregTechTileEntity aTileEntity) {
+		Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [1]");
 		if (aTileEntity == null) {
 			return false;
 		}
@@ -126,6 +126,7 @@ extends Behaviour_None {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
+			Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [2]");
 			return setStoredFluidOfGTMachine((IGregTechTileEntity) aMetaTileEntity);
 		}
 		else {
@@ -134,17 +135,16 @@ extends Behaviour_None {
 	}
 
 	public boolean setStoredFluidOfGTMachine(GT_MetaTileEntity_BasicTank aTileEntity) {
-		if (aTileEntity == null) {
+		try {
+			aTileEntity.mFluid = null;	
+			boolean b = aTileEntity.mFluid == null;
+			Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [3] "+b);
+			return aTileEntity.mFluid == null;
+		}
+		catch (Throwable t) {
+			Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
 			return false;
 		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity;
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
-			if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank){				
-				((GT_MetaTileEntity_BasicTank) aMetaTileEntity).mFluid = null;	
-				return true;				
-			}
-		}
-		return false;
 	}
 
 	public synchronized final FluidStack getStoredFluid() {

@@ -2,15 +2,10 @@ package gtPlusPlus.australia.gen.gt;
 
 import java.util.Hashtable;
 
-import net.minecraft.block.Block;
-
 import gregtech.api.enums.Materials;
 
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.ORES;
-import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.everglades.object.BoxedQuad;
 
@@ -20,71 +15,38 @@ public class WorldGen_Australia_Ores {
 	 * Set Ore Types on by one.
 	 */
 
-	public static volatile Pair<Block, Integer> Geikielite; 	// MgTiO3
-	public static volatile Pair<Block, Integer> Zimbabweite; 	// (Na,K)2PbAs4(Nb,Ta,Ti)4O18
-	public static volatile Pair<Block, Integer> Titanite;		// CaTiSiO5
-	public static volatile Pair<Block, Integer> Zirconolite;	// CaZrTi2O7
-	public static volatile Pair<Block, Integer> Crocoite;		// PbCrO4
-	public static volatile Pair<Block, Integer> Nichromite;		// (Ni,Co,Fe)(Cr,Fe,Al)2O4
-	public static volatile Pair<Block, Integer> Yttriaite;		// Y2O3
-	public static volatile Pair<Block, Integer> Samarskite_Y;	// (YFe3+Fe2+U,Th,Ca)2(Nb,Ta)2O8
-	public static volatile Pair<Block, Integer> Samarskite_Yb;	// (YbFe3+)2(Nb,Ta)2O8
-	public static volatile Pair<Block, Integer> Zircon;			// ZrSiO4
-	public static volatile Pair<Block, Integer> Gadolinite_Ce;	// (Ce2,La,Nd,Y)2FeBe2Si1O14
-	public static volatile Pair<Block, Integer> Gadolinite_Y;	// (Ce,La,Nd,Y2)2FeBe2Si4O9
-	public static volatile Pair<Block, Integer> Lepersonnite;	// Ca(Gd,Dy)2(UO2)24(SiO4)4(CO3)8(OH)24·48H2O
-	public static volatile Pair<Block, Integer> Xenotime;		// YPO4
-	public static volatile Pair<Block, Integer> Yttrialite;		// Y2Th2Si2O7
-	public static volatile Pair<Block, Integer> Yttrocerite;	// CaF5YCe
-	public static volatile Pair<Block, Integer> Polycrase;		// YCaCeUThTi2Nb2Ta2O6
-	public static volatile Pair<Block, Integer> Zircophyllite;	// (K,Na)3(Mn,Fe)7(Zr,Ti,Nb)2Si8O24(OH,F)7
-	public static volatile Pair<Block, Integer> Zirkelite;		// (Ca,Th,Ce)Zr(Ti,Nb)2O7
-	public static volatile Pair<Block, Integer> Lanthanite_La;	// (La)2(CO3)3·8(H2O).
-	public static volatile Pair<Block, Integer> Lanthanite_Ce;	// (Ce)2(CO3)3·8(H2O).
-	public static volatile Pair<Block, Integer> Lanthanite_Nd;	// (Nd)2(CO3)3·8(H2O).
-	public static volatile Pair<Block, Integer> Hibonite;		// ((Ca,Ce)(Al,Ti,Mg)12O19)
-	public static volatile Pair<Block, Integer> Cerite;			// (Ce,La,Ca)9(Mg,Fe+3)(SiO4)6(SiO3OH)(OH)3
-	public static volatile Pair<Block, Integer> Agardite_Y;		// (YCa)Cu5(As2O4)3(OH)6·3H2O
-	public static volatile Pair<Block, Integer> Agardite_Cd;	// (CdCa)Cu7(AsO2)4(O2H)5·3H2O
-	public static volatile Pair<Block, Integer> Agardite_La;	// (LaCa)Cu5(AsO6)2(OH)4·3H2O
-	public static volatile Pair<Block, Integer> Agardite_Nd;	// (NdCa)Cu6(As3O3)2(O2H)6·3H2O
-	public static volatile Pair<Block, Integer> Fluorcaphite;	// (Ca,Sr,Ce,Na)5(PO4)3F
-	public static volatile Pair<Block, Integer> Florencite;		// SmAl3(PO4)2(OH)6
-	public static volatile Pair<Block, Integer> Cryolite;		// Na3AlF6
-	//public static volatile Pair<Block, Integer> Pyroxene;		// 
-
 	private static final Material PYRITE = MaterialUtils.generateMaterialFromGtENUM(Materials.Pyrite);
 	private static final Material PYROPE = MaterialUtils.generateMaterialFromGtENUM(Materials.Pyrope);
 	private static final Material ALMANDINE = MaterialUtils.generateMaterialFromGtENUM(Materials.Almandine);
 	private static final Material RUBY = MaterialUtils.generateMaterialFromGtENUM(Materials.Ruby);
 	private static final Material CHALCOPYRITE = MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite);
-	private static final Material PLATINUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Platinum);
 	private static final Material TOPAZ = MaterialUtils.generateMaterialFromGtENUM(Materials.Topaz);
 	private static final Material SAPPHIRE_GREEN = MaterialUtils.generateMaterialFromGtENUM(Materials.GreenSapphire);
 	private static final Material SAPPHIRE_BLUE = MaterialUtils.generateMaterialFromGtENUM(Materials.Sapphire);
-	private static final Material BAUXITE = MaterialUtils.generateMaterialFromGtENUM(Materials.Bauxite);
 	
-	private static final Material NAQPLUS = MaterialUtils.generateMaterialFromGtENUM(Materials.NaquadahEnriched);
-	private static final Material NAQUADRIA = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadria);
-	private static final Material OSMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmium);
-	private static final Material AMETHYST = MaterialUtils.generateMaterialFromGtENUM(Materials.Amethyst);
-	private static final Material BISMUTH = MaterialUtils.generateMaterialFromGtENUM(Materials.Bismuth);
-	private static final Material PLUTONIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);
-	private static final Material URNAIUM235 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium235);
-	private static final Material INFUSEDGOLD = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedGold);
+	
+	private static final Material EMERALD = MaterialUtils.generateMaterialFromGtENUM(Materials.Emerald);
+	private static final Material DIAMOND = MaterialUtils.generateMaterialFromGtENUM(Materials.Diamond);
+	private static final Material BANDED_IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.BandedIron);
+	private static final Material LIM_YELLOW = MaterialUtils.generateMaterialFromGtENUM(Materials.YellowLimonite);
+	private static final Material LIM_BROWN = MaterialUtils.generateMaterialFromGtENUM(Materials.BrownLimonite);
+	private static final Material TETRAHEDRITE = MaterialUtils.generateMaterialFromGtENUM(Materials.Tetrahedrite);
+	private static final Material COAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Coal);
+	private static final Material SHIT_COAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Lignite);
+	private static final Material GRAPHITE = MaterialUtils.generateMaterialFromGtENUM(Materials.Graphite);
 	
 	
 	
 	public static WorldGen_GT_Australia_Ore_Layer BaseVein = new WorldGen_GT_Australia_Ore_Layer(
 			"veinA",
-			20, 40,
-			1,
+			0, 128,
+			5,
 			8,
-			128,
-			ELEMENT.getInstance().ALUMINIUM,
-			ELEMENT.getInstance().SILICON,
-			ELEMENT.getInstance().COPPER,
-			ELEMENT.getInstance().LEAD);
+			32,
+			ELEMENT.getInstance().IRON,
+			BANDED_IRON,
+			LIM_YELLOW,
+			TETRAHEDRITE);
 	
 	
 	
@@ -94,95 +56,98 @@ public class WorldGen_Australia_Ores {
 	
 	public static WorldGen_GT_Australia_Ore_Layer Vein1 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein1",
-			0, 60,
-			30,
+			0, 10,
+			1,
+			8,
 			16,
-			16,
-			ORES.AGARDITE_CD,
-			ORES.AGARDITE_LA,
-			ELEMENT.getInstance().SILICON,
-			ELEMENT.getInstance().BERYLLIUM);
+			EMERALD,
+			SHIT_COAL,
+			TOPAZ,
+			DIAMOND);
 	
 	public static WorldGen_GT_Australia_Ore_Layer Vein2 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein2",
-			0, 60,
-			30,
+			0, 128,
+			20,
 			16,
-			16,
-			ORES.AGARDITE_ND,
-			ORES.AGARDITE_Y,
-			PYRITE,
-			ORES.CERITE);
+			64,
+			COAL,
+			COAL,
+			SHIT_COAL,
+			SHIT_COAL);
 
 	public static WorldGen_GT_Australia_Ore_Layer Vein3 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein3",
-			0, 60,
-			30,
-			16,
+			0, 128,
+			5,
+			8,
 			32,
-			ORES.CERITE,
-			ORES.NICHROMITE,
-			PYROPE,
-			ORES.HIBONITE);
+			ELEMENT.getInstance().IRON,
+			ELEMENT.getInstance().TIN,
+			ELEMENT.getInstance().GOLD,
+			ELEMENT.getInstance().LEAD);
 
 	public static WorldGen_GT_Australia_Ore_Layer Vein4 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein4",
-			0, 60,
-			40,
-			16,
+			0, 128,
+			5,
+			8,
 			32,
-			ORES.GEIKIELITE,
-			ORES.CRYOLITE,
-			ORES.GADOLINITE_CE,
-			RUBY);
+			ELEMENT.getInstance().GOLD,
+			ELEMENT.getInstance().COPPER,
+			ELEMENT.getInstance().COBALT,
+			ALMANDINE);
 	
 	
 	
 	public static WorldGen_GT_Australia_Ore_Layer Vein5 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein5",
-			30, 128,
-			20,
+			0, 128,
+			15,
 			8,
-			64,
-			ORES.HIBONITE,
-			ORES.YTTRIALITE,
-			ORES.ZIRCONILITE,
-			ORES.CERITE);
+			16,
+			PYRITE,
+			PYROPE,
+			LIM_YELLOW,
+			CHALCOPYRITE);
+	
 	public static WorldGen_GT_Australia_Ore_Layer Vein6 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein6",
-			0, 40,
-			20,
+			0, 128,
+			5,
 			8,
-			64,
-			ORES.XENOTIME,
-			ORES.ZIRKELITE,
-			ORES.CROCROITE,
-			ALMANDINE);
+			32,
+			LIM_BROWN,
+			SAPPHIRE_GREEN,
+			ELEMENT.getInstance().IRON,
+			ELEMENT.getInstance().COPPER);
+	
 	public static WorldGen_GT_Australia_Ore_Layer Vein7 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein7",
-			40, 128,
-			20,
+			0, 128,
+			5,
 			8,
-			64,
+			32,
+			GRAPHITE,
 			RUBY,
-			TOPAZ,
-			ORES.SAMARSKITE_Y,
-			ORES.SAMARSKITE_YB);
+			LIM_YELLOW,
+			ELEMENT.getInstance().NICKEL);
+	
 	public static WorldGen_GT_Australia_Ore_Layer Vein8 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein8",
-			0, 40,
-			20,
+			0, 128,
+			5,
 			8,
-			64,
-			ORES.TITANITE,
-			ORES.ZIMBABWEITE,
-			ORES.ZIRCON,
-			ORES.FLORENCITE);
+			32,
+			ELEMENT.getInstance().IRON,
+			SAPPHIRE_BLUE,
+			LIM_YELLOW,
+			GRAPHITE);
 	
 	
 	
 
-	public static WorldGen_GT_Australia_Ore_Layer Vein9 = new WorldGen_GT_Australia_Ore_Layer(
+	/*public static WorldGen_GT_Australia_Ore_Layer Vein9 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein9",
 			10, 30,
 			20,
@@ -223,9 +188,9 @@ public class WorldGen_Australia_Ores {
 			CHALCOPYRITE,
 			ORES.HIBONITE);
 	
-	/**
+	*//**
 	 * Best Rarest Veins 2017
-	 */
+	 *//*
 	
 	public static WorldGen_GT_Australia_Ore_Layer Vein13 = new WorldGen_GT_Australia_Ore_Layer(
 			"vein13",
@@ -290,7 +255,7 @@ public class WorldGen_Australia_Ores {
 			ORES.GADOLINITE_CE,
 			ORES.GADOLINITE_Y,
 			ORES.AGARDITE_LA,
-			ORES.AGARDITE_CD);
+			ORES.AGARDITE_CD);*/
 	
 	
 	
@@ -299,12 +264,12 @@ public class WorldGen_Australia_Ores {
 			1024);
 	
 
-	public static volatile BoxedQuad<Integer, Integer, Integer, Integer> OreVein1 = new BoxedQuad(null, null, null, null);
+	public static volatile BoxedQuad<Integer, Integer, Integer, Integer> OreVein1 = new BoxedQuad<Integer, Integer, Integer, Integer>(null, null, null, null);
 	
 	static long ID = 0;
 	public static void generateValidOreVeins(){
-		//validOreveins.put(ID++, BaseVein);
-		/*
+		validOreveins.put(ID++, BaseVein);
+		
 		validOreveins.put(ID++, Vein1);
 		validOreveins.put(ID++, Vein2);
 		validOreveins.put(ID++, Vein3);
@@ -313,7 +278,8 @@ public class WorldGen_Australia_Ores {
 		validOreveins.put(ID++, Vein6);
 		validOreveins.put(ID++, Vein7);
 		validOreveins.put(ID++, Vein8);
-		validOreveins.put(ID++, Vein9);
+		
+		/*validOreveins.put(ID++, Vein9);
 		validOreveins.put(ID++, Vein10);
 		validOreveins.put(ID++, Vein11);
 		validOreveins.put(ID++, Vein12);

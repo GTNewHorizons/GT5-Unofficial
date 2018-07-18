@@ -44,6 +44,7 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
+import gtPlusPlus.core.item.tool.misc.GregtechPump;
 import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.lib.CORE;
@@ -265,6 +266,7 @@ public final class ModItems {
 	
 	public static Item itemBigEgg;
 
+	public static GregtechPump toolGregtechPump;
 
 	static {
 		Logger.INFO("Items!");
@@ -651,7 +653,13 @@ public final class ModItems {
 		metaItem2.registerItem(3, "Test Item 3", 1000765000, 4, "I Hold EU 3.", 32000);
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
-
+		
+		toolGregtechPump = new GregtechPump();
+		toolGregtechPump.registerPumpType(0, "Simple Hand Pump", 32000, 0);
+		toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 128000, 1);
+		toolGregtechPump.registerPumpType(2, "Super Hand Pump", 512000, 2);
+		toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 1024000, 3);
+		
 		//Create Multi-tools
 		ItemsMultiTools.load();
 
