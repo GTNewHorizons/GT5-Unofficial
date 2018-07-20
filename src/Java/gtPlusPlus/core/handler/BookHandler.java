@@ -81,6 +81,12 @@ public class BookHandler {
 								"Allows Insertation/Removal of power from the rear face of the controller, swap with a screwdriver."+"\n"+
 								"Variable Height Structure, between 4-16Y. Inserted Redox Cells dictate max energy tier of structure."+"\n",
 								//Page 6
+								"Redox Cells cannot be placed into the Top or Bottom layer and only take up 3xhx3 internally."+"\n"+
+								"Different Tier cells CANNOT be mixed together."+"\n",
+								//Page 7
+								"All Hatches Must be HV at a Minimum, this minimum tier is in place to stop people abusing ULV/LV hatches to lower the avg/t."+"\n"+
+								"Currently the GUI will NOT display anything at all until the structure forms, this is a known bug."+"\n",
+								//Page 8
 								"Valid Hatches:\n"+
 								"Energy Hatch,\n"+
 								"Dynamo Hatch,\n"+
@@ -88,7 +94,7 @@ public class BookHandler {
 								"Discharging Bus,\n"+
 								"Dynamo Buffer,\n"+
 								"Multi-Amp Dynamo Hatch.\n\n\n"+
-								"Structure MUST contain at least one input and one output hatch."
+								"Structure MUST contain at least one energy input and one energy output hatch."
 				});
 
 		//Test Novel

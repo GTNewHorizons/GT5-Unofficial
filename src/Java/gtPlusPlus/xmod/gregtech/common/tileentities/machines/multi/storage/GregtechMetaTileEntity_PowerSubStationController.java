@@ -68,6 +68,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
 				"Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2) + "",
 				"Hatches can be placed nearly anywhere",
+				"HV Energy/Dynamo Hatches are the lowest tier you can use",
 				"Controller (Bottom, Centre)",
 				"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
 				"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
@@ -266,6 +267,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				checkMachineProblem("Energy hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}
+			if(tier < 512) {
+				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
+				return false;
+			}
 			totalEuThroughput += re.maxEUInput();
 			hatchCount++;
 		}
@@ -274,6 +279,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			long tier = re.getInputTier();
 			if(tier > tOverallCellTier) {
 				checkMachineProblem("Dynamo hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
+				return false;
+			}
+			if(tier < 512) {
+				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}
 			totalEuThroughput += re.maxEUOutput();
