@@ -212,6 +212,16 @@ public class CoreItem extends Item
 		}
 	}
 
+	@Override
+	public boolean isDamageable() {
+		return false;
+	}
+
+	@Override
+	public boolean isRepairable() {
+		return false;
+	}
+
 /*	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
 		if ((this.itemName == null) || this.itemName.equals("")) {

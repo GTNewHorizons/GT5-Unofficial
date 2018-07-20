@@ -268,6 +268,8 @@ public final class ModItems {
 
 	public static GregtechPump toolGregtechPump;
 
+	public static Item itemGenericToken;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -278,7 +280,8 @@ public final class ModItems {
 	public static final void init(){
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 		itemBigEgg = new ItemGiantEgg("itemBigEgg", "Ginourmous Chicken Egg", tabMisc, 64, 0, "I had best try disassemble this.. for science!", "fuelLargeChickenEgg", 5000, 0).setTextureName(CORE.MODID + ":itemBigEgg");
-
+		itemGenericToken = new ItemGenericToken();
+		
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
@@ -925,5 +928,14 @@ public final class ModItems {
 		//GameRegistry.registerItem(ItemBlockGtFrameBox, "itemGtFrameBoxSet1");
 
 		itemCustomBook = new ItemBaseBook();
+		registerCustomTokens();
+	}
+	
+	public static void registerCustomTokens() {
+		ItemGenericToken.register(0, "Bit-Coin", 16, "Can be used on the dark web");
+		ItemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
+		ItemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
+		ItemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
+		ItemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 	}
 }
