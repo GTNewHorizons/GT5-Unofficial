@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -72,14 +73,14 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		if (tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
 			return true;
 		} else {
-			return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
+			//return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
+			return false;
 		}
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-		// TODO Auto-generated method stub
-		return super.onItemRightClick(p_77659_1_, p_77659_2_, p_77659_3_);
+		return p_77659_1_;
 	}
 
 	/**
@@ -696,11 +697,19 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	 * IFluidContainer Functions
 	 */
 
-	public void emptyStoredFluid(ItemStack aStack) {
-		String fluidname = "@@@@@";
-		int amount = 0;
-		NBTUtils.setString(aStack, "mFluid", fluidname);
-		NBTUtils.setInteger(aStack, "mFluidAmount", amount);
+	public void emptyStoredFluid(ItemStack aStack) {		
+		if (aStack.hasTagCompound()) {
+			NBTTagCompound t = aStack.getTagCompound();
+			if (t.hasKey("mInit")) {
+				t.removeTag("mInit");
+			}
+			if (t.hasKey("mFluid")) {
+				t.removeTag("mFluid");
+			}
+			if (t.hasKey("mFluidAmount")) {
+				t.removeTag("mFluidAmount");
+			}
+		}		
 	}
 
 	public void storeFluid(ItemStack aStack, FluidStack aFluid) {
@@ -902,8 +911,20 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				return false;
 			} else {
 				int aTier = (aStack.getItemDamage() - 1000);
-
-				if (this.getCharge(aStack) <= 0 && aTier > 1) {
+				int removal;
+				if (aTier == 0) {
+					removal = 0;
+				} else if (aTier == 1) {
+					removal = 32;
+				} else if (aTier == 2) {
+					removal = 128;
+				} else if (aTier == 3) {
+					removal = 512;
+				} else {
+					removal = 8;
+				}
+				if (!canUse(aStack, removal) && aTier > 0) {
+					PlayerUtils.messagePlayer(aPlayer, "Not enough power.");
 					Logger.INFO("No Power");
 					return false;
 				}
@@ -918,18 +939,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				} else {
 					double aCharge = this.getCharge(aStack);
 					boolean didDrain;
-					int removal;
-					if (aTier == 0) {
-						removal = 0;
-					} else if (aTier == 1) {
-						removal = 32;
-					} else if (aTier == 2) {
-						removal = 128;
-					} else if (aTier == 3) {
-						removal = 512;
-					} else {
-						removal = 8;
-					}
 					if (aTier > 0 && aCharge > 0) {
 						if (discharge(aStack, removal, aTier, true, true, false) > 0) {
 							didDrain = true;
@@ -981,7 +990,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 						}
 						boolean b = setStoredFluidOfVanillaTank(tTileEntity, newStackRemainingInTank);
 						Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
-						Logger.INFO("Returning " + b + " - drainTankVanilla.");
+						Logger.INFO("Returning " + b + " - drainTankVanilla.");						
+						if (b) {
+							PlayerUtils.messagePlayer(aPlayer, "Drained "+mAmountInserted+"L of "+aStored.getLocalizedName()+".");
+						}						
 						return b;
 					}
 				} else {
@@ -1028,7 +1040,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 							}
 							boolean b = setStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity, newStackRemainingInTank);
 							Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
-							Logger.INFO("Returning " + b + " - drainTankGT.");
+							Logger.INFO("Returning " + b + " - drainTankGT.");				
+							if (b) {
+								PlayerUtils.messagePlayer(aPlayer, "Drained "+mAmountInserted+"L of "+aStored.getLocalizedName()+".");
+							}			
 							return b;
 						}
 					} else {

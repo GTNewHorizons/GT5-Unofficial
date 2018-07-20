@@ -747,10 +747,7 @@ public class RECIPES_GREGTECH {
 				ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
 
-	private static void fluidExtractorRecipes() {
-		//Ender Fluid
-		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), null,
-				FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);		
+	private static void fluidExtractorRecipes() {		
 		//FLiBe fuel
 		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 1), null,
 				FluidUtils.getFluidStack("molten.li2bef4", 144), 10000, 100, 500);

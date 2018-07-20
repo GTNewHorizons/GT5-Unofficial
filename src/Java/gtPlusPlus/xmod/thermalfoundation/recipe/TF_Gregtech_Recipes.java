@@ -49,6 +49,9 @@ public class TF_Gregtech_Recipes {
 		Logger.INFO("Adding Recipes for Blazing Pyrotheum");
 		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);
 		
+		//Ender Fluid
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), GT_Values.NI, getFluidStack("ender", 250), 10000, 100, 30);
+		
 
 		ItemStack dustCoal = ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 1);
 		ItemStack dustSulfur = ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1);
