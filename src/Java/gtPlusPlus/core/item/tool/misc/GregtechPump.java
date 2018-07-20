@@ -25,6 +25,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
@@ -49,7 +50,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
@@ -66,11 +69,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		if (aStack == null || aPlayer == null || aWorld == null || aWorld.isRemote) {
 			return false;
 		}
-		if (tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)){
-			return true;		
-		}
-		else {
-			return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);				
+		if (tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
+			return true;
+		} else {
+			return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
 		}
 	}
 
@@ -154,7 +156,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 			final boolean Effect) {
 		this.addItem(id, localizedName, EnumChatFormatting.YELLOW + "Electric", new Object[] {});
 		if (euStorage > 0 && tier > 0)
-		this.setElectricStats(this.mOffset + id, euStorage, GT_Values.V[tier], tier, -3L, true);
+			this.setElectricStats(this.mOffset + id, euStorage, GT_Values.V[tier], tier, -3L, true);
 		this.rarity.add(new Pair<>(id, regRarity));
 		this.itemName.add(new Pair<>(id, localizedName));
 		this.itemDescription.add(new Pair<>(id, description));
@@ -189,14 +191,14 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 					+ this.itemDescription.get(aStack.getItemDamage() - this.mOffset).getValue());
 		}
 
-		if (aStack.getItemDamage()-1000 > 0) {
-			final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
-					tString = GT_LanguageManager.getTranslation(tKey);
-			if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) {
-				aList.add(tString);
-			}
-		}
 
+		if (aStack.getItemDamage() - 1000 <= 3) {
+			FluidStack f = getFluid(aStack);
+			aList.add("Can also drain any other standard fluid container block.");
+			aList.add(EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
+			aList.add(EnumChatFormatting.BLUE + (f != null ? ""+f.amount : ""+0) + "L" + " / " + getCapacity(aStack) + "L");
+		}
+		
 		final Long[] tStats = this.getElectricStats(aStack);
 		if (tStats != null) {
 			if (tStats[3] > 0) {
@@ -215,12 +217,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				}
 			}
 		}
-		
 
-		FluidStack f = getFluid(aStack);
-		aList.add(""+EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
-		aList.add(""+EnumChatFormatting.BLUE + (f != null ? f.amount : 0) + "L" + " / " + getCapacity(aStack)+"L");
-		
 		final ArrayList<IItemBehaviour<GregtechPump>> tList = this.mItemBehaviors.get((short) this.getDamage(aStack));
 		if (tList != null) {
 			for (final IItemBehaviour<GregtechPump> tBehavior : tList) {
@@ -794,7 +791,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				if (aStoredFluid.isFluidEqual(resource)) {
 					Logger.INFO("Found matching fluids.");
 					int aSpaceLeft = (aCapacity - aStoredAmount);
-					Logger.INFO("Capacity: "+aCapacity+" | Stored: "+aStoredAmount+" | Space left: "+aSpaceLeft);
+					Logger.INFO(
+							"Capacity: " + aCapacity + " | Stored: " + aStoredAmount + " | Space left: " + aSpaceLeft);
 					FluidStack toConsume;
 					int amountToConsume = 0;
 					if (resource.amount >= aSpaceLeft) {
@@ -804,18 +802,16 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 						amountToConsume = resource.amount;
 						Logger.INFO("Less fluid than container space");
 					}
-					Logger.INFO("Amount to consume: "+amountToConsume);
-					toConsume = FluidUtils.getFluidStack(resource, (aStoredAmount+amountToConsume));
-					if (toConsume != null && amountToConsume > 0) {						
+					Logger.INFO("Amount to consume: " + amountToConsume);
+					toConsume = FluidUtils.getFluidStack(resource, (aStoredAmount + amountToConsume));
+					if (toConsume != null && amountToConsume > 0) {
 						Logger.INFO("Storing Fluid");
 						storeFluid(container, toConsume);
 						return amountToConsume;
+					} else {
+						Logger.INFO("Not storing fluid");
 					}
-					else {
-						Logger.INFO("Not storing fluid");						
-					}
-				}
-				else {
+				} else {
 					Logger.INFO("Fluids did not match.");
 				}
 			}
@@ -905,8 +901,9 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 			if (aWorld.isRemote || aStack == null) {
 				return false;
 			} else {
+				int aTier = (aStack.getItemDamage() - 1000);
 
-				if (this.getCharge(aStack) <= 0) {
+				if (this.getCharge(aStack) <= 0 && aTier > 1) {
 					Logger.INFO("No Power");
 					return false;
 				}
@@ -918,47 +915,37 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 				if (tTileEntity == null) {
 					return false;
-				}
-				else {
+				} else {
 					double aCharge = this.getCharge(aStack);
-					int aTier = (aStack.getItemDamage()-1000);
 					boolean didDrain;
 					int removal;
 					if (aTier == 0) {
 						removal = 0;
-					}
-					else if (aTier == 1) {
+					} else if (aTier == 1) {
 						removal = 32;
-					}
-					else if (aTier == 2) {
+					} else if (aTier == 2) {
 						removal = 128;
-					}
-					else if (aTier == 3) {
+					} else if (aTier == 3) {
 						removal = 512;
+					} else {
+						removal = 8;
 					}
-					else {
-						removal = 8;						
-					}					
-					if (aTier > 0 && aCharge > 0) {						
+					if (aTier > 0 && aCharge > 0) {
 						if (discharge(aStack, removal, aTier, true, true, false) > 0) {
-							didDrain = true;							
-						}
-						else {
+							didDrain = true;
+						} else {
 							didDrain = false;
-						}						
-					}
-					else if (aTier == 0) {
+						}
+					} else if (aTier == 0) {
 						didDrain = true;
-					}
-					else {
+					} else {
 						didDrain = false;
 					}
 
 					if (didDrain) {
 						if ((tTileEntity instanceof IGregTechTileEntity)) {
 							return this.drainTankGT(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
-						}
-						else if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
+						} else if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
 							return this.drainIFluidTank(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
 						}
 					}
@@ -973,23 +960,39 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	 * Vanilla IFluidTank
 	 */
 
-	public boolean drainIFluidTank(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
+	public boolean drainIFluidTank(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX,
+			int aY, int aZ) {
 		if (tTileEntity == null) {
+			Logger.INFO("Invalid Tile, somehow.");
 			return false;
 		}
 		if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
-			Logger.INFO("Right Clicking on Vanilla Tank Tile - Behaviour Class.");
-			if (((IGregTechTileEntity) tTileEntity).getTimer() < 50L) {
-				Logger.INFO("Returning False - Behaviour Class. Timer < 50");
-				return false;
-			} else if ((!aWorld.isRemote) && (!((IGregTechTileEntity) tTileEntity).isUseableByPlayer(aPlayer))) {
-				Logger.INFO("Returning True - Behaviour Class. NotUsable()");
-				return true;
-			} else {
+			if (this.getFluid(aStack) == null || (this.getFluid(aStack) != null && this.getFluid(aStack).amount < this.getCapacity(aStack))) {
 				Logger.INFO("Trying to find Stored Fluid - Behaviour Class.");
+				FluidStack aStored = getStoredFluidOfVanillaTank(tTileEntity);
+				if (aStored != null) {
+					int mAmountInserted = fill(aStack, aStored);
+					FluidStack newStackRemainingInTank;
+					if (mAmountInserted > 0) {
+						if (mAmountInserted == aStored.amount) {
+							newStackRemainingInTank = null;
+						} else {
+							newStackRemainingInTank = FluidUtils.getFluidStack(aStored, (aStored.amount - mAmountInserted));
+						}
+						boolean b = setStoredFluidOfVanillaTank(tTileEntity, newStackRemainingInTank);
+						Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
+						Logger.INFO("Returning " + b + " - drainTankVanilla.");
+						return b;
+					}
+				} else {
+					Logger.INFO("Found no valid Fluidstack - drainTankVanilla.");
+				}
 			}
-
+			else {
+				Logger.INFO("Pump is full.");
+			}
 		}
+		Logger.INFO("Could not drain vanilla tank.");
 		return false;
 	}
 
@@ -997,7 +1000,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	 * GT Tanks
 	 */
 
-	public boolean drainTankGT(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ) {
+	public boolean drainTankGT(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX,
+			int aY, int aZ) {
 		if (tTileEntity == null) {
 			return false;
 		}
@@ -1010,27 +1014,33 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 				Logger.INFO("Returning True - drainTankGT. NotUsable()");
 				return true;
 			} else {
-				Logger.INFO("Trying to find Stored Fluid - drainTankGT.");
-				FluidStack aStored = getStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity);
-				if (aStored != null) {
-					int mAmountInserted = fill(aStack, aStored);
-					FluidStack newStackRemainingInTank;
-					if (mAmountInserted == aStored.amount) {
-						newStackRemainingInTank = null;
+				if (this.getFluid(aStack) == null || (this.getFluid(aStack) != null && this.getFluid(aStack).amount < this.getCapacity(aStack))) {
+					Logger.INFO("Trying to find Stored Fluid - drainTankGT.");
+					FluidStack aStored = getStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity);
+					if (aStored != null) {
+						int mAmountInserted = fill(aStack, aStored);
+						FluidStack newStackRemainingInTank;
+						if (mAmountInserted > 0) {
+							if (mAmountInserted == aStored.amount) {
+								newStackRemainingInTank = null;
+							} else {
+								newStackRemainingInTank = FluidUtils.getFluidStack(aStored, (aStored.amount - mAmountInserted));
+							}
+							boolean b = setStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity, newStackRemainingInTank);
+							Logger.INFO("Cleared Tank? " + b + " | mAmountInserted: " + mAmountInserted);
+							Logger.INFO("Returning " + b + " - drainTankGT.");
+							return b;
+						}
 					} else {
-						newStackRemainingInTank = FluidUtils.getFluidStack(aStored,
-								(aStored.amount - mAmountInserted));
+						Logger.INFO("Found no valid Fluidstack - drainTankGT.");
 					}
-					boolean b = setStoredFluidOfGTMachine((IGregTechTileEntity) tTileEntity,
-							newStackRemainingInTank);
-					Logger.INFO("Cleared Tank? " + b +" | mAmountInserted: "+mAmountInserted);
-					Logger.INFO("Returning "+b+" - drainTankGT.");
-					return b;
-				} else {
-					Logger.INFO("Found no valid Fluidstack - drainTankGT.");
+				}
+				else {
+					Logger.INFO("Pump is full.");
 				}
 			}
 		}
+		Logger.INFO("Could not drain GT tank.");
 		return false;
 	}
 
@@ -1042,13 +1052,11 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		if (aTileEntity == null) {
 			return null;
 		} else if ((aTileEntity instanceof IFluidTank || aTileEntity instanceof IFluidHandler)) {
-			Logger.INFO("Tile Was instanceof Vanilla Tank.");			
 			if (aTileEntity instanceof IFluidTank) {
 				return getStoredFluidOfVanillaTank((IFluidTank) aTileEntity);
-			}
-			else {
+			} else {
 				return getStoredFluidOfVanillaTank((IFluidHandler) aTileEntity);
-			}			
+			}
 		} else {
 			return null;
 		}
@@ -1062,29 +1070,96 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	}
 
 	public FluidStack getStoredFluidOfVanillaTank(IFluidHandler aTileEntity) {
-		/*FluidStack f = aTileEntity.;
-		Logger.INFO("Returning Fluid stack from tile. Found: "
-				+ (f != null ? f.getLocalizedName() + " - " + f.amount + "L" : "Nothing"));
-		return f.copy();*/
-		return null;
+		if (aTileEntity instanceof IFluidTank) {
+			return getStoredFluidOfVanillaTank((IFluidTank) aTileEntity);
+		}
+		FluidStack f;
+		AutoMap<FluidTankInfo[]> m = new AutoMap<FluidTankInfo[]>();
+		for (int i = 0; i < 6; i++) {
+			m.put(aTileEntity.getTankInfo(ForgeDirection.getOrientation(i)));
+		}
+		if (m.get(0) != null && m.get(0)[0] != null && m.get(0)[0].fluid != null) {
+			return m.get(0)[0].fluid;
+		} else {
+			return null;
+		}
 	}
 
-	public boolean setStoredFluidOfVanillaTank(IGregTechTileEntity aTileEntity, FluidStack aSetFluid) {
+	public boolean setStoredFluidOfVanillaTank(TileEntity aTileEntity, FluidStack aSetFluid) {
 		Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [1]");
+
 		if (aTileEntity == null) {
 			return false;
 		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		;
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
-			Logger.INFO("Trying to clear Tile's tank. - Behaviour Class. [2]");
-			return setStoredFluidOfGTMachine((GT_MetaTileEntity_BasicTank) aMetaTileEntity, aSetFluid);
+		else if ((aTileEntity instanceof IFluidTank || aTileEntity instanceof IFluidHandler)) {
+			if (aTileEntity instanceof IFluidTank) {
+				Logger.INFO("Tile Was instanceof IFluidTank.");
+				FluidStack f = ((IFluidTank) aTileEntity).getFluid();
+				if (aSetFluid == null) {
+					aSetFluid = f;
+					aSetFluid.amount = 0;
+				}
+				int toDrain = (f.amount - aSetFluid.amount);
+				FluidStack newStack;
+				if (toDrain <= 0) {
+					newStack = f;
+				} else {
+					newStack = ((IFluidTank) aTileEntity).drain(toDrain, true);
+				}
+
+				if (newStack.isFluidEqual(aSetFluid) && newStack.amount == aSetFluid.amount) {
+					Logger.INFO("Removed fluid from vanilla IFluidTank successfully.");
+					return true;
+				} else {
+					Logger.INFO("Failed trying to remove fluid from vanilla IFluidTank.");
+					return false;
+				}
+			}
+			else {
+				Logger.INFO("Tile Was instanceof IFluidHandler.");
+				FluidStack containedStack = null;
+				if ((IFluidHandler) aTileEntity != null) {
+					FluidTankInfo[] a1 = (((IFluidHandler) aTileEntity).getTankInfo(ForgeDirection.UNKNOWN));
+					if (a1 != null) {
+						if (a1[0] != null) {
+							Logger.INFO("Found Fluid in Tank.");
+							containedStack = a1[0].fluid;
+						}
+					}
+				}
+				if (containedStack != null) {
+					if (aSetFluid == null) {
+						aSetFluid = containedStack;
+						aSetFluid.amount = 0;
+					}
+					int toDrain = (containedStack.amount - aSetFluid.amount);
+					Logger.INFO("Found "+containedStack.amount+"L of "+containedStack.getLocalizedName()+". Trying to drain "+toDrain+"L.");
+					FluidStack newStack;
+					if (toDrain <= 0) {
+						Logger.INFO("Draining Nothing");
+						newStack = containedStack;
+					} else {
+						Logger.INFO("Draining Something");
+						newStack = ((IFluidTank) aTileEntity).drain(toDrain, true);
+					}
+
+					if (newStack.isFluidEqual(aSetFluid) && newStack.amount == aSetFluid.amount) {
+						Logger.INFO("Removed fluid from vanilla IFluidHandler successfully.");
+						return true;
+					} else {
+						Logger.INFO("Failed trying to remove fluid from vanilla IFluidHandler.");
+						return false;
+					}
+				} else {
+					Logger.INFO("Could not drain vanilla tank, IFluidHandler claims there is no fluid.");
+					return false;
+				}
+			}
 		} else {
+			Logger.INFO("Bad Tank Tile to drain.");
 			return false;
 		}
+
 	}
 
 	/*

@@ -50,6 +50,7 @@ public class RECIPES_General {
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();
 			addCompressedObsidian();
+			addHandPumpRecipes();
 		}
 	}
 
@@ -281,6 +282,35 @@ public class RECIPES_General {
 
 		}
 		return true;
+	}
+	
+	private static boolean addHandPumpRecipes() {
+		boolean a[] = new boolean[4];		
+		a[0] = RecipeUtils.recipeBuilder(
+				CI.electricPump_LV, "circuitBasic", null,
+				"ringBrass", CI.electricMotor_LV, "circuitBasic",
+				"plateSteel", "plateSteel", "rodBrass",
+				ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1));	
+		Logger.INFO("Added recipe for Hand Pump I - "+a[0]);
+		a[1] = RecipeUtils.recipeBuilder(
+				CI.electricPump_MV, "circuitAdvanced", null,
+				"ringMagnalium", CI.electricMotor_MV, "circuitAdvanced",
+				"plateAluminium", "plateAluminium", "rodMagnalium",
+				ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1));	
+		Logger.INFO("Added recipe for Hand Pump II - "+a[1]);	
+		a[2] = RecipeUtils.recipeBuilder(
+				CI.electricPump_HV, "circuitData", null,
+				"ringChrome", CI.electricMotor_HV, "circuitData",
+				"plateStainlessSteel", "plateStainlessSteel", "rodChrome",
+				ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1));		
+		Logger.INFO("Added recipe for Hand Pump III - "+a[2]);
+		a[3] = RecipeUtils.recipeBuilder(
+				CI.electricPump_EV, "circuitElite", null,
+				"ringTitanium", CI.electricMotor_EV, "circuitElite",
+				"plateStungstenSteel", "plateTungstenSteel", "rodTitanium",
+				ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1));	
+		Logger.INFO("Added recipe for Hand Pump IV - "+a[3]);	
+		return a[0] && a[1] && a[2] && a[3];		
 	}
 
 
