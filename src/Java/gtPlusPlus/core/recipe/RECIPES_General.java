@@ -284,39 +284,40 @@ public class RECIPES_General {
 		return true;
 	}
 	
-	private static boolean addHandPumpRecipes() {
-		boolean a[] = new boolean[4];		
-		a[0] = RecipeUtils.recipeBuilder(
+	private static void addHandPumpRecipes() {
+		/*if (RecipeUtils.recipeBuilder(
 				CI.electricPump_LV, "circuitBasic", null,
 				"ringBrass", CI.electricMotor_LV, "circuitBasic",
 				"plateSteel", "plateSteel", "rodBrass",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1));	
-		Logger.INFO("Added recipe for Hand Pump I - "+a[0]);
-		a[1] = RecipeUtils.recipeBuilder(
+				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1)))	
+		Logger.INFO("Added recipe for Hand Pump I - true");
+		if (RecipeUtils.recipeBuilder(
 				CI.electricPump_MV, "circuitAdvanced", null,
 				"ringMagnalium", CI.electricMotor_MV, "circuitAdvanced",
 				"plateAluminium", "plateAluminium", "rodMagnalium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1));	
-		Logger.INFO("Added recipe for Hand Pump II - "+a[1]);	
-		a[2] = RecipeUtils.recipeBuilder(
+				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1)))	
+		Logger.INFO("Added recipe for Hand Pump II - true");	
+		if (RecipeUtils.recipeBuilder(
 				CI.electricPump_HV, "circuitData", null,
 				"ringChrome", CI.electricMotor_HV, "circuitData",
 				"plateStainlessSteel", "plateStainlessSteel", "rodChrome",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1));		
-		Logger.INFO("Added recipe for Hand Pump III - "+a[2]);
-		a[3] = RecipeUtils.recipeBuilder(
+				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1)))		
+		Logger.INFO("Added recipe for Hand Pump III - true");
+		if (RecipeUtils.recipeBuilder(
 				CI.electricPump_EV, "circuitElite", null,
 				"ringTitanium", CI.electricMotor_EV, "circuitElite",
 				"plateStungstenSteel", "plateTungstenSteel", "rodTitanium",
-				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1));	
-		Logger.INFO("Added recipe for Hand Pump IV - "+a[3]);	
+				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1)))	
+		Logger.INFO("Added recipe for Hand Pump IV - true");*/	
+		
+		
 		
 		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1), 30, 30);
 		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1), 120, 120);
 		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1), 480, 480);
 		GT_Values.RA.addAssemblerRecipe(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), CI.getNumberedCircuit(20), ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1), 1820, 1820);
 		
-		return a[0] && a[1] && a[2] && a[3];		
+				
 	}
 
 

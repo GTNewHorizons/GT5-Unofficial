@@ -39,6 +39,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setStepSound(soundTypeStone);		
 		this.setBlockName("Ore"+Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
+		this.setBlockTextureName("stone");
 		try {			
 			GameRegistry.registerBlock(this, ItemBlockOre.class, Utils.sanitizeString("ore"+Utils.sanitizeString(this.blockMaterial.getLocalizedName())));
 			GT_OreDictUnificator.registerOre("ore"+Utils.sanitizeString(this.blockMaterial.getLocalizedName()), ItemUtils.getSimpleStack(this));

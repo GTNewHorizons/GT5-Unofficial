@@ -51,12 +51,13 @@ public class ItemGenericToken extends CoreItem {
 
 	public static boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript, EnumRarity aRarity,
 			EnumChatFormatting aCustomNameColour) {
-		int[][] sizes = new int[2][4];
+		int[][] sizes = new int[2][6];
 		sizes[0][0] = mLocalNames.size();
 		sizes[0][1] = mMaxStackSizes.size();
 		sizes[0][2] = mDescriptionArrays.size();
 		sizes[0][3] = mRarities.size();
 		sizes[0][4] = mCustomNameColours.size();
+		//sizes[0][5] = mIcons.size();
 		mLocalNames.put(id, aLocalName);
 		mMaxStackSizes.put(id, aMaxStack);
 		mDescriptionArrays.put(id, aDescript);
@@ -67,6 +68,7 @@ public class ItemGenericToken extends CoreItem {
 		sizes[1][2] = mDescriptionArrays.size();
 		sizes[1][3] = mRarities.size();
 		sizes[1][4] = mCustomNameColours.size();
+		//sizes[1][5] = mIcons.size();
 		boolean b = sizes[0][0] > sizes[1][0] && sizes[0][1] > sizes[1][1] && sizes[0][2] > sizes[1][2]
 				&& sizes[0][3] > sizes[1][3] && sizes[0][4] > sizes[1][4];
 		return b;
@@ -152,7 +154,7 @@ public class ItemGenericToken extends CoreItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public final void registerIcons(final IIconRegister aIconRegister) {
-		for (int i = 0, j = mIcons.size(); i < j; i++) {
+		for (int i = 0, j = mLocalNames.size(); i < j; i++) {
 			mIcons.put(i, aIconRegister.registerIcon(CORE.MODID + ":" + "token" + "/" + i));
 		}
 	}

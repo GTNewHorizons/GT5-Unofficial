@@ -932,7 +932,7 @@ public final class ModItems {
 	}
 	
 	public static void registerCustomTokens() {
-		ItemGenericToken.register(0, "Bit-Coin", 16, "Can be used on the dark web");
+		ItemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
 		ItemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
 		ItemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
 		ItemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");

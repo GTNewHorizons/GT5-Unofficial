@@ -71,11 +71,13 @@ public class ShapedRecipe {
 			if (aOutput != null && xNull < 9) {
 
 				for (ItemStack q : mBlackList) {
-					if (q.isItemEqual(aOutput)) {
-						Logger.RECIPE("Found recipe Alkalus is Debugging.");	
-					}					
+					if (q != null) {
+						if (q.isItemEqual(aOutput)) {
+							Logger.RECIPE("Found recipe Alkalus is Debugging.");	
+						}				
+					}
 				}
-				
+
 				Object[] mVarags2 = null;
 				Logger.RECIPE("Generating Shaped Crafting Recipe for "+aOutput.getDisplayName());
 
@@ -188,14 +190,14 @@ public class ShapedRecipe {
 					for (Pair<Character, Object> r : aRecipePairs) {			
 						char c = r.getKey();
 						Object o = r.getValue();	
-						
+
 						if (o instanceof ItemStack || o instanceof Item) {
 							if (o instanceof Item) {
 								o = ItemUtils.getSimpleStack((Item) o);
 							}
 							o = ((ItemStack) o).copy();
 						}
-						
+
 						mVarags2[counter2] = (char) c;
 						mVarags2[counter2+1] = o;	
 						counter2 += 2;
