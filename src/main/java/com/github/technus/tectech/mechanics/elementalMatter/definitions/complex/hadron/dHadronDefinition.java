@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition.getNbtTagCompound;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.transformation;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
@@ -324,7 +325,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         }
         try {
-            return new dHadronDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
+            return new dHadronDefinition(anti.toImmutable_optimized_unsafeLeavesExposedElementalTree());
         } catch (tElementalException e) {
             if (DEBUG_MODE) {
                 e.printStackTrace();
@@ -350,14 +351,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public NBTTagCompound toNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setByte("t", nbtType);
-        cElementalDefinitionStack[] quarkStacksValues = quarkStacks.values();
-        nbt.setInteger("i", quarkStacksValues.length);
-        for (int i = 0; i < quarkStacksValues.length; i++) {
-            nbt.setTag(Integer.toString(i), quarkStacksValues[i].toNBT());
-        }
-        return nbt;
+        return getNbtTagCompound(nbtType, quarkStacks);
     }
 
     public static dHadronDefinition fromNBT(NBTTagCompound nbt) {
@@ -426,6 +420,10 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public byte getClassType() {
+        return -64;
+    }
+
+    public static byte getClassTypeStatic(){
         return -64;
     }
 

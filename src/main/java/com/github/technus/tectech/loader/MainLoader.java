@@ -244,14 +244,14 @@ public final class MainLoader {
         //todo add GC GS stuff
     }
 
-    public static void addAfterPostLoad() {
+    public static void addAfterGregTechPostLoadRunner() {
         GregTech_API.sAfterGTPostload.add(new Runnable() {
             @Override
             public void run() {
                 if(TecTech.configTecTech.NERF_FUSION) {
                     FixBrokenFusionRecipes();
                 }
-                GT_MetaTileEntity_EM_collider.heliumPlasmaValue = getFuelValue(Materials.Helium.getPlasma(125));
+                GT_MetaTileEntity_EM_collider.setValues(getFuelValue(Materials.Helium.getPlasma(125)));
             }
         });
     }
@@ -290,7 +290,21 @@ public final class MainLoader {
                 if (DEBUG_MODE) {
                     LOGGER.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
                 }
-                r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
+                r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidOutputs[0].amount);
+            }
+            fluid = binds.get(r.mFluidInputs[0].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[0].getUnlocalizedName());
+                }
+                r.mFluidInputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
+            }
+            fluid = binds.get(r.mFluidInputs[1].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[1].getUnlocalizedName());
+                }
+                r.mFluidInputs[1] = new FluidStack(fluid, r.mFluidInputs[1].amount);
             }
         }
     }

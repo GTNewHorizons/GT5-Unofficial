@@ -1092,27 +1092,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     @Override
     public void stopMachine() {
-        if (outputEM != null) {
-            float mass = 0;
-            for (cElementalInstanceStackMap tree : outputEM) {
-                if (tree != null) {
-                    mass += tree.getMass();
-                }
-            }
-            if (mass > 0) {
-                if (eMufflerHatches.size() < 1) {
-                    explodeMultiblock();
-                } else {
-                    mass /= eMufflerHatches.size();
-                    for (GT_MetaTileEntity_Hatch_OverflowElemental dump : eMufflerHatches) {
-                        if (dump.addOverflowMatter(mass)) {
-                            explodeMultiblock();
-                        }
-                    }
-                }
-            }
-            outputEM = null;
-        }
+        cleanOrExplode();
 
         for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
             data.q = null;
@@ -1134,6 +1114,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      * helper method so i don't have to set that params to nothing at all times
      */
     protected void afterRecipeCheckFailed(){
+        cleanOrExplode();
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
+            data.q = null;
+        }
+
+        mOutputItems = null;
+        mOutputFluids = null;
+        mEfficiency = 0;
+        mEfficiencyIncrease = 0;
+        mProgresstime = 0;
+        mMaxProgresstime = 0;
+        eAvailableData = 0;
+        //getBaseMetaTileEntity().disableWorking(); //can add in override
+        //hatchesStatusUpdate_EM(); //called always after recipe checks
+    }
+
+    private void cleanOrExplode() {
         if (outputEM != null) {
             float mass = 0;
             for (cElementalInstanceStackMap tree : outputEM) {
@@ -1155,20 +1153,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             outputEM = null;
         }
-
-        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
-            data.q = null;
-        }
-
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEfficiency = 0;
-        mEfficiencyIncrease = 0;
-        mProgresstime = 0;
-        //mMaxProgresstime = 0; //Done after this - cos it is VITAL!
-        eAvailableData = 0;
-        //getBaseMetaTileEntity().disableWorking();
-        //hatchesStatusUpdate_EM(); //called always after recipe checks
     }
 
     /**
@@ -1689,7 +1673,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
                                         }else {
                                             afterRecipeCheckFailed();
-                                            mMaxProgresstime=0;//Just to be sure...
                                         }
                                         updateSlots();
                                     } else {
@@ -1705,7 +1688,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000));
                                 }else {
                                     afterRecipeCheckFailed();
-                                    mMaxProgresstime=0;//Just to be sure...
                                 }
                                 updateSlots();
                             } //else notAllowedToWork_stopMachine_EM(); //it is already stopped here

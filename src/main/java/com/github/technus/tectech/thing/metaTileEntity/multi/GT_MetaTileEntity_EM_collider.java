@@ -2,9 +2,19 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.dComplexAspectDefinition;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalMutableDefinitionStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.cElementalPrimitive;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.hadron.dHadronDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.eQuarkDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
@@ -21,6 +31,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.HashMap;
+
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
@@ -32,12 +44,231 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    public static long heliumPlasmaValue;
+    private static Textures.BlockIcons.CustomIcon ScreenON_Slave;
+    private static Textures.BlockIcons.CustomIcon ScreenOFF_Slave;
 
-    private byte eTier = 0;
+    private static double MASS_TO_EU_PARTIAL,MASS_TO_EU_INSTANT;
+    private static int STARTUP_COST,KEEPUP_COST;
 
-    protected long startupCost=10_000_000_000L;
-    protected double currentVelocity=-1,targetVelocity=-1;
+    private long plasmaEnergy;
+
+    public static void setValues(int heliumPlasmaValue){
+        MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
+        MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
+        STARTUP_COST=-heliumPlasmaValue*10000;
+        KEEPUP_COST=-heliumPlasmaValue;
+    }
+
+    //region collision handlers
+    public static final HashMap<Integer, ColliderHandler> FUSE_HANDLERS =new HashMap<>();
+    public static final HashMap<String, PrimitiveColliderHandler> PRIMITIVE_FUSE_HANDLERS =new HashMap<>();
+    public interface PrimitiveColliderHandler {
+        void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out);
+    }
+    public interface ColliderHandler extends PrimitiveColliderHandler {
+        byte getRequiredTier();
+    }
+    static {
+        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | dAtomDefinition.getClassTypeStatic(), new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                try {
+                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                    defs.putUnifyAll(in1.definition.getSubParticles());
+                    defs.putUnifyAll(in2.definition.getSubParticles());
+                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    out.putUnify(new cElementalInstanceStack(atom,Math.min(in1.amount,in2.amount)));
+                }catch (Exception e){
+                    out.putUnifyAll(in1,in2);
+                    return;
+                }
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 1;
+            }
+        });
+        registerSimpleAtomFuse(dHadronDefinition.getClassTypeStatic());
+        registerSimpleAtomFuse(dComplexAspectDefinition.getClassTypeStatic());
+        registerSimpleAtomFuse(cElementalPrimitive.getClassTypeStatic());
+
+        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | dHadronDefinition.getClassTypeStatic(), new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                try {
+                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                    defs.putUnifyAll(in1.definition.getSubParticles());
+                    defs.putUnifyAll(in2.definition.getSubParticles());
+                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    out.putUnify(new cElementalInstanceStack(hadron,Math.min(in1.amount,in2.amount)));
+                }catch (Exception e){
+                    out.putUnifyAll(in1,in2);
+                    return;
+                }
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 2;
+            }
+        });
+        FUSE_HANDLERS.put((dHadronDefinition.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                try {
+                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                    defs.putUnifyAll(in1.definition.getSubParticles());
+                    defs.putUnify(in2.definition.getStackForm(1));
+                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    out.putUnify(new cElementalInstanceStack(hadron,Math.min(in1.amount,in2.amount)));
+                }catch (Exception e){
+                    out.putUnifyAll(in1,in2);
+                    return;
+                }
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 2;
+            }
+        });
+
+        registerSimpleAspectFuse(dComplexAspectDefinition.getClassTypeStatic());
+        registerSimpleAspectFuse(cElementalPrimitive.getClassTypeStatic());
+
+        FUSE_HANDLERS.put((cElementalPrimitive.getClassTypeStatic() << 16) | cElementalPrimitive.getClassTypeStatic(), new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                PrimitiveColliderHandler collisionHandler= PRIMITIVE_FUSE_HANDLERS.get(in1.definition.getClass().getName()+'\0'+in2.definition.getClass().getName());
+                if (collisionHandler != null) {
+                    collisionHandler.collide(in2, in1, out);
+                } else {
+                    out.putUnifyAll(in1,in2);
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 2;
+            }
+        });
+
+        PRIMITIVE_FUSE_HANDLERS.put(eQuarkDefinition.class.getName() + '\0' + eQuarkDefinition.class.getName(), new PrimitiveColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                try {
+                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                    defs.putUnify(in1.definition.getStackForm(1));
+                    defs.putUnify(in2.definition.getStackForm(1));
+                    dHadronDefinition hadron = new dHadronDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    out.putUnify(new cElementalInstanceStack(hadron,Math.min(in1.amount,in2.amount)));
+                }catch (Exception e){
+                    out.putUnifyAll(in1,in2);
+                    return;
+                }
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+        });
+        PRIMITIVE_FUSE_HANDLERS.put(ePrimalAspectDefinition.class.getName() + '\0' + ePrimalAspectDefinition.class.getName(), new PrimitiveColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                if (fuseAspects(in1, in2, out)) return;
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+        });
+    }
+
+    private static boolean fuseAspects(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+        try {
+            cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+            defs.putUnify(in1.definition.getStackForm(1));
+            defs.putUnify(in2.definition.getStackForm(1));
+            dComplexAspectDefinition aspect = new dComplexAspectDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+            out.putUnify(new cElementalInstanceStack(aspect,Math.min(in1.amount,in2.amount)));
+        }catch (Exception e){
+            out.putUnifyAll(in1,in2);
+            return true;
+        }
+        return false;
+    }
+
+    private static void registerSimpleAspectFuse(byte classTypeStatic) {
+        FUSE_HANDLERS.put((dComplexAspectDefinition.getClassTypeStatic() << 16) | classTypeStatic, new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                if (fuseAspects(in1, in2, out)) return;
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 1;
+            }
+        });
+    }
+
+    private static void registerSimpleAtomFuse(byte classTypeStatic) {
+        FUSE_HANDLERS.put((dAtomDefinition.getClassTypeStatic() << 16) | classTypeStatic, new ColliderHandler() {
+            @Override
+            public void collide(cElementalInstanceStack in1, cElementalInstanceStack in2, cElementalInstanceStackMap out) {
+                try {
+                    cElementalMutableDefinitionStackMap defs=new cElementalMutableDefinitionStackMap();
+                    defs.putUnifyAll(in1.definition.getSubParticles());
+                    defs.putUnify(in2.definition.getStackForm(1));
+                    dAtomDefinition atom = new dAtomDefinition(defs.toImmutable_optimized_unsafeLeavesExposedElementalTree());
+                    out.putUnify(new cElementalInstanceStack(atom,Math.min(in1.amount,in2.amount)));
+                }catch (Exception e){
+                    out.putUnifyAll(in1,in2);
+                    return;
+                }
+                if(in1.amount>in2.amount){
+                    out.putUnify(new cElementalInstanceStack(in1.definition,in1.amount-in2.amount));
+                }else if (in2.amount>in1.amount){
+                    out.putUnify(new cElementalInstanceStack(in2.definition,in2.amount-in1.amount));
+                }
+            }
+
+            @Override
+            public byte getRequiredTier() {
+                return 1;
+            }
+        });
+    }
+    //endregion
+
+    protected byte eTier = 0;
+    protected cElementalInstanceStack stack;
+
+    protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
+    protected boolean started=false;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -106,13 +337,19 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public void registerIcons(IIconRegister aBlockIconRegister) {
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER");
         ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE");
+        ScreenOFF_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_SLAVE");
+        ScreenON_Slave = new Textures.BlockIcons.CustomIcon("iconsets/EM_COLLIDER_ACTIVE_SLAVE");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            if(aFacing%2==0){
+                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            }else{
+                return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new TT_RenderedTexture(aActive ? ScreenON_Slave : ScreenOFF_Slave)};
+            }
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
@@ -121,16 +358,22 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("eTier", eTier);//collider tier
-        aNBT.setDouble("eCurrentVelocity",currentVelocity);
-        aNBT.setDouble("eTargetVelocity",targetVelocity);
+        aNBT.setBoolean("eStarted",started);
+        if(stack!=null) {
+            aNBT.setTag("eStack", stack.toNBT());
+        }
+        aNBT.setLong("ePlasmaEnergy",plasmaEnergy);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         eTier = aNBT.getByte("eTier");//collider tier
-        currentVelocity=aNBT.getDouble("eCurrentVelocity");
-        targetVelocity=aNBT.getDouble("eTargetVelocity");
+        started=aNBT.getBoolean("eStarted");
+        if(aNBT.hasKey("eStack")){
+            stack=cElementalInstanceStack.fromNBT(aNBT.getCompoundTag("eStack"));
+        }
+        plasmaEnergy=aNBT.getLong("ePlasmaEnergy");
     }
 
     @Override
@@ -195,13 +438,19 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void parametersLoadDefault_EM() {
-        //setParameterPairIn_ClearOut(0,false,)
-    }
-
-    @Override
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        //setStatusOfParameterIn(0,0,);
+        if(isMaster()) {
+            double mode = getParameterIn(0, 0);
+            if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
+                setStatusOfParameterIn(0, 0, STATUS_OK);
+            } else if (mode > 1) {
+                setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
+            } else if (mode < 0) {
+                setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
+            }else{
+                setStatusOfParameterIn(0,0,STATUS_WRONG);
+            }
+        }
     }
 
     @Override
@@ -210,24 +459,110 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if(partner==null){
             return false;
         }
-        if(isMaster()){
-
+        mEfficiencyIncrease=10000;
+        if(started) {
+            if(stack==null) {
+                for (GT_MetaTileEntity_Hatch_InputElemental inputElemental : eInputHatches) {
+                    cElementalInstanceStackMap container = inputElemental.getContainerHandler();
+                    if (container.isEmpty()) {
+                        continue;
+                    }
+                    stack = container.remove(container.getFirst().definition);
+                    long eut = KEEPUP_COST+(long)(KEEPUP_COST * Math.abs(stack.getMass() / dAtomDefinition.getSomethingHeavy().getMass()))/2;
+                    if (eut < Integer.MIN_VALUE + 7) {
+                        return false;
+                    }
+                    mMaxProgresstime = 20;
+                    mEUt = (int) eut;
+                    eAmpereFlow = 5;
+                    return true;
+                }
+                mMaxProgresstime = 20;
+                mEUt = KEEPUP_COST;
+                eAmpereFlow = 1;
+                return true;
+            }
+            mMaxProgresstime = 20;
+            mEUt = KEEPUP_COST;
+            eAmpereFlow = 2;
+            return true;
         }else{
+            started=true;
+            mMaxProgresstime=20;
+            mEUt=STARTUP_COST;
+            eAmpereFlow=10;
+            return true;
+        }
+    }
 
+    protected double fuse(GT_MetaTileEntity_EM_collider partner){
+        if(partner.stack!=null && stack!=null) {//todo add single event mode as an option
+            boolean check=stack.definition.decayMakesEnergy(stack.getEnergy()) &&
+                    partner.stack.definition.decayMakesEnergy(partner.stack.getEnergy());
+
+            cElementalInstanceStack stack2 = partner.stack;
+            partner.stack = null;
+            double preMass = stack2.getMass() + stack.getMass();
+            //System.out.println("preMass = " + preMass);
+
+            cElementalInstanceStackMap map = new cElementalInstanceStackMap();
+            ColliderHandler colliderHandler;
+            if (stack2.definition.getClassType() > stack.definition.getClassType()) {//always bigger first
+                colliderHandler = FUSE_HANDLERS.get((stack2.definition.getClassType() << 16) | stack.definition.getClassType());
+                if (handleRecipe(stack2, map, colliderHandler)) return 0;
+            } else {
+                colliderHandler = FUSE_HANDLERS.get((stack.definition.getClassType() << 16) | stack2.definition.getClassType());
+                if (handleRecipe(stack2, map, colliderHandler)) return 0;
+            }
+            for (cElementalInstanceStack newStack : map.values()) {
+                check &= newStack.definition.decayMakesEnergy(newStack.getEnergy());
+            }
+            //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
+            outputEM = new cElementalInstanceStackMap[]{map};
+            return check ? preMass - map.getMass() :
+                    Math.min(preMass - map.getMass(), 0);
+        }
+        return 0;
+    }
+
+    private boolean handleRecipe(cElementalInstanceStack stack2, cElementalInstanceStackMap map, ColliderHandler colliderHandler) {
+        if (colliderHandler != null && eTier>= colliderHandler.getRequiredTier()) {
+            colliderHandler.collide(stack2, stack, map);
+        } else {
+            map.putUnifyAll(stack,stack2);
+            outputEM=new cElementalInstanceStackMap[]{map};
+            return true;
         }
         return false;
     }
 
     @Override
     protected void afterRecipeCheckFailed() {
-        currentVelocity=-1;
+        started=false;
+        if(stack!=null){
+            cleanMassEM_EM(stack.getMass());
+            stack=null;
+        }
+        getBaseMetaTileEntity().disableWorking();
         super.afterRecipeCheckFailed();
     }
 
     @Override
     public void stopMachine() {
-        currentVelocity=-1;
+        started=false;
+        if(stack!=null){
+            cleanMassEM_EM(stack.getMass());
+            stack=null;
+        }
         super.stopMachine();
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if(!aBaseMetaTileEntity.isAllowedToWork()){
+            started=false;
+        }
+        super.onPreTick(aBaseMetaTileEntity, aTick);
     }
 
     protected GT_MetaTileEntity_EM_collider getPartner(){
@@ -235,10 +570,15 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY*4;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
-        IGregTechTileEntity gregTechTileEntity=iGregTechTileEntity.getIGregTechTileEntityOffset(iGregTechTileEntity.getXCoord()+xDir,
-                iGregTechTileEntity.getYCoord()+yDir,
-                iGregTechTileEntity.getZCoord()+zDir);
-        return gregTechTileEntity instanceof GT_MetaTileEntity_EM_collider && ((GT_MetaTileEntity_EM_collider) gregTechTileEntity).mMachine && gregTechTileEntity.getBackFacing()==iGregTechTileEntity.getFrontFacing() ? (GT_MetaTileEntity_EM_collider)gregTechTileEntity:null;
+        IGregTechTileEntity gregTechBaseTileEntity=iGregTechTileEntity.getIGregTechTileEntityOffset(xDir, yDir, zDir);
+        if(gregTechBaseTileEntity!=null) {
+            IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
+            return gregTechMetaTileEntity instanceof GT_MetaTileEntity_EM_collider &&
+                    ((GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity).mMachine &&
+                    gregTechBaseTileEntity.getBackFacing() == iGregTechTileEntity.getFrontFacing() ?
+                    (GT_MetaTileEntity_EM_collider) gregTechMetaTileEntity : null;
+        }
+        return null;
     }
 
     protected final boolean isMaster(){
@@ -247,14 +587,61 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM(){
-        if(outputEM!=null) {
-            for(int i=0,lim=Math.min(outputEM.length,eOutputHatches.size());i<lim;i++){
-                if(outputEM[i]!=null) {
-                    eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
-                    outputEM[i]=null;
+        GT_MetaTileEntity_EM_collider partner=getPartner();
+        if(partner==null){
+            if(stack!=null){
+                cleanMassEM_EM(stack.getMass());
+                stack=null;
+            }
+            return;
+        }
+        if (isMaster()) {
+            switch (getParameterInInt(0,0)){
+                case FUSE_MODE:
+                    makeEU(fuse(partner));
+                    break;
+                case COLLIDE_MODE:
+                    //collide(partner);//todo
+                    break;
+                default: {
+                    outputEM=new cElementalInstanceStackMap[2];
+                    outputEM[1]=tickStack();
+                    if(outputEM[1]==null){
+                        outputEM[1]=partner.tickStack();
+                    }else {
+                        cElementalInstanceStackMap map=partner.tickStack();
+                        if(map!=null){
+                            outputEM[1].putUnifyAll(map);
+                        }
+                    }
+                }
+            }
+            if(outputEM!=null) {
+                for(int i=0,lim=Math.min(outputEM.length,eOutputHatches.size());i<lim;i++){
+                    if(outputEM[i]!=null) {
+                        eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+                        outputEM[i]=null;
+                    }
                 }
             }
         }
+    }
+
+    private void makeEU(double massDiff){
+        plasmaEnergy+=massDiff*MASS_TO_EU_INSTANT;
+    }
+
+    private cElementalInstanceStackMap tickStack(){
+        if(stack==null){
+            return null;
+        }
+        cElementalInstanceStackMap newInstances = stack.decay(1, stack.age += 1, 0);
+        if (newInstances == null) {
+            stack.nextColor();
+        } else {
+            stack=newInstances.remove(newInstances.getLast().definition);
+        }
+        return newInstances;
     }
 
     @Override

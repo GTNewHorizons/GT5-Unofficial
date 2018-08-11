@@ -201,6 +201,10 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         return -128;
     }
 
+    public static byte getClassTypeStatic(){
+        return -128;
+    }
+
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities)) {

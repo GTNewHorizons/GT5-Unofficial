@@ -110,6 +110,10 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public NBTTagCompound toNBT() {
+        return getNbtTagCompound(nbtType, aspectStacks);
+    }
+
+    public static NBTTagCompound getNbtTagCompound(byte nbtType, cElementalDefinitionStackMap aspectStacks) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setByte("t", nbtType);
         cElementalDefinitionStack[] quarkStacksValues = aspectStacks.values();
@@ -245,6 +249,10 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public byte getClassType() {
+        return -96;
+    }
+
+    public static byte getClassTypeStatic(){
         return -96;
     }
 

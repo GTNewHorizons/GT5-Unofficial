@@ -154,6 +154,22 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return lifeTimeMult;
     }
 
+    public cElementalInstanceStackMap tickStackByOneSecond(float lifeTimeMult, int postEnergize){
+        return tickStack(lifeTimeMult,postEnergize,1);
+    }
+
+    public cElementalInstanceStackMap tickStack(float lifeTimeMult, int postEnergize, int seconds){
+        cElementalInstanceStackMap newInstances = decay(lifeTimeMult, age += seconds, postEnergize);
+        if (newInstances == null) {
+            nextColor();
+        } else {
+            for (cElementalInstanceStack newInstance : newInstances.values()) {
+                newInstance.nextColor();
+            }
+        }
+        return newInstances;
+    }
+
     public cElementalInstanceStackMap decay() {
         return decay(1F, age, 0);//try to decay without changes
     }

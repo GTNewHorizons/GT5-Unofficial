@@ -313,7 +313,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public cElementalInstanceStack get(int i){
         Collection<cElementalInstanceStack> var = map.values();
-        return var.toArray(new cElementalInstanceStack[var.size()])[i];
+        return var.toArray(new cElementalInstanceStack[0])[i];
     }
 
     public String[] getElementalInfo() {
@@ -339,12 +339,12 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public cElementalInstanceStack[] values() {
         Collection<cElementalInstanceStack> var = map.values();
-        return var.toArray(new cElementalInstanceStack[var.size()]);
+        return var.toArray(new cElementalInstanceStack[0]);
     }
 
     public iElementalDefinition[] keys() {
         Set<iElementalDefinition> var = map.keySet();
-        return var.toArray(new iElementalDefinition[var.size()]);
+        return var.toArray(new iElementalDefinition[0]);
     }
 
     public float getMass() {
@@ -406,7 +406,6 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
                 removeAmount(false,instance);
                 for (cElementalInstanceStack newInstance : newInstances.values()) {
                     putUnify(newInstance);
-                    newInstance.nextColor();
                 }
             }
         }
