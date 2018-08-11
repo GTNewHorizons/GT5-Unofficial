@@ -64,16 +64,6 @@ public final class MainLoader {
     }
 
     public static void preLoad(){
-        //Set proper values in gt arrays
-        dyeLightBlue.mRGBa[0]=96;
-        dyeLightBlue.mRGBa[1]=128;
-        dyeLightBlue.mRGBa[2]=255;
-        dyeBlue.mRGBa[0]=0;
-        dyeBlue.mRGBa[1]=32;
-        dyeBlue.mRGBa[2]=255;
-        MACHINE_METAL.mRGBa[0]=210;
-        MACHINE_METAL.mRGBa[1]=220;
-        MACHINE_METAL.mRGBa[2]=255;
 
         //set expanded texture arrays for tiers
         try {
