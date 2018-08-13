@@ -77,8 +77,3 @@ out/
 .settings
 build/*
 bin/
-'.classpath'
-"
-.classpath"
-*
-.classpath
