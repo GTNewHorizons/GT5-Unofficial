@@ -24,7 +24,7 @@ public class DetravProPick extends DetravToolElectricProPickBase {
 	    		return 0.02F;
 	        return ((float) Math.pow(tier,((float)tier/5F)))/24F;*/
 	    	double x = tier+1;
-	    	return (float) ((float) 0.005D+Math.tanh(Math.pow(x,(x/8D))/25D)*(x/6D));
+	    	return (float) (((float) 0.005D+Math.tanh(Math.pow(x,(x/8D))/25D)*(x/6D))*1.25);
 	    }
 
 	    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {

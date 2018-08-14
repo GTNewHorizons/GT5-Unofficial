@@ -39,6 +39,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         addTool(14,"Prospector's Scanner(ZPM)","", new DetravProPick(7), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
         addTool(16,"Prospector's Scanner(UV)","", new DetravProPick(8), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
         addTool(18,"Prospector's Scanner(UHV)","", new DetravProPick(9), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.PERFODIO, 4L));
+
         addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolElectricProPick(6), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolElectricProPick(7), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolElectricProPick(8), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
@@ -46,8 +47,6 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
-    
-    
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         //getElectricStats()
         //super.addAdditionalToolTips();
@@ -60,13 +59,24 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             String name = aStack.getUnlocalizedName();
             String num = name.substring("gt.detrav.metatool.01.".length());
             int meta = Integer.parseInt(num);
+            int range = getHarvestLevel(aStack, "")/2+(meta/4);
+            if ((range % 2) == 0 ) {
+                range += 1;
+            }
             if (meta<100) {
                     aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + Long.toString(tMaxDamage - getToolDamage(aStack)) + " / " + Long.toString(tMaxDamage) + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + Integer.toString(getHarvestLevel(aStack, "")+(meta/4))+ "x"+Integer.toString(getHarvestLevel(aStack, "")+(meta/4)) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + 
+                        Integer.toString(range) + 
+                        "x"+
+                        Integer.toString(range) + 
+                        EnumChatFormatting.GRAY);
                     aList.add(tOffset + 3, EnumChatFormatting.ITALIC+ "Right click on rock for prospecting current chunk!" + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 4, EnumChatFormatting.ITALIC+ "Right click on bedrock for prospecting oil!" + EnumChatFormatting.GRAY);
-                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Chance of a successful scan: "+EnumChatFormatting.RESET+Integer.toString(((((1+meta)*7) <= 100)? ((1+meta)*7) : 100))+EnumChatFormatting.GRAY+"%");
+                    aList.add(tOffset + 5, EnumChatFormatting.ITALIC+ "Chance of a successful scan: "+EnumChatFormatting.RESET+Integer.toString(((((1+meta)*8) <= 100)? ((1+meta)*8) : 100))+EnumChatFormatting.GRAY+"%");
+                    aList.add(tOffset + 6, EnumChatFormatting.ITALIC+ "next to you (0 chunks away), close to you (1-2)");
+                    aList.add(tOffset + 7, EnumChatFormatting.ITALIC+ "at medium range (3-5), at long range (6-8), far away (9+)");
+
                     /*aList.add(tOffset + 4, "Traces: 1-9");
                     aList.add(tOffset + 5, "Small: 10-29");
                     aList.add(tOffset + 6, "Medium: 30-59");
