@@ -1240,6 +1240,11 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
+    public boolean fusionMakesEnergy(long energyLevel) {
+        return iaea!=null || iaeaDefinitionExistsAndHasEnergyLevels;
+    }
+
+    @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         //disembody
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();

@@ -45,6 +45,8 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract boolean decayMakesEnergy(long energyLevel);
 
+    public abstract  boolean fusionMakesEnergy(long energyLevel);
+
     public abstract float getEnergyDiffBetweenStates(long currentEnergy, long newEnergyLevel);//positive or negative
 
     public abstract float getMass();//mass... MeV/c^2

@@ -497,11 +497,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected double fuse(GT_MetaTileEntity_EM_collider partner){
         if(partner.stack!=null && stack!=null) {//todo add single event mode as an option
-            boolean check=stack.definition.decayMakesEnergy(stack.getEnergy()) &&
-                    partner.stack.definition.decayMakesEnergy(partner.stack.getEnergy());
+            boolean check=stack.definition.fusionMakesEnergy(stack.getEnergy()) &&
+                    partner.stack.definition.fusionMakesEnergy(partner.stack.getEnergy());
 
             cElementalInstanceStack stack2 = partner.stack;
-            partner.stack = null;
             double preMass = stack2.getMass() + stack.getMass();
             //System.out.println("preMass = " + preMass);
 
@@ -515,10 +514,14 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             for (cElementalInstanceStack newStack : map.values()) {
-                check &= newStack.definition.decayMakesEnergy(newStack.getEnergy());
+                check &= newStack.definition.fusionMakesEnergy(newStack.getEnergy());
             }
             //System.out.println("outputEM[0].getMass() = " + outputEM[0].getMass());
             outputEM = new cElementalInstanceStackMap[]{map};
+
+            partner.stack = stack = null;
+            //System.out.println("check = " + check);
+            //System.out.println("preMass-map.getMass() = " + (preMass - map.getMass()));
             return check ? preMass - map.getMass() :
                     Math.min(preMass - map.getMass(), 0);
         }
@@ -598,7 +601,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (isMaster()) {
             switch (getParameterInInt(0,0)){
                 case FUSE_MODE:
-                    makeEU(fuse(partner));
+                    fuse(partner);
                     break;
                 case COLLIDE_MODE:
                     //collide(partner);//todo
@@ -629,6 +632,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     private void makeEU(double massDiff){
         plasmaEnergy+=massDiff*MASS_TO_EU_INSTANT;
+        System.out.println("plasmaEnergy = " + plasmaEnergy);
     }
 
     private cElementalInstanceStackMap tickStack(){

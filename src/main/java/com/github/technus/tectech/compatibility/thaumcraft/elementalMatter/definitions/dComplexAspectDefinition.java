@@ -195,6 +195,11 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
+    public boolean fusionMakesEnergy(long energyLevel) {
+        return false;
+    }
+
+    @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         return noDecay;
     }
