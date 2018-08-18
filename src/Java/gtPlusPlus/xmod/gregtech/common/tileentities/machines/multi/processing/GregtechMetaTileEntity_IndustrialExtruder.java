@@ -22,7 +22,6 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.fluids.FluidStack;
@@ -127,7 +126,7 @@ extends GregtechMeta_MultiBlockBase {
 					return true;
 				}
 			}			
-			
+
 		}
 		return false;
 	}
@@ -140,26 +139,12 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final byte tSide = this.getBaseMetaTileEntity().getBackFacing();
-		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {
-			int tAirCount = 0;
-			for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-					for (byte k = -1; k < 2; k = (byte) (k + 1)) {
-						if (this.getBaseMetaTileEntity().getAirOffset(i, j, k)) {
-							tAirCount++;
-						}
-					}
-				}
-			}
-			if (tAirCount != 10) {
-				Logger.WARNING("False 1");
-				return false;
-			}
+		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {			
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
 						(tTileEntity.getFrontFacing() == this.getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
-						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialWireMill))) {
+						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialExtruder))) {
 					//Utils.LOG_INFO("False 1");
 					return false;
 				}
@@ -171,26 +156,24 @@ extends GregtechMeta_MultiBlockBase {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
 					if ((i != 0) || (j != 0)) {
 						for (byte k = 0; k < 5; k = (byte) (k + 1)) {
-							if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
-								if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
-								}
-								else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()))) {
-									Logger.WARNING("False 2");
-									return false;
-								}
+							//if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
+							if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
 							}
-							else if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) {
+							else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()) && (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)), getCasingTextureIndex()))) {
+								Logger.WARNING("False 2");
+								return false;
 							}
+							/*}
 							else {
 								Logger.WARNING("False 3");
 								return false;
-							}
+							}*/
 						}
 					}
 				}
 			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				Logger.WARNING("Incorrect amount of Input & Output busses.");
+				Logger.WARNING("Incorrect amount of Input || Output busses.");
 				return false;
 			}
 			this.mMaintenanceHatches.clear();
@@ -235,7 +218,7 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
-	
+
 	public Block getCasingBlock() {
 		return ModBlocks.blockCasings3Misc;
 	}
