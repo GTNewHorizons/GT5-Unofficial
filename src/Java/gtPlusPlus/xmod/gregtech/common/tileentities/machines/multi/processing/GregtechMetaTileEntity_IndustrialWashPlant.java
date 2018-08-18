@@ -70,6 +70,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any casing)",
 				"Wash Plant Casings for the rest",
 				getPollutionTooltip(),
+				getMachineTooltip(),
 				CORE.GT_Tooltip
 
 		};

@@ -267,7 +267,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				checkMachineProblem("Energy hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}
-			if(tier < 512) {
+			if(tier < 3) {
 				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}
@@ -281,7 +281,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				checkMachineProblem("Dynamo hatch (tier " + tier + ") is too strong for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}
-			if(tier < 512) {
+			if(tier < 3) {
 				checkMachineProblem("Energy hatch (tier " + tier + ") is too weak for cells (tier " + tOverallCellTier + ")");
 				return false;
 			}

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -21,13 +22,15 @@ import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_IndustrialPlatePress
-extends GregtechMeta_MultiBlockBase {
+public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_MultiBlockBase {
+
+	private boolean mFormingMode = false;
 
 	public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -44,16 +47,17 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		return "Bending Machine";
+		return "Bending Machine, Forming Press";
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{"Controller Block for the Material Press",
+		return new String[]{"Controller Block for Advanced Bending & Forming",
+				"Can be configured with a screwdriver to activate Forming Press Mode",
 				"500% faster than using single block machines of the same voltage",
 				"Processes four items per voltage tier",
 				"Circuit for recipe goes in the Input Bus",
-				"Each Input Bus can have a different Circuit!",
+				"Each Input Bus can have a different Circuit/Shape!",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
 				"1x Input Bus (anywhere)",
@@ -61,7 +65,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler Hatch (anywhere)",
-				"Material Press Machine Casings for the rest (16 at least!)",
+				"Material Press Machine Casings for the rest (12 at least!)",
 				getPollutionTooltip(),
 				getMachineTooltip(),
 				CORE.GT_Tooltip};
@@ -82,17 +86,17 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MaterialPress.png");
+		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MaterialPress.png");
 	}
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+		return mFormingMode ?  GT_Recipe.GT_Recipe_Map.sPressRecipes : GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 	}
 
 	@Override
@@ -148,7 +152,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 16;
+		return tAmount >= 12;
 	}
 
 	@Override
@@ -158,7 +162,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 12;
+		return this.mFormingMode ? 12 : 24;
 	}
 
 	@Override
@@ -169,5 +173,29 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("mFormingMode", mFormingMode);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		mFormingMode = aNBT.getBoolean("mFormingMode");
+		super.loadNBTData(aNBT);
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mFormingMode = Utils.invertBoolean(mFormingMode);		
+		if (mFormingMode){
+			PlayerUtils.messagePlayer(aPlayer, "Now running in Forming Press Mode.");
+		}
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
+		}		
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 }

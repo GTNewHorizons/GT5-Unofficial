@@ -572,7 +572,11 @@ public class BaseEuItem extends Item implements ISpecialElectricItem, IElectricI
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack par1ItemStack) {
-		return this.itemName.get(par1ItemStack.getItemDamage()-this.mOffset).getValue();
+		int keyValue = (par1ItemStack.getItemDamage() - this.mOffset);		
+		if (keyValue < 0 || keyValue > 3) {
+			keyValue = 0;
+		}		
+		return this.itemName.get(keyValue).getValue();
 	}
 
 }

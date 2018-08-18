@@ -29,6 +29,7 @@ import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
@@ -43,6 +44,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
+import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
@@ -159,6 +161,9 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
+		if (LoadedMods.Thaumcraft) {
+			event.registerServerCommand(new CommandDumpAspects());
+		}
 		tryPatchTurbineTextures();
 	}
 
@@ -203,18 +208,11 @@ public class GTplusplus implements ActionListener {
 			try {		
 				Logger.INFO("Trying to patch GT textures to make Turbines animated.");
 				IIcon aIcon = TexturesGtBlock.Overlay_Machine_Turbine_Active.getIcon();
-				//IIcon aOverlay = TexturesGtBlock.Overlay_Machine_Turbine_Active.getOverlayIcon();
 				if (ReflectionUtils.setField(h, "mIcon", aIcon)) {
 					Logger.INFO("Patched Gas Turbine Icon.");
-					/*if (ReflectionUtils.setField(h, "mOverlay", aOverlay)) {
-					Logger.INFO("Patched Gas Turbine Overlay Icon.");
-				}*/
 				}
 				if (ReflectionUtils.setField(h2, "mIcon", aIcon)) {
 					Logger.INFO("Patched Steam Turbine Icon.");
-					/*if (ReflectionUtils.setField(h2, "mOverlay", aOverlay)) {
-					Logger.INFO("Patched Steam Turbine Overlay Icon.");
-				}*/
 				}
 			}
 			catch (Throwable e) {
@@ -363,6 +361,7 @@ public class GTplusplus implements ActionListener {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void setupMaterialWhitelist() {
 
 		mGregMatLoader = new GT_Material_Loader();

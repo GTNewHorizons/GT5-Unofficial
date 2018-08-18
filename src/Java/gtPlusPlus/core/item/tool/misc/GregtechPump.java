@@ -686,7 +686,11 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack par1ItemStack) {
-		return this.itemName.get(par1ItemStack.getItemDamage() - this.mOffset).getValue();
+		int keyValue = (par1ItemStack.getItemDamage() - this.mOffset);		
+		if (keyValue < 0 || keyValue > 3) {
+			keyValue = 0;
+		}		
+		return this.itemName.get(keyValue).getValue();
 	}
 
 	/**
@@ -938,12 +942,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 					return false;
 				} else {
 					double aCharge = this.getCharge(aStack);
-					boolean didDrain;
+					boolean didDrain = false;
 					if (aTier > 0 && aCharge > 0) {
 						if (discharge(aStack, removal, aTier, true, true, false) > 0) {
 							didDrain = true;
-						} else {
-							didDrain = false;
 						}
 					} else if (aTier == 0) {
 						didDrain = true;
@@ -954,9 +956,10 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 					if (didDrain) {
 						if ((tTileEntity instanceof IGregTechTileEntity)) {
 							return this.drainTankGT(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
-						} else if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
+						} 
+						/*else if ((tTileEntity instanceof IFluidTank || tTileEntity instanceof IFluidHandler)) {
 							return this.drainIFluidTank(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
-						}
+						}*/
 					}
 				}
 			}
@@ -1211,7 +1214,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 			return false;
 		}
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		;
 		if (aMetaTileEntity == null) {
 			return false;
 		}
