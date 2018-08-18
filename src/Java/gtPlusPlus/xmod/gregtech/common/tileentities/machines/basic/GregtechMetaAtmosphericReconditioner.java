@@ -72,7 +72,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	public String[] getDescription() {
 		return new String[]{
 				this.mDescription,
-				"Requires a Turbine Rotor and an Air Filter to run.",
+				"Requires a turbine rotor and an Air Filter [T1/T2] to run.",
+				"The turbine rotor must be manually inserted/replaced",
 				"Can be configured with a screwdriver to change modes",
 				"Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
 				"High Efficiency: Removes full pollution, Turbine takes 100% dmg",
@@ -424,7 +425,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 	@Override
 	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-		if (aIndex == 5){
+		if (aIndex == 4){
 			return false;
 		}
 		return super.canInsertItem(aIndex, aStack, aSide);
