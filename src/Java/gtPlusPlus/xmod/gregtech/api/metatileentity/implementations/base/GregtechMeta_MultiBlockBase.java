@@ -23,12 +23,14 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -39,11 +41,13 @@ import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechMeta_MultiBlockBase
@@ -96,6 +100,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		}		
 	}
 
+	public abstract String getMachineType();
+	
+	public String getMachineTooltip() {
+		return "Machine Type: " + EnumChatFormatting.YELLOW + getMachineType() + EnumChatFormatting.RESET;
+	}
+	
 	public String[] getExtraInfoData() {
 		return new String[0];
 	};
@@ -125,9 +135,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 
+		mInfo.add(getMachineTooltip());
 		mInfo.add("Progress: " + Integer.toString((this.mProgresstime / 20)) +" / "+ Integer.toString((this.mMaxProgresstime / 20)) + " secs");
 		mInfo.add("Efficiency: " + Float.toString((this.mEfficiency / 100.0F)) + "%");
 		mInfo.add("Problems: " + Integer.toString((this.getIdealStatus() - this.getRepairStatus())));
+		mInfo.add("Pollution: "+this.getPollutionPerTick(null)*20+"/second");
 		mInfo.add("Total Time Since Built: " + Integer.toString(weeks)+" Weeks, " + Integer.toString(days) + " Days, ");
 		mInfo.add(Long.toString(hours) + " Hours, " + Long.toString(minutes) + " Minutes, " + Long.toString(second) + " Seconds.");
 		mInfo.add("Total Time in ticks: " + Long.toString(this.mTotalRunTime));
@@ -712,6 +724,68 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return false;
 	}
+	
+	public boolean resetRecipeMapForAllInputHatches() {
+		return resetRecipeMapForAllInputHatches(this.getRecipeMap());
+	}
+	
+	public boolean resetRecipeMapForAllInputHatches(GT_Recipe_Map aMap) {
+		int cleared = 0;
+		for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		for (GT_MetaTileEntity_Hatch_InputBus g : this.mInputBusses) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		return cleared > 0;
+	}
+	public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			return resetRecipeMapForHatch((IGregTechTileEntity) aMetaTileEntity, aMap);
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean resetRecipeMapForHatch(GT_MetaTileEntity_Hatch aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+			}
+			else {	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;				
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		resetRecipeMapForAllInputHatches();
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+	}
+	
 
 	/**
 	 * Enable Texture Casing Support if found in GT 5.09
