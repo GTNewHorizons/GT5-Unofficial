@@ -12,7 +12,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -20,6 +19,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
@@ -36,7 +36,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 		this.setResistance(6.0F);
 		this.setLightLevel(0.0F);
 		this.setHarvestLevel("pickaxe", 3);
-		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setStepSound(soundTypeStone);		
 		this.setBlockName("Ore"+Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
 		this.setBlockTextureName("stone");
@@ -60,10 +59,15 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 
 	@Override
 	public int getRenderType() {
+		try {
 		if (CustomOreBlockRenderer.INSTANCE != null){
 			return CustomOreBlockRenderer.INSTANCE.mRenderID;
 		}		
-		return super.getRenderType();		
+		return super.getRenderType();	
+		}
+		catch (NullPointerException n) {
+			return 0;
+		}
 	}
 
 	@Override
@@ -114,6 +118,11 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 			}
 		}
 		return new ITexture[]{new GT_RenderedTexture(hiddenTextureArray[0], new short[]{240, 240, 240, 0})};
+	}
+
+	@Override
+	public void registerBlockIcons(IIconRegister p_149651_1_) {
+		
 	}
 
 	public static class oldOreBlock extends BlockBaseModular implements ITexturedBlock{
