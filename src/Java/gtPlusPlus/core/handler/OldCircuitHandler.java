@@ -25,34 +25,42 @@ public class OldCircuitHandler {
 			removeCircuitRecipeMap(); //Bye shitty recipes.		
 		}	
 	}
-	
+
 	public static void init(){
-		
+
 	}
-	
+
 	public static void postInit(){
-		RECIPES_Old_Circuits.handleCircuits();
-		new RECIPES_Old_Circuits();
+		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
+			RECIPES_Old_Circuits.handleCircuits();
+			new RECIPES_Old_Circuits();
+		}
 	}
-	
+
 	public static boolean addCircuitItems() {
-		return MetaGeneratedGregtechItems.INSTANCE.registerOldCircuits();
+		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
+			return MetaGeneratedGregtechItems.INSTANCE.registerOldCircuits();
+		}
+		return false;
 	}
 
 	private static boolean removeCircuitRecipeMap(){
-		try {			
-			Logger.INFO("[Old Feature - Circuits] Trying to override the Circuit Assembler Recipe map, so that no recipes for new circuits get added.");
-			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));		
-			Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
-			FieldUtils.removeFinalModifier(jaffar, true);
-			jaffar.set(null, new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
-			Logger.INFO("[Old Feature - Circuits] Successfully replaced circuit assembler recipe map with one that cannot hold recipes.");
+		if (enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
+			try {			
+				Logger.INFO("[Old Feature - Circuits] Trying to override the Circuit Assembler Recipe map, so that no recipes for new circuits get added.");
+				ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));		
+				Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
+				FieldUtils.removeFinalModifier(jaffar, true);
+				jaffar.set(null, new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
+				Logger.INFO("[Old Feature - Circuits] Successfully replaced circuit assembler recipe map with one that cannot hold recipes.");
+			}
+			catch (Exception e) {
+				Logger.INFO("[Old Feature - Circuits] Failed removing circuit assembler recipe map.");
+				return false;
+			}
+			return true;
 		}
-		catch (Exception e) {
-			Logger.INFO("[Old Feature - Circuits] Failed removing circuit assembler recipe map.");
-			return false;
-		}
-		return true;
+		return false;
 	}
-	
+
 }

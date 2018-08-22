@@ -43,8 +43,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	public void generateMetaItems() {
 		int tLastID = 0;		
 
+		registerCustomCircuits();
 		OldCircuitHandler.addCircuitItems();
-		
+
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			Logger.INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.)");
 			GregtechItemList.Electric_Pump_LuV.set(this.addItem(tLastID = 0, "Electric Pump (LuV)", "163920 L/sec (as Cover)", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
@@ -144,36 +145,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 			registerComponents_MAX();
 		}
 
-		if (!CORE.GTNH){
-			GregtechItemList.Circuit_IV.set(this.addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
-			GregtechItemList.Circuit_LuV.set(this.addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic)}));
-			GregtechItemList.Circuit_ZPM.set(this.addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Quantum)}));
-			GregtechItemList.Circuit_Board_IV.set(this.addItem(tLastID = 710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
-			GregtechItemList.Circuit_Board_LuV.set(this.addItem(tLastID = 711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
-			GregtechItemList.Circuit_Board_ZPM.set(this.addItem(tLastID = 712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
-			GregtechItemList.Circuit_Parts_Crystal_Chip_IV.set(this.addItem(tLastID = 713, "(IV) Energized Crystal Chip", "Needed for Circuits", new Object[0]));
-			GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.set(this.addItem(tLastID = 714, "(LuV) Neutron based Microchip", "Needed for Circuits", new Object[0]));
-			GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.set(this.addItem(tLastID = 715, "(ZPM) Quantum Chip", "Needed for Circuits", new Object[0]));
-			GregtechItemList.Circuit_Parts_IV.set(this.addItem(tLastID = 716, "(IV) Energized Circuit Parts", "Circuit Parts", new Object[0]));
-			GregtechItemList.Circuit_Parts_LuV.set(this.addItem(tLastID = 717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts", new Object[0]));
-			GregtechItemList.Circuit_Parts_ZPM.set(this.addItem(tLastID = 718, "(ZPM) Quantum Circuit Parts", "Circuit Parts", new Object[0]));
-			GregtechItemList.Circuit_Parts_Wiring_IV.set(this.addItem(tLastID = 719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-			GregtechItemList.Circuit_Parts_Wiring_LuV.set(this.addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-			GregtechItemList.Circuit_Parts_Wiring_ZPM.set(this.addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-
-			if (CORE.ConfigSwitches.enableCustomCircuits){
-				ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_IV.get(1), "circuitSuperconductor");
-				ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_LuV.get(1), "circuitInfinite");
-			}
-		}
-
 		//Extruder Shape
 		GregtechItemList.Shape_Extruder_WindmillShaft.set(this.addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
 
 		//GTNH Already adds this.
-		if (!CORE.GTNH)
+		if (!CORE.GTNH) {
 			GregtechItemList.Shape_Extruder_SmallGear.set(this.addItem(221, "Extruder Shape (Small Gear)", "Extruder Shape for making small gears", new Object[0]));
-
+		}
 
 		//Batteries
 		GregtechItemList.Battery_RE_EV_Sodium.set(this.addItem(tLastID = 50, "Quad Cell Sodium Battery", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L), getTcAspectStack(TC_Aspects.POTENTIA, 2L)}));
@@ -354,5 +332,29 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Old_Empty_Board_Elite.set(this.addItem(220, "Empty Processor Board", "A Processor Board Part", new Object[0]));
 
 		return true;
+	}
+
+	public boolean registerCustomCircuits() {
+		if (CORE.ConfigSwitches.enableCustomCircuits){
+			GregtechItemList.Circuit_IV.set(this.addItem(704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
+			GregtechItemList.Circuit_LuV.set(this.addItem(705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic)}));
+			GregtechItemList.Circuit_ZPM.set(this.addItem(706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Quantum)}));
+			GregtechItemList.Circuit_Board_IV.set(this.addItem(710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
+			GregtechItemList.Circuit_Board_LuV.set(this.addItem(711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
+			GregtechItemList.Circuit_Board_ZPM.set(this.addItem(712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
+			GregtechItemList.Circuit_Parts_Crystal_Chip_IV.set(this.addItem(713, "(IV) Energized Crystal Chip", "Needed for Circuits", new Object[0]));
+			GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.set(this.addItem(714, "(LuV) Neutron based Microchip", "Needed for Circuits", new Object[0]));
+			GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.set(this.addItem(715, "(ZPM) Quantum Chip", "Needed for Circuits", new Object[0]));
+			GregtechItemList.Circuit_Parts_IV.set(this.addItem(716, "(IV) Energized Circuit Parts", "Circuit Parts", new Object[0]));
+			GregtechItemList.Circuit_Parts_LuV.set(this.addItem(717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts", new Object[0]));
+			GregtechItemList.Circuit_Parts_ZPM.set(this.addItem(718, "(ZPM) Quantum Circuit Parts", "Circuit Parts", new Object[0]));
+			GregtechItemList.Circuit_Parts_Wiring_IV.set(this.addItem(719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+			GregtechItemList.Circuit_Parts_Wiring_LuV.set(this.addItem(720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+			GregtechItemList.Circuit_Parts_Wiring_ZPM.set(this.addItem(721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+			ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_IV.get(1), "circuitSuperconductor");
+			ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_LuV.get(1), "circuitInfinite");
+			return true;
+		}
+		return false;
 	}
 }

@@ -6,9 +6,11 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 public class Core_VanillaFixes implements IPlugin {
 
 	final static Core_VanillaFixes mInstance;
+	final static VanillaBedHeightFix mBedFixInstance;
 
 	static {
 		mInstance = new Core_VanillaFixes();
+		mBedFixInstance = new VanillaBedHeightFix();
 		mInstance.log("Preparing "+mInstance.getPluginName()+" for use.");
 	}
 	
