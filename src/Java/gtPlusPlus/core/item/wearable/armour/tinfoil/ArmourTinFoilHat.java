@@ -5,15 +5,23 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
 import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityEnderEye;
+import net.minecraft.entity.item.EntityEnderPearl;
+import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityEgg;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -65,7 +73,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-		super.damageArmor(entity, stack, source, damage, slot);
+
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -74,12 +82,13 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 		aList.add("DoomSquirter's protection against cosmic radiation!");
 		aList.add("General paranoia makes the wearer unable to collect xp");
 		aList.add("Movement speed is also reduced, to keep you safe");
+		aList.add("This hat may also have other strange powers");
 	}
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
 			int slot) {
-		return super.getProperties(player, armor, source, damage, slot);
+		return new ArmorProperties(0, 0, 0);
 	}
 
 	@Override
@@ -115,19 +124,46 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 
 				// Move Xp orbs away
 				try {
-					AxisAlignedBB box = player.getBoundingBox();
-					box.maxX += 5;
-					box.maxY += 5;
-					box.maxZ += 5;
-					box.minX += 5;
-					box.minY += 5;
-					box.minZ += 5;
+					AxisAlignedBB box = player.boundingBox;
+					box.maxX = player.posX + 5;
+					box.maxY = player.posY + 5;
+					box.maxZ = player.posZ + 5;
+					box.minX = player.posX - 5;
+					box.minY = player.posY - 5;
+					box.minZ = player.posZ - 5;
 					@SuppressWarnings("unchecked")
 					List<Entity> g = world.getEntitiesWithinAABBExcludingEntity(player, box);
 					if (g.size() > 0) {
 						for (Entity e : g) {
-							if (e instanceof EntityXPOrb) {
-								e.setVelocity(player.motionX + 0.2, player.motionY, player.motionZ + 0.2);
+							if (e != null) {
+								if (
+										!EntityXPOrb.class.isInstance(e) &&
+										!EntityBoat.class.isInstance(e) &&
+										!EntitySnowball.class.isInstance(e) &&
+										!EntityFireball.class.isInstance(e) &&
+										!EntityEgg.class.isInstance(e) &&
+										!EntityExpBottle.class.isInstance(e) &&
+										!EntityEnderEye.class.isInstance(e) &&
+										!EntityEnderPearl.class.isInstance(e)
+										) {
+									continue;									
+								}
+								else {
+									//Logger.INFO("Found "+e.getClass().getName());
+									double distX = player.posX - e.posX;
+									double distZ = player.posZ - e.posZ;
+									double distY = e.posY + 1.5D - player.posY;
+									double dir = Math.atan2(distZ, distX);
+									double speed = 1F / e.getDistanceToEntity(player) * 0.5;
+									speed = -speed;
+									if (distY < 0) {
+										e.motionY += speed;
+									}
+									e.motionX = Math.cos(dir) * speed;
+									e.motionZ = Math.sin(dir) * speed;
+								}
+
+
 							}
 						}
 					}
