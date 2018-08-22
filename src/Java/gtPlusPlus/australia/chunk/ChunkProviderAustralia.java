@@ -1,5 +1,6 @@
 package gtPlusPlus.australia.chunk;
 
+import static net.minecraft.world.gen.structure.MapGenVillage.villageSpawnBiomes;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS;
 
 import java.util.ArrayList;
@@ -88,37 +89,28 @@ public class ChunkProviderAustralia extends ChunkProviderGenerate implements ICh
 	// Some Init Field?
 	{
 
+		try {
 		List<BiomeGenBase> y = new ArrayList<BiomeGenBase>();		
+		if (!villageSpawnBiomes.isEmpty()) {
+			y.addAll(villageSpawnBiomes);
+		}
+		
 		for (BiomeGenBase h : gtPlusPlus.australia.gen.map.MapGenExtendedVillage.villageSpawnBiomes) {
-			if (!MapGenVillage.villageSpawnBiomes.contains(h)) {
+			if (!y.contains(h)) {
 				if (h instanceof BiomeGenBase) {
-					MapGenVillage.villageSpawnBiomes.add(h);
+					try {
+						y.add(h);
+					}
+					catch (Throwable t) {}
 				}
 			}
 		}
+		if (y.size() > villageSpawnBiomes.size()) {
+			villageSpawnBiomes = y;
+		}
+		}
+		catch (Throwable t) {}
 
-		/*
-		 * if (map == null) { map =
-		 * FlatGeneratorInfo.createFlatGeneratorFromString("abcdefg12345678").
-		 * getWorldFeatures(); }
-		 */
-
-		/*
-		 * if (map != null && map.containsKey("village")){ Map map1 =
-		 * (Map)map.get("village"); if (!map1.containsKey("size")) { map1.put("size",
-		 * "10"); } villageGenerator = new MapGenExtendedVillage(map1); villageGenerator
-		 * = (MapGenExtendedVillage) TerrainGen.getModdedMapGen(villageGenerator,
-		 * net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
-		 * Logger.INFO("Registered Valid Chunk Provider for Custom Villages."); } else {
-		 * Logger.INFO("Failed to register Valid Chunk Provider for Custom Villages.");
-		 * }
-		 */
-
-		/*
-		 * villageGenerator = (MapGenVillageLogging)
-		 * TerrainGen.getModdedMapGen(villageGenerator,
-		 * net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
-		 */
 		caveGenerator = TerrainGen.getModdedMapGen(caveGenerator,
 				net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
 		mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator,
