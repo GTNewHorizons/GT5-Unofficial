@@ -632,23 +632,23 @@ public class RECIPES_GREGTECH {
 		ItemStack T6 = GregtechItemList.Casing_Vanadium_Redox_MAX.get(1);
 
 		addAR(T1,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseStainlessSteel", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTitanium", 4),
 				FluidUtils.getFluidStack("nitrogen", 16000),
 				T2, 120, 2000);
 		addAR(T2,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTitanium", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungstenSteel", 4),
 				FluidUtils.getFluidStack("helium", 8000),
 				T3, 250, 8000);
 		addAR(T3,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungsten", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
 				FluidUtils.getFluidStack("argon", 4000),
 				T4, 500, 32000);
 		addAR(T4,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseTungstenSteel", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNaquadah", 4),
 				FluidUtils.getFluidStack("radon", 4000),
 				T5, 1000, 128000);
 		addAR(T5,
-				ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 9),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateDenseAmericium", 4),
 				FluidUtils.getFluidStack("molten.krypton", 500),
 				T6, 2000, 512000);
 
