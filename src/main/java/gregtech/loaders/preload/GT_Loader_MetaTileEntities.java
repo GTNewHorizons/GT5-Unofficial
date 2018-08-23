@@ -1295,13 +1295,13 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 //        GT_ModHandler.addCraftingRecipe(ItemList.FusionComputer_ZPMV.get(1L, new Object[0]), bitsd, new Object[]{"CBC", "FMF", "CBC", 'M', ItemList.FusionComputer_LuV, 'C', OrePrefixes.circuit.get(Materials.Master), 'F', ItemList.Field_Generator_IV, 'B', OrePrefixes.plate.get(Materials.Europium)});
 //        GT_ModHandler.addCraftingRecipe(ItemList.FusionComputer_UV.get(1L, new Object[0]), bitsd, new Object[]{"CBC", "FMF", "CBC", 'M', ItemList.FusionComputer_ZPMV, 'C', OrePrefixes.circuit.get(Materials.Master), 'F', ItemList.Field_Generator_IV, 'B', OrePrefixes.plate.get(Materials.Americium)});
 
-        ItemList.Generator_Plasma_IV.set(new GT_MetaTileEntity_PlasmaGenerator(1196, "basicgenerator.plasmagenerator.tier.05", "Plasma Generator Mark I", 4).getStackForm(1L));
-        ItemList.Generator_Plasma_LuV.set(new GT_MetaTileEntity_PlasmaGenerator(1197, "basicgenerator.plasmagenerator.tier.06", "Plasma Generator Mark II", 5).getStackForm(1L));
-        ItemList.Generator_Plasma_ZPMV.set(new GT_MetaTileEntity_PlasmaGenerator(1198, "basicgenerator.plasmagenerator.tier.07", "Plasma Generator Mark III", 6).getStackForm(1L));
+        ItemList.Generator_Plasma_IV.set(new GT_MetaTileEntity_PlasmaGenerator(1196, "basicgenerator.plasmagenerator.tier.05", "Plasma Generator Mark I", 5).getStackForm(1L));
+        ItemList.Generator_Plasma_LuV.set(new GT_MetaTileEntity_PlasmaGenerator(1197, "basicgenerator.plasmagenerator.tier.06", "Plasma Generator Mark II", 6).getStackForm(1L));
+        ItemList.Generator_Plasma_ZPMV.set(new GT_MetaTileEntity_PlasmaGenerator(1198, "basicgenerator.plasmagenerator.tier.07", "Plasma Generator Mark III", 7).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_IV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_LuV, 'F', ItemList.Field_Generator_HV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'U', OrePrefixes.stick.get(Materials.Plutonium241)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_LuV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_EV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.wireGt04.get(Materials.VanadiumGallium), 'U', OrePrefixes.stick.get(Materials.Europium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_ZPMV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_UV, 'F', ItemList.Field_Generator_IV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U', OrePrefixes.stick.get(Materials.Americium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_IV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_IV, 'F', ItemList.Field_Generator_EV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.wireGt04.get(Materials.SuperconductorIV), 'U', OrePrefixes.stick.get(Materials.Plutonium241)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_LuV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_LuV, 'F', ItemList.Field_Generator_IV, 'C', OrePrefixes.circuit.get(Materials.Master), 'W', OrePrefixes.wireGt04.get(Materials.SuperconductorLuV), 'U', OrePrefixes.stick.get(Materials.Europium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_ZPMV.get(1L, new Object[0]), bitsd, new Object[]{"UCU", "FMF", aTextWireCoil, 'M', ItemList.Hull_ZPM, 'F', ItemList.Field_Generator_LuV, 'C', OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.wireGt04.get(Materials.SuperconductorZPM), 'U', OrePrefixes.stick.get(Materials.Americium)});
 
         ItemList.Processing_Array_T1.set(new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray.tier.04", "Processing Array T1").getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.Processing_Array_T1.get(1L, new Object[0]), bitsd, new Object[]{"CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B', OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'F', ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb});
@@ -1872,55 +1872,55 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Automation_ItemDistributor_MAX.get(1L, new Object[0]), bitsd, new Object[]{"XCX", "VMV", " V ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UV, 'C', OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.Good)});
         
       //PlasmaGenerator
-        ItemList.Generator_Plasma_ZPMV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10752, "basicgenerator.plasmagenerator.tier.08", "Plasma Generator Mark IV",7).getStackForm(1L));
-
-		ItemList.Generator_Plasma_UV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10753, "basicgenerator.plasmagenerator.tier.09", "Ultimate Pocket Sun", 8).getStackForm(1L));
+        ItemList.Generator_Plasma_UV.set(new GT_MetaTileEntity_PlasmaGenerator(
+				10752, "basicgenerator.plasmagenerator.tier.08", "Plasma Generator Mark IV",8).getStackForm(1L));
 
 		ItemList.Generator_Plasma_UHV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10754, "basicgenerator.plasmagenerator.tier.10", "Legendary Pocket Sun", 9).getStackForm(1L));
+				10753, "basicgenerator.plasmagenerator.tier.09", "Ultimate Pocket Sun", 9).getStackForm(1L));
 
 		ItemList.Generator_Plasma_UEV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10755, "basicgenerator.plasmagenerator.tier.11", "Legendary Pocket Sun II",10).getStackForm(1L));
+				10754, "basicgenerator.plasmagenerator.tier.10", "Legendary Pocket Sun", 10).getStackForm(1L));
 
 		ItemList.Generator_Plasma_UIV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10756, "basicgenerator.plasmagenerator.tier.12", "Legendary Pocket Sun III",11).getStackForm(1L));
+				10755, "basicgenerator.plasmagenerator.tier.11", "Legendary Pocket Sun II",11).getStackForm(1L));
 
 		ItemList.Generator_Plasma_UMV.set(new GT_MetaTileEntity_PlasmaGenerator(
-				10757, "basicgenerator.plasmagenerator.tier.13", "Legendary Pocket Sun IV",12).getStackForm(1L));
+				10756, "basicgenerator.plasmagenerator.tier.12", "Legendary Pocket Sun III",12).getStackForm(1L));
 
-		GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_ZPMV.get(1L),
-				bitsd,
-				new Object[] { "UCU", "FMF", "WCW",
-						'M', ItemList.Hull_UV,
-						'F', ItemList.Field_Generator_ZPM,
-						'C', OrePrefixes.circuit.get(Materials.Ultimate),
-						'W', OrePrefixes.wireGt08.get(Materials.Superconductor),
-						'U', OrePrefixes.stick.get(Materials.Tritanium) });
+		ItemList.Generator_Plasma_UXV.set(new GT_MetaTileEntity_PlasmaGenerator(
+				10757, "basicgenerator.plasmagenerator.tier.13", "Legendary Pocket Sun IV",13).getStackForm(1L));
 
 		GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_UV.get(1L),
 				bitsd,
 				new Object[] { "UCU", "FMF", "WCW",
 						'M', ItemList.Hull_UV,
-						'F', ItemList.Field_Generator_UV,
+						'F', ItemList.Field_Generator_ZPM,
 						'C', OrePrefixes.circuit.get(Materials.Superconductor),
-						'W', OrePrefixes.wireGt12.get(Materials.Superconductor),
+						'W', OrePrefixes.wireGt04.get(Materials.ElectrumFlux),
 						'U', OrePrefixes.stick.get(Materials.Tritanium) });
 		
 		GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_UHV.get(1L),
 				bitsd,
 				new Object[] { "UCU", "FMF", "WCW",
 						'M', ItemList.Hull_MAX,
-						'F', ItemList.Field_Generator_UHV,
+						'F', ItemList.Field_Generator_UV,
 						'C', OrePrefixes.circuit.get(Materials.Infinite),
-						'W', OrePrefixes.wireGt16.get(Materials.Superconductor),
-						'U', OrePrefixes.stickLong.get(Materials.Neutronium) });
+						'W', OrePrefixes.wireGt04.get(Materials.Superconductor),
+						'U', OrePrefixes.stickLong.get(Materials.Tritanium) });
 		
 		GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_UEV.get(1L),
 				bitsd,
 				new Object[] { "UCU", "FMF", "WCW",
 						'M', ItemList.Hull_UEV,
+						'F', ItemList.Field_Generator_UHV,
+						'C', OrePrefixes.circuit.get(Materials.Nano),
+						'W', OrePrefixes.wireGt04.get(Materials.SuperconductorUEV),
+						'U', OrePrefixes.stickLong.get(Materials.Neutronium) });
+		
+		GT_ModHandler.addCraftingRecipe(ItemList.Generator_Plasma_UIV.get(1L),
+				bitsd,
+				new Object[] { "UCU", "FMF", "WCW",
+						'M', ItemList.Hull_UIV,
 						'F', ItemList.Field_Generator_UEV,
 						'C', OrePrefixes.circuit.get(Materials.Nano),
 						'W', OrePrefixes.wireGt04.get(Materials.Neutronium),
