@@ -164,7 +164,6 @@ public class GTplusplus implements ActionListener {
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
-		tryPatchTurbineTextures();
 	}
 
 	@Mod.EventHandler
@@ -197,7 +196,7 @@ public class GTplusplus implements ActionListener {
 	 */
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
-		tryPatchTurbineTextures();
+		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
 	}
 

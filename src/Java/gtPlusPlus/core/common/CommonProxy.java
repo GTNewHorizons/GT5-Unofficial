@@ -182,6 +182,10 @@ public class CommonProxy {
 	{
 		COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
 	}
+	
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
+		COMPAT_IntermodStaging.onLoadComplete(event);
+	}
 
 	public void registerNetworkStuff(){
 		GuiHandler.init();

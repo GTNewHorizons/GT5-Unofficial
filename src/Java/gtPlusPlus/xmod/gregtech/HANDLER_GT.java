@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -90,10 +91,13 @@ public class HANDLER_GT {
 			OldCircuitHandler.postInit();
 		}
 		
-		removeCrudeTurbineRotors();
 		
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
+	}
+	
+	public static void onLoadComplete(FMLLoadCompleteEvent event) {
+		removeCrudeTurbineRotors();
 	}
 	
 	private static int removeCrudeTurbineRotors() {
@@ -107,6 +111,7 @@ public class HANDLER_GT {
 					outputs: for (ItemStack aI : aG.mOutputs) {
 						if (aI.getItem() instanceof GT_MetaGenerated_Tool_01) {
 							int aMeta = aI.getItemDamage();
+							Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
 							if (aMeta >= 170 && aMeta <= 176) {
 								//Found a Turbine
 								int aCutoff = aMeta == 170 ? 75000 : (aMeta == 172 ? 150000 : (aMeta == 174 ? 225000 : 300000));

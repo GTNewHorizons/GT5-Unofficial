@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.computronics.HANDLER_Computronics;
 import gtPlusPlus.xmod.forestry.HANDLER_FR;
@@ -53,6 +54,10 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Thaumcraft.postInit();
 		HANDLER_Tinkers.postInit();
 		HANDLER_SC2.postInit();
+	}
+
+	public static void onLoadComplete(FMLLoadCompleteEvent event) {
+		HANDLER_GT.onLoadComplete(event);
 	}
 
 

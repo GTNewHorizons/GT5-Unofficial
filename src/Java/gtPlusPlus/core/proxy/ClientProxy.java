@@ -8,6 +8,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -233,6 +234,12 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		} catch (Throwable e) {
 			Logger.INFO("Failed to download GT++ cape list.");
 		}*/
+	}
+
+	@Override
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
+		GTplusplus.tryPatchTurbineTextures();
+		super.onLoadComplete(event);
 	}
 
 }
