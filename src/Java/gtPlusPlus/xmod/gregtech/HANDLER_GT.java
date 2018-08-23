@@ -105,13 +105,13 @@ public class HANDLER_GT {
 		
 		Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
 		//170, 172, 174, 176
-		if (aAssRecipes.size() > 0) {
+		if (aAssRecipes.size() > 0 && (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH)) {
 			recipe: for (GT_Recipe aG : aAssRecipes) {
 				if (aG.mOutputs != null && aG.mOutputs.length > 0) {
 					outputs: for (ItemStack aI : aG.mOutputs) {
 						if (aI.getItem() instanceof GT_MetaGenerated_Tool_01) {
 							int aMeta = aI.getItemDamage();
-							Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
+							//Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
 							if (aMeta >= 170 && aMeta <= 176) {
 								//Found a Turbine
 								int aCutoff = aMeta == 170 ? 75000 : (aMeta == 172 ? 150000 : (aMeta == 174 ? 225000 : 300000));
@@ -119,9 +119,9 @@ public class HANDLER_GT {
 								Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
 								Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);	
 								long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);								
-								Logger.INFO("Found "+aType+"Turbine made out of "+getMaterialName(aMainMaterial)+", using "+getMaterialName(aSecondaryMaterial));
+								//Logger.INFO("Found "+aType+"Turbine made out of "+getMaterialName(aMainMaterial)+", using "+getMaterialName(aSecondaryMaterial));
 								if (rotorDurabilityMax < aCutoff) {
-									Logger.INFO("Disabled this recipe as "+rotorDurabilityMax+" is below the cutoff durability of "+aCutoff+" for "+aType+"Turbines.");
+									Logger.INFO("[Turbine Cleanup]"+getMaterialName(aMainMaterial)+" "+aType+"Turbines have "+rotorDurabilityMax+", which is below the cutoff durability of "+aCutoff+", disabling.");
 									aG.mEnabled = false;
 									aG.mHidden = true;
 									aG.mCanBeBuffered = false;
