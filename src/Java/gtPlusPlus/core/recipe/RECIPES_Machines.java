@@ -152,6 +152,7 @@ public class RECIPES_Machines {
 	public static ItemStack EV_MACHINE_ThermalCentrifuge;
 	public static ItemStack EV_MACHINE_OreWasher;
 	public static ItemStack EV_MACHINE_AlloySmelter;
+	public static ItemStack EV_MACHINE_Mixer;
 
 
 	//Cables
@@ -227,6 +228,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_EV_ThermalCentrifuge.get(1);
 				EV_MACHINE_OreWasher = ItemList.Machine_EV_OreWasher.get(1);
 				EV_MACHINE_AlloySmelter = ItemList.Machine_EV_AlloySmelter.get(1);  
+				EV_MACHINE_Mixer = ItemList.Machine_EV_Mixer.get(1);
 			}
 			//Balanced opposites
 			else {			    
@@ -243,6 +245,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_ThermalCentrifuge = ItemList.Machine_IV_ThermalCentrifuge.get(1);
 				EV_MACHINE_OreWasher = ItemList.Machine_IV_OreWasher.get(1);
 				EV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);  
+				EV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
 			}
 
 
@@ -1265,6 +1268,14 @@ public class RECIPES_Machines {
 						CI.robotArm_LuV, ItemList.Machine_LuV_Unboxinator.get(1), CI.robotArm_LuV,
 						CI.conveyorModule_LuV, GregtechItemList.Gregtech_Computer_Cube.get(1), CI.conveyorModule_LuV,
 						GregtechItemList.Amazon_Warehouse_Controller.get(1));
+				
+				
+				//Industrial Mixing Machine
+				RecipeUtils.recipeBuilder( 
+						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
+						"plateZirconiumCarbide", EV_MACHINE_Mixer, "plateZirconiumCarbide",
+						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
+						GregtechItemList.Industrial_Mixer.get(1));
 				
 			}
 
