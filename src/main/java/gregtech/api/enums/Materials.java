@@ -876,8 +876,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false, canBeCracked = false;
-    private Fluid hydroCrackedFluid = null, steamCrackedFluid = null;
-    
+    private Fluid[] hydroCrackedFluids = new Fluid[3], steamCrackedFluids = new Fluid[3];
+
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
      */
@@ -2114,28 +2114,56 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 		return this;
 	}
 
-	public Materials setHydroCrackedFluid(Fluid hydroCrackedFluid) {
-		this.hydroCrackedFluid = hydroCrackedFluid;
+	public Materials setHydroCrackedFluids(Fluid[] hydroCrackedFluids) {
+		this.hydroCrackedFluids = hydroCrackedFluids;
 		return this;
 	}
-	
-	public FluidStack getHydroCracked(int amount) {
-		if (hydroCrackedFluid == null) {
-			return null;
-		}
-		return new FluidStack(hydroCrackedFluid, amount);
+
+ 	public FluidStack getLightlyHydroCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(hydroCrackedFluids[0], amount);
 	}
-	
-	public Materials setSteamCrackedFluid(Fluid steamCrackedFluid) {
-		this.steamCrackedFluid = steamCrackedFluid;
+
+ 	public FluidStack getModeratelyHydroCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(hydroCrackedFluids[1], amount);
+	}
+
+ 	public FluidStack getSeverelyHydroCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(hydroCrackedFluids[2], amount);
+	}
+
+ 	public Materials setSteamCrackedFluids(Fluid[] steamCrackedFluids) {
+		this.steamCrackedFluids = steamCrackedFluids;
 		return this;
 	}
-	
-	public FluidStack getSteamCracked(int amount) {
-		if (hydroCrackedFluid == null) {
-			return null;
-		}
-		return new FluidStack(steamCrackedFluid, amount);
+
+ 	public FluidStack getLightlySteamCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(steamCrackedFluids[0], amount);
+	}
+
+ 	public FluidStack getModeratelySteamCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(steamCrackedFluids[1], amount);
+	}
+
+ 	public FluidStack getSeverelySteamCracked(int amount) {
+		if (hydroCrackedFluids[0] == null) {
+    			return null;
+    		}
+		return new FluidStack(steamCrackedFluids[2], amount);
 	}
 	
 	public int getGasTemperature() {
