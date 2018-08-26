@@ -89,6 +89,11 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean hasSlotInGUI() {
 		return true;
+	}	
+
+	@Override
+	public boolean requiresVanillaGtGUI() {
+		return true;
 	}
 
 	@Override

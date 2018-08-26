@@ -276,7 +276,7 @@ extends GregtechMeta_MultiBlockBase
 
 	@Override
 	public String getCustomGUIResourceName() {
-		return "VacuumFreezer";
+		return "Generic3By3";
 	}	
 
 }
