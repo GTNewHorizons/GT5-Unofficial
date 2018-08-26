@@ -4,7 +4,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
+import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMetaTileEntity_MassFabricator;
 
 /**
@@ -24,11 +24,10 @@ public class CONTAINER_MatterFab extends GT_ContainerMetaTile_Machine {
 	public CONTAINER_MatterFab(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final boolean bindInventory) {
 		super(aInventoryPlayer, aTileEntity, bindInventory);
 	}
-}
 
-/*@Override
+	@Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new Slot(mTileEntity, 1, 152, 5));
+        addSlotToContainer(new SlotNoInput(mTileEntity, 1, 152, 5));
     }
 
     @Override
@@ -40,4 +39,4 @@ public class CONTAINER_MatterFab extends GT_ContainerMetaTile_Machine {
     public int getShiftClickSlotCount() {
         return 0;
     }
-}*/
+}

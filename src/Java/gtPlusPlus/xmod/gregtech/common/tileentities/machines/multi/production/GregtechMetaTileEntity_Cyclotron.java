@@ -64,6 +64,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
+	public String getCustomGUIResourceName() {
+		return "FusionComputer";
+	}	
+
+	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
 	}

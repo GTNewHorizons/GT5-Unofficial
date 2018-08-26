@@ -82,13 +82,13 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;
+		return false;
 	}
 
 	@Override
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "CokeOven.png");
-	}
+	public String getCustomGUIResourceName() {
+		return "CokeOven";
+	}	
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {

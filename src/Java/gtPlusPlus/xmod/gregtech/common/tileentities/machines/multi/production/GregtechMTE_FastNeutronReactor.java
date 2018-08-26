@@ -37,6 +37,11 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
+	public String getCustomGUIResourceName() {
+		return null;
+	}	
+
+	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
 	{
 		return new GregtechMTE_FastNeutronReactor(this.mName);

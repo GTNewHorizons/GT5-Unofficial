@@ -81,7 +81,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getMachineType() {
-		String sType = "Assembler, Disassembler, "+(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? "Circuit Assembler, " : "")+"Autocrafter";
+		String sType = "Assembler, Disassembler, "+((CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH) ? "Circuit Assembler, " : "")+"Autocrafter";
 		return sType;
 	}
 
@@ -205,7 +205,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		if (this.mMachineMode == MODE.ASSEMBLY) {
 			return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 		}
-		else if (this.mMachineMode == MODE.CIRCUIT) {
+		else if (this.mMachineMode == MODE.CIRCUIT && !CORE.GTNH) {
 			GT_Recipe_Map r;			
 			try {
 				Field f = ReflectionUtils.getField(GT_Recipe.GT_Recipe_Map.class, "sCircuitAssemblerRecipes");
@@ -229,7 +229,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			isModernGT = false;
 		}
 		//5.09 support
-		if (isModernGT) {
+		if (isModernGT && !CORE.GTNH) {
 			mMachineMode = mMachineMode.nextMode();
 			if (mMachineMode == MODE.CRAFTING) {
 				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: §dAuto-Crafting");
@@ -554,5 +554,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	public boolean hasSlotInGUI() {
 		return true;
 	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "VacuumFreezer";
+	}	
 
 }

@@ -2,17 +2,14 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
@@ -72,9 +69,14 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "LFTR.png");
+	public boolean hasSlotInGUI() {
+		return false;
 	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "LFTR";
+	}	
 	
 	@Override
     public boolean checkRecipe(ItemStack aStack) {
@@ -291,11 +293,6 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_Refinery(this.mName);
-	}
-
-	@Override
-	public boolean hasSlotInGUI() {
-		return false;
 	}
 
 }

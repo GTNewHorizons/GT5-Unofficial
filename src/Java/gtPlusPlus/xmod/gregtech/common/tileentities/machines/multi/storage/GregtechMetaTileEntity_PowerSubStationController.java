@@ -92,8 +92,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;
+		return false;
 	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return null;
+	}	
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {

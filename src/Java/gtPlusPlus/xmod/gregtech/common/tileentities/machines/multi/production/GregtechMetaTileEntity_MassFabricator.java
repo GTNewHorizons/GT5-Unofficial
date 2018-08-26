@@ -122,7 +122,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;
+		return false;
+	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "MatterFabricator";
 	}
 
 	public ItemStack getScrapPile() {

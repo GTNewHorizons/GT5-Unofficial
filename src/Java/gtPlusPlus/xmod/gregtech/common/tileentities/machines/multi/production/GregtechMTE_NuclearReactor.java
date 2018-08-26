@@ -129,9 +129,14 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MatterFabricator.png");
+	public boolean hasSlotInGUI() {
+		return false;
 	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "MatterFabricator";
+	}	
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
@@ -305,7 +310,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		if (this.mMaintenanceHatches.size() != 2){
-			Logger.INFO("You require EXACTLY 2 muffler hatches. TWO. You have "+this.mMaintenanceHatches.size());
+			Logger.INFO("You require EXACTLY 2 Maint. hatches. TWO. You have "+this.mMaintenanceHatches.size());
 			return false;
 		}
 		this.mWrench = true;
@@ -660,11 +665,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 			this.turnCasingActive(false);
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
-	}
-
-	@Override
-	public boolean hasSlotInGUI() {
-		return true;
 	}
 
 }

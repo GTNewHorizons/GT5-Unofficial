@@ -13,11 +13,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import net.minecraft.item.ItemStack;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-
 import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.*;
 
-import net.minecraft.entity.player.InventoryPlayer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.enums.Textures;
@@ -95,10 +92,19 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
 	}
 
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
-			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"VacuumFreezer.png");
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+	
+	@Override
+	public boolean requiresVanillaGtGUI() {
+		return true;
+	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "VacuumFreezer";
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {		
@@ -165,11 +171,6 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
-	}
-
-	@Override
-	public boolean hasSlotInGUI() {
-		return true;
 	}
 
 	@Override

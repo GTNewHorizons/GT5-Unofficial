@@ -82,8 +82,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "IndustrialCentrifuge.png");
+	public String getCustomGUIResourceName() {
+		return "IndustrialCentrifuge";
 	}
 
 	@Override

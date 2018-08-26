@@ -91,11 +91,9 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
-			final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),
-				"ProcessingArray.png");
-	}
+	public String getCustomGUIResourceName() {
+		return null;
+	}	
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {

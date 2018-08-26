@@ -81,6 +81,11 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public String getCustomGUIResourceName() {
+		return null;
+	}	
+
+	@Override
 	public String[] getDescription() {
 		String casings = getCasingBlockItem().get(0).getDisplayName();
 		return new String[]{

@@ -39,6 +39,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,14 +90,28 @@ GT_MetaTileEntity_MultiBlockBase {
 			return new CONTAINER_MultiMachine(aPlayerInventory,	aBaseMetaTileEntity);			
 		}
 	}
+	
+	public abstract String getCustomGUIResourceName();
+	
+	public boolean requiresVanillaGtGUI() {
+		return false;
+	}
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {		
+		String aCustomGUI = getCustomGUIResourceName();
+		aCustomGUI = aCustomGUI != null ? aCustomGUI : "MultiblockDisplay";
+		aCustomGUI = aCustomGUI + ".png";
 		if (hasSlotInGUI()) {
-			return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");			
+			if (!requiresVanillaGtGUI()) {
+				return new GUI_Multi_Basic_Slotted(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);			
+			}
+			else {
+				return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);			
+			}			
 		}
 		else {
-			return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MultiblockDisplay.png");			
+			return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), aCustomGUI);			
 		}		
 	}
 

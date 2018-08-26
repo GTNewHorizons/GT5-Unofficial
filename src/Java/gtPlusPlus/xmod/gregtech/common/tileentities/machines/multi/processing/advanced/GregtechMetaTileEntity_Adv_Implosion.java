@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,11 +13,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
 public class GregtechMetaTileEntity_Adv_Implosion
@@ -69,9 +66,20 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48]};
 	}
+	
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
 
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ImplosionCompressor.png");
+	@Override
+	public String getCustomGUIResourceName() {
+		return "ImplosionCompressor";
+	}
+	
+	@Override
+	public boolean requiresVanillaGtGUI() {
+		return true;
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
@@ -141,8 +149,4 @@ extends GregtechMeta_MultiBlockBase {
 		return false;
 	}
 
-	@Override
-	public boolean hasSlotInGUI() {
-		return true;
-	}
 }

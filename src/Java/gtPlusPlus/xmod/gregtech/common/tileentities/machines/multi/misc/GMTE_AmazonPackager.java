@@ -16,12 +16,10 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,6 +51,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	public boolean hasSlotInGUI() {
 		return true;
 	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return "VacuumFreezer";
+	}	
 
 	@Override
 	public String[] getDescription() {
