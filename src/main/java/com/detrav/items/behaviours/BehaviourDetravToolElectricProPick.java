@@ -25,6 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -175,7 +176,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         } else if (value < 1) {
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
         } else
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name + ": " + value));
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name + " " + value));
     }
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
@@ -194,8 +195,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             else {
                 //if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
                 if (!aWorld.isRemote) {
-                    processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
-                    return true;
+                    prospectSingleChunk( (DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ );
                 }
                 return true;
             }
@@ -216,4 +216,5 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         }
         return true;
     }
+
 }

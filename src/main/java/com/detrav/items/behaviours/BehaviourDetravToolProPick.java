@@ -74,7 +74,8 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
     	
     	SplittableRandom aRandom =new SplittableRandom();
-    	int chance = ((1+aStack.getItemDamage())*8) > 100 ? 100 :(1+aStack.getItemDamage())*8;
+        int chance = ((1+aStack.getItemDamage())*8) > 100 ? 100 :(1+aStack.getItemDamage())*8;
+        
     	if (aWorld.isRemote)
     		 return false;
     	
@@ -95,52 +96,69 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.ground || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
             if (!aWorld.isRemote) {
-            	int bX = aX;
-            	int bZ = aZ;
-
-                badluck = 0;
-                ores = new HashMap<String, Integer>();
-
-                int range = ((DetravMetaGeneratedTool01)aItem).getHarvestLevel(aStack, "")/2+(aStack.getItemDamage()/4);
-                if ((range % 2) == 0 ) {
-                    range += 1;   // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the loop
-                }
-            	range = range/2; // Convert range from diameter to radius
-            	
-            	aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
-            	for (int x = -(range); x<(range+1);++x){
-            	    aX=bX+(x*16);
-                    for (int z = -(range); z<(range+1);++z) {
-
-                		aZ=bZ+(z*16);
-                        int dist = x*x + z*z;
-
-                        for( distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++ ) {
-                            if ( dist <= DISTANCEINTS[distTextIndex] ) {
-                                break;
-                            }
-                        }
-                		if (DetravScannerMod.DEBUGBUILD)
-                			aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + DISTANCETEXTS[distTextIndex]));
-                		processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
-            		}
-                }
-
-                for (String key : ores.keySet()) {
-                    int value = ores.get(key);
-                   addChatMassageByValue(aPlayer,value,key);
-                }
-
-                if( badluck == 0) {
-                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "All chunks scanned successfully!"));
-                } else {
-                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Failed on " + badluck + " chunks. Better luck next time!"));
-                }
-                return true;
+                prospectChunks( (DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance );
             }
             return true;
         }
         return false;
+    }
+
+    protected void prospectChunks(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, SplittableRandom aRandom, int chance)
+    {
+        int bX = aX;
+        int bZ = aZ;
+        
+        badluck = 0;
+        ores = new HashMap<String, Integer>();
+        
+        int range = ((DetravMetaGeneratedTool01)aItem).getHarvestLevel(aStack, "")/2+(aStack.getItemDamage()/4);
+        if ((range % 2) == 0 ) {
+            range += 1;   // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the loop
+        }
+        range = range/2; // Convert range from diameter to radius
+        
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")" ));
+        for (int x = -(range); x<(range+1);++x){
+            aX=bX+(x*16);
+            for (int z = -(range); z<(range+1);++z) {
+        
+                aZ=bZ+(z*16);
+                int dist = x*x + z*z;
+        
+                for( distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++ ) {
+                    if ( dist <= DISTANCEINTS[distTextIndex] ) {
+                        break;
+                    }
+                }
+                if (DetravScannerMod.DEBUGBUILD)
+                    aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + DISTANCETEXTS[distTextIndex]));
+                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
+            }
+        }
+        
+        for (String key : ores.keySet()) {
+            int value = ores.get(key);
+           addChatMassageByValue(aPlayer,value,key);
+        }
+        
+        if( badluck == 0) {
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "All chunks scanned successfully!"));
+        } else {
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.WHITE + "Failed on " + badluck + " chunks. Better luck next time!"));
+        }
+    }
+
+    // Used by Electric scanner when scanning the chunk whacked by the scanner. 100% chance find rate
+    protected void prospectSingleChunk(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ )
+    {
+        ores = new HashMap<String, Integer>();
+        aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Prospecting at " + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
+        processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
+        
+        for (String key : ores.keySet()) {
+            int value = ores.get(key);
+            addChatMassageByValue(aPlayer,value,key);
+        }
     }
 
     protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, ItemData tAssotiation, SplittableRandom aRandom, int chance)//TileEntity aTileEntity)
