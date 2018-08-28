@@ -40,6 +40,8 @@ public class GT_GUIContainer_FusionReactor extends GT_GUIContainerMetaTile_Machi
                 fontRendererObj.drawString("320,000,000 EU", 50, 155, 0x00ff0000);
             else if(this.mContainer.mEnergy > 640000000 && this.mContainer.mEnergy < 640010000)
                 fontRendererObj.drawString("640,000,000 EU", 50, 155, 0x00ff0000);
+            else if(this.mContainer.mEnergy > 1280000000 && this.mContainer.mEnergy < 1280010000)
+                fontRendererObj.drawString("1,280,000,000 EU", 50, 155, 0x00ff0000);
             else
             fontRendererObj.drawString(GT_Utility.formatNumbers(this.mContainer.mEnergy) + " EU", 50, 155, 0x00ff0000);
         }
