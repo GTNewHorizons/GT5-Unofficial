@@ -522,6 +522,44 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
         return rVoltage;
     }
+    
+    protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
+        byte mTier=(byte)Math.max(0,GT_Utility.getTier(maxInputVoltage));
+        if(mTier==0){
+            //Long time calculation
+            long xMaxProgresstime = (long)aDuration*2L;
+            if(xMaxProgresstime>Integer.MAX_VALUE-1){
+                //make impossible if too long
+                mEUt=Integer.MAX_VALUE-1;
+                mMaxProgresstime=Integer.MAX_VALUE-1;
+            }else{
+                mEUt=aEUt/4;
+                mMaxProgresstime=(int)xMaxProgresstime;
+            }
+        }else{
+            //Long EUt calculation
+            long xEUt=aEUt;
+            //Isnt too low EUt check?
+            long tempEUt = xEUt<V[1] ? V[1] : xEUt;
+
+            mMaxProgresstime = aDuration;
+
+            while (tempEUt <= V[mTier -1] * mAmperage) {
+                tempEUt *= 4;//this actually controls overclocking
+                xEUt *= 4;//this is effect of everclocking
+                mMaxProgresstime /= 2;//this is effect of overclocking
+                xEUt = mMaxProgresstime==0 ? xEUt/2 : xEUt;//U know, if the time is less than 1 tick make the machine use 2x less power
+            }
+            if(xEUt>Integer.MAX_VALUE-1){
+                mEUt = Integer.MAX_VALUE-1;
+                mMaxProgresstime = Integer.MAX_VALUE-1;
+            }else{
+                mEUt = (int)xEUt;
+                mEUt = mEUt == 0 ? 1 : mEUt;
+                mMaxProgresstime = mMaxProgresstime<1 ? 1 : mMaxProgresstime;//set time to 1 tick
+            }
+        }
+    }
 
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;

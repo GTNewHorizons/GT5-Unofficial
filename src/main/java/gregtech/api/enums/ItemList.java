@@ -649,8 +649,8 @@ public enum ItemList implements IItemContainer {
     ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
     Depleted_MNq_1, Depleted_MNq_2, Depleted_MNq_4,
     MNqCell_1, MNqCell_2, MNqCell_4,
-    FusionComputer_LuV, FusionComputer_ZPMV, FusionComputer_UV,
-    Casing_Fusion_Coil, Casing_Fusion, Casing_Fusion2,
+    FusionComputer_LuV, FusionComputer_ZPMV, FusionComputer_UV, FusionComputer_UHV,
+    Casing_Fusion_Coil, Casing_Fusion, Casing_Fusion2, Casing_Fusion3,
     Generator_Plasma_IV, Generator_Plasma_LuV, Generator_Plasma_ZPMV,
     MagicEnergyConverter_LV, MagicEnergyConverter_MV, MagicEnergyConverter_HV,
     MagicEnergyAbsorber_LV, MagicEnergyAbsorber_MV, MagicEnergyAbsorber_HV, MagicEnergyAbsorber_EV,
@@ -753,7 +753,7 @@ public enum ItemList implements IItemContainer {
 	AcceleratorLV, AcceleratorMV, AcceleratorHV, AcceleratorEV, AcceleratorIV, AcceleratorLuV, AcceleratorZPM, AcceleratorUV,
 	Automation_ChestBuffer_UHV, Automation_ChestBuffer_UEV, Automation_ChestBuffer_UIV, Automation_ChestBuffer_UMV,
 	
-	Magnetic_Confinement_Pod_AntiHydrogen, Magnetic_Confinement_Pod_Hydrogen, Magnetic_Confinement_Pod, Block_Magnetic_Coil, Casing_Internix_Chamber, Casing_Dyson_Ring, Casing_Core_Chamber, Antimatter_Reactor,
+	Magnetic_Confinement_Pod_AntiHydrogen, Magnetic_Confinement_Pod_Hydrogen, Magnetic_Confinement_Pod, Block_Magnetic_Coil, Casing_Internix_Chamber, Casing_Dyson_Ring, Casing_Core_Chamber, Antimatter_Reactor, Nuclear_Reactor1,
 	Machine_LV_WaterGenerator, Machine_MV_WaterGenerator, Machine_HV_WaterGenerator, Machine_EV_WaterGenerator, Machine_IV_WaterGenerator, Machine_LuV_WaterGenerator, Machine_ZPM_WaterGenerator, Machine_UV_WaterGenerator,
 	
 	Transformer_HA_LV_ULV, Transformer_HA_MV_LV, Transformer_HA_HV_MV, Transformer_HA_EV_HV, Transformer_HA_IV_EV, Transformer_HA_LuV_IV, Transformer_HA_ZPM_LuV, Transformer_HA_UV_ZPM, Transformer_HA_UHV_UV, Transformer_HA_UEV_UHV, Transformer_HA_UIV_UEV, Transformer_HA_UMV_UIV, Transformer_HA_UXV_UMV, Transformer_HA_OPV_UXV, Transformer_HA_MAXV_OPV,

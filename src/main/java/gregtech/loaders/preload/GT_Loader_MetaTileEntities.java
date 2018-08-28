@@ -1523,6 +1523,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         		'P', OrePrefixes.pipeLarge.get(Materials.Polytetrafluoroethylene), 
         		'M', ItemList.Electric_Motor_HV,
         		'B', ItemList.Hull_HV});
+        
+        //Nuclear reactor
+        ItemList.Nuclear_Reactor1.set(new GT_MetaTileEntity_NuclearReactor1(12106, "multimachine.nuclear1", "Nuclear Reactor Mk 1").getStackForm(1L));
+        
    }
 
     private static void run4() {
