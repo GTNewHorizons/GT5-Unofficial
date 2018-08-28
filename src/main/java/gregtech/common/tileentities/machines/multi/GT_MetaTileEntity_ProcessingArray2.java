@@ -1,32 +1,40 @@
 package gregtech.common.tileentities.machines.multi;
 
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
+import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
+import org.apache.commons.lang3.ArrayUtils;
+
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Textures;
+import gregtech.api.gui.GT_GUIContainer_MultiMachine;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiBlockBase {
 
-    GT_Recipe mLastRecipe;
+    private GT_Recipe mLastRecipe;
+    private int tTier = 0;
+    private int mMult = 0;
 
     public GT_MetaTileEntity_ProcessingArray2(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -49,8 +57,9 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 "1x Output Hatch/Bus (Any casing)",
                 "1x Maintenance Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
-                "Mining Osmiridium Casings for the rest (16 at least!)",
-                "Place up to 32 Single Block GT Machines into the Controller Inventory"};
+                "Mining Osmiridium Casings for the rest (14 at least!)",
+                "Place up to 64 Single Block GT Machines into the Controller Inventory",
+                "Maximal overclockedness of machines inside: Tier 9"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -63,6 +72,22 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ProcessingArray.png");
     }
+
+    //TODO: Expand so it also does the non recipe map recipes
+    /*
+    public void remoteRecipeCheck() {
+        if (mInventory[1] == null) return;
+        String tmp = mInventory[1].getUnlocalizedName().replaceAll("gt.blockmachines.basicmachine.", "");
+        if (tmp.startsWith("replicator")) {
+        } else if (tmp.startsWith("brewery")) {
+        } else if (tmp.startsWith("packer")) {
+        } else if (tmp.startsWith("printer")) {
+        } else if (tmp.startsWith("disassembler")) {
+        } else if (tmp.startsWith("massfab")) {
+        } else if (tmp.startsWith("scanner")) {
+        }
+    }
+    */
 
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         if (mInventory[1] == null) return null;
@@ -137,8 +162,6 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
             return GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes;
         } else if (tmp.startsWith("printer")) {
             return GT_Recipe.GT_Recipe_Map.sPrinterRecipes;
-        } else if (tmp.startsWith("press")) {
-            return GT_Recipe.GT_Recipe_Map.sPressRecipes;
         } else if (tmp.startsWith("fluidcanner")) {
             return GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
         } else if (tmp.startsWith("fluidheater")) {
@@ -152,6 +175,7 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
         } else if (tmp.startsWith("circuitassembler")) {
             return GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes;
         }
+
         return null;
     }
 
@@ -166,7 +190,7 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
         return aFacing > 1;
     }
 
-    public String mMachine = "";
+    private String mMachine = "";
     public boolean checkRecipe(ItemStack aStack) {
         if (!isCorrectMachinePart(mInventory[1])) {
             return false;
@@ -174,44 +198,70 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
         if (map == null) return false;
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tTier = 0;
-        if (mInventory[1].getUnlocalizedName().endsWith("1")) {
+
+        if (mInventory[1].getUnlocalizedName().endsWith("10")) {
+            tTier = 9;
+            mMult = 2;//u need 4x less machines and they will use 4x less power
+        } else if (mInventory[1].getUnlocalizedName().endsWith("11")) {
+            tTier = 9;
+            mMult = 4;//u need 16x less machines and they will use 16x less power
+        } else if (mInventory[1].getUnlocalizedName().endsWith("12") ||
+                mInventory[1].getUnlocalizedName().endsWith("13") ||
+                mInventory[1].getUnlocalizedName().endsWith("14") ||
+                mInventory[1].getUnlocalizedName().endsWith("15")) {
+            tTier = 9;
+            mMult = 6;//u need 64x less machines and they will use 64x less power
+        } else if (mInventory[1].getUnlocalizedName().endsWith("1")) {
             tTier = 1;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("2")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("2")) {
             tTier = 2;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("3")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("3")) {
             tTier = 3;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("4")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("4")) {
             tTier = 4;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("5")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("5")) {
             tTier = 5;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("6")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("6")) {
             tTier = 6;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("7")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("7")) {
             tTier = 7;
-        }else if (mInventory[1].getUnlocalizedName().endsWith("8")) {
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("8")) {
             tTier = 8;
+            mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("9")) {
+            tTier = 9;
+            mMult = 0;//*1
+        } else {
+            tTier = 0;
+            mMult = 0;//*1
         }
-        
-        if(!mMachine.equals(mInventory[1].getUnlocalizedName()))mLastRecipe=null;
+
+        if (!mMachine.equals(mInventory[1].getUnlocalizedName())) mLastRecipe = null;
         mMachine = mInventory[1].getUnlocalizedName();
         ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
-        
-        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]); 
+
+        FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
         if (tInputList.size() > 0 || tFluids.length > 0) {
             GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if (tRecipe != null) {
                 if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
-                        !isValidForLowGravity(tRecipe,getBaseMetaTileEntity().getWorld().provider.dimensionId))
+                        !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
                     return false;
 
                 mLastRecipe = tRecipe;
                 this.mEUt = 0;
                 this.mOutputItems = null;
                 this.mOutputFluids = null;
-                int machines = Math.min(32, mInventory[1].stackSize);
+                int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
                 int i = 0;
                 for (; i < machines; i++) {
                     if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
@@ -224,26 +274,23 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 this.mMaxProgresstime = tRecipe.mDuration;
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
-                if (tRecipe.mEUt <= 32) {
-                    this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-                    this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-                } else {
-                    this.mEUt = tRecipe.mEUt;
-                    this.mMaxProgresstime = tRecipe.mDuration;
-                    while (this.mEUt <= V[tTier - 1] * map.mAmperage) {
-                        this.mEUt *= 4;
-                        this.mMaxProgresstime /= 2;
-                    }
-                }
-                this.mEUt *= i;
+                calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, map.mAmperage, GT_Values.V[tTier]);
+                //In case recipe is too OP for that machine
+                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+                this.mEUt = GT_Utility.safeInt(((long) this.mEUt * i) >> mMult, 1);
+                if (mEUt == Integer.MAX_VALUE - 1)
+                    return false;
+
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
                 ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
                 for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-                	if(tRecipe.getOutput(h)!=null){
-                    tOut[h] = tRecipe.getOutput(h).copy();
-                    tOut[h].stackSize = 0;}
+                    if (tRecipe.getOutput(h) != null) {
+                        tOut[h] = tRecipe.getOutput(h).copy();
+                        tOut[h].stackSize = 0;
+                    }
                 }
                 FluidStack tFOut = null;
                 if (tRecipe.getFluidOutput(0) != null) tFOut = tRecipe.getFluidOutput(0).copy();
@@ -264,11 +311,12 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 List<ItemStack> overStacks = new ArrayList<ItemStack>();
                 for (int f = 0; f < tOut.length; f++) {
                     while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-                    	if(tOut[f]!=null){
-                        ItemStack tmp = tOut[f].copy();
-                        tmp.stackSize = tmp.getMaxStackSize();
-                        tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-                        overStacks.add(tmp);}
+                        if (tOut[f] != null) {
+                            ItemStack tmp = tOut[f].copy();
+                            tmp.stackSize = tmp.getMaxStackSize();
+                            tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
+                            overStacks.add(tmp);
+                        }
                     }
                 }
                 if (overStacks.size() > 0) {
@@ -285,7 +333,9 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 this.mOutputFluids = new FluidStack[]{tFOut};
                 updateSlots();
                 return true;
-            }
+            }/* else{
+                ...remoteRecipeCheck()
+            }*/
         }
         return false;
     }
@@ -321,7 +371,7 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 }
             }
         }
-        return tAmount >= 16;
+        return tAmount >= 14;
     }
 
     public int getMaxEfficiency(ItemStack aStack) {
@@ -339,4 +389,41 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
+
+
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+        		StatCollector.translateToLocal("GT5U.multiblock.Progress")+": "+
+        				EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
+                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": "+
+                		EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
+                StatCollector.translateToLocal("GT5U.multiblock.usage")+": "+
+                        EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.mei")+": "+
+                        EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+ " EU/t(*2A) "+StatCollector.translateToLocal("GT5U.machines.tier")+": "+
+                        EnumChatFormatting.YELLOW+VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
+                        EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
+                        " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
+                        EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
+                StatCollector.translateToLocal("GT5U.PA.machinetier")+": "+
+                        EnumChatFormatting.GREEN+tTier+EnumChatFormatting.RESET+
+                        " "+StatCollector.translateToLocal("GT5U.PA.discount")+": "+
+                        EnumChatFormatting.GREEN+(1<<mMult)+EnumChatFormatting.RESET + " x",
+                StatCollector.translateToLocal("GT5U.PA.parallel")+": "+EnumChatFormatting.GREEN+((mInventory[1] != null) ? (mInventory[1].stackSize<<mMult) : 0)+EnumChatFormatting.RESET
+        };
+    }
+
 }
