@@ -7,6 +7,7 @@ import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
@@ -35,6 +36,8 @@ public class GT_Container_QuantumChest extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null) return;
         if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest) {
             mContent = ((GT_MetaTileEntity_QuantumChest) mTileEntity.getMetaTileEntity()).mItemCount;
+        } else if (mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_SuperChest) {
+            mContent = ((GT_MetaTileEntity_SuperChest) mTileEntity.getMetaTileEntity()).mItemCount;
         } else {
             mContent = 0;
         }
