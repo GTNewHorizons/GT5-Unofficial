@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
                 "Top besides contoller and edges Filter Machine Casings",
                 "1 Reinforced Door (keep closed for 100% efficency",
                 "1x LV+ Energy Hatch(40EU/t startup, 4EU/t keepup), 1x Maintainance Hatch",
-                "Up to 10 Machine Hulls to transfer Items & Energy through walls",
+                "Up to 20 Machine Hulls to transfer Items & Energy through walls",
                 "Remaining Blocks Plascrete"};
     }
 
@@ -129,7 +129,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_MultiBlockBas
                 }
             }
         }
-        if (mMaintenanceHatches.size() != 1 || mEnergyHatches.size() != 1 || mDoorCount != 2 || mHullCount > 10) {
+        if (mMaintenanceHatches.size() != 1 || mEnergyHatches.size() != 1 || mDoorCount != 2 || mHullCount > 20) {
             return false;
         }
         for (int dX = -x + 1; dX <= x - 1; dX++) {
