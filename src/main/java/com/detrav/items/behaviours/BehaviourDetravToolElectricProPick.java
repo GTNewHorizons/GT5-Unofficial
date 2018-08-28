@@ -141,6 +141,9 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                     }
                                     break;
                                 case 2:
+                                    if(( x == 0 ) || ( z == 0 )){ //Skip doing the locations with the grid on them.
+                                        break;
+                                    }
                                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
                                     if (fStack.amount > 0) {
                                         packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);

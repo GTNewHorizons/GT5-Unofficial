@@ -13,11 +13,19 @@ import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
 
+import net.minecraftforge.fluids.*;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+/*
+//DEBUG CLASSES
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Set;
+*/
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -28,6 +36,7 @@ public class DetravProPickPacket00 extends DetravPacket {
     public int size;
     public int ptype;
     HashMap<Byte,Short>[][] map = null;
+    static HashMap<Integer, short[]> fluidColors = null;
     
     @Override
     public int getPacketID() {
@@ -119,8 +128,8 @@ public class DetravProPickPacket00 extends DetravPacket {
         BufferedImage image = new BufferedImage(wh,wh,BufferedImage.TYPE_INT_ARGB );
         WritableRaster raster = image.getRaster();
 
-        int playerI = posX - (chunkX-size)*16;
-        int playerJ = posZ - (chunkZ-size)*16;
+        int playerI = posX - (chunkX-size)*16 - 1; // Correct player offset
+        int playerJ = posZ - (chunkZ-size)*16 - 1;
 
         if(ores == null) ores = new HashMap<String, Integer>();
         int exception = 0;
@@ -190,7 +199,7 @@ public class DetravProPickPacket00 extends DetravPacket {
                         raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                         raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
                     }
-                    if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                    if ((i) % 16 == 0 || (j) % 16 == 0) {  // Draw grid on screen
                         raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
                         raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                         raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
@@ -198,16 +207,42 @@ public class DetravProPickPacket00 extends DetravPacket {
                 }
                 break;
             case 2:
-                int gasId = Materials.NatruralGas.mGas.getID();
-                short[] gas_rgba = new short[]{ 0,0xFF,0xFF};
-                int oilLightId =  Materials.OilLight.mFluid.getID();
-                short[] oilLight_rgba = new short[]{ 0xFF,0xFF,0};
-                int oilMediumId = Materials.OilMedium.mFluid.getID();
-                short[] oilMedium_rgba = new short[]{ 0,0xFF,0};
-                int oilHeavyId = Materials.OilHeavy.mFluid.getID();
-                short[] oilHeavy_rgba = new short[]{ 0xFF,0,0xFF};
-                int oilId = Materials.Oil.mFluid.getID();
-                short[] oil_rgba = new short[]{ 0,0,0};
+                if( fluidColors == null ) {  // Should probably be put somewhere else, but I suck at Java
+                    fluidColors = new HashMap<Integer, short[]>();
+
+                    fluidColors.put( Materials.NatruralGas.mGas.getID(),                         new short[]{0x00,0xff,0xff} );
+                    fluidColors.put( Materials.OilLight.mFluid.getID(),                          new short[]{0xff,0xff,0x00} );
+                    fluidColors.put( Materials.OilMedium.mFluid.getID(),                         new short[]{0x00,0xFF,0x00} );
+                    fluidColors.put( Materials.OilHeavy.mFluid.getID(),                          new short[]{0xFF,0x00,0xFF} );
+                    fluidColors.put( Materials.Oil.mFluid.getID(),                               new short[]{0x00,0x00,0x00} );
+                    fluidColors.put( Materials.Helium_3.mGas.getID(),                            new short[]{0x80,0x20,0xe0} );
+                    fluidColors.put( Materials.SaltWater.mFluid.getID(),                         new short[]{0x80,0xff,0x80} );
+                    fluidColors.put( Materials.Naquadah.getMolten(0).getFluid().getID(),         new short[]{0x20,0x20,0x20} );
+                    fluidColors.put( Materials.NaquadahEnriched.getMolten(0).getFluid().getID(), new short[]{0x60,0x60,0x60} );
+                    fluidColors.put( Materials.Lead.getMolten(0).getFluid().getID(),             new short[]{0xd0,0xd0,0xd0} );
+                    fluidColors.put( Materials.Chlorobenzene.mFluid.getID(),                     new short[]{0x40,0x80,0x40} );
+                    fluidColors.put( FluidRegistry.getFluid("liquid_extra_heavy_oil").getID(),   new short[]{0x00,0x00,0x50} );
+                    fluidColors.put( Materials.Oxygen.mGas.getID(),                              new short[]{0x40,0x40,0xA0} );
+                    fluidColors.put( Materials.Nitrogen.mGas.getID(),                            new short[]{0x00,0x80,0xd0} );
+                    fluidColors.put( Materials.Methane.mGas.getID(),                             new short[]{0x80,0x20,0x20} );
+                    fluidColors.put( Materials.Ethane.mGas.getID(),                              new short[]{0x40,0x80,0x20} );
+                    fluidColors.put( Materials.Ethylene.mGas.getID(),                            new short[]{0xd0,0xd0,0xd0} );
+                    fluidColors.put( Materials.LiquidAir.mFluid.getID(),                         new short[]{0x40,0x80,0x40} );
+
+/*
+                   Set set = fluidColors.entrySet();
+                   Iterator iterator = set.iterator();
+                   System.out.println( "DETRAV SCANNER DEBUG" );
+                   while(iterator.hasNext()) {
+                       Map.Entry mentry = (Map.Entry) iterator.next();
+                       System.out.println( "key is: "+ (Integer)mentry.getKey() + " & Value is: " +
+                                           ((short[])mentry.getValue())[0] + " " + 
+                                           ((short[])mentry.getValue())[1] + " " + 
+                                           ((short[])mentry.getValue())[2] );
+                   }
+*/
+               }
+
                 short[] metas = new short[2];
                 for (int i = 0; i < wh; i++)
                     for (int j = 0; j < wh; j++) {
@@ -217,52 +252,47 @@ public class DetravProPickPacket00 extends DetravPacket {
                             raster.setSample(i, j, 2, 255);
                             raster.setSample(i, j, 3, 255);
                         } else {
-                            metas[0] = map[i][j].get(Byte.valueOf((byte)1));
-                            metas[1] = map[i][j].get(Byte.valueOf((byte)2));
-                            metas[1] = (short)(metas[1]/2 + 20);
-                            if(metas[1] >0xFF) metas[1] = 0xFF;
+                            metas[0] = map[i][j].get(Byte.valueOf((byte)1));   //  fluidID
+                            metas[1] = map[i][j].get(Byte.valueOf((byte)2));   //  Size of the field
                             String name = null;
                             short[] rgba = null;
-                            if (metas[0] == gasId) {
-                                name = "NatruralGas";
-                                rgba = gas_rgba.clone();
-                            } else if (metas[0] == oilLightId) {
-                                name = "OilLight";
-                                rgba = oilLight_rgba.clone();
-                            } else if (metas[0] == oilMediumId) {
-                                name = "OilMedium";
-                                rgba = oilMedium_rgba.clone();
-                            } else if (metas[0] == oilHeavyId) {
-                                name = "OilHeavy";
-                                rgba = oilHeavy_rgba.clone();
-                            } else if (metas[0] == oilId) {
-                                name = "Oil";
-                                rgba = oil_rgba.clone();
+
+                            rgba = (short[])fluidColors.get( (Integer) ((int) metas[0] ) );
+                            if (rgba == null) {
+                                DetravScannerMod.proxy.sendPlayerExeption( "Unknown fluid ID = " + metas[0] + " Please add to DetravProPickPacket00.java!" );
+                                rgba = new short[]{ 0x00, 0xff, 0x00 };
                             }
-                            if (rgba == null) continue;
-                            if (name == null) continue;
+
+                            name = FluidRegistry.getFluid( metas[0] ).getLocalizedName(new FluidStack( FluidRegistry.getFluid( metas[0] ), 0) );
+                            if (name == null) {
+                                name = "Unknown Fluid name!";
+                            }
 
                             if (!ores.containsKey(name))
                                 ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
 
-                            for( int z = 0; z<3; z++) {
-                                rgba[z] = (short) (rgba[z] + (0xFF - metas[1]));
-                                if(rgba[z]>0xFF) rgba[z] = 0xFF;
+                            int k = (i % 16); // Variables used to locate within a chunk.
+                            int l = (j % 16);
+
+                            if( ( (k + l*16) * 3) < (metas[1]+48) ) { // draw an indicator in the chunk about how large the field is at this chunk.
+                                raster.setSample(i, j, 0, rgba[0]);
+                                raster.setSample(i, j, 1, rgba[1]);
+                                raster.setSample(i, j, 2, rgba[2]);
+                                raster.setSample(i, j, 3, 255);
+                            } else {
+                                raster.setSample(i, j, 0, 255);
+                                raster.setSample(i, j, 1, 255);
+                                raster.setSample(i, j, 2, 255);
+                                raster.setSample(i, j, 3, 255);
                             }
 
-                            raster.setSample(i, j, 0, rgba[0]);
-                            raster.setSample(i, j, 1, rgba[1]);
-                            raster.setSample(i, j, 2, rgba[2]);
-                            raster.setSample(i, j, 3, 255);
-
-
                         }
-                        if (playerI == i || playerJ == j) {
+                        if (playerI == i || playerJ == j) {  // Draw red line on screen
                             raster.setSample(i, j, 0, (raster.getSample(i, j, 0) + 255) / 2);
                             raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                             raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
                         }
-                        if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                        if ((i) % 16 == 0 || (j) % 16 == 0) {  // Draw grid on screen
                             raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
                             raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                             raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
@@ -291,7 +321,7 @@ public class DetravProPickPacket00 extends DetravPacket {
                             raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                             raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
                         }
-                        if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                        if ((i) % 16 == 0 || (j) % 16 == 0) {  // Draw grid on screen
                             raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
                             raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
                             raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
