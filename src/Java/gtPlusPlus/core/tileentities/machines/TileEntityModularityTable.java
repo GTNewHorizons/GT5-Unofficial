@@ -55,7 +55,6 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	}
 
 	@Override
-	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
 		if (!nbt.hasKey(tag)) {
 			nbt.setTag(tag, new NBTTagCompound());

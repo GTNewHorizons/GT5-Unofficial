@@ -154,7 +154,6 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 	}
 
-	@SuppressWarnings("static-method")
 	private float calculateDurabilityLoss(final World world, final int X, final int Y, final int Z){
 		float bDurabilityLoss = 0;
 		Boolean correctTool = false;

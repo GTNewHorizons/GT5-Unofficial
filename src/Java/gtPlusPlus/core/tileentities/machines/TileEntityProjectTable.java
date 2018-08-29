@@ -51,7 +51,6 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 		this.container = container;
 	}
 
-	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag){
 		if(!nbt.hasKey(tag))
 		{

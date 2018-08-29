@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -33,7 +32,7 @@ public class FishTrapHandler {
 		Class mFishingRegistryClass;
 		try {
 			mFishingRegistryClass = Class.forName("growthcraft.api.fishtrap.FishTrapRegistry");
-			final Method mFishingRegistryMethod = mFishingRegistryClass.getDeclaredMethod("getInstance", null);
+			final Method mFishingRegistryMethod = mFishingRegistryClass.getDeclaredMethod("getInstance");
 			mFishingRegistry = mFishingRegistryMethod.invoke(null);
 			if (mFishingRegistry != null){
 				return mFishingRegistry;

@@ -237,6 +237,10 @@ public class ObjMap<K, V>
         return key.hashCode() & m_mask;
     }
     
+    public Object[] values() {
+    	return m_data;
+    }
+    
     /** Taken from FastUtil implementation */
 
     /** Return the least power of two greater than or equal to the specified value.

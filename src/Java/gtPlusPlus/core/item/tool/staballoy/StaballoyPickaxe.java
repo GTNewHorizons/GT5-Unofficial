@@ -171,7 +171,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
 	}
 
-	@SuppressWarnings("static-method")
 	private float calculateDurabilityLoss(final World world, final int X, final int Y, final int Z){
 		float bDurabilityLoss = 0;
 		Boolean correctTool = false;

@@ -323,11 +323,24 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Machine_Screen_Logo = Internal_Overlay_Machine_Screen_Logo;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_Interface = new CustomIcon("chrono/Overlay_Cyber");
 	public static final CustomIcon Overlay_Machine_Cyber_Interface = Internal_Overlay_Machine_Cyber_Interface;
+	
+	//Machine Controller Overlays
+	private static final CustomIcon Internal_Overlay_Machine_Controller_Default = new CustomIcon("iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
+	public static final CustomIcon Overlay_Machine_Controller_Default = Internal_Overlay_Machine_Controller_Default;
+	private static final CustomIcon Internal_Overlay_Machine_Controller_Default_Active = new CustomIcon("iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
+	public static final CustomIcon Overlay_Machine_Controller_Default_Active = Internal_Overlay_Machine_Controller_Default_Active;
+	
+	
 	//Crafting Overlays
 	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
 	public static final CustomIcon Overlay_Crafting_Bronze = Internal_Overlay_Crafting_Bronze;
 	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");
 	public static final CustomIcon Overlay_Crafting_Steel = Internal_Overlay_Crafting_Steel;
+	
+	//Covers
+	private static final CustomIcon Internal_Overlay_Overflow_Valve = new CustomIcon("iconsets/OVERLAY_OVERFLOW_VALVE");
+	public static final CustomIcon Overlay_Overflow_Valve = Internal_Overlay_Overflow_Valve;
+	
 	
 	//Hatch Overlays
 	//Charger Texture

@@ -150,7 +150,6 @@ public class NuclearFuelRodBase extends Item
 		return p_77659_1_;
 	}
 
-	@SuppressWarnings("static-method")
 	private ItemStack func_150910_a(final ItemStack p_150910_1_, final EntityPlayer p_150910_2_, final Item p_150910_3_)
 	{
 		if (p_150910_2_.capabilities.isCreativeMode)

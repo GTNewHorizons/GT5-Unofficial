@@ -38,7 +38,6 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 		this.canUpdate();
 	}
 
-	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag)
 	{
 		if(!nbt.hasKey(tag))

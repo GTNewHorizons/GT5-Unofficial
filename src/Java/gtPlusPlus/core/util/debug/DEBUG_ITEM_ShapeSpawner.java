@@ -40,7 +40,6 @@ public class DEBUG_ITEM_ShapeSpawner extends BaseItemGeneric{
 
 
 
-	@SuppressWarnings("static-method")
 	@SubscribeEvent
 	public void playerInteractEventHandler(final PlayerInteractEvent event)
 	{

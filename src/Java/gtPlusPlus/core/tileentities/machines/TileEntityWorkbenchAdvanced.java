@@ -58,7 +58,6 @@ public class TileEntityWorkbenchAdvanced extends TileEntity implements IEnergySi
 
 	}
 
-	@SuppressWarnings("static-method")
 	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag)
 	{
 		if(!nbt.hasKey(tag))

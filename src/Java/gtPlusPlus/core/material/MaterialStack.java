@@ -22,7 +22,6 @@ public class MaterialStack {
 		this.vAmount = this.math(partOutOf100);
 	}
 
-	@SuppressWarnings("static-method")
 	private int[] math(final double val){
 		double i;
 		//Cast to a BigDecimal to round it.
