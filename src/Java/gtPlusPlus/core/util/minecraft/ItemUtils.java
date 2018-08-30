@@ -774,7 +774,7 @@ public class ItemUtils {
 			if (mLocaleCache.get(mCacheKey).toLowerCase().contains(".name")) {
 				mLocaleCache.remove(mCacheKey);
 				String mNew = ItemUtils.simpleMetaStack(block, meta, 1).getDisplayName();
-				Logger.INFO("Re-caching "+mNew+" into locale cache.");
+				//Logger.INFO("Re-caching "+mNew+" into locale cache.");
 				mLocaleCache.put(mCacheKey, mNew);
 			}
 			return mLocaleCache.get(mCacheKey);

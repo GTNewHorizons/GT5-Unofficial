@@ -27,6 +27,7 @@ public class DevHelper {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Method getForgeMethod(Class c, String s, Class... varags) {
 		String s1, s2;
 		Method a, b;
