@@ -139,7 +139,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 100;
+        return 1000;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

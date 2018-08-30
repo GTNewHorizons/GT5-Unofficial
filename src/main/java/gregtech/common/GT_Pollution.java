@@ -276,4 +276,9 @@ public class GT_Pollution {
 		//is just bad expacially when that is both used to store ChunkPos and BlockPos depeending on context
 		addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX,aPos.chunkPosZ),aPollution);
 	}
+
+	public static void addPollution(ChunkPosition chunkPosition, int aPollution) {
+		// TODO Auto-generated method stub
+		
+	}
 }

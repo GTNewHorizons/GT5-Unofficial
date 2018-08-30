@@ -260,7 +260,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
     public int getPollutionPerTick(ItemStack aStack) {
         int adjustedEUOutput = Math.max(25, getEUt() - 25 * integratedCircuitConfig);
-        return Math.max(1, 12 * adjustedEUOutput / getEUt());
+        return Math.max(1, 20 * adjustedEUOutput / getEUt());
     }
 
     public int getDamageToComponent(ItemStack aStack) {

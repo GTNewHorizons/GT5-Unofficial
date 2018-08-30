@@ -768,6 +768,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GasolineRegular = new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(576).constructMaterial();
     public static Materials GasolinePremium = new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(1152).constructMaterial();
     
+    public static Materials Pollution = new MaterialBuilder(396, TextureSet.SET_FLUID, "Pollution").addCell().addFluid().setRGB(90, 70, 15).setColor(Dyes.dyeBrown).constructMaterial();
+    
     public static Materials MysteriousCrystal       = new Materials( 394, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1                         ,  22, 133, 108,   0,   "MysteriousCrystal"       ,   "Mysterious Crystal"            ,     0,       0,     7200,  7200,  true, false,  4,   1,   1, Dyes.dyeCyan         );
 	public static Materials EnrichedMysteriousCrystal       = new Materials( 395, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1                         ,  28, 162, 108,   0,   "EnrichedMysteriousCrystal"       ,   "Enriched Mysterious Crystal"            ,     0,       0,     9000,  9000,  true, false,  4,   1,   1, Dyes.dyeCyan         );
 	

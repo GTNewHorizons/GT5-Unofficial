@@ -87,7 +87,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_MultiBlock
             this.mEfficiency = 10000;
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            GT_Pollution.addPollution(getBaseMetaTileEntity(), mMaxProgresstime*5);
+            GT_Pollution.addPollution(getBaseMetaTileEntity(), mMaxProgresstime*10);
             return true;
         } else {
             this.mEfficiency = 0;

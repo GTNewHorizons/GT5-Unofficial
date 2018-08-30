@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_Boiler_Steel
                 this.mTemperature += 1;
             }
             if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-                GT_Pollution.addPollution(getBaseMetaTileEntity(), 30);
+                GT_Pollution.addPollution(getBaseMetaTileEntity(), 60);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

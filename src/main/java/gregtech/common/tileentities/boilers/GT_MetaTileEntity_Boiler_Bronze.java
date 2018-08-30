@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_Boiler_Bronze
                 this.mTemperature += 1;
             }
             if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-                GT_Pollution.addPollution(getBaseMetaTileEntity(), 20);
+                GT_Pollution.addPollution(getBaseMetaTileEntity(), 40);
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

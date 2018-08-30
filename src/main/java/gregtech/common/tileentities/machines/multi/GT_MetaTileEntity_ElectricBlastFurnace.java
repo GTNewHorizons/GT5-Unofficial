@@ -247,7 +247,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     }
 
     public int getPollutionPerTick(ItemStack aStack) {
-        return 5;
+        return 10;
     }
 
     public int getDamageToComponent(ItemStack aStack) {

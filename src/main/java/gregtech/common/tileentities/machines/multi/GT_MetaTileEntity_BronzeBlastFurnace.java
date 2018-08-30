@@ -32,7 +32,7 @@ public class GT_MetaTileEntity_BronzeBlastFurnace
                 "Useable for Steel and general Pyrometallurgy",
                 "Size(WxHxD): 3x4x3 (Hollow, with opening on top)",
                 "Built from 32 Bronze Plated Bricks",
-                "Causes 50 Pollution per second"};
+                "Causes 100 Pollution per second"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
