@@ -756,6 +756,7 @@ public enum ItemList implements IItemContainer {
 	Magnetic_Confinement_Pod_AntiHydrogen, Magnetic_Confinement_Pod_Hydrogen, Magnetic_Confinement_Pod, Block_Magnetic_Coil, Casing_Internix_Chamber, Casing_Dyson_Ring, Casing_Core_Chamber, Antimatter_Reactor, Nuclear_Reactor1,
 	Machine_LV_WaterGenerator, Machine_MV_WaterGenerator, Machine_HV_WaterGenerator, Machine_EV_WaterGenerator, Machine_IV_WaterGenerator, Machine_LuV_WaterGenerator, Machine_ZPM_WaterGenerator, Machine_UV_WaterGenerator,
 	
+	WetTransformer_LV_ULV, WetTransformer_MV_LV, WetTransformer_HV_MV, WetTransformer_EV_HV, WetTransformer_IV_EV, WetTransformer_LuV_IV, WetTransformer_ZPM_LuV, WetTransformer_UV_ZPM, WetTransformer_UHV_UV, WetTransformer_UEV_UHV, WetTransformer_UIV_UEV, WetTransformer_UMV_UIV, WetTransformer_UXV_UMV, WetTransformer_OPV_UXV, WetTransformer_MAXV_OPV,
 	Transformer_HA_LV_ULV, Transformer_HA_MV_LV, Transformer_HA_HV_MV, Transformer_HA_EV_HV, Transformer_HA_IV_EV, Transformer_HA_LuV_IV, Transformer_HA_ZPM_LuV, Transformer_HA_UV_ZPM, Transformer_HA_UHV_UV, Transformer_HA_UEV_UHV, Transformer_HA_UIV_UEV, Transformer_HA_UMV_UIV, Transformer_HA_UXV_UMV, Transformer_HA_OPV_UXV, Transformer_HA_MAXV_OPV,
 	
 	AdsorptionFilter, AdsorptionFilterCasing, AdsorptionFilterDirty, Machine_Multi_AirFilter, Casing_AirFilter, Casing_AirFilter_Vent;

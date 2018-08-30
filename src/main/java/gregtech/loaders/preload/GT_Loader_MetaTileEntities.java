@@ -36,6 +36,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
+
 public class GT_Loader_MetaTileEntities implements Runnable {
     private static final String aTextWire1 = "wire."; private static final String aTextCable1 = "cable."; private static final String aTextWire2 = " Wire"; private static final String aTextCable2 = " Cable";
     private final static String aTextPlate = "PPP"; private final static String aTextPlateWrench = "PwP"; private final static String aTextPlateMotor = "PMP"; private final static String aTextCableHull = "CMC";
@@ -1524,7 +1529,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         		'M', ItemList.Electric_Motor_HV,
         		'B', ItemList.Hull_HV});
         
-        //Nuclear reactor
+        //Nuclear reactor (12106, 12107, 12108, 12109)
         ItemList.Nuclear_Reactor1.set(new GT_MetaTileEntity_NuclearReactor1(12106, "multimachine.nuclear1", "Nuclear Reactor Mk 1").getStackForm(1L));
         
    }
@@ -2999,6 +3004,500 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 						"Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
 						6, 1, 16000, 0, 1, "CircuitAssembler.png", "",
 						false, false, 0, "CIRCUITASSEMBLER", null).getStackForm(1L));
+				
+		// ===================================================================================================
+		// Wet Transformers
+		// ===================================================================================================
+                    
+					ItemList.Transformer_HA_LV_ULV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12135, "transformer.ha.tier.00", "Ultra Low Voltage Hi-Amp Transformer", 0,
+							"LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_MV_LV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12136, "transformer.ha.tier.01", "Low Voltage Hi-Amp Transformer", 1,
+							"MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_HV_MV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12137, "transformer.ha.tier.02", "Medium Voltage Hi-Amp Transformer", 2,
+							"HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_EV_HV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12138, "transformer.ha.tier.03", "High Voltage Hi-Amp Transformer", 3,
+							"EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_IV_EV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12139, "transformer.ha.tier.04", "Extreme Hi-Amp Transformer", 4,
+							"IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_LuV_IV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12140, "transformer.ha.tier.05", "Insane Hi-Amp Transformer", 5,
+							"LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_ZPM_LuV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12141, "transformer.ha.tier.06", "Ludicrous Hi-Amp Transformer", 6,
+							"ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UV_ZPM.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12142, "transformer.ha.tier.07", "ZPM Voltage Hi-Amp Transformer", 7,
+							"UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UHV_UV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12143, "transformer.ha.tier.08", "Ultimate Hi-Amp Transformer", 8,
+							"UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UEV_UHV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12144, "transformer.ha.tier.09", "Highly Ultimate Hi-Amp Transformer", 9,
+							"UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UIV_UEV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12145, "transformer.ha.tier.10", "Extremely Ultimate Hi-Amp Transformer",10,
+							"UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UMV_UIV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12146, "transformer.ha.tier.11", "Insanely Ultimate Hi-Amp Transformer",11,
+							"UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_UXV_UMV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12147, "transformer.ha.tier.12", "Mega Ultimate Hi-Amp Transformer",12,
+							"UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_OPV_UXV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12148, "transformer.ha.tier.13", "Extended Mega Ultimate Hi-Amp Transformer",13,
+							"OPV -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+					ItemList.Transformer_HA_MAXV_OPV.set(new GT_MetaTileEntity_TransformerHiAmp(
+							12149, "transformer.ha.tier.14", "Overpowered Hi-Amp Transformer",14,
+							"MAX -> OPV (Use Soft Mallet to invert)").getStackForm(1L));
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_LV_ULV.get(1L, new Object[0]), bitsd,
+							new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Transformer_LV_ULV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Tin), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Lead) });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_MV_LV.get(1L, new Object[0]), bitsd,
+							new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Transformer_MV_LV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Copper), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Tin) });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_HV_MV.get(1L, new Object[0]), bitsd,
+							new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Transformer_HV_MV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Gold), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Copper) });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_EV_HV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_EV_HV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Aluminium), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Gold), Character.valueOf('K'),
+									ItemList.Casing_Coil_Cupronickel });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_IV_EV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_IV_EV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Tungsten), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Aluminium), Character.valueOf('K'),
+									ItemList.Casing_Coil_Kanthal });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_LuV_IV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_LuV_IV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.VanadiumGallium), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Tungsten), Character.valueOf('K'),
+									ItemList.Casing_Coil_Nichrome });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_ZPM_LuV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_ZPM_LuV, Character.valueOf('C'),
+									OrePrefixes.wireGt16.get(Materials.Naquadah), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.VanadiumGallium), Character.valueOf('K'),
+									ItemList.Casing_Coil_TungstenSteel });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UV_ZPM.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UV_ZPM, Character.valueOf('C'),
+									OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('B'),
+									OrePrefixes.wireGt16.get(Materials.Naquadah), Character.valueOf('K'),
+									ItemList.Casing_Coil_Naquadah });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UHV_UV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_MAX_UV, Character.valueOf('C'),
+									OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('B'),
+									OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('K'),
+									ItemList.Casing_Coil_NaquadahAlloy });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UEV_UHV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UEV_UHV, Character.valueOf('C'),
+									OrePrefixes.wireGt04.get(Materials.SuperconductorUEV), Character.valueOf('B'),
+									OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('K'),
+									ItemList.Casing_Coil_Superconductor });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UIV_UEV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UIV_UEV, Character.valueOf('C'),
+									OrePrefixes.wireGt08.get(Materials.Neutronium), Character.valueOf('B'),
+									OrePrefixes.wireGt01.get(Materials.SuperconductorUEV), Character.valueOf('K'),
+									ItemList.Casing_Fusion_Coil });
+					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UMV_UIV.get(1L, new Object[0]), bitsd,
+							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UMV_UIV, Character.valueOf('C'),
+									OrePrefixes.wireGt08.get(Materials.Quantium), Character.valueOf('B'),
+									OrePrefixes.wireGt04.get(Materials.Neutronium), Character.valueOf('K'),
+									ItemList.Casing_Fusion_Coil });	
+				
+				ItemList.WetTransformer_LV_ULV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12150, "wettransformer.tier.00", "Ultra Low Voltage Power Transformer", 0,
+						"LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_MV_LV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12151, "wetransformer.tier.01", "Low Voltage Power Transformer", 1,
+						"MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_HV_MV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12152, "wettransformer.tier.02", "Medium Voltage Power Transformer", 2,
+						"HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_EV_HV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12153, "wettransformer.tier.03", "High Voltage Power Transformer", 3,
+						"EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_IV_EV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12154, "wettransformer.tier.04", "Extreme Power Transformer", 4,
+						"IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_LuV_IV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12155, "wettransformer.tier.05", "Insane Power Transformer", 5,
+						"LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_ZPM_LuV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12156, "wettransformer.tier.06", "Ludicrous Power Transformer", 6,
+						"ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UV_ZPM.set(new GT_MetaTileEntity_Wet_Transformer(
+						12157, "wettransformer.tier.07", "ZPM Voltage Power Transformer", 7,
+						"UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UHV_UV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12158, "wettransformer.tier.08", "Ultimate Power Transformer", 8,
+						"UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UEV_UHV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12159, "wettransformer.tier.09", "Highly Ultimate Power Transformer", 9,
+						"UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UIV_UEV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12160, "wettransformer.tier.10", "Extremely Ultimate Power Transformer",10,
+						"UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UMV_UIV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12161, "wettransformer.tier.11", "Insanely Ultimate Power Transformer",11,
+						"UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_UXV_UMV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12162, "wettransformer.tier.12", "Mega Ultimate Power Transformer",12,
+						"UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_OPV_UXV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12163, "wettransformer.tier.13", "Extended Mega Ultimate Power Transformer",13,
+						"OPV -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+
+				ItemList.WetTransformer_MAXV_OPV.set(new GT_MetaTileEntity_Wet_Transformer(
+						12164, "wettransformer.tier.14", "Overpowered Power Transformer",14,
+						"MAX -> OPV (Use Soft Mallet to invert)").getStackForm(1L));
+				
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_LV_ULV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Lead),
+										'C', OrePrefixes.wireGt16.get(Materials.Lead),
+										'S', OrePrefixes.spring.get(Materials.Tin),
+										'X', OrePrefixes.wireGt08.get(Materials.Tin),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_LV_ULV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_MV_LV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Tin),
+										'C', OrePrefixes.wireGt16.get(Materials.Tin),
+										'S', OrePrefixes.spring.get(Materials.Copper),
+										'X', OrePrefixes.wireGt08.get(Materials.Copper),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_MV_LV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_HV_MV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Copper),
+										'C', OrePrefixes.wireGt16.get(Materials.Copper),
+										'S', OrePrefixes.spring.get(Materials.Gold),
+										'X', OrePrefixes.wireGt08.get(Materials.Gold),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_HV_MV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_EV_HV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Gold),
+										'C', OrePrefixes.wireGt16.get(Materials.Gold),
+										'S', OrePrefixes.spring.get(Materials.Aluminium),
+										'X', OrePrefixes.wireGt08.get(Materials.Aluminium),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_EV_HV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_IV_EV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Aluminium),
+										'C', OrePrefixes.wireGt16.get(Materials.Aluminium),
+										'S', OrePrefixes.spring.get(Materials.Tungsten),
+										'X', OrePrefixes.wireGt08.get(Materials.Tungsten),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_IV_EV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_LuV_IV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Tungsten),
+										'C', OrePrefixes.wireGt16.get(Materials.Tungsten),
+										'S', OrePrefixes.spring.get(Materials.VanadiumGallium),
+										'X', OrePrefixes.wireGt08.get(Materials.VanadiumGallium),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_LuV_IV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_ZPM_LuV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.VanadiumGallium),
+										'C', OrePrefixes.wireGt16.get(Materials.VanadiumGallium),
+										'S', OrePrefixes.spring.get(Materials.Naquadah),
+										'X', OrePrefixes.wireGt08.get(Materials.Naquadah),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_ZPM_LuV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UV_ZPM.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Naquadah),
+										'C', OrePrefixes.wireGt16.get(Materials.Naquadah),
+										'S', OrePrefixes.spring.get(Materials.NaquadahAlloy),
+										'X', OrePrefixes.wireGt08.get(Materials.NaquadahAlloy),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_UV_ZPM});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UHV_UV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.NaquadahAlloy),
+										'C', OrePrefixes.wireGt16.get(Materials.NaquadahAlloy),
+										'S', OrePrefixes.spring.get(Materials.Europium),
+										'X', OrePrefixes.wireGt08.get(Materials.Europium),
+										'O', OrePrefixes.cell.get(Materials.Lubricant),
+										'P', ItemList.Electric_Pump_LV,
+										'T', ItemList.Transformer_HA_UHV_UV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UEV_UHV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Europium),
+										'C', OrePrefixes.wireGt16.get(Materials.Europium),
+										'S', OrePrefixes.spring.get(Materials.Diamericiumtitanium),
+										'X', OrePrefixes.wireGt08.get(Materials.Diamericiumtitanium),
+										'O', ItemList.Reactor_Coolant_He_1,
+										'P', ItemList.Electric_Pump_MV,
+										'T', ItemList.Transformer_HA_UEV_UHV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UIV_UEV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Diamericiumtitanium),
+										'C', OrePrefixes.wireGt16.get(Materials.Diamericiumtitanium),
+										'S', OrePrefixes.spring.get(Materials.Neutronium),
+										'X', OrePrefixes.wireGt08.get(Materials.Neutronium),
+										'O', ItemList.Reactor_Coolant_He_3,
+										'P', ItemList.Electric_Pump_HV,
+										'T', ItemList.Transformer_HA_UIV_UEV});
+
+						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UMV_UIV.get(1L),
+								bitsd,
+								new Object[]{"XOC", "STA", "POC",
+										'A', OrePrefixes.springSmall.get(Materials.Neutronium),
+										'C', OrePrefixes.wireGt16.get(Materials.Neutronium),
+										'S', OrePrefixes.spring.get(Materials.Quantium),
+										'X', OrePrefixes.wireGt08.get(Materials.Quantium),
+										'O', ItemList.Reactor_Coolant_He_6,
+										'P', ItemList.Electric_Pump_IV,
+										'T', ItemList.Transformer_HA_UMV_UIV});
+					
+		// ===================================================================================================
+		// Turbo Chargers
+		// ===================================================================================================
+						ItemList.Battery_TurboCharger_4by4_ULV.set(new GT_MetaTileEntity_TurboCharger(
+								12170, "batteryturbocharger.16.tier.00", "Ultra Low Voltage Turbo Charger",0,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_LV.set(new GT_MetaTileEntity_TurboCharger(
+								12171, "batteryturbocharger.16.tier.01", "Low Voltage Turbo Charger",1,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_MV.set(new GT_MetaTileEntity_TurboCharger(
+								12172, "batteryturbocharger.16.tier.02", "Medium Voltage Turbo Charger",2,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_HV.set(new GT_MetaTileEntity_TurboCharger(
+								12173, "batteryturbocharger.16.tier.03", "High Voltage Turbo Charger",3,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_EV.set(new GT_MetaTileEntity_TurboCharger(
+								12174, "batteryturbocharger.16.tier.04", "Extreme Voltage Turbo Charger",4,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_IV.set(new GT_MetaTileEntity_TurboCharger(
+								12175, "batteryturbocharger.16.tier.05", "Insane Voltage Turbo Charger",5,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_LuV.set(new GT_MetaTileEntity_TurboCharger(
+								12176, "batteryturbocharger.16.tier.06", "Ludicrous Voltage Turbo Charger",6,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_ZPM.set(new GT_MetaTileEntity_TurboCharger(
+								12177, "batteryturbocharger.16.tier.07", "ZPM Voltage Turbo Charger",7,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_UV.set(new GT_MetaTileEntity_TurboCharger(
+								12178, "batteryturbocharger.16.tier.08", "Ultimate Voltage Turbo Charger",8,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_UHV.set(new GT_MetaTileEntity_TurboCharger(
+								12179, "batteryturbocharger.16.tier.09", "Highly Ultimate Voltage Turbo Charger",9,"64A in /16A out, 120A/item, Disable to force Charge", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_UEV.set(new GT_MetaTileEntity_TurboCharger(
+								12180, "batteryturbocharger.16.tier.10", "Extremely Ultimate Turbo Charger",10,"64A in /16A out", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_UIV.set(new GT_MetaTileEntity_TurboCharger(
+								12181, "batteryturbocharger.16.tier.11", "Insanely Ultimate Turbo Charger",11,"64A in /16A out", 4).getStackForm(1L));
+
+						ItemList.Battery_TurboCharger_4by4_UMV.set(new GT_MetaTileEntity_TurboCharger(
+								12182, "batteryturbocharger.16.tier.12", "Mega Ultimate Turbo Charger",12,"64A in /16A out", 4).getStackForm(1L));
+						
+							GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_ULV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_LV_ULV,
+											'M', ItemList.Battery_Charger_4by4_ULV,
+											'B', ItemList.Battery_RE_ULV_Tantalum,
+											'C', OrePrefixes.wireGt16.get(Materials.Lead),
+											'X', OrePrefixes.circuit.get(Materials.Primitive)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_LV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_MV_LV,
+											'M', ItemList.Battery_Charger_4by4_LV,
+											'B', ItemList.Battery_RE_LV_Lithium,
+											'C', OrePrefixes.wireGt16.get(Materials.Tin),
+											'X', OrePrefixes.circuit.get(Materials.Basic)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_MV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_HV_MV,
+											'M', ItemList.Battery_Charger_4by4_MV,
+											'B', ItemList.Battery_RE_MV_Lithium,
+											'C', OrePrefixes.wireGt16.get(Materials.Copper),
+											'X', OrePrefixes.circuit.get(Materials.Good)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_HV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_EV_HV,
+											'M', ItemList.Battery_Charger_4by4_HV,
+											'B', ItemList.Battery_RE_HV_Lithium,
+											'C', OrePrefixes.wireGt16.get(Materials.Gold),
+											'X', OrePrefixes.circuit.get(Materials.Advanced)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_EV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_IV_EV,
+											'M', ItemList.Battery_Charger_4by4_EV,
+											'B', ItemList.BatteryHull_EV_Full,
+											'C', OrePrefixes.wireGt16.get(Materials.Aluminium),
+											'X', OrePrefixes.circuit.get(Materials.Data)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_IV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_LuV_IV,
+											'M', ItemList.Battery_Charger_4by4_IV,
+											'B', ItemList.Energy_LapotronicOrb,
+											'C', OrePrefixes.wireGt16.get(Materials.Tungsten),
+											'X', OrePrefixes.circuit.get(Materials.Elite)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_IV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+										    'T', ItemList.WetTransformer_LuV_IV,
+											'M', ItemList.Battery_Charger_4by4_IV,
+											'B', ItemList.BatteryHull_IV_Full,
+											'C', OrePrefixes.wireGt16.get(Materials.Tungsten),
+											'X', OrePrefixes.circuit.get(Materials.Elite)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_LuV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_ZPM_LuV,
+											'M', ItemList.Battery_Charger_4by4_LuV,
+											'B', ItemList.Energy_LapotronicOrb2,
+											'C', OrePrefixes.wireGt16.get(Materials.VanadiumGallium),
+											'X', OrePrefixes.circuit.get(Materials.Master)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_LuV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_ZPM_LuV,
+													'M', ItemList.Battery_Charger_4by4_LuV,
+													'B', ItemList.BatteryHull_LuV_Full,
+													'C', OrePrefixes.wireGt16.get(Materials.VanadiumGallium),
+													'X', OrePrefixes.circuit.get(Materials.Master)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_ZPM.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_UV_ZPM,
+											'M', ItemList.Battery_Charger_4by4_ZPM,
+											'B', ItemList.Energy_Module,
+											'C', OrePrefixes.wireGt16.get(Materials.Naquadah),
+											'X', OrePrefixes.circuit.get(Materials.Ultimate)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_ZPM.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_UV_ZPM,
+													'M', ItemList.Battery_Charger_4by4_ZPM,
+													'B', ItemList.BatteryHull_ZPM_Full,
+													'C', OrePrefixes.wireGt16.get(Materials.Naquadah),
+													'X', OrePrefixes.circuit.get(Materials.Ultimate)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_UHV_UV,
+											'M', ItemList.Battery_Charger_4by4_UV,
+											'B', ItemList.Energy_Cluster,
+											'C', OrePrefixes.wireGt16.get(Materials.NaquadahAlloy),
+											'X', OrePrefixes.circuit.get(Materials.Superconductor)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_UHV_UV,
+													'M', ItemList.Battery_Charger_4by4_UV,
+													'B', ItemList.BatteryHull_UV_Full,
+													'C', OrePrefixes.wireGt16.get(Materials.NaquadahAlloy),
+													'X', OrePrefixes.circuit.get(Materials.Superconductor)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UHV.get(1L),
+									bitsd,
+									new Object[]{"BTB", "CMC", "BXB",
+											'T', ItemList.WetTransformer_UEV_UHV,
+											'M', ItemList.Battery_Charger_4by4_MAX,
+											'B', ItemList.ZPM2,
+											'C', OrePrefixes.wireGt16.get(Materials.Europium),
+											'X', OrePrefixes.circuit.get(Materials.Infinite)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UHV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_UEV_UHV,
+													'M', ItemList.Battery_Charger_4by4_MAX,
+													'B', ItemList.BatteryHull_UHV_Full,
+													'C', OrePrefixes.wireGt16.get(Materials.Europium),
+													'X', OrePrefixes.circuit.get(Materials.Infinite)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UEV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_UIV_UEV,
+													'M', ItemList.Battery_Charger_4by4_UEV,
+													'B', ItemList.ZPM2,
+													'C', OrePrefixes.wireGt16.get(Materials.Diamericiumtitanium),
+													'X', OrePrefixes.circuit.get(Materials.Nano)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UEV.get(1L),
+													bitsd,
+													new Object[]{"BTB", "CMC", "BXB",
+															'T', ItemList.WetTransformer_UIV_UEV,
+															'M', ItemList.Battery_Charger_4by4_UEV,
+															'B', ItemList.BatteryHull_UEV_Full,
+															'C', OrePrefixes.wireGt16.get(Materials.Diamericiumtitanium),
+															'X', OrePrefixes.circuit.get(Materials.Nano)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UIV.get(1L),
+											bitsd,
+											new Object[]{"BTB", "CMC", "BXB",
+													'T', ItemList.WetTransformer_UMV_UIV,
+													'M', ItemList.Battery_Charger_4by4_UIV,
+													'B', ItemList.ZPM3,
+													'C', OrePrefixes.wireGt16.get(Materials.Neutronium),
+													'X', OrePrefixes.circuit.get(Materials.Nano)});
+									GT_ModHandler.addCraftingRecipe(ItemList.Battery_TurboCharger_4by4_UIV.get(1L),
+													bitsd,
+													new Object[]{"BTB", "CMC", "BXB",
+															'T', ItemList.WetTransformer_UMV_UIV,
+															'M', ItemList.Battery_Charger_4by4_UIV,
+															'B', ItemList.BatteryHull_UIV_Full,
+															'C', OrePrefixes.wireGt16.get(Materials.Neutronium),
+															'X', OrePrefixes.circuit.get(Materials.Nano)});
 				
     }
 
