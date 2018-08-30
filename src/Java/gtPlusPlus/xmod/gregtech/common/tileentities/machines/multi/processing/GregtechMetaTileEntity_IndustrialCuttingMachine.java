@@ -47,13 +47,13 @@ extends GregtechMeta_MultiBlockBase {
 				"Only uses 75% of the eu/t normally required",
 				"Processes four items per voltage tier",
 				"Size: 3x3x5 [WxHxL] (Hollow)", "Controller (front centered)",
-				"2x Input Bus (side centered)",
-				"2x Output Bus (side centered)",
+				"1x Input Bus (side centered)",
+				"1x Output Bus (side centered)",
 				"1x Energy Hatch (top or bottom centered)",
 				"1x Input Hatch (top or bottom centered)",
 				"1x Muffler Hatch (top)",
 				"1x Maintenance Hatch (back centered)",
-				"Cutting Factory Frames for the rest (32 at least!)",
+				"Cutting Factory Frames for the rest (26 at least!)",
 				getPollutionTooltip(),
 				getMachineTooltip(),
 				CORE.GT_Tooltip
@@ -97,20 +97,6 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final byte tSide = this.getBaseMetaTileEntity().getBackFacing();
 		if ((this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 1)) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 2) && (this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 3)))) {
-			int tAirCount = 0;
-			for (byte i = -1; i < 2; i = (byte) (i + 1)) {
-				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
-					for (byte k = -1; k < 2; k = (byte) (k + 1)) {
-						if (this.getBaseMetaTileEntity().getAirOffset(i, j, k)) {
-							tAirCount++;
-						}
-					}
-				}
-			}
-			if (tAirCount != 10) {
-				Logger.INFO("False 1");
-				return false;
-			}
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
@@ -149,7 +135,7 @@ extends GregtechMeta_MultiBlockBase {
 				Logger.INFO("Use Busses, Not Hatches for Output.");
 				return false;
 			}
-			if ((this.mInputBusses.size() != 2) || (this.mOutputBusses.size() != 2)) {
+			if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 1)) {
 				Logger.INFO("Incorrect amount of Input & Output busses.");
 				return false;
 			}
@@ -164,7 +150,7 @@ extends GregtechMeta_MultiBlockBase {
 					return false;
 				}
 			}
-			if ((this.mMaintenanceHatches.size() != 1) || (this.mMufflerHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
+			if ((this.mMaintenanceHatches.size() != 1) || (this.mMufflerHatches.size() < 1) || (this.mEnergyHatches.size() < 1)) {
 				Logger.INFO("Incorrect amount of Maintenance or Energy or Muffler hatches.");
 				return false;
 			}
