@@ -13,69 +13,63 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import gregtech.api.util.GT_OreDictUnificator;
-
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public class BaseItemGrindle extends Item{
+public class BaseItemGrindle extends Item {
 
 	protected final String unlocalName;
 
-
-	public BaseItemGrindle(){
+	public BaseItemGrindle() {
 		this.unlocalName = "itemGrindleTablet";
 		this.setUnlocalizedName("itemGrindleTablet");
 		this.setTextureName(CORE.MODID + ":" + "itemTablet");
 		GameRegistry.registerItem(this, "itemGrindleTablet");
-		GT_OreDictUnificator.registerOre("tabletGit", ItemUtils.getSimpleStack(this));
 		this.setMaxStackSize(1);
 		this.setCreativeTab(AddToCreativeTab.tabOther);
 	}
 
 	@Override
 	public int getMaxItemUseDuration(final ItemStack stack) {
-		return 1; 
+		return 1;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player)
-	{
-		if (!world.isRemote){
+	public ItemStack onItemRightClick(final ItemStack itemstack, final World world, final EntityPlayer player) {
+		if (!world.isRemote) {
 			if (!player.isSneaking()) {
 				player.openGui(GTplusplus.instance, GuiHandler.GUI9, world, 0, 0, 0);
 			}
 		}
-
 		return itemstack;
 	}
 
 	@Override
-	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-		return ("Git");
+	public String getItemStackDisplayName(final ItemStack aStack) {
+		String aName = super.getItemStackDisplayName(aStack);
+		if (aName.toLowerCase().contains(".name") || aName.toLowerCase().contains("git")) {
+			aName = "Grindle";
+		}
+		return aName;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(final IIconRegister iconRegister)
-	{
+	public void registerIcons(final IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + "itemTablet");
 	}
 
 	@Override
 	public String getPotionEffect(ItemStack p_150896_1_) {
-		// TODO Auto-generated method stub
 		return super.getPotionEffect(p_150896_1_);
 	}
 
 	@Override
-	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_,
-			List p_77624_3_, boolean p_77624_4_) {
-		// TODO Auto-generated method stub
-		super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
+	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+		super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+		aList.add("Used to read data from DataSticks & DataOrbs.");
 	}
 
 	@Override

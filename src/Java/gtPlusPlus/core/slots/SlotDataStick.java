@@ -4,11 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.ItemList;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotDataStick extends Slot {
 
@@ -17,21 +14,24 @@ public class SlotDataStick extends Slot {
 
 	}
 
+	public static ItemStack[] mDataItems = new ItemStack[2];
+	
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
+	public synchronized boolean isItemValid(final ItemStack itemstack) {
 		boolean isValid = false;
-
-		if (itemstack != null) {
-			if ((itemstack.getItem() instanceof GT_MetaGenerated_Item_01 && itemstack.getItemDamage() == 32708)
-					|| (itemstack == ItemList.Tool_DataStick.get(1))
-					|| (itemstack == GregtechItemList.Old_Tool_DataStick.get(1))
-					|| (itemstack.getItem() instanceof MetaGeneratedGregtechItems
-							&& itemstack.getItemDamage() == 32208)) {
-				isValid = true;
+		if (itemstack != null) {			
+			if (mDataItems[0] == null) {
+				mDataItems[0] = CI.getDataStick();
 			}
+			if (mDataItems[1] == null) {
+				mDataItems[1] = CI.getDataOrb();
+			}
+			if (mDataItems[0] != null && mDataItems[1] != null) {
+				if (GT_Utility.areStacksEqual(itemstack, mDataItems[0], true) || GT_Utility.areStacksEqual(itemstack, mDataItems[1], true) ) {
+					isValid = true;
+				}
+			}						
 		}
-		// Utils.LOG_INFO("Tried inserting "+itemstack.getDisplayName()+" |
-		// "+itemstack.getItemDamage()+" | ");
 		return isValid;
 	}
 

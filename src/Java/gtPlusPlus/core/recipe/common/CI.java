@@ -18,7 +18,6 @@ import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import ic2.core.Ic2Items;
 
 public class CI {
@@ -394,6 +393,15 @@ public class CI {
 		}
 		else {
 			return ItemList.Tool_DataOrb.get(1);				
+		}
+	}
+	
+	public static ItemStack getDataStick(){
+		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !CORE.GTNH){
+			return GregtechItemList.Old_Tool_DataStick.get(1);
+		}
+		else {
+			return ItemList.Tool_DataStick.get(1);				
 		}
 	}
 
