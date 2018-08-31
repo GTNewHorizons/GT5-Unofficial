@@ -1608,7 +1608,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         makeWires(Materials.SuperconductorIV, 2380, 0L, 0L, 4L, gregtech.api.enums.GT_Values.V[5], aBoolConst_0, true);
         makeWires(Materials.SuperconductorLuV, 2400, 0L, 0L, 8L, gregtech.api.enums.GT_Values.V[6], aBoolConst_0, true);
         makeWires(Materials.SuperconductorZPM, 2420, 0L, 0L, 8L, gregtech.api.enums.GT_Values.V[7], aBoolConst_0, true);
-        makeWires(Materials.SuperconductorUEV, 2440, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[10], aBoolConst_0, true);
+        makeWires(Materials.SuperconductorUV, 2440, 0L, 0L, 12L, gregtech.api.enums.GT_Values.V[8], aBoolConst_0, true);
+        makeWires(Materials.SuperconductorUEV, 2460, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[10], aBoolConst_0, true);
         
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("copperCableItem", 2L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.Copper)});
