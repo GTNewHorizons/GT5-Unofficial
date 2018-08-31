@@ -49,6 +49,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
             case "craftingLensOrange":
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_SoC.get(1, new Object[0]), 200, 1920,true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_SoC3.get(1, new Object[0]), 2700, 7680,true);
+                break;
+            case "craftingLensLime":
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_Simple_SoC.get(1, new Object[0]), 300, 64,false);
             	break;
             case "craftingLensCyan":
