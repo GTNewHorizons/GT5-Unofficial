@@ -21,9 +21,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Naquadah Reactor Piping");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Reactor Containment");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base"); //48
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
@@ -61,16 +61,16 @@ extends GregtechMetaCasingBlocksAbstract {
 			switch (aMeta) {
 				//Centrifuge
 				case 0:
-					return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A.getIcon();
+					return TexturesGtBlock.TEXTURE_METAL_PANEL_E.getIcon();
 					//Coke Oven Frame
 				case 1:
 					return TexturesGtBlock.TEXTURE_TECH_C.getIcon();
 					//Coke Oven Casing Tier 1
 				case 2:
-					return TexturesGtBlock.TEXTURE_METAL_PANEL_E.getIcon();
+					return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A.getIcon();
 					//Coke Oven Casing Tier 2
 				case 3:
-					return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
+					return TexturesGtBlock.Casing_Material_Grisium.getIcon();
 					//Material Press Casings
 				case 4:
 					return TexturesGtBlock.Casing_Material_Grisium.getIcon();				

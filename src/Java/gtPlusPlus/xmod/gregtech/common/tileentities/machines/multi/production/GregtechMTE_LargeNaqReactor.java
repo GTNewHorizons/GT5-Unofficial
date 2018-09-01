@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -9,11 +10,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import java.util.ArrayList;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -46,17 +51,21 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				"    Grate Machine Casing (or Controller or Data Access Hatch)",
 				"Top: Steel Casing(or Energy Hatch)",
 				"Up to 16 repeating slices, last is Output Bus",
-				"Optional 1x Data Access Hatch next to the Controller"};
+				"Optional 1x Data Access Hatch next to the Controller",
+				getPollutionTooltip(),
+				getMachineTooltip(),
+				CORE.GT_Tooltip
+				};
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
 			boolean aActive, boolean aRedstone) {
 		return aSide == aFacing
-				? new ITexture[]{BlockIcons.CASING_BLOCKS[16],
+				? new ITexture[]{BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 0)],
 						new GT_RenderedTexture(aActive
 								? TexturesGtBlock.Overlay_Machine_Controller_Default_Active
 								: TexturesGtBlock.Overlay_Machine_Controller_Default)}
-				: new ITexture[]{BlockIcons.CASING_BLOCKS[16]};
+				: new ITexture[]{BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 0)]};
 	}
 
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -86,8 +95,17 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(212)), 10, 1.0F, aX, aY,
 					aZ);
 		}
-
 	}
+	
+	private Block getCasing(int casingID) {
+		return ModBlocks.blockCasings4Misc;
+	}
+	
+	//Casing3, Meta 10 - "Grate Machine Casing");
+	//Casing2, Meta 0 - "Solid Steel Machine Casing"
+	//Casing2, Meta 5 - "Assembling Line Casing"
+	//Casing2, Meta 9 - "Assembler Machine Casing"
+	//Magic Glass - blockAlloyGlass
 
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
@@ -102,7 +120,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				if (i != 0
 						&& (aBaseMetaTileEntity.getBlockOffset(0, 0, i) != GregTech_API.sBlockCasings3
 								|| aBaseMetaTileEntity.getMetaIDOffset(0, 0, i) != 10)
-						&& r == 1 && !this.addNaquadahHatchToMachineInput(tTileEntity, 16)) {
+						&& r == 1 && !this.addNaquadahHatchToMachineInput(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					return false;
 				}
 
@@ -111,9 +129,9 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(0, -2, i);
-				if (!this.addMaintenanceToMachineList(tTileEntity, 16)
-						&& !this.addInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(0, -2, i) != GregTech_API.sBlockCasings2) {
+				if (!this.addMaintenanceToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))
+						&& !this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(0, -2, i) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -123,8 +141,8 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 1, i);
-				if (!this.addEnergyInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir, 1, i) != GregTech_API.sBlockCasings2) {
+				if (!this.addEnergyInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir, 1, i) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -133,13 +151,13 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 					}
 				}
 
-				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(xDir, 0, i) != GregTech_API.sBlockCasings2
-						|| aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, i) != 9)) {
+				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(xDir, 0, i) != ModBlocks.blockCasings4Misc
+						|| aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, i) != 1)) {
 					return false;
 				}
 
-				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(xDir, -1, i) != GregTech_API.sBlockCasings2
-						|| aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, i) != 5)) {
+				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(xDir, -1, i) != ModBlocks.blockCasings4Misc
+						|| aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, i) != 2)) {
 					return false;
 				}
 
@@ -154,9 +172,9 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir * 2, -2, i);
-				if (!this.addMaintenanceToMachineList(tTileEntity, 16)
-						&& !this.addInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir * 2, -2, i) != GregTech_API.sBlockCasings2) {
+				if (!this.addMaintenanceToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))
+						&& !this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir * 2, -2, i) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -166,7 +184,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, -2, i);
-				if (!this.addInputToMachineList(tTileEntity, 16) && this.addOutputToMachineList(tTileEntity, 16)) {
+				if (!this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0)) && this.addOutputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					return r > 0 && this.mEnergyHatches.size() > 0;
 				}
 			}
@@ -177,7 +195,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				if (i != 0
 						&& (aBaseMetaTileEntity.getBlockOffset(i, 0, 0) != GregTech_API.sBlockCasings3
 								|| aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0) != 10)
-						&& r == 1 && !this.addNaquadahHatchToMachineInput(tTileEntity, 16)) {
+						&& r == 1 && !this.addNaquadahHatchToMachineInput(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					return false;
 				}
 
@@ -186,9 +204,9 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, 0);
-				if (!this.addMaintenanceToMachineList(tTileEntity, 16)
-						&& !this.addInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(i, -2, 0) != GregTech_API.sBlockCasings2) {
+				if (!this.addMaintenanceToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))
+						&& !this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(i, -2, 0) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -198,8 +216,8 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 1, zDir);
-				if (!this.addEnergyInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(i, 1, zDir) != GregTech_API.sBlockCasings2) {
+				if (!this.addEnergyInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(i, 1, zDir) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -208,13 +226,13 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 					}
 				}
 
-				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(i, 0, zDir) != GregTech_API.sBlockCasings2
-						|| aBaseMetaTileEntity.getMetaIDOffset(i, 0, zDir) != 9)) {
+				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(i, 0, zDir) != ModBlocks.blockCasings4Misc
+						|| aBaseMetaTileEntity.getMetaIDOffset(i, 0, zDir) != 1)) {
 					return false;
 				}
 
-				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(i, -1, zDir) != GregTech_API.sBlockCasings2
-						|| aBaseMetaTileEntity.getMetaIDOffset(i, -1, zDir) != 5)) {
+				if (i != 0 && (aBaseMetaTileEntity.getBlockOffset(i, -1, zDir) != ModBlocks.blockCasings4Misc
+						|| aBaseMetaTileEntity.getMetaIDOffset(i, -1, zDir) != 2)) {
 					return false;
 				}
 
@@ -229,9 +247,9 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir * 2);
-				if (!this.addMaintenanceToMachineList(tTileEntity, 16)
-						&& !this.addInputToMachineList(tTileEntity, 16)) {
-					if (aBaseMetaTileEntity.getBlockOffset(i, -2, zDir * 2) != GregTech_API.sBlockCasings2) {
+				if (!this.addMaintenanceToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))
+						&& !this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+					if (aBaseMetaTileEntity.getBlockOffset(i, -2, zDir * 2) != ModBlocks.blockCasings4Misc) {
 						return false;
 					}
 
@@ -241,7 +259,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, -2, zDir);
-				if (!this.addInputToMachineList(tTileEntity, 16) && this.addOutputToMachineList(tTileEntity, 16)) {
+				if (!this.addInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0)) && this.addOutputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					return r > 0 && this.mEnergyHatches.size() > 0;
 				}
 			}
