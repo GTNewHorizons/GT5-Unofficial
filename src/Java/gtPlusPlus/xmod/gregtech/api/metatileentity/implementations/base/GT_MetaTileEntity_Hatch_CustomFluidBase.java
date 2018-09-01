@@ -61,9 +61,9 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 		return this.mFluidCapacity;
 	}
 
-	private FluidStack mLockedStack = null;
-	private Integer mLockedTemp = null;
-	private String mTempMod = null;
+	protected FluidStack mLockedStack = null;
+	protected Integer mLockedTemp = null;
+	protected String mTempMod = null;
 	
 	@Override
 	public String[] getDescription() {		

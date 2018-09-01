@@ -32,9 +32,12 @@ public final class ModBlocks {
 	//public static Block blockStaballoy;
 	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
+	
 	public static Block blockCasingsMisc;
 	public static Block blockCasings2Misc;
 	public static Block blockCasings3Misc;
+	public static Block blockCasings4Misc;
+	
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
 	public static Block blockNHG;

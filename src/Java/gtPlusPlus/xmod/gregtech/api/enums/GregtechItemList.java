@@ -345,9 +345,18 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	Industrial_Mixer, 
 	
-	Hatch_Input_Cryotheum, Hatch_Input_Pyrotheum,	
+	Hatch_Input_Cryotheum,
+	Hatch_Input_Pyrotheum,	
+	Hatch_Input_Naquadah, 
 	
 	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
+	
+	//Naq Reactor
+	Casing_Naq_Reactor_A,
+	Casing_Naq_Reactor_B,
+	Casing_Naq_Reactor_C,
+	Controller_Naq_Reactor,
+	
 	
 	
 	;

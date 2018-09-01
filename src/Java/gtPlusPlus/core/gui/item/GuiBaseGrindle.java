@@ -169,6 +169,7 @@ public class GuiBaseGrindle extends GuiContainer {
 				// Valid Datastick?
 				this.fontRendererObj.drawStringWithShadow(I18n.format("Insert device into port.", new Object[0]), 10, 8, Utils.rgbtoHexValue(255, 125, 125));
 				this.mPageDataArray = new String[][] {{}};
+				this.mCurrentPage = 0;
 			}
 
 			// Inventory Label

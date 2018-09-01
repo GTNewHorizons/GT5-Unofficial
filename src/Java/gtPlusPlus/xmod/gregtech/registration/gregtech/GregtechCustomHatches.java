@@ -7,6 +7,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GT_MetaTileEntity_Hatch_CustomFluidBase;
 
 public class GregtechCustomHatches {
@@ -37,7 +38,14 @@ public class GregtechCustomHatches {
 						968, // ID
 						"hatch.pyrotheum.input.tier.00", // unlocal name
 						"Pyrotheum Heating Vent" //Local name
-						).getStackForm(1L));		
+						).getStackForm(1L));	
+		
+		GregtechItemList.Hatch_Input_Naquadah.set(
+				new GT_MetaTileEntity_Hatch_Naquadah(
+						969, // ID
+						"hatch.naquadah.input.tier.00", // unlocal name
+						"Naquadah Reactor Input hatch" //Local name
+						).getStackForm(1L));
 
 		RecipeUtils.addShapedGregtechRecipe(
 				CI.component_Plate[6], ALLOY.MARAGING250.getGear(1), CI.component_Plate[6],
@@ -50,6 +58,12 @@ public class GregtechCustomHatches {
 				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_Adv_BlastFurnace.get(1), CI.getTieredCircuitOreDictName(4),
 				CI.component_Plate[6], ItemList.Hatch_Input_IV.get(1), CI.component_Plate[6],
 				GregtechItemList.Hatch_Input_Pyrotheum.get(1L, new Object[0]));
+		
+		RecipeUtils.addShapedGregtechRecipe(
+				CI.component_Plate[8], ALLOY.HG1223.getGear(1), CI.component_Plate[9],
+				CI.getTieredCircuitOreDictName(7), GregtechItemList.Casing_Naq_Reactor_A.get(1), CI.getTieredCircuitOreDictName(7),
+				CI.component_Plate[9], ItemList.Hatch_Input_ZPM.get(1), CI.component_Plate[8],
+				GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 		
 	}
 
