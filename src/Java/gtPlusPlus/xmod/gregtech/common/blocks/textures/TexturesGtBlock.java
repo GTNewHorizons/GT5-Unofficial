@@ -385,6 +385,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon TEXTURE_METAL_PANEL_E = new CustomIcon("metro/TEXTURE_METAL_PANEL_E");
 	public static final CustomIcon TEXTURE_MAGIC_PANEL_A = new CustomIcon("metro/TEXTURE_MAGIC_A");
 	public static final CustomIcon TEXTURE_ORGANIC_PANEL_A = new CustomIcon("metro/TEXTURE_ORGANIC_PANEL_A");
+	public static final CustomIcon TEXTURE_ORGANIC_PANEL_A_GLOWING = new CustomIcon("metro/TEXTURE_ORGANIC_PANEL_A_GLOWING");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A = new CustomIcon("metro/TEXTURE_STONE_BIRD_A");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A_LEFT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_LEFT");
 	public static final CustomIcon TEXTURE_STONE_BIRD_A_RIGHT = new CustomIcon("metro/TEXTURE_STONE_BIRD_A_RIGHT");

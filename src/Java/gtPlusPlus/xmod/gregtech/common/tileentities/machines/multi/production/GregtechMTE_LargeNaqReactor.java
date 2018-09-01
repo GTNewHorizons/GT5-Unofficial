@@ -187,7 +187,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 1, i);
-				if (!this.addEnergyInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+				if (!this.addDynamoToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					if (aBaseMetaTileEntity.getBlockOffset(xDir, 1, i) != getCasing(4)) {
 						return false;
 					}
@@ -261,7 +261,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 				}
 
 				tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 1, zDir);
-				if (!this.addEnergyInputToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
+				if (!this.addDynamoToMachineList(tTileEntity, TAE.getIndexFromPage(3, 0))) {
 					if (aBaseMetaTileEntity.getBlockOffset(i, 1, zDir) != getCasing(4)) {
 						return false;
 					}
