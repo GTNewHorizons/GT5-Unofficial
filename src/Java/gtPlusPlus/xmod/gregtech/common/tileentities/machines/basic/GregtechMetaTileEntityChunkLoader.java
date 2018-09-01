@@ -1,63 +1,42 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gtPlusPlus.api.objects.minecraft.ChunkManager.mChunkLoaderManagerMap;
 
-import java.io.File;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import com.google.common.collect.MapMaker;
-import com.google.common.collect.Sets;
+import com.google.common.collect.UnmodifiableIterator;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.MinecraftException;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
-
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.interfaces.IChunkLoader;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Triplet;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.objects.minecraft.ChunkManager;
-import gtPlusPlus.api.objects.minecraft.DimChunkPos;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
+import gtPlusPlus.api.interfaces.IGregtechPacketEntity;
+import gtPlusPlus.core.handler.chunkloading.ChunkManager;
+import gtPlusPlus.core.util.minecraft.network.PacketBuilder;
 
-public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredMachineBlock implements IChunkLoader {
-
-	private long mTicksLeft = 0;
-	
-	private boolean hasTicket;
-	private boolean refreshTicket;
+public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredMachineBlock implements IGregtechPacketEntity {
 
 	@SuppressWarnings("unused")
 	private final static int yMin = 0;
 	private final static int yMax = 254;
 	private final int xMin, xMax;
 	private final int zMin, zMax;
-	private int mChunkLoaderMapID = -1;
-	private boolean mHasID = false;	
-	private final short mMaxTicks = 100;	
-	private final UUID mUUID;	
-	private static final byte ANCHOR_RADIUS = 1;	
-	private static final Map<UUID, Ticket> tickets = new MapMaker().makeMap();
-	private Set<ChunkCoordIntPair> chunks;
 	
 	public GregtechMetaTileEntityChunkLoader(final int aID, final String aName, final String aNameRegional, final int aTier) {
 		super(aID, aName, aNameRegional, aTier, 0, "Loads chunks: " + (16 + (48 * aTier)) + " powered");
@@ -65,10 +44,6 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		xMax = this.xCoord+47;
 		zMin = this.zCoord-47;
 		zMax = this.zCoord+47;
-		mUUID = UUID.randomUUID();
-		this.prevX = this.xCoord;
-		this.prevY = this.yCoord;
-		this.prevZ = this.zCoord;
 	}
 
 	public GregtechMetaTileEntityChunkLoader(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
@@ -77,10 +52,6 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		xMax = this.xCoord+47;
 		zMin = this.zCoord-47;
 		zMax = this.zCoord+47;
-		mUUID = UUID.randomUUID();
-		this.prevX = this.xCoord;
-		this.prevY = this.yCoord;
-		this.prevZ = this.zCoord;
 	}
 
 	@Override
@@ -93,73 +64,6 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1], (aSide != 1) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
 	}
 
-	private int xCoord, yCoord, zCoord;
-	private int prevX, prevY, prevZ;
-	@Override
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
-
-		xCoord = aBaseMetaTileEntity.getXCoord();
-		yCoord = aBaseMetaTileEntity.getYCoord();
-		zCoord = aBaseMetaTileEntity.getZCoord();
-		
-
-		if (!aBaseMetaTileEntity.isServerSide()) {
-			return;
-		}
-		
-		if (aTimer % 20 == 0) {
-			if (!isRegistered() && this.getEUVar() > 0) {
-				registerLoader();
-			}
-			else if (isRegistered() && this.getEUVar() <= 0) {
-				releaseTicket();
-			}
-		}
-
-		if (!areChunksLoaded()) {
-			return;
-		}
-
-		if (aBaseMetaTileEntity.isAllowedToWork()) {
-			if (this.mTicksLeft > 0) {
-				this.mTicksLeft--;
-			}
-			else if (this.mTicksLeft < 0) {
-				this.mTicksLeft = 0;
-			}		
-			if (mTicksLeft < mMaxTicks) {  
-				long h = this.getEUVar();
-				if (h > 0) {
-					if (h >(this.maxEUInput()+this.getMinimumStoredEU())) {
-						this.setEUVar((this.getEUVar()-this.maxEUInput()));
-						this.mTicksLeft += 2;
-					}
-				}
-			}	
-			if (mTicksLeft > mMaxTicks) {
-				mTicksLeft = mMaxTicks;
-			}
-
-			//Somehow the Tile has moved, so lets release the ticket and update the previous xyz.
-			if (xCoord != prevX || yCoord != prevY || zCoord != prevZ) {
-				releaseTicket();
-				prevX = xCoord;
-				prevY = yCoord;
-				prevZ = zCoord;
-			}
-
-			//Tile has an active ticket, but either (1) the ticket is for a different dimension. (2) A ticket refresh has been queued or (3) the Tile is not allowed to work (Disabled via mallet)
-			if (hasActiveTicket() && (getTicket().world != aBaseMetaTileEntity.getWorld() || refreshTicket || !aBaseMetaTileEntity.isAllowedToWork())) {
-				releaseTicket();
-			}			
-
-			//Tile does not have a ticket but has mTicksLeft, we had best create a ticket,
-			if (!hasActiveTicket() && this.mTicksLeft > 0) {
-				requestTicket();
-			}
-		}
-	}
-
 	@Override
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
 		
@@ -167,7 +71,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	@Override
 	public void onRemoval() {
-		releaseTicket();
+		
 	}
 
 	@Override
@@ -232,283 +136,189 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
-		aNBT.setLong("mTicksLeft", getTicksRemaining());
-		aNBT.setBoolean("mHasID", mHasID);
-		aNBT.setInteger("mChunkLoaderMapID", mChunkLoaderMapID);
+		
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
-		this.mTicksLeft = aNBT.getLong("mTicksLeft");
-		this.mHasID = aNBT.getBoolean("mHasID");
-		this.mChunkLoaderMapID = aNBT.getInteger("mChunkLoaderMapID");
+		
 	}
-
-
-
-
-
+	
+	
+	
+	
 	/**
-	 * Chunk Handling
+	 * Chunkloading Code from Railcraft
 	 */
 
-	public void registerLoader() {
-		if (this.getBaseMetaTileEntity().getWorld().isRemote) {
-			return;
-		}		
-		//Logger.INFO("=======================[Chunkloader Registration]========================");
-		//Logger.INFO("Method Call [1]:"+ReflectionUtils.getMethodName(0));
-		//Logger.INFO("Method Call [2]:"+ReflectionUtils.getMethodName(1));
-		//Logger.INFO("Method Call [3]:"+ReflectionUtils.getMethodName(2));
-		if (this.getEUVar() <= 0) {
-			return;
+	private static final Map<UUID, Ticket> tickets = new MapMaker().makeMap();
+	private static final byte MAX_CHUNKS = 25;
+	private static final byte ANCHOR_RADIUS = 1;
+	private int prevX;
+	private int prevY;
+	private int prevZ;
+	private Set<ChunkCoordIntPair> chunks;
+	private boolean hasTicket;
+	private boolean refreshTicket;
+	private boolean powered;
+	private UUID uuid;
+	private int xCoord, yCoord, zCoord;	
+
+	public UUID getUUID() {
+		if (this.uuid == null) {
+			this.uuid = UUID.randomUUID();
 		}
-		
-		try {
-		if (this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity().getWorld() != null && this.getBaseMetaTileEntity().getWorld().getWorldTime() >= 100) {		
-			if (mChunkLoaderMapID == -1) {
-				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID());
-				Logger.INFO("["+getUniqueID()+"] Adjusted Chunk Loaders ID to "+mChunkLoaderMapID+". This chunk loader is not registered to the global list yet.");
+
+		return this.uuid;
+	}
+
+	private boolean sendClientUpdate = false;
+	
+	public void sendUpdateToClient(IGregTechTileEntity aBaseMetaTileEntity) {
+		if (aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
+			this.sendClientUpdate = true;
+		} else {
+			PacketBuilder.instance().sendTileEntityPacket(aBaseMetaTileEntity);
+		}
+
+	}
+
+	
+	@Override
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
+		super.onPostTick(aBaseMetaTileEntity, aTimer);
+		if (!aBaseMetaTileEntity.isServerSide()) {			
+			return;		
+		} 
+		else {
+			if (this.xCoord != this.prevX || this.yCoord != this.prevY || this.zCoord != this.prevZ) {
+				this.releaseTicket(aBaseMetaTileEntity);
+				this.prevX = this.xCoord;
+				this.prevY = this.yCoord;
+				this.prevZ = this.zCoord;
 			}
-			else {
-				Logger.INFO("["+getUniqueID()+"] Found cached ID - "+mChunkLoaderMapID);
-				ChunkManager.setIdAndUniqueString(this.mChunkLoaderMapID, getUniqueID());
-				 // Just Incase the ID gets shifted.
-				if (this.mChunkLoaderMapID != ChunkManager.getIdFromUniqueString(getUniqueID()))
-				this.mChunkLoaderMapID = ChunkManager.getIdFromUniqueString(getUniqueID());
+			
+			this.powered = meetsTicketRequirements();
+			if (this.hasActiveTicket() && (this.getTicket().world != aBaseMetaTileEntity.getWorld() || this.refreshTicket || !this.powered)) {
+				this.releaseTicket(aBaseMetaTileEntity);
 			}
-			if (this != null && this.getBaseMetaTileEntity() != null) {		
-				if (!isRegistered() && !getUniqueID().equalsIgnoreCase("0@0@0@0")) {
-					Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos> loaderData = new Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos>((int) this.mChunkLoaderMapID, this, new DimChunkPos(this.getBaseMetaTileEntity().getWorld(), getPos()));
-					mChunkLoaderManagerMap.put(getUniqueID(), loaderData);
-					Logger.INFO("[Chunk Loader] Registered Chunk loader ["+this.mChunkLoaderMapID+"]"+getPos().getLocationString());
-				}
-				else {
-					Logger.INFO("Tried to re-register a Chunk-Loader. Loader located @ "+getPos().getLocationString());
-				}
+			if (!this.hasActiveTicket()) {
+				this.requestTicket(aBaseMetaTileEntity);
 			}
-		}
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-		
-	}	
-
-
-	public void unregisterLoader() {
-		if (this != null && this.getBaseMetaTileEntity() != null) {		
-			if (isRegistered()) {
-				mChunkLoaderManagerMap.remove(getUniqueID());
-				Logger.INFO("[Chunk Loader] Removed Chunk loader ["+this.mChunkLoaderMapID+"]"+getPos().getLocationString());
-			}
-		}
-	}
-
-	public boolean isRegistered() {
-		return mChunkLoaderManagerMap.containsKey(getUniqueID());	
-	}
-
-	private BlockPos mCachedLocation;
-	public BlockPos getPos() {
-		if (mCachedLocation == null) {
-			mCachedLocation = new BlockPos(this.xCoord, this.yCoord, this.zCoord, this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
-		}
-		else if (mCachedLocation.xPos == 0 && mCachedLocation.yPos == 0 && mCachedLocation.zPos == 0 && mCachedLocation.dim == 0) {
-			mCachedLocation = null;
-			return getPos();
-		}
-		return mCachedLocation;
-	}
-
-	public String getUniqueID() {
-		if (getPos() == null) {
-			return "InvalidChunkLoader";
-		}		
-		return getPos().getUniqueIdentifier();
-	}
-
-	public int getLoaderID() {
-		return this.mChunkLoaderMapID;
-	}
-
-	public void onBlockRemoval() {
-		releaseTicket();
-	}
-
-	public void invalidate() {
-		releaseTicket();	
-		super.inValidate();
-		refreshTicket = true;
+		}	
+		if (this.sendClientUpdate) {
+			this.sendClientUpdate = false;
+			PacketBuilder.instance().sendTileEntityPacket(aBaseMetaTileEntity);
+		}	
 	}
 
 	public void validate() {
-		if (!isRegistered()) {
-			registerLoader();
+		this.refreshTicket = true;
+	}
+
+	protected void releaseTicket(IGregTechTileEntity aBaseMetaTileEntity) {
+		this.refreshTicket = false;
+		this.setTicket(aBaseMetaTileEntity, (Ticket) null);
+	}
+
+	protected void requestTicket(IGregTechTileEntity aBaseMetaTileEntity) {
+		if (this.meetsTicketRequirements()) {
+			Ticket chunkTicket = this.getTicketFromForge(aBaseMetaTileEntity);
+			if (chunkTicket != null) {
+				this.setTicketData(aBaseMetaTileEntity, chunkTicket);
+				this.forceChunkLoading(aBaseMetaTileEntity, chunkTicket);
+			}
 		}
 	}
 
-	protected void releaseTicket() {
-		refreshTicket = false;
-		if (getTicket() != null) {
-			ForgeChunkManager.releaseTicket(getTicket());
-		}
-		setTicket(null);
-		unregisterLoader();
+	protected boolean meetsTicketRequirements() {
+		return this.getEUVar() > (V[this.mTier]*2);
+	}
+	
+	public Ticket getTicketFromForge(IGregTechTileEntity aBaseMetaTileEntity) {
+		return ForgeChunkManager.requestTicket(GTplusplus.instance, aBaseMetaTileEntity.getWorld(), Type.NORMAL);
 	}
 
-	protected void requestTicket() {
-		Ticket chunkTicket = getTicketFromForge();
-		if (chunkTicket != null) {
-			setTicketData(chunkTicket);
-			forceChunkLoading(chunkTicket);
-		}
-	}
-
-	public Ticket getTicketFromForge() {
-		if (this.getBaseMetaTileEntity().getWorld() != null)
-			return ForgeChunkManager.requestTicket(GTplusplus.instance, this.getBaseMetaTileEntity().getWorld(), Type.NORMAL);
-		return null;
-	}
-
-	protected void setTicketData(Ticket chunkTicket) {
-		chunkTicket.getModData().setInteger("xCoord", this.getBaseMetaTileEntity().getXCoord());
-		chunkTicket.getModData().setInteger("yCoord", this.getBaseMetaTileEntity().getYCoord());
-		chunkTicket.getModData().setInteger("zCoord", this.getBaseMetaTileEntity().getZCoord());
-		//chunkTicket.getModData().setString("type", getMachineType().getTag());
+	protected void setTicketData(IGregTechTileEntity aBaseMetaTileEntity, Ticket chunkTicket) {
+		chunkTicket.getModData().setInteger("xCoord", this.xCoord);
+		chunkTicket.getModData().setInteger("yCoord", this.yCoord);
+		chunkTicket.getModData().setInteger("zCoord", this.zCoord);
+		chunkTicket.getModData().setString("type", "StandardChunkLoader");
 	}
 
 	public boolean hasActiveTicket() {
-		return getTicket() != null;
+		return this.getTicket() != null;
 	}
 
 	public Ticket getTicket() {
-		//Logger.INFO("[Chunk Loader] "+"Getting Ticking. ["+this.getLoaderID()+"] @ [x: "+this.xCoord+"][y: "+this.yCoord+"][z: "+this.zCoord+"]");
-		return tickets.get(this.mUUID);
+		return (Ticket) tickets.get(this.getUUID());
 	}
 
-	public void setTicket(Ticket t) {
+	public void setTicket(IGregTechTileEntity aBaseMetaTileEntity, Ticket t) {
 		boolean changed = false;
-		Ticket ticket = getTicket();
+		Ticket ticket = this.getTicket();
 		if (ticket != t) {
 			if (ticket != null) {
-				if (ticket.world == this.getBaseMetaTileEntity().getWorld()) {
-					for (ChunkCoordIntPair chunk : ticket.getChunkList()) {
-						if (ForgeChunkManager.getPersistentChunksFor(this.getBaseMetaTileEntity().getWorld()).keys().contains(chunk))
+				if (ticket.world == aBaseMetaTileEntity.getWorld()) {
+					UnmodifiableIterator<ChunkCoordIntPair> var4 = ticket.getChunkList().iterator();
+
+					while (var4.hasNext()) {
+						ChunkCoordIntPair chunk = (ChunkCoordIntPair) var4.next();
+						if (ForgeChunkManager.getPersistentChunksFor(aBaseMetaTileEntity.getWorld()).keys().contains(chunk)) {
 							ForgeChunkManager.unforceChunk(ticket, chunk);
+						}
 					}
+
 					ForgeChunkManager.releaseTicket(ticket);
 				}
-				Logger.INFO("[Chunk Loader] "+"Removing Ticket. ["+this.getLoaderID()+"] @ [x: "+this.xCoord+"][y: "+this.yCoord+"][z: "+this.zCoord+"]");
-				tickets.remove(mUUID);
+
+				tickets.remove(this.getUUID());
 			}
+
 			changed = true;
 		}
-		hasTicket = (t != null);
-		if (hasTicket) {
-			Logger.INFO("[Chunk Loader] "+"Putting Ticket. ["+this.getLoaderID()+"] @ [x: "+this.xCoord+"][y: "+this.yCoord+"][z: "+this.zCoord+"]");
-			tickets.put(mUUID, t);
-		}
-		//if (changed)
-		//sendUpdateToClient();
-	}
 
-	public void forceChunkLoading(Ticket ticket) {
-		try {			
-			setTicket(ticket);
-			forceChunkLoading2(ticket);
-			//setupChunks();
-			/*if (chunks != null) {
-				for (ChunkCoordIntPair chunk : chunks) {
-					ForgeChunkManager.forceChunk(ticket, chunk);
-				}
-			}*/
+		this.hasTicket = t != null;
+		if (this.hasTicket) {
+			tickets.put(this.getUUID(), t);
 		}
-		catch (Throwable t){
-			t.printStackTrace();
-		}
-	}
 
-	public void forceChunkLoading2(Ticket ticket) {		
-		chunks = Sets.newHashSet();
-		ChunkCoordIntPair quarryChunk = new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4);
-		chunks.add(quarryChunk);
-		ForgeChunkManager.forceChunk(ticket, quarryChunk);
-		for (int chunkX = xMin >> 4; chunkX <= xMax >> 4; chunkX++) {
-			for (int chunkZ = zMin >> 4; chunkZ <= zMax >> 4; chunkZ++) {
-				ChunkCoordIntPair chunk = new ChunkCoordIntPair(chunkX, chunkZ);
+		if (changed) {
+			this.sendUpdateToClient(aBaseMetaTileEntity);
+		}
+
+	}
+	
+	public void forceChunkLoading(IGregTechTileEntity aBaseMetaTileEntity, Ticket ticket) {
+		this.setTicket(aBaseMetaTileEntity, ticket);
+		this.setupChunks();
+		if (this.chunks != null) {
+			Iterator<ChunkCoordIntPair> var2 = this.chunks.iterator();
+			while (var2.hasNext()) {
+				ChunkCoordIntPair chunk = (ChunkCoordIntPair) var2.next();
 				ForgeChunkManager.forceChunk(ticket, chunk);
-				chunks.add(chunk);
 			}
 		}
-
 	}
-
+	
 	public void setupChunks() {
-		if (!hasTicket)
-			chunks = null;
-		else {
-			/*if (this.mTier == 3) {
-				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
-			}
-			else if (this.mTier == 4) {
-				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4 >> 4, (this.getBaseMetaTileEntity().getZCoord() >> 4) >> 4, ANCHOR_RADIUS);
-			}
-			else if (this.mTier == 5) {
-				chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4 >> 4 >> 4, ((this.getBaseMetaTileEntity().getZCoord() >> 4) >> 4) >> 4, ANCHOR_RADIUS);
-			} */
-			chunks = ChunkManager.getInstance().getChunksAround(this.getBaseMetaTileEntity().getXCoord() >> 4, this.getBaseMetaTileEntity().getZCoord() >> 4, ANCHOR_RADIUS);
+		if (!this.hasTicket) {
+			this.chunks = null;
 		}
-	}
-
-
-	@Override
-	public Chunk loadChunk(World p_75815_1_, int p_75815_2_, int p_75815_3_) throws IOException {
-		Logger.INFO("1");
-		return null;
-	}
-
-	@Override
-	public void saveChunk(World p_75816_1_, Chunk p_75816_2_) throws MinecraftException, IOException {
-		Logger.INFO("2");
-	}
-
-	@Override
-	public void saveExtraChunkData(World p_75819_1_, Chunk p_75819_2_) {
-		Logger.INFO("3");
-	}
-
-	@Override
-	public void chunkTick() {
-		Logger.INFO("4");
-	}
-
-	@Override
-	public void saveExtraData() {
-		Logger.INFO("5");
-	}
-
-	@Override
-	public long getTicksRemaining() {
-		return this.mTicksLeft;
-	}
-
-	@Override
-	public String[] getDescription() {
-		// TODO Auto-generated method stub
-		return super.getDescription();
+		else {
+			this.chunks = ChunkManager.getInstance().getChunksAround(this.xCoord >> 4, this.zCoord >> 4, 1);
+		}
 	}
 
 	@Override
 	public void onExplosion() {
-		this.releaseTicket();
+		this.releaseTicket(this.getBaseMetaTileEntity());
 		super.onExplosion();
 	}
 
 	@Override
-	public void inValidate() {
-		invalidate();
-		super.inValidate();
+	public void onValueUpdate(byte aValue) {
+		super.onValueUpdate(aValue);
 	}
 
 	@Override
@@ -518,68 +328,31 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredM
 
 	@Override
 	public void markDirty() {
-		validate();
+		this.refreshTicket = true;
 		super.markDirty();
 	}
 
 	@Override
+	public boolean connectsToItemPipe(byte aSide) {
+		return false;
+	}
+
+	@Override
 	public void doExplosion(long aExplosionPower) {
-		releaseTicket();
+		this.releaseTicket(this.getBaseMetaTileEntity());
 		super.doExplosion(aExplosionPower);
 	}
 
-	@Override
-	public boolean isGivingInformation() {
-		return true;
+	public void writePacketData(DataOutputStream data) throws IOException {
+		data.writeBoolean(this.hasTicket);
 	}
 
-	@Override
-	public String[] getInfoData() {
-		return new String[] {
-				this.getLocalName(),
-				"Ticks Left: "+this.mTicksLeft,
-				"mRange: "+(16 + (48 * mTier)),
-				"chunks: "+this.chunks.size()};
-	}
-
-	@Override
-	public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-		super.onCreated(aStack, aWorld, aPlayer);
-	}
-
-	@Override
-	public void onServerStart() {
-		validate();
-		super.onServerStart();
-	}
-
-	@Override
-	public void onWorldLoad(File aSaveDirectory) {
-		validate();
-		super.onWorldLoad(aSaveDirectory);
-	}
-
-	@Override
-	public void onWorldSave(File aSaveDirectory) {
-		validate();
-		super.onWorldSave(aSaveDirectory);
-	}
-
-	//Based on BC 7
-
-
-	private boolean hasCheckedChunks = false;
-	public boolean areChunksLoaded() {
-		if (hasCheckedChunks) {
-			return true;
+	public void readPacketData(DataInputStream data) throws IOException {
+		boolean tick = data.readBoolean();
+		if (this.hasTicket != tick) {
+			this.hasTicket = tick;
+			this.markDirty();
 		}
-		World worldObj = this.getBaseMetaTileEntity().getWorld();
-		hasCheckedChunks = worldObj.blockExists(xMin, yMax, zMin)
-				&& worldObj.blockExists(xMax, yMax, zMin)
-				&& worldObj.blockExists(xMin, yMax, zMax)
-				&& worldObj.blockExists(xMax, yMax, zMax);
-		// Each chunk covers the full height, so we only check one of them per height.
-		return hasCheckedChunks;
+		this.setupChunks();
 	}
-
 }

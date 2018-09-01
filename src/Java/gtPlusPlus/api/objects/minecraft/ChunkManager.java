@@ -344,8 +344,8 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 								if (H != null) {
 									ForgeChunkManager.releaseTicket(H);
 								}								
-								f.forceChunkLoading(ticket);
-								printAnchor("Force Chunk Loading. Chunk Loader has ID of "+f.getLoaderID()+". ",x,y,z);
+								f.forceChunkLoading(f.getBaseMetaTileEntity(), ticket);
+								printAnchor("Force Chunk Loading. Chunk Loader has ID of "+f.getUUID().toString()+". ",x,y,z);
 							}
 							else {
 								Logger.INFO("Tile Entity is null.");
@@ -445,7 +445,7 @@ public class ChunkManager implements LoadingCallback, OrderedLoadingCallback, Fo
 				for (Triplet<Integer, GregtechMetaTileEntityChunkLoader, DimChunkPos> j : mChunkLoaderManagerMap.values()) {
 					Ticket T;
 					Chunk C;				
-					T = j.getValue_2().getTicketFromForge();
+					T = j.getValue_2().getTicketFromForge(j.getValue_2().getBaseMetaTileEntity());
 					C = j.getValue_3().getChunk();				
 					ForgeChunkManager.forceChunk(T, C.getChunkCoordIntPair());
 					Logger.INFO("[Chunk Loader] Trying to force load a chunk that holds a chunkloader. [Timer]");

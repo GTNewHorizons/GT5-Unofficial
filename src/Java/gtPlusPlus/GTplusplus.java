@@ -21,12 +21,12 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.minecraft.ChunkManager;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
+import gtPlusPlus.core.handler.chunkloading.ChunkLoading;
 import gtPlusPlus.core.handler.events.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -67,6 +67,9 @@ public class GTplusplus implements ActionListener {
 	//GT++ Proxy Instances
 	@SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
 	public static CommonProxy proxy;
+	
+	//Chunk handler
+	public static ChunkLoading mChunkLoading;
 
 	// Loads Textures
 	@SideOnly(value = Side.CLIENT)
@@ -77,6 +80,11 @@ public class GTplusplus implements ActionListener {
 
 		// Blocks
 		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+	}
+	
+	public GTplusplus() {
+		super();
+		mChunkLoading = new ChunkLoading();
 	}
 
 	// Pre-Init
@@ -114,7 +122,7 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Login Handler Initialized");
 
 
-
+		mChunkLoading.preInit(event);
 		proxy.preInit(event);
 		Core_Manager.preInit();
 	}
@@ -122,6 +130,7 @@ public class GTplusplus implements ActionListener {
 	// Init
 	@Mod.EventHandler
 	public void init(final FMLInitializationEvent event) {
+		mChunkLoading.init(event);
 		proxy.init(event);
 		proxy.registerNetworkStuff();
 
@@ -142,6 +151,7 @@ public class GTplusplus implements ActionListener {
 	// Post-Init
 	@Mod.EventHandler
 	public void postInit(final FMLPostInitializationEvent event) {
+		mChunkLoading.postInit(event);
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
@@ -160,6 +170,7 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
+		mChunkLoading.serverStarting(event);
 		event.registerServerCommand(new CommandMath());
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
@@ -168,12 +179,7 @@ public class GTplusplus implements ActionListener {
 
 	@Mod.EventHandler
 	public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-		//Chunkload Handler
-		if (ChunkManager.mChunkLoaderManagerMap.size() > 0) {
-			Logger.INFO("Clearing Chunk Loaders.");
-			ChunkManager.clearInternalMaps();
-		}
-
+		mChunkLoading.serverStopping(event);
 		if (GregtechBufferThread.mBufferThreadAllocation.size() > 0) {
 			for (GregtechBufferThread i : GregtechBufferThread.mBufferThreadAllocation.values()) {
 				i.destroy();
