@@ -16,7 +16,7 @@ public class GregtechNaqReactor {
 
 	private static void run1() {
 		// LFTR
-		GregtechItemList.Controller_Naq_Reactor.set(new GregtechMTE_LargeNaqReactor(970, "lnr.controller.single", "Large Naquadah Reactor").getStackForm(1L));
+		GregtechItemList.Controller_Naq_Reactor.set(new GregtechMTE_LargeNaqReactor(970, "lnr.controller.single", "Naquadah Reactor Mark XII").getStackForm(1L));
 
 	}
 }

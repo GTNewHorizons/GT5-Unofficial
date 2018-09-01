@@ -51,7 +51,7 @@ public class CasingTextureHandler3 {
 			case 14:
 				return TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
 			case 15:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.TEXTURE_MAGIC_PANEL_A.getIcon();
 
 			default:
 				return TexturesGtBlock._PlaceHolder.getIcon();

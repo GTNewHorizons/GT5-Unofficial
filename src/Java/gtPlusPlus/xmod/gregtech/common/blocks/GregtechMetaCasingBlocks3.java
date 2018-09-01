@@ -55,7 +55,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Multi-Use Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Mining Platform Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Trinium Plated Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Vanadium Redox Power Cell (IV)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Vanadium Redox Power Cell (LuV)");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Vanadium Redox Power Cell (ZPM)");
@@ -66,7 +66,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Volcanus Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Fusion Machine Casing MK III");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Advanced Fusion Coil");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Containment Casing");
 		GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
@@ -81,7 +81,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Adv_BlastFurnace.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 13));
-		//GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); //Tree Farmer Textures
+		GregtechItemList.Casing_Containment.set(new ItemStack(this, 1, 15));
 	}
 
 	@Override
@@ -379,6 +379,9 @@ extends GregtechMetaCasingBlocksAbstract {
 			}
 			case 14 : {
 				return TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
+			}
+			case 15 : {
+				return TexturesGtBlock.TEXTURE_MAGIC_PANEL_A.getIcon();
 			}
 			default : {
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
