@@ -19,7 +19,7 @@ public class CasingTextureHandler3 {
 				return TexturesGtBlock.TEXTURE_METAL_PANEL_C.getIcon();
 			case 3:
 				//Trinium Plated Mining Platform Casing
-				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
+				return TexturesGtBlock.Casing_Trinium_Naquadah_Vent.getIcon();
 			case 4:
 				//Vanadium Redox IV
 				return TexturesGtBlock.Casing_Redox_2.getIcon();

@@ -208,6 +208,13 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
 	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
 	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
+	
+	
+	//Trinium Alloys
+	public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_TITANIUM");
+	public static final CustomIcon Casing_Trinium_Naquadah = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_NAQUADAH");
+	public static final CustomIcon Casing_Trinium_Naquadah_Vent = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_NAQUADAH_VENT");
+	public static final CustomIcon Casing_Trinium_Naquadah_Carbon = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TRINIUM_NAQUADAH_CARBON");
 
 	//Material Machine/Firebox Casings
 	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");

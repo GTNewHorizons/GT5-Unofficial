@@ -61,7 +61,7 @@ extends GregtechMetaCasingBlocksAbstract {
 			switch (aMeta) {
 				//Centrifuge
 				case 0:
-					return TexturesGtBlock.TEXTURE_METAL_PANEL_E.getIcon();
+					return TexturesGtBlock.Casing_Trinium_Titanium.getIcon();
 					//Coke Oven Frame
 				case 1:
 					return TexturesGtBlock.TEXTURE_TECH_C.getIcon();
