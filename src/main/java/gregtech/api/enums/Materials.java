@@ -794,6 +794,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Europiumoxide = new Materials( 392, TextureSet.SET_METALLIC, 	   18.0F, 3000, 4, 1|2|64|128, 200, 200, 200, 0, "Europiumoxide", "Europium Oxide", 0, 0, 8000, 8000, true, false, 4, 1, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Europium, 2), new MaterialStack(Oxygen, 3)));
     public static Materials EuropiumoxideMagnetic = new Materials( 393, TextureSet.SET_MAGNETIC, 	   18.0F, 3000, 4, 1|2|64|128, 200, 200, 200, 0, "EuropiumoxideMagnetic", "Magnetic Europium Oxide", 0, 0, 8000, 8000, true, false, 4, 1, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Europiumoxide, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 4), new TC_AspectStack(TC_Aspects.ORDO, 4), new TC_AspectStack(TC_Aspects.MAGNETO, 4)));
     
+    public static Materials FluidNaquadahFuel            = new MaterialBuilder(397, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Naquadha Fuel,").setName("FluidNaqudriaFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
+    public static Materials EnrichedNaquadria           = new MaterialBuilder(398, TextureSet.SET_FLUID      ,                                                                                                 "Enriched Naquadria,").setName("EnrichedNaquadria").addCell().addFluid().setRGB(52, 52, 52).setColor(Dyes.dyeBlack).constructMaterial();
+    public static Materials FluidEnrichedNaquadahFuel   = new MaterialBuilder(399, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Enriched Naquadha Fuel,").setName("FluidEnrichedNaquadhaFuel").addCell().addFluid().setRGB(42, 42, 42).setColor(Dyes.dyeBlack).constructMaterial();
+    public static Materials FluidNaquadriaFuel          = new MaterialBuilder(400, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Naquadria Fuel").setName("FluidNaquadriaFuel").addCell().addFluid().setRGB(32, 32, 32).setColor(Dyes.dyeBlack).constructMaterial();
+    
     /**
      * Materials which are renamed automatically
      */

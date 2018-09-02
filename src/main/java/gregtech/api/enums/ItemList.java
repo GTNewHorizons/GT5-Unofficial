@@ -535,6 +535,9 @@ public enum ItemList implements IItemContainer {
     Generator_Naquadah_Fluid,
     Generator_Naquadah_Mark_IV,
     Generator_Naquadah_Mark_V,
+    Generator_Naquadah_Mark_VI,
+    Generator_Naquadah_Mark_VII,
+    Generator_Naquadah_Mark_VIII,
 
     Machine_Bronze_Boiler,
     Machine_Bronze_Boiler_Solar,
