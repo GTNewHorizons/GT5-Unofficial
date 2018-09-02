@@ -1536,7 +1536,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         		'B', ItemList.Hull_HV});
         
         //Nuclear reactor (12106, 12107, 12108, 12109)
-        ItemList.Nuclear_Reactor1.set(new GT_MetaTileEntity_NuclearReactor1(12106, "multimachine.nuclear1", "Nuclear Reactor Mk 1").getStackForm(1L));
+        //ItemList.Nuclear_Reactor1.set(new GT_MetaTileEntity_NuclearReactor1(12106, "multimachine.nuclear1", "Nuclear Reactor Mk 1").getStackForm(1L));
         
    }
 
