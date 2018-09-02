@@ -4,9 +4,11 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
+import gregtech.common.covers.GT_Cover_SolarPanel;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -325,6 +327,12 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         ItemList.CompressedBioBall.set(addItem(tLastID = 584, "Compressed Bio Ball", "", new Object[0]));
         ItemList.PlantMass.set(addItem(tLastID = 585, "Plant Mass", "", new Object[0]));
         ItemList.RawBioFiber.set(addItem(tLastID = 586, "Raw Bio Fiber", "", new Object[0]));
+        
+        //Solar Panel
+        ItemList.Cover_SolarPanel_UHV.set(addItem(tLastID = 587, "Solar Panel (UHV)", "Ultra High Voltage Solar Panel", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L), new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)}));
+        
+        GregTech_API.registerCover(ItemList.Cover_SolarPanel_UHV.get(1L, new Object[0]), new GT_RenderedTexture(Textures.BlockIcons.SOLARPANEL_UHV), new GT_Cover_SolarPanel(2097152));
+        
         
         GT_Values.RA.addCentrifugeRecipe(ItemList.PlantMass.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getModItem("IC2", "itemBiochaff", 1L, 0), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000}, 300, 4);
         GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 1L, 0), new ItemStack[]{ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L)}, new int[]{10000, 5000, 3300, 2500}, 200, 2);
