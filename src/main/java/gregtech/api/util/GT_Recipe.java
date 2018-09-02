@@ -590,6 +590,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public static final GT_Recipe_Map_Fuel sAntimatterReactorFuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.antimetterreactor", "Antimatter Reactor", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, "Reaction Time: ", 1, " sec", true, true);
         
+        public static final GT_Recipe_Map_Fuel sNuclearReactor1Fuels = new GT_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.nuclearreactor1", "Nuclear Reactor Mk 1", null, RES_PATH_GUI + "basicmachines/Default", 2, 1, 2, 1, 1, "Reaction Time: ", 1, " sec", true, true);
+        
         /**
          * HashMap of Recipes based on their Items
          */
@@ -1584,23 +1586,43 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             	super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
             }
 
-			@Override
+            @Override
 			public ArrayList<PositionedStack> getInputPositionedStacks() {
-				int itemLimit = Math.min(mInputs.length, INPUT_COUNT);
+            	int itemLimit = Math.min(mInputs.length, INPUT_COUNT);
 				int fluidLimit = Math.min(mFluidInputs.length, FLUID_INPUT_COUNT);
-				ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
+				int inputlimit = itemLimit + fluidLimit;
+			    int j = 0;
+
+				ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>(inputlimit);
 				
-				for (int i = 0; i < itemLimit; i++) {
-					inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - i * 18, 5));
+				for (int i = 0; i < itemLimit; i++, j++) {
+                    if (GT_Values.allow_broken_recipemap) {
+                        if (this != null && this.mInputs != null && this.mInputs[i] != null)
+                            inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                        else {
+                            if (this.mOutputs != null && this.mOutputs[0] != null)
+                                GT_Log.out.println("recipe " + this.toString() + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
+                            else
+                                GT_Log.out.println("recipe " + this.toString() + " has errored!");
+                            inputStacks.add(new FixedPositionedStack(new ItemStack(Items.command_block_minecart), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                        }
+                    }else
+                        inputStacks.add(new FixedPositionedStack(this.mInputs[i].copy(), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
 				}
 				
-				for (int i = 0; i < fluidLimit; i++) {
-					if (i < 3) {
-						inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - i * 18, 23));
-					} else {
-						inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 12, 5));
-					}
-				}
+				for (int i = 0; i < fluidLimit; i++, j++) {
+                    if (GT_Values.allow_broken_recipemap) {
+                        if (this != null && this.mFluidInputs != null && this.mFluidInputs[i] != null)
+                            inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                        else {
+                            if (this.mOutputs != null && this.mOutputs[0] != null)
+                                GT_Log.out.println("recipe " + this.toString() + " Output 0:" + this.mOutputs[0].getDisplayName() + " has errored!");
+                            else
+                                GT_Log.out.println("recipe " + this.toString() + " has errored!");
+                        }
+                    }else
+                        inputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidInputs[i], true), 48 - j % 3 * 18, (j >= 3 ? 5 : 23)));
+                }
 				
 				return inputStacks;
 			}
@@ -1612,7 +1634,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 				ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
 				
 				for (int i = 0; i < itemLimit; i++) {
-					outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + i * 18, 5));
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + i * 18, 5));
 				}
 				
 				for (int i = 0; i < fluidLimit; i++) {
@@ -1621,7 +1643,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 				
 				return outputStacks;
 			}
-
             
         }
     }

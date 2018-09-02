@@ -112,4 +112,8 @@ public class GT_Values {
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
     public static World DW;
+    /**
+     * This will prevent NEI from crashing but spams the Log.
+     */
+    public static boolean allow_broken_recipemap = false;
 }

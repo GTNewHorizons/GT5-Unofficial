@@ -184,7 +184,7 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Setting Configs");
         GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
-
+        GT_Values.allow_broken_recipemap = tMainConfig.get(aTextGeneral, "debug allow broken recipemap",false).getBoolean(false);
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
         if (tMainConfig.get(aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
