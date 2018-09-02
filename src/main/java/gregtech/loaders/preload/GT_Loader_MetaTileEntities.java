@@ -3209,7 +3209,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Gold),
 										'X', OrePrefixes.wireGt08.get(Materials.Gold),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_MV,
 										'T', ItemList.Transformer_HA_HV_MV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_EV_HV.get(1L),
@@ -3220,7 +3220,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Aluminium),
 										'X', OrePrefixes.wireGt08.get(Materials.Aluminium),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_MV,
 										'T', ItemList.Transformer_HA_EV_HV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_IV_EV.get(1L),
@@ -3231,7 +3231,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Tungsten),
 										'X', OrePrefixes.wireGt08.get(Materials.Tungsten),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_HV,
 										'T', ItemList.Transformer_HA_IV_EV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_LuV_IV.get(1L),
@@ -3242,7 +3242,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.VanadiumGallium),
 										'X', OrePrefixes.wireGt08.get(Materials.VanadiumGallium),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_HV,
 										'T', ItemList.Transformer_HA_LuV_IV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_ZPM_LuV.get(1L),
@@ -3253,7 +3253,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Naquadah),
 										'X', OrePrefixes.wireGt08.get(Materials.Naquadah),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_EV,
 										'T', ItemList.Transformer_HA_ZPM_LuV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UV_ZPM.get(1L),
@@ -3264,7 +3264,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.NaquadahAlloy),
 										'X', OrePrefixes.wireGt08.get(Materials.NaquadahAlloy),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_EV,
 										'T', ItemList.Transformer_HA_UV_ZPM});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UHV_UV.get(1L),
@@ -3275,7 +3275,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Europium),
 										'X', OrePrefixes.wireGt08.get(Materials.Europium),
 										'O', OrePrefixes.cell.get(Materials.Lubricant),
-										'P', ItemList.Electric_Pump_LV,
+										'P', ItemList.Electric_Pump_IV,
 										'T', ItemList.Transformer_HA_UHV_UV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UEV_UHV.get(1L),
@@ -3286,7 +3286,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Diamericiumtitanium),
 										'X', OrePrefixes.wireGt08.get(Materials.Diamericiumtitanium),
 										'O', ItemList.Reactor_Coolant_He_1,
-										'P', ItemList.Electric_Pump_MV,
+										'P', ItemList.Electric_Pump_IV,
 										'T', ItemList.Transformer_HA_UEV_UHV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UIV_UEV.get(1L),
@@ -3297,7 +3297,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Neutronium),
 										'X', OrePrefixes.wireGt08.get(Materials.Neutronium),
 										'O', ItemList.Reactor_Coolant_He_3,
-										'P', ItemList.Electric_Pump_HV,
+										'P', ItemList.Electric_Pump_LuV,
 										'T', ItemList.Transformer_HA_UIV_UEV});
 
 						GT_ModHandler.addCraftingRecipe(ItemList.WetTransformer_UMV_UIV.get(1L),
@@ -3308,7 +3308,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 										'S', OrePrefixes.spring.get(Materials.Quantium),
 										'X', OrePrefixes.wireGt08.get(Materials.Quantium),
 										'O', ItemList.Reactor_Coolant_He_6,
-										'P', ItemList.Electric_Pump_IV,
+										'P', ItemList.Electric_Pump_LuV,
 										'T', ItemList.Transformer_HA_UMV_UIV});
 					
 		// ===================================================================================================
