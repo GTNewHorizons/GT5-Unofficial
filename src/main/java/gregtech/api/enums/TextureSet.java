@@ -29,7 +29,7 @@ public class TextureSet {
         mTextures[7] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/crushedCentrifuged");
         mTextures[8] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/gem");
         mTextures[9] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/nugget");
-        mTextures[10] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);
+        mTextures[10] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/casingSmall");
         mTextures[11] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/ingot");
         mTextures[12] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/ingotHot");
         mTextures[13] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + mSetName + "/ingotDouble");
