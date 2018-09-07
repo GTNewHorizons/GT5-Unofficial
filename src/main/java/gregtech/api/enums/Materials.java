@@ -362,9 +362,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Elite = new Materials(-1, TextureSet.SET_NONE, 			1.0F, 0, 0, 0, 255, 255, 255, 0, "Elite", "Elite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 6)));
     public static Materials Master = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Master", "Master", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 7)));
     public static Materials Ultimate = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Ultimate", "Ultimate", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8)));
-    public static Materials Superconductor = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Superconductor", "Superconductor UHV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8)));
-    public static Materials Infinite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Infinite", "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
-    public static Materials Nano = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Nano", "Nano", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);
+    public static Materials Superconductor = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Superconductor", "Superconductor UHV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
+    public static Materials Infinite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Infinite", "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
+    public static Materials Bio= new Materials(  -1, TextureSet.SET_NONE,           1.0F, 0, 0, 0, 255, 255, 255, 0, "Bio","Bio", 0, 0,-1,0, false, false, 1, 1, 1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
 
     /**
      * Not possible to determine exact Components
@@ -793,17 +793,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Europiumoxide = new Materials( 392, TextureSet.SET_METALLIC, 	   18.0F, 3000, 4, 1|2|64|128, 200, 200, 200, 0, "Europiumoxide", "Europium Oxide", 0, 0, 8000, 8000, true, false, 4, 1, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Europium, 2), new MaterialStack(Oxygen, 3)));
     public static Materials EuropiumoxideMagnetic = new Materials( 393, TextureSet.SET_MAGNETIC, 	   18.0F, 3000, 4, 1|2|64|128, 200, 200, 200, 0, "EuropiumoxideMagnetic", "Magnetic Europium Oxide", 0, 0, 8000, 8000, true, false, 4, 1, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Europiumoxide, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 4), new TC_AspectStack(TC_Aspects.ORDO, 4), new TC_AspectStack(TC_Aspects.MAGNETO, 4)));
     
+    //Fuels
     public static Materials FluidNaquadahFuel            = new MaterialBuilder(397, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Naquadah Fuel").setName("FluidNaqudriaFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials EnrichedNaquadria           = new MaterialBuilder(398, TextureSet.SET_FLUID      ,                                                                                                 "Enriched Naquadria").setName("EnrichedNaquadria").addCell().addFluid().setRGB(52, 52, 52).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials FluidEnrichedNaquadahFuel   = new MaterialBuilder(399, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Enriched Naquadah Fuel").setName("FluidEnrichedNaquadahFuel").addCell().addFluid().setRGB(42, 42, 42).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials FluidNaquadriaFuel          = new MaterialBuilder(400, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Naquadria Fuel").setName("FluidNaquadriaFuel").addCell().addFluid().setRGB(32, 32, 32).setColor(Dyes.dyeBlack).constructMaterial();
+    public static Materials FluidDarkMatterFuel          = new MaterialBuilder(404, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Dark Matter Fuel").setName("FluidDarkMatterFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
     
     //Custom Material
     public static Materials Quantium = new Materials( 391, TextureSet.SET_SHINY ,  18.0F,   2048,  4, 1|2  |8      |64|128      ,   0, 209,  11,   0,   "Quantium"                ,   "Quantium"                      ,     0,       0,     4000,  4000,  true, false,  4,   1,   1, Dyes.dyeLime         );
     public static Materials InfinityCatalyst        = new Materials( 401, TextureSet.SET_SHINY             ,  64.0F,1310720,  7, 1|2    |8    |64|128      , 255, 255, 255,   0,   "InfinityCatalyst"        ,   "Infinity Catalyst"             ,     5,  500000,     9000,  9000,  true, false,  20,   1,   1, Dyes.dyeLightGray    );
     public static Materials Infinity                = new Materials( 402, TextureSet.SET_SHINY             , 128.0F,2621440,  8, 1|2    |8    |64|128      , 255, 255, 255,   0,   "Infinity"                ,   "Infinity"                      ,     5, 5000000,     9000,  9000,  true, false,  40,   1,   1, Dyes.dyeWhite        );
     public static Materials Bedrockium              = new Materials( 403, TextureSet.SET_DULL              ,   8.0F, 327680,  6, 1      |8                 ,  50,  50,  50,   0,   "Bedrockium"              ,   "Bedrockium"                    ,     0,       0,     9000,  9000,  true, false,  4,   1,   1, Dyes.dyeBlack        );
-    
+    public static Materials ReinforceGlass          = new MaterialBuilder(405, TextureSet.SET_FLUID      ,                                                                                                     "Molten Reinforced Glass").setName("ReinforcedGlass").addCell().addFluid().setRGB(192, 245, 254).setColor(Dyes.dyeWhite).setLiquidTemperature(2000).constructMaterial();
+    public static Materials BioMediumRaw            = new MaterialBuilder(406, TextureSet.SET_FLUID      ,                                                                                                     "Raw Bio Medium").setName("BioMediumRaw").addCell().addFluid().setRGB(97, 147, 46).setColor(Dyes.dyeLime).constructMaterial();
+    public static Materials BioMediumSterilized     = new MaterialBuilder(407, TextureSet.SET_FLUID      ,                                                                                                     "Sterilized Bio Medium").setName("BiohMediumSterilized").addCell().addFluid().setRGB(162, 253, 53).setColor(Dyes.dyeLime).constructMaterial();
     /**
      * Materials which are renamed automatically
      */
@@ -1413,7 +1417,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Ultimate.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Nano.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Bio                     .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorMV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorHV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorEV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);

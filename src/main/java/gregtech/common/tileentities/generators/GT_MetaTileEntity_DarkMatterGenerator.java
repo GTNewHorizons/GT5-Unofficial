@@ -10,22 +10,22 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 
-public class GT_MetaTileEntity_PlasmaGenerator
+public class GT_MetaTileEntity_DarkMatterGenerator
         extends GT_MetaTileEntity_BasicGenerator {
 
     public int mEfficiency;
 
-    public GT_MetaTileEntity_PlasmaGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Plasma into energy", new ITexture[0]);
+    public GT_MetaTileEntity_DarkMatterGenerator(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, "Dark Matter into energy", new ITexture[0]);
         onConfigLoad();
     }
 
-    public GT_MetaTileEntity_PlasmaGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DarkMatterGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
     }
 
-    public GT_MetaTileEntity_PlasmaGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DarkMatterGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
     }
@@ -35,11 +35,11 @@ public class GT_MetaTileEntity_PlasmaGenerator
     }
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_PlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_DarkMatterGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     public GT_Recipe.GT_Recipe_Map getRecipes() {
-        return GT_Recipe.GT_Recipe_Map.sPlasmaFuels;
+        return GT_Recipe.GT_Recipe_Map.sFluidDarkMatterReactorFuels;
     }
 
     public int getCapacity() {
@@ -47,7 +47,7 @@ public class GT_MetaTileEntity_PlasmaGenerator
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "PlasmaGenerator.efficiency.tier." + this.mTier, (20 + (this.mTier * 10)));
+        this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "DarkMatterGenerator.efficiency.tier." + this.mTier, 100);
     }
 
 
@@ -56,7 +56,7 @@ public class GT_MetaTileEntity_PlasmaGenerator
     }
 
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[]{super.getFront(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFront(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[this.mTier]};
     }
 
     public ITexture[] getBack(byte aColor) {
@@ -76,7 +76,7 @@ public class GT_MetaTileEntity_PlasmaGenerator
     }
 
     public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[]{super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[this.mTier]};
     }
 
     public ITexture[] getBackActive(byte aColor) {
