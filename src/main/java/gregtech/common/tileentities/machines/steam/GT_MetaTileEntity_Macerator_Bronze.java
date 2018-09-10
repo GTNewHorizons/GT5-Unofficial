@@ -13,6 +13,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Random;
 
@@ -58,10 +59,11 @@ public class GT_MetaTileEntity_Macerator_Bronze
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
+        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[]{getFillableStack()}, getAllInputs()))
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
         this.mEUt = tRecipe.mEUt;
         this.mMaxProgresstime = (tRecipe.mDuration * 2);
-        getInputAt(0).stackSize -= tRecipe.mInputs[0].stackSize;
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 
