@@ -30,27 +30,27 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiBlockBase {
+public class GT_MetaTileEntity_ProcessingArray3 extends GT_MetaTileEntity_MultiBlockBase {
 
     private GT_Recipe mLastRecipe;
     private int tTier = 0;
     private int mMult = 0;
 
-    public GT_MetaTileEntity_ProcessingArray2(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_ProcessingArray3(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_ProcessingArray2(String aName) {
+    public GT_MetaTileEntity_ProcessingArray3(String aName) {
         super(aName);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ProcessingArray2(this.mName);
+        return new GT_MetaTileEntity_ProcessingArray3(this.mName);
     }
 
     public String[] getDescription() {
         return new String[]{
-                "Controller Block for the Processing Array Mk 2",
+                "Controller Block for the Processing Array Mk 3",
                 "Runs supplied machines as if placed in the world",
                 "Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
                 "1x Input Hatch/Bus (Any casing)",
@@ -58,8 +58,8 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 "1x Maintenance Hatch (Any casing)",
                 "1x Energy Hatch (Any casing)",
                 "Robust Tungstensteel Casings for the rest (14 at least!)",
-                "Place up to 32 Single Block GT Machines into the Controller Inventory",
-                "Maximal overclockedness of machines inside: Tier 10"};
+                "Place up to 64 Single Block GT Machines into the Controller Inventory",
+                "Maximal overclockedness of machines inside: Tier 11"};
     }
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -200,16 +200,16 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
         ArrayList<ItemStack> tInputList = getStoredInputs();
 
         if (mInventory[1].getUnlocalizedName().endsWith("10")) {
-            tTier = 10;
+            tTier = 11;
             mMult = 2;//u need 4x less machines and they will use 4x less power
         } else if (mInventory[1].getUnlocalizedName().endsWith("11")) {
-            tTier = 10;
+            tTier = 11;
             mMult = 4;//u need 16x less machines and they will use 16x less power
         } else if (mInventory[1].getUnlocalizedName().endsWith("12") ||
                 mInventory[1].getUnlocalizedName().endsWith("13") ||
                 mInventory[1].getUnlocalizedName().endsWith("14") ||
                 mInventory[1].getUnlocalizedName().endsWith("15")) {
-            tTier = 10;
+            tTier = 11;
             mMult = 6;//u need 64x less machines and they will use 64x less power
         } else if (mInventory[1].getUnlocalizedName().endsWith("1")) {
             tTier = 1;
@@ -241,6 +241,9 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
         } else if (mInventory[1].getUnlocalizedName().endsWith("10")) {
             tTier = 10;
             mMult = 0;//*1
+        } else if (mInventory[1].getUnlocalizedName().endsWith("11")) {
+            tTier = 11;
+            mMult = 0;//*1
         } else {
             tTier = 0;
             mMult = 0;//*1
@@ -264,7 +267,7 @@ public class GT_MetaTileEntity_ProcessingArray2 extends GT_MetaTileEntity_MultiB
                 this.mEUt = 0;
                 this.mOutputItems = null;
                 this.mOutputFluids = null;
-                int machines = Math.min(32, mInventory[1].stackSize << mMult); //Upped max Cap to 64
+                int machines = Math.min(64, mInventory[1].stackSize << mMult); //Upped max Cap to 64
                 int i = 0;
                 for (; i < machines; i++) {
                     if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
