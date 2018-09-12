@@ -103,17 +103,22 @@ local.properties
 *.iml
 
 # Other
-/screenshots
-/world
+backups
+bin
+blueprints
+build
+config
+crash-reports
+gradle
+libs
+local
+logs
+modpack
+mods
+resourcepacks
+saves
+screenshots
+scripts
+.circleci
 .gradle
-.settings
-asm/
-bin/
-config/
-crash-reports/
-gradle/
-logs/
-mods/
-resourcepacks/
-saves/
-VillageWiper/
+.okhttpcache

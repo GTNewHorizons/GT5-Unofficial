@@ -285,7 +285,7 @@ public class RECIPES_General {
 	}
 	
 	private static void addHandPumpRecipes() {
-		/*if (RecipeUtils.recipeBuilder(
+		if (RecipeUtils.recipeBuilder(
 				CI.electricPump_LV, "circuitBasic", null,
 				"ringBrass", CI.electricMotor_LV, "circuitBasic",
 				"plateSteel", "plateSteel", "rodBrass",
@@ -306,9 +306,9 @@ public class RECIPES_General {
 		if (RecipeUtils.recipeBuilder(
 				CI.electricPump_EV, "circuitElite", null,
 				"ringTitanium", CI.electricMotor_EV, "circuitElite",
-				"plateStungstenSteel", "plateTungstenSteel", "rodTitanium",
+				"plateTungstenSteel", "plateTungstenSteel", "rodTitanium",
 				ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1)))	
-		Logger.INFO("Added recipe for Hand Pump IV - true");*/	
+		Logger.INFO("Added recipe for Hand Pump IV - true");
 		
 		
 		

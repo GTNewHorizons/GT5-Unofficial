@@ -1,5 +1,6 @@
 package gtPlusPlus.preloader;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.weakref.WeakAutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.launchwrapper.Launch;
 
 public class DevHelper {
 
@@ -25,6 +27,24 @@ public class DevHelper {
 
 	public DevHelper() {
 
+	}
+	
+	
+	
+	public boolean IsObfuscatedEnvironment() {
+		// Are we in a 'decompiled' environment?
+		boolean deobfuscatedEnvironment = false;
+		byte[] bs;
+		try {
+			bs = Launch.classLoader.getClassBytes("net.minecraft.world.World");
+			if (bs != null) {
+				deobfuscatedEnvironment = true;
+			} else {
+				deobfuscatedEnvironment = false;
+			}
+		} catch (IOException e) {
+		}		
+		return !deobfuscatedEnvironment;
 	}
 
 	@SuppressWarnings("rawtypes")

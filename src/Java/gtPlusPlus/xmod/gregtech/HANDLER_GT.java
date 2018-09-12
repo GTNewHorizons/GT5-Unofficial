@@ -121,7 +121,7 @@ public class HANDLER_GT {
 								long rotorDurabilityMax = GT_MetaGenerated_Tool.getToolMaxDamage(aI);								
 								//Logger.INFO("Found "+aType+"Turbine made out of "+getMaterialName(aMainMaterial)+", using "+getMaterialName(aSecondaryMaterial));
 								if (rotorDurabilityMax < aCutoff) {
-									Logger.INFO("[Turbine Cleanup] "+getMaterialName(aMainMaterial)+" "+aType+"Turbines have "+rotorDurabilityMax+", which is below the cutoff durability of "+aCutoff+", disabling.");
+									Logger.WARNING("[Turbine Cleanup] "+getMaterialName(aMainMaterial)+" "+aType+"Turbines have "+rotorDurabilityMax+", which is below the cutoff durability of "+aCutoff+", disabling.");
 									aG.mEnabled = false;
 									aG.mHidden = true;
 									aG.mCanBeBuffered = false;

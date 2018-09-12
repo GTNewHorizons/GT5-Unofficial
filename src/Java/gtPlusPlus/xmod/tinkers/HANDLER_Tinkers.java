@@ -1,7 +1,13 @@
 package gtPlusPlus.xmod.tinkers;
 
+import java.lang.reflect.Field;
+
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
+import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -27,8 +33,61 @@ public class HANDLER_Tinkers {
 
 	public static final void postInit() {
 		if (LoadedMods.TiCon) {
-
-		}	
+				Class aTinkersSmeltery = ReflectionUtils.getClassByName("tconstruct.smeltery.TinkerSmeltery");
+				AutoMap<Fluid> aTweakedFluids = new AutoMap<Fluid>();
+				if (aTinkersSmeltery != null) {
+					try {
+						Logger.INFO("Manipulating the light levels of fluids in TiCon. Molten 'metals' in world are now very luminescent!");
+						Field aFluidArrayField = ReflectionUtils.getField(aTinkersSmeltery, "fluids");
+						Field aBlockArrayField = ReflectionUtils.getField(aTinkersSmeltery, "fluidBlocks");
+						Fluid[] aTiconFluids = (Fluid[]) aFluidArrayField.get(null);
+						Block[] aTiconFluidBlocks = (Block[]) aBlockArrayField.get(null);
+						if (aTiconFluids != null && aTiconFluidBlocks != null) {
+							for (Fluid a : aTiconFluids) {
+								if (a == null) {
+									continue;
+								} else {
+									if (a.getLuminosity() <= 15) {
+										//if (a.getTemperature() >= 500) {
+											a.setLuminosity(16);
+											aTweakedFluids.put(a);
+										//}
+									} else {
+										aTweakedFluids.put(a);
+										continue;
+									}
+								}
+							}
+							for (Block a : aTiconFluidBlocks) {
+								if (a == null) {
+									continue;
+								} else {
+									Fluid f = FluidRegistry.lookupFluidForBlock(a);
+									boolean isHot = false;
+									if (f != null && f.getTemperature() >= 500) {
+										if (f.getLuminosity() <= 16 && !aTweakedFluids.containsValue(f)) {
+											f.setLuminosity(16);
+										}
+										isHot = true;
+									}
+									if (a.getLightValue() <= 16f) {
+										if (isHot) {
+											a.setLightLevel(16f);
+										} else {
+											if (a.getLightValue() <= 16f) {
+												a.setLightLevel(16f);
+											}
+										}
+									} else {
+										continue;
+									}
+								}
+							}
+						}
+					} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+					}
+				}
+		}
 	}
 
 }
