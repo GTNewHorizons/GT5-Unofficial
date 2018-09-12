@@ -15,7 +15,7 @@ public class GT_MetaTileEntity_SolidNaquadahReactor2
     public int mEfficiency;
 
     public GT_MetaTileEntity_SolidNaquadahReactor2(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires Enriched Naquadah Rods", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires Enriched Naquadah Ingots", new ITexture[0]);
         onConfigLoad();
     }
 
