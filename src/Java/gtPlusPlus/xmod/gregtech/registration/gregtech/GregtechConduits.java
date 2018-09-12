@@ -41,6 +41,8 @@ public class GregtechConduits {
 		}
 	}
 
+	//30000-30999
+	
 	private static int BaseWireID = 30600;
 	private static int BasePipeID = 30700;
 

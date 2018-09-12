@@ -19,7 +19,6 @@ public class GregtechTieredFluidTanks {
 
 	private static void run1() {
 		int ID = 817;
-		Logger.INFO("Is New Horizons Loaded? " + CORE.GTNH);
 		if (CORE.GTNH) {
 			Logger.INFO("Only loading ULV-IV tier tanks for New Horizons Modpack.");
 		}

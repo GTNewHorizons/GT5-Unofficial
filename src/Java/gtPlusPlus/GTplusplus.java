@@ -44,6 +44,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
@@ -233,7 +234,8 @@ public class GTplusplus implements ActionListener {
 		int[] mOriginalCount = new int[] {0, 0, 0};
 
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
-		FishPondFakeRecipe.generateFishPondRecipes();		
+		FishPondFakeRecipe.generateFishPondRecipes();	
+		GregtechMiniRaFusion.generateSlowFusionrecipes();
 
 		//Large Centrifuge generation
 		mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();

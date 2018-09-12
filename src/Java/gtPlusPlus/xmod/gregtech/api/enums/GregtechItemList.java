@@ -298,6 +298,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Input_Battery_EV, 
 	Hatch_Output_Battery_MV, 
 	Hatch_Output_Battery_EV, 
+	
+	//Advanced Mufflers
+	Hatch_Muffler_Adv_LV, Hatch_Muffler_Adv_MV, Hatch_Muffler_Adv_HV, 
+	Hatch_Muffler_Adv_EV, Hatch_Muffler_Adv_IV, Hatch_Muffler_Adv_LuV, 
+	Hatch_Muffler_Adv_ZPM, Hatch_Muffler_Adv_UV, Hatch_Muffler_Adv_MAX, 
 
 
 

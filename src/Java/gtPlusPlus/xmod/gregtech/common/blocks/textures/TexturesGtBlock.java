@@ -356,6 +356,9 @@ public class TexturesGtBlock {
 	//Discharger Texture
 	private static final CustomIcon Internal_Overlay_Hatch_Discharger = new CustomIcon("TileEntities/cover_discharge");
 	public static final CustomIcon Overlay_Hatch_Discharger = Internal_Overlay_Hatch_Discharger;
+	//Advanced Muffler
+	private static final CustomIcon Internal_Overlay_Hatch_Muffler_Adv = new CustomIcon("iconsets/OVERLAY_MUFFLER_ADV");
+	public static final CustomIcon Overlay_Hatch_Muffler_Adv = Internal_Overlay_Hatch_Muffler_Adv;
 	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");
