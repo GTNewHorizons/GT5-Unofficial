@@ -6,6 +6,7 @@ import java.util.Random;
 import gregtech.api.enums.GT_Values;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
@@ -373,6 +374,24 @@ public class MathUtils {
 		}
 		return mLargeChanceArray[randInt(0, mLargeChanceArray.length-1)];
 		
+	}
+	
+	public static long getAverage(AutoMap aDataSet) {
+		long[] aNewSet = new long[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (long) aDataSet.get(u);
+		}		
+		return getAverage(aNewSet);
+	}
+	
+	public static long getAverage(long[] aDataSet) {
+		int divisor = aDataSet.length;
+		long total = 0;		
+		for (long i : aDataSet) {
+			total += i;
+		}
+		long result = (total/divisor);
+		return result;		
 	}
 
 }

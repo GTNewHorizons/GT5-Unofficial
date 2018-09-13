@@ -1,28 +1,70 @@
 package gregtech.api.util;
 
-import gregtech.api.util.Recipe_GT.*;
+import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
+
+import java.util.HashMap;
+
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class SemiFluidFuelHandler {
 
 	public static boolean generateFuels() {
 		final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
+		final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
+		final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<Integer, Pair<FluidStack, Integer>>();
+		// Find Fluids From items
 		for (GT_Recipe g : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
-			if (g != null && g.mEnabled && g.mFluidInputs[0] != null) {		
+			if (g != null && g.mEnabled && g.mInputs.length > 0 && g.mInputs[0] != null) {
+				for (ItemStack i : g.mInputs) {
+					FluidStack f = FluidContainerRegistry.getFluidForFilledItem(i);
+					if (f != null) {
+						Pair<FluidStack, Integer> aData = new Pair<FluidStack, Integer>(f, g.mSpecialValue);
+						aFoundFluidsFromItems.put(aData.hashCode(), aData);
+					}
+				}
+			} else if (g != null && g.mEnabled && g.mFluidInputs.length > 0 && g.mFluidInputs[0] != null) {
 				boolean aContainsCreosote = false;
 				for (FluidStack f : g.mFluidInputs) {
 					if (f.isFluidEqual(aCreosote)) {
 						aContainsCreosote = true;
 					}
-				}				
-				g.mSpecialValue *= aContainsCreosote ?  8 : 4;		
-				Logger.INFO("Added "+g.mFluidInputs[0]+" to the Semi-Fluid Generator fuel map.");
-				Gregtech_Recipe_Map.sSemiFluidLiquidFuels.add(g);
+				}
+				g.mSpecialValue *= aContainsCreosote ? 8 : 4;
+				Logger.INFO("Added " + g.mFluidInputs[0].getLocalizedName() + " to the Semi-Fluid Generator fuel map. Fuel Produces "+g.mSpecialValue+"EU per 1000L.");
+				sSemiFluidLiquidFuels.add(g);
 			}
-		}		
-		return Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size() > 0;
+		}
+		for (Pair<FluidStack, Integer> p : aFoundFluidsFromItems.values()) {
+			if (p != null) {
+				int aFuelValue = p.getValue();
+				if (p.getKey().isFluidEqual(aCreosote)) {
+					aFuelValue *= 8;
+				}
+				else if (p.getKey().isFluidEqual(aHeavyFuel)){
+					aFuelValue *= 1.5;
+				}
+				else {
+					aFuelValue *= 2;
+				}
+
+				if (aFuelValue <= (128*3)) {
+					GT_Recipe aRecipe = new Recipe_GT(true, new ItemStack[] {}, new ItemStack[] {}, null, new int[] {},
+							new FluidStack[] { p.getKey() }, null, 0, 0, aFuelValue);
+					if (aRecipe.mSpecialValue > 0) {
+						Logger.INFO("Added " + aRecipe.mFluidInputs[0].getLocalizedName() + " to the Semi-Fluid Generator fuel map. Fuel Produces "+(aRecipe.mSpecialValue*1000)+"EU per 1000L.");
+						sSemiFluidLiquidFuels.add(aRecipe);
+					}
+				} else {
+					Logger.INFO("Boosted Fuel value for " + p.getKey().getLocalizedName() + " exceeds 512k, ignoring.");
+				}
+			}
+		}
+		return sSemiFluidLiquidFuels.mRecipeList.size() > 0;
 	}
-	
+
 }

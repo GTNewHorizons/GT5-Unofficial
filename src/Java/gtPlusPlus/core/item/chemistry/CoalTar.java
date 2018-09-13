@@ -23,21 +23,21 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CoalTar {
 
-	private static Fluid Coal_Gas;
-	private static Fluid Ethylene;
-	private static Fluid Benzene;
-	private static Fluid Ethylbenzene;
-	private static Fluid Anthracene;
-	private static Fluid Toluene;
-	private static Fluid Coal_Tar;
-	private static Fluid Coal_Tar_Oil;
-	private static Fluid Sulfuric_Coal_Tar_Oil;
-	private static Fluid Naphthalene;
-	private static Fluid Phthalic_Acid;
-	private static Fluid Ethylanthraquinone2;
-	private static Fluid Ethylanthrahydroquinone2;
-	private static Fluid Hydrogen_Peroxide;
-	private static Fluid Lithium_Peroxide;
+	public static Fluid Coal_Gas;
+	public static Fluid Ethylene;
+	public static Fluid Benzene;
+	public static Fluid Ethylbenzene;
+	public static Fluid Anthracene;
+	public static Fluid Toluene;
+	public static Fluid Coal_Tar;
+	public static Fluid Coal_Tar_Oil;
+	public static Fluid Sulfuric_Coal_Tar_Oil;
+	public static Fluid Naphthalene;
+	public static Fluid Phthalic_Acid;
+	public static Fluid Ethylanthraquinone2;
+	public static Fluid Ethylanthrahydroquinone2;
+	public static Fluid Hydrogen_Peroxide;
+	public static Fluid Lithium_Peroxide;
 
 	public static void run(){
 
@@ -105,10 +105,10 @@ public class CoalTar {
 		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
 		//Burn the coal gas!
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 64, 1);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), null, 32, 3);
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), null, 64, 3);
-		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), null, 192, 3);
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), null, 128, 3);
 		createRecipes();
 
 

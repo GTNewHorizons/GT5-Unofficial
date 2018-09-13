@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common;
 
 import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverflowCache;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +13,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-
+import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.ObjMap;
+import gtPlusPlus.core.util.reflect.ProxyFinder;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class Meta_GT_Proxy {
 
@@ -81,6 +84,40 @@ public class Meta_GT_Proxy {
 			}
 		}
 		return aRemoved;
+	}
+	
+	
+	private static GT_Proxy[] mProxies = new GT_Proxy[2];
+
+	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
+		Object proxyGT;
+
+		if (mProxies[0] != null && client) {
+			proxyGT = mProxies[0];
+		} else if (mProxies[1] != null && !client) {
+			proxyGT = mProxies[1];
+		} else {
+			try {
+				proxyGT = (client ? ProxyFinder.getClientProxy(GT_Mod.instance)
+						: ProxyFinder.getServerProxy(GT_Mod.instance));
+			} catch (final ReflectiveOperationException e1) {
+				proxyGT = null;
+				Logger.INFO("Failed to obtain instance of GT " + (client ? "Client" : "Server") + " proxy.");
+			}
+			if (mProxies[0] == null && client) {
+				mProxies[0] = (GT_Proxy) proxyGT;
+			} else if (mProxies[1] == null && !client) {
+				mProxies[1] = (GT_Proxy) proxyGT;
+			}
+		}
+
+		if (proxyGT != null && proxyGT instanceof GT_Proxy) {
+			try {
+				return ReflectionUtils.getField(proxyGT.getClass(), fieldName).get(proxyGT);
+			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+			}
+		}
+		return null;
 	}
 
 }
