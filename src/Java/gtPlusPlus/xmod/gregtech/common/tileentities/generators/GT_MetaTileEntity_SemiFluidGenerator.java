@@ -17,7 +17,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
+import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator{
@@ -32,7 +32,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
 	public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier,
-				"Requires heavy-fluid Fuel",
+				"Requires semi-fluid Fuel",
 				new ITexture[0]);
 		onConfigLoad();
 	}
@@ -53,7 +53,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
 	public void onConfigLoad() {
 		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig,
-				"SemiFluidGenerator.efficiency.tier." + this.mTier, 100 - (this.mTier * 10));
+				"SemiFluidGenerator.efficiency.tier." + this.mTier, 100 - (this.mTier * 5));
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
-		return GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels;
+		return Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
 	}
 	
 	@Override

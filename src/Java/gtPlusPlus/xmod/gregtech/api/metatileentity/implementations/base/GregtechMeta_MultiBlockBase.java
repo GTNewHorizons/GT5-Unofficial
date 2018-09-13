@@ -767,7 +767,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-			return resetRecipeMapForHatch((IGregTechTileEntity) aMetaTileEntity, aMap);
+			return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
 		}
 		else {
 			return false;

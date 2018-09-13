@@ -236,6 +236,7 @@ public class GTplusplus implements ActionListener {
 		RecipeGen_BlastSmelterGT_GTNH.generateGTNHBlastSmelterRecipesFromEBFList();
 		FishPondFakeRecipe.generateFishPondRecipes();	
 		GregtechMiniRaFusion.generateSlowFusionrecipes();
+		SemiFluidFuelHandler.generateFuels();
 
 		//Large Centrifuge generation
 		mOriginalCount[0] = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size();
