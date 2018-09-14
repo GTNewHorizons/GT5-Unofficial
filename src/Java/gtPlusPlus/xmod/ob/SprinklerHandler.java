@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import com.google.common.base.Objects;
 
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.item.ItemStack;
-import openmods.inventory.GenericInventory;
-import openmods.inventory.TileEntityInventory;
 
 /**
  *  Wrapper Class to assist in handling the OB Sprinkler.
@@ -32,6 +32,27 @@ public class SprinklerHandler {
 		int aHash = Objects.hashCode(aFert.getItem(), aFert.getItemDamage());
 		if (!mValidFerts.containsKey(aHash)) {
 			mValidFerts.put(aHash, aFert.copy());
+		}
+	}
+	
+	public static void registerModFerts() {
+		ItemStack f;
+		if (LoadedMods.Forestry) {
+			f = ItemUtils.getCorrectStacktype("Forestry:fertilizerBio", 1);
+			if (f != null) {
+				registerSprinklerFertilizer(f);
+			}
+			f = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+			if (f != null) {
+				registerSprinklerFertilizer(f);
+			}
+		}
+		if (LoadedMods.IndustrialCraft2) {
+			f = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+			if (f != null) {
+				registerSprinklerFertilizer(f);
+			}
+			
 		}
 	}
 	

@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer2.GT_MetaTile_Visitor;
 
@@ -50,26 +51,30 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 		// Fix Tinkers Fluids
-		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid")) {
-			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
-		}
+		if (doesPackageExist("tconstruct.smeltery"))
+			if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid")) {
+				FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
+			}
 		
 		//Fix GC stuff
-		if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GC_FluidUtil(basicClass).getWriter().toByteArray();
-		}
-		if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GC_FuelLoader(basicClass).getWriter().toByteArray();
+		if (doesPackageExist("micdoodle8.mods.galacticraft")) {
+			if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_FluidUtil(basicClass).getWriter().toByteArray();
+			}
+			if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_FuelLoader(basicClass).getWriter().toByteArray();
+			}
 		}
 		
 		//Improve OB Sprinklers
-		if (transformedName.equals("openblocks.common.tileentity.TileEntitySprinkler")) {
-			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_OB_Sprinkler(obfuscated, basicClass).getWriter().toByteArray();
-		}		
+		if (doesPackageExist("openblocks.common"))
+			if (transformedName.equals("openblocks.common.tileentity.TileEntitySprinkler")) {
+				FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_OB_Sprinkler(obfuscated, basicClass).getWriter().toByteArray();
+			}		
 
 		if (mEnabled) {
 			if (transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {
@@ -88,6 +93,15 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 		return basicClass;
+	}
+	
+	public static boolean doesPackageExist(final String packageName) {
+		boolean exists = false;
+		Package f = Package.getPackage(packageName);			
+		if (f != null) {
+			exists = true;
+		}
+		return exists;
 	}
 
 }

@@ -45,6 +45,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.loaders.GT_Material_Loader;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMiniRaFusion;
+import gtPlusPlus.xmod.ob.SprinklerHandler;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.IIcon;
@@ -156,6 +157,7 @@ public class GTplusplus implements ActionListener {
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
+		SprinklerHandler.registerModFerts();
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
