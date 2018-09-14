@@ -3,8 +3,6 @@ package gtPlusPlus.preloader.asm.transformers;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -13,13 +11,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
-import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.sf.cglib.asm.Type;
 
 
 public class ClassTransformer_GC_FluidUtil {	

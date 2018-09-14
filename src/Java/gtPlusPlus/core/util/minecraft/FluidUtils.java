@@ -39,7 +39,8 @@ public class FluidUtils {
 	public static FluidStack getFluidStack(final String fluidName, final int amount){
 		Logger.WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
-			return FluidRegistry.getFluidStack(fluidName, amount).copy();
+			FluidStack x = FluidRegistry.getFluidStack(fluidName, amount);
+			return x != null ? x.copy() : null;
 		}
 		catch (final Throwable e){
 			return null;
@@ -50,7 +51,8 @@ public class FluidUtils {
 	public static FluidStack getFluidStack(final FluidStack vmoltenFluid, final int fluidAmount) {
 		Logger.WARNING("Trying to get a fluid stack of "+vmoltenFluid.getFluid().getName());
 		try {
-			return FluidRegistry.getFluidStack(vmoltenFluid.getFluid().getName(), fluidAmount).copy();
+			FluidStack x = FluidRegistry.getFluidStack(vmoltenFluid.getFluid().getName(), fluidAmount);
+			return x != null ? x.copy() : null;
 		}
 		catch (final Throwable e){
 			return null;
@@ -60,7 +62,8 @@ public class FluidUtils {
 	public static FluidStack getFluidStack(final Fluid vFluid, final int fluidAmount) {
 		Logger.WARNING("Trying to get a fluid stack of "+vFluid.getName());
 		try {
-			return FluidRegistry.getFluidStack(vFluid.getName(), fluidAmount).copy();
+			FluidStack x = FluidRegistry.getFluidStack(vFluid.getName(), fluidAmount);
+			return x != null ? x.copy() : null;
 		}
 		catch (final Throwable e){
 			return null;

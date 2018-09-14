@@ -64,6 +64,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GC_FuelLoader(basicClass).getWriter().toByteArray();
 		}
+		
+		//Improve OB Sprinklers
+		if (transformedName.equals("openblocks.common.tileentity.TileEntitySprinkler")) {
+			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_OB_Sprinkler(obfuscated, basicClass).getWriter().toByteArray();
+		}		
 
 		if (mEnabled) {
 			if (transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {
