@@ -60,16 +60,18 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 	@Override
 	public String[] getDescription() {		
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			String aPollution = "Causes " + getPollution() + " Pollution per second";
+			int pollMin = mTier == 4 ? 250 : (mTier == 5 ? 500 : 750);
+			int pollMax = mTier == 4 ? 2000 : (mTier == 5 ? 4000 : 6000);			
+			String aPollution = "Causes between "+pollMin+" and "+pollMax+ " Pollution per second";			
 			return new String[]{
 					this.mDescription,
-					"Fuel Efficiency: " + this.getEfficiency() + "%",
+					"Fuel Efficiency: " + this.getEfficiency()*2 + "%",
 					aPollution,
 					CORE.GT_Tooltip};
 		}		
 		return new String[]{
 				this.mDescription,
-				"Fuel Efficiency: " + this.getEfficiency() + "%",
+				"Fuel Efficiency: " + this.getEfficiency()*2 + "%",
 				CORE.GT_Tooltip};
 	}
 
@@ -160,7 +162,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public long maxEUStore() {
-		return Math.max(this.getEUVar(), (V[this.mTier] * 80) + this.getMinimumStoredEU());
+		return Math.max(this.getEUVar(), (V[this.mTier] * 500) + this.getMinimumStoredEU());
 	}
 
 	@Override

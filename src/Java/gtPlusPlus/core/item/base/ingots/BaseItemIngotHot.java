@@ -39,7 +39,8 @@ public class BaseItemIngotHot extends BaseItemIngot{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-		return ("Hot "+this.materialName+ " Ingot");
+		return super.getItemStackDisplayName(p_77653_1_);
+		//return ("Hot "+this.materialName+ " Ingot");
 	}
 
 	@Override

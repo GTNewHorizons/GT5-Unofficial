@@ -14,8 +14,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
-import gtPlusPlus.core.lib.CORE;
+import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -25,18 +25,13 @@ extends GregtechRocketFuelGeneratorBase {
 	public int mEfficiency;
 
 	public GregtechMetaTileEntityRocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
-		super(aID, aName, aNameRegional, aTier, "Requires Diesel-type liquid Fuels.", new ITexture[0]);
+		super(aID, aName, aNameRegional, aTier, "Requires Rocket Fuels.", new ITexture[0]);
 		this.onConfigLoad();
 	}
 
 	public GregtechMetaTileEntityRocketFuelGenerator(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
 		this.onConfigLoad();
-	}
-	
-	@Override
-	public String[] getDescription() {
-		return new String[]{this.mDescription, "Generates power at " + (this.getEfficiency() * 2) + "% Efficiency per tick", CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -51,7 +46,7 @@ extends GregtechRocketFuelGeneratorBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
-		return GT_Recipe.GT_Recipe_Map.sDieselFuels;
+		return Recipe_GT.Gregtech_Recipe_Map.sRocketFuels;
 	}
 
 	@Override
@@ -60,12 +55,12 @@ extends GregtechRocketFuelGeneratorBase {
 	}
 
 	public void onConfigLoad() {
-		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "RocketEngine.efficiency.tier." + this.mTier, (100 - (this.mTier * 8)));
+		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig, "RocketEngine.efficiency.tier." + this.mTier, ((40+((this.mTier) * 16))/4)+(this.mTier));
 	}
 
 	@Override
 	public int getEfficiency() {
-		return this.mEfficiency;
+		return ((40+((this.mTier) * 16))/4)+(this.mTier);
 	}
 
 	@Override
@@ -143,7 +138,9 @@ extends GregtechRocketFuelGeneratorBase {
 		return new ITexture[]{super.getSidesActive(aColor)[0], this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)};
 	}
 	
-    public int getPollution() {
-        return (int) (GT_MetaTileEntity_DieselGenerator.BASE_POLLUTION * Math.pow(8, mTier + 1));
+    public int getPollution() {    	
+		int pollMin = mTier == 4 ? 250 : (mTier == 5 ? 500 : 750);
+		int pollMax = mTier == 4 ? 2000 : (mTier == 5 ? 4000 : 6000);		
+		return  (int) (MathUtils.randInt(pollMin, pollMax)/20);    	
     }
 }

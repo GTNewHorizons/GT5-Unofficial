@@ -64,6 +64,12 @@ public final class ModBlocks {
 	public static Block blockXpConverter;
 	public static Block blockCompressedObsidian;
 	public static Block blockNet;
+
+	public static Block blockPlayerDoorWooden;
+	public static Block blockPlayerDoorIron;
+	public static Block blockPlayerDoorCustom_Glass;
+	public static Block blockPlayerDoorCustom_Ice;
+	public static Block blockPlayerDoorCustom_Cactus;
 	
 	public static Block blockCustomMobSpawner;
 
@@ -102,6 +108,12 @@ public final class ModBlocks {
 
 		blockFakeMiningPipe = new Mining_Pipe_Fake();
 		blockFakeMiningHead = new Mining_Head_Fake();
+		
+		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
+		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
+		blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
+		blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
+		blockPlayerDoorCustom_Cactus = new PlayerDoors(Material.cactus, "door_cactus", false);
 
 	}
 

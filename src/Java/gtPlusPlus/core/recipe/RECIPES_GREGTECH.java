@@ -542,7 +542,7 @@ public class RECIPES_GREGTECH {
 			// FluidStacks
 			final FluidStack ThoriumFluoride = FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 100); // Re-usable
 			// FluidStacks
-			final FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("molten.zirconiumtetrafluoride", 100); // Re-usable
+			final FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("zirconiumtetrafluoride", 100); // Re-usable
 			// FluidStacks
 			final FluidStack UraniumTetraFluoride = FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 100); // Re-usable
 			// FluidStacks

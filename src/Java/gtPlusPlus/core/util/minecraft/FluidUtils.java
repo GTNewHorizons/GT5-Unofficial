@@ -420,43 +420,36 @@ public class FluidUtils {
 	}
 
 	public final static Fluid generateFluid(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA){
-		if ((FluidUtils.getFluidStack("molten"+"."+unlocalizedName.toLowerCase(), 1) == null) && (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1) != null)){
+			FluidStack aFStack = (FluidUtils.getFluidStack("molten"+"."+unlocalizedName.toLowerCase(), 1));
+			if (aFStack == null){
 			Logger.WARNING("Generating our own fluid.");
-
-			//Generate a Cell if we need to
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1) == null){
-				@SuppressWarnings("unused")
-				final
-				Item temp = new BaseItemComponent(unlocalizedName, localizedName, RGBA);
+			ItemStack cell = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1);			
+			if (cell == null){
+				final Item temp = new BaseItemComponent(unlocalizedName, localizedName, RGBA);
+				cell = ItemUtils.getSimpleStack(temp);
 			}
-
 			final Fluid gtFluid = FluidUtils.addGTFluid(
 					unlocalizedName,
 					"Molten "+localizedName,
 					RGBA,
 					4,
 					MeltingPoint,
-					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
+					cell,
 					ItemUtils.getEmptyCell(),
 					1000);
-
-			//Disable this, not sure why it exists //TODO
-			/*MaterialGenerator.addFluidExtractionRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1), //Input
-					null, //Input 2
-					FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
-					0, //Chance
-					1*20, //Duration
-					16 //Eu Tick
-					);*/
-			
 			
 			return gtFluid;
 		}
-		Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName);
-		return null;
+		else {
+			Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName+", ALREADY EXISTS");
+			return aFStack.getFluid();
+		}
 	}
 
+	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA){
+		return generateFluidNonMolten(unlocalizedName, localizedName, MeltingPoint, RGBA, null, null, 0);
+	}
+	
 	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA, final ItemStack dustStack, final ItemStack dustStack2){
 		return generateFluidNonMolten(unlocalizedName, localizedName, MeltingPoint, RGBA, dustStack, dustStack2, 144);
 	}
@@ -465,7 +458,8 @@ public class FluidUtils {
 		if (dustStack == null){
 			dustStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1);
 		}
-		if ((FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1) == null)/* && ((dustStack != null) || (dustStack2 != null))*/){
+		FluidStack aFStack = (FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1));
+		if (aFStack == null){
 			Logger.WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
@@ -508,8 +502,10 @@ public class FluidUtils {
 
 			return gtFluid;
 		}
-		Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName);
-		return null;
+		else {
+			Logger.INFO("FLUID GENERATION FAILED FOR "+localizedName+", ALREADY EXISTS");
+			return aFStack.getFluid();
+		}
 	}
 
 	public final static Fluid generateFluidNoPrefix(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA){

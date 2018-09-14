@@ -33,6 +33,7 @@ import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
+import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
@@ -603,7 +604,7 @@ public final class ModItems {
 		//Zirconium Tetrafluoride
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
-		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride [ZrF4]", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		FluidUtils.generateFluidNoPrefix("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
@@ -749,6 +750,7 @@ public final class ModItems {
 
 		//Chemistry
 		CoalTar.run();
+		RocketFuels.run();
 		
 		//Nuclear Processing
 		NuclearChem.run();

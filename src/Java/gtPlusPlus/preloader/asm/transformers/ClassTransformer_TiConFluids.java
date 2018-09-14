@@ -6,13 +6,13 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.preloader.DevHelper;
-import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
 
 public class ClassTransformer_TiConFluids {	
@@ -38,7 +38,7 @@ public class ClassTransformer_TiConFluids {
 		try {
 			aTempReader = new ClassReader(className);
 			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new OreDictionaryVisitor(aTempWriter), 0);
+			new ClassReader(basicClass).accept(new localClassVisitir(aTempWriter, isObfuscated), 0);
 		} catch (IOException e) {}		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
@@ -117,6 +117,45 @@ public class ClassTransformer_TiConFluids {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Method injection complete.");		
 			
 		}
+	}
+	
+	public final class localClassVisitir extends ClassVisitor {
+
+		private final boolean mIsObfuscated;
+		
+		public localClassVisitir(ClassVisitor cv, boolean obfuscated) {
+			super(ASM5, cv);
+			mIsObfuscated = obfuscated;
+		}
+
+		@Override
+		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+			String IBlockAccessName = isObfuscated ? "ahl" : "net/minecraft/world/IBlockAccess";
+			String aConstructorTypes = "(L"+IBlockAccessName+";III)I";
+			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+			if(name.equals(methodName) && desc.equals(aConstructorTypes)) {
+				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method. ["+mIsObfuscated+"]");
+				return new localMethodVisitor(methodVisitor, mIsObfuscated);
+			}
+			return methodVisitor;
+		}
+
+	}
+
+	private final class localMethodVisitor extends MethodVisitor {
+
+		private final boolean mObfuscated;
+		
+		public localMethodVisitor(MethodVisitor mv, boolean obfuscated) {
+			super(ASM5, mv);
+			this.mObfuscated = obfuscated;
+		}
+
+		@Override
+		public void visitCode() {
+			
+		}
+
 	}
 
 

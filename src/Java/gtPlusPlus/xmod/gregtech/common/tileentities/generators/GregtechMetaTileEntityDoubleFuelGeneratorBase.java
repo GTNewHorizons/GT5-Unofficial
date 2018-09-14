@@ -136,4 +136,9 @@ extends GregtechRocketFuelGeneratorBase {
 	public ITexture[] getSidesActive(final byte aColor) {
 		return new ITexture[]{super.getSidesActive(aColor)[0], this.getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)};
 	}
+
+	@Override
+	public int getPollution() {
+		return 250;
+	}
 }

@@ -54,6 +54,16 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
 		}
+		
+		//Fix GC stuff
+		if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GC_FluidUtil(basicClass).getWriter().toByteArray();
+		}
+		if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
+			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GC_FuelLoader(basicClass).getWriter().toByteArray();
+		}
 
 		if (mEnabled) {
 			if (transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {
