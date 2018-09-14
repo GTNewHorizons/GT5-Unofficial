@@ -1,4 +1,4 @@
-package gtPlusPlus.core.tileentities.base;
+/*package gtPlusPlus.core.tileentities.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -804,33 +804,33 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	
 	
 	@Override
-	public boolean onPreTick() {
+	public boolean onPreTick(long aTick) {
 		return onPreTick(this, this.mTickTimer);
 	}
 
 	@Override
-	public boolean onTick() {
+	public boolean onTick(long aTick) {
 		return onTick(this, this.mTickTimer);
 	}
 
 	@Override
-	public boolean onPostTick() {
+	public boolean onPostTick(long aTick) {
 		return onPostTick(this, this.mTickTimer);
 	}
 
 	@Override
 	public boolean onPreTick(TilePoweredGT tilePoweredGT, long mTickTimer2) {
-		return super.onPreTick();
+		return super.onPreTick(mTickTimer2);
 	}
 
 	@Override
 	public boolean onTick(TilePoweredGT iGregTechTileEntity, long mTickTimer2) {
-		return super.onTick();
+		return super.onTick(mTickTimer2);
 	}
 
 	@Override
 	public boolean onPostTick(TilePoweredGT iGregTechTileEntity, long mTickTimer2) {
-		return super.onPostTick();
+		return super.onPostTick(mTickTimer2);
 	}
 
 	@Override
@@ -861,7 +861,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		int tCode = 0;
 		final boolean aSideServer = this.isServerSide();
 		final boolean aSideClient = this.isClientSide();
-		/*try {
+		try {
 			for (tCode = 0; this.hasValidMetaTileEntity() && tCode >= 0; tCode = -1) {
 				Label_1743 : {
 					switch (tCode) {
@@ -1139,7 +1139,7 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 		final boolean mWorkUpdate = false;
 		this.mRunningThroughTick = mWorkUpdate;
 		this.mInventoryChanged = mWorkUpdate;
-		this.mWorkUpdate = mWorkUpdate;*/
+		this.mWorkUpdate = mWorkUpdate;
 	}
 
 	private void onFirstTick(TilePoweredGT tilePoweredGT) {
@@ -1165,3 +1165,4 @@ public abstract class TilePoweredGT extends TileEntityBase implements IGregtechP
 	}
 	
 }
+*/

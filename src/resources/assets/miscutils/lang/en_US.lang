@@ -35,6 +35,8 @@ item.itemFuelRod_Plutonium.name=Plutonium Fuel Rod
 //Entities
 entity.constructStaballoy.name=Staballoy Construct
 entity.sickBlaze.name=Infected Zealot
+entity.miscutils.constructStaballoy.name=Staballoy Construct
+entity.miscutils.sickBlaze.name=Infected Zealot
 
 //Tile Entities
 tile.blockToolBuilder.name=GregTech Tool Constructor

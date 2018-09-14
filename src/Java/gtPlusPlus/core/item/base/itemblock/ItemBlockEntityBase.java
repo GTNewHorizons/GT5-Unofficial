@@ -31,6 +31,7 @@ public class ItemBlockEntityBase extends ItemBlock {
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
 			list.add(EnumChatFormatting.GRAY+"Can convert Liquid Xp to Mob Essence and back.");
 			list.add(EnumChatFormatting.GRAY+"Right click with a Screwdriver to change mode.");
+			list.add(EnumChatFormatting.GRAY+"Shift+Right click to view tank information.");
 		}
 		else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
 			//list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");

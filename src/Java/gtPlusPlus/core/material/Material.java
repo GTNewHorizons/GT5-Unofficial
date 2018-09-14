@@ -945,7 +945,18 @@ public class Material {
 
 	final public int calculateMeltingPoint(){
 		try {
-			int meltingPoint = 0;
+			
+			AutoMap<Integer> aDataSet = new AutoMap<Integer>();
+			for (MaterialStack m : this.vMaterialInput) {
+				aDataSet.put(m.getStackMaterial().getMeltingPointC());
+			}
+			long aAverage = MathUtils.getAverage(aDataSet);
+			return MathUtils.safeInt(aAverage);
+			
+			
+			
+			
+			/*int meltingPoint = 0;
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					int incrementor = part.getStackMaterial().getMeltingPointC();
@@ -959,7 +970,7 @@ public class Material {
 			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 			Logger.WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
 			meltingPoint = (meltingPoint/divisor);
-			return meltingPoint;
+			return meltingPoint;*/
 		}
 		catch (Throwable r){
 			return 500;
@@ -968,7 +979,16 @@ public class Material {
 
 	final public int calculateBoilingPoint(){
 		try {
-			int boilingPoint = 0;
+			
+			AutoMap<Integer> aDataSet = new AutoMap<Integer>();
+			for (MaterialStack m : this.vMaterialInput) {
+				aDataSet.put(m.getStackMaterial().getBoilingPointC());
+			}
+			long aAverage = MathUtils.getAverage(aDataSet);
+			return MathUtils.safeInt(aAverage);
+			
+			
+			/*int boilingPoint = 0;
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					boilingPoint += part.getStackMaterial().getBoilingPointC();
@@ -980,7 +1000,7 @@ public class Material {
 			}
 			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 			boilingPoint = (boilingPoint/divisor);
-			return boilingPoint;
+			return boilingPoint;*/
 		}
 		catch (Throwable r){
 			return 2500;
@@ -989,7 +1009,15 @@ public class Material {
 
 	final public long calculateProtons(){
 		try {
-			long protonCount = 0;
+			
+			AutoMap<Long> aDataSet = new AutoMap<Long>();
+			for (MaterialStack m : this.vMaterialInput) {
+				aDataSet.put(m.getStackMaterial().getProtons());
+			}
+			long aAverage = MathUtils.getAverage(aDataSet);
+			return aAverage;
+			
+			/*long protonCount = 0;
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					protonCount += (part.getStackMaterial().getProtons());
@@ -1000,7 +1028,7 @@ public class Material {
 			}
 			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 			protonCount = (protonCount/divisor);
-			return protonCount;
+			return protonCount;*/
 		}
 		catch (Throwable r){
 			return 50;
@@ -1009,7 +1037,15 @@ public class Material {
 
 	final public long calculateNeutrons(){
 		try {
-			long neutronCount = 0;
+			
+			AutoMap<Long> aDataSet = new AutoMap<Long>();
+			for (MaterialStack m : this.vMaterialInput) {
+				aDataSet.put(m.getStackMaterial().getNeutrons());
+			}
+			long aAverage = MathUtils.getAverage(aDataSet);
+			return aAverage;
+			
+			/*long neutronCount = 0;
 			for (MaterialStack  part : this.vMaterialInput){
 				if (part != null){
 					neutronCount += (part.getStackMaterial().getNeutrons());
@@ -1020,7 +1056,7 @@ public class Material {
 			}
 			int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 			neutronCount = (neutronCount/divisor);
-			return neutronCount;
+			return neutronCount;*/
 		}
 		catch (Throwable r){
 			return 75;

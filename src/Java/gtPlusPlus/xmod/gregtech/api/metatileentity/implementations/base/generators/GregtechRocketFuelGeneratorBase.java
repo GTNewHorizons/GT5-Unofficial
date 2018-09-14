@@ -14,9 +14,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.GT_Pollution;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank {
@@ -56,8 +58,19 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 
 	@Override
-	public String[] getDescription() {
-		return new String[]{this.mDescription, "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip};
+	public String[] getDescription() {		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			String aPollution = "Causes " + getPollution() + " Pollution per second";
+			return new String[]{
+					this.mDescription,
+					"Fuel Efficiency: " + this.getEfficiency() + "%",
+					aPollution,
+					CORE.GT_Tooltip};
+		}		
+		return new String[]{
+				this.mDescription,
+				"Fuel Efficiency: " + this.getEfficiency() + "%",
+				CORE.GT_Tooltip};
 	}
 
 
@@ -209,6 +222,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 						else {
 							this.useFuel = true;
 						}
+						PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
 					}
 				}
 			}
@@ -219,6 +233,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 					if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tEmptyContainer)) {
 						aBaseMetaTileEntity.increaseStoredEnergyUnits(tFuelValue, true);
 						aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+						PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
 					}
 				}
 			}
@@ -228,6 +243,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 			aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork() && (aBaseMetaTileEntity.getUniversalEnergyStored() >= (this.maxEUOutput() + this.getMinimumStoredEU())));
 		}
 	}
+
+	public abstract int getPollution();
 
 	public abstract GT_Recipe_Map getRecipes();
 

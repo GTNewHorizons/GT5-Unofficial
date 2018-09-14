@@ -2,6 +2,8 @@ package gtPlusPlus.api.objects.data;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 public class Pair<K,V> implements Serializable {
 
 	/**
@@ -22,6 +24,12 @@ public class Pair<K,V> implements Serializable {
 
 	final public V getValue(){
 		return this.value;
+	}
+
+	@Override
+	public int hashCode() {
+		Integer aCode = Objects.hashCode(getKey(), getValue());		
+		return aCode != null ? aCode : super.hashCode();
 	}
 
 }

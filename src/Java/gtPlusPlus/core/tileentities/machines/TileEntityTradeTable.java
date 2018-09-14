@@ -18,6 +18,7 @@ public class TileEntityTradeTable extends TileEntityBase {
 	private Container_TradeTable container;
 
 	public TileEntityTradeTable(){
+		super(2);
 		this.inventoryGrid = new InventoryTradeMain();//number of slots - without product slot
 		this.inventoryOutputs = new InventoryTradeOutput();//number of slots - without product slot
 	}

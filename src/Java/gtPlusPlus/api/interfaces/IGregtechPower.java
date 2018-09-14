@@ -8,8 +8,6 @@ import net.minecraft.world.World;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.tileentity.*;
 
-import gtPlusPlus.core.tileentities.base.TilePoweredGT;
-
 public abstract interface IGregtechPower extends IGearEnergyTileEntity, ITurnable, IGregTechDeviceInformation, IDescribable, IBasicEnergyContainer {
 
 	@Override
@@ -137,11 +135,11 @@ public abstract interface IGregtechPower extends IGearEnergyTileEntity, ITurnabl
 		return true;
 	}
 
-	boolean onPreTick(TilePoweredGT tilePoweredGT, long mTickTimer2);
+/*	boolean onPreTick(TilePoweredGT tilePoweredGT, long mTickTimer2);
 
 	boolean onTick(TilePoweredGT iGregTechTileEntity, long mTickTimer2);
 	
-	boolean onPostTick(TilePoweredGT iGregTechTileEntity, long mTickTimer2);
+	boolean onPostTick(TilePoweredGT iGregTechTileEntity, long mTickTimer2);*/
 
 
 }

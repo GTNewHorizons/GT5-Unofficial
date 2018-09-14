@@ -7,24 +7,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
+import gtPlusPlus.core.tileentities.base.TileBasicTank;
 import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
+public class TileEntityXpConverter extends TileBasicTank {
 
-	public FluidTank tankEssence = new FluidTank((int) (64000*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
-	public FluidTank tankLiquidXp = new FluidTank(64000);
-	private boolean needsUpdate = false;
+	public BTF_FluidTank tankEssence = new BTF_FluidTank((int) (64000*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
+	public BTF_FluidTank tankLiquidXp = new BTF_FluidTank(64000);
 	private boolean mConvertToEssence = true;
-	private int updateTimer = 0;
-	private long mTickTime = 0;
 
 	public TileEntityXpConverter() {
+		super (4, 32000);
 	}
 
 	private void changeMode(){
@@ -36,215 +33,27 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 			this.mConvertToEssence = true;
 			return;
 		}
-	}
+	}	
 
-	private boolean isServerSide(){
-		if (this.getWorldObj().isRemote){
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-	@Override
-	public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
-		this.needsUpdate = true;
-		Logger.WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
+	public float getAdjustedVolume() {		
 		if (this.mConvertToEssence){
-			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Logger.WARNING("fill(tankLiquidXp)");
-				return this.tankLiquidXp.fill(resource, doFill);
-			}
-			else {
-				Logger.WARNING("Looking for Liquid Xp, Instead found "+resource.getLocalizedName()+".");
-			}
-		}
-		else {
-			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Logger.WARNING("fill(tankEssence)");
-				return this.tankEssence.fill(resource, doFill);
-			}
-			else {
-				Logger.WARNING("Looking for Essence, Instead found "+resource.getLocalizedName()+".");
-			}
-		}
-		Logger.WARNING("fill(0)");
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(final ForgeDirection from, final FluidStack resource, final boolean doDrain) {
-		this.needsUpdate = true;
-		if (this.mConvertToEssence){
-			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Logger.WARNING("drain(mConvertToEssence)");
-				return this.tankEssence.drain(resource.amount, doDrain);
+			if ((this.tankLiquidXp.getFluid() != null) && (this.tankLiquidXp.getFluidAmount() >= 100) && (this.tankEssence.getFluidAmount() <= (this.tankEssence.getCapacity()-(100*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP)))){
+				final FluidStack bigStorage = EnchantingUtils.getEssenceFromLiquidXp(100);
+				this.tankEssence.fill(bigStorage, true);
+				this.tankLiquidXp.drain(100, true);
+				return (this.tankEssence.getCapacity()-this.tankEssence.getFluidAmount());
 			}
 		}
 		else {
-			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Logger.WARNING("drain(tankLiquidXp)");
-				return this.tankLiquidXp.drain(resource.amount, doDrain);
+			final double rm = EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP;
+			if ((this.tankEssence.getFluid() != null) && (this.tankEssence.getFluidAmount() >= rm) && (this.tankLiquidXp.getFluidAmount() <= (this.tankLiquidXp.getCapacity()-rm))){
+				final FluidStack bigStorage = EnchantingUtils.getLiquidXP(1);
+				this.tankLiquidXp.fill(bigStorage, true);
+				this.tankEssence.drain((int) rm, true);
+				return (this.tankLiquidXp.getCapacity()-this.tankLiquidXp.getFluidAmount());
 			}
-		}
-		Logger.WARNING("drain(null)");
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
-		this.needsUpdate = true;
-		Logger.WARNING("drain(Ex)");
-		final FluidStack fluid_Essence = this.tankEssence.getFluid();
-		final FluidStack fluid_Xp = this.tankLiquidXp.getFluid();
-		if ((fluid_Essence == null) && (fluid_Xp == null)) {
-			return null;
-		}
-
-		FluidStack fluid;
-		FluidTank tank;
-
-		if (this.mConvertToEssence){
-			fluid = fluid_Essence;
-			tank = this.tankEssence;
-		}
-		else {
-			fluid = fluid_Xp;
-			tank = this.tankLiquidXp;
-		}
-
-		int drained = maxDrain;
-		if (fluid.amount < drained) {
-			drained = fluid.amount;
-		}
-
-		final FluidStack stack = new FluidStack(fluid, drained);
-		if (doDrain) {
-			fluid.amount -= drained;
-			if (fluid.amount <= 0) {
-				fluid = null;
-			}
-
-			if (this != null) {
-				FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, this.getWorldObj(), this.xCoord,
-						this.yCoord, this.zCoord, tank, 0));
-			}
-		}
-
-
-		if (this.mConvertToEssence){
-			this.tankEssence = tank;
-		}
-		else {
-			this.tankLiquidXp = tank;
-		}
-
-		Logger.WARNING("drain(Ex2)");
-		return stack;
-	}
-
-	@Override
-	public boolean canFill(final ForgeDirection from, final Fluid fluid) {
-		if (this.mConvertToEssence){
-			if (this.tankEssence.getFluidAmount() < this.tankEssence.getCapacity()){
-				Logger.WARNING("canFill(mConvertToEssence)");
-				return true;
-			}
-		}
-		else {
-			if (this.tankLiquidXp.getFluidAmount()  < this.tankLiquidXp.getCapacity()){
-				Logger.WARNING("canFill(tankLiquidXp)");
-				return true;
-			}
-		}
-		Logger.WARNING("canFill(false)");
-		return false;
-	}
-
-	@Override
-	public boolean canDrain(final ForgeDirection from, final Fluid fluid) {
-		if (this.mConvertToEssence){
-			if (this.tankEssence.getFluidAmount() > 0){
-				return true;
-			}
-		}
-		else {
-			if (this.tankLiquidXp.getFluidAmount() > 0){
-				return true;
-			}
-		}
-		Logger.WARNING("canDrain(false)");
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(final ForgeDirection from) {
-		if (this.mConvertToEssence){
-			return new FluidTankInfo[] { this.tankEssence.getInfo() };
-		}
-		else {
-			return new FluidTankInfo[] { this.tankLiquidXp.getInfo() };
-		}
-	}
-
-	public float getAdjustedVolume() {
-		Logger.WARNING("AdjustedVolume()");
-		this.needsUpdate = true;
-		final float amount = this.tankLiquidXp.getFluidAmount();
-		final float capacity = this.tankLiquidXp.getCapacity();
-		final float volume = (amount / capacity) * 0.8F;
-		return volume;
-	}
-
-	@Override
-	public void updateEntity() {
-
-		if (this.isServerSide()){
-			this.mTickTime++;
-
-			if (this.needsUpdate) {
-				if (this.updateTimer == 0) {
-					this.updateTimer = 10; // every 10 ticks it will send an update
-				} else {
-					--this.updateTimer;
-					if (this.updateTimer == 0) {
-						this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-						this.needsUpdate = false;
-					}
-				}
-			}
-
-
-			if (this.mConvertToEssence){
-				if ((this.tankLiquidXp.getFluid() != null) && (this.tankLiquidXp.getFluidAmount() >= 100) && (this.tankEssence.getFluidAmount() <= (this.tankEssence.getCapacity()-(100*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP)))){
-					final FluidStack bigStorage = EnchantingUtils.getEssenceFromLiquidXp(100);
-					this.tankEssence.fill(bigStorage, true);
-					this.tankLiquidXp.drain(100, true);
-					this.needsUpdate = true;
-					Logger.WARNING("B->A");
-				}
-			}
-			else {
-				final double rm = EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP;
-				if ((this.tankEssence.getFluid() != null) && (this.tankEssence.getFluidAmount() >= rm) && (this.tankLiquidXp.getFluidAmount() <= (this.tankLiquidXp.getCapacity()-rm))){
-					final FluidStack bigStorage = EnchantingUtils.getLiquidXP(1);
-					this.tankLiquidXp.fill(bigStorage, true);
-					this.tankEssence.drain((int) rm, true);
-					this.needsUpdate = true;
-					Logger.WARNING("A->B");
-				}
-			}
-		}
-		else {
-		}
-		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		this.markDirty();
-
-		if ((this.mTickTime % 20) == 0){
-
-		}
-
+		}		
+		return 0f;
 	}
 
 	@Override
@@ -289,8 +98,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 		}
 	}
 
-	public void onRightClick(final byte aSide, final EntityPlayer aPlayer, final int aX, final int aY, final int aZ) {
-
+	public void onRightClick(final byte aSide, final EntityPlayer aPlayer, final int aX, final int aY, final int aZ) {		
 		if ((Keyboard.isKeyDown(42)) || (Keyboard.isKeyDown(54))) {
 			String mInput;
 			String mOutput;
@@ -307,7 +115,184 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 			PlayerUtils.messagePlayer(aPlayer, "Input: "+mInput+".");
 			PlayerUtils.messagePlayer(aPlayer, "Output: "+mOutput+".");
 		}
+	}
 
+	@Override
+	public boolean onPreTick(long aTick) {
+		boolean aSuperResult = super.onPreTick(aTick);		
+		long aTankSpaceLeft = 0;
+		double aAmount = 0;
+		int aRuns = 0;
+		if (this.mConvertToEssence) {
+			aTankSpaceLeft = (this.tankEssence.getCapacity()-this.tankEssence.getFluidAmount());
+			aAmount = EnchantingUtils.getEssenceFromLiquidXp(100).amount;	
+		}
+		else {
+			aTankSpaceLeft = (this.tankLiquidXp.getCapacity()-this.tankLiquidXp.getFluidAmount());
+			aAmount = EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP;	
+		}
+		aRuns = (int) (aTankSpaceLeft / aAmount);
+		for (int i=0;i<aRuns;i++) {
+			if (getAdjustedVolume() == 0) {
+				break;
+			}
+		}		
+		return aSuperResult;		
+	}
+
+	@Override
+	public boolean isLiquidInput(byte aSide) {
+		if (mConvertToEssence) {
+			if (aSide == 0 || aSide == 1) {
+				return false;
+			}
+		} else {
+			if (aSide == 0 || aSide == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isLiquidOutput(byte aSide) {
+		if (mConvertToEssence) {
+			if (aSide == 0 || aSide == 1) {
+				return true;
+			}
+		} else {
+			if (aSide == 0 || aSide == 1) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+		if (mConvertToEssence) {
+			if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+				return this.tankLiquidXp.fill(aFluid, doFill);
+			}
+		} else {
+			if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+				return this.tankEssence.fill(aFluid, doFill);
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+		if (mConvertToEssence) {
+			if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+				return this.tankEssence.drain(maxDrain, doDrain);
+			}
+		} else {
+			if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+				return this.tankLiquidXp.drain(maxDrain, doDrain);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+		if (mConvertToEssence) {
+			if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+				return this.tankEssence.drain(aFluid, doDrain);
+			}
+		} else {
+			if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+				return this.tankLiquidXp.drain(aFluid, doDrain);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+		if (mConvertToEssence) {
+			if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+				return this.tankLiquidXp.canTankBeFilled();
+			}
+		} else {
+			if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+				return this.tankEssence.canTankBeFilled();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+		if (mConvertToEssence) {
+			if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+				return this.tankEssence.canTankBeEmptied();
+			}
+		} else {
+			if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+				return this.tankLiquidXp.canTankBeEmptied();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+		if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+			return new FluidTankInfo[] { this.tankEssence.getInfo() };
+		} else {
+			return new FluidTankInfo[] { this.tankLiquidXp.getInfo() };
+
+		}
+	}
+
+	@Override
+	public FluidStack getFluid() {
+		if (mConvertToEssence) {
+			return this.tankEssence.getFluid();
+		}
+		else {
+			return this.tankLiquidXp.getFluid();			
+		}
+	}
+
+	@Override
+	public int getFluidAmount() {
+		if (mConvertToEssence) {
+			return this.tankEssence.getFluidAmount();
+		}
+		else {
+			return this.tankLiquidXp.getFluidAmount();			
+		}
+	}
+
+	@Override
+	public FluidTankInfo getInfo() {
+		if (mConvertToEssence) {
+			return this.tankEssence.getInfo();
+		} else {
+			return this.tankLiquidXp.getInfo();
+		}
+	}
+
+	@Override
+	public int fill(FluidStack resource, boolean doFill) {
+		if (mConvertToEssence) {
+			return this.tankEssence.fill(resource, doFill);
+		} else {
+			return this.tankLiquidXp.fill(resource, doFill);
+		}
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		if (mConvertToEssence) {
+			return this.tankEssence.drain(maxDrain, doDrain);
+		} else {
+			return this.tankLiquidXp.drain(maxDrain, doDrain);
+		}
 	}
 
 }

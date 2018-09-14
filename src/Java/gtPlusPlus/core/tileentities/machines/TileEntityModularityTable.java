@@ -35,6 +35,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	private int mRecipeTimeRemaining = -1;
 
 	public TileEntityModularityTable() {
+		super(16);
 		this.inventoryGrid = new InventoryModularMain();
 		this.inventoryOutputs = new InventoryModularOutput();
 		this.mTempRecipeStorage = new InventoryModularOutput();
@@ -363,7 +364,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.customName : "container.fishrap";
+		return this.hasCustomInventoryName() ? this.customName : "container.fishtrap";
 	}
 
 	@Override
@@ -372,7 +373,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	}
 
 	@Override
-	public boolean onPreTick() {
+	public boolean onPreTick(long aTick) {
 		//Check for active recipe
 		if (this.mRecipeTimeRemaining > -1 || (this.mTempRecipeStorage != null) && (this.mTempRecipeStorage.getRecipeTime() > -1)){
 			if ((this.mTempRecipeStorage != null) && this.mTempRecipeStorage.getRecipeTime() > -1){
@@ -393,7 +394,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	}
 
 	@Override
-	public boolean onPostTick() {
+	public boolean onPostTick(long aTick) {
 		if (mRecipeTimeRemaining == 0){
 			this.inventoryOutputs.setInventorySlotContents(2, this.getPendingOutputItem());	
 			clearRecipeData();
