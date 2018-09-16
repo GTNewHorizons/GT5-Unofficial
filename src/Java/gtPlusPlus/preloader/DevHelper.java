@@ -28,9 +28,9 @@ public class DevHelper {
 	public DevHelper() {
 
 	}
-	
-	
-	
+
+
+
 	public boolean IsObfuscatedEnvironment() {
 		// Are we in a 'decompiled' environment?
 		boolean deobfuscatedEnvironment = false;
@@ -55,16 +55,16 @@ public class DevHelper {
 		s2 = getSRG(s);	
 
 		try {
-		a = ReflectionUtils.getMethod(c, s1, varags);
-		if (a != null) {
-			return a;
-		}
-		else {
-			b = ReflectionUtils.getMethod(c, s2, varags);
-			if (b != null) {
-				return b;
+			a = ReflectionUtils.getMethod(c, s1, varags);
+			if (a != null) {
+				return a;
 			}
-		}
+			else {
+				b = ReflectionUtils.getMethod(c, s2, varags);
+				if (b != null) {
+					return b;
+				}
+			}
 		}
 		catch (Exception e) {}
 		return null;
@@ -117,10 +117,23 @@ public class DevHelper {
 		return DevHelperInternals.srgToForge.get(mSrgName);		
 	}
 
+	public String getObfuscated(String mDeob) {
+		return DevHelperInternals.deObToOb.get(mDeob);
+	}
+
+	public String getDeobfuscated(String mOb) {
+		return DevHelperInternals.obToDeOb.get(mOb);		
+	}
+	
 	public static class DevHelperInternals {
 		public static Map<String, String> srgToForge = new HashMap<String, String>();
 		public static Map<String, String> forgeToSrg = new HashMap<String, String>();
 		private static WeakAutoMap<Pair<String, String>> mInitMap = new WeakAutoMap<Pair<String, String>>();
+
+		//Obfuscation
+		public static Map<String, String> obToDeOb = new HashMap<String, String>();
+		public static Map<String, String> deObToOb = new HashMap<String, String>();
+		private static WeakAutoMap<Pair<String, String>> mObInitMap = new WeakAutoMap<Pair<String, String>>();
 
 		private static boolean init() {
 			init1();
@@ -135,8 +148,19 @@ public class DevHelper {
 						forgeToSrg.put(forge, srg);					
 					}
 				}
-			}		
-			return srgToForge.size() > 0 && forgeToSrg.size() > 0;		
+			}	
+
+			if (mObInitMap.size() > 0) {
+				for (Pair<String, String> p : mObInitMap) {
+					if (p != null) {
+						String ob = p.getKey();
+						String deOb = p.getValue();
+						obToDeOb.put(ob, deOb);
+						deObToOb.put(deOb, ob);					
+					}
+				}
+			}	
+			return srgToForge.size() > 0 && forgeToSrg.size() > 0 && obToDeOb.size() > 0 && deObToOb.size() > 0;		
 		}
 
 		private static void init1() {
@@ -4966,6 +4990,2050 @@ public class DevHelper {
 			mInitMap.put(new Pair<String, String>("func_98300_b", "setSeeFriendlyInvisiblesEnabled")); 
 			mInitMap.put(new Pair<String, String>("func_98306_d", "readGlyphSizes")); 
 			mInitMap.put(new Pair<String, String>("func_99999_d", "run"));		
+		}
+
+		public void init4() {
+			mObInitMap.put(new Pair<String, String>("aqc", "net/minecraft/world/chunk/storage/IChunkLoader"));
+			mObInitMap.put(new Pair<String, String>("amd", "net/minecraft/block/BlockMycelium"));
+			mObInitMap.put(new Pair<String, String>("aag", "net/minecraft/inventory/ContainerEnchantment"));
+			mObInitMap.put(new Pair<String, String>("aie", "net/minecraft/world/biome/WorldChunkManagerHell"));
+			mObInitMap.put(new Pair<String, String>("aub",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$DesertPyramid"));
+			mObInitMap.put(new Pair<String, String>("bue", "net/minecraft/client/stream/ChatController"));
+			mObInitMap.put(new Pair<String, String>("bqf", "net/minecraft/client/renderer/texture/TextureManager"));
+			mObInitMap.put(new Pair<String, String>("bei", "net/minecraft/client/gui/achievement/GuiAchievements"));
+			mObInitMap.put(new Pair<String, String>("bih", "net/minecraft/client/model/ModelSquid"));
+			mObInitMap.put(new Pair<String, String>("bmg", "net/minecraft/client/shader/Framebuffer"));
+			mObInitMap.put(new Pair<String, String>("na", "net/minecraft/client/network/NetHandlerHandshakeMemory"));
+			mObInitMap
+					.put(new Pair<String, String>("jb", "net/minecraft/network/play/client/C02PacketUseEntity$Action"));
+			mObInitMap.put(new Pair<String, String>("fc", "net/minecraft/util/MessageDeserializer2"));
+			mObInitMap.put(new Pair<String, String>("bd", "net/minecraft/command/server/CommandPardonIp"));
+			mObInitMap.put(new Pair<String, String>("amw", "net/minecraft/block/BlockPumpkin"));
+			mObInitMap.put(new Pair<String, String>("aey", "net/minecraft/item/crafting/RecipeFireworks"));
+			mObInitMap.put(new Pair<String, String>("aaz", "net/minecraft/inventory/ContainerDispenser"));
+			mObInitMap.put(new Pair<String, String>("aix", "net/minecraft/world/biome/BiomeGenEnd"));
+			mObInitMap.put(new Pair<String, String>("z", "net/minecraft/command/CommandHandler"));
+			mObInitMap.put(new Pair<String, String>("bqy", "net/minecraft/client/resources/IResourceManager"));
+			mObInitMap.put(new Pair<String, String>("nt", "net/minecraft/server/management/PlayerProfileCache$1"));
+			mObInitMap.put(new Pair<String, String>("ju", "net/minecraft/network/login/server/S00PacketDisconnect"));
+			mObInitMap.put(new Pair<String, String>("fv", "net/minecraft/network/play/INetHandlerPlayClient"));
+			mObInitMap.put(new Pair<String, String>("abn", "net/minecraft/item/ItemSoup"));
+			mObInitMap.put(new Pair<String, String>("afm", "net/minecraft/enchantment/EnchantmentArrowDamage"));
+			mObInitMap.put(new Pair<String, String>("brm", "net/minecraft/client/resources/SkinManager$3"));
+			mObInitMap.put(new Pair<String, String>("aqu", "net/minecraft/world/gen/ChunkProviderFlat"));
+			mObInitMap.put(new Pair<String, String>("aut",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Prison"));
+			mObInitMap.put(new Pair<String, String>("ays", "net/minecraft/world/storage/WorldInfo"));
+			mObInitMap.put(new Pair<String, String>("bbq", "net/minecraft/util/MinecraftError"));
+			mObInitMap.put(new Pair<String, String>("bfp", "net/minecraft/util/EnchantmentNameParts"));
+			mObInitMap.put(
+					new Pair<String, String>("bjo", "net/minecraft/client/multiplayer/ServerData$ServerResourceMode"));
+			mObInitMap.put(new Pair<String, String>("bnn", "net/minecraft/client/renderer/entity/RenderManager"));
+			mObInitMap.put(new Pair<String, String>("ck", "net/minecraft/dispenser/IBlockSource"));
+			mObInitMap.put(new Pair<String, String>("zp", "net/minecraft/entity/projectile/EntityWitherSkull"));
+			mObInitMap.put(
+					new Pair<String, String>("vq", "net/minecraft/entity/ai/EntityAINearestAttackableTarget$Sorter"));
+			mObInitMap.put(new Pair<String, String>("rr", "net/minecraft/potion/PotionAbsoption"));
+			mObInitMap.put(new Pair<String, String>("ns", "net/minecraft/server/management/PlayerProfileCache"));
+			mObInitMap.put(new Pair<String, String>("anj", "net/minecraft/block/BlockSapling"));
+			mObInitMap.put(new Pair<String, String>("afl", "net/minecraft/item/crafting/RecipesWeapons"));
+			mObInitMap.put(new Pair<String, String>("ajk", "net/minecraft/block/Block$2"));
+			mObInitMap.put(new Pair<String, String>("avh", "net/minecraft/world/gen/structure/MapGenStructure$3"));
+			mObInitMap.put(new Pair<String, String>("bce", "net/minecraft/client/gui/GuiLabel"));
+			mObInitMap.put(new Pair<String, String>("bgd", "net/minecraft/client/gui/ServerListEntryNormal$1"));
+			mObInitMap.put(new Pair<String, String>("brl", "net/minecraft/client/resources/SkinManager$2"));
+			mObInitMap.put(new Pair<String, String>("we", "net/minecraft/entity/passive/EntityBat"));
+			mObInitMap.put(new Pair<String, String>("og", "net/minecraft/server/management/PreYggdrasilConverter$7"));
+			mObInitMap.put(new Pair<String, String>("kh", "net/minecraft/network/status/INetHandlerStatusServer"));
+			mObInitMap.put(new Pair<String, String>("gi", "net/minecraft/network/play/server/S3APacketTabComplete"));
+			mObInitMap.put(new Pair<String, String>("aca", "net/minecraft/creativetab/CreativeTabs$4"));
+			mObInitMap.put(new Pair<String, String>("azz", "net/minecraft/scoreboard/Score"));
+			mObInitMap.put(new Pair<String, String>("bgc", "net/minecraft/client/gui/ServerListEntryNormal"));
+			mObInitMap.put(new Pair<String, String>("boa", "net/minecraft/client/renderer/entity/RenderItem$2"));
+			mObInitMap.put(new Pair<String, String>("wx", "net/minecraft/entity/IEntityMultiPart"));
+			mObInitMap.put(new Pair<String, String>("sy", "net/minecraft/entity/IEntityLivingData"));
+			mObInitMap.put(new Pair<String, String>("oz", "net/minecraft/network/rcon/RConThreadClient"));
+			mObInitMap.put(new Pair<String, String>("aoq", "net/minecraft/tileentity/TileEntityBeacon"));
+			mObInitMap.put(new Pair<String, String>("akr", "net/minecraft/block/BlockDynamicLiquid"));
+			mObInitMap.put(new Pair<String, String>("act", "net/minecraft/item/ItemFishFood"));
+			mObInitMap.put(new Pair<String, String>("ags", "net/minecraft/block/BlockEventData"));
+			mObInitMap.put(new Pair<String, String>("bss", "net/minecraft/client/audio/SoundListSerializer"));
+			mObInitMap.put(new Pair<String, String>("bot", "net/minecraft/client/renderer/entity/RenderSlime"));
+			mObInitMap.put(new Pair<String, String>("azy", "net/minecraft/scoreboard/ScorePlayerTeam"));
+			mObInitMap.put(new Pair<String, String>("bcw", "net/minecraft/client/gui/GuiYesNo"));
+			mObInitMap.put(new Pair<String, String>("bgv", "net/minecraft/client/main/Main$2"));
+			mObInitMap.put(new Pair<String, String>("bku", "net/minecraft/client/particle/EntityReddustFX"));
+			mObInitMap.put(new Pair<String, String>("pn", "net/minecraft/util/TupleIntJsonSerializable"));
+			mObInitMap.put(new Pair<String, String>("lo", "net/minecraft/network/rcon/IServer"));
+			mObInitMap.put(new Pair<String, String>("hp", "net/minecraft/network/play/server/S0APacketUseBed"));
+			mObInitMap.put(new Pair<String, String>("dq", "net/minecraft/nbt/NBTTagList"));
+			mObInitMap.put(new Pair<String, String>("adh", "net/minecraft/item/ItemMap"));
+			mObInitMap.put(new Pair<String, String>("bph", "net/minecraft/client/shader/ShaderDefault"));
+			mObInitMap.put(new Pair<String, String>("aso", "net/minecraft/world/gen/feature/WorldGenSwamp"));
+			mObInitMap.put(new Pair<String, String>("aop", "net/minecraft/block/BlockCarpet"));
+			mObInitMap.put(new Pair<String, String>("bdk", "net/minecraft/client/gui/GuiLanguage$List"));
+			mObInitMap.put(new Pair<String, String>("bhj", "net/minecraft/client/model/ModelCreeper"));
+			mObInitMap.put(new Pair<String, String>("bli", "net/minecraft/util/MovementInput"));
+			mObInitMap.put(new Pair<String, String>("ee", "net/minecraft/nbt/JsonToNBT$List"));
+			mObInitMap.put(new Pair<String, String>("af", "net/minecraft/command/server/CommandBanIp"));
+			mObInitMap.put(new Pair<String, String>("xk", "net/minecraft/entity/item/EntityItem"));
+			mObInitMap.put(new Pair<String, String>("tl", "net/minecraft/entity/ai/attributes/BaseAttributeMap"));
+			mObInitMap.put(new Pair<String, String>("pm", "net/minecraft/stats/IStatType"));
+			mObInitMap
+					.put(new Pair<String, String>("atc", "net/minecraft/world/gen/structure/StructureMineshaftStart"));
+			mObInitMap.put(new Pair<String, String>("apd", "net/minecraft/tileentity/TileEntityEnchantmentTable"));
+			mObInitMap.put(new Pair<String, String>("ale", "net/minecraft/block/BlockFurnace"));
+			mObInitMap.put(new Pair<String, String>("adg", "net/minecraft/item/ItemLeaves"));
+			mObInitMap.put(new Pair<String, String>("ahf", "net/minecraft/world/World$4"));
+			mObInitMap.put(new Pair<String, String>("axb", "net/minecraft/world/gen/layer/GenLayerAddIsland"));
+			mObInitMap.put(new Pair<String, String>("bpg", "net/minecraft/client/util/JsonBlendingMode"));
+			mObInitMap
+					.put(new Pair<String, String>("net/minecraft/realms/RealmsMth", "net/minecraft/realms/RealmsMth"));
+			mObInitMap.put(new Pair<String, String>("qa", "net/minecraft/util/IntHashMap$Entry"));
+			mObInitMap.put(new Pair<String, String>("mb", "net/minecraft/server/gui/MinecraftServerGui$3"));
+			mObInitMap.put(
+					new Pair<String, String>("ic", "net/minecraft/network/play/server/S3BPacketScoreboardObjective"));
+			mObInitMap.put(new Pair<String, String>("ed", "net/minecraft/nbt/JsonToNBT$Compound"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RendererUtility",
+					"net/minecraft/realms/RendererUtility"));
+			mObInitMap.put(new Pair<String, String>("atv",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Stairs"));
+			mObInitMap.put(new Pair<String, String>("apw", "net/minecraft/world/chunk/EmptyChunk"));
+			mObInitMap.put(new Pair<String, String>("alx", "net/minecraft/block/BlockLog"));
+			mObInitMap.put(new Pair<String, String>("adz", "net/minecraft/item/ItemSign"));
+			mObInitMap.put(new Pair<String, String>("ahy", "net/minecraft/world/biome/BiomeCache"));
+			mObInitMap.put(new Pair<String, String>("axu", "net/minecraft/world/gen/layer/GenLayerRiver"));
+			mObInitMap.put(new Pair<String, String>("bpz", "net/minecraft/client/renderer/texture/TextureMap"));
+			mObInitMap.put(new Pair<String, String>("yr", "net/minecraft/entity/monster/EntityZombie$1"));
+			mObInitMap.put(new Pair<String, String>("us", "net/minecraft/entity/ai/EntityAIMoveThroughVillage"));
+			mObInitMap.put(new Pair<String, String>("mu", "net/minecraft/world/WorldServer$1"));
+			mObInitMap.put(
+					new Pair<String, String>("iv", "net/minecraft/network/play/client/C0FPacketConfirmTransaction"));
+			mObInitMap.put(new Pair<String, String>("ew", "net/minecraft/network/NetworkStatistics$PacketStat"));
+			mObInitMap.put(new Pair<String, String>("ax", "net/minecraft/command/server/CommandListBans"));
+			mObInitMap.put(
+					new Pair<String, String>("net/minecraft/realms/ServerPing", "net/minecraft/realms/ServerPing"));
+			mObInitMap.put(new Pair<String, String>("aqk", "net/minecraft/world/chunk/storage/AnvilChunkLoader"));
+			mObInitMap.put(new Pair<String, String>("aml", "net/minecraft/block/BlockOldLeaf"));
+			mObInitMap.put(new Pair<String, String>("aen", "net/minecraft/potion/PotionHelper"));
+			mObInitMap.put(new Pair<String, String>("aao", "net/minecraft/inventory/ContainerHorseInventory$2"));
+			mObInitMap.put(new Pair<String, String>("aim", "net/minecraft/world/biome/BiomeGenMushroomIsland"));
+			mObInitMap.put(new Pair<String, String>("o", "net/minecraft/crash/CrashReportCategory$Entry"));
+			mObInitMap.put(new Pair<String, String>("bum", "net/minecraft/client/stream/IStream"));
+			mObInitMap.put(new Pair<String, String>("bqn", "net/minecraft/client/resources/AbstractResourcePack"));
+			mObInitMap.put(new Pair<String, String>("bar", "net/minecraft/client/Minecraft$11"));
+			mObInitMap.put(new Pair<String, String>("beq", "net/minecraft/client/gui/achievement/GuiStats$Stats"));
+			mObInitMap.put(new Pair<String, String>("bip", "net/minecraft/client/model/ModelZombie"));
+			mObInitMap.put(new Pair<String, String>("bmo",
+					"net/minecraft/client/renderer/tileentity/TileEntityEnderChestRenderer"));
+			mObInitMap.put(new Pair<String, String>("ni", "net/minecraft/network/NetHandlerPlayServer$1"));
+			mObInitMap.put(new Pair<String, String>("jj", "net/minecraft/network/play/client/C0BPacketEntityAction"));
+			mObInitMap.put(new Pair<String, String>("fk", "net/minecraft/util/IChatComponent$Serializer"));
+			mObInitMap.put(new Pair<String, String>("bl", "net/minecraft/command/ServerCommandManager"));
+			mObInitMap.put(new Pair<String, String>("yq", "net/minecraft/entity/monster/EntityZombie"));
+			mObInitMap.put(new Pair<String, String>("abc", "net/minecraft/item/ItemArmor$1"));
+			mObInitMap.put(new Pair<String, String>("afb", "net/minecraft/item/crafting/RecipesMapCloning"));
+			mObInitMap.put(new Pair<String, String>("brb",
+					"net/minecraft/client/resources/ResourcePackFileNotFoundException"));
+			mObInitMap.put(new Pair<String, String>("aqj", "net/minecraft/world/chunk/storage/RegionFileCache"));
+			mObInitMap.put(
+					new Pair<String, String>("aui", "net/minecraft/world/gen/structure/StructureStrongholdPieces"));
+			mObInitMap.put(new Pair<String, String>("bbf", "net/minecraft/client/Minecraft$9"));
+			mObInitMap.put(new Pair<String, String>("bfe", "net/minecraft/client/gui/GuiScreenBook"));
+			mObInitMap.put(new Pair<String, String>("bjd", "net/minecraft/client/multiplayer/ChunkProviderClient"));
+			mObInitMap.put(new Pair<String, String>("bnc", "net/minecraft/client/renderer/entity/RenderBat"));
+			mObInitMap.put(new Pair<String, String>("ze", "net/minecraft/entity/projectile/EntityFireball"));
+			mObInitMap.put(new Pair<String, String>("vf", "net/minecraft/entity/ai/EntityAIRestrictSun"));
+			mObInitMap.put(new Pair<String, String>("rg", "net/minecraft/client/renderer/texture/IIconRegister"));
+			mObInitMap.put(new Pair<String, String>("afa", "net/minecraft/item/crafting/FurnaceRecipes"));
+			mObInitMap.put(new Pair<String, String>("bby", "net/minecraft/client/gui/MapItemRenderer$1"));
+			mObInitMap.put(new Pair<String, String>("bfx", "net/minecraft/client/gui/inventory/GuiEditSign"));
+			mObInitMap.put(new Pair<String, String>("bra", "net/minecraft/client/resources/IResourcePack"));
+			mObInitMap.put(new Pair<String, String>("zx", "net/minecraft/inventory/ContainerBeacon"));
+			mObInitMap.put(new Pair<String, String>("vy", "net/minecraft/village/VillageDoorInfo"));
+			mObInitMap.put(new Pair<String, String>("arq", "net/minecraft/world/gen/feature/WorldGenFire"));
+			mObInitMap.put(new Pair<String, String>("anr", "net/minecraft/block/BlockStainedGlassPane"));
+			mObInitMap.put(new Pair<String, String>("abu", "net/minecraft/creativetab/CreativeTabs$1"));
+			mObInitMap.put(new Pair<String, String>("aft", "net/minecraft/enchantment/Enchantment"));
+			mObInitMap.put(new Pair<String, String>("ajs", "net/minecraft/block/BlockButton"));
+			mObInitMap.put(new Pair<String, String>("avp", "net/minecraft/world/gen/structure/StructureVillagePieces"));
+			mObInitMap.put(new Pair<String, String>("azo", "net/minecraft/world/storage/SaveHandlerMP"));
+			mObInitMap.put(new Pair<String, String>("brt",
+					"net/minecraft/client/resources/data/BaseMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("bfw", "net/minecraft/client/gui/GuiMerchant$MerchantButton"));
+			mObInitMap.put(new Pair<String, String>("bjv", "net/minecraft/client/particle/EntityBubbleFX"));
+			mObInitMap.put(new Pair<String, String>("bnu", "net/minecraft/client/renderer/entity/RenderGiantZombie"));
+			mObInitMap.put(new Pair<String, String>("wm", "net/minecraft/entity/passive/EntityMooshroom"));
+			mObInitMap.put(new Pair<String, String>("oo", "net/minecraft/server/management/UserList$Serializer"));
+			mObInitMap.put(new Pair<String, String>("kp", "net/minecraft/init/Bootstrap$12"));
+			mObInitMap.put(new Pair<String, String>("gq", "net/minecraft/network/play/server/S2FPacketSetSlot"));
+			mObInitMap.put(new Pair<String, String>("cr", "net/minecraft/util/EnumFacing"));
+			mObInitMap.put(new Pair<String, String>("aof", "net/minecraft/block/BlockTripWire"));
+			mObInitMap.put(new Pair<String, String>("akg", "net/minecraft/block/BlockDaylightDetector"));
+			mObInitMap.put(new Pair<String, String>("aci", "net/minecraft/item/ItemDoublePlant"));
+			mObInitMap.put(new Pair<String, String>("agh", "net/minecraft/enchantment/EnchantmentOxygen"));
+			mObInitMap.put(new Pair<String, String>("bsh",
+					"net/minecraft/client/resources/data/PackMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("bcl", "net/minecraft/client/gui/GuiOptionsRowList$Row"));
+			mObInitMap.put(new Pair<String, String>("bgk", "net/minecraft/client/gui/GuiResourcePackList"));
+			mObInitMap.put(new Pair<String, String>("bkj", "net/minecraft/client/particle/EntityHugeExplodeFX"));
+			mObInitMap.put(new Pair<String, String>("boi", "net/minecraft/client/renderer/entity/RenderMinecart"));
+			mObInitMap.put(new Pair<String, String>("pc", "net/minecraft/stats/AchievementList"));
+			mObInitMap.put(new Pair<String, String>("ld", "net/minecraft/client/util/JsonException$Entry"));
+			mObInitMap.put(new Pair<String, String>("he", "net/minecraft/network/play/server/S34PacketMaps"));
+			mObInitMap.put(new Pair<String, String>("df", "net/minecraft/nbt/NBTTagByteArray"));
+			mObInitMap.put(new Pair<String, String>("asd", "net/minecraft/world/gen/feature/WorldGenDungeons"));
+			mObInitMap.put(
+					new Pair<String, String>("awc", "net/minecraft/world/gen/structure/StructureVillagePieces$House3"));
+			mObInitMap.put(new Pair<String, String>("dy", "net/minecraft/nbt/NBTBase"));
+			mObInitMap.put(new Pair<String, String>("ta", "net/minecraft/entity/IEntityOwnable"));
+			mObInitMap.put(new Pair<String, String>("pb", "net/minecraft/stats/Achievement"));
+			mObInitMap.put(new Pair<String, String>("asw", "net/minecraft/world/gen/structure/MapGenMineshaft"));
+			mObInitMap.put(new Pair<String, String>("aox", "net/minecraft/tileentity/TileEntityCommandBlock"));
+			mObInitMap.put(new Pair<String, String>("aky", "net/minecraft/block/BlockFarmland"));
+			mObInitMap.put(new Pair<String, String>("agz", "net/minecraft/world/GameRules$Value"));
+			mObInitMap.put(new Pair<String, String>("awv", "net/minecraft/block/material/MapColor"));
+			mObInitMap.put(new Pair<String, String>("bds", "net/minecraft/client/gui/GuiFlatPresets$ListSlot"));
+			mObInitMap.put(new Pair<String, String>("bhr", "net/minecraft/client/model/ModelBase"));
+			mObInitMap.put(new Pair<String, String>("bsz", "net/minecraft/server/integrated/IntegratedServer$2"));
+			mObInitMap.put(new Pair<String, String>("xs", "net/minecraft/entity/item/EntityMinecartEmpty"));
+			mObInitMap.put(new Pair<String, String>("tt", "net/minecraft/entity/ai/EntityJumpHelper"));
+			mObInitMap.put(new Pair<String, String>("pu", "net/minecraft/util/JsonUtils"));
+			mObInitMap.put(new Pair<String, String>("lv", "net/minecraft/server/dedicated/DedicatedServer$2"));
+			mObInitMap.put(new Pair<String, String>("hw", "net/minecraft/network/play/server/S1CPacketEntityMetadata"));
+			mObInitMap.put(new Pair<String, String>("dx", "net/minecraft/nbt/NBTTagString"));
+			mObInitMap.put(new Pair<String, String>("atk",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor4"));
+			mObInitMap.put(new Pair<String, String>("apl", "net/minecraft/tileentity/TileEntityNote"));
+			mObInitMap.put(new Pair<String, String>("alm", "net/minecraft/block/BlockHay"));
+			mObInitMap.put(new Pair<String, String>("ado", "net/minecraft/item/ItemPiston"));
+			mObInitMap.put(new Pair<String, String>("ahn", "net/minecraft/world/EnumSkyBlock"));
+			mObInitMap.put(new Pair<String, String>("axj", "net/minecraft/world/gen/layer/GenLayerFuzzyZoom"));
+			mObInitMap.put(new Pair<String, String>("btn",
+					"net/minecraft/client/audio/SoundManager$SoundSystemStarterThread"));
+			mObInitMap.put(new Pair<String, String>("bpo", "net/minecraft/client/shader/ShaderUniform"));
+			mObInitMap.put(new Pair<String, String>("bhq", "net/minecraft/client/model/ModelMinecart"));
+			mObInitMap.put(new Pair<String, String>("blp", "net/minecraft/client/renderer/RenderSorter"));
+			mObInitMap.put(new Pair<String, String>("yg", "net/minecraft/entity/monster/EntityMob"));
+			mObInitMap.put(new Pair<String, String>("uh", "net/minecraft/entity/ai/EntityAIFollowParent"));
+			mObInitMap.put(new Pair<String, String>("qi", "net/minecraft/profiler/Profiler"));
+			mObInitMap.put(new Pair<String, String>("mj", "net/minecraft/client/renderer/DestroyBlockProgress"));
+			mObInitMap.put(new Pair<String, String>("ik", "net/minecraft/network/play/server/S18PacketEntityTeleport"));
+			mObInitMap.put(new Pair<String, String>("el", "net/minecraft/network/NetworkManager$2"));
+			mObInitMap.put(new Pair<String, String>("am", "net/minecraft/command/CommandEffect"));
+			mObInitMap.put(new Pair<String, String>("ama", "net/minecraft/block/BlockMobSpawner"));
+			mObInitMap.put(new Pair<String, String>("aec", "net/minecraft/item/ItemSnow"));
+			mObInitMap.put(new Pair<String, String>("aad", "net/minecraft/inventory/ContainerChest"));
+			mObInitMap.put(new Pair<String, String>("aib", "net/minecraft/world/biome/WorldChunkManager"));
+			mObInitMap.put(new Pair<String, String>("d", "net/minecraft/crash/CrashReport$2"));
+			mObInitMap.put(new Pair<String, String>("bub",
+					"net/minecraft/client/stream/BroadcastController$SwitchBroadcastState"));
+			mObInitMap.put(new Pair<String, String>("bqc", "net/minecraft/client/renderer/texture/TextureMap$3"));
+			mObInitMap.put(new Pair<String, String>("bag", "net/minecraft/scoreboard/ScoreHealthCriteria"));
+			mObInitMap.put(new Pair<String, String>("bef", "net/minecraft/client/gui/GuiVideoSettings"));
+			mObInitMap.put(new Pair<String, String>("bie", "net/minecraft/client/model/ModelSlime"));
+			mObInitMap.put(new Pair<String, String>("bmd", "net/minecraft/client/renderer/RenderList"));
+			mObInitMap.put(new Pair<String, String>("ba", "net/minecraft/command/server/CommandMessageRaw"));
+			mObInitMap.put(new Pair<String, String>("aev", "net/minecraft/item/crafting/RecipesArmor"));
+			mObInitMap.put(new Pair<String, String>("aaw", "net/minecraft/inventory/InventoryCraftResult"));
+			mObInitMap.put(new Pair<String, String>("w", "net/minecraft/client/audio/SoundCategory"));
+			mObInitMap
+					.put(new Pair<String, String>("bqv", "net/minecraft/client/resources/IReloadableResourceManager"));
+			mObInitMap.put(new Pair<String, String>("baz", "net/minecraft/client/Minecraft$3"));
+			mObInitMap.put(new Pair<String, String>("bey", "net/minecraft/client/gui/GuiRepair"));
+			mObInitMap.put(new Pair<String, String>("bix", "net/minecraft/client/model/ModelRenderer"));
+			mObInitMap.put(new Pair<String, String>("bmw", "net/minecraft/client/renderer/culling/ClippingHelperImpl"));
+			mObInitMap
+					.put(new Pair<String, String>("fs", "net/minecraft/util/ChatComponentTranslationFormatException"));
+			mObInitMap.put(new Pair<String, String>("bt", "net/minecraft/command/server/CommandStop"));
+			mObInitMap.put(new Pair<String, String>("yy", "net/minecraft/entity/player/InventoryPlayer$1"));
+			mObInitMap.put(new Pair<String, String>("uz", "net/minecraft/entity/ai/EntityAIPanic"));
+			mObInitMap.put(new Pair<String, String>("aqr", "net/minecraft/world/WorldProviderEnd"));
+			mObInitMap.put(new Pair<String, String>("ams", "net/minecraft/block/BlockCompressedPowered"));
+			mObInitMap.put(new Pair<String, String>("aeu", "net/minecraft/item/crafting/RecipesArmorDyes"));
+			mObInitMap.put(new Pair<String, String>("ait", "net/minecraft/world/biome/BiomeGenSavanna$Mutated"));
+			mObInitMap.put(new Pair<String, String>("auq",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Library"));
+			mObInitMap.put(new Pair<String, String>("ayp", "net/minecraft/world/storage/DerivedWorldInfo"));
+			mObInitMap.put(new Pair<String, String>("bbn", "net/minecraft/client/settings/GameSettings$Options$1"));
+			mObInitMap.put(new Pair<String, String>("bfm",
+					"net/minecraft/client/gui/inventory/GuiContainerCreative$ContainerCreative"));
+			mObInitMap.put(new Pair<String, String>("but", "net/minecraft/realms/RealmsServerStatusPinger$1"));
+			mObInitMap.put(new Pair<String, String>("bqu", "net/minecraft/client/resources/GrassColorReloadListener"));
+			mObInitMap.put(new Pair<String, String>("zm", "net/minecraft/entity/item/EntityEnderPearl"));
+			mObInitMap.put(new Pair<String, String>("vn", "net/minecraft/entity/ai/EntityAIHurtByTarget"));
+			mObInitMap.put(new Pair<String, String>("ro", "net/minecraft/util/DamageSource"));
+			mObInitMap.put(
+					new Pair<String, String>("np", "net/minecraft/server/network/NetHandlerLoginServer$LoginState"));
+			mObInitMap
+					.put(new Pair<String, String>("jq", "net/minecraft/network/handshake/INetHandlerHandshakeServer"));
+			mObInitMap.put(new Pair<String, String>("fr", "net/minecraft/util/ChatComponentTranslation"));
+			mObInitMap.put(new Pair<String, String>("arf", "net/minecraft/world/gen/feature/WorldGenBlockBlob"));
+			mObInitMap.put(new Pair<String, String>("ang", "net/minecraft/block/BlockRotatedPillar"));
+			mObInitMap.put(new Pair<String, String>("abj", "net/minecraft/item/ItemBoat"));
+			mObInitMap.put(new Pair<String, String>("afi", "net/minecraft/item/crafting/ShapelessRecipes"));
+			mObInitMap.put(new Pair<String, String>("ajh", "net/minecraft/block/BlockBed"));
+			mObInitMap.put(new Pair<String, String>("ave", "net/minecraft/world/gen/structure/MapGenStructure"));
+			mObInitMap.put(new Pair<String, String>("azd", "net/minecraft/client/AnvilConverterException"));
+			mObInitMap
+					.put(new Pair<String, String>("net/minecraft/client/main/Main", "net/minecraft/client/main/Main"));
+			mObInitMap.put(new Pair<String, String>("bri", "net/minecraft/client/resources/SimpleResource"));
+			mObInitMap.put(new Pair<String, String>("bfl", "net/minecraft/client/gui/inventory/GuiContainerCreative"));
+			mObInitMap.put(new Pair<String, String>("bjk", "net/minecraft/client/entity/EntityClientPlayerMP"));
+			mObInitMap.put(new Pair<String, String>("bnj", "net/minecraft/client/renderer/entity/RenderEntity"));
+			mObInitMap.put(new Pair<String, String>("wb", "net/minecraft/village/VillageSiege"));
+			mObInitMap.put(new Pair<String, String>("sc", "net/minecraft/entity/Entity$2"));
+			mObInitMap.put(new Pair<String, String>("od", "net/minecraft/server/management/PreYggdrasilConverter$4"));
+			mObInitMap.put(new Pair<String, String>("ke", "net/minecraft/network/ServerStatusResponse$Serializer"));
+			mObInitMap
+					.put(new Pair<String, String>("gf", "net/minecraft/network/play/server/S35PacketUpdateTileEntity"));
+			mObInitMap.put(new Pair<String, String>("cg", "net/minecraft/command/PlayerNotFoundException"));
+			mObInitMap.put(new Pair<String, String>("ary", "net/minecraft/world/gen/feature/WorldGenGlowStone1"));
+			mObInitMap.put(new Pair<String, String>("anz", "net/minecraft/block/BlockTallGrass"));
+			mObInitMap.put(new Pair<String, String>("bca", "net/minecraft/client/gui/ScaledResolution"));
+			mObInitMap.put(new Pair<String, String>("ow", "net/minecraft/network/rcon/RConThreadBase"));
+			mObInitMap.put(new Pair<String, String>("kx", "net/minecraft/init/Bootstrap$6"));
+			mObInitMap.put(
+					new Pair<String, String>("gy", "net/minecraft/network/play/server/S21PacketChunkData$Extracted"));
+			mObInitMap.put(new Pair<String, String>("cz", "net/minecraft/util/IRegistry"));
+			mObInitMap.put(new Pair<String, String>("acq", "net/minecraft/item/ItemFireball"));
+			mObInitMap.put(new Pair<String, String>("agp", "net/minecraft/command/server/CommandBlockLogic"));
+			mObInitMap.put(new Pair<String, String>("bsp", "net/minecraft/client/audio/SoundList"));
+			mObInitMap.put(new Pair<String, String>("boq", "net/minecraft/client/renderer/entity/RenderSheep"));
+			mObInitMap.put(new Pair<String, String>("arx", "net/minecraft/world/gen/feature/WorldGenLakes"));
+			mObInitMap.put(new Pair<String, String>("avw",
+					"net/minecraft/world/gen/structure/StructureVillagePieces$House4Garden"));
+			mObInitMap.put(new Pair<String, String>("azv", "net/minecraft/util/MovingObjectPosition$MovingObjectType"));
+			mObInitMap.put(new Pair<String, String>("bct", "net/minecraft/client/gui/GuiChat"));
+			mObInitMap.put(new Pair<String, String>("bgs", "net/minecraft/client/gui/stream/GuiTwitchUserMode"));
+			mObInitMap.put(new Pair<String, String>("bkr", "net/minecraft/client/particle/EffectRenderer$4"));
+			mObInitMap.put(new Pair<String, String>("dn", "net/minecraft/nbt/NBTTagIntArray"));
+			mObInitMap.put(new Pair<String, String>("wt", "net/minecraft/entity/monster/EntityIronGolem"));
+			mObInitMap.put(new Pair<String, String>("su", "net/minecraft/entity/EntityLeashKnot"));
+			mObInitMap.put(new Pair<String, String>("asl", "net/minecraft/world/gen/feature/WorldGenSpikes"));
+			mObInitMap.put(new Pair<String, String>("aom", "net/minecraft/block/BlockWood"));
+			mObInitMap.put(new Pair<String, String>("akn", "net/minecraft/block/BlockDoor"));
+			mObInitMap.put(new Pair<String, String>("ago", "net/minecraft/village/MerchantRecipeList"));
+			mObInitMap.put(new Pair<String, String>("awk", "net/minecraft/world/gen/NoiseGeneratorOctaves"));
+			mObInitMap.put(new Pair<String, String>("bdh", "net/minecraft/client/gui/GuiErrorScreen"));
+			mObInitMap.put(new Pair<String, String>("bhg", "net/minecraft/client/model/ModelChest"));
+			mObInitMap.put(new Pair<String, String>("bso", "net/minecraft/client/audio/PositionedSoundRecord"));
+			mObInitMap.put(new Pair<String, String>("xh", "net/minecraft/entity/effect/EntityLightningBolt"));
+			mObInitMap.put(new Pair<String, String>("ti", "net/minecraft/entity/ai/attributes/IAttributeInstance"));
+			mObInitMap.put(new Pair<String, String>("pj", "net/minecraft/stats/StatBase$2"));
+			mObInitMap.put(new Pair<String, String>("lk", "net/minecraft/server/MinecraftServer$4"));
+			mObInitMap.put(new Pair<String, String>("apa", "net/minecraft/tileentity/TileEntityDaylightDetector"));
+			mObInitMap.put(new Pair<String, String>("alb", "net/minecraft/block/BlockFire"));
+			mObInitMap.put(new Pair<String, String>("add", "net/minecraft/item/ItemStack"));
+			mObInitMap.put(new Pair<String, String>("ahc", "net/minecraft/world/World$1"));
+			mObInitMap.put(new Pair<String, String>("btc",
+					"net/minecraft/client/network/LanServerDetector$ThreadLanServerFind"));
+			mObInitMap
+					.put(new Pair<String, String>("bpd", "net/minecraft/client/renderer/tileentity/RenderWitherSkull"));
+			mObInitMap.put(new Pair<String, String>("bhf", "net/minecraft/client/model/ModelBook"));
+			mObInitMap.put(new Pair<String, String>("ble", "net/minecraft/client/particle/EntityFishWakeFX"));
+			mObInitMap.put(new Pair<String, String>("ea", "net/minecraft/nbt/NBTException"));
+			mObInitMap.put(new Pair<String, String>("ab", "net/minecraft/command/ICommandManager"));
+			mObInitMap.put(new Pair<String, String>("adw", "net/minecraft/item/ItemSeeds"));
+			mObInitMap.put(new Pair<String, String>("ahv", "net/minecraft/world/biome/BiomeGenBase$Height"));
+			mObInitMap.put(new Pair<String, String>("btv", "net/minecraft/client/audio/SoundEventAccessor"));
+			mObInitMap.put(new Pair<String, String>("bpw", "net/minecraft/client/renderer/texture/Stitcher$Holder"));
+			mObInitMap.put(new Pair<String, String>("bdz", "net/minecraft/client/gui/GuiShareToLan"));
+			mObInitMap.put(new Pair<String, String>("bhy", "net/minecraft/client/model/ModelSheep2"));
+			mObInitMap.put(new Pair<String, String>("blx", "net/minecraft/client/renderer/IImageBuffer"));
+			mObInitMap.put(
+					new Pair<String, String>("mr", "net/minecraft/server/management/PlayerManager$PlayerInstance"));
+			mObInitMap.put(new Pair<String, String>("is", "net/minecraft/network/play/client/C16PacketClientStatus"));
+			mObInitMap.put(new Pair<String, String>("et", "net/minecraft/network/PacketBuffer"));
+			mObInitMap.put(new Pair<String, String>("au", "net/minecraft/command/CommandHelp"));
+			mObInitMap.put(new Pair<String, String>("aek", "net/minecraft/item/ItemCloth"));
+			mObInitMap.put(new Pair<String, String>("aal", "net/minecraft/inventory/ContainerHopper"));
+			mObInitMap.put(new Pair<String, String>("l", "net/minecraft/crash/CrashReportCategory$1"));
+			mObInitMap.put(
+					new Pair<String, String>("bqk", "net/minecraft/client/renderer/texture/ITickableTextureObject"));
+			mObInitMap.put(new Pair<String, String>("atr",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Throne"));
+			mObInitMap.put(new Pair<String, String>("aps", "net/minecraft/tileentity/TileEntityPiston"));
+			mObInitMap.put(new Pair<String, String>("axq", "net/minecraft/world/gen/layer/GenLayerRareBiome"));
+			mObInitMap.put(new Pair<String, String>("bao", "net/minecraft/client/Minecraft"));
+			mObInitMap.put(new Pair<String, String>("ben", "net/minecraft/client/gui/achievement/GuiStats$StatsItem"));
+			mObInitMap.put(new Pair<String, String>("bim", "net/minecraft/client/model/ModelWitch"));
+			mObInitMap.put(new Pair<String, String>("bml",
+					"net/minecraft/client/renderer/tileentity/TileEntitySpecialRenderer"));
+			mObInitMap.put(new Pair<String, String>("fh", "net/minecraft/event/ClickEvent"));
+			mObInitMap.put(new Pair<String, String>("bi", "net/minecraft/command/server/CommandSaveOff"));
+			mObInitMap.put(new Pair<String, String>("yn", "net/minecraft/entity/monster/EntitySpider"));
+			mObInitMap.put(new Pair<String, String>("uo", "net/minecraft/entity/ai/EntityAILookAtTradePlayer"));
+			mObInitMap.put(new Pair<String, String>("aqg",
+					"net/minecraft/world/chunk/storage/ChunkLoader$AnvilConverterData"));
+			mObInitMap.put(new Pair<String, String>("amh", "net/minecraft/block/BlockNewLeaf"));
+			mObInitMap.put(new Pair<String, String>("aii", "net/minecraft/world/biome/BiomeGenHell"));
+			mObInitMap.put(new Pair<String, String>("auf",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$SwampHut"));
+			mObInitMap.put(new Pair<String, String>("aye", "net/minecraft/pathfinding/PathPoint"));
+			mObInitMap.put(new Pair<String, String>("bbc", "net/minecraft/client/Minecraft$6"));
+			mObInitMap
+					.put(new Pair<String, String>("bfb", "net/minecraft/client/gui/inventory/GuiBeacon$ConfirmButton"));
+			mObInitMap.put(new Pair<String, String>("bui", "net/minecraft/client/stream/IngestServerTester"));
+			mObInitMap.put(new Pair<String, String>("bqj", "net/minecraft/client/renderer/texture/ITickable"));
+			mObInitMap
+					.put(new Pair<String, String>("zb", "net/minecraft/entity/player/EntityPlayer$EnumChatVisibility"));
+			mObInitMap.put(new Pair<String, String>("vc", "net/minecraft/entity/ai/EntityAIWander"));
+			mObInitMap.put(new Pair<String, String>("rd", "net/minecraft/world/EnumDifficulty"));
+			mObInitMap.put(new Pair<String, String>("ne", "net/minecraft/network/NetworkSystem$2"));
+			mObInitMap.put(new Pair<String, String>("jf",
+					"net/minecraft/network/play/client/C03PacketPlayer$C06PacketPlayerPosLook"));
+			mObInitMap.put(new Pair<String, String>("fg", "net/minecraft/util/ChatComponentStyle$2"));
+			mObInitMap.put(new Pair<String, String>("aqz", "net/minecraft/world/gen/ChunkProviderGenerate"));
+			mObInitMap.put(new Pair<String, String>("auy",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs"));
+			mObInitMap.put(new Pair<String, String>("ayx", "net/minecraft/world/storage/WorldInfo$5"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsSliderButton",
+					"net/minecraft/realms/RealmsSliderButton"));
+			mObInitMap.put(new Pair<String, String>("zu", "net/minecraft/inventory/ContainerRepair"));
+			mObInitMap.put(new Pair<String, String>("vv", "net/minecraft/pathfinding/PathNavigate"));
+			mObInitMap.put(new Pair<String, String>("rw", "net/minecraft/potion/PotionEffect"));
+			mObInitMap.put(new Pair<String, String>("nx", "net/minecraft/server/management/BanList"));
+			mObInitMap.put(new Pair<String, String>("jy", "net/minecraft/network/status/INetHandlerStatusClient"));
+			mObInitMap.put(new Pair<String, String>("fz", "net/minecraft/network/play/server/S0FPacketSpawnMob"));
+			mObInitMap.put(new Pair<String, String>("arn", "net/minecraft/world/gen/feature/WorldGenerator"));
+			mObInitMap.put(new Pair<String, String>("ano", "net/minecraft/block/BlockSoulSand"));
+			mObInitMap.put(new Pair<String, String>("abr", "net/minecraft/item/ItemColored"));
+			mObInitMap.put(new Pair<String, String>("afq", "net/minecraft/enchantment/EnchantmentDamage"));
+			mObInitMap.put(new Pair<String, String>("ajp", "net/minecraft/block/BlockBookshelf"));
+			mObInitMap.put(new Pair<String, String>("brq", "net/minecraft/client/resources/Language"));
+			mObInitMap.put(new Pair<String, String>("bbu", "net/minecraft/client/gui/FontRenderer"));
+			mObInitMap
+					.put(new Pair<String, String>("bft", "net/minecraft/client/gui/inventory/GuiScreenHorseInventory"));
+			mObInitMap.put(new Pair<String, String>("bjs", "net/minecraft/client/network/OldServerPinger$2"));
+			mObInitMap.put(new Pair<String, String>("bnr", "net/minecraft/client/renderer/entity/RenderFireball"));
+			mObInitMap.put(new Pair<String, String>("sk", "net/minecraft/command/IEntitySelector$1"));
+			mObInitMap.put(new Pair<String, String>("ol", "net/minecraft/server/management/UserListEntry"));
+			mObInitMap.put(new Pair<String, String>("km", "net/minecraft/init/Bootstrap$1"));
+			mObInitMap.put(new Pair<String, String>("gn", "net/minecraft/network/play/server/S2DPacketOpenWindow"));
+			mObInitMap.put(new Pair<String, String>("co", "net/minecraft/util/RegistryDefaulted"));
+			mObInitMap.put(new Pair<String, String>("acf", "net/minecraft/creativetab/CreativeTabs$9"));
+			mObInitMap.put(new Pair<String, String>("age", "net/minecraft/enchantment/EnchantmentFishingSpeed"));
+			mObInitMap.put(
+					new Pair<String, String>("bse", "net/minecraft/client/resources/data/LanguageMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("arm", "net/minecraft/world/gen/feature/WorldGenDoublePlant"));
+			mObInitMap.put(new Pair<String, String>("avl",
+					"net/minecraft/world/gen/structure/StructureComponent$BlockSelector"));
+			mObInitMap.put(new Pair<String, String>("bci", "net/minecraft/client/gui/GuiListExtended$IGuiListEntry"));
+			mObInitMap.put(
+					new Pair<String, String>("bgh", "net/minecraft/client/resources/ResourcePackListEntryDefault"));
+			mObInitMap.put(new Pair<String, String>("bkg", "net/minecraft/client/particle/EntityFootStepFX"));
+			mObInitMap.put(new Pair<String, String>("bof", "net/minecraft/client/renderer/entity/RenderLeashKnot"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/server/MinecraftServer",
+					"net/minecraft/server/MinecraftServer"));
+			mObInitMap.put(new Pair<String, String>("hb", "net/minecraft/network/play/server/S2APacketParticles"));
+			mObInitMap.put(new Pair<String, String>("wi", "net/minecraft/entity/passive/EntityHorse"));
+			mObInitMap.put(new Pair<String, String>("sj", "net/minecraft/command/IEntitySelector"));
+			mObInitMap.put(new Pair<String, String>("asa", "net/minecraft/world/gen/feature/WorldGenMegaPineTree"));
+			mObInitMap.put(new Pair<String, String>("aob", "net/minecraft/block/BlockTNT"));
+			mObInitMap.put(new Pair<String, String>("akc", "net/minecraft/block/BlockRedstoneComparator"));
+			mObInitMap.put(new Pair<String, String>("agd", "net/minecraft/enchantment/EnchantmentFireAspect"));
+			mObInitMap.put(new Pair<String, String>("bsd",
+					"net/minecraft/client/resources/data/FontMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("ha", "net/minecraft/network/play/server/S28PacketEffect"));
+			mObInitMap.put(new Pair<String, String>("ast", "net/minecraft/world/gen/FlatLayerInfo"));
+			mObInitMap.put(new Pair<String, String>("aou", "net/minecraft/tileentity/TileEntity$3"));
+			mObInitMap.put(new Pair<String, String>("akv", "net/minecraft/block/BlockEnderChest"));
+			mObInitMap.put(new Pair<String, String>("acx", "net/minecraft/item/ItemFood"));
+			mObInitMap.put(new Pair<String, String>("agw", "net/minecraft/world/Explosion"));
+			mObInitMap.put(new Pair<String, String>("aws", "net/minecraft/block/material/MaterialLiquid"));
+			mObInitMap.put(new Pair<String, String>("bsw", "net/minecraft/server/integrated/IntegratedPlayerList"));
+			mObInitMap.put(new Pair<String, String>("box", "net/minecraft/client/renderer/entity/RenderTntMinecart"));
+			mObInitMap.put(new Pair<String, String>("bky", "net/minecraft/client/particle/EntitySplashFX"));
+			mObInitMap.put(new Pair<String, String>("xp", "net/minecraft/entity/item/EntityMinecartContainer"));
+			mObInitMap.put(new Pair<String, String>("tq", "net/minecraft/entity/ai/attributes/ServersideAttributeMap"));
+			mObInitMap.put(new Pair<String, String>("pr", "net/minecraft/util/JsonSerializableSet"));
+			mObInitMap.put(new Pair<String, String>("ls", "net/minecraft/server/dedicated/DedicatedPlayerList"));
+			mObInitMap.put(new Pair<String, String>("ht", "net/minecraft/network/play/server/S19PacketEntityHeadLook"));
+			mObInitMap.put(new Pair<String, String>("du", "net/minecraft/nbt/CompressedStreamTools"));
+			mObInitMap.put(new Pair<String, String>("api", "net/minecraft/tileentity/TileEntityHopper"));
+			mObInitMap.put(new Pair<String, String>("alj", "net/minecraft/block/BlockSlab"));
+			mObInitMap.put(new Pair<String, String>("adl", "net/minecraft/item/ItemMultiTexture"));
+			mObInitMap.put(new Pair<String, String>("ahk", "net/minecraft/world/WorldSettings$GameType"));
+			mObInitMap.put(new Pair<String, String>("btk", "net/minecraft/client/audio/SoundManager$1"));
+			mObInitMap.put(new Pair<String, String>("bpl", "net/minecraft/client/shader/ShaderLoader"));
+			mObInitMap.put(new Pair<String, String>("bdo", "net/minecraft/client/gui/GuiMemoryErrorScreen"));
+			mObInitMap.put(new Pair<String, String>("bhn", "net/minecraft/client/model/ModelLargeChest"));
+			mObInitMap.put(new Pair<String, String>("blm", "net/minecraft/client/renderer/RenderBlocks"));
+			mObInitMap.put(new Pair<String, String>("qf", "net/minecraft/util/EnumTypeAdapterFactory"));
+			mObInitMap.put(new Pair<String, String>("mg", "net/minecraft/server/gui/StatsComponent$1"));
+			mObInitMap.put(new Pair<String, String>("ih", "net/minecraft/network/play/server/S03PacketTimeUpdate"));
+			mObInitMap.put(new Pair<String, String>("ei", "net/minecraft/network/NettyEncryptingEncoder"));
+			mObInitMap.put(new Pair<String, String>("aj", "net/minecraft/command/server/CommandDeOp"));
+			mObInitMap.put(new Pair<String, String>("aaa", "net/minecraft/inventory/ContainerBrewingStand$Ingredient"));
+			mObInitMap.put(new Pair<String, String>("a", "net/minecraft/util/EnumChatFormatting"));
+			mObInitMap.put(new Pair<String, String>("atg",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing3"));
+			mObInitMap.put(new Pair<String, String>("axf", "net/minecraft/world/gen/layer/GenLayerBiome"));
+			mObInitMap.put(new Pair<String, String>("bad", "net/minecraft/scoreboard/ScoreboardSaveData"));
+			mObInitMap.put(new Pair<String, String>("bec", "net/minecraft/client/gui/GuiScreenOptionsSounds"));
+			mObInitMap.put(new Pair<String, String>("bib", "net/minecraft/client/model/ModelSkeletonHead"));
+			mObInitMap.put(new Pair<String, String>("bma", "net/minecraft/client/renderer/RenderGlobal"));
+			mObInitMap.put(new Pair<String, String>("yc", "net/minecraft/entity/monster/IMob$1"));
+			mObInitMap.put(new Pair<String, String>("ud", "net/minecraft/entity/ai/EntityAIEatGrass"));
+			mObInitMap.put(new Pair<String, String>("qe", "net/minecraft/util/LongHashMap$Entry"));
+			mObInitMap.put(new Pair<String, String>("t", "net/minecraft/util/ChatAllowedCharacters"));
+			mObInitMap.put(new Pair<String, String>("atz",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces"));
+			mObInitMap.put(new Pair<String, String>("baw", "net/minecraft/client/Minecraft$16"));
+			mObInitMap.put(new Pair<String, String>("bev", "net/minecraft/client/gui/GuiKeyBindingList$KeyEntry"));
+			mObInitMap.put(new Pair<String, String>("yv", "net/minecraft/entity/passive/EntityVillager"));
+			mObInitMap.put(new Pair<String, String>("uw", "net/minecraft/entity/ai/EntityAIOcelotSit"));
+			mObInitMap.put(new Pair<String, String>("qx", "net/minecraft/util/WeightedRandomChestContent"));
+			mObInitMap.put(new Pair<String, String>("my", "net/minecraft/entity/EntityTrackerEntry"));
+			mObInitMap.put(new Pair<String, String>("iz", "net/minecraft/network/play/client/C17PacketCustomPayload"));
+			mObInitMap.put(new Pair<String, String>("aqo", "net/minecraft/world/WorldProvider"));
+			mObInitMap.put(new Pair<String, String>("amp", "net/minecraft/block/BlockPortal"));
+			mObInitMap.put(new Pair<String, String>("aas", "net/minecraft/inventory/InventoryMerchant"));
+			mObInitMap.put(new Pair<String, String>("aun",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Corridor"));
+			mObInitMap.put(new Pair<String, String>("aym", "net/minecraft/world/chunk/storage/AnvilSaveHandler"));
+			mObInitMap.put(new Pair<String, String>("buq", "net/minecraft/client/stream/TwitchStream$1$1"));
+			mObInitMap.put(new Pair<String, String>("bqr", "net/minecraft/client/resources/FileResourcePack"));
+			mObInitMap.put(new Pair<String, String>("bms",
+					"net/minecraft/client/renderer/tileentity/TileEntitySkullRenderer"));
+			mObInitMap.put(new Pair<String, String>("zj", "net/minecraft/entity/projectile/EntitySnowball"));
+			mObInitMap.put(new Pair<String, String>("vk", "net/minecraft/entity/ai/EntityAITempt"));
+			mObInitMap.put(new Pair<String, String>("rl", "net/minecraft/inventory/ISidedInventory"));
+			mObInitMap.put(new Pair<String, String>("nm",
+					"net/minecraft/server/network/NetHandlerHandshakeTCP$SwitchEnumConnectionState"));
+			mObInitMap.put(new Pair<String, String>("jn", "net/minecraft/network/play/client/C12PacketUpdateSign"));
+			mObInitMap.put(new Pair<String, String>("fo", "net/minecraft/util/ChatStyle$1"));
+			mObInitMap.put(new Pair<String, String>("bp", "net/minecraft/command/CommandSetSpawnpoint"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsServerAddress",
+					"net/minecraft/realms/RealmsServerAddress"));
+			mObInitMap.put(new Pair<String, String>("arc", "net/minecraft/world/gen/feature/WorldGenAbstractTree"));
+			mObInitMap.put(new Pair<String, String>("and", "net/minecraft/block/BlockRedstoneTorch$Toggle"));
+			mObInitMap.put(new Pair<String, String>("abg", "net/minecraft/item/ItemBed"));
+			mObInitMap.put(new Pair<String, String>("aff", "net/minecraft/item/crafting/CraftingManager$1"));
+			mObInitMap.put(new Pair<String, String>("aje", "net/minecraft/block/BlockRailBase"));
+			mObInitMap.put(
+					new Pair<String, String>("brf", "net/minecraft/client/resources/ResourcePackRepository$Entry"));
+			mObInitMap.put(new Pair<String, String>("bbj", "net/minecraft/client/settings/GameSettings"));
+			mObInitMap.put(new Pair<String, String>("bfi", "net/minecraft/client/gui/inventory/GuiChest"));
+			mObInitMap.put(new Pair<String, String>("bjh", "net/minecraft/client/multiplayer/WorldClient$2"));
+			mObInitMap.put(new Pair<String, String>("bng", "net/minecraft/client/renderer/entity/RenderChicken"));
+			mObInitMap.put(new Pair<String, String>("oa", "net/minecraft/server/management/PreYggdrasilConverter$1"));
+			mObInitMap.put(new Pair<String, String>("kb", "net/minecraft/network/ServerStatusResponse"));
+			mObInitMap.put(new Pair<String, String>("gc", "net/minecraft/network/play/server/S0BPacketAnimation"));
+			mObInitMap.put(new Pair<String, String>("cd", "net/minecraft/command/CommandException"));
+			mObInitMap.put(new Pair<String, String>("abz", "net/minecraft/creativetab/CreativeTabs$3"));
+			mObInitMap.put(new Pair<String, String>("afy", "net/minecraft/enchantment/EnchantmentHelper$HurtIterator"));
+			mObInitMap.put(new Pair<String, String>("bry",
+					"net/minecraft/client/resources/data/IMetadataSerializer$Registration"));
+			mObInitMap.put(new Pair<String, String>("ava",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Straight"));
+			mObInitMap.put(new Pair<String, String>("bnz", "net/minecraft/client/renderer/entity/RenderItem$1"));
+			mObInitMap
+					.put(new Pair<String, String>("gv", "net/minecraft/network/play/server/S2BPacketChangeGameState"));
+			mObInitMap.put(new Pair<String, String>("cw", "net/minecraft/util/RegistryNamespaced"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsScrolledSelectionList",
+					"net/minecraft/realms/RealmsScrolledSelectionList"));
+			mObInitMap.put(new Pair<String, String>("aru", "net/minecraft/world/gen/feature/WorldGenBigMushroom"));
+			mObInitMap.put(new Pair<String, String>("anv", "net/minecraft/block/BlockStone"));
+			mObInitMap
+					.put(new Pair<String, String>("afx", "net/minecraft/enchantment/EnchantmentHelper$DamageIterator"));
+			mObInitMap.put(new Pair<String, String>("ajw", "net/minecraft/block/BlockCauldron"));
+			mObInitMap.put(
+					new Pair<String, String>("avt", "net/minecraft/world/gen/structure/StructureVillagePieces$Torch"));
+			mObInitMap.put(new Pair<String, String>("azs", "net/minecraft/world/storage/IThreadedFileIO"));
+			mObInitMap.put(new Pair<String, String>("bcq", "net/minecraft/client/gui/GuiScreenRealmsProxy"));
+			mObInitMap.put(new Pair<String, String>("bgp", "net/minecraft/client/gui/stream/GuiStreamUnavailable"));
+			mObInitMap
+					.put(new Pair<String, String>("brx", "net/minecraft/client/resources/data/IMetadataSerializer$1"));
+			mObInitMap.put(new Pair<String, String>("wq", "net/minecraft/entity/passive/EntitySheep$1"));
+			mObInitMap.put(new Pair<String, String>("sr", "net/minecraft/entity/EntityFlying"));
+			mObInitMap.put(new Pair<String, String>("os", "net/minecraft/server/management/UserListWhitelistEntry"));
+			mObInitMap.put(new Pair<String, String>("kt", "net/minecraft/init/Bootstrap$3"));
+			mObInitMap.put(new Pair<String, String>("gu", "net/minecraft/network/play/server/S27PacketExplosion"));
+			mObInitMap.put(new Pair<String, String>("asi", "net/minecraft/world/gen/feature/WorldGenCanopyTree"));
+			mObInitMap.put(new Pair<String, String>("aoj", "net/minecraft/block/BlockLilyPad"));
+			mObInitMap.put(new Pair<String, String>("akk", "net/minecraft/block/BlockDirectional"));
+			mObInitMap.put(new Pair<String, String>("acm", "net/minecraft/item/ItemEnchantedBook"));
+			mObInitMap.put(new Pair<String, String>("agl", "net/minecraft/enchantment/EnchantmentWaterWorker"));
+			mObInitMap.put(new Pair<String, String>("bsl", "net/minecraft/client/audio/MovingSound"));
+			mObInitMap.put(new Pair<String, String>("bom", "net/minecraft/client/renderer/entity/RenderOcelot"));
+			mObInitMap.put(new Pair<String, String>("bgo", "net/minecraft/client/gui/stream/GuiStreamOptions"));
+			mObInitMap.put(new Pair<String, String>("bkn", "net/minecraft/client/particle/EffectRenderer"));
+			mObInitMap.put(
+					new Pair<String, String>("net/minecraft/realms/RealmsScreen", "net/minecraft/realms/RealmsScreen"));
+			mObInitMap.put(new Pair<String, String>("xe", "net/minecraft/entity/projectile/EntityFishHook"));
+			mObInitMap.put(new Pair<String, String>("tf", "net/minecraft/entity/DataWatcher$WatchableObject"));
+			mObInitMap.put(new Pair<String, String>("pg", "net/minecraft/stats/StatisticsFile"));
+			mObInitMap.put(new Pair<String, String>("lh", "net/minecraft/server/MinecraftServer$1"));
+			mObInitMap.put(new Pair<String, String>("hi",
+					"net/minecraft/network/play/server/S14PacketEntity$S16PacketEntityLook"));
+			mObInitMap.put(new Pair<String, String>("dj", "net/minecraft/nbt/NBTTagCompound$2"));
+			mObInitMap.put(new Pair<String, String>("ada", "net/minecraft/item/ItemHoe"));
+			mObInitMap.put(new Pair<String, String>("bpa", "net/minecraft/client/renderer/entity/RenderVillager"));
+			mObInitMap.put(new Pair<String, String>("bdd", "net/minecraft/client/gui/GuiScreenDemo"));
+			mObInitMap.put(new Pair<String, String>("bhc", "net/minecraft/client/model/ModelBat"));
+			mObInitMap.put(new Pair<String, String>("blb", "net/minecraft/client/particle/EntityPickupFX"));
+			mObInitMap.put(new Pair<String, String>("pz", "net/minecraft/util/IntHashMap"));
+			mObInitMap.put(new Pair<String, String>("adt", "net/minecraft/item/ItemSaddle"));
+			mObInitMap.put(new Pair<String, String>("ahs", "net/minecraft/world/NextTickListEntry"));
+			mObInitMap.put(new Pair<String, String>("bts", "net/minecraft/client/audio/SoundHandler$SwitchType"));
+			mObInitMap.put(new Pair<String, String>("bpt", "net/minecraft/client/renderer/texture/LayeredTexture"));
+			mObInitMap.put(new Pair<String, String>("awz", "net/minecraft/world/gen/layer/GenLayerEdge$SwitchMode"));
+			mObInitMap.put(new Pair<String, String>("bdw", "net/minecraft/client/gui/GuiScreen"));
+			mObInitMap.put(new Pair<String, String>("bhv", "net/minecraft/client/model/TexturedQuad"));
+			mObInitMap.put(new Pair<String, String>("blu", "net/minecraft/client/renderer/EntityRenderer$1"));
+			mObInitMap.put(new Pair<String, String>("ip", "net/minecraft/network/play/client/C0APacketAnimation"));
+			mObInitMap.put(new Pair<String, String>("eq", "net/minecraft/network/EnumConnectionState$4"));
+			mObInitMap.put(new Pair<String, String>("ar", "net/minecraft/command/CommandGameMode"));
+			mObInitMap.put(new Pair<String, String>("xw", "net/minecraft/entity/item/EntityTNTPrimed"));
+			mObInitMap.put(new Pair<String, String>("tx", "net/minecraft/entity/ai/EntityAIAvoidEntity$1"));
+			mObInitMap.put(new Pair<String, String>("i", "net/minecraft/crash/CrashReport$7"));
+			mObInitMap.put(new Pair<String, String>("ato",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor5"));
+			mObInitMap.put(new Pair<String, String>("app", "net/minecraft/block/BlockPistonBase"));
+			mObInitMap.put(new Pair<String, String>("alq", "net/minecraft/block/BlockJukebox"));
+			mObInitMap.put(new Pair<String, String>("ahr", "net/minecraft/world/ChunkCache"));
+			mObInitMap.put(new Pair<String, String>("axn", "net/minecraft/world/gen/layer/GenLayer"));
+			mObInitMap.put(new Pair<String, String>("bal", "net/minecraft/client/settings/KeyBinding"));
+			mObInitMap.put(new Pair<String, String>("bek", "net/minecraft/client/gui/achievement/GuiStats$StatsBlock"));
+			mObInitMap.put(new Pair<String, String>("bij", "net/minecraft/client/model/ModelIronGolem"));
+			mObInitMap.put(new Pair<String, String>("btr", "net/minecraft/client/audio/SoundHandler$2"));
+			mObInitMap.put(new Pair<String, String>("yk", "net/minecraft/entity/monster/EntitySilverfish"));
+			mObInitMap.put(new Pair<String, String>("ul", "net/minecraft/entity/ai/EntityAIWatchClosest2"));
+			mObInitMap.put(new Pair<String, String>("qm", "net/minecraft/util/MouseFilter"));
+			mObInitMap.put(new Pair<String, String>("mn", "net/minecraft/entity/EntityTracker"));
+			mObInitMap.put(new Pair<String, String>("io", "net/minecraft/network/play/INetHandlerPlayServer"));
+			mObInitMap.put(new Pair<String, String>("aeg", "net/minecraft/item/ItemSlab"));
+			mObInitMap.put(new Pair<String, String>("aah", "net/minecraft/inventory/ContainerEnchantment$1"));
+			mObInitMap.put(new Pair<String, String>("aif", "net/minecraft/world/biome/BiomeGenForest"));
+			mObInitMap.put(new Pair<String, String>("auc",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid"));
+			mObInitMap.put(new Pair<String, String>("ayb", "net/minecraft/world/gen/layer/GenLayerVoronoiZoom"));
+			mObInitMap
+					.put(new Pair<String, String>("buf", "net/minecraft/client/stream/ChatController$SwitchChatState"));
+			mObInitMap.put(new Pair<String, String>("bqg", "net/minecraft/client/renderer/texture/TextureManager$1"));
+			mObInitMap.put(new Pair<String, String>("bii", "net/minecraft/client/model/PositionTextureVertex"));
+			mObInitMap.put(new Pair<String, String>("bmh", "net/minecraft/client/renderer/Tessellator"));
+			mObInitMap.put(new Pair<String, String>("ra", "net/minecraft/inventory/InventoryLargeChest"));
+			mObInitMap.put(new Pair<String, String>("nb",
+					"net/minecraft/client/network/NetHandlerHandshakeMemory$SwitchEnumConnectionState"));
+			mObInitMap.put(new Pair<String, String>("jc", "net/minecraft/network/play/client/C00PacketKeepAlive"));
+			mObInitMap.put(new Pair<String, String>("fd", "net/minecraft/util/MessageSerializer2"));
+			mObInitMap.put(new Pair<String, String>("be", "net/minecraft/command/server/CommandPardonPlayer"));
+			mObInitMap.put(new Pair<String, String>("aqw", "net/minecraft/world/gen/MapGenCaves"));
+			mObInitMap.put(new Pair<String, String>("amx", "net/minecraft/block/BlockQuartz"));
+			mObInitMap.put(new Pair<String, String>("aez", "net/minecraft/item/crafting/RecipesFood"));
+			mObInitMap.put(new Pair<String, String>("aiy", "net/minecraft/world/biome/BiomeEndDecorator"));
+			mObInitMap.put(
+					new Pair<String, String>("bqz", "net/minecraft/client/resources/IResourceManagerReloadListener"));
+			mObInitMap.put(new Pair<String, String>("rt", "net/minecraft/potion/PotionHealthBoost"));
+			mObInitMap.put(new Pair<String, String>("nu", "net/minecraft/server/management/PlayerProfileCache$2"));
+			mObInitMap.put(new Pair<String, String>("jv", "net/minecraft/network/login/INetHandlerLoginServer"));
+			mObInitMap.put(new Pair<String, String>("fw", "net/minecraft/network/play/server/S0EPacketSpawnObject"));
+			mObInitMap.put(new Pair<String, String>("bx", "net/minecraft/command/server/CommandTestForBlock"));
+			mObInitMap.put(new Pair<String, String>("abo", "net/minecraft/item/ItemBucket"));
+			mObInitMap.put(new Pair<String, String>("afn", "net/minecraft/enchantment/EnchantmentArrowFire"));
+			mObInitMap.put(new Pair<String, String>("brn", "net/minecraft/client/resources/SkinManager$3$1"));
+			mObInitMap.put(new Pair<String, String>("aqv", "net/minecraft/world/gen/ChunkProviderHell"));
+			mObInitMap.put(new Pair<String, String>("auu",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$RightTurn"));
+			mObInitMap.put(new Pair<String, String>("ayt", "net/minecraft/world/storage/WorldInfo$1"));
+			mObInitMap.put(new Pair<String, String>("bbr", "net/minecraft/util/Timer"));
+			mObInitMap.put(new Pair<String, String>("bfq", "net/minecraft/client/gui/GuiEnchantment"));
+			mObInitMap.put(new Pair<String, String>("bjp", "net/minecraft/client/multiplayer/ServerList"));
+			mObInitMap.put(new Pair<String, String>("bno", "net/minecraft/client/renderer/entity/Render"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsLevelSummary",
+					"net/minecraft/realms/RealmsLevelSummary"));
+			mObInitMap
+					.put(new Pair<String, String>("gk", "net/minecraft/network/play/server/S22PacketMultiBlockChange"));
+			mObInitMap.put(new Pair<String, String>("cl", "net/minecraft/block/BlockSourceImpl"));
+			mObInitMap.put(new Pair<String, String>("vr", "net/minecraft/entity/ai/EntityAITargetNonTamed"));
+			mObInitMap.put(new Pair<String, String>("rs", "net/minecraft/potion/PotionAttackDamage"));
+			mObInitMap.put(new Pair<String, String>("arj", "net/minecraft/world/gen/feature/WorldGenClay"));
+			mObInitMap.put(new Pair<String, String>("ank", "net/minecraft/block/BlockSign"));
+			mObInitMap.put(new Pair<String, String>("ajl", "net/minecraft/block/Block$3"));
+			mObInitMap.put(new Pair<String, String>("avi", "net/minecraft/world/gen/structure/MapGenStructureIO"));
+			mObInitMap.put(new Pair<String, String>("bcf", "net/minecraft/client/gui/GuiButtonLanguage"));
+			mObInitMap.put(new Pair<String, String>("bge", "net/minecraft/client/gui/ServerSelectionList"));
+			mObInitMap.put(new Pair<String, String>("wf", "net/minecraft/entity/passive/EntityAnimal"));
+			mObInitMap.put(new Pair<String, String>("sg", "net/minecraft/entity/EntityList"));
+			mObInitMap.put(new Pair<String, String>("oh",
+					"net/minecraft/server/management/PreYggdrasilConverter$ConversionError"));
+			mObInitMap.put(new Pair<String, String>("ki", "net/minecraft/network/status/client/C01PacketPing"));
+			mObInitMap.put(new Pair<String, String>("gj", "net/minecraft/network/play/server/S02PacketChat"));
+			mObInitMap.put(new Pair<String, String>("acb", "net/minecraft/creativetab/CreativeTabs$5"));
+			mObInitMap
+					.put(new Pair<String, String>("aga", "net/minecraft/enchantment/EnchantmentHelper$ModifierLiving"));
+			mObInitMap.put(
+					new Pair<String, String>("bsa", "net/minecraft/client/resources/data/AnimationMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("bkc", "net/minecraft/client/particle/EntityFireworkOverlayFX"));
+			mObInitMap.put(new Pair<String, String>("bob", "net/minecraft/client/renderer/entity/RenderItem$3"));
+			mObInitMap.put(new Pair<String, String>("wy", "net/minecraft/entity/boss/EntityDragonPart"));
+			mObInitMap.put(new Pair<String, String>("sz", "net/minecraft/entity/EnumCreatureAttribute"));
+			mObInitMap.put(new Pair<String, String>("asq", "net/minecraft/world/gen/feature/WorldGenTrees"));
+			mObInitMap.put(new Pair<String, String>("aor", "net/minecraft/tileentity/TileEntity"));
+			mObInitMap.put(new Pair<String, String>("aks", "net/minecraft/block/BlockEnchantmentTable"));
+			mObInitMap.put(new Pair<String, String>("acu", "net/minecraft/item/ItemFishFood$FishType"));
+			mObInitMap.put(new Pair<String, String>("agt", "net/minecraft/world/ChunkPosition"));
+			mObInitMap.put(new Pair<String, String>("bst", "net/minecraft/client/audio/ISound"));
+			mObInitMap.put(new Pair<String, String>("bou", "net/minecraft/client/renderer/entity/RenderSnowMan"));
+			mObInitMap.put(new Pair<String, String>("bcx", "net/minecraft/client/multiplayer/GuiConnecting"));
+			mObInitMap.put(new Pair<String, String>("bgw", "net/minecraft/client/main/Main$3"));
+			mObInitMap.put(new Pair<String, String>("bkv", "net/minecraft/client/particle/EntitySmokeFX"));
+			mObInitMap.put(
+					new Pair<String, String>("tn", "net/minecraft/entity/ai/attributes/ModifiableAttributeInstance"));
+			mObInitMap.put(new Pair<String, String>("po", "net/minecraft/util/IJsonSerializable"));
+			mObInitMap.put(new Pair<String, String>("lp", "net/minecraft/scoreboard/ServerScoreboard"));
+			mObInitMap
+					.put(new Pair<String, String>("hq", "net/minecraft/network/play/server/S13PacketDestroyEntities"));
+			mObInitMap.put(new Pair<String, String>("dr", "net/minecraft/nbt/NBTTagLong"));
+			mObInitMap.put(new Pair<String, String>("adi", "net/minecraft/item/ItemBucketMilk"));
+			mObInitMap.put(new Pair<String, String>("ahh", "net/minecraft/world/IWorldAccess"));
+			mObInitMap.put(new Pair<String, String>("bth", "net/minecraft/client/audio/MusicTicker$MusicType"));
+			mObInitMap.put(new Pair<String, String>("bpi", "net/minecraft/client/shader/ShaderManager"));
+			mObInitMap.put(new Pair<String, String>("asp", "net/minecraft/world/gen/feature/WorldGenTallGrass"));
+			mObInitMap.put(new Pair<String, String>("awo", "net/minecraft/world/gen/NoiseGeneratorSimplex"));
+			mObInitMap.put(new Pair<String, String>("bhk", "net/minecraft/client/model/ModelEnderman"));
+			mObInitMap.put(new Pair<String, String>("blj", "net/minecraft/util/MovementInputFromOptions"));
+			mObInitMap.put(new Pair<String, String>("ie", "net/minecraft/network/play/server/S3CPacketUpdateScore"));
+			mObInitMap.put(new Pair<String, String>("ef", "net/minecraft/nbt/JsonToNBT$Primitive"));
+			mObInitMap.put(new Pair<String, String>("ag", "net/minecraft/command/server/CommandBanPlayer"));
+			mObInitMap.put(new Pair<String, String>("xl", "net/minecraft/entity/item/EntityMinecart"));
+			mObInitMap.put(new Pair<String, String>("atd", "net/minecraft/world/gen/structure/MapGenNetherBridge"));
+			mObInitMap.put(new Pair<String, String>("ape", "net/minecraft/tileentity/TileEntityEnderChest"));
+			mObInitMap.put(new Pair<String, String>("alf", "net/minecraft/block/BlockGlass"));
+			mObInitMap.put(new Pair<String, String>("ahg", "net/minecraft/world/MinecraftException"));
+			mObInitMap.put(new Pair<String, String>("axc", "net/minecraft/world/gen/layer/GenLayerAddMushroomIsland"));
+			mObInitMap.put(new Pair<String, String>("baa", "net/minecraft/scoreboard/Score$1"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/DisconnectedOnlineScreen",
+					"net/minecraft/realms/DisconnectedOnlineScreen"));
+			mObInitMap.put(new Pair<String, String>("btg", "net/minecraft/client/audio/MusicTicker"));
+			mObInitMap.put(new Pair<String, String>("ua", "net/minecraft/entity/ai/EntityAIMate"));
+			mObInitMap.put(new Pair<String, String>("mc", "net/minecraft/server/gui/MinecraftServerGui$4"));
+			mObInitMap.put(new Pair<String, String>("id", "net/minecraft/network/play/server/S3EPacketTeams"));
+			mObInitMap.put(new Pair<String, String>("q", "net/minecraft/util/Facing"));
+			mObInitMap.put(new Pair<String, String>("atw",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Start"));
+			mObInitMap.put(new Pair<String, String>("apx", "net/minecraft/world/chunk/Chunk"));
+			mObInitMap.put(new Pair<String, String>("aly", "net/minecraft/block/BlockMelon"));
+			mObInitMap.put(new Pair<String, String>("ahz", "net/minecraft/world/biome/BiomeCache$Block"));
+			mObInitMap.put(new Pair<String, String>("axv", "net/minecraft/world/gen/layer/GenLayerRiverMix"));
+			mObInitMap.put(new Pair<String, String>("btz", "net/minecraft/client/stream/Metadata"));
+			mObInitMap.put(new Pair<String, String>("ys", "net/minecraft/entity/monster/EntityZombie$GroupData"));
+			mObInitMap.put(new Pair<String, String>("ut", "net/minecraft/entity/ai/EntityAIMoveTowardsRestriction"));
+			mObInitMap.put(new Pair<String, String>("qu", "net/minecraft/util/Tuple"));
+			mObInitMap.put(new Pair<String, String>("mv", "net/minecraft/world/WorldServer$ServerBlockEventList"));
+			mObInitMap.put(new Pair<String, String>("iw", "net/minecraft/network/play/client/C11PacketEnchantItem"));
+			mObInitMap.put(new Pair<String, String>("ex", "net/minecraft/network/NetworkStatistics$Tracker"));
+			mObInitMap.put(new Pair<String, String>("ay", "net/minecraft/command/server/CommandListPlayers"));
+			mObInitMap.put(
+					new Pair<String, String>("aql", "net/minecraft/world/chunk/storage/AnvilChunkLoader$PendingChunk"));
+			mObInitMap.put(new Pair<String, String>("amm", "net/minecraft/block/BlockOldLog"));
+			mObInitMap.put(new Pair<String, String>("aap", "net/minecraft/inventory/ContainerPlayer"));
+			mObInitMap.put(new Pair<String, String>("ain", "net/minecraft/world/biome/BiomeGenMutated"));
+			mObInitMap.put(new Pair<String, String>("p", "net/minecraft/util/Direction"));
+			mObInitMap.put(new Pair<String, String>("bun", "net/minecraft/client/stream/IStream$AuthFailureReason"));
+			mObInitMap.put(new Pair<String, String>("bqo", "net/minecraft/client/resources/ResourceIndex"));
+			mObInitMap.put(new Pair<String, String>("bas", "net/minecraft/client/Minecraft$12"));
+			mObInitMap.put(new Pair<String, String>("ber", "net/minecraft/client/gui/IProgressMeter"));
+			mObInitMap.put(new Pair<String, String>("biq", "net/minecraft/client/model/ModelDragon"));
+			mObInitMap.put(new Pair<String, String>("bmp",
+					"net/minecraft/client/renderer/tileentity/TileEntityMobSpawnerRenderer"));
+			mObInitMap.put(new Pair<String, String>("ri", "net/minecraft/profiler/PlayerUsageSnooper"));
+			mObInitMap.put(new Pair<String, String>("nj", "net/minecraft/network/NetHandlerPlayServer$2"));
+			mObInitMap.put(new Pair<String, String>("jk", "net/minecraft/network/play/client/C0CPacketInput"));
+			mObInitMap.put(new Pair<String, String>("fl", "net/minecraft/event/HoverEvent"));
+			mObInitMap.put(new Pair<String, String>("bm", "net/minecraft/command/server/CommandSetBlock"));
+			mObInitMap.put(new Pair<String, String>("abd", "net/minecraft/item/ItemArmor$ArmorMaterial"));
+			mObInitMap.put(new Pair<String, String>("afc", "net/minecraft/item/crafting/RecipesMapExtending"));
+			mObInitMap.put(new Pair<String, String>("ajb", "net/minecraft/block/BlockAnvil"));
+			mObInitMap.put(new Pair<String, String>("brc", "net/minecraft/client/resources/ResourcePackRepository"));
+			mObInitMap.put(
+					new Pair<String, String>("auj", "net/minecraft/world/gen/structure/StructureStrongholdPieces$1"));
+			mObInitMap.put(new Pair<String, String>("ayi", "net/minecraft/world/storage/MapData"));
+			mObInitMap.put(new Pair<String, String>("bbg", "net/minecraft/util/MouseHelper"));
+			mObInitMap.put(new Pair<String, String>("bff", "net/minecraft/client/gui/GuiScreenBook$NextPageButton"));
+			mObInitMap.put(new Pair<String, String>("bje", "net/minecraft/client/multiplayer/PlayerControllerMP"));
+			mObInitMap.put(new Pair<String, String>("bnd", "net/minecraft/client/renderer/entity/RenderBlaze"));
+			mObInitMap.put(new Pair<String, String>("ca", "net/minecraft/command/CommandToggleDownfall"));
+			mObInitMap.put(new Pair<String, String>("zf", "net/minecraft/entity/item/EntityFireworkRocket"));
+			mObInitMap.put(new Pair<String, String>("vg", "net/minecraft/entity/ai/EntityAIRunAroundLikeCrazy"));
+			mObInitMap.put(new Pair<String, String>("rh", "net/minecraft/inventory/InventoryBasic"));
+			mObInitMap.put(new Pair<String, String>("aja", "net/minecraft/block/BlockAir"));
+			mObInitMap.put(new Pair<String, String>("bbz", "net/minecraft/client/gui/MapItemRenderer$Instance"));
+			mObInitMap.put(new Pair<String, String>("bfy", "net/minecraft/client/gui/inventory/GuiDispenser"));
+			mObInitMap.put(new Pair<String, String>("bjx", "net/minecraft/client/particle/EntityCritFX"));
+			mObInitMap.put(new Pair<String, String>("zy", "net/minecraft/inventory/ContainerBeacon$BeaconSlot"));
+			mObInitMap.put(new Pair<String, String>("vz", "net/minecraft/village/Village"));
+			mObInitMap.put(new Pair<String, String>("arr", "net/minecraft/world/gen/feature/WorldGenGlowStone2"));
+			mObInitMap.put(new Pair<String, String>("ans", "net/minecraft/block/BlockStairs"));
+			mObInitMap.put(new Pair<String, String>("abv", "net/minecraft/creativetab/CreativeTabs$10"));
+			mObInitMap.put(new Pair<String, String>("afu", "net/minecraft/enchantment/EnumEnchantmentType"));
+			mObInitMap.put(new Pair<String, String>("ajt", "net/minecraft/block/BlockCactus"));
+			mObInitMap.put(
+					new Pair<String, String>("avq", "net/minecraft/world/gen/structure/StructureVillagePieces$House1"));
+			mObInitMap.put(new Pair<String, String>("azp", "net/minecraft/world/storage/IPlayerFileData"));
+			mObInitMap.put(new Pair<String, String>("bru", "net/minecraft/client/resources/data/IMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("bjw", "net/minecraft/client/particle/EntityCrit2FX"));
+			mObInitMap.put(new Pair<String, String>("bnv", "net/minecraft/client/renderer/entity/RenderHorse"));
+			mObInitMap.put(new Pair<String, String>("wn", "net/minecraft/entity/passive/EntityOcelot"));
+			mObInitMap.put(new Pair<String, String>("op", "net/minecraft/server/management/UserListBans"));
+			mObInitMap.put(new Pair<String, String>("kq", "net/minecraft/init/Bootstrap$13"));
+			mObInitMap.put(new Pair<String, String>("gr", "net/minecraft/network/play/server/S3FPacketCustomPayload"));
+			mObInitMap.put(new Pair<String, String>("cs", "net/minecraft/util/IObjectIntIterable"));
+			mObInitMap.put(new Pair<String, String>("asf", "net/minecraft/world/gen/feature/WorldGenTaiga1"));
+			mObInitMap.put(new Pair<String, String>("aog", "net/minecraft/block/BlockTripWireHook"));
+			mObInitMap.put(new Pair<String, String>("akh", "net/minecraft/block/BlockDeadBush"));
+			mObInitMap.put(new Pair<String, String>("acj", "net/minecraft/item/ItemDye"));
+			mObInitMap.put(new Pair<String, String>("agi", "net/minecraft/enchantment/EnchantmentProtection"));
+			mObInitMap
+					.put(new Pair<String, String>("bsi", "net/minecraft/client/resources/data/TextureMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("bcm", "net/minecraft/client/gui/GuiSlot"));
+			mObInitMap.put(new Pair<String, String>("bgl", "net/minecraft/client/gui/GuiResourcePackSelected"));
+			mObInitMap.put(new Pair<String, String>("bkk", "net/minecraft/client/particle/EntityLavaFX"));
+			mObInitMap.put(
+					new Pair<String, String>("boj", "net/minecraft/client/renderer/entity/RenderMinecartMobSpawner"));
+			mObInitMap.put(new Pair<String, String>("tc", "net/minecraft/entity/item/EntityPainting$EnumArt"));
+			mObInitMap.put(new Pair<String, String>("pd", "net/minecraft/stats/IStatStringFormat"));
+			mObInitMap.put(new Pair<String, String>("le", "net/minecraft/command/ServerCommand"));
+			mObInitMap.put(new Pair<String, String>("hf", "net/minecraft/network/play/server/S14PacketEntity"));
+			mObInitMap.put(new Pair<String, String>("dg", "net/minecraft/nbt/NBTTagByte"));
+			mObInitMap.put(new Pair<String, String>("ase", "net/minecraft/world/gen/feature/WorldGenMinable"));
+			mObInitMap.put(new Pair<String, String>("awd",
+					"net/minecraft/world/gen/structure/StructureVillagePieces$Village"));
+			mObInitMap.put(new Pair<String, String>("bda", "net/minecraft/client/gui/GuiCreateFlatWorld$Details"));
+			mObInitMap.put(new Pair<String, String>("hy", "net/minecraft/network/play/server/S12PacketEntityVelocity"));
+			mObInitMap.put(new Pair<String, String>("dz", "net/minecraft/nbt/NBTBase$NBTPrimitive"));
+			mObInitMap.put(new Pair<String, String>("xa", "net/minecraft/entity/boss/EntityDragon"));
+			mObInitMap.put(new Pair<String, String>("tb", "net/minecraft/entity/item/EntityPainting"));
+			mObInitMap
+					.put(new Pair<String, String>("asx", "net/minecraft/world/gen/structure/StructureMineshaftPieces"));
+			mObInitMap.put(new Pair<String, String>("aoy", "net/minecraft/tileentity/TileEntityCommandBlock$1"));
+			mObInitMap.put(new Pair<String, String>("akz", "net/minecraft/block/BlockFence"));
+			mObInitMap.put(new Pair<String, String>("aww", "net/minecraft/block/material/MaterialPortal"));
+			mObInitMap.put(new Pair<String, String>("bdt", "net/minecraft/client/gui/GuiScreenWorking"));
+			mObInitMap.put(new Pair<String, String>("bhs", "net/minecraft/client/model/ModelHorse"));
+			mObInitMap.put(new Pair<String, String>("xt", "net/minecraft/entity/ai/EntityMinecartMobSpawner"));
+			mObInitMap.put(new Pair<String, String>("tu", "net/minecraft/entity/ai/EntityLookHelper"));
+			mObInitMap.put(new Pair<String, String>("pv", "net/minecraft/util/HttpUtil"));
+			mObInitMap.put(new Pair<String, String>("lw", "net/minecraft/server/dedicated/DedicatedServer$3"));
+			mObInitMap.put(new Pair<String, String>("hx", "net/minecraft/network/play/server/S1BPacketEntityAttach"));
+			mObInitMap.put(new Pair<String, String>("f", "net/minecraft/crash/CrashReport$4"));
+			mObInitMap.put(new Pair<String, String>("atl",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Entrance"));
+			mObInitMap.put(new Pair<String, String>("apm", "net/minecraft/tileentity/TileEntitySign"));
+			mObInitMap.put(new Pair<String, String>("aln", "net/minecraft/block/BlockHopper"));
+			mObInitMap.put(new Pair<String, String>("adp", "net/minecraft/item/ItemPotion"));
+			mObInitMap.put(new Pair<String, String>("aho", "net/minecraft/world/SpawnerAnimals"));
+			mObInitMap.put(new Pair<String, String>("bai", "net/minecraft/stats/ObjectiveStat"));
+			mObInitMap.put(new Pair<String, String>("bto", "net/minecraft/client/audio/SoundEventAccessorComposite"));
+			mObInitMap.put(new Pair<String, String>("bpp", "net/minecraft/client/renderer/texture/AbstractTexture"));
+			mObInitMap.put(new Pair<String, String>("blq", "net/minecraft/client/renderer/EntitySorter"));
+			mObInitMap.put(new Pair<String, String>("yh", "net/minecraft/entity/monster/EntityPigZombie"));
+			mObInitMap.put(new Pair<String, String>("ui", "net/minecraft/entity/ai/EntityAIBase"));
+			mObInitMap.put(new Pair<String, String>("qj", "net/minecraft/profiler/Profiler$Result"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsServerStatusPinger",
+					"net/minecraft/realms/RealmsServerStatusPinger"));
+			mObInitMap.put(new Pair<String, String>("mk", "net/minecraft/world/demo/DemoWorldServer"));
+			mObInitMap
+					.put(new Pair<String, String>("il", "net/minecraft/network/play/server/S20PacketEntityProperties"));
+			mObInitMap.put(new Pair<String, String>("em", "net/minecraft/network/NetworkManager$3"));
+			mObInitMap.put(new Pair<String, String>("an", "net/minecraft/command/server/CommandEmote"));
+			mObInitMap.put(new Pair<String, String>("aqa", "net/minecraft/world/chunk/storage/NibbleArrayReader"));
+			mObInitMap.put(new Pair<String, String>("amb", "net/minecraft/block/BlockSilverfish"));
+			mObInitMap.put(new Pair<String, String>("aed", "net/minecraft/item/ItemSnowball"));
+			mObInitMap.put(new Pair<String, String>("aae", "net/minecraft/inventory/InventoryCrafting"));
+			mObInitMap.put(new Pair<String, String>("aic", "net/minecraft/world/biome/BiomeGenDesert"));
+			mObInitMap.put(new Pair<String, String>("e", "net/minecraft/crash/CrashReport$3"));
+			mObInitMap.put(
+					new Pair<String, String>("buc", "net/minecraft/client/stream/BroadcastController$BroadcastState"));
+			mObInitMap.put(new Pair<String, String>("bqd", "net/minecraft/client/renderer/texture/TextureAtlasSprite"));
+			mObInitMap.put(new Pair<String, String>("bah", "net/minecraft/scoreboard/IScoreObjectiveCriteria"));
+			mObInitMap.put(new Pair<String, String>("beg", "net/minecraft/client/gui/GuiWinGame"));
+			mObInitMap.put(new Pair<String, String>("bif", "net/minecraft/client/model/ModelSnowMan"));
+			mObInitMap.put(new Pair<String, String>("bme", "net/minecraft/client/util/QuadComparator"));
+			mObInitMap.put(new Pair<String, String>("fa", "net/minecraft/util/MessageSerializer"));
+			mObInitMap.put(new Pair<String, String>("bb", "net/minecraft/command/server/CommandNetstat"));
+			mObInitMap.put(new Pair<String, String>("aew", "net/minecraft/item/crafting/RecipeBookCloning"));
+			mObInitMap.put(new Pair<String, String>("aax", "net/minecraft/inventory/SlotCrafting"));
+			mObInitMap.put(new Pair<String, String>("aiv", "net/minecraft/world/biome/BiomeGenSwamp"));
+			mObInitMap.put(new Pair<String, String>("x", "net/minecraft/command/IAdminCommand"));
+			mObInitMap.put(new Pair<String, String>("bqw", "net/minecraft/client/resources/IResource"));
+			mObInitMap.put(new Pair<String, String>("bez", "net/minecraft/client/gui/inventory/GuiBeacon"));
+			mObInitMap.put(new Pair<String, String>("biy", "net/minecraft/client/model/TextureOffset"));
+			mObInitMap.put(new Pair<String, String>("bmx", "net/minecraft/client/renderer/culling/Frustrum"));
+			mObInitMap.put(new Pair<String, String>("js", "net/minecraft/network/login/server/S02PacketLoginSuccess"));
+			mObInitMap.put(new Pair<String, String>("ft", "net/minecraft/network/Packet"));
+			mObInitMap.put(new Pair<String, String>("bu", "net/minecraft/command/server/CommandSummon"));
+			mObInitMap.put(new Pair<String, String>("yz", "net/minecraft/entity/player/EntityPlayer"));
+			mObInitMap.put(new Pair<String, String>("aqs", "net/minecraft/world/gen/MapGenRavine"));
+			mObInitMap.put(new Pair<String, String>("amt", "net/minecraft/block/BlockRailPowered"));
+			mObInitMap.put(new Pair<String, String>("aiu", "net/minecraft/world/biome/BiomeGenStoneBeach"));
+			mObInitMap.put(new Pair<String, String>("aur",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$PieceWeight"));
+			mObInitMap.put(new Pair<String, String>("ayq", "net/minecraft/world/storage/SaveHandler"));
+			mObInitMap.put(new Pair<String, String>("bbo", "net/minecraft/client/LoadingScreenRenderer"));
+			mObInitMap.put(new Pair<String, String>("bfn",
+					"net/minecraft/client/gui/inventory/GuiContainerCreative$CreativeSlot"));
+			mObInitMap.put(new Pair<String, String>("bjm", "net/minecraft/client/multiplayer/ServerAddress"));
+			mObInitMap.put(new Pair<String, String>("buu", "net/minecraft/client/renderer/OpenGlHelper"));
+			mObInitMap.put(new Pair<String, String>("zn", "net/minecraft/entity/item/EntityExpBottle"));
+			mObInitMap.put(new Pair<String, String>("vo", "net/minecraft/entity/ai/EntityAINearestAttackableTarget"));
+			mObInitMap.put(new Pair<String, String>("rp", "net/minecraft/util/EntityDamageSource"));
+			mObInitMap.put(new Pair<String, String>("nq", "net/minecraft/server/network/NetHandlerStatusServer"));
+			mObInitMap.put(new Pair<String, String>("jr", "net/minecraft/network/login/INetHandlerLoginClient"));
+			mObInitMap.put(new Pair<String, String>("arg", "net/minecraft/world/gen/feature/WorldGeneratorBonusChest"));
+			mObInitMap.put(new Pair<String, String>("anh", "net/minecraft/block/BlockSand"));
+			mObInitMap.put(new Pair<String, String>("abk", "net/minecraft/item/ItemBook"));
+			mObInitMap.put(new Pair<String, String>("afj", "net/minecraft/item/crafting/RecipesCrafting"));
+			mObInitMap.put(new Pair<String, String>("aji", "net/minecraft/block/Block"));
+			mObInitMap.put(new Pair<String, String>("avf", "net/minecraft/world/gen/structure/MapGenStructure$1"));
+			mObInitMap.put(new Pair<String, String>("aze", "net/minecraft/world/storage/ISaveFormat"));
+			mObInitMap.put(new Pair<String, String>("brj", "net/minecraft/client/resources/SkinManager"));
+			mObInitMap.put(new Pair<String, String>("bjl", "net/minecraft/client/gui/GuiPlayerInfo"));
+			mObInitMap.put(
+					new Pair<String, String>("bnk", "net/minecraft/client/renderer/tileentity/RenderEnderCrystal"));
+			mObInitMap.put(new Pair<String, String>("wc", "net/minecraft/village/VillageCollection"));
+			mObInitMap.put(new Pair<String, String>("sd", "net/minecraft/entity/Entity$SwitchEnumEntitySize"));
+			mObInitMap.put(new Pair<String, String>("oe", "net/minecraft/server/management/PreYggdrasilConverter$5"));
+			mObInitMap.put(new Pair<String, String>("kf",
+					"net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier"));
+			mObInitMap.put(new Pair<String, String>("gg", "net/minecraft/network/play/server/S24PacketBlockAction"));
+			mObInitMap.put(new Pair<String, String>("ch", "net/minecraft/command/CommandNotFoundException"));
+			mObInitMap.put(new Pair<String, String>("arz", "net/minecraft/world/gen/feature/WorldGenMegaJungle"));
+			mObInitMap.put(new Pair<String, String>("bcb", "net/minecraft/client/gui/GuiButton"));
+			mObInitMap.put(new Pair<String, String>("bga", "net/minecraft/client/gui/ServerListEntryLanScan"));
+			mObInitMap.put(new Pair<String, String>("sw", "net/minecraft/entity/EntityLiving"));
+			mObInitMap.put(new Pair<String, String>("ox", "net/minecraft/network/rcon/RConThreadQuery"));
+			mObInitMap.put(new Pair<String, String>("ky", "net/minecraft/init/Bootstrap$7"));
+			mObInitMap.put(new Pair<String, String>("gz", "net/minecraft/network/play/server/S26PacketMapChunkBulk"));
+			mObInitMap.put(new Pair<String, String>("akp", "net/minecraft/block/BlockDragonEgg"));
+			mObInitMap.put(new Pair<String, String>("acr", "net/minecraft/item/ItemFireworkCharge"));
+			mObInitMap.put(new Pair<String, String>("agq", "net/minecraft/tileentity/MobSpawnerBaseLogic"));
+			mObInitMap.put(new Pair<String, String>("bsq", "net/minecraft/client/audio/SoundList$SoundEntry"));
+			mObInitMap.put(new Pair<String, String>("bor", "net/minecraft/client/renderer/entity/RenderSilverfish"));
+			mObInitMap.put(new Pair<String, String>("avx",
+					"net/minecraft/world/gen/structure/StructureVillagePieces$WoodHut"));
+			mObInitMap.put(new Pair<String, String>("azw", "net/minecraft/util/Vec3"));
+			mObInitMap.put(new Pair<String, String>("bcu", "net/minecraft/client/gui/GuiConfirmOpenLink"));
+			mObInitMap.put(new Pair<String, String>("bgt", "net/minecraft/client/main/Main$1"));
+			mObInitMap.put(new Pair<String, String>("bks", "net/minecraft/client/particle/EntityCloudFX"));
+			mObInitMap.put(new Pair<String, String>("wu", "net/minecraft/entity/passive/EntityWaterMob"));
+			mObInitMap.put(new Pair<String, String>("sv", "net/minecraft/entity/EntityLivingBase"));
+			mObInitMap.put(new Pair<String, String>("asm", "net/minecraft/world/gen/feature/WorldGenLiquids"));
+			mObInitMap.put(new Pair<String, String>("aon", "net/minecraft/block/BlockButtonWood"));
+			mObInitMap.put(new Pair<String, String>("ako", "net/minecraft/block/BlockDoublePlant"));
+			mObInitMap.put(new Pair<String, String>("awl", "net/minecraft/world/gen/NoiseGeneratorPerlin"));
+			mObInitMap.put(new Pair<String, String>("bdi", "net/minecraft/client/gui/GuiSleepMP"));
+			mObInitMap.put(new Pair<String, String>("bhh", "net/minecraft/client/model/ModelChicken"));
+			mObInitMap.put(new Pair<String, String>("blg", "net/minecraft/client/entity/AbstractClientPlayer"));
+			mObInitMap.put(new Pair<String, String>("xi", "net/minecraft/entity/item/EntityBoat"));
+			mObInitMap.put(new Pair<String, String>("tj", "net/minecraft/entity/ai/attributes/AttributeModifier"));
+			mObInitMap.put(new Pair<String, String>("pk", "net/minecraft/stats/StatBase$3"));
+			mObInitMap.put(new Pair<String, String>("ll", "net/minecraft/server/MinecraftServer$5"));
+			mObInitMap.put(
+					new Pair<String, String>("ata", "net/minecraft/world/gen/structure/StructureMineshaftPieces$Room"));
+			mObInitMap.put(new Pair<String, String>("apb", "net/minecraft/tileentity/TileEntityDispenser"));
+			mObInitMap.put(new Pair<String, String>("alc", "net/minecraft/block/BlockFlower"));
+			mObInitMap.put(new Pair<String, String>("ade", "net/minecraft/init/Items"));
+			mObInitMap.put(new Pair<String, String>("ahd", "net/minecraft/world/World$2"));
+			mObInitMap.put(
+					new Pair<String, String>("btd", "net/minecraft/client/network/LanServerDetector$LanServerList"));
+			mObInitMap.put(new Pair<String, String>("bpe", "net/minecraft/client/renderer/entity/RenderWolf"));
+			mObInitMap.put(new Pair<String, String>("blf", "net/minecraft/client/particle/EntityRainFX"));
+			mObInitMap.put(new Pair<String, String>("ia", "net/minecraft/network/play/server/S1FPacketSetExperience"));
+			mObInitMap.put(new Pair<String, String>("eb", "net/minecraft/nbt/JsonToNBT"));
+			mObInitMap.put(new Pair<String, String>("ac", "net/minecraft/command/ICommandSender"));
+			mObInitMap.put(new Pair<String, String>("att",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$PieceWeight"));
+			mObInitMap.put(new Pair<String, String>("apu", "net/minecraft/world/chunk/IChunkProvider"));
+			mObInitMap.put(new Pair<String, String>("alv", "net/minecraft/block/BlockLever"));
+			mObInitMap.put(new Pair<String, String>("adx", "net/minecraft/item/ItemShears"));
+			mObInitMap.put(new Pair<String, String>("ahw", "net/minecraft/world/biome/BiomeGenBase$TempCategory"));
+			mObInitMap.put(new Pair<String, String>("btw", "net/minecraft/client/stream/MetadataAchievement"));
+			mObInitMap.put(new Pair<String, String>("bpx", "net/minecraft/client/renderer/texture/Stitcher$Slot"));
+			mObInitMap.put(new Pair<String, String>("bhz", "net/minecraft/client/model/ModelSign"));
+			mObInitMap.put(new Pair<String, String>("bly", "net/minecraft/client/renderer/ItemRenderer"));
+			mObInitMap.put(new Pair<String, String>("uq", "net/minecraft/entity/ai/EntityAIAttackOnCollide"));
+			mObInitMap.put(new Pair<String, String>("ms", "net/minecraft/world/gen/ChunkProviderServer"));
+			mObInitMap.put(new Pair<String, String>("it",
+					"net/minecraft/network/play/client/C16PacketClientStatus$EnumState"));
+			mObInitMap.put(new Pair<String, String>("eu", "net/minecraft/network/NetworkStatistics"));
+			mObInitMap.put(new Pair<String, String>("av", "net/minecraft/command/CommandServerKick"));
+			mObInitMap.put(new Pair<String, String>("ael", "net/minecraft/item/ItemWritableBook"));
+			mObInitMap.put(new Pair<String, String>("aam", "net/minecraft/inventory/ContainerHorseInventory"));
+			mObInitMap.put(new Pair<String, String>("aik", "net/minecraft/world/biome/BiomeGenJungle"));
+			mObInitMap.put(new Pair<String, String>("m", "net/minecraft/crash/CrashReportCategory$2"));
+			mObInitMap.put(new Pair<String, String>("buk",
+					"net/minecraft/client/stream/IngestServerTester$IngestTestListener"));
+			mObInitMap.put(new Pair<String, String>("bql", "net/minecraft/client/renderer/texture/TextureClock"));
+			mObInitMap.put(new Pair<String, String>("ats",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Piece"));
+			mObInitMap.put(new Pair<String, String>("axr", "net/minecraft/world/gen/layer/GenLayerHills"));
+			mObInitMap.put(new Pair<String, String>("bap", "net/minecraft/client/Minecraft$1"));
+			mObInitMap
+					.put(new Pair<String, String>("beo", "net/minecraft/client/gui/achievement/GuiStats$StatsItem$1"));
+			mObInitMap.put(new Pair<String, String>("bin", "net/minecraft/client/model/ModelWither"));
+			mObInitMap.put(new Pair<String, String>("bmm",
+					"net/minecraft/client/renderer/tileentity/TileEntityChestRenderer"));
+			mObInitMap
+					.put(new Pair<String, String>("jh", "net/minecraft/network/play/client/C13PacketPlayerAbilities"));
+			mObInitMap.put(new Pair<String, String>("fi", "net/minecraft/event/ClickEvent$Action"));
+			mObInitMap.put(new Pair<String, String>("bj", "net/minecraft/command/server/CommandSaveOn"));
+			mObInitMap.put(new Pair<String, String>("yo", "net/minecraft/entity/monster/EntitySpider$GroupData"));
+			mObInitMap.put(new Pair<String, String>("up", "net/minecraft/entity/ai/EntityAIVillagerMate"));
+			mObInitMap.put(new Pair<String, String>("aqh", "net/minecraft/world/chunk/storage/RegionFile"));
+			mObInitMap.put(new Pair<String, String>("ami", "net/minecraft/block/BlockNewLog"));
+			mObInitMap.put(new Pair<String, String>("aij", "net/minecraft/world/biome/BiomeGenSnow"));
+			mObInitMap.put(new Pair<String, String>("aug", "net/minecraft/world/gen/structure/MapGenStronghold"));
+			mObInitMap.put(new Pair<String, String>("ayf", "net/minecraft/pathfinding/PathEntity"));
+			mObInitMap.put(new Pair<String, String>("bbd", "net/minecraft/client/Minecraft$7"));
+			mObInitMap.put(new Pair<String, String>("bfc", "net/minecraft/client/gui/inventory/GuiBeacon$PowerButton"));
+			mObInitMap.put(new Pair<String, String>("bjb", "net/minecraft/client/network/NetHandlerPlayClient"));
+			mObInitMap.put(
+					new Pair<String, String>("buj", "net/minecraft/client/stream/IngestServerTester$SwitchStatType"));
+			mObInitMap.put(new Pair<String, String>("zc", "net/minecraft/entity/projectile/EntityArrow"));
+			mObInitMap.put(new Pair<String, String>("vd", "net/minecraft/entity/ai/EntityAIArrowAttack"));
+			mObInitMap.put(new Pair<String, String>("re", "net/minecraft/client/renderer/IconFlipped"));
+			mObInitMap.put(new Pair<String, String>("nf", "net/minecraft/network/NetworkSystem$3"));
+			mObInitMap.put(new Pair<String, String>("jg",
+					"net/minecraft/network/play/client/C03PacketPlayer$C05PacketPlayerLook"));
+			mObInitMap.put(new Pair<String, String>("auz",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Stairs2"));
+			mObInitMap.put(new Pair<String, String>("ayy", "net/minecraft/world/storage/WorldInfo$6"));
+			mObInitMap.put(new Pair<String, String>("bja", "net/minecraft/client/network/NetHandlerLoginClient$1"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsSharedConstants",
+					"net/minecraft/realms/RealmsSharedConstants"));
+			mObInitMap.put(new Pair<String, String>("zv", "net/minecraft/inventory/ContainerRepair$1"));
+			mObInitMap.put(new Pair<String, String>("vw", "net/minecraft/entity/ai/EntitySenses"));
+			mObInitMap.put(new Pair<String, String>("rx", "net/minecraft/entity/EntityAgeable"));
+			mObInitMap.put(new Pair<String, String>("ny", "net/minecraft/server/management/IPBanEntry"));
+			mObInitMap.put(new Pair<String, String>("jz", "net/minecraft/network/status/server/S01PacketPong"));
+			mObInitMap.put(new Pair<String, String>("aro", "net/minecraft/world/gen/feature/WorldGenFlowers"));
+			mObInitMap.put(new Pair<String, String>("anp", "net/minecraft/block/BlockSponge"));
+			mObInitMap.put(new Pair<String, String>("abs", "net/minecraft/item/ItemMapBase"));
+			mObInitMap.put(new Pair<String, String>("afr", "net/minecraft/enchantment/EnchantmentDurability"));
+			mObInitMap.put(new Pair<String, String>("ajq", "net/minecraft/block/BlockBrewingStand"));
+			mObInitMap.put(new Pair<String, String>("avn", "net/minecraft/world/gen/structure/MapGenVillage"));
+			mObInitMap.put(new Pair<String, String>("brr", "net/minecraft/client/resources/LanguageManager"));
+			mObInitMap.put(new Pair<String, String>("bbv", "net/minecraft/client/gui/GuiIngame"));
+			mObInitMap.put(new Pair<String, String>("bfu", "net/minecraft/client/gui/inventory/GuiInventory"));
+			mObInitMap.put(new Pair<String, String>("bjt", "net/minecraft/client/network/OldServerPinger$2$1"));
+			mObInitMap.put(new Pair<String, String>("bns", "net/minecraft/client/renderer/entity/RenderFish"));
+			mObInitMap.put(new Pair<String, String>("sl", "net/minecraft/command/IEntitySelector$2"));
+			mObInitMap.put(new Pair<String, String>("om", "net/minecraft/server/management/UserList"));
+			mObInitMap.put(new Pair<String, String>("kn", "net/minecraft/init/Bootstrap$10"));
+			mObInitMap.put(new Pair<String, String>("go", "net/minecraft/network/play/server/S30PacketWindowItems"));
+			mObInitMap.put(new Pair<String, String>("cp", "net/minecraft/dispenser/IBehaviorDispenseItem"));
+			mObInitMap.put(new Pair<String, String>("ake", "net/minecraft/block/BlockWorkbench"));
+			mObInitMap.put(new Pair<String, String>("acg", "net/minecraft/item/ItemTool"));
+			mObInitMap.put(new Pair<String, String>("agf", "net/minecraft/enchantment/EnchantmentKnockback"));
+			mObInitMap.put(new Pair<String, String>("bsf",
+					"net/minecraft/client/resources/data/LanguageMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("avm", "net/minecraft/world/gen/structure/StructureStart"));
+			mObInitMap.put(new Pair<String, String>("bcj", "net/minecraft/client/gui/GuiOptionButton"));
+			mObInitMap
+					.put(new Pair<String, String>("bgi", "net/minecraft/client/resources/ResourcePackListEntryFound"));
+			mObInitMap.put(new Pair<String, String>("bkh", "net/minecraft/client/particle/EntityHeartFX"));
+			mObInitMap.put(new Pair<String, String>("bog", "net/minecraft/client/renderer/entity/RenderLightningBolt"));
+			mObInitMap.put(new Pair<String, String>("lb", "net/minecraft/client/util/JsonException"));
+			mObInitMap.put(new Pair<String, String>("hc", "net/minecraft/network/play/server/S29PacketSoundEffect"));
+			mObInitMap.put(new Pair<String, String>("dd", "net/minecraft/util/StatCollector"));
+			mObInitMap.put(new Pair<String, String>("wj", "net/minecraft/entity/passive/EntityHorse$1"));
+			mObInitMap.put(new Pair<String, String>("asb", "net/minecraft/world/gen/feature/WorldGenHugeTrees"));
+			mObInitMap.put(new Pair<String, String>("aoc", "net/minecraft/block/BlockTorch"));
+			mObInitMap.put(
+					new Pair<String, String>("awa", "net/minecraft/world/gen/structure/StructureVillagePieces$Start"));
+			mObInitMap.put(new Pair<String, String>("la", "net/minecraft/init/Bootstrap$9"));
+			mObInitMap.put(new Pair<String, String>("aov", "net/minecraft/tileentity/TileEntityBrewingStand"));
+			mObInitMap.put(new Pair<String, String>("akw", "net/minecraft/block/ITileEntityProvider"));
+			mObInitMap.put(new Pair<String, String>("acy", "net/minecraft/item/ItemAppleGold"));
+			mObInitMap.put(new Pair<String, String>("agx", "net/minecraft/world/ColorizerFoliage"));
+			mObInitMap.put(new Pair<String, String>("awt", "net/minecraft/block/material/Material"));
+			mObInitMap.put(new Pair<String, String>("bsx", "net/minecraft/server/integrated/IntegratedServer"));
+			mObInitMap.put(new Pair<String, String>("boy", "net/minecraft/client/renderer/entity/RenderTNTPrimed"));
+			mObInitMap.put(new Pair<String, String>("bkz", "net/minecraft/client/particle/EntitySuspendFX"));
+			mObInitMap.put(new Pair<String, String>("xq", "net/minecraft/entity/item/EntityMinecartFurnace"));
+			mObInitMap.put(new Pair<String, String>("tr", "net/minecraft/entity/EntityBodyHelper"));
+			mObInitMap.put(new Pair<String, String>("lt", "net/minecraft/server/dedicated/DedicatedServer"));
+			mObInitMap.put(new Pair<String, String>("hu", "net/minecraft/network/play/server/S09PacketHeldItemChange"));
+			mObInitMap.put(new Pair<String, String>("dv", "net/minecraft/nbt/NBTUtil"));
+			mObInitMap.put(new Pair<String, String>("ati",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Straight"));
+			mObInitMap.put(new Pair<String, String>("apj", "net/minecraft/tileentity/TileEntityMobSpawner"));
+			mObInitMap.put(new Pair<String, String>("alk", "net/minecraft/block/BlockBreakable"));
+			mObInitMap.put(new Pair<String, String>("adm", "net/minecraft/item/ItemNameTag"));
+			mObInitMap.put(new Pair<String, String>("ahl", "net/minecraft/world/IBlockAccess"));
+			mObInitMap.put(new Pair<String, String>("btl", "net/minecraft/client/audio/SoundManager$2"));
+			mObInitMap.put(new Pair<String, String>("bpm", "net/minecraft/client/shader/ShaderLoader$ShaderType"));
+			mObInitMap.put(new Pair<String, String>("bdp", "net/minecraft/client/gui/GuiIngameMenu"));
+			mObInitMap.put(new Pair<String, String>("bho", "net/minecraft/client/model/ModelMagmaCube"));
+			mObInitMap.put(new Pair<String, String>("bln", "net/minecraft/entity/boss/BossStatus"));
+			mObInitMap.put(new Pair<String, String>("uf", "net/minecraft/entity/ai/EntityAISwimming"));
+			mObInitMap.put(new Pair<String, String>("qg", "net/minecraft/util/EnumTypeAdapterFactory$1"));
+			mObInitMap.put(new Pair<String, String>("ii", "net/minecraft/network/play/server/S33PacketUpdateSign"));
+			mObInitMap.put(new Pair<String, String>("ej", "net/minecraft/network/NetworkManager"));
+			mObInitMap.put(new Pair<String, String>("ak", "net/minecraft/command/CommandDebug"));
+			mObInitMap.put(new Pair<String, String>("aea", "net/minecraft/item/ItemSimpleFoiled"));
+			mObInitMap.put(new Pair<String, String>("aab", "net/minecraft/inventory/ContainerBrewingStand$Potion"));
+			mObInitMap.put(new Pair<String, String>("b", "net/minecraft/crash/CrashReport"));
+			mObInitMap.put(new Pair<String, String>("bqa", "net/minecraft/client/renderer/texture/TextureMap$1"));
+			mObInitMap.put(new Pair<String, String>("ath",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$End"));
+			mObInitMap.put(new Pair<String, String>("bae", "net/minecraft/scoreboard/Team"));
+			mObInitMap.put(new Pair<String, String>("bed", "net/minecraft/client/gui/GuiScreenOptionsSounds$Button"));
+			mObInitMap.put(new Pair<String, String>("bic", "net/minecraft/client/model/ModelSkeleton"));
+			mObInitMap.put(new Pair<String, String>("bmb", "net/minecraft/client/renderer/RenderGlobal$1"));
+			mObInitMap.put(new Pair<String, String>("yd", "net/minecraft/entity/monster/EntityGhast"));
+			mObInitMap.put(new Pair<String, String>("ue", "net/minecraft/entity/ai/EntityAIFleeSun"));
+			mObInitMap.put(new Pair<String, String>("aau", "net/minecraft/inventory/SlotMerchantResult"));
+			mObInitMap.put(new Pair<String, String>("u", "net/minecraft/util/Util"));
+			mObInitMap.put(new Pair<String, String>("bax", "net/minecraft/client/Minecraft$SwitchMovingObjectType"));
+			mObInitMap.put(new Pair<String, String>("bew", "net/minecraft/client/gui/GuiControls"));
+			mObInitMap.put(new Pair<String, String>("yw", "net/minecraft/entity/player/PlayerCapabilities"));
+			mObInitMap.put(new Pair<String, String>("ux", "net/minecraft/entity/ai/EntityAILookAtVillager"));
+			mObInitMap.put(new Pair<String, String>("mz", "net/minecraft/network/PingResponseHandler"));
+			mObInitMap.put(new Pair<String, String>("aqp", "net/minecraft/world/WorldProviderHell"));
+			mObInitMap.put(new Pair<String, String>("amq", "net/minecraft/block/BlockPortal$Size"));
+			mObInitMap.put(new Pair<String, String>("aat", "net/minecraft/inventory/ContainerMerchant"));
+			mObInitMap.put(new Pair<String, String>("air", "net/minecraft/world/biome/BiomeGenRiver"));
+			mObInitMap.put(new Pair<String, String>("auo",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Crossing"));
+			mObInitMap.put(new Pair<String, String>("ayn", "net/minecraft/world/chunk/storage/AnvilSaveConverter"));
+			mObInitMap.put(new Pair<String, String>("bbl", "net/minecraft/client/settings/GameSettings$SwitchOptions"));
+			mObInitMap.put(new Pair<String, String>("bur", "net/minecraft/client/stream/NullStream"));
+			mObInitMap.put(new Pair<String, String>("bqs", "net/minecraft/client/resources/FolderResourcePack"));
+			mObInitMap.put(new Pair<String, String>("bmt", "net/minecraft/client/renderer/tileentity/RenderEndPortal"));
+			mObInitMap.put(new Pair<String, String>("zk", "net/minecraft/entity/projectile/EntityThrowable"));
+			mObInitMap.put(new Pair<String, String>("vl", "net/minecraft/entity/ai/EntityAITradePlayer"));
+			mObInitMap.put(new Pair<String, String>("rm", "net/minecraft/util/CombatEntry"));
+			mObInitMap.put(new Pair<String, String>("nn", "net/minecraft/server/network/NetHandlerLoginServer"));
+			mObInitMap.put(
+					new Pair<String, String>("jo", "net/minecraft/network/play/client/C08PacketPlayerBlockPlacement"));
+			mObInitMap.put(new Pair<String, String>("fp", "net/minecraft/util/ChatStyle$Serializer"));
+			mObInitMap.put(new Pair<String, String>("bq", "net/minecraft/command/CommandShowSeed"));
+			mObInitMap.put(new Pair<String, String>("ard", "net/minecraft/world/gen/feature/WorldGenBigTree"));
+			mObInitMap.put(new Pair<String, String>("ane", "net/minecraft/block/BlockReed"));
+			mObInitMap.put(new Pair<String, String>("abh", "net/minecraft/item/ItemBlock"));
+			mObInitMap.put(new Pair<String, String>("afg", "net/minecraft/item/crafting/IRecipe"));
+			mObInitMap.put(new Pair<String, String>("ajf", "net/minecraft/block/BlockRailBase$Rail"));
+			mObInitMap.put(new Pair<String, String>("avc",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold"));
+			mObInitMap.put(
+					new Pair<String, String>("brg", "net/minecraft/client/resources/SimpleReloadableResourceManager"));
+			mObInitMap.put(new Pair<String, String>("bbk", "net/minecraft/client/settings/GameSettings$1"));
+			mObInitMap.put(new Pair<String, String>("bfj", "net/minecraft/client/gui/inventory/GuiCrafting"));
+			mObInitMap.put(new Pair<String, String>("bji", "net/minecraft/client/multiplayer/WorldClient$3"));
+			mObInitMap.put(new Pair<String, String>("bnh", "net/minecraft/client/renderer/entity/RenderCow"));
+			mObInitMap.put(new Pair<String, String>("sa", "net/minecraft/entity/Entity"));
+			mObInitMap.put(new Pair<String, String>("ob", "net/minecraft/server/management/PreYggdrasilConverter$2"));
+			mObInitMap
+					.put(new Pair<String, String>("kc", "net/minecraft/network/ServerStatusResponse$PlayerCountData"));
+			mObInitMap.put(new Pair<String, String>("gd", "net/minecraft/network/play/server/S37PacketStatistics"));
+			mObInitMap.put(new Pair<String, String>("ce", "net/minecraft/command/NumberInvalidException"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/Realms", "net/minecraft/realms/Realms"));
+			mObInitMap.put(new Pair<String, String>("ajy", "net/minecraft/block/BlockClay"));
+			mObInitMap.put(new Pair<String, String>("afz", "net/minecraft/enchantment/EnchantmentHelper$IModifier"));
+			mObInitMap.put(new Pair<String, String>("brz", "net/minecraft/client/resources/data/AnimationFrame"));
+			mObInitMap.put(new Pair<String, String>("avb",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$StairsStraight"));
+			mObInitMap.put(new Pair<String, String>("aza", "net/minecraft/world/storage/WorldInfo$8"));
+			mObInitMap.put(new Pair<String, String>("kv", "net/minecraft/init/Bootstrap$5"));
+			mObInitMap.put(new Pair<String, String>("gw", "net/minecraft/network/play/server/S00PacketKeepAlive"));
+			mObInitMap.put(new Pair<String, String>("cx", "net/minecraft/dispenser/IPosition"));
+			mObInitMap.put(new Pair<String, String>("arv", "net/minecraft/world/gen/feature/WorldGenIcePath"));
+			mObInitMap.put(new Pair<String, String>("anw", "net/minecraft/block/BlockStoneBrick"));
+			mObInitMap.put(new Pair<String, String>("ajx", "net/minecraft/block/BlockChest"));
+			mObInitMap.put(new Pair<String, String>("avu",
+					"net/minecraft/world/gen/structure/StructureVillagePieces$PieceWeight"));
+			mObInitMap.put(new Pair<String, String>("azt", "net/minecraft/util/AxisAlignedBB"));
+			mObInitMap.put(new Pair<String, String>("bcr", "net/minecraft/client/gui/GuiSlotRealmsProxy"));
+			mObInitMap.put(new Pair<String, String>("bgq",
+					"net/minecraft/client/gui/stream/GuiStreamUnavailable$SwitchReason"));
+			mObInitMap.put(new Pair<String, String>("bkp", "net/minecraft/client/particle/EffectRenderer$2"));
+			mObInitMap.put(new Pair<String, String>("wr", "net/minecraft/entity/monster/EntitySnowman"));
+			mObInitMap.put(new Pair<String, String>("ss", "net/minecraft/entity/EntityHanging"));
+			mObInitMap.put(new Pair<String, String>("ot", "net/minecraft/network/rcon/RConOutputStream"));
+			mObInitMap.put(new Pair<String, String>("ku", "net/minecraft/init/Bootstrap$4"));
+			mObInitMap.put(new Pair<String, String>("asj", "net/minecraft/world/gen/feature/WorldGenSand"));
+			mObInitMap.put(new Pair<String, String>("aok", "net/minecraft/block/BlockWeb"));
+			mObInitMap.put(new Pair<String, String>("akl", "net/minecraft/block/BlockDirt"));
+			mObInitMap.put(new Pair<String, String>("acn", "net/minecraft/item/ItemEnderEye"));
+			mObInitMap.put(new Pair<String, String>("agm", "net/minecraft/entity/IMerchant"));
+			mObInitMap.put(new Pair<String, String>("bsm", "net/minecraft/client/audio/MovingSoundMinecart"));
+			mObInitMap.put(new Pair<String, String>("bon", "net/minecraft/client/renderer/entity/RenderPainting"));
+			mObInitMap.put(new Pair<String, String>("bko", "net/minecraft/client/particle/EffectRenderer$1"));
+			mObInitMap.put(new Pair<String, String>("xf", "net/minecraft/util/WeightedRandomFishable"));
+			mObInitMap.put(new Pair<String, String>("tg", "net/minecraft/entity/passive/EntityTameable"));
+			mObInitMap.put(new Pair<String, String>("ph", "net/minecraft/stats/StatBase"));
+			mObInitMap.put(new Pair<String, String>("li", "net/minecraft/server/MinecraftServer$2"));
+			mObInitMap.put(new Pair<String, String>("hj", "net/minecraft/network/play/server/S36PacketSignEditorOpen"));
+			mObInitMap.put(new Pair<String, String>("dk", "net/minecraft/nbt/NBTTagDouble"));
+			mObInitMap.put(new Pair<String, String>("adb", "net/minecraft/item/Item"));
+			mObInitMap.put(new Pair<String, String>("aha", "net/minecraft/world/ColorizerGrass"));
+			mObInitMap.put(new Pair<String, String>("bta", "net/minecraft/client/network/LanServerDetector"));
+			mObInitMap.put(new Pair<String, String>("bpb", "net/minecraft/client/renderer/entity/RenderWitch"));
+			mObInitMap.put(new Pair<String, String>("bde", "net/minecraft/client/gui/GuiScreenServerList"));
+			mObInitMap.put(new Pair<String, String>("bhd", "net/minecraft/client/model/ModelBlaze"));
+			mObInitMap.put(new Pair<String, String>("blc", "net/minecraft/client/particle/EntityBlockDustFX"));
+			mObInitMap.put(new Pair<String, String>("tz", "net/minecraft/entity/ai/EntityAIBreakDoor"));
+			mObInitMap.put(new Pair<String, String>("als", "net/minecraft/block/BlockLadder"));
+			mObInitMap.put(new Pair<String, String>("aht", "net/minecraft/world/biome/BiomeGenBeach"));
+			mObInitMap.put(new Pair<String, String>("btt", "net/minecraft/client/audio/SoundRegistry"));
+			mObInitMap.put(new Pair<String, String>("bpu", "net/minecraft/client/renderer/texture/SimpleTexture"));
+			mObInitMap.put(new Pair<String, String>("bdx", "net/minecraft/client/gui/GuiSelectWorld"));
+			mObInitMap.put(new Pair<String, String>("bhw", "net/minecraft/client/model/ModelQuadruped"));
+			mObInitMap.put(new Pair<String, String>("blv", "net/minecraft/client/renderer/EntityRenderer$2"));
+			mObInitMap.put(new Pair<String, String>("iq", "net/minecraft/network/play/client/C14PacketTabComplete"));
+			mObInitMap.put(new Pair<String, String>("er", "net/minecraft/network/EnumConnectionState$3"));
+			mObInitMap.put(new Pair<String, String>("as", "net/minecraft/command/CommandGameRule"));
+			mObInitMap.put(new Pair<String, String>("xx", "net/minecraft/entity/monster/EntityBlaze"));
+			mObInitMap.put(new Pair<String, String>("ty", "net/minecraft/entity/ai/EntityAIBeg"));
+			mObInitMap.put(new Pair<String, String>("aaj", "net/minecraft/inventory/ContainerFurnace"));
+			mObInitMap.put(new Pair<String, String>("j", "net/minecraft/crash/CrashReport$8"));
+			mObInitMap.put(new Pair<String, String>("atp",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor2"));
+			mObInitMap.put(new Pair<String, String>("apq", "net/minecraft/block/BlockPistonExtension"));
+			mObInitMap.put(new Pair<String, String>("alr", "net/minecraft/block/BlockJukebox$TileEntityJukebox"));
+			mObInitMap.put(new Pair<String, String>("axo", "net/minecraft/world/gen/layer/GenLayer$1"));
+			mObInitMap.put(new Pair<String, String>("bam", "net/minecraft/client/renderer/RenderHelper"));
+			mObInitMap
+					.put(new Pair<String, String>("bel", "net/minecraft/client/gui/achievement/GuiStats$StatsBlock$1"));
+			mObInitMap.put(new Pair<String, String>("bik", "net/minecraft/client/model/ModelVillager"));
+			mObInitMap.put(new Pair<String, String>("bmj",
+					"net/minecraft/client/renderer/tileentity/TileEntityBeaconRenderer"));
+			mObInitMap.put(new Pair<String, String>("bg", "net/minecraft/command/server/CommandPublishLocalServer"));
+			mObInitMap.put(new Pair<String, String>("yl", "net/minecraft/entity/monster/EntitySkeleton"));
+			mObInitMap.put(new Pair<String, String>("um", "net/minecraft/entity/ai/EntityAILeapAtTarget"));
+			mObInitMap.put(new Pair<String, String>("qn", "net/minecraft/util/StringUtils"));
+			mObInitMap.put(new Pair<String, String>("mo", "net/minecraft/entity/EntityTracker$1"));
+			mObInitMap.put(new Pair<String, String>("amf", "net/minecraft/block/BlockNetherWart"));
+			mObInitMap.put(new Pair<String, String>("aeh", "net/minecraft/item/ItemSword"));
+			mObInitMap.put(new Pair<String, String>("aai", "net/minecraft/inventory/ContainerEnchantment$2"));
+			mObInitMap.put(new Pair<String, String>("aig", "net/minecraft/world/biome/BiomeGenForest$1"));
+			mObInitMap.put(new Pair<String, String>("aud",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$JunglePyramid$Stones"));
+			mObInitMap.put(new Pair<String, String>("ayc", "net/minecraft/world/gen/layer/GenLayerZoom"));
+			mObInitMap.put(new Pair<String, String>("bba", "net/minecraft/client/Minecraft$4"));
+			mObInitMap.put(new Pair<String, String>("bug", "net/minecraft/client/stream/ChatController$ChatState"));
+			mObInitMap.put(new Pair<String, String>("bqh", "net/minecraft/client/renderer/texture/ITextureObject"));
+			mObInitMap.put(new Pair<String, String>("bmi", "net/minecraft/client/shader/TesselatorVertexState"));
+			mObInitMap.put(new Pair<String, String>("va", "net/minecraft/entity/ai/EntityAIPlay"));
+			mObInitMap.put(new Pair<String, String>("rb", "net/minecraft/inventory/IInventory"));
+			mObInitMap.put(new Pair<String, String>("nc", "net/minecraft/network/NetworkSystem"));
+			mObInitMap.put(new Pair<String, String>("jd", "net/minecraft/network/play/client/C03PacketPlayer"));
+			mObInitMap.put(new Pair<String, String>("fe", "net/minecraft/util/ChatComponentStyle"));
+			mObInitMap.put(new Pair<String, String>("bf", "net/minecraft/command/CommandPlaySound"));
+			mObInitMap.put(new Pair<String, String>("aqx", "net/minecraft/world/gen/MapGenBase"));
+			mObInitMap.put(new Pair<String, String>("amy", "net/minecraft/block/BlockRail"));
+			mObInitMap.put(new Pair<String, String>("aiz", "net/minecraft/world/gen/feature/WorldGenWaterlily"));
+			mObInitMap.put(new Pair<String, String>("auw",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Stones"));
+			mObInitMap.put(new Pair<String, String>("vt", "net/minecraft/entity/ai/EntityAIOwnerHurtTarget"));
+			mObInitMap.put(new Pair<String, String>("ru", "net/minecraft/potion/PotionHealth"));
+			mObInitMap.put(
+					new Pair<String, String>("nv", "net/minecraft/server/management/PlayerProfileCache$ProfileEntry"));
+			mObInitMap.put(new Pair<String, String>("jw", "net/minecraft/network/login/client/C00PacketLoginStart"));
+			mObInitMap.put(
+					new Pair<String, String>("fx", "net/minecraft/network/play/server/S11PacketSpawnExperienceOrb"));
+			mObInitMap.put(new Pair<String, String>("by", "net/minecraft/command/server/CommandTestFor"));
+			mObInitMap.put(new Pair<String, String>("abp", "net/minecraft/item/ItemCarrotOnAStick"));
+			mObInitMap.put(new Pair<String, String>("afo", "net/minecraft/enchantment/EnchantmentArrowInfinite"));
+			mObInitMap.put(new Pair<String, String>("ajn", "net/minecraft/init/Blocks"));
+			mObInitMap.put(new Pair<String, String>("bro",
+					"net/minecraft/client/resources/SkinManager$SkinAvailableCallback"));
+			mObInitMap.put(new Pair<String, String>("auv",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$RoomCrossing"));
+			mObInitMap.put(new Pair<String, String>("ayu", "net/minecraft/world/storage/WorldInfo$2"));
+			mObInitMap.put(new Pair<String, String>("bbs", "net/minecraft/util/Session"));
+			mObInitMap.put(new Pair<String, String>("bfr", "net/minecraft/client/gui/inventory/GuiFurnace"));
+			mObInitMap.put(new Pair<String, String>("bjq", "net/minecraft/client/network/OldServerPinger"));
+			mObInitMap.put(new Pair<String, String>("bnp", "net/minecraft/client/renderer/entity/RenderXPOrb"));
+			mObInitMap.put(new Pair<String, String>("kk", "net/minecraft/dispenser/BehaviorProjectileDispense"));
+			mObInitMap.put(
+					new Pair<String, String>("gl", "net/minecraft/network/play/server/S32PacketConfirmTransaction"));
+			mObInitMap.put(new Pair<String, String>("cm", "net/minecraft/dispenser/BehaviorDefaultDispenseItem"));
+			mObInitMap.put(new Pair<String, String>("zr", "net/minecraft/util/FoodStats"));
+			mObInitMap.put(new Pair<String, String>("vs", "net/minecraft/entity/ai/EntityAIOwnerHurtByTarget"));
+			mObInitMap.put(new Pair<String, String>("ark", "net/minecraft/world/gen/feature/WorldGenDeadBush"));
+			mObInitMap.put(new Pair<String, String>("anl", "net/minecraft/block/BlockSkull"));
+			mObInitMap.put(new Pair<String, String>("ajm", "net/minecraft/block/Block$SoundType"));
+			mObInitMap.put(new Pair<String, String>("avj", "net/minecraft/world/gen/structure/MapGenStructureData"));
+			mObInitMap.put(new Pair<String, String>("bgf", "net/minecraft/client/gui/GuiScreenResourcePacks"));
+			mObInitMap.put(new Pair<String, String>("bke", "net/minecraft/client/particle/EntityFireworkStarterFX"));
+			mObInitMap.put(new Pair<String, String>("wg", "net/minecraft/entity/passive/EntityChicken"));
+			mObInitMap.put(new Pair<String, String>("sh", "net/minecraft/entity/EntityList$EntityEggInfo"));
+			mObInitMap
+					.put(new Pair<String, String>("oi", "net/minecraft/server/management/ServerConfigurationManager"));
+			mObInitMap.put(new Pair<String, String>("kj", "net/minecraft/network/status/client/C00PacketServerQuery"));
+			mObInitMap.put(new Pair<String, String>("aka", "net/minecraft/block/BlockColored"));
+			mObInitMap.put(new Pair<String, String>("acc", "net/minecraft/creativetab/CreativeTabs$6"));
+			mObInitMap
+					.put(new Pair<String, String>("agb", "net/minecraft/enchantment/EnchantmentHelper$ModifierDamage"));
+			mObInitMap.put(new Pair<String, String>("bsb",
+					"net/minecraft/client/resources/data/AnimationMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("bkd", "net/minecraft/client/particle/EntityFireworkSparkFX"));
+			mObInitMap.put(new Pair<String, String>("boc", "net/minecraft/client/renderer/entity/RenderItem$4"));
+			mObInitMap.put(new Pair<String, String>("wz", "net/minecraft/entity/item/EntityEnderCrystal"));
+			mObInitMap.put(new Pair<String, String>("asr", "net/minecraft/world/gen/feature/WorldGenVines"));
+			mObInitMap.put(new Pair<String, String>("aos", "net/minecraft/tileentity/TileEntity$1"));
+			mObInitMap.put(new Pair<String, String>("akt", "net/minecraft/block/BlockEndPortal"));
+			mObInitMap.put(new Pair<String, String>("acv", "net/minecraft/item/ItemFishingRod"));
+			mObInitMap.put(new Pair<String, String>("agu", "net/minecraft/world/ChunkCoordIntPair"));
+			mObInitMap.put(new Pair<String, String>("awq", "net/minecraft/block/material/MaterialLogic"));
+			mObInitMap.put(new Pair<String, String>("bsu", "net/minecraft/client/audio/ISound$AttenuationType"));
+			mObInitMap.put(new Pair<String, String>("bov", "net/minecraft/client/renderer/entity/RenderSpider"));
+			mObInitMap.put(new Pair<String, String>("bcy", "net/minecraft/client/multiplayer/GuiConnecting$1"));
+			mObInitMap.put(new Pair<String, String>("bkw", "net/minecraft/client/particle/EntitySnowShovelFX"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsAnvilLevelStorageSource",
+					"net/minecraft/realms/RealmsAnvilLevelStorageSource"));
+			mObInitMap.put(new Pair<String, String>("to", "net/minecraft/entity/ai/attributes/RangedAttribute"));
+			mObInitMap.put(new Pair<String, String>("pp", "net/minecraft/stats/StatList"));
+			mObInitMap.put(new Pair<String, String>("lq", "net/minecraft/server/dedicated/PropertyManager"));
+			mObInitMap.put(
+					new Pair<String, String>("hr", "net/minecraft/network/play/server/S1EPacketRemoveEntityEffect"));
+			mObInitMap.put(new Pair<String, String>("ds", "net/minecraft/nbt/NBTSizeTracker"));
+			mObInitMap.put(new Pair<String, String>("alh", "net/minecraft/block/BlockGrass"));
+			mObInitMap.put(new Pair<String, String>("adj", "net/minecraft/item/ItemMinecart"));
+			mObInitMap.put(new Pair<String, String>("bti", "net/minecraft/client/audio/SoundPoolEntry"));
+			mObInitMap.put(new Pair<String, String>("bpj", "net/minecraft/client/shader/ShaderGroup"));
+			mObInitMap.put(new Pair<String, String>("awp", "net/minecraft/world/gen/NoiseGenerator"));
+			mObInitMap.put(new Pair<String, String>("bdm", "net/minecraft/client/gui/GuiOptions"));
+			mObInitMap.put(new Pair<String, String>("bhl", "net/minecraft/client/model/ModelGhast"));
+			mObInitMap.put(new Pair<String, String>("blk", "net/minecraft/client/entity/EntityPlayerSP"));
+			mObInitMap.put(new Pair<String, String>("me", "net/minecraft/server/gui/PlayerListComponent"));
+			mObInitMap.put(new Pair<String, String>("eg", "net/minecraft/network/NettyEncryptionTranslator"));
+			mObInitMap.put(new Pair<String, String>("ah", "net/minecraft/command/server/CommandBroadcast"));
+			mObInitMap.put(new Pair<String, String>("xm", "net/minecraft/entity/item/EntityMinecartChest"));
+			mObInitMap.put(
+					new Pair<String, String>("net/minecraft/realms/Tezzelator", "net/minecraft/realms/Tezzelator"));
+			mObInitMap
+					.put(new Pair<String, String>("ate", "net/minecraft/world/gen/structure/MapGenNetherBridge$Start"));
+			mObInitMap.put(new Pair<String, String>("apf", "net/minecraft/tileentity/TileEntityFlowerPot"));
+			mObInitMap.put(new Pair<String, String>("alg", "net/minecraft/block/BlockGlowstone"));
+			mObInitMap.put(new Pair<String, String>("axd", "net/minecraft/world/gen/layer/GenLayerAddSnow"));
+			mObInitMap.put(new Pair<String, String>("bea", "net/minecraft/client/gui/GuiSnooper"));
+			mObInitMap.put(new Pair<String, String>("ya", "net/minecraft/entity/monster/EntityEnderman"));
+			mObInitMap.put(new Pair<String, String>("ub", "net/minecraft/entity/ai/EntityAIControlledByPlayer"));
+			mObInitMap.put(new Pair<String, String>("qc", "net/minecraft/util/ThreadSafeBoundList"));
+			mObInitMap.put(new Pair<String, String>("md", "net/minecraft/server/gui/MinecraftServerGui$5"));
+			mObInitMap.put(new Pair<String, String>("r", "net/minecraft/util/ChunkCoordinates"));
+			mObInitMap.put(new Pair<String, String>("atx", "net/minecraft/world/gen/structure/MapGenScatteredFeature"));
+			mObInitMap.put(new Pair<String, String>("apy", "net/minecraft/world/chunk/Chunk$1"));
+			mObInitMap.put(new Pair<String, String>("alz", "net/minecraft/block/BlockCompressed"));
+			mObInitMap.put(new Pair<String, String>("axw", "net/minecraft/world/gen/layer/GenLayerShore"));
+			mObInitMap.put(new Pair<String, String>("bau", "net/minecraft/client/Minecraft$14"));
+			mObInitMap.put(new Pair<String, String>("yt", "net/minecraft/entity/NpcMerchant"));
+			mObInitMap.put(new Pair<String, String>("uu", "net/minecraft/entity/ai/EntityAIMoveTowardsTarget"));
+			mObInitMap.put(new Pair<String, String>("qv", "net/minecraft/util/WeightedRandom"));
+			mObInitMap.put(new Pair<String, String>("mw", "net/minecraft/entity/player/EntityPlayerMP"));
+			mObInitMap.put(new Pair<String, String>("ix", "net/minecraft/network/play/client/C0EPacketClickWindow"));
+			mObInitMap.put(new Pair<String, String>("ey", "net/minecraft/network/NetworkStatistics$PacketStatData"));
+			mObInitMap.put(new Pair<String, String>("az", "net/minecraft/command/server/CommandMessage"));
+			mObInitMap.put(new Pair<String, String>("amn", "net/minecraft/block/BlockOre"));
+			mObInitMap.put(new Pair<String, String>("aaq", "net/minecraft/inventory/ContainerPlayer$1"));
+			mObInitMap.put(new Pair<String, String>("aio", "net/minecraft/world/biome/BiomeGenOcean"));
+			mObInitMap.put(new Pair<String, String>("aul",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$SwitchDoor"));
+			mObInitMap.put(new Pair<String, String>("buo", "net/minecraft/client/stream/TwitchStream"));
+			mObInitMap.put(new Pair<String, String>("bqp", "net/minecraft/client/resources/DefaultResourcePack"));
+			mObInitMap.put(new Pair<String, String>("bat", "net/minecraft/client/Minecraft$13"));
+			mObInitMap.put(new Pair<String, String>("bes", "net/minecraft/client/gui/GuiKeyBindingList"));
+			mObInitMap.put(new Pair<String, String>("bir", "net/minecraft/client/model/ModelEnderCrystal"));
+			mObInitMap.put(new Pair<String, String>("bmq",
+					"net/minecraft/client/renderer/tileentity/TileEntityRendererPiston"));
+			mObInitMap.put(new Pair<String, String>("vi", "net/minecraft/entity/ai/EntityAICreeperSwell"));
+			mObInitMap.put(new Pair<String, String>("rj", "net/minecraft/profiler/PlayerUsageSnooper$1"));
+			mObInitMap
+					.put(new Pair<String, String>("nk", "net/minecraft/network/NetHandlerPlayServer$SwitchEnumState"));
+			mObInitMap.put(new Pair<String, String>("jl", "net/minecraft/network/play/client/C09PacketHeldItemChange"));
+			mObInitMap.put(new Pair<String, String>("fm", "net/minecraft/event/HoverEvent$Action"));
+			mObInitMap.put(new Pair<String, String>("bn", "net/minecraft/command/server/CommandSetDefaultSpawnpoint"));
+			mObInitMap.put(new Pair<String, String>("abe", "net/minecraft/item/ItemBlockWithMetadata"));
+			mObInitMap.put(new Pair<String, String>("afd", "net/minecraft/item/crafting/RecipesIngots"));
+			mObInitMap.put(new Pair<String, String>("ajc", "net/minecraft/block/BlockContainer"));
+			mObInitMap.put(new Pair<String, String>("brd", "net/minecraft/client/resources/ResourcePackRepository$1"));
+			mObInitMap.put(
+					new Pair<String, String>("auk", "net/minecraft/world/gen/structure/StructureStrongholdPieces$2"));
+			mObInitMap.put(new Pair<String, String>("ayj", "net/minecraft/world/storage/MapData$MapInfo"));
+			mObInitMap.put(new Pair<String, String>("bbh", "net/minecraft/client/renderer/OpenGlCapsChecker"));
+			mObInitMap.put(new Pair<String, String>("bfg", "net/minecraft/client/gui/inventory/GuiBrewingStand"));
+			mObInitMap.put(new Pair<String, String>("bjf", "net/minecraft/client/multiplayer/WorldClient"));
+			mObInitMap.put(new Pair<String, String>("bne", "net/minecraft/client/renderer/entity/RenderBoat"));
+			mObInitMap.put(new Pair<String, String>("ga", "net/minecraft/network/play/server/S10PacketSpawnPainting"));
+			mObInitMap.put(new Pair<String, String>("cb", "net/minecraft/command/CommandWeather"));
+			mObInitMap.put(new Pair<String, String>("zg", "net/minecraft/entity/projectile/EntityLargeFireball"));
+			mObInitMap.put(new Pair<String, String>("vh", "net/minecraft/entity/ai/EntityAISit"));
+			mObInitMap.put(new Pair<String, String>("abx", "net/minecraft/creativetab/CreativeTabs$12"));
+			mObInitMap.put(new Pair<String, String>("ana", "net/minecraft/block/BlockRedstoneWire"));
+			mObInitMap.put(new Pair<String, String>("bfz", "net/minecraft/client/gui/GuiMultiplayer"));
+			mObInitMap.put(new Pair<String, String>("bjy", "net/minecraft/client/particle/EntityDropParticleFX"));
+			mObInitMap.put(new Pair<String, String>("zz", "net/minecraft/inventory/ContainerBrewingStand"));
+			mObInitMap.put(new Pair<String, String>("ars", "net/minecraft/world/gen/feature/WorldGenHellLava"));
+			mObInitMap.put(new Pair<String, String>("ant", "net/minecraft/block/BlockStaticLiquid"));
+			mObInitMap.put(new Pair<String, String>("abw", "net/minecraft/creativetab/CreativeTabs$11"));
+			mObInitMap.put(new Pair<String, String>("afv", "net/minecraft/enchantment/EnchantmentHelper"));
+			mObInitMap.put(new Pair<String, String>("aju", "net/minecraft/block/BlockCake"));
+			mObInitMap.put(
+					new Pair<String, String>("avr", "net/minecraft/world/gen/structure/StructureVillagePieces$Field1"));
+			mObInitMap.put(new Pair<String, String>("azq", "net/minecraft/world/storage/MapStorage"));
+			mObInitMap.put(new Pair<String, String>("bco", "net/minecraft/client/gui/GuiStreamIndicator"));
+			mObInitMap.put(
+					new Pair<String, String>("brv", "net/minecraft/client/resources/data/IMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("bnw", "net/minecraft/client/renderer/entity/RenderBiped"));
+			mObInitMap.put(new Pair<String, String>("wo", "net/minecraft/entity/passive/EntityPig"));
+			mObInitMap.put(new Pair<String, String>("sp", "net/minecraft/command/IEntitySelector$ArmoredMob"));
+			mObInitMap.put(new Pair<String, String>("oq", "net/minecraft/server/management/UserListBansEntry"));
+			mObInitMap.put(new Pair<String, String>("kr", "net/minecraft/init/Bootstrap$14"));
+			mObInitMap.put(new Pair<String, String>("gs", "net/minecraft/network/play/server/S40PacketDisconnect"));
+			mObInitMap.put(new Pair<String, String>("ct", "net/minecraft/util/ObjectIntIdentityMap"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsEditBox",
+					"net/minecraft/realms/RealmsEditBox"));
+			mObInitMap.put(new Pair<String, String>("asg", "net/minecraft/world/gen/feature/WorldGenPumpkin"));
+			mObInitMap.put(new Pair<String, String>("aoh", "net/minecraft/block/BlockVine"));
+			mObInitMap.put(new Pair<String, String>("aki", "net/minecraft/block/BlockRailDetector"));
+			mObInitMap.put(new Pair<String, String>("ack", "net/minecraft/item/ItemEgg"));
+			mObInitMap.put(new Pair<String, String>("agj", "net/minecraft/enchantment/EnchantmentThorns"));
+			mObInitMap.put(
+					new Pair<String, String>("awf", "net/minecraft/world/gen/structure/StructureVillagePieces$Well"));
+			mObInitMap.put(new Pair<String, String>("bsj",
+					"net/minecraft/client/resources/data/TextureMetadataSectionSerializer"));
+			mObInitMap.put(new Pair<String, String>("bok", "net/minecraft/client/renderer/entity/RenderLiving"));
+			mObInitMap.put(new Pair<String, String>("bcn", "net/minecraft/client/gui/GuiOptionSlider"));
+			mObInitMap.put(new Pair<String, String>("bgm", "net/minecraft/client/gui/stream/GuiIngestServers"));
+			mObInitMap.put(new Pair<String, String>("bkl", "net/minecraft/client/particle/EntityNoteFX"));
+			mObInitMap.put(new Pair<String, String>("xc", "net/minecraft/entity/boss/EntityWither"));
+			mObInitMap.put(new Pair<String, String>("td", "net/minecraft/entity/EntityCreature"));
+			mObInitMap.put(new Pair<String, String>("pe", "net/minecraft/stats/StatBasic"));
+			mObInitMap.put(new Pair<String, String>("hg",
+					"net/minecraft/network/play/server/S14PacketEntity$S15PacketEntityRelMove"));
+			mObInitMap.put(new Pair<String, String>("dh", "net/minecraft/nbt/NBTTagCompound"));
+			mObInitMap.put(
+					new Pair<String, String>("awe", "net/minecraft/world/gen/structure/StructureVillagePieces$Road"));
+			mObInitMap.put(new Pair<String, String>("bdb", "net/minecraft/client/gui/GuiCreateWorld"));
+			mObInitMap.put(new Pair<String, String>("ly", "net/minecraft/server/gui/MinecraftServerGui"));
+			mObInitMap
+					.put(new Pair<String, String>("hz", "net/minecraft/network/play/server/S04PacketEntityEquipment"));
+			mObInitMap.put(new Pair<String, String>("asy",
+					"net/minecraft/world/gen/structure/StructureMineshaftPieces$Corridor"));
+			mObInitMap.put(new Pair<String, String>("aoz", "net/minecraft/tileentity/TileEntityComparator"));
+			mObInitMap.put(new Pair<String, String>("awx", "net/minecraft/world/gen/layer/GenLayerDeepOcean"));
+			mObInitMap.put(new Pair<String, String>("bdu", "net/minecraft/client/gui/GuiDownloadTerrain"));
+			mObInitMap.put(new Pair<String, String>("bht", "net/minecraft/client/model/ModelOcelot"));
+			mObInitMap.put(new Pair<String, String>("bls",
+					"net/minecraft/client/renderer/tileentity/TileEntityRendererChestHelper"));
+			mObInitMap.put(new Pair<String, String>("ap", "net/minecraft/command/CommandXP"));
+			mObInitMap.put(new Pair<String, String>("xu", "net/minecraft/entity/ai/EntityMinecartMobSpawner$1"));
+			mObInitMap.put(new Pair<String, String>("tv", "net/minecraft/entity/ai/EntityMoveHelper"));
+			mObInitMap.put(new Pair<String, String>("pw", "net/minecraft/util/HttpUtil$1"));
+			mObInitMap.put(new Pair<String, String>("lx", "net/minecraft/server/dedicated/DedicatedServer$4"));
+			mObInitMap.put(new Pair<String, String>("g", "net/minecraft/crash/CrashReport$5"));
+			mObInitMap.put(new Pair<String, String>("atm",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing2"));
+			mObInitMap.put(new Pair<String, String>("apn", "net/minecraft/tileentity/TileEntitySkull"));
+			mObInitMap.put(new Pair<String, String>("alo", "net/minecraft/block/BlockHugeMushroom"));
+			mObInitMap.put(new Pair<String, String>("adq", "net/minecraft/item/EnumRarity"));
+			mObInitMap.put(new Pair<String, String>("ahp", "net/minecraft/world/Teleporter"));
+			mObInitMap.put(new Pair<String, String>("axl", "net/minecraft/world/gen/layer/IntCache"));
+			mObInitMap.put(new Pair<String, String>("baj", "net/minecraft/client/renderer/ActiveRenderInfo"));
+			mObInitMap.put(new Pair<String, String>("btp", "net/minecraft/client/audio/SoundHandler"));
+			mObInitMap.put(new Pair<String, String>("bpq", "net/minecraft/client/renderer/texture/DynamicTexture"));
+			mObInitMap.put(new Pair<String, String>("blr", "net/minecraft/client/util/RenderDistanceSorter"));
+			mObInitMap.put(new Pair<String, String>("yi", "net/minecraft/entity/IRangedAttackMob"));
+			mObInitMap.put(new Pair<String, String>("uj", "net/minecraft/entity/ai/EntityAITasks"));
+			mObInitMap.put(new Pair<String, String>("qk", "net/minecraft/util/IProgressUpdate"));
+			mObInitMap.put(new Pair<String, String>("ml", "net/minecraft/world/demo/DemoWorldManager"));
+			mObInitMap.put(new Pair<String, String>("im",
+					"net/minecraft/network/play/server/S20PacketEntityProperties$Snapshot"));
+			mObInitMap.put(new Pair<String, String>("en",
+					"net/minecraft/network/NetworkManager$InboundHandlerTuplePacketListener"));
+			mObInitMap.put(new Pair<String, String>("ao", "net/minecraft/command/CommandEnchant"));
+			mObInitMap.put(new Pair<String, String>("amc", "net/minecraft/block/BlockMushroom"));
+			mObInitMap.put(new Pair<String, String>("aee", "net/minecraft/item/ItemMonsterPlacer"));
+			mObInitMap.put(new Pair<String, String>("aaf", "net/minecraft/inventory/ContainerWorkbench"));
+			mObInitMap.put(new Pair<String, String>("aid", "net/minecraft/world/biome/BiomeGenHills"));
+			mObInitMap.put(new Pair<String, String>("aua",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$1"));
+			mObInitMap.put(new Pair<String, String>("bud",
+					"net/minecraft/client/stream/BroadcastController$BroadcastListener"));
+			mObInitMap
+					.put(new Pair<String, String>("bqe", "net/minecraft/client/renderer/texture/TextureAtlasSprite$1"));
+			mObInitMap.put(new Pair<String, String>("beh", "net/minecraft/client/gui/achievement/GuiAchievement"));
+			mObInitMap.put(new Pair<String, String>("big", "net/minecraft/client/model/ModelSpider"));
+			mObInitMap.put(new Pair<String, String>("ja", "net/minecraft/network/play/client/C02PacketUseEntity"));
+			mObInitMap.put(new Pair<String, String>("fb", "net/minecraft/network/INetHandler"));
+			mObInitMap.put(new Pair<String, String>("bc", "net/minecraft/command/server/CommandOp"));
+			mObInitMap.put(new Pair<String, String>("amv", "net/minecraft/block/BlockPressurePlate$Sensitivity"));
+			mObInitMap.put(new Pair<String, String>("aex", "net/minecraft/item/crafting/RecipesDyes"));
+			mObInitMap.put(new Pair<String, String>("aay", "net/minecraft/inventory/Slot"));
+			mObInitMap.put(new Pair<String, String>("aiw", "net/minecraft/world/biome/BiomeGenTaiga"));
+			mObInitMap.put(new Pair<String, String>("y", "net/minecraft/command/CommandBase"));
+			mObInitMap.put(new Pair<String, String>("bqx", "net/minecraft/util/ResourceLocation"));
+			mObInitMap.put(new Pair<String, String>("biz", "net/minecraft/client/network/NetHandlerLoginClient"));
+			mObInitMap.put(new Pair<String, String>("bmy", "net/minecraft/client/renderer/culling/ClippingHelper"));
+			mObInitMap.put(
+					new Pair<String, String>("jt", "net/minecraft/network/login/server/S01PacketEncryptionRequest"));
+			mObInitMap.put(new Pair<String, String>("fu", "net/minecraft/network/play/server/S08PacketPlayerPosLook"));
+			mObInitMap.put(new Pair<String, String>("bv", "net/minecraft/command/server/CommandTeleport"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/realms/RealmsConnect",
+					"net/minecraft/realms/RealmsConnect"));
+			mObInitMap.put(new Pair<String, String>("abm", "net/minecraft/item/ItemBow"));
+			mObInitMap.put(new Pair<String, String>("amu", "net/minecraft/block/BlockPressurePlate"));
+			mObInitMap.put(new Pair<String, String>("aus",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$PortalRoom"));
+			mObInitMap.put(new Pair<String, String>("ayr", "net/minecraft/world/storage/SaveFormatOld"));
+			mObInitMap.put(new Pair<String, String>("bbp", "net/minecraft/util/ScreenShotHelper"));
+			mObInitMap.put(new Pair<String, String>("bfo", "net/minecraft/client/renderer/InventoryEffectRenderer"));
+			mObInitMap.put(new Pair<String, String>("bjn", "net/minecraft/client/multiplayer/ServerData"));
+			mObInitMap.put(new Pair<String, String>("bnm", "net/minecraft/client/renderer/entity/RenderEnderman"));
+			mObInitMap.put(new Pair<String, String>("zo", "net/minecraft/entity/projectile/EntityPotion"));
+			mObInitMap.put(new Pair<String, String>("vp", "net/minecraft/entity/ai/EntityAINearestAttackableTarget$1"));
+			mObInitMap.put(new Pair<String, String>("rq", "net/minecraft/util/EntityDamageSourceIndirect"));
+			mObInitMap.put(new Pair<String, String>("nr", "net/minecraft/server/management/BanEntry"));
+			mObInitMap.put(new Pair<String, String>("arh", "net/minecraft/world/gen/feature/WorldGenCactus"));
+			mObInitMap.put(new Pair<String, String>("ani", "net/minecraft/block/BlockSandStone"));
+			mObInitMap.put(new Pair<String, String>("abl", "net/minecraft/item/ItemGlassBottle"));
+			mObInitMap.put(new Pair<String, String>("afk", "net/minecraft/item/crafting/RecipesTools"));
+			mObInitMap.put(new Pair<String, String>("ajj", "net/minecraft/block/Block$1"));
+			mObInitMap.put(new Pair<String, String>("avg", "net/minecraft/world/gen/structure/MapGenStructure$2"));
+			mObInitMap.put(new Pair<String, String>("azf", "net/minecraft/world/storage/SaveFormatComparator"));
+			mObInitMap.put(new Pair<String, String>("bcd", "net/minecraft/client/gui/GuiTextField"));
+			mObInitMap.put(new Pair<String, String>("brk", "net/minecraft/client/resources/SkinManager$1"));
+			mObInitMap.put(new Pair<String, String>("bnl", "net/minecraft/client/renderer/entity/RenderDragon"));
+			mObInitMap.put(new Pair<String, String>("wd", "net/minecraft/entity/passive/EntityAmbientCreature"));
+			mObInitMap.put(new Pair<String, String>("se", "net/minecraft/entity/Entity$EnumEntitySize"));
+			mObInitMap.put(new Pair<String, String>("of", "net/minecraft/server/management/PreYggdrasilConverter$6"));
+			mObInitMap.put(new Pair<String, String>("kg",
+					"net/minecraft/network/ServerStatusResponse$MinecraftProtocolVersionIdentifier$Serializer"));
+			mObInitMap.put(new Pair<String, String>("gh", "net/minecraft/network/play/server/S23PacketBlockChange"));
+			mObInitMap.put(new Pair<String, String>("ci", "net/minecraft/command/WrongUsageException"));
+			mObInitMap.put(
+					new Pair<String, String>("avz", "net/minecraft/world/gen/structure/StructureVillagePieces$House2"));
+			mObInitMap.put(
+					new Pair<String, String>("net/minecraft/realms/RealmsButton", "net/minecraft/realms/RealmsButton"));
+			mObInitMap.put(new Pair<String, String>("bcc", "net/minecraft/client/gui/GuiNewChat"));
+			mObInitMap.put(new Pair<String, String>("bgb", "net/minecraft/client/gui/ServerListEntryLanDetected"));
+			mObInitMap.put(new Pair<String, String>("bka", "net/minecraft/client/particle/EntityExplodeFX"));
+			mObInitMap.put(new Pair<String, String>("ww", "net/minecraft/entity/boss/IBossDisplayData"));
+			mObInitMap.put(new Pair<String, String>("sx", "net/minecraft/entity/EnumCreatureType"));
+			mObInitMap.put(new Pair<String, String>("oy", "net/minecraft/network/rcon/RConThreadQuery$Auth"));
+			mObInitMap.put(new Pair<String, String>("kz", "net/minecraft/init/Bootstrap$8"));
+			mObInitMap.put(new Pair<String, String>("akq", "net/minecraft/block/BlockDropper"));
+			mObInitMap.put(new Pair<String, String>("acs", "net/minecraft/item/ItemFirework"));
+			mObInitMap.put(new Pair<String, String>("agr",
+					"net/minecraft/tileentity/MobSpawnerBaseLogic$WeightedRandomMinecart"));
+			mObInitMap.put(new Pair<String, String>("bsr", "net/minecraft/client/audio/SoundList$SoundEntry$Type"));
+			mObInitMap.put(new Pair<String, String>("bos", "net/minecraft/client/renderer/entity/RenderSkeleton"));
+			mObInitMap.put(
+					new Pair<String, String>("avy", "net/minecraft/world/gen/structure/StructureVillagePieces$Church"));
+			mObInitMap.put(new Pair<String, String>("azx", "net/minecraft/scoreboard/ScoreObjective"));
+			mObInitMap.put(new Pair<String, String>("bcv", "net/minecraft/client/gui/GuiYesNoCallback"));
+			mObInitMap.put(new Pair<String, String>("bgu", "net/minecraft/client/main/Main$1$1"));
+			mObInitMap.put(new Pair<String, String>("bkt", "net/minecraft/client/particle/EntityPortalFX"));
+			mObInitMap.put(new Pair<String, String>("ln", "net/minecraft/server/management/PlayerPositionComparator"));
+			mObInitMap.put(new Pair<String, String>("ho", "net/minecraft/network/play/server/S38PacketPlayerListItem"));
+			mObInitMap.put(new Pair<String, String>("dp", "net/minecraft/nbt/NBTTagInt"));
+			mObInitMap.put(new Pair<String, String>("wv", "net/minecraft/entity/passive/EntityWolf"));
+			mObInitMap.put(new Pair<String, String>("asn", "net/minecraft/world/gen/feature/WorldGenTaiga2"));
+			mObInitMap.put(new Pair<String, String>("aoo", "net/minecraft/block/BlockWoodSlab"));
+			mObInitMap.put(new Pair<String, String>("bdj", "net/minecraft/client/gui/GuiLanguage"));
+			mObInitMap.put(new Pair<String, String>("bhi", "net/minecraft/client/model/ModelCow"));
+			mObInitMap.put(
+					new Pair<String, String>("blh", "net/minecraft/client/entity/AbstractClientPlayer$SwitchType"));
+			mObInitMap.put(new Pair<String, String>("ae", "net/minecraft/command/server/CommandAchievement"));
+			mObInitMap.put(new Pair<String, String>("xj", "net/minecraft/entity/item/EntityFallingBlock"));
+			mObInitMap.put(new Pair<String, String>("tk", "net/minecraft/entity/ai/attributes/BaseAttribute"));
+			mObInitMap.put(new Pair<String, String>("pl", "net/minecraft/stats/StatBase$4"));
+			mObInitMap.put(new Pair<String, String>("lm", "net/minecraft/server/MinecraftServer$6"));
+			mObInitMap.put(new Pair<String, String>("atb",
+					"net/minecraft/world/gen/structure/StructureMineshaftPieces$Stairs"));
+			mObInitMap.put(new Pair<String, String>("apc", "net/minecraft/tileentity/TileEntityDropper"));
+			mObInitMap.put(new Pair<String, String>("ald", "net/minecraft/block/BlockFlowerPot"));
+			mObInitMap.put(new Pair<String, String>("adf", "net/minecraft/item/ItemLead"));
+			mObInitMap.put(new Pair<String, String>("ahe", "net/minecraft/world/World$3"));
+			mObInitMap.put(new Pair<String, String>("axa", "net/minecraft/world/gen/layer/GenLayerEdge$Mode"));
+			mObInitMap.put(new Pair<String, String>("bte", "net/minecraft/client/multiplayer/ThreadLanServerPing"));
+			mObInitMap.put(new Pair<String, String>("bpf", "net/minecraft/client/renderer/entity/RenderZombie"));
+			mObInitMap.put(new Pair<String, String>("ma", "net/minecraft/server/gui/MinecraftServerGui$2"));
+			mObInitMap.put(new Pair<String, String>("ib", "net/minecraft/network/play/server/S06PacketUpdateHealth"));
+			mObInitMap.put(new Pair<String, String>("ec", "net/minecraft/nbt/JsonToNBT$Any"));
+			mObInitMap.put(new Pair<String, String>("ad", "net/minecraft/command/PlayerSelector"));
+			mObInitMap.put(new Pair<String, String>("atu",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Crossing"));
+			mObInitMap.put(new Pair<String, String>("apv", "net/minecraft/world/chunk/NibbleArray"));
+			mObInitMap.put(new Pair<String, String>("alw", "net/minecraft/block/BlockLiquid"));
+			mObInitMap.put(new Pair<String, String>("ady", "net/minecraft/item/ItemSpade"));
+			mObInitMap.put(new Pair<String, String>("ahx", "net/minecraft/world/biome/BiomeGenBase$SpawnListEntry"));
+			mObInitMap.put(new Pair<String, String>("axt", "net/minecraft/world/gen/layer/GenLayerRiverInit"));
+			mObInitMap.put(new Pair<String, String>("bpy", "net/minecraft/client/renderer/StitcherException"));
+			mObInitMap.put(new Pair<String, String>("ur", "net/minecraft/entity/ai/EntityAIMoveIndoors"));
+			mObInitMap.put(new Pair<String, String>("mt", "net/minecraft/world/WorldServer"));
+			mObInitMap.put(new Pair<String, String>("iu", "net/minecraft/network/play/client/C15PacketClientSettings"));
+			mObInitMap.put(new Pair<String, String>("ev", "net/minecraft/network/NetworkStatistics$1"));
+			mObInitMap.put(new Pair<String, String>("aw", "net/minecraft/command/CommandKill"));
+			mObInitMap.put(new Pair<String, String>("amk", "net/minecraft/block/BlockObsidian"));
+			mObInitMap.put(new Pair<String, String>("aem", "net/minecraft/item/ItemEditableBook"));
+			mObInitMap.put(new Pair<String, String>("aan", "net/minecraft/inventory/ContainerHorseInventory$1"));
+			mObInitMap.put(new Pair<String, String>("ail", "net/minecraft/world/biome/BiomeGenMesa"));
+			mObInitMap.put(new Pair<String, String>("n", "net/minecraft/crash/CrashReportCategory$3"));
+			mObInitMap.put(
+					new Pair<String, String>("bul", "net/minecraft/client/stream/IngestServerTester$IngestTestState"));
+			mObInitMap.put(new Pair<String, String>("bqm", "net/minecraft/client/renderer/texture/TextureCompass"));
+			mObInitMap.put(new Pair<String, String>("axs", "net/minecraft/world/gen/layer/GenLayerRemoveTooMuchOcean"));
+			mObInitMap.put(new Pair<String, String>("baq", "net/minecraft/client/Minecraft$10"));
+			mObInitMap.put(
+					new Pair<String, String>("bep", "net/minecraft/client/gui/achievement/GuiStats$StatsMobsList"));
+			mObInitMap.put(new Pair<String, String>("bio", "net/minecraft/client/model/ModelWolf"));
+			mObInitMap.put(
+					new Pair<String, String>("bmn", "net/minecraft/client/renderer/entity/RenderEnchantmentTable"));
+			mObInitMap.put(new Pair<String, String>("nh", "net/minecraft/network/NetHandlerPlayServer"));
+			mObInitMap.put(new Pair<String, String>("ji", "net/minecraft/network/play/client/C07PacketPlayerDigging"));
+			mObInitMap.put(new Pair<String, String>("fj", "net/minecraft/util/IChatComponent"));
+			mObInitMap.put(new Pair<String, String>("bk", "net/minecraft/command/server/CommandScoreboard"));
+			mObInitMap.put(new Pair<String, String>("yp", "net/minecraft/entity/monster/EntityWitch"));
+			mObInitMap.put(new Pair<String, String>("abb", "net/minecraft/item/ItemArmor"));
+			mObInitMap.put(new Pair<String, String>("aqi", "net/minecraft/world/chunk/storage/RegionFile$ChunkBuffer"));
+			mObInitMap.put(new Pair<String, String>("amj", "net/minecraft/block/BlockNote"));
+			mObInitMap.put(new Pair<String, String>("auh", "net/minecraft/world/gen/structure/MapGenStronghold$Start"));
+			mObInitMap.put(new Pair<String, String>("ayg", "net/minecraft/pathfinding/PathFinder"));
+			mObInitMap.put(new Pair<String, String>("bbe", "net/minecraft/client/Minecraft$8"));
+			mObInitMap.put(new Pair<String, String>("bfd", "net/minecraft/client/gui/inventory/GuiBeacon$Button"));
+			mObInitMap.put(new Pair<String, String>("bjc", "net/minecraft/client/network/NetHandlerPlayClient$1"));
+			mObInitMap.put(new Pair<String, String>("bnb", "net/minecraft/client/renderer/entity/RenderArrow"));
+			mObInitMap.put(new Pair<String, String>("zd", "net/minecraft/entity/item/EntityEnderEye"));
+			mObInitMap.put(new Pair<String, String>("ve", "net/minecraft/entity/ai/EntityAIRestrictOpenDoor"));
+			mObInitMap.put(new Pair<String, String>("rf", "net/minecraft/util/IIcon"));
+			mObInitMap.put(new Pair<String, String>("ng", "net/minecraft/network/NetworkSystem$4"));
+			mObInitMap.put(new Pair<String, String>("aba", "net/minecraft/item/ItemAnvilBlock"));
+			mObInitMap.put(new Pair<String, String>("ayz", "net/minecraft/world/storage/WorldInfo$7"));
+			mObInitMap.put(new Pair<String, String>("bbx", "net/minecraft/client/gui/MapItemRenderer"));
+			mObInitMap.put(new Pair<String, String>("zw", "net/minecraft/inventory/ContainerRepair$2"));
+			mObInitMap.put(new Pair<String, String>("vx", "net/minecraft/entity/ai/RandomPositionGenerator"));
+			mObInitMap.put(new Pair<String, String>("ry", "net/minecraft/entity/passive/IAnimals"));
+			mObInitMap.put(new Pair<String, String>("nz", "net/minecraft/server/management/PreYggdrasilConverter"));
+			mObInitMap.put(new Pair<String, String>("arp", "net/minecraft/world/gen/feature/WorldGenShrub"));
+			mObInitMap.put(new Pair<String, String>("anq", "net/minecraft/block/BlockStainedGlass"));
+			mObInitMap.put(new Pair<String, String>("abt", "net/minecraft/creativetab/CreativeTabs"));
+			mObInitMap.put(new Pair<String, String>("afs", "net/minecraft/enchantment/EnchantmentDigging"));
+			mObInitMap.put(new Pair<String, String>("ajr", "net/minecraft/block/BlockBush"));
+			mObInitMap.put(new Pair<String, String>("avo", "net/minecraft/world/gen/structure/MapGenVillage$Start"));
+			mObInitMap.put(new Pair<String, String>("brs", "net/minecraft/client/resources/Locale"));
+			mObInitMap.put(new Pair<String, String>("bbw", "net/minecraft/client/gui/Gui"));
+			mObInitMap.put(new Pair<String, String>("bfv", "net/minecraft/client/gui/GuiMerchant"));
+			mObInitMap.put(new Pair<String, String>("bju", "net/minecraft/client/particle/EntityBreakingFX"));
+			mObInitMap.put(new Pair<String, String>("bnt", "net/minecraft/client/renderer/entity/RenderGhast"));
+			mObInitMap.put(new Pair<String, String>("wl", "net/minecraft/entity/monster/EntityGolem"));
+			mObInitMap.put(new Pair<String, String>("sm", "net/minecraft/command/IEntitySelector$3"));
+			mObInitMap.put(new Pair<String, String>("on", "net/minecraft/server/management/UserList$1"));
+			mObInitMap.put(new Pair<String, String>("ko", "net/minecraft/init/Bootstrap$11"));
+			mObInitMap.put(new Pair<String, String>("gp", "net/minecraft/network/play/server/S31PacketWindowProperty"));
+			mObInitMap.put(new Pair<String, String>("cq", "net/minecraft/dispenser/IBehaviorDispenseItem$1"));
+			mObInitMap.put(new Pair<String, String>("aoe", "net/minecraft/block/BlockTrapDoor"));
+			mObInitMap.put(new Pair<String, String>("akf", "net/minecraft/block/BlockCrops"));
+			mObInitMap.put(new Pair<String, String>("ach", "net/minecraft/item/ItemDoor"));
+			mObInitMap.put(new Pair<String, String>("agg", "net/minecraft/enchantment/EnchantmentLootBonus"));
+			mObInitMap.put(new Pair<String, String>("bsg", "net/minecraft/client/resources/data/PackMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("bck", "net/minecraft/client/gui/GuiOptionsRowList"));
+			mObInitMap.put(new Pair<String, String>("bgj", "net/minecraft/client/gui/GuiResourcePackAvailable"));
+			mObInitMap.put(new Pair<String, String>("bki", "net/minecraft/client/particle/EntityLargeExplodeFX"));
+			mObInitMap
+					.put(new Pair<String, String>("boh", "net/minecraft/client/renderer/entity/RendererLivingEntity"));
+			mObInitMap.put(new Pair<String, String>("lc", "net/minecraft/client/util/JsonException$1"));
+			mObInitMap.put(new Pair<String, String>("hd", "net/minecraft/network/play/server/S01PacketJoinGame"));
+			mObInitMap.put(new Pair<String, String>("de", "net/minecraft/util/StringTranslate"));
+			mObInitMap.put(new Pair<String, String>("wk", "net/minecraft/entity/passive/EntityHorse$GroupData"));
+			mObInitMap.put(new Pair<String, String>("asc", "net/minecraft/world/gen/feature/WorldGenMelon"));
+			mObInitMap.put(new Pair<String, String>("aod", "net/minecraft/block/BlockLeavesBase"));
+			mObInitMap.put(
+					new Pair<String, String>("awb", "net/minecraft/world/gen/structure/StructureVillagePieces$Path"));
+			mObInitMap.put(new Pair<String, String>("pa", "net/minecraft/network/rcon/RConThreadMain"));
+			mObInitMap.put(new Pair<String, String>("asv", "net/minecraft/world/gen/structure/StructureBoundingBox"));
+			mObInitMap.put(new Pair<String, String>("aow", "net/minecraft/tileentity/TileEntityChest"));
+			mObInitMap.put(new Pair<String, String>("akx", "net/minecraft/block/BlockFalling"));
+			mObInitMap.put(new Pair<String, String>("acz", "net/minecraft/item/ItemHangingEntity"));
+			mObInitMap.put(new Pair<String, String>("agy", "net/minecraft/world/GameRules"));
+			mObInitMap.put(new Pair<String, String>("awu", "net/minecraft/block/material/Material$1"));
+			mObInitMap.put(new Pair<String, String>("bdr", "net/minecraft/client/gui/GuiFlatPresets$LayerItem"));
+			mObInitMap.put(new Pair<String, String>("bsy", "net/minecraft/server/integrated/IntegratedServer$1"));
+			mObInitMap.put(new Pair<String, String>("boz", "net/minecraft/client/renderer/entity/RenderIronGolem"));
+			mObInitMap.put(new Pair<String, String>("xr", "net/minecraft/entity/item/EntityMinecartHopper"));
+			mObInitMap.put(new Pair<String, String>("pt", "net/minecraft/util/CryptManager"));
+			mObInitMap.put(new Pair<String, String>("lu", "net/minecraft/server/dedicated/DedicatedServer$1"));
+			mObInitMap.put(
+					new Pair<String, String>("hv", "net/minecraft/network/play/server/S3DPacketDisplayScoreboard"));
+			mObInitMap.put(new Pair<String, String>("dw", "net/minecraft/nbt/NBTTagShort"));
+			mObInitMap.put(new Pair<String, String>("atj",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor3"));
+			mObInitMap.put(new Pair<String, String>("apk", "net/minecraft/tileentity/TileEntityMobSpawner$1"));
+			mObInitMap.put(new Pair<String, String>("all", "net/minecraft/block/BlockHardenedClay"));
+			mObInitMap.put(new Pair<String, String>("adn", "net/minecraft/item/ItemPickaxe"));
+			mObInitMap.put(new Pair<String, String>("ahm", "net/minecraft/world/WorldType"));
+			mObInitMap.put(new Pair<String, String>("btm", "net/minecraft/client/audio/SoundManager$2$1"));
+			mObInitMap.put(new Pair<String, String>("bpn", "net/minecraft/client/shader/ShaderLinkHelper"));
+			mObInitMap.put(new Pair<String, String>("bdq", "net/minecraft/client/gui/GuiFlatPresets"));
+			mObInitMap.put(new Pair<String, String>("bhp", "net/minecraft/client/model/ModelLeashKnot"));
+			mObInitMap.put(new Pair<String, String>("blo", "net/minecraft/client/renderer/WorldRenderer"));
+			mObInitMap.put(new Pair<String, String>("yf", "net/minecraft/entity/monster/EntityMagmaCube"));
+			mObInitMap.put(new Pair<String, String>("ug", "net/minecraft/entity/ai/EntityAIFollowOwner"));
+			mObInitMap.put(new Pair<String, String>("qh", "net/minecraft/util/MathHelper"));
+			mObInitMap.put(new Pair<String, String>("ij", "net/minecraft/network/play/server/S0DPacketCollectItem"));
+			mObInitMap.put(new Pair<String, String>("ek", "net/minecraft/network/NetworkManager$1"));
+			mObInitMap.put(new Pair<String, String>("al", "net/minecraft/command/CommandDefaultGameMode"));
+			mObInitMap.put(new Pair<String, String>("aeb", "net/minecraft/item/ItemSkull"));
+			mObInitMap.put(new Pair<String, String>("aac", "net/minecraft/inventory/ICrafting"));
+			mObInitMap.put(new Pair<String, String>("aia", "net/minecraft/world/biome/BiomeDecorator"));
+			mObInitMap.put(new Pair<String, String>("c", "net/minecraft/crash/CrashReport$1"));
+			mObInitMap.put(new Pair<String, String>("bua", "net/minecraft/client/stream/BroadcastController"));
+			mObInitMap.put(new Pair<String, String>("bqb", "net/minecraft/client/renderer/texture/TextureMap$2"));
+			mObInitMap.put(new Pair<String, String>("baf", "net/minecraft/scoreboard/ScoreDummyCriteria"));
+			mObInitMap.put(new Pair<String, String>("bee", "net/minecraft/client/gui/GuiMainMenu"));
+			mObInitMap.put(new Pair<String, String>("bmc", "net/minecraft/client/renderer/ImageBufferDownload"));
+			mObInitMap.put(new Pair<String, String>("ye", "net/minecraft/entity/monster/EntityGiantZombie"));
+			mObInitMap.put(new Pair<String, String>("aav", "net/minecraft/inventory/InventoryEnderChest"));
+			mObInitMap.put(new Pair<String, String>("v", "net/minecraft/util/Util$EnumOS"));
+			mObInitMap.put(new Pair<String, String>("bay", "net/minecraft/client/Minecraft$2"));
+			mObInitMap.put(new Pair<String, String>("bex", "net/minecraft/client/gui/inventory/GuiContainer"));
+			mObInitMap.put(new Pair<String, String>("bmv", "net/minecraft/client/renderer/culling/ICamera"));
+			mObInitMap.put(new Pair<String, String>("bs", "net/minecraft/command/CommandSpreadPlayers$Position"));
+			mObInitMap.put(new Pair<String, String>("yx", "net/minecraft/entity/player/InventoryPlayer"));
+			mObInitMap.put(new Pair<String, String>("uy", "net/minecraft/entity/ai/EntityAIOpenDoor"));
+			mObInitMap.put(new Pair<String, String>("aqq", "net/minecraft/world/WorldProviderSurface"));
+			mObInitMap.put(new Pair<String, String>("amr", "net/minecraft/block/BlockPotato"));
+			mObInitMap.put(new Pair<String, String>("ais", "net/minecraft/world/biome/BiomeGenSavanna"));
+			mObInitMap.put(new Pair<String, String>("aup",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$LeftTurn"));
+			mObInitMap.put(new Pair<String, String>("ayo", "net/minecraft/world/chunk/storage/AnvilSaveConverter$1"));
+			mObInitMap.put(new Pair<String, String>("bbm", "net/minecraft/client/settings/GameSettings$Options"));
+			mObInitMap.put(new Pair<String, String>("bus", "net/minecraft/realms/RealmsConnect$1"));
+			mObInitMap
+					.put(new Pair<String, String>("bqt", "net/minecraft/client/resources/FoliageColorReloadListener"));
+			mObInitMap.put(new Pair<String, String>("zl", "net/minecraft/entity/projectile/EntityEgg"));
+			mObInitMap.put(new Pair<String, String>("vm", "net/minecraft/entity/ai/EntityAIDefendVillage"));
+			mObInitMap.put(new Pair<String, String>("rn", "net/minecraft/util/CombatTracker"));
+			mObInitMap.put(new Pair<String, String>("no", "net/minecraft/server/network/NetHandlerLoginServer$1"));
+			mObInitMap.put(new Pair<String, String>("jp", "net/minecraft/network/handshake/client/C00Handshake"));
+			mObInitMap.put(new Pair<String, String>("fq", "net/minecraft/util/ChatComponentText"));
+			mObInitMap.put(new Pair<String, String>("br", "net/minecraft/command/CommandSpreadPlayers"));
+			mObInitMap.put(new Pair<String, String>("are", "net/minecraft/world/gen/feature/WorldGenForest"));
+			mObInitMap.put(new Pair<String, String>("anf", "net/minecraft/block/BlockRedstoneRepeater"));
+			mObInitMap.put(new Pair<String, String>("abi", "net/minecraft/item/ItemReed"));
+			mObInitMap.put(new Pair<String, String>("afh", "net/minecraft/item/crafting/ShapedRecipes"));
+			mObInitMap.put(new Pair<String, String>("ajg", "net/minecraft/block/BlockBeacon"));
+			mObInitMap.put(new Pair<String, String>("avd",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$Stronghold$Door"));
+			mObInitMap.put(new Pair<String, String>("azc", "net/minecraft/world/storage/ISaveHandler"));
+			mObInitMap.put(new Pair<String, String>("brh",
+					"net/minecraft/client/resources/SimpleReloadableResourceManager$1"));
+			mObInitMap.put(new Pair<String, String>("bfk", "net/minecraft/client/gui/inventory/CreativeCrafting"));
+			mObInitMap.put(new Pair<String, String>("bjj", "net/minecraft/client/multiplayer/WorldClient$4"));
+			mObInitMap.put(new Pair<String, String>("bni", "net/minecraft/client/renderer/entity/RenderCreeper"));
+			mObInitMap.put(new Pair<String, String>("wa", "net/minecraft/village/Village$VillageAgressor"));
+			mObInitMap.put(new Pair<String, String>("sb", "net/minecraft/entity/Entity$1"));
+			mObInitMap.put(new Pair<String, String>("oc", "net/minecraft/server/management/PreYggdrasilConverter$3"));
+			mObInitMap.put(new Pair<String, String>("kd",
+					"net/minecraft/network/ServerStatusResponse$PlayerCountData$Serializer"));
+			mObInitMap.put(new Pair<String, String>("ge", "net/minecraft/network/play/server/S25PacketBlockBreakAnim"));
+			mObInitMap.put(new Pair<String, String>("cf", "net/minecraft/command/SyntaxErrorException"));
+			mObInitMap.put(new Pair<String, String>("any", "net/minecraft/block/BlockStoneSlab"));
+			mObInitMap.put(new Pair<String, String>("ajz", "net/minecraft/block/BlockCocoa"));
+			mObInitMap.put(new Pair<String, String>("azb", "net/minecraft/world/storage/WorldInfo$9"));
+			mObInitMap.put(new Pair<String, String>("ov", "net/minecraft/network/rcon/RConConsoleSource"));
+			mObInitMap.put(new Pair<String, String>("kw", "net/minecraft/init/Bootstrap$5$1"));
+			mObInitMap.put(new Pair<String, String>("gx", "net/minecraft/network/play/server/S21PacketChunkData"));
+			mObInitMap.put(new Pair<String, String>("cy", "net/minecraft/dispenser/PositionImpl"));
+			mObInitMap.put(new Pair<String, String>("acp", "net/minecraft/item/ItemExpBottle"));
+			mObInitMap.put(new Pair<String, String>("bop", "net/minecraft/client/renderer/entity/RenderPlayer"));
+			mObInitMap.put(new Pair<String, String>("arw", "net/minecraft/world/gen/feature/WorldGenIceSpike"));
+			mObInitMap.put(new Pair<String, String>("anx", "net/minecraft/block/BlockButtonStone"));
+			mObInitMap.put(
+					new Pair<String, String>("avv", "net/minecraft/world/gen/structure/StructureVillagePieces$Hall"));
+			mObInitMap.put(new Pair<String, String>("azu", "net/minecraft/util/MovingObjectPosition"));
+			mObInitMap.put(new Pair<String, String>("bcs", "net/minecraft/client/gui/ScreenChatOptions"));
+			mObInitMap.put(
+					new Pair<String, String>("bgr", "net/minecraft/client/gui/stream/GuiStreamUnavailable$Reason"));
+			mObInitMap.put(new Pair<String, String>("bkq", "net/minecraft/client/particle/EffectRenderer$3"));
+			mObInitMap.put(new Pair<String, String>("dm", "net/minecraft/nbt/NBTTagFloat"));
+			mObInitMap.put(new Pair<String, String>("ws", "net/minecraft/entity/passive/EntitySquid"));
+			mObInitMap.put(new Pair<String, String>("st", "net/minecraft/entity/item/EntityItemFrame"));
+			mObInitMap.put(new Pair<String, String>("ou", "net/minecraft/network/rcon/RConUtils"));
+			mObInitMap.put(new Pair<String, String>("ask", "net/minecraft/world/gen/feature/WorldGenSavannaTree"));
+			mObInitMap.put(new Pair<String, String>("aol", "net/minecraft/block/BlockPressurePlateWeighted"));
+			mObInitMap.put(new Pair<String, String>("akm", "net/minecraft/block/BlockDispenser"));
+			mObInitMap.put(new Pair<String, String>("aco", "net/minecraft/item/ItemEnderPearl"));
+			mObInitMap.put(new Pair<String, String>("agn", "net/minecraft/village/MerchantRecipe"));
+			mObInitMap.put(new Pair<String, String>("awj", "net/minecraft/world/gen/NoiseGeneratorImproved"));
+			mObInitMap.put(new Pair<String, String>("bdg", "net/minecraft/client/gui/GuiScreenAddServer"));
+			mObInitMap.put(new Pair<String, String>("bsn", "net/minecraft/client/audio/MovingSoundMinecartRiding"));
+			mObInitMap.put(new Pair<String, String>("boo", "net/minecraft/client/renderer/entity/RenderPig"));
+			mObInitMap.put(new Pair<String, String>("xg", "net/minecraft/entity/effect/EntityWeatherEffect"));
+			mObInitMap.put(new Pair<String, String>("th", "net/minecraft/entity/ai/attributes/IAttribute"));
+			mObInitMap.put(new Pair<String, String>("pi", "net/minecraft/stats/StatBase$1"));
+			mObInitMap.put(new Pair<String, String>("lj", "net/minecraft/server/MinecraftServer$3"));
+			mObInitMap
+					.put(new Pair<String, String>("hk", "net/minecraft/network/play/server/S39PacketPlayerAbilities"));
+			mObInitMap.put(new Pair<String, String>("dl", "net/minecraft/nbt/NBTTagEnd"));
+			mObInitMap.put(new Pair<String, String>("ala", "net/minecraft/block/BlockFenceGate"));
+			mObInitMap.put(new Pair<String, String>("adc", "net/minecraft/item/Item$ToolMaterial"));
+			mObInitMap.put(new Pair<String, String>("ahb", "net/minecraft/world/World"));
+			mObInitMap.put(new Pair<String, String>("btb", "net/minecraft/client/network/LanServerDetector$LanServer"));
+			mObInitMap.put(new Pair<String, String>("bpc", "net/minecraft/client/renderer/entity/RenderWither"));
+			mObInitMap.put(new Pair<String, String>("bdf", "net/minecraft/client/gui/GuiDisconnected"));
+			mObInitMap.put(new Pair<String, String>("bhe", "net/minecraft/client/model/ModelBoat"));
+			mObInitMap.put(new Pair<String, String>("bld", "net/minecraft/client/particle/EntityDiggingFX"));
+			mObInitMap.put(new Pair<String, String>("xz", "net/minecraft/entity/monster/EntityCreeper"));
+			mObInitMap.put(new Pair<String, String>("aa", "net/minecraft/command/ICommand"));
+			mObInitMap.put(new Pair<String, String>("alt", "net/minecraft/block/BlockLeaves"));
+			mObInitMap.put(new Pair<String, String>("adv", "net/minecraft/item/ItemSeedFood"));
+			mObInitMap.put(new Pair<String, String>("ahu", "net/minecraft/world/biome/BiomeGenBase"));
+			mObInitMap.put(new Pair<String, String>("btu", "net/minecraft/client/audio/ISoundEventAccessor"));
+			mObInitMap.put(new Pair<String, String>("bpv", "net/minecraft/client/renderer/texture/Stitcher"));
+			mObInitMap.put(new Pair<String, String>("bdy", "net/minecraft/client/gui/GuiSelectWorld$List"));
+			mObInitMap.put(new Pair<String, String>("bhx", "net/minecraft/client/model/ModelSheep1"));
+			mObInitMap.put(new Pair<String, String>("blw", "net/minecraft/client/renderer/EntityRenderer$3"));
+			mObInitMap.put(new Pair<String, String>("mq", "net/minecraft/server/management/PlayerManager"));
+			mObInitMap.put(new Pair<String, String>("ir", "net/minecraft/network/play/client/C01PacketChatMessage"));
+			mObInitMap.put(new Pair<String, String>("es", "net/minecraft/network/EnumConnectionState$1"));
+			mObInitMap.put(new Pair<String, String>("at", "net/minecraft/command/CommandGive"));
+			mObInitMap.put(new Pair<String, String>("xy", "net/minecraft/entity/monster/EntityCaveSpider"));
+			mObInitMap.put(new Pair<String, String>("aej", "net/minecraft/item/ItemLilyPad"));
+			mObInitMap.put(new Pair<String, String>("aak", "net/minecraft/inventory/SlotFurnace"));
+			mObInitMap.put(new Pair<String, String>("k", "net/minecraft/crash/CrashReportCategory"));
+			mObInitMap.put(new Pair<String, String>("atq",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$NetherStalkRoom"));
+			mObInitMap.put(new Pair<String, String>("apr", "net/minecraft/block/BlockPistonMoving"));
+			mObInitMap.put(new Pair<String, String>("axp", "net/minecraft/world/gen/layer/GenLayer$2"));
+			mObInitMap.put(new Pair<String, String>("ban", "net/minecraft/client/renderer/GLAllocation"));
+			mObInitMap
+					.put(new Pair<String, String>("bem", "net/minecraft/client/gui/achievement/GuiStats$StatsGeneral"));
+			mObInitMap.put(new Pair<String, String>("bil", "net/minecraft/client/model/ModelZombieVillager"));
+			mObInitMap.put(new Pair<String, String>("bmk",
+					"net/minecraft/client/renderer/tileentity/TileEntityRendererDispatcher"));
+			mObInitMap.put(new Pair<String, String>("bh", "net/minecraft/command/server/CommandSaveAll"));
+			mObInitMap.put(new Pair<String, String>("ym", "net/minecraft/entity/monster/EntitySlime"));
+			mObInitMap.put(new Pair<String, String>("un", "net/minecraft/entity/ai/EntityAIWatchClosest"));
+			mObInitMap.put(new Pair<String, String>("mp", "net/minecraft/world/WorldManager"));
+			mObInitMap.put(new Pair<String, String>("aqf", "net/minecraft/world/chunk/storage/ChunkLoader"));
+			mObInitMap.put(new Pair<String, String>("amg", "net/minecraft/block/BlockNetherrack"));
+			mObInitMap.put(new Pair<String, String>("aei", "net/minecraft/item/EnumAction"));
+			mObInitMap.put(new Pair<String, String>("aih", "net/minecraft/world/biome/BiomeGenForest$2"));
+			mObInitMap.put(new Pair<String, String>("aue",
+					"net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces$Feature"));
+			mObInitMap.put(new Pair<String, String>("ayd", "net/minecraft/pathfinding/Path"));
+			mObInitMap.put(new Pair<String, String>("bbb", "net/minecraft/client/Minecraft$5"));
+			mObInitMap
+					.put(new Pair<String, String>("bfa", "net/minecraft/client/gui/inventory/GuiBeacon$CancelButton"));
+			mObInitMap.put(new Pair<String, String>("buh", "net/minecraft/client/stream/ChatController$ChatListener"));
+			mObInitMap.put(new Pair<String, String>("bqi", "net/minecraft/client/renderer/texture/TextureUtil"));
+			mObInitMap.put(new Pair<String, String>("za", "net/minecraft/entity/player/EntityPlayer$EnumStatus"));
+			mObInitMap.put(new Pair<String, String>("vb", "net/minecraft/entity/ai/EntityAILookIdle"));
+			mObInitMap.put(new Pair<String, String>("rc", "net/minecraft/inventory/IInvBasic"));
+			mObInitMap.put(new Pair<String, String>("nd", "net/minecraft/network/NetworkSystem$1"));
+			mObInitMap.put(new Pair<String, String>("je",
+					"net/minecraft/network/play/client/C03PacketPlayer$C04PacketPlayerPosition"));
+			mObInitMap.put(new Pair<String, String>("ff", "net/minecraft/util/ChatComponentStyle$1"));
+			mObInitMap.put(new Pair<String, String>("aqy", "net/minecraft/world/gen/MapGenCavesHell"));
+			mObInitMap.put(new Pair<String, String>("amz", "net/minecraft/block/BlockRedstoneOre"));
+			mObInitMap.put(new Pair<String, String>("ayw", "net/minecraft/world/storage/WorldInfo$4"));
+			mObInitMap.put(new Pair<String, String>("zt", "net/minecraft/inventory/AnimalChest"));
+			mObInitMap.put(new Pair<String, String>("vu", "net/minecraft/entity/ai/EntityAITarget"));
+			mObInitMap.put(new Pair<String, String>("rv", "net/minecraft/potion/Potion"));
+			mObInitMap.put(
+					new Pair<String, String>("nw", "net/minecraft/server/management/PlayerProfileCache$Serializer"));
+			mObInitMap.put(
+					new Pair<String, String>("jx", "net/minecraft/network/login/client/C01PacketEncryptionResponse"));
+			mObInitMap.put(
+					new Pair<String, String>("fy", "net/minecraft/network/play/server/S2CPacketSpawnGlobalEntity"));
+			mObInitMap.put(new Pair<String, String>("bz", "net/minecraft/command/CommandTime"));
+			mObInitMap.put(new Pair<String, String>("ann", "net/minecraft/block/BlockSnow"));
+			mObInitMap.put(new Pair<String, String>("abq", "net/minecraft/item/ItemCoal"));
+			mObInitMap.put(new Pair<String, String>("afp", "net/minecraft/enchantment/EnchantmentArrowKnockback"));
+			mObInitMap.put(new Pair<String, String>("ajo", "net/minecraft/block/IGrowable"));
+			mObInitMap.put(new Pair<String, String>("brp", "net/minecraft/client/resources/I18n"));
+			mObInitMap.put(new Pair<String, String>("ayv", "net/minecraft/world/storage/WorldInfo$3"));
+			mObInitMap.put(new Pair<String, String>("bbt", "net/minecraft/util/Session$Type"));
+			mObInitMap.put(new Pair<String, String>("bfs", "net/minecraft/client/gui/GuiHopper"));
+			mObInitMap.put(new Pair<String, String>("bjr", "net/minecraft/client/network/OldServerPinger$1"));
+			mObInitMap.put(new Pair<String, String>("bnq", "net/minecraft/client/renderer/entity/RenderFallingBlock"));
+			mObInitMap.put(new Pair<String, String>("ok", "net/minecraft/server/management/UserListOpsEntry"));
+			mObInitMap.put(new Pair<String, String>("kl", "net/minecraft/init/Bootstrap"));
+			mObInitMap.put(new Pair<String, String>("gm", "net/minecraft/network/play/server/S2EPacketCloseWindow"));
+			mObInitMap.put(new Pair<String, String>("cn", "net/minecraft/util/RegistryNamespacedDefaultedByKey"));
+			mObInitMap.put(new Pair<String, String>("zs", "net/minecraft/inventory/Container"));
+			mObInitMap.put(new Pair<String, String>("ace", "net/minecraft/creativetab/CreativeTabs$8"));
+			mObInitMap.put(new Pair<String, String>("arl", "net/minecraft/world/gen/feature/WorldGenDesertWells"));
+			mObInitMap.put(new Pair<String, String>("anm", "net/minecraft/block/BlockSnowBlock"));
+			mObInitMap.put(new Pair<String, String>("avk", "net/minecraft/world/gen/structure/StructureComponent"));
+			mObInitMap.put(new Pair<String, String>("bch", "net/minecraft/client/gui/GuiListExtended"));
+			mObInitMap.put(new Pair<String, String>("bgg", "net/minecraft/client/resources/ResourcePackListEntry"));
+			mObInitMap.put(new Pair<String, String>("bkf", "net/minecraft/client/particle/EntityFlameFX"));
+			mObInitMap.put(new Pair<String, String>("boe", "net/minecraft/client/renderer/entity/RenderMagmaCube"));
+			mObInitMap.put(new Pair<String, String>("wh", "net/minecraft/entity/passive/EntityCow"));
+			mObInitMap.put(new Pair<String, String>("oj", "net/minecraft/server/management/UserListOps"));
+			mObInitMap.put(new Pair<String, String>("aoa", "net/minecraft/block/BlockPane"));
+			mObInitMap.put(new Pair<String, String>("akb", "net/minecraft/block/BlockCommandBlock"));
+			mObInitMap.put(new Pair<String, String>("acd", "net/minecraft/creativetab/CreativeTabs$7"));
+			mObInitMap.put(new Pair<String, String>("agc", "net/minecraft/enchantment/EnchantmentData"));
+			mObInitMap.put(new Pair<String, String>("bsc", "net/minecraft/client/resources/data/FontMetadataSection"));
+			mObInitMap.put(new Pair<String, String>("bod", "net/minecraft/client/renderer/entity/RenderSnowball"));
+			mObInitMap.put(
+					new Pair<String, String>("net/minecraft/realms/RealmsBridge", "net/minecraft/realms/RealmsBridge"));
+			mObInitMap.put(new Pair<String, String>("da", "net/minecraft/util/RegistrySimple"));
+			mObInitMap.put(new Pair<String, String>("ass", "net/minecraft/world/gen/FlatGeneratorInfo"));
+			mObInitMap.put(new Pair<String, String>("aot", "net/minecraft/tileentity/TileEntity$2"));
+			mObInitMap.put(new Pair<String, String>("aku", "net/minecraft/block/BlockEndPortalFrame"));
+			mObInitMap.put(new Pair<String, String>("acw", "net/minecraft/item/ItemFlintAndSteel"));
+			mObInitMap.put(new Pair<String, String>("awr", "net/minecraft/block/material/MaterialTransparent"));
+			mObInitMap.put(new Pair<String, String>("bsv", "net/minecraft/client/audio/ITickableSound"));
+			mObInitMap.put(new Pair<String, String>("bow", "net/minecraft/client/renderer/entity/RenderSquid"));
+			mObInitMap.put(new Pair<String, String>("bcz", "net/minecraft/client/gui/GuiCreateFlatWorld"));
+			mObInitMap.put(new Pair<String, String>("bkx", "net/minecraft/client/particle/EntitySpellParticleFX"));
+			mObInitMap.put(new Pair<String, String>("xo", "net/minecraft/entity/EntityMinecartCommandBlock$1"));
+			mObInitMap.put(new Pair<String, String>("pq", "net/minecraft/stats/StatFileWriter"));
+			mObInitMap.put(new Pair<String, String>("lr", "net/minecraft/server/gui/IUpdatePlayerListBox"));
+			mObInitMap.put(new Pair<String, String>("hs", "net/minecraft/network/play/server/S07PacketRespawn"));
+			mObInitMap.put(new Pair<String, String>("dt", "net/minecraft/nbt/NBTSizeTracker$1"));
+			mObInitMap.put(new Pair<String, String>("aph", "net/minecraft/tileentity/IHopper"));
+			mObInitMap.put(new Pair<String, String>("ali", "net/minecraft/block/BlockGravel"));
+			mObInitMap.put(new Pair<String, String>("adk", "net/minecraft/item/ItemMinecart$1"));
+			mObInitMap.put(new Pair<String, String>("ahj", "net/minecraft/world/WorldSettings"));
+			mObInitMap.put(new Pair<String, String>("btj", "net/minecraft/client/audio/SoundManager"));
+			mObInitMap.put(new Pair<String, String>("bpk", "net/minecraft/client/shader/Shader"));
+			mObInitMap.put(new Pair<String, String>("bdn", "net/minecraft/client/gui/GuiOptions$1"));
+			mObInitMap.put(new Pair<String, String>("bhm", "net/minecraft/client/model/ModelBiped"));
+			mObInitMap.put(new Pair<String, String>("bll", "net/minecraft/client/entity/EntityOtherPlayerMP"));
+			mObInitMap.put(new Pair<String, String>("mf", "net/minecraft/server/gui/StatsComponent"));
+			mObInitMap.put(new Pair<String, String>("ig", "net/minecraft/network/play/server/S05PacketSpawnPosition"));
+			mObInitMap.put(new Pair<String, String>("eh", "net/minecraft/network/NettyEncryptingDecoder"));
+			mObInitMap.put(new Pair<String, String>("ai", "net/minecraft/command/CommandClearInventory"));
+			mObInitMap.put(new Pair<String, String>("xn", "net/minecraft/entity/EntityMinecartCommandBlock"));
+			mObInitMap.put(
+					new Pair<String, String>("atf", "net/minecraft/world/gen/structure/StructureNetherBridgePieces"));
+			mObInitMap.put(new Pair<String, String>("apg", "net/minecraft/tileentity/TileEntityFurnace"));
+			mObInitMap.put(new Pair<String, String>("axe", "net/minecraft/world/gen/layer/GenLayerBiomeEdge"));
+			mObInitMap.put(new Pair<String, String>("bac", "net/minecraft/scoreboard/Scoreboard"));
+			mObInitMap.put(new Pair<String, String>("beb", "net/minecraft/client/gui/GuiSnooper$List"));
+			mObInitMap.put(new Pair<String, String>("bia", "net/minecraft/client/model/ModelSilverfish"));
+			mObInitMap.put(new Pair<String, String>("yb", "net/minecraft/entity/monster/IMob"));
+			mObInitMap.put(new Pair<String, String>("uc", "net/minecraft/entity/ai/EntityAIDoorInteract"));
+			mObInitMap.put(new Pair<String, String>("qd", "net/minecraft/util/LongHashMap"));
+			mObInitMap.put(new Pair<String, String>("s", "net/minecraft/util/ReportedException"));
+			mObInitMap.put(new Pair<String, String>("net/minecraft/client/ClientBrandRetriever",
+					"net/minecraft/client/ClientBrandRetriever"));
+			mObInitMap.put(new Pair<String, String>("apz", "net/minecraft/world/chunk/storage/ExtendedBlockStorage"));
+			mObInitMap.put(
+					new Pair<String, String>("aty", "net/minecraft/world/gen/structure/MapGenScatteredFeature$Start"));
+			mObInitMap.put(new Pair<String, String>("axx", "net/minecraft/world/gen/layer/GenLayerSmooth"));
+			mObInitMap.put(new Pair<String, String>("bav", "net/minecraft/client/Minecraft$15"));
+			mObInitMap.put(new Pair<String, String>("beu", "net/minecraft/client/gui/GuiKeyBindingList$CategoryEntry"));
+			mObInitMap.put(new Pair<String, String>("yu", "net/minecraft/entity/INpc"));
+			mObInitMap.put(new Pair<String, String>("uv", "net/minecraft/entity/ai/EntityAIOcelotAttack"));
+			mObInitMap.put(new Pair<String, String>("qw", "net/minecraft/util/WeightedRandom$Item"));
+			mObInitMap.put(new Pair<String, String>("mx", "net/minecraft/server/management/ItemInWorldManager"));
+			mObInitMap.put(new Pair<String, String>("iy", "net/minecraft/network/play/client/C0DPacketCloseWindow"));
+			mObInitMap.put(new Pair<String, String>("ez", "net/minecraft/util/MessageDeserializer"));
+			mObInitMap.put(new Pair<String, String>("amo", "net/minecraft/block/BlockPackedIce"));
+			mObInitMap.put(new Pair<String, String>("aip", "net/minecraft/world/biome/BiomeGenPlains"));
+			mObInitMap.put(new Pair<String, String>("aum",
+					"net/minecraft/world/gen/structure/StructureStrongholdPieces$ChestCorridor"));
+			mObInitMap.put(new Pair<String, String>("ayl", "net/minecraft/world/WorldSavedData"));
+			mObInitMap.put(new Pair<String, String>("bup", "net/minecraft/client/stream/TwitchStream$1"));
+			mObInitMap.put(new Pair<String, String>("bqq", "net/minecraft/client/resources/FallbackResourceManager"));
+			mObInitMap.put(new Pair<String, String>("bet", "net/minecraft/client/gui/GuiKeyBindingList$1"));
+			mObInitMap.put(new Pair<String, String>("bis", "net/minecraft/client/model/ModelBox"));
+			mObInitMap.put(
+					new Pair<String, String>("bmr", "net/minecraft/client/renderer/tileentity/TileEntitySignRenderer"));
+			mObInitMap.put(new Pair<String, String>("zi", "net/minecraft/entity/projectile/EntitySmallFireball"));
+			mObInitMap.put(new Pair<String, String>("vj", "net/minecraft/entity/ai/EntityAIFollowGolem"));
+			mObInitMap.put(new Pair<String, String>("rk", "net/minecraft/profiler/IPlayerUsage"));
+			mObInitMap.put(new Pair<String, String>("nl", "net/minecraft/server/network/NetHandlerHandshakeTCP"));
+			mObInitMap.put(new Pair<String, String>("jm",
+					"net/minecraft/network/play/client/C10PacketCreativeInventoryAction"));
+			mObInitMap.put(new Pair<String, String>("fn", "net/minecraft/util/ChatStyle"));
+			mObInitMap.put(new Pair<String, String>("bo", "net/minecraft/command/CommandSetPlayerTimeout"));
+			mObInitMap.put(new Pair<String, String>("anc", "net/minecraft/block/BlockRedstoneTorch"));
+			mObInitMap.put(new Pair<String, String>("abf", "net/minecraft/item/ItemAxe"));
+			mObInitMap.put(new Pair<String, String>("afe", "net/minecraft/item/crafting/CraftingManager"));
+			mObInitMap.put(new Pair<String, String>("ajd", "net/minecraft/block/BlockBasePressurePlate"));
+			mObInitMap.put(new Pair<String, String>("bre", "net/minecraft/client/resources/ResourcePackRepository$2"));
+			mObInitMap.put(new Pair<String, String>("ayk", "net/minecraft/world/storage/MapData$MapCoord"));
+			mObInitMap.put(new Pair<String, String>("bfh", "net/minecraft/client/gui/GuiCommandBlock"));
+			mObInitMap.put(new Pair<String, String>("bjg", "net/minecraft/client/multiplayer/WorldClient$1"));
+			mObInitMap.put(new Pair<String, String>("bnf", "net/minecraft/client/renderer/entity/RenderCaveSpider"));
+			mObInitMap.put(new Pair<String, String>("ka", "net/minecraft/network/status/server/S00PacketServerInfo"));
+			mObInitMap.put(new Pair<String, String>("gb", "net/minecraft/network/play/server/S0CPacketSpawnPlayer"));
+			mObInitMap.put(new Pair<String, String>("cc", "net/minecraft/command/server/CommandWhitelist"));
+			mObInitMap.put(new Pair<String, String>("zh", "net/minecraft/entity/IProjectile"));
+			mObInitMap.put(new Pair<String, String>("aby", "net/minecraft/creativetab/CreativeTabs$2"));
+			mObInitMap.put(new Pair<String, String>("ara", "net/minecraft/world/gen/ChunkProviderEnd"));
+			mObInitMap.put(new Pair<String, String>("anb", "net/minecraft/block/BlockRedstoneLight"));
+			mObInitMap.put(
+					new Pair<String, String>("bjz", "net/minecraft/client/particle/EntityEnchantmentTableParticleFX"));
+			mObInitMap.put(new Pair<String, String>("bny", "net/minecraft/client/renderer/entity/RenderItem"));
+			mObInitMap.put(new Pair<String, String>("cv", "net/minecraft/dispenser/ILocation"));
+			mObInitMap.put(new Pair<String, String>("anu", "net/minecraft/block/BlockStem"));
+			mObInitMap.put(new Pair<String, String>("afw", "net/minecraft/enchantment/EnchantmentHelper$1"));
+			mObInitMap.put(new Pair<String, String>("ajv", "net/minecraft/block/BlockCarrot"));
+			mObInitMap.put(
+					new Pair<String, String>("avs", "net/minecraft/world/gen/structure/StructureVillagePieces$Field2"));
+			mObInitMap.put(new Pair<String, String>("azr", "net/minecraft/world/storage/ThreadedFileIOBase"));
+			mObInitMap.put(new Pair<String, String>("bcp", "net/minecraft/client/gui/GuiButtonRealmsProxy"));
+			mObInitMap.put(new Pair<String, String>("brw", "net/minecraft/client/resources/data/IMetadataSerializer"));
+			mObInitMap.put(new Pair<String, String>("bnx", "net/minecraft/client/renderer/tileentity/RenderItemFrame"));
+			mObInitMap.put(new Pair<String, String>("wp", "net/minecraft/entity/passive/EntitySheep"));
+			mObInitMap.put(new Pair<String, String>("sq", "net/minecraft/entity/item/EntityXPOrb"));
+			mObInitMap.put(new Pair<String, String>("or", "net/minecraft/server/management/UserListWhitelist"));
+			mObInitMap.put(new Pair<String, String>("ks", "net/minecraft/init/Bootstrap$2"));
+			mObInitMap.put(new Pair<String, String>("gt", "net/minecraft/network/play/server/S19PacketEntityStatus"));
+			mObInitMap.put(new Pair<String, String>("cu", "net/minecraft/dispenser/ILocatableSource"));
+			mObInitMap.put(new Pair<String, String>("ash", "net/minecraft/world/gen/feature/WorldGenReed"));
+			mObInitMap.put(new Pair<String, String>("aoi", "net/minecraft/block/BlockWall"));
+			mObInitMap.put(new Pair<String, String>("akj", "net/minecraft/block/BlockRedstoneDiode"));
+			mObInitMap.put(new Pair<String, String>("acl", "net/minecraft/item/ItemEmptyMap"));
+			mObInitMap.put(new Pair<String, String>("agk", "net/minecraft/enchantment/EnchantmentUntouching"));
+			mObInitMap.put(new Pair<String, String>("bsk", "net/minecraft/client/audio/PositionedSound"));
+			mObInitMap.put(new Pair<String, String>("bol", "net/minecraft/client/renderer/entity/RenderMooshroom"));
+			mObInitMap.put(
+					new Pair<String, String>("bgn", "net/minecraft/client/gui/stream/GuiIngestServers$ServerList"));
+			mObInitMap.put(new Pair<String, String>("bkm", "net/minecraft/client/particle/EntityFX"));
+			mObInitMap.put(new Pair<String, String>("xd", "net/minecraft/entity/boss/EntityWither$1"));
+			mObInitMap.put(new Pair<String, String>("te", "net/minecraft/entity/DataWatcher"));
+			mObInitMap.put(new Pair<String, String>("pf", "net/minecraft/stats/StatCrafting"));
+			mObInitMap.put(new Pair<String, String>("lg", "net/minecraft/server/ServerEula"));
+			mObInitMap.put(new Pair<String, String>("hh",
+					"net/minecraft/network/play/server/S14PacketEntity$S17PacketEntityLookMove"));
+			mObInitMap.put(new Pair<String, String>("di", "net/minecraft/nbt/NBTTagCompound$1"));
+			mObInitMap.put(new Pair<String, String>("bdc", "net/minecraft/client/gui/GuiGameOver"));
+			mObInitMap.put(new Pair<String, String>("bla", "net/minecraft/client/particle/EntityAuraFX"));
+			mObInitMap.put(new Pair<String, String>("py", "net/minecraft/server/management/LowerStringMap"));
+			mObInitMap.put(new Pair<String, String>("lz", "net/minecraft/server/gui/MinecraftServerGui$1"));
+			mObInitMap.put(new Pair<String, String>("ads", "net/minecraft/item/ItemRedstone"));
+			mObInitMap.put(new Pair<String, String>("bps", "net/minecraft/client/renderer/ThreadDownloadImageData$1"));
+			mObInitMap.put(new Pair<String, String>("asz",
+					"net/minecraft/world/gen/structure/StructureMineshaftPieces$Cross"));
+			mObInitMap.put(new Pair<String, String>("awy", "net/minecraft/world/gen/layer/GenLayerEdge"));
+			mObInitMap.put(new Pair<String, String>("bdv", "net/minecraft/client/gui/GuiRenameWorld"));
+			mObInitMap.put(new Pair<String, String>("bhu", "net/minecraft/client/model/ModelPig"));
+			mObInitMap.put(new Pair<String, String>("blt", "net/minecraft/client/renderer/EntityRenderer"));
+			mObInitMap.put(new Pair<String, String>("ep", "net/minecraft/network/EnumConnectionState$2"));
+			mObInitMap.put(new Pair<String, String>("aq", "net/minecraft/command/CommandDifficulty"));
+			mObInitMap.put(new Pair<String, String>("xv", "net/minecraft/entity/item/EntityMinecartTNT"));
+			mObInitMap.put(new Pair<String, String>("tw", "net/minecraft/entity/ai/EntityAIAvoidEntity"));
+			mObInitMap.put(new Pair<String, String>("px", "net/minecraft/util/HttpUtil$DownloadListener"));
+			mObInitMap.put(new Pair<String, String>("h", "net/minecraft/crash/CrashReport$6"));
+			mObInitMap.put(new Pair<String, String>("atn",
+					"net/minecraft/world/gen/structure/StructureNetherBridgePieces$Corridor"));
+			mObInitMap.put(new Pair<String, String>("apo", "net/minecraft/tileentity/TileEntityEndPortal"));
+			mObInitMap.put(new Pair<String, String>("alp", "net/minecraft/block/BlockIce"));
+			mObInitMap.put(new Pair<String, String>("adr", "net/minecraft/item/ItemRecord"));
+			mObInitMap.put(new Pair<String, String>("ahq", "net/minecraft/world/Teleporter$PortalPosition"));
+			mObInitMap.put(new Pair<String, String>("axm", "net/minecraft/world/gen/layer/GenLayerIsland"));
+			mObInitMap.put(new Pair<String, String>("bak", "net/minecraft/client/gui/ChatLine"));
+			mObInitMap.put(new Pair<String, String>("bej", "net/minecraft/client/gui/achievement/GuiStats"));
+			mObInitMap.put(new Pair<String, String>("btq", "net/minecraft/client/audio/SoundHandler$1"));
+			mObInitMap.put(new Pair<String, String>("bpr", "net/minecraft/client/renderer/ThreadDownloadImageData"));
+			mObInitMap.put(new Pair<String, String>("yj", "net/minecraft/entity/SharedMonsterAttributes"));
 		}
 
 	}

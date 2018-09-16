@@ -65,6 +65,8 @@ public class ClassTransformer_OB_Sprinkler {
 			injectMethod("getRealInventory");
 			injectMethod("generateInventory");
 			injectMethod("updateEntity");
+			//injectMethod("createInventoryCallback");
+			//injectMethod("registerInventoryCallback");
 		}
 
 	}
@@ -202,7 +204,7 @@ public class ClassTransformer_OB_Sprinkler {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(156, l0);
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitMethodInsn(INVOKESPECIAL, "openblocks/common/tileentity/TileEntitySprinkler", "updateEntity", "()V", false);
+			mv.visitMethodInsn(INVOKESPECIAL, "net/minecraft/tileentity/TileEntity", "updateEntity", "()V", false);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
 			mv.visitLineNumber(157, l1);
@@ -418,30 +420,33 @@ public class ClassTransformer_OB_Sprinkler {
 		else if (aMethodName.equals("generateInventory")) {
 			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
 			mv = getWriter().visitMethod(ACC_PRIVATE, "generateInventory", "()Lopenmods/inventory/GenericInventory;", null, null);
+
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
-			mv.visitLineNumber(278, l0);
-			mv.visitVarInsn(ALOAD, 0);
-			Label l1 = new Label();
-			mv.visitLabel(l1);
-			mv.visitLineNumber(279, l1);
-			mv.visitTypeInsn(NEW, "openblocks/common/tileentity/TileEntitySprinkler$2");
+			mv.visitLineNumber(281, l0);
+			mv.visitTypeInsn(NEW, "gtPlusPlus/xmod/ob/CustomSprinklerInventory");
 			mv.visitInsn(DUP);
-			mv.visitVarInsn(ALOAD, 0);
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitLdcInsn("sprinkler");
 			mv.visitInsn(ICONST_1);
 			mv.visitIntInsn(BIPUSH, 9);
-			mv.visitMethodInsn(INVOKESPECIAL, "openblocks/common/tileentity/TileEntitySprinkler$2", "<init>", "(Lopenblocks/common/tileentity/TileEntitySprinkler;L"+mTileEntityName+";Ljava/lang/String;ZI)V", false);
-			Label l2 = new Label();
-			mv.visitLabel(l2);
-			mv.visitLineNumber(278, l2);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "openblocks/common/tileentity/TileEntitySprinkler", "registerInventoryCallback", "(Lopenmods/inventory/GenericInventory;)Lopenmods/inventory/GenericInventory;", false);
+			mv.visitMethodInsn(INVOKESPECIAL, "gtPlusPlus/xmod/ob/CustomSprinklerInventory", "<init>", "(L"+mTileEntityName+";Ljava/lang/String;ZI)V", false);
 			mv.visitVarInsn(ASTORE, 1);
+			Label l1 = new Label();
+			mv.visitLabel(l1);
+			mv.visitLineNumber(282, l1);
+			mv.visitVarInsn(ALOAD, 1);
+			Label l2 = new Label();
+			mv.visitJumpInsn(IFNULL, l2);
 			Label l3 = new Label();
 			mv.visitLabel(l3);
-			mv.visitLineNumber(292, l3);
+			mv.visitLineNumber(283, l3);
+			mv.visitLdcInsn("Created Custom Inventory for OB Sprinkler.");
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/api/objects/Logger", "INFO", "(Ljava/lang/String;)V", false);
+			mv.visitLabel(l2);
+			mv.visitLineNumber(285, l2);
+			mv.visitFrame(F_APPEND,1, new Object[] {"openmods/inventory/GenericInventory"}, 0, null);
 			mv.visitVarInsn(ALOAD, 1);
 			Label l4 = new Label();
 			mv.visitJumpInsn(IFNULL, l4);
@@ -449,7 +454,7 @@ public class ClassTransformer_OB_Sprinkler {
 			Label l5 = new Label();
 			mv.visitJumpInsn(GOTO, l5);
 			mv.visitLabel(l4);
-			mv.visitFrame(F_APPEND,1, new Object[] {"openmods/inventory/GenericInventory"}, 0, null);
+			mv.visitFrame(F_SAME, 0, null, 0, null);
 			mv.visitInsn(ACONST_NULL);
 			mv.visitLabel(l5);
 			mv.visitFrame(F_SAME1, 0, null, 1, new Object[] {"openmods/inventory/GenericInventory"});
@@ -457,10 +462,9 @@ public class ClassTransformer_OB_Sprinkler {
 			Label l6 = new Label();
 			mv.visitLabel(l6);
 			mv.visitLocalVariable("this", "Lopenblocks/common/tileentity/TileEntitySprinkler;", null, l0, l6, 0);
-			mv.visitLocalVariable("x", "Lopenmods/inventory/GenericInventory;", null, l3, l6, 1);
-			mv.visitMaxs(8, 2);
+			mv.visitLocalVariable("x", "Lopenmods/inventory/GenericInventory;", null, l1, l6, 1);
+			mv.visitMaxs(6, 2);
 			mv.visitEnd();
-
 		}
 		else if (aMethodName.equals("getRealInventory")) {
 			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
@@ -513,6 +517,45 @@ public class ClassTransformer_OB_Sprinkler {
 			mv.visitMaxs(2, 1);
 			mv.visitEnd();
 		}
+		else if (aMethodName.equals("createInventoryCallback")) {
+			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
+			mv = getWriter().visitMethod(ACC_PROTECTED, "createInventoryCallback", "()Lopenmods/api/IInventoryCallback;", null, null);
+			mv.visitCode();
+			Label l0 = new Label();
+			mv.visitLabel(l0);
+			mv.visitLineNumber(289, l0);
+			mv.visitTypeInsn(NEW, "gtPlusPlus/xmod/ob/CallbackObject");
+			mv.visitInsn(DUP);
+			mv.visitVarInsn(ALOAD, 0);
+			mv.visitMethodInsn(INVOKESPECIAL, "gtPlusPlus/xmod/ob/CallbackObject", "<init>", "(L"+mTileEntityName+";)V", false);
+			mv.visitInsn(ARETURN);
+			Label l1 = new Label();
+			mv.visitLabel(l1);
+			mv.visitLocalVariable("this", "Lopenblocks/common/tileentity/TileEntitySprinkler;", null, l0, l1, 0);
+			mv.visitMaxs(3, 1);
+			mv.visitEnd();
+		}
+		else if (aMethodName.equals("registerInventoryCallback")) {
+			FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
+			mv = getWriter().visitMethod(ACC_PROTECTED, "registerInventoryCallback", "(Lopenmods/inventory/GenericInventory;)Lopenmods/inventory/GenericInventory;", null, null);
+			mv.visitCode();
+			Label l0 = new Label();
+			mv.visitLabel(l0);
+			mv.visitLineNumber(293, l0);
+			mv.visitVarInsn(ALOAD, 1);
+			mv.visitVarInsn(ALOAD, 0);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "openblocks/common/tileentity/TileEntitySprinkler", "createInventoryCallback", "()Lopenmods/api/IInventoryCallback;", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "openmods/inventory/GenericInventory", "addCallback", "(Lopenmods/api/IInventoryCallback;)Lopenmods/inventory/GenericInventory;", false);
+			mv.visitInsn(ARETURN);
+			Label l1 = new Label();
+			mv.visitLabel(l1);
+			mv.visitLocalVariable("this", "Lopenblocks/common/tileentity/TileEntitySprinkler;", null, l0, l1, 0);
+			mv.visitLocalVariable("inventory", "Lopenmods/inventory/GenericInventory;", null, l0, l1, 1);
+			mv.visitMaxs(2, 2);
+			mv.visitEnd();
+		}
+
+
 		FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Method injection complete.");		
 	}
 

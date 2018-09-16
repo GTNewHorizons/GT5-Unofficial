@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import com.google.common.base.Objects;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -31,12 +33,17 @@ public class SprinklerHandler {
 	public static void registerSprinklerFertilizer(ItemStack aFert) {
 		int aHash = Objects.hashCode(aFert.getItem(), aFert.getItemDamage());
 		if (!mValidFerts.containsKey(aHash)) {
+			Logger.INFO("Registering "+aFert.getDisplayName()+" as OB Sprinkler Fertilizer.");
 			mValidFerts.put(aHash, aFert.copy());
 		}
 	}
 	
 	public static void registerModFerts() {
-		ItemStack f;
+		ItemStack f;		
+
+		f = new ItemStack(Items.dye, 1, 15);
+		SprinklerHandler.registerSprinklerFertilizer(f);		
+		
 		if (LoadedMods.Forestry) {
 			f = ItemUtils.getCorrectStacktype("Forestry:fertilizerBio", 1);
 			if (f != null) {

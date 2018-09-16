@@ -311,6 +311,30 @@ public class ReflectionUtils {
 		}
 		return m;
 	}
+	
+	public static Method getMethodRecursively(final Class<?> clazz, final String fieldName) throws NoSuchMethodException {
+		try {
+			Method k = clazz.getDeclaredMethod(fieldName);
+			makeMethodAccessible(k);
+			return k;
+		} catch (final NoSuchMethodException e) {
+			final Class<?> superClass = clazz.getSuperclass();
+			if (superClass == null) {
+				throw e;
+			}
+			return getMethod(superClass, fieldName);
+		}
+	}
+
+	public static void makeMethodAccessible(final Method field) {
+		if (!Modifier.isPublic(field.getModifiers()) ||
+				!Modifier.isPublic(field.getDeclaringClass().getModifiers()))
+		{
+			field.setAccessible(true);
+		}
+	}
+	
+	
 
 	public static Class<?> getNonPublicClass(final String className) {
 		Class<?> c = null;
