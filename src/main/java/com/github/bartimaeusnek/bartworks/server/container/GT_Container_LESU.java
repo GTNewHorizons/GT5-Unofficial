@@ -2,10 +2,8 @@ package com.github.bartimaeusnek.bartworks.server.container;
 
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class GT_Container_LESU extends GT_Container_MultiMachine {
 

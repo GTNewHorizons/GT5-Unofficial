@@ -24,11 +24,20 @@ public class RecipeLoader implements Runnable {
     public void run() {
 
         if(MainMod.GTNH) {
+            /*
+             * GTNH "hardmode" Recipes
+             */
+
             GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(Blocks.lapis_block),Materials.Iron.getMolten(1296L),new ItemStack(ItemRegistry.BW_BLOCKS[0],1,0),100,(int) (GT_Values.V[3]-(GT_Values.V[3]/10)));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ItemRegistry.BW_BLOCKS[0],1,0), Materials.Lapis.getPlates(9), GT_OreDictUnificator.get(OrePrefixes.circuit,Materials.Advanced,2L), GT_Utility.getIntegratedCircuit(17)}, FluidRegistry.getFluidStack("ic2coolant",1000),new ItemStack(ItemRegistry.BW_BLOCKS[0],1,1),100,(int) (GT_Values.V[3]-(GT_Values.V[3]/10)));
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{new ItemStack(ItemRegistry.BW_BLOCKS[0],1,1), Materials.Lapis.getBlocks(8), GT_Utility.getIntegratedCircuit(17)}, GT_Values.NF, new ItemStack(ItemRegistry.BW_BLOCKS[1]),100,(int) (GT_Values.V[3]-(GT_Values.V[3]/10)));
         }
         else {
+            /*
+             * Vanilla Recipes
+             */
+
+
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{Materials.Lapis.getBlocks(8), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1L), GT_Utility.getIntegratedCircuit(17)}, GT_Values.NF, new ItemStack(ItemRegistry.BW_BLOCKS[1]), 100,(int) (GT_Values.V[1] - (GT_Values.V[1] / 10)));
 
             GT_ModHandler.addCraftingRecipe(
@@ -48,6 +57,10 @@ public class RecipeLoader implements Runnable {
             GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0],1,0),bitsd,new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0],1,1)});
             GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0],1,1),bitsd,new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0],1,0)});
         }
+
+        /*
+         * Common Recipes
+         */
 
         GT_ModHandler.addCraftingRecipe(
                 new GT_TileEntity_LESU(ConfigHandler.IDOffset,"LESU","LESU").getStackForm(1L),
@@ -142,8 +155,29 @@ public class RecipeLoader implements Runnable {
                             'P', "plateAlloyIridium",
                     });
 
+
+        Materials[] cables = {Materials.Lead, Materials.Tin,Materials.AnnealedCopper,Materials.Gold,Materials.Aluminium,Materials.Tungsten, Materials.VanadiumGallium,Materials.Naquadah, Materials.Naquadah, Materials.Superconductor};
+        Materials[] hulls = {Materials.WroughtIron, Materials.Steel,Materials.Aluminium,Materials.StainlessSteel,Materials.Titanium,Materials.TungstenSteel, Materials.Chrome,Materials.Iridium, Materials.Osmium, Materials.NaquadahAlloy};
+
         for (int i = 0; i < GT_Values.VN.length; i++) {
-            new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset+1+i,"Energy Distributor "+GT_Values.VN[i], "Energy Distributor "+GT_Values.VN[i], i, "Splits Amperage into several Sides");
+            try{
+                Materials cable = cables[i];
+                Materials hull = hulls[i];
+                ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
+            GT_ModHandler.addCraftingRecipe(
+                    new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset+1+i,"Energy Distributor "+GT_Values.VN[i], "Energy Distributor "+GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L),
+                    bitsd,
+                    new Object[]{
+                    "PWP",
+                    "WCW",
+                    "PWP",
+                    'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16,cable,1L),
+                    'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                    'C', machinehull
+                    });
+                    }catch(ArrayIndexOutOfBoundsException e){
+                    //e.printStackTrace();
+                }
+            }
         }
-    }
 }

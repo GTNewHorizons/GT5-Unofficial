@@ -4,7 +4,6 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.client.renderer.texture.IIconRegister;

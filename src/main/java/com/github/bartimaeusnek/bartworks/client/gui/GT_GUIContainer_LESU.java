@@ -3,7 +3,6 @@ package com.github.bartimaeusnek.bartworks.client.gui;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
