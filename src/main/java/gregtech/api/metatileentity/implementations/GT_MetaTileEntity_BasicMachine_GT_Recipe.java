@@ -788,14 +788,14 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             case 2:
                 return (!mRequiresFluidForFiltering || getFillableStack() != null) && (((getInputAt(0) != null && getInputAt(1) != null) || (getInputAt(0) == null && getInputAt(1) == null ? getRecipeList().containsInput(aStack) : (getRecipeList().containsInput(aStack) && null != getRecipeList().findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), aIndex == getInputSlot() ? new ItemStack[]{aStack, getInputAt(1)} : new ItemStack[]{getInputAt(0), aStack})))));
             default:
-                GT_Recipe_Map gt_recipe_map=getRecipeList();
-                if (GT_Recipe_Map.sCircuitAssemblerRecipes==gt_recipe_map) // assemblers
-                {
-                    if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitBasic") ||
-                            GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitAdvanced")) return true;
-                    // allow input all of this oredict circuits for assemblers
-                }
-                return gt_recipe_map.containsInput(aStack);
+            	GT_Recipe_Map gt_recipe_map=getRecipeList();
+            	if (GT_Recipe_Map.sCircuitAssemblerRecipes==gt_recipe_map) // assemblers
+            {
+            		if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitBasic") ||
+            				GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitAdvanced")) return true;
+            		// allow input all of this oredict circuits for assemblers
+            }
+            	return gt_recipe_map.containsInput(aStack);
         }
     }
 
