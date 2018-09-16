@@ -1,0 +1,16 @@
+[
+{
+  "modid": "bartworks",
+  "name": "BartWorks",
+  "description": "A Gregtech Addon.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["bartimaeusnek"],
+  "credits": "Gregorius Techneticies for making gregtech and allowing me to port his old stuff.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
