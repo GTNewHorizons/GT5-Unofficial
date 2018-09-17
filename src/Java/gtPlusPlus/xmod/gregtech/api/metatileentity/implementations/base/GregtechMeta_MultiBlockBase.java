@@ -126,7 +126,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	};
 
 	@Override
-	public String[] getInfoData() {
+	public final String[] getInfoData() {
 		ArrayList<String> mInfo = new ArrayList<String>();
 		if (!this.getMetaName().equals("")) {
 			mInfo.add(this.getMetaName());

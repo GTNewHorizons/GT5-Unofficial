@@ -4,6 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -13,11 +21,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
 
 public class GregtechMetaTileEntity_SolarTower
 extends GregtechMeta_MultiBlockBase {
@@ -26,6 +39,7 @@ extends GregtechMeta_MultiBlockBase {
 	private static final int mCasingTextureID = TAE.getIndexFromPage(3, 4);
 	public static String mCasingName = "";
 	private int mHeight = 0;
+	private int mHeatLevel = 0;
 
 	public GregtechMetaTileEntity_SolarTower(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -55,8 +69,8 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		return new String[]{
-				"Controller Block for Industrial Arc Furnace",
-				mCasingName+"s for the rest (28 at least!)",
+				"Contributing Green Energy towards the future",
+				mCasingName+"s for the base of the tower",
 				getPollutionTooltip(),
 				getMachineTooltip(),
 				CORE.GT_Tooltip};
@@ -64,7 +78,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getSound() {
-		return GregTech_API.sSoundList.get(Integer.valueOf(203));
+		return GregTech_API.sSoundList.get(Integer.valueOf(212));
 	}
 
 	@Override
@@ -96,8 +110,57 @@ extends GregtechMeta_MultiBlockBase {
 		return aFacing <= 1;
 	}
 
+	private Set<String> mCachedReflectors = new HashSet<String>();
+
+	public Set<String> getConnectedSolarReflectors(){
+		Set<String> mValidTilePositions = new HashSet<String>();
+		IGregTechTileEntity tTileEntity;
+		Map<String, BlockPos> mFastMap = new HashMap<String, BlockPos>();
+		for (int x = -64; x <= 64; x++) {
+			for (int z = -64; z <= 64; z++) {				
+				int aX, aY, aZ;
+				aX = this.getBaseMetaTileEntity().getXCoord();
+				aY = this.mHeight;
+				aZ = this.getBaseMetaTileEntity().getZCoord();				
+				BlockPos b = new BlockPos(aX+x, aY, aZ+z, this.getBaseMetaTileEntity().getWorld());
+				
+				tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(aX + x, this.mHeight, aZ + z);
+				if (tTileEntity == null) {
+					continue;
+				}
+				else {					
+					Logger.INFO("Found Tile Entity at "+b.getLocationString());					
+					if (tTileEntity.getMetaTileEntity() instanceof TileEntitySolarHeater) {
+						TileEntitySolarHeater mTile = (TileEntitySolarHeater) tTileEntity.getMetaTileEntity();
+						if (mTile != null) {							
+							b = new BlockPos(tTileEntity.getXCoord(), tTileEntity.getYCoord(), tTileEntity.getZCoord(), tTileEntity.getWorld());
+							if (!mTile.mHasTower || mTile.mSolarTower == null) {
+								Logger.INFO("Found Solar Reflector, Injecting Data.");
+								mTile.setSolarTower(b);
+							}
+							mFastMap.put(b.getUniqueIdentifier(), b);
+						}
+					}
+					else {
+						continue;
+					}
+				}
+
+				if (addToMachineList(tTileEntity, mCasingTextureID)) {
+					continue;
+				}
+			}	
+		}
+
+		for (BlockPos p : mFastMap.values()) {
+			if (mValidTilePositions.add(p.getUniqueIdentifier()));
+		}
+		mCachedReflectors = mValidTilePositions;
+		return mCachedReflectors;
+	}
+
 	@Override
-	public boolean checkRecipe(final ItemStack aStack) {
+	public boolean checkRecipe(final ItemStack aStack) {		
 		//this.mEfficiencyIncrease = 100;
 		//this.mMaxProgresstime = 100;
 		//this.mEUt = -4;
@@ -111,8 +174,8 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-
-		for (int i = 0; i < 19; i++) {
+		this.mHeight = 0;
+		for (int i = 0; i <= 19; i++) {
 			if (!checkLayer(i)) {
 				Logger.INFO("Invalid Structure on Y level "+i);
 				return false;
@@ -121,8 +184,12 @@ extends GregtechMeta_MultiBlockBase {
 		if (mMaintenanceHatches.size() != 1) {
 			Logger.INFO("Bad Hatches");
 			return false;
-		}
+		}		
+
+		this.mHeight = this.getBaseMetaTileEntity().getYCoord() - 19;		
 		Logger.INFO("Built Structure");
+		if (!aBaseMetaTileEntity.getWorld().isRemote)
+			getConnectedSolarReflectors();
 		return true;
 	}
 
@@ -195,12 +262,14 @@ extends GregtechMeta_MultiBlockBase {
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setInteger("mHeight", mHeight);
+		aNBT.setInteger("mHeatLevel", mHeatLevel);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		mHeight = aNBT.getInteger("mHeight");
+		mHeatLevel = aNBT.getInteger("mHeatLevel");
 	}
 
 	public boolean checkLayer(int aY) {
@@ -501,7 +570,7 @@ extends GregtechMeta_MultiBlockBase {
 		int aMeta;
 
 		int requiredMeta = getCasingMeta2();
-		if (aY == 19) {
+		if (aY == -19) {
 			requiredMeta = getCasingMeta();
 		}		
 
@@ -561,6 +630,63 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		return true;	
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+
+		//Add Heat every second
+		if (aTick % 20 == 0) {
+
+			//Add Heat First, if sources available
+			int aCacheSize = this.mCachedReflectors.size();
+			if (aCacheSize > 0) {
+				int aCount = aCacheSize;
+				for (int i = 0; i < aCount; i++) {
+					this.mHeatLevel++;
+				}
+			}
+
+			//Remove Heat, based on time of day
+			World w = this.getBaseMetaTileEntity().getWorld();
+			if (w != null) {
+				int aRemovalFactor = 0;
+				if (w.isDaytime()) {
+					aRemovalFactor = 1;
+				}
+				else {
+					aRemovalFactor = 3;
+				}
+				for (int i = 0; i<MathUtils.randInt((aCacheSize/10), (aCacheSize*10)); i++){
+					this.mHeatLevel -= aRemovalFactor;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPreTick(aBaseMetaTileEntity, aTick);
+		if (this.mCachedReflectors.isEmpty()) {
+			if (aTick % (30*20) == 0) {
+				this.getConnectedSolarReflectors();
+			}
+		}
+	}
+
+	@Override
+	public void onRemoval() {
+		this.mCachedReflectors.clear();
+		super.onRemoval();
+	}
+
+	@Override
+	public String[] getExtraInfoData() {
+		return new String[] {
+				"Internal Heat Level: "+this.mHeatLevel,
+				"Connected Solar Reflectors: "+this.mCachedReflectors.size()
+		};
 	}
 
 
