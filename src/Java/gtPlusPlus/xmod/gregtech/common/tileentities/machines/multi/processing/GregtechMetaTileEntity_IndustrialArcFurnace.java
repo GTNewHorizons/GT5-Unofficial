@@ -1,9 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,10 +11,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -36,7 +30,8 @@ extends GregtechMeta_MultiBlockBase {
 	private static final int mCasingTextureID = TAE.getIndexFromPage(3, 3);
 	public static String mCasingName = "Tempered Arc Furnace Casing";
 	private boolean mPlasmaMode = false;
-	
+	private int mSize = 0;
+
 	public GregtechMetaTileEntity_IndustrialArcFurnace(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 3);
@@ -59,11 +54,11 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		
+
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 3);
 		}
-		
+
 		return new String[]{
 				"Controller Block for Industrial Arc Furnace",
 				"250% faster than using single block machines of the same voltage",
@@ -88,11 +83,11 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (aSide == 0 || aSide == 1) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)],
-                    new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
-        }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)]};
+		if (aSide == 0 || aSide == 1) {
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)],
+					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
+		}
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)]};
 	}
 
 	@Override
@@ -117,7 +112,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		return this.checkRecipeGeneric(8 * GT_Utility.getTier(this.getMaxInputVoltage()), 100, 250);
+		return this.checkRecipeGeneric(this.mSize * 8 * GT_Utility.getTier(this.getMaxInputVoltage()), 100, 250);
 	}
 
 	@Override
@@ -130,81 +125,130 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		int x = 1;
 		int z = 1;
-		int y = 1;
-		int mHullCount = 0;
+		int depth = 1;
 		int mPlascreteCount = 0;
-		boolean doorState = false;
-		mUpdate = 100;
 		for (int i = 1; i < 4; i++) {
 			Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, 0);
 			int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, 0);
-			if (tBlock != ModBlocks.blockCasings3Misc && tMeta != 1) {
+			if (tBlock == ModBlocks.blockCasings3Misc && tMeta == 1) {
+				Logger.INFO("Found Correct Top Casing at offset "+i);
+				continue;				
+			}
+			else {
 				if (isValidCasingBlock(tBlock, tMeta)) {
 					x = i;
 					z = i;
 					Logger.INFO("Found Correct Edge Casing at offset "+i);
 					break;
 				} else {
-					return false;
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(i, 0, 0);
+					if (addToMachineList(tTileEntity, mCasingTextureID)) {
+						Logger.INFO("Found Tile Entity on Edge Casing on top layer, it is a valid htach/bus.");
+						x = i;
+						z = i;
+						break;
+					}
+					else {
+						return false;
+					}
 				}
 			}
-			else {
-				Logger.INFO("Found Correct Top Casing at offset "+i);
-			}
 		}
-		for (int i = -1; i > -16; i--) {
-			Block tBlock = aBaseMetaTileEntity.getBlockOffset(x, i, z);
-			int tMeta = aBaseMetaTileEntity.getMetaIDOffset(x, i, z);
-			if (!isValidCasingBlock(tBlock, tMeta)) {
-				y = i+1;
-				Logger.INFO("Found Correct Floor Casing at offset "+y);
-				break;
-			}
+		for (int i = 0; i > -3; i--) {			
+			if (!aBaseMetaTileEntity.getAirOffset(0, i, 0)) {
+				Block tBlock = aBaseMetaTileEntity.getBlockOffset(0, i, 0);
+				int tMeta = aBaseMetaTileEntity.getMetaIDOffset(0, i, 0);
+				if (isValidCasingBlock(tBlock, tMeta)) {
+					depth = i;
+					Logger.INFO("Found Correct Floor Casing at offset "+depth);
+					break;
+				}
+			}			
 		}
-		if (y >= -4) {
+		//!addToMachineList(tTileEntity, mCasingTextureID)
+		if (depth >= -1) {
 			Logger.INFO("Structure is not 5 blocks or taller.");
 			return false;
 		}
+		
+		mSize = x;
+		
+		Logger.INFO("Using X: "+x+" | Y: "+depth+" | Z: "+z+" as offsets");
 		for (int dX = -x; dX <= x; dX++) {
 			for (int dZ = -z; dZ <= z; dZ++) {
-				for (int dY = 0; dY >= y; dY--) {
-					if (dX == -x || dX == x || dY == -y || dY == y || dZ == -z || dZ == z) {
+				for (int dY = 0; dY >= depth; dY--) {
+					if (dX == -x || dX == x || dY == -depth || dY == depth || dZ == -z || dZ == z) {
 						Block tBlock = aBaseMetaTileEntity.getBlockOffset(dX, dY, dZ);
 						int tMeta = aBaseMetaTileEntity.getMetaIDOffset(dX, dY, dZ);
-						if (y == 0) {
+						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
+						if (dY == 0) {
 							if (dX == -x || dX == x || dZ == -z || dZ == z) {
-								if (!isValidCasingBlock(tBlock, tMeta)) {
-									Logger.INFO("Found Incorrect Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
+								if (!isValidCasingBlock(tBlock, tMeta) && !addToMachineList(tTileEntity, mCasingTextureID)) {
+									Logger.INFO("Found Incorrect Edge Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
 									return false;
 								}
 							} else if (dX == 0 && dZ == 0) {
+
 							} else {
 								if (tBlock != ModBlocks.blockCasings3Misc || tMeta != 1) {
-									Logger.INFO("Found Incorrect Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
+									Logger.INFO("Found Incorrect Inner Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
 									return false;
 								}
 							}
-						} else if (isValidCasingBlock(tBlock, tMeta)) {
-							mPlascreteCount++;
-						} else {
-							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
-							if ((!addMaintenanceToMachineList(tTileEntity, mCasingTextureID))
-									&& (!addEnergyInputToMachineList(tTileEntity, mCasingTextureID))) {
-								if ((!addInputToMachineList(tTileEntity, mCasingTextureID))
-										&& (!addOutputToMachineList(tTileEntity, mCasingTextureID))) {
-									
-									if (/*!aBaseMetaTileEntity.getAirOffset(dX, dY, dZ) && */tBlock != Blocks.pumpkin) {
-										Logger.INFO("Found Invalid object @ offset  X:"+dX+" | Y:"+dY+" | Z:"+dZ +" | Block: "+(tBlock != null ? tBlock.getLocalizedName() : "Air"));
-										int aX = aBaseMetaTileEntity.getXCoord()+dX;
-										int aY = aBaseMetaTileEntity.getYCoord()+dY;
-										int aZ = aBaseMetaTileEntity.getZCoord()+dZ;
-										aBaseMetaTileEntity.getWorld().setBlock(aX, aY, aZ, Blocks.pumpkin, 0, 3);
-										return false;										
-									}
-									
+						}
+						else if (dY < 0) {							
+							//Check Walls
+							if (dX == -x || dX == x || dZ == -z || dZ == z) {
+								if (!isValidCasingBlock(tBlock, tMeta) && !addToMachineList(tTileEntity, mCasingTextureID)) {
+									Logger.INFO("Found Incorrect Wall Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
+									return false;
+								}
+								else {
+									mPlascreteCount++;
+								}
+							}							
+							//Check Floor
+							if (dY == depth) {
+								if (!isValidCasingBlock(tBlock, tMeta) && !addToMachineList(tTileEntity, mCasingTextureID)) {
+									Logger.INFO("Found Incorrect Floor Casing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
+									return false;
+								}
+								else {
+									mPlascreteCount++;
 								}
 							}
+							//Check Spacing
+							else {
+								if (aBaseMetaTileEntity.getAirOffset(dX, dY, dZ)) {
+									Logger.INFO("Found Incorrect Inner Spacing at offset X:"+dX+" | Y:"+dY+" | Z:"+dZ);
+									return false;
+								}
+							}							
 						}
+						
+						else {/*
+							if (isValidCasingBlock(tBlock, tMeta)) {
+							} 
+							else {						
+								IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dX, dY, dZ);
+								if ((!addMaintenanceToMachineList(tTileEntity, mCasingTextureID))
+										&& (!addEnergyInputToMachineList(tTileEntity, mCasingTextureID))) {
+									if ((!addInputToMachineList(tTileEntity, mCasingTextureID))
+											&& (!addOutputToMachineList(tTileEntity, mCasingTextureID)) && (!addMufflerToMachineList(tTileEntity, mCasingTextureID))) {
+
+										if (!aBaseMetaTileEntity.getAirOffset(dX, dY, dZ)) {
+											Logger.INFO("Found Invalid object @ offset  X:"+dX+" | Y:"+dY+" | Z:"+dZ +" | Block: "+(tBlock != null ? tBlock.getLocalizedName() : "Air"));
+											int aX = aBaseMetaTileEntity.getXCoord()+dX;
+											int aY = aBaseMetaTileEntity.getYCoord()+dY;
+											int aZ = aBaseMetaTileEntity.getZCoord()+dZ;
+											//aBaseMetaTileEntity.getWorld().setBlock(aX, aY, aZ, Blocks.pumpkin, 0, 3);
+											return false;										
+										}
+
+									}
+								}
+							}
+						*/}
 					}
 				}
 			}
@@ -213,13 +257,13 @@ extends GregtechMeta_MultiBlockBase {
 			Logger.INFO("Bad Hatches");
 			return false;
 		}
-		
-		
-		
+
+
+
 		for (int dX = -x + 1; dX <= x - 1; dX++) {
 			for (int dZ = -z + 1; dZ <= z - 1; dZ++) {
-				for (int dY = -1; dY >= y + 1; dY--) {/*
-					
+				for (int dY = -1; dY >= depth + 1; dY--) {/*
+
 					Block aInnerBlock = aBaseMetaTileEntity.getBlockOffset(dX, dY, dZ);					
 					if (aBaseMetaTileEntity.getAirOffset(dX, dY, dZ) || aInnerBlock instanceof BlockAir) {
 						int aX, aY, aZ;
@@ -228,8 +272,8 @@ extends GregtechMeta_MultiBlockBase {
 						aZ = aBaseMetaTileEntity.getZCoord()+dZ;
 						aBaseMetaTileEntity.getWorld().setBlock(aX, aY, aZ, Blocks.lava, 0, 3);
 					}
-					
-				*/}
+
+				 */}
 			}
 		}
 
@@ -274,7 +318,7 @@ extends GregtechMeta_MultiBlockBase {
 	public byte getCasingMeta2() {
 		return 15;
 	}
-	
+
 	public boolean isValidCasingBlock(Block aBlock, int aMeta) {
 		if (aBlock == getCasingBlock() && aMeta == getCasingMeta()) {
 			return true;
@@ -282,6 +326,7 @@ extends GregtechMeta_MultiBlockBase {
 		if (aBlock == getCasingBlock2() && aMeta == getCasingMeta2()) {
 			return true;
 		}
+		Logger.INFO("Found "+(aBlock != null ? aBlock.getLocalizedName() : "Air") + "With Meta "+aMeta);
 		return false;
 	}
 
@@ -292,29 +337,33 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-		this.mPlasmaMode = Utils.invertBoolean(mPlasmaMode);
-		if (mPlasmaMode) {
-			PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.LIGHT_PURPLE+"Plasma"+EnumChatFormatting.RESET);
-		}
-		else {
-			PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.YELLOW+"Electric"+EnumChatFormatting.RESET);			
-		}
+		if (this.mSize > 3) {
+			this.mPlasmaMode = Utils.invertBoolean(mPlasmaMode);
+			if (mPlasmaMode) {
+				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.LIGHT_PURPLE+"Plasma"+EnumChatFormatting.RESET);
+			}
+			else {
+				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.YELLOW+"Electric"+EnumChatFormatting.RESET);			
+			}
+		}		
 	}
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setBoolean("mPlasmaMode", mPlasmaMode);
+		aNBT.setInteger("mSize", mSize);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		mPlasmaMode = aNBT.getBoolean("mPlasmaMode");
+		mSize = aNBT.getInteger("mSize");
 	}
-	
-    @Override
-    public void onMachineBlockUpdate() {
-        mUpdate = 100;
-    }
+
+	@Override
+	public void onMachineBlockUpdate() {
+		mUpdate = 100;
+	}
 }
