@@ -271,6 +271,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Naq_Reactor_C,
 	Controller_Naq_Reactor, 
 	Casing_Containment,	
+	
+	//Arc Furnace
+	Industrial_Arc_Furnace,
+	Casing_Industrial_Arc_Furnace, 
 
 
 
@@ -500,6 +504,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Fluid Void Covers
 	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
+	
 	
 	
 

@@ -18,7 +18,7 @@ public class VanillaBedHeightFix implements IBugFix {
 
 	public VanillaBedHeightFix() {
 		if (DevHelper.isValidHelperObject()) {
-			Method m = DevHelper.getInstance().getForgeMethod(EntityPlayer.class, "sleepInBedAt", int.class, int.class,
+			Method m = DevHelper.getForgeMethod(EntityPlayer.class, "sleepInBedAt", int.class, int.class,
 					int.class);
 			if (m != null) {
 				mSleepInBedAt = m;

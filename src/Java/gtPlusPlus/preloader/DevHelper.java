@@ -48,12 +48,11 @@ public class DevHelper {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Method getForgeMethod(Class c, String s, Class... varags) {
+	public static Method getForgeMethod(Class c, String s, Class... varags) {
 		String s1, s2;
 		Method a, b;
 		s1 = s;
-		s2 = getSRG(s);	
-
+		s2 = getSRG(s);
 		try {
 			a = ReflectionUtils.getMethod(c, s1, varags);
 			if (a != null) {
@@ -101,7 +100,7 @@ public class DevHelper {
 
 
 
-	public static synchronized final DevHelper getInstance() {
+	private static synchronized final DevHelper getInstance() {
 		return mInstance;
 	}
 
@@ -109,20 +108,31 @@ public class DevHelper {
 		return mIsValidHelper;
 	}
 
-	public String getSRG(String mForgeName) {
-		return DevHelperInternals.forgeToSrg.get(mForgeName);
+	public static String getSRG(String mForgeName) {
+		String aSRG = DevHelperInternals.forgeToSrg.get(mForgeName);
+		return aSRG != null ? aSRG : "BAD_SRG_NAME";
 	}
 
-	public String getForge(String mSrgName) {
-		return DevHelperInternals.srgToForge.get(mSrgName);		
+	public static String getForge(String mSrgName) {	
+		String aForgeName = DevHelperInternals.srgToForge.get(mSrgName);
+		return aForgeName != null ? aForgeName : "BAD_FORGE_NAME";
+	}
+	
+	public static String getMinecraftClassName(String adeObName, boolean obfuscated) {
+		if (obfuscated) {
+			return getObfuscated(adeObName);
+		}
+		return adeObName;
 	}
 
-	public String getObfuscated(String mDeob) {
-		return DevHelperInternals.deObToOb.get(mDeob);
+	public static String getObfuscated(String mDeob) {
+		String obfuscatedClassname = DevHelperInternals.deObToOb.get(mDeob);
+		return obfuscatedClassname != null ? obfuscatedClassname : "BAD_OBFUSCATED_CLASS_NAME";
 	}
 
-	public String getDeobfuscated(String mOb) {
-		return DevHelperInternals.obToDeOb.get(mOb);		
+	public static String getDeobfuscated(String mOb) {
+		String deobfuscatedClassname = DevHelperInternals.obToDeOb.get(mOb);
+		return deobfuscatedClassname != null ? deobfuscatedClassname : "BAD_DEOBFUSCATED_CLASS_NAME";
 	}
 	
 	public static class DevHelperInternals {

@@ -1,5 +1,12 @@
 package gtPlusPlus;
 
+import java.util.LinkedHashMap;
+
+import com.google.common.base.Objects;
+
+import gtPlusPlus.api.objects.data.ObjMap;
+import net.minecraft.item.ItemStack;
+
 /**
  * This Class purely exists to note down ideas and or plans to (re)implement things.
  * 
@@ -63,7 +70,7 @@ public class RoadMap {
 		return false;
 	}*/
 
-/*	private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
+	/*private static final LinkedHashMap<String, ObjMap<Integer, Boolean>>mCachedResults = new LinkedHashMap<String, ObjMap<Integer, Boolean>>();
     
     public boolean contains(ItemStack aStack) {
         if (aStack == null){

@@ -24,7 +24,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base"); //48
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "");
@@ -40,8 +40,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Naq_Reactor_A.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
-		/*GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
-		GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
+		/*GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));
@@ -70,7 +70,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
 					//Coke Oven Casing Tier 2
 				case 3:
-					return TexturesGtBlock.Casing_Material_Grisium.getIcon();
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 					//Material Press Casings
 				case 4:
 					return TexturesGtBlock.Casing_Material_Grisium.getIcon();				

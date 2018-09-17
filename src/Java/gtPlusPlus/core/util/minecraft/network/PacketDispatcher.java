@@ -59,7 +59,7 @@ public class PacketDispatcher {
 			Method a, b;
 			
 			try {
-				a = DevHelper.getInstance().getForgeMethod(PlayerManager.class, "getOrCreateChunkWatcher", int.class, int.class, boolean.class);
+				a = DevHelper.getForgeMethod(PlayerManager.class, "getOrCreateChunkWatcher", int.class, int.class, boolean.class);
 			}
 			catch (Throwable t) {
 				a = ReflectionHelper.findMethod(playerInstanceClass, (Object) null,
@@ -67,7 +67,7 @@ public class PacketDispatcher {
 						new Class[]{Integer.TYPE, Integer.TYPE, Boolean.TYPE});
 			}
 			try {
-				b = DevHelper.getInstance().getForgeMethod(PlayerManager.class, "sendToAllPlayersWatchingChunk", Packet.class);
+				b = DevHelper.getForgeMethod(PlayerManager.class, "sendToAllPlayersWatchingChunk", Packet.class);
 			}
 			catch (Throwable t) {
 				b = ReflectionHelper.findMethod(playerInstanceClass, (Object) null,
