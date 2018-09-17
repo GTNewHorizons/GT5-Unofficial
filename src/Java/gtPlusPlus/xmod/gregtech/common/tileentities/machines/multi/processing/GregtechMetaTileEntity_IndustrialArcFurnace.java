@@ -63,14 +63,18 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for Industrial Arc Furnace",
 				"250% faster than using single block machines of the same voltage",
 				"Processes 8 items per voltage tier",
-				"Size: 3x3x5 [WxHxL] (Hollow)",
-				"Controller (front centered)",
+				"Size: nx3xn [WxHxL] (Hollow)",
+				"n can be 3, 5 or 7",
+				"Max Size required to process Plasma recipes",
+				"Controller (top centered)",
 				"1x Input Bus (anywhere)",
 				"1x Output Bus (anywhere)",
+				"1x Input Hatch (anywhere)",
+				"1x Output Hatch (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Muffler Hatch (anywhere)",
 				"1x Maintenance Hatch (Back Center)",
-				mCasingName+"s for the rest (28 at least!)",
+				mCasingName+"s for the rest",
 				getPollutionTooltip(),
 				getMachineTooltip(),
 				CORE.GT_Tooltip};
@@ -78,7 +82,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String getSound() {
-		return GregTech_API.sSoundList.get(Integer.valueOf(203));
+		return GregTech_API.sSoundList.get(Integer.valueOf(207));
 	}
 
 	@Override

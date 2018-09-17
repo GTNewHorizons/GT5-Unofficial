@@ -118,6 +118,7 @@ public class COMPAT_HANDLER {
 			GregtechCustomHatches.run();
 			GregtechNaqReactor.run();
 			GregtechIndustrialArcFurnace.run();
+			GregtechSolarTower.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

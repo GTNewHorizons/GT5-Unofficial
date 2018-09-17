@@ -275,6 +275,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Arc Furnace
 	Industrial_Arc_Furnace,
 	Casing_Industrial_Arc_Furnace, 
+	
+	//Solar Tower
+	Industrial_Solar_Tower,
+	Casing_SolarTower_Structural, 
+	Casing_SolarTower_SaltContainment, 
+	Casing_SolarTower_HeatContainment, 
 
 
 

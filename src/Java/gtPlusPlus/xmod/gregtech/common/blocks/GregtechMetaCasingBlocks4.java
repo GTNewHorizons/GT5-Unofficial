@@ -25,9 +25,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Structural Solar Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Salt Containment Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Thermal Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", ""); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "");
@@ -41,10 +41,10 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
-		/*GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
-		GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
-		GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));
+		GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 5));
+		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 6));
+		/*GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_Power_SubStation.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_Cyclotron_Coil.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_Cyclotron_External.set(new ItemStack(this, 1, 10));
@@ -76,10 +76,10 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.Casing_Material_Grisium.getIcon();				
 					//Sifter Structural
 				case 5:
-					return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
+					return TexturesGtBlock.Casing_Material_Stellite.getIcon();
 					//Sifter Sieve
 				case 6:
-					return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
+					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 
 					//Vanadium Radox Battery
 				case 7:
