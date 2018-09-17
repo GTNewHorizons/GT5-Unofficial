@@ -2,8 +2,10 @@ package com.github.bartimaeusnek.bartworks.common.tileentities;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_LESU;
+import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -138,7 +140,15 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getDescription() {
         return new String[]{
-
+                "Controller Block for the GT2-Styled L.E.S.U.",
+                "Size: ANY",
+                "Storage per LESU Casing: " + this.energyPerCell+"EU",
+                "Output EU: LESU Casings amount"+
+                "Input EU: Next Voltage Tier to Output EU",
+                "Input/Output Amps can be configured via 4 Circuits in GUI",
+                "Output Side has a dot on it.",
+                ChatColorHelper.RED+"Only one Controller allowed, no Wallsharing!",
+                "Added by bartimaeusnek via BartWorks"
         };
     }
 

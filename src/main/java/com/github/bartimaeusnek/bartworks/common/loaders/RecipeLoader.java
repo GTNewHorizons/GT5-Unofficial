@@ -156,15 +156,15 @@ public class RecipeLoader implements Runnable {
                     });
 
 
-        Materials[] cables = {Materials.Lead, Materials.Tin,Materials.AnnealedCopper,Materials.Gold,Materials.Aluminium,Materials.Tungsten, Materials.VanadiumGallium,Materials.Naquadah, Materials.Naquadah, Materials.Superconductor};
-        Materials[] hulls = {Materials.WroughtIron, Materials.Steel,Materials.Aluminium,Materials.StainlessSteel,Materials.Titanium,Materials.TungstenSteel, Materials.Chrome,Materials.Iridium, Materials.Osmium, Materials.NaquadahAlloy};
+        Materials[] cables = {Materials.Lead, Materials.Tin,Materials.AnnealedCopper,Materials.Gold,Materials.Aluminium,Materials.Tungsten, Materials.VanadiumGallium,Materials.Naquadah, Materials.NaquadahAlloy, Materials.Superconductor};
+        Materials[] hulls = {Materials.WroughtIron, Materials.Steel,Materials.Aluminium,Materials.StainlessSteel,Materials.Titanium,Materials.TungstenSteel, Materials.Chrome,Materials.Iridium, Materials.Osmium, Materials.Naquadah};
 
         for (int i = 0; i < GT_Values.VN.length; i++) {
             try{
                 Materials cable = cables[i];
                 Materials hull = hulls[i];
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
-            GT_ModHandler.addCraftingRecipe(
+                GT_ModHandler.addCraftingRecipe(
                     new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset+1+i,"Energy Distributor "+GT_Values.VN[i], "Energy Distributor "+GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L),
                     bitsd,
                     new Object[]{
@@ -175,8 +175,8 @@ public class RecipeLoader implements Runnable {
                     'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
                     'C', machinehull
                     });
-                    }catch(ArrayIndexOutOfBoundsException e){
-                    //e.printStackTrace();
+                }catch(ArrayIndexOutOfBoundsException e){
+                //e.printStackTrace();
                 }
             }
         }

@@ -34,16 +34,16 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
     }
 
     public long maxAmperesOut() {
-        return 64*5;
+        return 320;
     }
 
     public long maxAmperesIn() {
-        return 256;
+        return 320;
     }
 
     @Override
     public long maxEUStore() {
-        return 512L + (GT_Values.V[this.mTier ] * 256L);
+        return 512L + (GT_Values.V[this.mTier ] * 320L);
     }
 
     public String[] getDescription() {
