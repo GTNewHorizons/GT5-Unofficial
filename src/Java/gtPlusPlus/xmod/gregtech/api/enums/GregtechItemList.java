@@ -380,8 +380,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Basically is an automatic Cauldron
 	SimpleDustWasher, 
-
-
+	
+	//Solar Tower Reflector
+	Solar_Tower_Reflector,
 
 	//Super Tier Chests
 	Super_Chest_LV, Super_Chest_MV, Super_Chest_HV, Super_Chest_EV, Super_Chest_IV, 

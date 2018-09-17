@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -13,13 +12,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -74,10 +70,10 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 0 || aSide == 1) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 6)],
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(3, 6)]};
 	}
 
 	@Override
@@ -102,10 +98,10 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-        //this.mEfficiencyIncrease = 100;
-        //this.mMaxProgresstime = 100;
-        //this.mEUt = -4;
-        return true;
+		//this.mEfficiencyIncrease = 100;
+		//this.mMaxProgresstime = 100;
+		//this.mEUt = -4;
+		return true;
 	}
 
 	@Override
@@ -113,17 +109,15 @@ extends GregtechMeta_MultiBlockBase {
 		this.sendLoopStart((byte) 1);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		
-		for (int i = 0; i < 18; i++) {
+
+		for (int i = 0; i < 19; i++) {
 			if (!checkLayer(i)) {
 				Logger.INFO("Invalid Structure on Y level "+i);
 				return false;
 			}
 		}
-		
 		if (mMaintenanceHatches.size() != 1) {
 			Logger.INFO("Bad Hatches");
 			return false;
@@ -193,8 +187,8 @@ extends GregtechMeta_MultiBlockBase {
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 		if (this.mHeight > 3) {}
-		
-		
+
+
 	}
 
 	@Override
@@ -208,102 +202,283 @@ extends GregtechMeta_MultiBlockBase {
 		super.loadNBTData(aNBT);
 		mHeight = aNBT.getInteger("mHeight");
 	}
-	
+
 	public boolean checkLayer(int aY) {
-		if (aY >= 0 && aY <= 4) {
+		if (aY >= 0 && aY <= 6) {
 			return checkTopLayers(-aY);
 		}
-		if (aY >= 5 && aY <= 14) {
+		if (aY >= 7 && aY <= 16) {
 			return checkTowerLayer(-aY);			
 		}
-		else if (aY >= 15 && aY <= 17) {
+		else if (aY >= 17 && aY <= 19) {
 			return checkBaseLayer(-aY);			
-		}		
+		}	
 		Logger.INFO("Bad Y level to check");
 		return false;
 	}
-	
+
 	public boolean checkTopLayers(int aY) {
 		Block aBlock;
 		int aMeta;
+
 		if (aY == 0) {
-			for (int x = -2; x < 2; x++) {
-				for (int z = -2; z < 2; z++) {
+			return true;
+		} else if (aY == -1) {
+			for (int x = -1; x <= 1; x++) {
+				for (int z = -1; z <= 1; z++) {
 					aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
 					aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
-					if (x != 0 && z != 0) {
+					if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
+						continue;
+					} else {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+						Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta); 
+						return false;						
+					}
+				}
+			}
+		} else if (aY == -2 || aY == -6) {
+			for (int x = -2; x <= 2; x++) {
+				for (int z = -2; z <= 2; z++) {
+					aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
+					aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);					
+					//Edge Casing
+					if (x == -2 || x == 2 || z == -2 || z == 2) {						
+						//Edge Corners
+						if ((x == 2 || x == -2) && (z == 2 | z == -2)) {
+							if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Outside Corner "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;								
+							}
+							else {
+								continue;
+							}
+						}
+						else {
+							//Edge Sides
+							if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
+								continue;
+							} else {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;								
+							}
+						}						
+					}
+
+					//Internal
+					else {
+						if (aBlock == getCasingBlock() && aMeta == getCasingMeta2()) {
+							continue;
+						} else {
+							Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+							Logger.INFO("Found Bad Block Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+							return false;
+						}
+					}				
+				}
+			}
+		} 
+		//Top Layers 7x7
+		else if (aY == -3 || aY == -5) {
+			for (int x = -3; x <= 3; x++) {
+				for (int z = -3; z <= 3; z++) {
+					aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
+					aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);					
+					//Edge Casing
+					if (x == -3 || x == 3 || z == -3 || z == 3) {
+
+						//3, 3
+						//2, 3
+						//3, 2
+
+						//Air Spacing
+						if (x == 3 && (z == -3 || z == -2 || z == 2 || z == 3)) {
+							if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Outside Corner "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;
+							}
+							else {
+								continue;
+							}
+						}
+						else if (x == -3 && (z == -3 || z == -2 || z == 2 || z == 3)) {
+							if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Outside Corner "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;
+							}
+							else {
+								continue;
+							}
+						}
+						else if (z == 3 && (x == -3 || x == -2 || x == 2 || x == 3)) {
+							if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Outside Corner "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;
+							}
+							else {
+								continue;
+							}
+						}
+						else if (z == -3 && (x == -3 || x == -2 || x == 2 || x == 3)) {
+							if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Outside Corner "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;
+							}
+							else {
+								continue;
+							}
+						}
+						else {
+							//Edge Sides
+							if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
+								continue;
+							} else {
+								Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+								Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+								return false;
+							}
+						}						
+					}
+					else if ((x == -2 || x == 2) & (z == -2 || z == 2)) {
 						if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
 							continue;
 						} else {
-							Logger.INFO("Found Bad Block on Top Layer: "+(aBlock != null ? aBlock.getLocalizedName() : "Air"));
+							Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+							Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
 							return false;
 						}
+					}
+					//Internal
+					else {
+						if (aBlock == getCasingBlock() && aMeta == getCasingMeta2()) {
+							continue;
+						} else {
+							Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+							Logger.INFO("Found Bad Block Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+							return false;
+						}
+					}				
+				}
+			}
+		} 
+		//Midle Top Layer 9x9
+		else if (aY == -4) {
+			//Check Inner 5x5
+			for (int x = -2; x <= 2; x++) {
+				for (int z = -2; z <= 2; z++) {
+					if (getBaseMetaTileEntity().getBlockOffset(x, aY, z) != getCasingBlock() && this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z) != getCasingMeta2()) {
+						Logger.INFO("Error at offset: X:" + x + ", Y:" + aY + ", Z:" + z);
+						return false;
 					}
 					else {
 						continue;
 					}
-				}
+				}	
 			}
-		} else if (aY > 0 && aY < 4) {
-			for (int x = -2; x < 2; x++) {
-				for (int z = -2; z < 2; z++) {
-					aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-					aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
-					if (x != -2 || x == 2 || z == -2 || z == 2) {
-						if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
-							continue;
-						} else {
-							Logger.INFO("Found Bad Block on Exterior of Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
-							return false;
-						}
-					} else {
-						if (aBlock == getCasingBlock() && aMeta == getCasingMeta2()) {
-							continue;
-						} else {
-							Logger.INFO("Found Bad Block on Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
-							return false;
-						}
-					}
+			//Check Pos Sides
+			for (int z = -1; z <= -1; z++) {
+				if (getBaseMetaTileEntity().getBlockOffset(3, aY, z) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(3, aY, z) == getCasingMeta2()) {
+					continue;
+				} else if (getBaseMetaTileEntity().getBlockOffset(-3, aY, z) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(-3, aY, z) == getCasingMeta2()) {
+					continue;
+				} else {
+					Logger.INFO("1 Error at offset: X:3/-3" + ", Y:" + aY + ", Z:" + z);
+					return false;
 				}
+
 			}
-		} else if (aY == 4) {
-			for (int x = -2; x < 2; x++) {
-				for (int z = -2; z < 2; z++) {
-					aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-					aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
-					
-					if (x == 0 && z == 0) {
-						if (aBlock == getCasingBlock() && aMeta == getCasingMeta2()) {
-							continue;
-						}
-						else {
-							return false;
-						}
-					}
-					
-					if (aBlock == getCasingBlock() && aMeta == getCasingMeta3()) {
+			for (int x = -1; x <= -1; x++) {
+				if (getBaseMetaTileEntity().getBlockOffset(x, aY, 3) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, 3) == getCasingMeta2()) {
+					continue;
+				} else if (getBaseMetaTileEntity().getBlockOffset(x, aY, -3) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, -3) == getCasingMeta2()) {
+					continue;
+				} else {
+					Logger.INFO("1 Error at offset: X:" + x + ", Y:" + aY + ", Z:3/-3");
+					return false;
+				}
+			}	
+
+			//Corner Casings
+			for (int z = -2; z <= -2; z++) {
+				if (z == -2 || z == 2) {
+					if (getBaseMetaTileEntity().getBlockOffset(3, aY, z) == getCasingBlock()
+							&& this.getBaseMetaTileEntity().getMetaIDOffset(3, aY, z) == getCasingMeta3()) {
+						continue;
+					} else if (getBaseMetaTileEntity().getBlockOffset(-3, aY, z) == getCasingBlock()
+							&& this.getBaseMetaTileEntity().getMetaIDOffset(-3, aY, z) == getCasingMeta3()) {
 						continue;
 					} else {
-						Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+						Logger.INFO("2 Error at offset: X:3/-3" + ", Y:" + aY + ", Z:" + z);
 						return false;
 					}
 				}
 			}
+			for (int x = -2; x <= -2; x++) {
+				if (x == -2 || x == 2) {
+					if (getBaseMetaTileEntity().getBlockOffset(x, aY, 3) == getCasingBlock()
+							&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, 3) == getCasingMeta3()) {
+						continue;
+					} else if (getBaseMetaTileEntity().getBlockOffset(x, aY, -3) == getCasingBlock()
+							&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, -3) == getCasingMeta3()) {
+						continue;
+					} else {
+						Logger.INFO("2 Error at offset: X:" + x + ", Y:" + aY + ", Z:3/-3");
+						return false;
+					}
+				}
+			}
+			//Check Sides Casings
+			for (int z = -1; z <= -1; z++) {
+				if (getBaseMetaTileEntity().getBlockOffset(4, aY, z) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(4, aY, z) == getCasingMeta3()) {
+					continue;
+				} else if (getBaseMetaTileEntity().getBlockOffset(-4, aY, z) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(-4, aY, z) == getCasingMeta3()) {
+					continue;
+				} else {
+					Logger.INFO("1 Error at offset: X:3/-3" + ", Y:" + aY + ", Z:" + z);
+					return false;
+				}
+
+			}
+			for (int x = -1; x <= -1; x++) {
+				if (getBaseMetaTileEntity().getBlockOffset(x, aY, 4) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, 4) == getCasingMeta3()) {
+					continue;
+				} else if (getBaseMetaTileEntity().getBlockOffset(x, aY, -4) == getCasingBlock()
+						&& this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, -4) == getCasingMeta3()) {
+					continue;
+				} else {
+					Logger.INFO("1 Error at offset: X:" + x + ", Y:" + aY + ", Z:3/-3");
+					return false;
+				}
+			}		
 		}
 		return true;
 	}
-	
+
 	public boolean checkTowerLayer(int aY) {
 		Block aBlock;
 		int aMeta;		
-		for (int x = -1; x < 1; x++) {
-			for (int z = -1; z < 1; z++) {
+		for (int x = -1; x <= 1; x++) {
+			for (int z = -1; z <= 1; z++) {
 				aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
 				aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);
 				if (x == -1 || x == 1 || z == -1 || z == 1) {
 					if (aBlock == getCasingBlock() && aMeta == getCasingMeta()) {
 						continue;
 					} else {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
 						Logger.INFO("Found Bad Block Externally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
 						return false;
 					}
@@ -311,6 +486,7 @@ extends GregtechMeta_MultiBlockBase {
 					if (aBlock == getCasingBlock() && aMeta == getCasingMeta2()) {
 						continue;
 					} else {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
 						Logger.INFO("Found Bad Block Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
 						return false;
 					}
@@ -319,28 +495,80 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		return true;	
 	}
-	
+
 	public boolean checkBaseLayer(int aY) {
 		Block aBlock;
-		int aMeta;		
-		for (int x = -2; x < 2; x++) {
-			for (int z = -1; z < 1; z++) {
+		int aMeta;
+
+		int requiredMeta = getCasingMeta2();
+		if (aY == 19) {
+			requiredMeta = getCasingMeta();
+		}		
+
+		for (int x = -3; x <= 3; x++) {
+			for (int z = -3; z <= 3; z++) {
 				aBlock = this.getBaseMetaTileEntity().getBlockOffset(x, aY, z);
-				aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);								
-				if (aBlock == getCasingBlock() && aMeta == getCasingMeta()) {
-					continue;
-				} else {
-                    IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);					
-                    if (addToMachineList(tTileEntity, mCasingTextureID)) {
-                    	continue;
-                    }     
-					Logger.INFO("Found Bad Block on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);               
-					return false;
+				aMeta = this.getBaseMetaTileEntity().getMetaIDOffset(x, aY, z);		
+
+				if ((x == 3 && z == 3) || (x == 2 && z == 2) || (x == 3 && z == 2) || (x == 2 && z == 3)) {
+					if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+						return false;
+					}
+				}
+				else if ((x == -3 && z == -3) || (x == -2 && z == -2) || (x == -3 && z == -2) || (x == -2 && z == -3)) {
+					if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+						return false;
+					}
+				}
+				else if ((x == -3 && z == 3) || (x == -2 && z == 2) || (x == -3 && z == 2) || (x == -2 && z == 3)) {
+					if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+						return false;
+					}
+				}
+				else if ((x == 3 && z == -3) || (x == 2 && z == -2) || (x == 3 && z == -2) || (x == 2 && z == -3)) {
+					if (!getBaseMetaTileEntity().getAirOffset(x, aY, z)) {
+						Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+						return false;
+					}
+				}
+				else {
+					IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityOffset(x, aY, z);					
+					if (addToMachineList(tTileEntity, mCasingTextureID)) {
+						continue;
+					}
+					if (x == 0 && z == 0) {
+						if (aBlock == getCasingBlock() && aMeta == requiredMeta) {
+							continue;
+						} else {
+							Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+							Logger.INFO("Found Bad Block Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+							return false;
+						}					
+					}
+					else {
+						if (aBlock == getCasingBlock() && aMeta == getCasingMeta()) {
+							continue;
+						} else {
+							Logger.INFO("Error at offset: X:"+x+", Y:"+aY+", Z:"+z);
+							Logger.INFO("Found Bad Block Internally on Layer "+aY+": "+(aBlock != null ? aBlock.getLocalizedName() : "Air")+" | Meta: "+aMeta);
+							return false;
+						}
+					}					
 				}
 			}
 		}
 		return true;	
 	}
-	
-	
+
+
+
+
+
+
+
+
+
 }

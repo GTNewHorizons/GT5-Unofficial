@@ -32,7 +32,7 @@ public class ClassTransformer_TiConFluids {
 
 	public ClassTransformer_TiConFluids(String aMethodName, boolean obfuscated, byte[] basicClass) {
 		isObfuscated = obfuscated;
-		methodName = obfuscated ? DevHelper.getInstance().getSRG(aMethodName) : aMethodName;
+		methodName = obfuscated ? DevHelper.getSRG(aMethodName) : aMethodName;
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
 		try {

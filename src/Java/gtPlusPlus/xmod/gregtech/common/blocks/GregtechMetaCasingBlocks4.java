@@ -73,7 +73,7 @@ extends GregtechMetaCasingBlocksAbstract {
 					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 					//Material Press Casings
 				case 4:
-					return TexturesGtBlock.Casing_Material_Grisium.getIcon();				
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();				
 					//Sifter Structural
 				case 5:
 					return TexturesGtBlock.Casing_Material_Stellite.getIcon();
