@@ -63,11 +63,9 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String[] getDescription() {
-
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 4);
 		}
-
 		return new String[]{
 				"Contributing Green Energy towards the future",
 				mCasingName+"s for the base of the tower",
