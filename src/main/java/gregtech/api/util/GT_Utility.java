@@ -364,9 +364,10 @@ public class GT_Utility {
     public static boolean isConnectableNonInventoryPipe(Object aTileEntity, int aSide) {
         if (aTileEntity == null) return false;
         checkAvailabilities();
-        if (TE_CHECK) if (aTileEntity instanceof IItemDuct) return true;
-        if (BC_CHECK) if (aTileEntity instanceof buildcraft.api.transport.IPipeTile)
+        if (TE_CHECK && aTileEntity instanceof IItemDuct) return true;
+        if (BC_CHECK && aTileEntity instanceof buildcraft.api.transport.IPipeTile)
             return ((buildcraft.api.transport.IPipeTile) aTileEntity).isPipeConnected(ForgeDirection.getOrientation(aSide));
+        if (GregTech_API.mTranslocator && aTileEntity instanceof codechicken.translocator.TileItemTranslocator) return true;
         return false;
     }
     /**

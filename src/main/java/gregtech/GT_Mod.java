@@ -59,7 +59,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes;")
+@Mod(modid = "gregtech", name = "GregTech", version = "MC1710", useMetadata = false, dependencies = "required-after:IC2; after:Forestry; after:PFAAGeologica; after:Thaumcraft; after:Railcraft; after:appliedenergistics2; after:ThermalExpansion; after:TwilightForest; after:harvestcraft; after:magicalcrops; after:BuildCraft|Transport; after:BuildCraft|Silicon; after:BuildCraft|Factory; after:BuildCraft|Energy; after:BuildCraft|Core; after:BuildCraft|Builders; after:GalacticraftCore; after:GalacticraftMars; after:GalacticraftPlanets; after:ThermalExpansion|Transport; after:ThermalExpansion|Energy; after:ThermalExpansion|Factory; after:RedPowerCore; after:RedPowerBase; after:RedPowerMachine; after:RedPowerCompat; after:RedPowerWiring; after:RedPowerLogic; after:RedPowerLighting; after:RedPowerWorld; after:RedPowerControl; after:UndergroundBiomes; after:TConstruct;  after:Translocator;")
 public class GT_Mod implements IGT_Mod {
     public static final int VERSION = 509, SUBVERSION = 32;
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
@@ -134,6 +134,10 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.mMagneticraft = Loader.isModLoaded("Magneticraft");
         GregTech_API.mImmersiveEngineering = Loader.isModLoaded("ImmersiveEngineering");
         GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");        
+        GregTech_API.mGTPlusPlus = Loader.isModLoaded("miscutils");
+        GregTech_API.mTranslocator = Loader.isModLoaded("Translocator");
+        GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
+        GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
         GT_Log.mLogFile = new File(aEvent.getModConfigurationDirectory().getParentFile(), "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
             try {
@@ -180,7 +184,10 @@ public class GT_Mod implements IGT_Mod {
         } catch (Throwable e) {
         }
         gregtechproxy.onPreLoad();
-
+        GT_Log.out.println("GT_Mod: Are you there Translocator? " + GregTech_API.mTranslocator);
+        GT_Log.out.println("GT_Mod: Are you there TConstruct? " + GregTech_API.mTConstruct);
+        GT_Log.out.println("GT_Mod: Are you there GalacticraftCore? " + GregTech_API.mGalacticraft);
+        
         GT_Log.out.println("GT_Mod: Setting Configs");
         GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
@@ -287,6 +294,8 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.enableUBOres = GregTech_API.sWorldgenFile.get("general", "enableUBOres", gregtechproxy.enableUBOres);
         gregtechproxy.gt6Pipe = tMainConfig.get("general", "GT6StyledPipesConnection", true).getBoolean(true);
         gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", false).getBoolean(false);
+        gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", true).getBoolean(true);
+        gregtechproxy.ic2EnergySourceCompat = tMainConfig.get("general", "Ic2EnergySourceCompat", true).getBoolean(true);
         gregtechproxy.costlyCableConnection = tMainConfig.get("general", "CableConnectionRequiresSolderingMaterial", false).getBoolean(false);
         GT_LanguageManager.i18nPlaceholder = tMainConfig.get("general", "UsePlaceholderForMaterialNamesInLangFile", true).getBoolean(true);
 

@@ -9,7 +9,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +49,7 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     private byte[] mSidedRedstone = new byte[]{0, 0, 0, 0, 0, 0};
     private int[] mCoverSides = new int[]{0, 0, 0, 0, 0, 0}, mCoverData = new int[]{0, 0, 0, 0, 0, 0}, mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
     private boolean mInventoryChanged = false, mWorkUpdate = false, mWorks = true, mNeedsUpdate = true, mNeedsBlockUpdate = true, mSendClientData = false;
+    private boolean mCheckConnections = false;
     private byte mColor = 0, oColor = 0, mStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0, mLagWarningCount = 0;
     private int oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0;
     private short mID = 0;
@@ -636,10 +642,20 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public boolean inputEnergyFrom(byte aSide, boolean waitForActive) {
+        return false;
+    }
+    
+    @Override
     public boolean outputsEnergyTo(byte aSide) {
         return false;
     }
 
+    @Override
+    public boolean outputsEnergyTo(byte aSide, boolean waitForActive) {
+        return false;
+    }
+    
     @Override
     public long getOutputAmperage() {
         return 0;
@@ -1177,8 +1193,10 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         if (aSide == ForgeDirection.UNKNOWN)
         	return true;
 
-        if (!mMetaTileEntity.isConnectedAtSide((byte) aSide.ordinal()))
-            return false;
+        IFluidHandler tTileEntity = getITankContainerAtSide((byte) aSide.ordinal());
+        // Only require a connection if there's something to connect to - Allows fluid cells & buckets to interact with the pipe
+        if (tTileEntity != null && !mMetaTileEntity.isConnectedAtSide((byte) aSide.ordinal()))
+        	return false;
 
         if(isFill && mMetaTileEntity.isLiquidInput((byte) aSide.ordinal())
                 && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn((byte) aSide.ordinal(), getCoverIDAtSide((byte) aSide.ordinal()), getCoverDataAtSide((byte) aSide.ordinal()), aFluid, this))
@@ -1275,8 +1293,9 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
+        mColor = (byte) (aColor + 1);
         if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
-        return mColor = (byte) (aColor + 1);
+        return mColor;
     }
 
     @Override
@@ -1334,6 +1353,18 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         mInventoryChanged = true;
     }
 
+    public void onNeighborBlockChange(int aX, int aY, int aZ) {
+        if (canAccessData()) {
+            final IMetaTileEntity meta = getMetaTileEntity();
+            if (meta instanceof MetaPipeEntity) {
+                // Trigger a checking of connections in case someone placed down a block that the pipe/wire shouldn't be connected to.
+                // However; don't do it immediately in case the world isn't finished loading
+                //  (This caused issues with AE2 GTEU p2p connections.
+                ((MetaPipeEntity) meta).setCheckConnections();
+            }
+        }
+    }
+    
     @Override
     public int getLightOpacity() {
         return mMetaTileEntity == null ? 0 : mMetaTileEntity.getLightOpacity();
@@ -1354,8 +1385,4 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
     }
 
-	@Override
-	public boolean energyStateReady() {
-		return true;
-	}
 }

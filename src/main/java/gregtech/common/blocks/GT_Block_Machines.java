@@ -87,6 +87,13 @@ public class GT_Block_Machines
         }
     }
 
+    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if ((tTileEntity instanceof BaseMetaPipeEntity)) {
+            ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
+        }
+    }
+    
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
         if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {

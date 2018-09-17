@@ -62,6 +62,10 @@ repositories {
         name 'tterrag Repo'
         url "http://maven.tterrag.com"
     }
+	maven { // TConstruct
+        name 'DVS1 Maven FS'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
     maven { // AppleCore
         url "http://www.ryanliptak.com/maven/"
     }
@@ -85,23 +89,26 @@ repositories {
         name 'IC2NuclearControl'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
     }
-		ivy {
+    ivy {
         name 'ImmersiveEngineering'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.immeng.cf}/[module]-[revision].[ext]"
     }
-		ivy {
+    ivy {
         name 'magneticraft'
         artifactPattern "http://addons-origin.cursecdn.com/files/${config.magneticraft.cf}/[module]-[revision].[ext]"
     }
 }
 
 dependencies {
-    //provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
-    //    exclude module: '*'
-    //}
+    //    compile fileTree(dir: 'libs', include: '*.jar')
+     compile "tconstruct:TConstruct:${config.minecraft.version}-${config.tconstruct.version}:deobf"
+    provided ("appeng:appliedenergistics2:${config.ae2.version}:dev") {
+        exclude module: '*'
+    }
     provided "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
 	provided "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
     provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
+	provided "codechicken:Translocator:${config.minecraft.version}-${config.translocators.version}:dev"
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
     provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
     provided "applecore:AppleCore:${config.applecore.version}:api"
@@ -116,7 +123,11 @@ dependencies {
     // provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
     // provided name: 'ImmersiveEngineering', version: config.immeng.version, ext: 'jar'
     // provided name: 'magneticraft', version: config.magneticraft.version, ext: 'jar'
-    provided fileTree(dir: 'libs', include: '*.jar')
+	//    compile files("libs/Galacticraft-API-1.7-${config.gc.version}.jar")
+    //    compile files("libs/GalacticraftCore-Dev-${config.gc.version}.jar")
+    provided name: "Galacticraft-API", version: config.gc.version, ext: 'jar'
+    provided name: "GalacticraftCore-Dev", version: config.gc.version, ext: 'jar'
+    provided fileTree(dir: 'libs/', include:'*.jar')
 }
 
 processResources
