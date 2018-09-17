@@ -109,6 +109,11 @@ public class GT_Values {
      */
     public static boolean D1 = false, D2 = false;
     /**
+     * Debug parameter for cleanroom testing.
+     */     
+    public static boolean debugCleanroom = false;
+    
+    /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
     public static World DW;
@@ -116,4 +121,8 @@ public class GT_Values {
      * This will prevent NEI from crashing but spams the Log.
      */
     public static boolean allow_broken_recipemap = false;
+    /**
+     * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
+     */
+    public static float cleanroomGlass = 5.0f;
 }
