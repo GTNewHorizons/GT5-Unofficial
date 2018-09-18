@@ -281,6 +281,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_SolarTower_Structural, 
 	Casing_SolarTower_SaltContainment, 
 	Casing_SolarTower_HeatContainment, 
+	
+	//Larger Turbines
+	Large_Steam_Turbine, Large_HPSteam_Turbine, 
+	Casing_Turbine_Shaft, Casing_Turbine_LP, Casing_Turbine_HP,
 
 
 
@@ -510,7 +514,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	 */
 
 	//Fluid Void Covers
-	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV, 
+	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,  
 	
 	
 	

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,7 +14,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,10 +39,13 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ST5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ST_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ST5) : Textures.BlockIcons.CASING_BLOCKS[getTAE()]};
     }
 
     public String[] getDescription() {
+		if (mCasingName.toLowerCase().contains(".name")) {
+			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 7);
+		}    	
         return new String[]{
                 "Controller Block for the XL Steam Turbine",
                 "Size(WxHxD): 3x3x4 (Hollow), Controller (Front centered)",
@@ -48,7 +53,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
                 "1x Maintenance Hatch (Side centered)",
                 "1x Dynamo Hatch (Back centered)",
                 "1x Output Hatch for Distilled Water (Side centered)",
-                "Turbine Casings for the rest (24 at least!)",
+                mCasingName+"s for the rest (24 at least!)",
                 "Needs a Turbine Item (Inside controller GUI)",
                 "Output depending on Rotor and fitting",
                 "Use screwdriver to adjust fitting of turbine"};
@@ -66,7 +71,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 
     @Override
     public byte getCasingMeta() {
-        return 9;
+        return 8;
     }
 
     @Override
@@ -171,7 +176,6 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         looseFit=aNBT.getBoolean("turbineFitting");
     }
 
-
 	@Override
 	public boolean hasSlotInGUI() {
 		return true;
@@ -183,9 +187,9 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
 		return null;
 	}
 
-
 	@Override
 	public String getMachineType() {
 		return "Large Steam Turbine";
 	}
+
 }

@@ -28,9 +28,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Structural Solar Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Salt Containment Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Thermal Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", ""); 
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Turbine Shaft");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Low Pressure Turbine Casing"); 
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "High Pressure Turbine Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
@@ -44,10 +44,10 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 6));
-		/*GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));
-		GregtechItemList.Casing_Power_SubStation.set(new ItemStack(this, 1, 8));
-		GregtechItemList.Casing_Cyclotron_Coil.set(new ItemStack(this, 1, 9));
-		GregtechItemList.Casing_Cyclotron_External.set(new ItemStack(this, 1, 10));
+		GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 7));
+		GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 8));
+		GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 9));
+		/*GregtechItemList.Casing_Cyclotron_External.set(new ItemStack(this, 1, 10));
 		GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
