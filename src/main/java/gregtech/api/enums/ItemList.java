@@ -712,6 +712,7 @@ public enum ItemList implements IItemContainer {
 	Transformer_UEV_UHV, Transformer_UIV_UEV, Transformer_UMV_UIV, Transformer_UXV_UMV, Transformer_OPV_UXV, Transformer_MAXV_OPV,
 	BatteryHull_EV, BatteryHull_IV, BatteryHull_LuV, BatteryHull_ZPM, BatteryHull_UV, BatteryHull_UHV, BatteryHull_UEV, BatteryHull_UIV, BatteryHull_UMV, BatteryHull_UxV,
 	BatteryHull_EV_Full, BatteryHull_IV_Full, BatteryHull_LuV_Full, BatteryHull_ZPM_Full, BatteryHull_UV_Full, BatteryHull_UHV_Full, BatteryHull_UEV_Full, BatteryHull_UIV_Full, BatteryHull_UMV_Full, BatteryHull_UxV_Full,
+	EnergyCrystal_LV, EnergyCrystal_MV, EnergyCrystal_HV, EnergyCrystal_EV, EnergyCrystal_IV,
 	Battery_TurboCharger_4by4_ULV, Battery_TurboCharger_4by4_LV, Battery_TurboCharger_4by4_MV, Battery_TurboCharger_4by4_HV, Battery_TurboCharger_4by4_EV, Battery_TurboCharger_4by4_IV, Battery_TurboCharger_4by4_LuV, Battery_TurboCharger_4by4_ZPM, Battery_TurboCharger_4by4_UV, Battery_TurboCharger_4by4_UHV,Battery_TurboCharger_4by4_UEV, Battery_TurboCharger_4by4_UIV, Battery_TurboCharger_4by4_UMV, Battery_TurboCharger_4by4_UXV, Battery_TurboCharger_4by4_OPV, Battery_TurboCharger_4by4_MAXV,
 	Generator_Plasma_UV, Generator_Plasma_UHV, Generator_Plasma_UEV, Generator_Plasma_UIV, Generator_Plasma_UMV, Generator_Plasma_UXV, Generator_Naquadah_Mark_III, 
 	AlloySmelterUHV, AlloySmelterUEV, AlloySmelterUIV, AlloySmelterUMV, AlloySmelterUXV, AlloySmelterOPV,

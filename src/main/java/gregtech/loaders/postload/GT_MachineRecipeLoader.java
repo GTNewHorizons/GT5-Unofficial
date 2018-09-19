@@ -2646,6 +2646,13 @@ if(Loader.isModLoaded("Railcraft")){
     				ItemList.BatteryHull_UIV_Full.get(1L),
     				null, 450, 62880);
     		
+    		//Energy Crystals
+    		GT_Values.RA.addCompressorRecipe(ItemList.IC2_Energium_Dust.get(36L), ItemList.EnergyCrystal_LV.get(1L), 1000, 30);
+    		GT_Values.RA.addCompressorRecipe(ItemList.EnergyCrystal_LV.get(4L), ItemList.EnergyCrystal_MV.get(1L), 1000, 120);
+    		GT_Values.RA.addCompressorRecipe(ItemList.EnergyCrystal_MV.get(4L), ItemList.EnergyCrystal_HV.get(1L), 1000, 480);
+    		GT_Values.RA.addCompressorRecipe(ItemList.EnergyCrystal_HV.get(4L), ItemList.EnergyCrystal_EV.get(1L), 1000, 1920);
+    		GT_ModHandler.addCraftingRecipe(ItemList.EnergyCrystal_IV.get(1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"PBP", "BCB", "PBP", 'C', OrePrefixes.circuit.get(Materials.Elite), 'B', ItemList.EnergyCrystal_EV.get(1L), 'P', GT_ModHandler.getIC2Item("iridiumPlate", 1L)});
+            
     		//Antimatter
     		GT_Values.RA.addAssemblerRecipe(ItemList.Hull_ZPM.get(1, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Osmium, 16), Materials.Gallium.getMolten(864L), ItemList.Casing_Dyson_Ring.get(1, new Object[0]), 350, 30800, true);
     		

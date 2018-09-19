@@ -1,9 +1,11 @@
 package gregtech.common.items;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 
 public class GT_MetaGenerated_Item_03
@@ -205,6 +207,22 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutted Circuit Board", "Bio genetic mutated Board", o));
         ItemList.Circuit_Biomainframe.set(addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION}));
+    
+        ItemList.EnergyCrystal_LV.set(addItem(tLastID = 200, "Small Energium Crystall (T1)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
+	    setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[1], 1L, -3L, true);	    
+		
+	    ItemList.EnergyCrystal_MV.set(addItem(tLastID = 201, "Medium Energium Crystall (T2)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
+	    setElectricStats(32000 + tLastID, 12800000L, GT_Values.V[2], 2L, -3L, true);	    
+		
+	    ItemList.EnergyCrystal_HV.set(addItem(tLastID = 202, "Large Energium Crystall (T3)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
+	    setElectricStats(32000 + tLastID, 51200000L, GT_Values.V[3], 3L, -3L, true);	    
+		
+	    ItemList.EnergyCrystal_EV.set(addItem(tLastID = 203, "Huge Energium Crystall (T4)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
+	    setElectricStats(32000 + tLastID, 204800000L, GT_Values.V[4], 4L, -3L, true);	    
+		
+	    ItemList.EnergyCrystal_IV.set(addItem(tLastID = 204, "Energium Orb (T5)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
+	    setElectricStats(32000 + tLastID, 819200000L, GT_Values.V[5], 5L, -3L, true);	    
+		
     }
 
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
