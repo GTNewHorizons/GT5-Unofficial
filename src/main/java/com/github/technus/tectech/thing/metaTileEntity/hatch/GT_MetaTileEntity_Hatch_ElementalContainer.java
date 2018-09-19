@@ -5,7 +5,7 @@ import com.github.technus.tectech.Util;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
 import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToEMpipe;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToElementalPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -29,7 +29,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, IConnectsToEMpipe {
+public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;

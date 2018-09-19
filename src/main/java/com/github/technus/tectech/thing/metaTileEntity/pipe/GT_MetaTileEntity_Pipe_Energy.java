@@ -26,31 +26,28 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-/**
- * Created by Tec on 26.02.2017.
- */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe {
+public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
 
-    public GT_MetaTileEntity_Pipe_EM(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public GT_MetaTileEntity_Pipe_EM(String aName) {
+    public GT_MetaTileEntity_Pipe_Energy(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Pipe_EM(mName);
+        return new GT_MetaTileEntity_Pipe_Energy(mName);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_PIPE");
+        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASER");
         EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
         super.registerIcons(aBlockIconRegister);
     }
@@ -92,7 +89,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                "Quantum tunneling device.",
+                "Energy tunneling device.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
                 EnumChatFormatting.AQUA + "Do not cross,split or turn"
@@ -125,12 +122,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                         }
                         //}
                     }
-                    if (tTileEntity instanceof IConnectsToElementalPipe && ((IConnectsToElementalPipe) tTileEntity).canConnect(b1)) {
+                    if (tTileEntity instanceof IConnectsToEnergyTunnel && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(b1)) {
                         mConnections |= 1 << b0;
                         connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToElementalPipe) {
+                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
                         if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
-                                ((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                                ((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
                             mConnections |= 1 << b0;
                             connectionCount++;
                         }

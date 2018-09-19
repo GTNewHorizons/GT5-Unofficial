@@ -601,7 +601,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if (isMaster()) {
             switch (getParameterInInt(0,0)){
                 case FUSE_MODE:
-                    fuse(partner);
+                    makeEU(fuse(partner));
                     break;
                 case COLLIDE_MODE:
                     //collide(partner);//todo
