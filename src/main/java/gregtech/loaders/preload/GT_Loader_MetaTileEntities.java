@@ -3622,7 +3622,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 													'o', OrePrefixes.wireGt04.get(Materials.Superconductor),
 													'O', OrePrefixes.wireGt16.get(Materials.SuperconductorUEV),
 													'C', OrePrefixes.circuit.get(Materials.Infinite),
-													'R', OrePrefixes.rotor.get(Materials.Tritanium),
+													'R', OrePrefixes.rotor.get(Materials.NaquadahAlloy),
 													'M', ItemList.Electric_Motor_UHV,
 													'T', ItemList.WetTransformer_UEV_UHV});
 									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_UIV_UEV.get(1L),
