@@ -3511,7 +3511,129 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 															'B', ItemList.BatteryHull_UIV_Full,
 															'C', OrePrefixes.wireGt16.get(Materials.Neutronium),
 															'X', OrePrefixes.circuit.get(Materials.Bio)});
-				
+									
+							//Ultra Transformer
+									ItemList.Transformer_Ultra_HV_MV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12200, "ultratransformer.tier.02", "Medium Voltage Ultra Transformer", 2,
+											"HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_EV_HV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12201, "ultratransformer.tier.03", "High Voltage Ultra Transformer", 3,
+											"EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_IV_EV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12202, "ultratransformer.tier.04", "Extreme Voltage Ultra Transformer", 4,
+											"IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_LuV_IV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12203, "ultratransformer.tier.05", "Insane Voltage Ultra Transformer", 5,
+											"LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_ZPM_LuV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12204, "ultratransformer.tier.06", "Ludicrous Voltage Ultra Transformer", 6,
+											"ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UV_ZPM.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12205, "ultratransformer.tier.07", "ZPM Voltage Ultra Transformer", 7,
+											"UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UHV_UV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12206, "ultratransformer.tier.08", "Ultimate Voltage Ultra Transformer", 8,
+											"UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UEV_UHV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12207, "ultratransformer.tier.09", "Highly Ultimate Voltage Ultra Transformer", 9,
+											"UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UIV_UEV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12208, "ultratransformer.tier.10", "Extreme Ultimate Voltage Ultra Transformer", 10,
+											"UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UMV_UIV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12209, "ultratransformer.tier.11", "Insanely Ultimate Voltage Ultra Transformer", 11,
+											"UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_UXV_UMV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12210, "ultratransformer.tier.12", "Mega Ultimate Voltage Ultra Transformer", 12,
+											"UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_OPV_UXV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12211, "ultratransformer.tier.13", "Extended Mega Ultimate Voltage Ultra Transformer", 13,
+											"OPV -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+									ItemList.Transformer_Ultra_MAXV_OPV.set(new GT_MetaTileEntity_Ultra_Transformer(
+											12212, "ultratransformer.tier.14", "Overpowered Voltage Ultra Transformer", 14,
+											"MAX -> OPV (Use Soft Mallet to invert)").getStackForm(1L));
+									
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_HV_MV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorMV),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorHV),
+													'C', OrePrefixes.circuit.get(Materials.Good),
+													'R', OrePrefixes.rotor.get(Materials.Aluminium),
+													'M', ItemList.Electric_Motor_MV,
+													'T', ItemList.WetTransformer_HV_MV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_EV_HV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorHV),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorEV),
+													'C', OrePrefixes.circuit.get(Materials.Advanced),
+													'R', OrePrefixes.rotor.get(Materials.StainlessSteel),
+													'M', ItemList.Electric_Motor_HV,
+													'T', ItemList.WetTransformer_EV_HV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_IV_EV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorEV),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorIV),
+													'C', OrePrefixes.circuit.get(Materials.Data),
+													'R', OrePrefixes.rotor.get(Materials.Titanium),
+													'M', ItemList.Electric_Motor_EV,
+													'T', ItemList.WetTransformer_IV_EV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_LuV_IV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorIV),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorLuV),
+													'C', OrePrefixes.circuit.get(Materials.Elite),
+													'R', OrePrefixes.rotor.get(Materials.TungstenSteel),
+													'M', ItemList.Electric_Motor_IV,
+													'T', ItemList.WetTransformer_LuV_IV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_ZPM_LuV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorLuV),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorZPM),
+													'C', OrePrefixes.circuit.get(Materials.Master),
+													'R', OrePrefixes.rotor.get(Materials.Chrome),
+													'M', ItemList.Electric_Motor_LuV,
+													'T', ItemList.WetTransformer_ZPM_LuV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_UV_ZPM.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorZPM),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorUV),
+													'C', OrePrefixes.circuit.get(Materials.Ultimate),
+													'R', OrePrefixes.rotor.get(Materials.Iridium),
+													'M', ItemList.Electric_Motor_ZPM,
+													'T', ItemList.WetTransformer_UV_ZPM});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_UHV_UV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorUV),
+													'W', OrePrefixes.wireGt16.get(Materials.Superconductor),
+													'C', OrePrefixes.circuit.get(Materials.Superconductor),
+													'R', OrePrefixes.rotor.get(Materials.Osmium),
+													'M', ItemList.Electric_Motor_UV,
+													'T', ItemList.WetTransformer_UHV_UV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_UEV_UHV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.Superconductor),
+													'W', OrePrefixes.wireGt16.get(Materials.SuperconductorUEV),
+													'C', OrePrefixes.circuit.get(Materials.Infinite),
+													'R', OrePrefixes.rotor.get(Materials.Tritanium),
+													'M', ItemList.Electric_Motor_UHV,
+													'T', ItemList.WetTransformer_UEV_UHV});
+									GT_ModHandler.addCraftingRecipe(ItemList.Transformer_Ultra_UIV_UEV.get(1L),
+											bitsd,
+											new Object[]{"oCo", "oTo", "MOR",
+													'w', OrePrefixes.wireGt04.get(Materials.SuperconductorUEV),
+													'W', OrePrefixes.wireGt16.get(Materials.Neutronium),
+													'C', OrePrefixes.circuit.get(Materials.Bio),
+													'R', OrePrefixes.rotor.get(Materials.Neutronium),
+													'M', ItemList.Electric_Motor_UEV,
+													'T', ItemList.WetTransformer_UIV_UEV});
     }
 
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
