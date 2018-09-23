@@ -98,7 +98,7 @@ public class ItemDrop extends Item {
 		tDrop = getStackForType(DropType.HOT_COOLANT);
 		addProcessLV(tDrop, new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100), GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0), 3000, 8);
 		tDrop = getStackForType(DropType.OXYGEN);
-		addProcessLV(tDrop, Materials.Oxygen.getGas(100L), GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0), 250, 1200,8);
+		addProcessLV(tDrop, Materials.Oxygen.getGas(100L), GT_ModHandler.getModItem("Forestry", "propolis", 1L, 0), 1200, 8);
 	}
 
 	public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {

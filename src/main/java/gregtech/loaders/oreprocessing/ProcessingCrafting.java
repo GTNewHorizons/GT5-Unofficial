@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -93,6 +94,12 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_CPU.get(8, new Object[0]), 200, 1920,true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer4.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_CPU.get(6, new Object[0]), 350, 1024,true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_CPU.get(16, new Object[0]), 50, 7680,true);
+                break;
+            case "craftingLensGray":
+            	if(Loader.isModLoaded("GalacticraftCore")){
+            	GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Wafer_ILC.get(1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 13), 200, 256);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Wafer_NAND.get(1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GT_ModHandler.getModItem("GalacticraftCore", "item.basicItem", 1L, 14), 200, 480);
+            	}
                 break;
         }
     }

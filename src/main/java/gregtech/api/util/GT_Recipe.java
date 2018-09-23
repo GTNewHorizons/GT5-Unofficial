@@ -1631,6 +1631,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 				
 				return inputStacks;
 			}
+           
 
 			@Override
 			public ArrayList<PositionedStack> getOutputPositionedStacks() {

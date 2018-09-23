@@ -805,9 +805,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials InfinityCatalyst        = new Materials( 401, TextureSet.SET_SHINY             ,  64.0F,1310720,  7, 1|2    |8    |64|128      , 255, 255, 255,   0,   "InfinityCatalyst"        ,   "Infinity Catalyst"             ,     5,  500000,     9000,  9000,  true, false,  20,   1,   1, Dyes.dyeLightGray    );
     public static Materials Infinity                = new Materials( 402, TextureSet.SET_SHINY             , 128.0F,2621440,  8, 1|2    |8    |64|128      , 255, 255, 255,   0,   "Infinity"                ,   "Infinity"                      ,     5, 5000000,     9000,  9000,  true, false,  40,   1,   1, Dyes.dyeWhite        );
     public static Materials Bedrockium              = new Materials( 403, TextureSet.SET_DULL              ,   8.0F, 327680,  6, 1      |8                 ,  50,  50,  50,   0,   "Bedrockium"              ,   "Bedrockium"                    ,     0,       0,     9000,  9000,  true, false,  4,   1,   1, Dyes.dyeBlack        );
-    public static Materials ReinforceGlass          = new MaterialBuilder(405, TextureSet.SET_FLUID      ,                                                                                                     "Molten Reinforced Glass").setName("ReinforcedGlass").addCell().addFluid().setRGB(192, 245, 254).setColor(Dyes.dyeWhite).setLiquidTemperature(2000).constructMaterial();
+    public static Materials ReinforcedGlass          = new Materials(405,TextureSet.SET_GLASS, 			1.0F, 4, 0, 1|4, 192, 245, 254, 220, "ReinforcedGlass", "Reinforced Glass", 0, 0, 1500, 0, false, true, 1, 1, 1, Dyes.dyeGray);
     public static Materials BioMediumRaw            = new MaterialBuilder(406, TextureSet.SET_FLUID      ,                                                                                                     "Raw Bio Medium").setName("BioMediumRaw").addCell().addFluid().setRGB(97, 147, 46).setColor(Dyes.dyeLime).constructMaterial();
     public static Materials BioMediumSterilized     = new MaterialBuilder(407, TextureSet.SET_FLUID      ,                                                                                                     "Sterilized Bio Medium").setName("BiohMediumSterilized").addCell().addFluid().setRGB(162, 253, 53).setColor(Dyes.dyeLime).constructMaterial();
+    public static Materials Bacteria     = new MaterialBuilder(408, TextureSet.SET_FLUID      ,                                                                                                     "Bacteria").setName("Bacteria").addCell().addFluid().setRGB(227, 150, 128).setColor(Dyes.dyeOrange).constructMaterial();
+    public static Materials EnrichedBacterialSludge     = new MaterialBuilder(409, TextureSet.SET_FLUID      ,                                                                                                     "Enriched Bacterial Sludge").setName("EnrichedBacterialSludge").addCell().addFluid().setRGB(70, 250, 70).setColor(Dyes.dyeLime).constructMaterial();
+    public static Materials Mutagen     = new MaterialBuilder(410, TextureSet.SET_FLUID      ,                                                                                                     "Mutagen").setName("Mutagen").addCell().addFluid().setRGB(100, 200, 130).setColor(Dyes.dyeCyan).constructMaterial();
+    
     /**
      * Materials which are renamed automatically
      */
@@ -1355,6 +1359,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Clay.add(SubTag.MORTAR_GRINDABLE);
 
         Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+		ReinforcedGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
         Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
         Emerald.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Amethyst.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
