@@ -4317,6 +4317,43 @@ if(Loader.isModLoaded("Railcraft")){
             	//Polybenzimidazole
             	GT_Values.RA.addChemicalRecipe(Materials.Diphenylisophthalate.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Diaminobenzidin.getFluid(1000), Materials.Polybenzimidazole.getMolten(1000), Materials.Phenol.getCells(1), 100, 7680);
             	GT_Values.RA.addChemicalRecipe(Materials.Diaminobenzidin.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Diphenylisophthalate.getFluid(1000), Materials.Polybenzimidazole.getMolten(1000), Materials.Phenol.getCells(1), 100, 7680);
+            	
+            	
+            	//---Alternative recipes---
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(2),GT_Values.NI,Materials.Butene.getGas(1000), Materials.Ethylene.getGas(2000), GT_Values.NI,860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),GT_Utility.getIntegratedCircuit(2),  GT_Values.NF,Materials.Ethylene.getGas(2000), Materials.Empty.getCells(1),860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(2),GT_Utility.getIntegratedCircuit(12), Materials.Butene.getGas(1000), GT_Values.NF,Materials.Ethylene.getCells(2), 860, 1920);
+            	GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Butene.getCells(1), Materials.Empty.getCells(1),GT_Values.NF,GT_Values.NF,Materials.Ethylene.getCells(2),GT_Values.NI,860, 1920);
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(2),GT_Values.NI,Materials.Butene.getGas(1000), Materials.Ethylene.getGas(1000),GT_Values.NI,360, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),GT_Utility.getIntegratedCircuit(2),  GT_Values.NF,Materials.Ethylene.getGas(1000),Materials.Empty.getCells(1),240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),GT_Utility.getIntegratedCircuit(12), Materials.Butene.getGas(1000), GT_Values.NF,Materials.Ethylene.getCells(1),240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),GT_Utility.getIntegratedCircuit(12), GT_Values.NF,GT_Values.NF,Materials.Ethylene.getCells(1), 240, 7680);
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(4),GT_Values.NI,Materials.Ethylene.getGas(2000),Materials.Butene.getGas(1000),GT_Values.NI,860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(2),      GT_Utility.getIntegratedCircuit(4),  GT_Values.NF,Materials.Butene.getGas(1000),Materials.Empty.getCells(2), 860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),         GT_Utility.getIntegratedCircuit(14), Materials.Ethylene.getGas(2000), GT_Values.NF,Materials.Butene.getCells(1),860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(2),      GT_Utility.getIntegratedCircuit(14), GT_Values.NF,                    GT_Values.NF,Materials.Butene.getCells(1), Materials.Empty.getCells(1),860, 1920);
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(4),  GT_Values.NI,                        Materials.Ethylene.getGas(1000), Materials.Butene.getGas(1000), GT_Values.NI,240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1),      GT_Utility.getIntegratedCircuit(4),  GT_Values.NF,Materials.Butene.getGas(1000),Materials.Empty.getCells(1),240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),         GT_Utility.getIntegratedCircuit(14), Materials.Ethylene.getGas(1000), GT_Values.NF,Materials.Butene.getCells(1),240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1),      GT_Utility.getIntegratedCircuit(14), GT_Values.NF, GT_Values.NF,Materials.Butene.getCells(1),240, 7680);
+            	
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(3),  GT_Values.NI,                        Materials.Ethylene.getGas(3000), Materials.Propene.getGas(2000), GT_Values.NI,                   240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(3),      GT_Utility.getIntegratedCircuit(3),  GT_Values.NF,                    Materials.Propene.getGas(2000), Materials.Empty.getCells(3),    240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(2),         GT_Utility.getIntegratedCircuit(13), Materials.Ethylene.getGas(3000), GT_Values.NF,                   Materials.Propene.getCells(2),  240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(3),      GT_Utility.getIntegratedCircuit(13), GT_Values.NF,                    GT_Values.NF,                   Materials.Propene.getCells(2),  Materials.Empty.getCells(1), 240, 7680);
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(3),  GT_Values.NI,                        Materials.Ethylene.getGas(1000), Materials.Propene.getGas(1000), GT_Values.NI,                  240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1),      GT_Utility.getIntegratedCircuit(3),  GT_Values.NF,                    Materials.Propene.getGas(1000), Materials.Empty.getCells(1),   240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),         GT_Utility.getIntegratedCircuit(13), Materials.Ethylene.getGas(1000), GT_Values.NF,                   Materials.Propene.getCells(1), 240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Ethylene.getCells(1),      GT_Utility.getIntegratedCircuit(13), GT_Values.NF,                    GT_Values.NF,                   Materials.Propene.getCells(1), 3240, 7680);
+            	
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(8),             GT_Values.NI,                        Materials.Butene.getGas(2000), Materials.Butadiene.getGas(1000), GT_Values.NI,                     860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(2),                   GT_Utility.getIntegratedCircuit(8),  GT_Values.NF,                  Materials.Butadiene.getGas(1000), Materials.Empty.getCells(2),      860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(2),                    GT_Utility.getIntegratedCircuit(10), Materials.Butene.getGas(2000), GT_Values.NF, Materials.Empty.getCells(1),      Materials.Butadiene.getCells(1),  860, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(2), GT_Values.NI, GT_Values.NF, GT_Values.NF, Materials.Butadiene.getCells(1),  Materials.Empty.getCells(1),      480, 120);
+            	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(8),             GT_Values.NI,                        Materials.Butene.getGas(2000), Materials.Butadiene.getGas(1000),  GT_Values.NI,                     240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),                   GT_Utility.getIntegratedCircuit(8),  GT_Values.NF,                  Materials.Butadiene.getGas(1000), Materials.Empty.getCells(1),      240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),                    GT_Utility.getIntegratedCircuit(10), Materials.Butene.getGas(2000), GT_Values.NF,                     Materials.Butadiene.getCells(1),  240, 7680);
+            	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(2),                   GT_Utility.getIntegratedCircuit(10), GT_Values.NF, GT_Values.NF,                 Materials.Empty.getCells(1),      Materials.Butadiene.getCells(1),  240, 7680);
 
             }
        public void run3() {
