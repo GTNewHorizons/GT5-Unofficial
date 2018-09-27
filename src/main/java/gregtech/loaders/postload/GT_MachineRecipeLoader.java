@@ -4394,7 +4394,7 @@ if(Loader.isModLoaded("Railcraft")){
             	GT_Values.RA.addChemicalRecipe(Materials.Diphenylisophthalate.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Diaminobenzidin.getFluid(1000), Materials.Polybenzimidazole.getMolten(1000), Materials.Phenol.getCells(1), 100, 7680);
             	GT_Values.RA.addChemicalRecipe(Materials.Diaminobenzidin.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Diphenylisophthalate.getFluid(1000), Materials.Polybenzimidazole.getMolten(1000), Materials.Phenol.getCells(1), 100, 7680);
             	
-            	
+            	/*
             	//---Alternative recipes---
             	GT_Values.RA.addChemicalRecipe(GT_Utility.getIntegratedCircuit(2),GT_Values.NI,Materials.Butene.getGas(1000), Materials.Ethylene.getGas(2000), GT_Values.NI,860, 1920);
             	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),GT_Utility.getIntegratedCircuit(2),  GT_Values.NF,Materials.Ethylene.getGas(2000), Materials.Empty.getCells(1),860, 1920);
@@ -4430,7 +4430,7 @@ if(Loader.isModLoaded("Railcraft")){
             	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(1),                   GT_Utility.getIntegratedCircuit(8),  GT_Values.NF,                  Materials.Butadiene.getGas(1000), Materials.Empty.getCells(1),      240, 7680);
             	GT_Values.RA.addChemicalRecipe(Materials.Empty.getCells(1),                    GT_Utility.getIntegratedCircuit(10), Materials.Butene.getGas(2000), GT_Values.NF,                     Materials.Butadiene.getCells(1),  240, 7680);
             	GT_Values.RA.addChemicalRecipe(Materials.Butene.getCells(2),                   GT_Utility.getIntegratedCircuit(10), GT_Values.NF, GT_Values.NF,                 Materials.Empty.getCells(1),      Materials.Butadiene.getCells(1),  240, 7680);
-
+            	*/
             }
        public void run3() {
       //Solar Panel
