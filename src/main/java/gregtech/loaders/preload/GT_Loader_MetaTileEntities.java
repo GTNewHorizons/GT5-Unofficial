@@ -1620,6 +1620,11 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         makeWires(Materials.SuperconductorUV, 2440, 0L, 0L, 12L, gregtech.api.enums.GT_Values.V[8], aBoolConst_0, true);
         makeWires(Materials.SuperconductorUEV, 2460, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[10], aBoolConst_0, true);
         
+        if (Loader.isModLoaded("DraconicEvolution")){
+        makeWires(Materials.Draconium, 11390, bEC ? 4L : 16L, bEC ? 32L : 64L, 8L, GT_Values.V[10], true, false);
+        makeWires(Materials.DraconiumAwakened, 11410, bEC ? 4L : 16L, bEC ? 16L : 32L, 1L, GT_Values.V[14], false, false);
+        }
+        
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("copperCableItem", 2L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.Copper)});
             GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("goldCableItem", 4L), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xP", 'P', OrePrefixes.plate.get(Materials.Gold)});

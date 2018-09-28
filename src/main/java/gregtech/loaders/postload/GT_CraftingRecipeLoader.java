@@ -772,6 +772,18 @@ public class GT_CraftingRecipeLoader implements Runnable {
 			GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("EnderIO", "itemMachinePart", 1, 0), new Object[]{"PBP", "BCB", "PBP", 'P',  OrePrefixes.plate.get(Materials.Steel), 'C', GT_ModHandler.getModItem("EnderIO", "itemMachinePart", 1, 0), 'B', new ItemStack(Blocks.iron_bars, 1, 0)});
 			
 		}
+		
+		if (Loader.isModLoaded("DraconicEvolution")){
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "generator", 1, 3));
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0));
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "wyvernCore", 1, 0));
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "awakenedCore", 1, 0));
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "chaoticCore", 1, 0));
+			
+			GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("DraconicEvolution", "grinder", 1, 3));
+			GT_ModHandler.addCraftingRecipe(GT_ModHandler.getModItem("DraconicEvolution", "grinder", 1, 3), new Object[]{"PCP", "SMS", "PEP", 'P',  OrePrefixes.plate.get(Materials.Draconium), 'C', GT_ModHandler.getModItem("DraconicEvolution", "draconicCore", 1, 0), 'S', GT_ModHandler.getModItem("DraconicEvolution", "wyvernSword", 1, 0), 'E', ItemList.Electric_Motor_LuV.get(1L, new Object[0]), 'M', ItemList.MobRep_LuV.get(1L, new Object[0])});
+			
+		}
 
         long bits = GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE;
         GT_ModHandler.addCraftingRecipe(ItemList.ModularBasicHelmet.getWildcard(1), bits, new Object[]{"AAA", "B B", 'A', new ItemStack(Items.leather, 1, 32767), 'B', OrePrefixes.ring.get(Materials.Iron)});
