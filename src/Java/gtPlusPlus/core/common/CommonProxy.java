@@ -25,7 +25,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
@@ -33,6 +32,7 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
+import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraftforge.common.ForgeChunkManager;
 
@@ -138,6 +138,8 @@ public class CommonProxy {
 		Utils.registerEvent(new GeneralTooltipEventHandler());
 		//Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
+		//Handles Custom Tooltips for GC
+		Utils.registerEvent(new HandlerTooltip_GC());
 		
 		//Register Chunkloader
 		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());

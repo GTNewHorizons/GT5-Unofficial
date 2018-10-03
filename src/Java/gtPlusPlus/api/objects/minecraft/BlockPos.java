@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
@@ -44,6 +45,10 @@ public class BlockPos implements Serializable{
 		this.world = dim;
 	}
 	
+	public BlockPos(IGregTechTileEntity b) {
+		this (b.getXCoord(), b.getYCoord(), b.getZCoord(), b.getWorld());
+	}
+
 	public String getLocationString() {
 		return "[X: "+this.xPos+"][Y: "+this.yPos+"][Z: "+this.zPos+"][Dim: "+this.dim+"]";
 	}

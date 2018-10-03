@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
@@ -309,18 +310,6 @@ public class RocketFuels {
 				new ItemStack[] {},
 				null,
 				new int[] {},
-				new FluidStack[] {FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 1000)},
-				new FluidStack[] {},
-				0,
-				0,
-				1024)); //Fuel Value
-		
-		mRocketFuels.put(new Recipe_GT(
-				true,
-				new ItemStack[] {},
-				new ItemStack[] {},
-				null,
-				new int[] {},
 				new FluidStack[] {FluidUtils.getFluidStack(Dense_Hydrazine_Mix, 1000)},
 				new FluidStack[] {},
 				0,
@@ -338,6 +327,23 @@ public class RocketFuels {
 				0,
 				0,
 				768)); //Fuel Value
+		
+		mRocketFuels.put(new Recipe_GT(
+				true,
+				new ItemStack[] {},
+				new ItemStack[] {},
+				null,
+				new int[] {},
+				new FluidStack[] {FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide, 1000)},
+				new FluidStack[] {},
+				0,
+				0,
+				1024)); //Fuel Value
+		
+		
+		//Add in default Diesel for the Buggy
+		mValidRocketFuelNames.add(Materials.Fuel.getFluid(1).getFluid().getName());
+		mValidRocketFuels.put(-1, Materials.Fuel.getFluid(1).getFluid());	
 		
 		int mID = 0;
 		for (Recipe_GT r : mRocketFuels) {

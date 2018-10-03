@@ -1,15 +1,6 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.lang.instrument.Instrumentation;
-import java.lang.instrument.UnmodifiableClassException;
-import java.security.ProtectionDomain;
-
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -19,7 +10,6 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer2.GT_MetaTile_Visitor;
 
@@ -50,12 +40,17 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
-		// Fix the OreDictionary
+		// Fix the OreDictionary - Forge
 		if (transformedName.equals("net.minecraftforge.oredict.OreDictionary")) {
 			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Transforming %s", transformedName);
 			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 			new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
 			return classWriter.toByteArray();
+		}
+		// Fix the OreDictionary COFH
+		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter")) {
+			FMLRelaunchLog.log("[GT++ ASM] COFH", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, obfuscated).getWriter().toByteArray();
 		}
 
 		// Fix Tinkers Fluids
@@ -67,11 +62,15 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		//Fix GC stuff
 			if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
 				FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
-				return new ClassTransformer_GC_FluidUtil(basicClass).getWriter().toByteArray();
+				return new ClassTransformer_GC_FluidUtil(basicClass, obfuscated).getWriter().toByteArray();
 			}
 			if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
 				FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
-				return new ClassTransformer_GC_FuelLoader(basicClass).getWriter().toByteArray();
+				return new ClassTransformer_GC_FuelLoader(basicClass, obfuscated).getWriter().toByteArray();
+			}
+			if (transformedName.equals("micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket")) {
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_EntityAutoRocket(basicClass, obfuscated).getWriter().toByteArray();
 			}
 		
 	
@@ -92,9 +91,9 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 			
 			//Improve OB Sprinklers
-			if (transformedName.equals("openblocks.common.tileentity.TileEntitySprinkler")) {
+			/*if (transformedName.equals("openblocks.common.tileentity.TileEntitySprinkler")) {
 				FMLRelaunchLog.log("[GT++ ASM] OpenBlocks Sprinkler Patch", Level.INFO, "Transforming %s", transformedName);
-				/*try {
+				try {
 					ClassLoader aCustom = new gtPlusPlus.preloader.CustomClassLoader();
 					Class aCustomClass = aCustom.loadClass(gtPlusPlus.xmod.ob.TileEntitySprinkler_ASM.class.getName());
 					if (aCustomClass == null) {
@@ -113,9 +112,9 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
 				} catch (ClassNotFoundException | UnmodifiableClassException e) {
 					e.printStackTrace();
-				}*/
+				}
 				return new ClassTransformer_OB_Sprinkler(obfuscated, basicClass).getWriter().toByteArray();
-			}
+			}*/
 		}
 		return basicClass;
 	}

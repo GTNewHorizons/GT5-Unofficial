@@ -23,9 +23,9 @@ public class ClassTransformer_GC_FluidUtil {
 	private final ClassReader reader;
 	private final ClassWriter writer;	
 
-	public ClassTransformer_GC_FluidUtil(byte[] basicClass) {
+	public ClassTransformer_GC_FluidUtil(byte[] basicClass, boolean obfuscated) {
 		ClassReader aTempReader = null;
-		ClassWriter aTempWriter = null;		
+		ClassWriter aTempWriter = null;
 		try {
 			aTempReader = new ClassReader(className);
 			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
@@ -60,10 +60,6 @@ public class ClassTransformer_GC_FluidUtil {
 	}
 
 	public void injectMethod(String aMethodName) {		
-		/*String aConstructorTypes = (aMethodName.equals("testFuel") ? "(Ljava/lang/String;)Z" : (aMethodName.equals("fillWithGCFuel") ? "(Lnet/minecraftforge/fluids/FluidTank;Lnet/minecraftforge/fluids/FluidStack;Z)I\"" : "error"));
-		if (aConstructorTypes.equals("error")) {
-			return;
-		}	*/			
 		MethodVisitor mv;		
 		if (aMethodName.equals("testFuel")) {
 			FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
