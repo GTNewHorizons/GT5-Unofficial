@@ -39,8 +39,8 @@ import net.minecraft.util.EnumChatFormatting;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_WetTransformer;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
+//import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+//import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
 
 public class GT_Loader_MetaTileEntities implements Runnable {
     private static final String aTextWire1 = "wire."; private static final String aTextCable1 = "cable."; private static final String aTextWire2 = " Wire"; private static final String aTextCable2 = " Cable";
@@ -3642,6 +3642,110 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 													'R', OrePrefixes.rotor.get(Materials.Neutronium),
 													'M', ItemList.Electric_Motor_UEV,
 													'T', ItemList.WetTransformer_UIV_UEV});
+		
+									// ===================================================================================================
+									// World Accelerator Lv-UV
+									// ===================================================================================================
+									if(Loader.isModLoaded("miscutils")) {
+									}else {
+									ItemList.AcceleratorLV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12220, "basicmachine.accelerator.tier.01", "Basic World Accelerator", 1).getStackForm(1L));
+									ItemList.AcceleratorMV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12221, "basicmachine.accelerator.tier.02", "Advanced World Accelerator", 2).getStackForm(1L));
+									ItemList.AcceleratorHV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12222, "basicmachine.accelerator.tier.03", "Advanced World Accelerator II", 3).getStackForm(1L));
+									ItemList.AcceleratorEV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12223, "basicmachine.accelerator.tier.04", "Advanced World Accelerator III", 4).getStackForm(1L));
+									ItemList.AcceleratorIV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12224, "basicmachine.accelerator.tier.05", "Advanced World Accelerator IV", 5).getStackForm(1L));
+									ItemList.AcceleratorLuV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12225, "basicmachine.accelerator.tier.06", "Elite World Accelerator", 6).getStackForm(1L));
+									ItemList.AcceleratorZPM.set(new GT_MetaTileEntity_WorldAccelerator(
+											12226, "basicmachine.accelerator.tier.07", "Elite World Accelerator II", 7).getStackForm(1L));
+									ItemList.AcceleratorUV.set(new GT_MetaTileEntity_WorldAccelerator(
+											12227, "basicmachine.accelerator.tier.08", "Ultimate Time Anomaly", 8).getStackForm(1L));
+									//Not adding either...
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorLV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_LV,
+													'M', ItemList.Electric_Motor_LV,
+													'P', ItemList.Electric_Pump_LV,
+													'B', ItemList.Hull_LV,
+													'C', ItemList.Conveyor_Module_LV,
+													'I', ItemList.Electric_Piston_LV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorMV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_MV,
+													'M', ItemList.Electric_Motor_MV,
+													'P', ItemList.Electric_Pump_MV,
+													'B', ItemList.Hull_MV,
+													'C', ItemList.Conveyor_Module_MV,
+													'I', ItemList.Electric_Piston_MV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorHV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_HV,
+													'M', ItemList.Electric_Motor_HV,
+													'P', ItemList.Electric_Pump_HV,
+													'B', ItemList.Hull_HV,
+													'C', ItemList.Conveyor_Module_HV,
+													'I', ItemList.Electric_Piston_HV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorEV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_EV,
+													'M', ItemList.Electric_Motor_EV,
+													'P', ItemList.Electric_Pump_EV,
+													'B', ItemList.Hull_EV,
+													'C', ItemList.Conveyor_Module_EV,
+													'I', ItemList.Electric_Piston_EV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorIV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_IV,
+													'M', ItemList.Electric_Motor_IV,
+													'P', ItemList.Electric_Pump_IV,
+													'B', ItemList.Hull_IV,
+													'C', ItemList.Conveyor_Module_IV,
+													'I', ItemList.Electric_Piston_IV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorLuV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_LuV,
+													'M', ItemList.Electric_Motor_LuV,
+													'P', ItemList.Electric_Pump_LuV,
+													'B', ItemList.Hull_LuV,
+													'C', ItemList.Conveyor_Module_LuV,
+													'I', ItemList.Electric_Piston_LuV});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorZPM.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_ZPM,
+													'M', ItemList.Electric_Motor_ZPM,
+													'P', ItemList.Electric_Pump_ZPM,
+													'B', ItemList.Hull_ZPM,
+													'C', ItemList.Conveyor_Module_ZPM,
+													'I', ItemList.Electric_Piston_ZPM});
+
+									GT_ModHandler.addCraftingRecipe(ItemList.AcceleratorUV.get(1L),
+											bitsd,
+											new Object[]{"RMR", "PBC", "IMI",
+													'R', ItemList.Robot_Arm_UV,
+													'M', ItemList.Electric_Motor_UV,
+													'P', ItemList.Electric_Pump_UV,
+													'B', ItemList.Hull_UV,
+													'C', ItemList.Conveyor_Module_UV,
+													'I', ItemList.Electric_Piston_UV});
+									}
     }
 
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
