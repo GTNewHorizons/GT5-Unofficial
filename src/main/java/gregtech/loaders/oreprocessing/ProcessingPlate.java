@@ -21,7 +21,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.plateQuintuple.add(this);
         OrePrefixes.plateDense.add(this);
         OrePrefixes.plateAlloy.add(this);
-        OrePrefixes.casingSmall.add(this);
+        //OrePrefixes.casingSmall.add(this);
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
@@ -184,7 +184,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_ModHandler.removeRecipeByOutput(aStack);
                 }
                 break;
-            case casingSmall:
+            /*case casingSmall:
                 GT_ModHandler.removeRecipeByOutput(aStack);
                 if (aMaterial.mStandardMoltenFluid != null) {
                     GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Casing.get(0L, new Object[0]), aMaterial.getMolten(72L), GT_OreDictUnificator.get(OrePrefixes.casingSmall, aMaterial, 1L), 16, 8);
@@ -199,7 +199,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.addCutterRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L), GT_OreDictUnificator.get(OrePrefixes.casingSmall, aMaterial, 2L), null, (int) Math.max(aMaterial.getMass(), 1L), 16);
                 GT_Values.RA.addExtruderRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), ItemList.Shape_Extruder_Casing.get(0L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.casingSmall, aMaterial, 2L), (int) Math.max(aMaterial.getMass(), 1L), 45);
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                break;
+                break;*/
         }
     }
 }
