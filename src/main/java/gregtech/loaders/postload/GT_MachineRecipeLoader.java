@@ -2309,70 +2309,81 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W), 144000, new Object[]{
         		GT_ModHandler.getIC2Item("nanoHelmet", 1L, GT_Values.W),
         		new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
-            	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
+        		GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
+        		GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
             	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
             	ItemList.Sensor_IV.get(1, new Object[]{}),
             	ItemList.Field_Generator_EV.get(1, new Object[]{}),
-            	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+            	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4)
             	}, new FluidStack[]{
             	Materials.SolderingAlloy.getMolten(2304),
-            	Materials.Titanium.getMolten(1440)
-            	}, GT_ModHandler.getIC2Item("quantumHelmet", 1L), 1500, 4096);            
+            	Materials.Titanium.getMolten(1440),
+            	Materials.Glowstone.getMolten(288L)
+            	}, GT_ModHandler.getIC2Item("quantumHelmet", 1, 26), 1500, 4096);            
             
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L));
             GT_Values.RA.addAssemblylineRecipe(Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W), 144000, new Object[]{
             		Loader.isModLoaded("GraviSuite") ? GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W) : GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, GT_Values.W),
-            		new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
-                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
+            	    new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
+            		GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
+            		GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
                 	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
-                	ItemList.Field_Generator_HV.get(2, new Object[]{}),
+                	ItemList.Field_Generator_EV.get(2, new Object[]{}),
                 	ItemList.Electric_Motor_IV.get(2, new Object[]{}),
-                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4)
                 	}, new FluidStack[]{
                 	Materials.SolderingAlloy.getMolten(2304),
-                	Materials.Titanium.getMolten(1440)
-                	}, GT_ModHandler.getIC2Item("quantumBodyarmor", 1L), 1500, 4096);   
+                	Materials.Titanium.getMolten(1440),
+                	Materials.Glowstone.getMolten(288L)
+                	}, GT_ModHandler.getIC2Item("quantumBodyarmor", 1, 26), 1500, 4096);   
             
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumLeggings", 1L));
             GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W), 144000, new Object[]{
             		GT_ModHandler.getIC2Item("nanoLeggings", 1L, GT_Values.W),
             		new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
-                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
+            		GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 6),
+            		GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 6),
                 	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
-                	ItemList.Field_Generator_HV.get(2, new Object[]{}),
+                	ItemList.Field_Generator_EV.get(2, new Object[]{}),
                 	ItemList.Electric_Motor_IV.get(4, new Object[]{}),
-                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4)
                 	}, new FluidStack[]{
                 	Materials.SolderingAlloy.getMolten(2304),
-                	Materials.Titanium.getMolten(1440)
-                	}, GT_ModHandler.getIC2Item("quantumLeggings", 1L), 1500, 4096);   
+                	Materials.Titanium.getMolten(1440),
+                	Materials.Glowstone.getMolten(288L)
+                	}, GT_ModHandler.getIC2Item("quantumLeggings", 1, 26), 1500, 4096);   
             
             GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("quantumBoots", 1L));
             GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W), 144000, new Object[]{
             		GT_ModHandler.getIC2Item("nanoBoots", 1L, GT_Values.W),
             		new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
-                	GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
+            		GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.TungstenSteel, 4),
+            		GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 4),
                 	ItemList.Energy_LapotronicOrb.get(1, new Object[]{}),
-                	ItemList.Field_Generator_HV.get(1, new Object[]{}),
+                	ItemList.Field_Generator_EV.get(1, new Object[]{}),
                 	ItemList.Electric_Piston_IV.get(2, new Object[]{}),
-                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Tungsten, 4)
+                	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 4)
                 	}, new FluidStack[]{
                 	Materials.SolderingAlloy.getMolten(2304),
-                	Materials.Titanium.getMolten(1440)
+                	Materials.Titanium.getMolten(1440),
+                	Materials.Glowstone.getMolten(288L)
                 	}, GT_ModHandler.getIC2Item("quantumBoots", 1L), 1500, 4096);   
             
             if(Loader.isModLoaded("GraviSuite")){
                 GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, GT_Values.W));
                 GT_Values.RA.addAssemblylineRecipe(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, GT_Values.W), 144000, new Object[]{
-                		GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, GT_Values.W),
-                		GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, GT_Values.W),
+                		GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, 1),
+                        ItemList.Transformer_ZPM_LuV.get(1L),
+                        GT_ModHandler.getModItem("GraviSuite", "ultimateLappack", 1, 1),
+                        GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 6, 1),
+                        GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 2),
+                        GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 2, 3),
                 		new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 2},
-                    	GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Duranium, 6),
+                    	GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Duranium, 2),
                     	ItemList.Energy_LapotronicOrb2.get(1, new Object[]{}),
                     	ItemList.Field_Generator_IV.get(2, new Object[]{}),
-                		GT_ModHandler.getModItem("GraviSuite", "itemSimpleItem", 4, 3),
-                    	ItemList.Electric_Motor_ZPM.get(2, new Object[]{}),
-                    	GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 32),
+                		ItemList.Electric_Motor_ZPM.get(2, new Object[]{}),
+                    	GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 8),
                     	GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Duranium, 4)
                     	}, new FluidStack[]{
                     	Materials.SolderingAlloy.getMolten(2304),
