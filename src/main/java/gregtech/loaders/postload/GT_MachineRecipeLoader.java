@@ -2606,29 +2606,29 @@ if(Loader.isModLoaded("Railcraft")){
             
          // --- New Batteries
             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 2L),
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 2L), Materials.Polytetrafluoroethylene.getMolten(144L),
     				ItemList.BatteryHull_EV.get(1L), 100, 480);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Platinum, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RoseGold, 6L),
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RoseGold, 6L), Materials.Polytetrafluoroethylene.getMolten(288L),
     				ItemList.BatteryHull_IV.get(1L), 200, 1920);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18L),
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 18L), Materials.Polybenzimidazole.getMolten(144L),
     				ItemList.BatteryHull_LuV.get(1L), 300, 7680); 		
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6L),
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 6L), Materials.Polybenzimidazole.getMolten(288L),
     				ItemList.BatteryHull_ZPM.get(1L), 200, 30720);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18L),
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 18L), Materials.Polybenzimidazole.getMolten(576L),
     				ItemList.BatteryHull_UV.get(1L), 300, 122880);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24L),
-    				ItemList.BatteryHull_UHV.get(1L), 100, 491520);
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 24L), Materials.Polybenzimidazole.getMolten(1152L),
+    				ItemList.BatteryHull_UHV.get(1L), 100, 500000);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36L),
-    				ItemList.BatteryHull_UEV.get(1L), 200, 1048576);
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahEnriched, 36L), Materials.Polybenzimidazole.getMolten(2304L),
+    				ItemList.BatteryHull_UEV.get(1L), 200, 1000000);
     		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2L),
-    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48L),
-    				ItemList.BatteryHull_UIV.get(1L), 300, 1966080);
+    				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48L), Materials.Polybenzimidazole.getMolten(4608L),
+    				ItemList.BatteryHull_UIV.get(1L), 300, 2000000);
 
     		GT_ModHandler.addExtractionRecipe(ItemList.BatteryHull_EV_Full.get(1L), ItemList.BatteryHull_EV.get(1L));
     	    GT_ModHandler.addExtractionRecipe(ItemList.BatteryHull_IV_Full.get(1L), ItemList.BatteryHull_IV.get(1L));
