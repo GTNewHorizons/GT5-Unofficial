@@ -1507,9 +1507,9 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.HSSG, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.TungstenCarbide, 8L), Materials.Tungsten.getMolten(144L), ItemList.Casing_Coil_HSSG.get(1L), 600, 1920);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 8L), Materials.TungstenSteel.getMolten(144L), ItemList.Casing_Coil_Naquadah.get(1L), 700, 4096);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NaquadahAlloy, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 8L), Materials.Naquadah.getMolten(144L), ItemList.Casing_Coil_NaquadahAlloy.get(1L), 800, 7680);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 32L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 32L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 1000, 30720, true);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 16L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 1000, 30720, true);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 12L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 12L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 1000, 30720, true);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 32L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 32L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 3000, 30720, true);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 16L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 16L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 2000, 30720, true);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 12L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 12L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 1500, 30720, true);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 8L), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 8L), Materials.Tin.getMolten(5760L), ItemList.Casing_Coil_Superconductor.get(1L), 1000, 30720, true);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1L), ItemList.Casing_SolidSteel.get(2L, new Object[0]), 50, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 6L), GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1L), ItemList.Casing_FrostProof.get(2L, new Object[0]), 50, 16);
@@ -2428,7 +2428,7 @@ if(Loader.isModLoaded("Railcraft")){
             		ItemList.Circuit_Parts_ResistorSMD.get(64,o),
             		ItemList.Circuit_Parts_TransistorSMD.get(32,o),
             		ItemList.Circuit_Parts_DiodeSMD.get(16,o),
-            		ItemList.Circuit_Chip_Ram.get(16,o),GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 32),
+            		ItemList.Circuit_Chip_Ram.get(16,o),GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
             		GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 64)
             }, new FluidStack[]{
             		Materials.SolderingAlloy.getMolten(2880),
@@ -2500,7 +2500,7 @@ if(Loader.isModLoaded("Railcraft")){
                     ItemList.Circuit_Wafer_SoC2.get(64, o),
                     ItemList.Circuit_Wafer_SoC2.get(64, o),
                     ItemList.Circuit_Parts_DiodeSMD.get(8, o),
-                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 32),},
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),},
                     new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(2880), GregTech_API.mIC2Classic ? Materials.Water.getFluid(8000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)},
                     ItemList.Energy_Module.get(1, o), 2000, 100000);
@@ -2516,14 +2516,14 @@ if(Loader.isModLoaded("Railcraft")){
                     ItemList.Circuit_Wafer_HPIC.get(64, o),
                     ItemList.Circuit_Wafer_HPIC.get(64, o),
                     ItemList.Circuit_Parts_DiodeSMD.get(16, o),
-                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 32),},
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 24),},
                     new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(2880),
                     GregTech_API.mIC2Classic ? Materials.Water.getFluid(16000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)},
                     ItemList.Energy_Cluster.get(1, o), 2000, 200000);
 
             GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_Cluster.get(1,o), 288000, new ItemStack[]{
-                		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 64L),
+                		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 64L),
                 		ItemList.Circuit_Wetwaremainframe.get(1,o),
                 		ItemList.Circuit_Wetwaremainframe.get(1,o),
                 		ItemList.Circuit_Wetwaremainframe.get(1,o),
@@ -2533,14 +2533,14 @@ if(Loader.isModLoaded("Railcraft")){
                 		ItemList.Circuit_Wafer_HPIC.get(64,o),
                 		ItemList.Circuit_Wafer_HPIC.get(64,o),
                 		ItemList.Circuit_Parts_DiodeSMD.get(64,o),
-                		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64),
+                		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 32),
                 }, new FluidStack[]{
                 		Materials.SolderingAlloy.getMolten(2880),
                 		GregTech_API.mIC2Classic ? Materials.Water.getFluid(16000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
                 }, ItemList.ZPM2.get(1,o), 2000, 300000);
             
             GT_Values.RA.addAssemblylineRecipe(ItemList.ZPM2.get(1,o), 576000, new ItemStack[]{
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Neutronium, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
@@ -2551,7 +2551,7 @@ if(Loader.isModLoaded("Railcraft")){
                     ItemList.Circuit_Wafer_UHPIC.get(64,o),
                     ItemList.Circuit_Wafer_SoC2.get(32,o),
                     ItemList.Circuit_Parts_DiodeSMD.get(64,o),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Neutronium, 64),
             }, new FluidStack[]{
                     Materials.SolderingAlloy.getMolten(3760),
                     Materials.Naquadria.getMolten(9000),
@@ -3214,12 +3214,12 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Chip_NanoCPU.get(2), ItemList.Circuit_Parts_CapacitorSMD.get(24), ItemList.Circuit_Parts_TransistorSMD.get(24), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 8)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Crystalprocessor.get(1), 200, 9600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Crystalprocessor.get(2), ItemList.Circuit_Parts_Coil.get(24), ItemList.Circuit_Parts_CapacitorSMD.get(32), ItemList.Circuit_Chip_Ram.get(24), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 16)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Crystalcomputer.get(1), 400, 9600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Crystalcomputer.get(2), ItemList.Circuit_Chip_Ram.get(4), ItemList.Circuit_Chip_NOR.get(32), ItemList.Circuit_Chip_NAND.get(64), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Ultimatecrystalcomputer.get(1), 400, 9600, true);
-                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Ultimatecrystalcomputer.get(2), ItemList.Circuit_Parts_Coil.get(32), ItemList.Circuit_Parts_CapacitorSMD.get(64), ItemList.Circuit_Chip_Ram.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 1600, 30720, true);                //Wetware Circuits
+                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Ultimatecrystalcomputer.get(2), ItemList.Circuit_Parts_Coil.get(32), ItemList.Circuit_Parts_CapacitorSMD.get(64), ItemList.Circuit_Chip_Ram.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 1600, 30720, true);                //Wetware Circuits
                     }else {
 				    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Chip_NanoCPU.get(2), ItemList.Circuit_Parts_CapacitorSMD.get(24), ItemList.Circuit_Parts_TransistorSMD.get(24), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 8)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Crystalprocessor.get(1), 200, 9600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Crystalprocessor.get(2), ItemList.Circuit_Parts_Coil.get(24), ItemList.Circuit_Parts_CapacitorSMD.get(32), ItemList.Circuit_Chip_Ram.get(24), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 16)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Crystalcomputer.get(1), 400, 9600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Crystalcomputer.get(2), ItemList.Circuit_Chip_Ram.get(4), ItemList.Circuit_Chip_NOR.get(32), ItemList.Circuit_Chip_NAND.get(64), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Ultimatecrystalcomputer.get(1), 400, 9600, true);
-                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Ultimatecrystalcomputer.get(2), ItemList.Circuit_Parts_Coil.get(32), ItemList.Circuit_Parts_CapacitorSMD.get(64), ItemList.Circuit_Chip_Ram.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 1600, 30720, true);                //Wetware Circuits
+                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Ultimatecrystalcomputer.get(2), ItemList.Circuit_Parts_Coil.get(32), ItemList.Circuit_Parts_CapacitorSMD.get(64), ItemList.Circuit_Chip_Ram.get(32), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 1600, 30720, true);                //Wetware Circuits
                     }
         
                     //Wetware Boards
@@ -3249,14 +3249,14 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 48), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Quantummainframe.get(1), 50, 500000, true);
 					GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 8)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Crystalprocessor.get(1), 50, 153600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 16)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Ultimatecrystalcomputer.get(1), 50, 500000, true);
-                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 32)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 50, 2000000, true);
+                    GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 32)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 50, 2000000, true);
 					GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Chip_BioCPU.get(1L),ItemList.Circuit_Chip_CrystalSoC2.get(1L), ItemList.Circuit_Chip_NanoCPU.get(2L), ItemList.Circuit_Parts_CapacitorSMD.get(48L),ItemList.Circuit_Parts_TransistorSMD.get(48L),GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 16)},tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Bioprocessor.get(1L), 600, 153600, true);
                     GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1L), ItemList.Circuit_Neuroprocessor.get(2L), ItemList.Circuit_Parts_Coil.get(48L), ItemList.Circuit_Parts_CapacitorSMD.get(64L), ItemList.Circuit_Chip_Ram.get(32L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 24)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Biowarecomputer.get(1L), 800, 153600, true);
 					}else {
 					GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 48), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Quantummainframe.get(1), 50, 500000, true);
 					GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 8)}, tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Crystalprocessor.get(1), 50, 153600, true);
                     GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Multifiberglass_Elite.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 32), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 16)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Ultimatecrystalcomputer.get(1), 50, 500000, true);
-                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 32)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 50, 2000000, true);
+                    GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 2), ItemList.Circuit_Chip_CrystalSoC.get(2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8), GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Iridium, 32)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.Circuit_Crystalmainframe.get(1), 50, 2000000, true);
 					GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Chip_BioCPU.get(1L),ItemList.Circuit_Chip_CrystalSoC2.get(1L), ItemList.Circuit_Chip_NanoCPU.get(2L), ItemList.Circuit_Parts_CapacitorSMD.get(48L),ItemList.Circuit_Parts_TransistorSMD.get(48L),GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 16)},tMat.getMolten(144L * tMultiplier / 2L), ItemList.Circuit_Bioprocessor.get(1L), 600, 153600, true);
                     GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1L), ItemList.Circuit_Neuroprocessor.get(2L), ItemList.Circuit_Parts_Coil.get(48L), ItemList.Circuit_Parts_CapacitorSMD.get(64L), ItemList.Circuit_Chip_Ram.get(32L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 24)}, tMat.getMolten(144L * tMultiplier), ItemList.Circuit_Biowarecomputer.get(1L), 800, 153600, true);
 					}
