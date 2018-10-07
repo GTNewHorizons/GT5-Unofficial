@@ -814,6 +814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials EnrichedBacterialSludge     = new MaterialBuilder(409, TextureSet.SET_FLUID      ,                                                                                                     "Enriched Bacterial Sludge").setName("EnrichedBacterialSludge").addCell().addFluid().setRGB(70, 250, 70).setColor(Dyes.dyeLime).constructMaterial();
     public static Materials Mutagen     = new MaterialBuilder(410, TextureSet.SET_FLUID      ,                                                                                                     "Mutagen").setName("Mutagen").addCell().addFluid().setRGB(100, 200, 130).setColor(Dyes.dyeCyan).constructMaterial();
     public static Materials IronIIIChloride           = new MaterialBuilder(411, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(HydrochloricAcid, 2), new MaterialStack(Iron, 1)).addElectrolyzerRecipe().constructMaterial();
+    public static Materials Lapotron = new Materials( 412, TextureSet.SET_DIAMOND, 		1.0F, 0, 1, 1|4|8 , 50, 66, 199, 0, "Lapotron", "Lapotron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlue);
     
     /**
      * Materials which are renamed automatically

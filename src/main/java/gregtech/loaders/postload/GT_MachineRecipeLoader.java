@@ -166,6 +166,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L), ItemList.Food_PotatoChips.get(1L, new Object[0]), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.Food_ChiliChips.get(1L, new Object[0]), 32, 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Redstone, 5L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ruby, 4L), GT_Values.NI, GT_Utility.getIntegratedCircuit(2), GT_Values.NF, GT_Values.NF, ItemList.IC2_Energium_Dust.get(1L, new Object[0]), 300, 120);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 5L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ruby, 4L), GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, ItemList.IC2_Energium_Dust.get(9L, new Object[0]), 600, 120);
+		GT_Values.RA.addMixerRecipe(ItemList.IC2_Energium_Dust.get(3L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Utility.getIntegratedCircuit(1), GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapotron, 5L), 200, 480);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L), new ItemStack(Blocks.brown_mushroom, 1), new ItemStack(Items.spider_eye, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Items.fermented_spider_eye, 1), 100, 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.LiveRoot, 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 2L), 100, 8);
         GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 9L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.LiveRoot, 9L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 18L), 900, 8);
@@ -452,11 +453,17 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addFluidSmelterRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1L), GT_Values.NI, Materials.Ice.getSolid(1000L), 10000, 128, 4);
         GT_Values.RA.addFluidSmelterRecipe(GT_ModHandler.getModItem(aTextForestry, "phosphor", 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphor, 1L), Materials.Lava.getFluid(800L), 1000, 256, 128);
 
-        GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L, new Object[0]), Materials.Water.getFluid(1000L), ItemList.IC2_EnergyCrystal.get(1L, new Object[0]), 10000, 500, 256);
-        GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 0), Materials.Water.getFluid(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 10), 10000, 2000, 24);
+        GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L, new Object[0]), GT_ModHandler.getDistilledWater(1000L), ItemList.IC2_EnergyCrystal.get(1L, new Object[0]), 8000, 1200, 320);
+        GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L, new Object[0]), Materials.ConductiveIron.getMolten(288), ItemList.IC2_EnergyCrystal.get(1L, new Object[0]), 10000, 300, 256);
+        GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L, new Object[0]), Materials.EnergeticAlloy.getMolten(72), ItemList.IC2_EnergyCrystal.get(1L, new Object[0]), 10000, 150, 192);
+        
+		GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapotron, 9), GT_ModHandler.getDistilledWater(1000L), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), 8000, 1600, 480);
+        GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapotron, 9), Materials.EnergeticAlloy.getMolten(144), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), 10000, 400, 384);
+        GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapotron, 9), Materials.VibrantAlloy.getMolten(36), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), 10000, 200, 256);
+        
+		GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 0), Materials.Water.getFluid(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 10), 10000, 2000, 24);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 600), Materials.Water.getFluid(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 11), 10000, 2000, 24);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 1200), Materials.Water.getFluid(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 12), 10000, 2000, 24);
-        GT_Values.RA.addAutoclaveRecipe(ItemList.IC2_Energium_Dust.get(9L, new Object[0]), GT_ModHandler.getDistilledWater(1000L), ItemList.IC2_EnergyCrystal.get(1L, new Object[0]), 10000, 250, 256);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 0), GT_ModHandler.getDistilledWater(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 10), 10000, 1000, 24);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 600), GT_ModHandler.getDistilledWater(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 11), 10000, 1000, 24);
         GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem(aTextAE, "item.ItemCrystalSeed", 1L, 1200), GT_ModHandler.getDistilledWater(200L), GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 12), 10000, 1000, 24);
@@ -3038,6 +3045,19 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 2), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 2)}, Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(16), 160, 480);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 2)},Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(24), 160, 480);
 
+			//Lapotron Crystal
+			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), ItemList.Circuit_Advanced.get(2L), GT_Values.NF, GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), ItemList.Circuit_Nanoprocessor.get(2L), GT_Values.NF, GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), GT_ModHandler.getModItem("IC2","itemPartCircuitAdv", 2L), GT_Values.NF, GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+			
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Lapis, 2), ItemList.Circuit_Parts_Wiring_Elite.get(2)}, Materials.EnergeticAlloy.getMolten(144L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Lapis, 1), ItemList.Circuit_Parts_Wiring_Elite.get(1)}, Materials.VibrantAlloy.getMolten(36L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 300, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Lazurite, 2), ItemList.Circuit_Parts_Wiring_Elite.get(2)}, Materials.EnergeticAlloy.getMolten(144L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Lazurite, 1), ItemList.Circuit_Parts_Wiring_Elite.get(1)}, Materials.VibrantAlloy.getMolten(36L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 300, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Sodalite, 2), ItemList.Circuit_Parts_Wiring_Elite.get(2)}, Materials.EnergeticAlloy.getMolten(144L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Sapphire, 1), GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Sodalite, 1), ItemList.Circuit_Parts_Wiring_Elite.get(1)}, Materials.VibrantAlloy.getMolten(36L), GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 300, 1024);
+            
+			
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Cylinder.get(0, o), Materials.Polytetrafluoroethylene.getMolten(36), ItemList.Circuit_Parts_PetriDish.get(1, o), 160, 16);
             GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Cylinder.get(0, o), Materials.Polystyrene.getMolten(36), ItemList.Circuit_Parts_PetriDish.get(1, o), 160, 16);
                      

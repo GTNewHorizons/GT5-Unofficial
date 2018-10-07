@@ -619,17 +619,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.addCraftingRecipe(Ic2Items.miningLaser.copy(), new Object[]{"PPP", "GEC", "SBd", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G', OrePrefixes.gemExquisite.get(Materials.GarnetRed), 'E', ItemList.Emitter_HV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'S', OrePrefixes.screw.get(Materials.Titanium), 'B', new ItemStack(Ic2Items.chargingEnergyCrystal.copy().getItem(), 1, GT_Values.W)});
         }
         GT_ModHandler.removeRecipeByOutput(ItemList.IC2_Energium_Dust.get(1L));
-        if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.gregtechrecipes, "energycrystalruby", true)) {
-            GT_ModHandler.addCraftingRecipe(ItemList.IC2_Energium_Dust.get(9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RDR", "DRD", "RDR", 'R', OrePrefixes.dust.get(Materials.Redstone), 'D', OrePrefixes.dust.get(Materials.Ruby)});
-        } else {
-            GT_ModHandler.addCraftingRecipe(ItemList.IC2_Energium_Dust.get(9L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"RDR", "DRD", "RDR", 'R', OrePrefixes.dust.get(Materials.Redstone), 'D', OrePrefixes.dust.get(Materials.Diamond)});
-        }
         GT_ModHandler.removeRecipeByOutput(GT_ModHandler.getIC2Item("lapotronCrystal", 1L));
-        for (Materials tCMat : new Materials[]{Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
-            GT_ModHandler.addShapelessCraftingRecipe(GT_ModHandler.getIC2Item("lapotronCrystal", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{OrePrefixes.gemExquisite.get(Materials.Sapphire), OrePrefixes.stick.get(tCMat), ItemList.Circuit_Parts_Wiring_Elite});
-            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("lapotronCrystal", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"LCL", "RSR", "LCL", 'C', OrePrefixes.circuit.get(Materials.Data), 'S', GT_ModHandler.getIC2Item("energyCrystal", 1L, 32767), 'L', OrePrefixes.plate.get(tCMat), 'R', OrePrefixes.stick.get(tCMat)});
-            GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("lapotronCrystal", 1L), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"LCL", "RSR", "LCL", 'C', OrePrefixes.circuit.get(Materials.Advanced), 'S', OrePrefixes.gemFlawless.get(Materials.Sapphire), 'L', OrePrefixes.plate.get(tCMat), 'R', OrePrefixes.stick.get(tCMat)});
-        }
+        
         GT_ModHandler.removeRecipe(GT_ModHandler.getIC2Item("miningPipe", 8));
         GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("miningPipe", 1), new Object[]{"hPf", 'P', OrePrefixes.pipeSmall.get(Materials.Steel)});
         GT_Values.RA.addWiremillRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1), GT_ModHandler.getIC2Item("miningPipe", 1), 200, 16);
