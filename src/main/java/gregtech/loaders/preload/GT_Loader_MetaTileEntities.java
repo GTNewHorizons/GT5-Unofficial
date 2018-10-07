@@ -1304,6 +1304,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.FusionComputer_ZPMV.set(new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer Mark II").getStackForm(1L));
         ItemList.FusionComputer_UV.set(new GT_MetaTileEntity_FusionComputer3(1195, "fusioncomputer.tier.08", "Fusion Control Computer Mark III").getStackForm(1L));
         ItemList.FusionComputer_UHV.set(new GT_MetaTileEntity_FusionComputer4(12107, "fusioncomputer.tier.09", "Fusion Control Computer Mark IV").getStackForm(1L));
+        ItemList.FusionComputer_UEV.set(new GT_MetaTileEntity_FusionComputer5(12108, "fusioncomputer.tier.10", "Fusion Control Computer Mark V").getStackForm(1L));
         
 //        GT_ModHandler.addCraftingRecipe(ItemList.Casing_Fusion_Coil.get(1L, new Object[0]), bitsd, new Object[]{"CTC", "FMF", "CTC", 'M', ItemList.Casing_Coil_Superconductor, 'C', OrePrefixes.circuit.get(Materials.Master), 'F', ItemList.Field_Generator_MV, 'T', ItemList.Neutron_Reflector});
 

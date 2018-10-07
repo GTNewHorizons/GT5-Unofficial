@@ -29,7 +29,7 @@ public class GT_Block_Casings4
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Titanium Firebox Casing");
 //      GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Fusion Casing");
 //      GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Fusion Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Machine Casing MK I");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Fusion Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Fusion Machine Casing MK II");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Turbine Casing");
