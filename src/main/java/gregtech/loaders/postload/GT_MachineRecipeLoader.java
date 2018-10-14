@@ -4328,7 +4328,6 @@ if(Loader.isModLoaded("Railcraft")){
         //Fix Recipes
         GT_Values.RA.addExtractorRecipe(GT_ModHandler.getIC2Item( "itemCellHydrant", 1L, GT_Values.W), ItemList.Cell_Empty.get(1L, new Object[0]), 100, 2);
         GT_Values.RA.addCentrifugeRecipe( GT_ModHandler.getModItem("IC2", "itemCellHydrant", 1L, GT_Values.W), GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.Cell_Empty.get(1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000}, 100, 2);
-        GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(11)}, new FluidStack[]{Materials.Methane.getFluid(5000),  Materials.Water.getFluid(10000)}, new FluidStack[]{Materials.CarbonDioxide.getGas(5000), Materials.Hydrogen.getGas(40000)}, null, 300, 480);
         
 		//Recipes for gasoline
         GT_Values.RA.addChemicalRecipe(Materials.Nitrogen.getCells(2), Materials.Oxygen.getCells(1), GT_Values.NF, GT_Values.NF, Materials.NitrousOxide.getCells(3), 200, 30);
