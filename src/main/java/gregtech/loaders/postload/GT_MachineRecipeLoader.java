@@ -2020,9 +2020,9 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2L)}, new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
         		Materials.SolderingAlloy.getMolten(1296),
-        		Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Motor_UV.get(1, new Object[]{}), 600, 100000);
+        		Materials.Lubricant.getFluid(2000),
+        		Materials.Naquadria.getMolten(1296)}, ItemList.Electric_Motor_UV.get(1, new Object[]{}), 600, 100000);
            
 //      Pumps
         
@@ -2056,9 +2056,9 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 32L),
         		GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Iridium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2L)}, new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
         		Materials.SolderingAlloy.getMolten(1296),
-        		Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Pump_UV.get(1, new Object[]{}), 600, 100000);
+        		Materials.Lubricant.getFluid(2000),
+        		Materials.Naquadria.getMolten(1296)}, ItemList.Electric_Pump_UV.get(1, new Object[]{}), 600, 100000);
          
 //        Conveyor
 
@@ -2086,9 +2086,9 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Duranium, 4L),
         		GT_OreDictUnificator.get(OrePrefixes.round, Materials.Duranium, 32L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2L)}, new FluidStack[]{
-        		Materials.Naquadria.getMolten(1296),
         		Materials.StyreneButadieneRubber.getMolten(2880),
-        		Materials.Lubricant.getFluid(2000)}, ItemList.Conveyor_Module_UV.get(1, new Object[]{}), 600, 100000);
+        		Materials.Lubricant.getFluid(2000),
+        		Materials.Naquadria.getMolten(1296)}, ItemList.Conveyor_Module_UV.get(1, new Object[]{}), 600, 100000);
         
         
 //        Piston
@@ -2127,9 +2127,9 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Iridium, 1L),
         		GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iridium, 2L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 4L)}, new FluidStack[]{
-        		Materials.Naquadria.getMolten(1296),
         		Materials.SolderingAlloy.getMolten(1296),
-        		Materials.Lubricant.getFluid(2000)}, ItemList.Electric_Piston_UV.get(1, new Object[]{}), 600, 100000); 
+        		Materials.Lubricant.getFluid(2000),
+        		Materials.Naquadria.getMolten(1296)}, ItemList.Electric_Piston_UV.get(1, new Object[]{}), 600, 100000); 
         
 //        RobotArm
 
@@ -2170,9 +2170,9 @@ if(Loader.isModLoaded("Railcraft")){
                 new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 4},
                 new Object[]{OrePrefixes.circuit.get(Materials.Master), 8},
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 6L)}, new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
         		Materials.SolderingAlloy.getMolten(2304),
-        		Materials.Lubricant.getFluid(2000)}, ItemList.Robot_Arm_UV.get(1, new Object[]{}), 600, 100000);
+        		Materials.Lubricant.getFluid(2000),
+        		Materials.Naquadria.getMolten(1296)}, ItemList.Robot_Arm_UV.get(1, new Object[]{}), 600, 100000);
 
 //        Emitter
 
@@ -2212,8 +2212,8 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7L)}, new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
-        		Materials.SolderingAlloy.getMolten(2304)},
+        		Materials.SolderingAlloy.getMolten(2304),
+        		Materials.Naquadria.getMolten(1296)},
         		ItemList.Emitter_UV.get(1, new Object[]{}), 600, 100000);
         
 //        Sensor
@@ -2254,8 +2254,8 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7L)}, new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
-        		Materials.SolderingAlloy.getMolten(2304)},
+        		Materials.SolderingAlloy.getMolten(2304),
+        		Materials.Naquadria.getMolten(1296)},
         		ItemList.Sensor_UV.get(1, new Object[]{}), 600, 100000);
         
 //        Field Generator
@@ -2308,8 +2308,8 @@ if(Loader.isModLoaded("Railcraft")){
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 8L)},
                 new FluidStack[]{
-                Materials.Naquadria.getMolten(1296),
-        		Materials.SolderingAlloy.getMolten(2304)},
+        		Materials.SolderingAlloy.getMolten(2304),
+        		Materials.Naquadria.getMolten(1296)},
         		ItemList.Field_Generator_UV.get(1, new Object[]{}), 600, 100000);
         
 //        Quantumsuite
@@ -4616,9 +4616,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
-	                Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Motor_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.Lubricant.getFluid(4000),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Motor_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Motor_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
 	                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 4L),
@@ -4630,9 +4630,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
-	                Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Motor_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.Lubricant.getFluid(8000),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Motor_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Pump_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
 	                ItemList.Electric_Motor_UHV.get(1, new Object(){}),
@@ -4642,9 +4642,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 32L),
 	                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 4L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
-	                Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Pump_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.Lubricant.getFluid(4000),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Pump_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Pump_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
 	                ItemList.Electric_Motor_UEV.get(1, new Object(){}),
@@ -4654,9 +4654,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 32L),
 	                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Neutronium, 4L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
-	                Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Pump_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.Lubricant.getFluid(8000),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Pump_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Conveyor_Module_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
 	                ItemList.Electric_Motor_UHV.get(2, new Object(){}),
@@ -4664,10 +4664,10 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Tritanium, 8L),
 	                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Tritanium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
 	                Materials.Lubricant.getFluid(4000),
-	                Materials.StyreneButadieneRubber.getMolten(11520)}, ItemList.Conveyor_Module_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.StyreneButadieneRubber.getMolten(11520),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Conveyor_Module_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Conveyor_Module_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
 	                ItemList.Electric_Motor_UEV.get(2, new Object(){}),
@@ -4675,10 +4675,10 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 8L),
 	                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
 	                Materials.Lubricant.getFluid(8000),
-	                Materials.StyreneButadieneRubber.getMolten(23040)}, ItemList.Conveyor_Module_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.StyreneButadieneRubber.getMolten(23040),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Conveyor_Module_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Piston_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
                     ItemList.Electric_Motor_UHV.get(1, new Object(){}),
@@ -4689,9 +4689,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 4L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
                     Materials.SolderingAlloy.getMolten(2592),
-                    Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Piston_UHV.get(1, new Object[]{}), 800, 200000);
+                    Materials.Lubricant.getFluid(4000),
+                    Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Piston_UHV.get(1, new Object[]{}), 800, 200000);
         	
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Electric_Piston_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
                     ItemList.Electric_Motor_UEV.get(1, new Object(){}),
@@ -4702,9 +4702,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Neutronium, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 8L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
                     Materials.SolderingAlloy.getMolten(5184),
-                    Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Piston_UEV.get(1, new Object[]{}), 1000, 500000);
+                    Materials.Lubricant.getFluid(8000),
+                    Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Piston_UEV.get(1, new Object[]{}), 1000, 500000);
         
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Robot_Arm_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tritanium, 8L),
@@ -4716,9 +4716,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 4L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Ultimate), 8L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 6L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
                     Materials.SolderingAlloy.getMolten(4608),
-                    Materials.Lubricant.getFluid(4000)}, ItemList.Robot_Arm_UHV.get(1, new Object[]{}), 800, 200000);
+                    Materials.Lubricant.getFluid(4000),
+                    Materials.Naquadria.getMolten(2592)}, ItemList.Robot_Arm_UHV.get(1, new Object[]{}), 800, 200000);
             
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Robot_Arm_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8L),
@@ -4730,9 +4730,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 4L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 8L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 12L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
                     Materials.SolderingAlloy.getMolten(9216),
-                    Materials.Lubricant.getFluid(8000)}, ItemList.Robot_Arm_UEV.get(1, new Object[]{}), 1000, 500000);
+                    Materials.Lubricant.getFluid(8000),
+                    Materials.Naquadria.getMolten(5184)}, ItemList.Robot_Arm_UEV.get(1, new Object[]{}), 1000, 500000);
         
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Emitter_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 1L),
@@ -4745,8 +4745,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 7L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Emitter_UHV.get(1, new Object[]{}), 800, 200000);
             
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Emitter_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
@@ -4760,8 +4760,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 14L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Emitter_UEV.get(1, new Object[]{}), 1000, 500000);
         
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Sensor_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
@@ -4775,8 +4775,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 7L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Sensor_UHV.get(1, new Object[]{}), 800, 200000);
             
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Sensor_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
@@ -4790,8 +4790,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 14L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Sensor_UEV.get(1, new Object[]{}), 1000, 500000);
         
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Field_Generator_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
@@ -4810,8 +4810,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 8L)},
             new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Field_Generator_UHV.get(1, new Object[]{}), 800, 200000);
             
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Field_Generator_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
@@ -4830,8 +4830,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 16L)},
             new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Field_Generator_UEV.get(1, new Object[]{}), 1000, 500000);
             
 		}else{
@@ -4846,9 +4846,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
-	                Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Motor_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.Lubricant.getFluid(4000),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Motor_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_UHV.get(1, new Object(){}),1152000,new ItemStack[]{
 	                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 4L),
@@ -4860,9 +4860,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
-	                Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Motor_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.Lubricant.getFluid(8000),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Motor_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Pump_UV.get(1, new Object(){}),576000,new ItemStack[]{
 	                ItemList.Electric_Motor_UHV.get(1, new Object(){}),
@@ -4872,9 +4872,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 32L),
 	                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 4L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
-	                Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Pump_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.Lubricant.getFluid(4000),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Pump_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Pump_UHV.get(1, new Object(){}),1152000,new ItemStack[]{
 	                ItemList.Electric_Motor_UEV.get(1, new Object(){}),
@@ -4884,9 +4884,9 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 32L),
 	                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Neutronium, 4L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
-	                Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Pump_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.Lubricant.getFluid(8000),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Pump_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Conveyor_Module_UV.get(1, new Object(){}),576000,new ItemStack[]{
 	                ItemList.Electric_Motor_UHV.get(2, new Object(){}),
@@ -4894,10 +4894,10 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Tritanium, 8L),
 	                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Tritanium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 2L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(2592),
 	                Materials.SolderingAlloy.getMolten(2592),
 	                Materials.Lubricant.getFluid(4000),
-	                Materials.StyreneButadieneRubber.getMolten(11520)}, ItemList.Conveyor_Module_UHV.get(1, new Object[]{}), 800, 200000);
+	                Materials.StyreneButadieneRubber.getMolten(11520),
+	                Materials.Naquadria.getMolten(2592)}, ItemList.Conveyor_Module_UHV.get(1, new Object[]{}), 800, 200000);
 	        
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Conveyor_Module_UHV.get(1, new Object(){}),1152000,new ItemStack[]{
 	                ItemList.Electric_Motor_UEV.get(2, new Object(){}),
@@ -4905,10 +4905,10 @@ if(Loader.isModLoaded("Railcraft")){
 	                GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 8L),
 	                GT_OreDictUnificator.get(OrePrefixes.round, Materials.Neutronium, 64L),
 	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 4L)}, new FluidStack[]{
-	                Materials.Naquadria.getMolten(5184),
 	                Materials.SolderingAlloy.getMolten(5184),
 	                Materials.Lubricant.getFluid(8000),
-	                Materials.StyreneButadieneRubber.getMolten(23040)}, ItemList.Conveyor_Module_UEV.get(1, new Object[]{}), 1000, 500000);
+	                Materials.StyreneButadieneRubber.getMolten(23040),
+	                Materials.Naquadria.getMolten(5184)}, ItemList.Conveyor_Module_UEV.get(1, new Object[]{}), 1000, 500000);
 	    
 	        GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Piston_UV.get(1, new Object(){}),576000,new ItemStack[]{
                     ItemList.Electric_Motor_UHV.get(1, new Object(){}),
@@ -4919,9 +4919,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.NaquadahAlloy, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 4L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
                     Materials.SolderingAlloy.getMolten(2592),
-                    Materials.Lubricant.getFluid(4000)}, ItemList.Electric_Piston_UHV.get(1, new Object[]{}), 800, 200000);
+                    Materials.Lubricant.getFluid(4000),
+                    Materials.Naquadria.getMolten(2592)}, ItemList.Electric_Piston_UHV.get(1, new Object[]{}), 800, 200000);
         	
             GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Piston_UHV.get(1, new Object(){}),1152000,new ItemStack[]{
                     ItemList.Electric_Motor_UEV.get(1, new Object(){}),
@@ -4932,9 +4932,9 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Neutronium, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 8L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
                     Materials.SolderingAlloy.getMolten(5184),
-                    Materials.Lubricant.getFluid(8000)}, ItemList.Electric_Piston_UEV.get(1, new Object[]{}), 1000, 500000);
+                    Materials.Lubricant.getFluid(8000),
+                    Materials.Naquadria.getMolten(5184)}, ItemList.Electric_Piston_UEV.get(1, new Object[]{}), 1000, 500000);
         
             GT_Values.RA.addAssemblylineRecipe(ItemList.Robot_Arm_UV.get(1, new Object(){}),576000,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tritanium, 8L),
@@ -4946,9 +4946,9 @@ if(Loader.isModLoaded("Railcraft")){
                     new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
                     new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 8},
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 6L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
                     Materials.SolderingAlloy.getMolten(4608),
-                    Materials.Lubricant.getFluid(4000)}, ItemList.Robot_Arm_UHV.get(1, new Object[]{}), 800, 200000);
+                    Materials.Lubricant.getFluid(4000),
+                    Materials.Naquadria.getMolten(2592)}, ItemList.Robot_Arm_UHV.get(1, new Object[]{}), 800, 200000);
             
             GT_Values.RA.addAssemblylineRecipe(ItemList.Robot_Arm_UHV.get(1, new Object(){}),1152000,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 8L),
@@ -4960,9 +4960,9 @@ if(Loader.isModLoaded("Railcraft")){
                     new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4},
                     new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 8},
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 12L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
                     Materials.SolderingAlloy.getMolten(9216),
-                    Materials.Lubricant.getFluid(8000)}, ItemList.Robot_Arm_UEV.get(1, new Object[]{}), 1000, 500000);
+                    Materials.Lubricant.getFluid(8000),
+                    Materials.Naquadria.getMolten(5184)}, ItemList.Robot_Arm_UEV.get(1, new Object[]{}), 1000, 500000);
         
             GT_Values.RA.addAssemblylineRecipe(ItemList.Emitter_UV.get(1, new Object(){}),576000,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 1L),
@@ -4975,8 +4975,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 7L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Emitter_UHV.get(1, new Object[]{}), 800, 200000);
             
             GT_Values.RA.addAssemblylineRecipe(ItemList.Emitter_UHV.get(1, new Object(){}),1152000,new Object[]{
@@ -4990,8 +4990,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 14L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Emitter_UEV.get(1, new Object[]{}), 1000, 500000);
         
             GT_Values.RA.addAssemblylineRecipe(ItemList.Sensor_UV.get(1, new Object(){}),576000,new Object[]{
@@ -5005,8 +5005,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 7L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Sensor_UHV.get(1, new Object[]{}), 800, 200000);
             
             GT_Values.RA.addAssemblylineRecipe(ItemList.Sensor_UHV.get(1, new Object(){}),1152000,new Object[]{
@@ -5020,8 +5020,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 14L)}, new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Sensor_UEV.get(1, new Object[]{}), 1000, 500000);
         
             GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_UV.get(1, new Object(){}),576000,new Object[]{
@@ -5040,8 +5040,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 8L)},
             new FluidStack[]{
-                    Materials.Naquadria.getMolten(2592),
-                    Materials.SolderingAlloy.getMolten(4608)},
+                    Materials.SolderingAlloy.getMolten(4608),
+                    Materials.Naquadria.getMolten(2592)},
             ItemList.Field_Generator_UHV.get(1, new Object[]{}), 800, 200000);
             
             GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_UHV.get(1, new Object(){}),1152000,new Object[]{
@@ -5060,8 +5060,8 @@ if(Loader.isModLoaded("Railcraft")){
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 16L)},
             new FluidStack[]{
-                    Materials.Naquadria.getMolten(5184),
-                    Materials.SolderingAlloy.getMolten(9216)},
+                    Materials.SolderingAlloy.getMolten(9216),
+                    Materials.Naquadria.getMolten(5184)},
             ItemList.Field_Generator_UEV.get(1, new Object[]{}), 1000, 500000);
             
         }
