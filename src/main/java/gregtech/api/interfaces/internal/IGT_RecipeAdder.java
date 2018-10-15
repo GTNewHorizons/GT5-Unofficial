@@ -26,6 +26,8 @@ public interface IGT_RecipeAdder {
      */
     public boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
 
+    public boolean addFusionReactorRecipe(ItemStack aInput1, FluidStack aInput2, FluidStack aInput3, FluidStack aOutput1, ItemStack aOutput2, int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion);
+
     /**
      * Adds a Centrifuge Recipe
      *

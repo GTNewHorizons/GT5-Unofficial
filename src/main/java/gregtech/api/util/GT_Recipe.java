@@ -212,6 +212,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             GT_Recipe_Map.sFusionRecipes.addRecipe(this);
         }
     }
+    public GT_Recipe(ItemStack aInput1, FluidStack aInput2, FluidStack aInput3, FluidStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aSpecialValue) {
+        this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput2}, null, null, new FluidStack[]{aInput2, aInput3}, new FluidStack[]{aOutput1}, Math.max(aDuration, 1), aEUt, Math.max(Math.min(aSpecialValue, 160000000), 0));
+        if (mInputs.length > 1) {
+            GT_Recipe_Map.sFusionRecipes.addRecipe(this);
+        }
+    }
 
     public GT_Recipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
         this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2}, null, null, null, null, aDuration, aEUt, 0);
@@ -548,7 +554,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(100), "gt.recipe.fluidextractor", "Fluid Extractor", null, RES_PATH_GUI + "basicmachines/FluidExtractor", 1, 1, 1, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(2500), "gt.recipe.packager", "Packager", null, RES_PATH_GUI + "basicmachines/Packager", 2, 1, 2, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sUnboxinatorRecipes = new GT_Recipe_Map_Unboxinator(new HashSet<GT_Recipe>(2500), "gt.recipe.unpackager", "Unpackager", null, RES_PATH_GUI + "basicmachines/Unpackager", 1, 2, 1, 0, 1, E, 1, E, true, true);
-        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fusionreactor", "Fusion Reactor", null, RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+        public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fusionreactor", "Fusion Reactor", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 2, 1, "Start: ", 1, " EU", true, true);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.centrifuge", "Centrifuge", null, RES_PATH_GUI + "basicmachines/Centrifuge", 2, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sElectrolyzerRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.electrolyzer", "Electrolyzer", null, RES_PATH_GUI + "basicmachines/Electrolyzer", 2, 6, 0, 0, 1, E, 1, E, true, true);
         public static final GT_Recipe_Map sBlastRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(500), "gt.recipe.blastfurnace", "Blast Furnace", null, RES_PATH_GUI + "basicmachines/Default", 2, 2, 1, 0, 1, "Heat Capacity: ", 1, " K", false, true);

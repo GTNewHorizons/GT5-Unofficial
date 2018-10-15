@@ -11,7 +11,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -26,6 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -105,10 +108,20 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
                 && (addIfInjector(xCenter - 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
                 && (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
-                && (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)) {
+                && (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)&& (this.mOutputBusses.size() >= 1) && (this.mInputBusses.size() >= 2)) {
             int mEnergyHatches_sS = this.mEnergyHatches.size();
             for (int i = 0; i < mEnergyHatches_sS; i++) {
                 if (this.mEnergyHatches.get(i).mTier < tier())
+                    return false;
+            }
+            int mOutputBusses_sS = this.mOutputBusses.size();
+            for (int i = 0; i < mOutputBusses_sS; i++) {
+                if (this.mOutputBusses.get(i).mTier < tier())
+                    return false;
+            }
+            int mInputBusses_sS = this.mInputBusses.size();
+            for (int i = 0; i < mInputBusses_sS; i++) {
+                if (this.mInputBusses.get(i).mTier < tier())
                     return false;
             }
             int mOutputHatches_sS = this.mOutputHatches.size();
@@ -244,23 +257,44 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS=tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--); tFluidList_sS=tFluidList.size();
+    	ArrayList<ItemStack> tInputList = getStoredInputs();
+        int tInputList_sS = tInputList.size();
+        for (int i = 0; i < tInputList_sS - 1; i++) {
+            for (int j = i + 1; j < tInputList_sS; j++) {
+                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+                        tInputList.remove(j--);
+                        tInputList_sS = tInputList.size();
                     } else {
-                        tFluidList.remove(i--); tFluidList_sS=tFluidList.size();
+                        tInputList.remove(i--);
+                        tInputList_sS = tInputList.size();
                         break;
                     }
                 }
             }
         }
-        if (tFluidList.size() > 1) {
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids, new ItemStack[]{});
+        ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
+
+        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        int tFluidList_sS = tFluidList.size();
+        for (int i = 0; i < tFluidList_sS - 1; i++) {
+            for (int j = i + 1; j < tFluidList_sS; j++) {
+                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
+                        tFluidList.remove(j--);
+                        tFluidList_sS = tFluidList.size();
+                    } else {
+                        tFluidList.remove(i--);
+                        tFluidList_sS = tFluidList.size();
+                        break;
+                    }
+                }
+            }
+        }
+        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+        
+        if (tInputList.size() > 1) {
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[8], tFluids, tInputs);
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
@@ -272,6 +306,7 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
             this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
             this.mEfficiencyIncrease = 10000;
             this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
+            this.mOutputItems = new ItemStack[]{tRecipe.getOutput(2)};
             turnCasingActive(true);
             mRunningOnLoad = false;
             return true;
@@ -285,6 +320,16 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
             for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
+                hatch.updateTexture(status ? 52 : 53);
+            }
+        }
+        if (this.mOutputBusses != null) {
+            for (GT_MetaTileEntity_Hatch_OutputBus hatch : this.mOutputBusses) {
+                hatch.updateTexture(status ? 52 : 53);
+            }
+        }
+        if (this.mInputBusses != null) {
+            for (GT_MetaTileEntity_Hatch_InputBus hatch : this.mInputBusses) {
                 hatch.updateTexture(status ? 52 : 53);
             }
         }
