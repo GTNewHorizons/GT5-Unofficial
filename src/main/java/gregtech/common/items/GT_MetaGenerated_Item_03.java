@@ -131,6 +131,11 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Wafer_SoC4.set(addItem(tLastID = 62, "UHASoC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_SoC4.set(addItem(tLastID = 63, "UHASoC", "Ultra High Advanced System on a Chip", o));
         
+        ItemList.Circuit_Wafer_ULPIC.set(addItem(tLastID = 112, "ULVPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_ULPIC.set(addItem(tLastID = 113, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
+        ItemList.Circuit_Wafer_LPIC.set(addItem(tLastID =114, "LPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_LPIC.set(addItem(tLastID = 115, "Low Power IC", "Low Power Circuit", o));
+        
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 64, "Enderium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer4.set(addItem(tLastID = 65, "Enderium doped Wafer", "Raw Circuit", o));
         

@@ -67,6 +67,7 @@ public class GT_MetaGenerated_Tool_01 extends GT_MetaGenerated_Tool {
     public static final short TURBINE_LARGE = 174;
     public static final short TURBINE_HUGE = 176;
     public static final short TURBINE_BLADE = 178;
+    
     public static GT_MetaGenerated_Tool_01 INSTANCE;
 
     public GT_MetaGenerated_Tool_01() {
