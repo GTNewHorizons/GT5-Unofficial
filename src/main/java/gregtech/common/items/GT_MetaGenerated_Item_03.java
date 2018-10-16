@@ -226,7 +226,21 @@ public class GT_MetaGenerated_Item_03
 	    setElectricStats(32000 + tLastID, 204800000L, GT_Values.V[4], 4L, -3L, true);	    
 		
 	    ItemList.EnergyCrystal_IV.set(addItem(tLastID = 204, "Energium Orb (T5)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
-	    setElectricStats(32000 + tLastID, 819200000L, GT_Values.V[5], 5L, -3L, true);	    
+	    setElectricStats(32000 + tLastID, 819200000L, GT_Values.V[5], 5L, -3L, true);
+	    
+	    
+	    ItemList.ULV_Coil.set(addItem(tLastID = 210, "Ultra Low Voltage Coil", "Primitive Coil", o));
+	    ItemList.LV_Coil.set(addItem(tLastID = 211, "Low Voltage Coil", "Basic Coil", o));
+        ItemList.MV_Coil.set(addItem(tLastID = 212, "Medium Voltage Coil", "Good Coil", o));
+        ItemList.HV_Coil.set(addItem(tLastID = 213, "High Voltage Coil", "Advanced Coil", o));
+        ItemList.EV_Coil.set(addItem(tLastID = 214, "Extreme Voltage Coil", "Extreme Coil", o));
+        ItemList.IV_Coil.set(addItem(tLastID = 215, "Insane Voltage Coil", "Elite Coil", o));
+        ItemList.LuV_Coil.set(addItem(tLastID = 216, "Ludicrous Voltage Coil", "Master Coil", o));
+        ItemList.ZPM_Coil.set(addItem(tLastID = 217, "ZPM Voltage Coil", "Ultimate Coil", o));
+        ItemList.UV_Coil.set(addItem(tLastID = 218, "Ultimate Voltage Coil", "Super Coil", o));
+        ItemList.UHV_Coil.set(addItem(tLastID = 219, "Highly Ultimate Voltage Coil", "Infinite Coil", o));
+        ItemList.UEV_Coil.set(addItem(tLastID = 220, "Extremely Ultimate Voltage Coil", "Ultra Coil", o));
+        ItemList.UIV_Coil.set(addItem(tLastID = 221, "Insanely Ultimate Voltage Coil", "Insane Coil", o));
 		
     }
 

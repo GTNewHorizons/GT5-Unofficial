@@ -660,6 +660,7 @@ public enum ItemList implements IItemContainer {
     Neutron_Reflector,
     Reactor_Coolant_He_1, Reactor_Coolant_He_3, Reactor_Coolant_He_6, Reactor_Coolant_NaK_1, Reactor_Coolant_NaK_3, Reactor_Coolant_NaK_6,
     ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
+    ULV_Coil, LV_Coil, MV_Coil, HV_Coil, EV_Coil, IV_Coil, LuV_Coil, ZPM_Coil, UV_Coil, UHV_Coil, UEV_Coil, UIV_Coil,
     Depleted_MNq_1, Depleted_MNq_2, Depleted_MNq_4,
     MNqCell_1, MNqCell_2, MNqCell_4,
     FusionComputer_LuV, FusionComputer_ZPMV, FusionComputer_UV, FusionComputer_UHV, FusionComputer_UEV,
