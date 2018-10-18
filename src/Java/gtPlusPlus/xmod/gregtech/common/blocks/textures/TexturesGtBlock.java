@@ -524,6 +524,10 @@ public class TexturesGtBlock {
 
 
 
+	public static Object Casing_Material_Turbine;
+
+
+
 
 	
 }

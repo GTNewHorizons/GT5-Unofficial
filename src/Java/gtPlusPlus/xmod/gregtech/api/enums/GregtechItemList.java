@@ -300,6 +300,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Air Intake hatch
 	Hatch_Air_Intake,
+	
+	//XL Turbine Rotor Hatch
+	Hatch_Turbine_Rotor,
 
 	//Custom Fluid Hatches
 	Hatch_Input_Cryotheum,

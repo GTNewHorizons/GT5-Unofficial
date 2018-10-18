@@ -2,7 +2,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
+import net.minecraft.world.IBlockAccess;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
@@ -11,6 +13,7 @@ import gregtech.common.blocks.GT_Material_Casings;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 
 
 public class GregtechMetaCasingBlocks4
@@ -53,10 +56,24 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
 		GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
 		GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15));*/
-	}
+	}	
 
+	private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
+	
 	@Override
-	public IIcon getIcon(final int aSide, final int aMeta) { //Texture ID's. case 0 == ID[57]
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide) {
+		final GregtechMetaCasingBlocks4 i = this;
+		return mTurbineTextures.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
+	}
+	
+	@Override
+	public IIcon getIcon(final int aSide, final int aMeta) {
+		return getStaticIcon((byte) aSide, (byte) aMeta);
+	}
+	
+	public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {
+		 //Texture ID's. case 0 == ID[57]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
 				//Centrifuge
@@ -81,15 +98,18 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 6:
 					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 
+					
 					//Vanadium Radox Battery
 				case 7:
 					return TexturesGtBlock.Casing_Redox_1.getIcon();
 					//Power Sub-Station Casing
 				case 8:
-					return TexturesGtBlock.Casing_Machine_Metal_Sheet_A.getIcon();
+					return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 					//Cyclotron Coil
 				case 9:
-					return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();
+					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+					
+					
 					//Cyclotron External Casing
 				case 10:
 					return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
@@ -110,15 +130,6 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 14:
 					return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 				case 15:
-					if (aSide <2) {
-						if (aSide == 1) {
-							return TexturesGtBlock.Casing_Machine_Podzol.getIcon();					
-						}
-						return TexturesGtBlock.Casing_Machine_Acacia_Log.getIcon();							
-					}
-					else {
-						return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();					
-					}
 				default:
 					return TexturesGtBlock.Overlay_UU_Matter.getIcon();
 

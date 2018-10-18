@@ -22,17 +22,23 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
@@ -505,7 +511,12 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		log("Error generating recipe, returning null.");
 		return null;
-
+	}
+	
+	public boolean isMachineRunning() {
+		boolean aRunning = this.getBaseMetaTileEntity().isActive();
+		Logger.INFO("Queried Multiblock is currently running: "+aRunning);
+		return aRunning;
 	}
 
 	@Override
@@ -638,10 +649,41 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return b;
 	}
+	
+	
+	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
+			final int aBaseCasingIndex) {
+		if (aList.isEmpty()) {
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+				Logger.INFO("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+				updateTexture(aTileEntity, aBaseCasingIndex);
+				return aList.add((E) aTileEntity);
+			}
+		} else {
+			IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
+			BlockPos aCurPos = new BlockPos(aCur);
+			boolean aExists = false;
+			for (E m : aList) {
+				IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
+				BlockPos aPos = new BlockPos(b);
+				if (b != null && aPos != null) {
+					if (aCurPos.equals(aPos)) {
+						Logger.INFO("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						return false;
+					}
+				}
+			}
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+				Logger.INFO("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				updateTexture(aTileEntity, aBaseCasingIndex);
+				return aList.add((E) aTileEntity);
+			}
+		}
+		return false;
+	}
 
 	@Override
-	public boolean addToMachineList(final IGregTechTileEntity aTileEntity,
-			final int aBaseCasingIndex) {
+	public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		}
@@ -649,65 +691,71 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
-
+		
+		//Use this to determine the correct value, then update the hatch texture after.
+		boolean aDidAdd = false;
+		
+        //Handle Custom Hustoms
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
 			log("Found GT_MetaTileEntity_Hatch_InputBattery");
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mChargeHatches.add(
-					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
+			aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
 		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
 			log("Found GT_MetaTileEntity_Hatch_OutputBattery");
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mDischargeHatches.add(
-					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
+			aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
 		}
-		if (LoadedMods.TecTech){
-			if (isThisHatchMultiDynamo(aMetaTileEntity)) {
-				log("Found isThisHatchMultiDynamo");
-				updateTexture(aTileEntity, aBaseCasingIndex);
-				return this.mMultiDynamoHatches.add(
-						(GT_MetaTileEntity_Hatch) aMetaTileEntity);
-			}
+		
+		//Handle TT Multi-A Dynamos
+		else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
+			log("Found isThisHatchMultiDynamo");
+			aDidAdd = addToMachineListInternal(mMultiDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+		}		
+		
+		//Handle Fluid Hatches using seperate logic
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+        	aDidAdd = addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
+			aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
+		
+        //Process Remaining hatches using Vanilla GT Logic
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
+        	aDidAdd = addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+        	aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
+        	aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo)
+        	aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+        	aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
+        	aDidAdd = addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
+		        
+		//return super.addToMachineList(aTileEntity, aBaseCasingIndex);
+        return aDidAdd;
+	}
+	
+	
 
-		}
-		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
+	@Override
+	public boolean addMaintenanceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
-	public boolean addChargeableToMachineList(final IGregTechTileEntity aTileEntity,
-			final int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mChargeHatches.add(
-					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
-		}
-		return false;
+	@Override
+	public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
-	public boolean addDischargeableInputToMachineList(
-			final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-		if (aTileEntity == null) {
-			return false;
-		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mDischargeHatches.add(
-					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
-		}
-		return false;
+	@Override
+	public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
+	@Override
+	public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
 
 	public boolean addFluidInputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
 		if (aTileEntity == null) {
@@ -717,25 +765,17 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity == null) {
 			return false;
 		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-			return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
-		}
-		return false;
+		return addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
 	}
 
-	public boolean addFluidOutputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+	public boolean addFluidInputToMachineList(final IMetaTileEntity aTileEntity, final int aBaseCasingIndex) {
 		if (aTileEntity == null) {
 			return false;
 		}
-		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null) {
-			return false;
-		}
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+			return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);			
 		}
 		return false;
 	}
@@ -808,9 +848,22 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	@SuppressWarnings("deprecation")
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}	
+		return updateTexture(aMetaTileEntity, aCasingID);
+	}
+	
+	/**
+	 * Enable Texture Casing Support if found in GT 5.09
+	 */
+
+	@SuppressWarnings("deprecation")
+	public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID){
 		try { //gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
 
-			final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+			final IMetaTileEntity aMetaTileEntity = aTileEntity;
 			if (aMetaTileEntity == null) {
 				return false;
 			}			
@@ -828,7 +881,7 @@ GT_MetaTileEntity_MultiBlockBase {
 				log("Bad Method Call for updateTexture.");
 				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
 					if (aCasingID <= Byte.MAX_VALUE) {
-						((GT_MetaTileEntity_Hatch) aTileEntity.getMetaTileEntity()).mMachineBlock = (byte) aCasingID;
+						((GT_MetaTileEntity_Hatch) aTileEntity).mMachineBlock = (byte) aCasingID;
 						log("Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
 						return true;
 					}
@@ -1120,6 +1173,35 @@ GT_MetaTileEntity_MultiBlockBase {
 			return mRecipeResult;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Custom Tool Handling
+	 */
+	
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+			float aY, float aZ) {		
+		//Do Super
+		boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+		// Do Things
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+			if (tCurrentItem != null) {				
+				if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {	
+					
+				}
+			}
+		}
+		return aSuper;
+	}
+	
+	
+	
 
 
 
