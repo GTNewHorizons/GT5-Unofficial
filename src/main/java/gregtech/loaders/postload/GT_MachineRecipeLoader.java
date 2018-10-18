@@ -2783,9 +2783,9 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neutronium, 9L), 			GT_Utility.getIntegratedCircuit(19), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Neutronium, 1L), GT_Values.NI, 5000,  500000, 9000);
             GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 4L), 			GT_Utility.getIntegratedCircuit(14), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.Neutronium, 1L), GT_Values.NI, 5000,  500000, 9000);
 
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 1L), 			GT_Utility.getIntegratedCircuit(11), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 122880, 9000);
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.ElectrumFlux, 9L), 		GT_Utility.getIntegratedCircuit(19), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 122880, 9000);
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.ElectrumFlux, 4L), 		GT_Utility.getIntegratedCircuit(14), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 122880, 9000);
+            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 1L), 			GT_Utility.getIntegratedCircuit(11), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 62880, 9000);
+            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.ElectrumFlux, 9L), 		GT_Utility.getIntegratedCircuit(19), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 62880, 9000);
+            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.ElectrumFlux, 4L), 		GT_Utility.getIntegratedCircuit(14), Materials.Argon.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.ElectrumFlux, 1L), GT_Values.NI, 1000, 62880, 9000);
 
             GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 1L), 					GT_Utility.getIntegratedCircuit(11), Materials.Nitrogen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.HSSG, 1L), GT_Values.NI, 1800, 1920, 4200);
             GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.HSSG, 9L), 				GT_Utility.getIntegratedCircuit(19), Materials.Nitrogen.getGas(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.HSSG, 1L), GT_Values.NI, 1800, 1920, 4200);
@@ -3075,32 +3075,7 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addExtruderRecipe(Materials.BorosilicateGlass.getIngots(1), ItemList.Shape_Extruder_Wire.get(0), ItemList.Circuit_Parts_GlassFiber.get(8), 160, 96);
             GT_Values.RA.addWiremillRecipe(Materials.BorosilicateGlass.getIngots(1), ItemList.Circuit_Parts_GlassFiber.get(4), 200, 120);
 
-            GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), ItemList.Circuit_Wafer_NAND.get(1), 900, 480, true);
-            GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), ItemList.Circuit_Wafer_NAND.get(4), 600, 1920, true);
-            GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), ItemList.Circuit_Wafer_NOR.get(1), 900, 480, true);
-            GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), ItemList.Circuit_Wafer_NOR.get(4), 600, 1920, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_ILC.get(1), ItemList.Circuit_Chip_ILC.get(8), null, 900, 64);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_Ram.get(1), ItemList.Circuit_Chip_Ram.get(32), null, 900, 96);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NAND.get(1), ItemList.Circuit_Chip_NAND.get(32), null, 900, 192, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NOR.get(1), ItemList.Circuit_Chip_NOR.get(16), null, 900, 192, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_CPU.get(1), ItemList.Circuit_Chip_CPU.get(8), null, 900, 120, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_Simple_SoC.get(1L), ItemList.Circuit_Chip_Simple_SoC.get(6L), GT_Values.NI, 900, 64, false);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC.get(1), ItemList.Circuit_Chip_SoC.get(6), null, 900, 480, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC2.get(1), ItemList.Circuit_Chip_SoC2.get(6), null, 900, 1024, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC3.get(1), ItemList.Circuit_Chip_SoC3.get(6), null, 900, 1920, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC4.get(1), ItemList.Circuit_Chip_SoC4.get(6), null, 900, 4096, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Chip_PIC.get(4), null, 900, 1920, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Chip_HPIC.get(2), null, 900, 7860, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(2), null, 900, 30720, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.Circuit_Chip_NanoCPU.get(8), null, 900, 480, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_QuantumCPU.get(1), ItemList.Circuit_Chip_QuantumCPU.get(4), null, 900, 1920, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_PIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2), Materials.RedstoneAlloy.getMolten(288), null, ItemList.Circuit_Wafer_HPIC.get(1), GT_Values.NI, 1200, 7860, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_HPIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 8), Materials.EnergeticAlloy.getMolten(576), null, ItemList.Circuit_Wafer_UHPIC.get(1), GT_Values.NI, 1200, 30720, true);
-
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_CPU.get(1), GT_Utility.copyAmount(16, Ic2Items.carbonFiber), Materials.Glowstone.getMolten(576), null, ItemList.Circuit_Wafer_NanoCPU.get(1), GT_Values.NI, 1200, 1920, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 1), Materials.Radon.getGas(50), null, ItemList.Circuit_Wafer_QuantumCPU.get(1), GT_Values.NI, 1200, 1920, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.QuantumEye.get(2), Materials.GalliumArsenide.getMolten(288), null, ItemList.Circuit_Wafer_QuantumCPU.get(1), GT_Values.NI, 900, 1920, true);
-
+            
             GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(Materials.Hydrogen.getCells(3)), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnetite, 0), Materials.Nitrogen.getGas(1000), Materials.Ammonia.getGas(1000), ItemList.Cell_Empty.get(3L), 320, 384);
 
             if(Loader.isModLoaded("GalacticraftCore")){
@@ -3126,19 +3101,6 @@ if(Loader.isModLoaded("Railcraft")){
             //GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Parts_RawCrystalChip.get(9), new Object[]{ItemList.Circuit_Chip_CrystalCPU.get(1)});
             GT_Values.RA.addBlastRecipe(ItemList.Circuit_Parts_RawCrystalChip.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1), Materials.Helium.getGas(1000), null, ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1), null, 900, 480, 5000);
             GT_Values.RA.addBlastRecipe(ItemList.Circuit_Parts_RawCrystalChip.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Olivine, 1), Materials.Helium.getGas(1000), null, ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1), null, 900, 480, 5000);
-            
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gallium, 1), null, null, ItemList.Circuit_Silicon_Ingot.get(1, new Object[0]), null, 9000, 120, 1784);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer.get(16, new Object[0]),null, 400, 16);        
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 64), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 8), Materials.Nitrogen.getGas(8000), null, ItemList.Circuit_Silicon_Ingot2.get(1, new Object[0]), null, 12000, 480, 2484);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot2.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer2.get(32, new Object[0]),null, 800, 120, true);        
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 16), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1), Materials.Argon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot3.get(1, new Object[0]), null, 1500, 1920, 5400);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot3.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer3.get(64, new Object[0]),null, 1600, 480, true);
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 8), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Enderium, 6), Materials.Argon.getGas(4000), null, ItemList.Circuit_Silicon_Ingot4.get(1, new Object[0]), null, 13500, 1024, 3333);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot4.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer4.get(48, new Object[0]), null, 1200, 240, true);
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 24), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 2), Materials.Argon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), null, 2400, 30720, 9000);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer5.get(64, new Object[0]),null, 3700, 7680, true);
-            GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.MysteriousCrystal, 2), Materials.Argon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), null, 3200, 500000, 9000);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer6.get(64, new Object[0]),null, 4800, 122880, true);
             
             GT_Values.RA.addCentrifugeRecipe(ItemList.Cell_Air.get(5L), GT_Values.NI, GT_Values.NF, Materials.Nitrogen.getGas(3900L), Materials.Oxygen.getCells(1), ItemList.Cell_Empty.get(4L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 10000}, 1600, 8);
             
@@ -4594,66 +4556,79 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lead, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.ULV_Coil.get(1L), 200, 2);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.LV_Coil.get(1L), 200, 8);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.IronMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Aluminium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.MV_Coil.get(1L), 200, 30);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SteelMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.StainlessSteel, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.HV_Coil.get(1L), 200, 120);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SteelMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Titanium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.EV_Coil.get(1L), 200, 480);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.TungstenSteel, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.IV_Coil.get(1L), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SteelMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.VibrantAlloy, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.HV_Coil.get(1L), 200, 120);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.SteelMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.TungstenSteel, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.EV_Coil.get(1L), 200, 480);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NeodymiumMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Iridium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.IV_Coil.get(1L), 200, 1920);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NeodymiumMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.LuV_Coil.get(1L), 200, 7680);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.ZPM_Coil.get(1L), 200, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stick, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.ZPM_Coil.get(1L), 200, 30720);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.ElectrumFlux, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UV_Coil.get(1L), 200, 122880);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UHV_Coil.get(1L), 200, 500000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Diamericiumtitanium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UEV_Coil.get(1L), 200, 2000000);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UIV_Coil.get(1L), 200, 8000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UHV_Coil.get(1L), 200, 500000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UEV_Coil.get(1L), 200, 2000000);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EuropiumoxideMagnetic, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Quantium, 16L), GT_Utility.getIntegratedCircuit(1)}, GT_Values.NF, ItemList.UIV_Coil.get(1L), 200, 8000000);
         
         //Energy Hatches
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L), ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(2L), ItemList.Electric_Pump_MV.get(1L)}, GT_Values.NF, ItemList.Hatch_Energy_HV.get(1L, new Object[0]), 200, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L), ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(2L), ItemList.Electric_Pump_HV.get(1L)}, GT_Values.NF, ItemList.Hatch_Energy_EV.get(1L, new Object[0]), 200, 480);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 1L), ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L), ItemList.Reactor_Coolant_He_3.get(2L), ItemList.Electric_Pump_EV.get(1L)}, GT_Values.NF, ItemList.Hatch_Energy_IV.get(1L, new Object[0]), 200, 1920);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_LuV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1L), ItemList.Circuit_Chip_HPIC.get(4L), ItemList.LuV_Coil.get(2L), ItemList.Reactor_Coolant_He_3.get(2L), ItemList.Electric_Pump_IV.get(1L)}, GT_Values.NF, ItemList.Hatch_Energy_LuV.get(1L, new Object[0]), 200, 7680);
         
       //Energy Hatches ZPM-UIV
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_IV.get(1, new Object(){}),72000,new Object[]{
+                        ItemList.Hull_LuV.get(1L, new Object(){}),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2L),
+                        ItemList.Circuit_Chip_UHPIC.get(2L,  new Object(){}),
+                        new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
+                ItemList.LuV_Coil.get(2L, new Object(){}),
+                ItemList.Reactor_Coolant_He_3.get(2L, new Object(){}),
+                ItemList.Electric_Pump_LuV.get(1L, new Object(){})},
+                new FluidStack[]{
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                        Materials.SolderingAlloy.getMolten(720)},
+                ItemList.Hatch_Energy_LuV.get(1, new Object[]{}), 400, 30720);
+
+
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_LuV.get(1, new Object(){}),144000,new Object[]{
                         ItemList.Hull_ZPM.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1L),
-                        ItemList.Circuit_Chip_UHPIC.get(2L,  new Object(){}),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 2L),
+                        ItemList.Circuit_Chip_NPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 2},
                         ItemList.ZPM_Coil.get(2L, new Object(){}),
                         ItemList.Reactor_Coolant_He_6.get(2L, new Object(){}),
-                        ItemList.Electric_Pump_LuV.get(1L, new Object(){})},
+                        ItemList.Electric_Pump_ZPM.get(1L, new Object(){})},
                 new FluidStack[]{
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                         Materials.SolderingAlloy.getMolten(1440)},
-                ItemList.Hatch_Energy_ZPM.get(1, new Object[]{}), 600, 30720);
+                ItemList.Hatch_Energy_ZPM.get(1, new Object[]{}), 600, 122880);
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_ZPM.get(1, new Object(){}),288000,new Object[]{
                         ItemList.Hull_UV.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 2L),
-                        ItemList.Circuit_Chip_UHPIC.get(4L,  new Object(){}),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 2L),
+                        ItemList.Circuit_Chip_PPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
                         ItemList.UV_Coil.get(2L, new Object(){}),
                         ItemList.Reactor_Coolant_He_6.get(4L, new Object(){}),
-                        ItemList.Electric_Pump_ZPM.get(1L, new Object(){})},
+                        ItemList.Electric_Pump_UV.get(1L, new Object(){})},
                 new FluidStack[]{
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
                         Materials.SolderingAlloy.getMolten(2880)},
-                ItemList.Hatch_Energy_UV.get(1, new Object[]{}), 800, 122880);
+                ItemList.Hatch_Energy_UV.get(1, new Object[]{}), 800, 500000);
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_UV.get(1, new Object(){}),576000,new Object[]{
                         ItemList.Hull_MAX.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4L),
-                        ItemList.Circuit_Chip_UHPIC.get(8L,  new Object(){}),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 2L),//TODO Need new recipe for UHV superconductor
+                        ItemList.Circuit_Chip_QPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 2},
                         ItemList.UHV_Coil.get(2L, new Object(){}),
                         ItemList.Reactor_Coolant_He_6.get(8L, new Object(){}),
-                        ItemList.Electric_Pump_UV.get(1L, new Object(){})},
+                        ItemList.Electric_Pump_UHV.get(1L, new Object(){})},
                 new FluidStack[]{
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000),
                         Materials.SolderingAlloy.getMolten(5760)},
-                ItemList.Hatch_Energy_MAX.get(1, new Object[]{}), 1000, 500000);
+                ItemList.Hatch_Energy_MAX.get(1, new Object[]{}), 1000, 2000000);
         
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_MAX.get(1, new Object(){}),576000,new Object[]{
                 ItemList.Hull_UEV.get(1L, new Object(){}),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 6L),
-                ItemList.Circuit_Chip_UHPIC.get(16L,  new Object(){}),
+                ItemList.Circuit_Chip_QPIC.get(4L,  new Object(){}),
                 new Object[]{OrePrefixes.circuit.get(Materials.Bio), 2},
                 ItemList.UEV_Coil.get(2L, new Object(){}),
                 ItemList.Reactor_Coolant_He_6.get(12L, new Object(){}),
@@ -4661,12 +4636,12 @@ if(Loader.isModLoaded("Railcraft")){
         new FluidStack[]{
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000),
                 Materials.SolderingAlloy.getMolten(11520)},
-        ItemList.Hatch_Energy_UEV.get(1, new Object[]{}), 1200, 2000000);
+        ItemList.Hatch_Energy_UEV.get(1, new Object[]{}), 1200, 8000000);
         
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Energy_UEV.get(1, new Object(){}),576000,new Object[]{
                 ItemList.Hull_UIV.get(1L, new Object(){}),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Neutronium, 8L),
-                ItemList.Circuit_Chip_UHPIC.get(32L,  new Object(){}),
+                ItemList.Circuit_Chip_QPIC.get(8L,  new Object(){}),
                 new Object[]{OrePrefixes.circuit.get(Materials.Bio), 2},
                 ItemList.UIV_Coil.get(2L, new Object(){}),
                 ItemList.Reactor_Coolant_He_6.get(16L, new Object(){}),
@@ -4674,10 +4649,60 @@ if(Loader.isModLoaded("Railcraft")){
         new FluidStack[]{
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 64000),
                 Materials.SolderingAlloy.getMolten(23040)},
-        ItemList.Hatch_Energy_UIV.get(1, new Object[]{}), 1400, 8000000);
+        ItemList.Hatch_Energy_UIV.get(1, new Object[]{}), 1400, 32000000);
 
 
 		//END-GAME
+        
+        //Wafers
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gallium, 1), null, null, ItemList.Circuit_Silicon_Ingot.get(1, new Object[0]), null, 9000, 120, 1784);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer.get(16, new Object[0]),null, 400, 16);        
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 64), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 8), Materials.Nitrogen.getGas(8000), null, ItemList.Circuit_Silicon_Ingot2.get(1, new Object[0]), null, 12000, 480, 2484);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot2.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer2.get(32, new Object[0]),null, 800, 120, true);        
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 16), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1), Materials.Argon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot3.get(1, new Object[0]), null, 1500, 1920, 5400);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot3.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer3.get(64, new Object[0]),null, 1600, 480, true);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 8), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Enderium, 6), Materials.Argon.getGas(4000), null, ItemList.Circuit_Silicon_Ingot4.get(1, new Object[0]), null, 13500, 1024, 3333);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot4.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer4.get(48, new Object[0]), null, 1200, 240, true);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 24), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 2), Materials.Argon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), null, 2400, 30720, 9000);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer5.get(64, new Object[0]),null, 3700, 7680, true);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.MysteriousCrystal, 2), Materials.Argon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), null, 3200, 500000, 9000);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer6.get(64, new Object[0]),ItemList.Circuit_Silicon_Wafer6.get(64, new Object[0]), 4800, 122880, true);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2), Materials.Radon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot7.get(1, new Object[0]), null, 18000, 7680, 6484);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot7.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer7.get(64, new Object[0]), ItemList.Circuit_Silicon_Wafer7.get(32, new Object[0]), 2400, 1920, true);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 64), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Americium, 4), Materials.Radon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot8.get(1, new Object[0]), null, 21000, 30720, 9000);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot8.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer8.get(64, new Object[0]), ItemList.Circuit_Silicon_Wafer8.get(64, new Object[0]), 3200, 7680, true);
+		
+        GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), ItemList.Circuit_Wafer_NAND.get(1), 900, 480, true);
+        GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderPearl, 1)), ItemList.Circuit_Wafer_NAND.get(4), 600, 1920, true);
+        GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), ItemList.Circuit_Wafer_NOR.get(1), 900, 480, true);
+        GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0, GT_OreDictUnificator.get(OrePrefixes.lens, Materials.EnderEye, 1)), ItemList.Circuit_Wafer_NOR.get(4), 600, 1920, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_ILC.get(1), ItemList.Circuit_Chip_ILC.get(8), null, 900, 64);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_Ram.get(1), ItemList.Circuit_Chip_Ram.get(32), null, 900, 96);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NAND.get(1), ItemList.Circuit_Chip_NAND.get(32), null, 900, 192, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NOR.get(1), ItemList.Circuit_Chip_NOR.get(16), null, 900, 192, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_CPU.get(1), ItemList.Circuit_Chip_CPU.get(8), null, 900, 120, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_Simple_SoC.get(1L), ItemList.Circuit_Chip_Simple_SoC.get(6L), GT_Values.NI, 900, 64, false);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC.get(1), ItemList.Circuit_Chip_SoC.get(6), null, 900, 480, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC2.get(1), ItemList.Circuit_Chip_SoC2.get(6), null, 900, 1024, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC3.get(1), ItemList.Circuit_Chip_SoC3.get(6), null, 900, 1920, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC4.get(1), ItemList.Circuit_Chip_SoC4.get(6), null, 900, 4096, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Chip_PIC.get(4), null, 900, 1920, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Chip_HPIC.get(2), null, 900, 7860, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(2), null, 900, 30720, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.Circuit_Chip_NanoCPU.get(8), null, 900, 480, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_QuantumCPU.get(1), ItemList.Circuit_Chip_QuantumCPU.get(4), null, 900, 1920, true);
+		GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NPIC.get(1L), ItemList.Circuit_Chip_NPIC.get(2L), GT_Values.NI, 900, 122880, true);
+		GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PPIC.get(1L), ItemList.Circuit_Chip_PPIC.get(2L), GT_Values.NI, 900, 500000, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_QPIC.get(1L), ItemList.Circuit_Chip_QPIC.get(2L), GT_Values.NI, 900, 2000000, true);
+	
+		GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_PIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2), Materials.RedstoneAlloy.getMolten(288), null, ItemList.Circuit_Wafer_HPIC.get(1), GT_Values.NI, 1200, 7860, true);
+        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_HPIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 8), Materials.EnergeticAlloy.getMolten(576), null, ItemList.Circuit_Wafer_UHPIC.get(1), GT_Values.NI, 1200, 30720, true);
+
+        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_CPU.get(1), GT_Utility.copyAmount(16, Ic2Items.carbonFiber), Materials.Glowstone.getMolten(576), null, ItemList.Circuit_Wafer_NanoCPU.get(1), GT_Values.NI, 1200, 1920, true);
+        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 1), Materials.Radon.getGas(50), null, ItemList.Circuit_Wafer_QuantumCPU.get(1), GT_Values.NI, 1200, 1920, true);
+        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.QuantumEye.get(2), Materials.GalliumArsenide.getMolten(288), null, ItemList.Circuit_Wafer_QuantumCPU.get(1), GT_Values.NI, 900, 1920, true);
+
+        
       //Fusion Coil
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Coil_Superconductor.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 4), ItemList.Circuit_Masterquantumcomputer.get(6L), ItemList.Field_Generator_IV.get(2L), ItemList.Electric_Pump_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(1L), ItemList.Neutron_Reflector.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.YttriumBariumCuprate.getMolten(864), ItemList.Casing_Fusion_Coil.get(1L), 200, 30720, true);
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Coil_Superconductor.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 4), ItemList.Circuit_Crystalcomputer.get(6L), ItemList.Field_Generator_IV.get(2L), ItemList.Electric_Pump_IV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(1L), ItemList.Neutron_Reflector.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.YttriumBariumCuprate.getMolten(864), ItemList.Casing_Fusion_Coil.get(1L), 200, 30720, true);

@@ -135,6 +135,12 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Chip_ULPIC.set(addItem(tLastID = 113, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
         ItemList.Circuit_Wafer_LPIC.set(addItem(tLastID =114, "LPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_LPIC.set(addItem(tLastID = 115, "Low Power IC", "Low Power Circuit", o));
+        ItemList.Circuit_Wafer_NPIC.set(addItem(tLastID = 160, "NPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_NPIC.set(addItem(tLastID = 161, "Nano Power IC", "Nano Power Circuit", o));
+        ItemList.Circuit_Wafer_PPIC.set(addItem(tLastID = 162, "PPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_PPIC.set(addItem(tLastID = 163, "Piko Power IC", "Piko Power Circuit", o));
+        ItemList.Circuit_Wafer_QPIC.set(addItem(tLastID = 164, "QPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_QPIC.set(addItem(tLastID = 165, "Quantum Power IC", "Quantum Power Circuit", o));
         
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 64, "Enderium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer4.set(addItem(tLastID = 65, "Enderium doped Wafer", "Raw Circuit", o));
@@ -144,6 +150,12 @@ public class GT_MetaGenerated_Item_03
         
 		ItemList.Circuit_Silicon_Ingot6.set(addItem(tLastID = 108, "Mysterious Crystal doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer6.set(addItem(tLastID = 109, "Mysterious Crystal doped Wafer", "Raw Circuit", o));
+        
+        ItemList.Circuit_Silicon_Ingot7.set(addItem(tLastID = 150, "Europium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer7.set(addItem(tLastID = 151, "Europium doped Wafer", "Raw Circuit", o));
+        
+        ItemList.Circuit_Silicon_Ingot8.set(addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer8.set(addItem(tLastID = 153, "Americium doped Wafer", "Raw Circuit", o));
         
         /**
          * Engraved Crystal Chip

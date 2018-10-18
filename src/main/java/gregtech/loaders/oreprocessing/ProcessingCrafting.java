@@ -38,6 +38,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer4.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_PIC.get(2, new Object[0]), 350, 1024,true);
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_PIC.get(8, new Object[0]), 100, 7680,true);             
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer6.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_PIC.get(24, new Object[0]), 50, 30720,true);             
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer8.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_QPIC.get(1, new Object[0]), 2400, 500000,true);
                 break;
             case "craftingLensYellow":
                 GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 14), 2000, 1920);
@@ -51,6 +52,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 break;
             case "craftingLensOrange":
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer5.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_SoC3.get(1, new Object[0]), 2700, 7680,true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer7.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_NPIC.get(1, new Object[0]), 1800, 30720,true);
+                GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer8.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_NPIC.get(4, new Object[0]), 1800, 122880,true);
                 break;
             case "craftingLensLime":
                 GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Silicon_Wafer.get(1, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemList.Circuit_Wafer_Simple_SoC.get(1, new Object[0]), 300, 64,false);
