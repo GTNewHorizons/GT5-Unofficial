@@ -4771,6 +4771,8 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC2.get(1), ItemList.Circuit_Chip_SoC2.get(6), null, 900, 1024, true);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC3.get(1), ItemList.Circuit_Chip_SoC3.get(6), null, 900, 1920, true);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC4.get(1), ItemList.Circuit_Chip_SoC4.get(6), null, 900, 4096, true);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_ULPIC.get(1L), ItemList.Circuit_Chip_ULPIC.get(6L), GT_Values.NI, 900, 120, false);
+        GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_LPIC.get(1L), ItemList.Circuit_Chip_LPIC.get(4L), GT_Values.NI, 900, 480, false);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Chip_PIC.get(4), null, 900, 1920, true);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Chip_HPIC.get(2), null, 900, 7860, true);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(2), null, 900, 30720, true);
