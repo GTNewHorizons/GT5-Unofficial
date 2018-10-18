@@ -3089,13 +3089,13 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC2.get(1), ItemList.Circuit_Chip_SoC2.get(6), null, 900, 1024, true);
             GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC3.get(1), ItemList.Circuit_Chip_SoC3.get(6), null, 900, 1920, true);
             GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_SoC4.get(1), ItemList.Circuit_Chip_SoC4.get(6), null, 900, 4096, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Chip_PIC.get(4), null, 900, 1024, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Chip_HPIC.get(2), null, 900, 4096, true);
-            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(2), null, 900, 7860, true);
+            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_PIC.get(1), ItemList.Circuit_Chip_PIC.get(4), null, 900, 1920, true);
+            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_HPIC.get(1), ItemList.Circuit_Chip_HPIC.get(2), null, 900, 7860, true);
+            GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_UHPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(2), null, 900, 30720, true);
             GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), ItemList.Circuit_Chip_NanoCPU.get(8), null, 900, 480, true);
             GT_Values.RA.addCutterRecipe(ItemList.Circuit_Wafer_QuantumCPU.get(1), ItemList.Circuit_Chip_QuantumCPU.get(4), null, 900, 1920, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_PIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2), Materials.RedstoneAlloy.getMolten(288), null, ItemList.Circuit_Wafer_HPIC.get(1), GT_Values.NI, 1200, 1920, true);
-            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_HPIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 8), Materials.Electrum.getMolten(576), null, ItemList.Circuit_Wafer_UHPIC.get(1), GT_Values.NI, 1200, 30720, true);
+            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_PIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 2), Materials.RedstoneAlloy.getMolten(288), null, ItemList.Circuit_Wafer_HPIC.get(1), GT_Values.NI, 1200, 7860, true);
+            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_HPIC.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 8), Materials.EnergeticAlloy.getMolten(576), null, ItemList.Circuit_Wafer_UHPIC.get(1), GT_Values.NI, 1200, 30720, true);
 
             GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_CPU.get(1), GT_Utility.copyAmount(16, Ic2Items.carbonFiber), Materials.Glowstone.getMolten(576), null, ItemList.Circuit_Wafer_NanoCPU.get(1), GT_Values.NI, 1200, 1920, true);
             GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Wafer_NanoCPU.get(1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 1), Materials.Radon.getGas(50), null, ItemList.Circuit_Wafer_QuantumCPU.get(1), GT_Values.NI, 1200, 1920, true);
