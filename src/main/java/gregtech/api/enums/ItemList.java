@@ -657,7 +657,7 @@ public enum ItemList implements IItemContainer {
     Machine_LV_FluidHeater, Machine_MV_FluidHeater, Machine_HV_FluidHeater, Machine_EV_FluidHeater, Machine_IV_FluidHeater, Machine_LuV_FluidHeater, Machine_ZPM_FluidHeater, Machine_UV_FluidHeater,
     Machine_LV_Miner, Machine_MV_Miner, Machine_HV_Miner, Machine_EV_Miner, Machine_IV_Miner, 
 
-    Neutron_Reflector,
+    Neutron_Reflector, neutroniumHeatCapacitor,
     Reactor_Coolant_He_1, Reactor_Coolant_He_3, Reactor_Coolant_He_6, Reactor_Coolant_NaK_1, Reactor_Coolant_NaK_3, Reactor_Coolant_NaK_6,
     ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
     ULV_Coil, LV_Coil, MV_Coil, HV_Coil, EV_Coil, IV_Coil, LuV_Coil, ZPM_Coil, UV_Coil, UHV_Coil, UEV_Coil, UIV_Coil,
