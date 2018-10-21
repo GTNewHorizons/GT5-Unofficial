@@ -4584,7 +4584,7 @@ if(Loader.isModLoaded("Railcraft")){
         //Dynamo Hatches
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_HV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Gold, 1L), ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(2L), ItemList.Electric_Pump_HV.get(1L)}, GT_Values.NF, ItemList.Hatch_Dynamo_HV.get(1L, new Object[0]), 200, 120);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_EV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Aluminium, 1L), ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(2L), ItemList.Electric_Pump_EV.get(1L)}, GT_Values.NF, ItemList.Hatch_Dynamo_EV.get(1L, new Object[0]), 200, 480);
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Tungsten, 1L), ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L), ItemList.Reactor_Coolant_He_3.get(2L), ItemList.Electric_Pump_IV.get(1L)}, GT_Values.NF, ItemList.Hatch_Dynamo_IV.get(1L, new Object[0]), 200, 1920);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hull_IV.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L), ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L), ItemList.Reactor_Coolant_He_3.get(2L), ItemList.Electric_Pump_IV.get(1L)}, GT_Values.NF, ItemList.Hatch_Dynamo_IV.get(1L, new Object[0]), 200, 1920);
         
         //All Hatches
         if(Loader.isModLoaded("IronChest")){
@@ -4725,7 +4725,7 @@ if(Loader.isModLoaded("Railcraft")){
         //Dynamo Hatches LuV-UIV
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Dynamo_IV.get(1, new Object(){}),72000,new Object[]{
                         ItemList.Hull_LuV.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.VanadiumGallium, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 2L),
                         ItemList.Circuit_Chip_UHPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Master), 2},
                 ItemList.LuV_Coil.get(2L, new Object(){}),
@@ -4739,7 +4739,7 @@ if(Loader.isModLoaded("Railcraft")){
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Dynamo_LuV.get(1, new Object(){}),144000,new Object[]{
                         ItemList.Hull_ZPM.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Naquadah, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 2L),
                         ItemList.Circuit_Chip_NPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 2},
                         ItemList.ZPM_Coil.get(2L, new Object(){}),
@@ -4752,7 +4752,7 @@ if(Loader.isModLoaded("Railcraft")){
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Dynamo_ZPM.get(1, new Object(){}),288000,new Object[]{
                         ItemList.Hull_UV.get(1L, new Object(){}),
-                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.NaquadahAlloy, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.ElectrumFlux, 2L),
                         ItemList.Circuit_Chip_PPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
                         ItemList.UV_Coil.get(2L, new Object(){}),
@@ -4778,7 +4778,7 @@ if(Loader.isModLoaded("Railcraft")){
         
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Dynamo_MAX.get(1, new Object(){}),576000,new Object[]{
                 ItemList.Hull_UEV.get(1L, new Object(){}),
-                GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Diamericiumtitanium, 6L),
+                GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Diamericiumtitanium, 2L),
                 ItemList.Circuit_Chip_QPIC.get(4L,  new Object(){}),
                 new Object[]{OrePrefixes.circuit.get(Materials.Bio), 2},
                 ItemList.UEV_Coil.get(2L, new Object(){}),
