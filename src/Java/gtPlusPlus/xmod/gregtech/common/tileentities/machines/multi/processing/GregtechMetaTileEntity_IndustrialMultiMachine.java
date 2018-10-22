@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -48,6 +49,14 @@ extends GregtechMeta_MultiBlockBase {
 	private static final int MODE_AUTOCLAVE = 7;
 	private static final int MODE_REPLICATOR = 8;
 	private static final int[][] MODE_MAP = new int[][] {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
+	public static final String[] aToolTipNames = new String[9];
+	
+	static {
+		for (int id = 0; id < 8; id++) {
+			String aNEI = GT_LanguageManager.getTranslation(getRecipeMap(id).mUnlocalizedName);
+			aToolTipNames[id] = aNEI != null ? aNEI : "BAD NEI NAME (Report to Github)";			
+		}
+	}
 
 
 	public GregtechMetaTileEntity_IndustrialMultiMachine(final int aID, final String aName, final String aNameRegional) {
@@ -68,8 +77,13 @@ extends GregtechMeta_MultiBlockBase {
 		return "Nine in One";
 	}
 
+	
 	@Override
-	public String[] getDescription() {
+	public String[] getDescription() {		
+		String[] aBuiltStrings = new String[3];
+		aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
+		aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
+		aBuiltStrings[2] = aToolTipNames[6] + ", " + aToolTipNames[7];		
 		return new String[]{"Controller Block for the Industrial Multi-Machine",
 				"250% faster than using single block machines of the same voltage",
 				"Only uses 80% of the eu/t normally required",
@@ -79,7 +93,9 @@ extends GregtechMeta_MultiBlockBase {
 				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
 				getPollutionTooltip(),
-				getMachineTooltip(),
+				"Machine Type: [A] - " + EnumChatFormatting.YELLOW + aBuiltStrings[0] + EnumChatFormatting.RESET,
+				"Machine Type: [B] - " + EnumChatFormatting.YELLOW + aBuiltStrings[1] + EnumChatFormatting.RESET,
+				"Machine Type: [C] - " + EnumChatFormatting.YELLOW + aBuiltStrings[2] + EnumChatFormatting.RESET,
 				CORE.GT_Tooltip};
 	}
 

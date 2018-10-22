@@ -81,6 +81,20 @@ public class EntityUtils {
 		}
 		return false;
 	}
+	
+	public static boolean applyHeatDamageToEntity(final int heatLevel, final World world, final Entity entityHolding){
+		if (!world.isRemote){
+			if ((heatLevel > 0) && (entityHolding instanceof EntityLivingBase)) {
+				final EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
+				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+					if (!GT_Utility.isWearingFullHeatHazmat(entityLiving)) {
+						return GT_Utility.applyHeatDamage(entityLiving, heatLevel);
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 
 	/**

@@ -122,3 +122,11 @@ scripts
 .circleci
 .gradle
 .okhttpcache
+/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Field_Sprinkler.java
+/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Method_Sprinkler_GetInventory.java
+/src/Java/gtPlusPlus/preloader/asm/visitors/ob/sprinkler/Visitor_Method_Sprinkler_UpdateEntity.java
+/src/Java/gtPlusPlus/xmod/galacticraft/asm/EntityAutoRocket_ASM.java
+/src/Java/gtPlusPlus/xmod/galacticraft/asm/FluidUtil_ASM.java
+/src/Java/gtPlusPlus/xmod/galacticraft/asm/TileEntityFuelLoader_ASM.java
+/src/Java/gtPlusPlus/xmod/ob/TileEntitySprinkler_ASM.java
+/src/Java/gtPlusPlus/xmod/thermalfoundation/asm/OreDictionaryArbiter_ASM.java

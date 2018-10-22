@@ -51,6 +51,7 @@ extends GregtechMeta_MultiBlockBase {
 				"2x Input Bus (side centered)",
 				"2x Output Bus (side centered)",
 				"1x Energy Hatch (top or bottom centered)",
+				"1x Muffler Hatch (top or bottom centered)",
 				"1x Maintenance Hatch (back centered)",
 				"Wire Factory Casings for the rest (32 at least!)",
 				getPollutionTooltip(),

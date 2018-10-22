@@ -1281,12 +1281,30 @@ public class RECIPES_Machines {
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
 				ItemStack plate = ALLOY.STABALLOY.getPlate(1);
-				ItemStack o_Compressor = ItemList.Machine_HV_Compressor.get(1);
-				ItemStack o_Lathe = ItemList.Machine_HV_Lathe.get(1);
-				ItemStack o_Electromagnet = ItemList.Machine_HV_Polarizer.get(1);
-				ItemStack o_Fermenter = ItemList.Machine_HV_Fermenter.get(1);
-				ItemStack o_Distillery = ItemList.Machine_HV_FluidExtractor.get(1);
-				ItemStack o_Extractor = ItemList.Machine_HV_Extractor.get(1);					
+
+				
+				ItemStack o_Compressor;
+				ItemStack o_Lathe;
+				ItemStack o_Electromagnet;
+				ItemStack o_Fermenter;
+				ItemStack o_Distillery;
+				ItemStack o_Extractor;
+				if (CORE.GTNH) {
+					o_Compressor = ItemList.Machine_IV_Compressor.get(1);
+					o_Lathe = ItemList.Machine_IV_Lathe.get(1);
+					o_Electromagnet = ItemList.Machine_IV_Polarizer.get(1);
+					o_Fermenter = ItemList.Machine_IV_Fermenter.get(1);
+					o_Distillery = ItemList.Machine_IV_FluidExtractor.get(1);
+					o_Extractor = ItemList.Machine_IV_Extractor.get(1);	
+				}
+				else {
+					o_Compressor = ItemList.Machine_EV_Compressor.get(1);
+					o_Lathe = ItemList.Machine_EV_Lathe.get(1);
+					o_Electromagnet = ItemList.Machine_EV_Polarizer.get(1);
+					o_Fermenter = ItemList.Machine_EV_Fermenter.get(1);
+					o_Distillery = ItemList.Machine_EV_FluidExtractor.get(1);
+					o_Extractor = ItemList.Machine_EV_Extractor.get(1);	
+				}					
 				RecipeUtils.recipeBuilder(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateStainlessSteel", "frameGtZirconiumCarbide", "plateStainlessSteel",

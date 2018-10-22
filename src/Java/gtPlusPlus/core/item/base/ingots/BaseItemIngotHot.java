@@ -5,18 +5,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemIngotHot extends BaseItemIngot{
@@ -55,15 +58,13 @@ public class BaseItemIngotHot extends BaseItemIngot{
 
 	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		if (!world.isRemote){
-			if(this.tickCounter < this.tickCounterMax){
-				this.tickCounter++;
+		if (this.componentMaterial != null){
+			if (entityHolding != null && entityHolding instanceof EntityPlayer){
+				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+					EntityUtils.applyHeatDamageToEntity(1, world, entityHolding);	
+				}
 			}
-			else if(this.tickCounter == this.tickCounterMax){
-				entityHolding.attackEntityFrom(DamageSource.onFire, 1);
-				this.tickCounter = 0;
-			}
-		}
+		}		
 		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 	}
 

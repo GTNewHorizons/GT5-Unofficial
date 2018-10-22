@@ -274,7 +274,7 @@ public class CI {
 			}
 		}
 		else {
-			return getTieredCircuitOreDictName((CORE.GTNH && tier >= 6 ? tier - 1 : tier));
+			return getTieredCircuitOreDictName(tier);
 		}
 		return _NULL;
 	}
