@@ -200,5 +200,13 @@ public class GT_Loader_OreDictionary
 
         GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic, GT_ModHandler.getIC2Item("electronicCircuit", 1L));
         GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced, GT_ModHandler.getIC2Item("advancedCircuit", 1L));
+        
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Copper, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 0));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Tin, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Bronze, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 2));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Gold, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 3));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Iron, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 4));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Steel, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 5));
+        GT_OreDictUnificator.registerOre(OrePrefixes.itemCasing, Materials.Lead, GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 6));
     }
 }
