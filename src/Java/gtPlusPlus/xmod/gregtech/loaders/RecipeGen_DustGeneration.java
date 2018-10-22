@@ -6,10 +6,14 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -109,6 +113,10 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 		if (materialFrameBox != null) {
 			GT_ModHandler.addPulverisationRecipe(materialFrameBox, material.getDust(2));
+		}
+		
+		if (smallDust != null && tinyDust != null) {
+			generatePackagerRecipes(material);
 		}
 
 		//Is this a composite?
@@ -306,6 +314,21 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			Logger.WARNING("InputStacks == NUll - "+material.getLocalizedName());
 		}
 		return false;
+	}
+	
+	public static boolean generatePackagerRecipes(Material aMatInfo) {
+		AutoMap<Boolean> aResults = new AutoMap<Boolean>();
+		//Small Dust
+		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, new Object[]{aMatInfo.getSmallDust(4)}), ItemList.Schematic_Dust.get(0L, new Object[0]), aMatInfo.getDust(1), 100, 4));
+         //Tiny Dust
+		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, new Object[]{aMatInfo.getTinyDust(9)}), ItemList.Schematic_Dust.get(0L, new Object[0]), aMatInfo.getDust(1), 100, 4));
+        
+		for (boolean b : aResults) {
+			if (!b) {
+				return false;
+			}
+		}		
+		return true;
 	}
 	
 }

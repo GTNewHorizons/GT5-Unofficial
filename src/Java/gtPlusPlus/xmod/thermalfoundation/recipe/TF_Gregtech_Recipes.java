@@ -33,7 +33,7 @@ public class TF_Gregtech_Recipes {
 
 		//Gelid Cryotheum
 		Logger.INFO("Adding Recipes for Gelid Cryotheum");
-		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 144), 10000, 200, 240);
+		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 10000, 200, 240);
 		GT_Values.RA.addChemicalBathRecipe((GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L)), getFluidStack("cryotheum", 144), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L), GT_Values.NI, GT_Values.NI, null, 400, 30);
 
 		//Blizz Powder

@@ -271,6 +271,8 @@ public final class ModItems {
 
 	public static Item itemGenericToken;
 
+	public static Item itemControlCore;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -747,6 +749,8 @@ public final class ModItems {
 
 		itemGrindleTablet = new BaseItemGrindle();
 		itemDragonJar = new ItemEntityCatcher();
+		
+		itemControlCore = new ItemControlCore();
 
 		//Chemistry
 		CoalTar.run();
