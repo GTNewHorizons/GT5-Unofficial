@@ -21,14 +21,11 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
-import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -69,7 +66,6 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_)
 	{
 		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (this.textureFront));
-		//return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
 	}
 
 	@Override
@@ -104,7 +100,6 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 					if (tile != null) {
 						mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
 					}
-
 				}
 			}
 			catch (final Throwable t) {}
@@ -113,7 +108,6 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 				final TileEntity te = world.getTileEntity(x, y, z);
 				if ((te != null) && (te instanceof TileEntityCircuitProgrammer)){
 					player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
-					Logger.INFO("Opened GUI.");
 					return true;
 				}
 			}

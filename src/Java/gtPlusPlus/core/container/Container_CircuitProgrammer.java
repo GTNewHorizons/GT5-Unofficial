@@ -32,7 +32,6 @@ public class Container_CircuitProgrammer extends Container {
 																				// slots
 
 	public Container_CircuitProgrammer(final InventoryPlayer inventory, final TileEntityCircuitProgrammer te) {
-		Logger.INFO("Created CP Container.");
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 
