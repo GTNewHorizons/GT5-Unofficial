@@ -32,7 +32,10 @@ public class ItemBlockBasicTile extends ItemBlock{
 		else if (this.mID == 3){ //Project
 			list.add("Scan any crafting recipe in this to mass fabricate them in the Autocrafter..");			
 		}
-		//super.addInformation(stack, aPlayer, list, bool);
+		else if (this.mID == 4){ //Circuit Table
+			list.add("Easy Circuit Configuration.");			
+		}
+		super.addInformation(stack, aPlayer, list, bool);
 	}
 	
 

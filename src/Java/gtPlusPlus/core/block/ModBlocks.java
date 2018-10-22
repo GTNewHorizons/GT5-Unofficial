@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
 
+	public static Block blockCircuitProgrammer;
 	public static Block blockFakeMiningPipe;
 	public static Block blockFakeMiningHead;
 	
@@ -95,7 +96,7 @@ public final class ModBlocks {
 		blockFirePit = new FirePit();
 		blockFishTrap = new FishTrap();
 		blockInfiniteFLuidTank = new FluidTankInfinite();
-		blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
+		//blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 		blockMiningExplosive = new MiningExplosives();
 		blockHellfire = new HellFire();
 		blockProjectTable =  new Machine_ProjectTable();
@@ -108,6 +109,8 @@ public final class ModBlocks {
 
 		blockFakeMiningPipe = new Mining_Pipe_Fake();
 		blockFakeMiningHead = new Mining_Head_Fake();
+		
+		blockCircuitProgrammer = new CircuitProgrammer();
 		
 		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
 		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);

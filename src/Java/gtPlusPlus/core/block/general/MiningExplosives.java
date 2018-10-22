@@ -30,11 +30,10 @@ public class MiningExplosives extends BlockTNT {
 	private IIcon textureBottom;
 
 	public MiningExplosives(){
-		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		this.setBlockName("blockMiningExplosives");
-		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, "blockMiningExplosives");
 		LanguageRegistry.addName(this, "Earth Blasting Explosives");
+		this.setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
 	/**

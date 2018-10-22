@@ -15,12 +15,12 @@ import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
 import gtPlusPlus.core.gui.item.GuiBaseGrindle;
-import gtPlusPlus.core.gui.item.GuiScreenGrindle;
 import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.machines.*;
 
@@ -33,7 +33,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI5 = 4;      //Workbench Adv
 	public static final int GUI6 = 5;      //Fish trap
 	public static final int GUI7 = 6;      //Trade table
-	public static final int GUI8 = 7;      //Alchemical Furnace
+	public static final int GUI8 = 7;      //Circuit Programmer
 	public static final int GUI9 = 8;      //Grindle
 
 
@@ -82,7 +82,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 			else if (ID == GUI8){
-				//return new ContainerFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
+				return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer)te);
 			}
 		}
 
@@ -134,7 +134,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
 			else if (ID == GUI8){
-				//return new GuiFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
+				return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer)te);
 			}
 		}
 

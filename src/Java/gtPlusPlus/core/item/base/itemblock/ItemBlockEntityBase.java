@@ -16,7 +16,7 @@ public class ItemBlockEntityBase extends ItemBlock {
 	public ItemBlockEntityBase(final Block block) {
 		super(block);
 		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		//this.setHasSubtypes(true);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
@@ -32,9 +32,6 @@ public class ItemBlockEntityBase extends ItemBlock {
 			list.add(EnumChatFormatting.GRAY+"Can convert Liquid Xp to Mob Essence and back.");
 			list.add(EnumChatFormatting.GRAY+"Right click with a Screwdriver to change mode.");
 			list.add(EnumChatFormatting.GRAY+"Shift+Right click to view tank information.");
-		}
-		else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
-			//list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

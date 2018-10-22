@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -67,15 +68,15 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 	}
 
 	public String[] getDescription() {
+		String aTierName = GT_Values.VN[9];
 		return new String[]{
 				"HARNESSING THE POWER OF A NEUTRON STAR", 
 				"Fusion Machine Casings MK III around Advanced Fusion Coils", 
 				"2-16 Input Hatches", 
 				"1-16 Output Hatches", 
 				"1-16 Energy Hatches", 
-				"All Hatches must be UV or better", 
+				"All Hatches must be "+aTierName+" or better", 
 				"32768 EU/t and 80mio EU Cap per Energy Hatch",
-				"Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 

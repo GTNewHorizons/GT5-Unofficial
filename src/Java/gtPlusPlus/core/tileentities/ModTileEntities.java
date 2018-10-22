@@ -23,6 +23,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityModularityTable.class, "TileEntityModularityTable");
 		GameRegistry.registerTileEntity(TileEntityXpConverter.class, "TileEntityXpConverter");
 		GameRegistry.registerTileEntity(TileEntityGenericSpawner.class, "TileEntityGenericSpawner");
+		GameRegistry.registerTileEntity(TileEntityCircuitProgrammer.class, "TileCircuitProgrammer");
 
 		
 		//Mod TEs
