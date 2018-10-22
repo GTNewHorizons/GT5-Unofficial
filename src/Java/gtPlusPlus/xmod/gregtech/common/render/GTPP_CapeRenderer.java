@@ -109,6 +109,10 @@ extends RenderPlayer {
 		float aPartialTicks = aEvent.partialRenderTick;
 		try {		
 
+			if (tResource == null && CORE.DEVENV) {
+				tResource = mCapes[3];
+			}
+			
 			if ((tResource != null) && (!aPlayer.getHideCape())) {
 				bindTexture(tResource);
 				GL11.glPushMatrix();

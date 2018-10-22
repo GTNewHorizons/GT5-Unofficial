@@ -82,6 +82,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 			else if (ID == GUI8){
+				Logger.INFO("Returning CP Container.");
 				return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer)te);
 			}
 		}
@@ -134,6 +135,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
 			else if (ID == GUI8){
+				Logger.INFO("Returning CP GUI.");
 				return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer)te);
 			}
 		}

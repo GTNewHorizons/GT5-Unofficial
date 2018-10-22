@@ -6,7 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
@@ -23,15 +23,16 @@ public class Container_CircuitProgrammer extends Container {
 	private final int posY;
 	private final int posZ;
 
+	public static final int SLOT_OUTPUT = 25;
+
 	public static int StorageSlotNumber = 26; // Number of slots in storage area
 	public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
 												// and Hotbar)
 	public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
 																				// slots
 
-	private final int[] slotStorage = new int[26];
-
 	public Container_CircuitProgrammer(final InventoryPlayer inventory, final TileEntityCircuitProgrammer te) {
+		Logger.INFO("Created CP Container.");
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 
@@ -41,32 +42,77 @@ public class Container_CircuitProgrammer extends Container {
 		this.posX = te.xCoord;
 		this.posY = te.yCoord;
 		this.posZ = te.zCoord;
+		Logger.INFO("1");
 
 		int o = 0;
 
 		// Storage Side
 		/*for (var6 = 0; var6 < 3; var6++) {
 			for (var7 = 0; var7 < 5; var7++) {
-				this.slotStorage[o] = o;
 				this.addSlotToContainer(new SlotIntegratedCircuit(o, this.inventoryChest, o, 44 + (var7 * 18), 15 + (var6 * 18)));
 				o++;
 			}
 		}*/
 		
-		//Add Output
-		//this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, 44 + (6 * 18), 15 + (3 * 18)));
+		
+		int xStart = 8;
+		int yStart = 5;
 
+		try {
+		//0
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart, yStart));
+		//1-10
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+18));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+18));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+18));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+18));
+		//11-20
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+18));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+18));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+36));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+54));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+54));
+		//21-24
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+54));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+54));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+54));
+		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+54));
+		Logger.INFO("2");
+		
+		//Add Output
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart+(8*18), yStart+54));
+		o++;
+		Logger.INFO("3");
+
+		
+		
 		// Player Inventory
 		for (var6 = 0; var6 < 3; ++var6) {
 			for (var7 = 0; var7 < 9; ++var7) {
-				this.addSlotToContainer(new Slot(inventory, o++, 8 + (var7 * 18), 84 + (var6 * 18)));
+				this.addSlotToContainer(new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
 			}
 		}
-
 		// Player Hotbar
 		for (var6 = 0; var6 < 9; ++var6) {
-			this.addSlotToContainer(new Slot(inventory, o++, 8 + (var6 * 18), 142));
+			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
+		
+		
+		
+		Logger.INFO("4");
+		}
+		catch (Throwable t) {}
 
 	}
 
@@ -89,7 +135,7 @@ public class Container_CircuitProgrammer extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockFishTrap) {
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockCircuitProgrammer) {
 			return false;
 		}
 

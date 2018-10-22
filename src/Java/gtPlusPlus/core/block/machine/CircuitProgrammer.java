@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -20,12 +21,16 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
+import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
+import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 {
@@ -63,7 +68,8 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_)
 	{
-		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
+		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (this.textureFront));
+		//return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
 	}
 
 	@Override
@@ -85,11 +91,36 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 		if (world.isRemote) {
 			return true;
 		}
+		else {
 
-		final TileEntity te = world.getTileEntity(x, y, z);
-		if ((te != null) && (te instanceof TileEntityCircuitProgrammer)){
-			player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
-			return true;
+			boolean mDidScrewDriver = false;
+			// Check For Screwdriver
+			try {
+				final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
+				final Item mHandItem = mHandStack.getItem();
+				if (((mHandItem instanceof GT_MetaGenerated_Tool_01)
+						&& ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+					final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
+					if (tile != null) {
+						mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
+					}
+
+				}
+			}
+			catch (final Throwable t) {}
+
+			if (!mDidScrewDriver) {
+				final TileEntity te = world.getTileEntity(x, y, z);
+				if ((te != null) && (te instanceof TileEntityCircuitProgrammer)){
+					player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
+					Logger.INFO("Opened GUI.");
+					return true;
+				}
+			}
+			else {
+				return true;
+			}
+		
 		}
 		return false;
 	}

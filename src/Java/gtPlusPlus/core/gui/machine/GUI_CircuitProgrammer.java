@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_CircuitProgrammer;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
@@ -19,12 +20,13 @@ public class GUI_CircuitProgrammer extends GuiContainer {
 
 	public GUI_CircuitProgrammer(final InventoryPlayer player_inventory, final TileEntityCircuitProgrammer te){
 		super(new Container_CircuitProgrammer(player_inventory, te));
+		Logger.INFO("Created CP GUI.");
 	}
 
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int i, final int j){
-		
+		super.drawGuiContainerForegroundLayer(i, j);
 	}
 
 

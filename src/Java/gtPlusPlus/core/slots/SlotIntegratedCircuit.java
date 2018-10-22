@@ -23,9 +23,7 @@ public class SlotIntegratedCircuit extends Slot {
 		}
 		else {
 			mCircuitLock = (short) mTypeLock;
-		}
-		
-		
+		}		
 	}
 
 	@Override
@@ -36,8 +34,7 @@ public class SlotIntegratedCircuit extends Slot {
 		}
 		if (mCircuitItem != null) {
 			if (itemstack != null) {
-				if (itemstack.getItem() == mCircuitItem) {
-					
+				if (itemstack.getItem() == mCircuitItem) {					
 					if (mCircuitLock == -1) {
 						isValid = true;
 					}
@@ -45,8 +42,7 @@ public class SlotIntegratedCircuit extends Slot {
 						if (itemstack.getItemDamage() == mCircuitLock) {
 							isValid = true;
 						}
-					}
-					
+					}					
 				}
 			}
 		}
@@ -55,6 +51,6 @@ public class SlotIntegratedCircuit extends Slot {
 
 	@Override
 	public int getSlotStackLimit() {
-		return 1;
+		return 64;
 	}
 }

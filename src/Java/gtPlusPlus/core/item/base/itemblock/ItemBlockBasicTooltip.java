@@ -19,6 +19,7 @@ public class ItemBlockBasicTooltip extends ItemBlock{
 	}	
 	
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (this.mID == 0){ //blockDarkWorldPortalFrame
