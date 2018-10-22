@@ -178,13 +178,13 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	// We want automation.
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return true;
+		return aIndex == 1 || aIndex == 3;
 	}
 
 	// We want automation.
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return true;
+		return aIndex == 2;
 	}
 
 	@Override
