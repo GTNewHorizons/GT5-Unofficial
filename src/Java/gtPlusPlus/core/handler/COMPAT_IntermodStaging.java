@@ -26,6 +26,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Thaumcraft.preInit();
 		HANDLER_Tinkers.preInit();
 		HANDLER_SC2.preInit();
+		HANDLER_GC.preInit();
 	}
 
 	public static void init(){
@@ -40,6 +41,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Thaumcraft.init();
 		HANDLER_Tinkers.init();
 		HANDLER_SC2.init();
+		HANDLER_GC.init();
 	}
 
 	public static void postInit(){
@@ -54,6 +56,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Thaumcraft.postInit();
 		HANDLER_Tinkers.postInit();
 		HANDLER_SC2.postInit();
+		HANDLER_GC.postInit();
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {

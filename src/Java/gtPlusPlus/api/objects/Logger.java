@@ -143,6 +143,10 @@ public class Logger {
 	public static void RECIPE(String string) {
 		if (/*CORE.DEVENV || */CORE.DEBUG)
 		modLogger.info("[Recipe] "+string);		
+	}	
+
+	public static void SPACE(final String s) {
+		modLogger.info("[Space] "+s);
 	}
 	
 	

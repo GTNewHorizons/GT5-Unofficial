@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.galacticraft.system.objects;
 
+import java.util.Map;
+
 import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraft.block.Block;
 
 public interface IPlanetBlockRegister extends Runnable {
 
-	public abstract AutoMap<Block> getBlocksToRegister();
+	public abstract Map<Integer, Block> getBlocks();
 
 	public abstract Block getWaterBlock();
 	

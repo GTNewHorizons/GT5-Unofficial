@@ -1,8 +1,10 @@
 package gtPlusPlus.xmod.galacticraft.system.objects;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gtPlusPlus.api.objects.data.Pair;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import net.minecraft.block.Block;
 
@@ -10,7 +12,7 @@ public class PlanetGenerator {
 
 	private final Planet mPlanet;
 	private final IPlanetBlockRegister mTask;
-	private final Map<String, Block> mPlanetBlocks;
+	private final Map<Integer, Pair<String, Block>> mPlanetBlocks;
 	private final Thread mTaskThread;
 	
 	public static final Map<String, PlanetGenerator> mGlobalPlanetCache = new HashMap<String, PlanetGenerator>();
@@ -18,9 +20,10 @@ public class PlanetGenerator {
 	public PlanetGenerator(Planet aPlanet, IPlanetBlockRegister aBlockRegistrationTask) {
 		mPlanet = aPlanet;
 		mTask = aBlockRegistrationTask;
-		mPlanetBlocks = new HashMap<String, Block>();
-		for (Block b : aBlockRegistrationTask.getBlocksToRegister()) {
-			mPlanetBlocks.put(b.getUnlocalizedName(), b);
+		mPlanetBlocks = new LinkedHashMap<Integer, Pair<String, Block>>();
+		for (int i=0;i<4;i++) {
+			Block b = aBlockRegistrationTask.getBlocks().get(i);
+			mPlanetBlocks.put(i, new Pair<String, Block>(b.getUnlocalizedName(), b));
 		}
 		if (mGlobalPlanetCache.get(mPlanet.getName().toUpperCase()) == null) {
 			mGlobalPlanetCache.put(mPlanet.getName().toUpperCase(), this);
@@ -43,7 +46,7 @@ public class PlanetGenerator {
 		return mTask;
 	}
 
-	public synchronized final Map<String, Block> getPlanetBlocks() {
+	public synchronized final Map<Integer, Pair<String, Block>> getPlanetBlocks() {
 		return mPlanetBlocks;
 	}
 	
