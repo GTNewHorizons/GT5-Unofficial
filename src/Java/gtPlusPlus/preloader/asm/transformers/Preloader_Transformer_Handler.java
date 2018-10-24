@@ -77,6 +77,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_BlockMachines_NBT(basicClass, obfuscated).getWriter().toByteArray();
 		}
+		//Patching Meta Tile Tooltips
+		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, obfuscated).getWriter().toByteArray();
+		}
 
 		return basicClass;
 	}

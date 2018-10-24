@@ -16,7 +16,7 @@ import gtPlusPlus.preloader.DevHelper;
 public class ClassTransformer_GT_BlockMachines_NBT {	
 
 	//The qualified name of the class we plan to transform.
-	private static final String className = "micdoodle8.mods.galacticraft.core.util.FluidUtil"; 
+	private static final String className = "gregtech.common.blocks.GT_Block_Machines"; 
 	//gregtech/common/blocks/GT_Block_Machines
 
 	private final boolean isValid;
