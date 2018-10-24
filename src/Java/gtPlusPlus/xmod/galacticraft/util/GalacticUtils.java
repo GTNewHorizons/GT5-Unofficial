@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import gregtech.api.enums.Materials;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -51,7 +52,37 @@ public class GalacticUtils {
 		aIFuelable = a5;
 		getRocketTier = m1;
 		getRocket = m2;
-		getBuggy = m3;		
+		getBuggy = m3;	
+		if (a1 != null && a2 != null && a3 != null && a4 != null && a5 != null && m1 != null && m2 != null && m3 != null) {
+			Logger.SPACE("Successfully relfected into 5 classes and 3 methods.");
+		}
+		else {
+			Logger.SPACE("Failed to relfect into Galacticraft classes and methods.");
+			if (a1 == null) {
+				Logger.SPACE("micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket was null..");
+			}
+			if (a2 == null) {
+				Logger.SPACE("micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad was null..");
+			}
+			if (a3 == null) {
+				Logger.SPACE("micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler was null..");
+			}
+			if (a4 == null) {
+				Logger.SPACE("micdoodle8.mods.galacticraft.api.entity.IDockable was null..");
+			}
+			if (a5 == null) {
+				Logger.SPACE("micdoodle8.mods.galacticraft.api.entity.IFuelable was null..");
+			}
+			if (m1 == null) {
+				Logger.SPACE("getRocketTier was null..");
+			}
+			if (m2 == null) {
+				Logger.SPACE("getDockedEntity was null..");
+			}
+			if (m3 == null) {
+				Logger.SPACE("getDockedEntity(buggy) was null..");
+			}
+		}
 	}
 
 	
@@ -108,7 +139,8 @@ public class GalacticUtils {
 			return getValidFuelForTier(getRocketTier(aEntity));
 		}
 		else {
-			return null;
+			Logger.SPACE("Failed to get valid rocket fuel for "+aEntity.getClass().getCanonicalName());
+			return getValidFuelForTier(0);
 		}	
 	}	
 

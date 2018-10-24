@@ -23,6 +23,7 @@ public class PlanetGenerator {
 		mPlanetBlocks = new LinkedHashMap<Integer, Pair<String, Block>>();
 		for (int i=0;i<4;i++) {
 			Block b = aBlockRegistrationTask.getBlocks().get(i);
+			if (b != null)
 			mPlanetBlocks.put(i, new Pair<String, Block>(b.getUnlocalizedName(), b));
 		}
 		if (mGlobalPlanetCache.get(mPlanet.getName().toUpperCase()) == null) {

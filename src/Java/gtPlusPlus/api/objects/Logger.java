@@ -112,15 +112,15 @@ public class Logger {
 	 * Special Logger for Materials related content
 	 */
 	public static void MATERIALS(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG)
-		modLogger.info("[Materials] "+s);
+		/*if (CORE.DEVENV || CORE.DEBUG)
+		modLogger.info("[Materials] "+s);*/
 	}
 	/**
 	 * Special Logger for Debugging Materials related content
 	 */
 	public static void DEBUG_MATERIALS(final String s) {
-		if (CORE.DEVENV || CORE.DEBUG)
-		modLogger.info("[Debug][Materials] "+s);
+		/*if (CORE.DEVENV || CORE.DEBUG)
+		modLogger.info("[Debug][Materials] "+s);*/
 	}
 	
 	/**

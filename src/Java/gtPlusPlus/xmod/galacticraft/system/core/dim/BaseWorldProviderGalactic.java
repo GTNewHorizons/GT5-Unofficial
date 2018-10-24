@@ -2,8 +2,9 @@ package gtPlusPlus.xmod.galacticraft.system.core.dim;
 
 import java.util.Random;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.xmod.galacticraft.system.BaseGalacticDimension;
+import gtPlusPlus.xmod.galacticraft.system.core.space.BaseGalacticDimension;
 import gtPlusPlus.xmod.galacticraft.system.core.world.gen.GalacticBiomeGenBase;
 import gtPlusPlus.xmod.galacticraft.system.objects.BiomeSettings;
 import gtPlusPlus.xmod.galacticraft.system.objects.DimensionSettings;
@@ -14,7 +15,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.BiomeDictionary.Type;
@@ -37,9 +37,15 @@ public class BaseWorldProviderGalactic {
 	
 	private BaseWorldProviderGalactic(PlanetGenerator b, DimensionSettings aDimSettings, BiomeSettings aBiomeSettings) {
 		mThisPlanet = b;
-		Class<? extends IChunkProvider> aCP = aDimSettings.getChunkProvider();
 		mBiome = tryCreateBiome(aBiomeSettings);
-		mDim = new BaseGalacticDimension(b, mBiome, aCP, aDimSettings);
+		if (mBiome != null) {
+			Logger.SPACE("Created Biome for "+b.getPlanet().getLocalizedName()+".");
+			mDim = new BaseGalacticDimension(b, mBiome, aDimSettings.getChunkProvider(), aDimSettings);
+		}
+		else {
+			Logger.SPACE("Failed to Create Biome for "+b.getPlanet().getLocalizedName()+", Using Deep Ocean as fallback.");
+			mDim = new BaseGalacticDimension(b, BiomeGenBase.deepOcean, aDimSettings.getChunkProvider(), aDimSettings);
+		}
 	}
 
 	public synchronized final BaseGalacticDimension getDim() {

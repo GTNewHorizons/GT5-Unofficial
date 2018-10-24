@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.galacticraft.system;
+package gtPlusPlus.xmod.galacticraft.system.core.space;
 
 import java.util.Random;
 

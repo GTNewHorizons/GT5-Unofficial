@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.galacticraft.system;
+package gtPlusPlus.xmod.galacticraft.system.core.space;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody.ScalableDistance;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
+import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseSolarSystem {
@@ -70,6 +71,7 @@ public abstract class BaseSolarSystem {
 			mPlanetMap.put(aPlanet);
 			GalaxyRegistry.registerPlanet(aPlanet);		
 			registryteleport(aWorldProvider, aWorldProviderInstance);
+			GalacticraftRegistry.registerRocketGui(aWorldProvider,	new ResourceLocation(CORE.MODID, "textures/space/RocketGui.png"));
 			return true;
 		}
 		catch(Throwable t) {
@@ -86,18 +88,20 @@ public abstract class BaseSolarSystem {
 	public Star createStar(String aStarName, int aTierRequired) {
 		Logger.SPACE("Creating new Star named "+aStarName);
 		Star aStar = (Star) (new Star(aStarName)).setParentSolarSystem(getSystem()).setTierRequired(aTierRequired);
-		aStar.setBodyIcon(new ResourceLocation(CORE.MODID, "textures/space/planets/"+aStarName.toLowerCase()+"/"+aStarName+".png"));
+		aStar.setBodyIcon(getGalacticTexture(aStarName));
 		return aStar;
 	}
 	
-	public PlanetGenerator createPlanet(String aPlanetName, float[] aRingRGB, float aPhaseShift, float aRelativeDistanceFromCentMin, float aRelativeDistanceFromCentMax, float aRelativeOrbitTime, IPlanetBlockRegister aPlanetBlocks) {		
+	public PlanetGenerator createPlanet(String aPlanetName, int aTier, float[] aRingRGB, float aPhaseShift, float aRelativeDistanceFromCentMin, float aRelativeDistanceFromCentMax, float aRelativeOrbitTime, IPlanetBlockRegister aPlanetBlocks) {		
 		Logger.SPACE("Creating "+aPlanetName);
 		Planet aNewPlanet = (new Planet(aPlanetName)).setParentSolarSystem(getSystem());
 		aNewPlanet.setRingColorRGB(aRingRGB[0], aRingRGB[1], aRingRGB[2]);
 		aNewPlanet.setPhaseShift(aPhaseShift);
-		aNewPlanet.setBodyIcon(new ResourceLocation(CORE.MODID, "textures/space/planets/"+aPlanetName.toLowerCase()+"/"+aPlanetName+".png"));
+		aNewPlanet.setBodyIcon(getGalacticTexture(aPlanetName));
 		aNewPlanet.setRelativeDistanceFromCenter(new ScalableDistance(aRelativeDistanceFromCentMin, aRelativeDistanceFromCentMax));
 		aNewPlanet.setRelativeOrbitTime(aRelativeOrbitTime);
+		if (aTier > 0)
+		aNewPlanet.setTierRequired(aTier);
 		PlanetGenerator aPlanet = new PlanetGenerator(aNewPlanet, aPlanetBlocks);
 		return aPlanet;
 	}
@@ -105,7 +109,17 @@ public abstract class BaseSolarSystem {
 	public void setMainStarForSolarSystem(Star aStar) {
 		this.mStar = aStar;
 		getSystem().setMainStar(aStar);
-		Logger.SPACE("Setting "+aStar.getLocalizedName()+" as main Star for "+getSystem().getLocalizedName()+" within the "+getSystem().getLocalizedParentGalaxyName()+" Galaxy.");
+		Logger.SPACE("Setting "+aStar.getName()+" as main Star for "+getSystem().getName()+" within the "+getSystem().getLocalizedParentGalaxyName()+" Galaxy.");
+	}
+	
+	private ResourceLocation getGalacticTexture(String aName) {
+		String aText = getSystem().getUnlocalizedName();
+		aText = aText.replace("solarsystem.", "");
+		aName = aName.replace(aText+"-", "");
+		
+		ResourceLocation aVal = new ResourceLocation(CORE.MODID, "textures/space/"+aText.toLowerCase()+"/"+aName+".png");	
+		Logger.SPACE("Trying to obtain ResourceLocation for "+aVal.toString());		
+		return aVal;
 	}
 	
 	
