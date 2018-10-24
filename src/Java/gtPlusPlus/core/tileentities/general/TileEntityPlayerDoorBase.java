@@ -1,12 +1,19 @@
 package gtPlusPlus.core.tileentities.general;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class TileEntityPlayerDoorBase extends TileEntity {
 
@@ -69,6 +76,8 @@ public class TileEntityPlayerDoorBase extends TileEntity {
 		return 0;
 	}
 
+	AutoMap<Entity> mNearbyEntityCache = new AutoMap<Entity>();
+	
 	@Override
 	public void updateEntity() {
 
@@ -125,43 +134,94 @@ public class TileEntityPlayerDoorBase extends TileEntity {
 			}
 		}
 
-		if (mTickCounter % 4 == 0) {
-			int aDoorState = 0;
-			if (mNeighbourDoor != null) {
-				aDoorState = getNeighbourState();
+		World aWorld = this.getWorldObj();
+		Block aBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
+		BlockPos aThisPos = new BlockPos(xCoord, yCoord, zCoord, this.worldObj);
+		
+		if (mTickCounter % 20 == 0) {
+			int x = 0, y = 0, z = 0;
+			x = this.xCoord;
+			y = this.yCoord;
+			z = this.zCoord;
+			//List aEntityList = aWorld.loadedEntityList;
+			List<Entity> aEntityList = new ArrayList<Entity>();
+			Chunk aThisChunk = aWorld.getChunkFromBlockCoords(x, z);
+			for (List l : aThisChunk.entityLists) {
+				aEntityList.addAll(l);
 			}
-			World aWorld = this.getWorldObj();
-			Block aBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
+			for (Object o : aEntityList) {
+				if (o != null) {
+					if (o instanceof Entity) {
+						if (o instanceof EntityPlayer) {
+							continue;
+						}
+						else {
+							Entity e = (Entity) o;
+							BlockPos p = EntityUtils.findBlockPosUnderEntity(e);
+							if (p != null) {
+								int newY = p.yPos+1;
+								if (e.getDistance(xCoord, yCoord, zCoord) <= 2){
+									mNearbyEntityCache.put(e);
+								}
+								else if (aThisPos.distanceFrom(p.xPos, newY, p.zPos) <= 2) {
+									mNearbyEntityCache.put(e);
+								}									
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (mTickCounter % 4 == 0) {			
+			for (Entity y : mNearbyEntityCache) {
+				if (y.getDistance(xCoord, yCoord, zCoord) > 2){
+					mNearbyEntityCache.remove(y);
+				}
+			}
+			
+			boolean foundMonster = mNearbyEntityCache.size() > 0;
+			int aNeighbourDoorState = 0;
+			if (mNeighbourDoor != null) {
+				aNeighbourDoorState = getNeighbourState();
+			}
 			BlockDoor aDoor = (aBlock instanceof BlockDoor ? (BlockDoor) aBlock : null);
 			boolean aPlayers = checkForPlayers(this.getWorldObj());
 
 			if (aDoor != null) {
-				if (aDoorState != 0 && mMeta == -1) {
-					if (aDoorState == 100) {
-						if (!mIsOpen) {
+				//If neighbour state != 0 and we are in slave mode
+				if (aNeighbourDoorState != 0 && mMeta == -1) {
+					if (aNeighbourDoorState == 100) {
+						if (!mIsOpen && !foundMonster) {
 							//Logger.INFO("Opening Door (Slave)");
 							aDoor.func_150014_a(aWorld, this.xCoord, this.yCoord, this.zCoord, true);
 							mIsOpen = true;
 						}
-					} else if (aDoorState == -100) {
+					} else if (aNeighbourDoorState == -100 || foundMonster) {
 						if (mIsOpen) {
 							//Logger.INFO("Closing Door (Slave)");
 							aDoor.func_150014_a(aWorld, this.xCoord, this.yCoord, this.zCoord, false);
 							mIsOpen = false;
 						}
 					}
+					//We are master, proceed
 				} else {
+					//No redstone found, allow automatic handling
 					if (aDoor != null && !hasRedstone()) {
+						//Found a nearby player
 						if (aPlayers) {
-							if (!mIsOpen) {
+							//If we are closed and there are no monsters nearby, open
+							if (!mIsOpen && !foundMonster) {
 								//Logger.INFO("Opening Door (Mstr)");
 								aDoor.func_150014_a(aWorld, this.xCoord, this.yCoord, this.zCoord, true);
 								mIsOpen = true;
 							} else {
 								// Logger.INFO("Doing Nothing, Door is in correct state.");
 							}
+							//Did not find nearby player
 						} else {
-							if (mIsOpen) {
+							//If we are open or there is a monster nearby, close.
+							if (mIsOpen || foundMonster) {
 								//Logger.INFO("Closing Door (Mstr)");
 								aDoor.func_150014_a(aWorld, this.xCoord, this.yCoord, this.zCoord, false);
 								mIsOpen = false;
