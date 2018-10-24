@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.recipes;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -9,12 +11,15 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraftforge.fluids.FluidStack;
@@ -647,8 +652,90 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			return GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, (ItemStack) aInput2, aInputFluid, aOutput, a1, a2);			
 		}
 	}
+	
+	/*
+	 * Reflection Based Recipe Additions with Fallbacks
+	 */
 
+	private static final  Method mSixSlotAssembly;
+	private static final  Method mAssemblyLine;
+	
+	static {
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
+			//Get GT's RA class;
+			Class<? extends IGT_RecipeAdder> clazz = GT_Values.RA.getClass();			
+			//6 Slot Assembler
+			mSixSlotAssembly = ReflectionUtils.getMethod(clazz, "addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class);
+			//Assembly Line
+			mAssemblyLine = ReflectionUtils.getMethod(clazz, "addAssemblylineRecipe", ItemStack.class, int.class, ItemStack[].class, FluidStack[].class, ItemStack.class, int.class, int.class);
+		
+		}
+		else {
+			mSixSlotAssembly = null;
+			mAssemblyLine = null;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration, int aEUt) {
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {			
+			if (mSixSlotAssembly != null) {
+				try {
+					return (boolean) mSixSlotAssembly.invoke(GT_Values.RA, aInputs, aInputFluid, aOutput1, aDuration, aEUt);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					if (CORE.GTNH) {
+						return false;
+					}
+				}
+			}		
+		}
+		return CORE.RA.addComponentMakerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);		
+	}
 
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+        	if (aInputs.length < 6 && aFluidInputs.length < 2) {
+        		ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
+        		return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
+        	}        	
+        	return false;
+        }
+        else {
+		if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+            return false;
+        }
+			else {
+				if (mAssemblyLine != null) {
+					try {
+						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
+								aFluidInputs, aOutput, aDuration, aEUt);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						if (aInputs.length < 6 && aFluidInputs.length < 2) {
+							ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1],
+									aInputs[2], aInputs[3], aInputs[4] };
+							return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+									aEUt);
+						}
+						return false;
+					}
+				} else {
+					if (aInputs.length < 6 && aFluidInputs.length < 2) {
+						ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1], aInputs[2],
+								aInputs[3], aInputs[4] };
+						return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+								aEUt);
+					}
+					return false;
+				}
+			}		
+        }
+        
+        
+	}
 
 
 

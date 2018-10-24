@@ -118,8 +118,8 @@ public interface IGregtech_RecipeAdder {
 	 * @return true if the Recipe got added, otherwise false.
 	 */
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt, int aSpecialValue);
-	
-	
+
+
 	public boolean addLFTRRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);
 	public boolean addLFTRRecipe(ItemStack aInput1, FluidStack aInput2, ItemStack aOutput1, FluidStack aOutput2, int aDuration, int aEUt);
 	public boolean addLFTRRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt);
@@ -131,17 +131,17 @@ public interface IGregtech_RecipeAdder {
 			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9,
 			FluidStack aOutput1, FluidStack aOutput2,
 			int aDuration, int aEUt);
-	
+
 	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
-	
+
 	boolean addCyclotronRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, FluidStack aFluidOutput,
 			int[] aChances, int aDuration, int aEUt, int aSpecialValue);
-	
+
 	public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
 			FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
-		
-	
+
+
 	/**
 	 * Adds a Recipe for the Machine Component Assembler. (up to 6 Inputs)
 	 *
@@ -152,17 +152,20 @@ public interface IGregtech_RecipeAdder {
 	 * @param aEUt			= EU per tick needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
 	 */
-	 public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
+	public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt);
 
-	 public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
+	public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
+
+	public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
+
+	public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
+
+
+	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, ItemStack aOutput, int a1, int a2);
+	public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, FluidStack aInputFluid, ItemStack aOutput, int a1, int a2);
+
+	public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration, int aEUt);
 	
-	 public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-	 
-	 public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
-	 
-	 
-	 public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, ItemStack aOutput, int a1, int a2);
-	 public boolean addAssemblerRecipeWithOreDict(Object aInput1, int aAmount1, Object aInput2, int aAmount2, FluidStack aInputFluid, ItemStack aOutput, int a1, int a2);
-	 
-	 
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt);
+	
 }
