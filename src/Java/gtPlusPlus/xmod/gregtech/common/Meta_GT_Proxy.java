@@ -197,7 +197,7 @@ public class Meta_GT_Proxy {
                 if (afluid != null) {
                     int tFluidAmount = afluid.amount;
                     if (tFluidAmount > 0) {
-                        aList.add(tFluidAmount + " " + GT_LanguageManager.addStringLocalization("GT_TileEntity_FLUIDTANK", "Fluid: "+afluid.getLocalizedName()+" "+tFluidAmount+"L", !GregTech_API.sPostloadFinished ));
+                        aList.add(GT_LanguageManager.addStringLocalization("GT_TileEntity_FLUIDTANK", "Tank Fluid: "+tFluidAmount+"L "+afluid.getLocalizedName()+"", !GregTech_API.sPostloadFinished ));
                     }                	
                 }
                 

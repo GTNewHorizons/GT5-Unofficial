@@ -1,8 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.util.EnumChatFormatting;
-
+import net.minecraftforge.fluids.FluidStack;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ITexture;
@@ -16,16 +18,38 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	public final GT_Materials mMaterial;
+	private boolean mCheckConnections;	
+	
+	public GregtechMetaPipeEntityFluid(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+			int aCapacity, int aHeatResistance, boolean aGasProof) {
+		this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+	}
 
-	public GregtechMetaPipeEntityFluid(final int aID, final String aName, final String aNameRegional, final float aThickNess, final GT_Materials aMaterial, final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
+	public GregtechMetaPipeEntityFluid(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+			int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
 		super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
+		this.mLastReceivedFrom = 0;
+		this.oLastReceivedFrom = 0;
+		this.mCheckConnections = !GT_Mod.gregtechproxy.gt6Pipe;
+		this.mDisableInput = 0;
+		this.mMaterial = aMaterial;
+		this.addInfo(aID);
+	}
+	
+	public GregtechMetaPipeEntityFluid(final String aName, final float aThickNess, final GT_Materials aMaterial, final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
+		this(aName, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+	}
+
+	public GregtechMetaPipeEntityFluid(String aName, float aThickNess, GT_Materials aMaterial, int aCapacity,
+			int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+		super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
+		this.mLastReceivedFrom = 0;
+		this.oLastReceivedFrom = 0;
+		this.mCheckConnections = !GT_Mod.gregtechproxy.gt6Pipe;
+		this.mDisableInput = 0;
 		this.mMaterial = aMaterial;
 	}
 
-	public GregtechMetaPipeEntityFluid(final String aName, final float aThickNess, final GT_Materials aMaterial, final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
-		super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
-		this.mMaterial = aMaterial;
-	}
 
 	@Override
 	public byte getTileEntityBaseType() {

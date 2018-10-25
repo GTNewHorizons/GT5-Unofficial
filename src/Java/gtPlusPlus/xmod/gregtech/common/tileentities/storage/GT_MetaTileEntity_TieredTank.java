@@ -28,8 +28,7 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 	public String[] getDescription() {
 		String[] aTip;
 		if (this.mFluid == null) {
-			//aTip = new String[] {this.mDescription, "Not a very portable tank.", CORE.GT_Tooltip};
-			aTip = super.getDescription();
+			aTip = new String[] {this.mDescription, "A portable tank.", CORE.GT_Tooltip};
 		}
 		else {
 			aTip = new String[] {this.mDescription, "A portable tank.", "Fluid: "+mFluid.getLocalizedName()+" "+mFluid.amount+"L", CORE.GT_Tooltip};

@@ -1292,6 +1292,11 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 			}
 		}
 	}
+
+	//Required as of 5.09.32-pre5
+	public boolean energyStateReady() {
+		return false;
+	}
     
 
 

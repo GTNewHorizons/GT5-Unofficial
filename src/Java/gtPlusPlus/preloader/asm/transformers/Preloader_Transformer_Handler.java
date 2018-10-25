@@ -39,6 +39,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
+		//Enable mapping of Tickets and loaded chunks. - Forge
+		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_Forge_ChunkLoading(basicClass, obfuscated).getWriter().toByteArray();
+		}
+
 		// Fix the OreDictionary - Forge
 		if (transformedName.equals("net.minecraftforge.oredict.OreDictionary")) {
 			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Transforming %s", transformedName);
@@ -82,6 +88,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, obfuscated).getWriter().toByteArray();
 		}
+		
 
 		return basicClass;
 	}

@@ -70,8 +70,9 @@ public class GregtechConduits {
 		if (Utils.getGregtechVersionAsInt() >= 50930) {
 			try {
 				Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
-				Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(new Class[]{int.class, String.class, String.class, float.class, Materials.class, int.class, int.class, boolean.class, int.class});
+				Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(int.class, String.class, String.class, float.class, Materials.class, int.class, int.class, boolean.class, int.class);
 				if (constructor != null) {
+					Logger.INFO("Generating Hexadecuple pipes.");
 					generateFluidMultiPipes(constructor, Materials.Copper, Materials.Copper.mName, "Copper", BasePipeHexadecupleID++, 60, 1000, true);
 					generateFluidMultiPipes(constructor, Materials.Bronze, Materials.Bronze.mName, "Bronze", BasePipeHexadecupleID++, 120, 2000, true);
 					generateFluidMultiPipes(constructor, Materials.Steel, Materials.Steel.mName, "Steel", BasePipeHexadecupleID++, 240, 2500, true);
@@ -85,8 +86,13 @@ public class GregtechConduits {
 						generateFluidMultiPipes(constructor, aPTFE, aPTFE.mName, "PTFE", BasePipeHexadecupleID++, 480, 600, true);	        	
 					}
 				}
+				else {
+					Logger.INFO("Failed during Hexadecuple pipe generation.");					
+				}
 
 			} catch (NoSuchMethodException | SecurityException e) {
+				Logger.INFO("Failed during Hexadecuple pipe generation. [Ecx]");
+				e.printStackTrace();
 			}		
 		}		
 	}
@@ -97,9 +103,17 @@ public class GregtechConduits {
 			aPipe = aClazz.newInstance(startID, "GT_Pipe_" + name + "_Hexadecuple",
 					"Hexadecuple " + displayName + " Fluid Pipe", 1.0F, aMaterial, baseCapacity, heatCapacity, gasProof,
 					16);
-			GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+			if (aPipe == null) {
+				Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes.");
+			}
+			else {
+				Logger.INFO("Generated "+aMaterial+" Hexadecuple pipes.");
+				GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+			}
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
+			Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes. [Ecx]");
+			e.printStackTrace();
 		}
 	}
 

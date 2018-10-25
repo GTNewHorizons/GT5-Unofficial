@@ -92,7 +92,7 @@ public class GTplusplus implements ActionListener {
 	// Pre-Init
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
-		Logger.INFO("Loading " + CORE.name + " V" + CORE.VERSION);
+		Logger.INFO("Loading " + CORE.name + " "+CORE.VERSION+" on Gregtech "+Utils.getGregtechVersionAsString());
 		//Load all class objects within the plugin package.
 		Core_Manager.veryEarlyInit();
 
