@@ -27,7 +27,11 @@ public class ChunkDebugger {
 
 	public static void removeTicketFromCache(Ticket aTicket) {
 		Pair<String, String> aPair = mChunkTicketsMap.get(aTicket.hashCode());
-		Logger.REFLECTION("Ticket released by "+aTicket.getModId()+" for dimension "+aPair.getValue());
+		String aKey = aPair.getKey();
+		if (aKey == null) {
+			aKey = "Invalid ModId";
+		}
+		Logger.REFLECTION("Ticket released by "+aKey+" for dimension "+aTicket.world.provider.dimensionId);
 		mChunkTicketsMap.remove(aTicket.hashCode());
 	}
 
@@ -42,7 +46,7 @@ public class ChunkDebugger {
 		String aKey = aPair.getKey();
 		String aValue = aPair.getValue();
 		if (aKey != null && aValue != null) {
-			Logger.REFLECTION("Chunk Loaded by "+aKey+" at position "+aChunk.toString()+" for dimension "+aValue);
+			Logger.REFLECTION("Chunk Unloaded by "+aKey+" at position "+aChunk.toString()+"");
 		}		
 		mChunksLoadedByModsMap.remove(aChunk.toString());
 	}

@@ -1,5 +1,6 @@
 package gtPlusPlus.preloader.asm.transformers;
 
+import java.io.File;
 import java.io.IOException;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
@@ -8,13 +9,21 @@ import org.objectweb.asm.ClassWriter;
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import galaxyspace.SolarSystem.core.configs.GSConfigDimensions;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
 	private final boolean mEnabled = false;
+	public static final AsmConfig mConfig;
+	static {
+		mConfig = new AsmConfig(new File("config/GTplusplus/asm.cfg"));
+		System.out.println("Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
+	}
 
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
 
@@ -40,7 +49,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 		//Enable mapping of Tickets and loaded chunks. - Forge
-		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager")) {	
+		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager") && mConfig.enableChunkDebugging) {	
 			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_Forge_ChunkLoading(basicClass, obfuscated).getWriter().toByteArray();
 		}
@@ -59,7 +68,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 		// Fix Tinkers Fluids
-		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid")) {
+		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid") && mConfig.enableTiConFluidLighting) {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
 		}
@@ -79,12 +88,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		}
 
 		//Fix GT NBT Persistency issue
-		if (transformedName.equals("gregtech.common.blocks.GT_Block_Machines")) {	
+		if (transformedName.equals("gregtech.common.blocks.GT_Block_Machines") && mConfig.enableGtNbtFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_BlockMachines_NBT(basicClass, obfuscated).getWriter().toByteArray();
 		}
 		//Patching Meta Tile Tooltips
-		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines")) {	
+		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines") && mConfig.enableGtTooltipFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, obfuscated).getWriter().toByteArray();
 		}
