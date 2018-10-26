@@ -155,17 +155,20 @@ public class RocketFuels {
 		FluidStack fuelA = FluidUtils.getFluidStack("diesel", 400);
 		FluidStack fuelB = FluidUtils.getFluidStack("fuel", 400);
 		if (fuelA != null){
-			GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
+			//GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
+			GT_Values.RA.addDistilleryRecipe(CI.getNumberedCircuit(23), fuelA, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
 		}
-		if (fuelA ==  null && fuelB != null){
-			GT_Values.RA.addDistilleryRecipe(23, fuelB, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
+		if (fuelA == null && fuelB != null){
+			//GT_Values.RA.addDistilleryRecipe(23, fuelB, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
+			GT_Values.RA.addDistilleryRecipe(CI.getNumberedCircuit(23), fuelB, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
 		}
 	}
 
 	public static void createRP1(){
 		FluidStack fuelA = FluidUtils.getFluidStack(Kerosene, 100);
 		if (fuelA != null){
-			GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(RP1, 25), 400, 120, false);
+			//GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(RP1, 25), 400, 120, false);
+			GT_Values.RA.addDistilleryRecipe(CI.getNumberedCircuit(23), fuelA, FluidUtils.getFluidStack(RP1, 50), 400, 120, false);
 		}
 	}
 
@@ -279,13 +282,13 @@ public class RocketFuels {
 	}
 
 	private static void createUnsymmetricalDimethylhydrazine() {
-		GT_Values.RA.addChemicalRecipe(
+		CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrazine", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellFormaldehyde", 2),
 				FluidUtils.getFluidStack("hydrogen", 4000),
 				FluidUtils.getFluidStack(Unsymmetrical_Dimethylhydrazine, 1000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				20*60);
 
 	}

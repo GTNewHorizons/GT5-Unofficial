@@ -652,35 +652,52 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			return GT_Values.RA.addAssemblerRecipe((ItemStack) aInput1, (ItemStack) aInput2, aInputFluid, aOutput, a1, a2);			
 		}
 	}
-	
+
 	/*
 	 * Reflection Based Recipe Additions with Fallbacks
 	 */
 
 	private static final  Method mSixSlotAssembly;
 	private static final  Method mAssemblyLine;
+	private static final  Method[] mChemicalRecipe = new Method[3];
+	private static final  Method mLargeChemReactor;
 	
 	static {
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
-			//Get GT's RA class;
-			Class<? extends IGT_RecipeAdder> clazz = GT_Values.RA.getClass();			
+
+		//Get GT's RA class;
+		Class<? extends IGT_RecipeAdder> clazz = GT_Values.RA.getClass();		
+
+		mChemicalRecipe[0] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, int.class);
+
+
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {	
 			//6 Slot Assembler
 			mSixSlotAssembly = ReflectionUtils.getMethod(clazz, "addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class);
 			//Assembly Line
 			mAssemblyLine = ReflectionUtils.getMethod(clazz, "addAssemblylineRecipe", ItemStack.class, int.class, ItemStack[].class, FluidStack[].class, ItemStack.class, int.class, int.class);
-		
+
+			mChemicalRecipe[1] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, int.class, int.class);
+			mChemicalRecipe[2] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, ItemStack.class, int.class);
+
+			mLargeChemReactor = ReflectionUtils.getMethod(clazz, "addMultiblockChemicalRecipe", ItemStack[].class, FluidStack[].class, FluidStack[].class, ItemStack[].class, int.class, int.class);
+
+
+
 		}
 		else {
 			mSixSlotAssembly = null;
 			mAssemblyLine = null;
+			mLargeChemReactor = null;
 		}
+
+
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1, int aDuration, int aEUt) {
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {			
 			if (mSixSlotAssembly != null) {
@@ -697,17 +714,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
-        if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-        	if (aInputs.length < 6 && aFluidInputs.length < 2) {
-        		ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
-        		return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
-        	}        	
-        	return false;
-        }
-        else {
-		if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
-            return false;
-        }
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			if (aInputs.length < 6 && aFluidInputs.length < 2) {
+				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
+				return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
+			}        	
+			return false;
+		}
+		else {
+			if ((aResearchItem==null)||(aResearchTime<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+				return false;
+			}
 			else {
 				if (mAssemblyLine != null) {
 					try {
@@ -732,13 +749,57 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					return false;
 				}
 			}		
-        }
-        
-        
+		}
+
+
 	}
 
 
+	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, int time, int eu){
+		return addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, null, time, eu);
+	}
+	
+	@Override
+	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,	ItemStack output, Object object, int time, int eu) {
+		try {
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+				return (boolean) mChemicalRecipe[0].invoke(GT_Values.RA, input1, input2, inputFluid, outputFluid, output, time);
+			}
+			else {
+				return (boolean) mChemicalRecipe[1].invoke(GT_Values.RA, input1, input2, inputFluid, outputFluid, output, time, eu);
+			}
+		}
+		catch (Throwable t) {
+			return false;
+		}
+	}
 
+	@Override
+	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,	ItemStack output, ItemStack output2, int time) {
+		try {
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+				return (boolean) mChemicalRecipe[0].invoke(GT_Values.RA, input1, input2, inputFluid, outputFluid, output, time);
+			}
+			else {
+				return (boolean) mChemicalRecipe[2].invoke(GT_Values.RA, input1, input2, inputFluid, outputFluid, output, output2, time);
+			}
+		}
+		catch (Throwable t) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks, FluidStack[] fluidStacks2, ItemStack[] outputs, int time, int eu) {
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return false;
+		}		
+		try {			
+			return (boolean) mLargeChemReactor.invoke(GT_Values.RA, itemStacks, fluidStacks, fluidStacks2, outputs, time, eu);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			return false;
+		}		
+	}
 
 
 
@@ -768,5 +829,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return itemsNull && fluidsNull;
 	}
+
+
+
 
 }

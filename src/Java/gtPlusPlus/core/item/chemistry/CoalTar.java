@@ -136,7 +136,7 @@ public class CoalTar {
 
 
 	private static void recipeEthylBenzineFuelsIntoHeavyFuel() {
-			GT_Values.RA.addChemicalRecipe(
+			CORE.RA.addChemicalRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDict("cellFuel", 9), 
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2), 
 					null,
@@ -144,7 +144,7 @@ public class CoalTar {
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 11), 
 					100,
 					CORE.GTNH ? 1000 : 500);
-			GT_Values.RA.addChemicalRecipe(
+			CORE.RA.addChemicalRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDict("cellBioDiesel", 9), 
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2), 
 					null,

@@ -5,6 +5,7 @@ import net.minecraft.init.Items;
 import gregtech.api.enums.GT_Values;
 
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -48,7 +49,7 @@ public class NuclearChem {
 	}
 	
 	private static void chemReator_CreateMutagen() {
-		GT_Values.RA.addChemicalRecipe(
+		CORE.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(20),
 				ItemUtils.getSimpleStack(Items.nether_star, 2),
 				FluidUtils.getMobEssence(5000),
@@ -59,7 +60,7 @@ public class NuclearChem {
 	}
 	
 	private static void chemReactor_MutagenWithEggs() {
-		GT_Values.RA.addChemicalRecipe(
+		CORE.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(20),
 				ItemUtils.getSimpleStack(Items.egg, 2),
 				FluidUtils.getFluidStack(GeneticMutagen, 500),

@@ -19,6 +19,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,7 +43,11 @@ public class RECIPES_GREGTECH {
 		chemicalReactorRecipes();
 		dehydratorRecipes();
 		blastFurnaceRecipes();
-		largeChemReactorRecipes();
+		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			largeChemReactorRecipes();
+		}
+		
 		fissionFuelRecipes();
 		autoclaveRecipes();
 		compressorRecipes();
@@ -501,27 +506,27 @@ public class RECIPES_GREGTECH {
 
 	private static void largeChemReactorRecipes() {
 		//Styrene
-		GT_Values.RA.addMultiblockChemicalRecipe(
-				new ItemStack[]{GT_Utility.getIntegratedCircuit(24)},
+		CORE.RA.addMultiblockChemicalRecipe(
+				new ItemStack[]{CI.getNumberedCircuit(24)},
 				new FluidStack[]{
 						FluidUtils.getFluidStack("fluid.ethylbenzene", 1000)
 				},
 				new FluidStack[]{
-						Materials.Styrene.getFluid(1000),
+						MaterialUtils.getMaterial("Styrene").getFluid(1000),
 						Materials.Hydrogen.getGas(2000)
 				},
 				null,
 				30,
 				30);
 		//Short-cut Styrene
-		GT_Values.RA.addMultiblockChemicalRecipe(
-				new ItemStack[]{GT_Utility.getIntegratedCircuit(24)},
+		CORE.RA.addMultiblockChemicalRecipe(
+				new ItemStack[]{CI.getNumberedCircuit(24)},
 				new FluidStack[]{
-						Materials.Ethylene.getGas(500), 
-						Materials.Benzene.getFluid(500)
+						MaterialUtils.getMaterial("Ethylene").getGas(500), 
+						MaterialUtils.getMaterial("Benzene").getFluid(500)
 				},
 				new FluidStack[]{
-						Materials.Styrene.getFluid(500),
+						MaterialUtils.getMaterial("Styrene").getFluid(500),
 						Materials.Hydrogen.getGas(1000)
 				},
 				null,

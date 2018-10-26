@@ -154,7 +154,7 @@ public final class ELEMENT {
 		//GTNH Trinium Handling		
 		if (CORE.GTNH){			
 			//yay
-			Materials a1 = MaterialUtils.getMaterialByName("Trinium");
+			Materials a1 = MaterialUtils.getMaterial("Trinium");
 			Materials a2 = Materials.valueOf("Trinium");
 			Materials a3 = Materials.get("Trinium");
 			Materials a4;

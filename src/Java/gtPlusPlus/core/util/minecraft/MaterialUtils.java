@@ -183,7 +183,7 @@ public class MaterialUtils {
 		}
 	}
 
-	public static Materials getMaterialByName(String materialName) {
+	private static Materials getMaterialByName(String materialName) {
 
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			return (Materials) EnumUtils.getValue(gregtech.api.enums.Materials.class, materialName, false);
@@ -217,6 +217,14 @@ public class MaterialUtils {
 		Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
 		return o;
+	}
+	
+	public static Materials getMaterial(String aMaterialName) {
+		Materials m = gtPlusPlus.xmod.gregtech.common.StaticFields59.getMaterial(aMaterialName);
+		if (m == null) {
+			m = getMaterialByName(aMaterialName);
+		}
+		return m;
 	}
 
 

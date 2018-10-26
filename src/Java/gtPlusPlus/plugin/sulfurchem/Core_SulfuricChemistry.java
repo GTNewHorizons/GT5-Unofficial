@@ -11,6 +11,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -97,7 +98,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 		 * Sulfur Trioxide Recipes
 		 */		
 		//Air
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellAir", 1),
 				FluidUtils.getFluidStack("sulfurdioxide", 3000),
@@ -108,7 +109,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				16)) {
 			mCountAdded++;
 		}
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurDioxide", 3),
 				FluidUtils.getFluidStack("air", 1000),
@@ -120,7 +121,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 			mCountAdded++;
 		}		
 		//Oxygen
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
 				FluidUtils.getFluidStack("sulfurdioxide", 3000),
@@ -131,7 +132,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				16)) {
 			mCountAdded++;
 		}
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict(catalyst, 0),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurDioxide", 3),
 				FluidUtils.getFluidStack("oxygen", 1000),
@@ -147,7 +148,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 		 * Sulfuric Acid Recipes
 		 */
 
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(22),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1),
 				FluidUtils.getFluidStack("water", 750),
@@ -158,7 +159,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				20)) {
 			mCountAdded++;
 		}		
-		if (GT_Values.RA.addChemicalRecipe(
+		if (CORE.RA.addChemicalRecipe(
 				CI.getNumberedCircuit(22),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 3),
 				FluidUtils.getFluidStack("sulfurtrioxide", 4000),
@@ -204,7 +205,8 @@ public class Core_SulfuricChemistry implements IPlugin {
 		}
 
 		//Multi Block Recipes
-		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		recipe : for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
 			for (ItemStack i : r.mOutputs) {
 				i.stackSize = 1;
 				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))) {
@@ -227,6 +229,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				}
 				continue;
 			}
+		}
 		}
 
 		return mDisabled;
@@ -263,7 +266,8 @@ public class Core_SulfuricChemistry implements IPlugin {
 		}
 
 		//Multi Block Recipes
-		recipe : for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList) {
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		recipe : for (GT_Recipe r : StaticFields59.getLargeChemicalReactorRecipeMap().mRecipeList) {
 			for (ItemStack i : r.mOutputs) {
 				i.stackSize = 1;
 				if (ItemStack.areItemStacksEqual(i, ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricAcid", 1))) {
@@ -286,6 +290,7 @@ public class Core_SulfuricChemistry implements IPlugin {
 				}
 				continue;
 			}
+		}
 		}
 
 		return mDisabled;
