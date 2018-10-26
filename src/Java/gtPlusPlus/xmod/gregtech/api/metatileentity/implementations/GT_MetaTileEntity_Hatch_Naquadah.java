@@ -13,6 +13,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -188,15 +189,17 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
 		int textureIndex = a1 | a2 << 7;
 		byte texturePointer = (byte) (a1 & 127);
 		
+		
+		
 		if (aSide == 1 || aSide == 0) {
-			ITexture g = textureIndex > 0 ?  BlockIcons.casingTexturePages[a2][texturePointer] : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
+			ITexture g = textureIndex > 0 ?  StaticFields59.getCasingTexturePages(a2, texturePointer) : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 			
 			return new ITexture[] {g, new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
 		}
 		
 		return aSide != aFacing	? 
-				(textureIndex > 0 ? new ITexture[] { BlockIcons.casingTexturePages[a2][texturePointer] } : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] })
-				: (textureIndex > 0	? (aActive ? this.getTexturesActive(BlockIcons.casingTexturePages[a2][texturePointer]) : this.getTexturesInactive(BlockIcons.casingTexturePages[a2][texturePointer]))
+				(textureIndex > 0 ? new ITexture[] { StaticFields59.getCasingTexturePages(a2, texturePointer) } : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] })
+				: (textureIndex > 0	? (aActive ? this.getTexturesActive(StaticFields59.getCasingTexturePages(a2, texturePointer)) : this.getTexturesInactive(StaticFields59.getCasingTexturePages(a2, texturePointer)))
 						: (aActive ? this.getTexturesActive(BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1]) : this.getTexturesInactive(BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1])));
 	}
 

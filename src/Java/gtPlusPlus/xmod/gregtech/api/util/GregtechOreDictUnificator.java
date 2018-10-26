@@ -100,7 +100,7 @@ public class GregtechOreDictUnificator {
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, ItemStack aReplacement, long aAmount) {
         //if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial)) aPrefix.mDynamicItems.add((Materials) aMaterial);
-        if (StaticFields59.getOrePrefixesBooleanDisabledItems().contains(aPrefix) && StaticFields59.getOrePrefixesBooleanDisabledItems().contains(aMaterial)) return aReplacement;
+        if (StaticFields59.geOrePrefixesBooleanPreventableComponents().contains(aPrefix) && StaticFields59.getOrePrefixesBooleanDisabledItems().contains(aMaterial)) return aReplacement;
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 

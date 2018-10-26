@@ -3,13 +3,18 @@ package gtPlusPlus.xmod.gregtech.common;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -23,6 +28,8 @@ public class StaticFields59 {
 	public static final Field mDisabledItems;
 	public static final Field mMultiblockChemicalRecipes;
 	public static final Field mDescriptionArray;
+	public static final Field mCasingTexturePages;
+	
 	public static final Method mCalculatePollutionReduction;
 
 	private static final Map<String, Materials> mMaterialCache = new LinkedHashMap<String, Materials>();
@@ -36,6 +43,8 @@ public class StaticFields59 {
 		mDisabledItems = getField(OrePrefixes.class, "mDisabledItems");
 		mMultiblockChemicalRecipes = getField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes");
 		mDescriptionArray = getField(GT_MetaTileEntity_TieredMachineBlock.class, "mDescriptionArray");
+		mCasingTexturePages = getField(BlockIcons.class, "casingTexturePages");
+		
 		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction", int.class);		
 	}
 
@@ -67,19 +76,20 @@ public class StaticFields59 {
 		return ReflectionUtils.getMethod(a, b, params);
 	}
 
-	public static synchronized final Boolean getOrePrefixesBooleanDisabledItems() {
+	public static synchronized final Collection<Materials> getOrePrefixesBooleanDisabledItems() {
 		try {
-			return (Boolean) mDisabledItems.get(OrePrefixes.class);
+			return (Collection<Materials>) mDisabledItems.get(OrePrefixes.class);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			return false;
+			return new ArrayList<Materials>();
 		}
 	}
+	
 
-	public static synchronized final Boolean geOrePrefixesBooleanPreventableComponents() {
+	public static synchronized final List<OrePrefixes> geOrePrefixesBooleanPreventableComponents() {
 		try {
-			return (Boolean) mPreventableComponents.get(OrePrefixes.class);
+			return (List<OrePrefixes>) mPreventableComponents.get(OrePrefixes.class);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			return false;
+			return new ArrayList<OrePrefixes>();
 		}
 	}
 
@@ -112,6 +122,19 @@ public class StaticFields59 {
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return new String[] {aTile.mDescription};
 		}
+	}
+	
+	public static ITexture getCasingTexturePages(int a, int b) {
+		try {
+			ITexture[][] g = (ITexture[][]) mCasingTexturePages.get(null);
+			if (g != null) {
+				return g[a][b];
+			}
+		}
+		catch (Throwable t) {
+			
+		}
+		return null;
 	}
 
 

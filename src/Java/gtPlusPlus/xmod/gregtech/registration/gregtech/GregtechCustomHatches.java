@@ -5,6 +5,7 @@ import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -21,6 +22,9 @@ public class GregtechCustomHatches {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
 			run1();
+			
+			//No pollution in 5.08
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
 			run2();
 		}
 	}

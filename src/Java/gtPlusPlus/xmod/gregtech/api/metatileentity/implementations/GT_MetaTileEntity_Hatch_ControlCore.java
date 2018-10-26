@@ -20,11 +20,7 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
     public GT_Recipe_Map mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_ControlCore(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, getSlots(aTier), 
-        		new String[]{
-        				"Control Core Module for GT++ Multiblocks",
-        				"Core determines maximum tier machine will operate at"
-        		});
+        super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Core determines maximum tier machine will operate at");
     }
 
     public GT_MetaTileEntity_Hatch_ControlCore(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
