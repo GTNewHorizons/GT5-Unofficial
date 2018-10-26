@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 import gregtech.common.gui.GT_GUIContainer_ChestBuffer;
 
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ThreadedBuffer;
-
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gregtech.common.gui.GT_Container_ChestBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 import gregtech.api.interfaces.IIconContainer;
@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_ThreadedChestBuffer extends GT_MetaTileEntity_Thr
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return (IMetaTileEntity) new GT_MetaTileEntity_ThreadedChestBuffer(this.mName, this.mTier, this.mInventorySynchro.length,
-				this.mDescriptionArray, this.mTextures);
+				StaticFields59.getDescriptionArray(this), this.mTextures);
 	}
 
 	public ITexture getOverlayIcon() {

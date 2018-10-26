@@ -12,6 +12,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_2by2;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_4by4;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -45,18 +46,26 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	}
 
 	public GT_MetaTileEntity_Hatch_Muffler_Adv(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
+		super(aName, aTier, aDescription[0], aTextures);
 	}
 
 	public String[] getDescription() {
-		String[] desc = new String[this.mDescriptionArray.length + 4];
-		System.arraycopy(this.mDescriptionArray, 0, desc, 0, this.mDescriptionArray.length);
-		desc[this.mDescriptionArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
-		desc[this.mDescriptionArray.length + 1] = "Requires extra Air on the exhaust face";
-		desc[this.mDescriptionArray.length + 2] = "Reduces Pollution to " + this.calculatePollutionReduction(100) + "%";
-		desc[this.mDescriptionArray.length + 3] = "Recovers " + (105 - this.calculatePollutionReduction(100))
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		
+		String[] mDescArray = StaticFields59.getDescriptionArray(this);
+			
+		String[] desc = new String[mDescArray.length + 4];
+		System.arraycopy(mDescArray, 0, desc, 0, mDescArray.length);
+		desc[mDescArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
+		desc[mDescArray.length + 1] = "Requires extra Air on the exhaust face";
+		desc[mDescArray.length + 2] = "Reduces Pollution to " + this.calculatePollutionReduction(100) + "%";
+		desc[mDescArray.length + 3] = "Recovers " + (105 - this.calculatePollutionReduction(100))
 				+ "% of CO2/CO/SO2";
 		return desc;
+		}
+		else {
+			return new String[] {};
+		}
 	}
 
 	public ITexture[] getTexturesActive(ITexture aBaseTexture) {
@@ -72,7 +81,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_Hatch_Muffler_Adv(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return new GT_MetaTileEntity_Hatch_Muffler_Adv(this.mName, this.mTier, StaticFields59.getDescriptionArray(this), this.mTextures);
 	}
 	
 	@Override

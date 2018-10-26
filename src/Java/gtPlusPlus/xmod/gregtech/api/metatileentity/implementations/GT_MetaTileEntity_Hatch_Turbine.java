@@ -15,6 +15,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.CONTAINER_1by1_Turbine;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.GUI_1by1_Turbine;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.GregtechMetaTileEntity_LargerTurbineBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,8 +31,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	private String mControllerLocation;
 
 	public GT_MetaTileEntity_Hatch_Turbine(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 16, new String[]{
-				"Turbine Rotor holder for XL Turbines"});
+		super(aID, aName, aNameRegional, aTier, 16, "Turbine Rotor holder for XL Turbines");
 	}
 
 	public GT_MetaTileEntity_Hatch_Turbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 	}
 
 	public GT_MetaTileEntity_Hatch_Turbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 1, aDescription, aTextures);
+		super(aName, aTier, 1, aDescription[0], aTextures);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_Hatch_Turbine(mName, mTier, mDescriptionArray, mTextures);
+		return new GT_MetaTileEntity_Hatch_Turbine(mName, mTier, StaticFields59.getDescriptionArray(this), mTextures);
 	}
 
 	@Override

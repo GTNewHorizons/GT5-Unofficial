@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_ThreadedSuperBuffer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_ThreadedSuperBuffer;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,7 +37,7 @@ public class GT_MetaTileEntity_ThreadedSuperBuffer extends GT_MetaTileEntity_Thr
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return (IMetaTileEntity) new GT_MetaTileEntity_ThreadedSuperBuffer(this.mName, this.mTier, this.mInventorySynchro.length,
-				this.mDescriptionArray, this.mTextures);
+				StaticFields59.getDescriptionArray(this), this.mTextures);
 	}
 
 	public ITexture getOverlayIcon() {
