@@ -78,12 +78,19 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 			else {
 				duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;
 			}*/
-
+			
+			int aSlot = M.vTier - 2;
+			if (aSlot < 2) {
+				aSlot = 2;
+			}
+			long aVoltage = GT_Values.V[aSlot >= 2 ? aSlot : 2];
+			
+			
 			//Set a duration - NEW
-			int duration = 200*M.vTier*20;
+			int duration = 120*M.vTier*20;
 
 			if (M.vTier <= 4){
-				duration = 40*M.vTier*20;
+				duration = 20*M.vTier*20;
 			}
 
 			int mMaterialListSize=0;
@@ -123,7 +130,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 			//Generate Recipes for all singular materials that can be made molten.
 			if (hasMoreInputThanACircuit){
 				if (M.requiresBlastFurnace()) {
-					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, 240)){
+					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, (int) aVoltage)){
 						Logger.WARNING("[BAS] Success.");
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration, 120)){
@@ -145,7 +152,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 				}
 			}
 			else {
-				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/2, 120)){
+				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/2, (int) aVoltage)){
 					Logger.WARNING("[BAS] Success.");
 					if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluid(144), M.getIngot(1), duration/2, 60)){
 						Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
@@ -246,7 +253,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 
 						//Adds Recipe
 						if (M.requiresBlastFurnace()) {
-							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, 500)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, (int) aVoltage)){
 								Logger.WARNING("[BAS] Success.");
 							}
 							else {
@@ -254,7 +261,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 							}
 						}
 						else {
-							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, 240)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, (int) aVoltage/2)){
 								Logger.WARNING("[BAS] Success.");
 							}
 							else {

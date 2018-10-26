@@ -11,7 +11,9 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.preloader.DevHelper;
+import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class ClassTransformer_GT_BlockMachines_NBT {	
 
@@ -27,7 +29,7 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 	String aEntityPlayerMP;
 	String aWorld;
 	
-	private static boolean doesMethodAlreadyExist = false;
+	public static boolean isNbtPersistencyPatchAlreadyApplied = false;
 
 	public ClassTransformer_GT_BlockMachines_NBT(byte[] basicClass, boolean obfuscated) {
 		
@@ -50,16 +52,16 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 		reader = aTempReader;
 		writer = aTempWriter;
 
-		if (reader != null && writer != null && !doesMethodAlreadyExist) {	
-			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Getting Valid MC Class names. "+".");		
+		CORE.NBT_PERSISTENCY_PATCH_APPLIED = isNbtPersistencyPatchAlreadyApplied;
+		
+		if (reader != null && writer != null && !isNbtPersistencyPatchAlreadyApplied && AsmConfig.enableGtNbtFix) {		
 			aEntityPlayer = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayer") : "net/minecraft/entity/player/EntityPlayer";
 			aEntityPlayerMP = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayerMP") : "net/minecraft/entity/player/EntityPlayerMP";
 			aWorld = obfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-
-			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Found: "+aEntityPlayer+", "+aEntityPlayerMP+", "+aWorld+".");
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Attempting Method Injection.");
-			injectMethod("removedByPlayer");
-			injectMethod("harvestBlock");
+			if (injectMethod("removedByPlayer") && injectMethod("harvestBlock")) {
+				CORE.NBT_PERSISTENCY_PATCH_APPLIED = true;
+			}
 		}
 
 	}
@@ -76,8 +78,9 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 		return writer;
 	}
 
-	public void injectMethod(String aMethodName) {		
+	public boolean injectMethod(String aMethodName) {		
 		MethodVisitor mv;	
+		boolean didInject = false;
 		FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");	
 		if (aMethodName.equals("removedByPlayer")) {
 			
@@ -117,7 +120,7 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 			mv.visitLocalVariable("aWillHarvest", "Z", null, l0, l3, 6);
 			mv.visitMaxs(7, 7);
 			mv.visitEnd();
-
+			didInject = true;
 
 		}
 		else if (aMethodName.equals("harvestBlock")) {
@@ -159,10 +162,11 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 			mv.visitLocalVariable("aMeta", "I", null, l0, l3, 6);
 			mv.visitMaxs(7, 7);
 			mv.visitEnd();
+			didInject = true;
 
 		}	
 		FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Method injection complete.");		
-
+		return didInject;
 	}
 
 	public static final class localClassVisitor extends ClassVisitor {
@@ -175,11 +179,11 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {			
 			if (name.equals("removedByPlayer")) {
 				FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Found method "+name+", skipping patch.");
-				doesMethodAlreadyExist = true;
+				isNbtPersistencyPatchAlreadyApplied = true;
 			}	
 			if (name.equals("harvestBlock")) {
 				FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Found method "+name+", skipping patch.");
-				doesMethodAlreadyExist = true;
+				isNbtPersistencyPatchAlreadyApplied = true;
 			}			
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
 			return methodVisitor;

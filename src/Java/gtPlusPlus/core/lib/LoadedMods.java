@@ -52,6 +52,7 @@ public class LoadedMods {
 	public static boolean TecTech = false; //Technus' Mod
 	public static boolean TiCon = false;
 	public static boolean StevesCarts = false;
+	public static boolean Witchery = false;
 
 
 
@@ -278,6 +279,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("tectech")){
 			TecTech  = true;
 			Logger.INFO("Components enabled for: TecTech");
+			totalMods++;
+		}	
+		if (Loader.isModLoaded("witchery")){
+			Witchery  = true;
+			Logger.INFO("Components enabled for: Witchery");
 			totalMods++;
 		}		
 

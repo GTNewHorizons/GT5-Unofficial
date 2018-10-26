@@ -244,20 +244,23 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
 
 					if (inputStacks.length == 1) {
-						input2 = CI.getNumberedCircuit(20);
+						input2 = input1;
+						input1 = CI.getNumberedCircuit(20);
 					}
 					else if (inputStacks.length == 2) {
-						input3 = CI.getNumberedCircuit(20);
+						input3 = input2;
+						input2 = input1;
+						input1 = CI.getNumberedCircuit(20);
 
 					}
 					else if (inputStacks.length == 3) {
-						input4 = CI.getNumberedCircuit(20);
-
+						input4 = input3;
+						input3 = input2;
+						input2 = input1;
+						input1 = CI.getNumberedCircuit(20);
 					}
-
-
+					
 					//Add mixer Recipe
-
 					FluidStack oxygen = GT_Values.NF;
 					if (material.getComposites() != null){
 						int compSlot = 0;

@@ -67,16 +67,11 @@ public class RocketFuels {
 		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100}, null, null);
 
 		//Nos
-		if (FluidUtils.getFluidStack("NitrousOxide", 1) == null && FluidUtils.getFluidStack("nitrousoxide", 1) == null){
+		if (!FluidUtils.doesFluidExist("NitrousOxide")){
 			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100});
 		}
 		else {
-			if (FluidUtils.getFluidStack("NitrousOxide", 1) != null ) {
-				Nitrous_Oxide = FluidUtils.getFluidStack("NitrousOxide", 1).getFluid();				
-			}
-			else {
-				Nitrous_Oxide = FluidUtils.getFluidStack("nitrousoxide", 1).getFluid();
-			}
+			Nitrous_Oxide = FluidUtils.getWildcardFluidStack("NitrousOxide", 1).getFluid();
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellNitrousOxide", 1) == null){				
 				new BaseItemComponent("NitrousOxide", "Nitrous Oxide", new short[] {10, 10, 175});
 			}

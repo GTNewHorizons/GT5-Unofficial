@@ -163,6 +163,9 @@ public class COMPAT_HANDLER {
 		if (LoadedMods.PamsHarvestcraft){
 			COMPAT_HarvestCraft.OreDict();
 		}
+		if (LoadedMods.Witchery) {
+			COMPAT_Witchery.OreDict();
+		}
 	}
 
 	public static void RemoveRecipesFromOtherMods(){

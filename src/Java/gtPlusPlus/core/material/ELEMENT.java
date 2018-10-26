@@ -125,6 +125,8 @@ public final class ELEMENT {
 	//Fictional	
 	public final Material YELLORIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yellorium, new short[] {255, 242, 10});
 	public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
+	public final Material NAQUADAH_ENRICHED = MaterialUtils.generateMaterialFromGtENUM(Materials.NaquadahEnriched);
+	public final Material NAQUADRIA = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadria);
 	public final Material TRINIUM;
 	public final Material TRINIUM_REFINED;
 	//https://github.com/Blood-Asp/GT5-Unofficial/issues/609
@@ -142,6 +144,8 @@ public final class ELEMENT {
 	public final Material POLONIUM210 = new Material("Polonium-210", MaterialState.SOLID, Materials.Plutonium241.mIconSet, POLONIUM.vDurability, POLONIUM.getRGBA(), POLONIUM.getMeltingPointK(), POLONIUM.getBoilingPointK(), 84, 126, false, StringUtils.superscript("210Po"), 2, false);//Not a GT Inherited Material
 	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, Materials.Americium.mIconSet, Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2, false);//Not a GT Inherited Material
 
+	public final Material MAGIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Magic, new short[] {10, 185, 140});
+	public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
 
 
 	static {

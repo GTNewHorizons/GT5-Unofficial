@@ -2,6 +2,8 @@ package gtPlusPlus.core.item;
 import static gtPlusPlus.core.creative.AddToCreativeTab.*;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
+import com.ibm.icu.util.RangeValueIterator.Element;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.item.*;
@@ -368,9 +370,9 @@ public final class ModItems {
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null){
 				ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
 			}
-			/*if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
-		    	ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", "", Utils.rgbtoHexValue(Materials.Gadolinium.mRGBa[0], Materials.Gadolinium.mRGBa[1], Materials.Gadolinium.mRGBa[2]));
-			}*/
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1) == null){
+		    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
+			}
 
 
 			//Elements generate first so they can be used in compounds.
@@ -527,13 +529,20 @@ public final class ModItems {
 			}
 			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
-			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);			
-
+			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);
+			
+			//Top Tier Alloys
+			MaterialGenerator.generate(ALLOY.LAFIUM);
+			MaterialGenerator.generate(ALLOY.CINOBITE);
+			MaterialGenerator.generate(ALLOY.PIKYONIUM);
+			MaterialGenerator.generate(ALLOY.ABYSSAL);
+			
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
 
 			//Ores
 			MaterialGenerator.generateOreMaterial(FLUORIDES.FLUORITE);
+			MaterialGenerator.generateOreMaterial(ALLOY.KOBOLDITE);
 			GTplusplus_Everglades.GenerateOreMaterials();
 
 

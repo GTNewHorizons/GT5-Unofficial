@@ -123,22 +123,21 @@ public class BaseItemDust extends Item{
 	protected final int sRadiation;
 	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
+		
+		if (this.dustInfo != null){
+			if (entityHolding instanceof EntityPlayer){
+				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+					EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.dustInfo.vRadiationLevel, world, entityHolding);	
+				}
+			}
+		}
+		
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
-		/*if (getUnlocalizedName().contains("DustTiny")){
-			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");
-		}
-		else if (getUnlocalizedName().contains("DustSmall")){
-			list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");
-		}
-		else {
-			list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
-		}*/
+
 		if (stack.getDisplayName().equalsIgnoreCase("fluorite")){
 			list.add("Mined from Sandstone and Limestone.");
 		}
@@ -167,143 +166,61 @@ public class BaseItemDust extends Item{
 
 	}
 
-	private void addMacerationRecipe(){
-		Logger.WARNING("Adding recipe for "+this.materialName+" Dusts");
+	private void addMacerationRecipe(){		
 
-		String tempIngot = this.getUnlocalizedName().replace("item.itemDust", "ingot");
-		final String tempDust = this.getUnlocalizedName().replace("item.itemDust", "dust");
-		ItemStack tempInputStack;
-		ItemStack tempOutputStack;
-
-		if (this.getUnlocalizedName().contains("DustSmall") || this.getUnlocalizedName().contains("DustTiny")){
-			return;
-		}
-
-		Logger.WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
-		if (this.getUnlocalizedName().contains("item.")){
-			tempIngot = this.getUnlocalizedName().replace("item.", "");
-			Logger.WARNING("Generating OreDict Name: "+tempIngot);
-		}
-		else {
-			tempIngot = this.getUnlocalizedName();
-		}
-
-		tempIngot = tempIngot.replace("itemDust", "ingot");
-		Logger.WARNING("Generating OreDict Name: "+tempIngot);
-		final ItemStack[] outputStacks = {this.dustInfo.getDust(1)};
-		if ((tempIngot != null) && !tempIngot.equals("")){
-			tempInputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
-			tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempDust, 1);
-			ItemStack tempStackOutput2 = null;
-			final int chance = (this.mTier*10)/MathUtils.randInt(10, 20);
-			if (outputStacks.length != 0){
-				if (outputStacks.length == 1){
-					tempStackOutput2 = null;
-				}
-				else {
-					if (!outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
-						tempStackOutput2 = outputStacks[1];
-						tempOutputStack = outputStacks[0];
-					}
-					else {
-						tempStackOutput2 = null;
-					}
-				}
-			}
-			else {
-				tempStackOutput2 = null;
-			}
-			if ((null != tempOutputStack) && (null != tempInputStack)){
-				if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(tempStackOutput2) && ItemUtils.checkForInvalidItems(tempInputStack)) {
-					GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack.splitStack(1), tempStackOutput2, chance);
-				}
-			}
-		}
+		Logger.MATERIALS("Adding Maceration recipe for "+this.materialName+" Ingot -> Dusts");
+		final int chance = (this.mTier*10)/MathUtils.randInt(10, 20);
+		GT_ModHandler.addPulverisationRecipe(dustInfo.getIngot(1), dustInfo.getDust(1), null, chance);
+		
 	}
 
 	private void addFurnaceRecipe(){
 
-		String temp = "";
-		if (this.getUnlocalizedName().contains("item.")){
-			temp = this.getUnlocalizedName().replace("item.", "");
-		}
-		else {
-			temp = this.getUnlocalizedName();
-		}
-		if (temp.contains("DustTiny") || temp.contains("DustSmall")){
-			return;
-		}
-		temp = temp.replace("itemDust", "ingot");
-		if ((temp != null) && !temp.equals("")){
-			ItemStack mThisStack = ItemUtils.getSimpleStack(this);
-			if (this.dustInfo.requiresBlastFurnace()){
-				Logger.WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
-				final String tempIngot = temp.replace("ingot", "ingotHot");
-				final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
-				if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
-					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
-					if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
-						this.addBlastFurnaceRecipe(mThisStack, null, tempOutputStack, null, 350*this.mTier);
-					}
-				}
-				return;
-			}
-			Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a furnace.");
-			final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
-			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
-			if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
-				if ((this.mTier < 5) || !this.dustInfo.requiresBlastFurnace()){
-					if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
-						if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
-							Logger.WARNING("Successfully added a furnace recipe for "+this.materialName);
-						}
-						else {
-							Logger.WARNING("Failed to add a furnace recipe for "+this.materialName);
-						}
-					}
-				}
-				else if ((this.mTier >= 5) || this.dustInfo.requiresBlastFurnace()){
-					Logger.WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
-					Logger.WARNING("This will produce "+tempOutputStack.getDisplayName());
-					if (null != tempOutputStack && tempOutputStack != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
-						if (ItemUtils.checkForInvalidItems(tempOutputStack) && ItemUtils.checkForInvalidItems(mThisStack)) {
-							this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
-						}
-					}
-					return;
-				}
-			}
-
-		}
-	}
-
-	private void addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
-		//Special Cases
-		/*if (input1.getUnlocalizedName().toLowerCase().contains("tantalloy61")){
-			Utils.LOG_INFO("Adding Special handler for Staballoy-61 in the Blast Furnace");
-			input2 = UtilsItems.getItemStackOfAmountFromOreDict("dustTantalloy60", 2);
-			if (input2 == null){
-				Utils.LOG_INFO("invalid itemstack.");
+		ItemStack aDust = dustInfo.getDust(1);
+		ItemStack aOutput;
+		
+		if (this.dustInfo.requiresBlastFurnace()) {
+			aOutput = dustInfo.getHotIngot(1);			
+			if (addBlastFurnaceRecipe(aDust, null, aOutput, null, dustInfo.getMeltingPointK())){
+				Logger.MATERIALS("Successfully added a blast furnace recipe for "+this.materialName);
 			}
 			else {
-				Utils.LOG_INFO("Found "+input2.getDisplayName());
+				Logger.MATERIALS("Failed to add a blast furnace recipe for "+this.materialName);
 			}
-		}*/
+		}
+		else {
+			aOutput = dustInfo.getIngot(1);
+			if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
+				Logger.MATERIALS("Successfully added a furnace recipe for "+this.materialName);
+			}
+			else {
+				Logger.MATERIALS("Failed to add a furnace recipe for "+this.materialName);
+			}
+		}
+		
+	}
 
-		int timeTaken = 250*this.mTier*20;
+	private boolean addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
+
+		int timeTaken = 125*this.mTier*20;
 
 		if (this.mTier <= 4){
-			timeTaken = 50*this.mTier*20;
+			timeTaken = 25*this.mTier*20;
 		}
+		int aSlot = mTier - 2;
+		if (aSlot < 2) {
+			aSlot = 2;
+		}
+		long aVoltage = GT_Values.V[aSlot >= 2 ? aSlot : 2];
 
-		GT_Values.RA.addBlastRecipe(
+		return GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,
 				GT_Values.NF, GT_Values.NF,
 				output1,
 				output2,
 				timeTaken,
-				this.mTier*60,
+				(int) aVoltage,
 				tempRequired);
 
 

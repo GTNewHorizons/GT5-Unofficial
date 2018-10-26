@@ -357,6 +357,14 @@ public class MathUtils {
 		}
 	}
 
+	public static byte safeByte(long number){
+		return number>Byte.MAX_VALUE ? Byte.MAX_VALUE :(byte)number;
+	}
+	
+	public static short safeShort(long number){
+		return number>Short.MAX_VALUE ? Short.MAX_VALUE :(short)number;
+	}
+	
 	public static int safeInt(long number, int margin){
 		return number>Integer.MAX_VALUE-margin ? Integer.MAX_VALUE-margin :(int)number;
 	}
@@ -376,21 +384,114 @@ public class MathUtils {
 		
 	}
 	
-	public static long getAverage(AutoMap aDataSet) {
+	
+	/*
+	 * Averages
+	 */
+	
+	public static byte getByteAverage(AutoMap<?> aDataSet) {
+		byte[] aNewSet = new byte[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (byte) aDataSet.get(u);
+		}		
+		return getByteAverage(aNewSet);
+	}
+	
+	public static short getShortAverage(AutoMap<?> aDataSet) {
+		short[] aNewSet = new short[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (short) aDataSet.get(u);
+		}		
+		return getShortAverage(aNewSet);
+	}
+	
+	public static int getIntAverage(AutoMap<?> aDataSet) {
+		int[] aNewSet = new int[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (int) aDataSet.get(u);
+		}		
+		return getIntAverage(aNewSet);
+	}
+	
+	public static float getFloatAverage(AutoMap<?> aDataSet) {
+		float[] aNewSet = new float[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (float) aDataSet.get(u);
+		}		
+		return getFloatAverage(aNewSet);
+	}
+	
+	public static long getLongAverage(AutoMap<?> aDataSet) {
 		long[] aNewSet = new long[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (long) aDataSet.get(u);
 		}		
-		return getAverage(aNewSet);
+		return getLongAverage(aNewSet);
 	}
 	
-	public static long getAverage(long[] aDataSet) {
+	public static double getDoubleAverage(AutoMap<?> aDataSet) {
+		double[] aNewSet = new double[aDataSet.size()];		
+		for (int u=0;u<aDataSet.size();u++) {
+			aNewSet[u] = (double) aDataSet.get(u);
+		}		
+		return getDoubleAverage(aNewSet);
+	}
+	
+	
+	
+	public static byte getByteAverage(byte[] aDataSet) {
+		int divisor = aDataSet.length;
+		byte total = 0;		
+		for (byte i : aDataSet) {
+			total += i;
+		}
+		byte result = safeByte(total/divisor);
+		return result;		
+	}
+	
+	public static short getShortAverage(short[] aDataSet) {
+		int divisor = aDataSet.length;
+		short total = 0;		
+		for (short i : aDataSet) {
+			total += i;
+		}
+		short result = safeShort(total/divisor);
+		return result;		
+	}
+	public static int getIntAverage(int[] aDataSet) {
+		int divisor = aDataSet.length;
+		int total = 0;		
+		for (int i : aDataSet) {
+			total += i;
+		}
+		int result = safeInt(total/divisor);
+		return result;		
+	}
+	public static float getFloatAverage(float[] aDataSet) {
+		int divisor = aDataSet.length;
+		float total = 0;		
+		for (float i : aDataSet) {
+			total += i;
+		}
+		float result = (total/divisor);
+		return result;		
+	}
+	public static long getLongAverage(long[] aDataSet) {
 		int divisor = aDataSet.length;
 		long total = 0;		
 		for (long i : aDataSet) {
 			total += i;
 		}
 		long result = (total/divisor);
+		return result;		
+	}
+	public static double getDoubleAverage(double[] aDataSet) {
+		int divisor = aDataSet.length;
+		double total = 0;		
+		for (double i : aDataSet) {
+			total += i;
+		}
+		double result = (total/divisor);
 		return result;		
 	}
 

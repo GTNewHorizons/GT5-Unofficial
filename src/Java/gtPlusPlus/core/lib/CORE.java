@@ -44,6 +44,7 @@ public class CORE {
 
 	public static boolean DEVENV = false;
 	public static boolean DEBUG = false;
+	public static boolean NBT_PERSISTENCY_PATCH_APPLIED = false;
 	//Only can be set in Dev, no config or setting elsewhere.
 	public static final boolean LOAD_ALL_CONTENT = false;;
 
@@ -114,6 +115,7 @@ public class CORE {
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static IGregtech_RecipeAdder RA;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
+
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
 	/**

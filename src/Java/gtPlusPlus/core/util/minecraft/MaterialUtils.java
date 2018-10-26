@@ -182,6 +182,42 @@ public class MaterialUtils {
 			return 0;
 		}
 	}
+	
+	public static int getVoltageForTier(final int aTier) {
+		if (aTier == 0) {
+			return 16;
+		}
+		if (aTier == 1) {
+			return 30;
+		}
+		if (aTier == 2) {
+			return 120;
+		}
+		if (aTier == 3) {
+			return 480;
+		}
+		if (aTier == 4) {
+			return 1600;
+		}
+		if (aTier == 5) {
+			return 6400;
+		}
+		if (aTier == 6) {
+			return 25000;
+		}
+		if (aTier == 7) {
+			return 100000;
+		}
+		if (aTier == 8) {
+			return 400000;
+		}
+		if (aTier == 9) {
+			return 1600000;
+		}
+			
+			
+			return 120;
+	}
 
 	private static Materials getMaterialByName(String materialName) {
 
@@ -202,7 +238,10 @@ public class MaterialUtils {
 	public static String getMaterialName(Materials mat){
 		String mName;
 		try {
-			mName = (String) FieldUtils.getDeclaredField(Materials.class, "mName", true).get(mat);
+			mName = (String) FieldUtils.getDeclaredField(Materials.class, "mDefaultLocalName", true).get(mat);
+			if (mName == null) {
+				mName = (String) FieldUtils.getDeclaredField(Materials.class, "mName", true).get(mat);
+			}
 		}
 		catch (IllegalArgumentException | IllegalAccessException e) {
 			mName = mat.name();

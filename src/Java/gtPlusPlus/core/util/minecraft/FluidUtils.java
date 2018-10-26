@@ -543,6 +543,44 @@ public class FluidUtils {
 	public static FluidStack getLiquidXP(final int amount){
 		return EnchantingUtils.getLiquidXP(amount);
 	}
+	
+	public static boolean doesFluidExist(String aFluidName) {
+		FluidStack aFStack1 = (FluidUtils.getFluidStack("molten"+"."+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack2 = (FluidUtils.getFluidStack("fluid"+"."+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack3 = (FluidUtils.getFluidStack(aFluidName.toLowerCase(), 1));		
+		FluidStack aFStack4 = (FluidUtils.getFluidStack(aFluidName, 1));
+		FluidStack aFStack5 = (FluidUtils.getFluidStack("liquid_"+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack6 = (FluidUtils.getFluidStack("liquid"+"."+aFluidName.toLowerCase(), 1));			
+		return aFStack1 == null && aFStack2 == null && aFStack3 == null && aFStack4 == null && aFStack5 == null && aFStack6 == null;
+	}
+	
+	public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
+		FluidStack aFStack1 = (FluidUtils.getFluidStack("molten"+"."+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack2 = (FluidUtils.getFluidStack("fluid"+"."+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack3 = (FluidUtils.getFluidStack(aFluidName.toLowerCase(), 1));		
+		FluidStack aFStack4 = (FluidUtils.getFluidStack(aFluidName, 1));	
+		FluidStack aFStack5 = (FluidUtils.getFluidStack("liquid_"+aFluidName.toLowerCase(), 1));
+		FluidStack aFStack6 = (FluidUtils.getFluidStack("liquid"+"."+aFluidName.toLowerCase(), 1));	
+		if (aFStack1 != null) {
+			return aFStack1;
+		}
+		if (aFStack2 != null) {
+			return aFStack2;
+		}
+		if (aFStack3 != null) {
+			return aFStack3;
+		}
+		if (aFStack4 != null) {
+			return aFStack4;
+		}	
+		if (aFStack5 != null) {
+			return aFStack5;
+		}	
+		if (aFStack6 != null) {
+			return aFStack6;
+		}		
+		return null;
+	}
 
 
 }

@@ -17,6 +17,7 @@ public class AsmConfig {
 	public static boolean enableGtNbtFix;
 	public static boolean enableChunkDebugging;
 	public static boolean enableCofhPatch;
+	public static boolean enableGcFuelChanges;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -72,6 +73,13 @@ public class AsmConfig {
 			enableGtTooltipFix = prop.getBoolean(true);
 			propOrder.add(prop.getName());
 			
+			prop = config.get("general", "enableGcFuelChanges", true);
+			prop.comment = "Enable/Disable changes to Galacticraft Rocket Fuels.";
+			prop.setLanguageKey("gtpp.enableGcFuelChanges").setRequiresMcRestart(true);
+			enableGcFuelChanges = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
+			
 
 			config.setCategoryPropertyOrder("general", propOrder);
 			config.setCategoryPropertyOrder("debug", propOrderDebug);
@@ -84,6 +92,7 @@ public class AsmConfig {
 			FMLLog.log(Level.INFO, "[GT++ ASM] TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] COFH Patch - Enabled: "+enableCofhPatch, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Gc Fuel Changes Patch - Enabled: "+enableGcFuelChanges, new Object[0]);
 			
 		} catch (Exception var3) {
 			FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);

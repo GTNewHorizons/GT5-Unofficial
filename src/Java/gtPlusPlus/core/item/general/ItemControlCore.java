@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 
 public class ItemControlCore extends Item {
@@ -29,16 +28,16 @@ public class ItemControlCore extends Item {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_0");
-		this.icons[1] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_1");
-		this.icons[2] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_2");
-		this.icons[3] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_3");
-		this.icons[4] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_4");
-		this.icons[5] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_5");
-		this.icons[6] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_6");
-		this.icons[7] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_7");
-		this.icons[8] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_8");
-		this.icons[9] = reg.registerIcon(CORE.MODID + ":" + "controlcore/core_9");
+		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_0");
+		this.icons[1] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_1");
+		this.icons[2] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_2");
+		this.icons[3] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_3");
+		this.icons[4] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_4");
+		this.icons[5] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_5");
+		this.icons[6] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_6");
+		this.icons[7] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_7");
+		this.icons[8] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_8");
+		this.icons[9] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_9");
 	}
 
 	@Override
@@ -46,6 +45,7 @@ public class ItemControlCore extends Item {
 		return this.icons[meta];
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		for (int i = 0; i < 10; i ++) {

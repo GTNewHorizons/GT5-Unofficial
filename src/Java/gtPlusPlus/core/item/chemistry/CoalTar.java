@@ -47,23 +47,37 @@ public class CoalTar {
 		Coal_Gas = FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
 		//Ethanol
 		// v - Dehydrate cells to remove water
+		
+		
 		//Create Ethylene
-		Ethylene = FluidUtils.generateFluidNonMolten("Ethylene", "Ethylene", -103, new short[]{255, 255, 255, 100}, null, null);
+		if (!FluidUtils.doesFluidExist("Ethylene")){
+			Ethylene = FluidUtils.generateFluidNonMolten("Ethylene", "Ethylene", -103, new short[]{255, 255, 255, 100}, null, null);
+		}
+		else {
+			Ethylene = FluidUtils.getWildcardFluidStack("Ethylene", 1).getFluid();
+		}
+		
 		//Create Benzene - (Toluene + Hydrogen | 95% Benzene / 5% methane)
-		Benzene = FluidUtils.generateFluidNonMolten("Benzene", "Benzene", 81, new short[]{150, 75, 0, 100}, null, null);
+		if (!FluidUtils.doesFluidExist("NitrousOxide")){
+			Benzene = FluidUtils.generateFluidNonMolten("Benzene", "Benzene", 81, new short[]{150, 75, 0, 100}, null, null);
+		}
+		else {
+			Benzene = FluidUtils.getWildcardFluidStack("Benzene", 1).getFluid();
+		}
+		
 		//Create Ethylbenzene - Ethylbenzene is produced in on a large scale by combining benzene and ethylene in an acid-catalyzed chemical reaction
 		//Use Chemical Reactor
 		Ethylbenzene = FluidUtils.generateFluidNonMolten("Ethylbenzene", "Ethylbenzene", 136, new short[]{255, 255, 255, 100}, null, null);
 		//Create Anthracene
 		Anthracene = FluidUtils.generateFluidNonMolten("Anthracene", "Anthracene", 340, new short[]{255, 255, 255, 100}, null, null);
-		//Toluene		
-		if (FluidUtils.getFluidStack("liquid_toluene", 1) == null){
+		//Toluene
+		if (!FluidUtils.doesFluidExist("Toluene")){
 			Toluene = FluidUtils.generateFluidNonMolten("Toluene", "Toluene", -95, new short[]{140, 70, 20, 100}, null, null);
 		}
 		else {
-			Toluene = FluidUtils.getFluidStack("liquid_toluene", 1000).getFluid();
+			Toluene = FluidUtils.getWildcardFluidStack("Toluene", 1).getFluid();
 			Item itemCellToluene = new BaseItemComponent("Toluene", "Toluene", new short[]{140, 70, 20, 100});
-			MaterialGenerator.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack("liquid_toluene", 1000), null);
+			MaterialGenerator.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack(Toluene, 1000), null);
 		}
 
 		//Create Coal Tar
