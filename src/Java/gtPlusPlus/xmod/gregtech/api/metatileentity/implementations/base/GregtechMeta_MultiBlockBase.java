@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -43,6 +42,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
@@ -61,6 +61,24 @@ import net.minecraftforge.fluids.FluidStack;
 public abstract class GregtechMeta_MultiBlockBase
 extends
 GT_MetaTileEntity_MultiBlockBase {
+
+
+
+
+	static {
+		
+		Method a08 = findRecipe08 = ReflectionUtils.getMethod(GT_Recipe_Map.class, "findRecipe", IHasWorldObjectAndCoords.class, GT_Recipe.class, boolean.class, long.class, FluidStack[].class, ItemStack.class, ItemStack[].class);
+		Method a09 = findRecipe09 = ReflectionUtils.getMethod(GT_Recipe_Map.class, "findRecipe", IHasWorldObjectAndCoords.class, GT_Recipe.class, boolean.class, boolean.class, long.class, FluidStack[].class, ItemStack.class, ItemStack[].class);
+		Logger.INFO("Found .08 findRecipe method? "+(a08 != null));
+		Logger.INFO("Found .09 findRecipe method? "+(a09 != null));
+		
+		//gregtech.api.util.GT_Recipe.GT_Recipe_Map.findRecipe(IHasWorldObjectAndCoords, GT_Recipe, boolean, long, FluidStack[], ItemStack, ItemStack...)
+		
+	}
+
+	//Find Recipe Methods
+	private static final Method findRecipe08;
+	private static final Method findRecipe09;
 
 	public GT_Recipe mLastRecipe;
 	private boolean mInternalCircuit = false;
@@ -329,7 +347,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Control Core to control the Multiblocks behaviour.
 		int aControlCoreTier = getControlCoreTier();
-		
+
 		//If no core, return false;
 		if (aControlCoreTier == 0) {
 			return false;
@@ -350,7 +368,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (tTier > aControlCoreTier) {
 			return false;
 		}
-		
+
 
 		GT_Recipe tRecipe = findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
@@ -410,11 +428,11 @@ GT_MetaTileEntity_MultiBlockBase {
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
 
-		
+
 		//Only Overclock as high as the control circuit.
 		byte tTierOld = tTier;
 		tTier = (byte) aControlCoreTier;
-		
+
 		// Overclock
 		if (this.mEUt <= 16) {
 			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
@@ -713,7 +731,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return false;
 	}
-	
+
 	public int getControlCoreTier() {		
 		if (mControlCoreBus.size() == 0) {
 			return 0;
@@ -1229,15 +1247,32 @@ GT_MetaTileEntity_MultiBlockBase {
 		catch (Throwable t) {
 			log("Invalid recipe lookup.");			
 		}		
+
+
 		if (mRecipeResult == null) {
-			return this.getRecipeMap().findRecipe(aTileEntity, aRecipe,	aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+				try {
+					return (GT_Recipe) findRecipe08.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					return null;
+				}
+			}
+			else {
+				try {
+					return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					return null;
+				}
+			}
 		}
 		else {
 			return mRecipeResult;
 		}
+
+
+
+
 	}
-
-
 
 
 

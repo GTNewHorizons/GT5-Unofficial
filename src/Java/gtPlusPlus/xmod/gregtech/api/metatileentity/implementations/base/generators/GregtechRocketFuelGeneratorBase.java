@@ -14,7 +14,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.common.GT_Pollution;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.core.lib.CORE;

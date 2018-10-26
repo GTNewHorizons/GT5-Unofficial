@@ -12,7 +12,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.*;
 
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -100,7 +100,7 @@ public class GregtechOreDictUnificator {
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, ItemStack aReplacement, long aAmount) {
         //if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial)) aPrefix.mDynamicItems.add((Materials) aMaterial);
-        if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial)) return aReplacement;
+        if (StaticFields59.getOrePrefixesBooleanDisabledItems().contains(aPrefix) && StaticFields59.getOrePrefixesBooleanDisabledItems().contains(aMaterial)) return aReplacement;
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 

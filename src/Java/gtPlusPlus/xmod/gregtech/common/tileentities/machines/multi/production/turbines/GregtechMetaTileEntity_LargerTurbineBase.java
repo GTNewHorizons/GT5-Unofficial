@@ -20,11 +20,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Turbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.turbine.LargeTurbineTextureHandler;
 import net.minecraft.block.Block;
@@ -332,8 +334,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 			if (baseEff == 0 || optFlow == 0 || counter >= 512 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
 					|| this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
 				counter = 0;
-				baseEff = GT_Utility.safeInt((long)((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-				optFlow = GT_Utility.safeInt((long)Math.max(Float.MIN_NORMAL,
+				baseEff = MathUtils.safeInt((long)((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+				optFlow = MathUtils.safeInt((long)Math.max(Float.MIN_NORMAL,
 						((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
 						* GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
 						* 50));
@@ -354,7 +356,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 
 		// Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in power level (per tick)
 		// This is how much the turbine can actually change during this tick
-		int maxChangeAllowed = Math.max(10, GT_Utility.safeInt((long)Math.abs(difference)/100));
+		int maxChangeAllowed = Math.max(10, MathUtils.safeInt((long)Math.abs(difference)/100));
 
 		if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed change
 			int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
@@ -406,7 +408,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		int mPollutionReduction=0;
 		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 			if (isValidMetaTileEntity(tHatch)) {
-				mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
+				mPollutionReduction=Math.max(StaticFields59.calculatePollutionReducation(tHatch, 100),mPollutionReduction);
 			}
 		}
 
@@ -420,7 +422,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		int tDura = 0;
 
 		if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
-			tDura = GT_Utility.safeInt((long)(100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
+			tDura = MathUtils.safeInt((long)(100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
 		}
 
 		long storedEnergy=0;
@@ -438,14 +440,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 				StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", /* 2 */
 				StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ /* 3 */
 				EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU", 
-				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + /* 4 */
+				StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + /* 4 */
 						EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")", /* 5 */
 						StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", /* 6 */
 						StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", /* 7 */
 						StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" /* 8 */
 		};
 		if (!this.getClass().getName().contains("Steam"))
-			ret[4]=StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
+			ret[4]=StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+MathUtils.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
 		return ret;
 
 

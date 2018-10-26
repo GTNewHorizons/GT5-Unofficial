@@ -16,7 +16,10 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Naquadah;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Fusion_MK4;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -320,7 +323,13 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 			if (aMetaTileEntity == null) {
 				return false;
 			} else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Naquadah) {
-				((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+				
+				try {
+					GregtechMetaTileEntity_Adv_Fusion_MK4.mUpdateHatchTexture.invoke((GT_MetaTileEntity_Hatch) aMetaTileEntity, aBaseCasingIndex);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {					
+				}
+				
+				//((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 				return this.mNaqHatches.add((GT_MetaTileEntity_Hatch_Naquadah) aMetaTileEntity);
 			} else {
 				return false;

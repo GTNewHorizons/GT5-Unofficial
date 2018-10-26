@@ -20,7 +20,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -208,13 +208,13 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((i != 0) || (j != 0)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings5) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != StaticFields59.getBlockCasings5()) {
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
 						return false;
 					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings5) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != StaticFields59.getBlockCasings5()) {
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
@@ -284,7 +284,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			int pollutionReduction = 0;
 			for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 				if (isValidMetaTileEntity(tHatch)) {
-					pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
+					pollutionReduction = 100 - StaticFields59.calculatePollutionReducation(tHatch, 100);
 					break;
 				}
 			}

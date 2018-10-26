@@ -7,7 +7,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,14 +62,7 @@ public class GUI_Multi_Basic_Slotted extends GT_GUIContainerMetaTile_Machine {
 				}
 
 				ItemStack tItem;
-				if (this.mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DrillerBase) {
-					tItem = this.mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
-					if (tItem == null
-							|| !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-						this.fontRendererObj.drawString(this.trans("143", "Missing Mining Pipe"), 10,
-								((GT_Container_MultiMachine) this.mContainer).mActive == 0 ? 40 : 24, 16448255);
-					}
-				} else if (this.mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine) {
+				if (this.mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine) {
 					tItem = this.mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
 					if (tItem == null || tItem.getItem() != GT_MetaGenerated_Tool_01.INSTANCE
 							|| tItem.getItemDamage() < 170 || tItem.getItemDamage() > 177) {

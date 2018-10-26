@@ -66,24 +66,24 @@ public class GregtechConduits {
 	}
 
 	private static void run3() {
-
+		
 		if (Utils.getGregtechVersionAsInt() >= 50930) {
 			try {
 				Class<GT_MetaPipeEntity_Fluid> aPipeEntity = GT_MetaPipeEntity_Fluid.class;
 				Constructor<GT_MetaPipeEntity_Fluid> constructor = aPipeEntity.getConstructor(int.class, String.class, String.class, float.class, Materials.class, int.class, int.class, boolean.class, int.class);
 				if (constructor != null) {
 					Logger.INFO("Generating Hexadecuple pipes.");
-					generateFluidMultiPipes(constructor, Materials.Copper, Materials.Copper.mName, "Copper", BasePipeHexadecupleID++, 60, 1000, true);
-					generateFluidMultiPipes(constructor, Materials.Bronze, Materials.Bronze.mName, "Bronze", BasePipeHexadecupleID++, 120, 2000, true);
-					generateFluidMultiPipes(constructor, Materials.Steel, Materials.Steel.mName, "Steel", BasePipeHexadecupleID++, 240, 2500, true);
-					generateFluidMultiPipes(constructor, Materials.StainlessSteel, Materials.StainlessSteel.mName, "StainlessSteel", BasePipeHexadecupleID++, 360, 3000, true);
-					generateFluidMultiPipes(constructor, Materials.Titanium, Materials.Titanium.mName, "Titanium", BasePipeHexadecupleID++, 480, 5000, true);
-					generateFluidMultiPipes(constructor, Materials.TungstenSteel, Materials.TungstenSteel.mName, "Bronze", BasePipeHexadecupleID++, 600, 7500, true);
-					generateFluidMultiPipes(constructor, Materials.Plastic, Materials.Plastic.mName, "Plastic", BasePipeHexadecupleID++, 360, 350, true);
+					generateFluidMultiPipes(constructor, Materials.Copper, MaterialUtils.getMaterialName(Materials.Copper), "Copper", BasePipeHexadecupleID++, 60, 1000, true);
+					generateFluidMultiPipes(constructor, Materials.Bronze, MaterialUtils.getMaterialName(Materials.Bronze), "Bronze", BasePipeHexadecupleID++, 120, 2000, true);
+					generateFluidMultiPipes(constructor, Materials.Steel, MaterialUtils.getMaterialName(Materials.Steel), "Steel", BasePipeHexadecupleID++, 240, 2500, true);
+					generateFluidMultiPipes(constructor, Materials.StainlessSteel, MaterialUtils.getMaterialName(Materials.StainlessSteel), "StainlessSteel", BasePipeHexadecupleID++, 360, 3000, true);
+					generateFluidMultiPipes(constructor, Materials.Titanium, MaterialUtils.getMaterialName(Materials.Titanium), "Titanium", BasePipeHexadecupleID++, 480, 5000, true);
+					generateFluidMultiPipes(constructor, Materials.TungstenSteel, MaterialUtils.getMaterialName(Materials.TungstenSteel), "Bronze", BasePipeHexadecupleID++, 600, 7500, true);
+					generateFluidMultiPipes(constructor, Materials.Plastic, MaterialUtils.getMaterialName(Materials.Plastic), "Plastic", BasePipeHexadecupleID++, 360, 350, true);
 
 					Materials aPTFE = Materials.get("Polytetrafluoroethylene");
 					if (aPTFE != null) {
-						generateFluidMultiPipes(constructor, aPTFE, aPTFE.mName, "PTFE", BasePipeHexadecupleID++, 480, 600, true);	        	
+						generateFluidMultiPipes(constructor, aPTFE, MaterialUtils.getMaterialName(aPTFE), "PTFE", BasePipeHexadecupleID++, 480, 600, true);	        	
 					}
 				}
 				else {

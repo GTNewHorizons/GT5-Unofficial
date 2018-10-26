@@ -10,6 +10,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
@@ -236,8 +237,8 @@ public class RECIPES_Machines {
 				EV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
 				EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
 				HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
-				EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
-				EV_MACHINE_MassFabricator= ItemList.Machine_LuV_Massfab.get(1);
+				EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);			
+				EV_MACHINE_MassFabricator= CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Machine_LuV_Massfab").get(1, ItemList.Machine_IV_Massfab.get(1)) : ItemList.Machine_IV_Massfab.get(1);
 				EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
 				EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
 				EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
@@ -861,9 +862,13 @@ public class RECIPES_Machines {
 						GregtechItemList.Pollution_Detector.get(1));
 				
 				//Air Intake Hatch
+				
+				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("FluidRegulator_IV").get(1, ItemList.Pump_IV.get(1)) : ItemList.Pump_IV.get(1);
+				
+				
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
-						CI.component_Plate[6], ItemList.FluidRegulator_IV.get(1), CI.component_Plate[6],
+						CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
 						CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
 						GregtechItemList.Hatch_Air_Intake.get(1));
 				
@@ -1132,9 +1137,12 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter){
+				
+				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Block_IridiumTungstensteel").get(1, ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1)) : ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
+				
 				RecipeUtils.recipeBuilder(
 						"plateTungstenSteel", CI.craftingToolHammer_Hard, "plateTungstenSteel",
-						"plateStellite", ItemList.Block_IridiumTungstensteel.get(1), "plateStellite",
+						"plateStellite", aCoreBlock, "plateStellite",
 						"plateTungstenSteel", CI.craftingToolWrench, "plateTungstenSteel",
 						GregtechItemList.Casing_Autocrafter.get(Casing_Amount));
 
@@ -1257,6 +1265,8 @@ public class RECIPES_Machines {
 				cell1 = CI.conveyorModule_EV;
 				cell2 = CI.electricMotor_IV;
 				ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
+				ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Machine_LuV_Unboxinator").get(1, ItemList.Machine_IV_Unboxinator.get(1)) : ItemList.Machine_IV_Unboxinator.get(1);
+				
 
 				RecipeUtils.recipeBuilder(
 						plate, ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1), plate,
@@ -1265,7 +1275,7 @@ public class RECIPES_Machines {
 						GregtechItemList.Casing_AmazonWarehouse.get(Casing_Amount));
 				RecipeUtils.recipeBuilder( 
 						casingAmazon, CI.getTieredCircuit(7), casingAmazon,
-						CI.robotArm_LuV, ItemList.Machine_LuV_Unboxinator.get(1), CI.robotArm_LuV,
+						CI.robotArm_LuV, aTieredUnboxinator, CI.robotArm_LuV,
 						CI.conveyorModule_LuV, GregtechItemList.Gregtech_Computer_Cube.get(1), CI.conveyorModule_LuV,
 						GregtechItemList.Amazon_Warehouse_Controller.get(1));
 				

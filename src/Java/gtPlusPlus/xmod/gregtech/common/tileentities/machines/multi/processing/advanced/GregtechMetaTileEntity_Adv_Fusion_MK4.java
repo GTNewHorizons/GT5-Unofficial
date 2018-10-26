@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import java.lang.reflect.Method;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
@@ -8,6 +10,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
@@ -16,6 +19,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_FusionCompu
 
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import net.minecraft.block.Block;
@@ -24,6 +28,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_FusionComputer {
 
+	public static final Method mUpdateHatchTexture;
+	
+	static {
+		mUpdateHatchTexture = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);
+	}
+	
 	public GregtechMetaTileEntity_Adv_Fusion_MK4(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional, 6);
 	}
@@ -126,20 +136,25 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 	}
 
 	public boolean turnCasingActive(final boolean status) {
+		try {
 		if (this.mEnergyHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
-				hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+				mUpdateHatchTexture.invoke(hatch, (status ? TAE.getIndexFromPage(2, 14) : 53));
 			}
 		}
 		if (this.mOutputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Output hatch2 : this.mOutputHatches) {
-				hatch2.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+				mUpdateHatchTexture.invoke(hatch2, (status ? TAE.getIndexFromPage(2, 14) : 53));
 			}
 		}
 		if (this.mInputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Input hatch3 : this.mInputHatches) {
-				hatch3.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+				mUpdateHatchTexture.invoke(hatch3, (status ? TAE.getIndexFromPage(2, 14) : 53));
 			}
+		}
+		}
+		catch (Throwable t) {
+			return false;
 		}
 		return true;
 	}

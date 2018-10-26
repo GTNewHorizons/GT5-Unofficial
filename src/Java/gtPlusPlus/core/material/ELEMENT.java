@@ -165,23 +165,23 @@ public final class ELEMENT {
 					if (a3 == null) {
 						Logger.INFO("[Material] Fallback attempt to find Trinium failed, dumping materials.");
 						for (Materials m : Materials.values()) {
-							Logger.INFO("[Material] Found "+m.mName);
+							Logger.INFO("[Material] Found "+MaterialUtils.getMaterialName(m));
 						}
 						a4 = null;
 					}
 					else {
-						Logger.INFO("[Material] a3 Found "+a3.mName);
+						Logger.INFO("[Material] a3 Found "+MaterialUtils.getMaterialName(a3));
 						a4 = a3;						
 					}
 				}
 				else {
-					Logger.INFO("[Material] a2 Found "+a2.mName);
+					Logger.INFO("[Material] a2 Found "+MaterialUtils.getMaterialName(a2));
 					a4 = a2;
 				}
 				TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(a4);
 			}
 			else {
-				Logger.INFO("[Material] a1 Found "+a1.mName);
+				Logger.INFO("[Material] a1 Found "+MaterialUtils.getMaterialName(a1));
 				TRINIUM  = MaterialUtils.generateMaterialFromGtENUM(a1);				
 			}		
 			

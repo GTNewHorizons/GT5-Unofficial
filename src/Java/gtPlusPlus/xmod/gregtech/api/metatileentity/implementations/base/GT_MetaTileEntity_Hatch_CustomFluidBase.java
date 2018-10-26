@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 	}
 
 	public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount,  final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
-		super(aName, 6, aDescription, aTextures);
+		super(aName, 6, aDescription[0], aTextures);
 		this.mRecipeMap = null;
 		this.mLockedFluid = aFluid;
 		this.mFluidCapacity = aAmount;
@@ -112,6 +112,6 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 	}
 
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_CustomFluidBase(this.mLockedFluid, this.mFluidCapacity, this.mName, this.mDescriptionArray,	this.mTextures);
+		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_CustomFluidBase(this.mLockedFluid, this.mFluidCapacity, this.mName, this.mDescription,	this.mTextures);
 	}
 }

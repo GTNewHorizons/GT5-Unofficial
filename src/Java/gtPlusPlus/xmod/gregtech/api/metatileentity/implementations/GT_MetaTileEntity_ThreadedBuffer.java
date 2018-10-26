@@ -37,7 +37,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 
 	public GT_MetaTileEntity_ThreadedBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
 			final int aInvSlotCount, final String[] aDescription) {
-		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription[0]);
 		this.bOutput = false;
 		this.bRedstoneIfFull = false;
 		this.bInvert = false;
@@ -59,7 +59,7 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 
 	public GT_MetaTileEntity_ThreadedBuffer(final String aName, final int aTier, final int aInvSlotCount,
 			final String[] aDescription, final ITexture[][][] aTextures) {
-		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+		super(aName, aTier, aInvSlotCount, aDescription[0], aTextures);
 		this.bOutput = false;
 		this.bRedstoneIfFull = false;
 		this.bInvert = false;
@@ -292,10 +292,9 @@ public abstract class GT_MetaTileEntity_ThreadedBuffer extends GT_MetaTileEntity
 				this.mTargetStackSize = 64;
 			}
 			if (this.mTargetStackSize == 0) {
-				GT_Utility.sendChatToPlayer(aPlayer, this.trans("098", "Do not regulate Item Stack Size"));
+				GT_Utility.sendChatToPlayer(aPlayer, "Do not regulate Item Stack Size");
 			} else {
-				GT_Utility.sendChatToPlayer(aPlayer,
-						this.trans("099", "Regulate Item Stack Size to: ") + this.mTargetStackSize);
+				GT_Utility.sendChatToPlayer(aPlayer, "Regulate Item Stack Size to: " + this.mTargetStackSize);
 			}
 		}
 	}

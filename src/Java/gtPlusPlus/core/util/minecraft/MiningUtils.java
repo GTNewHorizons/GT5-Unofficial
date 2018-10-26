@@ -143,14 +143,22 @@ public class MiningUtils {
 	}
 	
 	public static void iterateAllOreTypes() {
-		HashMap<String, Integer> M = new HashMap<String, Integer>();		
+		HashMap<String, Integer> M = new HashMap<String, Integer>();
+		String aTextWorldGen = null;
 		if (MiningUtils.findAndMapOreTypesFromGT()) {
 			int mapKey = 0;
 			for (AutoMap<GT_Worldgen_GT_Ore_Layer> g : MiningUtils.mOreMaps) {
-				for (GT_Worldgen_GT_Ore_Layer h : g) {					
+				for (GT_Worldgen_GT_Ore_Layer h : g) {	
+					
+					try {
+						aTextWorldGen = (String) ReflectionUtils.getField(GT_Worldgen_GT_Ore_Layer.class, "aTextWorldgen").get(h);
+					} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+						aTextWorldGen = h.mWorldGenName;
+					}
+					
 					//if (M.containsKey(h.aTextWorldgen + h.mWorldGenName)) {
-						M.put(h.aTextWorldgen + h.mWorldGenName, mapKey);
-						Logger.INFO("Found Vein type: " + h.aTextWorldgen + h.mWorldGenName + " in map with key: "+mapKey);
+						M.put(aTextWorldGen + h.mWorldGenName, mapKey);
+						Logger.INFO("Found Vein type: " + aTextWorldGen + h.mWorldGenName + " in map with key: "+mapKey);
 					//}					
 				}
 				mapKey++;
@@ -169,6 +177,8 @@ public class MiningUtils {
 	
 	public static boolean findAndMapOreTypesFromGT() {
 		//Gets Moon ID
+		
+		boolean aEndAsteroids;		
 		try {
 			if (Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore") != null && mMoonID == -99) {
 				mMoonID = ReflectionUtils.getField(Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore"), "idDimensionMoon").getInt(null);
@@ -200,16 +210,25 @@ public class MiningUtils {
 		
 		for (GT_Worldgen_GT_Ore_Layer x : GT_Worldgen_GT_Ore_Layer.sList) {			
 			if (x.mEnabled) {
+				
+
+				try {
+					aEndAsteroids = ReflectionUtils.getField(GT_Worldgen_GT_Ore_Layer.class, "mEndAsteroid").getBoolean(x);
+				}
+				catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+					aEndAsteroids = false;
+				}
+				
 				if (x.mOverworld) {
 					Ores_Overworld.put(x);
 				}
 				if (x.mNether) {
 					Ores_Nether.put(x);
 				}
-				if (x.mEnd || x.mEndAsteroid) {
+				if (x.mEnd || aEndAsteroids) {
 					Ores_End.put(x);
 				}
-				if (x.mOverworld || x.mNether || (x.mEnd || x.mEndAsteroid)) {
+				if (x.mOverworld || x.mNether || (x.mEnd || aEndAsteroids)) {
 					continue;
 				}
 				/*if (x.mMoon) {

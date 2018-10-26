@@ -70,13 +70,13 @@ public class AsmConfig {
 				config.save();
 			}
 
-			System.out.println("[GT++ ASM] Chunk Debugging - Enabled: "+enableChunkDebugging);
-			System.out.println("[GT++ ASM] Gt Nbt Fix - Enabled: "+enableGtNbtFix);
-			System.out.println("[GT++ ASM] TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting);
-			System.out.println("[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Chunk Debugging - Enabled: "+enableChunkDebugging, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Nbt Fix - Enabled: "+enableGtNbtFix, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix, new Object[0]);
 			
 		} catch (Exception var3) {
-			FMLLog.log(Level.ERROR, var3, "GT++ ASM has a problem loading it's config", new Object[0]);
+			FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);
 		}
 
 	}

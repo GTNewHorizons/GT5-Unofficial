@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
 
 	public GT_MetaTileEntity_Hatch_Naquadah(final String aName, final String[] aDescription,
 			final ITexture[][][] aTextures) {
-		super(aName, 6, aDescription, aTextures);
+		super(aName, 6, aDescription[0], aTextures);
 		mFluidCapacity = 32000;
 		initHatch();
 	}
@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
 	}
 
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_Naquadah(this.mName, this.mDescriptionArray, this.mTextures);
+		return (MetaTileEntity) new GT_MetaTileEntity_Hatch_Naquadah(this.mName, this.mDescription, this.mTextures);
 	}
 	
 	@Override
