@@ -20,7 +20,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
 	private final boolean mEnabled = false;
 	public static final AsmConfig mConfig;
-	
+
 	static {
 		mConfig = new AsmConfig(new File("config/GTplusplus/asm.cfg"));
 		System.out.println("[GT++ ASM] Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
@@ -50,10 +50,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
+		boolean probablyShouldBeFalse = false;
+
 		//Enable mapping of Tickets and loaded chunks. - Forge
 		if (transformedName.equals("net.minecraftforge.common.ForgeChunkManager") && mConfig.enableChunkDebugging) {	
 			FMLRelaunchLog.log("[GT++ ASM] Chunkloading Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_Forge_ChunkLoading(basicClass, obfuscated).getWriter().toByteArray();
+			return new ClassTransformer_Forge_ChunkLoading(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
 		}
 
 		// Fix the OreDictionary - Forge
@@ -64,42 +66,44 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return classWriter.toByteArray();
 		}
 		// Fix the OreDictionary COFH
-		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter") && mConfig.enableCofhPatch) {
+		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter") && (mConfig.enableCofhPatch || !obfuscated)) {
 			FMLRelaunchLog.log("[GT++ ASM] COFH", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, obfuscated).getWriter().toByteArray();
+			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
 		}
 
 		// Fix Tinkers Fluids
 		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid") && mConfig.enableTiConFluidLighting) {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
+			return new ClassTransformer_TiConFluids("getLightValue", probablyShouldBeFalse, basicClass).getWriter().toByteArray();
 		}
 
 		//Fix GC stuff
-		if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GC_FluidUtil(basicClass, obfuscated).getWriter().toByteArray();
-		}
-		if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GC_FuelLoader(basicClass, obfuscated).getWriter().toByteArray();
-		}
-		if (transformedName.equals("micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket")) {
-			FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GC_EntityAutoRocket(basicClass, obfuscated).getWriter().toByteArray();
+		if (mConfig.enableGcFuelChanges) {
+			if (transformedName.equals("micdoodle8.mods.galacticraft.core.util.FluidUtil")) {	
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft FluidUtils Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_FluidUtil(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
+			}
+			if (transformedName.equals("micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader")) {
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft Fuel_Loader Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_FuelLoader(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
+			}
+			if (transformedName.equals("micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket")) {
+				FMLRelaunchLog.log("[GT++ ASM] Galacticraft EntityAutoRocket Patch", Level.INFO, "Transforming %s", transformedName);
+				return new ClassTransformer_GC_EntityAutoRocket(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
+			}
 		}
 
 		//Fix GT NBT Persistency issue
-		if (transformedName.equals("gregtech.common.blocks.GT_Block_Machines") && mConfig.enableGtNbtFix) {	
+		if (transformedName.equals("gregtech.common.blocks.GT_Block_Machines")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GT_BlockMachines_NBT(basicClass, obfuscated).getWriter().toByteArray();
+			return new ClassTransformer_GT_BlockMachines_NBT(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
 		}
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines") && mConfig.enableGtTooltipFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, obfuscated).getWriter().toByteArray();
+			return new ClassTransformer_GT_ItemMachines_Tooltip(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
 		}
-		
+
 
 		return basicClass;
 	}

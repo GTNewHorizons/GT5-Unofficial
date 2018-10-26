@@ -19,6 +19,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
@@ -27,11 +28,11 @@ public class MaterialUtils {
 
 	@SuppressWarnings({ "rawtypes", "unused" })
 	private static Class[][] commonTypes =
-			{{Materials.class, int.class, TextureSet.class, float.class, int.class,
-					int.class, int.class, int.class, int.class, int.class, int.class,
-					String.class, int.class, int.class, int.class, int.class, boolean.class,
-					boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
-					List.class , List.class}};
+{{Materials.class, int.class, TextureSet.class, float.class, int.class,
+	int.class, int.class, int.class, int.class, int.class, int.class,
+	String.class, int.class, int.class, int.class, int.class, boolean.class,
+	boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
+	List.class , List.class}};
 
 	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;
@@ -182,7 +183,7 @@ public class MaterialUtils {
 			return 0;
 		}
 	}
-	
+
 	public static int getVoltageForTier(final int aTier) {
 		if (aTier == 0) {
 			return 16;
@@ -214,9 +215,9 @@ public class MaterialUtils {
 		if (aTier == 9) {
 			return 1600000;
 		}
-			
-			
-			return 120;
+
+
+		return 120;
 	}
 
 	private static Materials getMaterialByName(String materialName) {
@@ -236,16 +237,19 @@ public class MaterialUtils {
 
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(Materials mat){
-		String mName;
+		
+		String mName = null;
+
 		try {
-			mName = (String) FieldUtils.getDeclaredField(Materials.class, "mDefaultLocalName", true).get(mat);
+			mName = (String) ReflectionUtils.getField(Materials.class, "mDefaultLocalName").get(mat);
 			if (mName == null) {
-				mName = (String) FieldUtils.getDeclaredField(Materials.class, "mName", true).get(mat);
+				mName = (String) ReflectionUtils.getField(Materials.class, "mName").get(mat);
 			}
 		}
-		catch (IllegalArgumentException | IllegalAccessException e) {
-			mName = mat.name();
+		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
 		}
+
+
 		if (mName == null || mName.equals("")){
 			mName = mat.name();
 		}
@@ -257,7 +261,7 @@ public class MaterialUtils {
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
 		return o;
 	}
-	
+
 	public static Materials getMaterial(String aMaterialName) {
 		Materials m = gtPlusPlus.xmod.gregtech.common.StaticFields59.getMaterial(aMaterialName);
 		if (m == null) {

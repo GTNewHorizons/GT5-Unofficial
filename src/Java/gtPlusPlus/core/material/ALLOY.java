@@ -141,8 +141,8 @@ public final class ALLOY {
 			"Inconel-625", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{128, 200, 128, 0}, //Material Colour
-			1425, //Melting Point in C
-			-1,
+			2425, //Melting Point in C
+			3758,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -159,8 +159,8 @@ public final class ALLOY {
 			"Inconel-690", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{118, 220, 138, 0}, //Material Colour
-			1425, //Melting Point in C
-			-1,
+			3425, //Melting Point in C
+			4895,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -176,8 +176,8 @@ public final class ALLOY {
 			"Inconel-792", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{108, 240, 118, 0}, //Material Colour
-			1425, //Melting Point in C
-			-1,
+			3425, //Melting Point in C
+			6200,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -194,8 +194,8 @@ public final class ALLOY {
 			"Zeron-100", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{180, 180, 20, 0}, //Material Colour
-			-1,
-			-1,
+			6100,
+			9785,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -213,8 +213,8 @@ public final class ALLOY {
 			"Maraging Steel 250", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{140, 140, 140, 0}, //Material Colour
-			1413, //Melting Point in C
-			-1,
+			2413, //Melting Point in C
+			4555,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -231,8 +231,8 @@ public final class ALLOY {
 			"Maraging Steel 300", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{150, 150, 150, 0}, //Material Colour
-			1413, //Melting Point in C
-			-1,
+			2413, //Melting Point in C
+			4555,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -249,8 +249,8 @@ public final class ALLOY {
 			"Maraging Steel 350", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{160, 160, 160, 0}, //Material Colour
-			1413, //Melting Point in C
-			-1,
+			2413, //Melting Point in C
+			4555,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -267,8 +267,8 @@ public final class ALLOY {
 			"Stellite", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{129, 75, 120, 0}, //Material Colour
-			1310, //Melting Point in C
-			-1,
+			4310, //Melting Point in C
+			6250,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -284,11 +284,11 @@ public final class ALLOY {
 			"Talonite", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{228, 75, 120, 0}, //Material Colour
-			1454, //Melting Point in C
+			3454, //Melting Point in C
+			5500,
 			-1,
 			-1,
-			-1,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().COBALT, 40),
@@ -301,11 +301,11 @@ public final class ALLOY {
 			"Hastelloy-W", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{218, 165, 32, 0}, //Material Colour
-			1350, //Melting Point in C
+			3350, //Melting Point in C
+			5755,
 			-1,
 			-1,
-			-1,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 06),
@@ -319,11 +319,11 @@ public final class ALLOY {
 			"Hastelloy-X", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{255, 193, 37, 0}, //Material Colour
-			1350, //Melting Point in C
+			3350, //Melting Point in C
+			5755,
 			-1,
 			-1,
-			-1,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 18),
@@ -338,8 +338,8 @@ public final class ALLOY {
 			"Hastelloy-N", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{236, 213, 48, 0}, //Material Colour
-			1350, //Melting Point in C
-			-1,
+			4350, //Melting Point in C
+			6875,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -356,8 +356,8 @@ public final class ALLOY {
 			"Hastelloy-C276", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{238, 180, 34, 0}, //Material Colour
-			1350, //Melting Point in C
-			-1,
+			4350, //Melting Point in C
+			6520,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -375,11 +375,11 @@ public final class ALLOY {
 			"Incoloy-020", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{101, 81, 71, 0}, //Material Colour
-			1425, //Melting Point in C
+			3425, //Melting Point in C
+			5420,
 			-1,
 			-1,
-			-1,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 40),
@@ -392,11 +392,11 @@ public final class ALLOY {
 			"Incoloy-DS", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{71, 101, 81, 0}, //Material Colour
-			1425, //Melting Point in C
+			3425, //Melting Point in C
+			5420,
 			-1,
 			-1,
-			-1,
-			false, //Uses Blast furnace?
+			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 46),
@@ -409,8 +409,8 @@ public final class ALLOY {
 			"Incoloy-MA956", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{81, 71, 101, 0}, //Material Colour
-			1425, //Melting Point in C
-			-1,
+			4425, //Melting Point in C
+			6875,
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -506,8 +506,8 @@ public final class ALLOY {
 			"Grisium", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{53, 93, 106, 0}, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
+			3850, //Melting Point in C
+			5550, //Boiling Point in C
 			96, //Protons
 			128, //Neutrons
 			true, //Uses Blast furnace?
@@ -580,8 +580,8 @@ public final class ALLOY {
 			"Trinium Titanium Alloy", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{239,210,200, 0}, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
+			3750, //Melting Point in C
+			7210, //Boiling Point in C
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -593,8 +593,8 @@ public final class ALLOY {
 			"Trinium Naquadah Alloy", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{255, 243, 117, 0}, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
+			4200, //Melting Point in C
+			7400, //Boiling Point in C
 			-1,
 			-1,
 			false, //Uses Blast furnace?
@@ -606,8 +606,8 @@ public final class ALLOY {
 			"Trinium Naquadah Carbonite", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{255, 233, 0, 0}, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
+			6500, //Melting Point in C
+			9000, //Boiling Point in C
 			-1,
 			-1,
 			true, //Uses Blast furnace?
@@ -616,6 +616,9 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
 			});
 
+	/*
+	 * Witchery Material
+	 */
 
 	public static final Material KOBOLDITE = new Material(
 			"Koboldite", //Material Name
@@ -632,6 +635,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().THAUMIUM, 30),
 					new MaterialStack(ELEMENT.getInstance().IRON, 35)
 			});
+	
 	
 	/*
 	 * Top Tier Alloys
@@ -737,11 +741,14 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ALLOY.STELLITE, 25),
+					new MaterialStack(ALLOY.STELLITE, 15),
+					new MaterialStack(ALLOY.ENERGYCRYSTAL, 5),
+					new MaterialStack(ALLOY.SILICON_CARBIDE, 5),
 					new MaterialStack(ELEMENT.getInstance().GALLIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().AMERICIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().PALLADIUM, 5),
-					new MaterialStack(ELEMENT.getInstance().BISMUTH, 5)
+					new MaterialStack(ELEMENT.getInstance().BISMUTH, 5),
+					new MaterialStack(ELEMENT.getInstance().GERMANIUM, 5)
 			});
 
 

@@ -142,13 +142,31 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					//Get us four ItemStacks to input into the mixer
 					ItemStack[] input = new ItemStack[4];
 					
-					/*input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
+					input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
 					input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
 					input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
 					input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
-					*/
 					
-					for (int g = 0; g<4; g++) {						
+					
+					if (inputStacks.length == 1) {
+						input[1] = input[0];
+						input[0] = CI.getNumberedCircuit(inputStacks.length+10);
+					}
+					else if (inputStacks.length == 2) {
+						input[2] = input[1];
+						input[1] = input[0];
+						input[0] = CI.getNumberedCircuit(inputStacks.length+10);
+
+					}
+					else if (inputStacks.length == 3) {
+						input[3] = input[2];
+						input[2] = input[1];
+						input[1] = input[0];
+						input[0] = CI.getNumberedCircuit(inputStacks.length+10);
+					}
+					
+					
+					/*for (int g = 0; g<4; g++) {						
 						if(inputStacks.length > g) {
 							input[g] = inputStacks[g] != null ? inputStacks[g] : null;							
 						}
@@ -156,7 +174,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 							input[g] = CI.getNumberedCircuit(g+10);
 							break;
 						}												
-					}					
+					}*/					
 
 					//Add mixer Recipe
 					FluidStack oxygen = GT_Values.NF;

@@ -87,10 +87,10 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 			
 			
 			//Set a duration - NEW
-			int duration = 120*M.vTier*20;
+			int duration = 120*M.vTier*10;
 
 			if (M.vTier <= 4){
-				duration = 20*M.vTier*20;
+				duration = 20*M.vTier*10;
 			}
 
 			int mMaterialListSize=0;

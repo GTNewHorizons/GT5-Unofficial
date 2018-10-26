@@ -43,11 +43,11 @@ public class RECIPES_GREGTECH {
 		chemicalReactorRecipes();
 		dehydratorRecipes();
 		blastFurnaceRecipes();
-		
+
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			largeChemReactorRecipes();
 		}
-		
+
 		fissionFuelRecipes();
 		autoclaveRecipes();
 		compressorRecipes();
@@ -120,8 +120,21 @@ public class RECIPES_GREGTECH {
 							ELEMENT.getInstance().CERIUM.getDust(8)
 					},
 					FluidUtils.getFluidStack("molten.trinium", 136 * 144), 0, 20 * 3000,
-					2040);
+					2040*4);
 		}
+
+		// Germanium Roasting
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] { 
+						ItemUtils.getGregtechCircuit(22),
+						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSphalerite", 8),
+						ELEMENT.getInstance().CARBON.getDust(32),
+				},
+				Materials.SulfuricAcid.getFluid(2000),
+				ELEMENT.getInstance().GERMANIUM.getFluid(288),
+				0,
+				20 * 300,
+				2000);
 
 	}
 

@@ -202,10 +202,10 @@ public class BaseItemDust extends Item{
 
 	private boolean addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
 
-		int timeTaken = 125*this.mTier*20;
+		int timeTaken = 125*this.mTier*10;
 
 		if (this.mTier <= 4){
-			timeTaken = 25*this.mTier*20;
+			timeTaken = 25*this.mTier*10;
 		}
 		int aSlot = mTier - 2;
 		if (aSlot < 2) {
