@@ -26,16 +26,16 @@ public class ClassTransformer_GC_FuelLoader {
 	private final boolean isObfuscated;
 
 	public ClassTransformer_GC_FuelLoader(byte[] basicClass, boolean obfuscated) {
+		
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
+		
 		isObfuscated = obfuscated;
-		try {
-			aTempReader = new ClassReader(className);
-			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new localClassVisitor(aTempWriter), 0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		
+		aTempReader = new ClassReader(basicClass);
+		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+		aTempReader.accept(new localClassVisitor(aTempWriter), 0);		
+		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
 		}

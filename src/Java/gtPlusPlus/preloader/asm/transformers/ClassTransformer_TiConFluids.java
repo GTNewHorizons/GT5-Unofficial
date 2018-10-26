@@ -32,14 +32,16 @@ public class ClassTransformer_TiConFluids {
 
 	public ClassTransformer_TiConFluids(String aMethodName, boolean obfuscated, byte[] basicClass) {
 		isObfuscated = obfuscated;
+		
 		methodName = obfuscated ? DevHelper.getSRG(aMethodName) : aMethodName;
+		
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
-		try {
-			aTempReader = new ClassReader(className);
-			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new localClassVisitir(aTempWriter, isObfuscated), 0);
-		} catch (IOException e) {}		
+		
+		aTempReader = new ClassReader(basicClass);
+		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+		aTempReader.accept(new localClassVisitir(aTempWriter, isObfuscated), 0);
+		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
 		}

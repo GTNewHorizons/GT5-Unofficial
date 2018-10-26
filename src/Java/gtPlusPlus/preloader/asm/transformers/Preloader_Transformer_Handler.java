@@ -20,9 +20,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
 	private final boolean mEnabled = false;
 	public static final AsmConfig mConfig;
+	
 	static {
 		mConfig = new AsmConfig(new File("config/GTplusplus/asm.cfg"));
-		System.out.println("Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
+		System.out.println("[GT++ ASM] Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
+		System.out.println("[GT++ ASM] Is DevHelper Valid? "+gtPlusPlus.preloader.DevHelper.mIsValidHelper);
 	}
 
 	public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -62,7 +64,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			return classWriter.toByteArray();
 		}
 		// Fix the OreDictionary COFH
-		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter")) {
+		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter") && mConfig.enableCofhPatch) {
 			FMLRelaunchLog.log("[GT++ ASM] COFH", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, obfuscated).getWriter().toByteArray();
 		}

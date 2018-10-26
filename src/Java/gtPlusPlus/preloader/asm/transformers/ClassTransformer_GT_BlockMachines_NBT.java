@@ -30,27 +30,34 @@ public class ClassTransformer_GT_BlockMachines_NBT {
 	private static boolean doesMethodAlreadyExist = false;
 
 	public ClassTransformer_GT_BlockMachines_NBT(byte[] basicClass, boolean obfuscated) {
+		
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
-		try {
-			aTempReader = new ClassReader(className);
-			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new localClassVisitor(aTempWriter), 0);
-		} catch (IOException e) {}		
+		
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Attempting to patch "+className+".");	
+		
+		aTempReader = new ClassReader(basicClass);
+		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+		aTempReader.accept(new localClassVisitor(aTempWriter), 0);		
+		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
 		}
 		else {
 			isValid = false;
 		}
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Valid patch? "+isValid+".");	
 		reader = aTempReader;
 		writer = aTempWriter;
 
-		if (reader != null && writer != null && !doesMethodAlreadyExist) {			
+		if (reader != null && writer != null && !doesMethodAlreadyExist) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Getting Valid MC Class names. "+".");		
 			aEntityPlayer = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayer") : "net/minecraft/entity/player/EntityPlayer";
 			aEntityPlayerMP = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayerMP") : "net/minecraft/entity/player/EntityPlayerMP";
 			aWorld = obfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-						
+
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Found: "+aEntityPlayer+", "+aEntityPlayerMP+", "+aWorld+".");
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech NBT Persistency Patch", Level.INFO, "Attempting Method Injection.");
 			injectMethod("removedByPlayer");
 			injectMethod("harvestBlock");
 		}

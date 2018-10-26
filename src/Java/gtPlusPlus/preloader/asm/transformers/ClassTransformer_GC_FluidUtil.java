@@ -24,13 +24,14 @@ public class ClassTransformer_GC_FluidUtil {
 	private final ClassWriter writer;	
 
 	public ClassTransformer_GC_FluidUtil(byte[] basicClass, boolean obfuscated) {
+		
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
-		try {
-			aTempReader = new ClassReader(className);
-			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-			new ClassReader(basicClass).accept(new localClassVisitor(aTempWriter), 0);
-		} catch (IOException e) {}		
+		
+		aTempReader = new ClassReader(basicClass);
+		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+		aTempReader.accept(new localClassVisitor(aTempWriter), 0);	
+		
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
 		}

@@ -150,14 +150,19 @@ public class RecipeGen_Ore implements Runnable{
 			Logger.MATERIALS("bonusA.getTinyDust(1): "+(bonusA.getTinyDust(1) != null)+" | Material: "+(bonusA != null) + " | Material name: "+(bonusA != null ? bonusA.getLocalizedName() : "invalid material"));
 			Logger.MATERIALS("bonusB.getTinyDust(1): "+(bonusB.getTinyDust(1) != null)+" | Material: "+(bonusB != null) + " | Material name: "+(bonusB != null ? bonusB.getLocalizedName() : "invalid material"));
 
+			try {
 			//.08 compat
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushed(1), 200, material.getCrushedCentrifuged(1), bonusB.getTinyDust(1), dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Crushed ore to Centrifuged Ore' | Input: "+material.getCrushed(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+bonusB.getTinyDust(1).getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
-
+			}
+			catch (Throwable t) {}
+			try {
 			if (GT_ModHandler.addThermalCentrifugeRecipe(material.getCrushedPurified(1), 200, material.getCrushedCentrifuged(1), bonusA.getTinyDust(1), dustStone)){
 				Logger.MATERIALS("[ThermalCentrifuge] Added Recipe: 'Washed ore to Centrifuged Ore' | Input: "+material.getCrushedPurified(1).getDisplayName()+" | Outputs: "+material.getCrushedCentrifuged(1).getDisplayName()+", "+bonusA.getTinyDust(1).getDisplayName()+", "+dustStone.getDisplayName()+".");
 			}
+			}
+			catch (Throwable t) {}
 
 
 			/**

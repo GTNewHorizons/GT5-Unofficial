@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.weakref.WeakAutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -13,7 +14,7 @@ import net.minecraft.launchwrapper.Launch;
 public class DevHelper {
 
 	private static final DevHelper mInstance;
-	private static final boolean mIsValidHelper;
+	public static final boolean mIsValidHelper;
 
 	static {
 		mInstance = new DevHelper();
@@ -127,7 +128,11 @@ public class DevHelper {
 
 	public static String getObfuscated(String mDeob) {
 		String obfuscatedClassname = DevHelperInternals.deObToOb.get(mDeob);
-		return obfuscatedClassname != null ? obfuscatedClassname : "BAD_OBFUSCATED_CLASS_NAME";
+		obfuscatedClassname = obfuscatedClassname != null ? obfuscatedClassname : "BAD_OBFUSCATED_CLASS_NAME";
+		if (obfuscatedClassname.equals("BAD_OBFUSCATED_CLASS_NAME")) {
+			Logger.INFO("[Fix] Failed to Get Deobfuscated name for "+mDeob);
+		}
+		return obfuscatedClassname;
 	}
 
 	public static String getDeobfuscated(String mOb) {
@@ -148,7 +153,8 @@ public class DevHelper {
 		private static boolean init() {
 			init1();
 			init2();
-			init3();		
+			init3();	
+			init4();
 			if (mInitMap.size() > 0) {
 				for (Pair<String, String> p : mInitMap) {
 					if (p != null) {
@@ -166,10 +172,17 @@ public class DevHelper {
 						String ob = p.getKey();
 						String deOb = p.getValue();
 						obToDeOb.put(ob, deOb);
-						deObToOb.put(deOb, ob);					
+						deObToOb.put(deOb, ob);
 					}
 				}
 			}	
+			Logger.INFO("[DevHelper] mInitMap size: "+mInitMap.size());
+			Logger.INFO("[DevHelper] mObInitMap size: "+mObInitMap.size());
+			
+			Logger.INFO("[DevHelper] srgToForge size: "+srgToForge.size());
+			Logger.INFO("[DevHelper] forgeToSrg size: "+forgeToSrg.size());
+			Logger.INFO("[DevHelper] obToDeOb size: "+obToDeOb.size());
+			Logger.INFO("[DevHelper] deObToOb size: "+deObToOb.size());
 			return srgToForge.size() > 0 && forgeToSrg.size() > 0 && obToDeOb.size() > 0 && deObToOb.size() > 0;		
 		}
 
@@ -5002,7 +5015,7 @@ public class DevHelper {
 			mInitMap.put(new Pair<String, String>("func_99999_d", "run"));		
 		}
 
-		public void init4() {
+		public static void init4() {
 			mObInitMap.put(new Pair<String, String>("aqc", "net/minecraft/world/chunk/storage/IChunkLoader"));
 			mObInitMap.put(new Pair<String, String>("amd", "net/minecraft/block/BlockMycelium"));
 			mObInitMap.put(new Pair<String, String>("aag", "net/minecraft/inventory/ContainerEnchantment"));

@@ -16,6 +16,7 @@ public class AsmConfig {
 	public static boolean enableGtTooltipFix;
 	public static boolean enableGtNbtFix;
 	public static boolean enableChunkDebugging;
+	public static boolean enableCofhPatch;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -40,7 +41,7 @@ public class AsmConfig {
 			prop = config.get("debug", "enableChunkDebugging", false);
 			prop.comment = "Enable/Disable Chunk Debugging Features, Must Be enabled on Client and Server.";
 			prop.setLanguageKey("gtpp.enableChunkDebugging").setRequiresMcRestart(true);
-			enableChunkDebugging = prop.getBoolean(true);
+			enableChunkDebugging = prop.getBoolean(false);
 			propOrderDebug.add(prop.getName());
 			
 			prop = config.get("debug", "enableGtNbtFix", true);
@@ -48,6 +49,14 @@ public class AsmConfig {
 			prop.setLanguageKey("gtpp.enableGtNbtFix").setRequiresMcRestart(true);
 			enableGtNbtFix = prop.getBoolean(true);
 			propOrderDebug.add(prop.getName());
+			
+			prop = config.get("debug", "enableCofhPatch", false);
+			prop.comment = "Enable/Disable COFH OreDictionaryArbiter Patch (Useful for Development)";
+			prop.setLanguageKey("gtpp.enableCofhPatch").setRequiresMcRestart(true);
+			enableCofhPatch = prop.getBoolean(false);
+			propOrderDebug.add(prop.getName());
+			
+			
 			
 
 			//General Features
@@ -74,6 +83,7 @@ public class AsmConfig {
 			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Nbt Fix - Enabled: "+enableGtNbtFix, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] TiCon Fluid Lighting - Enabled: "+enableTiConFluidLighting, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] COFH Patch - Enabled: "+enableCofhPatch, new Object[0]);
 			
 		} catch (Exception var3) {
 			FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);

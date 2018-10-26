@@ -38,14 +38,16 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
 		private final boolean isObfuscated;
 
 		public ClassTransformer_COFH_OreDictionaryArbiter(byte[] basicClass, boolean obfuscated) {
+			
 			ClassReader aTempReader = null;
 			ClassWriter aTempWriter = null;
+			
 			isObfuscated = obfuscated;
-			try {
-				aTempReader = new ClassReader(className);
-				aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-				new ClassReader(basicClass).accept(new localClassVisitor(aTempWriter), 0);
-			} catch (IOException e) {}		
+			
+			aTempReader = new ClassReader(basicClass);
+			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+			aTempReader.accept(new localClassVisitor(aTempWriter), 0);	
+			
 			if (aTempReader != null && aTempWriter != null) {
 				isValid = true;
 			}
@@ -77,7 +79,7 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
 			String aItemStack = isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack") : "net/minecraft/item/ItemStack";
 			MethodVisitor mv;		
 			if (aMethodName.equals("registerOreDictionaryEntry")) {
-				FMLRelaunchLog.log("[GT++ ASM] COFH OreDictionaryArbiter Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+".");
+				FMLRelaunchLog.log("[GT++ ASM] COFH OreDictionaryArbiter Patch", Level.INFO, "Injecting "+aMethodName+" into "+className+". ItemStack: "+aItemStack);
 				mv = getWriter().visitMethod(ACC_PUBLIC + ACC_STATIC, "registerOreDictionaryEntry", "(L"+aItemStack+";Ljava/lang/String;)V", null, null);
 				mv.visitCode();
 				Label l0 = new Label();
