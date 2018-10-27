@@ -389,7 +389,7 @@ public class MathUtils {
 	 * Averages
 	 */
 	
-	public static byte getByteAverage(AutoMap<?> aDataSet) {
+	public static byte getByteAverage(AutoMap aDataSet) {
 		byte[] aNewSet = new byte[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (byte) aDataSet.get(u);
@@ -397,7 +397,7 @@ public class MathUtils {
 		return getByteAverage(aNewSet);
 	}
 	
-	public static short getShortAverage(AutoMap<?> aDataSet) {
+	public static short getShortAverage(AutoMap aDataSet) {
 		short[] aNewSet = new short[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (short) aDataSet.get(u);
@@ -405,7 +405,7 @@ public class MathUtils {
 		return getShortAverage(aNewSet);
 	}
 	
-	public static int getIntAverage(AutoMap<?> aDataSet) {
+	public static int getIntAverage(AutoMap aDataSet) {
 		int[] aNewSet = new int[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (int) aDataSet.get(u);
@@ -413,7 +413,7 @@ public class MathUtils {
 		return getIntAverage(aNewSet);
 	}
 	
-	public static float getFloatAverage(AutoMap<?> aDataSet) {
+	public static float getFloatAverage(AutoMap aDataSet) {
 		float[] aNewSet = new float[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (float) aDataSet.get(u);
@@ -421,7 +421,7 @@ public class MathUtils {
 		return getFloatAverage(aNewSet);
 	}
 	
-	public static long getLongAverage(AutoMap<?> aDataSet) {
+	public static long getLongAverage(AutoMap aDataSet) {
 		long[] aNewSet = new long[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (long) aDataSet.get(u);
@@ -429,7 +429,7 @@ public class MathUtils {
 		return getLongAverage(aNewSet);
 	}
 	
-	public static double getDoubleAverage(AutoMap<?> aDataSet) {
+	public static double getDoubleAverage(AutoMap aDataSet) {
 		double[] aNewSet = new double[aDataSet.size()];		
 		for (int u=0;u<aDataSet.size();u++) {
 			aNewSet[u] = (double) aDataSet.get(u);

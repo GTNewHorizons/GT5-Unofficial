@@ -209,7 +209,7 @@ public class RECIPES_GREGTECH {
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[] { 
 						ItemUtils.getGregtechCircuit(19),
-						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSheldonite", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCooperite", 8),
 						ELEMENT.getInstance().CARBON.getDust(32),
 				},
 				Materials.SulfuricAcid.getFluid(8000),
