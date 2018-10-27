@@ -923,13 +923,14 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("chlorine", 2400),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 4),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5), chances, 30 * 20, 240);
-		chances = new int[]{9000, 7500, 1000};
-		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 10),
-				FluidUtils.getFluidStack("chlorine", 3000),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 4),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustTitanium", 1), chances, 30 * 20, 240);		
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 5), chances, 30 * 20, 480);
+		chances = new int[]{9000, 3000, 1000};
+		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRutile", 5),
+				FluidUtils.getFluidStack("chlorine", 4000),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustTitanium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
+				chances, 30 * 20, 1024);		
 
 		GT_Values.RA.addChemicalBathRecipe(FLUORIDES.FLUORITE.getCrushed(2), FluidUtils.getFluidStack("hydrogen", 2000),
 				FLUORIDES.FLUORITE.getCrushedPurified(8), FLUORIDES.FLUORITE.getDustImpure(4),
@@ -1184,7 +1185,7 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustHafnium", 1) },
-				new int[] { 5000, 2500, 1000, 1000, 1000, 1000 }, 20 * 30, 500);
+				new int[] { 5000, 2500, 1000, 1000, 300, 300 }, 20 * 30, 500);
 		
 		// Zirconium
 		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1),

@@ -108,9 +108,9 @@ public class MaterialGenerator {
 						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 						temp = new BaseItemIngot(matInfo);
 
-						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier);
+						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier);
+						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier);
 						temp = new BaseItemNugget(matInfo);
 						temp = new BaseItemPlate(matInfo);
 						temp = new BaseItemRod(matInfo);
@@ -124,9 +124,9 @@ public class MaterialGenerator {
 						if (hotIngot){
 							temp = new BaseItemIngotHot(matInfo);
 						}
-						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
-						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+						temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier);
+						temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier);
+						temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier);
 						temp = new BaseItemNugget(matInfo);
 						temp = new BaseItemPlate(matInfo);
 						temp = new BaseItemPlateDouble(matInfo);
@@ -142,9 +142,9 @@ public class MaterialGenerator {
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 
 					temp = new BaseItemIngot(matInfo);
-					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
-					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
-					temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier);
+					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier);
+					temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier);
 					temp = new BaseItemNugget(matInfo);
 					temp = new BaseItemPlate(matInfo);
 					temp = new BaseItemPlateDouble(matInfo);
@@ -155,9 +155,9 @@ public class MaterialGenerator {
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 				}
 				temp = new BaseItemIngot(matInfo);
-				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
-				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
-				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
+				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier);
+				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier);
+				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier);
 				temp = new BaseItemNugget(matInfo);
 				temp = new BaseItemPlate(matInfo);
 				temp = new BaseItemPlateDouble(matInfo);
@@ -211,9 +211,9 @@ public class MaterialGenerator {
 		}
 
 		if (matInfo.getState() == MaterialState.SOLID){
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation, false);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation, false);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation, false);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, false);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, false);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, false);
 		}
 
 		//Add A jillion Recipes - old code
@@ -247,13 +247,13 @@ public class MaterialGenerator {
 			}
 
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1);
 
 			temp = new BaseItemIngot(matInfo);
 			temp = new BaseItemNugget(matInfo);
-			
+
 			if (generatePlates) {
 				temp = new BaseItemPlate(matInfo);
 				temp = new BaseItemPlateDouble(matInfo);
@@ -266,7 +266,7 @@ public class MaterialGenerator {
 			new RecipeGen_Fluids(matInfo);
 			new RecipeGen_MaterialProcessing(matInfo);
 			new RecipeGen_DustGeneration(matInfo, true);
-			new RecipeGen_Recycling(matInfo);			
+			new RecipeGen_Recycling(matInfo);	
 			
 		} catch (final Throwable t){
 			Logger.MATERIALS(""+matInfo.getLocalizedName()+" failed to generate.");
@@ -308,11 +308,11 @@ public class MaterialGenerator {
 			}
 
 			if (generateDust) {
-				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, sRadiation, false);
+				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", matInfo.vTier, false);
 			}
 			if (generateSmallTinyDusts) {
-				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, sRadiation, false);
-				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, sRadiation, false);
+				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", matInfo.vTier, false);
+				temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", matInfo.vTier, false);
 			}
 
 			temp = new BaseItemCrushedOre(matInfo);

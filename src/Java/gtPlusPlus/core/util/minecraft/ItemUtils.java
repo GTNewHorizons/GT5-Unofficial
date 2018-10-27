@@ -263,13 +263,15 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackOfAmountFromOreDict(final String oredictName, final int amount){
 		String mTemp = oredictName;
-		//Banned Materials and replacements for GT5.8 compat.		
+		//Banned Materials and replacements for GT5.8 compat.
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 		if (oredictName.toLowerCase().contains("rutile")){
 			mTemp = oredictName.replace("Rutile", "Titanium");
 		}
 		if (oredictName.toLowerCase().contains("vanadiumsteel")){
 			mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
 		}			
+		}
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
 		if (!oreDictList.isEmpty()){
 			final ItemStack returnValue = oreDictList.get(0).copy();
@@ -331,9 +333,9 @@ public class ItemUtils {
 	public static Item[] generateDusts(final String unlocalizedName, final String materialName, final int materialTier, final Material matInfo, final int Colour){
 		final int radioactive = getRadioactivityLevel(materialName);
 		final Item[] output = {
-				new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, radioactive),
-				new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, radioactive),
-				new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, radioactive)};
+				new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier),
+				new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier),
+				new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier)};
 		return output;
 	}
 
