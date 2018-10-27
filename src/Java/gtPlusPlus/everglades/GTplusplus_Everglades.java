@@ -105,6 +105,18 @@ public class GTplusplus_Everglades implements ActionListener {
 		MaterialGenerator.generateOreMaterial(ORES.FLORENCITE);
 		MaterialGenerator.generateOreMaterial(ORES.CRYOLITE);
 
+		MaterialGenerator.generateOreMaterial(ORES.LAUTARITE);
+		MaterialGenerator.generateOreMaterial(ORES.LAFOSSAITE);
+		MaterialGenerator.generateOreMaterial(ORES.DEMICHELEITE_BR);
+		MaterialGenerator.generateOreMaterial(ORES.COMANCHEITE);
+		MaterialGenerator.generateOreMaterial(ORES.PERROUDITE);
+		MaterialGenerator.generateOreMaterial(ORES.HONEAITE);
+		MaterialGenerator.generateOreMaterial(ORES.ALBURNITE);
+		MaterialGenerator.generateOreMaterial(ORES.MIESSIITE);
+		MaterialGenerator.generateOreMaterial(ORES.KASHINITE);
+		MaterialGenerator.generateOreMaterial(ORES.IRARSITE);
+		MaterialGenerator.generateOreMaterial(ORES.RADIOBARITE);
+		
 		//Custom Ores
 		if (LoadedMods.Big_Reactors) {
 			MaterialGenerator.generateOreMaterial(ELEMENT.getInstance().YELLORIUM, false, false, true, new short[] {255, 242, 10});
@@ -118,6 +130,9 @@ public class GTplusplus_Everglades implements ActionListener {
 					false,
 					ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
 		}
+		
+
+		
 	}
 
 	protected synchronized void setVars(FMLPreInitializationEvent event){
@@ -133,8 +148,8 @@ public class GTplusplus_Everglades implements ActionListener {
 		 */
 		WorldGen_Ores.generateValidOreVeins();
 		WorldGen_GT_Base.oreveinPercentage = 64;
-		WorldGen_GT_Base.oreveinAttempts = 32;
-		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 6;	
+		WorldGen_GT_Base.oreveinAttempts = 16;
+		WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;	
 		if (CORE.DEBUG || CORE.DEVENV){
 			WorldGen_GT_Base.debugWorldGen = true;
 		}		

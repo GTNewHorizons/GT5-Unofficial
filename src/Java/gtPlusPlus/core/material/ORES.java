@@ -587,8 +587,215 @@ public final class ORES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
 			});
 
-
-
+	//Iodine Source
+	public static final Material LAUTARITE = new Material(
+			"Lautarite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
+			new short[]{165, 105, 205, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().IODINE, 2),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 6)
+			});	
+	
+	//	Tl(Cl,Br)
+	public static final Material LAFOSSAITE = new Material(
+			"Lafossaite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
+			new short[]{165, 105, 205, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
+					new MaterialStack(ELEMENT.getInstance().BROMINE, 1),
+					new MaterialStack(ELEMENT.getInstance().THALLIUM, 1)
+			});
+	
+	//Demicheleite-(Br)
+	//	BiSBr
+	public static final Material DEMICHELEITE_BR = new Material(
+			"Demicheleite (Br)", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_SHINY, //Texture Set
+			new short[]{165, 75, 75, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().BISMUTH, 13),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 11),
+					new MaterialStack(ELEMENT.getInstance().BROMINE, 1)
+			});
+	
+	//Comancheite
+	//Hg55N24(NH2,OH)4(Cl,Br)34
+	public static final Material COMANCHEITE = new Material(
+			"Comancheite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
+			new short[]{65, 205, 105, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().MERCURY, 54/4),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 28/4),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 12/4),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 8/4),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 34/4),
+					new MaterialStack(ELEMENT.getInstance().BROMINE, 34/4)
+			});
+	
+	//Perroudite
+	//Hg5Ag4S5(I,Br)2Cl2
+	public static final Material PERROUDITE = new Material(
+			"Perroudite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
+			new short[]{77, 165, 174, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 5),
+					new MaterialStack(ELEMENT.getInstance().SILVER, 4),
+					new MaterialStack(ELEMENT.getInstance().IODINE, 2),
+					new MaterialStack(ELEMENT.getInstance().MERCURY, 5),
+					new MaterialStack(ELEMENT.getInstance().BROMINE, 2),
+					new MaterialStack(ELEMENT.getInstance().CHLORINE, 2)
+			});
+	
+	//Honeaite
+	//Au3TlTe2
+	public static final Material HONEAITE = new Material(
+			"Honeaite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
+			new short[]{165, 165, 5, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().GOLD, 3),
+					new MaterialStack(ELEMENT.getInstance().THALLIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().TELLURIUM, 2)
+			});
+	
+	//Alburnite
+	//Ag8GeTe2S4
+	public static final Material ALBURNITE = new Material(
+			"Alburnite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_METALLIC, //Texture Set
+			new short[]{16, 5, 105, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().GOLD, 8),
+					new MaterialStack(ELEMENT.getInstance().GERMANIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().TELLURIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 4)
+			});
+	
+	//Miessiite
+	//Pd11Te2Se2
+	public static final Material MIESSIITE = new Material(
+			"Miessiite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FINE, //Texture Set
+			new short[]{75, 75, 75, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().PALLADIUM, 11),
+					new MaterialStack(ELEMENT.getInstance().TELLURIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().SELENIUM, 2)
+			});
+	
+	//Kashinite
+	//(Ir,Rh)2S3
+	public static final Material KASHINITE = new Material(
+			"Kashinite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_SHINY, //Texture Set
+			new short[]{75, 105, 75, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().IRIDIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().RHODIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 3)
+			});
+	
+	//Irarsite
+	//(Ir,Ru,Rh,Pt)AsS
+	public static final Material IRARSITE = new Material(
+			"Irarsite", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FIERY, //Texture Set
+			new short[]{125, 105, 105, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().IRIDIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().RUTHENIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().RHODIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().PLATINUM, 1),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 1),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1)
+			});
+	
+	//Radiobarite
+	//Radium, Barium, Barite?
+	public static final Material RADIOBARITE = new Material(
+			"Barite (Rd)", //Material Name
+			MaterialState.ORE, //State
+			TextureSet.SET_FLINT, //Texture Set
+			new short[]{205, 205, 205, 0}, //Material Colour
+			500,
+			1500,
+			50,
+			75,
+			0, //Radiation
+			new MaterialStack[]{// Na3AlF6
+					new MaterialStack(ELEMENT.getInstance().BARIUM, 32),
+					new MaterialStack(ELEMENT.getInstance().RADIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 16),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 15)
+			});
+	
+	
 
 
 
