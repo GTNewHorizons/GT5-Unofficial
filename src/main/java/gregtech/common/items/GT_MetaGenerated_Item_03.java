@@ -135,6 +135,10 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Chip_ULPIC.set(addItem(tLastID = 113, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
         ItemList.Circuit_Wafer_LPIC.set(addItem(tLastID =114, "LPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_LPIC.set(addItem(tLastID = 115, "Low Power IC", "Low Power Circuit", o));
+        
+        ItemList.Circuit_Chip_RPico.set(addItem(tLastID = 121, "Raw Pico Wafer", "", o));
+        ItemList.Circuit_Chip_Pico.set(addItem(tLastID = 122, "Pico Wafer", "", o));
+        
         ItemList.Circuit_Wafer_NPIC.set(addItem(tLastID = 160, "NPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_NPIC.set(addItem(tLastID = 161, "Nano Power IC", "Nano Power Circuit", o));
         ItemList.Circuit_Wafer_PPIC.set(addItem(tLastID = 162, "PPIC Wafer", "Raw Circuit", o));
@@ -224,7 +228,12 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutted Circuit Board", "Bio genetic mutated Board", o));
         ItemList.Circuit_Biomainframe.set(addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION}));
-    
+        
+        ItemList.Circuit_Piko.set(addItem(tLastID = 123, "Piko Circuit", "A Super Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION}));
+        ItemList.Circuit_Quantum.set(addItem(tLastID = 124, "Quantum Circuit", "A Infinite Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION}));
+        ItemList.Circuit_Nano.set(addItem(tLastID = 125, "Nano Circuit", "A Bio Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION}));
+        
+        
         ItemList.EnergyCrystal_LV.set(addItem(tLastID = 200, "Small Energium Crystall (T1)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
 	    setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[1], 1L, -3L, true);	    
 		
