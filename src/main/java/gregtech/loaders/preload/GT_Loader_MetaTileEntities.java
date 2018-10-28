@@ -1635,6 +1635,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         generateFluidPipes(Materials.NetherStar, Materials.NetherStar.mName, 5350, 19200, 1000000, true);
         generateFluidPipes(Materials.Duranium, Materials.Duranium.mName, 5360, 12400, 1000000, true);
         generateFluidPipes(Materials.Polybenzimidazole, Materials.Polybenzimidazole.mName, "PBI", 5370, 600, 1000, true);
+        generateFluidPipes(Materials.Infuscolium, Materials.Infuscolium.mName, 5380, 14600, 1000000, true);
         
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5165, "GT_Pipe_HighPressure_Small", "Small High Pressure Fluid Pipe", 0.375F, Materials.Redstone, 4800, 1500, true).getStackForm(1L));
         GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(Materials.Ultimate), new GT_MetaPipeEntity_Fluid(5166, "GT_Pipe_HighPressure", "High Pressure Fluid Pipe", 0.5F, Materials.Redstone, 7200, 1500, true).getStackForm(1L));
