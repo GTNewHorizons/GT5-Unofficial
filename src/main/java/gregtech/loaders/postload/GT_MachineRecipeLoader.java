@@ -590,9 +590,16 @@ if(Loader.isModLoaded("Railcraft")){
         
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Cylinder.get(0, o), Materials.Polytetrafluoroethylene.getMolten(36), ItemList.Circuit_Parts_PetriDish.get(1, o), 160, 16);
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Cylinder.get(0, o), Materials.Polystyrene.getMolten(36), ItemList.Circuit_Parts_PetriDish.get(1, o), 160, 16);
-        GT_Values.RA.addMixerRecipe(Materials.Sugar.getDust(4), Materials.MeatRaw.getDust(1), Materials.Salt.getDustTiny(1), GT_Values.NI, GT_ModHandler.getDistilledWater(4000), Materials.GrowthMediumRaw.getFluid(4000), GT_Values.NI, 160, 16);
-        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.GrowthMediumRaw.getFluid(1000), Materials.GrowthMediumSterilized.getFluid(1000), 60, 24);
-        GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), FluidRegistry.getFluidStack("potion.dragonblood", 1000), Materials.GrowthMediumSterilized.getFluid(1000), 60, 24);
+        //GT_Values.RA.addMixerRecipe(Materials.Sugar.getDust(4), Materials.MeatRaw.getDust(1), Materials.Salt.getDustTiny(1), GT_Values.NI, GT_ModHandler.getDistilledWater(4000), Materials.GrowthMediumRaw.getFluid(4000), GT_Values.NI, 160, 16);
+		
+        GT_Values.RA.addChemicalRecipe(Materials.Plutonium.getDust(1), Materials.Europium.getDust(1), Materials.Radon.getGas(8000L), Materials.GrowthMediumRaw.getFluid(8000L), GT_Values.NI, 300, 7680);
+		GT_Values.RA.addChemicalRecipe(Materials.Naquadah.getDustTiny(4), Materials.Americium.getDustTiny(4), Materials.Radon.getGas(16000L), Materials.GrowthMediumRaw.getFluid(16000L), GT_Values.NI, 300, 30720);
+		GT_Values.RA.addChemicalRecipe(Materials.Naquadria.getDustTiny(1), Materials.Neutronium.getDustTiny(1), Materials.Radon.getGas(32000L), Materials.GrowthMediumRaw.getFluid(32000L), GT_Values.NI, 600, 122880);
+		
+        GT_Values.RA.addChemicalRecipe(GT_Values.NI, GT_Values.NI,  Materials.GrowthMediumSterilized.getFluid(250L), GT_Values.NF, ItemList.Circuit_Chip_Stemcell.get(4L), 300, 30720);
+		
+		GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.GrowthMediumRaw.getFluid(1000), Materials.GrowthMediumSterilized.getFluid(1000), 100, 7680);
+        //GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), FluidRegistry.getFluidStack("potion.dragonblood", 1000), Materials.GrowthMediumSterilized.getFluid(1000), 60, 24);
         //GT_Values.RA.addMixerRecipe(Materials.MysteriousCrystal.getDust(4), Materials.Oriharukon.getDust(4), Materials.BlackPlutonium.getDustTiny(4), GT_ModHandler.getModItem("dreamcraft", "item.TCetiESeaweedExtract", 16L, 0), FluidRegistry.getFluidStack("mutagen", 4000), Materials.BioMediumRaw.getFluid(4000), GT_Values.NI, 160, 160);
 
         //Fusion Casings
