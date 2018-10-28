@@ -2420,31 +2420,30 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Crystalmainframe.get(1L), 72000, new ItemStack[]{
                 ItemList.Circuit_Board_Wetware_Extreme.get(1L),
                 ItemList.Circuit_Chip_Stemcell.get(16L),
-                ItemList.Circuit_Parts_Glass_Tube.get(16L),
-                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Plastic, 16),
-                ItemList.IC2_Item_Casing_Gold.get(8,o),
-                //GT_OreDictUnificator.get(OrePrefixes.casingSmall, Materials.Gold, 16),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 32),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.StainlessSteel, 32),
+                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(8L),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 8L),
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Electrum, 16L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 16L),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSE, 8L),
         }, new FluidStack[]{
                 GregTech_API.mIC2Classic ? Materials.Water.getFluid(250L) : Materials.GrowthMediumSterilized.getFluid(250L),
                 Materials.UUMatter.getFluid(250L),
                 GregTech_API.mIC2Classic ? Materials.Lava.getFluid(1000L) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, ItemList.Circuit_Chip_NeuroCPU.get(1L), 1200, 80000);
 
-        /*GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Chip_NeuroCPU.get(1L), 144000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Chip_NeuroCPU.get(1L), 144000, new ItemStack[]{
                 ItemList.Circuit_Board_Bio_Ultra.get(1L),
                 ItemList.Circuit_Chip_Biocell.get(32L),
                 ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(16L),
                 GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 16),
-                GT_OreDictUnificator.get(OrePrefixes.casingSmall, Materials.Tungsten, 16),
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tungsten, 16),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 64),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.TungstenSteel, 32),
+                GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32),
         }, new FluidStack[]{
                 GregTech_API.mIC2Classic ? Materials.Water.getFluid(500L) : Materials.BioMediumSterilized.getFluid(500L),
                 Materials.UUMatter.getFluid(500L),
                 GregTech_API.mIC2Classic ? Materials.Lava.getFluid(2000L) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000)
-        }, ItemList.Circuit_Chip_BioCPU.get(1L), 2400, 160000);*/
+        }, ItemList.Circuit_Chip_BioCPU.get(1L), 2400, 160000);
 		
             GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1,o), 288000, new ItemStack[]{
             		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4),
