@@ -35,7 +35,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 		this.setHardness(2.0f);
 		this.setResistance(6.0F);
 		this.setLightLevel(0.0F);
-		this.setHarvestLevel("pickaxe", 3);
+		this.setHarvestLevel("pickaxe", Math.min(Math.max(material.vTier, 1), 5));
 		this.setStepSound(soundTypeStone);		
 		this.setBlockName("Ore"+Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
 		this.setBlockTextureName("stone");

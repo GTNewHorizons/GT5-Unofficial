@@ -44,7 +44,11 @@ public class RecipeGen_Ore implements Runnable{
 		
 		//if (material.getMaterialComposites().length > 1){
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
-			final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 120 : 30;
+			int tVoltageMultiplier = MaterialUtils.getVoltageForTier(material.vTier);
+			if (tVoltageMultiplier < 120) {
+				tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 480 : 120;
+			}
+			
 			final ItemStack dustStone = ItemUtils.getItemStackOfAmountFromOreDict("dustStone", 1);
 			Material bonusA = null; //Ni
 			Material bonusB = null; //Tin
@@ -101,19 +105,19 @@ public class RecipeGen_Ore implements Runnable{
 			 * Macerate
 			 */
 			//Macerate ore to Crushed
-			if (GT_Values.RA.addPulveriserRecipe(material.getOre(1), new ItemStack[]{material.getCrushed(2)}, new int[]{10000}, 20*20, 2)){
+			if (GT_Values.RA.addPulveriserRecipe(material.getOre(1), new ItemStack[]{material.getCrushed(2)}, new int[]{10000}, 20*20, tVoltageMultiplier/2)){
 				Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate ore to Crushed ore'");
 			}
 			//Macerate Crushed to Impure Dust
-			if (GT_Values.RA.addPulveriserRecipe(material.getCrushed(1), new ItemStack[]{material.getDustImpure(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, 2)){
+			if (GT_Values.RA.addPulveriserRecipe(material.getCrushed(1), new ItemStack[]{material.getDustImpure(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, tVoltageMultiplier/2)){
 				Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Crushed ore to Impure Dust'");
 			}
 			//Macerate Washed to Purified Dust
-			if (GT_Values.RA.addPulveriserRecipe(material.getCrushedPurified(1), new ItemStack[]{material.getDustPurified(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, 2)){
+			if (GT_Values.RA.addPulveriserRecipe(material.getCrushedPurified(1), new ItemStack[]{material.getDustPurified(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, tVoltageMultiplier/2)){
 				Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Washed ore to Purified Dust'");
 			}
 			//Macerate Centrifuged to Pure Dust
-			if (GT_Values.RA.addPulveriserRecipe(material.getCrushedCentrifuged(1), new ItemStack[]{material.getDust(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, 2)){
+			if (GT_Values.RA.addPulveriserRecipe(material.getCrushedCentrifuged(1), new ItemStack[]{material.getDust(1), bonusA.getDust(1)}, new int[]{10000, 1000}, 20*20, tVoltageMultiplier/2)){
 				Logger.MATERIALS("[Macerator] Added Recipe: 'Macerate Centrifuged ore to Pure Dust'");
 			}
 
@@ -168,13 +172,13 @@ public class RecipeGen_Ore implements Runnable{
 			/**
 			 * Forge Hammer
 			 */			
-			if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedCentrifuged(1), material.getDust(1), 10, 16)){
+			if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedCentrifuged(1), material.getDust(1), 10, tVoltageMultiplier/4)){
 				Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Centrifuged to Pure Dust'");
 			}
-			if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedPurified(1), material.getDustPurified(1), 10, 16)){
+			if (GT_Values.RA.addForgeHammerRecipe(material.getCrushedPurified(1), material.getDustPurified(1), 10, tVoltageMultiplier/4)){
 				Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Crushed Purified to Purified Dust'");
 			}
-			if (GT_Values.RA.addForgeHammerRecipe(material.getOre(1), material.getCrushed(1), 10, 16)){
+			if (GT_Values.RA.addForgeHammerRecipe(material.getOre(1), material.getCrushed(1), 10, tVoltageMultiplier/4)){
 				Logger.MATERIALS("[ForgeHammer] Added Recipe: 'Ore to Crushed'");
 			}
 
@@ -190,7 +194,7 @@ public class RecipeGen_Ore implements Runnable{
 					null, null,null, 
 					new int[]{10000, 10000}, //Chances
 					5*20, //Eu
-					5)){ //Time
+					tVoltageMultiplier/2)){ //Time
 				Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 			}
 
@@ -203,7 +207,7 @@ public class RecipeGen_Ore implements Runnable{
 					null, null,null, 
 					new int[]{10000, 10000}, //Chances
 					5*20, //Eu
-					5)){ //Time
+					tVoltageMultiplier/2)){ //Time
 				Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
 			}
 
@@ -287,7 +291,7 @@ public class RecipeGen_Ore implements Runnable{
 							mInternalOutputs[4],
 							mInternalOutputs[5],
 							mChances, 
-							20*90, 
+							20*1*(tVoltageMultiplier/10), 
 							tVoltageMultiplier)){
 						Logger.MATERIALS("[Electrolyzer] Generated Electrolyzer recipe for "+material.getDust(1).getDisplayName());
 					}

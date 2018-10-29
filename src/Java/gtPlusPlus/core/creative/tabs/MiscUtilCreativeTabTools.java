@@ -1,6 +1,7 @@
 package gtPlusPlus.core.creative.tabs;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import gtPlusPlus.core.item.ModItems;
@@ -13,7 +14,7 @@ public class MiscUtilCreativeTabTools extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemStaballoyPickaxe;
+		return Items.diamond_pickaxe;
 	}
 
 }

@@ -29,6 +29,7 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.*;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class HANDLER_GT {
@@ -102,14 +103,21 @@ public class HANDLER_GT {
 	
 	private static int removeCrudeTurbineRotors() {
 		int aRemoved = 0;
-		
+		Item aU;
 		Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
 		//170, 172, 174, 176
 		if (aAssRecipes.size() > 0 && (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH)) {
 			recipe: for (GT_Recipe aG : aAssRecipes) {
 				if (aG.mOutputs != null && aG.mOutputs.length > 0) {
 					outputs: for (ItemStack aI : aG.mOutputs) {
-						if (aI.getItem() instanceof GT_MetaGenerated_Tool_01) {
+						if (aI == null) {
+							continue;
+						}
+						aU = aI.getItem();
+						if (aU == null) {
+							continue;
+						}						
+						if (aU instanceof GT_MetaGenerated_Tool_01) {
 							int aMeta = aI.getItemDamage();
 							//Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
 							if (aMeta >= 170 && aMeta <= 176) {

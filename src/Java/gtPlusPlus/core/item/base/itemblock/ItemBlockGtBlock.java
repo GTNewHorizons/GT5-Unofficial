@@ -7,20 +7,27 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockGtBlock extends ItemBlock{
 
 	protected final int blockColour;
 	protected final int sRadiation;
 
+	private final Material mMaterial;
+
 	private final Block thisBlock;
 	private boolean isOre = false;
+	private boolean isModular = false;
 
 	public ItemBlockGtBlock(final Block block) {
 		super(block);
@@ -28,14 +35,42 @@ public class ItemBlockGtBlock extends ItemBlock{
 		if (block instanceof BlockBaseOre){
 			this.isOre = true;
 		}
+		else if (block instanceof BlockBaseModular) {
+			this.isModular = true;
+		}
+		else {
+
+		}
+		if (!isModular && !isOre) {
+			mMaterial = null;
+		}
+		else {
+			if (isOre) {
+				mMaterial = ((BlockBaseOre) block).getMaterialEx();
+			}
+			else {
+				mMaterial = ((BlockBaseModular) block).getMaterialEx();				
+			}
+		}		
+
 		final BlockBaseModular baseBlock = (BlockBaseModular) block;
-		this.blockColour = baseBlock.getRenderColor(0);
-		if (block.getLocalizedName().toLowerCase().contains("uranium") || block.getLocalizedName().toLowerCase().contains("plutonium") || block.getLocalizedName().toLowerCase().contains("thorium")){
-			this.sRadiation = 2;
+		if (isModular) {
+			this.blockColour = baseBlock.getRenderColor(0);
+		}
+		else if (isOre) {
+			this.blockColour = block.getBlockColor();
+		}
+		else {
+			this.blockColour = block.getBlockColor();
+		}
+		if (this.mMaterial != null) {
+			this.sRadiation = mMaterial.vRadiationLevel;
 		}
 		else {
 			this.sRadiation = 0;
 		}
+
+
 		//GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
 	}
 
@@ -45,17 +80,38 @@ public class ItemBlockGtBlock extends ItemBlock{
 
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		
+		if (this.mMaterial != null){
+			list.add(this.mMaterial.vChemicalFormula);			
+		}
+		
 		if (this.sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
-		if (this.isOre){
-			if (this.thisBlock != null){
-				if (this.thisBlock.getLocalizedName().equalsIgnoreCase("fluorite ore")){
-					list.add("Mined from Sandstone and Limestone.");
+		
+		if (KeyboardUtils.isCtrlKeyDown()) {
+			Block b = Block.getBlockFromItem(stack.getItem());
+			if (b != null) {
+				
+				String aTool = b.getHarvestTool(stack.getItemDamage());
+				int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
+				list.add("Mining Level: "+Math.min(Math.max(aMiningLevel1, 0), 5));	
+				
+				if (this.mMaterial != null) {
+					list.add("Ore contains:    ");	
+					if (mMaterial.getComposites().isEmpty()) {
+						list.add("- "+mMaterial.getLocalizedName());						
+					}
+					else {
+						for (MaterialStack m : mMaterial.getComposites()) {
+							list.add("- "+m.getStackMaterial().getLocalizedName()+" x"+m.getPartsPerOneHundred());					
+						}
+					}
 				}
 			}
 		}
 		else {
+			list.add(EnumChatFormatting.DARK_GRAY+"Hold Ctrl to show additional info.");				
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

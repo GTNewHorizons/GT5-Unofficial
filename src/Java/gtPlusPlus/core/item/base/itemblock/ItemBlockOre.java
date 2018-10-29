@@ -7,14 +7,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockOre extends ItemBlock{
 
@@ -60,23 +63,55 @@ public class ItemBlockOre extends ItemBlock{
 		if (this.mThisMaterial == FLUORIDES.FLUORITE){
 			list.add("Mined from Sandstone with a 1/"+(CORE.ConfigSwitches.chanceToDropFluoriteOre*20)+" chance, or Limestone with a 1/"+(CORE.ConfigSwitches.chanceToDropFluoriteOre)+" chance.");			
 		}	
-		else if (this.mThisMaterial != FLUORIDES.FLUORITE){
+/*		else if (this.mThisMaterial != FLUORIDES.FLUORITE){
 			list.add("Mined from the Toxic Everglades.");			
-		}
-		super.addInformation(stack, aPlayer, list, bool);
-	}
+		}*/
 
-	@Override
-	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		if (this.mThisMaterial != null){
-			if (this.mThisRadiation > 0){
-				if (entityHolding instanceof EntityPlayer){
-					if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
-						EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.mThisMaterial.vRadiationLevel, world, entityHolding);	
+		if (KeyboardUtils.isCtrlKeyDown()) {
+		
+		if (this.mThisMaterial != null) {
+			Block b = Block.getBlockFromItem(stack.getItem());
+			if (b != null) {
+				String aTool = b.getHarvestTool(stack.getItemDamage());
+				int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());	
+				if (aMiningLevel1 != 0) {
+					list.add("Mining Level: "+Math.min(Math.max(aMiningLevel1, 0), 5));				
+				}	
+				list.add("Ore contains:    ");	
+				if (mThisMaterial.getComposites().isEmpty()) {
+					list.add("- "+mThisMaterial.getLocalizedName());						
+				}
+				else {
+					for (MaterialStack m : mThisMaterial.getComposites()) {
+						list.add("- "+m.getStackMaterial().getLocalizedName()+" x"+m.getPartsPerOneHundred());					
 					}
+				}
+			}
+			}
+		}
+		else {
+			list.add(EnumChatFormatting.DARK_GRAY+"Hold Ctrl to show additional info.");				
+		}
+
+	
+
+
+
+
+	super.addInformation(stack, aPlayer, list, bool);
+}
+
+@Override
+public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
+	if (this.mThisMaterial != null){
+		if (this.mThisRadiation > 0){
+			if (entityHolding instanceof EntityPlayer){
+				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
+					EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.mThisMaterial.vRadiationLevel, world, entityHolding);	
 				}
 			}
 		}
 	}
+}
 
 }

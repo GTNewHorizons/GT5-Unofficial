@@ -14,11 +14,13 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
@@ -118,7 +120,13 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		if (smallDust != null && tinyDust != null) {
 			generatePackagerRecipes(material);
 		}
-
+		
+		ItemStack ingot = material.getIngot(1);
+		if (normalDust != null && ingot != null) {
+			addFurnaceRecipe(material);
+			addMacerationRecipe(material);
+		}
+		
 		//Is this a composite?
 		if ((inputStacks != null) && !disableOptional){
 			//Is this a composite?
@@ -350,6 +358,84 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			}
 		}		
 		return true;
+	}
+	
+	private void addMacerationRecipe(Material aMatInfo){
+		try {
+			Logger.MATERIALS("Adding Maceration recipe for "+aMatInfo.getLocalizedName()+" Ingot -> Dusts");
+			final int chance = (aMatInfo.vTier*10)/MathUtils.randInt(10, 20);
+			GT_ModHandler.addPulverisationRecipe(aMatInfo.getIngot(1), aMatInfo.getDust(1), null, chance);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
+
+	private void addFurnaceRecipe(Material aMatInfo){
+
+		ItemStack aDust = aMatInfo.getDust(1);
+		ItemStack aOutput;
+		try {
+			if (aMatInfo.requiresBlastFurnace()) {
+				aOutput = aMatInfo.getHotIngot(1);		
+				if (aOutput != null) {	
+					if (addBlastFurnaceRecipe(aMatInfo, aDust, null, aOutput, null, aMatInfo.getMeltingPointK())){
+						Logger.MATERIALS("Successfully added a blast furnace recipe for "+aMatInfo.getLocalizedName());
+					}
+					else {
+						Logger.MATERIALS("Failed to add a blast furnace recipe for "+aMatInfo.getLocalizedName());
+					}
+				}
+				else {
+					Logger.MATERIALS("Failed to add a blast furnace recipe for "+aMatInfo.getLocalizedName());
+				}
+			}
+			else {
+				aOutput = aMatInfo.getIngot(1);
+				if (aOutput != null) {
+					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
+						Logger.MATERIALS("Successfully added a furnace recipe for "+aMatInfo.getLocalizedName());
+					}
+					else {
+						Logger.MATERIALS("Failed to add a furnace recipe for "+aMatInfo.getLocalizedName());
+					}
+				}				
+			}		
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+
+	}
+
+	private boolean addBlastFurnaceRecipe(Material aMatInfo, final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
+
+		try {
+			int timeTaken = 125*aMatInfo.vTier*10;
+
+			if (aMatInfo.vTier <= 4){
+				timeTaken = 25*aMatInfo.vTier*10;
+			}
+			int aSlot = aMatInfo.vTier - 1;
+			if (aSlot < 2) {
+				aSlot = 2;
+			}
+			long aVoltage = GT_Values.V[aSlot >= 2 ? aSlot : 2];
+
+			return GT_Values.RA.addBlastRecipe(
+					input1,
+					input2,
+					GT_Values.NF, GT_Values.NF,
+					output1,
+					output2,
+					timeTaken,
+					(int) aVoltage,
+					tempRequired);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+			return false;
+		}
 	}
 	
 }

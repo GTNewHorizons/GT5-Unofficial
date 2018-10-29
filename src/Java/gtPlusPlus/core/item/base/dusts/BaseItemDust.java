@@ -1,44 +1,46 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-
-import java.util.List;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public class BaseItemDust extends Item{
+public class BaseItemDust extends BaseItemComponent {
 
-	protected int colour;
-	protected String materialName;
-	protected String pileType;
-	String name = "";
-	private int mTier;
+
+
 	private Material dustInfo;
+	private BaseItemComponent[] mSizedDusts = new BaseItemComponent[2];
 
-	public BaseItemDust(final String unlocalizedName, final String materialName, final Material matInfo, final int colour, final String pileSize, final int tier){
+	public BaseItemDust(Material aMat) {
+		this(aMat, true);
+	}
+
+	public BaseItemDust(Material aMat, boolean generateSmallDusts) {
+		super(aMat, ComponentTypes.DUST);
+		if (generateSmallDusts) {
+			mSizedDusts[0] = new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);
+			mSizedDusts[1] = new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);
+		}
+	}
+
+	public BaseItemDust(DustState aState, Material aMat) {
+		super(aMat, ComponentTypes.DUST);		
+		if (aState.generatesSmallDust()) {
+			mSizedDusts[0] = new BaseItemComponent(aMat, ComponentTypes.DUSTSMALL);			
+		}
+		if (aState.generatesTinyDust()) {
+			mSizedDusts[1] = new BaseItemComponent(aMat, ComponentTypes.DUSTTINY);			
+		}
+	}
+
+	private BaseItemDust(final String unlocalizedName, final String materialName, final Material matInfo, final int colour, final String pileSize, final int tier){
 		this(unlocalizedName, materialName, matInfo, colour, pileSize, tier, true);
 	}
 
-	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, boolean addRecipes) {
-		try {
+	private BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, boolean addRecipes) {
+		super(matInfo, ComponentTypes.DUST);
+
+		try {/*
 			this.setUnlocalizedName(unlocalizedName);
 			this.setMaxStackSize(64);
 
@@ -78,14 +80,15 @@ public class BaseItemDust extends Item{
 				this.addFurnaceRecipe();
 				this.addMacerationRecipe();
 			}		
-		}
+		 */}
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
 
 	private String getCorrectTexture(final String pileSize){
-		if (!CORE.ConfigSwitches.useGregtechTextures){
+
+		if (!CORE.ConfigSwitches.useGregtechTextures || this.dustInfo.getTextureSet() == null){
 			if ((pileSize == "dust") || (pileSize == "Dust")){
 				this.setTextureName(CORE.MODID + ":" + "dust");}
 			else{
@@ -103,7 +106,7 @@ public class BaseItemDust extends Item{
 		return "gregtech" + ":" + "materialicons/"+this.dustInfo.getTextureSet().mSetName+"/dust";
 	}
 
-	@Override
+	/*	@Override
 	public String getItemStackDisplayName(final ItemStack iStack) {
 
 		String unlocal = super.getItemStackDisplayName(iStack);
@@ -114,11 +117,10 @@ public class BaseItemDust extends Item{
 			return unlocal;
 		}
 
-	}
+	}*/
 
-	@Override
+	/*	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-
 		try {
 			if (this.dustInfo != null){
 				if (entityHolding instanceof EntityPlayer){
@@ -131,10 +133,9 @@ public class BaseItemDust extends Item{
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
+	}*/
 
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
@@ -151,101 +152,116 @@ public class BaseItemDust extends Item{
 
 		//}
 		super.addInformation(stack, aPlayer, list, bool);
-	}
+	}*/
 
-	public final String getMaterialName() {
-		return this.materialName;
-	}
+	public static class DustState {
+		static final int NORMAL = (1);
+		static final int SMALL = (10);
+		static final int TINY = (100);
+		final int MIXTURE;	
+		final boolean[] doesThings = new boolean[3];
 
-	@Override
-	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-		if (this.colour == 0){
-			return MathUtils.generateSingularRandomHexValue();
-		}
-		return this.colour;
-
-	}
-
-	private void addMacerationRecipe(){		
-
-		try {
-			Logger.MATERIALS("Adding Maceration recipe for "+this.materialName+" Ingot -> Dusts");
-			final int chance = (this.mTier*10)/MathUtils.randInt(10, 20);
-			GT_ModHandler.addPulverisationRecipe(dustInfo.getIngot(1), dustInfo.getDust(1), null, chance);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-
-	}
-
-	private void addFurnaceRecipe(){
-
-		ItemStack aDust = dustInfo.getDust(1);
-		ItemStack aOutput;
-		try {
-			if (this.dustInfo.requiresBlastFurnace()) {
-				aOutput = dustInfo.getHotIngot(1);		
-				if (aOutput != null) {	
-					if (addBlastFurnaceRecipe(aDust, null, aOutput, null, dustInfo.getMeltingPointK())){
-						Logger.MATERIALS("Successfully added a blast furnace recipe for "+this.materialName);
-					}
-					else {
-						Logger.MATERIALS("Failed to add a blast furnace recipe for "+this.materialName);
-					}
-				}
-				else {
-					Logger.MATERIALS("Failed to add a blast furnace recipe for "+this.materialName);
-				}
+		public DustState (boolean genDust, boolean genSmallDust, boolean genDustTiny){
+			int aTotal = 0;
+			if (genDust) {
+				aTotal += NORMAL;
+				doesThings[0] = true;
 			}
 			else {
-				aOutput = dustInfo.getIngot(1);
-				if (aOutput != null) {
-					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
-						Logger.MATERIALS("Successfully added a furnace recipe for "+this.materialName);
-					}
-					else {
-						Logger.MATERIALS("Failed to add a furnace recipe for "+this.materialName);
-					}
-				}				
-			}		
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
+				doesThings[0] = false;				
+			}
+			if (genSmallDust) {
+				aTotal += SMALL;
+				doesThings[1] = true;
+			}
+			else {
+				doesThings[1] = false;				
+			}
+			if (genDustTiny) {
+				aTotal += TINY;
+				doesThings[2] = true;
+			}
+			else {
+				doesThings[2] = false;				
+			}
+			MIXTURE = aTotal;
 		}
 
+		public boolean generatesDust() {
+			return doesThings[0];
+		}
+		public boolean generatesSmallDust() {
+			return doesThings[1];
+		}
+		public boolean generatesTinyDust() {
+			return doesThings[2];
+		}
+
+		private DustState(int amount) {
+			
+			if (amount == 1) {
+				doesThings[0] = true;
+				doesThings[1] = false;
+				doesThings[2] = false;
+				
+			}
+			else if (amount == 10) {
+				doesThings[0] = false;
+				doesThings[1] = true;
+				doesThings[2] = false;
+				
+			}
+			else if (amount == 100) {
+				doesThings[0] = false;
+				doesThings[1] = false;
+				doesThings[2] = true;
+				
+			}
+			else if (amount == 11) {
+				doesThings[0] = true;
+				doesThings[1] = true;
+				doesThings[2] = false;
+				
+			}
+			else if (amount == 101) {
+				doesThings[0] = true;
+				doesThings[1] = false;
+				doesThings[2] = true;
+				
+			}
+			else if (amount == 110) {
+				doesThings[0] = false;
+				doesThings[1] = true;
+				doesThings[2] = true;
+				
+			}
+			else if (amount == 111) {
+				doesThings[0] = true;
+				doesThings[1] = true;
+				doesThings[2] = true;				
+			}
+			else {
+				doesThings[0] = false;
+				doesThings[1] = false;
+				doesThings[2] = false;
+			}
+			MIXTURE = amount;			
+		}
+
+		public DustState get(int a) {
+			if (a == 1) {
+				return new DustState(NORMAL);
+			}
+			else if (a == 10) {
+				return new DustState(SMALL);
+			}
+			else if (a == 100) {
+				return new DustState(TINY);
+			}
+			else {
+				return new DustState(MIXTURE);
+			}
+		}
 	}
 
-	private boolean addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
-
-		try {
-			int timeTaken = 125*this.mTier*10;
-
-			if (this.mTier <= 4){
-				timeTaken = 25*this.mTier*10;
-			}
-			int aSlot = mTier - 2;
-			if (aSlot < 2) {
-				aSlot = 2;
-			}
-			long aVoltage = GT_Values.V[aSlot >= 2 ? aSlot : 2];
-
-			return GT_Values.RA.addBlastRecipe(
-					input1,
-					input2,
-					GT_Values.NF, GT_Values.NF,
-					output1,
-					output2,
-					timeTaken,
-					(int) aVoltage,
-					tempRequired);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-			return false;
-		}
-
-
-
-	}
 }

@@ -30,9 +30,9 @@ public class DustDecayable extends BaseItemTickable {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		String gt = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + "dust";
+		String gt = "gregtech" + ":" + "materialicons/"+"SHINY"+"/" + "dust";
 		this.mIcon[0] = reg.registerIcon(gt);
-		String gt2 = "gregtech" + ":" + "materialicons/"+"METALLIC"+"/" + "dust" + "_OVERLAY";
+		String gt2 = "gregtech" + ":" + "materialicons/"+"SHINY"+"/" + "dust" + "_OVERLAY";
 		this.mIcon[1] = reg.registerIcon(gt2);
 	}
 	
@@ -57,15 +57,16 @@ public class DustDecayable extends BaseItemTickable {
 			}
 		}
 		
-		if (!tickItemTag(world, iStack)) {
+		if (!tickItemTag(world, iStack) && !this.getIsActive(world, iStack)) {
 			if (entityHolding instanceof EntityPlayer){
 				ItemStack replacement = ItemUtils.getSimpleStack(turnsIntoItem);
 				//Logger.INFO("Replacing "+iStack.getDisplayName()+" with "+replacement.getDisplayName()+".");
 				final ItemStack tempTransform = replacement;
-				if (iStack.stackSize == 64){
-					tempTransform.stackSize=64;
+				if (iStack.stackSize > 1){
+					int u = iStack.stackSize;
+					tempTransform.stackSize = u;
 					((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
-					for (int l=0;l<64;l++){
+					for (int l=0;l<u;l++){
 						((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
 					}
 

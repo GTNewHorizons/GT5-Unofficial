@@ -1,6 +1,8 @@
 package gtPlusPlus.core.item.base;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -14,10 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -33,6 +35,12 @@ import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
 public class BaseItemComponent extends Item{
 
+	private final static Class<TextureSet> mTextureSetPreload;
+	
+	static {
+		mTextureSetPreload = TextureSet.class;
+	}
+	
 	public final Material componentMaterial;
 	public final String materialName;
 	public final String unlocalName;
@@ -54,7 +62,9 @@ public class BaseItemComponent extends Item{
 		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
-		if (componentType != ComponentTypes.DUST)
+		
+		//if (componentType != ComponentTypes.DUST)
+		
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
 			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 1);
@@ -62,6 +72,7 @@ public class BaseItemComponent extends Item{
 				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.RADIO, 2);				
 			}
 		}
+		registerComponent();		
 	}
 
 	//For Cell Generation
@@ -78,6 +89,30 @@ public class BaseItemComponent extends Item{
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
+		registerComponent();
+	}
+	
+	public boolean registerComponent() {		
+		if (this.componentMaterial == null) {
+			return false;
+		}		
+		//Register Component
+		Map<String, BaseItemComponent> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
+		if (aMap == null) {
+			aMap = new HashMap<String, BaseItemComponent>();
+		}
+		String aKey = componentType.getGtOrePrefix().name();
+		BaseItemComponent x = aMap.get(aKey);
+		if (x == null) {
+			aMap.put(aKey, this);
+			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
+			return true;
+		}
+		else {
+			//Bad
+			Logger.MATERIALS("Tried to double register a material component. ");
+			return false;
+		}
 	}
 
 	public String getCorrectTextures(){
@@ -224,34 +259,36 @@ public class BaseItemComponent extends Item{
 
 
 	public static enum ComponentTypes {
-		DUST("Dust", " Dust", "dust"),
-		DUSTSMALL("DustSmall", " Dust", "dustSmall"),
-		DUSTTINY("DustTiny", " Dust", "dustTiny"),
-		INGOT("Ingot", " Ingot", "ingot"),
-		HOTINGOT("HotIngot", " Hot Ingot", "ingotHot"),
-		PLATE("Plate", " Plate", "plate"),
-		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"),
-		ROD("Rod", " Rod", "stick"),
-		RODLONG("RodLong", " Long Rod", "stickLong"),
-		GEAR("Gear", " Gear", "gearGt"),
-		SMALLGEAR("SmallGear", " Gear", "gearGtSmall"), //TODO
-		SCREW("Screw", " Screw", "screw"),
-		BOLT("Bolt", " Bolt", "bolt"),
-		ROTOR("Rotor", " Rotor", "rotor"),
-		RING("Ring", " Ring", "ring"),
-		FOIL("Foil", " Foil", "foil"),
-		PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma"),
-		CELL("Cell", " Cell", "cell"),
-		NUGGET("Nugget", " Nugget", "nugget"),
-		PLATEHEAVY("HeavyPlate", " Heavy Plate", "plateHeavy");
+		DUST("Dust", " Dust", "dust", OrePrefixes.dust),
+		DUSTSMALL("DustSmall", " Dust", "dustSmall", OrePrefixes.dustSmall),
+		DUSTTINY("DustTiny", " Dust", "dustTiny", OrePrefixes.dustTiny),
+		INGOT("Ingot", " Ingot", "ingot", OrePrefixes.ingot),
+		HOTINGOT("HotIngot", " Hot Ingot", "ingotHot", OrePrefixes.ingotHot),
+		PLATE("Plate", " Plate", "plate", OrePrefixes.plate),
+		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble", OrePrefixes.plateDouble),
+		ROD("Rod", " Rod", "stick", OrePrefixes.stick),
+		RODLONG("RodLong", " Long Rod", "stickLong", OrePrefixes.stickLong),
+		GEAR("Gear", " Gear", "gearGt", OrePrefixes.gearGt),
+		SMALLGEAR("SmallGear", " Gear", "gearGtSmall", OrePrefixes.gearGtSmall), //TODO
+		SCREW("Screw", " Screw", "screw", OrePrefixes.screw),
+		BOLT("Bolt", " Bolt", "bolt", OrePrefixes.bolt),
+		ROTOR("Rotor", " Rotor", "rotor", OrePrefixes.rotor),
+		RING("Ring", " Ring", "ring", OrePrefixes.ring),
+		FOIL("Foil", " Foil", "foil", OrePrefixes.foil),
+		PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma", OrePrefixes.cellPlasma),
+		CELL("Cell", " Cell", "cell", OrePrefixes.cell),
+		NUGGET("Nugget", " Nugget", "nugget", OrePrefixes.nugget),
+		PLATEHEAVY("HeavyPlate", " Heavy Plate", "plateHeavy", OrePrefixes.plateDense);
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;
 		private String OREDICT_NAME;
-		private ComponentTypes (final String LocalName, final String DisplayName, final String OreDictName){
+		private OrePrefixes a_GT_EQUAL;
+		private ComponentTypes (final String LocalName, final String DisplayName, final String OreDictName, final OrePrefixes aPrefix){
 			this.COMPONENT_NAME = LocalName;
 			this.DISPLAY_NAME = DisplayName;
 			this.OREDICT_NAME = OreDictName;
+			this.a_GT_EQUAL = aPrefix;
 		}
 
 		public String getComponent(){
@@ -266,6 +303,10 @@ public class BaseItemComponent extends Item{
 			return this.OREDICT_NAME;
 		}
 
+		public OrePrefixes getGtOrePrefix() {
+			return this.a_GT_EQUAL;
+		}
+		
 	}
 
 }

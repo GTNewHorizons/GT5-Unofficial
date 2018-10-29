@@ -52,7 +52,13 @@ public class BaseItemTickable extends CoreItem {
 		if (world == null || iStack == null) {
 			return;
 		}	
-		tickItemTag(world, iStack);
+		
+
+		boolean active = getIsActive(world, iStack);
+		if (active) {
+			tickItemTag(world, iStack);
+		}
+		
 	}
 
 	/*private final boolean setGregtechItemList() {
@@ -160,7 +166,7 @@ public class BaseItemTickable extends CoreItem {
 			}
 		}
 		else {
-			createNBT(world, aStack);
+			return createNBT(world, aStack);
 		}
 		return true;
 	}
@@ -266,10 +272,7 @@ public class BaseItemTickable extends CoreItem {
 				}				
 			}					
 		}
-		else {
-			createNBT(world, aStack);
-		}
-		return false;
+		return createNBT(world, aStack);		
 	}
 
 	@Override

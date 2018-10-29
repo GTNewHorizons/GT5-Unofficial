@@ -1,8 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.fluid;
 
 import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.ItemList;
+import net.minecraftforge.fluids.FluidRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -40,24 +39,31 @@ public class GregtechFluidHandler {
 
 		if (!LoadedMods.ThermalFoundation){
 
-			Logger.INFO("Adding in our own GT versions of Thermal Foundation Fluids");
-			FluidUtils.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemUtils.getEmptyCell(), 1000);
-			FluidUtils.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemUtils.getEmptyCell(), 1000);
-			FluidUtils.addFluid("ender", "Resonant Ender", GT_Materials.Ender, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L), ItemUtils.getEmptyCell(), 1000);
+			Logger.INFO("Adding in our own GT versions of Thermal Foundation Fluids if they do not already exist.");
+			if (!FluidRegistry.isFluidRegistered("cryotheum")) {
+				FluidUtils.addGtFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemUtils.getEmptyCell(), 1000);
+				}
+			if (!FluidRegistry.isFluidRegistered("pyrotheum")) {
+				FluidUtils.addGtFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemUtils.getEmptyCell(), 1000);
+				}
+			if (!FluidRegistry.isFluidRegistered("ender")) {
+				FluidUtils.addGtFluid("ender", "Resonant Ender", GT_Materials.Ender, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L), ItemUtils.getEmptyCell(), 1000);
+				}
+			
 			}
 
 		if (LoadedMods.IndustrialCraft2){
 			Logger.INFO("Adding in GT Fluids for various nuclear related content.");
 
-			FluidUtils.addFluid("hydrofluoricAcid", "Industrial Strength Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemUtils.getEmptyCell(), 1000);
+			FluidUtils.addGtFluid("hydrofluoricAcid", "Industrial Strength Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemUtils.getEmptyCell(), 1000, false);
 			generateIC2FluidCell("HydrofluoricAcid");
 			
 			FluidUtils.generateFluidNoPrefix("SulfurDioxide", "High Quality Sulfur Dioxide", 263, GT_Materials.SulfurDioxide.mRGBa);
 						
-			FluidUtils.addFluid("sulfurousAcid", "Sulfurous Acid", GT_Materials.SulfurousAcid, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L), ItemUtils.getEmptyCell(), 1000);
+			FluidUtils.addGtFluid("sulfurousAcid", "Sulfurous Acid", GT_Materials.SulfurousAcid, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L), ItemUtils.getEmptyCell(), 1000, false);
 			generateIC2FluidCell("SulfurousAcid");
 
-			FluidUtils.addFluid("sulfuricApatite", "Sulfuric Apatite Mix", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemUtils.getEmptyCell(), 1000);
+			FluidUtils.addGtFluid("sulfuricApatite", "Sulfuric Apatite Mix", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemUtils.getEmptyCell(), 1000, false);
 			generateIC2FluidCell("SulfuricApatite");
 
 
@@ -70,16 +76,16 @@ public class GregtechFluidHandler {
 					else {
 						Logger.INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
 					}
-					FluidUtils.addFluid("hydrogenChloride", "Industrial Strength Hydrogen Chloride", GT_Materials.HydrogenChloride, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L), ItemUtils.getEmptyCell(), 1000);
+					FluidUtils.addGtFluid("hydrogenChloride", "Industrial Strength Hydrogen Chloride", GT_Materials.HydrogenChloride, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L), ItemUtils.getEmptyCell(), 1000, false);
 					generateIC2FluidCell("HydrogenChloride");
 				}
 			}
 
 
-			FluidUtils.addFluid("sulfuricLithium", "Sulfuric Lithium Mix", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemUtils.getEmptyCell(), 1000);
+			FluidUtils.addGtFluid("sulfuricLithium", "Sulfuric Lithium Mix", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemUtils.getEmptyCell(), 1000, false);
 			generateIC2FluidCell("SulfuricLithium");
 
-			FluidUtils.addFluid("lithiumHydroxide", "Lithium Hydroxide", GT_Materials.LithiumHydroxide, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L), ItemUtils.getEmptyCell(), 1000);
+			FluidUtils.addGtFluid("lithiumHydroxide", "Lithium Hydroxide", GT_Materials.LithiumHydroxide, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L), ItemUtils.getEmptyCell(), 1000, false);
 			generateIC2FluidCell("LithiumHydroxide");
 
 

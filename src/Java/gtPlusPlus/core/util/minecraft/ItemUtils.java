@@ -22,7 +22,6 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
-import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
@@ -328,15 +327,6 @@ public class ItemUtils {
 		}
 		Logger.WARNING(material+" was not valid.");
 		return null;
-	}
-
-	public static Item[] generateDusts(final String unlocalizedName, final String materialName, final int materialTier, final Material matInfo, final int Colour){
-		final int radioactive = getRadioactivityLevel(materialName);
-		final Item[] output = {
-				new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier),
-				new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier),
-				new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier)};
-		return output;
 	}
 
 	//NullFormula

@@ -45,12 +45,13 @@ public class CommonProxy {
 		//Should Register Gregtech Materials I've Made
 		Utils.registerEvent(this);
 		if (LoadedMods.Gregtech){
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				Logger.INFO("We're using Gregtech 5.09 Experimental.");
+			if (!CORE.GTNH) {
+				Logger.INFO("We're using Gregtech "+Utils.getGregtechVersionAsString());				
 			}
 			else {
-				Logger.INFO("We're using Gregtech 5.08 or an earlier fork.");
+				Logger.INFO("We're using GTNH's Gregtech "+Utils.getGregtechVersionAsString());				
 			}
+			
 			Logger.INFO("Setting up our own GT_Proxy.");
 			GtProxy = new Meta_GT_Proxy();
 		}
@@ -74,6 +75,8 @@ public class CommonProxy {
 		else {
 			Logger.WARNING("Development mode not set.");
 		}
+
+		AddToCreativeTab.initialiseTabs();
 		
 		//Moved from Init after Debug Loading.
 		//29/01/18 - Alkalus
@@ -83,7 +86,6 @@ public class CommonProxy {
 		ModBlocks.init();
 		CI.preInit();
 		
-		AddToCreativeTab.initialiseTabs();
 		
 		
 		COMPAT_IntermodStaging.preInit();

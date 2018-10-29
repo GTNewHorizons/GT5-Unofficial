@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.*;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.TypeCounter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -129,7 +130,6 @@ public class MaterialUtils {
 		final Material temp = new Material(
 				materialName,
 				defaultState,
-				0, //Durability
 				colour,
 				1000, //melting
 				3000, //boiling
@@ -148,35 +148,35 @@ public class MaterialUtils {
 		return true;
 	}
 
-	public static int getTierOfMaterial(final int M){
-		if ((M >= 0) && (M <= 1000)){
+	public static int getTierOfMaterial(final int aMeltingPoint){
+		if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){
 			return 1;
 		}
-		else if((M >= 1001) && (M <= 2000)){
+		else if((aMeltingPoint >= 1001) && (aMeltingPoint <= 2000)){
 			return 2;
 		}
-		else if((M >= 2001) && (M <= 3000)){
+		else if((aMeltingPoint >= 2001) && (aMeltingPoint <= 3000)){
 			return 3;
 		}
-		else if((M >= 3001) && (M <= 4000)){
+		else if((aMeltingPoint >= 3001) && (aMeltingPoint <= 4000)){
 			return 4;
 		}
-		else if((M >= 4001) && (M <= 5000)){
+		else if((aMeltingPoint >= 4001) && (aMeltingPoint <= 5000)){
 			return 5;
 		}
-		else if((M >= 5001) && (M <= 6000)){
+		else if((aMeltingPoint >= 5001) && (aMeltingPoint <= 6000)){
 			return 6;
 		}
-		else if((M >= 6001) && (M <= 7000)){
+		else if((aMeltingPoint >= 6001) && (aMeltingPoint <= 7000)){
 			return 7;
 		}
-		else if((M >= 7001) && (M <= 8000)){
+		else if((aMeltingPoint >= 7001) && (aMeltingPoint <= 8000)){
 			return 8;
 		}
-		else if((M >= 8001) && (M <= 9000)){
+		else if((aMeltingPoint >= 8001) && (aMeltingPoint <= 9000)){
 			return 9;
 		}
-		else if((M >= 9001) && (M <= 9999)){
+		else if((aMeltingPoint >= 9001) && (aMeltingPoint <= 9999)){
 			return 10;
 		}
 		else {
@@ -256,10 +256,21 @@ public class MaterialUtils {
 		return mName;
 	}
 
-	public static TextureSet getMostCommonTextureSet(List<Material> list) {
-		Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
+	public static TextureSet getMostCommonTextureSet(List<Material> list) {		
+		TypeCounter<TextureSet> aCounter = new TypeCounter<TextureSet>(TextureSet.class);
+		for (Material m : list) {
+			TextureSet t = m.getTextureSet();
+			if (t == null) {
+				t = Materials.Gold.mIconSet;
+			}
+			if (t != null) {
+				aCounter.add(t, t.mSetName);
+			}			
+		}
+		return aCounter.getResults();
+		/*Optional<TextureSet> r = list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
-		return o;
+		return o;*/
 	}
 
 	public static Materials getMaterial(String aMaterialName) {

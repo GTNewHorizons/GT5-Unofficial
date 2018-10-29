@@ -1,7 +1,7 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.TextureSet;
-
+import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.state.MaterialState;
 
 public final class ORES {
@@ -9,7 +9,7 @@ public final class ORES {
 	public static final Material GEIKIELITE = new Material(
 			"Geikielite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_GEM_HORIZONTAL, //Texture Set
+			TextureSets.GEM_A.get(), //Texture Set
 			new short[]{187, 193, 204, 0}, //Material Colour
 			500,
 			1500,
@@ -133,7 +133,7 @@ public final class ORES {
 	public static final Material SAMARSKITE_Y = new Material(
 			"Samarskite (Y)", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FINE, //Texture Set
+			TextureSets.ENRICHED.get(), //Texture Set
 			new short[]{65, 163, 164, 0}, //Material Colour
 			500,
 			1500,
@@ -153,7 +153,7 @@ public final class ORES {
 	public static final Material SAMARSKITE_YB = new Material(
 			"Samarskite (Yb)", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FINE, //Texture Set
+			TextureSets.ENRICHED.get(), //Texture Set
 			new short[]{95, 193, 194, 0}, //Material Colour
 			500,
 			1500,
@@ -172,7 +172,7 @@ public final class ORES {
 	public static final Material ZIRCON = new Material(
 			"Zircon", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_GEM_VERTICAL, //Texture Set
+			TextureSets.GEM_A.get(), //Texture Set
 			new short[]{195, 19, 19, 0}, //Material Colour
 			500,
 			1500,
@@ -189,7 +189,7 @@ public final class ORES {
 	public static final Material GADOLINITE_CE = new Material(
 			"Gadolinite (Ce)", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FINE, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{15, 159, 59, 0}, //Material Colour
 			500,
 			1500,
@@ -211,7 +211,7 @@ public final class ORES {
 	public static final Material GADOLINITE_Y = new Material(
 			"Gadolinite (Y)", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FINE, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{35, 189, 99, 0}, //Material Colour
 			500,
 			1500,
@@ -323,7 +323,7 @@ public final class ORES {
 	public static final Material ZIRCOPHYLLITE = new Material(
 			"Zircophyllite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FIERY, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{30, 0, 6, 0}, //Material Colour
 			500,
 			1500,
@@ -346,7 +346,7 @@ public final class ORES {
 	public static final Material ZIRKELITE = new Material(
 			"Zirkelite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_GEM_HORIZONTAL, //Texture Set
+			TextureSets.GEM_A.get(), //Texture Set
 			new short[]{229, 208, 48, 0}, //Material Colour
 			500,
 			1500,
@@ -366,7 +366,7 @@ public final class ORES {
 	public static final Material LANTHANITE_LA = new Material(
 			"Lanthanite (La)", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_METALLIC, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{219, 160, 214, 0}, //Material Colour
 			500,
 			1500,
@@ -439,7 +439,7 @@ public final class ORES {
 	public static final Material CERITE = new Material(
 			"Cerite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_METALLIC, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{68, 13, 0, 0}, //Material Colour
 			500,
 			1500,
@@ -608,7 +608,7 @@ public final class ORES {
 	public static final Material LAFOSSAITE = new Material(
 			"Lafossaite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_METALLIC, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{165, 105, 205, 0}, //Material Colour
 			500,
 			1500,
@@ -644,7 +644,7 @@ public final class ORES {
 	public static final Material COMANCHEITE = new Material(
 			"Comancheite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FINE, //Texture Set
+			TextureSets.REFINED.get(), //Texture Set
 			new short[]{65, 205, 105, 0}, //Material Colour
 			500,
 			1500,
@@ -759,7 +759,7 @@ public final class ORES {
 	public static final Material IRARSITE = new Material(
 			"Irarsite", //Material Name
 			MaterialState.ORE, //State
-			TextureSet.SET_FIERY, //Texture Set
+			TextureSets.ENRICHED.get(), //Texture Set
 			new short[]{125, 105, 105, 0}, //Material Colour
 			500,
 			1500,

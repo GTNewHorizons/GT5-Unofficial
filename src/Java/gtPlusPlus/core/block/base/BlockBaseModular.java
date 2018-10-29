@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
-
+import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
@@ -26,17 +26,17 @@ public class BlockBaseModular extends BasicBlock {
 	protected String thisBlockMaterial;
 	protected final String thisBlockType;
 
+	public BlockBaseModular(final Material material, final BlockTypes blockType) {
+		this(material, blockType, material.getRgbAsHex());
+	}
+	
 	public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
 		this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron,
-				blockType, colour, 2);
+				blockType, colour, Math.min(Math.max(material.vTier, 1), 5));
+		blockMaterial = material;
 	}
 
-	public BlockBaseModular(final String unlocalizedName, final String blockMaterial, final BlockTypes blockType,
-			final int colour) {
-		this(unlocalizedName, blockMaterial, net.minecraft.block.material.Material.iron, blockType, colour, 2);
-	}
-
-	public BlockBaseModular(final String unlocalizedName, final String blockMaterial,
+	protected BlockBaseModular(final String unlocalizedName, final String blockMaterial,
 			final net.minecraft.block.material.Material vanillaMaterial, final BlockTypes blockType, final int colour,
 			final int miningLevel) {
 		super(unlocalizedName, vanillaMaterial);
@@ -57,7 +57,7 @@ public class BlockBaseModular extends BasicBlock {
 					ItemUtils.getSimpleStack(this));
 		}
 		else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())) {
-			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class,
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
 					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 			GT_OreDictUnificator.registerOre(
 					"frameGt" + getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "")
@@ -111,12 +111,27 @@ public class BlockBaseModular extends BasicBlock {
 		return false;
 	}
 
+	public Material getMaterialEx(){
+		return this.blockMaterial;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister iIcon) {
-		if (this.thisBlock != BlockTypes.ORE) {
-			this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
-		}
+			if (!CORE.ConfigSwitches.useGregtechTextures || this.blockMaterial == null || this.thisBlock == BlockTypes.ORE){
+				this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
+			}
+			String metType = "9j4852jyo3rjmh3owlhw9oe"; 
+			if (this.blockMaterial != null) {
+				TextureSet u = this.blockMaterial.getTextureSet();
+				if (u != null) {
+					metType = u.mSetName;				
+				}
+			}		
+			metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);	
+			int tier = this.blockMaterial.vTier;
+			String aType = (this.thisBlock == BlockTypes.FRAME) ? "frameGt" : (tier < 3 ? "block1" : tier < 6 ? "block6" : "block5");			
+			this.blockIcon = iIcon.registerIcon("gregtech" + ":" + "materialicons/"+ "METALLIC" +"/" + aType);
 	}
 
 	@Override
