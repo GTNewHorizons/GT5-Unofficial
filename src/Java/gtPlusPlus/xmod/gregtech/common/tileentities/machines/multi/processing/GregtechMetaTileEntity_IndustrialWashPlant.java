@@ -358,7 +358,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		mChemicalMode = Utils.invertBoolean(mChemicalMode);		
 		if (mChemicalMode){
 			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Chemical Bath Mode.");

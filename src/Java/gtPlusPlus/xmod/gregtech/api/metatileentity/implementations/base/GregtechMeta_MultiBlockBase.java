@@ -755,8 +755,17 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	//mControlCoreBus
-	public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {		
+		log("Found GT_MetaTileEntity_Hatch_ControlCore");
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (!mControlCoreBus.isEmpty()) {
+			return false;
+		}
+		
+		return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
 	}
 
 	@Override
@@ -775,7 +784,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		//Handle Custom Hustoms
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ControlCore) {
 			log("Found GT_MetaTileEntity_Hatch_ControlCore");
-			aDidAdd = addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);
+			aDidAdd = addControlCoreToMachineList(aTileEntity, aBaseCasingIndex);
 		}
 		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
 			log("Found GT_MetaTileEntity_Hatch_InputBattery");
@@ -917,9 +926,13 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		resetRecipeMapForAllInputHatches();
+	public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+		onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+	}
+	
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		resetRecipeMapForAllInputHatches();
 	}
 
 

@@ -136,11 +136,12 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit^=true;
             GT_Utility.sendChatToPlayer(aPlayer, looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);	
     }
 
     @Override

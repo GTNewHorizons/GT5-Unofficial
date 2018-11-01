@@ -30,12 +30,13 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 	private final Material blockMaterial;
 
 	public BlockBaseOre(final Material material, final BlockTypes blockType, final int colour) {
-		super(blockType, Utils.sanitizeString(material.getUnlocalizedName()), net.minecraft.block.material.Material.rock);
+		super(blockType, Utils.sanitizeString(material.getUnlocalizedName()), net.minecraft.block.material.Material.rock, Math.min(Math.max(material.vTier, 1), 6));
+		int aMaterialTierForMining = Math.min(Math.max(material.vTier, 1), 6);
 		this.blockMaterial = material;
-		this.setHardness(2.0f);
+		this.setHardness(1.0f*aMaterialTierForMining);
 		this.setResistance(6.0F);
 		this.setLightLevel(0.0F);
-		this.setHarvestLevel("pickaxe", Math.min(Math.max(material.vTier, 1), 5));
+		this.setHarvestLevel("pickaxe", aMaterialTierForMining);
 		this.setStepSound(soundTypeStone);		
 		this.setBlockName("Ore"+Utils.sanitizeString(Utils.sanitizeString(material.getUnlocalizedName())));
 		this.setBlockTextureName("stone");

@@ -57,12 +57,7 @@ public class ItemBlockOre extends ItemBlock{
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
-		if (!mInitOres_Everglades || mMapOreBlockItemToDimName.size() == 0 || (aPlayer != null ? aPlayer.worldObj.getWorldTime() % 200 == 0 : false)) {
-
-			//mMapOreBlockItemToDimName.clear();
-			mDimsForThisOre.clear();
-
-
+		if (!mInitOres_Everglades) {
 			for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
 				Material[]  m2 = new Material[] {f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic};
 				for (Material m1 : m2) {
@@ -70,8 +65,9 @@ public class ItemBlockOre extends ItemBlock{
 					if (aMap == null) {
 						aMap = new AutoMap<String>();
 					}
-					if (!aMap.containsValue("Everglades")) {
-						aMap.put("Everglades");	
+					String aDimName = "Everglades";
+					if (!aMap.containsValue(aDimName)) {
+						aMap.put(aDimName);	
 					}							
 					mMapOreBlockItemToDimName.put(m1.getUnlocalizedName().toLowerCase(), aMap);
 				}				
@@ -120,20 +116,20 @@ public class ItemBlockOre extends ItemBlock{
 			}
 
 			if (mDimsForThisOre.isEmpty()) {
-				AutoMap A = mMapOreBlockItemToDimName.get(this.mThisMaterial.getUnlocalizedName().toLowerCase());
+				AutoMap<String> A = mMapOreBlockItemToDimName.get(this.mThisMaterial.getUnlocalizedName().toLowerCase());
 				if (A != null) {
 					mDimsForThisOre = A;
-				}
-				else {
-					mDimsForThisOre.put("Unknown");
-				}			
+				}		
 			}
-			
+
+			list.add("Found:    ");
 			if (!mDimsForThisOre.isEmpty()) {
-				list.add("Found:    ");
 				for (String m : mDimsForThisOre) {
 					list.add("- "+m);					
 				}			
+			}
+			else {
+				list.add("- Unknown");				
 			}
 
 		}

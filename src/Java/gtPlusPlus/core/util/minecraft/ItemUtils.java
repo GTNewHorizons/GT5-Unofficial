@@ -724,7 +724,20 @@ public class ItemUtils {
 		}	
 		return (gregstack);
 	}
+	
+	public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
+		ItemStack aGtStack = GT_OreDictUnificator.get(mPrefix, mMat, mAmount);
+		if (aGtStack == null) {
+			return getErrorStack(mAmount);
+		}
+		else {
+			return aGtStack;
+		}
+	}
 
+	public static ItemStack getErrorStack(int mAmount) {
+		return getSimpleStack(ModItems.AAA_Broken, mAmount);
+	}
 	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictname);
 		if (!oreDictList.isEmpty()){

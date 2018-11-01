@@ -339,8 +339,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		if (this.mSize > 3) {
 			this.mPlasmaMode = Utils.invertBoolean(mPlasmaMode);
 			if (mPlasmaMode) {
@@ -349,7 +348,8 @@ extends GregtechMeta_MultiBlockBase {
 			else {
 				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.YELLOW+"Electric"+EnumChatFormatting.RESET);			
 			}
-		}		
+		}	
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);	
 	}
 
 	@Override

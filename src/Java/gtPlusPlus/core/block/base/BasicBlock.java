@@ -29,10 +29,10 @@ public class BasicBlock extends BlockContainer {
 			this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
 		}
 
-		this.setCreativeTab(AddToCreativeTab.tabBlock);
-		this.setHardness(2.0F);
+		this.setCreativeTab(AddToCreativeTab.tabBlock);		
 		this.setResistance(6.0F);
 		this.setLightLevel(0.0F);
+		this.setHardness(1.0f*harvestLevel);
 		this.setHarvestLevel("pickaxe", harvestLevel);
 		this.setStepSound(soundTypeMetal);
 	}

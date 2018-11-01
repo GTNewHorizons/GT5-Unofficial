@@ -35,7 +35,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 		final ItemStack itemIngot = material.getIngot(1);
-		final ItemStack plate_Single = material.getPlate(1);
+		final ItemStack itemPlate = material.getPlate(1);
 		final ItemStack itemGear = material.getGear(1);
 
 		final ItemStack shape_Plate = ItemList.Shape_Extruder_Plate.get(0);
@@ -49,6 +49,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 		Logger.WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 
 		//Ingot Recipe
+		if (material.getIngot(1) != null && material.getBlock(1) != null)
 		if (addExtruderRecipe(
 				material.getBlock(1),
 				shape_Ingot,
@@ -62,6 +63,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 		}
 
 		//Block Recipe
+		if (material.getIngot(1) != null && material.getBlock(1) != null)
 		if (addExtruderRecipe(
 				material.getIngot(9),
 				shape_Block,
@@ -75,10 +77,11 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 		}
 
 		//Plate Recipe
+		if (material.getIngot(1) != null && material.getPlate(1) != null)
 		if (addExtruderRecipe(
 				itemIngot,
 				shape_Plate,
-				plate_Single,
+				itemPlate,
 				10, 4 * tVoltageMultiplier)){
 			Logger.WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
@@ -87,6 +90,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 		}
 
 		//Ring Recipe
+		if (material.getIngot(1) != null && material.getRing(1) != null)
 		if (!material.isRadioactive){
 			if (addExtruderRecipe(
 					itemIngot,
@@ -103,6 +107,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
 
 		//Gear Recipe
+		if (material.getIngot(1) != null && material.getGear(1) != null)
 		if (!material.isRadioactive){
 			if (addExtruderRecipe(
 					material.getIngot(4),
@@ -119,6 +124,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
 
 		//Rod Recipe
+		if (material.getIngot(1) != null && material.getRod(1) != null)
 		if (addExtruderRecipe(
 				itemIngot,
 				shape_Rod,
@@ -133,6 +139,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 
 
 		//Bolt Recipe
+		if (material.getIngot(1) != null && material.getBolt(1) != null)
 		if (!material.isRadioactive){
 			if (addExtruderRecipe(
 					itemIngot,

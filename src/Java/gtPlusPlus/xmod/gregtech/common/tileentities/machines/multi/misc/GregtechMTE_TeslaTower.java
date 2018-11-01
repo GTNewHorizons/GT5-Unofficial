@@ -447,7 +447,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		mMode = Utils.invertBoolean(mMode);		
 		this.mInRange.clear();
 		if (mMode){

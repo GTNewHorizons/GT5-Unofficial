@@ -97,14 +97,14 @@ public class BaseItemComponent extends Item{
 			return false;
 		}		
 		//Register Component
-		Map<String, BaseItemComponent> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
+		Map<String, ItemStack> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
 		if (aMap == null) {
-			aMap = new HashMap<String, BaseItemComponent>();
+			aMap = new HashMap<String, ItemStack>();
 		}
 		String aKey = componentType.getGtOrePrefix().name();
-		BaseItemComponent x = aMap.get(aKey);
+		ItemStack x = aMap.get(aKey);
 		if (x == null) {
-			aMap.put(aKey, this);
+			aMap.put(aKey, ItemUtils.getSimpleStack(this));
 			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
 			return true;
 		}

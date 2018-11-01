@@ -18,11 +18,11 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
 	}
 
-	public RecipeGen_Fluids(final Material M){
+	public RecipeGen_Fluids(final Material M) {
 		this(M, false);
 	}
-	
-	public RecipeGen_Fluids(final Material M, final boolean dO){
+
+	public RecipeGen_Fluids(final Material M, final boolean dO) {
 		this.toGenerate = M;
 		this.disableOptional = dO;
 		mRecipeGenMap.add(this);
@@ -33,263 +33,269 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 		generateRecipes(this.toGenerate, this.disableOptional);
 	}
 
-	private void generateRecipes(final Material material, final boolean dO){
+	private void generateRecipes(final Material material, final boolean dO) {
 
 		if (material == null) {
 			return;
 		}
-		
-		//Melting Shapes to fluid
-		if (material.getFluid(1) != null && !material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")){
-			
+
+		// Melting Shapes to fluid
+		if (material.getFluid(1) != null
+				&& !material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")) {
+
 			if (!material.requiresBlastFurnace()) {
 
-				//Ingot
-				if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), //Input
-						null, //Input 2
-						material.getFluid(144), //Fluid Output
-						0, //Chance
-						1*20, //Duration
-						16 //Eu Tick
-						)){
-					Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+				// Ingot
+				if (material.getIngot(1) != null)
+					if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), // Input
+							null, // Input 2
+							material.getFluid(144), // Fluid Output
+							0, // Chance
+							1 * 20, // Duration
+							16 // Eu Tick
+					)) {
+						Logger.WARNING("144l fluid extractor from 1 ingot Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING("144l fluid extractor from 1 ingot Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Plate
+				if (material.getPlate(1) != null)
+					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), // Input
+							null, // Input 2
+							material.getFluid(144), // Fluid Output
+							0, // Chance
+							1 * 20, // Duration
+							16 // Eu Tick
+					)) {
+						Logger.WARNING("144l fluid extractor from 1 plate Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING("144l fluid extractor from 1 plate Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Double Plate
+				if (material.getPlateDouble(1) != null)
+					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), // Input
+							null, // Input 2
+							material.getFluid(288), // Fluid Output
+							0, // Chance
+							1 * 20, // Duration
+							16 // Eu Tick
+					)) {
+						Logger.WARNING("144l fluid extractor from 1 double plate Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING("144l fluid extractor from 1 double plate Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Nugget
+				if (material.getNugget(1) != null)
+					if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), // Input
+							null, // Input 2
+							material.getFluid(16), // Fluid Output
+							0, // Chance
+							16, // Duration
+							8 // Eu Tick
+					)) {
+						Logger.WARNING("16l fluid extractor from 1 nugget Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING("16l fluid extractor from 1 nugget Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Block
+				if (material.getBlock(1) != null)
+					if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), // Input
+							null, // Input 2
+							material.getFluid(144 * 9), // Fluid Output
+							0, // Chance
+							288, // Duration
+							16 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid extractor from 1 block Recipe: "
+								+ material.getLocalizedName() + " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid extractor from 1 block Recipe: "
+								+ material.getLocalizedName() + " - Failed");
+					}
+
+			}
+
+			// Making Shapes from fluid
+
+			// Ingot
+			if (material.getIngot(1) != null)
+				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), // Item Shape
+						material.getFluid(144), // Fluid Input
+						material.getIngot(1), // output
+						32, // Duration
+						8 // Eu Tick
+				)) {
+					Logger.WARNING(
+							"144l fluid molder for 1 ingot Recipe: " + material.getLocalizedName() + " - Success");
+				} else {
+					Logger.WARNING(
+							"144l fluid molder for 1 ingot Recipe: " + material.getLocalizedName() + " - Failed");
 				}
-				else {
-					Logger.WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
+
+			// Plate
+			if (material.getPlate(1) != null)
+				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0), // Item Shape
+						material.getFluid(144), // Fluid Input
+						material.getPlate(1), // output
+						32, // Duration
+						8 // Eu Tick
+				)) {
+					Logger.WARNING(
+							"144l fluid molder for 1 plate Recipe: " + material.getLocalizedName() + " - Success");
+				} else {
+					Logger.WARNING(
+							"144l fluid molder for 1 plate Recipe: " + material.getLocalizedName() + " - Failed");
 				}
 
-				//Plate
-				if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), //Input
-						null, //Input 2
-						material.getFluid(144), //Fluid Output
-						0, //Chance
-						1*20, //Duration
-						16 //Eu Tick
-						)){
-					Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
-				}
-				else {
-					Logger.WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
-				}
-
-				//Double Plate
-				if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), //Input
-						null, //Input 2
-						material.getFluid(288), //Fluid Output
-						0, //Chance
-						1*20, //Duration
-						16 //Eu Tick
-						)){
-					Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
-				}
-				else {
-					Logger.WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");
+			// Nugget
+			if (material.getNugget(1) != null)
+				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0), // Item Shape
+						material.getFluid(16), // Fluid Input
+						material.getNugget(1), // output
+						16, // Duration
+						4 // Eu Tick
+				)) {
+					Logger.WARNING(
+							"16l fluid molder for 1 nugget Recipe: " + material.getLocalizedName() + " - Success");
+				} else {
+					Logger.WARNING(
+							"16l fluid molder for 1 nugget Recipe: " + material.getLocalizedName() + " - Failed");
 				}
 
-				//Nugget
-				if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), //Input
-						null, //Input 2
-						material.getFluid(16), //Fluid Output
-						0, //Chance
-						16, //Duration
-						8 //Eu Tick
-						)){
-					Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
-				}
-				else {
-					Logger.WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
-				}
-
-				//Block
-				if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), //Input
-						null, //Input 2
-						material.getFluid(144*9), //Fluid Output
-						0, //Chance
-						288, //Duration
-						16 //Eu Tick
-						)){
-					Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
-				}
-				else {
-					Logger.WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
+			// Gears
+			if (material.getGear(1) != null)
+				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0), // Item Shape
+						material.getFluid(576), // Fluid Input
+						material.getGear(1), // output
+						128, // Duration
+						8 // Eu Tick
+				)) {
+					Logger.WARNING(
+							"576l fluid molder for 1 gear Recipe: " + material.getLocalizedName() + " - Success");
+				} else {
+					Logger.WARNING("576l fluid molder for 1 gear Recipe: " + material.getLocalizedName() + " - Failed");
 				}
 
-			}
+			// Blocks
+			if (material.getBlock(1) != null)
+				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0), // Item Shape
+						material.getFluid(144 * 9), // Fluid Input
+						material.getBlock(1), // output
+						288, // Duration
+						16 // Eu Tick
+				)) {
+					Logger.WARNING((144 * 9) + "l fluid molder from 1 block Recipe: " + material.getLocalizedName()
+							+ " - Success");
+				} else {
+					Logger.WARNING((144 * 9) + "l fluid molder from 1 block Recipe: " + material.getLocalizedName()
+							+ " - Failed");
+				}
 
+			if (CORE.GTNH) {
 
+				// GTNH
 
-
-
-			//Making Shapes from fluid
-
-			//Ingot
-			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Ingot.get(0), //Item Shape
-					material.getFluid(144), //Fluid Input
-					material.getIngot(1), //output
-					32, //Duration
-					8 //Eu Tick
-					)){
-				Logger.WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-
-			//Plate
-			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Plate.get(0), //Item Shape
-					material.getFluid(144), //Fluid Input
-					material.getPlate(1), //output
-					32, //Duration
-					8 //Eu Tick
-					)){
-				Logger.WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-
-			//Nugget
-			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Nugget.get(0), //Item Shape
-					material.getFluid(16), //Fluid Input
-					material.getNugget(1), //output
-					16, //Duration
-					4 //Eu Tick
-					)){
-				Logger.WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-
-			//Gears
-			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Gear.get(0), //Item Shape
-					material.getFluid(576), //Fluid Input
-					material.getGear(1), //output
-					128, //Duration
-					8 //Eu Tick
-					)){
-				Logger.WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING("576l fluid molder for 1 gear Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-
-			//Blocks
-			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Block.get(0), //Item Shape
-					material.getFluid(144*9), //Fluid Input
-					material.getBlock(1), //output
-					288, //Duration
-					16 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			
-			
-			
-			if (CORE.GTNH){
-			
-			//GTNH
-			
-			//Shape_Mold_Rod
-			//Shape_Mold_Rod_Long
-		    //Shape_Mold_Bolt,
-		    //Shape_Mold_Screw,
-		    //Shape_Mold_Ring,
+				// Shape_Mold_Rod
+				// Shape_Mold_Rod_Long
+				// Shape_Mold_Bolt,
+				// Shape_Mold_Screw,
+				// Shape_Mold_Ring,
 
 				ItemList mold_Rod = ItemList.valueOf("Shape_Mold_Rod");
 				ItemList mold_Rod_Long = ItemList.valueOf("Shape_Mold_Rod_Long");
 				ItemList mold_Bolt = ItemList.valueOf("Shape_Mold_Bolt");
 				ItemList mold_Screw = ItemList.valueOf("Shape_Mold_Screw");
 				ItemList mold_Ring = ItemList.valueOf("Shape_Mold_Ring");
-				
-			//Rod
-			if (mold_Rod != null && GT_Values.RA.addFluidSolidifierRecipe(
-					mold_Rod.get(0), //Item Shape
-					material.getFluid(72), //Fluid Input
-					material.getRod(1), //output
-					150, //Duration
-					24 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 rod Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 rod Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			//Rod Long
-			if (mold_Rod_Long != null && GT_Values.RA.addFluidSolidifierRecipe(
-					mold_Rod_Long.get(0), //Item Shape
-					material.getFluid(144), //Fluid Input
-					material.getLongRod(1), //output
-					300, //Duration
-					24 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 rod long Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 rod long Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			//Bolt
-			if (mold_Bolt != null && GT_Values.RA.addFluidSolidifierRecipe(
-					mold_Bolt.get(0), //Item Shape
-					material.getFluid(18), //Fluid Input
-					material.getBolt(1), //output
-					50, //Duration
-					6 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 bolt Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 bolt Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			//Screw
-			if (mold_Screw != null && GT_Values.RA.addFluidSolidifierRecipe(
-					mold_Screw.get(0), //Item Shape
-					material.getFluid(18), //Fluid Input
-					material.getScrew(1), //output
-					50, //Duration
-					6 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 screw Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 screw Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			//Ring
-			if (mold_Ring != null && GT_Values.RA.addFluidSolidifierRecipe(
-					mold_Ring.get(0), //Item Shape
-					material.getFluid(36), //Fluid Input
-					material.getRing(1), //output
-					100, //Duration
-					12 //Eu Tick
-					)){
-				Logger.WARNING((144*9)+"l fluid molder from 1 ring Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Logger.WARNING((144*9)+"l fluid molder from 1 ring Recipe: "+material.getLocalizedName()+" - Failed");
-			}
-			
-			
-			
-			
-			
-			
-			
-			
+
+				// Rod
+				if (material.getRod(1) != null)
+					if (mold_Rod != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod.get(0), // Item Shape
+							material.getFluid(72), // Fluid Input
+							material.getRod(1), // output
+							150, // Duration
+							24 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Rod Long
+				if (material.getLongRod(1) != null)
+					if (mold_Rod_Long != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod_Long.get(0), // Item
+																												// Shape
+							material.getFluid(144), // Fluid Input
+							material.getLongRod(1), // output
+							300, // Duration
+							24 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod long Recipe: "
+								+ material.getLocalizedName() + " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod long Recipe: "
+								+ material.getLocalizedName() + " - Failed");
+					}
+
+				// Bolt
+				if (material.getBolt(1) != null)
+					if (mold_Bolt != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Bolt.get(0), // Item Shape
+							material.getFluid(18), // Fluid Input
+							material.getBolt(1), // output
+							50, // Duration
+							6 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Screw
+				if (material.getScrew(1) != null)
+					if (mold_Screw != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Screw.get(0), // Item Shape
+							material.getFluid(18), // Fluid Input
+							material.getScrew(1), // output
+							50, // Duration
+							6 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 screw Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 screw Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
+				// Ring
+				if (material.getRing(1) != null)
+					if (mold_Ring != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Ring.get(0), // Item Shape
+							material.getFluid(36), // Fluid Input
+							material.getRing(1), // output
+							100, // Duration
+							12 // Eu Tick
+					)) {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName()
+								+ " - Success");
+					} else {
+						Logger.WARNING((144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName()
+								+ " - Failed");
+					}
+
 			}
 		}
 	}
 }
-

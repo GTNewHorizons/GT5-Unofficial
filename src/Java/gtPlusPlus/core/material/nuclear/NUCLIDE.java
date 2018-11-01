@@ -1,5 +1,6 @@
 package gtPlusPlus.core.material.nuclear;
 
+import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -12,12 +13,13 @@ public final class NUCLIDE {
 	public static final Material LiFBeF2ThF4UF4 = new Material(
 			"LiFBeF2ThF4UF4", //Material Name
 			MaterialState.LIQUID, //State
-			new short[]{40, 90, 25, 0}, //Material Colour
+			TextureSets.NUCLEAR.get(),
+			null, //Material Colour
 			566, //Melting Point in C
 			870, //Boiling Point in C
-			150, //Protons
-			150, //Neutrons
-			true, //Uses Blast furnace?
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ThF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
@@ -27,16 +29,17 @@ public final class NUCLIDE {
 					new MaterialStack(FLUORIDES.THORIUM_TETRAFLUORIDE, 1),
 					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1)
 			});
-
+	
 	public static final Material LiFBeF2ZrF4UF4 = new Material(
 			"LiFBeF2ZrF4UF4", //Material Name
 			MaterialState.LIQUID, //State
-			new short[]{20, 70, 45, 0}, //Material Colour
+			TextureSets.NUCLEAR.get(),
+			null, //Material Colour
 			650, //Melting Point in C
 			940, //Boiling Point in C
-			150, //Protons
-			150, //Neutrons
-			true, //Uses Blast furnace?
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
@@ -50,12 +53,13 @@ public final class NUCLIDE {
 	public static final Material LiFBeF2ZrF4U235 = new Material(
 			"LiFBeF2ZrF4U235", //Material Name
 			MaterialState.LIQUID, //State
-			new short[]{50, 70, 15, 0}, //Material Colour
+			TextureSets.NUCLEAR.get(),
+			null, //Material Colour
 			590, //Melting Point in C
 			890, //Boiling Point in C
-			150, //Protons
-			150, //Neutrons
-			true, //Uses Blast furnace?
+			-1, //Protons
+			-1, //Neutrons
+			false, //Uses Blast furnace?
 			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4")+StringUtils.superscript("235U"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.

@@ -1,25 +1,39 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.*;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.TypeCounter;
+import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.EnumUtils;
 import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -45,88 +59,139 @@ public class MaterialUtils {
 		return null;
 	}
 
+	private static Map<String, Material> mGeneratedMaterialMap = new HashMap();
 
 	public static Material generateMaterialFromGtENUM(final Materials material){
-		return generateMaterialFromGtENUM(material, null);
+		return generateMaterialFromGtENUM(material, null, null);
+	}
+
+	public static Material generateMaterialFromGtENUM(final Materials material, TextureSet aCustomTextures){
+		return generateMaterialFromGtENUM(material, null, aCustomTextures);
 	}
 
 	public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB){
-		@SuppressWarnings("deprecation")
-		String name = material.name();
-		final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
-		final int melting = material.mMeltingPoint;
-		final int boiling = material.mBlastFurnaceTemp;
-		final long protons = material.getProtons();
-		final long neutrons = material.getNeutrons();
-		final boolean blastFurnace = material.mBlastFurnaceRequired;
-		final TextureSet iconSet = material.mIconSet;
-		final int durability = material.mDurability;
-		boolean mGenerateCell = false;
-		boolean mGenerateFluid = true;
-		MaterialState materialState;
-		String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
-		final Element element = material.mElement;
-		int radioactivity = 0;
-		if (material.isRadioactive()){
-			radioactivity = 1;
+		return generateMaterialFromGtENUM(material, customRGB, null);
+	}
+
+	public static Material generateMaterialFromGtENUM(final Materials material, short[] customRGB, TextureSet aCustomTextures){
+		String aMaterialKey = getMaterialName(material).toLowerCase();
+		if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
+			return mGeneratedMaterialMap.get(aMaterialKey);
 		}
 
-		//Weird Blacklist of Bad Chemical Strings
-		if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar){
-			chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
-		}
+		try {
+			@SuppressWarnings("deprecation")
+			String name = material.name();
+			final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
+			final int melting = material.mMeltingPoint;
+			final int boiling = material.mBlastFurnaceTemp;
+			final long protons = material.getProtons();
+			final long neutrons = material.getNeutrons();
+			final boolean blastFurnace = material.mBlastFurnaceRequired;
+			Integer radioactivity = 0;
+			if (material.isRadioactive()){
+				ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
+				radioactivity = aDustStack != null ? GT_Utility.getRadioactivityLevel(aDustStack) : 0;
+				if (radioactivity == 0) {
+					long aProtons = material.getProtons();
+					radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);				
+				}
+			}
+			Logger.MATERIALS("[Debug] Calculated Radiation level to be "+radioactivity.intValue()+".");
+			TextureSet iconSet = null;
+			if (aCustomTextures == null) {
+				if (material.isRadioactive()) {
+					iconSet = TextureSets.NUCLEAR.get();
+				}
+				else {
+					iconSet = material.mIconSet;
+				}
+			}
+			else {
+				iconSet = aCustomTextures;
+			}
+			if (iconSet == null || iconSet.mSetName.toLowerCase().contains("fluid")) {
+				iconSet = TextureSet.SET_METALLIC;
+			}
+			Logger.MATERIALS("[Debug] Calculated Texture Set to be "+iconSet.mSetName+".");
 
-		//Determine default state
-		Logger.MATERIALS("[Debug] Setting State of GT generated material. "+material.mDefaultLocalName);
-		if (material.getMolten(1) != null || material.getSolid(1) != null){
-			materialState = MaterialState.SOLID;
-			Logger.MATERIALS("[Debug] Molten or Solid was not null.");
-			if (material.getMolten(1) == null && material.getSolid(1) != null){
-				Logger.MATERIALS("[Debug] Molten is Null, Solid is not. Enabling cell generation.");
-				mGenerateCell = true;
+
+			final int durability = material.mDurability;
+			boolean mGenerateCell = false;
+			boolean mGenerateFluid = true;
+			MaterialState materialState;
+			String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+			final Element element = material.mElement;
+
+
+			//Weird Blacklist of Bad Chemical Strings
+			if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar){
+				chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
 			}
-			else if (material.getMolten(1) != null && material.getSolid(1) == null){
-				Logger.MATERIALS("[Debug] Molten is not Null, Solid is null. Not enabling cell generation.");
-				//mGenerateCell = true;
+
+			//Determine default state
+			Logger.MATERIALS("[Debug] Setting State of GT generated material. "+material.mDefaultLocalName);
+			if (material.getMolten(1) != null || material.getSolid(1) != null){
+				materialState = MaterialState.SOLID;
+				Logger.MATERIALS("[Debug] Molten or Solid was not null.");
+				if (material.getMolten(1) == null && material.getSolid(1) != null){
+					Logger.MATERIALS("[Debug] Molten is Null, Solid is not. Enabling cell generation.");
+					mGenerateCell = true;
+				}
+				else if (material.getMolten(1) != null && material.getSolid(1) == null){
+					Logger.MATERIALS("[Debug] Molten is not Null, Solid is null. Not enabling cell generation.");
+					//mGenerateCell = true;
+				}
+				Logger.MATERIALS("[Debug] State set as solid.");
 			}
-			Logger.MATERIALS("[Debug] State set as solid.");
-		}
-		else if (material.getFluid(1) != null){
-			Logger.MATERIALS("[Debug] State set as liquid.");
-			materialState = MaterialState.LIQUID;
-		}
-		else if (material.getGas(1) != null){
-			Logger.MATERIALS("[Debug] State set as gas.");
-			materialState = MaterialState.GAS;
-		}/*
+			else if (material.getFluid(1) != null){
+				Logger.MATERIALS("[Debug] State set as liquid.");
+				materialState = MaterialState.LIQUID;
+			}
+			else if (material.getGas(1) != null){
+				Logger.MATERIALS("[Debug] State set as gas.");
+				materialState = MaterialState.GAS;
+			}/*
 		else if (material.getPlasma(1) != null){
 			Logger.MATERIALS("[Debug] State set as plasma.");
 			materialState = MaterialState.PLASMA;
 		}*/
-		else {
-			Logger.MATERIALS("[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
-			materialState = MaterialState.SOLID;
-			mGenerateFluid = false;
-		}
+			else {
+				Logger.MATERIALS("[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
+				materialState = MaterialState.SOLID;
+				mGenerateFluid = false;
+			}
 
 
-		if (name.toLowerCase().contains("infused")){
-			final String tempname = name.substring(7, name.length());
-			name = "Infused " + tempname;
+			if (name.toLowerCase().contains("infused")){
+				final String tempname = name.substring(7, name.length());
+				name = "Infused " + tempname;
+			}
+			if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
+				//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
+				//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
+				Material M = new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity.intValue(), mGenerateCell, mGenerateFluid);
+				mGeneratedMaterialMap.put(aMaterialKey, M);
+				return M;
+			}
+			else {
+				Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
+			}
 		}
-		if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
-			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
-			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, materialState,iconSet, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity, mGenerateCell, mGenerateFluid);
-		}
-		else {
-			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name() +" | Valid RGB? "+(hasValidRGBA(rgba)));
+		catch (Throwable t) {	
+			Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for "+material.name());		
+			t.printStackTrace();
 		}
 		return null;
 
 	}
 
 	public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState, final short[] colour, final int sRadioactivity) {
+		String aMaterialKey = materialName.toLowerCase();
+		if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
+			return mGeneratedMaterialMap.get(aMaterialKey);
+		}
+
 		final Material temp = new Material(
 				materialName,
 				defaultState,
@@ -138,6 +203,7 @@ public class MaterialUtils {
 				false,
 				"",
 				sRadioactivity);
+		mGeneratedMaterialMap.put(aMaterialKey, temp);
 		return temp;
 	}
 
@@ -237,7 +303,7 @@ public class MaterialUtils {
 
 	@SuppressWarnings("deprecation")
 	public static String getMaterialName(Materials mat){
-		
+
 		String mName = null;
 
 		try {
@@ -279,6 +345,82 @@ public class MaterialUtils {
 			m = getMaterialByName(aMaterialName);
 		}
 		return m;
+	}
+
+	public static AutoMap<Material> getCompoundMaterialsRecursively(Material aMat){		
+		return getCompoundMaterialsRecursively_Speiger(aMat);		
+		/*
+		AutoMap<Material> aDataSet = new AutoMap<Material>();	
+		final int HARD_LIMIT = 1000;
+		int mLoopCounter = 0;
+		if (aMat.getComposites().size() > 0) {
+			try {
+				List<Material> xList = Lists.newLinkedList();
+				for (MaterialStack kj : aMat.getComposites()) {
+					xList.add(kj.getStackMaterial());
+				}
+				if (xList.isEmpty()) {
+					aDataSet.put(aMat);
+					return aDataSet;
+				}
+				ListIterator<Material> listIterator = xList.listIterator();			
+				while(listIterator.hasNext()){				
+					Material e = listIterator.next();
+					listIterator.remove();
+					if (mLoopCounter > HARD_LIMIT) {
+						break;
+					}
+
+					if (e.getComposites().isEmpty()) {
+						aDataSet.put(e);
+					}
+					else {
+						for (MaterialStack x : e.getComposites()) {
+							listIterator.add(x.getStackMaterial());		
+						}				
+					}
+					mLoopCounter++;
+
+
+				}}
+			catch (Throwable t) {
+				aDataSet.put(aMat);
+				t.printStackTrace();
+			}
+		}
+		if (aDataSet.isEmpty()) {
+			aDataSet.put(aMat);
+			return aDataSet;
+		}
+		return aDataSet;	
+	*/}
+
+	public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
+		AutoMap<Material> resultList = new AutoMap<Material>();
+		if (toSearch.getComposites().isEmpty()) {
+			resultList.put(toSearch);
+			return resultList;
+		}
+		final int HARD_LIMIT = 1000;
+		
+		// Could be a Deque but i dont use the interface
+		// enough to use it as default.
+		LinkedList<Material> toCheck = new LinkedList<Material>(); 		
+		
+		toCheck.add(toSearch);
+		int processed = 0;
+		while (toCheck.size() > 0 && processed < HARD_LIMIT) {
+			Material current = toCheck.remove();
+			if (current.getComposites().isEmpty()) {
+				resultList.put(current);
+			} else {
+				for (MaterialStack entry : current.getComposites()) {
+					toCheck.add(entry.getStackMaterial());
+				}
+			}
+			processed++;
+		}
+		return resultList;
 	}
 
 

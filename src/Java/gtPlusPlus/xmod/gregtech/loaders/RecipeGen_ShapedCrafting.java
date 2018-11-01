@@ -56,7 +56,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		//Plates
 		
 		//Single Plate Shaped/Shapeless
-		if (material.getPlate(1) != null)
+		if (material.getPlate(1) != null && material.getIngot(1) != null)
 		GT_ModHandler.addCraftingRecipe(
 				material.getPlate(1),
 				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
@@ -66,7 +66,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 						Character.valueOf('B'),
 						material.getIngot(1)});
 
-		if (material.getPlate(1) != null)
+		if (material.getPlate(1) != null && material.getIngot(1) != null)
 		GT_ModHandler.addShapelessCraftingRecipe(
 				material.getPlate(1),
 				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
@@ -74,7 +74,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 						material.getIngot(1)});
 
 		//Double Plate Shaped/Shapeless
-		if (material.getPlateDouble(1) != null)
+		if (material.getPlateDouble(1) != null && material.getPlate(1) != null)
 		GT_ModHandler.addCraftingRecipe(
 				material.getPlateDouble(1),
 				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
@@ -84,7 +84,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 						Character.valueOf('B'),
 						material.getPlate(1)});
 
-		if (material.getPlateDouble(1) != null)
+		if (material.getPlateDouble(1) != null && material.getPlate(1) != null)
 		GT_ModHandler.addShapelessCraftingRecipe(
 				material.getPlateDouble(1),
 				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
@@ -92,7 +92,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 						material.getPlate(1)});
 
 		//Ring Recipe
-		if (!material.isRadioactive && material.getRing(1) != null){
+		if (!material.isRadioactive && material.getRing(1) != null && material.getRod(1) != null){
 			if (CORE.GTNH){
 				if (RecipeUtils.recipeBuilder(
 						"craftingToolHardHammer", null, null,
@@ -121,7 +121,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 
 		//Framebox Recipe
-		if (!material.isRadioactive && material.getFrameBox(1) != null){
+		if (!material.isRadioactive && material.getFrameBox(1) != null && material.getRod(1) != null){
 			final ItemStack stackStick = material.getRod(1);
 			if (RecipeUtils.recipeBuilder(
 					stackStick, stackStick, stackStick,
@@ -166,7 +166,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 
 		//Shaped Recipe - Bolts
-		if (!material.isRadioactive && material.getBolt(1) != null){
+		if (!material.isRadioactive && material.getBolt(1) != null && material.getRod(1) != null){
 			if (RecipeUtils.recipeBuilder(
 					"craftingToolSaw", null, null,
 					null, material.getRod(1), null,
@@ -181,7 +181,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 
 		//Shaped Recipe - Ingot to Rod
-		if (material.getRod(1) != null)
+		if (material.getRod(1) != null && material.getIngot(1) != null)
 		if (RecipeUtils.recipeBuilder(
 				"craftingToolFile", null, null,
 				null, material.getIngot(1), null,
@@ -195,7 +195,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 
 		//Shaped Recipe - Long Rod to two smalls
-		if (material.getRod(1) != null)
+		if (material.getRod(1) != null && material.getLongRod(1) != null)
 		if (RecipeUtils.recipeBuilder(
 				"craftingToolSaw", null, null,
 				material.getLongRod(1), null, null,
@@ -208,7 +208,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		}
 
 		//Two small to long rod
-		if (material.getLongRod(1) != null)
+		if (material.getLongRod(1) != null && material.getRod(1) != null)
 		if (RecipeUtils.recipeBuilder(
 				material.getRod(1), "craftingToolHardHammer", material.getRod(1),
 				null, null, null,
@@ -221,7 +221,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		}
 
 		//Rotor Recipe
-		if (!material.isRadioactive && material.getRotor(1) != null){
+		if (!material.isRadioactive && material.getRotor(1) != null && material.getRing(1) != null && material.getPlate(1) != null && material.getScrew(1) != null){
 			if (RecipeUtils.recipeBuilder(
 					material.getPlate(1), "craftingToolHardHammer", material.getPlate(1),
 					material.getScrew(1), material.getRing(1), "craftingToolFile",
@@ -235,7 +235,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		}
 
 		//Gear Recipe
-		if (!material.isRadioactive && material.getGear(1) != null){
+		if (!material.isRadioactive && material.getGear(1) != null && material.getPlate(1) != null && material.getRod(1) != null){
 			if (RecipeUtils.recipeBuilder(
 					material.getRod(1), material.getPlate(1), material.getRod(1),
 					material.getPlate(1), "craftingToolWrench", material.getPlate(1),
@@ -249,7 +249,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 		}
 
 		//Screws
-		if (!material.isRadioactive && material.getScrew(1) != null){
+		if (!material.isRadioactive && material.getScrew(1) != null && material.getBolt(1) != null){
 			if (RecipeUtils.recipeBuilder(
 					"craftingToolFile", material.getBolt(1), null,
 					material.getBolt(1), null, null,

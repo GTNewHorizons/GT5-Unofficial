@@ -374,7 +374,7 @@ public class Utils {
 	/*
 	 * http://javadevnotes.com/java-left-pad-string-with-zeros-examples
 	 */
-	public static String leftPadWithZeroes(final String originalString, final int length) {
+	public static String padWithZerosLefts(final String originalString, final int length) {
 		final StringBuilder sb = new StringBuilder();
 		while ((sb.length() + originalString.length()) < length) {
 			sb.append('0');
@@ -382,6 +382,19 @@ public class Utils {
 		sb.append(originalString);
 		final String paddedString = sb.toString();
 		return paddedString;
+	}
+	
+	public static String padWithZerosRight(final int value, final int length) {
+		String originalString = String.valueOf(value);
+		final StringBuilder sb = new StringBuilder();
+		while ((sb.length() + originalString.length()) < length) {
+			sb.append('0');
+		}
+		//sb.append(originalString);
+		if (sb.length() > 0)
+		originalString = (originalString + sb.toString());
+		final String paddedString = sb.toString();
+		return originalString;
 	}
 
 	/*
@@ -429,17 +442,20 @@ public class Utils {
 		if (hexAsStringOrInt.getClass() == String.class) {
 
 			if (((String) hexAsStringOrInt).length() != 6) {
-				final String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
+				final String temp = padWithZerosLefts((String) hexAsStringOrInt, 6);
 				result = temp;
 			}
 			result = hexChar + hexAsStringOrInt;
 			return result;
-		} else if (hexAsStringOrInt.getClass() == Integer.class) {
-			if (((String) hexAsStringOrInt).length() != 6) {
-				final String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
+		} else if (hexAsStringOrInt.getClass() == Integer.class || hexAsStringOrInt.getClass() == int.class) {
+			String aa = String.valueOf(hexAsStringOrInt);
+			if (aa.length() != 6) {
+				final String temp = padWithZerosLefts(aa, 6);
 				result = temp;
 			}
-			result = hexChar + String.valueOf(hexAsStringOrInt);
+			else {
+				result = hexChar + String.valueOf(hexAsStringOrInt);				
+			}
 			return result;
 		} else {
 			return null;

@@ -31,6 +31,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 
 		//Nuggets
+		if (material.getIngot(1) != null && material.getNugget(1) != null)
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(1),
 				ItemList.Shape_Mold_Nugget.get(0),
@@ -39,6 +40,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				2 * tVoltageMultiplier);
 
 		//Gears
+		if (material.getIngot(1) != null && material.getGear(1) != null)
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(8),
 				ItemList.Shape_Mold_Gear.get(0),
@@ -47,6 +49,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				2 * tVoltageMultiplier);
 		
 		//Ingot
+		if (material.getIngot(1) != null && material.getNugget(1) != null)
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getNugget(9),
 				ItemList.Shape_Mold_Ingot.get(0),

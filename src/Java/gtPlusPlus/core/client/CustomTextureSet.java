@@ -8,7 +8,8 @@ public class CustomTextureSet extends TextureSet {
 		
 		REFINED(),
 		GEM_A(),
-		ENRICHED();
+		ENRICHED(),
+		NUCLEAR;
 
 		private final CustomTextureSet A;
 		
