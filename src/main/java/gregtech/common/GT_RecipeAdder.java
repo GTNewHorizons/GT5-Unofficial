@@ -49,20 +49,6 @@ public class GT_RecipeAdder
         return true;
     }
     
-    public boolean addFusionReactorRecipe(ItemStack aInput1, FluidStack aInput2, FluidStack aInput3, FluidStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aStartEU) {
-        if (aInput1 == null || aInput2 == null || aInput3 == null || aOutput1 == null || aOutput2 == null || aDuration < 1 || aEUt < 1 || aStartEU < 1) {
-            return false;
-        }
-        if ((aOutput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("fusion", aOutput1.getFluid().getName(), aDuration)) <= 0)) {
-            return false;
-        }
-        if ((aOutput2 != null) && ((aDuration = GregTech_API.sRecipeFile.get("fusion", aOutput2, aDuration)) <= 0)) {
-            return false;
-        }
-        GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput2}, null, null, new FluidStack[]{aInput2, aInput3}, new FluidStack[]{aOutput1}, aDuration, aEUt, aStartEU);
-        return true;
-    }
-
     public boolean addCentrifugeRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration) {
         return addCentrifugeRecipe(aInput1, aInput2 < 0 ? ItemList.IC2_Fuel_Can_Empty.get(-aInput2, new Object[0]) : aInput2 > 0 ? ItemList.Cell_Empty.get(aInput2, new Object[0]) : null, null, null, aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6, null, aDuration, 5);
     }
