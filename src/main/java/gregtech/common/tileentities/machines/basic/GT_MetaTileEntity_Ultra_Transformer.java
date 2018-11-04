@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_Ultra_Transformer extends GT_MetaTileEntity_Trans
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_Wet_Transformer(this.mName, this.mTier, this.mDescription, this.mTextures);
+		return new GT_MetaTileEntity_Ultra_Transformer(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 	@Override
