@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_LargeBoiler_TungstenSteel
     }
 
     public int getEUt() {
-        return 1000;
+        return 1200;
     }
 
     public int getEfficiencyIncrease() {

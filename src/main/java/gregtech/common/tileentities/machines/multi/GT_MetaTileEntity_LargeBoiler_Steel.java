@@ -61,7 +61,7 @@ public class GT_MetaTileEntity_LargeBoiler_Steel
     }
 
     public int getEUt() {
-        return 600;
+        return 650;
     }
 
     public int getEfficiencyIncrease() {
