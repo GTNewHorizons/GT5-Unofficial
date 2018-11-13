@@ -921,6 +921,43 @@ public class DreamCraftRecipeLoader implements Runnable {
                             Materials.Concrete.getMolten(73728L)
                     },
                     getItemContainer("StargateFramePart").get(1L), 72000, 2000000);
+
+            //Batteries
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Energy_Cluster.get(1L),12000,16,100000,3,new ItemStack[]{
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 1L),
+                    ItemList.Energy_Cluster.get(8L, new Object[0]),
+                    ItemList.Field_Generator_UV.get(2),
+                    ItemList.Circuit_Wafer_HPIC.get(64),
+                    ItemList.Circuit_Wafer_HPIC.get(64),
+                    ItemList.Circuit_Parts_DiodeSMD.get(64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 32),
+            }, new FluidStack[]{
+                    Materials.SolderingAlloy.getMolten(2880),
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)
+            }, ItemList.ZPM2.get(1), 3000, 400000);
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.ZPM2.get(1L),24000,64,200000,6,new ItemStack[]{
+                    GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 1L),
+                    ItemList.ZPM2.get(8),
+                    ItemList.Field_Generator_UHV.get(4),
+                    ItemList.Circuit_Wafer_UHPIC.get(64),
+                    ItemList.Circuit_Wafer_UHPIC.get(64),
+                    ItemList.Circuit_Wafer_SoC2.get(32),
+                    ItemList.Circuit_Parts_DiodeSMD.get(64),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Neutronium, 64),
+            }, new FluidStack[]{
+                    Materials.SolderingAlloy.getMolten(3760),
+                    Materials.Naquadria.getMolten(9000),
+                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000)
+            }, ItemList.ZPM3.get(1), 4000, 1600000);
         }
         //endregion
 
