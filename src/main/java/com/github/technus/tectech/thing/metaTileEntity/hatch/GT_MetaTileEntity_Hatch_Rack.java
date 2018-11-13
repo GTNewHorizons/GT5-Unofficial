@@ -270,14 +270,37 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     }
 
     public static void run() {//20k heat cap max!
-        new RackComponent(ItemList.Circuit_Primitive.get(1), 1, 4, 0, 500, true);
-        new RackComponent(ItemList.Circuit_Basic.get(1), 4, 8, 0, 1000, true);
-        new RackComponent(ItemList.Circuit_Good.get(1), 6, 9, -.05f, 1500, true);
+        new RackComponent(ItemList.Circuit_Primitive.get(1), 1, 4, 0, 500, true);//Primitive Circuit
+        new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true);
+        new RackComponent(ItemList.Circuit_Basic.get(1), 4, 8, 0, 1000, true);//Basic Circuit
+        new RackComponent(ItemList.Circuit_Microprocessor.get(1), 6, 8, 0, 1250, true);
+        new RackComponent(ItemList.Circuit_Good.get(1), 6, 9, -.05f, 1500, true);//Good Circuit
+        new RackComponent(ItemList.Circuit_Integrated_Good.get(1), 7, 9, -.075f, 1750, true);
+        new RackComponent(ItemList.Circuit_Processor.get(1), 8, 9, -.07f, 1800, true);
         new RackComponent(ItemList.Circuit_Parts_Advanced.get(1), 1, 2, -.05f, 2000, true);
+        new RackComponent(ItemList.Circuit_Nanoprocessor.get(1), 8, 10, -.09f, 2250, true);//Advanced Circuit
         new RackComponent(ItemList.Circuit_Advanced.get(1), 8, 10, -.1f, 2500, true);
-        new RackComponent(ItemList.Circuit_Data.get(1), 1, 1, -.1f, 3000, true);
-        new RackComponent(ItemList.Circuit_Master.get(1), 12, 10, -.2F, 5000, true);
-        new RackComponent(ItemList.Circuit_Elite.get(1), 16, 12, -.15F, 3500, true);
+        new RackComponent(ItemList.Circuit_Data.get(1), 9, 1, -.1f, 3000, true);//EV Circuit
+        new RackComponent(ItemList.Circuit_Nanocomputer.get(1), 11, 10, -.125f, 3300, true);
+        new RackComponent(ItemList.Circuit_Quantumprocessor.get(1), 13, 10, -.15f, 3600, true);
+        new RackComponent(ItemList.Circuit_Elite.get(1), 12, 10, -.15F, 3500, true);//IV Circuit
+        new RackComponent(ItemList.Circuit_Elitenanocomputer.get(1), 14, 10, -.15F, 4000, true);
+        new RackComponent(ItemList.Circuit_Quantumcomputer.get(1), 16, 10, -.15F, 4500, true);
+        new RackComponent(ItemList.Circuit_Crystalprocessor.get(1), 18, 10, -.15F, 5000, true);
+        new RackComponent(ItemList.Circuit_Master.get(1), 16, 12, -.2F, 5000, true);//LuV Circuit
+        new RackComponent(ItemList.Circuit_Masterquantumcomputer.get(1), 16, 13, -.2F, 5100, true);
+        new RackComponent(ItemList.Circuit_Crystalcomputer.get(1), 20, 14, -.25F, 5200, true);
+        new RackComponent(ItemList.Circuit_Neuroprocessor.get(1), 24, 15, -.3F, 5300, true);
+        new RackComponent(ItemList.Circuit_Quantummainframe.get(1), 22, 14, -.3F, 5200, true);//ZPM Circuit
+        new RackComponent(ItemList.Circuit_Ultimatecrystalcomputer.get(1), 26, 16, -.3F, 5400, true);
+        new RackComponent(ItemList.Circuit_Wetwarecomputer.get(1), 30, 18, -.3F, 5600, true);
+        new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true);
+        new RackComponent(ItemList.Circuit_Crystalmainframe.get(1), 30, 18, -.35F, 5500, true);//UV Circuit
+        new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 35, 22, -.3F, 5700, true);
+        new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
+        new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 38, 25, -.4F, 6000, true);//UHV Circuit
+        new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
+        new RackComponent(ItemList.Circuit_Biomainframe.get(1), 40, 28, -.4F, 6000, true);//UHV Circuit
 
         new RackComponent("IC2:ic2.reactorVent", 0, -1, 10f, 1000, false);
         new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 20f, 2500, false);
@@ -287,9 +310,9 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new RackComponent("dreamcraft:item.HighEnergyCircuitParts", 3, 2, -.1f, 9001, true);
             new RackComponent("dreamcraft:item.HighEnergyFlowCircuit", 24, 16, -.25f, 10000, true);
-            new RackComponent("dreamcraft:item.NanoCircuit", 32, 20, -.15f, 8000, true);
-            new RackComponent("dreamcraft:item.PikoCircuit", 64, 32, -.2f, 8500, true);
-            new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.3f, 9000, true);
+            new RackComponent("dreamcraft:item.NanoCircuit", 48, 35, -.45f, 8000, true);
+            new RackComponent("dreamcraft:item.PikoCircuit", 64, 40, -.5f, 8500, true);
+            new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.6f, 9000, true);
         }
         if (Loader.isModLoaded("OpenComputers")) {
             new RackComponent("OpenComputers:item.23", 0, 1, 0f, 100, true);//Transistor
