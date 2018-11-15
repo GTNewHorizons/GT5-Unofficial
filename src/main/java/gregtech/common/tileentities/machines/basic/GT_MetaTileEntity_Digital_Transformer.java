@@ -95,31 +95,36 @@ public class GT_MetaTileEntity_Digital_Transformer extends GT_MetaTileEntity_Tra
 	    
 	    @Override
 	    public long maxEUInput() {
-	        return V[mTier];
+	    	return ((getBaseMetaTileEntity().isAllowedToWork()) ?V[mTier]:Math.abs(EUT));
 	    }
 
 	    @Override
 	    public long maxEUOutput() {
-	        return producing?Math.abs(EUT):0;
+	    	return ((getBaseMetaTileEntity().isAllowedToWork()) ? Math.abs(EUT):V[mTier]);
+	    }
+	    
+	    /*@Override
+	    public long maxAmperesIn() {
+	        return producing?0:Math.abs(AMP);
 	    }
 	    
 	    @Override
 	    public long maxAmperesOut() {
 	        return producing?Math.abs(AMP):0;
-	    }
-
-	    /*@Override
-	    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-	        if (aBaseMetaTileEntity.isServerSide()) {
-	            aBaseMetaTileEntity.setActive(producing);
-	            if (aBaseMetaTileEntity.isActive()) {
-	                setEUVar(maxEUStore());
-	            } else {
-	                setEUVar(0);
-	            }
-	        }
 	    }*/
+	    
+	    @Override
+		public long maxAmperesOut() {
+			
+			return ((getBaseMetaTileEntity().isAllowedToWork()) ? Math.abs(AMP) : 1L);
+		}
 
+		@Override
+		public long maxAmperesIn() {
+			
+			return ((getBaseMetaTileEntity().isAllowedToWork()) ? 1L : Math.abs(AMP));
+		}
+	   
 	    @Override
 	    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 	        if (aBaseMetaTileEntity.isClientSide()) {
@@ -139,16 +144,6 @@ public class GT_MetaTileEntity_Digital_Transformer extends GT_MetaTileEntity_Tra
 	        return true;
 	    }
 
-	    /*@Override
-	    public boolean isInputFacing(byte aSide) {
-	        return !producing && aSide != getBaseMetaTileEntity().getFrontFacing();
-	    }
-
-	    @Override
-	    public boolean isOutputFacing(byte aSide) {
-	        return producing && aSide != getBaseMetaTileEntity().getFrontFacing();
-	    }*/
-	    
 	    @Override
 		public long maxEUStore() {
 			return 8192L + V[mTier + 1] * 64L;
