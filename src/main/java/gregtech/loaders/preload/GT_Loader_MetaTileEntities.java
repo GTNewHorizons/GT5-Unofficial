@@ -121,9 +121,9 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 
        	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Firebricks.get(1L, new Object[0]), bits, new Object[] {"BB", "BB", 'B', ItemList.Firebrick.get(1, new Object[0])});
         
-       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Processor.get(1L, new Object[0]), bits, new Object[]{"PSP", "SÑS", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Elite), 'C', ItemList.Casing_SolidSteel});
-       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Pump.get(1L, new Object[0]), bits, new Object[]{"PSP", "RÑR", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Advanced), 'C', ItemList.Casing_SolidSteel, 'R', ItemList.Electric_Pump_HV});
-       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Motor.get(1L, new Object[0]), bits, new Object[]{"PSP", "RÑR", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Advanced), 'C', ItemList.Casing_SolidSteel, 'R', ItemList.Electric_Motor_HV});
+       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Processor.get(1L), bits, new Object[]{"PSP", "SMS", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Elite), 'M', ItemList.Casing_SolidSteel});
+       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Pump.get(1L), bits, new Object[]{"PSP", "RMR", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Advanced), 'M', ItemList.Casing_SolidSteel, 'R', ItemList.Electric_Pump_HV});
+       	GT_ModHandler.addCraftingRecipe(ItemList.Casing_Motor.get(1L), bits, new Object[]{"PSP", "RMR", "PSP", 'P', OrePrefixes.itemCasing.get(Materials.StainlessSteel), 'S', OrePrefixes.circuit.get(Materials.Advanced), 'M', ItemList.Casing_SolidSteel, 'R', ItemList.Electric_Motor_HV});
         
         ItemList.Hull_Bronze.set(new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
         ItemList.Hull_Bronze_Bricks.set(new GT_MetaTileEntity_BasicHull_BronzeBricks(2, "hull.bronze_bricked", "Bricked Bronze Hull", 0, "For your first Steam Machines").getStackForm(1L));
