@@ -4428,6 +4428,24 @@ if(Loader.isModLoaded("Railcraft")){
             	//*/
             }
        public void run3() {
+    	//Bioline
+    	   GT_Values.RA.addCentrifugeRecipe(ItemList.PlantMass.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getModItem("IC2", "itemBiochaff", 1L, 0), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000}, 300, 4);
+           GT_Values.RA.addPulveriserRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 1L, 0), new ItemStack[]{ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L), ItemList.PlantMass.get(1L)}, new int[]{10000, 5000, 3300, 2500}, 200, 2);
+           GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getModItem("IC2", "itemBiochaff", 1L, 0), Materials.Water.getFluid(750L), GT_ModHandler.getModItem("Forestry", "mulch", 8L, 0),  GT_ModHandler.getModItem("Forestry", "mulch", 4L, 0), GT_ModHandler.getModItem("Forestry", "mulch", 4L, 0), new int[]{10000,3300,2000}, 500, 30);
+           GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), Materials.Biomass.getFluid(8), ItemList.RawBioFiber.get(1L), 3300, 200, 20);
+           GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), Materials.Fuel.getFluid(8), ItemList.RawBioFiber.get(1L), 9000, 200, 20);
+           GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), Materials.NitroFuel.getFluid(8), ItemList.RawBioFiber.get(1L), 10000, 200, 20);
+           GT_Values.RA.addAutoclaveRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), Materials.Methanol.getFluid(8), ItemList.RawBioFiber.get(1L), 5000, 200, 20);
+           GT_Values.RA.addAssemblerRecipe(ItemList.RawBioFiber.get(2L), GT_Utility.getIntegratedCircuit(1), ItemList.BioOrganicMesh.get(1L), 800, 2);
+           GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1), ItemList.CompressedBioBall.get(8L), ItemList.BioChunk.get(1L), 1200, 64);
+           GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("IC2", "itemWeed", 16L), ItemList.IC2_Plantball.get(1L), 300, 2);
+           GT_Values.RA.addCompressorRecipe(ItemList.BioOrganicMesh.get(1L), ItemList.BioCarbonPlate.get(1L), 300, 2);
+           GT_Values.RA.addCompressorRecipe(ItemList.BioBall.get(1L), ItemList.CompressedBioBall.get(1L), 300, 2);
+           GT_Values.RA.addBlastRecipe(ItemList.BioCarbonPlate.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("carbonPlate", 1L), GT_Values.NI, 1000, 120, 600);
+           GT_Values.RA.addBlastRecipe(ItemList.BioChunk.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("coalChunk", 1L), GT_Values.NI, 1000, 120, 1200);
+           GT_Values.RA.addMixerRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Flint, 2), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.BioBall.get(1L), 200, 16);
+           
+    	
       //Solar Panel
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_SolarPanel_MV.get(3L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L), ItemList.Circuit_Silicon_Wafer2.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 2), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polytetrafluoroethylene, 2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 4)},Materials.SolderingAlloy.getMolten(144), ItemList.Cover_SolarPanel_HV.get(1L), 120, 1920, true);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_SolarPanel_MV.get(3L), ItemList.Circuit_Elitenanocomputer.get(2L), ItemList.Circuit_Silicon_Wafer2.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 2), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polytetrafluoroethylene, 2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 4)},Materials.SolderingAlloy.getMolten(144), ItemList.Cover_SolarPanel_HV.get(1L), 120, 1920, true);
