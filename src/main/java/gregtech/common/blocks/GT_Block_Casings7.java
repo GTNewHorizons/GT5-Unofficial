@@ -33,12 +33,16 @@ public class GT_Block_Casings7
             Textures.BlockIcons.casingTexturePages[1][i + 64] = new GT_CopiedBlockTexture(this, 6, i);
         }
 
+    	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Naquadah Alloy Machine Casing");
+        
     	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "UIV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UMV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "UXV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "OPV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "MAX Machine Casing");//adding
+        
+        ItemList.Casing_RobustNaquadahAlloy.set(new ItemStack(this, 1, 0));
         
         ItemList.Casing_UEV.set(new ItemStack(this,1,10));
         ItemList.Casing_UIV.set(new ItemStack(this,1,11));
@@ -51,6 +55,9 @@ public class GT_Block_Casings7
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
+            case 0:
+                return Textures.BlockIcons.MACHINE_CASING_ROBUST_NAQUADAHALLOY.getIcon();
+            
                 
             }
             if (aSide == 0) {
