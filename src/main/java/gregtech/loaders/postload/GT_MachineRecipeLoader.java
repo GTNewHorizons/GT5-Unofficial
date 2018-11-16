@@ -341,6 +341,32 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Anvil.get(0L, new Object[0]), Materials.WroughtIron.getMolten(4464L), new ItemStack(Blocks.anvil, 1, 0), 128, 16);
         GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Anvil.get(0L, new Object[0]), Materials.Steel.getMolten(4464L), GT_ModHandler.getModItem("Railcraft", "tile.railcraft.anvil", 1L, 0), 128, 16);
 
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Plate.get(0L),  ItemList.Shape_Mold_Plate.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Casing.get(0L),  ItemList.Shape_Mold_Casing.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Gear.get(0L),  ItemList.Shape_Mold_Gear.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Credit.get(0L),  ItemList.Shape_Mold_Credit.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Bottle.get(0L),  ItemList.Shape_Mold_Bottle.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Ingot.get(0L),  ItemList.Shape_Mold_Ingot.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Ball.get(0L),  ItemList.Shape_Mold_Ball.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Block.get(0L),  ItemList.Shape_Mold_Block.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Nugget.get(0L),  ItemList.Shape_Mold_Nugget.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Bun.get(0L),  ItemList.Shape_Mold_Bun.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Bread.get(0L),  ItemList.Shape_Mold_Bread.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Baguette.get(0L),  ItemList.Shape_Mold_Baguette.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Cylinder.get(0L),  ItemList.Shape_Mold_Cylinder.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Anvil.get(0L),  ItemList.Shape_Mold_Anvil.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Name.get(0L),  ItemList.Shape_Mold_Name.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Arrow.get(0L),  ItemList.Shape_Mold_Arrow.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Gear_Small.get(0L),  ItemList.Shape_Mold_Gear_Small.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Rod.get(0L),  ItemList.Shape_Mold_Rod.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Bolt.get(0L),  ItemList.Shape_Mold_Bolt.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Round.get(0L),  ItemList.Shape_Mold_Round.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Screw.get(0L),  ItemList.Shape_Mold_Screw.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Ring.get(0L),  ItemList.Shape_Mold_Ring.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Rod_Long.get(0L),  ItemList.Shape_Mold_Rod_Long.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Rotor.get(0L),  ItemList.Shape_Mold_Rotor.get(1L),  200, 256);
+        GT_Values.RA.addFormingPressRecipe(ItemList.Shape_Empty.get(1L),ItemList.Shape_Mold_Turbine_Blade.get(0L),  ItemList.Shape_Mold_Turbine_Blade.get(1L),  200, 256);
+
         GT_Values.RA.addChemicalBathRecipe(ItemList.Food_Raw_Fries.get(1L, new Object[0]), Materials.FryingOilHot.getFluid(10L), ItemList.Food_Fries.get(1L, new Object[0]), GT_Values.NI, GT_Values.NI, null, 16, 4);
         GT_Values.RA.addChemicalBathRecipe(GT_ModHandler.getIC2Item("dynamite", 1L), Materials.Glue.getFluid(10L), GT_ModHandler.getIC2Item("stickyDynamite", 1L), GT_Values.NI, GT_Values.NI, null, 16, 4);
         GT_Values.RA.addChemicalRecipe(new ItemStack(Items.paper,1), new ItemStack(Items.string,1), Materials.Glyceryl.getFluid(500), GT_Values.NF, GT_ModHandler.getIC2Item("dynamite", 1L), 160, 4);
