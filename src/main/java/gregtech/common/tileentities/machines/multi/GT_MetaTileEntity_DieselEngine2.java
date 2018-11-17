@@ -72,21 +72,24 @@ public class GT_MetaTileEntity_DieselEngine2 extends GT_MetaTileEntity_DieselEng
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
                     	if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a diesel fluid
-                            fuelConsumption = tLiquid.amount = boostEu ? (16384 / aFuel.mSpecialValue) : (8192 / aFuel.mSpecialValue); //Calc fuel consumption
+                            fuelConsumption = tLiquid.amount = boostEu ? (10240 / aFuel.mSpecialValue) : (8192 / aFuel.mSpecialValue); //Calc fuel consumption
                             if(depleteInput(tLiquid)) { //Deplete that amount
                                 boostEu = depleteInput(Materials.Oxygen.getGas(3L));
 
                                 if(tFluids.contains(Materials.Lubricant.getFluid(2L))) { //Has lubricant?
                                     //Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                                    if(mRuntime % 72 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 2 : 1));
+                                    if(mRuntime % 80 == 0 || mRuntime == 0) depleteInput(Materials.Lubricant.getFluid(boostEu ? 3 : 2));
                                 } else return false;
 
                                 fuelValue = aFuel.mSpecialValue;
                                 fuelRemaining = hatchFluid1.amount; //Record available fuel
-                                this.mEUt = mEfficiency < 4000 ? 0 : 8192; //Output 0 if startup is less than 20%
+                                if (mEfficiency < 2000)
+                                	this.mEUt =  0; 
+                                	else
+                                	this.mEUt = 8192;
                                 this.mProgresstime = 1;
                                 this.mMaxProgresstime = 1;
-                                this.mEfficiencyIncrease = 20;
+                                this.mEfficiencyIncrease = 40;
                                 return true;
                             }
                         }
@@ -116,11 +119,11 @@ public class GT_MetaTileEntity_DieselEngine2 extends GT_MetaTileEntity_DieselEng
     }
 
     public Block getGearboxBlock() {
-        return GregTech_API.sBlockCasings2;
+        return GregTech_API.sBlockCasings7;
     }
 
     public byte getGearboxMeta() {
-        return 5;
+        return 1;
     }
 
     public byte getCasingTextureIndex() {
