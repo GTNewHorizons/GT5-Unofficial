@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
 
     public String[] getDescription() {
         return new String[]{
-                "Controller Block for the Large Combustion Engine",
+                "Controller Block for the Large Combustion Engine T1",
                 "Size(WxHxD): 3x3x4, Controller (front centered)",
                 "3x3x4 of Stable Titanium Machine Casing (hollow, Min 16!)",
                 "2x Titanium Gear Box Machine Casing inside the Hollow Casing",
@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Diesel Engine",
+                "Diesel Engine Mk 1",
                 "Current Output: " + mEUt * mEfficiency / 10000 + " EU/t",
                 "Fuel Consumption: " + fuelConsumption + "L/t",
                 "Fuel Value: " + fuelValue + " EU/L",
