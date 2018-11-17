@@ -8,10 +8,16 @@ import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_RecipeAdder;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class  TT_recipeAdder extends GT_RecipeAdder {
     public static final ItemStack[] nullItem=new ItemStack[0];
@@ -44,7 +50,72 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
         }
         TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, totalComputationRequired, researchEUt, researchAmperage| computationRequiredPerSec<<16);
         GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result")}, aFluidInputs, null, assDuration, assEUt, 0,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, 0/*ignored*/, aInputs, aFluidInputs, aOutput, assDuration, assEUt));
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, totalComputationRequired/computationRequiredPerSec, aInputs, aFluidInputs, aOutput, assDuration, assEUt));
+        return true;
+    }
+
+    public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        if(aInputs==null) {
+            aInputs = nullItem;
+        }
+        if(aFluidInputs==null) {
+            aFluidInputs = nullFluid;
+        }
+        if (aResearchItem==null || totalComputationRequired<=0 || aOutput == null || aInputs.length>15 || aFluidInputs.length>4 || assDuration<=0 || assEUt<=0) {
+            return false;
+        }
+
+        ItemStack[] tInputs = new ItemStack[aInputs.length];
+        ItemStack[][] tAlts = new ItemStack[aInputs.length][];
+        for(int i = 0; i < aInputs.length; i++){
+            Object obj = aInputs[i];
+            if (obj instanceof ItemStack) {
+                tInputs[i] = (ItemStack) obj;
+                tAlts[i] = null;
+                continue;
+            } else if (obj instanceof ItemStack[]) {
+                ItemStack[] aStacks = (ItemStack[]) obj;
+                if (aStacks.length > 0) {
+                    tInputs[i] = aStacks[0];
+                    tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+                    continue;
+                }
+            } else if (obj instanceof Object[]) {
+                Object[] objs = (Object[]) obj;
+                List<ItemStack> tList;
+                if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
+                    try {
+                        int tAmount = (int) objs[1];
+                        List<ItemStack> uList = new ArrayList<>();
+                        for (ItemStack tStack : tList) {
+                            ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack);
+                            if (GT_Utility.isStackValid(uStack)) {
+                                uList.add(uStack);
+                                if (tInputs[i] == null) tInputs[i] = uStack;
+                            }
+                        }
+                        tAlts[i] = uList.toArray(new ItemStack[0]);
+                        continue;
+                    } catch (Exception t) {
+                        TecTech.LOGGER.error("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> there is some ... in that recipe");
+                    }
+                }
+            }
+            TecTech.LOGGER.error("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+        }
+        if(researchAmperage<=0) {
+            researchAmperage = 1;
+        } else if(researchAmperage > Short.MAX_VALUE) {
+            researchAmperage = Short.MAX_VALUE;
+        }
+        if(computationRequiredPerSec<=0) {
+            computationRequiredPerSec = 1;
+        } else if(computationRequiredPerSec > Short.MAX_VALUE) {
+            computationRequiredPerSec = Short.MAX_VALUE;
+        }
+        TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, totalComputationRequired, researchEUt, researchAmperage| computationRequiredPerSec<<16);
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false,tInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0])},aFluidInputs,null,assDuration,assEUt,0,tAlts,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, totalComputationRequired/computationRequiredPerSec, tInputs, aFluidInputs, aOutput, assDuration, assEUt, tAlts));
         return true;
     }
 
