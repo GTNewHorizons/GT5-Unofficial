@@ -301,8 +301,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Aluminium, 2L), ItemList.ThermosCan_Empty.get(1L, new Object[0]), 800, 1);
 
-        if(Loader.isModLoaded("miscutils")){
-        }else{
         ItemList.Fluid_Cell_144L.set(this.addItem(tLastID = 61, "144L Invar Fluid Cell", "Holds exactly one dust worth of liquid.", new Object[]{new ItemData(Materials.Invar, (OrePrefixes.plateDouble.mMaterialAmount * 4L) + (4L * OrePrefixes.ring.mMaterialAmount), new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
 		setFluidContainerStats(32000 + tLastID, 144L, 64L);
 
@@ -319,8 +317,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 4L), ItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 30);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 4L), ItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 30);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), ItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 30);
-
-        }
 		
         ItemList.Large_Fluid_Cell_Steel.set(addItem(tLastID = 405, "Large Steel Fluid Cell", "", new Object[]{new ItemData(Materials.Steel, OrePrefixes.plateDouble.mMaterialAmount * 4L, new MaterialStack(Materials.Steel, OrePrefixes.ring.mMaterialAmount * 4L)), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)}));
         setFluidContainerStats(32000 + tLastID, 8000L, 64L);
