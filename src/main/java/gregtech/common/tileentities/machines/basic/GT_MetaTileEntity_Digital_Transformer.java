@@ -43,18 +43,18 @@ public class GT_MetaTileEntity_Digital_Transformer extends GT_MetaTileEntity_Tra
 		public ITexture[][][] getTextureSet(ITexture[] aTextures) {
 	        ITexture[][][] rTextures = new ITexture[12][17][];
 	        for (byte i = -1; i < 16; i++) {
-	            rTextures[0][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
-	            rTextures[1][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
-	            rTextures[2][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
+	            rTextures[0][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
+	            rTextures[1][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
+	            rTextures[2][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
 	            rTextures[3][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier]};
 	            rTextures[4][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier]};
 	            rTextures[5][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier]};
 	            rTextures[6][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier]};
 	            rTextures[7][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier]};
 	            rTextures[8][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier]};
-	            rTextures[9][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
-	            rTextures[10][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
-	            rTextures[11][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_out)};
+	            rTextures[9][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
+	            rTextures[10][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
+	            rTextures[11][i + 1] = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.IDSU), new GT_RenderedTexture(Textures.BlockIcons.IDSU_Out)};
 	        }
 	        return rTextures;
 	    }
