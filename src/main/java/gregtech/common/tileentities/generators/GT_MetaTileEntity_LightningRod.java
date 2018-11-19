@@ -117,7 +117,7 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
 
     @Override
     public long maxEUStore() {
-        return 50000000;
+        return 2000000000;
     }
 
     @Override
