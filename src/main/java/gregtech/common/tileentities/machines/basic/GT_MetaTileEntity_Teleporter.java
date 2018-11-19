@@ -1,15 +1,12 @@
 package gregtech.common.tileentities.machines.basic;
 
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.events.TeleporterUsingEvent;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_Container_Teleporter;
@@ -28,30 +25,31 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 
 public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
 
-    public static boolean sInterDimensionalTeleportAllowed = true;
-    public static int sPassiveEnergyDrain = 2048;
-    public static int sPowerMultiplyer = 100;
-    public static double sFPowerMultiplyer = 1.0;
+    private static boolean sInterDimensionalTeleportAllowed = true;
+    private static int sPassiveEnergyDrain = 2048;
+    private static int sPowerMultiplyer = 100;
+    private static double sFPowerMultiplyer = 1.0;
     public int mTargetX = 0;
     public int mTargetY = 0;
     public int mTargetZ = 0;
-    public int mTargetD = 0;
+    public int mTargetD = Integer.MIN_VALUE;//0
     public boolean mDebug = false;
-    public boolean hasEgg = false;
+    //public boolean hasEgg = false;
 
     public GT_MetaTileEntity_Teleporter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, new String[]{"Teleport long distances with this little device.", "Use a Dragon Egg or Nitrogen Plasma", "for Inter-dimensional transmission"});
@@ -147,7 +145,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        this.hasEgg = checkForEgg();
+        //this.hasEgg = checkForEgg();
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
@@ -174,12 +172,20 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     
 
     public String[] getInfoData() {
-        return new String[]{"Coordinates:", "X: " + this.mTargetX, "Y: " + this.mTargetY, "Z: " + this.mTargetZ, "Dimension: " + this.mTargetD};
+        return new String[]{
+                "Coordinates:",
+                "X: "+ EnumChatFormatting.GREEN+ this.mTargetX+EnumChatFormatting.RESET,
+                "Y: "+EnumChatFormatting.GREEN+ this.mTargetY+EnumChatFormatting.RESET,
+                "Z: "+EnumChatFormatting.GREEN+ this.mTargetZ+EnumChatFormatting.RESET,
+                "Dimension: " + EnumChatFormatting.GREEN+this.mTargetD+EnumChatFormatting.RESET,
+                "Dimension Valid: " + (GT_Utility.isRealDimension(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET),
+                "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD) ? EnumChatFormatting.GREEN+"Yes"+EnumChatFormatting.RESET : EnumChatFormatting.RED+"No"+EnumChatFormatting.RESET)
+        };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES) : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -210,55 +216,66 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            if ((this.mTargetX == 0) && (this.mTargetY == 0) && (this.mTargetZ == 0) && (this.mTargetD == 0)) {
-                this.mTargetX = getBaseMetaTileEntity().getXCoord();
-                this.mTargetY = getBaseMetaTileEntity().getYCoord();
-                this.mTargetZ = getBaseMetaTileEntity().getZCoord();
-                this.mTargetD = getBaseMetaTileEntity().getWorld().provider.dimensionId;
+            if ((this.mTargetX == 0) && (this.mTargetY == 0) && (this.mTargetZ == 0) && (this.mTargetD == Integer.MIN_VALUE)) {
+                this.mTargetX = aBaseMetaTileEntity.getXCoord();
+                this.mTargetY = aBaseMetaTileEntity.getYCoord();
+                this.mTargetZ = aBaseMetaTileEntity.getZCoord();
+                this.mTargetD = aBaseMetaTileEntity.getWorld().provider.dimensionId;
             }
-            this.hasEgg = checkForEgg();
+            //this.hasEgg = checkForEgg();
         }
     }
+    
+    //public boolean checkForEgg() {
+    //    for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
+    //        for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
+    //            for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
+    //                if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == Blocks.dragon_egg) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return false;
+	//}
 
-    public boolean checkForEgg() {
-        for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
-            for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
-                for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-                    if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == Blocks.dragon_egg) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+
 
     public boolean hasDimensionalTeleportCapability() {
-        return (this.mDebug) || (this.hasEgg) || (mFluid != null && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 10);
+        return this.mDebug ||
+                //(
+                        sInterDimensionalTeleportAllowed //&&
+                //                (
+                //                        this.hasEgg ||
+                //                                mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000
+                //                )
+                //)
+        ;
     }
 
     public boolean isDimensionalTeleportAvailable() {
-        return (this.mDebug) || ((hasDimensionalTeleportCapability()) && (GT_Utility.isRealDimension(this.mTargetD)) && (GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId)));
+        return this.mDebug || (hasDimensionalTeleportCapability() && GT_Utility.isRealDimension(this.mTargetD) && GT_Utility.isRealDimension(getBaseMetaTileEntity().getWorld().provider.dimensionId));
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (mFluid == null) {
-            mFluid = Materials.Nitrogen.getPlasma(0);
+
+        if (mFluid != null) {//Was if null -> Materials.Nitrogen.getPlasma(0);
+            mFluid = null;
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
-            if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
-                this.hasEgg = checkForEgg();
-            }
+            //if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
+            //    this.hasEgg = checkForEgg();
+            //}
             if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone())) {
                 if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(sPassiveEnergyDrain, false)) {
-                    if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg || mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))&& new XSTR().nextInt(10)==0) {
-                        mFluid.amount--;
-                        if (mFluid.amount < 1) {
-                            mFluid = null;
-                        }
-                    }
+                    //if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg || mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))&& new XSTR().nextInt(10)==0) {
+                    //    mFluid.amount--;
+                    //    if (mFluid.amount < 1) {
+                    //        mFluid = null;
+                    //    }
+                    //}
                     int tDistance = distanceCalculation();
                     if (mInventory[0] != null) {
                         TileEntity tTile = null;
@@ -274,24 +291,32 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank {
                             int tStacksize = mInventory[0].stackSize;
                             GT_Utility.moveOneItemStack(this, tTile, (byte) 0, (byte) 0, null, false, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
                             if (mInventory[0] == null || mInventory[0].stackSize < tStacksize) {
-                                getBaseMetaTileEntity().decreaseStoredEnergyUnits((int) (Math.pow(tDistance, 1.5) * tDistance * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize)) * sFPowerMultiplyer), false);
+                                getBaseMetaTileEntity().decreaseStoredEnergyUnits((long) (Math.pow(tDistance, 1.5) * tDistance * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize)) * sFPowerMultiplyer), false);
                             }
                         }
 
                     }
-                    for (Object tObject : getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) - 1, getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) + 2, getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) + 2, getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) + 2))) {
+                    List entities_in_box =  getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(
+                            Entity.class,AxisAlignedBB.getBoundingBox(
+                                    getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(),2) - 1,
+                                    getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) - 1,
+                                    getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) - 1,
+                                    getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) + 2,
+                                    getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) + 2,
+                                    getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) + 2)
+                    );
+
+                    for (Object tObject : entities_in_box) {
                         if (((tObject instanceof Entity)) && (!((Entity) tObject).isDead)) {
                             Entity tEntity = (Entity) tObject;
-//                	System.out.println("teleport"+(Math.pow(tDistance, 1.5)));
-                            TeleporterUsingEvent tEvent = new TeleporterUsingEvent(tEntity, mTargetX, mTargetY, mTargetZ, mTargetD, hasEgg);
-                            MinecraftForge.EVENT_BUS.post(tEvent);
-                            if (!tEvent.isCanceled() && getBaseMetaTileEntity().decreaseStoredEnergyUnits((int) (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) * sFPowerMultiplyer), false)) {
-                                if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg || mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))) {
-                                    mFluid.amount = mFluid.amount - ((int) Math.min(10, (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) / 8192)));
-                                    if (mFluid.amount < 1) {
-                                        mFluid = null;
-                                    }
-                                }
+//                	GT_FML_LOGGER.info("teleport"+(Math.pow(tDistance, 1.5)));
+                            if (getBaseMetaTileEntity().decreaseStoredEnergyUnits((long) (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) * sFPowerMultiplyer), false)) {
+                                //if (hasDimensionalTeleportCapability() && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg || mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))) {
+                                //    mFluid.amount = mFluid.amount - ((int) Math.min(10, (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) / 8192)));
+                                //    if (mFluid.amount < 1) {
+                                //        mFluid = null;
+                                //    }
+                                //}
                                 if (tEntity.ridingEntity != null) {
                                     tEntity.mountEntity(null);
                                 }

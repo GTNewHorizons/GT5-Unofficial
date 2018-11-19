@@ -1332,8 +1332,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_ZPM_WaterGenerator.get(1L, new Object[0]), bitsd, new Object[]{"CCC", "PMP", "WEW", 'M', ItemList.Hull_ZPM, 'E', OrePrefixes.circuit.get(Materials.Ultimate), 'P', ItemList.Pump_ZPM, 'C', Ic2Items.reinforcedGlass, 'W', OrePrefixes.plate.get(Materials.HSSE)});
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_UV_WaterGenerator.get(1L, new Object[0]), bitsd, new Object[]{"CCC", "PMP", "WEW", 'M', ItemList.Hull_UV, 'E', OrePrefixes.circuit.get(Materials.Superconductor), 'P', ItemList.Pump_UV, 'C', Ic2Items.reinforcedGlass, 'W', OrePrefixes.plate.get(Materials.Tritanium)});
 
-        ItemList.Teleporter.set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter", 6).getStackForm(1L));
-        GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextPlateMotor, "BCB", 'M', ItemList.Hull_LuV, 'B', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Elite), 'P', ItemList.Field_Generator_EV});
+        ItemList.Teleporter.set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter", 9).getStackForm(1L));
+        GT_ModHandler.addCraftingRecipe(ItemList.Teleporter.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextPlateMotor, "BCB", 'M', ItemList.Hull_MAX, 'B', ItemList.Tool_DataOrb, 'C', OrePrefixes.circuit.get(Materials.Infinite), 'P', ItemList.Field_Generator_UHV});
 
         ItemList.MobRep_LV.set(new GT_MetaTileEntity_MonsterRepellent(1146, "basicmachine.mobrep.tier.01", "Basic Monster Repellator", 1).getStackForm(1L));
         ItemList.MobRep_MV.set(new GT_MetaTileEntity_MonsterRepellent(1147, "basicmachine.mobrep.tier.02", "Advanced Monster Repellator", 2).getStackForm(1L));
