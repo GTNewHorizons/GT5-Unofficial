@@ -671,13 +671,13 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Machine_UV_AlloySmelter.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(208, "basicmachine.alloysmelter.tier.08", "Advanced Alloy Smelter VII", 8, "HighTech combination Smelter", GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes, 2, 1, 0, 0, 1, "AlloySmelter.png", (String) GregTech_API.sSoundList.get(Integer.valueOf(208)), aBoolConst_0, aBoolConst_0, 0, "ALLOY_SMELTER", new Object[]{"ECE", aTextCableHull, aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE}).getStackForm(1L));
 
         ItemList.Machine_LV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(211, "basicmachine.assembler.tier.01", "Basic Assembling Machine", 1, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_MV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(212, "basicmachine.assembler.tier.02", "Advanced Assembling Machine", 2, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_HV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(213, "basicmachine.assembler.tier.03", "Advanced Assembling Machine II", 3, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_EV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(214, "basicmachine.assembler.tier.04", "Advanced Assembling Machine III", 4, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_IV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(215, "basicmachine.assembler.tier.05", "Advanced Assembling Machine IV", 5, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 16000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_LuV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(216, "basicmachine.assembler.tier.06", "Advanced Assembling Machine V", 6, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 16000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_ZPM_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(217, "basicmachine.assembler.tier.07", "Advanced Assembling Machine VI", 7, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 16000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
-        ItemList.Machine_UV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(218, "basicmachine.assembler.tier.08", "Advanced Assembling Machine VII", 8, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 16000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_MV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(212, "basicmachine.assembler.tier.02", "Advanced Assembling Machine", 2, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 24000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_HV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(213, "basicmachine.assembler.tier.03", "Advanced Assembling Machine II", 3, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 32000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_EV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(214, "basicmachine.assembler.tier.04", "Advanced Assembling Machine III", 4, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 48000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_IV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(215, "basicmachine.assembler.tier.05", "Advanced Assembling Machine IV", 5, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 64000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_LuV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(216, "basicmachine.assembler.tier.06", "Advanced Assembling Machine V", 6, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 64000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_ZPM_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(217, "basicmachine.assembler.tier.07", "Advanced Assembling Machine VI", 7, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 64000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+        ItemList.Machine_UV_Assembler.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(218, "basicmachine.assembler.tier.08", "Advanced Assembling Machine VII", 8, "Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 64000, 0, 1, "Assembler2.png", "", aBoolConst_0, aBoolConst_0, 0, "ASSEMBLER", new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
 
         ItemList.Machine_LV_Bender.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(221, "basicmachine.bender.tier.01", "Basic Bending Machine", 1, "Boo, he's bad! We want BENDER!!!", GT_Recipe.GT_Recipe_Map.sBenderRecipes, 2, 1, 0, 0, 1, "Bender.png", (String) GregTech_API.sSoundList.get(Integer.valueOf(203)), aBoolConst_0, aBoolConst_0, 0, "BENDER", new Object[]{aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
         ItemList.Machine_MV_Bender.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(222, "basicmachine.bender.tier.02", "Advanced Bending Machine", 2, "Boo, he's bad! We want BENDER!!!", GT_Recipe.GT_Recipe_Map.sBenderRecipes, 2, 1, 0, 0, 1, "Bender.png", (String) GregTech_API.sSoundList.get(Integer.valueOf(203)), aBoolConst_0, aBoolConst_0, 0, "BENDER", new Object[]{aTextPlateWrench, aTextCableHull, aTextMotorWire, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
@@ -1992,22 +1992,22 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 		//AssemblingMachine
 		ItemList.AssemblingMachineUHV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				10783, "basicmachine.assembler.tier.09", "Epic Assembly Constructor", 9, "Avengers, Assemble!",
-				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png",
+				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 72000, 0, 1, "Assembler2.png",
 				"", false, false, 0, "ASSEMBLER",new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
 
 		ItemList.AssemblingMachineUEV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				10784, "basicmachine.assembler.tier.10", "Epic Assembly Constructor II",10, "Avengers, Assemble!",
-				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png",
+				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 96000, 0, 1, "Assembler2.png",
 				"", false, false, 0, "ASSEMBLER",new Object[]{"ACA", "VMV", aTextWireCoil, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'V', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'A', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
 
 		ItemList.AssemblingMachineUIV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				10785, "basicmachine.assembler.tier.11", "Epic Assembly Constructor III",11, "Avengers, Assemble!",
-				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png",
+				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 128000, 0, 1, "Assembler2.png",
 				"", false, false, 0, "ASSEMBLER",null).getStackForm(1L));
 
 		ItemList.AssemblingMachineUMV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				10786, "basicmachine.assembler.tier.12", "Epic Assembly Constructor IV",12, "Avengers, Assemble!",
-				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png",
+				GT_Recipe.GT_Recipe_Map.sAssemblerRecipes, 9, 1, 128000, 0, 1, "Assembler2.png",
 				"", false, false, 0, "ASSEMBLER",null).getStackForm(1L));
 		
 		//Autoclave
@@ -2946,37 +2946,37 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 		ItemList.MixerUHV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11213, "basicmachine.mixer.tier.09", "Epic Matter Organizer", 9,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 72000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", new Object[]{"GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
 
 		ItemList.MixerUEV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11214, "basicmachine.mixer.tier.10", "Epic Matter Organizer II",10,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 96000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", new Object[]{"GRG", "GEG", aTextCableHull, 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'E', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'R', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR, 'C', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
 
 		ItemList.MixerUIV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11215, "basicmachine.mixer.tier.11", "Epic Matter Organizer III",11,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 128000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", null).getStackForm(1L));
 
 		ItemList.MixerUMV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11216, "basicmachine.mixer.tier.12", "Epic Matter Organizer IV",12,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 128000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", null).getStackForm(1L));
 		
 		ItemList.MixerUXV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11217, "basicmachine.mixer.tier.13", "Epic Matter Organizer V",13,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 128000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", null).getStackForm(1L));
 		
 		ItemList.MixerOPV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				11218, "basicmachine.mixer.tier.14", "Epic Matter Organizer VI",14,
 				"Will it Blend?", GT_Recipe.GT_Recipe_Map.sMixerRecipes,
-				6, 1, 64000, 0, 1, "Mixer.png", "",
+				6, 1, 128000, 0, 1, "Mixer.png", "",
 				false, false, 0, "MIXER", null).getStackForm(1L));
 		
 		//Circuit Assembler
