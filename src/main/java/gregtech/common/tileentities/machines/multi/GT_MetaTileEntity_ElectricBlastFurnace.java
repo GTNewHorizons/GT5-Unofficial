@@ -193,10 +193,10 @@ switch (tUsedMeta) {
         this.mHeatingCapacity = 9001;
         break;
     case 12:
-        this.mHeatingCapacity = 10001;
+        this.mHeatingCapacity = 12001;
         break;
     case 13:
-        this.mHeatingCapacity = 12001;
+        this.mHeatingCapacity = 15001;
         break;
     default:
         return false;
