@@ -770,8 +770,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GasolineRegular = new MaterialBuilder(997, TextureSet.SET_FLUID, "Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(576).constructMaterial();
     public static Materials GasolinePremium = new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(1152).constructMaterial();
     
-    public static Materials Pollution = new MaterialBuilder(396, TextureSet.SET_FLUID, "Pollution").addCell().addFluid().setRGB(90, 70, 15).setColor(Dyes.dyeBrown).constructMaterial();
-    
     public static Materials Oriharukon              = new Materials( 389, TextureSet.SET_SHINY             ,  32.0F,  10240,  5, 1|2  |8      |64|128      , 103, 125, 104,   0,   "Oriharukon"              ,   "Oriharukon"                    ,     0,       0,     5400,  5400,  true, false,  4,   1,   1, Dyes.dyeLime         , Element.Oh, Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2),new TC_AspectStack(TC_Aspects.LUCRUM, 2), new TC_AspectStack(TC_Aspects.ALIENIS, 1)));
     public static Materials MysteriousCrystal       = new Materials( 394, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1                         ,  22, 133, 108,   0,   "MysteriousCrystal"       ,   "Mysterious Crystal"            ,     0,       0,     11000,  11000,  true, false,  4,   1,   1, Dyes.dyeCyan         );
 	public static Materials EnrichedMysteriousCrystal       = new Materials( 395, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1                         ,  28, 162, 108,   0,   "EnrichedMysteriousCrystal"       ,   "Enriched Mysterious Crystal"            ,     0,       0,     11000,  11000,  true, false,  4,   1,   1, Dyes.dyeCyan         );
@@ -819,7 +817,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Mutagen     = new MaterialBuilder(410, TextureSet.SET_FLUID      ,                                                                                                     "Mutagen").setName("Mutagen").addCell().addFluid().setRGB(100, 200, 130).setColor(Dyes.dyeCyan).constructMaterial();
     public static Materials IronIIIChloride           = new MaterialBuilder(411, TextureSet.SET_FLUID      ,                                                                                                     "Iron III Chloride").setName("IronIIIChloride").addCell().addFluid().setRGB(22, 21, 14).setColor(Dyes.dyeBlack).setMaterialList(new MaterialStack(HydrochloricAcid, 2), new MaterialStack(Iron, 1)).addElectrolyzerRecipe().constructMaterial();
     public static Materials Lapotron = new Materials( 412, TextureSet.SET_DIAMOND, 		1.0F, 0, 1, 1|4|8 , 50, 66, 199, 0, "Lapotron", "Lapotron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlue);
-    
+    public static Materials Pollution = new MaterialBuilder(396, TextureSet.SET_FLUID, "Pollution").addCell().addFluid().setRGB(90, 70, 15).setColor(Dyes.dyeBrown).constructMaterial();
+    public static Materials SluiceJuice = new MaterialBuilder(413, TextureSet.SET_FLUID, "Sluice Juice").addCell().addFluid().setRGB(100, 60, 20).setColor(Dyes.dyeBrown).constructMaterial();
+    public static Materials SluiceSand = new Materials(414, TextureSet.SET_SAND, 1.0F, 0, 2, 1, 20, 30, 20, 0, "SluiceSand",   "Sluice Sand", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray);
+	
     /**
      * Materials which are renamed automatically
      */

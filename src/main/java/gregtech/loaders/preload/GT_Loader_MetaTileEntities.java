@@ -1526,6 +1526,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Machine_DigitalTransformer_UHV.set(new GT_MetaTileEntity_Digital_Transformer(12188, "basicmachine.d_transformer.tier.09", "Ultimate High Digital Transformer", 9,"UHV -> (ULV - MAX) (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Machine_DigitalTransformer_UEV.set(new GT_MetaTileEntity_Digital_Transformer(12189, "basicmachine.d_transformer.tier.10", "Ultra Extreme Digital Transformer", 10,"UEV -> (ULV - MAX) (Use Soft Mallet to invert)").getStackForm(1L));
         
+        //Industrial Pulverizer
+        ItemList.Machine_IndustrialPulverizer.set(new GT_MetaTileEntity_IndustrialPulverizer(12191, "multimachine.industrialpulverizer", "Industrial Pulverizer").getStackForm(1));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_IndustrialPulverizer.get(1L, new Object[0]), bitsd, new Object[]{"POP", "MHM", "CWC", 'H', ItemList.Hull_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'P', ItemList.Electric_Piston_EV, 'M', ItemList.Electric_Motor_EV, 'W', OrePrefixes.cableGt01.get(Materials.Aluminium), 'O', ItemList.Component_Grinder_Tungsten});
+        
         
         
    }

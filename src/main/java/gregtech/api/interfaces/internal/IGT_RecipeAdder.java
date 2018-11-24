@@ -650,6 +650,11 @@ public interface IGT_RecipeAdder {
     public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt, boolean hidden);
 
     /**
+     * Adds a Recipe for the GT Industrial Pulveriser. (up to 4 Outputs)
+     */
+    public boolean addIndustrialPulverizerRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int[] aChances, int aDuration, int aEUt);
+    
+    /**
      * Adds a Distillation Tower Recipe
      * Every Fluid also gets separate distillation recipes
      *
