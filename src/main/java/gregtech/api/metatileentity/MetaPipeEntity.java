@@ -2,7 +2,6 @@ package gregtech.api.metatileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -738,6 +737,17 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         return true;
     }
 
+    public boolean letsInOrOut(byte side){
+        final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        final int coverId = baseMetaTile.getCoverIDAtSide(side),
+                coverData = baseMetaTile.getCoverDataAtSide(side);
+        final GT_CoverBehavior coverBehavior = baseMetaTile.getCoverBehaviorAtSide(side);
+        boolean letsIn = letsIn(coverBehavior, side, coverId, coverData, baseMetaTile);
+        boolean letsOut = letsOut(coverBehavior, side, coverId, coverData, baseMetaTile);
+        boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(side, coverId, coverData, baseMetaTile);
+        return letsIn || letsOut || alwaysLookConnected;
+    }
+    
 	@Override
 	public int connect(byte aSide) {
 		if (aSide >= 6) return 0;
@@ -746,22 +756,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 		final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
 		if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final GT_CoverBehavior coverBehavior = baseMetaTile.getCoverBehaviorAtSide(aSide);
-        final int coverId = baseMetaTile.getCoverIDAtSide(aSide),
-                  coverData = baseMetaTile.getCoverDataAtSide(aSide);
-
-        boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(aSide, coverId, coverData, baseMetaTile);
-        boolean letsIn = letsIn(coverBehavior, aSide, coverId, coverData, baseMetaTile);
-        boolean letsOut = letsOut(coverBehavior, aSide, coverId, coverData, baseMetaTile);
-
         // Careful - tTileEntity might be null, and that's ok -- so handle it
         TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(aSide);
         if (!connectableColor(tTileEntity)) return 0;
 
-        if ((alwaysLookConnected || letsIn || letsOut))  {
+        if (letsInOrOut(aSide))  {
             // Are we trying to connect to a pipe? let's do it!
             IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() : null;
-            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this))) {
+            if (tPipe != null && (getClass().isInstance(tPipe) || (tPipe.getClass().isInstance(this))) && ((MetaPipeEntity) tPipe).letsInOrOut(tSide)) {
                 connectAtSide(aSide);
                 if (!((MetaPipeEntity) tPipe).isConnectedAtSide(tSide)) {
                     // Make sure pipes all get together -- connect back to us if we're connecting to a pipe
