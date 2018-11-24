@@ -2,6 +2,7 @@ package com.github.bartimaeusnek.bartworks;
 
 
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
+import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import cpw.mods.fml.common.Loader;
@@ -11,9 +12,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 
 @Mod(
         modid = MainMod.modID, name = MainMod.name, version = MainMod.version,
@@ -27,6 +34,7 @@ public final class MainMod {
     public static final Logger logger = LogManager.getLogger(name);
     public static boolean GTNH  = false;
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
+    public static final CreativeTabs BWT = new bartworksTab("bartworks");
     public static final IGuiHandler GH = new GuiHandler();
     @Mod.Instance(modID)
     public static MainMod instance;
@@ -50,6 +58,9 @@ public final class MainMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance,GH);
+
+
+
     }
 
 

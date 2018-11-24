@@ -47,7 +47,7 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
     }
 
     public String[] getDescription() {
-        return new String[] {mDescription,"Voltage: "+ ChatColorHelper.YELLOW +GT_Values.V[this.mTier],"Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(),"Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut()};
+        return new String[] {mDescription,"Voltage: "+ ChatColorHelper.YELLOW +GT_Values.V[this.mTier],"Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(),"Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via BartWorks"};
     }
 
 }

@@ -70,10 +70,10 @@ dependencies {
 //    mustRunAfter "repackMinecraft"
 //}
 
-tasks.setupCIWorkspace.dependsOn getGregTech
-tasks.setupDevWorkspace.dependsOn getGregTech
-tasks.setupDecompWorkspace.dependsOn getGregTech
-tasks.compileJava.dependsOn getGregTech
+//tasks.setupCIWorkspace.dependsOn getGregTech
+//tasks.setupDevWorkspace.dependsOn getGregTech
+//tasks.setupDecompWorkspace.dependsOn getGregTech
+//tasks.compileJava.dependsOn getGregTech
 
 processResources
 {

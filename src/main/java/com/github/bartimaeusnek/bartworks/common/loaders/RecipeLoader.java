@@ -2,8 +2,10 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_Diode;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_EnergyDistributor;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_LESU;
+import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_ManualTrafo;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -164,6 +166,7 @@ public class RecipeLoader implements Runnable {
                 Materials cable = cables[i];
                 Materials hull = hulls[i];
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
+
                 GT_ModHandler.addCraftingRecipe(
                     new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset+1+i,"Energy Distributor "+GT_Values.VN[i], "Energy Distributor "+GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L),
                     bitsd,
@@ -175,9 +178,145 @@ public class RecipeLoader implements Runnable {
                     'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
                     'C', machinehull
                     });
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode12A[i]=new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset+GT_Values.VN.length*4+1+i,"Cable Diode 12A "+GT_Values.VN[i], "Cable Diode 12A "+GT_Values.VN[i], i,12).getStackForm(1L),
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_Diode.get(1L,ItemList.Circuit_Parts_DiodeSMD.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode12A[i],
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_DiodeSMD.get(1L,ItemList.Circuit_Parts_Diode.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt12,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode8A[i]=new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset+GT_Values.VN.length*3+1+i,"Cable Diode 8A "+GT_Values.VN[i], "Cable Diode 8A "+GT_Values.VN[i], i,8).getStackForm(1L),
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_Diode.get(1L,ItemList.Circuit_Parts_DiodeSMD.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode8A[i],
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_DiodeSMD.get(1L,ItemList.Circuit_Parts_Diode.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt08,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode4A[i]=new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset+GT_Values.VN.length*2+1+i,"Cable Diode 4A "+GT_Values.VN[i], "Cable Diode 4A "+GT_Values.VN[i], i,4).getStackForm(1L),
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_Diode.get(1L,ItemList.Circuit_Parts_DiodeSMD.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode4A[i],
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_DiodeSMD.get(1L,ItemList.Circuit_Parts_Diode.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt04,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode2A[i]=new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset+GT_Values.VN.length+1+i,"Cable Diode 2A "+GT_Values.VN[i], "Cable Diode 2A "+GT_Values.VN[i], i,2).getStackForm(1L),
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_Diode.get(1L,ItemList.Circuit_Parts_DiodeSMD.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode2A[i],
+                        bitsd,
+                        new Object[]{
+                                "WDW",
+                                "DCD",
+                                "PDP",
+                                'D',  ItemList.Circuit_Parts_DiodeSMD.get(1L,ItemList.Circuit_Parts_Diode.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.cableGt02,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode16A[i]=new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset+GT_Values.VN.length*5+5+i,"Cable Diode 16A "+GT_Values.VN[i], "Cable Diode 16A "+GT_Values.VN[i], i,16).getStackForm(1L),
+                        bitsd,
+                        new Object[]{
+                                "WHW",
+                                "DCD",
+                                "PDP",
+                                'H', ItemList.Circuit_Parts_Coil.get(1L),
+                                'D', ItemList.Circuit_Parts_Diode.get(1L,ItemList.Circuit_Parts_DiodeSMD.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+                GT_ModHandler.addCraftingRecipe(
+                        ItemRegistry.Diode16A[i],
+                        bitsd,
+                        new Object[]{
+                                "WHW",
+                                "DCD",
+                                "PDP",
+                                'H', ItemList.Circuit_Parts_Coil.get(1L),
+                                'D', ItemList.Circuit_Parts_DiodeSMD.get(1L,ItemList.Circuit_Parts_Diode.get(1L)),
+                                'W', GT_OreDictUnificator.get(OrePrefixes.wireGt16,cable,1L),
+                                'P', GT_OreDictUnificator.get(OrePrefixes.plate,hull,1L),
+                                'C', machinehull
+                        }
+                );
+
                 }catch(ArrayIndexOutOfBoundsException e){
                 //e.printStackTrace();
                 }
             }
+
+            new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset+GT_Values.VN.length*6+1,"ManualTravo","ManualTravo");
+            //current ID: ConfigHandler.IDOffset+GT_Values.VN.length*6+1
         }
 }

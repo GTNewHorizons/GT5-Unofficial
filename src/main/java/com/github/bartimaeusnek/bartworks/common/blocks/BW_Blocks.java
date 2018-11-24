@@ -23,6 +23,14 @@ public class BW_Blocks extends Block {
         this.textureNames=texture;
         this.setCreativeTab(MainMod.GT2);
     }
+    public BW_Blocks(String name, String[] texture, CreativeTabs tabs) {
+        super(Material.anvil);
+        this.setHardness(15.0F);
+        this.setResistance(30.0F);
+        this.name = name;
+        this.textureNames=texture;
+        this.setCreativeTab(tabs);
+    }
 
     @SideOnly(Side.CLIENT)
     private IIcon[] texture;
