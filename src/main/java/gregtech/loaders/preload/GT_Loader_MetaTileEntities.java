@@ -1528,7 +1528,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         
         //Industrial Pulverizer
         ItemList.Machine_IndustrialPulverizer.set(new GT_MetaTileEntity_IndustrialPulverizer(12191, "multimachine.industrialpulverizer", "Industrial Pulverizer").getStackForm(1));
-        GT_ModHandler.addCraftingRecipe(ItemList.Machine_IndustrialPulverizer.get(1L, new Object[0]), bitsd, new Object[]{"POP", "MHM", "CWC", 'H', ItemList.Hull_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'P', ItemList.Electric_Piston_EV, 'M', ItemList.Electric_Motor_EV, 'W', OrePrefixes.cableGt01.get(Materials.Aluminium), 'O', ItemList.Component_Grinder_Tungsten});
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_IndustrialPulverizer.get(1L, new Object[0]), bitsd, new Object[]{"POP", "MHM", "CWC", 'H', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.Good), 'P', ItemList.Electric_Piston_MV, 'M', ItemList.Electric_Motor_MV, 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'O', ItemList.Component_Grinder_Diamond});
         
         //Flotation Unit
         ItemList.Machine_FlotationUnit.set(new GT_MetaTileEntity_FlotationUnit(12192, "multimachine.flotationunit", "Flotation Unit").getStackForm(1));

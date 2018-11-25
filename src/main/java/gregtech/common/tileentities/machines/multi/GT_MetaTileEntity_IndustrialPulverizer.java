@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_MultiBlockBase {
 
-	private final int CASING_INDEX = 30;
+	private final int CASING_INDEX = 16;
 	
 	public GT_MetaTileEntity_IndustrialPulverizer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -42,10 +42,10 @@ public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_Mu
 				"Has the all recipes as the Macerator, Ore Washer and Chemical Bath",
 				"Does not lose efficiency when overclocked",
 				"Size(WxHxD): 3x3x3",
-				"3x3x3 of Stable Titanium Machine Casings (hollow, min 8!)",
+				"3x3x3 of Solid Steel Machine Casings (hollow, min 8!)",
 				"Controller (Front centered)",
-				"1x Titanium Gearbox (inside the hollow casings)",
-				"1x Titanium Pipe Machine Casing (next to Titanium Gearbox)",
+				"1x Steel Gearbox (inside the hollow casings)",
+				"1x Steel Pipe Machine Casing (next to Steel Gearbox)",
 				"1x Input Bus/Hatch (Any inert casing)",
 				"1x Output Bus/Hatch (Any inert casing)",
 				"1x Maintenance Hatch (Any inert casing)",
@@ -57,11 +57,11 @@ public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_Mu
 			boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[] {
-					Textures.BlockIcons.casingTexturePages[0][50],
+					Textures.BlockIcons.casingTexturePages[0][16],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE
 							: Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR) };
 		}
-		return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][50] };
+		return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
 	}
 
 	@Override
@@ -171,20 +171,20 @@ public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_Mu
 						centerCoords++;
 					}
 					if (centerCoords == 3) {
-						if (block == GregTech_API.sBlockCasings2 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 4) {
+						if (block == GregTech_API.sBlockCasings2 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 3) {
 							continue;
 						} else {
 							return false;
 						}
 					}
-					if (centerCoords == 2 && block == GregTech_API.sBlockCasings2 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 14) {
+					if (centerCoords == 2 && block == GregTech_API.sBlockCasings2 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 13) {
 						hasHeatingCoil = true;
 						continue;
 					}
 					if (!addInputToMachineList(tileEntity, CASING_INDEX) && !addOutputToMachineList(tileEntity, CASING_INDEX)
 							&& !addMaintenanceToMachineList(tileEntity, CASING_INDEX)
 							&& !addEnergyInputToMachineList(tileEntity, CASING_INDEX)) {
-						if (block == GregTech_API.sBlockCasings4 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 2) {
+						if (block == GregTech_API.sBlockCasings2 && aBaseMetaTileEntity.getMetaIDOffset(x, y, z) == 0) {
 							casingAmount++;
 						} else {
 							return false;
