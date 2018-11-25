@@ -399,7 +399,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 if (lServerNames == null) {
                     makeStick();
                 } else {
-                    makeStick2();
+                    try {
+                        makeStick2();
+                    }catch (NoSuchFieldError e){
+                        makeStick();
+                    }
                 }
             }else if (aRecipe != null && ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
