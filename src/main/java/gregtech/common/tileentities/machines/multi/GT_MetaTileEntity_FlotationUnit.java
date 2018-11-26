@@ -46,11 +46,11 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
 				"8x Titanium Pipe Casing (Two middle Layers, corners)",
                 "8x Nichrome Coil (Two middle Layers, sides)",
                 "Stable Titanium Machine Casings for the rest",
-				"1x Input Bus/Hatch (Any inert casing)",
-				"1x Output Bus/Hatch (Any inert casing)",
-				"1x Maintenance Hatch (Any inert casing)",
-				"1x Muffler Hatch (Any inert casing)",
-				"1x Energy Hatch (Any inert casing)",
+				"1x Input Bus/Hatch (Bottom casing)",
+				"1x Output Bus/Hatch (Bottom casing)",
+				"1x Maintenance Hatch (Bottom casing)",
+				"1x Muffler Hatch (Only Top casing)",
+				"1x Energy Hatch (Botton casing)",
 				"Causes " + 20 * getPollutionPerTick(null) + " Pollution per second"};
     }
 
@@ -147,6 +147,13 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
 		}
 		return false;
 	}
+	
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(200)), 10, 1.0F, aX, aY, aZ);
+        }
+    }
 
 	@Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -159,21 +166,21 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
         if (!aBaseMetaTileEntity.getAirOffset(xDir, one, zDir) || !aBaseMetaTileEntity.getAirOffset(xDir, two, zDir)) {//check air inside
             return false;
         }
-        for(int i=-one;i<two;i++) {
+        for (int i = -one; i < two; i++) {
             for (int j = -one; j < two; j++) {
-                if (!aBaseMetaTileEntity.getAirOffset(xDir+i, 4, zDir+j) || !aBaseMetaTileEntity.getAirOffset(xDir+i, 5, zDir+j)) {//check air at on top of top layer
-                    return false;
+                if (xDir + i != 0 || zDir + j != 0) {
+                    IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);
+                    if (!addMufflerToMachineList(tTileEntity, 50)) {
+                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != GregTech_API.sBlockCasings4) {
+                            return false;
+                        }
+                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 2) {
+                            return false;
+                        }
+                    }
                 }
-                if (aBaseMetaTileEntity.getBlockOffset(xDir+i, 3, zDir+j) != GregTech_API.sBlockCasings4) {
-                    return false;//top casing
-                }
-                if (aBaseMetaTileEntity.getMetaIDOffset(xDir+i, 3, zDir+j) != 2) {
-                    return false;//top casing
-                }
-
             }
         }
-        
         //air check and top casing check done
         //coil check
         if(aBaseMetaTileEntity.getBlockOffset(one+xDir, one, zDir)!= GregTech_API.sBlockCasings5) {
