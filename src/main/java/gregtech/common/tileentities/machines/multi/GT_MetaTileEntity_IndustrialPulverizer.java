@@ -144,6 +144,13 @@ public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_Mu
 		}
 		return false;
 	}
+	
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(201)), 10, 1.0F, aX, aY, aZ);;
+        }
+    }
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
