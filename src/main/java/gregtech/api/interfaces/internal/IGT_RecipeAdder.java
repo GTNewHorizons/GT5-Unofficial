@@ -651,8 +651,9 @@ public interface IGT_RecipeAdder {
 
     /**
      * Adds a Recipe for the GT Industrial Pulveriser. (up to 4 Outputs)
+     * @param i 
      */
-    public boolean addIndustrialPulverizerRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int[] aChances, int aDuration, int aEUt);
+    public boolean addIndustrialPulverizerRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt);
     
     public boolean addFlotationUnitRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt);
     

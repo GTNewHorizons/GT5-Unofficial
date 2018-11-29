@@ -1078,8 +1078,8 @@ public class GT_RecipeAdder
         return false;
     }
     
-    public boolean addIndustrialPulverizerRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int[] aChances, int aDuration, int aEUt) {
-    	GT_Recipe.GT_Recipe_Map.sIndustrialPulverizerRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+    public boolean addIndustrialPulverizerRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt) {
+    	GT_Recipe.GT_Recipe_Map.sIndustrialPulverizerRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutputs, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
         return true;
     }
     
