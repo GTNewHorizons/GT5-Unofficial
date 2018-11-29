@@ -4485,6 +4485,7 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addAssemblerRecipe(ItemList.RawBioFiber.get(2L), GT_Utility.getIntegratedCircuit(1), ItemList.BioOrganicMesh.get(1L), 800, 2);
            GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1), ItemList.CompressedBioBall.get(8L), ItemList.BioChunk.get(1L), 1200, 64);
            GT_Values.RA.addCompressorRecipe(GT_ModHandler.getModItem("IC2", "itemWeed", 16L), ItemList.IC2_Plantball.get(1L), 300, 2);
+           GT_Values.RA.addCompressorRecipe(new ItemStack(Items.apple, 8), ItemList.IC2_Plantball.get(1L), 300, 2);
            GT_Values.RA.addCompressorRecipe(ItemList.BioOrganicMesh.get(1L), ItemList.BioCarbonPlate.get(1L), 300, 2);
            GT_Values.RA.addCompressorRecipe(ItemList.BioBall.get(1L), ItemList.CompressedBioBall.get(1L), 300, 2);
            GT_Values.RA.addBlastRecipe(ItemList.BioCarbonPlate.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("carbonPlate", 1L), GT_Values.NI, 1000, 120, 600);
