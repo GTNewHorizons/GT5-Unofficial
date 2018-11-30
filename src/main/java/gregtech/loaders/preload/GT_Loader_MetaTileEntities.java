@@ -1534,6 +1534,14 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Machine_FlotationUnit.set(new GT_MetaTileEntity_FlotationUnit(12192, "multimachine.flotationunit", "Flotation Unit").getStackForm(1));
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_FlotationUnit.get(1L, new Object[0]), bitsd, new Object[]{"SOS", "RHR", "MCM", 'H', ItemList.Hull_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'S', ItemList.Electric_Pump_EV, 'M', ItemList.Electric_Motor_EV, 'R', OrePrefixes.rotor.get(Materials.Titanium), 'O', OrePrefixes.pipeMedium.get(Materials.Titanium)});
         
+        //Multiblock Centrifuge
+        ItemList.Machine_MultiblockCentrifuge.set(new GT_MetaTileEntity_MultiblockCentrifuge(12193, "multimachine.multicentrifuge", "Multiblock Centrifuge").getStackForm(1));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockCentrifuge.get(1L, new Object[0]), bitsd, new Object[]{"MCM", "CHC", "MCM", 'H', ItemList.Hull_EV, 'C', OrePrefixes.circuit.get(Materials.Data), 'M', ItemList.Electric_Motor_EV});
+        
+        //Multiblock Electrolyzer
+        ItemList.Machine_MultiblockElectrolyzer.set(new GT_MetaTileEntity_MultiblockElectrolyzer(12194, "multimachine.multielectrolyzer", "Multiblock Electrolyzer").getStackForm(1));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockElectrolyzer.get(1L, new Object[0]), bitsd, new Object[]{"WCW", "PHP", "WCW", 'H', ItemList.Hull_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.wireGt02.get(Materials.Platinum), 'P', OrePrefixes.plateDouble.get(Materials.Titanium)});
+        
         
    }
 
