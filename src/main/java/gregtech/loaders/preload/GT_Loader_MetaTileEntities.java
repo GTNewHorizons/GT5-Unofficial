@@ -381,11 +381,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_Bus_ULV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Lead), 'I', OrePrefixes.pipeMedium.get(Materials.Tin), 'X', new ItemStack(Blocks.chest, 1, 0)});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_Bus_LV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_LV, 'C', ItemList.Conveyor_Module_LV,  'I', OrePrefixes.pipeMedium.get(Materials.Nickel), 'X', new ItemStack(Blocks.chest, 1, 0)});
-        if(Loader.isModLoaded("IronChest")){
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_Bus_MV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_MV, 'C', ItemList.Conveyor_Module_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Cobalt), 'X', GT_ModHandler.getModItem("IronChest", "BlockIronChest", 1L, 3)});
-        }else {
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_Bus_MV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_MV, 'C', ItemList.Conveyor_Module_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Cobalt), 'X', new ItemStack(Blocks.chest, 1, 0)});	
-        }
         
         ItemList.Hatch_Output_Bus_ULV.set(new GT_MetaTileEntity_Hatch_OutputBus(80, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Output_Bus_LV.set(new GT_MetaTileEntity_Hatch_OutputBus(81, "hatch.output_bus.tier.01", "Output Bus (LV)", 1).getStackForm(1L));
@@ -400,11 +396,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_Bus_ULV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Lead), 'I', OrePrefixes.pipeMedium.get(Materials.Tin), 'X', new ItemStack(Blocks.chest, 1, 0)});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_Bus_LV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_LV, 'C', ItemList.Conveyor_Module_LV,  'I', OrePrefixes.pipeMedium.get(Materials.Nickel), 'X', new ItemStack(Blocks.chest, 1, 0)});
-        if(Loader.isModLoaded("IronChest")){
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_Bus_MV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_MV, 'C', ItemList.Conveyor_Module_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Cobalt), 'X', GT_ModHandler.getModItem("IronChest", "BlockIronChest", 1L, 3)});
-        }else {
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_Bus_MV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_MV, 'C', ItemList.Conveyor_Module_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Cobalt), 'X', new ItemStack(Blocks.chest, 1, 0)});
-        }
+        
         ItemList.Hatch_Maintenance.set(new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Maintenance.get(1L, new Object[0]), bitsd, new Object[]{"dwx", "hMc", "fsr", 'M', ItemList.Hull_LV});
@@ -1759,7 +1752,8 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         generateItemPipes(Materials.ElectrumFlux, Materials.ElectrumFlux.mName, 5670, 16);
         generateItemPipes(Materials.Diamericiumtitanium, Materials.Diamericiumtitanium.mName, 5676, 64);
         generateItemPipes(Materials.Quantium, Materials.Quantium.mName, 5682, 128);
-
+        generateItemPipes(Materials.Tin, Materials.Tin.mName, 5688, 1);
+        
         ItemList.Automation_ChestBuffer_ULV.set(new GT_MetaTileEntity_ChestBuffer(9230, "automation.chestbuffer.tier.00", "Ultra Low Voltage Chest Buffer", 0).getStackForm(1L));
         ItemList.Automation_ChestBuffer_LV.set(new GT_MetaTileEntity_ChestBuffer(9231, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1).getStackForm(1L));
         ItemList.Automation_ChestBuffer_MV.set(new GT_MetaTileEntity_ChestBuffer(9232, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2).getStackForm(1L));
