@@ -1535,6 +1535,9 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Machine_MultiblockElectrolyzer.set(new GT_MetaTileEntity_MultiblockElectrolyzer(12194, "multimachine.multielectrolyzer", "Multiblock Electrolyzer").getStackForm(1));
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockElectrolyzer.get(1L, new Object[0]), bitsd, new Object[]{"WCW", "PHP", "WCW", 'H', ItemList.Hull_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.wireGt02.get(Materials.Platinum), 'P', OrePrefixes.plateDouble.get(Materials.Titanium)});
         
+        //Tesseract
+        ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1));
+        
         
    }
 
@@ -3111,25 +3114,29 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 									OrePrefixes.wireGt16.get(Materials.Naquadah), Character.valueOf('K'),
 									ItemList.Casing_Coil_Naquadah });
 					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UHV_UV.get(1L, new Object[0]), bitsd,
-							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_MAX_UV, Character.valueOf('C'),
+							new Object[] { "KBB", "CME", "KBB", Character.valueOf('M'), ItemList.Transformer_MAX_UV, Character.valueOf('C'),
 									OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('B'),
 									OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('K'),
-									ItemList.Casing_Coil_NaquadahAlloy });
+									ItemList.Casing_Coil_NaquadahAlloy, Character.valueOf('E'),
+									ItemList.Circuit_HighEnergyFlow});
 					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UEV_UHV.get(1L, new Object[0]), bitsd,
-							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UEV_UHV, Character.valueOf('C'),
+							new Object[] { "KBB", "CME", "KBB", Character.valueOf('M'), ItemList.Transformer_UEV_UHV, Character.valueOf('C'),
 									OrePrefixes.wireGt04.get(Materials.SuperconductorUEV), Character.valueOf('B'),
 									OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('K'),
-									ItemList.Casing_Coil_Superconductor });
+									ItemList.Casing_Coil_Superconductor, Character.valueOf('E'),
+									ItemList.Circuit_HighEnergyFlow});
 					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UIV_UEV.get(1L, new Object[0]), bitsd,
-							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UIV_UEV, Character.valueOf('C'),
+							new Object[] { "KBB", "CME", "KBB", Character.valueOf('M'), ItemList.Transformer_UIV_UEV, Character.valueOf('C'),
 									OrePrefixes.wireGt08.get(Materials.Neutronium), Character.valueOf('B'),
 									OrePrefixes.wireGt01.get(Materials.SuperconductorUEV), Character.valueOf('K'),
-									ItemList.Casing_Fusion_Coil });
+									ItemList.Casing_Fusion_Coil, Character.valueOf('E'),
+									ItemList.Circuit_HighEnergyFlow});
 					GT_ModHandler.addCraftingRecipe(ItemList.Transformer_HA_UMV_UIV.get(1L, new Object[0]), bitsd,
-							new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Transformer_UMV_UIV, Character.valueOf('C'),
+							new Object[] { "KBB", "CME", "KBB", Character.valueOf('M'), ItemList.Transformer_UMV_UIV, Character.valueOf('C'),
 									OrePrefixes.wireGt08.get(Materials.Quantium), Character.valueOf('B'),
 									OrePrefixes.wireGt04.get(Materials.Neutronium), Character.valueOf('K'),
-									ItemList.Casing_Fusion_Coil });	
+									ItemList.Casing_Fusion_Coil, Character.valueOf('E'),
+									ItemList.Circuit_HighEnergyFlow});	
 				
 				ItemList.WetTransformer_LV_ULV.set(new GT_MetaTileEntity_Wet_Transformer(
 						12150, "wettransformer.tier.00", "Ultra Low Voltage Power Transformer", 0,

@@ -232,6 +232,7 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Piko.set(addItem(tLastID = 123, "Piko Circuit", "A Super Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION}));
         ItemList.Circuit_Quantum.set(addItem(tLastID = 124, "Quantum Circuit", "A Infinite Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Infinite), SubTag.NO_UNIFICATION}));
         ItemList.Circuit_Nano.set(addItem(tLastID = 125, "Nano Circuit", "A Bio Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION}));
+        ItemList.Circuit_HighEnergyFlow.set(addItem(tLastID = 126, "High Energy Flow Circuit", "Energy Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Energy), SubTag.NO_UNIFICATION}));
         
         
         ItemList.EnergyCrystal_LV.set(addItem(tLastID = 200, "Small Energium Crystall (T1)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));

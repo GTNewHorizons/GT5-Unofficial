@@ -367,7 +367,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Superconductor = new Materials(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Superconductor", "Superconductor UHV", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
     public static Materials Infinite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 0, 0, 255, 255, 255, 0, "Infinite", "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10)));
     public static Materials Bio= new Materials(  -1, TextureSet.SET_NONE,           1.0F, 0, 0, 0, 255, 255, 255, 0, "Bio","Bio", 0, 0,-1,0, false, false, 1, 1, 1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 11)));
-
+    public static Materials Energy= new Materials(  -1, TextureSet.SET_NONE,        1.0F, 0, 0, 0, 255, 255, 255, 0, "Energy","Energy", 0, 0,-1,0, false, false, 1, 1, 1, Dyes.dyeLightGray   , Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 9)));
+    
     /**
      * Not possible to determine exact Components
      */
@@ -1433,6 +1434,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Bio                     .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Energy                  .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorMV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorHV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorEV        .add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
