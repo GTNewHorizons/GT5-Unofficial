@@ -77,7 +77,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
                 ItemStack[] aStacks = (ItemStack[]) obj;
                 if (aStacks.length > 0) {
                     tInputs[i] = aStacks[0];
-                    tAlts[i] = (ItemStack[]) Arrays.copyOf(aStacks, aStacks.length);
+                    tAlts[i] = Arrays.copyOf(aStacks, aStacks.length);
                     continue;
                 }
             } else if (obj instanceof Object[]) {
@@ -85,7 +85,7 @@ public class  TT_recipeAdder extends GT_RecipeAdder {
                 List<ItemStack> tList;
                 if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
                     try {
-                        int tAmount = (int) objs[1];
+                        int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
                         for (ItemStack tStack : tList) {
                             ItemStack uStack = GT_Utility.copyAmount(tAmount, tStack);
