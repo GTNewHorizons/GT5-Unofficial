@@ -511,11 +511,11 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64), Materials.Plastic.getMolten(576), GT_ModHandler.getIC2Item("carbonFiber", 16L), 10000, 600, 30);
         GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1), Materials.UUMatter.getFluid(576), GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1), 3333, 72000, 480);
         
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1), OrePrefixes.circuit.get(Materials.Basic), 4, Materials.Osmium.getMolten(288), ItemList.Field_Generator_LV.get(1, new Object[0]), 1800, 30);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1), OrePrefixes.circuit.get(Materials.Good), 4, Materials.Osmium.getMolten(576), ItemList.Field_Generator_MV.get(1, new Object[0]), 1800, 120);
-        GT_Values.RA.addAssemblerRecipe(ItemList.QuantumEye.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Advanced), 4, Materials.Osmium.getMolten(1152), ItemList.Field_Generator_HV.get(1, new Object[0]), 1800, 480);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1), OrePrefixes.circuit.get(Materials.Data), 4, Materials.Osmium.getMolten(2304), ItemList.Field_Generator_EV.get(1, new Object[0]), 1800, 1920);
-        GT_Values.RA.addAssemblerRecipe(ItemList.QuantumStar.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Elite), 4, Materials.Osmium.getMolten(4608), ItemList.Field_Generator_IV.get(1, new Object[0]), 1800, 7680);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_LV.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Basic), 4, Materials.Osmium.getMolten(288), ItemList.Field_Generator_LV.get(1, new Object[0]), 1800, 30);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_MV.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Good), 4, Materials.Osmium.getMolten(576), ItemList.Field_Generator_MV.get(1, new Object[0]), 1800, 120);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_HV.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Advanced), 4, Materials.Osmium.getMolten(1152), ItemList.Field_Generator_HV.get(1, new Object[0]), 1800, 480);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_EV.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Data), 4, Materials.Osmium.getMolten(2304), ItemList.Field_Generator_EV.get(1, new Object[0]), 1800, 1920);
+        GT_Values.RA.addAssemblerRecipe(ItemList.Emitter_IV.get(1, new Object[]{}), OrePrefixes.circuit.get(Materials.Elite), 4, Materials.Osmium.getMolten(4608), ItemList.Field_Generator_IV.get(1, new Object[0]), 1800, 7680);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 64), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16), null, ItemList.Component_Filter.get(1, new Object[0]), 1600, 16);
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 8), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicon, 1), Materials.Glue.getFluid(250L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Graphene, 1), 480, 240);
         GT_Values.RA.addAssemblerRecipe(ItemList.Electric_Pump_LV.get(1L, new Object[0]), OrePrefixes.circuit.get(Materials.Basic), 2, GT_Values.NF,	ItemList.FluidRegulator_LV.get(1L, new Object[0]), 800, 4);
@@ -2323,8 +2323,7 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_IV.get(1, new Object(){}),144000,new Object[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSG, 1L),
         		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSG, 6L),
-        		ItemList.QuantumStar.get(2, new Object(){}),
-        		ItemList.Emitter_LuV.get(4, new Object(){}),
+        		ItemList.Emitter_LuV.get(2, new Object(){}),
         		new ItemStack[]{ItemList.Circuit_Crystalmainframe.get(4, new Object(){}), ItemList.Circuit_Wetwaresupercomputer.get(4, new Object(){})},
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmium, 64L),
@@ -2337,13 +2336,8 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_LuV.get(1, new Object(){}),144000,new Object[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 1L),
         		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSE, 6L),
-        		ItemList.QuantumStar.get(1, new Object(){}),
-        		ItemList.Emitter_ZPM.get(4, new Object(){}),
+        		ItemList.Emitter_ZPM.get(2, new Object(){}),
         		new ItemStack[]{ItemList.Circuit_Crystalmainframe.get(8, new Object(){}), ItemList.Circuit_Wetwaresupercomputer.get(8, new Object(){})},
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
@@ -2355,13 +2349,8 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_ZPM.get(1, new Object(){}),288000,new Object[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1L),
         		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Duranium, 6L),
-        		ItemList.Gravistar.get(2, new Object(){}),
-        		ItemList.Emitter_UV.get(4, new Object(){}),
+        		ItemList.Emitter_UV.get(2, new Object(){}),
         		new ItemStack[]{ItemList.Circuit_Crystalmainframe.get(16, new Object(){}), ItemList.Circuit_Wetwaresupercomputer.get(16, new Object(){})},
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
-        		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
         		GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 64L),
@@ -5555,15 +5544,11 @@ if(Loader.isModLoaded("Railcraft")){
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Field_Generator_UV.get(1, new Object(){}),12000,16, 200000, 3,new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 6L),
-                    ItemList.Gravistar.get(4, new Object(){}),
-                    ItemList.Emitter_UHV.get(4, new Object(){}),
+                    ItemList.Emitter_UHV.get(2, new Object(){}),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 8L)},
@@ -5575,15 +5560,11 @@ if(Loader.isModLoaded("Railcraft")){
 	        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Field_Generator_UHV.get(1, new Object(){}),24000,32, 500000, 6,new ItemStack[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6L),
-                    ItemList.Gravistar.get(4, new Object(){}),
-                    ItemList.Emitter_UEV.get(4, new Object(){}),
+                    ItemList.Emitter_UEV.get(2, new Object(){}),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 16L)},
@@ -5785,15 +5766,11 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_UV.get(1, new Object(){}),576000,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 6L),
-                    ItemList.Gravistar.get(4, new Object(){}),
-                    ItemList.Emitter_UHV.get(4, new Object(){}),
+                    ItemList.Emitter_UHV.get(2, new Object(){}),
                     new ItemStack[]{ItemList.Circuit_Crystalmainframe.get(16, new Object(){}), ItemList.Circuit_Wetwaresupercomputer.get(16, new Object(){})},
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Europium, 8L)},
@@ -5805,15 +5782,11 @@ if(Loader.isModLoaded("Railcraft")){
             GT_Values.RA.addAssemblylineRecipe(ItemList.Field_Generator_UHV.get(1, new Object(){}),1152000,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6L),
-                    ItemList.Gravistar.get(4, new Object(){}),
-                    ItemList.Emitter_UEV.get(4, new Object(){}),
+                    ItemList.Emitter_UEV.get(2, new Object(){}),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Diamericiumtitanium, 16L)},
