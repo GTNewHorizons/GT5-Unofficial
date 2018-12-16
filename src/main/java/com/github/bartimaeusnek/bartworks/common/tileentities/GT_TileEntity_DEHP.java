@@ -20,7 +20,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return null;
+        return new GT_TileEntity_DEHP(this.mName);
     }
 
     @Override
@@ -35,31 +35,33 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     protected ItemList getCasingBlockItem() {
-        return null;
+        return ItemList.Casing_HeatProof;
     }
 
     @Override
     protected Materials getFrameMaterial() {
-        return null;
+        return Materials.Tungsten;
     }
 
     @Override
     protected int getCasingTextureIndex() {
-        return 0;
+        return 13;
     }
 
     @Override
     protected int getMinTier() {
-        return 0;
+        return 5;
     }
 
     @Override
     protected boolean checkHatches() {
-        return false;
+        return !this.mMaintenanceHatches.isEmpty() && !this.mOutputHatches.isEmpty() && !this.mInputHatches.isEmpty();
     }
 
     @Override
     protected void setElectricityStats() {
+
+
 
     }
 }

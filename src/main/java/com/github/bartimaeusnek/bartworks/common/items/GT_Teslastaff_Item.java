@@ -1,6 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +21,7 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 import java.util.Set;
 
-public class GT_Teslastaff_Item extends ItemTool implements ic2.api.item.IElectricItem
+public class GT_Teslastaff_Item extends ItemTool implements IElectricItem
 {
     public double mCharge;
     public double mTransfer;
@@ -45,6 +46,7 @@ public class GT_Teslastaff_Item extends ItemTool implements ic2.api.item.IElectr
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
         aList.add("No warranty!");
+        aList.add("Added by"+ ChatColorHelper.DARKGREEN +" BartWorks");
     }
 
     public boolean hitEntity(ItemStack aStack, EntityLivingBase aTarget, EntityLivingBase aPlayer) {

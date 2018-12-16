@@ -1,6 +1,7 @@
 package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
 import gregtech.api.gui.GT_GUIContainer;
@@ -29,7 +30,7 @@ public class GT_GUIContainer_LESU extends GT_GUIContainer {
     protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
         this.drawString(this.fontRendererObj,"L.E.S.U.", 11, 8, 16448255);
         if (this.mContainer != null) {
-            String percell = String.valueOf(c.energyPerCell).substring(1);
+            String percell = String.valueOf(ConfigHandler.energyPerCell).substring(1);
             this.drawString(this.fontRendererObj,"EU: " + String.valueOf(this.mContainer.mEnergy), 11, 16, 16448255);
             this.drawString(this.fontRendererObj,"MAX: " + (this.c.getBaseMetaTileEntity().isActive() ? String.valueOf(this.mContainer.mOutput)+ percell : Integer.toString(0)), 11, 24, 16448255);
             this.drawString(this.fontRendererObj,"MAX EU/t IN: " + String.valueOf(this.mContainer.mInput), 11, 32, 16448255);

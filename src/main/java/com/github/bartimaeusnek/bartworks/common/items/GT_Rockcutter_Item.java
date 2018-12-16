@@ -1,6 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.google.common.collect.Sets;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,6 +54,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem
 
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
         aList.add("Tier: " + GT_Values.VN[this.mTier]);
+        aList.add("Added by"+ ChatColorHelper.DARKGREEN +" BartWorks");
     }
 
     public void onUpdate(ItemStack aStack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {

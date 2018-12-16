@@ -31,22 +31,14 @@ import net.minecraft.world.World;
 
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
-    @SideOnly(Side.CLIENT)
-    static IIcon[] iIcons = new IIcon[4];
-    @SideOnly(Side.CLIENT)
-    static IIconContainer[] iIconContainers = new IIconContainer[4];
-    @SideOnly(Side.CLIENT)
-    static ITexture[][] iTextures = new ITexture[4][1];
-    @SideOnly(Side.CLIENT)
-    static final byte TEXID_SIDE = 0;
-    @SideOnly(Side.CLIENT)
-    static final byte TEXID_CHARGING = 1;
-    @SideOnly(Side.CLIENT)
-    static final byte TEXID_IDLE = 2;
-    @SideOnly(Side.CLIENT)
-    static final byte TEXID_EMPTY = 3;
 
-    public static long energyPerCell = 100000L;
+    private static IIcon[] iIcons = new IIcon[4];
+    private static IIconContainer[] iIconContainers = new IIconContainer[4];
+    private static ITexture[][] iTextures = new ITexture[4][1];
+    private static final byte TEXID_SIDE = 0;
+    private static final byte TEXID_CHARGING = 1;
+    private static final byte TEXID_IDLE = 2;
+    private static final byte TEXID_EMPTY = 3;
 
     private long mStorage;
     public ConnectedBlocksChecker connectedcells;
@@ -54,7 +46,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     public GT_TileEntity_LESU(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.mStorage = energyPerCell;
+        this.mStorage = ConfigHandler.energyPerCell;
     }
 
     public GT_TileEntity_LESU(String aName){
@@ -104,7 +96,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public long maxEUOutput() {
-        return Math.min(Math.max(this.mStorage / energyPerCell, 1L), 32768L);
+        return Math.min(Math.max(this.mStorage / ConfigHandler.energyPerCell, 1L), 32768L);
     }
 
     @Override
@@ -142,18 +134,19 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         return new String[]{
                 "Controller Block for the GT2-Styled L.E.S.U.",
                 "Size: ANY",
-                "Storage per LESU Casing: " + this.energyPerCell+"EU",
+                "Storage per LESU Casing: " + ConfigHandler.energyPerCell+"EU",
                 "Output EU: LESU Casings amount"+
                 "Input EU: Next Voltage Tier to Output EU",
                 "Input/Output Amps can be configured via 4 Circuits in GUI",
                 "Output Side has a dot on it.",
                 ChatColorHelper.RED+"Only one Controller allowed, no Wallsharing!",
-                "Added by bartimaeusnek via BartWorks"
+                "Added by bartimaeusnek via "+ChatColorHelper.DARKGREEN+"BartWorks"
         };
     }
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
+
         for (int i = 0; i < iTextures.length; i++) {
             iIcons[i]=aBlockIconRegister.registerIcon(MainMod.modID+":LESU_CASING_"+i);
             final int finalI = i;
@@ -204,6 +197,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         ITexture[] ret = new ITexture[0];
 
         if(this.isClientSide()) {
+
             for (int i = 0; i < iTextures.length; i++) {
                 iTextures[i][0] = new GT_RenderedTexture(iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
@@ -331,7 +325,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean onRunningTick(ItemStack aStack){
         this.mMaxProgresstime=1;
-
         return true;
     }
 
@@ -366,7 +359,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         }
 
         this.mEfficiency=this.getMaxEfficiency(null);
-        this.mStorage=(energyPerCell * connectedcells.hashset.size() >= Long.MAX_VALUE-1 ||  energyPerCell * connectedcells.hashset.size() < 0) ? Long.MAX_VALUE-1 : energyPerCell * connectedcells.hashset.size() ;
+        this.mStorage=(ConfigHandler.energyPerCell * connectedcells.hashset.size() >= Long.MAX_VALUE-1 ||  ConfigHandler.energyPerCell * connectedcells.hashset.size() < 0) ? Long.MAX_VALUE-1 : ConfigHandler.energyPerCell * connectedcells.hashset.size() ;
         this.mMaxProgresstime=1;
         this.mProgresstime=0;
 

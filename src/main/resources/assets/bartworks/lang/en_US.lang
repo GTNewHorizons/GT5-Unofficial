@@ -6,3 +6,6 @@ BW_ItemBlocks.0.name=Etched Lapis Cell
 BW_ItemBlocks.1.name=Plated Lapis Cell
 GT_LESU_CASING.0.name=LESU Casing
 itemGroup.GT2C=Gregtech 2 Compat
+itemGroup.bartworks=BartWorks Inter Temporal
+BW_Machinery_Casings.0.name=Nickel-Zinc Ferrite Block
+BW_Machinery_Casings.1.name=Transformer-Winding Block

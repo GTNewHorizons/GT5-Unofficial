@@ -35,6 +35,6 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
         return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
     }
     public String[] getDescription() {
-        return new String[] {mDescription,"Voltage: "+ ChatColorHelper.YELLOW + GT_Values.V[this.mTier],"Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(),"Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via BartWorks"};
+        return new String[] {mDescription,"Voltage: "+ ChatColorHelper.YELLOW + GT_Values.V[this.mTier],"Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(),"Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via "+ChatColorHelper.DARKGREEN+"BartWorks"};
     }
 }

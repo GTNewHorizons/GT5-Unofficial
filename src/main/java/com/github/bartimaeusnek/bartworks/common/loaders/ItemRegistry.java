@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.BWT;
 import static com.github.bartimaeusnek.bartworks.MainMod.GT2;
+import static com.github.bartimaeusnek.bartworks.common.ConfigHandler.newStuff;
 
 public class ItemRegistry implements Runnable {
 
@@ -23,6 +24,7 @@ public class ItemRegistry implements Runnable {
     public static final Item RockcutterLV = new GT_Rockcutter_Item(1);
     public static final Item RockcutterMV = new GT_Rockcutter_Item(2);
     public static final Item RockcutterHV = new GT_Rockcutter_Item(3);
+    public static final Item CircuitProgrammer = new Circuit_Programmer();
     public static ItemStack[] Diode2A= new ItemStack[GT_Values.VN.length];
     public static ItemStack[] Diode4A= new ItemStack[GT_Values.VN.length];
     public static ItemStack[] Diode8A= new ItemStack[GT_Values.VN.length];
@@ -42,8 +44,8 @@ public class ItemRegistry implements Runnable {
             new BW_Blocks("BW_Machinery_Casings",new String[]{
                     MainMod.modID+":NickelFerriteBlocks",
                     MainMod.modID+":TransformerCoil",
-                    MainMod.modID+":DEHP_Casing",
-                    MainMod.modID+":DEHP_Casing_Base"
+                   // MainMod.modID+":DEHP_Casing",
+                   // MainMod.modID+":DEHP_Casing_Base"
             },BWT),
 
     };
@@ -52,12 +54,15 @@ public class ItemRegistry implements Runnable {
     @Override
     public void run() {
 
+        if (newStuff) {
+            GameRegistry.registerBlock(BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
+            GT_OreDictUnificator.registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(BW_BLOCKS[2]));
+        }
+
+
+        //GT2 stuff
         GameRegistry.registerBlock(BW_BLOCKS[0], BW_ItemBlocks.class,"BW_ItemBlocks");
         GameRegistry.registerBlock(BW_BLOCKS[1], BW_ItemBlocks.class,"GT_LESU_CASING");
-        GameRegistry.registerBlock(BW_BLOCKS[2], BW_ItemBlocks.class,"BW_Machinery_Casings");
-
-        GT_OreDictUnificator.registerOre(OrePrefixes.block, Materials.NickelZincFerrite,new ItemStack(BW_BLOCKS[2]));
-
         if (ConfigHandler.teslastaff)
             GameRegistry.registerItem(Teslastaff,Teslastaff.getUnlocalizedName());
 

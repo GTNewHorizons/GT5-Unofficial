@@ -36,6 +36,7 @@ public final class MainMod {
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BWT = new bartworksTab("bartworks");
     public static final IGuiHandler GH = new GuiHandler();
+
     @Mod.Instance(modID)
     public static MainMod instance;
     public static ConfigHandler CHandler;
@@ -58,9 +59,6 @@ public final class MainMod {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance,GH);
-
-
-
     }
 
 
