@@ -1469,7 +1469,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(12), 144), dust, Materials.Magnesium,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(13), 144), dust, Materials.Aluminium,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(14), 144), dust, Materials.Silicon,1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(15), 144), dust, Materials.Phosphor,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(15), 144), dust, Materials.Phosphorus,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(16), 144), dust, Materials.Sulfur,1);
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(17), 144),Materials.Chlorine.mGas.getID(), 144);
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(18), 144),Materials.Argon.mGas.getID(), 144);
