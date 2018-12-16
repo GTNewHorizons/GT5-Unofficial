@@ -17,8 +17,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 
-import java.lang.reflect.Field;
-
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
