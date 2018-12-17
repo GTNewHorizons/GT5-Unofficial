@@ -321,7 +321,7 @@ public class RecipeLoader implements Runnable {
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 64L), GT_Utility.getIntegratedCircuit(17)},
                     Materials.Plastic.getMolten(1152L),
-                    new ItemStack(ItemRegistry.BW_BLOCKS[2]),
+                    new ItemStack(ItemRegistry.BW_BLOCKS[2],1,1),
                     20,
                     (int) (GT_Values.V[3] - (GT_Values.V[3] / 10))
             );
