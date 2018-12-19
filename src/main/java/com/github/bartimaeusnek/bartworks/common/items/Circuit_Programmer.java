@@ -29,7 +29,8 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack,aPlayer,aList,aF3_H);
-        aList.add("Has Circuit inside? "+ (aStack.getTagCompound().getBoolean("HasChip") ? "Yes" : "No"));
+        if (aStack != null && aStack.getTagCompound() != null)
+            aList.add("Has Circuit inside? "+ (aStack.getTagCompound().getBoolean("HasChip") ? "Yes" : "No"));
         aList.add("Added by"+ ChatColorHelper.DARKGREEN +" BartWorks");
     }
 
