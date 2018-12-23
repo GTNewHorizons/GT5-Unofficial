@@ -4392,7 +4392,7 @@ if(Loader.isModLoaded("Railcraft")){
         private void addPolybenzimidazoleRecipes() {
 
             	//Potassium Nitride
-            	GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Ammonia.getGas(1000), GT_Values.NF, Materials.PotassiumNitrade.getDust(1), 100, 30);
+        	    GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.NitricAcid.getFluid(1000), GT_Values.NF, Materials.PotassiumNitrade.getDust(1), 100, 30);
 
             	// Chrome Trioxide
             	GT_Values.RA.addChemicalRecipeForBasicMachineOnly(Materials.Chrome.getDust(1), GT_Utility.getIntegratedCircuit(1), Materials.Oxygen.getGas(3000), GT_Values.NF, Materials.ChromiumTrioxide.getDust(1), GT_Values.NI, 300, 60);
