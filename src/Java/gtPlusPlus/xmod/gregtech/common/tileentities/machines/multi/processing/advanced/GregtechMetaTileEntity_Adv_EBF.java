@@ -1,5 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -12,7 +19,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
@@ -25,15 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase {
-
 
 	public static int CASING_TEXTURE_ID;
 	public static String mHotFuelName = "Blazing Pyrotheum";
@@ -52,9 +50,12 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		CM = FluidUtils.getFluidStack("carbonmonoxide", 1000);
 		SD = FluidUtils.getFluidStack("sulfuredioxide", 1000);
 		if (mPollutionFluidStacks.size() == 0) {
-			if (CD != null) mPollutionFluidStacks.put(CD);
-			if (CM != null) mPollutionFluidStacks.put(CM);
-			if (SD != null) mPollutionFluidStacks.put(SD);	
+			if (CD != null)
+				mPollutionFluidStacks.put(CD);
+			if (CM != null)
+				mPollutionFluidStacks.put(CM);
+			if (SD != null)
+				mPollutionFluidStacks.put(SD);
 		}
 		if (mPollutionFluidStacks.size() > 0) {
 			return true;
@@ -101,43 +102,37 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 		}
 
-		return new String[]{
-				"Controller Block for the Advanced Electric Blast Furnace",
-				"120% faster than using an equal tier EBF",
-				"Only uses 90% of the eu/t normally required",
-				"Processes upto 8 recipes at once",
-				"Consumes 1L of "+mHotFuelName+"/t during operation",
+		return new String[] { "Controller Block for the Advanced Electric Blast Furnace",
+				"120% faster than using an equal tier EBF", "Only uses 90% of the eu/t normally required",
+				"Processes upto 8 recipes at once", "Consumes 1L of " + mHotFuelName + "/t during operation",
 				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
-				"16x Heating Coils (Two middle Layers, hollow)",
-				"1x " + mHatchName + " (Any bottom layer casing)",
-				"1x Input Hatch/Bus (Any bottom layer casing)",
-				"1x Output Hatch/Bus (Any bottom layer casing)",
-				"1x Energy Hatch (Any bottom layer casing)",
-				"1x Maintenance Hatch (Any bottom layer casing)",
+				"16x Heating Coils (Two middle Layers, hollow)", "1x " + mHatchName + " (Any bottom layer casing)",
+				"1x Input Hatch/Bus (Any bottom layer casing)", "1x Output Hatch/Bus (Any bottom layer casing)",
+				"1x Energy Hatch (Any bottom layer casing)", "1x Maintenance Hatch (Any bottom layer casing)",
 				"1x Muffler Hatch (Top middle)",
 				"1x Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
-				"    Recovery scales with Muffler Hatch tier",
-				mCasingName+"s for the rest",
+				"    Recovery scales with Muffler Hatch tier", mCasingName + "s for the rest",
 				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%", getPollutionTooltip(),
+				getMachineTooltip(), CORE.GT_Tooltip };
 	}
 
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+			boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+			return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID],
+					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
+							: Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID]};
+		return new ITexture[] { Textures.BlockIcons.CASING_BLOCKS[CASING_TEXTURE_ID] };
 	}
 
 	@Override
 	public boolean hasSlotInGUI() {
-		return true;		
+		return true;
 	}
-	
+
 	@Override
 	public boolean requiresVanillaGtGUI() {
 		return true;
@@ -161,7 +156,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean checkRecipe(ItemStack aStack) {
-		return checkRecipeGeneric(8, 90, 120); //Will have to clone the logic from parent class to handle heating coil tiers.
+		return checkRecipeGeneric(8, 90, 120); // Will have to clone the logic from parent class to handle heating coil
+												// tiers.
 	}
 
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -176,51 +172,91 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
 			return false;
 		}
-		if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), CASING_TEXTURE_ID)) {
+		if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
+				CASING_TEXTURE_ID)) {
 			return false;
 		}
 		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-		switch (tUsedMeta) {
-		case 0:
-			this.mHeatingCapacity = 1800;
-			break;
-		case 1:
-			this.mHeatingCapacity = 2700;
-			break;
-		case 2:
-			this.mHeatingCapacity = 3600;
-			break;
-		case 3:
-			this.mHeatingCapacity = 4500;
-			break;
-		case 4:
-			this.mHeatingCapacity = 5400;
-			break;
-		case 5:
-			this.mHeatingCapacity = 7200;
-			break;
-		case 6:
-			this.mHeatingCapacity = 9001;
-			break;
-		default:
-			return false;
+
+		if (!CORE.GTNH) {
+			switch (tUsedMeta) {
+			case 0:
+				this.mHeatingCapacity = 1800;
+				break;
+			case 1:
+				this.mHeatingCapacity = 2700;
+				break;
+			case 2:
+				this.mHeatingCapacity = 3600;
+				break;
+			case 3:
+				this.mHeatingCapacity = 4500;
+				break;
+			case 4:
+				this.mHeatingCapacity = 5400;
+				break;
+			case 5:
+				this.mHeatingCapacity = 7200;
+				break;
+			case 6:
+				this.mHeatingCapacity = 9001;
+				break;
+			default:
+				return false;
+			}
+		} else {
+			switch (tUsedMeta) {
+			case 0:
+				this.mHeatingCapacity = 1801;
+				break;
+			case 1:
+				this.mHeatingCapacity = 2701;
+				break;
+			case 2:
+				this.mHeatingCapacity = 3601;
+				break;
+			case 3:
+				this.mHeatingCapacity = 4501;
+				break;
+			case 4:
+				this.mHeatingCapacity = 5401;
+				break;
+			case 5:
+				this.mHeatingCapacity = 7201;
+				break;
+			case 6:
+				this.mHeatingCapacity = 9001;
+				break;
+			case 7:
+				this.mHeatingCapacity = 12001;
+				break;
+			case 8:
+				this.mHeatingCapacity = 15001;
+				break;
+			default:
+				return false;
+			}
 		}
+
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((i != 0) || (j != 0)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != StaticFields59.getBlockCasings5()) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != StaticFields59
+							.getBlockCasings5()) {
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
 						return false;
 					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != StaticFields59.getBlockCasings5()) {
+					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != StaticFields59
+							.getBlockCasings5()) {
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
 						return false;
 					}
-					if (!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), CASING_TEXTURE_ID)) {
+					if (!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j),
+							CASING_TEXTURE_ID)) {
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasings3Misc) {
 							return false;
 						}
@@ -234,8 +270,12 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((xDir + i != 0) || (zDir + j != 0)) {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-					if ((!addMaintenanceToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addInputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID))) {
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,
+							zDir + j);
+					if ((!addMaintenanceToMachineList(tTileEntity, CASING_TEXTURE_ID))
+							&& (!addInputToMachineList(tTileEntity, CASING_TEXTURE_ID))
+							&& (!addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID))
+							&& (!addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID))) {
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasings3Misc) {
 							return false;
 						}
@@ -267,7 +307,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	@Override
 	public boolean addOutput(FluidStack aLiquid) {
-		if (aLiquid == null) return false;
+		if (aLiquid == null)
+			return false;
 		int targetHeight;
 		FluidStack tLiquid = aLiquid.copy();
 		boolean isOutputPollution = false;
@@ -293,7 +334,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			targetHeight = this.controllerY;
 		}
 		for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam() : tHatch.outputsLiquids()) {
+			if (isValidMetaTileEntity(tHatch) && GT_ModHandler.isSteam(aLiquid) ? tHatch.outputsSteam()
+					: tHatch.outputsLiquids()) {
 				if (tHatch.getBaseMetaTileEntity().getYCoord() == targetHeight) {
 					int tAmount = tHatch.fill(tLiquid, false);
 					if (tAmount >= tLiquid.amount) {
@@ -308,25 +350,21 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public boolean checkRecipeGeneric(
-			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll) {
+	public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+			int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
 		// Based on the Processing Array. A bit overkill, but very flexible.
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
 		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
+		this.mOutputItems = new ItemStack[] {};
+		this.mOutputFluids = new FluidStack[] {};
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		Logger.WARNING("Running checkRecipeGeneric(0)");
 
-
-		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(
-				getBaseMetaTileEntity(), mLastRecipe, false,
+		GT_Recipe tRecipe = this.getRecipeMap().findRecipe(getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
 		Logger.WARNING("Running checkRecipeGeneric(1)");
@@ -349,13 +387,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		float tTotalEUt = 0.0f;
 
 		int parallelRecipes = 0;
-		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+		// Count recipes to do in parallel, consuming input items and fluids and
+		// considering input voltage limits
 		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
 			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-				Logger.WARNING("Broke at "+parallelRecipes+".");
+				Logger.WARNING("Broke at " + parallelRecipes + ".");
 				break;
 			}
-			Logger.WARNING("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+			Logger.WARNING("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
 			tTotalEUt += tRecipeEUt;
 		}
 
@@ -366,15 +405,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		// -- Try not to fail after this point - inputs have already been consumed! --
 
-
 		// Convert speed bonus to duration multiplier
 		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
 		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
 		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
+		this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor);
 		int rInt = 2;
 
-		this.mEUt = (int)Math.ceil(tTotalEUt);
+		this.mEUt = (int) Math.ceil(tTotalEUt);
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
@@ -390,7 +428,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			}
 		}
 
-		if (tHeatCapacityDivTiers > 0) this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
+		if (tHeatCapacityDivTiers > 0)
+			this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
 		if (this.mEUt > 0) {
 			this.mEUt = (-this.mEUt);
 		}
@@ -447,7 +486,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		// Strip empty stacks
 		List<ItemStack> tSList = new ArrayList<ItemStack>();
 		for (ItemStack tS : tOutputItems) {
-			if (tS.stackSize > 0) tSList.add(tS);
+			if (tS.stackSize > 0)
+				tSList.add(tS);
 		}
 		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
 
@@ -472,15 +512,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0) {
 			if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 1))) {
 				if (mGraceTimer-- == 0) {
-					if (this.causeMaintenanceIssue()){
-						this.stopMachine();			
+					if (this.causeMaintenanceIssue()) {
+						this.stopMachine();
 					}
-					if (false) { //To be replaced with a config option or something
-						this.explodeMultiblock();							
-					}				
+					if (false) { // To be replaced with a config option or something
+						this.explodeMultiblock();
+					}
 				}
-			}
-			else {
+			} else {
 				mGraceTimer = 100;
 			}
 		}

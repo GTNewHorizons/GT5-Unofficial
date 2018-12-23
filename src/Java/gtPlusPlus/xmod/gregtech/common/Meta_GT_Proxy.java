@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common;
 
 import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverflowCache;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,8 +28,10 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ObjMap;
 import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -38,6 +39,8 @@ public class Meta_GT_Proxy {
 
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
 	public static List<Runnable> GT_ItemIconload = new ArrayList<>();
+	
+	public static AutoMap<Integer> GT_ValidHeatingCoilMetas = new AutoMap<Integer>();
 	
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
 
@@ -47,6 +50,18 @@ public class Meta_GT_Proxy {
 	public Meta_GT_Proxy() {
 		Logger.INFO("GT_PROXY - initialized.");
 		scheduleCoverMapCleaner();
+		setValidHeatingCoilMetas();
+	}
+	
+	public void setValidHeatingCoilMetas() {
+		for (int i = 0; i <= 6; i++ ) {
+			GT_ValidHeatingCoilMetas.put(i);			
+		}
+		if (CORE.GTNH) {
+			for (int i = 7; i <= 8; i++ ) {
+				GT_ValidHeatingCoilMetas.put(i);			
+			}		
+		}
 	}
 
 	public static boolean areWeUsingGregtech5uExperimental(){
@@ -76,7 +91,7 @@ public class Meta_GT_Proxy {
 	}
 	
 	public static int cleanupOverFlowCoverCache() {
-		ObjMap cache = mOverflowCache;
+		ObjMap<String, ?> cache = mOverflowCache;
 		int aRemoved = 0;
 		long aCurrentTime = System.currentTimeMillis()/1000;
 		for (Object o : cache.values()) {
@@ -139,7 +154,7 @@ public class Meta_GT_Proxy {
 		mCustomGregtechMetaTooltips.put(aNbtTagName, aData);
 	}
 	
-    public static void conStructGtTileBlockTooltip(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
+    public static void conStructGtTileBlockTooltip(ItemStack aStack, EntityPlayer aPlayer, List<Object> aList, boolean par4) {
         try {
             int tDamage = aStack.getItemDamage();
             if ((tDamage <= 0) || (tDamage >= GregTech_API.METATILEENTITIES.length)) {
