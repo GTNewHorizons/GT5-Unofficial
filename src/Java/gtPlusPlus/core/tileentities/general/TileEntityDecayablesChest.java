@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.inventories.Inventory_DecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -33,8 +34,11 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 				
 				this.tickCount++;
 				
-				if ((this.tickCount % 20) == 0) {
+				if ((this.tickCount % 20) == 0) {					
 					for (ItemStack inv : this.getInventory().getInventory()) {
+						if (inv == null) {
+							continue;
+						}
 						if (inv.getItem() instanceof DustDecayable) {
 							DustDecayable D = (DustDecayable) inv.getItem();
 							tryUpdateDecayable(D, inv, this.worldObj);
@@ -57,10 +61,19 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 		}
 		
 		boolean a1, a2;		
+		int u = 0;
 		a1 = b.getIsActive(world, iStack);
 		a2 = b.tickItemTag(world, iStack);
+		while (u < 19) {
+			if (!a1) {
+				break;
+			}
+			a1 = b.getIsActive(world, iStack);
+			a2 = b.tickItemTag(world, iStack);
+			u++;
+		}		
 		
-		if (!a1 && !a2) {			
+		if (!a1 && !a2) {	
 				ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
 				replacement.stackSize=1;
 				iStack = replacement.copy();

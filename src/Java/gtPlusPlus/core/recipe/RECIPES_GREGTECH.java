@@ -80,7 +80,7 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1),
 				null,
 				null,
-				FluidUtils.getFluidStack("radon", 500),
+				FluidUtils.getFluidStack("radon", !CORE.GTNH ? 500 : 144),
 				null,
 				null, 
 				null, 
