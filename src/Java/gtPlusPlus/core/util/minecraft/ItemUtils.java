@@ -333,18 +333,20 @@ public class ItemUtils {
 			if (oredictName.toLowerCase().contains("dust")) {
 				final String MaterialName = oredictName.toLowerCase().replace("dust", "");
 				final Materials m = Materials.get(MaterialName);
-				returnValue = getGregtechDust(m, amount);
-				if (returnValue != null) {
-					return returnValue;
+				if (m != null && m != Materials._NULL) {
+					returnValue = getGregtechDust(m, amount);
+					if (checkForInvalidItems(returnValue)) {
+						return returnValue;
+					}
 				}
 			}
-
-			/*if (returnValue == null) {
+			if (returnValue == null) {
 				returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);				
 				if (ItemUtils.checkForInvalidItems(returnValue)) {
 					return returnValue.copy();					
 				}
-			}*/
+			}
+			
 			Logger.RECIPE(oredictName + " was not valid.");
 			return null;
 		} catch (final Throwable t) {
@@ -760,7 +762,7 @@ public class ItemUtils {
 	public static ItemStack getErrorStack(int mAmount) {
 		//System.exit(1);
 		try {
-			new GregtechException("Logging - [Issue #999]");
+			//new GregtechException("Logging - [Issue #999]");
 		}
 		catch (Throwable t) {
 			t.printStackTrace();

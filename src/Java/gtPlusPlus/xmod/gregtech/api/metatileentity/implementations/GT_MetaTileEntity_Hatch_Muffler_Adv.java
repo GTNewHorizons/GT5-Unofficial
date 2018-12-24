@@ -4,13 +4,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_2by2;
-import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.GUI_Electric_4by4;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -27,10 +22,15 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	@Override
 	public void onConfigLoad(GT_Config aConfig) {
 		super.onConfigLoad(aConfig);
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
-			Integer a1 = (int) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "mPollutionSmogLimit");
-			if (a1 != null && a1 > 0) {
-				mPollutionSmogLimit = a1;
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {			
+			try {
+				Integer a1 = (int) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "mPollutionSmogLimit");
+				if (a1 != null && a1 > 0) {
+					mPollutionSmogLimit = a1;
+				}
+			}
+			catch (Throwable t) {
+				mPollutionSmogLimit = 500000;				
 			}
 		}
 	}

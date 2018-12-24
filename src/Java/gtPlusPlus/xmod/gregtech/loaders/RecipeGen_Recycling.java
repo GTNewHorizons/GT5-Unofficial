@@ -7,9 +7,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -18,6 +20,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
@@ -73,12 +76,9 @@ public class RecipeGen_Recycling implements Runnable {
 		Pair<OrePrefixes, ItemStack>[] mValidPairs = new Pair[mValidPrefixesAsString.length];
 		
 		for (int r=0;r<mValidPairs.length;r++){
-			ItemStack temp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mValidPrefixesAsString[r].name()+Utils.sanitizeString(material.getLocalizedName()), 1);
+			ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(mValidPrefixesAsString[r].name()+Utils.sanitizeString(material.getLocalizedName()), 1);
 			if (temp != null){
 				mValidPairs[mSlotIndex++] = new Pair<OrePrefixes, ItemStack>(mValidPrefixesAsString[r], temp.copy());
-			}
-			else {
-				Logger.WARNING("Invalid Item: "+mValidPrefixesAsString[r].name()+Utils.sanitizeString(material.getLocalizedName()));
 			}
 		}
 		
@@ -103,16 +103,11 @@ public class RecipeGen_Recycling implements Runnable {
 			}
 		}
 		
-		Logger.WARNING("Found " + mValidPairs.length + " valid OreDict prefixes.");
 		if (mValidPrefixesAsString.length >= 1) {
 			for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
 				try {
 					
-					if (material == null || validPrefix == null) {
-						continue;
-					}
-					
-					if (material.getState() != MaterialState.SOLID ||  validPrefix.getKey() == OrePrefixes.ingotHot){
+					if (material == null || validPrefix == null || material.getState() != MaterialState.SOLID || validPrefix.getKey() == OrePrefixes.ingotHot) {
 						continue;
 					}
 					
@@ -227,14 +222,6 @@ public class RecipeGen_Recycling implements Runnable {
 			Logger.WARNING("Trying to get a Tiny Dust");
 			rStack = get(OrePrefixes.dustTiny, aMaterial, (aMaterialAmount * 9) / M);
 		}
-		if (rStack == null) {
-			Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
-			Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
-			Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
-			Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(3));
-			Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(4));
-		}
-
 		return rStack;
 	}
 
@@ -321,6 +308,68 @@ public class RecipeGen_Recycling implements Runnable {
 		}
 		Logger.WARNING("Invalid map stored in GT_OreDictUnificator.class, unable to find sName2StackMap field.");
 		return null;
+	}
+	
+	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
+
+		try {
+
+			if (oredictName.contains("-") || oredictName.contains("_")) {
+				oredictName = Utils.sanitizeString(oredictName, new char[] {'-', '_'});			
+			}
+			else {
+				oredictName = Utils.sanitizeString(oredictName);			
+			}
+
+			// Adds a check to grab dusts using GT methodology if possible.
+			ItemStack returnValue = null;
+			if (oredictName.toLowerCase().contains("dust")) {
+				final String MaterialName = oredictName.toLowerCase().replace("dust", "");
+				final Materials m = Materials.get(MaterialName);
+				if (m != null && m != Materials._NULL) {
+					returnValue = ItemUtils.getGregtechDust(m, amount);
+					if (ItemUtils.checkForInvalidItems(returnValue)) {
+						return returnValue;
+					}
+				}
+			}
+			if (returnValue == null) {
+				returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);				
+				if (ItemUtils.checkForInvalidItems(returnValue)) {
+					return returnValue.copy();					
+				}
+			}			
+			return null;
+		} catch (final Throwable t) {
+			return null;
+		}
+	}
+	
+	public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
+		String mTemp = oredictName;
+
+		// Banned Materials and replacements for GT5.8 compat.
+
+		if (oredictName.toLowerCase().contains("ingotclay")) {
+			return ItemUtils.getSimpleStack(Items.clay_ball, amount);
+		}
+
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			if (oredictName.toLowerCase().contains("rutile")) {
+				mTemp = oredictName.replace("Rutile", "Titanium");
+			}
+			if (oredictName.toLowerCase().contains("vanadiumsteel")) {
+				mTemp = oredictName.replace("VanadiumSteel", "StainlessSteel");
+			}
+		}
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
+		if (!oreDictList.isEmpty()) {
+			final ItemStack returnValue = oreDictList.get(0).copy();
+			returnValue.stackSize = amount;
+			return returnValue;
+		}
+		return null;
+		//return getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
 	}
 
 }

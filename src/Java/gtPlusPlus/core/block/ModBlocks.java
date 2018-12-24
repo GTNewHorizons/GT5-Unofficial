@@ -28,6 +28,8 @@ public final class ModBlocks {
 	public static Block blockFishTrap;
 	public static Block blockWorkbench;
 	public static Block blockWorkbenchAdvanced;
+	public static Block blockDecayablesChest;
+	
 	//Blocks
 	//public static Block blockBloodSteel;
 	//public static Block blockStaballoy;
@@ -111,6 +113,8 @@ public final class ModBlocks {
 		blockFakeMiningHead = new Mining_Head_Fake();
 		
 		blockCircuitProgrammer = new CircuitProgrammer();
+		
+		blockDecayablesChest = new DecayablesChest();
 		
 		blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
 		blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);

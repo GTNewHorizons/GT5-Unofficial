@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GT_OreDictUnificator;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemTickable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -22,7 +22,7 @@ public class DustDecayable extends BaseItemTickable {
 	private final int radLevel;
 	
 	public DustDecayable(String unlocal, int colour, int maxTicks, String[] desc1, Item turnsInto, int radLevel) {
-		super(true, true, unlocal, colour, maxTicks, desc1);
+		super(true, true, unlocal, colour, (maxTicks/1), desc1);
 		this.turnsIntoItem = turnsInto;
 		this.radLevel = radLevel;
 		GT_OreDictUnificator.registerOre(unlocal, ItemUtils.getSimpleStack(this));
@@ -30,9 +30,9 @@ public class DustDecayable extends BaseItemTickable {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		String gt = "gregtech" + ":" + "materialicons/"+"SHINY"+"/" + "dust";
+		String gt = "gregtech" + ":" + "materialicons/"+"NUCLEAR"+"/" + "dust";
 		this.mIcon[0] = reg.registerIcon(gt);
-		String gt2 = "gregtech" + ":" + "materialicons/"+"SHINY"+"/" + "dust" + "_OVERLAY";
+		String gt2 = "gregtech" + ":" + "materialicons/"+"NUCLEAR"+"/" + "dust" + "_OVERLAY";
 		this.mIcon[1] = reg.registerIcon(gt2);
 	}
 	
@@ -50,16 +50,23 @@ public class DustDecayable extends BaseItemTickable {
 		if (world == null || iStack == null) {
 			return;
 		}	
+		if (world.isRemote) {
+			return;
+		}
 		
 		if (entityHolding instanceof EntityPlayer){
 			if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
 				EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.radLevel, world, entityHolding);	
 			}
 		}
+		boolean a1, a2;
 		
-		if (!tickItemTag(world, iStack) && !this.getIsActive(world, iStack)) {
+		a1 = this.getIsActive(world, iStack);
+		a2 = tickItemTag(world, iStack);
+		
+		if (!a1 && !a2) {
 			if (entityHolding instanceof EntityPlayer){
-				ItemStack replacement = ItemUtils.getSimpleStack(turnsIntoItem);
+				ItemStack replacement = ItemUtils.getSimpleStack(getDecayResult());
 				//Logger.INFO("Replacing "+iStack.getDisplayName()+" with "+replacement.getDisplayName()+".");
 				final ItemStack tempTransform = replacement;
 				if (iStack.stackSize > 1){
@@ -78,6 +85,10 @@ public class DustDecayable extends BaseItemTickable {
 				}
 			}
 		}
+	}
+
+	public Item getDecayResult() {
+		return turnsIntoItem;
 	}
 	
 }

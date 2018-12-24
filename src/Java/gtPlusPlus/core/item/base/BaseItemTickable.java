@@ -51,7 +51,10 @@ public class BaseItemTickable extends CoreItem {
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
 		if (world == null || iStack == null) {
 			return;
-		}	
+		}		
+		if (world.isRemote) {
+			return;
+		}
 		
 
 		boolean active = getIsActive(world, iStack);
@@ -120,7 +123,7 @@ public class BaseItemTickable extends CoreItem {
 		
 		//Try set world time
 		if (world != null) {
-			tagNBT.setLong("CreationDate", world.getTotalWorldTime());
+			//tagNBT.setLong("CreationDate", world.getTotalWorldTime());
 		}
 		
 		tagMain.setTag("TickableItem", tagNBT);		
@@ -250,9 +253,9 @@ public class BaseItemTickable extends CoreItem {
 			if (aNBT.hasKey("TickableItem")) {
 				aNBT = aNBT.getCompoundTag("TickableItem");
 				
-				if (!aNBT.hasKey("CreationDate") && world != null) {
+				/*if (!aNBT.hasKey("CreationDate") && world != null) {
 					aNBT.setLong("CreationDate", world.getTotalWorldTime());
-				}
+				}*/
 				
 				//Done Ticking
 				if (maxTicks-getFilterDamage(world, aStack) <= 0) {
@@ -269,7 +272,10 @@ public class BaseItemTickable extends CoreItem {
 						
 						return true;
 					}
-				}				
+				}	
+				else {
+					return false;
+				}
 			}					
 		}
 		return createNBT(world, aStack);		

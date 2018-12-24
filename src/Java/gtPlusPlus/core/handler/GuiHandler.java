@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.tool.misc.box.ContainerBoxBase;
 import gtPlusPlus.core.item.tool.misc.box.CustomBoxInventory;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
+import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.machines.*;
 
@@ -49,6 +50,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI10 = 9; // Universal Toolbox
 	public static final int GUI11 = 10; // Auto Lunchbox
 	public static final int GUI12 = 11; // Bag for Magic Tools
+	public static final int GUI13 = 12; // Decayables Chest
 
 	public static void init() {
 
@@ -91,13 +93,15 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable) te);
 			} else if (ID == GUI8) {
 				return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+			} else if (ID == GUI13) {
+				return new Container_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
 			}
 		}
 
 		if (ID == GUI9) {
 			return new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem()));
 		}
-		//Tool, lunch, magic
+		// Tool, lunch, magic
 		if (ID == GUI10) {
 			return new ToolBoxContainer(player, player.inventory, new ToolBoxInventory(player.getHeldItem()));
 		}
@@ -145,25 +149,29 @@ public class GuiHandler implements IGuiHandler {
 						((TileEntityBase) te).getOwner());
 			} else if (ID == GUI8) {
 				return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+			} else if (ID == GUI13) {
+				return new GUI_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
 			}
 		}
 
 		if (ID == GUI9) {
-			return new GuiBaseGrindle(new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())));
+			return new GuiBaseGrindle(
+					new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())));
 		}
-		
 
-		//Tool, lunch, magic
+		// Tool, lunch, magic
 		if (ID == GUI10) {
-			return new ToolBoxGui(new ToolBoxContainer(player, player.inventory, new ToolBoxInventory(player.getHeldItem())));
+			return new ToolBoxGui(
+					new ToolBoxContainer(player, player.inventory, new ToolBoxInventory(player.getHeldItem())));
 		}
 		if (ID == GUI11) {
-			return new LunchBoxGui(new LunchBoxContainer(player, player.inventory, new LunchBoxInventory(player.getHeldItem())));
+			return new LunchBoxGui(
+					new LunchBoxContainer(player, player.inventory, new LunchBoxInventory(player.getHeldItem())));
 		}
 		if (ID == GUI12) {
-			return new MagicBagGui(new MagicBagContainer(player, player.inventory, new MagicBagInventory(player.getHeldItem())));
+			return new MagicBagGui(
+					new MagicBagContainer(player, player.inventory, new MagicBagInventory(player.getHeldItem())));
 		}
-		
 
 		return null;
 	}

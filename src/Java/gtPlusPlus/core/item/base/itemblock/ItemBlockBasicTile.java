@@ -38,6 +38,14 @@ public class ItemBlockBasicTile extends ItemBlock{
 			list.add("Change default setting with a Screwdriver");
 			list.add("Default is used to select slot for auto-insertion");			
 		}
+		else if (this.mID == 5){ //Decayables Chest
+			list.add("Holds radioactive materials");	
+			list.add("Items which decay will tick while inside");			
+		}
+		else {
+			list.add("Bad Tooltip ID - "+mID);
+			
+		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 	
