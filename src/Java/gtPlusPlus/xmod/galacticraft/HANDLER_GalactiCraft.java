@@ -10,13 +10,10 @@ import gtPlusPlus.xmod.galacticraft.system.hd10180.SystemHD10180;
 public class HANDLER_GalactiCraft {
 	
 	private static final HashMap<String, BaseSolarSystem> mSystemsCache = new HashMap<String, BaseSolarSystem>();
-		
-	static {
-		mSystemsCache.put("HD10180", new SystemHD10180());
-	}
 	
 	public static void preInit(){
 		if (LoadedMods.GalacticraftCore){
+			mSystemsCache.put("HD10180", new SystemHD10180());
 			for (BaseSolarSystem solar : mSystemsCache.values()) {
 				Logger.SPACE("Running 'pre-init' for "+solar.mSystemName);
 				solar.preInit();
