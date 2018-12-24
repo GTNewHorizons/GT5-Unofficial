@@ -65,8 +65,13 @@ public class GT_MetaTileEntity_MultiblockCentrifuge extends GT_MetaTileEntity_Mu
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeChemicalReactor.png");
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LargeChemicalReactor.png");
 	}
+
+	/*@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+	}*/
 
 	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -82,10 +87,10 @@ public class GT_MetaTileEntity_MultiblockCentrifuge extends GT_MetaTileEntity_Mu
 				if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
 					if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
 						tInputList.remove(j--);
-						tInputList_sS = tInputList.size();
+						//tInputList_sS = tInputList.size();
 					} else {
 						tInputList.remove(i--);
-						tInputList_sS = tInputList.size();
+						//tInputList_sS = tInputList.size();
 						break;
 					}
 				}
@@ -135,7 +140,12 @@ public class GT_MetaTileEntity_MultiblockCentrifuge extends GT_MetaTileEntity_Mu
 
 				this.mEUt = -EUt;
 				this.mMaxProgresstime = maxProgresstime;
-				this.mOutputItems = recipe.mOutputs;
+				mOutputItems = new ItemStack[recipe.mOutputs.length];
+ 		        for (int i = 0; i < recipe.mOutputs.length; i++) {
+ 		            if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
+ 		                this.mOutputItems[i] = recipe.getOutput(i);
+ 		            }
+ 		        }
 				this.mOutputFluids = recipe.mFluidOutputs;
 				this.updateSlots();
 				return true;

@@ -136,7 +136,12 @@ public class GT_MetaTileEntity_IndustrialPulverizer extends GT_MetaTileEntity_Mu
 
 				this.mEUt = -EUt;
 				this.mMaxProgresstime = maxProgresstime;
-				this.mOutputItems = recipe.mOutputs;
+				mOutputItems = new ItemStack[recipe.mOutputs.length];
+ 		        for (int i = 0; i < recipe.mOutputs.length; i++) {
+ 		            if (getBaseMetaTileEntity().getRandomNumber(10000) < recipe.getOutputChance(i)) {
+ 		                this.mOutputItems[i] = recipe.getOutput(i);
+ 		            }
+ 		        }
 				this.mOutputFluids = recipe.mFluidOutputs;
 				this.updateSlots();
 				return true;

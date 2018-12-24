@@ -10,6 +10,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.nei.GT_NEI_DefaultHandler.FixedPositionedStack;
+import mantle.items.ItemUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1376,6 +1377,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     /**
      * Special Class for Printer handling.
      */
+    
     public static class GT_Recipe_Map_Printer extends GT_Recipe_Map {
         public GT_Recipe_Map_Printer(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
@@ -1656,7 +1658,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             
         }
     }
-    
+    //-----------------------------------------------------------------------------\\
     public static class GT_Recipe_Map_MultiblockCentrifugeRecipe extends GT_Recipe_Map{
     	private static int INPUT_COUNT = 2;
     	private static int OUTPUT_COUNT = 6;
@@ -1664,7 +1666,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     	private static int FLUID_OUTPUT_COUNT = 4;
     	
         public GT_Recipe_Map_MultiblockCentrifugeRecipe() {
-            super(new HashSet<GT_Recipe>(200), "gt.recipe.multiblockcentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/HugeMachine", INPUT_COUNT, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
+            super(new HashSet<GT_Recipe>(200), "gt.recipe.multiblockcentrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/DistillationTower", INPUT_COUNT, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
         }
 
         @Override
@@ -1793,21 +1795,26 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			}
            
 
-			@Override
+            @Override
 			public ArrayList<PositionedStack> getOutputPositionedStacks() {
 				int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
 				int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
 				ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
 				
 				for (int i = 0; i < itemLimit; i++) {
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + i * 18, 5));
+					int x = 102 + ((i + 1) % FLUID_OUTPUT_COUNT) * 18;
+					int y =  52 - ((i + 1) / FLUID_OUTPUT_COUNT) * 18;
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), x, y));
 				}
 				
 				for (int i = 0; i < fluidLimit; i++) {
-					outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 23));
+					int x = 102 + ((i + 1) % OUTPUT_COUNT) * 18;
+					int y =  16 - ((i + 1) / OUTPUT_COUNT) * 18;
+					outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), x, y));
 				}
-				
+
 				return outputStacks;
+
 			}
             
         }
@@ -1819,7 +1826,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     	private static int FLUID_OUTPUT_COUNT = 4;
     	
         public GT_Recipe_Map_MultiblockElectrolyzerRecipe() {
-            super(new HashSet<GT_Recipe>(200), "gt.recipe.multielectrolyzer", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/Default", 2, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
+            super(new HashSet<GT_Recipe>(200), "gt.recipe.multielectrolyzer", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/Default", 6, OUTPUT_COUNT, 0, 0, 1, E, 1, E, true, true);
         }
 
         @Override
