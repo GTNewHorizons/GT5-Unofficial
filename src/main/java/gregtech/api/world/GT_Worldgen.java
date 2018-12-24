@@ -34,6 +34,10 @@ public abstract class GT_Worldgen {
         return false;
     }
 
+    public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        return 4; // This is for the empty Orevein 
+    }
+
     /**
      * @param aWorld         The World Object
      * @param aRandom        The Random Generator to use
@@ -47,11 +51,22 @@ public abstract class GT_Worldgen {
         return false;
     }
 
+    /**
+     * 
+     * @param aWorld					The World Object
+     * @param aDimensionType			The Type of Worldgeneration to add. -1 = Nether, 0 = Overworld, +1 = End
+     * @param aAllowedDimensionType		The Type of allowed Worldgeneration
+     * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether, Overworld, Twilight Forest and Deep Dark)
+     */
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-        String aDimName = aWorld.provider.getDimensionName();
+       
+    	if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld")) || (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("The End"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))))
+        	return false;
+        
+    	String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen.dimensions." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile.get("worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }
