@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
@@ -221,6 +222,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		return new String[] {
 				this.getLocalName(),
 				"Current Pollution: "+this.mCurrentPollution,
+				"Average/10 Sec: "+this.mAveragePollution,
 				"Emit Redstone at pollution level: "+this.mRedstoneLevel};
 	}
 
@@ -331,15 +333,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 	@Override
 	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-			if (this.mCurrentPollution == 0) {
-				this.mCurrentPollution = getCurrentChunkPollution();
-			}
-			if (this.mArrayPos < 0 || this.mArrayPos > 9) {
-				this.mArrayPos = 0;
-			}
-			this.mTickTimer = 0;
-		}
+		super.onFirstTick(aBaseMetaTileEntity);
 	}
 
 	public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
@@ -350,6 +344,11 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		
+		//Only Calc server-side
+		if (!this.getBaseMetaTileEntity().isServerSide()) {
+			return;
+		}		
+		//Emit Redstone
 		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
 			this.markDirty();
 			for (int i=0;i<6;i++){
@@ -362,53 +361,23 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 			}
 		}
 		
-		if (this.getBaseMetaTileEntity().isServerSide()) {
-			//TickTimer - 20 times a second
-			if (this.mTickTimer >= 0 || this.mTickTimer <= 19){
-				this.mTickTimer++;
+		//Do Math for stats		
+		if (this.mTickTimer % 20 == 0) {			
+			mCurrentPollution = this.getCurrentChunkPollution();
+			if (mArrayPos > mAveragePollutionArray.length-1) {
+				mArrayPos = 0;
 			}
-			else {
-				this.mTickTimer = 0;
-				//Perform pollution update once a second
-				this.mCurrentPollution = getCurrentChunkPollution();
-				this.mSecondTimer++;
-			}
-			//Update Pollution array once a minute
-			if (this.mSecondTimer >= 60){
-				Utils.sendServerMessage("Udating Average of pollution array. Using Array slot"+this.mArrayPos);
-				this.mSecondTimer = 0;
-				if (this.mArrayPos<this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos++;
-				}
-				else if (this.mArrayPos==this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos = 0;
-				}
-			}
-		}		
+			mAveragePollutionArray[mArrayPos] = mCurrentPollution;	
+			mAveragePollution = getAveragePollutionOverLastTen();
+			mArrayPos++;
+		}
+		this.mTickTimer++;
+		
 	}
 
-	public int getAveragePollutionOverLastTen(){
-		int counter = 0;
-		int total = 0;
+	public int getAveragePollutionOverLastTen(){		
+		return MathUtils.getIntAverage(mAveragePollutionArray);
 		
-		for (int i=0;i<this.mAveragePollutionArray.length;i++){
-			if (this.mAveragePollutionArray[i] != 0){
-				total += this.mAveragePollutionArray[i];
-				counter++;
-			}
-		}
-		int returnValue = 0;
-		if (total > 0 && counter > 0){
-			returnValue = (total/counter);
-			this.mAveragePollution = returnValue;
-		}
-		else {
-			returnValue = getCurrentChunkPollution();
-		}
-		Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
-		return returnValue;
 	}
 
 	@Override
