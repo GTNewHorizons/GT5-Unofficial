@@ -203,10 +203,6 @@ public enum ItemList implements IItemContainer {
     Cell_Water,
     Cell_Lava,
     Cell_Air,
-    Fluid_Cell_144L,
-    Fluid_Cell_36L,
-    Fluid_Cell_16L,
-    Fluid_Cell_1L,
     Large_Fluid_Cell_Steel,
     Large_Fluid_Cell_TungstenSteel,
     Large_Fluid_Cell_Aluminium, 
@@ -777,7 +773,8 @@ public enum ItemList implements IItemContainer {
 	Transformer_Ultra_HV_MV, Transformer_Ultra_EV_HV, Transformer_Ultra_IV_EV, Transformer_Ultra_LuV_IV, Transformer_Ultra_ZPM_LuV, Transformer_Ultra_UV_ZPM, Transformer_Ultra_UHV_UV, Transformer_Ultra_UEV_UHV, Transformer_Ultra_UIV_UEV, Transformer_Ultra_UMV_UIV, Transformer_Ultra_UXV_UMV, Transformer_Ultra_OPV_UXV, Transformer_Ultra_MAXV_OPV,
 	Machine_DigitalTransformer_EV, Machine_DigitalTransformer_IV, Machine_DigitalTransformer_LuV, Machine_DigitalTransformer_ZPM, Machine_DigitalTransformer_UV, Machine_DigitalTransformer_UHV, Machine_DigitalTransformer_UEV,
 	
-	AdsorptionFilter, AdsorptionFilterCasing, AdsorptionFilterDirty, Machine_Multi_AirFilter, Casing_AirFilter, Casing_AirFilter_Vent;
+	AdsorptionFilter, AdsorptionFilterCasing, AdsorptionFilterDirty, Machine_Multi_AirFilter, Casing_AirFilter, Casing_AirFilter_Vent,
+	VOLUMETRIC_FLASK;
     
 
     public static final ItemList[]

@@ -287,7 +287,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Hatch_Input_UV.set(new GT_MetaTileEntity_Hatch_Input(58, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_MAX.set(new GT_MetaTileEntity_Hatch_Input(59, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_ULV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Rubber), 'I', OrePrefixes.pipeMedium.get(Materials.Copper), 'X', ItemList.Fluid_Cell_144L});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_ULV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Rubber), 'I', OrePrefixes.pipeMedium.get(Materials.Copper), 'X', ItemList.Cell_Empty});
 		GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_LV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_LV, 'C', ItemList.Electric_Pump_LV,  'I', OrePrefixes.pipeMedium.get(Materials.Bronze), 'X', ItemList.Large_Fluid_Cell_Steel});
 		GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Input_MV.get(1L, new Object[0]), bitsd, new Object[]{"CX ", "MI ", 'M', ItemList.Hull_MV, 'C', ItemList.Electric_Pump_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Steel),'X', ItemList.Large_Fluid_Cell_Aluminium});
 		
@@ -302,7 +302,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Hatch_Output_UV.set(new GT_MetaTileEntity_Hatch_Output(68, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Output_MAX.set(new GT_MetaTileEntity_Hatch_Output(69, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
         
-        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_ULV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Rubber), 'I', OrePrefixes.pipeMedium.get(Materials.Copper), 'X', ItemList.Fluid_Cell_144L});
+        GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_ULV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_ULV, 'C', OrePrefixes.plate.get(Materials.Rubber), 'I', OrePrefixes.pipeMedium.get(Materials.Copper), 'X', ItemList.Cell_Empty});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_LV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_LV, 'C', ItemList.Electric_Pump_LV,  'I', OrePrefixes.pipeMedium.get(Materials.Bronze), 'X', ItemList.Large_Fluid_Cell_Steel});
         GT_ModHandler.addCraftingRecipe(ItemList.Hatch_Output_MV.get(1L, new Object[0]), bitsd, new Object[]{" XC", "IM ", 'M', ItemList.Hull_MV, 'C', ItemList.Electric_Pump_MV,  'I', OrePrefixes.pipeMedium.get(Materials.Steel), 'X', ItemList.Large_Fluid_Cell_Aluminium});
         
@@ -1536,7 +1536,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockElectrolyzer.get(1L, new Object[0]), bitsd, new Object[]{"WCW", "PHP", "WCW", 'H', ItemList.Hull_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.wireGt02.get(Materials.Platinum), 'P', OrePrefixes.plateDouble.get(Materials.Titanium)});
         
         //Tesseract
-        ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1));
+        //ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract.tier.09", "Tesseract", 9).getStackForm(1L));
         
         
    }
