@@ -1209,7 +1209,7 @@ public class RECIPES_Machines {
 				//Advanced Vacuum Freezer
 				ItemStack plate = ALLOY.HG1223.getPlateDouble(1);
 				ItemStack gear = ALLOY.INCOLOY_MA956.getGear(1);
-				ItemStack frame = ALLOY.INCOLOY_DS.getFrameBox(1);
+				ItemStack frame = ALLOY.LAFIUM.getFrameBox(1);
 				ItemStack cell1 = ItemList.Reactor_Coolant_He_6.get(1);
 				ItemStack cell2 = ItemList.Reactor_Coolant_NaK_6.get(1);
 
@@ -1246,7 +1246,7 @@ public class RECIPES_Machines {
 				//Advanced Implosion Compressor
 				plate = ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 1);
 				gear = ALLOY.LEAGRISIUM.getGear(1);
-				frame = ALLOY.HG1223.getFrameBox(1);
+				frame = ALLOY.CINOBITE.getFrameBox(1);
 				cell1 = ItemUtils.simpleMetaStack("IC2:reactorHeatSwitchDiamond:1", 1, 1);
 				cell2 = ItemUtils.simpleMetaStack("IC2:reactorVentGold:1", 1, 1);
 

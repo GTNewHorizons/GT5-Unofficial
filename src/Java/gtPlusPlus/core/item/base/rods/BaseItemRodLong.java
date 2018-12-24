@@ -24,23 +24,20 @@ public class BaseItemRodLong extends BaseItemComponent{
 	private void addExtruderRecipe(){
 		Logger.WARNING("Adding recipe for Long "+this.materialName+" Rods");
 
-		final String tempStick = this.unlocalName.replace("itemRodLong", "stick");
-		final String tempStickLong = this.unlocalName.replace("itemRodLong", "stickLong");
-		final ItemStack stackStick = ItemUtils.getItemStackOfAmountFromOreDict(tempStick, 1);
-		final ItemStack stackLong = ItemUtils.getItemStackOfAmountFromOreDict(tempStickLong, 1);
+		final ItemStack stackStick = this.componentMaterial.getRod(2);
+		final ItemStack stackLong = this.componentMaterial.getLongRod(1);
 
-		final ItemStack temp = stackStick;
-		temp.stackSize = 2;
-
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {stackStick, stackLong}))
 		GT_Values.RA.addForgeHammerRecipe(
-				temp,
+				stackStick,
 				stackLong,
 				(int) Math.max(this.componentMaterial.getMass(), 1L),
 				16);
 
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {stackStick, stackLong}))
 		GT_Values.RA.addCutterRecipe(
 				stackLong,
-				temp,
+				stackStick,
 				null,
 				(int) Math.max(this.componentMaterial.getMass(), 1L),
 				4);

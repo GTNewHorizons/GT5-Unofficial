@@ -1,14 +1,19 @@
 package gtPlusPlus.core.block.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtFrameBox;
 import gtPlusPlus.core.lib.CORE;
@@ -34,6 +39,7 @@ public class BlockBaseModular extends BasicBlock {
 		this(material.getUnlocalizedName(), material.getLocalizedName(), net.minecraft.block.material.Material.iron,
 				blockType, colour, Math.min(Math.max(material.vTier, 1), 6));
 		blockMaterial = material;
+		registerComponent();
 	}
 
 	protected BlockBaseModular(final String unlocalizedName, final String blockMaterial,
@@ -47,8 +53,8 @@ public class BlockBaseModular extends BasicBlock {
 		this.thisBlockMaterial = blockMaterial;
 		this.thisBlockType = blockType.name().toUpperCase();
 		this.setBlockName(this.GetProperName());
-
-		if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())) {
+		int fx = getBlockTypeMeta();
+		if (fx == 0) {
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
 					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 			GT_OreDictUnificator.registerOre(
@@ -56,7 +62,7 @@ public class BlockBaseModular extends BasicBlock {
 							.replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""),
 					ItemUtils.getSimpleStack(this));
 		}
-		else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())) {
+		else if (fx == 1) {
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
 					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 			GT_OreDictUnificator.registerOre(
@@ -64,7 +70,7 @@ public class BlockBaseModular extends BasicBlock {
 							.replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""),
 					ItemUtils.getSimpleStack(this));
 		}
-		else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())) {
+		else if (fx == 2) {
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class,
 					Utils.sanitizeString(blockType.getTexture() + unlocalizedName));
 			GT_OreDictUnificator.registerOre(
@@ -72,7 +78,47 @@ public class BlockBaseModular extends BasicBlock {
 							.replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""),
 					ItemUtils.getSimpleStack(this));
 		}
-
+	}
+	
+	public boolean registerComponent() {
+		Logger.MATERIALS("Attempting to register "+this.getUnlocalizedName()+".");
+		if (this.blockMaterial == null) {
+			Logger.MATERIALS("Tried to register "+this.getUnlocalizedName()+" but the material was null.");
+			return false;
+		}		
+		String aName = blockMaterial.getUnlocalizedName();
+		//Register Component
+		Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
+		if (aMap == null) {
+			aMap = new HashMap<String, ItemStack>();
+		}
+		int fx = getBlockTypeMeta();
+		String aKey = (fx == 0 ? OrePrefixes.block.name() : ( fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));		
+		ItemStack x = aMap.get(aKey);
+		if (x == null) {
+			aMap.put(aKey, ItemUtils.getSimpleStack(this));
+			Logger.MATERIALS("Registering a material component. Item: ["+aName+"] Map: ["+aKey+"]");
+			Material.mComponentMap.put(aName, aMap);
+			return true;
+		}
+		else {
+			//Bad
+			Logger.MATERIALS("Tried to double register a material component.");
+			return false;
+		}
+	}
+	
+	public int getBlockTypeMeta() {
+		if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())) {
+			return 0;
+		}
+		else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())) {
+			return 1;
+		}
+		else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())) {
+			return 2;
+		}
+		return 0;
 	}
 
 	/**
@@ -146,6 +192,15 @@ public class BlockBaseModular extends BasicBlock {
 
 	@Override
 	public int getRenderColor(final int aMeta) {
+		if (this.blockColour == 0) {
+			return MathUtils.generateSingularRandomHexValue();
+		}
+
+		return this.blockColour;
+	}
+
+	@Override
+	public int getBlockColor() {
 		if (this.blockColour == 0) {
 			return MathUtils.generateSingularRandomHexValue();
 		}

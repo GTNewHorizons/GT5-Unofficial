@@ -10,6 +10,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGen_Fluids extends RecipeGen_Base {
 
@@ -46,7 +47,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			if (!material.requiresBlastFurnace()) {
 
 				// Ingot
-				if (material.getIngot(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
 					if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
@@ -62,7 +63,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Plate
-				if (material.getPlate(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
 					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), // Input
 							null, // Input 2
 							material.getFluid(144), // Fluid Output
@@ -78,7 +79,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Double Plate
-				if (material.getPlateDouble(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1)))
 					if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), // Input
 							null, // Input 2
 							material.getFluid(288), // Fluid Output
@@ -94,7 +95,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Nugget
-				if (material.getNugget(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
 					if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), // Input
 							null, // Input 2
 							material.getFluid(16), // Fluid Output
@@ -110,7 +111,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Block
-				if (material.getBlock(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
 					if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), // Input
 							null, // Input 2
 							material.getFluid(144 * 9), // Fluid Output
@@ -130,7 +131,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 			// Making Shapes from fluid
 
 			// Ingot
-			if (material.getIngot(1) != null)
+			if (ItemUtils.checkForInvalidItems(material.getIngot(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), // Item Shape
 						material.getFluid(144), // Fluid Input
 						material.getIngot(1), // output
@@ -145,7 +146,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				}
 
 			// Plate
-			if (material.getPlate(1) != null)
+			if (ItemUtils.checkForInvalidItems(material.getPlate(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Plate.get(0), // Item Shape
 						material.getFluid(144), // Fluid Input
 						material.getPlate(1), // output
@@ -160,7 +161,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				}
 
 			// Nugget
-			if (material.getNugget(1) != null)
+			if (ItemUtils.checkForInvalidItems(material.getNugget(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Nugget.get(0), // Item Shape
 						material.getFluid(16), // Fluid Input
 						material.getNugget(1), // output
@@ -175,7 +176,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				}
 
 			// Gears
-			if (material.getGear(1) != null)
+			if (ItemUtils.checkForInvalidItems(material.getGear(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Gear.get(0), // Item Shape
 						material.getFluid(576), // Fluid Input
 						material.getGear(1), // output
@@ -189,7 +190,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				}
 
 			// Blocks
-			if (material.getBlock(1) != null)
+			if (ItemUtils.checkForInvalidItems(material.getBlock(1)))
 				if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Block.get(0), // Item Shape
 						material.getFluid(144 * 9), // Fluid Input
 						material.getBlock(1), // output
@@ -220,7 +221,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				ItemList mold_Ring = ItemList.valueOf("Shape_Mold_Ring");
 
 				// Rod
-				if (material.getRod(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getRod(1)))
 					if (mold_Rod != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod.get(0), // Item Shape
 							material.getFluid(72), // Fluid Input
 							material.getRod(1), // output
@@ -235,7 +236,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Rod Long
-				if (material.getLongRod(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getLongRod(1)))
 					if (mold_Rod_Long != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Rod_Long.get(0), // Item
 																												// Shape
 							material.getFluid(144), // Fluid Input
@@ -251,7 +252,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Bolt
-				if (material.getBolt(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getBolt(1)))
 					if (mold_Bolt != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Bolt.get(0), // Item Shape
 							material.getFluid(18), // Fluid Input
 							material.getBolt(1), // output
@@ -266,7 +267,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Screw
-				if (material.getScrew(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getScrew(1)))
 					if (mold_Screw != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Screw.get(0), // Item Shape
 							material.getFluid(18), // Fluid Input
 							material.getScrew(1), // output
@@ -281,7 +282,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 					}
 
 				// Ring
-				if (material.getRing(1) != null)
+				if (ItemUtils.checkForInvalidItems(material.getRing(1)))
 					if (mold_Ring != null && GT_Values.RA.addFluidSolidifierRecipe(mold_Ring.get(0), // Item Shape
 							material.getFluid(36), // Fluid Input
 							material.getRing(1), // output

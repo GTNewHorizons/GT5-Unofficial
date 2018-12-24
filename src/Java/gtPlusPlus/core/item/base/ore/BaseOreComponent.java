@@ -1,6 +1,8 @@
 package gtPlusPlus.core.item.base.ore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -13,9 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -52,6 +54,7 @@ public class BaseOreComponent extends Item{
 		//this.setTextureName(this.getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, this.unlocalName);
+		registerComponent();
 		GT_OreDictUnificator.registerOre(componentType.getComponent()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
 			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 2);
@@ -60,6 +63,51 @@ public class BaseOreComponent extends Item{
 			}
 		}
 		
+	}
+	
+	public boolean registerComponent() {	
+		Logger.MATERIALS("Attempting to register "+this.getUnlocalizedName()+".");	
+		if (this.componentMaterial == null) {
+			Logger.MATERIALS("Tried to register "+this.getUnlocalizedName()+" but the material was null.");
+			return false;
+		}		
+		//Register Component
+		Map<String, ItemStack> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
+		if (aMap == null) {
+			aMap = new HashMap<String, ItemStack>();
+		}
+		String aKey = "Invalid";		
+		if (componentType == ComponentTypes.CRUSHED) {
+			aKey = OrePrefixes.crushed.name();
+		}
+		else if (componentType == ComponentTypes.CRUSHEDCENTRIFUGED) {
+			aKey = OrePrefixes.crushedCentrifuged.name();
+		}
+		else if (componentType == ComponentTypes.CRUSHEDPURIFIED) {
+			aKey = OrePrefixes.crushedPurified.name();
+		}
+		else if (componentType == ComponentTypes.DUST) {
+			aKey = OrePrefixes.dust.name();
+		}
+		else if (componentType == ComponentTypes.DUSTIMPURE) {
+			aKey = OrePrefixes.dustImpure.name();
+		}
+		else if (componentType == ComponentTypes.DUSTPURE) {
+			aKey = OrePrefixes.dustPure.name();
+		}
+		
+		ItemStack x = aMap.get(aKey);
+		if (x == null) {
+			aMap.put(aKey, ItemUtils.getSimpleStack(this));
+			Logger.MATERIALS("Registering a material component. Item: ["+componentMaterial.getUnlocalizedName()+"] Map: ["+aKey+"]");
+			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
+			return true;
+		}
+		else {
+			//Bad
+			Logger.MATERIALS("Tried to double register a material component. ");
+			return false;
+		}
 	}
 
 	public String getCorrectTextures(){

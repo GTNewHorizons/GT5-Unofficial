@@ -417,7 +417,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_HV_Component_Maker, 
 	Machine_EV_Component_Maker, 
 	Machine_IV_Component_Maker,  
-
+	Machine_LuV_Component_Maker,
+	Machine_ZPM_Component_Maker,
+	Machine_UV_Component_Maker,
+	
 
 	//Solar Generators
 	GT_Solar_ULV, GT_Solar_LV, GT_Solar_MV,

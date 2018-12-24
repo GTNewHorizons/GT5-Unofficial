@@ -2,18 +2,21 @@ package gtPlusPlus.core.item.base.dusts;
 
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -79,6 +82,32 @@ public class BaseItemDustUnique extends Item{
 		}
 		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+		}
+		registerComponent();
+	}
+	
+	public boolean registerComponent() {		
+		if (this.materialName == null) {
+			return false;
+		}		
+		String aName = materialName;
+		//Register Component
+		Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
+		if (aMap == null) {
+			aMap = new HashMap<String, ItemStack>();
+		}
+		String aKey = OrePrefixes.dust.name();
+		ItemStack x = aMap.get(aKey);
+		if (x == null) {
+			aMap.put(aKey, ItemUtils.getSimpleStack(this));
+			Logger.MATERIALS("Registering a material component. Item: ["+aName+"] Map: ["+aKey+"]");
+			Material.mComponentMap.put(aName, aMap);
+			return true;
+		}
+		else {
+			//Bad
+			Logger.MATERIALS("Tried to double register a material component. ");
+			return false;
 		}
 	}
 

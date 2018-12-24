@@ -129,7 +129,7 @@ public class GregtechConduits {
 			wireFactory("RedstoneAlloy", 32, BaseWireID+45, 0, 2, 1, new short[]{178,34,34, 0});
 		}
 
-		if(!GTNH) {
+		if(!GTNH) {			
 			customWireFactory(ALLOY.LEAGRISIUM, 512, BaseWireID + 56, 1, 2, 2);
 			customWireFactory(ELEMENT.getInstance().ZIRCONIUM, 128, BaseWireID + 67, 1, 2, 2);
 			customWireFactory(ALLOY.HG1223, 32768, BaseWireID + 78, 2, 8, 4);
@@ -235,8 +235,6 @@ public class GregtechConduits {
 			}
 		}
 
-		generateWireRecipes(aMaterial);
-
 	}
 
 	private static void superConductorFactory(final GT_Materials Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){
@@ -292,7 +290,7 @@ public class GregtechConduits {
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GT_MetaPipeEntity_Fluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GT_MetaPipeEntity_Fluid(startID+3, "GT_Pipe_"+material.mDefaultLocalName+"_Large", "Large "+material.mDefaultLocalName+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GT_MetaPipeEntity_Fluid(startID+4, "GT_Pipe_"+material.mDefaultLocalName+"_Huge", "Huge "+material.mDefaultLocalName+" Fluid Pipe", GTNH?0.875F:1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
-		generatePipeRecipes(material.mDefaultLocalName, mass, voltage);
+		//generatePipeRecipes(material.mDefaultLocalName, mass, voltage);
 	}
 
 	private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
@@ -312,14 +310,14 @@ public class GregtechConduits {
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GregtechMetaPipeEntityFluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GregtechMetaPipeEntityFluid(startID+3, "GT_Pipe_"+material.mDefaultLocalName+"_Large", "Large "+material.mDefaultLocalName+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GregtechMetaPipeEntityFluid(startID+4, "GT_Pipe_"+material.mDefaultLocalName+"_Huge", "Huge "+material.mDefaultLocalName+" Fluid Pipe", GTNH?0.875F:1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
-		generatePipeRecipes(material.mDefaultLocalName, mass, tVoltageMultiplier);
+		//generatePipeRecipes(material.mDefaultLocalName, mass, tVoltageMultiplier);
 
 	}
 
-	private static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti){
+	public static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti){
 
 		String output = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
-		output = output.replace("-", "").replace("_", "").replace(" ", "");
+		output = Utils.sanitizeString(output);
 
 		if (output.equals("VoidMetal")){
 			output = "Void";

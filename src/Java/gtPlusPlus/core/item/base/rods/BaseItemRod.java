@@ -7,6 +7,7 @@ import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemRod extends BaseItemComponent{
 
@@ -22,6 +23,7 @@ public class BaseItemRod extends BaseItemComponent{
 		final ItemStack stackStick = this.componentMaterial.getRod(1);
 		final ItemStack stackBolt = this.componentMaterial.getBolt(4);
 
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {stackStick, stackBolt}))
 		GT_Values.RA.addCutterRecipe(
 				stackStick,
 				stackBolt,

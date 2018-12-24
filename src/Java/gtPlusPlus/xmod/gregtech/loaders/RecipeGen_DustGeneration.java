@@ -7,9 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -35,7 +33,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 	public RecipeGen_DustGeneration(final Material M){
 		this(M, false);
 	}
-	
+
 	public RecipeGen_DustGeneration(final Material M, final boolean O){
 		this.toGenerate = M;		
 		this.disableOptional = O;
@@ -59,74 +57,76 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		final ItemStack[] inputStacks = material.getMaterialComposites();
 		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-		if (RecipeUtils.recipeBuilder(
-				tinyDust,	tinyDust, tinyDust,
-				tinyDust, tinyDust, tinyDust,
-				tinyDust, tinyDust, tinyDust,
-				normalDust)){
-			Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+
+		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					tinyDust,	tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					normalDust)){
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+
+			if (RecipeUtils.recipeBuilder(
+					normalDust, null, null,
+					null, null, null,
+					null, null, null,
+					material.getTinyDust(9))){
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");
+			}
 		}
 
-		if (RecipeUtils.recipeBuilder(
-				normalDust, null, null,
-				null, null, null,
-				null, null, null,
-				material.getTinyDust(9))){
-			Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Logger.WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");
-		}
-
-
-		if (RecipeUtils.recipeBuilder(
-				smallDust, smallDust, null,
-				smallDust, smallDust, null,
-				null, null, null,
-				normalDust)){
-			Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
-		}
-
-
-		if (RecipeUtils.recipeBuilder(
-				null, normalDust, null,
-				null, null, null,
-				null, null, null,
-				material.getSmallDust(4))){
-			Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					smallDust, smallDust, null,
+					smallDust, smallDust, null,
+					null, null, null,
+					normalDust)){
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+			}
+			if (RecipeUtils.recipeBuilder(
+					null, normalDust, null,
+					null, null, null,
+					null, null, null,
+					material.getSmallDust(4))){
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
+			}
 		}
 
 		//Macerate blocks back to dusts.
 		final ItemStack materialBlock = material.getBlock(1);
 		final ItemStack materialFrameBox = material.getFrameBox(1);
 
-		if (materialBlock != null) {
+		if (ItemUtils.checkForInvalidItems(materialBlock)) {
 			GT_ModHandler.addPulverisationRecipe(materialBlock, material.getDust(9));
 		}
 
-		if (materialFrameBox != null) {
+		if (ItemUtils.checkForInvalidItems(materialFrameBox)) {
 			GT_ModHandler.addPulverisationRecipe(materialFrameBox, material.getDust(2));
 		}
-		
-		if (smallDust != null && tinyDust != null) {
+
+		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(tinyDust)) {
 			generatePackagerRecipes(material);
 		}
-		
+
 		ItemStack ingot = material.getIngot(1);
-		if (normalDust != null && ingot != null) {
+		if (ItemUtils.checkForInvalidItems(normalDust) && ItemUtils.checkForInvalidItems(ingot)) {
 			addFurnaceRecipe(material);
 			addMacerationRecipe(material);
 		}
-		
+
 		//Is this a composite?
 		if ((inputStacks != null) && !disableOptional){
 			//Is this a composite?
@@ -149,13 +149,13 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 
 					//Get us four ItemStacks to input into the mixer
 					ItemStack[] input = new ItemStack[4];
-					
+
 					input[0] = (inputStacks.length >= 1) ? ((inputStacks[0] == null) ? null : inputStacks[0]) : null;
 					input[1] = (inputStacks.length >= 2) ? ((inputStacks[1] == null) ? null : inputStacks[1]) : null;
 					input[2] = (inputStacks.length >= 3) ? ((inputStacks[2] == null) ? null : inputStacks[2]) : null;
 					input[3] = (inputStacks.length >= 4) ? ((inputStacks[3] == null) ? null : inputStacks[3]) : null;
-					
-					
+
+
 					if (inputStacks.length == 1) {
 						input[1] = input[0];
 						input[0] = CI.getNumberedCircuit(inputStacks.length+10);
@@ -172,8 +172,8 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 						input[1] = input[0];
 						input[0] = CI.getNumberedCircuit(inputStacks.length+10);
 					}
-					
-					
+
+
 					/*for (int g = 0; g<4; g++) {						
 						if(inputStacks.length > g) {
 							input[g] = inputStacks[g] != null ? inputStacks[g] : null;							
@@ -285,7 +285,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 						input2 = input1;
 						input1 = CI.getNumberedCircuit(20);
 					}
-					
+
 					//Add mixer Recipe
 					FluidStack oxygen = GT_Values.NF;
 					if (material.getComposites() != null){
@@ -344,14 +344,14 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		}
 		return false;
 	}
-	
+
 	public static boolean generatePackagerRecipes(Material aMatInfo) {
 		AutoMap<Boolean> aResults = new AutoMap<Boolean>();
 		//Small Dust
 		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(4L, new Object[]{aMatInfo.getSmallDust(4)}), ItemList.Schematic_Dust.get(0L, new Object[0]), aMatInfo.getDust(1), 100, 4));
-         //Tiny Dust
+		//Tiny Dust
 		aResults.put(GT_Values.RA.addBoxingRecipe(GT_Utility.copyAmount(9L, new Object[]{aMatInfo.getTinyDust(9)}), ItemList.Schematic_Dust.get(0L, new Object[0]), aMatInfo.getDust(1), 100, 4));
-        
+
 		for (boolean b : aResults) {
 			if (!b) {
 				return false;
@@ -359,7 +359,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		}		
 		return true;
 	}
-	
+
 	private void addMacerationRecipe(Material aMatInfo){
 		try {
 			Logger.MATERIALS("Adding Maceration recipe for "+aMatInfo.getLocalizedName()+" Ingot -> Dusts");
@@ -378,7 +378,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 		try {
 			if (aMatInfo.requiresBlastFurnace()) {
 				aOutput = aMatInfo.getHotIngot(1);		
-				if (aOutput != null) {	
+				if (ItemUtils.checkForInvalidItems(aOutput)) {	
 					if (addBlastFurnaceRecipe(aMatInfo, aDust, null, aOutput, null, aMatInfo.getMeltingPointK())){
 						Logger.MATERIALS("Successfully added a blast furnace recipe for "+aMatInfo.getLocalizedName());
 					}
@@ -392,7 +392,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			}
 			else {
 				aOutput = aMatInfo.getIngot(1);
-				if (aOutput != null) {
+				if (ItemUtils.checkForInvalidItems(aOutput)) {
 					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
 						Logger.MATERIALS("Successfully added a furnace recipe for "+aMatInfo.getLocalizedName());
 					}
@@ -437,6 +437,6 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			return false;
 		}
 	}
-	
+
 }
 

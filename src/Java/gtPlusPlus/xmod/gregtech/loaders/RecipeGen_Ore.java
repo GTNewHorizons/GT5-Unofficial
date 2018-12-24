@@ -3,18 +3,21 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-
+import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
@@ -23,12 +26,17 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeGen_Ore implements Runnable{
+public class RecipeGen_Ore extends RecipeGen_Base {
 
-	final Material toGenerate;
+	public final static Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<RunnableWithInfo<Material>>();
+	
+	static {
+		MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+	}	
 
 	public RecipeGen_Ore(final Material M){
 		this.toGenerate = M;
+		mRecipeGenMap.add(this);
 	}
 
 	@Override
@@ -368,7 +376,7 @@ public class RecipeGen_Ore implements Runnable{
 
 			int mCounter = 0;
 			for (Pair<Integer, Material> f : componentMap){
-				if (f.getValue().getState() != MaterialState.SOLID){
+				if (f.getValue().getState() != MaterialState.SOLID && f.getValue().getState() != MaterialState.ORE){
 					Logger.MATERIALS("[Dehydrator] Found Fluid Component, adding "+f.getKey()+" cells of "+f.getValue().getLocalizedName()+".");
 					mInternalOutputs[mCounter++] = f.getValue().getCell(f.getKey());
 					mCellCount += f.getKey();

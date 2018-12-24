@@ -1,15 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gtPlusPlus.core.recipe.common.CI.bitsd;
-
-import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler_Adv;
@@ -60,21 +53,6 @@ public class GregtechCustomHatches {
 				"Naquadah Reactor Input hatch" // Local name
 		).getStackForm(1L));
 
-		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[6], ALLOY.MARAGING250.getGear(1), CI.component_Plate[6],
-				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_AdvancedVacuum.get(1),
-				CI.getTieredCircuitOreDictName(4), CI.component_Plate[5], ItemList.Hatch_Input_IV.get(1),
-				CI.component_Plate[5], GregtechItemList.Hatch_Input_Cryotheum.get(1L, new Object[0]));
-
-		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[5], ALLOY.MARAGING300.getGear(1), CI.component_Plate[5],
-				CI.getTieredCircuitOreDictName(4), GregtechItemList.Casing_Adv_BlastFurnace.get(1),
-				CI.getTieredCircuitOreDictName(4), CI.component_Plate[6], ItemList.Hatch_Input_IV.get(1),
-				CI.component_Plate[6], GregtechItemList.Hatch_Input_Pyrotheum.get(1L, new Object[0]));
-
-		RecipeUtils.addShapedGregtechRecipe(CI.component_Plate[8], ALLOY.HG1223.getGear(1), CI.component_Plate[9],
-				CI.getTieredCircuitOreDictName(7), GregtechItemList.Casing_Naq_Reactor_A.get(1),
-				CI.getTieredCircuitOreDictName(7), CI.component_Plate[9], ItemList.Hatch_Input_ZPM.get(1),
-				CI.component_Plate[8], GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
-
 	}
 
 	private static void run2() {
@@ -105,35 +83,6 @@ public class GregtechCustomHatches {
 		GregtechItemList.Hatch_Muffler_Adv_MAX
 				.set((new GT_MetaTileEntity_Hatch_Muffler_Adv(30009, "hatch.muffler.adv.tier.09", "Advanced Muffler Hatch (MAX)", 9))
 						.getStackForm(1L));		
-		
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_LV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_MV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_MV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_MV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_HV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_HV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_HV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_EV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_EV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_EV.get(1) });		
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_IV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_IV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_IV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_LuV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LuV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_LuV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_ZPM.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_ZPM.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_ZPM.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_UV.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_UV.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_UV.get(1) });
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L, new Object[0]), bitsd,
-				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_MAX.get(1), Character.valueOf('P'),
-						GregtechItemList.Pollution_Cleaner_MAX.get(1) });
-		
 		
 		//GT++ multiblock Control Core Bus
 		GregtechItemList.Hatch_Control_Core

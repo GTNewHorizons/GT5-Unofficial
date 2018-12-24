@@ -73,6 +73,7 @@ public class CORE {
 	public static final int GREG_FIRST_ID = 760;
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
+	public static int turbineCutoffBase = 75000;
 
 	//GT++ Fake Player Profile
 	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");

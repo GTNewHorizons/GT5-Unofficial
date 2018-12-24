@@ -852,7 +852,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
 	private static ItemStack issStackValid(ItemStack result){
 		if (result == null){
-			return ItemUtils.getSimpleStack(ModItems.AAA_Broken);
+			return ItemUtils.getErrorStack(1);
 		}
 		return result;
 	}

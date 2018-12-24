@@ -33,6 +33,7 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
 	private void generateRecipes(final Material material){
 
 		//Frame Box
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {material.getRod(1), material.getFrameBox(1)}))
 		GT_Values.RA.addAssemblerRecipe(
 				material.getRod(4),
 				ItemUtils.getGregtechCircuit(4),
@@ -41,6 +42,7 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
 				8);
 
 		//Rotor
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {material.getPlate(1), material.getRing(1), material.getRotor(1)}))
 		addAssemblerRecipe(
 				material.getPlate(4),
 				material.getRing(1),

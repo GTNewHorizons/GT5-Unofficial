@@ -123,6 +123,22 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("molten.trinium", 136 * 144), 0, 20 * 3000,
 					2040*4);
 		}
+		
+		//Eglin Steel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] { 
+						ItemUtils.getGregtechCircuit(6),
+						ELEMENT.getInstance().IRON.getDust(4),
+						ALLOY.KANTHAL.getDust(1),
+						ALLOY.INVAR.getDust(5),
+						ELEMENT.getInstance().SULFUR.getDust(1),
+						ELEMENT.getInstance().CARBON.getDust(1),
+						ELEMENT.getInstance().SILICON.getDust(4)
+				},
+				ALLOY.EGLIN_STEEL.getFluid(16 * 144),
+				0, 
+				20 * 45,
+				120);
 
 		// Germanium Roasting
 		CORE.RA.addBlastSmelterRecipe(
@@ -432,16 +448,20 @@ public class RECIPES_GREGTECH {
 		// Raisins from Grapes
 		try {
 
+			ItemStack cropGrape = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cropGrape", 1);
+			ItemStack foodRaisins = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1);
+			
+			if (cropGrape != null && foodRaisins != null)			
 			CORE.RA.addDehydratorRecipe(new ItemStack[] { 
-					ItemUtils.getItemStackOfAmountFromOreDict("cropGrape", 1)
+					cropGrape
 			}, // Item
 					null, // Fluid input (slot 1)
 					null, // Fluid output (slot 2)
 					new ItemStack[] { 
-							ItemUtils.getItemStackOfAmountFromOreDict("foodRaisins", 1)
+							foodRaisins
 			}, // Output
-					new int[] { 0 }, 10 * 20, // Time in ticks
-					8); // EU
+					new int[] { 0 }, 10, // Time in ticks
+					2); // EU
 
 		}
 		catch (final NullPointerException e) {
@@ -547,7 +567,8 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("hydrofluoricacid", 9 * 144), 
 					null, 
 					new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9) },
+							FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9)
+							},
 					new int[] { 0 }, 120 * 20, // Time in ticks
 					500); // EU
 
@@ -559,7 +580,7 @@ public class RECIPES_GREGTECH {
 						FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 18 * 144),
 						null,
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
-								ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9) },						
+								FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getDust(9) },						
 						new int[] { 0 },
 						120 * 20, // Time in ticks
 						500); // EU
@@ -1069,14 +1090,19 @@ public class RECIPES_GREGTECH {
 					CI.emptyCells(2), 20 * 20);
 		}
 
-		//Refine GT HF into GT++ HF
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid_GT5U", 5),
-				null, // Fluid Input
-				FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
-				CI.emptyCells(7),
-				2 * 20);
+		ItemStack temp_GT5u_SA = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellHydrofluoricAcid_GT5U", 5);
+		if (temp_GT5u_SA != null) {
+			//Refine GT HF into GT++ HF
+			GT_Values.RA.addChemicalRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
+					temp_GT5u_SA,
+					null, // Fluid Input
+					FluidUtils.getFluidStack("hydrofluoricacid", 6000), // Fluid Output
+					CI.emptyCells(7),
+					2 * 20);
+		}
+		
+
 
 	}
 

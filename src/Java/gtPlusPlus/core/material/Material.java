@@ -722,36 +722,49 @@ public class Material {
 	}
 
 	public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
+		String aKey = aPrefix.name();
 		Map<String, ItemStack> g =  mComponentMap.get(this.unlocalizedName);
 		if (g == null) {
 			Map<String, ItemStack> aMap = new HashMap<String, ItemStack>();
 			mComponentMap.put(unlocalizedName, aMap);
 			g = aMap;
 		}		
-		ItemStack i = g.get(aPrefix.name());
+		ItemStack i = g.get(aKey);
 		if (i != null) {
 			return ItemUtils.getSimpleStack(i, stacksize);
 		}		
 		else {
-			ItemStack u = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(aPrefix.name()+this.unlocalizedName, stacksize);
-			String aKey = aPrefix.name();
-			if (u != null) {
-				g.put(aKey, u);
-				mComponentMap.put(unlocalizedName, g);				
-				return u;
+			// Try get a GT Material
+			Materials Erf = MaterialUtils.getMaterial(this.unlocalizedName);
+			if (Erf != null && Erf != Materials._NULL) {
+				ItemStack Erg = ItemUtils.getOrePrefixStack(aPrefix, Erf, stacksize);
+				if (Erg != null) {
+					Logger.MATERIALS("Found \"" + aKey + this.unlocalizedName + "\" using backup GT Materials option.");
+					g.put(aKey, Erg);
+					mComponentMap.put(unlocalizedName, g);
+					return Erg;
+				}
+			} else {
+				ItemStack u = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(aKey + this.unlocalizedName, stacksize);
+				if (u != null) {
+					g.put(aKey, u);
+					mComponentMap.put(unlocalizedName, g);
+					return u;
+				}
 			}
-			else {
-				return ItemUtils.getSimpleStack(ModItems.AAA_Broken);
-			}
+			//Logger.MATERIALS("Unabled to find \"" + aKey + this.unlocalizedName + "\"");
+			return ItemUtils.getErrorStack(stacksize);
 		}
+		
 	}
 
 	final public Block getBlock(){
-		return Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+this.unlocalizedName, 1).getItem());
+		return Block.getBlockFromItem(getBlock(1).getItem());
 	}
 
 	public final ItemStack getBlock(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+this.unlocalizedName, stacksize);
+		ItemStack i = getComponentByPrefix(OrePrefixes.block, stacksize);
+		return i != null ? i : ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+this.unlocalizedName, stacksize);
 	}
 
 	public final ItemStack getDust(final int stacksize){
@@ -858,22 +871,23 @@ public class Material {
 		return Blocks.stone;
 	}
 	public final ItemStack getCrushed(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushed"+this.unlocalizedName, stacksize);
+		return getComponentByPrefix(OrePrefixes.crushed, stacksize);
 	}
 	public final ItemStack getCrushedPurified(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushedPurified"+this.unlocalizedName, stacksize);
+		return getComponentByPrefix(OrePrefixes.crushedPurified, stacksize);
 	}
 	public final ItemStack getCrushedCentrifuged(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("crushedCentrifuged"+this.unlocalizedName, stacksize);
+		return getComponentByPrefix(OrePrefixes.crushedCentrifuged, stacksize);
 	}
 	public final ItemStack getDustPurified(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPure"+this.unlocalizedName, stacksize);
+		return getComponentByPrefix(OrePrefixes.dustPure, stacksize);
 	}
 	public final ItemStack getDustImpure(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustImpure"+this.unlocalizedName, stacksize);
+		return getComponentByPrefix(OrePrefixes.dustImpure, stacksize);
 	}
-	public final boolean hasSolidForm() {
-		if (this.getDust(1) != null || this.getBlock(1) != null || this.getSmallDust(1) != null || this.getTinyDust(1) != null) {
+	
+	public final boolean hasSolidForm() {		
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1)})) {
 			return true;
 		}
 		return false;

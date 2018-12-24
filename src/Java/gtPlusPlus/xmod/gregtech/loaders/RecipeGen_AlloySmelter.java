@@ -9,6 +9,7 @@ import gregtech.api.enums.ItemList;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 
@@ -30,8 +31,10 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 	private void generateRecipes(final Material material){
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 
+		
+		
 		//Nuggets
-		if (material.getIngot(1) != null && material.getNugget(1) != null)
+		if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getNugget(1)))
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(1),
 				ItemList.Shape_Mold_Nugget.get(0),
@@ -40,7 +43,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				2 * tVoltageMultiplier);
 
 		//Gears
-		if (material.getIngot(1) != null && material.getGear(1) != null)
+		if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getIngot(8),
 				ItemList.Shape_Mold_Gear.get(0),
@@ -49,7 +52,7 @@ public class RecipeGen_AlloySmelter extends RecipeGen_Base {
 				2 * tVoltageMultiplier);
 		
 		//Ingot
-		if (material.getIngot(1) != null && material.getNugget(1) != null)
+		if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getNugget(1)))
 		GT_Values.RA.addAlloySmelterRecipe(
 				material.getNugget(9),
 				ItemList.Shape_Mold_Ingot.get(0),

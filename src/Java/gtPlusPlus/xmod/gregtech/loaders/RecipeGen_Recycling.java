@@ -108,6 +108,10 @@ public class RecipeGen_Recycling implements Runnable {
 			for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
 				try {
 					
+					if (material == null || validPrefix == null) {
+						continue;
+					}
+					
 					if (material.getState() != MaterialState.SOLID ||  validPrefix.getKey() == OrePrefixes.ingotHot){
 						continue;
 					}
@@ -118,7 +122,7 @@ public class RecipeGen_Recycling implements Runnable {
 					int mFluidAmount = (int) GT_Utility.translateMaterialToFluidAmount(validPrefix.getKey().mMaterialAmount, true);
 							
 					//Maceration
-					if (tempStack != null) {
+					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						// mValidItems[mSlotIndex++] = tempStack;
 						if ((mDust != null) && GT_ModHandler.addPulverisationRecipe(tempStack, mDust)) {
 							Logger.WARNING("Recycle Recipe: " + material.getLocalizedName() + " - Success - Recycle "
@@ -133,12 +137,12 @@ public class RecipeGen_Recycling implements Runnable {
 					}
 					
 					//Arc Furnace
-					if (tempStack != null) {
+					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						
 					}					
 					
 					//Fluid Extractor
-					if (tempStack != null) {
+					if (ItemUtils.checkForInvalidItems(tempStack)) {
 						// mValidItems[mSlotIndex++] = tempStack;
 						if ((mDust != null) && GT_Values.RA.addFluidExtractionRecipe(tempStack, null, material.getFluid(mFluidAmount), 0, 30, 8)) {
 							Logger.WARNING("Fluid Recycle Recipe: " + material.getLocalizedName() + " - Success - Recycle "

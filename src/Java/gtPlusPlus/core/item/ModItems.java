@@ -49,6 +49,9 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
+import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
+import gtPlusPlus.core.item.tool.misc.box.MagicToolBag;
+import gtPlusPlus.core.item.tool.misc.box.UniversalToolBox;
 import gtPlusPlus.core.item.tool.misc.GregtechPump;
 import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.item.wearable.WearableLoader;
@@ -282,6 +285,10 @@ public final class ModItems {
 
 	public static Fluid fluidZrF4;
 
+	public static Item boxTools;
+	public static Item boxFood;
+	public static Item boxMagic;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -348,6 +355,12 @@ public final class ModItems {
 		backpack_Gray = new BaseItemBackpack("backpackGray", Utils.rgbtoHexValue(128, 128, 128));
 		backpack_Black = new BaseItemBackpack("backpackBlack", Utils.rgbtoHexValue(20, 20, 20));
 		backpack_White = new BaseItemBackpack("backpackWhite", Utils.rgbtoHexValue(240, 240, 240));
+		
+		
+		//Load Custom Box/bags
+		boxTools = new UniversalToolBox("Tool Box");
+		boxFood = new AutoLunchBox("Eatotron-9000");
+		boxMagic = new MagicToolBag("Mystic Bag");
 
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
@@ -365,19 +378,19 @@ public final class ModItems {
 			 * Try generate dusts for missing rare earth materials if they don't exist
 			 */
 
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1) == null){
+			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))){
 				ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
 			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1) == null){
+			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))){
 				ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
 			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1) == null){
+			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))){
 				ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
 			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1) == null){
+			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))){
 				ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
 			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1) == null){
+			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
 		    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
 			}
 
@@ -621,8 +634,10 @@ public final class ModItems {
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
-		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
-		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
+		/*GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
+		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));*/
+		//GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
+		//GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
 		fluidZrF4 = FluidUtils.generateFluidNoPrefix("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
 		//Coolant Salt
@@ -684,7 +699,7 @@ public final class ModItems {
 		toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
 		
 		//Create Multi-tools
-		ItemsMultiTools.load();
+		//ItemsMultiTools.load();
 
 		//Xp Fluids - Dev
 		if (!FluidRegistry.isFluidRegistered("mobessence")){
@@ -731,7 +746,6 @@ public final class ModItems {
 			// A plate of Meat.
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null){
 				itemPlateRawMeat = new BaseItemPlate(meatRaw);
-				RecipeUtils.generateMortarRecipe(ItemUtils.getSimpleStack(itemPlateRawMeat), ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1));
 				ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
 			}
 			// A Block of Meat.
@@ -896,7 +910,10 @@ public final class ModItems {
 		//IC2 Exp
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
 			Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
-			RfEuBattery = new RF2EU_Battery();
+			
+			if (LoadedMods.CoFHCore) {
+				RfEuBattery = new RF2EU_Battery();				
+			}
 
 			//Baubles Mod Test
 			try {

@@ -105,6 +105,7 @@ public class BaseItemComponent extends Item{
 		ItemStack x = aMap.get(aKey);
 		if (x == null) {
 			aMap.put(aKey, ItemUtils.getSimpleStack(this));
+			Logger.MATERIALS("Registering a material component. Item: ["+componentMaterial.getUnlocalizedName()+"] Map: ["+aKey+"]");
 			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
 			return true;
 		}

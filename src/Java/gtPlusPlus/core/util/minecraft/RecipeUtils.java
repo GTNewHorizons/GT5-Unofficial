@@ -14,6 +14,7 @@ import net.minecraft.item.crafting.IRecipe;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -23,6 +24,7 @@ import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -30,6 +32,20 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 public class RecipeUtils {
 public static int mInvalidID = 1;
 	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, ItemStack resultItem){
+		
+		if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
+			Logger.INFO(ReflectionUtils.getMethodName(1));
+			Logger.INFO(ReflectionUtils.getMethodName(2));
+			Logger.INFO(ReflectionUtils.getMethodName(3));
+			Logger.INFO(ReflectionUtils.getMethodName(4));
+			Logger.INFO(ReflectionUtils.getMethodName(5));
+			Logger.INFO(ReflectionUtils.getMethodName(6));
+			Logger.INFO(ReflectionUtils.getMethodName(7));
+			Logger.INFO(ReflectionUtils.getMethodName(8));
+			Logger.INFO(ReflectionUtils.getMethodName(9));
+			System.exit(1);
+		}
+		
 		if (resultItem == null){
 			Logger.RECIPE("[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
 			resultItem = ItemUtils.getItemStackOfAmountFromOreDict("givemeabrokenitem", 1);
@@ -325,6 +341,21 @@ public static int mInvalidID = 1;
 				InputItem4, InputItem5, InputItem6,
 				InputItem7, InputItem8, InputItem9
 		};
+		
+
+		if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
+			Logger.INFO(ReflectionUtils.getMethodName(1));
+			Logger.INFO(ReflectionUtils.getMethodName(2));
+			Logger.INFO(ReflectionUtils.getMethodName(3));
+			Logger.INFO(ReflectionUtils.getMethodName(4));
+			Logger.INFO(ReflectionUtils.getMethodName(5));
+			Logger.INFO(ReflectionUtils.getMethodName(6));
+			Logger.INFO(ReflectionUtils.getMethodName(7));
+			Logger.INFO(ReflectionUtils.getMethodName(8));
+			Logger.INFO(ReflectionUtils.getMethodName(9));
+			System.exit(1);
+		}
+		
 
 		int size = COMPAT_HANDLER.mGtRecipesToGenerate.size();
 		COMPAT_HANDLER.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));

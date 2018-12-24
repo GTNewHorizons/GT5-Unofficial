@@ -233,16 +233,7 @@ public class MaterialGenerator {
 
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
 		try {
-			final String unlocalizedName = matInfo.getUnlocalizedName();
-			final String materialName = matInfo.getLocalizedName();
-			final short[] C = matInfo.getRGBA();
-			final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
-
-			int sRadiation = 0;
-			if (matInfo.vRadiationLevel != 0){
-				sRadiation = matInfo.vRadiationLevel;
-			}
-
+			
 			tempBlock = new BlockBaseModular(matInfo,BlockTypes.STANDARD);
 			temp = new BaseItemDust(matInfo);
 			temp = new BaseItemIngot(matInfo);
@@ -322,7 +313,7 @@ public class MaterialGenerator {
 			temp = new BaseItemPurifiedDust(matInfo);
 
 			Logger.MATERIALS("Generated all ore components for "+matInfo.getLocalizedName()+", now generating processing recipes.");
-			RecipeGen_Ore.generateRecipes(matInfo);
+			new RecipeGen_Ore(matInfo);
 
 		} catch (final Throwable t){
 			Logger.MATERIALS("[Error] "+(matInfo != null ? matInfo.getLocalizedName() : "Null Material")+" failed to generate.");

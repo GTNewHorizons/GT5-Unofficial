@@ -19,12 +19,12 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 
 	
 	public AutoMap() {
-		this(new HashMap<Integer, V>());
+		this(new LinkedHashMap<Integer, V>());
 	}
 	
 	public AutoMap(Map<Integer, V> defaultMapType) {
 		mInternalMap = defaultMapType;
-		mInternalNameMap = new HashMap<String, Integer>();
+		mInternalNameMap = new LinkedHashMap<String, Integer>();
 	}
 	
 	@Override
@@ -86,6 +86,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	public synchronized boolean clear(){
 		this.mInternalID = 0;
 		this.mInternalMap.clear();
+		this.mInternalNameMap.clear();
 		return true;
 	}
 	

@@ -70,7 +70,6 @@ public class HANDLER_GT {
 		//Only loads if the config option is true (default: true)
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
 			new MetaGeneratedGregtechTools();
-			new ProcessingToolHeadChoocher().run();
 		}
 
 		if (ConfigSwitches.enableOldGTcircuits && !CORE.GTNH){
@@ -84,6 +83,12 @@ public class HANDLER_GT {
 	}
 
 	public static void postInit(){
+		
+		//Only loads if the config option is true (default: true)
+		if (CORE.ConfigSwitches.enableSkookumChoochers){
+			new ProcessingToolHeadChoocher().run();
+		}
+		
 		if (CORE.ConfigSwitches.enableNitroFix){
 			GregtechNitroDieselFix.run();
 		}
@@ -103,6 +108,7 @@ public class HANDLER_GT {
 	
 	private static int removeCrudeTurbineRotors() {
 		int aRemoved = 0;
+		int CUT = CORE.turbineCutoffBase;
 		Item aU;
 		Collection<GT_Recipe> aAssRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList;
 		//170, 172, 174, 176
@@ -122,7 +128,7 @@ public class HANDLER_GT {
 							//Logger.INFO("Found assembler recipe outputting a GT Tool with a meta value of "+aMeta);
 							if (aMeta >= 170 && aMeta <= 176) {
 								//Found a Turbine
-								int aCutoff = aMeta == 170 ? 75000 : (aMeta == 172 ? 150000 : (aMeta == 174 ? 225000 : 300000));
+								int aCutoff = aMeta == 170 ? CUT : (aMeta == 172 ? CUT*2 : (aMeta == 174 ? CUT*3 : CUT*4));
 								String aType = aMeta == 170 ? "Small " : (aMeta == 172 ? "" : (aMeta == 174 ? "Large " : "Huge "));
 								Materials aMainMaterial = GT_MetaGenerated_Tool.getPrimaryMaterial(aI);
 								Materials aSecondaryMaterial = GT_MetaGenerated_Tool.getSecondaryMaterial(aI);	

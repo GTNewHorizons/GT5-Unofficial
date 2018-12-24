@@ -77,8 +77,13 @@ public class GTplusplus implements ActionListener {
 				mPrev.setPhaseActive(false);
 			}
 			mIsPhaseActive = aIsPhaseActive;
+			if (CURRENT_LOAD_PHASE != this) {
+				CURRENT_LOAD_PHASE = this;
+			}
 		}
 	}
+	
+	public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 	
 	//Mod Instance
 	@Mod.Instance(CORE.MODID)

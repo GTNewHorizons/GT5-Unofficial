@@ -40,6 +40,7 @@ import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -543,6 +544,47 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static String sanitizeString(final String input, final char[] aDontRemove) {
+		
+		String output;
+		AutoMap<String> aToRemoveMap = new AutoMap<String>();
+
+		aToRemoveMap.put(" ");
+		aToRemoveMap.put("-");
+		aToRemoveMap.put("_");
+		aToRemoveMap.put("~");
+		aToRemoveMap.put("?");
+		aToRemoveMap.put("!");
+		aToRemoveMap.put("@");
+		aToRemoveMap.put("#");
+		aToRemoveMap.put("$");
+		aToRemoveMap.put("%");
+		aToRemoveMap.put("^");
+		aToRemoveMap.put("&");
+		aToRemoveMap.put("*");
+		aToRemoveMap.put("(");
+		aToRemoveMap.put(")");
+		aToRemoveMap.put("{");
+		aToRemoveMap.put("}");
+		aToRemoveMap.put("[");
+		aToRemoveMap.put("]");
+		aToRemoveMap.put(" ");
+		
+		for (String s : aToRemoveMap) {
+			for (char e : aDontRemove) {
+			if (s.charAt(0) == e) {
+				aToRemoveMap.remove("s");
+			}
+			}
+		}		
+		output = input;
+		for (String A : aToRemoveMap) {
+			output = output.replace(A, "");
+		}		
+		return output;
+
 	}
 
 	public static String sanitizeString(final String input) {

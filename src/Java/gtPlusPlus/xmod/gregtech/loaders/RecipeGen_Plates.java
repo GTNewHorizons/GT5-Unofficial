@@ -14,6 +14,7 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGen_Plates extends RecipeGen_Base {
 
@@ -45,6 +46,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 		Logger.WARNING("Generating Plate recipes for "+material.getLocalizedName());
 
 		//Forge Hammer
+		if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single))
 		if (addForgeHammerRecipe(
 				ingotStackTwo,
 				plate_Single,
@@ -56,6 +58,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 			Logger.WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 		//Bender
+		if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single))
 		if (addBenderRecipe(
 				ingotStackOne,
 				plate_Single,
@@ -67,6 +70,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 			Logger.WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 		//Alloy Smelter
+		if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single))
 		if (GT_Values.RA.addAlloySmelterRecipe(
 				ingotStackTwo,
 				shape_Mold,
@@ -81,6 +85,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 
 
 		//Making Double Plates
+		if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double))
 		if (addBenderRecipe(
 				ingotStackTwo,
 				plate_Double,
@@ -91,6 +96,8 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 		else {
 			Logger.WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");
 		}
+		
+		if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double))
 		if (addBenderRecipe(
 				plate_SingleTwo,
 				plate_Double,

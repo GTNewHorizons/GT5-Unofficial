@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
@@ -53,11 +51,7 @@ public class GregtechPollutionDevices {
 		}
 		
 		GregtechItemList.Hatch_Air_Intake.set(new GT_MetaTileEntity_Hatch_AirIntake(861, "hatch.air.intake.tier.00", "Air Intake Hatch", 5).getStackForm(1L));
-		RecipeUtils.addShapedGregtechRecipe(
-				CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
-				CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
-				CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
-				GregtechItemList.Hatch_Air_Intake.get(1L, new Object[0]));
+
 		
 	}
 
