@@ -4,7 +4,10 @@ package com.github.bartimaeusnek.bartworks;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
+import com.github.bartimaeusnek.bartworks.common.tileentities.BW_RotorBlock;
+import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_Windmill;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -12,15 +15,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 
 @Mod(
         modid = MainMod.modID, name = MainMod.name, version = MainMod.version,
@@ -53,7 +52,7 @@ public final class MainMod {
     }
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        new LoaderRegistry().run();
+       new LoaderRegistry().run();
     }
 
     @Mod.EventHandler

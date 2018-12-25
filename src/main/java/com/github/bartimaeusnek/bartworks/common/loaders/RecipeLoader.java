@@ -2,11 +2,8 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_Diode;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_EnergyDistributor;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_LESU;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_ManualTrafo;
+import com.github.bartimaeusnek.bartworks.common.tileentities.*;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -18,12 +15,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.bartimaeusnek.bartworks.common.ConfigHandler.newStuff;
 
 public class RecipeLoader implements Runnable {
 
-    private final static long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE;
+    private static final long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE;
 
     @Override
     public void run() {
@@ -46,7 +44,7 @@ public class RecipeLoader implements Runnable {
 
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.BW_BLOCKS[1]),
-                    bitsd,
+                    RecipeLoader.bitsd,
                     new Object[]{
                             "LLL",
                             "LCL",
@@ -58,8 +56,8 @@ public class RecipeLoader implements Runnable {
             GT_Values.RA.addCutterRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[1]), new ItemStack(ItemRegistry.BW_BLOCKS[0], 9, 1), GT_Values.NI, 100, (int) (GT_Values.V[1] - (GT_Values.V[1] / 10)));
             GT_Values.RA.addCompressorRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 9, 1), new ItemStack(ItemRegistry.BW_BLOCKS[1]), 100, (int) (GT_Values.V[1] - (GT_Values.V[1] / 10)));
             GT_Values.RA.addCompressorRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 9, 0), new ItemStack(ItemRegistry.BW_BLOCKS[1]), 100, (int) (GT_Values.V[1] - (GT_Values.V[1] / 10)));
-            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0), bitsd, new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1)});
-            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1), bitsd, new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0)});
+            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0), RecipeLoader.bitsd, new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1)});
+            GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1), RecipeLoader.bitsd, new Object[]{new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0)});
         }
 
         /*
@@ -68,7 +66,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new GT_TileEntity_LESU(ConfigHandler.IDOffset, "LESU", "LESU").getStackForm(1L),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "CDC",
                         "SBS",
@@ -82,7 +80,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.Destructopack),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "CPC",
                         "PLP",
@@ -94,7 +92,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.Destructopack),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "CPC",
                         "PLP",
@@ -106,7 +104,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.RockcutterMV),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "DS ",
                         "DP ",
@@ -120,7 +118,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.RockcutterLV),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "DS ",
                         "DP ",
@@ -134,7 +132,7 @@ public class RecipeLoader implements Runnable {
 
         GT_ModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.RockcutterHV),
-                bitsd,
+                RecipeLoader.bitsd,
                 new Object[]{
                         "DS ",
                         "DP ",
@@ -149,7 +147,7 @@ public class RecipeLoader implements Runnable {
         if (ConfigHandler.teslastaff)
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.Teslastaff),
-                    bitsd,
+                    RecipeLoader.bitsd,
                     new Object[]{
                             "BO ",
                             "OP ",
@@ -171,7 +169,7 @@ public class RecipeLoader implements Runnable {
 
                     GT_ModHandler.addCraftingRecipe(
                             new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "Energy Distributor " + GT_Values.VN[i], "Energy Distributor " + GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "PWP",
                                     "WCW",
@@ -182,7 +180,7 @@ public class RecipeLoader implements Runnable {
                             });
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "Cable Diode 12A " + GT_Values.VN[i], "Cable Diode 12A " + GT_Values.VN[i], i, 12).getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -195,7 +193,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode12A[i],
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -208,7 +206,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "Cable Diode 8A " + GT_Values.VN[i], "Cable Diode 8A " + GT_Values.VN[i], i, 8).getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -221,7 +219,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode8A[i],
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -234,7 +232,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "Cable Diode 4A " + GT_Values.VN[i], "Cable Diode 4A " + GT_Values.VN[i], i, 4).getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -247,7 +245,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode4A[i],
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -260,7 +258,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "Cable Diode 2A " + GT_Values.VN[i], "Cable Diode 2A " + GT_Values.VN[i], i, 2).getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -273,7 +271,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode2A[i],
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WDW",
                                     "DCD",
@@ -286,7 +284,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 5 + i, "Cable Diode 16A " + GT_Values.VN[i], "Cable Diode 16A " + GT_Values.VN[i], i, 16).getStackForm(1L),
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WHW",
                                     "DCD",
@@ -300,7 +298,7 @@ public class RecipeLoader implements Runnable {
                     );
                     GT_ModHandler.addCraftingRecipe(
                             ItemRegistry.Diode16A[i],
-                            bitsd,
+                            RecipeLoader.bitsd,
                             new Object[]{
                                     "WHW",
                                     "DCD",
@@ -328,7 +326,7 @@ public class RecipeLoader implements Runnable {
 
             GT_ModHandler.addCraftingRecipe(
                 new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "Manual Travo", "Manual Travo").getStackForm(1L),
-                bitsd,
+                    RecipeLoader.bitsd,
                 new Object[]{
                         "SCS",
                         "CHC",
@@ -341,7 +339,157 @@ public class RecipeLoader implements Runnable {
             );
 
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit,Materials.Good,1L),Materials.Aluminium.getPlates(1),ItemList.Circuit_Board_Plastic.get(1L), ItemList.Battery_RE_LV_Lithium.get(1L)}, Materials.SolderingAlloy.getMolten(288L),new ItemStack(ItemRegistry.CircuitProgrammer),600,(int) (GT_Values.V[2] - (GT_Values.V[2] / 10)));
-            //current ID: ConfigHandler.IDOffset+GT_Values.VN.length*6+1
+
+            GT_ModHandler.addCraftingRecipe(
+                    new GT_TileEntity_Windmill(ConfigHandler.IDOffset+GT_Values.VN.length*6+2,"Windmill","Windmill").getStackForm(1L),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "BHB",
+                            "WGW",
+                            "BWB",
+                            'B', new ItemStack(Blocks.brick_block),
+                            'W', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                            'H', new ItemStack(Blocks.hopper),
+                            'G', new ItemStack(ItemRegistry.craftingParts,1,2),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,0),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "SSS",
+                            "DfD",
+                            " h ",
+                            'S', new ItemStack(Blocks.stone),
+                            'D', new ItemStack(GregTech_API.sBlockGranites,1,OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,1),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "hDf",
+                            "SSS",
+                            'S', new ItemStack(Blocks.stone),
+                            'D', new ItemStack(GregTech_API.sBlockGranites,1, OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,2),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "STS",
+                            "h f",
+                            "SBS",
+                            'S', new ItemStack(GregTech_API.sBlockGranites,1, OreDictionary.WILDCARD_VALUE),
+                            'T', new ItemStack(ItemRegistry.craftingParts, 1, 0),
+                            'B', new ItemStack(ItemRegistry.craftingParts, 1, 1),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,3),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "WLs",
+                            "WLh",
+                            "WLf",
+                            'L', new ItemStack(Items.leather),
+                            'W', new ItemStack(Blocks.log,1,OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,4),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "WLs",
+                            "WLh",
+                            "WLf",
+                            'L', new ItemStack(Blocks.carpet),
+                            'W', new ItemStack(Blocks.log,1,OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,5),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "WLs",
+                            "WLh",
+                            "WLf",
+                            'L', new ItemStack(Items.paper),
+                            'W', new ItemStack(Blocks.log,1,OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.craftingParts,1,6),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "WEs",
+                            "WZh",
+                            "WDf",
+                            'E', new ItemStack(ItemRegistry.craftingParts,1,3),
+                            'Z', new ItemStack(ItemRegistry.craftingParts,1,4),
+                            'D', new ItemStack(ItemRegistry.craftingParts,1,5),
+                            'W', new ItemStack(Blocks.log,1,OreDictionary.WILDCARD_VALUE),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.LeatherRotor),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "hPf",
+                            "PWP",
+                            "sPr",
+                            'P', new ItemStack(ItemRegistry.craftingParts,1,3),
+                            'W', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.WoolRotor),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "hPf",
+                            "PWP",
+                            "sPr",
+                            'P', new ItemStack(ItemRegistry.craftingParts,1,4),
+                            'W', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.PaperRotor),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "hPf",
+                            "PWP",
+                            "sPr",
+                            'P', new ItemStack(ItemRegistry.craftingParts,1,5),
+                            'W', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.CombinedRotor),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "hPf",
+                            "PWP",
+                            "sPr",
+                            'P', new ItemStack(ItemRegistry.craftingParts,1,6),
+                            'W', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(
+                    new ItemStack(ItemRegistry.ROTORBLOCK),
+                    RecipeLoader.bitsd,
+                    new Object[]{
+                            "WRW",
+                            "RGR",
+                            "WRW",
+                            'R',GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1L),
+                            'W', new ItemStack(Blocks.planks),
+                            'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
+                    }
+            );
+            //next free ID: ConfigHandler.IDOffset+GT_Values.VN.length*6+3
+
         }
     }
 }
