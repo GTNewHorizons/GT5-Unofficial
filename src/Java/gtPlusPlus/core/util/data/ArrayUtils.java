@@ -51,6 +51,19 @@ public class ArrayUtils {
 		}		
 		return c;
 	}
+	
+	public static <T> T[][] rotateArrayClockwise(T[][] mat) {
+	    final int M = mat.length;
+	    final int N = mat[0].length;
+	    @SuppressWarnings("unchecked")
+		T[][] ret = (T[][]) new Object[N][M];
+	    for (int r = 0; r < M; r++) {
+	        for (int c = 0; c < N; c++) {
+	            ret[c][M-1-r] = mat[r][c];
+	        }
+	    }	    
+	    return ret;
+	}
 
 }
 

@@ -2,11 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -16,13 +11,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,7 +47,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{"Controller Block for Advanced Bending & Forming",
 				"Can be configured with a screwdriver to activate Forming Press Mode",
 				"500% faster than using single block machines of the same voltage",
@@ -63,10 +61,8 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler Hatch (anywhere)",
-				"Material Press Machine Casings for the rest (12 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Material Press Machine Casings for the rest (12 at least!)"
+				};
 	}
 
 	@Override

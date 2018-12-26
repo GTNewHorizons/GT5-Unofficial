@@ -50,7 +50,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
 				"Can be configured with a screwdriver to also process Chemical Bathing",
@@ -67,10 +67,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Wash Plant Casings for the rest",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
+				"Wash Plant Casings for the rest"
 
 		};
 	}

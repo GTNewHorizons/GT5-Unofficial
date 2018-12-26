@@ -8,10 +8,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -53,7 +54,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
 				"125% faster than using single block machines of the same voltage",
@@ -70,9 +71,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch",
 				"1x Energy Hatch [Blue]",
 				"Centrifuge Casings for the rest (10 at least)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

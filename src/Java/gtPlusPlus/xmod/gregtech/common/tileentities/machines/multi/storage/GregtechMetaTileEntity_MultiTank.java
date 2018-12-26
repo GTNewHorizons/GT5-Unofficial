@@ -3,11 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -19,14 +14,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -204,7 +201,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Multitank",
 				"Size: 3xHx3 (Block behind controller must be air)",
@@ -215,9 +212,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output hatch (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				"Multitank Exterior Casings for the rest (16 at least!)",
-				getMachineTooltip(),
-				CORE.GT_Tooltip
+				"Multitank Exterior Casings for the rest (16 at least!)"
 		};
 	}
 

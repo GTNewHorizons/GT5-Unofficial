@@ -199,6 +199,40 @@ GT_MetaTileEntity_MultiBlockBase {
 		return true;
 	}
 
+	private String[] aCachedToolTip;
+	
+	@Override
+	public final String[] getDescription() {		
+		if (aCachedToolTip != null) {
+			return aCachedToolTip;
+		}		
+		String[] x = getTooltip();		
+		//Add Stock Tooltip to bottom of list
+		String[] z;		
+		if (getPollutionPerTick(null) > 0) {
+			z = new String[] {
+					getPollutionTooltip(),
+					getMachineTooltip(),
+					CORE.GT_Tooltip};
+		}
+		else {
+			z = new String[] {
+				getMachineTooltip(),
+				CORE.GT_Tooltip};		
+		}
+		
+		int a2, a3;
+		a2 = x != null ? x.length : 0;
+		a3 = z != null ? z.length : 0; 
+		String[] aToolTip = new String[(a2 + a3)];
+		aToolTip = ArrayUtils.addAll(aToolTip, x);
+		aToolTip = ArrayUtils.addAll(aToolTip, z);
+		aCachedToolTip = aToolTip;
+		return aToolTip;
+	}
+	
+	public abstract String[] getTooltip();
+
 	public int getAmountOfOutputs() {
 		return 1;
 	}
@@ -935,6 +969,9 @@ GT_MetaTileEntity_MultiBlockBase {
 		resetRecipeMapForAllInputHatches();
 	}
 
+	
+	
+	
 
 	/**
 	 * Enable Texture Casing Support if found in GT 5.09

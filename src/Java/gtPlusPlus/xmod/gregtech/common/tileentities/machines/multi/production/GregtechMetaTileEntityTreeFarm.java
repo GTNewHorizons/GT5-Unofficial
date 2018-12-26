@@ -1,11 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
@@ -16,17 +10,20 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
@@ -54,7 +51,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 		        "THIS MULTIBLOCK IS DISABLED - DO NOT BUILD",
 				"Controller Block for the Tree Farmer",
@@ -69,9 +66,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				"1x Input Hatch (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
 		};
 	}
 

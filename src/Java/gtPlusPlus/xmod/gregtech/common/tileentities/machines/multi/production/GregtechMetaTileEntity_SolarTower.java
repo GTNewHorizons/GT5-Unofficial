@@ -1,12 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,16 +14,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.TileEntitySolarHeater;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class GregtechMetaTileEntity_SolarTower
 extends GregtechMeta_MultiBlockBase {
@@ -62,16 +57,14 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 4);
 		}
 		return new String[]{
 				"Contributing Green Energy towards the future",
 				mCasingName+"s for the base of the tower",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

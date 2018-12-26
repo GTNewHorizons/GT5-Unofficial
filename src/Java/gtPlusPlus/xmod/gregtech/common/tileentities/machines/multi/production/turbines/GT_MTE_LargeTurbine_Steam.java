@@ -33,7 +33,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
         super(aName);
     }
 
-    public String[] getDescription() {
+    public String[] getTooltip() {
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings4Misc, 8);
 		}    	

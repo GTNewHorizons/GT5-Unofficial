@@ -13,7 +13,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -54,7 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 2);
@@ -76,9 +75,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (anywhere)",
 				mCasingName+"s for the rest (16 at least!)",
 				mCasingName2+"s for the internal blocks (2)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

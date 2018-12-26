@@ -86,7 +86,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}	
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		String casings = getCasingBlockItem().get(0).getDisplayName();
 		return new String[]{
 				"Controller Block for the Tesla Defence Tower Mk3200",
@@ -98,10 +98,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 				"1x3x1 " + casings + " pillar (Center of base)",
 				"1x3x1 " + MaterialUtils.getMaterialName(getFrameMaterial()) + " Frame Boxes (Each pillar side and on top)",
 				"1x Maintenance Hatch (One of base casings)",
-				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)"};
 	}
 
 	private final void initFields() {

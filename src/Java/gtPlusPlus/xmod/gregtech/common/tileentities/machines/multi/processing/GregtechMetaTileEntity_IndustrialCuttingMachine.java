@@ -40,7 +40,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Cutting Factory",
 				"200% faster than using single block machines of the same voltage",
@@ -53,10 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Hatch (top or bottom centered)",
 				"1x Muffler Hatch (top)",
 				"1x Maintenance Hatch (back centered)",
-				"Cutting Factory Frames for the rest (26 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
+				"Cutting Factory Frames for the rest (26 at least!)"
 		};
 	}
 

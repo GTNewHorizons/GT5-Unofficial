@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -44,7 +43,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
 				"400% faster than single-block machines of the same voltage",
@@ -59,10 +58,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (Any top or bottom edge casing)",
 				"1x Energy Hatch (Any top or bottom edge casing)",
 				"18x Sieve Grate (Top and Middle 3x3)",
-				"Sieve Casings for the rest (35 min)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Sieve Casings for the rest (35 min)"
+				};
 	}
 
 	@Override

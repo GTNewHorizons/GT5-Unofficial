@@ -41,7 +41,7 @@ extends GregtechMeta_MultiBlockBase {
 		return "Implosion Compressor";
 	}
 
-	public String[] getDescription() {    	
+	public String[] getTooltip() {    	
 		if (mCasingName.contains("gt.blockcasings")) {
 			mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
 		}    	
@@ -54,10 +54,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				mCasingName+"s for the rest (16 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				mCasingName+"s for the rest (16 at least!)"
+		};
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
@@ -66,7 +64,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[48]};
 	}
-	
+
 	@Override
 	public boolean hasSlotInGUI() {
 		return true;
@@ -76,7 +74,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String getCustomGUIResourceName() {
 		return "ImplosionCompressor";
 	}
-	
+
 	@Override
 	public boolean requiresVanillaGtGUI() {
 		return true;

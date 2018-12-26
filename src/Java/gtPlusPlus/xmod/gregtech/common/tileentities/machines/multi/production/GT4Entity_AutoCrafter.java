@@ -125,7 +125,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[] { "Highly Advanced Autocrafter", "Right Click with a Screwdriver to change mode",
 				"This Machine Can Autocraft, Assemble, Disassemble or Circuit Assemble",
 				"200% faster than using single block machines of the same voltage",
@@ -135,8 +135,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 				"Size: 3x3x3 (Hollow)", "1x Input Bus", "1x Input Hatch", "1x Output Bus", "1x Output Hatch",
 				"1x Muffler Hatch", "1x Maintenance Hatch", "1x Energy Hatch",
 				"Hatches & Busses can be placed anywhere", "Rest is Autocrafter Frame",
-				"--------------------------------------", getPollutionTooltip(),
-				getMachineTooltip(), CORE.GT_Tooltip };
+				"--------------------------------------", 
+				};
 	}
 
 	@Override

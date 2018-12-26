@@ -3,9 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -16,12 +13,12 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -52,7 +49,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
 				"20% Faster than the Electric Blast Furnace",
@@ -68,9 +65,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (top middle)",
 				"1x Fluid Input Hatch (optional, top layer)",
 				"Blast Smelter Casings for the rest",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

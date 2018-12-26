@@ -1,27 +1,20 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import java.util.ArrayList;
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -31,6 +24,11 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_PowerSubStation;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -62,7 +60,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"[BUG] GUI does not work until structure is assembled correctly. (Do Not Report issue)",
 				"Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches",
@@ -73,8 +71,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				"Size(WxHxD): External 5xHx5, Sub-Station External Casings", 
 				"Size(WxHxD): Internal 3x(H-2)x3, Vanadium Redox Power Cells",
 				"Read '"+BookHandler.ItemBookWritten_MultiPowerStorage.getDisplayName()+"' for more info.",
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

@@ -1,24 +1,23 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.*;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
-
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,7 +42,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Generator Array",
 				"Runs supplied generators as if placed in the world",
@@ -54,9 +53,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 				"1x Energy Hatch (Any casing)",
 				"Robust Tungstensteel Machine Casings for the rest (16 at least!)",
 				"Place up to 16 Single Block GT Generators into the Controller Inventory",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

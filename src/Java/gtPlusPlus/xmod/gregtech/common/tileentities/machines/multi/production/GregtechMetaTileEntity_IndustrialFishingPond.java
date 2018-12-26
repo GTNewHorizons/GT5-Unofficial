@@ -6,16 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomFishable;
-
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -23,11 +15,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -36,6 +26,11 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,15 +58,13 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[] { "Controller Block for the Fishing Pond", "Size: 9x3x9 [WxHxL] (open)", "X           X",
 				"X           X", "XXXXXXXXX", "Put a numbered circuit into the input bus.", "Circuit 14 for Fish",
 				"Circuit 15 for Junk", "Circuit 16 for Treasure", "Controller (front centered)",
 				"1x Output Bus (Any casing)", "1x Input Bus (Any casing)",
 				"1x Input Hatch (Any casing, fill with water)", "1x Maintenance Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)", "Aquatic Casings for the rest", getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip };
+				"1x Energy Hatch (Any casing)", "Aquatic Casings for the rest",  };
 	}
 
 	@Override
@@ -258,8 +251,8 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		return 0;
 	}
 
-	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(32);
+	public int getCasingTextureIndex() {
+		return TAE.GTPP_INDEX(32);
 	}
 
 	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {

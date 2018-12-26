@@ -90,7 +90,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		return new GregtechMetaTileEntity_Adv_EBF(this.mName);
 	}
 
-	public String[] getDescription() {
+	public String[] getTooltip() {
 
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 11);
@@ -114,8 +114,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				"    Recovery scales with Muffler Hatch tier", mCasingName + "s for the rest",
 				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%", getPollutionTooltip(),
-				getMachineTooltip(), CORE.GT_Tooltip };
+				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%"
+				};
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,

@@ -54,7 +54,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return "Vacuum Freezer";
 	}
 
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
@@ -76,9 +76,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 				"1x Maintenance Hatch (Any casing)", 
 				"1x Energy Hatch (Any casing)",
 				mCasingName+"s for the rest (10 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,

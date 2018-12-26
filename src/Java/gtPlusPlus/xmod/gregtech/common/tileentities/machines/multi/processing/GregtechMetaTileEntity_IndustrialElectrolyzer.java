@@ -9,9 +9,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.blueprint.Blueprint_Generic_3x3;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,7 +37,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{"Controller Block for the Industrial Electrolyzer",
 				"180% faster than using single block machines of the same voltage",
 				"Only uses 90% of the eu/t normally required",
@@ -51,10 +51,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
-				"Electrolyzer Casings for the rest (10 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Electrolyzer Casings for the rest (10 at least!)"
+				};
 	}
 
 	@Override
@@ -90,8 +88,38 @@ extends GregtechMeta_MultiBlockBase {
 		return checkRecipeGeneric(2* GT_Utility.getTier(this.getMaxInputVoltage()), 90, 180);
 	}
 
+	private class Blueprint_Electrolyzer extends Blueprint_Generic_3x3 {
+
+		public Blueprint_Electrolyzer() {
+			super(TAE.GTPP_INDEX(5));
+		}
+
+		@Override
+		public int getMinimumInputBus() {
+			return 0;
+		}
+
+		@Override
+		public int getMinimumInputHatch() {
+			return 0;
+		}
+
+		@Override
+		public int getMinimumOutputBus() {
+			return 0;
+		}
+
+		@Override
+		public int getMinimumOutputHatch() {
+			return 0;
+		}
+		
+	}
+	
+	public Blueprint_Electrolyzer mBluePrint;
+	
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {/*
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
@@ -116,6 +144,12 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		return tAmount >= 10;
+	*/
+		
+	if (mBluePrint == null) {
+		mBluePrint = new Blueprint_Electrolyzer();
+	}	
+	return mBluePrint.checkMachine(aBaseMetaTileEntity);
 	}
 
 	@Override

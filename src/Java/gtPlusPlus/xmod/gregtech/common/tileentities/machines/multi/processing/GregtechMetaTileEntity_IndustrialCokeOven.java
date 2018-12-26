@@ -1,26 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
-
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialCokeOven
@@ -46,7 +39,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
 				"Controller Block for the Industrial Coke Oven",
 				"Gain 4% speed bonus per voltage tier increased",
@@ -63,9 +56,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
 				"Structural Coke Oven Casings for the rest",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

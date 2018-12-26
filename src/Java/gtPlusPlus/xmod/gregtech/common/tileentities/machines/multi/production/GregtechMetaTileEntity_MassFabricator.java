@@ -9,21 +9,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
@@ -38,6 +38,11 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -87,7 +92,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Matter Fabricator",
 				"Produces UU-Matter from UU-Amplifier",
@@ -106,9 +111,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				"1x Energy Hatch (Any bottom layer casing)",
 				"24x IC2 Reinforced Glass for the walls",
 				"Matter Fabricator Casings for the edges & top (40 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

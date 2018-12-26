@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -14,9 +11,10 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialThermalCentrifuge
@@ -40,7 +38,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
 				"150% faster than using single block machines of the same voltage",
@@ -54,9 +52,6 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any bottom layer casing)",
 				"Thermal processing Casings for the rest (8 at least!)",
 				"Noise Hazard Sign Blocks also count as valid casings",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
 				
 		};
 	}

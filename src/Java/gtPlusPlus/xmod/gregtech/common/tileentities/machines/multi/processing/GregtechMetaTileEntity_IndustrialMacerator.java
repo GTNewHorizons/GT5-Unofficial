@@ -2,9 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -15,12 +12,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialMacerator
@@ -46,7 +43,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
 				"60% faster than using single block machines of the same voltage",
@@ -61,10 +58,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
-				"Maceration Stack Casings for the rest (26 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Maceration Stack Casings for the rest (26 at least!)"
+				};
 	}
 
 	@Override

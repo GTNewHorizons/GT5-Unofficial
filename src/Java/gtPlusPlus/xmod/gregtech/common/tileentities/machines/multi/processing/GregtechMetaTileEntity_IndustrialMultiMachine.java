@@ -7,19 +7,27 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -79,7 +87,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	
 	@Override
-	public String[] getDescription() {		
+	public String[] getTooltip() {		
 		String[] aBuiltStrings = new String[3];
 		aBuiltStrings[0] = aToolTipNames[0] + ", " + aToolTipNames[1] + ", " + aToolTipNames[2];
 		aBuiltStrings[1] = aToolTipNames[3] + ", " + aToolTipNames[4] + ", " + aToolTipNames[5];
@@ -92,11 +100,9 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller (front centered)",
 				"6 Multi-Use casings required (Minimum)",
 				"Read Multi-Machine Manual for extra information",
-				getPollutionTooltip(),
 				"Machine Type: [A] - " + EnumChatFormatting.YELLOW + aBuiltStrings[0] + EnumChatFormatting.RESET,
 				"Machine Type: [B] - " + EnumChatFormatting.YELLOW + aBuiltStrings[1] + EnumChatFormatting.RESET,
-				"Machine Type: [C] - " + EnumChatFormatting.YELLOW + aBuiltStrings[2] + EnumChatFormatting.RESET,
-				CORE.GT_Tooltip};
+				"Machine Type: [C] - " + EnumChatFormatting.YELLOW + aBuiltStrings[2] + EnumChatFormatting.RESET};
 	}
 
 	@Override

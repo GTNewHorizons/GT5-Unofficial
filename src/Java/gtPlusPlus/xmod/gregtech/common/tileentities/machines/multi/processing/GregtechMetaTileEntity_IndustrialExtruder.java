@@ -2,10 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import java.util.ArrayList;
 
-import gregtech.api.util.GT_Utility;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -17,12 +13,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialExtruder
@@ -47,7 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{"Controller Block for the Material Extruder",
 				"250% faster than using single block machines of the same voltage",
 				"Processes four items per voltage tier",
@@ -62,10 +59,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Muffler Hatch (anywhere)",
 				"1x Maintenance Hatch (Back Center)",
-				"Inconel Reinforced Casings for the rest (28 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				"Inconel Reinforced Casings for the rest (28 at least!)"
+				};
 	}
 
 	@Override

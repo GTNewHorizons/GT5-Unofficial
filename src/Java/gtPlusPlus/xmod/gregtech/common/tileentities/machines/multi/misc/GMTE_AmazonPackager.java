@@ -59,7 +59,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 	}	
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Amazon Warehouse",
 				"This Multiblock is used for EXTREME packaging requirements",
@@ -76,10 +76,7 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
-				"Supply Depot. Casings for the rest (10 at least!)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
+				"Supply Depot. Casings for the rest (10 at least!)"
 		};
 	}
 

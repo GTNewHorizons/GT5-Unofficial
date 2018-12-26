@@ -1,21 +1,23 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
-
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -176,7 +178,7 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public String[] getDescription()
+	public String[] getTooltip()
 	{
 		return new String[]{
 				"Thermal Boiler Controller",
@@ -189,9 +191,7 @@ extends GregtechMeta_MultiBlockBase
 				"Thermal Containment Casings for the rest",
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

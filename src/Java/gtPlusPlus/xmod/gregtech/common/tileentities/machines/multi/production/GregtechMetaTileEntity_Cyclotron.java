@@ -2,11 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.TAE;
@@ -16,19 +11,25 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -257,7 +258,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Super Magnetic Speed Shooter",
 				"------------------------------------------------------------",
@@ -272,9 +273,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
 				"All Hatches must be IV or better",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

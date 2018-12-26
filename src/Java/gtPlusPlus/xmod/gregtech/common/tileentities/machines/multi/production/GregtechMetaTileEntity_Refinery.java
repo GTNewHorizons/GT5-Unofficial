@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -14,11 +12,10 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -40,7 +37,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return new String[]{
 				"Controller Block for the Fission Fuel Processing Unit",
 				"Size(WxHxD): 3x9x3", "Controller (Front middle at bottom)",
@@ -54,9 +51,6 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				"1x Maintenance Hatch (One of base platform)",
 				"1x ZPM or better Muffler (One of base platform)",
 				"1x Energy Hatch (One of base platform)",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip
 		};
 	}
 

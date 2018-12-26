@@ -1,18 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.*;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.*;
-
-import gtPlusPlus.core.lib.CORE;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMTE_FastNeutronReactor
@@ -177,7 +175,7 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public String[] getDescription()
+	public String[] getTooltip()
 	{
 		return new String[]{
 				"Fukushima-Daiichi Reactor No. 6",
@@ -186,9 +184,7 @@ extends GregtechMeta_MultiBlockBase
 				"Harness the power of Nuclear Fission",
 				"------------------------------------------",
 				"Consult user manual for more information",
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override
