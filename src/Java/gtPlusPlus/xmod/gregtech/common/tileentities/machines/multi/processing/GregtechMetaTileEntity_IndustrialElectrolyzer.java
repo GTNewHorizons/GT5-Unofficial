@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -91,7 +92,7 @@ extends GregtechMeta_MultiBlockBase {
 	private class Blueprint_Electrolyzer extends Blueprint_Generic_3x3 {
 
 		public Blueprint_Electrolyzer() {
-			super(TAE.GTPP_INDEX(5));
+			super(new Pair<Block, Integer>(ModBlocks.blockCasingsMisc, 5), TAE.GTPP_INDEX(5));
 		}
 
 		@Override
@@ -116,36 +117,10 @@ extends GregtechMeta_MultiBlockBase {
 		
 	}
 	
-	public Blueprint_Electrolyzer mBluePrint;
+	private static Blueprint_Electrolyzer mBluePrint;
 	
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {/*
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 2; h++) {
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(5))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(5)))) {
-							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 5))) {
-								return false;
-							}
-							tAmount++;
-						}
-					}
-				}
-			}
-		}
-		return tAmount >= 10;
-	*/
-		
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
 	if (mBluePrint == null) {
 		mBluePrint = new Blueprint_Electrolyzer();
 	}	

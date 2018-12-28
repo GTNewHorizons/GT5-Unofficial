@@ -3,7 +3,7 @@ package gtPlusPlus.core.util.data;
 import java.util.*;
 
 import net.minecraft.item.ItemStack;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 
 public class ArrayUtils {
@@ -53,16 +53,26 @@ public class ArrayUtils {
 	}
 	
 	public static <T> T[][] rotateArrayClockwise(T[][] mat) {
+		Logger.INFO("Rotating Array 90' Clockwise");
+		try {
 	    final int M = mat.length;
 	    final int N = mat[0].length;
+		Logger.INFO("Dimension X: "+M);
+		Logger.INFO("Dimension Z: "+N);
 	    @SuppressWarnings("unchecked")
 		T[][] ret = (T[][]) new Object[N][M];
 	    for (int r = 0; r < M; r++) {
 	        for (int c = 0; c < N; c++) {
 	            ret[c][M-1-r] = mat[r][c];
 	        }
-	    }	    
+	    }	   
+		Logger.INFO("Returning Rotated Array"); 
 	    return ret;
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+			return null;
+		}
 	}
 
 }
