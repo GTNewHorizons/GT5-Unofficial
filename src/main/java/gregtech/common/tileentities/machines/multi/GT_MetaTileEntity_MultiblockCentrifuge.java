@@ -87,10 +87,10 @@ public class GT_MetaTileEntity_MultiblockCentrifuge extends GT_MetaTileEntity_Mu
 				if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
 					if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
 						tInputList.remove(j--);
-						//tInputList_sS = tInputList.size();
+						tInputList_sS = tInputList.size();
 					} else {
 						tInputList.remove(i--);
-						//tInputList_sS = tInputList.size();
+						tInputList_sS = tInputList.size();
 						break;
 					}
 				}
