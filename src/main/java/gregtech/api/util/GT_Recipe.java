@@ -1771,28 +1771,36 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 				
 				return inputStacks;
 			}
-           
 
-            @Override
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
-				int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-				ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				
-				for (int i = 0; i < itemLimit; i++) {
-					int x = 102 + (i % 3) * 18;
-					int y =  -2 + (i / 3) * 18;
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), x, y));
-				}
-				
-				for (int i = 0; i < fluidLimit; i++) {
-					int x = 102 + (i % 3) * 18;
-					int y = 34 + (i / 3) * 18;
-					outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), x, y));
-				}
-				return outputStacks;
+			@Override
+            public ArrayList<PositionedStack> getOutputPositionedStacks() {
+                int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
+                int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
+                ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
+                int posY = -2;
+                int count = 0;
 
-			}
+                for (int i = 0; i < itemLimit; i++) {
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + count * 18, posY));
+                    count++;
+                    if (count==3) {
+                        count=0;
+                        posY+=18;
+                        }
+                }
+
+                for (int i = 0; i < fluidLimit; i++) {
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + count * 18, posY));
+                    count++;
+                    if (count==3) {
+                        count=0;
+                        posY+=18;
+                        }
+                }
+
+                return outputStacks;
+            }
+
             
         }
     }
@@ -1911,23 +1919,33 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 			}
 
 			@Override
-			public ArrayList<PositionedStack> getOutputPositionedStacks() {
-				int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
-				int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
-				ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
-				
-				for (int i = 0; i < itemLimit; i++) {
-					int x = 102 + (i % 3) * 18;
-					int y =  5 + (i / 3) * 18;
-                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), x, y));
-				}
-				
-				for (int i = 0; i < fluidLimit; i++) {
-					outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + i * 18, 41));
-				}
-				
-				return outputStacks;
-			}
+            public ArrayList<PositionedStack> getOutputPositionedStacks() {
+                int itemLimit = Math.min(mOutputs.length, OUTPUT_COUNT);
+                int fluidLimit = Math.min(mFluidOutputs.length, FLUID_OUTPUT_COUNT);
+                ArrayList<PositionedStack> outputStacks = new ArrayList<PositionedStack>(itemLimit + fluidLimit);
+                int posY = 5;
+                int count = 0;
+
+                for (int i = 0; i < itemLimit; i++) {
+                    outputStacks.add(new FixedPositionedStack(this.mOutputs[i].copy(), 102 + count * 18, posY));
+                    count++;
+                    if (count==3) {
+                        count=0;
+                        posY+=18;
+                        }
+                }
+
+                for (int i = 0; i < fluidLimit; i++) {
+                    outputStacks.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(this.mFluidOutputs[i], true), 102 + count * 18, posY));
+                    count++;
+                    if (count==3) {
+                        count=0;
+                        posY+=18;
+                        }
+                }
+
+                return outputStacks;
+            }
 
             
         }
