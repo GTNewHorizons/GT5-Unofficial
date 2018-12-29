@@ -7,6 +7,7 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -16,10 +17,13 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import static gregtech.api.enums.GT_Values.VN;
 
 public class GT_MetaTileEntity_ElectricBlastFurnace
 extends GT_MetaTileEntity_MultiBlockBase {
@@ -323,4 +327,39 @@ for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
 return false;
 }
 
+@Override
+public String[] getInfoData() {
+    int mPollutionReduction=0;
+    for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+        if (isValidMetaTileEntity(tHatch)) {
+            mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
+        }
+    }
+
+    long storedEnergy=0;
+    long maxEnergy=0;
+    for(GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+        if (isValidMetaTileEntity(tHatch)) {
+            storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+            maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+        }
+    }
+
+    return new String[]{
+    		StatCollector.translateToLocal("GT5U.multiblock.Progress")+": " +EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
+                    EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
+            StatCollector.translateToLocal("GT5U.multiblock.energy")+": " +EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+                    EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
+            StatCollector.translateToLocal("GT5U.multiblock.usage")+": "+EnumChatFormatting.RED + Integer.toString(-mEUt) + EnumChatFormatting.RESET + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.mei")+": "+EnumChatFormatting.YELLOW+Long.toString(getMaxInputVoltage())+EnumChatFormatting.RESET+" EU/t(*2A) "+StatCollector.translateToLocal("GT5U.machines.tier")+": "+
+                    EnumChatFormatting.YELLOW+VN[GT_Utility.getTier(getMaxInputVoltage())]+ EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.multiblock.problems")+": "+
+                    EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
+                    " "+StatCollector.translateToLocal("GT5U.multiblock.efficiency")+": "+
+                    EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
+            StatCollector.translateToLocal("GT5U.EBF.heat")+": "+
+                    EnumChatFormatting.GREEN+mHeatingCapacity+EnumChatFormatting.RESET+" K",
+            StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+    };
+}
 }

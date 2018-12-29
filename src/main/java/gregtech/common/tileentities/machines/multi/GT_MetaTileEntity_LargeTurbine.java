@@ -5,6 +5,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -12,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
+    protected boolean looseFit=false;
 
     public GT_MetaTileEntity_LargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -196,23 +200,52 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends GT_MetaTileEntity_M
 
     @Override
     public String[] getInfoData() {
-        String tRunning = mMaxProgresstime>0 ? "Turbine running":"Turbine stopped";
-        String tMaintainance = getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" ;
+        int mPollutionReduction=0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
+            }
+        }
+
+        String tRunning = mMaxProgresstime>0 ?
+
+                EnumChatFormatting.GREEN+StatCollector.translateToLocal("GT5U.turbine.running.true")+EnumChatFormatting.RESET :
+                EnumChatFormatting.RED+StatCollector.translateToLocal("GT5U.turbine.running.false")+EnumChatFormatting.RESET;
+        String tMaintainance = getIdealStatus() == getRepairStatus() ?
+                EnumChatFormatting.GREEN+StatCollector.translateToLocal("GT5U.turbine.maintenance.false")+EnumChatFormatting.RESET :
+                EnumChatFormatting.RED+StatCollector.translateToLocal("GT5U.turbine.maintenance.true")+EnumChatFormatting.RESET ;
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof GT_MetaGenerated_Tool_01) {
-            tDura = (int) ((100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
+            tDura = GT_Utility.safeInt((long)(100.0f / GT_MetaGenerated_Tool.getToolMaxDamage(mInventory[1]) * (GT_MetaGenerated_Tool.getToolDamage(mInventory[1]))+1));
         }
 
-        return new String[]{
-                "Large Turbine",
-                tRunning,
-                "Current Output: "+mEUt+" EU/t",
-                "Optimal Flow: "+(int)realOptFlow+" L/t",
-                "Fuel Remaining: "+storedFluid+"L",
-                "Current Speed: "+(mEfficiency/100)+"%",
-                "Turbine Damage: "+tDura+"%",
-                tMaintainance};
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        String[] ret = new String[]{
+                // 8 Lines available for information panels
+                tRunning + ": " + EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t", /* 1 */
+                tMaintainance, /* 2 */
+                StatCollector.translateToLocal("GT5U.turbine.efficiency")+": "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.RESET+"%", /* 2 */
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": " + EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+ /* 3 */
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU", 
+                StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t" + /* 4 */
+                        EnumChatFormatting.YELLOW+" ("+(looseFit?StatCollector.translateToLocal("GT5U.turbine.loose"):StatCollector.translateToLocal("GT5U.turbine.tight"))+")", /* 5 */
+                StatCollector.translateToLocal("GT5U.turbine.fuel")+": "+EnumChatFormatting.GOLD+storedFluid+EnumChatFormatting.RESET+"L", /* 6 */
+                StatCollector.translateToLocal("GT5U.turbine.dmg")+": "+EnumChatFormatting.RED+Integer.toString(tDura)+EnumChatFormatting.RESET+"%", /* 7 */
+                StatCollector.translateToLocal("GT5U.multiblock.pollution")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %" /* 8 */
+        };
+        if (!this.getClass().getName().contains("Steam"))
+        	ret[4]=StatCollector.translateToLocal("GT5U.turbine.flow")+": "+EnumChatFormatting.YELLOW+GT_Utility.safeInt((long)realOptFlow)+EnumChatFormatting.RESET+" L/t";
+        return ret;
+       
+        	
     }
 
     @Override

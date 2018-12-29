@@ -9,6 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -16,6 +17,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -146,14 +149,36 @@ public class GT_MetaTileEntity_DieselEngine2 extends GT_MetaTileEntity_DieselEng
 
     @Override
     public String[] getInfoData() {
+        int mPollutionReduction=0;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
+            }
+        }
+
+        long storedEnergy=0;
+        long maxEnergy=0;
+        for(GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy+=tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy+=tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        
         return new String[]{
-                "Diesel Engine Mk2",
-                "Current Output: " + mEUt * mEfficiency / 10000 + " EU/t",
-                "Fuel Consumption: " + fuelConsumption + "L/t",
-                "Fuel Value: " + fuelValue + " EU/L",
-                "Fuel Remaining: " + fuelRemaining + " Litres",
-                "Current Efficiency: " + (mEfficiency / 100) + "%",
-                getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance"};
+                EnumChatFormatting.BLUE+"Diesel Engine"+EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": " +
+                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
+                EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
+                StatCollector.translateToLocal("GT5U.engine.output")+": " +EnumChatFormatting.RED+(-mEUt*mEfficiency/10000)+EnumChatFormatting.RESET+" EU/t",
+                StatCollector.translateToLocal("GT5U.engine.consumption")+": " +EnumChatFormatting.YELLOW+fuelConsumption+EnumChatFormatting.RESET+" L/t",
+                StatCollector.translateToLocal("GT5U.engine.value")+": " +EnumChatFormatting.YELLOW+fuelValue+EnumChatFormatting.RESET+" EU/L",
+                StatCollector.translateToLocal("GT5U.turbine.fuel")+": " +EnumChatFormatting.GOLD+fuelRemaining+EnumChatFormatting.RESET+" L",
+                StatCollector.translateToLocal("GT5U.engine.efficiency")+": " +EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.YELLOW+" %",
+                StatCollector.translateToLocal("GT5U.multiblock.pollution")+": " + EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %"
+
+        };
     }
 
     @Override

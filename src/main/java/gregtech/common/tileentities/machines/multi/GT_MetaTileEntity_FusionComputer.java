@@ -22,6 +22,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -444,10 +446,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends GT_MetaTileEntity
         }
 
         return new String[]{
-                "Fusion Reactor MK "+tier,
-                "EU Required: "+powerRequired+"EU/t",
-                "Stored EU: "+mEUStore+" / "+maxEUStore(),
-                "Plasma Output: "+plasmaOut+"L/t"};
+                EnumChatFormatting.BLUE+"Fusion Reactor MK "+EnumChatFormatting.RESET+tier,
+                StatCollector.translateToLocal("GT5U.fusion.req")+": " +EnumChatFormatting.RED+powerRequired+EnumChatFormatting.RESET+"EU/t",
+                StatCollector.translateToLocal("GT5U.multiblock.energy")+": " +EnumChatFormatting.GREEN+mEUStore+EnumChatFormatting.RESET+" EU / "+EnumChatFormatting.YELLOW+maxEUStore()+EnumChatFormatting.RESET+" EU",
+                StatCollector.translateToLocal("GT5U.fusion.plasma")+": " +EnumChatFormatting.YELLOW+plasmaOut+EnumChatFormatting.RESET+"L/t"};
     }
 
     @Override
