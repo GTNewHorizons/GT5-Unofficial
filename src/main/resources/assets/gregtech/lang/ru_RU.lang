@@ -1,4 +1,45 @@
-﻿item.gregtech:modulararmor_helmet.name=Базовый шлем модульной брони
+GT5U.turbine.running.true=Турбина работает
+GT5U.turbine.running.false=Турбина остановлена
+GT5U.turbine.maintenance.false=Обслуживание не требуется
+GT5U.turbine.maintenance.true=Необходимо обслуживание
+GT5U.turbine.efficiency=Текущая скорость
+GT5U.turbine.flow=Оптимальный поток
+GT5U.turbine.fuel=Осталось топлива
+GT5U.turbine.dmg=Повреждения ротора
+GT5U.turbine.loose=Свободна
+GT5U.turbine.tight=Нагружена
+
+GT5U.engine.output=Текущий выход
+GT5U.engine.consumption=Расход топлива
+GT5U.engine.value=Энергоплотность топлива
+GT5U.engine.efficiency=Текущая эффективность
+
+GT5U.PA.machinetier=Тир машины
+GT5U.PA.discount=Снижение/скидка
+GT5U.PA.parallel=Параллельная обработка
+
+GT5U.LHE.steam=(в паре)
+GT5U.LHE.superheated=Перегретый
+GT5U.LHE.threshold=Порог
+
+GT5U.fusion.req=EU требуется
+GT5U.fusion.plasma=Выход плазмы
+
+GT5U.EBF.heat=Температура(К)
+
+GT5U.MS.multismelting=Мульти плавка
+
+GT5U.machines.tier=Тир
+
+GT5U.multiblock.pollution=Загрязнения снижены до
+GT5U.multiblock.energy=Хранится энергии
+GT5U.multiblock.Progress=Прогресс
+GT5U.multiblock.efficiency=Эффективность
+GT5U.multiblock.problems=Проблемы
+GT5U.multiblock.mei=Максимальный приход энергии
+GT5U.multiblock.usage=Возможно использует
+
+item.gregtech:modulararmor_helmet.name=Базовый шлем модульной брони
 item.gregtech:modulararmor_chestplate.name=Базовый нагрудник модульной брони
 item.gregtech:modulararmor_leggings.name=Базовые штаны модульной брони
 item.gregtech:modulararmor_boots.name=Базовые ботинки модульной брони
