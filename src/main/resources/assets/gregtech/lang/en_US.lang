@@ -1,3 +1,44 @@
+GT5U.turbine.running.true=Turbine running
+GT5U.turbine.running.false=Turbine stopped
+GT5U.turbine.maintenance.false=No Maintainance issues
+GT5U.turbine.maintenance.true=Needs Maintainance
+GT5U.turbine.efficiency=Current Speed
+GT5U.turbine.flow=Optimal Flow
+GT5U.turbine.fuel=Fuel Remaining
+GT5U.turbine.dmg=Turbine Damage
+GT5U.turbine.loose=Loose
+GT5U.turbine.tight=Tight
+
+GT5U.engine.output=Current Output
+GT5U.engine.consumption=Fuel Consumption
+GT5U.engine.value=Fuel Value
+GT5U.engine.efficiency=Current Efficiency
+
+GT5U.PA.machinetier=Machine tier installed
+GT5U.PA.discount=Discount
+GT5U.PA.parallel=Parallel processing
+
+GT5U.LHE.steam=(in steam)
+GT5U.LHE.superheated=Super Heated
+GT5U.LHE.threshold=threshold
+
+GT5U.fusion.req=EU Required
+GT5U.fusion.plasma=Plasma Output
+
+GT5U.EBF.heat=Heat capacity
+
+GT5U.MS.multismelting=Multi smelting
+
+GT5U.machines.tier=Tier
+
+GT5U.multiblock.pollution=Pollution reduced to
+GT5U.multiblock.energy=Stored Energy
+GT5U.multiblock.Progress=Progress
+GT5U.multiblock.efficiency=Efficiency
+GT5U.multiblock.problems=Problems
+GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.usage=Probably uses
+
 item.gregtech:modulararmor_helmet.name=Basic Modular Armor Helmet
 item.gregtech:modulararmor_chestplate.name=Basic Modular Armor Chestplate
 item.gregtech:modulararmor_leggings.name=Basic Modular Armor Leggings
