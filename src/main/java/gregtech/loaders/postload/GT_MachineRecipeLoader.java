@@ -1123,6 +1123,34 @@ if(Loader.isModLoaded("Railcraft")){
             GT_ModHandler.addCompressionRecipe(GT_ModHandler.getModItem(aTextEBXL, "saplings_2", 4, 4), ItemList.IC2_Plantball.get(1, new Object[0]));
 
         }
+		
+		if (Loader.isModLoaded("BiomesOPlenty")) {
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "flowers", 2L, 3), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "mushrooms", 2L, 3), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "coral1", 2L, 15), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "flowers", 2L, 13), new ItemStack(Items.spider_eye, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "mudball", 1L, 0), new ItemStack(Items.clay_ball, 1, 0), 200, 2);
+        }
+        if (Loader.isModLoaded("Natura")) {
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "florasapling", 1L, 5), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "floraleavesnocolor", 4L, 2), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "bloodwood", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "bloodwood", 1L, 15), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "florasapling", 2L, 7), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Dark Leaves", 8L, 3), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Dark Tree", 2L, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "florasapling", 2L, 6),  ItemList.IC2_Fertilizer.get(1, new Object[0]), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Dark Leaves", 8L, 0),  ItemList.IC2_Fertilizer.get(1, new Object[0]), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Dark Tree", 2L, 0),  ItemList.IC2_Fertilizer.get(1, new Object[0]), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Natura.netherfood", 1L, 0),  ItemList.IC2_Fertilizer.get(4, new Object[0]), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "florasapling", 2L, 4), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "floraleavesnocolor", 4L, 1), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "tree", 2L, 2), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bone, 1L), 100, 120);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Glowshroom", 2L, 0), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Glowshroom", 2L, 1), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        GT_Values.RA.addExtractorRecipe(GT_ModHandler.getModItem("Natura", "Glowshroom", 2L, 2), new ItemStack(Items.glowstone_dust, 1, 0), 300, 2);
+        }
+		
         GT_ModHandler.addCompressionRecipe(ItemList.IC2_Compressed_Coal_Chunk.get(1L, new Object[0]), ItemList.IC2_Industrial_Diamond.get(1L, new Object[0]));
         GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1L), GT_ModHandler.getIC2Item("Uran238", 1L));
         GT_ModHandler.addCompressionRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium235, 1L), GT_ModHandler.getIC2Item("Uran235", 1L));
@@ -2012,6 +2040,18 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neodymium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Yttrium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lanthanum, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cerium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cadmium, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Caesium, 1L), new int[]{2500, 2500, 2500, 2500, 2500, 2500}, 64, 20);
         GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem(aTextAE, aTextAEMM, 1L, 45), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BasalticMineralSand, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Olivine, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Obsidian, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Basalt, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Flint, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.RareEarth, 1L), new int[]{2000, 2000, 2000, 2000, 2000, 2000}, 64, 20);
 
+		if(Loader.isModLoaded("BiomesOPlenty")){
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopGrass", 1L, 0), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 0), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 1), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 2), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Flint, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 3), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Flint, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopGrass", 1L, 2), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.QuartzSand, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 4), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.QuartzSand, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "newBopDirt", 1L, 5), GT_Values.NI, GT_Values.NF, GT_Values.NF, new ItemStack(Blocks.dirt, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.QuartzSand, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{10000, 3300}, 100,30);
+        GT_Values.RA.addCentrifugeRecipe(GT_ModHandler.getModItem("BiomesOPlenty", "driedDirt", 1L, 0), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Clay, 1L), new ItemStack(Blocks.sand, 1, 0), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[]{9000, 5000, 2500}, 100,30);
+        }
+		
 		GT_Values.RA.addLatheRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 1L), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glass, 1L), 400, 16);
 		GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 1L), GT_Values.NI, 1200, 30);
 	    
