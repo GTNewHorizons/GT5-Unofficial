@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.Logger;
@@ -894,6 +896,77 @@ public class ItemUtils {
 		}
 
 		return true;
+	}
+	
+	
+	public static IInventory organiseInventory(IInventory aInputInventory) {
+		ItemStack[] p = new ItemStack[aInputInventory.getSizeInventory()];
+		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
+			p[o] = aInputInventory.getStackInSlot(o);
+		}		
+		ItemStack[] g = organiseInventory(p);		
+		IInventory aTemp = aInputInventory;		
+		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
+			aTemp.setInventorySlotContents(o, g[o]);
+		}		
+		return aTemp;
+	}
+	
+	
+	public static ItemStack[] organiseInventory(ItemStack[] aInputs) {
+
+		//Update Slots		
+		int aInvSize = aInputs.length;
+		ItemStack[] newArray = new ItemStack[aInvSize];
+		
+		
+		//Try merge stacks
+		for (int i = 0; i < aInvSize; i++) {
+			for (int i2 = 0; i2 < aInvSize; i2++) {
+				if (i != i2) {
+					ItemStack[] t1 = new ItemStack[] {aInputs[i], aInputs[i2]};
+					if (t1[0] == null || t1[1] == null) {
+						continue;
+					}
+					else if (!GT_Utility.areStacksEqual(t1[0], t1[1])) {
+						continue;
+					}
+					//Try Merge
+					else {						
+						
+						if (GT_Utility.areStacksEqual(t1[0], t1[1])) {						
+						while ((t1[0].stackSize < 64 && t1[1].stackSize > 0)) {							
+							t1[0].stackSize++;
+							t1[1].stackSize--;
+							if (t1[1].stackSize <= 0) {
+								t1[1] = null;
+								break;
+							}
+							if (t1[0].stackSize == 64) {
+								break;
+							}							
+						}						
+						newArray[i] = t1[1];
+						newArray[i2] = t1[0];						
+						}
+					}
+				}
+			}
+		}
+		
+		ItemStack[] newArray2 = new ItemStack[aInvSize];
+		
+		//Move nulls to end
+		int count2 = 0;
+		for (int i = 0; i < aInvSize; i++) 
+			if (newArray[i] != null) 
+				newArray2[count2++] = newArray[i];
+		while (count2 < aInvSize) 
+			newArray2[count2++] = null;			
+		
+		return newArray2;
+
+	
 	}
 
 }

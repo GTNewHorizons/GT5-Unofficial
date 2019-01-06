@@ -100,6 +100,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	public boolean tryAddLoot() {
 		if (this.getInventory().getInventory() != null) {
 			int checkingSlot = 0;
+			ItemUtils.organiseInventory(getInventory());
 			final ItemStack loot = this.generateLootForFishTrap().copy();
 			try {
 				//Utils.LOG_WARNING("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
@@ -203,9 +204,6 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 				if ((this.tickCount % 20) == 0) {
 					this.isInWater = this.isSurroundedByWater();
 				}
-				else {
-
-				}
 
 				if (this.isInWater) {
 					this.calculateTickrate();
@@ -219,13 +217,20 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 						// x["+this.locationX+"] y["+this.locationY+"]
 						// z["+this.locationZ+"] (Ticking for loot every
 						// "+this.baseTickRate+" ticks)");
-						this.tryAddLoot();
+						
+						int aExtraLootChance = MathUtils.randInt(1, 1000);
+						if (aExtraLootChance == 1000) {
+							this.tryAddLoot();
+							this.tryAddLoot();
+							this.tryAddLoot();							
+						}
+						else {
+							this.tryAddLoot();							
+						}
+						
 						this.markDirty();
 					}
 					else {
-						Logger.WARNING("This Trap does not have enough water around it.");
-						Logger.WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
-								+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
 						this.markDirty();
 					}
 					this.tickCount = 0;
@@ -240,20 +245,24 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	}
 
 	public void calculateTickrate() {
-		int calculateTickrate = 0;
-		if (this.waterSides <= 2) {
-			calculateTickrate = 0;
+		int water = this.waterSides;
+		int variance = (int) ((MathUtils.randInt(200, 2000)/water)*0.5);
+		if (water <= 1) {
+			this.baseTickRate = 0;
+		} else if (water == 2) {
+			this.baseTickRate = 6800;
+		} else if (water == 3) {
+			this.baseTickRate = 5600;
+		} else if (water == 4) {
+			this.baseTickRate = 4400;
+		} else if (water == 5) {
+			this.baseTickRate = 3200;
+		} else {
+			this.baseTickRate = 1750;
 		}
-		else if ((this.waterSides > 2) && (this.waterSides < 4)) {
-			calculateTickrate = 4800;
+		if (water > 1) {
+			this.baseTickRate += variance;			
 		}
-		else if ((this.waterSides >= 4) && (this.waterSides < 6)) {
-			calculateTickrate = 3600;
-		}
-		else if (this.waterSides == 6) {
-			calculateTickrate = 2400;
-		}
-		this.baseTickRate = calculateTickrate;
 	}
 
 	public boolean anyPlayerInRange() {

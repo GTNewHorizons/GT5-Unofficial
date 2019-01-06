@@ -1102,6 +1102,12 @@ public class RECIPES_GREGTECH {
 					2 * 20);
 		}
 		
+		
+		//Technetium
+		GT_Values.RA.addChemicalRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium99", 1), null,
+				FluidUtils.getFluidStack("sulfuricacid", 1000), FluidUtils.getFluidStack("sulfuricacid", 144 * 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustTechnetium", 1), 100 * 20);
+		
 
 
 	}

@@ -449,9 +449,8 @@ public final class ALLOY {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().SILICON, 40),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10)
+					new MaterialStack(ELEMENT.getInstance().SILICON, 50),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
 			});
 
 	public static final Material TANTALUM_CARBIDE = new Material(
@@ -465,9 +464,8 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().TANTALUM, 40),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10)
+					new MaterialStack(ELEMENT.getInstance().TANTALUM, 50),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
 			});
 
 	public static final Material ZIRCONIUM_CARBIDE = new Material(
@@ -481,9 +479,8 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 40),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10)
+					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 50),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
 			});
 
 	public static final Material NIOBIUM_CARBIDE = new Material(
@@ -497,9 +494,8 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 40),
-					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
-					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10)
+					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 50),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
 			});
 
 	public static final Material LEAGRISIUM = new Material(
@@ -615,6 +611,25 @@ public final class ALLOY {
 					new MaterialStack(TRINIUM_NAQUADAH, 9),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
 			});
+	
+	public static final Material TRINIUM_REINFORCED_STEEL = new Material(
+			"Arceus Alloy 2B", //Material Name
+			MaterialState.SOLID, //State
+			new short[]{205, 197, 23, 0}, //Material Colour
+			7555, //Melting Point in C
+			12350,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 30),
+					new MaterialStack(ALLOY.MARAGING350, 40),
+					new MaterialStack(ALLOY.TUNGSTENSTEEL, 20),
+					new MaterialStack(ALLOY.OSMIRIDIUM, 10)
+			});
+	
+	
 
 	/*
 	 * Witchery Material

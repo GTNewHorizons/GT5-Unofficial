@@ -30,6 +30,7 @@ import gtPlusPlus.australia.entity.type.EntityDingo;
 import gtPlusPlus.australia.entity.type.EntityOctopus;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
+import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderGiantChicken;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderPlasmaBolt;
@@ -50,6 +51,7 @@ import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
@@ -137,6 +139,8 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 		Logger.INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
+		Logger.INFO("Registering Custom Renderer for the Lead Lined Chest.");
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
 
 
 		//GT++ Australia

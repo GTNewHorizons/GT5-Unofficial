@@ -13,10 +13,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -659,6 +661,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	private static final  Method mSixSlotAssembly;
 	private static final  Method mAssemblyLine;
+	private static final  Method mScannerTT;
 	private static final  Method[] mChemicalRecipe = new Method[3];
 	private static final  Method mLargeChemReactor;
 	
@@ -675,7 +678,28 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			mSixSlotAssembly = ReflectionUtils.getMethod(clazz, "addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class);
 			//Assembly Line
 			mAssemblyLine = ReflectionUtils.getMethod(clazz, "addAssemblylineRecipe", ItemStack.class, int.class, ItemStack[].class, FluidStack[].class, ItemStack.class, int.class, int.class);
+			
 
+			Method T = null;
+			if (LoadedMods.TecTech) {
+				try {
+					Class TTRecipeAdder = Class.forName("com.github.technus.tectech.recipe.TT_recipeAdder");
+					if (TTRecipeAdder != null) {
+						Method ttTest = ReflectionUtils.getMethod(TTRecipeAdder, "addResearchableAssemblylineRecipe",
+								ItemStack.class, int.class, int.class, int.class, int.class, Object[].class,
+								FluidStack[].class, ItemStack.class, int.class, int.class);
+						if (ttTest != null) {
+							T = ttTest;
+						}
+					}
+				} catch (ClassNotFoundException e) {
+				}
+			}
+			else {
+				T = null;
+			}
+			mScannerTT = T;
+			
 			mChemicalRecipe[1] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, int.class, int.class);
 			mChemicalRecipe[2] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, ItemStack.class, int.class);
 
@@ -688,6 +712,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			mSixSlotAssembly = null;
 			mAssemblyLine = null;
 			mLargeChemReactor = null;
+			mScannerTT = null;
 		}
 
 
@@ -727,7 +752,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			}
 			else {
 				if (mAssemblyLine != null) {
-					try {
+					try {						
+						if (!tryAddTecTechScannerRecipe(aResearchItem, aInputs, aFluidInputs, aOutput, aDuration, aEUt)) {
+							Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus.");
+						}
 						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
 								aFluidInputs, aOutput, aDuration, aEUt);
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -750,8 +778,28 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				}
 			}		
 		}
+	}
+	
+	private boolean tryAddTecTechScannerRecipe(ItemStack aResearchItem,	Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+		if (!LoadedMods.TecTech) {
+			return true;
+		}
+		else {
 
-
+			int compSec = (GT_Utility.getTier(assEUt)+1) * 16;
+			int compMax = (GT_Utility.getTier(assEUt)+1) * 10000;
+			
+			if (mScannerTT != null) {
+				try {
+					return (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
+							(assEUt/2), 16, aInputs, aFluidInputs, aOutput, assDuration, assEUt);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus. [Severe]");
+					e.printStackTrace();
+				}
+			}			
+		}
+		return false;
 	}
 
 

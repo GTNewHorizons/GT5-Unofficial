@@ -31,6 +31,7 @@ import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
+import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
@@ -288,6 +289,12 @@ public final class ModItems {
 	public static Item boxTools;
 	public static Item boxFood;
 	public static Item boxMagic;
+
+	private static DustDecayable dustMolybdenum99;
+
+	private static DustDecayable dustTechnetium99;
+
+	private static DustDecayable dustTechnetium99M;
 
 	static {
 		Logger.INFO("Items!");
@@ -550,6 +557,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
 			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);
+			MaterialGenerator.generate(ALLOY.TRINIUM_REINFORCED_STEEL);
 			
 			//Top Tier Alloys
 			MaterialGenerator.generate(ALLOY.LAFIUM);
@@ -774,10 +782,28 @@ public final class ModItems {
 			itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
 		}
 
+		
+		/*
+		 * Decayable Materials
+		 */
+		
 		dustNeptunium238 = new DustDecayable("dustNeptunium238", Utils.rgbtoHexValue(175, 240, 75), 50640, new String[] {""+StringUtils.superscript("238Np"), "Result: Plutonium 238 ("+StringUtils.superscript("238Pu")+")"}, ELEMENT.getInstance().PLUTONIUM238.getDust(1).getItem(), 5);
 		dustDecayedRadium226 = ItemUtils.generateSpecialUseDusts("DecayedRadium226", "Decayed Radium-226", "Contains Radon ("+StringUtils.superscript("222Rn")+")", ELEMENT.getInstance().RADIUM.getRgbAsHex())[0];
 		dustRadium226 = new DustDecayable("dustRadium226", ELEMENT.getInstance().RADIUM.getRgbAsHex(), 90000, new String[] {""+StringUtils.superscript("226Ra"), "Result: Radon ("+StringUtils.superscript("222Rn")+")"}, ItemUtils.getSimpleStack(dustDecayedRadium226).getItem(), 5);
 
+		dustTechnetium99 = new DustDecayable("dustTechnetium99", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 164500, new String[] {""+StringUtils.superscript("99Mo"), "Result: Ruthenium 99("+StringUtils.superscript("99Ru")+")"}, ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(), 4);
+		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
+		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);
+		
+		new BaseItemParticle(ELEMENT.getInstance().HYDROGEN, "Ion");
+		new BaseItemParticle(ELEMENT.getInstance().HELIUM, "Ion");
+		new BaseItemParticle(ELEMENT.getInstance().LITHIUM, "Ion");
+		new BaseItemParticle(ELEMENT.getInstance().BERYLLIUM, "Ion");
+		
+		
+		
+		
+		
 		itemBoilerChassis = new ItemBoilerChassis();
 		itemDehydratorCoilWire = new ItemDehydratorCoilWire();
 		itemDehydratorCoil = new ItemDehydratorCoil();

@@ -22,7 +22,10 @@ public class ItemBlockBasicTile extends ItemBlock{
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (this.mID == 0){ //Fish trap
-			list.add("This trap catches fish faster if surrounded by more water blocks.");			
+			list.add("This trap catches fish faster if surrounded by more water blocks");	
+			list.add("Can also be placed beside upto 4 other fish traps");	
+			list.add("Requires at least two faces touching water");		
+			list.add("1/1000 chance to produce triple loot.");		
 		}
 		else if (this.mID == 1){ //Modularity
 			list.add("Used to construct modular armour & bauble upgrades..");			
@@ -39,8 +42,9 @@ public class ItemBlockBasicTile extends ItemBlock{
 			list.add("Default is used to select slot for auto-insertion");			
 		}
 		else if (this.mID == 5){ //Decayables Chest
-			list.add("Holds radioactive materials");	
-			list.add("Items which decay will tick while inside");			
+			list.add("Chest which holds radioactive materials");	
+			list.add("Items which decay will tick while inside");	
+			list.add("Place with right click");			
 		}
 		else {
 			list.add("Bad Tooltip ID - "+mID);

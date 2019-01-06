@@ -49,6 +49,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_Multi_Basic_Slotted;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
+import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -81,6 +82,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	private static final Method findRecipe09;
 
 	public GT_Recipe mLastRecipe;
+	private MultiblockRequirements mRequirements;
 	private boolean mInternalCircuit = false;
 	protected long mTotalRunTime = 0;
 
@@ -232,6 +234,17 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 	
 	public abstract String[] getTooltip();
+
+	public synchronized final MultiblockRequirements getRequirements() {
+		return mRequirements;
+	}
+
+	//public abstract MultiblockRequirements setRequirements();
+	
+	public synchronized final void setRequirementsInternal() {
+		//this.mRequirements = setRequirements();
+		this.mRequirements = null;
+	}
 
 	public int getAmountOfOutputs() {
 		return 1;

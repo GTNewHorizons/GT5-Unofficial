@@ -44,7 +44,7 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 
 	@Override
 	public int tier() {
-		return 8;
+		return 9;
 	}
 
 	@Override
@@ -86,8 +86,8 @@ public class GregtechMetaTileEntity_Adv_Fusion_MK4 extends GT_MetaTileEntity_Fus
 				"1-16 Output Hatches", 
 				"1-16 Energy Hatches", 
 				"All Hatches must be "+aTierName+" or better", 
-				"32768 EU/t and 80mio EU Cap per Energy Hatch",
 				CORE.GT_Tooltip};
+		//"32768 EU/t and 80mio EU Cap per Energy Hatch"
 	}
 
 	@Override

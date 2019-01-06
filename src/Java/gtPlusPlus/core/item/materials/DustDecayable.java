@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemTickable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -36,7 +35,7 @@ public class DustDecayable extends BaseItemTickable {
 		this.mIcon[1] = reg.registerIcon(gt2);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		super.addInformation(stack, player, list, bool);

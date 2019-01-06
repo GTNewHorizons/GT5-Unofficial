@@ -3,11 +3,22 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 import java.util.HashMap;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.data.ArrayUtils;
+import gtPlusPlus.xmod.gregtech.api.objects.MultiblockLayer.LayerBlockData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.init.Blocks;
@@ -42,7 +53,7 @@ public class MultiblockLayer {
 		width = x;
 		depth = z;
 		mLayerData = new LayerBlockData[x][z];
-		Logger.INFO("Created new Blueprint Layer.");
+		//Logger.INFO("Created new Blueprint Layer.");
 	}
 
 	/**
@@ -65,7 +76,7 @@ public class MultiblockLayer {
 	 * @return - Is this data added to the layer data map?
 	 */
 	public boolean addBlockForPos(Block aBlock, int aMeta, int x, int z, boolean canBeHatch) {		
-		return addBlockForPos(aBlock, aMeta, x, z, canBeHatch, null);
+		return addBlockForPos(aBlock, aMeta, x, z, canBeHatch, new Class[] {});
 	}
 
 	/**
@@ -79,12 +90,44 @@ public class MultiblockLayer {
 	 * @return - Is this data added to the layer data map?
 	 */
 	public boolean addBlockForPos(Block aBlock, int aMeta, int x, int z, boolean canBeHatch, Class aHatchTypeClass) {	
+		return addBlockForPos(aBlock, aMeta, x, z, canBeHatch, new Class[] {aHatchTypeClass});
+	}
+	
+	/**
+	 * 
+	 * @param aBlock - The block expected as this location.
+	 * @param aMeta - The meta for the block above.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @param canBeHatch - is this location able to be substituted for a hatch?
+	 * @param aHatchTypeClass - Specify the class for the hatch if you want it explicit. Use base classes to allow custom hatches which extend.
+	 * @return - Is this data added to the layer data map?
+	 */
+	public boolean addBlockForPos(Block aBlock, int aMeta, int x, int z, boolean canBeHatch, Class[] aHatchTypeClass) {	
 		if (x > width -1) {	
 			return false;
 		}
 		if (z > depth - 1) {
 			return false;
 		}			
+		
+		if (canBeHatch && (aHatchTypeClass == null || aHatchTypeClass.length <= 0)){
+			aHatchTypeClass = new Class[] {
+					GT_MetaTileEntity_Hatch_DataAccess.class,
+					GT_MetaTileEntity_Hatch_Dynamo.class,
+					GT_MetaTileEntity_Hatch_Energy.class,
+					GT_MetaTileEntity_Hatch_Input.class,
+					GT_MetaTileEntity_Hatch_InputBus.class,
+					GT_MetaTileEntity_Hatch_Maintenance.class,
+					GT_MetaTileEntity_Hatch_Muffler.class,
+					GT_MetaTileEntity_Hatch_Output.class,
+					GT_MetaTileEntity_Hatch_OutputBus.class,
+					GT_MetaTileEntity_Hatch.class
+			};
+		}
+		
+		
+		
 		mLayerData[x][z] = new LayerBlockData(aBlock, aMeta, canBeHatch, aHatchTypeClass);		
 		return true;
 	}
@@ -99,6 +142,113 @@ public class MultiblockLayer {
 		setControllerLocation(new Pair<Integer, Integer>(x, z));		
 		return addBlockForPos(GregTech_API.sBlockMachines, 0, x, z, true, GT_MetaTileEntity_MultiBlockBase.class);
 	}
+	
+
+	/**
+	 * Adds a Muffler to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addMuffler(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Muffler.class);
+	}
+	
+
+	/**
+	 * Adds a Maint Hatch to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addMaintHatch(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Maintenance.class);
+	}
+	
+
+	/**
+	 * Adds ah Input to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addInputBus(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_InputBus.class);
+	}
+	
+
+	/**
+	 * Adds an Output to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addOutputBus(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_OutputBus.class);
+	}
+	
+	/**
+	 * Adds ah Input to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addInputHatch(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Input.class);
+	}
+	
+
+	/**
+	 * Adds an Output to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addOutputHatch(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Output.class);
+	}
+	
+	/**
+	 * Adds ah Input to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addInput(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, new Class[] {GT_MetaTileEntity_Hatch_Input.class, GT_MetaTileEntity_Hatch_InputBus.class});
+	}
+	
+
+	/**
+	 * Adds an Output to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addOutput(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, new Class[] {GT_MetaTileEntity_Hatch_Output.class, GT_MetaTileEntity_Hatch_OutputBus.class});
+	}
+	
+	/**
+	 * Adds ah Input to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addEnergyInput(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Energy.class);
+	}
+	
+
+	/**
+	 * Adds an Output to the layer at the designated location.
+	 * @param x - The X location, where 0 is the top left corner & counts upwards, moving right.
+	 * @param z - The Z location, where 0 is the top left corner & counts upwards, moving down.
+	 * @return - Is this controller added to the layer data map?
+	 */
+	public boolean addEnergyOutput(Block aBlock, int aMeta, int x, int z) {		
+		return addBlockForPos(aBlock, aMeta, x, z, true, GT_MetaTileEntity_Hatch_Dynamo.class);
+	}
 
 	/**
 	 * 
@@ -110,7 +260,7 @@ public class MultiblockLayer {
 	 * @return - True if the correct Block was found. May also return true if a hatch is found when allowed or it's the controller.
 	 */
 	public boolean getBlockForPos(Block aBlock, int aMeta, int x, int z, ForgeDirection aDir) {		
-		Logger.INFO("Grid Index X: "+x+" | Z: "+z + " | "+aDir.name());
+		//Logger.INFO("Grid Index X: "+x+" | Z: "+z + " | "+aDir.name());
 		LayerBlockData g;
 		if (aDir == ForgeDirection.SOUTH) {
 			g = mVariantOrientations.get(2)[x][z];
@@ -121,11 +271,11 @@ public class MultiblockLayer {
 		else if (aDir == ForgeDirection.NORTH) {
 			LayerBlockData[][] aData = mVariantOrientations.get(0);
 			if (aData != null) {
-				Logger.INFO("Found Valid Orientation Data. "+aData.length + ", "+aData[0].length);
+				//Logger.INFO("Found Valid Orientation Data. "+aData.length + ", "+aData[0].length);
 				g = aData[x][z];
 			}
 			else {
-				Logger.INFO("Did not find valid orientation data.");
+				//Logger.INFO("Did not find valid orientation data.");
 				g = null;
 			}
 		}
@@ -136,8 +286,8 @@ public class MultiblockLayer {
 			g = mLayerData[x][z];			
 		}		
 		if (g == null) {
-			/*Logger.INFO("Failed to find LayerBlockData.");
-			return false;*/
+			Logger.INFO("Failed to find LayerBlockData. Using AIR_FALLBACK");
+			//return false;*/
 			g = LayerBlockData.FALLBACK_AIR_CHECK;
 		}
 
@@ -164,32 +314,32 @@ public class MultiblockLayer {
 			Logger.INFO("Failed to lock layer");	
 			return;
 		}
-		Logger.INFO("Trying to lock layer");	
+		//Logger.INFO("Trying to lock layer");	
 		this.mFinalised = true;
 		generateOrientations();
-		Logger.INFO("Trying to Build Blueprint Layer [Constructed orietations & finalized]");
+		//Logger.INFO("Trying to Build Blueprint Layer [Constructed orietations & finalized]");
 	}
 
 	private void generateOrientations() {
 		try {		
 
-			Logger.INFO("Trying to gen orients for layer");
+			//Logger.INFO("Trying to gen orients for layer");
 			//North
 			mVariantOrientations.put(mLayerData);
 			LayerBlockData[][] val;
-			Logger.INFO("1 done");
+			//Logger.INFO("1 done");
 			//East
 			val = rotateArrayClockwise(mLayerData);
 			mVariantOrientations.put((LayerBlockData[][]) val);
-			Logger.INFO("2 done");
+			//Logger.INFO("2 done");
 			//South
 			val = rotateArrayClockwise(mLayerData);
 			mVariantOrientations.put((LayerBlockData[][]) val);
-			Logger.INFO("3 done");
+			//Logger.INFO("3 done");
 			//West
 			val = rotateArrayClockwise(mLayerData);
 			mVariantOrientations.put((LayerBlockData[][]) val);
-			Logger.INFO("4 done");		
+			//Logger.INFO("4 done");		
 
 		}
 		catch (Throwable t) {
@@ -198,19 +348,19 @@ public class MultiblockLayer {
 	}
 
 	public static LayerBlockData[][] rotateArrayClockwise(LayerBlockData[][] mat) {
-		Logger.INFO("Rotating Layer 90' Clockwise");
+		//Logger.INFO("Rotating Layer 90' Clockwise");
 		try {
 			final int M = mat.length;
 			final int N = mat[0].length;
-			Logger.INFO("Dimension X: "+M);
-			Logger.INFO("Dimension Z: "+N);
+			//Logger.INFO("Dimension X: "+M);
+			//Logger.INFO("Dimension Z: "+N);
 			LayerBlockData[][] ret = new LayerBlockData[N][M];
 			for (int r = 0; r < M; r++) {
 				for (int c = 0; c < N; c++) {
 					ret[c][M-1-r] = mat[r][c];
 				}
 			}	   
-			Logger.INFO("Returning Rotated Layer"); 
+			//Logger.INFO("Returning Rotated Layer"); 
 			return ret;
 		}
 		catch (Throwable t) {
@@ -237,7 +387,55 @@ public class MultiblockLayer {
 		this.mControllerLocation = mControllerLocation;
 	}
 
+	public LayerBlockData getDataFromCoordsWithDirection(ForgeDirection aDir, int W, int D) {
+		LayerBlockData g;
+		if (aDir == ForgeDirection.SOUTH) {
+			g = this.mVariantOrientations.get(2)[W][D];
+		}
+		else if (aDir == ForgeDirection.WEST) {
+			g = this.mVariantOrientations.get(3)[W][D];
+		}
+		else if (aDir == ForgeDirection.NORTH) {
+			g = this.mVariantOrientations.get(0)[W][D];
+		}
+		else if (aDir == ForgeDirection.EAST) {
+			g = this.mVariantOrientations.get(1)[W][D];
+		}
+		else {
+			g = this.mLayerData[W][D];			
+		}
+		return g;
+	}
+	
+	public static Pair<Integer, Integer> rotateOffsetValues(ForgeDirection aDir, int X, int Z) {
+		int offsetX, offsetZ;
+		
+		if (aDir == ForgeDirection.NORTH) {			
+			offsetX = X;						
+			offsetZ = Z;			
+		}
 
+		else if (aDir == ForgeDirection.EAST) {			
+			offsetX = -X;			
+			offsetZ = Z;			
+		}
+
+		else if (aDir == ForgeDirection.SOUTH) {			
+			offsetX = -X;			
+			offsetZ = -Z;			
+		}
+
+		else if (aDir == ForgeDirection.WEST) {			
+			offsetX = X;				
+			offsetZ = -Z;				
+		}
+		else {
+			offsetX = X;
+			offsetZ = Z;			
+		}		
+		
+		return new Pair<Integer, Integer>(offsetX, offsetZ);
+	}
 
 
 
@@ -363,21 +561,25 @@ public class MultiblockLayer {
 		public final Block mBlock;
 		public final int mMeta;
 		public final boolean canBeHatch;
-		public final Class mHatchClass;
+		public final Class[] mHatchClass;
 
-		private final boolean isController;
+		public final boolean isController;
 
 
 		public LayerBlockData(Block aBlock, int aMeta, boolean aHatch) {
-			this(aBlock, aMeta, aHatch, null);
+			this(aBlock, aMeta, aHatch, new Class[] {});
 		}
 
 		public LayerBlockData(Block aBlock, int aMeta, boolean aHatch, Class clazz) {
+			this(aBlock, aMeta, aHatch, new Class[] {clazz});
+		}
+		
+		public LayerBlockData(Block aBlock, int aMeta, boolean aHatch, Class[] clazz) {
 			mBlock = aBlock;
 			mMeta = aMeta;
 			canBeHatch = aHatch;
 			mHatchClass = clazz;
-			if (clazz != null && clazz.equals(GT_MetaTileEntity_MultiBlockBase.class)) {
+			if (clazz != null && clazz.length > 0 && clazz[0].equals(GT_MetaTileEntity_MultiBlockBase.class)) {
 				isController = true;
 			}
 			else {
@@ -391,17 +593,20 @@ public class MultiblockLayer {
 			if (blockToTest instanceof BlockAir && mBlock instanceof BlockAir) {
 				return true;
 			}
-
-			//If Block does't match at all and it cannot be hatch
-			if (blockToTest != mBlock && !canBeHatch) {
-				return false;
+			
+			if (isController && blockToTest == GregTech_API.sBlockMachines) {
+				return true;
 			}
-
-			//If Block does Match, is not controller, is not hatch and Meta does not match
-			if (!isController && !canBeHatch && metaToTest != mMeta) {
-				return false;
+			
+			if (canBeHatch && blockToTest == GregTech_API.sBlockMachines) {
+				return true;
+			}
+			
+			if (blockToTest == mBlock && metaToTest == mMeta) {
+				return true;
 			}			
-			return true;
+			
+			return false;
 		}
 	}
 

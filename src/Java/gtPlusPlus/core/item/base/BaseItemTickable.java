@@ -260,6 +260,7 @@ public class BaseItemTickable extends CoreItem {
 				//Done Ticking
 				if (maxTicks-getFilterDamage(world, aStack) <= 0) {
 					setIsActive(world, aStack, false);
+					return false;
 				}			
 				if (getIsActive(world, aStack)) {
 					if (aNBT != null) {
@@ -271,6 +272,9 @@ public class BaseItemTickable extends CoreItem {
 						
 						
 						return true;
+					}
+					else {
+						return false;
 					}
 				}	
 				else {
@@ -293,7 +297,7 @@ public class BaseItemTickable extends CoreItem {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+	public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list, boolean bool) {
 		World world = player.getEntityWorld();
 		if (this.descriptionString.length > 0) {
 			list.add(EnumChatFormatting.GRAY+this.descriptionString[0]);

@@ -8,6 +8,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -16,6 +17,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_Machines {
 
@@ -860,18 +862,18 @@ public class RECIPES_Machines {
 						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
 						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
 						GregtechItemList.Pollution_Detector.get(1));
-				
+
 				//Air Intake Hatch
-				
+
 				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("FluidRegulator_IV").get(1, ItemList.Pump_IV.get(1)) : ItemList.Pump_IV.get(1);
-				
-				
+
+
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
 						CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
 						CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
 						GregtechItemList.Hatch_Air_Intake.get(1));
-				
+
 				//ULV
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[0], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[0],
@@ -1048,7 +1050,7 @@ public class RECIPES_Machines {
 
 
 			}
-			
+
 			//Shelves
 			RecipeUtils.addShapedGregtechRecipe(
 					"screwWood", "plateWood", "screwWood",
@@ -1137,9 +1139,9 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter){
-				
+
 				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Block_IridiumTungstensteel").get(1, ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1)) : ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
-				
+
 				RecipeUtils.recipeBuilder(
 						"plateTungstenSteel", CI.craftingToolHammer_Hard, "plateTungstenSteel",
 						"plateStellite", aCoreBlock, "plateStellite",
@@ -1255,9 +1257,9 @@ public class RECIPES_Machines {
 						CI.fieldGenerator_IV, CI.machineHull_ZPM, CI.robotArm_IV,
 						plate, GregtechItemList.Gregtech_Computer_Cube.get(1), plate,
 						GregtechItemList.Machine_Adv_ImplosionCompressor.get(1));	
-				
-				
-				
+
+
+
 				//Supply Depot
 				plate = ALLOY.TUNGSTEN_CARBIDE.getPlateDouble(1);
 				gear = ALLOY.TRINIUM_TITANIUM.getRing(1);
@@ -1266,7 +1268,7 @@ public class RECIPES_Machines {
 				cell2 = CI.electricMotor_IV;
 				ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
 				ItemStack aTieredUnboxinator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Machine_LuV_Unboxinator").get(1, ItemList.Machine_IV_Unboxinator.get(1)) : ItemList.Machine_IV_Unboxinator.get(1);
-				
+
 
 				RecipeUtils.recipeBuilder(
 						plate, ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1), plate,
@@ -1278,21 +1280,21 @@ public class RECIPES_Machines {
 						CI.robotArm_LuV, aTieredUnboxinator, CI.robotArm_LuV,
 						CI.conveyorModule_LuV, GregtechItemList.Gregtech_Computer_Cube.get(1), CI.conveyorModule_LuV,
 						GregtechItemList.Amazon_Warehouse_Controller.get(1));
-				
-				
+
+
 				//Industrial Mixing Machine
 				RecipeUtils.recipeBuilder( 
 						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
 						"plateZirconiumCarbide", EV_MACHINE_Mixer, "plateZirconiumCarbide",
 						"plateStaballoy",CI.getTieredCircuit(5),"plateStaballoy",
 						GregtechItemList.Industrial_Mixer.get(1));
-				
+
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine){				
 				ItemStack plate = ALLOY.STABALLOY.getPlate(1);
 
-				
+
 				ItemStack o_Compressor;
 				ItemStack o_Lathe;
 				ItemStack o_Electromagnet;
@@ -1375,8 +1377,151 @@ public class RECIPES_Machines {
 					GregtechItemList.Charger_MAX.get(1));
 
 
+
+
+			/*
+			 * 6/1/19 - Content additions
+			 */
+
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+
+				/*
+				 * Fusion MK4
+				 */
+
+				//Fusion MK4 Controller
+				CORE.RA.addAssemblylineRecipe(
+						ItemList.FusionComputer_UV.get(1),
+						(int) GT_Values.V[5],
+						new ItemStack[] {
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(9), 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 32 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("wireGt16Superconductor", 8 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.fieldGenerator_ZPM, 6 * (CORE.GTNH ? 2 : 1)),
+								ItemList.Energy_LapotronicOrb2.get(1 * (CORE.GTNH ? 2 : 1)),
+								ItemList.FusionComputer_UV.get(1),
+								GregtechItemList.Casing_Fusion_Internal.get(1)
+						},
+						new FluidStack[] {
+								ALLOY.PIKYONIUM.getFluid(32 * 144),
+								ALLOY.HG1223.getFluid(64 * 144)
+						},
+						GregtechItemList.FusionComputer_UV2.get(1),
+						(int) GT_Values.V[6],
+						(int) GT_Values.V[8]);
+
+				//Fusion MK4 Casing
+				CORE.RA.addAssemblylineRecipe(
+						ItemList.Casing_Fusion2.get(1),
+						(int) GT_Values.V[4],
+						new ItemStack[] {
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 8 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 16 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("blockTungstenCarbide", 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.electricMotor_ZPM, 3 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.electricPiston_LuV, 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.machineHull_ZPM, 1 * (CORE.GTNH ? 2 : 1)),
+								ItemList.Casing_Fusion2.get(1)
+						},
+						new FluidStack[] {
+								Materials.NaquadahAlloy.getMolten(576 * (CORE.GTNH ? 2 : 1)),
+								ALLOY.ZERON_100.getFluid(16 * 144)
+						},
+						GregtechItemList.Casing_Fusion_External.get(1),
+						(int) GT_Values.V[5],
+						(int) GT_Values.V[7]);
+
+				//Fusion MK4 Coil
+				CORE.RA.addAssemblylineRecipe(
+						ItemList.Casing_Fusion_Coil.get(1),
+						(int) GT_Values.V[4],
+						new ItemStack[] {
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.emitter_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.sensor_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.fieldGenerator_LuV, 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.getDataOrb(), 8 * (CORE.GTNH ? 2 : 1)),
+								ItemList.Energy_LapotronicOrb2.get(2 * (CORE.GTNH ? 2 : 1)),
+								ItemList.Casing_Fusion_Coil.get(1)
+						},
+						new FluidStack[] {
+								ALLOY.CINOBITE.getFluid(16 * 144 * (CORE.GTNH ? 2 : 1)),
+								ALLOY.ABYSSAL.getFluid(64 * 144)
+						},
+						GregtechItemList.Casing_Fusion_Internal.get(1),
+						(int) GT_Values.V[5],
+						(int) GT_Values.V[7]);
+
+
+				
+				
+				ItemStack aDrillController;
+				if (CORE.GTNH) {
+					aDrillController = ItemList.valueOf("OreDrill4").get(1);
+				}
+				else {
+					ItemList g = ItemList.valueOf("OreDrill4");
+					if (g == null) {
+						aDrillController = CI.machineHull_UV;
+					}
+					else {
+						aDrillController = g.get(1);
+					}
+				}
+				
+				//Drilling Platform
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								aDrillController,
+								ItemUtils.getItemStackOfAmountFromOreDict("frameGtTriniumNaquadahCarbonite", 3),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.conveyorModule_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.electricPump_ZPM, 4 * (CORE.GTNH ? 2 : 1)),
+						},
+						ALLOY.LAFIUM.getFluid(144 * 8  * (CORE.GTNH ? 2 : 1)),
+						GregtechItemList.BedrockMiner_MKI.get(1),
+						(int) GT_Values.V[5],
+						(int) GT_Values.V[7]);
+				
+				//Drilling Platform Casings
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								ItemUtils.getItemStackOfAmountFromOreDict("frameGtTriniumNaquadahCarbonite", 4),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleTriniumTitaniumAlloy", 1 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("gearGtPikyonium64B", 2 * (CORE.GTNH ? 2 : 1)),
+								ALLOY.TRINIUM_REINFORCED_STEEL.getPlateDouble(4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack(CI.machineHull_LuV, 1 * (CORE.GTNH ? 2 : 1)),
+						},
+						ALLOY.MARAGING350.getFluid(144 * 16  * (CORE.GTNH ? 2 : 1)),
+						GregtechItemList.Casing_BedrockMiner.get(1),
+						(int) GT_Values.V[4],
+						(int) GT_Values.V[6]);
+
+
+
+
+
+
+
+
+
+			}
+
+
+
+
+
+
+
+
+
+
 		}
-		
+
 
 
 		//Mystic Frame
@@ -1388,8 +1533,8 @@ public class RECIPES_Machines {
 				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2))){
 			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
 		}
-		
-		
+
+
 		Logger.INFO("Done loading recipes for the Various machine blocks.");
 	}
 }

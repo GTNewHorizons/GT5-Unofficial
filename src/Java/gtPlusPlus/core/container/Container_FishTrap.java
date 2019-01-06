@@ -34,6 +34,7 @@ public class Container_FishTrap extends Container {
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 
+        te.openInventory();
 		int var6;
 		int var7;
 		this.worldObj = te.getWorldObj();
@@ -80,6 +81,7 @@ public class Container_FishTrap extends Container {
 	@Override
 	public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
 		super.onContainerClosed(par1EntityPlayer);
+		tile_entity.closeInventory();
 	}
 
 	@Override

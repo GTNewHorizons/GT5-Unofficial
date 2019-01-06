@@ -27,6 +27,7 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.blueprint.Blueprint_LFTR;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -135,11 +136,23 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		return "MatterFabricator";
 	}	
 
+	private Blueprint_LFTR mBlueprint;
+	
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		
+		if (mBlueprint == null) {
+			mBlueprint = new  Blueprint_LFTR();
+		}		
+		return mBlueprint.checkMachine(aBaseMetaTileEntity);
+		
+		
+		/*
+
+		
 
 		// Life Lessons from Greg.
-		/**
+		*//**
 		[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
 		[23:41:26] <GregoriusTechneticies> thats you issue
 		[23:44:33] <Alkalus> mmm?
@@ -154,7 +167,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		[23:45:51] <Alkalus> Ahh
 		[23:45:57] <GregoriusTechneticies> and not 2
 		[23:46:06] <Alkalus> Noted, thanks :D
-		 */
+		 *//*
 
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
@@ -197,7 +210,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 						}
 
 						//TODO - Add Carbon Moderation Rods
-						/*
+						
 							else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
@@ -208,7 +221,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
 									return false;
 								}
-							}*/
+							}
 
 					}
 
@@ -319,7 +332,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		this.turnCasingActive(false);
 		Logger.INFO("Multiblock Formed.");
 		return true;
-	}
+	*/}
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
