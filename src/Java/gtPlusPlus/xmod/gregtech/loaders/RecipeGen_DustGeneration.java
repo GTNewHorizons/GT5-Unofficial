@@ -20,6 +20,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -416,11 +417,11 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			if (aMatInfo.vTier <= 4){
 				timeTaken = 25*aMatInfo.vTier*10;
 			}
-			int aSlot = aMatInfo.vTier - 1;
+			int aSlot = aMatInfo.vTier;
 			if (aSlot < 2) {
 				aSlot = 2;
 			}
-			long aVoltage = GT_Values.V[aSlot >= 2 ? aSlot : 2];
+			long aVoltage = MaterialUtils.getVoltageForTier(aSlot);
 
 			return GT_Values.RA.addBlastRecipe(
 					input1,

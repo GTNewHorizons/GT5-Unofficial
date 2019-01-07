@@ -1396,15 +1396,15 @@ public class RECIPES_Machines {
 						new ItemStack[] {
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(9), 4 * (CORE.GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 32 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict("wireGt16Superconductor", 8 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.fieldGenerator_ZPM, 6 * (CORE.GTNH ? 2 : 1)),
-								ItemList.Energy_LapotronicOrb2.get(1 * (CORE.GTNH ? 2 : 1)),
-								ItemList.FusionComputer_UV.get(1),
+								ItemUtils.getItemStackOfAmountFromOreDict("wireGt16Superconductor", 8 * (CORE.GTNH ? 4 : 2)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateDenseNeutronium", 2 * (CORE.GTNH ? 5 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_ZPM), 5),
+								ItemList.Energy_LapotronicOrb2.get(1 * (CORE.GTNH ? 64 : 8)),
+								CORE.GTNH ? GregtechItemList.Compressed_Fusion_Reactor.get(1) : ItemList.FusionComputer_UV.get(1),
 								GregtechItemList.Casing_Fusion_Internal.get(1)
 						},
 						new FluidStack[] {
-								ALLOY.PIKYONIUM.getFluid(32 * 144),
+								ALLOY.PIKYONIUM.getFluid(32 * 144 * (CORE.GTNH ? 2 : 1)),
 								ALLOY.HG1223.getFluid(64 * 144)
 						},
 						GregtechItemList.FusionComputer_UV2.get(1),
@@ -1420,9 +1420,9 @@ public class RECIPES_Machines {
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 16 * (CORE.GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict("blockTungstenCarbide", 4 * (CORE.GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.electricMotor_ZPM, 3 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.electricPiston_LuV, 4 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.machineHull_ZPM, 1 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.electricMotor_MAX : CI.electricMotor_ZPM), 3 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.electricPiston_UV : CI.electricPiston_LuV), 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.machineHull_MAX : CI.machineHull_ZPM), 1 * (CORE.GTNH ? 2 : 1)),
 								ItemList.Casing_Fusion2.get(1)
 						},
 						new FluidStack[] {
@@ -1440,12 +1440,12 @@ public class RECIPES_Machines {
 						new ItemStack[] {
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 4 * (CORE.GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 8 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.emitter_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.sensor_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.fieldGenerator_LuV, 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.getDataOrb(), 8 * (CORE.GTNH ? 2 : 1)),
-								ItemList.Energy_LapotronicOrb2.get(2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict("plateNeutronium", 2 * (CORE.GTNH ? 3 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.emitter_MAX : CI.emitter_ZPM), 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.sensor_MAX : CI.sensor_ZPM), 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_LuV), 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 8) : CI.getDataOrb()), 8 * (CORE.GTNH ? 2 : 1)),
+								ItemList.Energy_LapotronicOrb2.get(2 * (CORE.GTNH ? 16 : 1)),
 								ItemList.Casing_Fusion_Coil.get(1)
 						},
 						new FluidStack[] {

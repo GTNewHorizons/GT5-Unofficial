@@ -10,6 +10,7 @@ public final class ALLOY {
 	//Just some GT Alloys that I need within mine.
 	public static final Material BRONZE = MaterialUtils.generateMaterialFromGtENUM(Materials.Bronze);
 	public static final Material STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.Steel);
+	public static final Material STEEL_BLACK = MaterialUtils.generateMaterialFromGtENUM(Materials.BlackSteel);
 	public static final Material INVAR = MaterialUtils.generateMaterialFromGtENUM(Materials.Invar);
 	public static final Material KANTHAL = MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal);
 	public static final Material NICHROME = MaterialUtils.generateMaterialFromGtENUM(Materials.Nichrome);
@@ -26,6 +27,7 @@ public final class ALLOY {
 			150, //Protons
 			80, //Neutrons
 			true, //Uses Blast furnace?
+			"⬟ ⯂ ⬢ ⬣ ⯃ ⯄",
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().AER, 5),
@@ -187,6 +189,21 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 10),
 					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20),
 					new MaterialStack(NICHROME, 10)
+			});
+	
+	public static final Material NITINOL_60 = new Material(
+			"Nitinol 60", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			5651, //Melting Point in C
+			8975,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 40),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 60)
 			});
 
 
@@ -437,6 +454,21 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
 					new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 50)
 			});
+	
+	public static final Material TUNGSTEN_TITANIUM_CARBIDE = new Material(
+			"Tungsten Titanium Carbide", //Material Name
+			MaterialState.SOLID, //State
+			null,
+			-1, //Melting Point in C
+			-1,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(TUNGSTEN_CARBIDE, 70),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 30)
+			});
 
 	public static final Material SILICON_CARBIDE = new Material(
 			"Silicon Carbide", //Material Name
@@ -496,6 +528,23 @@ public final class ALLOY {
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 50),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
+			});
+	
+	public static final Material ARCANITE = new Material(
+			"Arcanite", //Material Name
+			MaterialState.SOLID, //State
+			null,
+			5666, //Melting Point in C
+			9875,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 40),
+					new MaterialStack(ENERGYCRYSTAL, 40),
+					new MaterialStack(ELEMENT.getInstance().ORDO, 10),
+					new MaterialStack(ELEMENT.getInstance().PERDITIO, 10)
 			});
 
 	public static final Material LEAGRISIUM = new Material(
@@ -704,7 +753,7 @@ public final class ALLOY {
 	public static final Material PIKYONIUM = new Material(
 			"Pikyonium 64B", //Material Name
 			MaterialState.SOLID, //State
-			null, //Material Colour
+            new short[]{52, 103, 186, 0}, //Material Colour
 			7850, //Melting Point in C
 			11765, //Boiling Point in C
 			-1,
@@ -744,12 +793,49 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().GERMANIUM, 2),
 			});
 	
+	//Titansteel
+	public static final Material TITANSTEEL = new Material(
+			"Titansteel", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			8250, //Melting Point in C
+			11765, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.TUNGSTEN_TITANIUM_CARBIDE, 3),
+					new MaterialStack(ELEMENT.getInstance().IGNIS, 1),
+					new MaterialStack(ELEMENT.getInstance().TERRA, 1),
+					new MaterialStack(ELEMENT.getInstance().PERDITIO, 1),
+			});
+	
+	
+	public static final Material OCTIRON = new Material(
+			"Octiron", //Material Name
+			MaterialState.SOLID, //State
+			null,
+			9120, //Melting Point in C
+			14200,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ARCANITE, 30),
+					new MaterialStack(TITANSTEEL, 30),
+					new MaterialStack(ENERGYCRYSTAL, 5),
+					new MaterialStack(STEEL_BLACK, 10),
+					new MaterialStack(ELEMENT.getInstance().THAUMIUM, 25)
+			});
+	
 	//Quantum
 	public static final Material QUANTUM = new Material(
 			"Quantum", //Material Name
 			MaterialState.SOLID, //State
 			null, //Material Colour
-			9500, //Melting Point in C
+			10500, //Melting Point in C
 			25000, //Boiling Point in C
 			150, //Protons
 			200, //Neutrons

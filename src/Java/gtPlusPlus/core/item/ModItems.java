@@ -385,19 +385,19 @@ public final class ModItems {
 			 * Try generate dusts for missing rare earth materials if they don't exist
 			 */
 
-			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))){
+			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))){
 				ItemUtils.generateSpecialUseDusts("Gadolinium", "Gadolinium", Materials.Gadolinium.mElement.name(), Utils.rgbtoHexValue(226, 172, 9));
 			}
-			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))){
+			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustYtterbium", 1))){
 				ItemUtils.generateSpecialUseDusts("Ytterbium", "Ytterbium", Materials.Ytterbium.mElement.name(), Utils.rgbtoHexValue(Materials.Yttrium.mRGBa[0]-60, Materials.Yttrium.mRGBa[1]-60, Materials.Yttrium.mRGBa[2]-60));
 			}
-			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))){
+			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSamarium", 1))){
 				ItemUtils.generateSpecialUseDusts("Samarium", "Samarium", Materials.Samarium.mElement.name(), Utils.rgbtoHexValue(161, 168, 114));
 			}
-			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))){
+			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLanthanum", 1))){
 				ItemUtils.generateSpecialUseDusts("Lanthanum", "Lanthanum", Materials.Lanthanum.mElement.name(), Utils.rgbtoHexValue(106, 127, 163));
 			}
-			if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
+			if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGermanium", 1))){
 		    	ItemUtils.generateSpecialUseDusts("Germanium", "Germanium", "Ge", ELEMENT.getInstance().GERMANIUM.getRgbAsHex());
 			}
 
@@ -461,6 +461,14 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
+			
+			
+			//Custom Materials that will have standalone refinery processes
+			MaterialGenerator.generate(ELEMENT.STANDALONE.ADVANCED_NITINOL, false);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.ASTRAL_TITANIUM);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.HYPOGEN);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
@@ -471,6 +479,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.ZIRCONIUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);
+			MaterialGenerator.generate(ALLOY.TUNGSTEN_TITANIUM_CARBIDE);
 
 			//LFTR Fuel components
 			MaterialGenerator.generate(FLUORIDES.HYDROXIDE); //LFTR fuel component
@@ -528,6 +537,8 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.MARAGING300);
 			MaterialGenerator.generate(ALLOY.MARAGING350);
 
+			MaterialGenerator.generate(ALLOY.NITINOL_60);
+
 			//Composite Alloys
 			MaterialGenerator.generate(ALLOY.STELLITE);
 			MaterialGenerator.generate(ALLOY.TALONITE);
@@ -564,6 +575,11 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.CINOBITE);
 			MaterialGenerator.generate(ALLOY.PIKYONIUM);
 			MaterialGenerator.generate(ALLOY.ABYSSAL);
+			
+
+			MaterialGenerator.generate(ALLOY.TITANSTEEL, false);
+			MaterialGenerator.generate(ALLOY.ARCANITE);
+			MaterialGenerator.generate(ALLOY.OCTIRON);			
 			
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);

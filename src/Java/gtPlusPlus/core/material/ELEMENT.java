@@ -122,6 +122,8 @@ public final class ELEMENT {
 	public final Material IGNIS = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedFire, TextureSets.GEM_A.get());
 	public final Material TERRA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEarth, TextureSets.GEM_A.get());
 	public final Material AQUA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater, TextureSets.GEM_A.get());
+	public final Material PERDITIO = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEntropy, TextureSets.GEM_A.get());
+	public final Material ORDO = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedOrder, TextureSets.GEM_A.get());
 	
 	//Fictional	
 	public final Material YELLORIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yellorium, new short[] {255, 242, 10}, TextureSets.NUCLEAR.get());
@@ -146,8 +148,7 @@ public final class ELEMENT {
 	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, TextureSets.NUCLEAR.get(), Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2, false);//Not a GT Inherited Material
 
 	public final Material MAGIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Magic, new short[] {10, 185, 140});
-	public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
-
+	public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);	
 
 	static {
 		Logger.MATERIALS("Initialising Base Elements.");
@@ -201,6 +202,16 @@ public final class ELEMENT {
 
 	public static ELEMENT getInstance(){
 		return INSTANCE;
+	}
+	
+	public static class STANDALONE {
+		
+		public static final Material CELESTIAL_TUNGSTEN = new Material("Celestial Tungsten", MaterialState.SOLID, TextureSets.REFINED.get(), ELEMENT.INSTANCE.TUNGSTEN.getRGB(), INSTANCE.TUNGSTEN.getMeltingPointC()+6500, INSTANCE.TUNGSTEN.getBoilingPointC()+7500, 160, 101, true, "✦◆✦", 0);//Not a GT Inherited Material
+		public static final Material ASTRAL_TITANIUM = new Material("Astral Titanium", MaterialState.SOLID, TextureSets.REFINED.get(), ELEMENT.INSTANCE.TITANIUM.getRGB(), INSTANCE.TITANIUM.getMeltingPointC()+7500, INSTANCE.TITANIUM.getBoilingPointC()+7500, 145, 133, true, "✧◇✧", 0);//Not a GT Inherited Material
+		public static final Material CHRONOMATIC_GLASS = new Material("Chromatic Glass", MaterialState.SOLID, new short[]{255, 255, 255}, 9200, 17550, 40, 51, false, "🕛🕒🕕🕘🕛 ", 0);//Not a GT Inherited Material
+		public static final Material ADVANCED_NITINOL = new Material("Advanced Nitinol", MaterialState.SOLID, TextureSets.ENRICHED.get(), ALLOY.NITINOL_60.getRGB(), 8400, 14377, 40, 51, true, "⚷⚙⚷ Ni4Ti6", 0);//Not a GT Inherited Material
+		public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
+		
 	}
 
 

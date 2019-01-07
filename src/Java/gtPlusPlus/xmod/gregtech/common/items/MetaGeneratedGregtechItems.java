@@ -283,6 +283,15 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(262144));
 		
 		
+		//Fusion Reactor MK4 Singularity
+		GregtechItemList.Compressed_Fusion_Reactor.set(this.addItem(100, "Hypervisor Matrix (Fusion)", "A memory unit containing an RI (Restricted Intelligence)", new Object[0]));
+		GT_Values.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
+		
+		//NanoTubes
+		GregtechItemList.NanoTube_Base_Substrate.set(this.addItem(101, "Silicon Base Substrate", "Used in the production of Carbon Nanotubes", new Object[0]));
+		GregtechItemList.NanoTube_Finished.set(this.addItem(102, "Carbon Nanotubes", "Multi-walled Zigzag nanotubes, possibly Carbon's final form", new Object[0]));
+		GregtechItemList.Carbyne_Tube_Finished.set(this.addItem(103, "Linear Acetylenic Carbon (LAC/Carbyne)", "LAC chains grown inside Multi-walled Carbon Nanotubes, highly stable", new Object[0]));
+		GregtechItemList.Carbyne_Sheet_Finished.set(this.addItem(104, "Carbyne Composite Panel", "Nanotubes which contain LAC, arranged side by side and compressed further", new Object[0]));
 		
 	}
 

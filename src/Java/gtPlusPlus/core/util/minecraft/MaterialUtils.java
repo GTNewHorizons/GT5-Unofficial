@@ -215,7 +215,11 @@ public class MaterialUtils {
 	}
 
 	public static int getTierOfMaterial(final int aMeltingPoint){
-		if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){
+		
+		return aMeltingPoint < 1000 ? 0 : (Math.round(aMeltingPoint/1000));
+		
+		
+		/*if ((aMeltingPoint >= 0) && (aMeltingPoint <= 1000)){
 			return 1;
 		}
 		else if((aMeltingPoint >= 1001) && (aMeltingPoint <= 2000)){
@@ -247,43 +251,49 @@ public class MaterialUtils {
 		}
 		else {
 			return 0;
-		}
+		}*/
 	}
 
-	public static int getVoltageForTier(final int aTier) {
+	public static int getVoltageForTier(int aTier) {
+		aTier += 1;
 		if (aTier == 0) {
 			return 16;
-		}
-		if (aTier == 1) {
+		} else if (aTier == 1) {
 			return 30;
-		}
-		if (aTier == 2) {
+		} else if (aTier == 2) {
 			return 120;
-		}
-		if (aTier == 3) {
+		} else if (aTier == 3) {
 			return 480;
+		} else if (aTier == 4) {
+			return 1920;
+		} else if (aTier == 5) {
+			return 7680;
+		} else if (aTier == 6) {
+			return 30720;
+		} else if (aTier == 7) {
+			return 122880;
+		} else if (aTier == 8) {
+			return 491520;
+		} else if (aTier == 9) {
+			return 1966080;
+		} else if (aTier == 10) {
+			return 7864320;
+		} else if (aTier == 11) {
+			return 31457280;
+		} else if (aTier == 12) {
+			return 125829120;
+		} else if (aTier == 13) {
+			return 503316480;
+		} else if (aTier == 14) {
+			return 2013265920;
+		} else {
+			return Integer.MAX_VALUE;
 		}
-		if (aTier == 4) {
-			return 1600;
-		}
-		if (aTier == 5) {
-			return 6400;
-		}
-		if (aTier == 6) {
-			return 25000;
-		}
-		if (aTier == 7) {
-			return 100000;
-		}
-		if (aTier == 8) {
-			return 400000;
-		}
-		if (aTier == 9) {
-			return 1600000;
-		}
-
-
-		return 120;
+		
+		/*else {
+			int newTier = aTier - 1;
+			return (int) ((4*(Math.pow(4, newTier)))*7.5);
+		}*/
 	}
 
 	private static Materials getMaterialByName(String materialName) {

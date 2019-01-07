@@ -6,6 +6,7 @@ import gregtech.api.util.GT_ModHandler;
 
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemIngot extends BaseItemComponent{
 
@@ -28,7 +29,7 @@ public class BaseItemIngot extends BaseItemComponent{
 	private void generateCompressorRecipe(){
 		final ItemStack tempStack = componentMaterial.getIngot(9);
 		final ItemStack tempOutput = componentMaterial.getBlock(1);
-		if (tempStack != null && tempOutput != null){
+		if (ItemUtils.checkForInvalidItems(new ItemStack[] {tempStack, tempOutput})){
 			GT_ModHandler.addCompressionRecipe(tempStack, tempOutput);
 		}
 	}

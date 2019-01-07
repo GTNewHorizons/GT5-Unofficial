@@ -15,8 +15,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().MAGNESIUM, 1),
@@ -33,8 +31,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
@@ -56,8 +52,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
@@ -76,8 +70,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
@@ -96,8 +88,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().LEAD, 1),
@@ -114,8 +104,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().NICKEL, 1),
@@ -135,8 +123,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1), //Y not YT/YB
@@ -153,8 +139,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2), //Y not YT/YB
@@ -175,8 +159,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2), //Y not YT/YB
@@ -196,8 +178,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 1),
@@ -215,8 +195,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 4),
@@ -239,8 +217,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 2),
@@ -262,8 +238,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
@@ -283,8 +257,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
@@ -301,8 +273,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
@@ -320,8 +290,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 1),
@@ -339,8 +307,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
@@ -363,8 +329,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().POTASSIUM, 3),
@@ -388,8 +352,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (Ca,Th,Ce)Zr(Ti,Nb)2O7
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
@@ -410,8 +372,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (La)2(CO3)3·8(H2O)
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 2),
@@ -430,8 +390,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (Ce)2(CO3)3·8(H2O)
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 2),
@@ -450,8 +408,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (Nd)2(CO3)3·8(H2O)
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 2),
@@ -470,8 +426,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// ((Ca,Ce)(Al,Ti,Mg)12O19)
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
@@ -491,8 +445,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (Ce,La,Ca)9(Mg,Fe+3)(SiO4)6(SiO3OH)(OH)3
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 9),
@@ -514,8 +466,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (YCa)Cu5(As2O4)3(OH)6·3H2O
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 1),
@@ -535,8 +485,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (CdCa)Cu7(AsO2)4(O2H)5·3H2O
 					new MaterialStack(ELEMENT.getInstance().CADMIUM, 1),
@@ -556,8 +504,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (LaCa)Cu5(AsO6)2(OH)4·3H2O
 					new MaterialStack(ELEMENT.getInstance().LANTHANUM, 1),
@@ -577,8 +523,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (NdCa)Cu6(As3O3)2(O2H)6·3H2O
 					new MaterialStack(ELEMENT.getInstance().NEODYMIUM, 1),
@@ -598,8 +542,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// (Ca,Sr,Ce,Na)5(PO4)3F
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 5),
@@ -620,8 +562,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// SmAl3(PO4)2(OH)6
 					new MaterialStack(ELEMENT.getInstance().SAMARIUM, 1),
@@ -640,8 +580,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().SODIUM, 3),
@@ -659,8 +597,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
@@ -678,8 +614,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().CHLORINE, 1),
@@ -698,8 +632,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			-1, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().BISMUTH, 13),
@@ -718,8 +650,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().MERCURY, 54/4),
@@ -741,8 +671,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().SULFUR, 5),
@@ -764,8 +692,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().GOLD, 3),
@@ -784,8 +710,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().GOLD, 8),
@@ -805,8 +729,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().PALLADIUM, 11),
@@ -825,8 +747,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().IRIDIUM, 2),
@@ -845,8 +765,6 @@ public final class ORES {
 			-1,
 			-1,
 			-1,
-			false,
-			"(IrRuRhPt)SAs",
 			0, //Radiation
 			new MaterialStack[]{// Na3AlF6
 					new MaterialStack(ELEMENT.getInstance().IRIDIUM, 1),

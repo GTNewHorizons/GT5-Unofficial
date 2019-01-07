@@ -87,6 +87,14 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Custom Batteries (Unused)
 	Battery_Gem_1, Battery_Gem_2, Battery_Gem_3, 
 	
+	//Compressed Fusion MK3
+	Compressed_Fusion_Reactor,
+	
+	//Carbon Materials
+	NanoTube_Base_Substrate, 
+	NanoTube_Finished,
+	Carbyne_Tube_Finished,
+	Carbyne_Sheet_Finished,
 	
 
 	//----------------------------------------------------------------------------
