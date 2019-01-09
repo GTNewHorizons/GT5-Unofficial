@@ -271,7 +271,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
 
     public static void run() {//20k heat cap max!
         new RackComponent(ItemList.Circuit_Primitive.get(1), 1, 4, 0, 500, true);//Primitive Circuit
-        new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true);
         new RackComponent(ItemList.Circuit_Basic.get(1), 4, 8, 0, 1000, true);//Basic Circuit
         new RackComponent(ItemList.Circuit_Microprocessor.get(1), 6, 8, 0, 1250, true);
         new RackComponent(ItemList.Circuit_Good.get(1), 6, 9, -.05f, 1500, true);//Good Circuit
@@ -294,20 +293,24 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
         new RackComponent(ItemList.Circuit_Quantummainframe.get(1), 22, 14, -.3F, 5200, true);//ZPM Circuit
         new RackComponent(ItemList.Circuit_Ultimatecrystalcomputer.get(1), 26, 16, -.3F, 5400, true);
         new RackComponent(ItemList.Circuit_Wetwarecomputer.get(1), 30, 18, -.3F, 5600, true);
-        new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true);
         new RackComponent(ItemList.Circuit_Crystalmainframe.get(1), 30, 18, -.35F, 5500, true);//UV Circuit
         new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 35, 22, -.3F, 5700, true);
-        new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 38, 25, -.4F, 6000, true);//UHV Circuit
-        new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
-        new RackComponent(ItemList.Circuit_Biomainframe.get(1), 40, 28, -.4F, 6000, true);//UHV Circuit
-
+        
         new RackComponent("IC2:ic2.reactorVent", 0, -1, 10f, 1000, false);
         new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 20f, 2500, false);
         new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 40f, 5000, false);
         new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 10000, false);//2x oc
-
+        
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
+            //GTNH-GT5u circuits
+            //these components causes crashes when used with the original GT5u
+            new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true);//Primitive Circuit
+            new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
+            new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
+            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 40, 28, -.4F, 6000, true);//UHV Circuit
+            new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true); 
+            
             new RackComponent("dreamcraft:item.HighEnergyCircuitParts", 3, 2, -.1f, 9001, true);
             new RackComponent("dreamcraft:item.HighEnergyFlowCircuit", 24, 16, -.25f, 10000, true);
             new RackComponent("dreamcraft:item.NanoCircuit", 48, 35, -.45f, 8000, true);
