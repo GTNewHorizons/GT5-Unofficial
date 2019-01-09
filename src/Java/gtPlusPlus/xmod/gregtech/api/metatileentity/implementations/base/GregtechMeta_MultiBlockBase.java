@@ -349,8 +349,8 @@ GT_MetaTileEntity_MultiBlockBase {
 	public static Method aLogger = null;
 
 	public void log(String s) {
-		boolean isDebugLogging = CORE.DEBUG;	
-		boolean reset = false;
+		boolean isDebugLogging = CORE.DEBUG || true;	
+		boolean reset = true;
 		if (aLogger == null || reset) {
 			if (isDebugLogging) {
 				try {
@@ -614,13 +614,14 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (aBaseMetaTileEntity.isServerSide()) {
-			if (mUpdate == 0 || this.mStartUpCheck == 0) {
+			if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
 				this.mChargeHatches.clear();
 				this.mDischargeHatches.clear();
 				this.mControlCoreBus.clear();
 				this.mMultiDynamoHatches.clear();
 			}
 		}
+		
 
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
@@ -752,7 +753,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			final int aBaseCasingIndex) {
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				Logger.INFO("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+				log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -765,13 +766,13 @@ GT_MetaTileEntity_MultiBlockBase {
 				BlockPos aPos = new BlockPos(b);
 				if (b != null && aPos != null) {
 					if (aCurPos.equals(aPos)) {
-						Logger.INFO("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
 						return false;
 					}
 				}
 			}
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				Logger.INFO("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -780,7 +781,8 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public int getControlCoreTier() {		
-		if (mControlCoreBus.size() == 0) {
+		if (mControlCoreBus.isEmpty()) {
+			log("No Control Core Modules Found.");
 			return 0;
 		}		
 		GT_MetaTileEntity_Hatch_ControlCore i = getControlCoreBus();
@@ -790,28 +792,33 @@ GT_MetaTileEntity_MultiBlockBase {
 				return x.getItemDamage();
 			}
 		}
+		log("Control Core Module was null.");
 		return 0;
 	}
 
 	public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
 		GT_MetaTileEntity_Hatch_ControlCore x = this.mControlCoreBus.get(0);
 		if (x != null) {
+			log("getControlCore(ok)");
 			return x;
 		}
+		log("getControlCore(bad)");
 		return null;
 	}
 
 	//mControlCoreBus
 	public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {		
-		log("Found GT_MetaTileEntity_Hatch_ControlCore");
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) {
+			log("Tried to add null module entity.");
 			return false;
 		}
 		if (!mControlCoreBus.isEmpty()) {
+			log("Tried to add a secondary control core module.");
 			return false;
 		}
-		
+
+		log("Adding control core module.");
 		return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
 	}
 

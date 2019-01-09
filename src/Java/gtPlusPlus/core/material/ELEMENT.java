@@ -47,7 +47,7 @@ public final class ELEMENT {
 	public final Material ARSENIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Arsenic);
 	public final Material SELENIUM = new Material("Selenium", MaterialState.SOLID, new short[]{190, 190, 190}, 217, 685, 34, 45, false, "Se", 0);//Not a GT Inherited Material
 	public final Material BROMINE = new Material("Bromine", MaterialState.PURE_LIQUID, new short[]{200, 25, 25}, -7, 58, 35, 45, false, "Br", 0);//Not a GT Inherited Material
-	public final Material KRYPTON = new Material("Krypton", MaterialState.GAS, new short[]{255, 255, 255}, -157, -153, 36, 48, false, "Kr", 0);//Not a GT Inherited Material
+	public final Material KRYPTON = new Material("Krypton", MaterialState.PURE_LIQUID, new short[]{255, 255, 255}, -157, -153, 36, 48, false, "Kr", 0);//Not a GT Inherited Material
 	public final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
 	public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium);
 	public final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
@@ -206,9 +206,9 @@ public final class ELEMENT {
 	
 	public static class STANDALONE {
 		
-		public static final Material CELESTIAL_TUNGSTEN = new Material("Celestial Tungsten", MaterialState.SOLID, TextureSets.REFINED.get(), ELEMENT.INSTANCE.TUNGSTEN.getRGB(), INSTANCE.TUNGSTEN.getMeltingPointC()+6500, INSTANCE.TUNGSTEN.getBoilingPointC()+7500, 160, 101, true, "✦◆✦", 0);//Not a GT Inherited Material
-		public static final Material ASTRAL_TITANIUM = new Material("Astral Titanium", MaterialState.SOLID, TextureSets.REFINED.get(), ELEMENT.INSTANCE.TITANIUM.getRGB(), INSTANCE.TITANIUM.getMeltingPointC()+7500, INSTANCE.TITANIUM.getBoilingPointC()+7500, 145, 133, true, "✧◇✧", 0);//Not a GT Inherited Material
-		public static final Material CHRONOMATIC_GLASS = new Material("Chromatic Glass", MaterialState.SOLID, new short[]{255, 255, 255}, 9200, 17550, 40, 51, false, "🕛🕒🕕🕘🕛 ", 0);//Not a GT Inherited Material
+		public static final Material CELESTIAL_TUNGSTEN = new Material("Celestial Tungsten", MaterialState.SOLID, TextureSets.REFINED.get(), new short[] {50, 50, 50, 2}, INSTANCE.TUNGSTEN.getMeltingPointC()+6500, INSTANCE.TUNGSTEN.getBoilingPointC()+7500, 160, 101, true, "✦◆✦", 0);//Not a GT Inherited Material
+		public static final Material ASTRAL_TITANIUM = new Material("Astral Titanium", MaterialState.SOLID, TextureSets.REFINED.get(), new short[] {220, 160, 240, 2}, INSTANCE.TITANIUM.getMeltingPointC()+7500, INSTANCE.TITANIUM.getBoilingPointC()+7500, 145, 133, true, "✧◇✧", 0);//Not a GT Inherited Material
+		public static final Material CHRONOMATIC_GLASS = new Material("Chromatic Glass", MaterialState.SOLID, new short[]{255, 255, 255, 3}, 9200, 17550, 40, 51, false, "⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ ", 0);//Not a GT Inherited Material
 		public static final Material ADVANCED_NITINOL = new Material("Advanced Nitinol", MaterialState.SOLID, TextureSets.ENRICHED.get(), ALLOY.NITINOL_60.getRGB(), 8400, 14377, 40, 51, true, "⚷⚙⚷ Ni4Ti6", 0);//Not a GT Inherited Material
 		public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 		

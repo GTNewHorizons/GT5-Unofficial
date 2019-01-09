@@ -280,6 +280,26 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().COBALT, 8),
 			});
 
+	public static final Material AQUATIC_STEEL = new Material(
+			"Watertight Steel", //Material Name
+			MaterialState.SOLID, //State
+			new short[] {120, 120, 180}, //Material Colour
+			2673, //Melting Point in C
+			4835,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.STEEL, 60),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 10),
+					new MaterialStack(ELEMENT.getInstance().MANGANESE, 5),
+					new MaterialStack(ELEMENT.getInstance().SILICON, 10),
+					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 5),
+					new MaterialStack(ELEMENT.getInstance().SULFUR, 5),
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 5)
+			});
+
 	public static final Material STELLITE = new Material(
 			"Stellite", //Material Name
 			MaterialState.SOLID, //State
@@ -459,7 +479,7 @@ public final class ALLOY {
 			"Tungsten Titanium Carbide", //Material Name
 			MaterialState.SOLID, //State
 			null,
-			-1, //Melting Point in C
+			4422, //Melting Point in C
 			-1,
 			-1,
 			-1,

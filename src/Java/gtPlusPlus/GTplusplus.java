@@ -167,12 +167,6 @@ public class GTplusplus implements ActionListener {
 		mChunkLoading.init(event);
 		proxy.init(event);
 		proxy.registerNetworkStuff();
-
-		//Set Variables for Fluorite Block handling
-		Logger.INFO("Setting some Variables for the block break event handler.");
-		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
-		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
-		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
 		Core_Manager.init();
 
 		//Used by foreign players to generate .lang files for translation.
@@ -190,7 +184,13 @@ public class GTplusplus implements ActionListener {
 		proxy.postInit(event);
 		BookHandler.runLater();
 		Core_Manager.postInit();
-		SprinklerHandler.registerModFerts();
+		//SprinklerHandler.registerModFerts();
+
+		//Set Variables for Fluorite Block handling
+		Logger.INFO("Setting some Variables for the block break event handler.");
+		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
+		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
+		BlockEventHandler.fluoriteOre = FLUORIDES.FLUORITE.getOre(1);
 
 		Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Logger.INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "

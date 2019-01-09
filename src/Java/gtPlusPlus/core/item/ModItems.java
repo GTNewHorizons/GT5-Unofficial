@@ -37,8 +37,10 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
+import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
+import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
@@ -536,6 +538,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.MARAGING250);
 			MaterialGenerator.generate(ALLOY.MARAGING300);
 			MaterialGenerator.generate(ALLOY.MARAGING350);
+			MaterialGenerator.generate(ALLOY.AQUATIC_STEEL);
 
 			MaterialGenerator.generate(ALLOY.NITINOL_60);
 
@@ -811,11 +814,8 @@ public final class ModItems {
 		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
 		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);
 		
-		new BaseItemParticle(ELEMENT.getInstance().HYDROGEN, "Ion");
-		new BaseItemParticle(ELEMENT.getInstance().HELIUM, "Ion");
-		new BaseItemParticle(ELEMENT.getInstance().LITHIUM, "Ion");
-		new BaseItemParticle(ELEMENT.getInstance().BERYLLIUM, "Ion");
-		
+		new IonParticles();
+		new StandardBaseParticles();
 		
 		
 		

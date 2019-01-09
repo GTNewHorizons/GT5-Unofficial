@@ -1193,7 +1193,7 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort){
-				ItemStack plate = ALLOY.INCONEL_792.getPlate(1);
+				ItemStack plate = ALLOY.AQUATIC_STEEL.getPlate(1);
 				RecipeUtils.recipeBuilder(
 						plate, CI.craftingToolHammer_Hard, plate,
 						"plateEglinSteel", "frameGtEglinSteel", "plateEglinSteel",
@@ -1478,9 +1478,9 @@ public class RECIPES_Machines {
 						new ItemStack[] {
 								aDrillController,
 								ItemUtils.getItemStackOfAmountFromOreDict("frameGtTriniumNaquadahCarbonite", 3),
-								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.conveyorModule_ZPM, 2 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.electricPump_ZPM, 4 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(9), 2 * (CORE.GTNH ? 4 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.conveyorModule_UV : CI.conveyorModule_ZPM), 2 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.electricPump_UV : CI.electricPump_ZPM), 4 * (CORE.GTNH ? 2 : 1)),
 						},
 						ALLOY.LAFIUM.getFluid(144 * 8  * (CORE.GTNH ? 2 : 1)),
 						GregtechItemList.BedrockMiner_MKI.get(1),
@@ -1494,7 +1494,7 @@ public class RECIPES_Machines {
 								ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleTriniumTitaniumAlloy", 1 * (CORE.GTNH ? 2 : 1)),
 								ItemUtils.getItemStackOfAmountFromOreDict("gearGtPikyonium64B", 2 * (CORE.GTNH ? 2 : 1)),
 								ALLOY.TRINIUM_REINFORCED_STEEL.getPlateDouble(4 * (CORE.GTNH ? 2 : 1)),
-								ItemUtils.getSimpleStack(CI.machineHull_LuV, 1 * (CORE.GTNH ? 2 : 1)),
+								ItemUtils.getSimpleStack((CORE.GTNH ? CI.machineHull_UV : CI.machineHull_LuV), 1 * (CORE.GTNH ? 2 : 1)),
 						},
 						ALLOY.MARAGING350.getFluid(144 * 16  * (CORE.GTNH ? 2 : 1)),
 						GregtechItemList.Casing_BedrockMiner.get(1),

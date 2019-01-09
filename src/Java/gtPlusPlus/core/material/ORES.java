@@ -797,7 +797,7 @@ public final class ORES {
 	
 
 	public static final Material DEEP_EARTH_REACTOR_FUEL_DEPOSIT = new Material(
-			"Radioactive Minerial Mix", //Material Name
+			"Radioactive Mineral Mix", //Material Name
 			MaterialState.ORE, //State
 			TextureSets.NUCLEAR.get(), //Texture Set
 			null, //Material Colour

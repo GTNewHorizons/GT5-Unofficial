@@ -13,20 +13,20 @@ public class HANDLER_GalactiCraft {
 	
 	public static void preInit(){
 		if (LoadedMods.GalacticraftCore){
-			mSystemsCache.put("HD10180", new SystemHD10180());
-			for (BaseSolarSystem solar : mSystemsCache.values()) {
+			//mSystemsCache.put("HD10180", new SystemHD10180());
+			/*for (BaseSolarSystem solar : mSystemsCache.values()) {
 				Logger.SPACE("Running 'pre-init' for "+solar.mSystemName);
 				solar.preInit();
-			}
+			}*/
 		}		
 	}
 
 	public static void init(){
 		if (LoadedMods.GalacticraftCore){
-			for (BaseSolarSystem solar : mSystemsCache.values()) {
+			/*for (BaseSolarSystem solar : mSystemsCache.values()) {
 				Logger.SPACE("Running 'init' for "+solar.mSystemName);
 				solar.init();
-			}
+			}*/
 		}
 	}
 

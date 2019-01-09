@@ -2025,7 +2025,7 @@ entity.Aboriginal.name=Native
 entity.miscutils.constructStaballoy.name=Staballoy Construct
 entity.miscutils.sickBlaze.name=Infected Zealot
 
-//Added 15/9/`8
+//Added 15/9/18
 item.ZirconiumTetrafluoride.name=Zirconium Tetrafluoride Cell
 item.Formaldehyde.name=Formaldehyde Cell
 item.RocketFuelMixA.name=H8N4C2O4 Rocket Fuel Cell
@@ -2040,3 +2040,665 @@ item.NitrousOxide.name=Nitrous Oxide Cell
 item.AmmoniumNitrateSlurry.name=Ammonium Nitrate Slurry Cell
 item.Kerosene.name=Kerosene Cell
 item.LiquidOxygen.name=Liquid Oxygen Cell [LOX]
+
+//Added 8/1/19
+
+//Ores
+
+tile.OreIrarsite.name=Irarsite Ore
+item.crushedIrarsite.name=Crushed Irarsite Ore
+item.crushedCentrifugedIrarsite.name=Centrifuged Crushed Irarsite Ore
+item.crushedPurifiedIrarsite.name=Purified Crushed Irarsite Ore
+item.dustImpureIrarsite.name=Impure Irarsite Dust
+item.dustPureIrarsite.name=Purified Irarsite Dust
+item.itemDustIrarsite.name=Irarsite Dust
+item.itemDustTinyIrarsite.name=Tiny Pile of Irarsite Dust
+item.itemDustSmallIrarsite.name=Small Pile of Irarsite Dust
+
+tile.OreMiessiite.name=Miessiite Ore
+item.crushedMiessiite.name=Crushed Miessiite Ore
+item.crushedCentrifugedMiessiite.name=Centrifuged Crushed Miessiite Ore
+item.crushedPurifiedMiessiite.name=Purified Crushed Miessiite Ore
+item.dustImpureMiessiite.name=Impure Miessiite Dust
+item.dustPureMiessiite.name=Purified Miessiite Dust
+item.itemDustMiessiite.name=Miessiite Dust
+item.itemDustTinyMiessiite.name=Tiny Pile of Miessiite Dust
+item.itemDustSmallMiessiite.name=Small Pile of Miessiite Dust
+
+tile.OreComancheite.name=Comancheite Ore
+item.crushedComancheite.name=Crushed Comancheite Ore
+item.crushedCentrifugedComancheite.name=Centrifuged Crushed Comancheite Ore
+item.crushedPurifiedComancheite.name=Purified Crushed Comancheite Ore
+item.dustImpureComancheite.name=Impure Comancheite Dust
+item.dustPureComancheite.name=Purified Comancheite Dust
+item.itemDustComancheite.name=Comancheite Dust
+item.itemDustTinyComancheite.name=Tiny Pile of Comancheite Dust
+item.itemDustSmallComancheite.name=Small Pile of Comancheite Dust
+
+tile.OreKoboldite.name=Koboldite Ore
+item.crushedKoboldite.name=Crushed Koboldite Ore
+item.crushedCentrifugedKoboldite.name=Centrifuged Crushed Koboldite Ore
+item.crushedPurifiedKoboldite.name=Purified Crushed Koboldite Ore
+item.dustImpureKoboldite.name=Impure Koboldite Dust
+item.dustPureKoboldite.name=Purified Koboldite Dust
+item.itemDustKoboldite.name=Koboldite Dust
+item.itemDustTinyKoboldite.name=Tiny Pile of Koboldite Dust
+item.itemDustSmallKoboldite.name=Small Pile of Koboldite Dust
+
+tile.OrePerroudite.name=Perroudite Ore
+item.crushedPerroudite.name=Crushed Perroudite Ore
+item.crushedCentrifugedPerroudite.name=Centrifuged Crushed Perroudite Ore
+item.crushedPurifiedPerroudite.name=Purified Crushed Perroudite Ore
+item.dustImpurePerroudite.name=Impure Perroudite Dust
+item.dustPurePerroudite.name=Purified Perroudite Dust
+item.itemDustPerroudite.name=Perroudite Dust
+item.itemDustTinyPerroudite.name=Tiny Pile of Perroudite Dust
+item.itemDustSmallPerroudite.name=Small Pile of Perroudite Dust
+
+tile.OreDemicheleite.name=Demicheleite Ore
+item.crushedDemicheleite.name=Crushed Demicheleite Ore
+item.crushedCentrifugedDemicheleite.name=Centrifuged Crushed Demicheleite Ore
+item.crushedPurifiedDemicheleite.name=Purified Crushed Demicheleite Ore
+item.dustImpureDemicheleite.name=Impure Demicheleite Dust
+item.dustPureDemicheleite.name=Purified Demicheleite Dust
+item.itemDustDemicheleite.name=Demicheleite Dust
+item.itemDustTinyDemicheleite.name=Tiny Pile of Demicheleite Dust
+item.itemDustSmallDemicheleite.name=Small Pile of Demicheleite Dust
+
+tile.OreAlburnite.name=Alburnite Ore
+item.crushedAlburnite.name=Crushed Alburnite Ore
+item.crushedCentrifugedAlburnite.name=Centrifuged Crushed Alburnite Ore
+item.crushedPurifiedAlburnite.name=Purified Crushed Alburnite Ore
+item.dustImpureAlburnite.name=Impure Alburnite Dust
+item.dustPureAlburnite.name=Purified Alburnite Dust
+item.itemDustAlburnite.name=Alburnite Dust
+item.itemDustTinyAlburnite.name=Tiny Pile of Alburnite Dust
+item.itemDustSmallAlburnite.name=Small Pile of Alburnite Dust
+
+tile.OreLautarite.name=Lautarite Ore
+item.crushedLautarite.name=Crushed Lautarite Ore
+item.crushedCentrifugedLautarite.name=Centrifuged Crushed Lautarite Ore
+item.crushedPurifiedLautarite.name=Purified Crushed Lautarite Ore
+item.dustImpureLautarite.name=Impure Lautarite Dust
+item.dustPureLautarite.name=Purified Lautarite Dust
+item.itemDustLautarite.name=Lautarite Dust
+item.itemDustTinyLautarite.name=Tiny Pile of Lautarite Dust
+item.itemDustSmallLautarite.name=Small Pile of Lautarite Dust
+
+tile.OreBariteRd.name=Barite (Rd) Ore
+item.crushedBariteRd.name=Crushed Barite (Rd) Ore
+item.crushedCentrifugedBariteRd.name=Centrifuged Crushed Barite (Rd) Ore
+item.crushedPurifiedBariteRd.name=Purified Crushed Barite (Rd) Ore
+item.dustImpureBariteRd.name=Impure Barite (Rd) Dust
+item.dustPureBariteRd.name=Purified Barite (Rd) Dust
+item.itemDustBariteRd.name=Barite (Rd) Dust
+item.itemDustTinyBariteRd.name=Tiny Pile of Barite (Rd) Dust
+item.itemDustSmallBariteRd.name=Small Pile of Barite (Rd) Dust
+
+tile.OreHoneaite.name=Honeaite Ore
+item.crushedHoneaite.name=Crushed Honeaite Ore
+item.crushedCentrifugedHoneaite.name=Centrifuged Crushed Honeaite Ore
+item.crushedPurifiedHoneaite.name=Purified Crushed Honeaite Ore
+item.dustImpureHoneaite.name=Impure Honeaite Dust
+item.dustPureHoneaite.name=Purified Honeaite Dust
+item.itemDustHoneaite.name=Honeaite Dust
+item.itemDustTinyHoneaite.name=Tiny Pile of Honeaite Dust
+item.itemDustSmallHoneaite.name=Small Pile of Honeaite Dust
+
+tile.OreLafossaite.name=Lafossaite Ore
+item.crushedLafossaite.name=Crushed Lafossaite Ore
+item.crushedCentrifugedLafossaite.name=Centrifuged Crushed Lafossaite Ore
+item.crushedPurifiedLafossaite.name=Purified Crushed Lafossaite Ore
+item.dustImpureLafossaite.name=Impure Lafossaite Dust
+item.dustPureLafossaite.name=Purified Lafossaite Dust
+item.itemDustLafossaite.name=Lafossaite Dust
+item.itemDustTinyLafossaite.name=Tiny Pile of Lafossaite Dust
+item.itemDustSmallLafossaite.name=Small Pile of Lafossaite Dust
+
+tile.OreKashinite.name=Kashinite Ore
+item.crushedKashinite.name=Crushed Kashinite Ore
+item.crushedCentrifugedKashinite.name=Centrifuged Crushed Kashinite Ore
+item.crushedPurifiedKashinite.name=Purified Crushed Kashinite Ore
+item.dustImpureKashinite.name=Impure Kashinite Dust
+item.dustPureKashinite.name=Purified Kashinite Dust
+item.itemDustKashinite.name=Kashinite Dust
+item.itemDustTinyKashinite.name=Tiny Pile of Kashinite Dust
+item.itemDustSmallKashinite.name=Small Pile of Kashinite Dust
+
+tile.OreRadioactiveMineralMix.name=Strange Ore
+item.crushedRadioactiveMineralMix.name=Crushed Strange Ore
+item.crushedCentrifugedRadioactiveMineralMix.name=Centrifuged Crushed Strange Ore
+item.crushedPurifiedRadioactiveMineralMix.name=Purified Crushed Strange Ore
+item.dustImpureRadioactiveMineralMix.name=Impure Strange Dust
+item.dustPureRadioactiveMineralMix.name=Purified Strange Dust
+item.itemDustRadioactiveMineralMix.name=Strange Dust
+item.itemDustTinyRadioactiveMineralMix.name=Tiny Pile of Strange Dust
+item.itemDustSmallRadioactiveMineralMix.name=Small Pile of Strange Dust
+
+tile.OreDemicheleiteBr.name=Demicheleite (Br) Ore
+item.crushedDemicheleiteBr.name=Crushed Demicheleite (Br) Ore
+item.crushedCentrifugedDemicheleiteBr.name=Centrifuged Crushed Demicheleite (Br) Ore
+item.crushedPurifiedDemicheleiteBr.name=Purified Crushed Demicheleite (Br) Ore
+item.dustImpureDemicheleiteBr.name=Impure Demicheleite (Br) Dust
+item.dustPureDemicheleiteBr.name=Purified Demicheleite (Br) Dust
+item.itemDustDemicheleiteBr.name=Demicheleite (Br) Dust
+
+
+//Materials
+
+item.itemIngotTitansteel.name=Titansteel Ingot
+item.itemHotIngotTitansteel.name=Hot Titansteel Ingot
+item.itemDustTitansteel.name=Titansteel Dust
+item.itemDustTinyTitansteel.name=Tiny Pile of Titansteel Dust
+item.itemDustSmallTitansteel.name=Small Pile of Titansteel Dust
+item.itemNuggetTitansteel.name=Titansteel Nugget
+item.itemPlateTitansteel.name=Titansteel Plate
+item.itemPlateDoubleTitansteel.name=Double Titansteel Plate
+item.itemBoltTitansteel.name=Titansteel Bolt
+item.itemRodTitansteel.name=Titansteel Rod
+item.itemRodLongTitansteel.name=Long Titansteel Rod
+item.itemRingTitansteel.name=Titansteel Ring
+item.itemScrewTitansteel.name=Titansteel Screw
+item.itemRotorTitansteel.name=Titansteel Rotor
+item.itemGearTitansteel.name=Titansteel Gear
+item.itemCellTitansteel.name=Titansteel Cell
+tile.Block of Titansteel.name=Block of Titansteel
+tile.Titansteel Frame Box.name=Titansteel Frame Box
+
+item.itemIngotOctiron.name=Octiron Ingot
+item.itemHotIngotOctiron.name=Hot Octiron Ingot
+item.itemDustOctiron.name=Octiron Dust
+item.itemDustTinyOctiron.name=Tiny Pile of Octiron Dust
+item.itemDustSmallOctiron.name=Small Pile of Octiron Dust
+item.itemNuggetOctiron.name=Octiron Nugget
+item.itemPlateOctiron.name=Octiron Plate
+item.itemPlateDoubleOctiron.name=Double Octiron Plate
+item.itemBoltOctiron.name=Octiron Bolt
+item.itemRodOctiron.name=Octiron Rod
+item.itemRodLongOctiron.name=Long Octiron Rod
+item.itemRingOctiron.name=Octiron Ring
+item.itemScrewOctiron.name=Octiron Screw
+item.itemRotorOctiron.name=Octiron Rotor
+item.itemGearOctiron.name=Octiron Gear
+item.itemCellOctiron.name=Octiron Cell
+tile.Block of Octiron.name=Block of Octiron
+tile.Octiron Frame Box.name=Octiron Frame Box
+
+item.itemIngotWatertightSteel.name=Watertight Steel Ingot
+item.itemHotIngotWatertightSteel.name=Hot Watertight Steel Ingot
+item.itemDustWatertightSteel.name=Watertight Steel Dust
+item.itemDustTinyWatertightSteel.name=Tiny Pile of Watertight Steel Dust
+item.itemDustSmallWatertightSteel.name=Small Pile of Watertight Steel Dust
+item.itemNuggetWatertightSteel.name=Watertight Steel Nugget
+item.itemPlateWatertightSteel.name=Watertight Steel Plate
+item.itemPlateDoubleWatertightSteel.name=Double Watertight Steel Plate
+item.itemBoltWatertightSteel.name=Watertight Steel Bolt
+item.itemRodWatertightSteel.name=Watertight Steel Rod
+item.itemRodLongWatertightSteel.name=Long Watertight Steel Rod
+item.itemRingWatertightSteel.name=Watertight Steel Ring
+item.itemScrewWatertightSteel.name=Watertight Steel Screw
+item.itemRotorWatertightSteel.name=Watertight Steel Rotor
+item.itemGearWatertightSteel.name=Watertight Steel Gear
+item.itemCellWatertightSteel.name=Watertight Steel Cell
+tile.Block of Watertight Steel.name=Block of Watertight Steel
+tile.Watertight Steel Frame Box.name=Watertight Steel Frame Box
+
+item.itemIngotCelestialTungsten.name=Celestial Tungsten Ingot
+item.itemHotIngotCelestialTungsten.name=Hot Celestial Tungsten Ingot
+item.itemDustCelestialTungsten.name=Celestial Tungsten Dust
+item.itemDustTinyCelestialTungsten.name=Tiny Pile of Celestial Tungsten Dust
+item.itemDustSmallCelestialTungsten.name=Small Pile of Celestial Tungsten Dust
+item.itemNuggetCelestialTungsten.name=Celestial Tungsten Nugget
+item.itemPlateCelestialTungsten.name=Celestial Tungsten Plate
+item.itemPlateDoubleCelestialTungsten.name=Double Celestial Tungsten Plate
+item.itemBoltCelestialTungsten.name=Celestial Tungsten Bolt
+item.itemRodCelestialTungsten.name=Celestial Tungsten Rod
+item.itemRodLongCelestialTungsten.name=Long Celestial Tungsten Rod
+item.itemRingCelestialTungsten.name=Celestial Tungsten Ring
+item.itemScrewCelestialTungsten.name=Celestial Tungsten Screw
+item.itemRotorCelestialTungsten.name=Celestial Tungsten Rotor
+item.itemGearCelestialTungsten.name=Celestial Tungsten Gear
+item.itemCellCelestialTungsten.name=Celestial Tungsten Cell
+tile.Block of Celestial Tungsten.name=Block of Celestial Tungsten
+tile.Celestial Tungsten Frame Box.name=Celestial Tungsten Frame Box
+
+item.itemIngotHypogen.name=Hypogen Ingot
+item.itemHotIngotHypogen.name=Hot Hypogen Ingot
+item.itemDustHypogen.name=Hypogen Dust
+item.itemDustTinyHypogen.name=Tiny Pile of Hypogen Dust
+item.itemDustSmallHypogen.name=Small Pile of Hypogen Dust
+item.itemNuggetHypogen.name=Hypogen Nugget
+item.itemPlateHypogen.name=Hypogen Plate
+item.itemPlateDoubleHypogen.name=Double Hypogen Plate
+item.itemBoltHypogen.name=Hypogen Bolt
+item.itemRodHypogen.name=Hypogen Rod
+item.itemRodLongHypogen.name=Long Hypogen Rod
+item.itemRingHypogen.name=Hypogen Ring
+item.itemScrewHypogen.name=Hypogen Screw
+item.itemRotorHypogen.name=Hypogen Rotor
+item.itemGearHypogen.name=Hypogen Gear
+item.itemCellHypogen.name=Hypogen Cell
+tile.Block of Hypogen.name=Block of Hypogen
+tile.Hypogen Frame Box.name=Hypogen Frame Box
+
+item.itemIngotArceusAlloy2B.name=Arceus Alloy 2B Ingot
+item.itemHotIngotArceusAlloy2B.name=Hot Arceus Alloy 2B Ingot
+item.itemDustArceusAlloy2B.name=Arceus Alloy 2B Dust
+item.itemDustTinyArceusAlloy2B.name=Tiny Pile of Arceus Alloy 2B Dust
+item.itemDustSmallArceusAlloy2B.name=Small Pile of Arceus Alloy 2B Dust
+item.itemNuggetArceusAlloy2B.name=Arceus Alloy 2B Nugget
+item.itemPlateArceusAlloy2B.name=Arceus Alloy 2B Plate
+item.itemPlateDoubleArceusAlloy2B.name=Double Arceus Alloy 2B Plate
+item.itemBoltArceusAlloy2B.name=Arceus Alloy 2B Bolt
+item.itemRodArceusAlloy2B.name=Arceus Alloy 2B Rod
+item.itemRodLongArceusAlloy2B.name=Long Arceus Alloy 2B Rod
+item.itemRingArceusAlloy2B.name=Arceus Alloy 2B Ring
+item.itemScrewArceusAlloy2B.name=Arceus Alloy 2B Screw
+item.itemRotorArceusAlloy2B.name=Arceus Alloy 2B Rotor
+item.itemGearArceusAlloy2B.name=Arceus Alloy 2B Gear
+item.itemCellArceusAlloy2B.name=Arceus Alloy 2B Cell
+tile.Block of Arceus Alloy 2B.name=Block of Arceus Alloy 2B
+tile.Arceus Alloy 2B Frame Box.name=Arceus Alloy 2B Frame Box
+
+item.itemIngotChromaticGlass.name=Chromatic Glass Ingot
+item.itemHotIngotChromaticGlass.name=Hot Chromatic Glass Ingot
+item.itemDustChromaticGlass.name=Chromatic Glass Dust
+item.itemDustTinyChromaticGlass.name=Tiny Pile of Chromatic Glass Dust
+item.itemDustSmallChromaticGlass.name=Small Pile of Chromatic Glass Dust
+item.itemNuggetChromaticGlass.name=Chromatic Glass Nugget
+item.itemPlateChromaticGlass.name=Chromatic Glass Plate
+item.itemPlateDoubleChromaticGlass.name=Double Chromatic Glass Plate
+item.itemBoltChromaticGlass.name=Chromatic Glass Bolt
+item.itemRodChromaticGlass.name=Chromatic Glass Rod
+item.itemRodLongChromaticGlass.name=Long Chromatic Glass Rod
+item.itemRingChromaticGlass.name=Chromatic Glass Ring
+item.itemScrewChromaticGlass.name=Chromatic Glass Screw
+item.itemRotorChromaticGlass.name=Chromatic Glass Rotor
+item.itemGearChromaticGlass.name=Chromatic Glass Gear
+item.itemCellChromaticGlass.name=Chromatic Glass Cell
+tile.Block of Chromatic Glass.name=Block of Chromatic Glass
+tile.Chromatic Glass Frame Box.name=Chromatic Glass Frame Box
+
+item.itemIngotAstralTitanium.name=Astral Titanium Ingot
+item.itemHotIngotAstralTitanium.name=Hot Astral Titanium Ingot
+item.itemDustAstralTitanium.name=Astral Titanium Dust
+item.itemDustTinyAstralTitanium.name=Tiny Pile of Astral Titanium Dust
+item.itemDustSmallAstralTitanium.name=Small Pile of Astral Titanium Dust
+item.itemNuggetAstralTitanium.name=Astral Titanium Nugget
+item.itemPlateAstralTitanium.name=Astral Titanium Plate
+item.itemPlateDoubleAstralTitanium.name=Double Astral Titanium Plate
+item.itemBoltAstralTitanium.name=Astral Titanium Bolt
+item.itemRodAstralTitanium.name=Astral Titanium Rod
+item.itemRodLongAstralTitanium.name=Long Astral Titanium Rod
+item.itemRingAstralTitanium.name=Astral Titanium Ring
+item.itemScrewAstralTitanium.name=Astral Titanium Screw
+item.itemRotorAstralTitanium.name=Astral Titanium Rotor
+item.itemGearAstralTitanium.name=Astral Titanium Gear
+item.itemCellAstralTitanium.name=Astral Titanium Cell
+tile.Block of Astral Titanium.name=Block of Astral Titanium
+tile.Astral Titanium Frame Box.name=Astral Titanium Frame Box
+
+item.itemIngotTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Ingot
+item.itemHotIngotTungstenTitaniumCarbide.name=Hot Tungsten Titanium Carbide Ingot
+item.itemDustTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Dust
+item.itemDustTinyTungstenTitaniumCarbide.name=Tiny Pile of Tungsten Titanium Carbide Dust
+item.itemDustSmallTungstenTitaniumCarbide.name=Small Pile of Tungsten Titanium Carbide Dust
+item.itemNuggetTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Nugget
+item.itemPlateTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Plate
+item.itemPlateDoubleTungstenTitaniumCarbide.name=Double Tungsten Titanium Carbide Plate
+item.itemBoltTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Bolt
+item.itemRodTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Rod
+item.itemRodLongTungstenTitaniumCarbide.name=Long Tungsten Titanium Carbide Rod
+item.itemRingTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Ring
+item.itemScrewTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Screw
+item.itemRotorTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Rotor
+item.itemGearTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Gear
+item.itemCellTungstenTitaniumCarbide.name=Tungsten Titanium Carbide Cell
+tile.Block of Tungsten Titanium Carbide.name=Block of Tungsten Titanium Carbide
+tile.Tungsten Titanium Carbide Frame Box.name=Tungsten Titanium Carbide Frame Box
+
+item.itemIngotNitinol60.name=Nitinol 60 Ingot
+item.itemHotIngotNitinol60.name=Hot Nitinol 60 Ingot
+item.itemDustNitinol60.name=Nitinol 60 Dust
+item.itemDustTinyNitinol60.name=Tiny Pile of Nitinol 60 Dust
+item.itemDustSmallNitinol60.name=Small Pile of Nitinol 60 Dust
+item.itemNuggetNitinol60.name=Nitinol 60 Nugget
+item.itemPlateNitinol60.name=Nitinol 60 Plate
+item.itemPlateDoubleNitinol60.name=Double Nitinol 60 Plate
+item.itemBoltNitinol60.name=Nitinol 60 Bolt
+item.itemRodNitinol60.name=Nitinol 60 Rod
+item.itemRodLongNitinol60.name=Long Nitinol 60 Rod
+item.itemRingNitinol60.name=Nitinol 60 Ring
+item.itemScrewNitinol60.name=Nitinol 60 Screw
+item.itemRotorNitinol60.name=Nitinol 60 Rotor
+item.itemGearNitinol60.name=Nitinol 60 Gear
+item.itemCellNitinol60.name=Nitinol 60 Cell
+tile.Block of Nitinol 60.name=Block of Nitinol 60
+tile.Nitinol 60 Frame Box.name=Nitinol 60 Frame Box
+
+item.itemIngotAdvancedNitinol.name=Advanced Nitinol Ingot
+item.itemHotIngotAdvancedNitinol.name=Hot Advanced Nitinol Ingot
+item.itemDustAdvancedNitinol.name=Advanced Nitinol Dust
+item.itemDustTinyAdvancedNitinol.name=Tiny Pile of Advanced Nitinol Dust
+item.itemDustSmallAdvancedNitinol.name=Small Pile of Advanced Nitinol Dust
+item.itemNuggetAdvancedNitinol.name=Advanced Nitinol Nugget
+item.itemPlateAdvancedNitinol.name=Advanced Nitinol Plate
+item.itemPlateDoubleAdvancedNitinol.name=Double Advanced Nitinol Plate
+item.itemBoltAdvancedNitinol.name=Advanced Nitinol Bolt
+item.itemRodAdvancedNitinol.name=Advanced Nitinol Rod
+item.itemRodLongAdvancedNitinol.name=Long Advanced Nitinol Rod
+item.itemRingAdvancedNitinol.name=Advanced Nitinol Ring
+item.itemScrewAdvancedNitinol.name=Advanced Nitinol Screw
+item.itemRotorAdvancedNitinol.name=Advanced Nitinol Rotor
+item.itemGearAdvancedNitinol.name=Advanced Nitinol Gear
+item.itemCellAdvancedNitinol.name=Advanced Nitinol Cell
+tile.Block of Advanced Nitinol.name=Block of Advanced Nitinol
+tile.Advanced Nitinol Frame Box.name=Advanced Nitinol Frame Box
+
+item.itemIngotArcanite.name=Arcanite Ingot
+item.itemHotIngotArcanite.name=Hot Arcanite Ingot
+item.itemDustArcanite.name=Arcanite Dust
+item.itemDustTinyArcanite.name=Tiny Pile of Arcanite Dust
+item.itemDustSmallArcanite.name=Small Pile of Arcanite Dust
+item.itemNuggetArcanite.name=Arcanite Nugget
+item.itemPlateArcanite.name=Arcanite Plate
+item.itemPlateDoubleArcanite.name=Double Arcanite Plate
+item.itemBoltArcanite.name=Arcanite Bolt
+item.itemRodArcanite.name=Arcanite Rod
+item.itemRodLongArcanite.name=Long Arcanite Rod
+item.itemRingArcanite.name=Arcanite Ring
+item.itemScrewArcanite.name=Arcanite Screw
+item.itemRotorArcanite.name=Arcanite Rotor
+item.itemGearArcanite.name=Arcanite Gear
+item.itemCellArcanite.name=Arcanite Cell
+tile.Block of Arcanite.name=Block of Arcanite
+tile.Arcanite Frame Box.name=Arcanite Frame Box
+
+item.itemIngotPikyonium64B.name=Pikyonium 64B Ingot
+item.itemHotIngotPikyonium64B.name=Hot Pikyonium 64B Ingot
+item.itemDustPikyonium64B.name=Pikyonium 64B Dust
+item.itemDustTinyPikyonium64B.name=Tiny Pile of Pikyonium 64B Dust
+item.itemDustSmallPikyonium64B.name=Small Pile of Pikyonium 64B Dust
+item.itemNuggetPikyonium64B.name=Pikyonium 64B Nugget
+item.itemPlatePikyonium64B.name=Pikyonium 64B Plate
+item.itemPlateDoublePikyonium64B.name=Double Pikyonium 64B Plate
+item.itemBoltPikyonium64B.name=Pikyonium 64B Bolt
+item.itemRodPikyonium64B.name=Pikyonium 64B Rod
+item.itemRodLongPikyonium64B.name=Long Pikyonium 64B Rod
+item.itemRingPikyonium64B.name=Pikyonium 64B Ring
+item.itemScrewPikyonium64B.name=Pikyonium 64B Screw
+item.itemRotorPikyonium64B.name=Pikyonium 64B Rotor
+item.itemGearPikyonium64B.name=Pikyonium 64B Gear
+item.itemCellPikyonium64B.name=Pikyonium 64B Cell
+tile.Block of Pikyonium 64B.name=Block of Pikyonium 64B
+tile.Pikyonium 64B Frame Box.name=Pikyonium 64B Frame Box
+
+item.itemIngotCinobiteA243.name=Cinobite A243 Ingot
+item.itemHotIngotCinobiteA243.name=Hot Cinobite A243 Ingot
+item.itemDustCinobiteA243.name=Cinobite A243 Dust
+item.itemDustTinyCinobiteA243.name=Tiny Pile of Cinobite A243 Dust
+item.itemDustSmallCinobiteA243.name=Small Pile of Cinobite A243 Dust
+item.itemNuggetCinobiteA243.name=Cinobite A243 Nugget
+item.itemPlateCinobiteA243.name=Cinobite A243 Plate
+item.itemPlateDoubleCinobiteA243.name=Double Cinobite A243 Plate
+item.itemBoltCinobiteA243.name=Cinobite A243 Bolt
+item.itemRodCinobiteA243.name=Cinobite A243 Rod
+item.itemRodLongCinobiteA243.name=Long Cinobite A243 Rod
+item.itemRingCinobiteA243.name=Cinobite A243 Ring
+item.itemScrewCinobiteA243.name=Cinobite A243 Screw
+item.itemRotorCinobiteA243.name=Cinobite A243 Rotor
+item.itemGearCinobiteA243.name=Cinobite A243 Gear
+item.itemCellCinobiteA243.name=Cinobite A243 Cell
+tile.Block of Cinobite A243.name=Block of Cinobite A243
+tile.Cinobite A243 Frame Box.name=Cinobite A243 Frame Box
+
+item.itemIngotLafiumCompound.name=Lafium Compound Ingot
+item.itemHotIngotLafiumCompound.name=Hot Lafium Compound Ingot
+item.itemDustLafiumCompound.name=Lafium Compound Dust
+item.itemDustTinyLafiumCompound.name=Tiny Pile of Lafium Compound Dust
+item.itemDustSmallLafiumCompound.name=Small Pile of Lafium Compound Dust
+item.itemNuggetLafiumCompound.name=Lafium Compound Nugget
+item.itemPlateLafiumCompound.name=Lafium Compound Plate
+item.itemPlateDoubleLafiumCompound.name=Double Lafium Compound Plate
+item.itemBoltLafiumCompound.name=Lafium Compound Bolt
+item.itemRodLafiumCompound.name=Lafium Compound Rod
+item.itemRodLongLafiumCompound.name=Long Lafium Compound Rod
+item.itemRingLafiumCompound.name=Lafium Compound Ring
+item.itemScrewLafiumCompound.name=Lafium Compound Screw
+item.itemRotorLafiumCompound.name=Lafium Compound Rotor
+item.itemGearLafiumCompound.name=Lafium Compound Gear
+item.itemCellLafiumCompound.name=Lafium Compound Cell
+tile.Block of Lafium Compound.name=Block of Lafium Compound
+tile.Lafium Compound Frame Box.name=Lafium Compound Frame Box
+
+item.itemIngotKoboldite.name=Koboldite Ingot
+item.itemHotIngotKoboldite.name=Hot Koboldite Ingot
+item.itemDustKoboldite.name=Koboldite Dust
+item.itemDustTinyKoboldite.name=Tiny Pile of Koboldite Dust
+item.itemDustSmallKoboldite.name=Small Pile of Koboldite Dust
+item.itemNuggetKoboldite.name=Koboldite Nugget
+item.itemPlateKoboldite.name=Koboldite Plate
+item.itemPlateDoubleKoboldite.name=Double Koboldite Plate
+item.itemBoltKoboldite.name=Koboldite Bolt
+item.itemRodKoboldite.name=Koboldite Rod
+item.itemRodLongKoboldite.name=Long Koboldite Rod
+item.itemRingKoboldite.name=Koboldite Ring
+item.itemScrewKoboldite.name=Koboldite Screw
+item.itemRotorKoboldite.name=Koboldite Rotor
+item.itemGearKoboldite.name=Koboldite Gear
+item.itemCellKoboldite.name=Koboldite Cell
+tile.Block of Koboldite.name=Block of Koboldite
+tile.Koboldite Frame Box.name=Koboldite Frame Box
+
+item.itemIngotAbyssalAlloy.name=Abyssal Alloy Ingot
+item.itemHotIngotAbyssalAlloy.name=Hot Abyssal Alloy Ingot
+item.itemDustAbyssalAlloy.name=Abyssal Alloy Dust
+item.itemDustTinyAbyssalAlloy.name=Tiny Pile of Abyssal Alloy Dust
+item.itemDustSmallAbyssalAlloy.name=Small Pile of Abyssal Alloy Dust
+item.itemNuggetAbyssalAlloy.name=Abyssal Alloy Nugget
+item.itemPlateAbyssalAlloy.name=Abyssal Alloy Plate
+item.itemPlateDoubleAbyssalAlloy.name=Double Abyssal Alloy Plate
+item.itemBoltAbyssalAlloy.name=Abyssal Alloy Bolt
+item.itemRodAbyssalAlloy.name=Abyssal Alloy Rod
+item.itemRodLongAbyssalAlloy.name=Long Abyssal Alloy Rod
+item.itemRingAbyssalAlloy.name=Abyssal Alloy Ring
+item.itemScrewAbyssalAlloy.name=Abyssal Alloy Screw
+item.itemRotorAbyssalAlloy.name=Abyssal Alloy Rotor
+item.itemGearAbyssalAlloy.name=Abyssal Alloy Gear
+item.itemCellAbyssalAlloy.name=Abyssal Alloy Cell
+tile.Block of Abyssal Alloy.name=Block of Abyssal Alloy
+tile.Abyssal Alloy Frame Box.name=Abyssal Alloy Frame Box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Radioactive
+item.dustTechnetium99M.name=Technetium 99M Dust
+item.dustTechnetium99.name=Technetium 99 Dust
+item.dustMolybdenum99.name=Molybdenum 99 Dust
+
+//Bags
+item.item.MysticBag.name=Mystic Pouch
+item.item.Eatotron9000.name=Eatotronic 9000
+item.item.ToolBox.name=Workers Toolbox
+
+//Cells
+item.Bromine.name=Bromine Cell
+item.Krypton.name=Krypton Cell
+item.cryotheum.name=Cryotheum Cell
+item.pyrotheum.name=Pyrotheum Cell
+item.GeneticMutagen.name=Mutagen Cell
+
+//Ingots
+item.itemHotIngotIncoloy020.name=Hot Incoloy-020 Ingot
+item.itemHotIngotIncoloyDS.name=Hot Incoloy-DS Ingot
+item.itemHotIngotTalonite.name=Hot Talonite Ingot
+item.itemHotIngotHastelloyX.name=Hot Hastelloy-X Ingot
+item.itemHotIngotHastelloyW.name=Hot Hastelloy-W Carbide Ingot
+
+//Railcraft Fix
+item.railcraft.part.plate.lead.name=Lead Plate
+
+//Ions
+item.particle.ion.Hydrogen.name=Hydrogen Ion
+item.particle.ion.Helium.name=Helium Ion
+item.particle.ion.Lithium.name=Lithium Ion
+item.particle.ion.Beryllium.name=Beryllium Ion
+item.particle.ion.Boron.name=Boron Ion
+item.particle.ion.Carbon.name=Carbon Ion
+item.particle.ion.Nitrogen.name=Nitrogen Ion
+item.particle.ion.Oxygen.name=Oxygen Ion
+item.particle.ion.Fluorine.name=Fluorine Ion
+item.particle.ion.Neon.name=Neon Ion
+item.particle.ion.Sodium.name=Sodium Ion
+item.particle.ion.Magnesium.name=Magnesium Ion
+item.particle.ion.Aluminum.name=Aluminum Ion
+item.particle.ion.Silicon.name=Silicon Ion
+item.particle.ion.Phosphorus.name=Phosphorus Ion
+item.particle.ion.Sulfur.name=Sulfur Ion
+item.particle.ion.Chlorine.name=Chlorine Ion
+item.particle.ion.Argon.name=Argon Ion
+item.particle.ion.Potassium.name=Potassium Ion
+item.particle.ion.Calcium.name=Calcium Ion
+item.particle.ion.Scandium.name=Scandium Ion
+item.particle.ion.Titanium.name=Titanium Ion
+item.particle.ion.Vanadium.name=Vanadium Ion
+item.particle.ion.Chromium.name=Chromium Ion
+item.particle.ion.Manganese.name=Manganese Ion
+item.particle.ion.Iron.name=Iron Ion
+item.particle.ion.Cobalt.name=Cobalt Ion
+item.particle.ion.Nickel.name=Nickel Ion
+item.particle.ion.Copper.name=Copper Ion
+item.particle.ion.Zinc.name=Zinc Ion
+item.particle.ion.Gallium.name=Gallium Ion
+item.particle.ion.Germanium.name=Germanium Ion
+item.particle.ion.Arsenic.name=Arsenic Ion
+item.particle.ion.Selenium.name=Selenium Ion
+item.particle.ion.Bromine.name=Bromine Ion
+item.particle.ion.Krypton.name=Krypton Ion
+item.particle.ion.Rubidium.name=Rubidium Ion
+item.particle.ion.Strontium.name=Strontium Ion
+item.particle.ion.Yttrium.name=Yttrium Ion
+item.particle.ion.Zirconium.name=Zirconium Ion
+item.particle.ion.Niobium.name=Niobium Ion
+item.particle.ion.Molybdenum.name=Molybdenum Ion
+item.particle.ion.Technetium.name=Technetium Ion
+item.particle.ion.Ruthenium.name=Ruthenium Ion
+item.particle.ion.Rhodium.name=Rhodium Ion
+item.particle.ion.Palladium.name=Palladium Ion
+item.particle.ion.Silver.name=Silver Ion
+item.particle.ion.Cadmium.name=Cadmium Ion
+item.particle.ion.Indium.name=Indium Ion
+item.particle.ion.Tin.name=Tin Ion
+item.particle.ion.Antimony.name=Antimony Ion
+item.particle.ion.Tellurium.name=Tellurium Ion
+item.particle.ion.Iodine.name=Iodine Ion
+item.particle.ion.Xenon.name=Xenon Ion
+item.particle.ion.Cesium.name=Cesium Ion
+item.particle.ion.Barium.name=Barium Ion
+item.particle.ion.Lanthanum.name=Lanthanum Ion
+item.particle.ion.Cerium.name=Cerium Ion
+item.particle.ion.Praseodymium.name=Praseodymium Ion
+item.particle.ion.Neodymium.name=Neodymium Ion
+item.particle.ion.Promethium.name=Promethium Ion
+item.particle.ion.Samarium.name=Samarium Ion
+item.particle.ion.Europium.name=Europium Ion
+item.particle.ion.Gadolinium.name=Gadolinium Ion
+item.particle.ion.Terbium.name=Terbium Ion
+item.particle.ion.Dysprosium.name=Dysprosium Ion
+item.particle.ion.Holmium.name=Holmium Ion
+item.particle.ion.Erbium.name=Erbium Ion
+item.particle.ion.Thulium.name=Thulium Ion
+item.particle.ion.Ytterbium.name=Ytterbium Ion
+item.particle.ion.Lutetium.name=Lutetium Ion
+item.particle.ion.Hafnium.name=Hafnium Ion
+item.particle.ion.Tantalum.name=Tantalum Ion
+item.particle.ion.Tungsten.name=Tungsten Ion
+item.particle.ion.Rhenium.name=Rhenium Ion
+item.particle.ion.Osmium.name=Osmium Ion
+item.particle.ion.Iridium.name=Iridium Ion
+item.particle.ion.Platinum.name=Platinum Ion
+item.particle.ion.Gold.name=Gold Ion
+item.particle.ion.Mercury.name=Mercury Ion
+item.particle.ion.Thallium.name=Thallium Ion
+item.particle.ion.Lead.name=Lead Ion
+item.particle.ion.Bismuth.name=Bismuth Ion
+item.particle.ion.Polonium.name=Polonium Ion
+item.particle.ion.Astatine.name=Astatine Ion
+item.particle.ion.Radon.name=Radon Ion
+item.particle.ion.Francium.name=Francium Ion
+item.particle.ion.Radium.name=Radium Ion
+item.particle.ion.Actinium.name=Actinium Ion
+item.particle.ion.Thorium.name=Thorium Ion
+item.particle.ion.Protactinium.name=Protactinium Ion
+item.particle.ion.Uranium.name=Uranium Ion
+item.particle.ion.Neptunium.name=Neptunium Ion
+item.particle.ion.Plutonium.name=Plutonium Ion
+item.particle.ion.Americium.name=Americium Ion
+item.particle.ion.Curium.name=Curium Ion
+item.particle.ion.Berkelium.name=Berkelium Ion
+item.particle.ion.Californium.name=Californium Ion
+item.particle.ion.Einsteinium.name=Einsteinium Ion
+item.particle.ion.Fermium.name=Fermium Ion
+item.particle.ion.Mendelevium.name=Mendelevium Ion
+item.particle.ion.Nobelium.name=Nobelium Ion
+item.particle.ion.Lawrencium.name=Lawrencium Ion
+item.particle.ion.Rutherfordium.name=Rutherfordium Ion
+item.particle.ion.Dubnium.name=Dubnium Ion
+item.particle.ion.Seaborgium.name=Seaborgium Ion
+item.particle.ion.Bohrium.name=Bohrium Ion
+item.particle.ion.Hassium.name=Hassium Ion
+item.particle.ion.Meitnerium.name=Meitnerium Ion
+item.particle.ion.Darmstadtium.name=Darmstadtium Ion
+item.particle.ion.Roentgenium.name=Roentgenium Ion
+item.particle.ion.Copernicium.name=Copernicium Ion
+item.particle.ion.Nihonium.name=Nihonium Ion
+item.particle.ion.Flerovium.name=Flerovium Ion
+item.particle.ion.Moscovium.name=Moscovium Ion
+item.particle.ion.Livermorium.name=Livermorium Ion
+item.particle.ion.Tennessine.name=Tennessine Ion
+item.particle.ion.Oganesson.name=Oganesson Ion
+
+
+item.particle.base.Graviton.name=Graviton
+item.particle.base.Up.name=Up Quark
+item.particle.base.Down.name=Down Quark
+item.particle.base.Charm.name=Charm Quark
+item.particle.base.Strange.name=Strange Quark
+item.particle.base.Top.name=Top Quark
+item.particle.base.Bottom.name=Bottom Quark
+item.particle.base.Electron.name=Electron
+item.particle.base.Electron Neutrino.name=Electron Neutrino
+item.particle.base.Muon.name=Muon
+item.particle.base.Muon Neutrino.name=Muon Neutrino
+item.particle.base.Tau.name=Tau
+item.particle.base.Tau Neutrino.name=Tau Neutrino
+item.particle.base.Gluon.name=Gluon
+item.particle.base.Photon.name=Photon
+item.particle.base.Z Boson.name=Z Boson
+item.particle.base.W Boson.name=W Boson
+item.particle.base.Higgs Boson.name=Higgs Boson
+item.particle.base.Proton.name=Proton
+item.particle.base.Neutron.name=Neutron
+item.particle.base.Lambda.name=Lambda
+item.particle.base.Omega.name=Omega
+item.particle.base.Pion.name=Pion
+item.particle.base.ETA Meson.name=ETA Meson
+
+
+

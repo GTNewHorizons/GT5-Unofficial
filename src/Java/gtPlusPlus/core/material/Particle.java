@@ -1,5 +1,7 @@
 package gtPlusPlus.core.material;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+
 public class Particle {
 
 	public static final Particle GRAVITON;
@@ -31,6 +33,8 @@ public class Particle {
 	
 	public static final Particle PION;
 	public static final Particle ETA_MESON;
+	
+	public static final AutoMap<Particle> aMap = new AutoMap<Particle>();
 	
 	static {
 		
@@ -99,7 +103,8 @@ public class Particle {
 	public Particle(ElementaryGroup aParticleType, String aParticleName, Particle[] aComposition) {
 		mParticleType = aParticleType;
 		mParticleName = aParticleName;
-		mComposition = aComposition == null ? new Particle[] {this} : aComposition;		
+		mComposition = aComposition == null ? new Particle[] {this} : aComposition;	
+		aMap.put(this);
 	}
 	
 }
