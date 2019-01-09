@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.server.container;
 
 import gregtech.api.gui.GT_Slot_Holo;
@@ -12,17 +34,17 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_Container_CircuitProgrammer extends Container {
 
-    public GT_Container_CircuitProgrammer(InventoryPlayer inventory){
+    public GT_Container_CircuitProgrammer(InventoryPlayer inventory) {
 
         IInventory inv = new pinv(inventory.player);
 
-        addSlotToContainer(new Slot(inv,0,44,61));//-45, 84));
+        addSlotToContainer(new Slot(inv, 0, 44, 61));//-45, 84));
 
         for (int i = 1; i < 13; i++) {
-            addSlotToContainer(new GT_Slot_Holo(inv, i, -64+i*18, 22, false, false, 1));
+            addSlotToContainer(new GT_Slot_Holo(inv, i, -64 + i * 18, 22, false, false, 1));
         }
         for (int i = 0; i < 12; i++) {
-            addSlotToContainer(new GT_Slot_Holo(inv, i+12, -46+i*18, 40, false, false, 1));
+            addSlotToContainer(new GT_Slot_Holo(inv, i + 12, -46 + i * 18, 40, false, false, 1));
         }
 
         for (int i = 0; i < 3; i++) {
@@ -37,13 +59,13 @@ public class GT_Container_CircuitProgrammer extends Container {
     }
 
     @Override
-    public ItemStack slotClick(int slot, int button, int aShifthold, EntityPlayer entityPlayer){
-      if (slot > 0 && slot < 25 && ((Slot)this.inventorySlots.get(0)).getStack() != null){
-          ((Slot)this.inventorySlots.get(0)).getStack().setItemDamage(slot);
-          detectAndSendChanges();
-          return ( (Slot) this.inventorySlots.get(0)).getStack();
-      }
-      return super.slotClick(slot, button, aShifthold, entityPlayer);//( (Slot) this.inventorySlots.get(slot)).getStack();
+    public ItemStack slotClick(int slot, int button, int aShifthold, EntityPlayer entityPlayer) {
+        if (slot > 0 && slot < 25 && ((Slot) this.inventorySlots.get(0)).getStack() != null) {
+            ((Slot) this.inventorySlots.get(0)).getStack().setItemDamage(slot);
+            detectAndSendChanges();
+            return ((Slot) this.inventorySlots.get(0)).getStack();
+        }
+        return super.slotClick(slot, button, aShifthold, entityPlayer);//( (Slot) this.inventorySlots.get(slot)).getStack();
     }
 
     @Override
@@ -52,21 +74,20 @@ public class GT_Container_CircuitProgrammer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int SlotNR)
-    {
-        Slot chipslot = (Slot)this.inventorySlots.get(0);
+    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int SlotNR) {
+        Slot chipslot = (Slot) this.inventorySlots.get(0);
         if (SlotNR > 24) {
             Slot slot = (Slot) this.inventorySlots.get(SlotNR);
-            if (slot != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())){
-                if ( chipslot.getStack()== null ){
+            if (slot != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+                if (chipslot.getStack() == null) {
                     chipslot.putStack(slot.getStack());
                     slot.decrStackSize(1);
                 }
             }
-        }else if (SlotNR == 0 && chipslot.getStack() != null){
+        } else if (SlotNR == 0 && chipslot.getStack() != null) {
             for (int i = 25; i < this.inventorySlots.size(); i++) {
-                if (((Slot)this.inventorySlots.get(i)).getStack() == null){
-                    Slot empty = ( (Slot) this.inventorySlots.get(i));
+                if (((Slot) this.inventorySlots.get(i)).getStack() == null) {
+                    Slot empty = ((Slot) this.inventorySlots.get(i));
                     empty.putStack(chipslot.getStack());
                     chipslot.decrStackSize(1);
                     break;
@@ -78,18 +99,18 @@ public class GT_Container_CircuitProgrammer extends Container {
 
     class pinv implements IInventory {
 
-        public pinv(EntityPlayer Player){
+        ItemStack toBind;
+        EntityPlayer Player;
+        ItemStack Slot;
+
+        public pinv(EntityPlayer Player) {
             super();
-            this.Player=Player;
-            this.toBind=Player.inventory.getCurrentItem();
+            this.Player = Player;
+            this.toBind = Player.inventory.getCurrentItem();
             NBTTagCompound tag = this.toBind.getTagCompound();
             if (tag.getBoolean("HasChip"))
                 Slot = GT_Utility.getIntegratedCircuit(tag.getByte("ChipConfig"));
         }
-
-        ItemStack toBind;
-        EntityPlayer Player;
-        ItemStack Slot;
 
         @Override
         public int getSizeInventory() {
@@ -106,9 +127,9 @@ public class GT_Container_CircuitProgrammer extends Container {
             ItemStack ret = Slot.copy();
             Slot = null;
             NBTTagCompound tag = toBind.getTagCompound();
-            tag.setBoolean("HasChip",false);
+            tag.setBoolean("HasChip", false);
             toBind.setTagCompound(tag);
-            Player.inventory.setInventorySlotContents(Player.inventory.currentItem,toBind);
+            Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
             return ret;
         }
 
@@ -123,10 +144,10 @@ public class GT_Container_CircuitProgrammer extends Container {
                 Slot = itemStack.copy().splitStack(1);
                 itemStack.stackSize--;
                 NBTTagCompound tag = toBind.getTagCompound();
-                tag.setBoolean("HasChip",true);
+                tag.setBoolean("HasChip", true);
                 tag.setByte("ChipConfig", (byte) itemStack.getItemDamage());
                 toBind.setTagCompound(tag);
-                Player.inventory.setInventorySlotContents(Player.inventory.currentItem,toBind);
+                Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
             }
         }
 
@@ -167,7 +188,7 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         @Override
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack itemStack) {
-            if (itemStack!= null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
+            if (itemStack != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
                 return true;
             return false;
         }

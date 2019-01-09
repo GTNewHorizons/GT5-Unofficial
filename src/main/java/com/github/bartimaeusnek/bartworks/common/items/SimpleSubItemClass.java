@@ -1,10 +1,34 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -12,13 +36,13 @@ import net.minecraft.util.IIcon;
 import java.util.List;
 
 public class SimpleSubItemClass extends Item {
-    String[] tex;
     @SideOnly(Side.CLIENT)
     protected IIcon[] itemIcon;
+    String[] tex;
 
-    public SimpleSubItemClass(String[] tex){
-        this.tex=tex;
-        this.hasSubtypes=true;
+    public SimpleSubItemClass(String[] tex) {
+        this.tex = tex;
+        this.hasSubtypes = true;
         this.setCreativeTab(MainMod.BWT);
     }
 
@@ -26,9 +50,15 @@ public class SimpleSubItemClass extends Item {
     public void registerIcons(IIconRegister iconRegister) {
         itemIcon = new IIcon[tex.length];
         for (int i = 0; i < tex.length; i++) {
-            itemIcon[i]=iconRegister.registerIcon(MainMod.modID+":"+tex[i]);
+            itemIcon[i] = iconRegister.registerIcon(MainMod.modID + ":" + tex[i]);
         }
 
+    }
+
+    @Override
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+        super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
+        aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override
@@ -39,18 +69,16 @@ public class SimpleSubItemClass extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int p_77617_1_)
-    {
-        if (p_77617_1_<tex.length)
+    public IIcon getIconFromDamage(int p_77617_1_) {
+        if (p_77617_1_ < tex.length)
             return this.itemIcon[p_77617_1_];
         else
             return this.itemIcon[0];
     }
 
-    public String getUnlocalizedName(ItemStack p_77667_1_)
-    {
-        if (p_77667_1_.getItemDamage()<tex.length)
-            return "item."+this.tex[p_77667_1_.getItemDamage()].replaceAll("/",".");
+    public String getUnlocalizedName(ItemStack p_77667_1_) {
+        if (p_77667_1_.getItemDamage() < tex.length)
+            return "item." + this.tex[p_77667_1_.getItemDamage()].replaceAll("/", ".");
         else
             return "WrongDamageItemDestroyIt";
     }

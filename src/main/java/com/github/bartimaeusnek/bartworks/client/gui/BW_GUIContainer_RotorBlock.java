@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -11,8 +33,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator
-{
+public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator {
     public ContainerWindKineticGenerator container;
     public String name;
 
@@ -42,7 +63,7 @@ public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator
     }
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-        GL11.glColor3f(0.5f,0.25f,0.07f);
+        GL11.glColor3f(0.5f, 0.25f, 0.07f);
         this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.modID, "textures/GUI/GUIPrimitiveKUBox.png"));
         int j = (this.width - this.xSize) / 2;
         int k = (this.height - this.ySize) / 2;

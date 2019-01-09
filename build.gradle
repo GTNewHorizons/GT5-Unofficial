@@ -19,6 +19,7 @@ buildscript {
 apply plugin: 'forge'
 apply plugin: 'idea'
 apply plugin: 'signing'
+
 import de.undercouch.gradle.tasks.download.Download
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,6 +45,7 @@ archivesBaseName = "bartworks"+ "[" + config.mc_version + "]"
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     replaceIn "MainMod.java"
+    replaceIn "API_REFERENCE.java"
     replace "@version@", project.version
     runDir = "run"
 }
@@ -93,6 +95,29 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+task apiJar(type: Jar){
+    from(sourceSets.main.output) {
+        include 'com/github/bartimaeusnek/bartworks/API/**'
+    }
+    classifier = 'API'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives devJar
+    archives sourceJar
+    archives apiJar
 }
 
 task signJar(dependsOn: 'reobf'){

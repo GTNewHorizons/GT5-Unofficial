@@ -1,0 +1,65 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.bartimaeusnek.bartworks.common.configs;
+
+
+import com.github.bartimaeusnek.bartworks.MainMod;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.enums.GT_Values;
+import net.minecraftforge.common.config.Configuration;
+
+import javax.annotation.Nonnull;
+import java.io.File;
+
+public class ConfigHandler {
+    private static final int IDU = GT_Values.VN.length * 8 - 3;
+    public static int IDOffset = 12600;
+    public static boolean teslastaff = false;
+    public static long energyPerCell = 100000L;
+    public static boolean newStuff = true;
+    public static boolean BioLab = true;
+    public static Configuration c;
+    private static boolean ezmode = false;
+
+    public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
+        c = new Configuration(new File(e.getModConfigurationDirectory().toString() + "/" + MainMod.modID + ".cfg"));
+
+        IDOffset = c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
+        energyPerCell = c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
+        ezmode = c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
+        MainMod.GTNH = ezmode ? !MainMod.GTNH : MainMod.GTNH;
+        teslastaff = c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
+        newStuff = !c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
+        BioLab = !c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
+
+        if (ConfigHandler.IDOffset == 0) {
+            ConfigHandler.IDOffset = 12600;
+            c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
+        }
+
+        if (c.hasChanged())
+            c.save();
+
+    }
+
+}

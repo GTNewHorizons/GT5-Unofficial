@@ -1,8 +1,30 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.common.tileentities;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_LESU;
-import com.github.bartimaeusnek.bartworks.common.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -32,24 +54,23 @@ import net.minecraft.world.World;
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
 
-    private static IIcon[] iIcons = new IIcon[4];
-    private static IIconContainer[] iIconContainers = new IIconContainer[4];
-    private static ITexture[][] iTextures = new ITexture[4][1];
     private static final byte TEXID_SIDE = 0;
     private static final byte TEXID_CHARGING = 1;
     private static final byte TEXID_IDLE = 2;
     private static final byte TEXID_EMPTY = 3;
-
-    private long mStorage;
+    private static IIcon[] iIcons = new IIcon[4];
+    private static IIconContainer[] iIconContainers = new IIconContainer[4];
+    private static ITexture[][] iTextures = new ITexture[4][1];
     public ConnectedBlocksChecker connectedcells;
     public ItemStack[] circuits = new ItemStack[5];
+    private long mStorage;
 
     public GT_TileEntity_LESU(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         this.mStorage = ConfigHandler.energyPerCell;
     }
 
-    public GT_TileEntity_LESU(String aName){
+    public GT_TileEntity_LESU(String aName) {
         super(aName);
     }
 
@@ -66,13 +87,13 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public long maxEUStore() {
-        return (this.mStorage >= Long.MAX_VALUE-1 || this.mStorage < 0) ? Long.MAX_VALUE-1 : this.mStorage;
+        return (this.mStorage >= Long.MAX_VALUE - 1 || this.mStorage < 0) ? Long.MAX_VALUE - 1 : this.mStorage;
     }
 
     @Override
     public long maxAmperesIn() {
         int ret = 0;
-        for (int i = 0 ; i < 5; ++i)
+        for (int i = 0; i < 5; ++i)
             if (this.circuits[i] != null && this.circuits[i].getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem()))
                 ret += this.circuits[i].getItemDamage();
         return ret > 0 ? ret : 1;
@@ -87,8 +108,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public long maxEUInput() {
 
         for (int i = 1; i < GT_Values.V.length; i++) {
-            if (maxEUOutput() <= GT_Values.V[i] && maxEUOutput() > GT_Values.V[i-1])
-                return Math.min(GT_Values.V[i],32768L);
+            if (maxEUOutput() <= GT_Values.V[i] && maxEUOutput() > GT_Values.V[i - 1])
+                return Math.min(GT_Values.V[i], 32768L);
         }
 
         return 8;
@@ -134,13 +155,13 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         return new String[]{
                 "Controller Block for the GT2-Styled L.E.S.U.",
                 "Size: ANY",
-                "Storage per LESU Casing: " + ConfigHandler.energyPerCell+"EU",
-                "Output EU: LESU Casings amount"+
-                "Input EU: Next Voltage Tier to Output EU",
+                "Storage per LESU Casing: " + ConfigHandler.energyPerCell + "EU",
+                "Output EU: LESU Casings amount" +
+                        "Input EU: Next Voltage Tier to Output EU",
                 "Input/Output Amps can be configured via 4 Circuits in GUI",
                 "Output Side has a dot on it.",
-                ChatColorHelper.RED+"Only one Controller allowed, no Wallsharing!",
-                "Added by bartimaeusnek via "+ChatColorHelper.DARKGREEN+"BartWorks"
+                ChatColorHelper.RED + "Only one Controller allowed, no Wallsharing!",
+                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
         };
     }
 
@@ -148,9 +169,9 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public void registerIcons(IIconRegister aBlockIconRegister) {
 
         for (int i = 0; i < iTextures.length; i++) {
-            iIcons[i]=aBlockIconRegister.registerIcon(MainMod.modID+":LESU_CASING_"+i);
+            iIcons[i] = aBlockIconRegister.registerIcon(MainMod.modID + ":LESU_CASING_" + i);
             final int finalI = i;
-            iIconContainers[i]=new IIconContainer() {
+            iIconContainers[i] = new IIconContainer() {
                 @Override
                 public IIcon getIcon() {
                     return iIcons[finalI];
@@ -163,7 +184,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
                 @Override
                 public ResourceLocation getTextureFile() {
-                    return new ResourceLocation(MainMod.modID+":LESU_CASING_"+ finalI);
+                    return new ResourceLocation(MainMod.modID + ":LESU_CASING_" + finalI);
                 }
             };
         }
@@ -196,7 +217,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         ITexture[] ret = new ITexture[0];
 
-        if(this.isClientSide()) {
+        if (this.isClientSide()) {
 
             for (int i = 0; i < iTextures.length; i++) {
                 iTextures[i][0] = new GT_RenderedTexture(iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
@@ -233,16 +254,16 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public ItemStack getStackInSlot(int p_70301_1_) {
         if (p_70301_1_ > 1)
-            return this.circuits[(p_70301_1_-2)];
+            return this.circuits[(p_70301_1_ - 2)];
         return this.mInventory[p_70301_1_];
     }
 
     @Override
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
         if (p_70299_1_ < 2)
-            this.mInventory[p_70299_1_]=p_70299_2_;
+            this.mInventory[p_70299_1_] = p_70299_2_;
         else
-            this.circuits[(p_70299_1_-2)]=p_70299_2_;
+            this.circuits[(p_70299_1_ - 2)] = p_70299_2_;
     }
 
     @Override
@@ -268,8 +289,9 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
 
-        switch (p_94041_1_){
-            case 0: case 1:
+        switch (p_94041_1_) {
+            case 0:
+            case 1:
                 return true;
             default:
                 return p_94041_2_.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
@@ -323,22 +345,22 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack){
-        this.mMaxProgresstime=1;
+    public boolean onRunningTick(ItemStack aStack) {
+        this.mMaxProgresstime = 1;
         return true;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setIntArray("customCircuitInv",GT_Utility.stacksToIntArray(this.circuits));
+        aNBT.setIntArray("customCircuitInv", GT_Utility.stacksToIntArray(this.circuits));
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         int[] stacks = aNBT.getIntArray("customCircuitInv");
-        for (int i = 0; i < stacks.length ; i++) {
-            this.circuits[i]=GT_Utility.intToStack(stacks[i]);
+        for (int i = 0; i < stacks.length; i++) {
+            this.circuits[i] = GT_Utility.intToStack(stacks[i]);
         }
         super.loadNBTData(aNBT);
     }
@@ -346,29 +368,28 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         connectedcells = new ConnectedBlocksChecker();
-        connectedcells.get_connected(aBaseMetaTileEntity.getWorld(),aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord(), ItemRegistry.BW_BLOCKS[1]);
+        connectedcells.get_connected(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), ItemRegistry.BW_BLOCKS[1]);
 
-        if (connectedcells.get_meta_of_sideblocks(aBaseMetaTileEntity.getWorld(),this.getBaseMetaTileEntity().getMetaTileID(),new int[]{aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()},true))
-        {
+        if (connectedcells.get_meta_of_sideblocks(aBaseMetaTileEntity.getWorld(), this.getBaseMetaTileEntity().getMetaTileID(), new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()}, true)) {
             this.getBaseMetaTileEntity().disableWorking();
             this.getBaseMetaTileEntity().setActive(false);
-            this.mStorage=0;
-            this.mMaxProgresstime=0;
-            this.mProgresstime=0;
+            this.mStorage = 0;
+            this.mMaxProgresstime = 0;
+            this.mProgresstime = 0;
             return false;
         }
 
-        this.mEfficiency=this.getMaxEfficiency(null);
-        this.mStorage=(ConfigHandler.energyPerCell * connectedcells.hashset.size() >= Long.MAX_VALUE-1 ||  ConfigHandler.energyPerCell * connectedcells.hashset.size() < 0) ? Long.MAX_VALUE-1 : ConfigHandler.energyPerCell * connectedcells.hashset.size() ;
-        this.mMaxProgresstime=1;
-        this.mProgresstime=0;
+        this.mEfficiency = this.getMaxEfficiency(null);
+        this.mStorage = (ConfigHandler.energyPerCell * connectedcells.hashset.size() >= Long.MAX_VALUE - 1 || ConfigHandler.energyPerCell * connectedcells.hashset.size() < 0) ? Long.MAX_VALUE - 1 : ConfigHandler.energyPerCell * connectedcells.hashset.size();
+        this.mMaxProgresstime = 1;
+        this.mProgresstime = 0;
 
-        this.mCrowbar=true;
-        this.mHardHammer=true;
-        this.mScrewdriver=true;
-        this.mSoftHammer=true;
-        this.mSolderingTool=true;
-        this.mWrench=true;
+        this.mCrowbar = true;
+        this.mHardHammer = true;
+        this.mScrewdriver = true;
+        this.mSoftHammer = true;
+        this.mSolderingTool = true;
+        this.mWrench = true;
 
         this.getBaseMetaTileEntity().enableWorking();
         this.getBaseMetaTileEntity().setActive(true);

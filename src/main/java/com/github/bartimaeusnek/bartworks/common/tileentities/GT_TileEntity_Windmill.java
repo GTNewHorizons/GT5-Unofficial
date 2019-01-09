@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2019 bartimaeusnek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.github.bartimaeusnek.bartworks.common.tileentities;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -69,7 +91,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         return true;
     }
 
-    public boolean recipe_fallback(ItemStack aStack){
+    public boolean recipe_fallback(ItemStack aStack) {
         //sight... fallback to the macerator recipes
         GT_Recipe.GT_Recipe_Map tMap = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
         if (tMap == null)
@@ -80,14 +102,15 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
         if (tRecipe.getOutput(0) != null) {
             aStack.stackSize--;
             mOutputItems[0] = tRecipe.getOutput(0);
-            if (new XSTR().nextInt(2) == 0){
+
+            if (new XSTR().nextInt(2) == 0) {
                 if (tRecipe.getOutput(1) != null)
                     mOutputItems[1] = tRecipe.getOutput(1);
-                else
+                else if (GT_OreDictUnificator.getAssociation(aStack) == null || GT_OreDictUnificator.getAssociation(aStack).mMaterial == null || GT_OreDictUnificator.getAssociation(aStack).mMaterial.mMaterial == null)
                     mOutputItems[1] = tRecipe.getOutput(0);
             }
         }
-        this.mMaxProgresstime = (tRecipe.mDuration * 2 *100);
+        this.mMaxProgresstime = (tRecipe.mDuration * 2 * 100);
         return true;
     }
 
@@ -235,6 +258,11 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             this.mMaxProgresstime = 60 * 20 * 100;
             this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.crushed, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
             return true;
+        } else if (OrePrefixes.nugget.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
+            itemStack.stackSize -= 1;
+            this.mMaxProgresstime = 15 * 20 * 100;
+            this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dustTiny, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, 1L));
+            return true;
         } else if (OrePrefixes.crushed.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)) {
             itemStack.stackSize -= 1;
             this.mMaxProgresstime = 30 * 20 * 100;
@@ -256,7 +284,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial, (GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.METAL) || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTAL)) ? 9L : 1L));
             return true;
         } else if (
-                        OrePrefixes.stone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
+                OrePrefixes.stone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
                         OrePrefixes.stoneBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
                         OrePrefixes.stoneChiseled.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
                         OrePrefixes.stoneCobble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix) ||
@@ -279,7 +307,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new BW_GUIContainer_Windmill(aPlayerInventory, aBaseMetaTileEntity,this.getLocalName());
+        return new BW_GUIContainer_Windmill(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
     }
 
     public boolean addDispenserToOutputSet(TileEntity aTileEntity) {
@@ -512,10 +540,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                 "A primitive Grinder powered by Kinetic energy.",
                 "WxHxL: 7x12x7",
                 "Layer 1: 7x7 Bricks, corners are air, controller at front centered.",
-                "Layer 2-4: 5x5 Hardened Clay, corners are air, can contain one door,",
+                "Layer 2-5: 5x5 Hardened Clay, corners are air, can contain one door,",
                 "hollow, must contain at least one Dispenser",
-                "Layer 5: 5x5 Wood Planks. Corners are filled, hollow.",
-                "Layer 6: 7x7 Wood Planks. Corners are air, hollow.",
+                "Layer 6: 5x5 Wood Planks. Corners are filled, hollow.",
+                "Layer 7: 7x7 Wood Planks. Corners are air, hollow.",
                 "Layer 8: 7x7 Wood Planks. Corners are air, hollow,",
                 "front centered must be a Primitive Kinetic Shaftbox",
                 "Layer 9: 7x7 Wood Planks. Corners are air, hollow.",
@@ -525,7 +553,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                 "Needs a Wind Mill Rotor in the Shaftbox to operate",
                 "Input items in Controller",
                 "Output items will appear in the dispensers",
-                "Added by bartimaeusnek via "+ ChatColorHelper.DARKGREEN+"BartWorks"
+                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
         };
     }
 
@@ -536,26 +564,26 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-            iIcons[0]=aBlockIconRegister.registerIcon("brick");
-            iIconContainers[0]=new IIconContainer() {
-                @Override
-                public IIcon getIcon() {
-                    return iIcons[0];
-                }
+        iIcons[0] = aBlockIconRegister.registerIcon("brick");
+        iIconContainers[0] = new IIconContainer() {
+            @Override
+            public IIcon getIcon() {
+                return iIcons[0];
+            }
 
-                @Override
-                public IIcon getOverlayIcon() {
-                    return iIcons[0];
-                }
+            @Override
+            public IIcon getOverlayIcon() {
+                return iIcons[0];
+            }
 
-                @Override
-                public ResourceLocation getTextureFile() {
-                    return new ResourceLocation("brick");
-                }
-            };
+            @Override
+            public ResourceLocation getTextureFile() {
+                return new ResourceLocation("brick");
+            }
+        };
 
-        iIcons[1]=aBlockIconRegister.registerIcon(MainMod.modID+":windmill_top");
-        iIconContainers[1]=new IIconContainer() {
+        iIcons[1] = aBlockIconRegister.registerIcon(MainMod.modID + ":windmill_top");
+        iIconContainers[1] = new IIconContainer() {
             @Override
             public IIcon getIcon() {
                 return iIcons[1];
@@ -568,7 +596,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             @Override
             public ResourceLocation getTextureFile() {
-                return new ResourceLocation(MainMod.modID+":windmill_top");
+                return new ResourceLocation(MainMod.modID + ":windmill_top");
             }
         };
     }
@@ -582,10 +610,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             iTextures[0] = new GT_RenderedTexture(iIconContainers[0], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
 
             ret = new ITexture[6];
-                for (int i = 0; i < 6; i++) {
-                    ret[i] = iTextures[0];
+            for (int i = 0; i < 6; i++) {
+                ret[i] = iTextures[0];
             }
-            if (aSide == 1){
+            if (aSide == 1) {
                 iTextures[1] = new GT_RenderedTexture(iIconContainers[1], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
 
                 ret = new ITexture[6];
