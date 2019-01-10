@@ -270,6 +270,7 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
+        gregtechproxy.mLowGravProcessingCircuits = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE) && tMainConfig.get("general", "LowGravProcessingCircuits", false).getBoolean(false);
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
@@ -583,6 +584,7 @@ public class GT_Mod implements IGT_Mod {
 		//Disable Low Grav regardless of config if Cleanroom is disabled.
 		if (!gregtechproxy.mEnableCleanroom){
 			gregtechproxy.mLowGravProcessing = false;
+			gregtechproxy.mLowGravProcessingCircuits = false;
 		}
 
         gregtechproxy.onLoad();
