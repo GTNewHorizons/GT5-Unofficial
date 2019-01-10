@@ -1,16 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.Collection;
 
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -20,27 +14,23 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Triplet;
-import gtPlusPlus.api.objects.minecraft.GenericStack;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,27 +38,25 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
 
-
-	public final static int JUNK_TO_SCRAP = 19;
-	public final static int JUNK_TO_UUA = 20;
-	public final static int SCRAP_UUA = 21;
-	public final static int PRODUCE_UUM = 22;
 	public static int sUUAperUUM = 1;
 	public static int sUUASpeedBonus = 4;
 	public static int sDurationMultiplier = 3200;
+	
 	private int mMatterProduced = 0;
 	private int mScrapProduced = 0;
 	private int mAmplifierProduced = 0;
 	private int mScrapUsed = 0;
 	private int mAmplifierUsed = 0;
+	
 	private int mMode = 0;
+
+	private final static int MODE_SCRAP = 1;
+	private final static int MODE_UU = 0;
 
 	public static boolean sRequiresUUA = false;
 	private static FluidStack[] mUU = new FluidStack[2];
 	private static ItemStack mScrap[] = new ItemStack[2];
 	private static Block IC2Glass = Block.getBlockFromItem(ItemUtils.getItem("IC2:blockAlloyGlass"));
-
-	private GT_Recipe mFakeRecipe;
 
 	public int getAmplifierUsed(){
 		return this.mAmplifierUsed;
@@ -118,7 +106,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(9)],
-					new GT_RenderedTexture(aActive ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1)};
+					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_MatterFab_Active_Animated : TexturesGtBlock.Overlay_MatterFab_Animated)};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(9)]};
 	}
@@ -133,13 +121,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return "MatterFabricator";
 	}
 
-	public ItemStack getScrapPile() {
+	public static ItemStack getScrapPile() {
 		if (mScrap[0] == null) {
 			mScrap[0] = ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrap"));
 		}
 		return mScrap[0];
 	}	
-	public ItemStack getScrapBox() {		
+	public static ItemStack getScrapBox() {		
 		if (mScrap[1] == null) {
 			mScrap[1] = ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrapbox"));
 		}
@@ -158,53 +146,16 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
 		sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
 		sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
-		Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
+		//Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
 	}
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Logger.INFO("Doing Recipe.");
 		ArrayList<ItemStack> tItems = getStoredInputs();
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
 		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-
-		if (tItems.size() == 0 && tFluids.size() == 0) {
-			if (this.mMode != PRODUCE_UUM) {
-				Logger.INFO("Not Processing.");
-				return false;
-			}
-		}
-		else {
-			if (tItems.size() != 0 && tFluids.size() == 0) {
-
-				int yu = 0;
-
-				for (ItemStack h : tItems) {
-					if (h != null) {
-						if (h.getItem() != getScrapPile().getItem() && h.getItem() != getScrapBox().getItem() && h.getItem() != CI.getNumberedCircuit(0).getItem()) {
-							yu++;
-							Logger.INFO("Found "+h.getDisplayName()+"++");
-						}
-						else {
-							Logger.INFO("Found "+h.getDisplayName());							
-							if (h.getItem() == CI.getNumberedCircuit(0).getItem()) {								
-								this.mMode = getGUICircuit(new ItemStack[] {h});
-							}
-
-						}
-					}
-				}
-
-				if (yu == 0 && this.mMode != PRODUCE_UUM) {
-					Logger.INFO("Not Processing.");
-					return false;
-				}
-
-			}
-		}
-
-		return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 75, 500, 100);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 100);
 	}		
 
 
@@ -212,6 +163,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+		
+		Block aContainmentGlass = ModBlocks.blockCasings3Misc;
+		int aContainmentMeta = 15;
+		
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 4; h++) {
@@ -283,8 +238,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 								}
 
 								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != aContainmentGlass) {
 										Logger.INFO("Glass Casings Missing from somewhere in the second layer.");
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != aContainmentMeta) {
+										Logger.INFO("Glass Casings wrong meta from the second layer.");
 										return false;
 									}
 								}
@@ -302,8 +261,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 								}
 
 								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
+									
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != aContainmentGlass) {
 										Logger.INFO("Glass Casings Missing from somewhere in the third layer.");
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != aContainmentMeta) {
+										Logger.INFO("Glass Casings wrong meta from the third layer.");
 										return false;
 									}
 								}
@@ -352,275 +316,6 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return new GregtechMetaTileEntity_MassFabricator(this.mName);
 	}
 
-	public static Map<String, GT_Recipe> mCachedRecipeMap = new ConcurrentHashMap<String, GT_Recipe>();
-
-	/**
-	 * Special Recipe Generator
-	 */
-
-	private GT_Recipe generateCustomRecipe(int mode, ItemStack[] aItemInputs, FluidStack[] aFluidInputs) {
-		ItemStack[] inputs = null;
-		ItemStack[] outputs = null;
-		FluidStack fluidIn = null;
-		FluidStack fluidOut = null;		
-		Triplet<Integer, ItemStack[], FluidStack[]> K = new Triplet<Integer, ItemStack[], FluidStack[]>(mode, aItemInputs, aFluidInputs);
-		//int mapKey = ((K == null || aItemInputs == null || aItemInputs.length < 1) ? -1 : K.hashCode());
-		String mapKey = Utils.calculateChecksumMD5(K);
-		if (mCachedRecipeMap.containsKey(mapKey)) {
-			Logger.INFO("2.x. Returning Cached Result.");			
-			return mCachedRecipeMap.get(mapKey);
-		}
-
-		final boolean oldRecipe = Utils.invertBoolean(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK);
-		Logger.INFO("2.x.1 | "+mapKey);			
-
-		int baseEuCost = 0;
-		int baseTimeCost = 0;
-
-		final int mEuPerRecycleOperation = 32;
-		final int mTicksPerRecycleOperation = 4;
-		final int mEuPerAmplifabOperation = 32;
-		final int mTicksPerAmplifabOperation = 160*20;
-		final int mEuPerMatterFabOperation = 32;
-		final int mTicksPerMatterFabOperation = 160*20;
-
-		final Item SP = this.getScrapPile().getItem();
-		final Item SB = this.getScrapBox().getItem();
-		final Item CR = CI.getNumberedCircuit(0).getItem();
-		Logger.INFO("2.x.2");			
-
-		/**
-		 * Count Inputs
-		 */	
-
-		ItemStack[] mStrippedInputs = new ItemStack[aItemInputs.length];
-		int mStrippedIndex = 0;
-
-		int inputCount = 0;
-		if (aItemInputs.length > 0) {
-			for (int y=0;y<aItemInputs.length;y++) {
-				if (aItemInputs[y].getItem() != SP && aItemInputs[y].getItem() != SB && aItemInputs[y].getItem() != CR) {
-					inputCount += aItemInputs[y].stackSize;
-					mStrippedInputs[mStrippedIndex++] = aItemInputs[y].copy();
-				}
-			}
-		}
-
-		Logger.INFO("2.x.3");			
-
-		/**
-		 * Set Inputs and Outputs depending on mode.
-		 */
-
-		//Recycler mode
-		if (mode == JUNK_TO_SCRAP) {
-			if (mStrippedInputs.length > 0) {
-				Logger.INFO("2.x.4.1");	
-				inputs = mStrippedInputs;
-				outputs = getScrapPiles(inputCount);
-				baseEuCost = mEuPerRecycleOperation;
-				baseTimeCost = mTicksPerRecycleOperation;
-			}
-		}
-
-		//Hybrid mode
-		else if (mode == JUNK_TO_UUA) {
-			if (mStrippedInputs.length > 0) {
-				Logger.INFO("2.x.4.2");	
-				inputs = mStrippedInputs;
-				GenericStack x = getUUAFromScrapStack(getScrapPiles(inputCount));
-				outputs = new ItemStack[]{x.getItemStack()};
-				fluidOut = x.getFluidStack();
-				baseEuCost = 512;
-				baseTimeCost = mTicksPerRecycleOperation;		
-			}
-		}
-
-		//Amplifabricator mode
-		else if (mode == SCRAP_UUA) {
-			if (mStrippedInputs.length > 0) {
-				Logger.INFO("2.x.4.3");					
-				inputs = mStrippedInputs;
-				GenericStack x = getUUAFromScrapStack(inputs);
-				outputs = new ItemStack[]{x.getItemStack()};
-				fluidOut = x.getFluidStack();				
-				baseEuCost = mEuPerAmplifabOperation;
-				baseTimeCost = mTicksPerAmplifabOperation;		
-			}
-		}
-
-		//Matter Fabricator mode
-		else if (mode == PRODUCE_UUM) {
-			Logger.INFO("2.x.4.4");	
-			if (sDurationMultiplier != 0) {
-				baseTimeCost = sDurationMultiplier;
-			}
-			if (doesHatchContainUUA()) {
-				fluidIn = FluidUtils.getFluidStack(mUU[0], sUUAperUUM);				
-			}
-			else {	
-				if (sRequiresUUA) {
-					//Return null because if this is the case, the machine cannot run at all.
-					return null;
-				}
-				else {
-					fluidIn = GT_Values.NF;
-				}
-			}
-			fluidOut = FluidUtils.getFluidStack(mUU[1], 1);
-			baseEuCost = mEuPerMatterFabOperation;
-			baseTimeCost =  (fluidIn == GT_Values.NF ? mTicksPerMatterFabOperation: mTicksPerMatterFabOperation/sUUASpeedBonus);			
-		}
-		Logger.INFO("2.x.5");			
-
-
-		//Pre 5.09 compat
-		if (oldRecipe) {
-			baseEuCost = (baseEuCost/8);
-		}
-
-		Recipe_GT B = null;
-		try {
-			B = new Recipe_GT(
-					true,
-					inputs, //Inputs
-					outputs, //Outputs
-					null, // Special?
-					new int[] {10000}, //Chances
-					new FluidStack[] {fluidIn}, //Fluid Inputs
-					new FluidStack[] {fluidOut}, //Fluid Outputs
-					baseTimeCost, //duration
-					baseEuCost, //eu/t
-					0);
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
-
-		//Cache generated recipe
-		if (B != null) {
-			mCachedRecipeMap.put(mapKey, B);
-			Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.add(B);
-		}	
-
-		//The Recipe Itself.
-		return B;
-	}
-
-	private ItemStack[] getScrapPiles(int inputSize) {
-
-		if (inputSize < 1) {
-			Logger.INFO("2.x.4.x.x");	
-			return null;
-		}
-
-		Logger.INFO("2.x.4.x.1");	
-
-		//Generate Trash
-		ItemStack[] mOutputs;
-		AutoMap<ItemStack> mTemp = new AutoMap<ItemStack>();
-		for (int r=0;r<inputSize;r++) {
-			Logger.INFO("2.x.4.x.1.0");	
-			if (MathUtils.randInt(0, 5) != 6) {
-				mTemp.put(getScrapPile());
-			}
-		}
-		Logger.INFO("2.x.4.x.2");	
-		//int mSlots = (int) Math.ceil((mTemp.size()/64) / 100.0);
-		int mSlots = (int) (mTemp.size()/64);
-		Logger.INFO("2.x.4.x.3 | mSlots: "+mSlots);	
-		mOutputs = new ItemStack[(mSlots > 0 ? mSlots : 1)];
-		Logger.INFO("2.x.4.x.4 | mOutputs: "+mOutputs.length);	
-		int totalScrap = mTemp.size();
-		Logger.INFO("2.x.4.x.5");	
-		int index = 0;		
-		Logger.INFO("2.x.4.x.6");
-		try {
-			if (totalScrap > 0) {	
-				Logger.INFO("2.x.4.x.6.x | "+totalScrap);
-				while (totalScrap > 0) {
-					Logger.INFO("2.x.4.x.6.xx | "+index);
-					//if (index < mOutputs.length) {					
-					if (mOutputs[index] == null) { //TODO
-						Logger.WARNING("2.x.4.x.6.1");	
-						mOutputs[index] = getScrapPile();
-						totalScrap--;
-					}						
-					else {
-						Logger.WARNING("2.x.4.x.6.2");	
-						if (mOutputs[index].stackSize < 64) {
-							mOutputs[index].stackSize++;
-							totalScrap--;								
-						}
-					}
-
-					if (mOutputs[index] != null && mOutputs[index].stackSize >= 64) {
-						Logger.WARNING("2.x.4.x.6.0");	
-						index++;
-					}	
-					//}
-				}
-			}
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-
-		}
-		Logger.WARNING("2.x.4.x.7");	
-		return mOutputs;
-	}
-
-	public GenericStack getUUAFromScrapStack(ItemStack[] scrapStack) {
-		//9=1
-		int mbUUA = 0;		
-		int temp = 0;
-		for (int u=0;u<scrapStack.length;u++) {
-			temp++;
-			if(temp == 9) {
-				temp = 0;
-				mbUUA++;
-			}
-		}
-
-		int remainder = (scrapStack.length % 9);		
-		GenericStack mOutput = new GenericStack();
-		ItemStack mScrapOutput = null;
-		FluidStack mUUAOutput = null;
-		if (remainder > 0) {
-			mScrapOutput= ItemUtils.getSimpleStack(getScrapPile(), remainder);			
-		}
-		if (mbUUA > 0) {
-			mUUAOutput = FluidUtils.getFluidStack(mUU[0], mbUUA);			
-		}		
-		mOutput.setItemStack(mScrapOutput);
-		mOutput.setFluidStack(mUUAOutput);		
-		return mOutput;
-	}
-
-	private GT_Recipe getFakeRecipeForMode(ItemStack[] aItemInputs, FluidStack[] aFluidInputs) {		
-		if (this.mMode == JUNK_TO_SCRAP) {
-			Logger.WARNING("2.1");			
-			return generateCustomRecipe(JUNK_TO_SCRAP, aItemInputs, aFluidInputs);
-		}
-		else if (this.mMode == JUNK_TO_UUA) {
-			Logger.WARNING("2.2");
-			return generateCustomRecipe(JUNK_TO_UUA, aItemInputs, aFluidInputs);			
-		}
-		else if (this.mMode == SCRAP_UUA) {
-			Logger.WARNING("2.3");
-			return generateCustomRecipe(SCRAP_UUA, aItemInputs, aFluidInputs);		
-		}
-		else if (this.mMode == PRODUCE_UUM) {
-			Logger.WARNING("2.4");
-			return generateCustomRecipe(PRODUCE_UUM, aItemInputs, aFluidInputs);		
-		}
-		else {
-			Logger.WARNING("2.5");
-			return null;
-		}		
-	}
-
-
 	public boolean doesHatchContainUUA() {		
 		if (mUU[0] == null) {
 			mUU[0] = Materials.UUAmplifier.getFluid(100);
@@ -650,7 +345,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public GT_Recipe_Map getRecipeMap() {
-		return null;
+		return this.mMode == MODE_SCRAP ? GT_Recipe_Map.sRecyclerRecipes : Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes;
 		//return Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes;
 	}
 
@@ -658,188 +353,94 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
-			int aSpeedBonusPercent, int aOutputChanceRoll) {
+			int aSpeedBonusPercent, int aOutputChanceRoll) {	
+		
+		if (this.mMode == MODE_SCRAP) {
 
-		// Based on the Processing Array. A bit overkill, but very flexible.
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
+			long tVoltage = getMaxInputVoltage();
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));			
+			GT_Recipe c = new Recipe_GT(false, new ItemStack[] { GT_Utility.copyAmount(1, aItemInputs[0]) },
+					GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aItemInputs[0]), 0) == null ? null
+							: new ItemStack[] { ItemList.IC2_Scrap.get(1) },
+					null, new int[] { 2000 }, null, null, 100,
+					(int) gregtech.api.enums.GT_Values.V[2], 0);
+			
+			// EU discount
+			float tRecipeEUt = (c.mEUt * aEUPercent) / 100.0f;
+			float tTotalEUt = 0.0f;
 
-		Logger.INFO("1.");
-		Logger.INFO("2.");
-		mFakeRecipe = getFakeRecipeForMode(aItemInputs, aFluidInputs);
-		Logger.INFO("3.");
-
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		Logger.INFO("4.");
-
-		GT_Recipe tRecipe = mFakeRecipe;
-
-		// Remember last recipe - an optimization for findRecipe()
-		this.mLastRecipe = tRecipe;
-
-		if (tRecipe == null) {
-			Logger.INFO("Bad Recipe Generated.");
-			return false;
-		}
-
-		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-			Logger.INFO("Cannot buffer output.");
-			return false;
-		}
-
-		// EU discount
-		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-		float tTotalEUt = 0.0f;
-
-		int parallelRecipes = 0;
-
-		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
-			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-				break;
+			int parallelRecipes = 0;
+			// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+			for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+				if (!c.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+					log("Broke at "+parallelRecipes+".");
+					break;
+				}
+				log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+				tTotalEUt += tRecipeEUt;
 			}
-			tTotalEUt += tRecipeEUt;
-		}
 
-		if (parallelRecipes == 0) {
-			return false;
-		}
-
-		// -- Try not to fail after this point - inputs have already been consumed! --
-
-
-		// Convert speed bonus to duration multiplier
-		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
-
-		this.mEUt = (int)Math.ceil(tTotalEUt);
-
-		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-		this.mEfficiencyIncrease = 10000;
-
-		// Overclock
-		if (this.mEUt <= 16) {
-			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-		} else {
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
+			if (parallelRecipes == 0) {
+				this.mEUt = (int) gregtech.api.enums.GT_Values.V[tTier];
+				this.mMaxProgresstime = 10;
+				return true;
 			}
+			
+			return super.checkRecipeGeneric(c, 32, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 		}
-
-		if (this.mEUt > 0) {
-			this.mEUt = (-this.mEUt);
+		
+		//Return normal Recipe handling
+		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);	
 		}
-
-		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-		// Collect fluid outputs
-		FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
-		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
-			if (tRecipe.getFluidOutput(h) != null) {
-				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-				tOutputFluids[h].amount *= parallelRecipes;
-			}
+	
+	private GT_Recipe generateScrapRecipe(ItemStack[] aInputs) {		
+		if (aInputs.length < 1) {
+			return null;
 		}
-
-		// Collect output item types
-		ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
-		for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-			if (tRecipe.getOutput(h) != null) {
-				tOutputItems[h] = tRecipe.getOutput(h).copy();
-				tOutputItems[h].stackSize = 0;
-			}
-		}
-
-		// Set output item stack sizes (taking output chance into account)
-		for (int f = 0; f < tOutputItems.length; f++) {
-			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
-				for (int g = 0; g < parallelRecipes; g++) {
-					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+		else {
+			AutoMap<ItemStack> aInputsFiltered = new AutoMap<ItemStack>();
+			ItemStack circuit = CI.getNumberedCircuit(1);
+			for (ItemStack f : aInputs) {
+				if (f == null || f.getItem() == circuit.getItem()) {
+					continue;
 				}
 			}
+			
+			
 		}
+		
+		
+		return null;
+	}
 
-		tOutputItems = removeNulls(tOutputItems);
-
-		// Sanitize item stack size, splitting any stacks greater than max stack size
-		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-		for (ItemStack tItem : tOutputItems) {
-			while (tItem.getMaxStackSize() < tItem.stackSize) {
-				ItemStack tmp = tItem.copy();
-				tmp.stackSize = tmp.getMaxStackSize();
-				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-				splitStacks.add(tmp);
-			}
+	@Override
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		int aMode = this.mMode + 1;
+		if (aMode > 1) {
+			this.mMode = MODE_UU;
+			PlayerUtils.messagePlayer(aPlayer, "Mode ["+this.mMode+"]: Matter/AmpliFabricator");
 		}
-
-		if (splitStacks.size() > 0) {
-			ItemStack[] tmp = new ItemStack[splitStacks.size()];
-			tmp = splitStacks.toArray(tmp);
-			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
+		else if (aMode == 1) {
+			this.mMode = MODE_SCRAP;
+			PlayerUtils.messagePlayer(aPlayer, "Mode ["+this.mMode+"]: Recycler");
 		}
-
-		// Strip empty stacks
-		List<ItemStack> tSList = new ArrayList<ItemStack>();
-		for (ItemStack tS : tOutputItems) {
-			if (tS.stackSize > 0) tSList.add(tS);
+		else {
+			this.mMode = MODE_SCRAP;
+			PlayerUtils.messagePlayer(aPlayer, "Mode ["+this.mMode+"]: Recycler");
 		}
-		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
-
-		// Commit outputs
-		this.mOutputItems = tOutputItems;
-		this.mOutputFluids = tOutputFluids;
-		updateSlots();
-
-		/**
-		 * Amp Stat Recording
-		 */
-
-		for (int u=0;u<tRecipe.mFluidInputs.length;u++) {
-			if (tRecipe.mFluidInputs[u].isFluidEqual(mUU[0])) {
-				if (tRecipe.mFluidInputs[u].amount > 0) {
-					mAmplifierUsed += tRecipe.mFluidInputs[u].amount;
-				}
-			}
-		}		
-		for (int u=0;u<tOutputFluids.length;u++) {
-			if (tOutputFluids[u].isFluidEqual(mUU[0])) {
-				mAmplifierProduced += tOutputFluids[u].amount;
-			}
-			/**
-			 * UUM Stat Recording
-			 */	
-			if (tOutputFluids[u].isFluidEqual(mUU[1])) {
-				mMatterProduced += tOutputFluids[u].amount;
-			}
+		GT_Recipe_Map r = this.getRecipeMap();
+		final Collection<GT_Recipe> x = r.mRecipeList;
+		Logger.INFO("Dumping " + r.mUnlocalizedName + " Recipes for Debug. size: "+x.size());
+		for (final GT_Recipe newBo : x) {
+			Logger.INFO("========================");
+			Logger.INFO("Dumping Input: " + ItemUtils.getArrayStackNames(newBo.mInputs));
+			Logger.INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
+			Logger.INFO("Dumping Duration: " + newBo.mDuration);
+			Logger.INFO("Dumping EU/t: " + newBo.mEUt);
+			Logger.INFO("Dumping Output: " + ItemUtils.getArrayStackNames(newBo.mOutputs));
+			Logger.INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
+			Logger.INFO("========================");
 		}
-
-		/**
-		 * Scrap Stat Recording
-		 */
-		for (int u=0;u<tRecipe.mInputs.length;u++) {
-			if (tRecipe.mInputs[u].getItem() == getScrapPile().getItem()) {
-				mScrapUsed += tRecipe.mInputs[u].stackSize;
-			}
-		}		
-		for (int u=0;u<tOutputItems.length;u++) {
-			if (tOutputItems[u].getItem() == getScrapPile().getItem()) {
-				mScrapProduced += tOutputItems[u].stackSize;
-			}
-		}
-
-		// Play sounds (GT++ addition - GT multiblocks play no sounds)
-		startProcess();
-
-		return true;
 	}
 
 	@Override

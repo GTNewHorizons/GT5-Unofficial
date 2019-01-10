@@ -42,10 +42,10 @@ public class CasingTextureHandler {
 				return TexturesGtBlock.Casing_Material_Tumbaga.getIcon();
 				//Broken Pink Fusion Casings
 			case 8:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
 				//Matter Fabricator Casings
 			case 9:
-				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
+				return TexturesGtBlock.TEXTURE_METAL_PANEL_F.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
 				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();

@@ -102,7 +102,8 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
-		return true;
+		return super.onRunningTick(aStack);
+		//return true;
 	}
 
 	@Override
@@ -200,18 +201,24 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	}
 
+	private static GT_Recipe_Map fCircuitMap;
+	
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {		
 		if (this.mMachineMode == MODE.ASSEMBLY) {
 			return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 		}
 		else if (this.mMachineMode == MODE.CIRCUIT && !CORE.GTNH) {
+			if (fCircuitMap != null) {
+				return fCircuitMap;
+			}
 			GT_Recipe_Map r;			
 			try {
 				Field f = ReflectionUtils.getField(GT_Recipe.GT_Recipe_Map.class, "sCircuitAssemblerRecipes");
 				if (f != null) {
 					r = (GT_Recipe_Map) f.get(null);
 					if (r != null) {
+						fCircuitMap = r;
 						return r;
 					}
 				}
@@ -232,7 +239,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		if (isModernGT && !CORE.GTNH) {
 			mMachineMode = mMachineMode.nextMode();
 			if (mMachineMode == MODE.CRAFTING) {
-				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �dAuto-Crafting");
+				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �dAutoCrafting");
 			} else if (mMachineMode == MODE.ASSEMBLY) {
 				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �aAssembly");
 			} else if (mMachineMode == MODE.DISASSEMBLY) {
@@ -251,14 +258,13 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			}
 			
 			if (mMachineMode == MODE.CRAFTING) {
-				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �dAuto-Crafting");
+				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �dAutoCrafting");
 			} else if (mMachineMode == MODE.ASSEMBLY) {
 				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �aAssembly");
 			} else {
 				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �cDisassembly");
 			}
-		}		
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+		}
 	}
 
 	@Override

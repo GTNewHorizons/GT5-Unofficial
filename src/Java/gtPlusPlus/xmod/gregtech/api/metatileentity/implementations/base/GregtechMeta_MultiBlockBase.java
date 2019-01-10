@@ -385,10 +385,32 @@ GT_MetaTileEntity_MultiBlockBase {
 		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
 	}
 
+
+	public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {		
+		if (aRecipe == null) {
+			return false;
+		}		
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
+	}
+	
 	public boolean checkRecipeGeneric(
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll) {
+		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
+	}
+	
+	
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 		// Based on the Processing Array. A bit overkill, but very flexible.
 
 
@@ -397,6 +419,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//If no core, return false;
 		if (aControlCoreTier == 0) {
+			log("No control core found.");
 			return false;
 		}
 
@@ -413,11 +436,12 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Check to see if Voltage Tier > Control Core Tier
 		if (tTier > aControlCoreTier) {
+			log("Control core found is lower tier than power tier.");
 			return false;
 		}
 
 
-		GT_Recipe tRecipe = findRecipe(
+		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
@@ -982,11 +1006,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	@Override
 	public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+		resetRecipeMapForAllInputHatches();
 		onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
 	}
 	
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		resetRecipeMapForAllInputHatches();
+		
 	}
 
 	
@@ -1320,10 +1345,12 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 		if (mRecipeResult == null) {
+			log("Invalid recipe, Fallback lookup. "+this.getRecipeMap().mRecipeList.size()+" | "+this.getRecipeMap().mNEIName);	
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 				try {
 					return (GT_Recipe) findRecipe08.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
 					return null;
 				}
 			}
@@ -1331,6 +1358,7 @@ GT_MetaTileEntity_MultiBlockBase {
 				try {
 					return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
 					return null;
 				}
 			}

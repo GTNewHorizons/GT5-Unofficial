@@ -27,12 +27,12 @@ public class CONTAINER_MatterFab extends GT_ContainerMetaTile_Machine {
 
 	@Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new SlotNoInput(mTileEntity, 1, 152, 5));
+        //addSlotToContainer(new SlotNoInput(mTileEntity, 1, 152, 5));
     }
 
     @Override
     public int getSlotCount() {
-        return 1;
+        return 0;
     }
 
     @Override
