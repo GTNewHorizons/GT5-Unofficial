@@ -272,4 +272,14 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 		return 2;
 	}
 
+	@Override
+	public int getMaxParallelRecipes() {
+		return 9;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
+
 }

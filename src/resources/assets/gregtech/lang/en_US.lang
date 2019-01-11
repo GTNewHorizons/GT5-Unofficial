@@ -1,0 +1,19 @@
+
+//Shit I stole from GTNH~
+
+GTPP.EBF.heat=Heat capacity
+
+GTPP.machines.tier=Tier
+
+GTPP.multiblock.pollutionreduced=Pollution reduced to
+GTPP.multiblock.pollution=Pollution
+GTPP.multiblock.energy=Stored Energy
+GTPP.multiblock.Progress=Progress
+GTPP.multiblock.efficiency=Efficiency
+GTPP.multiblock.problems=Problems
+GTPP.multiblock.mei=Max Energy Income
+GTPP.multiblock.usage=Probably uses
+
+GTPP.CC.machinetier=Control Core Tier
+GTPP.CC.discount=EU Discount
+GTPP.CC.parallel=Maximum Parallel Processing

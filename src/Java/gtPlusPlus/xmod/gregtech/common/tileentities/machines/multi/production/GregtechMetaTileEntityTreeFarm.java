@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
@@ -261,6 +262,16 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			return true;
 		}		
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 

@@ -12,6 +12,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.*;
 
@@ -122,6 +123,16 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 
 	public boolean checkRecipe(final ItemStack aStack) {
 		return this.checkRecipeGeneric(4, 100, 100);
+	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 4;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
 	}
 
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {

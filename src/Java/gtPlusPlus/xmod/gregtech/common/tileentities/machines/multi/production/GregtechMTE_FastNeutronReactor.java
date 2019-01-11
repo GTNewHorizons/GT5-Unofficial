@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
@@ -86,6 +87,16 @@ extends GregtechMeta_MultiBlockBase
 			//Stage 1
 		}
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 	public boolean processing_Stage_1() { //Deplete Water, Add More Progress Time

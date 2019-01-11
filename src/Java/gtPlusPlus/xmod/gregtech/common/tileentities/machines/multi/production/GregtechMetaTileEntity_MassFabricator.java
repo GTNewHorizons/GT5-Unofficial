@@ -16,13 +16,11 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
@@ -47,6 +45,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	private int mAmplifierProduced = 0;
 	private int mScrapUsed = 0;
 	private int mAmplifierUsed = 0;
+
+	public static String mCasingName1 = "Matter Fabricator Casing";
+	public static String mCasingName2 = "Containment Casing";
+	public static String mCasingName3 = "Matter Generation Coil";
 	
 	private int mMode = 0;
 
@@ -56,7 +58,6 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public static boolean sRequiresUUA = false;
 	private static FluidStack[] mUU = new FluidStack[2];
 	private static ItemStack mScrap[] = new ItemStack[2];
-	private static Block IC2Glass = Block.getBlockFromItem(ItemUtils.getItem("IC2:blockAlloyGlass"));
 
 	public int getAmplifierUsed(){
 		return this.mAmplifierUsed;
@@ -68,37 +69,49 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	public GregtechMetaTileEntity_MassFabricator(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
+		mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
+		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
+		mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
 	}
 
 	public GregtechMetaTileEntity_MassFabricator(final String aName) {
 		super(aName);
+		mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
+		mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
+		mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
 	}
 
 	@Override
 	public String getMachineType() {
-		return "Mass Fabricator";
+		return "Mass Fabricator / Recycler";
 	}
 
 	@Override
 	public String[] getTooltip() {
+
+		if (mCasingName1.toLowerCase().contains(".name")) {
+			mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
+		}
+		if (mCasingName2.toLowerCase().contains(".name")) {
+			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
+		}
+		if (mCasingName3.toLowerCase().contains(".name")) {
+			mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
+		}
+		
 		return new String[]{
 				"Controller Block for the Matter Fabricator",
-				"Produces UU-Matter from UU-Amplifier",
-				"Use numbered circuits in GUI slot to change mode",
-				"[19] Junk Items to Scrap",
-				"[20] Junk Items to UU-A",
-				"[21] Scrap to UU-A",
-				"[22] Produce UU-M",
+				"Produces UU-A, UU-m & Scrap",
 				"Size(WxHxD): 5x4x5, Controller (Bottom center)",
-				"3x1x3 Matter Generation Coils (Inside bottom 5x1x5 layer)",
-				"9x Matter Generation Coils (Centered 3x1x3 area in Bottom layer)",
+				"3x1x3 "+mCasingName3+"s (Inside bottom 5x1x5 layer)",
+				"9x "+mCasingName3+" (Centered 3x1x3 area in Bottom layer)",
 				"1x Input Hatch (Any bottom layer casing)",
 				"1x Output Hatch (Any bottom layer casing)",
 				"1x Maintenance Hatch (Any bottom layer casing)",
 				"1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
 				"1x Energy Hatch (Any bottom layer casing)",
-				"24x IC2 Reinforced Glass for the walls",
-				"Matter Fabricator Casings for the edges & top (40 at least!)",
+				"24x "+mCasingName2+" for the walls",
+				mCasingName1+"s for the edges & top (40 at least!)",
 				};
 	}
 
@@ -386,31 +399,21 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				return true;
 			}
 			
-			return super.checkRecipeGeneric(c, 32, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+			return super.checkRecipeGeneric(c, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);
 		}
 		
 		//Return normal Recipe handling
-		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);	
-		}
+		return super.checkRecipeGeneric(aItemInputs, aFluidInputs, getMaxParallelRecipes(), getEuDiscountForParallelism(), aSpeedBonusPercent, aOutputChanceRoll);	
+		}	
 	
-	private GT_Recipe generateScrapRecipe(ItemStack[] aInputs) {		
-		if (aInputs.length < 1) {
-			return null;
-		}
-		else {
-			AutoMap<ItemStack> aInputsFiltered = new AutoMap<ItemStack>();
-			ItemStack circuit = CI.getNumberedCircuit(1);
-			for (ItemStack f : aInputs) {
-				if (f == null || f.getItem() == circuit.getItem()) {
-					continue;
-				}
-			}
-			
-			
-		}
-		
-		
-		return null;
+	@Override
+	public int getMaxParallelRecipes() {
+		return this.mMode == MODE_SCRAP ? 32 : 2 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 80;
 	}
 
 	@Override

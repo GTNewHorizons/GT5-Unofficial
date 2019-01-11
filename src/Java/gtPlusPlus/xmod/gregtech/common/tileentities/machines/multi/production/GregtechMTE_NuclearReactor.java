@@ -18,6 +18,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -139,129 +140,120 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	private Blueprint_LFTR mBlueprint;
 	
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		
-		if (mBlueprint == null) {
-			mBlueprint = new  Blueprint_LFTR();
-		}		
-		return mBlueprint.checkMachine(aBaseMetaTileEntity);
-		
-		
-		/*
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
 
-		
+			// Life Lessons from Greg.
+			/**
+			[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
+			[23:41:26] <GregoriusTechneticies> thats you issue
+			[23:44:33] <Alkalus> mmm?
+			[23:44:49] <Alkalus> Should they be x3?
+			[23:44:50] <GregoriusTechneticies> you just do a x2, what is for a 5x5 multiblock
+			[23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one
+			[23:45:06] <Alkalus> I have no idea what that value does, tbh..
+			[23:45:15] <GregoriusTechneticies> its the offset
+			[23:45:23] <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
+			[23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock
+			[23:45:47] <GregoriusTechneticies> which is in your case THREE blocks away from the controller
+			[23:45:51] <Alkalus> Ahh
+			[23:45:57] <GregoriusTechneticies> and not 2
+			[23:46:06] <Alkalus> Noted, thanks :D
+			 */
 
-		// Life Lessons from Greg.
-		*//**
-		[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
-		[23:41:26] <GregoriusTechneticies> thats you issue
-		[23:44:33] <Alkalus> mmm?
-		[23:44:49] <Alkalus> Should they be x3?
-		[23:44:50] <GregoriusTechneticies> you just do a x2, what is for a 5x5 multiblock
-		[23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one
-		[23:45:06] <Alkalus> I have no idea what that value does, tbh..
-		[23:45:15] <GregoriusTechneticies> its the offset
-		[23:45:23] <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
-		[23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock
-		[23:45:47] <GregoriusTechneticies> which is in your case THREE blocks away from the controller
-		[23:45:51] <Alkalus> Ahh
-		[23:45:57] <GregoriusTechneticies> and not 2
-		[23:46:06] <Alkalus> Noted, thanks :D
-		 *//*
+			final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
+			final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
 
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 3;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 3;
+			for (int i = -3; i <= 3; i++) {
+				for (int j = -3; j <= 3; j++) {
+					for (int h = 0; h < 4; h++) {
+						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 
-		for (int i = -3; i <= 3; i++) {
-			for (int j = -3; j <= 3; j++) {
-				for (int h = 0; h < 4; h++) {
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						// Reactor Floor/Roof inner 5x5
+						if (((i != -3) && (i != 3)) && ((j != -3) && (j != 3))) {
 
-					// Reactor Floor/Roof inner 5x5
-					if (((i != -3) && (i != 3)) && ((j != -3) && (j != 3))) {
+							// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
+							if ((h == 0) || (h == 3)) {
 
-						// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
-						if ((h == 0) || (h == 3)) {
-
-							//If not a hatch, continue, else add hatch and continue.
-							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3.");
-									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-									return false;
-								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-									Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing.");
-									return false;
-								}
-							}
-						}
-
-						// Inside 2 layers, mostly air
-						else {
-
-							// Reactor Inner 5x5
-							//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
-							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
-								return false;
-							}
-
-						}
-
-						//TODO - Add Carbon Moderation Rods
-						
-							else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
-									Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-									return false;
-								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
-									return false;
-								}
-							}
-
-					}
-
-					//Dealt with inner 5x5, now deal with the exterior.
-					else {
-
-						//Deal with all 4 sides (Reactor walls)
-						if ((h == 1) || (h == 2)) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
-								Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
-								Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
-								Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-								return false;
-							}
-						}
-
-						//Deal with top and Bottom edges (Inner 5x5)
-						else if ((h == 0) || (h == 3)) {
-							if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
-								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
-
+								//If not a hatch, continue, else add hatch and continue.
+								if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer.");
+										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3.");
 										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer. "+h);
-										Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										if (h ==0){
-											if (tTileEntity instanceof GregtechMTE_NuclearReactor){
+										Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing.");
+										return false;
+									}
+								}
+							}
 
-											}
-										}
-										else {
+							// Inside 2 layers, mostly air
+							else {
+
+								// Reactor Inner 5x5
+								//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
+								if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
+									Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
+									return false;
+								}
+
+							}
+
+							//TODO - Add Carbon Moderation Rods
+							/*
+								else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+										Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
+										Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+										return false;
+									}
+								}*/
+
+						}
+
+						//Dealt with inner 5x5, now deal with the exterior.
+						else {
+
+							//Deal with all 4 sides (Reactor walls)
+							if ((h == 1) || (h == 2)) {
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+									Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
+									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									return false;
+								}
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
+									Logger.INFO("Reactor Shielding Missing from somewhere in the second layer.");
+									Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									return false;
+								}
+							}
+
+							//Deal with top and Bottom edges (Inner 5x5)
+							else if ((h == 0) || (h == 3)) {
+								if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
+									if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
+
+										if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+											Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer.");
+											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 											return false;
+										}
+										if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
+											Logger.INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer. "+h);
+											Logger.INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+											if (h ==0){
+												if (tTileEntity instanceof GregtechMTE_NuclearReactor){
+
+												}
+											}
+											else {
+												return false;
+											}
 										}
 									}
 								}
@@ -270,69 +262,68 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-		}
 
-		
-		if (this.mDynamoHatches != null) {
-			for (int i = 0; i < this.mDynamoHatches.size(); i++) {
-				if (this.mDynamoHatches.get(i).mTier < 5){
-					Logger.INFO("You require at LEAST IV tier Dynamo Hatches.");
-					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					return false;
+			
+			if (this.mDynamoHatches != null) {
+				for (int i = 0; i < this.mDynamoHatches.size(); i++) {
+					if (this.mDynamoHatches.get(i).mTier < 5){
+						Logger.INFO("You require at LEAST IV tier Dynamo Hatches.");
+						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+						return false;
+					}
 				}
 			}
-		}
-		if (this.mOutputHatches != null) {
-			for (int i = 0; i < this.mOutputHatches.size(); i++) {
+			if (this.mOutputHatches != null) {
+				for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
-				if ((this.mOutputHatches.get(i).mTier < 5) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-					Logger.INFO("You require at LEAST IV tier Output Hatches.");
-					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
-					return false;
+					if ((this.mOutputHatches.get(i).mTier < 5) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
+						Logger.INFO("You require at LEAST IV tier Output Hatches.");
+						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+						return false;
+					}
 				}
 			}
-		}
-		if (this.mInputHatches != null) {
-			for (int i = 0; i < this.mInputHatches.size(); i++) {
-				if (this.mInputHatches.get(i).mTier < 5){
-					Logger.INFO("You require at LEAST IV tier Input Hatches.");
-					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
-					return false;
+			if (this.mInputHatches != null) {
+				for (int i = 0; i < this.mInputHatches.size(); i++) {
+					if (this.mInputHatches.get(i).mTier < 5){
+						Logger.INFO("You require at LEAST IV tier Input Hatches.");
+						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+						Logger.INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+						return false;
+					}
 				}
 			}
-		}
-		if (this.mMufflerHatches.size() != 4){
-			Logger.INFO("You require EXACTLY 4 muffler hatches on top. FOUR. You have "+this.mMufflerHatches.size());
-			return false;
-		}
-		if (this.mInputHatches.size() < 4){
-			Logger.INFO("You require 4 or more input hatches. You have "+this.mInputHatches.size());
-			return false;
-		}
-		if (this.mOutputHatches.size() < 10){
-			Logger.INFO("You require 10 or more output hatches. You have "+this.mOutputHatches.size());
-			return false;
-		}
-		if (this.mDynamoHatches.size() != 4){
-			Logger.INFO("You require EXACTLY 4 dynamo hatches. FOUR. You have "+this.mDynamoHatches.size());
-			return false;
-		}
-		if (this.mMaintenanceHatches.size() != 2){
-			Logger.INFO("You require EXACTLY 2 Maint. hatches. TWO. You have "+this.mMaintenanceHatches.size());
-			return false;
-		}
-		this.mWrench = true;
-		this.mScrewdriver = true;
-		this.mSoftHammer = true;
-		this.mHardHammer = true;
-		this.mSolderingTool = true;
-		this.mCrowbar = true;
-		this.turnCasingActive(false);
-		Logger.INFO("Multiblock Formed.");
-		return true;
-	*/}
+			if (this.mMufflerHatches.size() != 4){
+				Logger.INFO("You require EXACTLY 4 muffler hatches on top. FOUR. You have "+this.mMufflerHatches.size());
+				return false;
+			}
+			if (this.mInputHatches.size() < 4){
+				Logger.INFO("You require 4 or more input hatches. You have "+this.mInputHatches.size());
+				return false;
+			}
+			if (this.mOutputHatches.size() < 10){
+				Logger.INFO("You require 10 or more output hatches. You have "+this.mOutputHatches.size());
+				return false;
+			}
+			if (this.mDynamoHatches.size() != 4){
+				Logger.INFO("You require EXACTLY 4 dynamo hatches. FOUR. You have "+this.mDynamoHatches.size());
+				return false;
+			}
+			if (this.mMaintenanceHatches.size() != 2){
+				Logger.INFO("You require EXACTLY 2 Maint. hatches. TWO. You have "+this.mMaintenanceHatches.size());
+				return false;
+			}
+			this.mWrench = true;
+			this.mScrewdriver = true;
+			this.mSoftHammer = true;
+			this.mHardHammer = true;
+			this.mSolderingTool = true;
+			this.mCrowbar = true;
+			this.turnCasingActive(false);
+			Logger.INFO("Multiblock Formed.");
+			return true;
+	}
 
 	@Override
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -547,6 +538,16 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 		this.mEUt = 0;
 		this.mEfficiency = 0;
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 

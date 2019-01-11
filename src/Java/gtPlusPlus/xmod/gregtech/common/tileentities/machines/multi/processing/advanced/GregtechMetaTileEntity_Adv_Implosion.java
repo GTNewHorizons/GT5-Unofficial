@@ -147,4 +147,14 @@ extends GregtechMeta_MultiBlockBase {
 		return false;
 	}
 
+	@Override
+	public int getMaxParallelRecipes() {
+		return (GT_Utility.getTier(this.getMaxInputVoltage())/2+1);
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
+	}
+
 }

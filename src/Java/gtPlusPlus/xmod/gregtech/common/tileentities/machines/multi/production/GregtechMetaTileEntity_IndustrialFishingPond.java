@@ -139,6 +139,16 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		}
 		return true;
 	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
+	}
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {

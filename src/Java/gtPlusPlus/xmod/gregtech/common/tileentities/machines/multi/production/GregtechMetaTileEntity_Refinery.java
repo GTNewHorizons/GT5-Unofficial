@@ -105,7 +105,17 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
             }
         }
         return false;
-    }
+    }	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {

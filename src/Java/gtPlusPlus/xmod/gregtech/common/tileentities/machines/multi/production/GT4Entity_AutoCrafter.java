@@ -278,8 +278,18 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		} else if (mMachineMode == MODE.CRAFTING) {
 			return doCrafting(aStack);
 		} else {
-			return super.checkRecipeGeneric(tTier * 2, 100, 200);
+			return super.checkRecipeGeneric(getMaxParallelRecipes(), 100, 200);
 		}
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 2 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
 	}
 
 	public boolean doDisassembly() {

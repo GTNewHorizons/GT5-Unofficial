@@ -115,6 +115,16 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipe(final ItemStack aStack) {
 		return this.checkRecipeGeneric(this.mSize * 8 * GT_Utility.getTier(this.getMaxInputVoltage()), 100, 250);
 	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return (this.mSize * 8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
+	}
 
 	@Override
 	public void startProcess() {

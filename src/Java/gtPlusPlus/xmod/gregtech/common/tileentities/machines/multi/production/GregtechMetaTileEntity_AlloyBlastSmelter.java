@@ -205,6 +205,16 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		Logger.WARNING("Failed to find some Valid Inputs or Clientside.");
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 	@Override

@@ -116,6 +116,16 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 
 	public boolean checkRecipe(ItemStack aStack) {
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {

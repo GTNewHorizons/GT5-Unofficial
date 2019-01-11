@@ -121,10 +121,38 @@ extends GregtechMeta_MultiBlockBase {
 	
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
-	if (mBluePrint == null) {
+	/*if (mBluePrint == null) {
 		mBluePrint = new Blueprint_Electrolyzer();
 	}	
-	return mBluePrint.checkMachine(aBaseMetaTileEntity);
+	return mBluePrint.checkMachine(aBaseMetaTileEntity);*/		
+		
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+			return false;
+		}
+		
+		int tAmount = 0;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				for (int h = -1; h < 2; h++) {
+					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
+						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(5)))) {
+							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 5))) {
+								return false;
+							}
+							tAmount++;
+						}
+					}
+				}
+			}
+		}
+		return tAmount >= 10;
+	
+		
 	}
 
 	@Override
@@ -145,5 +173,15 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
+	}
+
+	@Override
+	public int getMaxParallelRecipes() {
+		return 2* GT_Utility.getTier(this.getMaxInputVoltage());
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 90;
 	}
 }

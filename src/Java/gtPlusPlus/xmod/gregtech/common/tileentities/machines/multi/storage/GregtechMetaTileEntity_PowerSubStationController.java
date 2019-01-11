@@ -375,6 +375,16 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		this.mEfficiencyIncrease = 10000;
 		return true;
 	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
 
 	private void drawEnergyFromHatch(MetaTileEntity aHatch)  {
 		if (!isValidMetaTileEntity(aHatch)) return;

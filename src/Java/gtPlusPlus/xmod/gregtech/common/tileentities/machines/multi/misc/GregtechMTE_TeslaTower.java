@@ -456,5 +456,15 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
+	@Override
+	public int getMaxParallelRecipes() {
+		return 0;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
+
 
 }

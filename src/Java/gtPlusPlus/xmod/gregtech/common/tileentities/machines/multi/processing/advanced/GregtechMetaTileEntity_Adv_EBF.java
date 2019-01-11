@@ -525,5 +525,15 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 8;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 90;
+	}
 
 }

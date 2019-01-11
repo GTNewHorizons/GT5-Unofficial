@@ -120,6 +120,16 @@ extends GregtechMeta_MultiBlockBase
 		this.mMaxProgresstime = 0;
 		this.mEUt = 0;
 		return false;
+	}	
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 
 	@Override

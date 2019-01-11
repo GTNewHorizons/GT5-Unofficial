@@ -259,4 +259,14 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	public int getAmountOfOutputs() {
 		return 1;
 	}
+
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
 }

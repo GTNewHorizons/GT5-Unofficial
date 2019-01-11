@@ -115,6 +115,16 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 		}
 		return false;
 	}
+	
+	@Override
+	public int getMaxParallelRecipes() {
+		return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 100;
+	}
 
 	@Override
 	public void startProcess() {

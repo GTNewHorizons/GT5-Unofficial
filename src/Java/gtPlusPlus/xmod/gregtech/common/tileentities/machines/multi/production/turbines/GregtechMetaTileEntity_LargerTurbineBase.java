@@ -630,5 +630,14 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 		return aUpdated;
 	}
 	
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
 
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
+	}
+	
 }
