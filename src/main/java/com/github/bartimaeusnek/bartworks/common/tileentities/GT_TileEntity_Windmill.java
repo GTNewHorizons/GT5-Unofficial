@@ -553,6 +553,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                 "Needs a Wind Mill Rotor in the Shaftbox to operate",
                 "Input items in Controller",
                 "Output items will appear in the dispensers",
+                "It is faster in regions with more wind (like IC2 Windmills)",
                 "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
         };
     }

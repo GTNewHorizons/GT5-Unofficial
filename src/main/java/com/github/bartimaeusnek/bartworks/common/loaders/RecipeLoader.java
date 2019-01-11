@@ -378,27 +378,67 @@ public class RecipeLoader implements Runnable {
                             'G', new ItemStack(ItemRegistry.craftingParts, 1, 2),
                     }
             );
-            GT_ModHandler.addCraftingRecipe(
-                    new ItemStack(ItemRegistry.craftingParts, 1, 0),
-                    RecipeLoader.BITSD,
-                    new Object[]{
-                            "SSS",
-                            "DfD",
-                            " h ",
-                            'S', new ItemStack(Blocks.stone),
-                            'D', new ItemStack(GregTech_API.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE),
-                    }
-            );
-            GT_ModHandler.addCraftingRecipe(
-                    new ItemStack(ItemRegistry.craftingParts, 1, 1),
-                    RecipeLoader.BITSD,
-                    new Object[]{
-                            "hDf",
-                            "SSS",
-                            'S', new ItemStack(Blocks.stone),
-                            'D', new ItemStack(GregTech_API.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE),
-                    }
-            );
+
+            String[] stones = {"stone","stoneSmooth"};
+            String[] granites = {"blockGranite","stoneGranite","Granite","granite"};
+            for (String granite : granites) {
+                for (String stone : stones) {
+                    GT_ModHandler.addCraftingRecipe(
+                            new ItemStack(ItemRegistry.craftingParts, 1, 0),
+                            RecipeLoader.BITSD,
+                            new Object[]{
+                                    "SSS",
+                                    "DfD",
+                                    " h ",
+                                    'S', stone,
+                                    'D', new ItemStack(GregTech_API.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE),
+                            }
+                    );
+                    GT_ModHandler.addCraftingRecipe(
+                            new ItemStack(ItemRegistry.craftingParts, 1, 1),
+                            RecipeLoader.BITSD,
+                            new Object[]{
+                                    "hDf",
+                                    "SSS",
+                                    'S', stone,
+                                    'D', new ItemStack(GregTech_API.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE),
+                            }
+                    );
+                    GT_ModHandler.addCraftingRecipe(
+                            new ItemStack(ItemRegistry.craftingParts, 1, 0),
+                            RecipeLoader.BITSD,
+                            new Object[]{
+                                    "SSS",
+                                    "DfD",
+                                    " h ",
+                                    'S', stone,
+                                    'D', granite,
+                            }
+                    );
+                    GT_ModHandler.addCraftingRecipe(
+                            new ItemStack(ItemRegistry.craftingParts, 1, 1),
+                            RecipeLoader.BITSD,
+                            new Object[]{
+                                    "hDf",
+                                    "SSS",
+                                    'S', stone,
+                                    'D', granite,
+                            }
+                    );
+                }
+                GT_ModHandler.addCraftingRecipe(
+                        new ItemStack(ItemRegistry.craftingParts, 1, 2),
+                        RecipeLoader.BITSD,
+                        new Object[]{
+                                "STS",
+                                "h f",
+                                "SBS",
+                                'S', granite,
+                                'T', new ItemStack(ItemRegistry.craftingParts, 1, 0),
+                                'B', new ItemStack(ItemRegistry.craftingParts, 1, 1),
+                        }
+                );
+            }
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.craftingParts, 1, 2),
                     RecipeLoader.BITSD,
