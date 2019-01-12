@@ -22,7 +22,11 @@
 
 package com.github.bartimaeusnek.bartworks.server.container;
 
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -31,6 +35,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.ForgeHooks;
 
 public class GT_Container_CircuitProgrammer extends Container {
 
@@ -102,12 +107,13 @@ public class GT_Container_CircuitProgrammer extends Container {
         ItemStack toBind;
         EntityPlayer Player;
         ItemStack Slot;
+        NBTTagCompound tag;
 
         public pinv(EntityPlayer Player) {
             super();
             this.Player = Player;
             this.toBind = Player.inventory.getCurrentItem();
-            NBTTagCompound tag = this.toBind.getTagCompound();
+            tag = this.toBind.getTagCompound();
             if (tag.getBoolean("HasChip"))
                 Slot = GT_Utility.getIntegratedCircuit(tag.getByte("ChipConfig"));
         }
@@ -126,7 +132,7 @@ public class GT_Container_CircuitProgrammer extends Container {
         public ItemStack decrStackSize(int slotNR, int count) {
             ItemStack ret = Slot.copy();
             Slot = null;
-            NBTTagCompound tag = toBind.getTagCompound();
+            tag = toBind.getTagCompound();
             tag.setBoolean("HasChip", false);
             toBind.setTagCompound(tag);
             Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
@@ -140,14 +146,27 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         @Override
         public void setInventorySlotContents(int slotNR, ItemStack itemStack) {
-            if (itemStack != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+            if (itemStack != null && itemStack.getItem() != null && itemStack.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
                 Slot = itemStack.copy().splitStack(1);
                 itemStack.stackSize--;
-                NBTTagCompound tag = toBind.getTagCompound();
+                tag = toBind.getTagCompound();
                 tag.setBoolean("HasChip", true);
                 tag.setByte("ChipConfig", (byte) itemStack.getItemDamage());
                 toBind.setTagCompound(tag);
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
+            } else if (BW_Util.checkStackAndPrefix(itemStack) && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit) && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.equals(Materials.Basic)) {
+                Slot = GT_Utility.getIntegratedCircuit(0);
+                itemStack.stackSize--;
+                tag = toBind.getTagCompound();
+                tag.setBoolean("HasChip", true);
+                tag.setByte("ChipConfig", (byte) itemStack.getItemDamage());
+                toBind.setTagCompound(tag);
+                Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
+            } else {
+                ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
+                tag = toBind.getTagCompound();
+                tag.setBoolean("HasChip", false);
+                toBind.setTagCompound(tag);
             }
         }
 

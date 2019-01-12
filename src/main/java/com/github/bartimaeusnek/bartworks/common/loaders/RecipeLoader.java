@@ -379,8 +379,8 @@ public class RecipeLoader implements Runnable {
                     }
             );
 
-            String[] stones = {"stone","stoneSmooth"};
-            String[] granites = {"blockGranite","stoneGranite","Granite","granite"};
+            String[] stones = {"stone", "stoneSmooth"};
+            String[] granites = {"blockGranite", "stoneGranite", "Granite", "granite"};
             for (String granite : granites) {
                 for (String stone : stones) {
                     GT_ModHandler.addCraftingRecipe(
