@@ -101,7 +101,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		Logger.INFO("Checking form of Cyclotron.");
 		int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
 		int yCenter = getBaseMetaTileEntity().getYCoord();
@@ -372,7 +372,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		if (aBaseMetaTileEntity.isServerSide()) {
 			if (mEfficiency < 0)
 				mEfficiency = 0;
-			if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+			if (mRunningOnLoad && checkMultiblock(aBaseMetaTileEntity, mInventory[1])) {
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipe(mInventory[1]);
 			}
@@ -385,7 +385,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mEnergyHatches.clear();
 				mMufflerHatches.clear();
 				mMaintenanceHatches.clear();
-				mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+				mMachine = checkMultiblock(aBaseMetaTileEntity, mInventory[1]);
 			}
 			if (mStartUpCheck < 0) {
 				if (mMachine) {

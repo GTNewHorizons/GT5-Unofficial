@@ -141,7 +141,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public static final int CELL_HEIGHT_MIN = 2;
 
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		Logger.INFO("Checking structure for Industrial Power Sub-Station.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;

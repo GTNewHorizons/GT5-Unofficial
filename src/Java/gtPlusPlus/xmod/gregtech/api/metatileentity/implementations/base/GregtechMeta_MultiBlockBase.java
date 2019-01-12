@@ -408,8 +408,8 @@ public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
 public static Method aLogger = null;
 
 public void log(String s) {
-	boolean isDebugLogging = CORE.DEBUG || true;	
-	boolean reset = true;
+	boolean isDebugLogging = CORE.DEBUG;	
+	boolean reset = false;
 	if (aLogger == null || reset) {
 		if (isDebugLogging) {
 			try {
@@ -1456,6 +1456,13 @@ public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlaye
 }
 
 
+public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
+	boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);
+	boolean aHasCore = this.getControlCoreBus() != null;	
+	return aStructureCheck && aHasCore;
+}
+
+public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
 
 

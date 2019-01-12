@@ -207,7 +207,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {

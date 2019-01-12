@@ -133,7 +133,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		int x = 1;
 		int z = 1;
 		int depth = 1;

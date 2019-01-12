@@ -140,7 +140,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase {
 	private Blueprint_LFTR mBlueprint;
 	
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
 
 			// Life Lessons from Greg.
 			/**

@@ -162,7 +162,7 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 	//Casing2, Meta 9 - "Assembler Machine Casing"
 	//Magic Glass - blockAlloyGlass
 
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		int r;

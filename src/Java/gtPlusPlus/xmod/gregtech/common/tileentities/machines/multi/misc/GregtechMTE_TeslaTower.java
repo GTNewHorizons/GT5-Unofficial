@@ -156,7 +156,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		updateCoordinates();
 		//check base layer
 		for (int xOff = -1 + back.offsetX; xOff <= 1 + back.offsetX; xOff++) {

@@ -208,7 +208,7 @@ extends GregtechMeta_MultiBlockBase
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack arg1) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack arg1) {
 		return true;
 	}
 

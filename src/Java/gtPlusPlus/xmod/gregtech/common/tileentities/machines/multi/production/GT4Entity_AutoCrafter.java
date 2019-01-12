@@ -152,7 +152,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack p1) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack p1) {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {

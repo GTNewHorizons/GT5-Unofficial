@@ -151,7 +151,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 	}
 
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		// Get Facing direction
 		int mDirectionX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int mCurrentDirectionX;

@@ -135,7 +135,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		return 100;
 	}
 
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final int xDir = ForgeDirection.getOrientation((int) aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation((int) aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {

@@ -120,7 +120,7 @@ extends GregtechMeta_MultiBlockBase {
 	private static Blueprint_Electrolyzer mBluePrint;
 	
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
 	/*if (mBluePrint == null) {
 		mBluePrint = new Blueprint_Electrolyzer();
 	}	

@@ -127,7 +127,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		/*if (ConfigSwitches.disableCentrifugeFormation){
 			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(this.getBaseMetaTileEntity().getOwnerName());
 			if (!player.getEntityWorld().isRemote && isDisabled == false)

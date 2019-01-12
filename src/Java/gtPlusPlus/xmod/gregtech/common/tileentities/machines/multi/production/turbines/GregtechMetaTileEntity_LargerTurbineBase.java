@@ -90,7 +90,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
 		return checkMachine2(aBaseMetaTileEntity, aStack);
 	}
 

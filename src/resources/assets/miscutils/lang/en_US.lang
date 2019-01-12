@@ -2700,5 +2700,11 @@ item.particle.base.Omega.name=Omega
 item.particle.base.Pion.name=Pion
 item.particle.base.ETA Meson.name=ETA Meson
 
+//Added 12/1/19
 
+tile.playerDoorGlass.name=Glass Auto-Door
+tile.playerDoorCactus.name=Cactus Auto-Door
+tile.playerDoorIce.name=Ice Auto-Door
+tile.playerDoorIron.name=Iron Auto-Door
+tile.playerDoorWood.name=Wooden Auto-Door
 

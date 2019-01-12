@@ -104,7 +104,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		return new String[] { "Controller Block for the Advanced Electric Blast Furnace",
 				"120% faster than using an equal tier EBF", "Only uses 90% of the eu/t normally required",
-				"Processes upto 8 recipes at once", "Consumes 1L of " + mHotFuelName + "/t during operation",
+				"Processes upto 8 recipes at once", "Consumes 10L of " + mHotFuelName + "/s during operation",
 				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
 				"16x Heating Coils (Two middle Layers, hollow)", "1x " + mHatchName + " (Any bottom layer casing)",
 				"1x Input Hatch/Bus (Any bottom layer casing)", "1x Output Hatch/Bus (Any bottom layer casing)",
@@ -115,7 +115,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
 				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%"
-				};
+		};
 	}
 
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
@@ -157,10 +157,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 	public boolean checkRecipe(ItemStack aStack) {
 		return checkRecipeGeneric(8, 90, 120); // Will have to clone the logic from parent class to handle heating coil
-												// tiers.
+		// tiers.
 	}
 
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 		controllerY = aBaseMetaTileEntity.getYCoord();
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
@@ -509,23 +509,20 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 	@SuppressWarnings("unused")
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0) {
-			if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 1))) {
-				if (mGraceTimer-- == 0) {
-					if (this.causeMaintenanceIssue()) {
-						this.stopMachine();
-					}
-					if (false) { // To be replaced with a config option or something
-						this.explodeMultiblock();
-					}
+		if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {			
+			if (aTick % 10 == 0 || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()) {
+				if (!this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 5))) {
+					this.causeMaintenanceIssue();
+					this.stopMachine();
 				}
-			} else {
-				mGraceTimer = 100;
-			}
+				if (false) { // To be replaced with a config option or something
+					this.explodeMultiblock();
+				}
+			}			
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 8;
