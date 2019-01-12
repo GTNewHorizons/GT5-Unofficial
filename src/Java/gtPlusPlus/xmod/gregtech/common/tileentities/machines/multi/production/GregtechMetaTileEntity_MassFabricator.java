@@ -89,15 +89,15 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	@Override
 	public String[] getTooltip() {
 
-		if (mCasingName1.toLowerCase().contains(".name")) {
+		//if (mCasingName1.toLowerCase().contains(".name")) {
 			mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
-		}
-		if (mCasingName2.toLowerCase().contains(".name")) {
+		//}
+		//if (mCasingName2.toLowerCase().contains(".name")) {
 			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
-		}
-		if (mCasingName3.toLowerCase().contains(".name")) {
+		//}
+		//if (mCasingName3.toLowerCase().contains(".name")) {
 			mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
-		}
+		//}
 		
 		return new String[]{
 				"Controller Block for the Matter Fabricator",

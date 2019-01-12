@@ -141,7 +141,7 @@ public class GT_MTE_LargeTurbine_Steam extends GregtechMetaTileEntity_LargerTurb
             looseFit^=true;
             GT_Utility.sendChatToPlayer(aPlayer, looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         }
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);	
+		super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);	
     }
 
     @Override

@@ -211,8 +211,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");			
-		}	
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);			
+		}			
 	}
 
 	@Override

@@ -355,8 +355,7 @@ extends GregtechMeta_MultiBlockBase {
 			else {
 				PlayerUtils.messagePlayer(aPlayer, "["+EnumChatFormatting.RED+"MODE"+EnumChatFormatting.RESET+"] "+EnumChatFormatting.YELLOW+"Electric"+EnumChatFormatting.RESET);			
 			}
-		}	
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);	
+		}		
 	}
 
 	@Override

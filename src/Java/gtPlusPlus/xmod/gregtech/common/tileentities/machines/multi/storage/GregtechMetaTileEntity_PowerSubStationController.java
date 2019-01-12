@@ -583,7 +583,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now inputting power into the controller.");
 		}
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 }

@@ -200,6 +200,5 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Now running in Bending Mode.");
 		}		
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 }

@@ -453,7 +453,6 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase {
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "[Tesla Tower] Targetting all types of entities.");
 		}		
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 	@Override

@@ -373,7 +373,6 @@ extends GregtechMeta_MultiBlockBase {
 		else {
 			PlayerUtils.messagePlayer(aPlayer, "Wash Plant is now running in Ore Washer Mode.");
 		}		
-		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
 }

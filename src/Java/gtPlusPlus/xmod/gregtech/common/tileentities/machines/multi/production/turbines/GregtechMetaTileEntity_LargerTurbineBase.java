@@ -483,7 +483,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends GregtechM
 	@Override
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		if (!KeyboardUtils.isShiftKeyDown()) {
-			super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);		
+			//super.onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);		
 		}
 		else {
 			this.mIsAnimated = Utils.invertBoolean(mIsAnimated);
