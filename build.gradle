@@ -36,7 +36,7 @@ configFile.withReader {
 }
 
 
-version = config.mod_version
+version = config.majorUpdate+"."+config.minorUpdate+"."+config.buildNumber
 group= "com.github.bartimaeusnek.bartworks" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "bartworks"+ "[" + config.mc_version + "]"
 

@@ -83,7 +83,7 @@ public class GT_Container_CircuitProgrammer extends Container {
         Slot chipslot = (Slot) this.inventorySlots.get(0);
         if (SlotNR > 24) {
             Slot slot = (Slot) this.inventorySlots.get(SlotNR);
-            if (slot != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+            if (slot != null && slot.getStack() != null  && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
                 if (chipslot.getStack() == null) {
                     chipslot.putStack(slot.getStack());
                     slot.decrStackSize(1);
