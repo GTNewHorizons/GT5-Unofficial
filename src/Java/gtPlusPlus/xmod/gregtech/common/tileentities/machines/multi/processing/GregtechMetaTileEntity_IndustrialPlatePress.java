@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -55,13 +56,11 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 				"Circuit for recipe goes in the Input Bus",
 				"Each Input Bus can have a different Circuit/Shape!",
 				"Size: 3x3x3 (Hollow)",
+				"Material Press Machine Casings (10 at least!)",
 				"Controller (front centered)",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler Hatch (anywhere)",
-				"Material Press Machine Casings for the rest (12 at least!)"
+				"1x Input Bus",
+				"1x Output Bus",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -133,30 +132,35 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends GregtechMeta_Mu
 
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
+
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 2; h++) {
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(4)))) {
-							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 4))) {
+		} else {
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (!isValidBlockForStructure(tTileEntity, 4, true, aBlock, aMeta,
+									ModBlocks.blockCasingsMisc, 4)) {
+								Logger.INFO("Bad material press casing");
 								return false;
 							}
-							tAmount++;
+							++tAmount;
+
 						}
 					}
 				}
 			}
+			return tAmount >= 10;
 		}
-		return tAmount >= 12;
 	}
 
 	@Override

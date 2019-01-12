@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -127,16 +128,25 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public String[] getTooltip() {
-		return new String[] { "Highly Advanced Autocrafter", "Right Click with a Screwdriver to change mode",
+		return new String[] { 
+				"Highly Advanced Autocrafter", 
+				"Right Click with a Screwdriver to change mode",
 				"This Machine Can Autocraft, Assemble, Disassemble or Circuit Assemble",
 				"200% faster than using single block machines of the same voltage",
-				"Processes two items per voltage tier", "--------------------------------------",
-				"Insert a Memory stick into the GUI", "to automate a crafting table recipe",
-				"Requires recipe to be scanned in a project table", "--------------------------------------",
-				"Size: 3x3x3 (Hollow)", "1x Input Bus", "1x Input Hatch", "1x Output Bus", "1x Output Hatch",
-				"1x Muffler Hatch", "1x Maintenance Hatch", "1x Energy Hatch",
-				"Hatches & Busses can be placed anywhere", "Rest is Autocrafter Frame",
-				"--------------------------------------", 
+				"Processes two items per voltage tier", 
+				"--------------------------------------",
+				"Insert a Memory stick into the GUI", 
+				"to automate a crafting table recipe",
+				"Requires recipe to be scanned in a project table", 
+				"--------------------------------------",
+				"Size: 3x3x3 (Hollow)",  
+				"Autocrafter Frame (10 at least!)",
+				"Controller (Front Center)",
+				"1x Input Bus", 
+				"1x Input Hatch",
+				"1x Output Bus",
+				"1x Output Hatch",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -153,51 +163,41 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack p1) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
+
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; ++i) {
-			for (int j = -1; j < 2; ++j) {
-				for (int h = -1; h < 2; ++h) {
-					if (h != 0 || ((xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0))) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
-								.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(28))) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
-									zDir + j) != ModBlocks.blockCasings2Misc) {
-								Logger.WARNING("Bad Block. Found "
-										+ aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-								Logger.WARNING("Block Found at x:" + (aBaseMetaTileEntity.getXCoord() + xDir + i)
-										+ " | y:" + (aBaseMetaTileEntity.getYCoord() + h) + " | z:"
-										+ (aBaseMetaTileEntity.getZCoord() + zDir + j));
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-								Logger.WARNING("Bad Meta.");
+		} else {
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(28), true, aBlock, aMeta,
+									ModBlocks.blockCasings2Misc, 12)) {
+								Logger.INFO("Bad Autcrafter casing");
 								return false;
 							}
 							++tAmount;
+
 						}
 					}
 				}
 			}
 		}
 
-		if ((this.mInputHatches.size() == 0) || (this.mOutputHatches.size() == 0) || (this.mInputBusses.size() == 0)
-				|| (this.mOutputBusses.size() == 0) || (this.mMufflerHatches.size() != 1)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() == 0)) {
+		if ((this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() == 0)) {
 			Logger.WARNING("Wrong Hatch count.");
-			Logger.WARNING("|" + this.mInputHatches.size() + "|" + this.mOutputHatches.size() + "|"
-					+ this.mInputBusses.size() + "|" + this.mOutputBusses.size() + "|" + this.mMufflerHatches.size()
-					+ "|" + this.mMaintenanceHatches.size() + "|" + this.mEnergyHatches.size() + "|");
 			return false;
 		}
-
 		// mInventoryCrafter = new CraftingHelper(this);
-		return tAmount >= 16;
+		return tAmount >= 10;
 
 	}
 

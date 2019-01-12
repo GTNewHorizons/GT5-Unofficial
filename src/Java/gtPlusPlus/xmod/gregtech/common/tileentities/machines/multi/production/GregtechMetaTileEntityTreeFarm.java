@@ -10,7 +10,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
@@ -55,18 +54,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public String[] getTooltip() {
 		return new String[]{
 		        "THIS MULTIBLOCK IS DISABLED - DO NOT BUILD",
-				"Controller Block for the Tree Farmer",
-				"How to get your first logs without an axe.",
-				"Size(WxHxD): 15x2x15",
-				"Purple: Farm Keeper Blocks",
-				"Dark Purple: Dirt/Grass/Podzol/Humus",
-				"Light Blue: Fence/Fence Gate",
-				"Blue/Yellow: Controller",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Input Hatch (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
 		};
 	}
 

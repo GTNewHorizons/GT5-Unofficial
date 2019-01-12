@@ -56,15 +56,13 @@ extends GregtechMeta_MultiBlockBase {
 				"Allows Complex GT++ alloys to be created",
 				"Circuit for recipe goes in the Input Bus or GUI slot",
 				"Size: 3x4x3 (Hollow)",
+				"Blast Smelter Casings (10 at least!)",
 				"Controller (front middle at bottom)",
 				"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
-				"1x Input bus (one of bottom)",
-				"1x Output Hatch (one of bottom)",
-				"1x Energy Hatch (one of bottom)",
-				"1x Maintenance Hatch (one of bottom)",
-				"1x Muffler Hatch (top middle)",
-				"1x Fluid Input Hatch (optional, top layer)",
-				"Blast Smelter Casings for the rest",
+				"1x Input bus",
+				"1x Input Hatch (optional)",
+				"1x Output Hatch",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -178,7 +176,7 @@ extends GregtechMeta_MultiBlockBase {
 				final long tVoltage = this.getMaxInputVoltage();
 				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-				if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+				if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 					Logger.WARNING("Found some Valid Inputs.");
 					this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 					this.mEfficiencyIncrease = 10000;
@@ -222,55 +220,50 @@ extends GregtechMeta_MultiBlockBase {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
-		//this.mHeatingCapacity = 0;
+		this.mHeatingCapacity = 0;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
 			return false;
 		}
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
 			return false;
 		}
-		this.addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), TAE.GTPP_INDEX(15));
 
 		this.mHeatingCapacity = 20000;
 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((i != 0) || (j != 0)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != ModBlocks.blockCasingsMisc) {
+										
+					//Coils 1
+					if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(1), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), ModBlocks.blockCasingsMisc, 14)) {
+						Logger.INFO("Heating Coils missing.");
 						return false;
 					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != 14) {
+					
+					//Coils 2
+					if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(1), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), ModBlocks.blockCasingsMisc, 14)) {
+						Logger.INFO("Heating Coils missing.");
 						return false;
-					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != ModBlocks.blockCasingsMisc) {
+					}	
+					
+					//Top Layer
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
+						Logger.INFO("Heating Coils missing.");
 						return false;
-					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != 14) {
-						return false;
-					}
-					if (!this.addFluidInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), TAE.GTPP_INDEX(15))) {
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasingsMisc) {
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 15) {
-							return false;
-						}
 					}
 				}
 			}
 		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-					if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(15))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(15))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(15))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(15)))) {
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 15) {
-							return false;
-						}
-					}
+				if (((xDir + i) != 0) || ((zDir + j) != 0)) {					
+					//Bottom Layer
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
+						Logger.INFO("Heating Coils missing.");
+						return false;
+					}					
 				}
 			}
 		}

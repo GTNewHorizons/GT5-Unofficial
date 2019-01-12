@@ -51,6 +51,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.objects.MultiblockRequirements;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -225,11 +226,11 @@ GT_MetaTileEntity_MultiBlockBase {
 				" "+StatCollector.translateToLocal("GTPP.multiblock.efficiency")+": "+
 				EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %");
 
-		
+
 		mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollution")+": "+ EnumChatFormatting.RED + this.getPollutionPerTick(null)*20+ EnumChatFormatting.RESET+"/sec");
 		mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced")+": "+ EnumChatFormatting.GREEN + mPollutionReduction+ EnumChatFormatting.RESET+" %");
 
-		
+
 		mInfo.add(StatCollector.translateToLocal("GTPP.CC.machinetier")+": "+
 				EnumChatFormatting.GREEN+tTier+EnumChatFormatting.RESET);
 
@@ -244,1225 +245,1276 @@ GT_MetaTileEntity_MultiBlockBase {
 		mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + Long.toString(this.mTotalRunTime));
 
 
-	String[] mInfo2 = new String[mInfo.size()];
-	mInfo.toArray(mInfo2);
-	return mInfo2;
+		String[] mInfo2 = new String[mInfo.size()];
+		mInfo.toArray(mInfo2);
+		return mInfo2;
 
 
 
-}
-
-@Override
-public boolean isGivingInformation() {
-	return true;
-}
-
-private String[] aCachedToolTip;
-
-@Override
-public final String[] getDescription() {		
-	if (aCachedToolTip != null) {
-		return aCachedToolTip;
-	}		
-	String[] x = getTooltip();		
-	//Add Stock Tooltip to bottom of list
-	String[] z;		
-	if (getPollutionPerTick(null) > 0) {
-		z = new String[] {
-				getPollutionTooltip(),
-				getMachineTooltip(),
-				CORE.GT_Tooltip};
-	}
-	else {
-		z = new String[] {
-				getMachineTooltip(),
-				CORE.GT_Tooltip};		
 	}
 
-	int a2, a3;
-	a2 = x != null ? x.length : 0;
-	a3 = z != null ? z.length : 0; 
-	String[] aToolTip = new String[(a2 + a3)];
-	aToolTip = ArrayUtils.addAll(aToolTip, x);
-	aToolTip = ArrayUtils.addAll(aToolTip, z);
-	aCachedToolTip = aToolTip;
-	return aToolTip;
-}
-
-public abstract String[] getTooltip();
-
-public synchronized final MultiblockRequirements getRequirements() {
-	return mRequirements;
-}
-
-//public abstract MultiblockRequirements setRequirements();
-
-public synchronized final void setRequirementsInternal() {
-	//this.mRequirements = setRequirements();
-	this.mRequirements = null;
-}
-
-public int getAmountOfOutputs() {
-	return 1;
-}
-
-public abstract int getMaxParallelRecipes();
-public abstract int getEuDiscountForParallelism();
-
-@Override
-public boolean isCorrectMachinePart(final ItemStack paramItemStack) {
-	return true;
-}
-
-@Override
-public int getDamageToComponent(final ItemStack paramItemStack) {
-	return 0;
-}
-
-@Override
-public boolean explodesOnComponentBreak(ItemStack p0) {
-	return false;
-}
-
-@Override
-public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
-	super.startSoundLoop(aIndex, aX, aY, aZ);
-	if (aIndex == 1) {
-		GT_Utility.doSoundAtClient(getSound(), 10, 1.0F, aX, aY, aZ);
-	}
-}
-
-public void startProcess() {
-	if(GT_Utility.isStringValid(getSound())) this.sendLoopStart((byte) 1);
-}
-
-public String getSound() { return ""; }
-
-public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
-	if (aRecipe.mOutputs.length > 16) {
-		// Gendustry custom comb with a billion centrifuge outputs? Do it anyway.
+	@Override
+	public boolean isGivingInformation() {
 		return true;
 	}
 
-	// Count slots available in output buses
-	ArrayList<ItemStack> tBusStacks = new ArrayList<>();
+	private String[] aCachedToolTip;
 
-	int tEmptySlots = 0;
-	for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
-		if (!isValidMetaTileEntity(tBus)) {
-			continue;
-		}
-		final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-		for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-			if (tBus.getStackInSlot(i) == null) {
-				tEmptySlots++;
-			}
-			else {
-				tBusStacks.add(tBus.getStackInSlot(i));
-			}
-		}
-	}
+	/*private final String aRequiresMuffler = "1x Muffler Hatch";
+	private final String aRequiresCoreModule = "1x Core Module";
+	private final String aRequiresMaint = "1x Maintanence Hatch";*/
 
-	int slotsNeeded = aRecipe.mOutputs.length;
-	for (final ItemStack tRecipeOutput: aRecipe.mOutputs) {
-		if (tRecipeOutput == null) continue;
-		int amount = tRecipeOutput.stackSize * aParallelRecipes;
-		for (final ItemStack tBusStack : tBusStacks) {
-			if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
-				if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
-					slotsNeeded--;
+	@Override
+	public final String[] getDescription() {		
+		/*if (aCachedToolTip != null) {
+			boolean uuuu = false;
+			for (String s : aCachedToolTip) {
+				if (s.toLowerCase().contains(".")) {
+					uuuu = true;
 					break;
 				}
 			}
+			if (!uuuu) {
+				return aCachedToolTip;				
+			}
+			else {
+				aCachedToolTip = null;
+			}			
+		}*/
+		
+		String aRequiresMuffler = "1x Muffler Hatch";
+		String aRequiresCoreModule = "1x Core Module";
+		String aRequiresMaint = "1x Maintanence Hatch";
+		
+		String[] x = getTooltip();		
+		//Add Stock Tooltip to bottom of list
+		String[] z;		
+		if (getPollutionPerTick(null) > 0) {
+			z = new String[] {
+					aRequiresMaint,
+					aRequiresCoreModule,
+					aRequiresMuffler,
+					getPollutionTooltip(),
+					getMachineTooltip(),
+					CORE.GT_Tooltip};
+		}
+		else {
+			z = new String[] {
+					aRequiresMaint,
+					aRequiresCoreModule,
+					getMachineTooltip(),
+					CORE.GT_Tooltip};		
+		}
+
+		int a2, a3;
+		a2 = x != null ? x.length : 0;
+		a3 = z != null ? z.length : 0; 
+		String[] aToolTip = new String[(a2 + a3)];
+		aToolTip = ArrayUtils.addAll(aToolTip, x);
+		aToolTip = ArrayUtils.addAll(aToolTip, z);
+		aCachedToolTip = aToolTip;
+		return aToolTip;
+	}
+
+	public abstract String[] getTooltip();
+
+	public synchronized final MultiblockRequirements getRequirements() {
+		return mRequirements;
+	}
+
+	//public abstract MultiblockRequirements setRequirements();
+
+	public synchronized final void setRequirementsInternal() {
+		//this.mRequirements = setRequirements();
+		this.mRequirements = null;
+	}
+
+	public int getAmountOfOutputs() {
+		return 1;
+	}
+
+	public abstract int getMaxParallelRecipes();
+	public abstract int getEuDiscountForParallelism();
+
+	@Override
+	public boolean isCorrectMachinePart(final ItemStack paramItemStack) {
+		return true;
+	}
+
+	@Override
+	public int getDamageToComponent(final ItemStack paramItemStack) {
+		return 0;
+	}
+
+	@Override
+	public boolean explodesOnComponentBreak(ItemStack p0) {
+		return false;
+	}
+
+	@Override
+	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 1) {
+			GT_Utility.doSoundAtClient(getSound(), 10, 1.0F, aX, aY, aZ);
 		}
 	}
-	// Enough open slots?
-	if (tEmptySlots < slotsNeeded) return false;
 
-	// For each output fluid, make sure an output hatch can accept it.
-	for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
-		if (tRecipeFluid == null) continue;
-		boolean tCanBufferFluid = false;
-		int tRecipeAmount = tRecipeFluid.amount;
-		for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
-			FluidStack tHatchFluid = tHatch.getFluid();
-			if (tHatchFluid == null) {
-				if(tHatch.getCapacity() > tRecipeAmount) {
+	public void startProcess() {
+		if(GT_Utility.isStringValid(getSound())) this.sendLoopStart((byte) 1);
+	}
+
+	public String getSound() { return ""; }
+
+	public boolean canBufferOutputs(final GT_Recipe aRecipe, int aParallelRecipes) {
+		if (aRecipe.mOutputs.length > 16) {
+			// Gendustry custom comb with a billion centrifuge outputs? Do it anyway.
+			return true;
+		}
+
+		// Count slots available in output buses
+		ArrayList<ItemStack> tBusStacks = new ArrayList<>();
+
+		int tEmptySlots = 0;
+		for (final GT_MetaTileEntity_Hatch_OutputBus tBus : this.mOutputBusses) {
+			if (!isValidMetaTileEntity(tBus)) {
+				continue;
+			}
+			final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+			for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+				if (tBus.getStackInSlot(i) == null) {
+					tEmptySlots++;
+				}
+				else {
+					tBusStacks.add(tBus.getStackInSlot(i));
+				}
+			}
+		}
+
+		int slotsNeeded = aRecipe.mOutputs.length;
+		for (final ItemStack tRecipeOutput: aRecipe.mOutputs) {
+			if (tRecipeOutput == null) continue;
+			int amount = tRecipeOutput.stackSize * aParallelRecipes;
+			for (final ItemStack tBusStack : tBusStacks) {
+				if (GT_Utility.areStacksEqual(tBusStack, tRecipeOutput)) {
+					if (tBusStack.stackSize + amount <= tBusStack.getMaxStackSize()) {
+						slotsNeeded--;
+						break;
+					}
+				}
+			}
+		}
+		// Enough open slots?
+		if (tEmptySlots < slotsNeeded) return false;
+
+		// For each output fluid, make sure an output hatch can accept it.
+		for (FluidStack tRecipeFluid: aRecipe.mFluidOutputs) {
+			if (tRecipeFluid == null) continue;
+			boolean tCanBufferFluid = false;
+			int tRecipeAmount = tRecipeFluid.amount;
+			for (final GT_MetaTileEntity_Hatch_Output tHatch : this.mOutputHatches) {
+				FluidStack tHatchFluid = tHatch.getFluid();
+				if (tHatchFluid == null) {
+					if(tHatch.getCapacity() > tRecipeAmount) {
+						tCanBufferFluid = true;
+						break;
+					}
+				}
+				else if (tHatchFluid.isFluidEqual(tRecipeFluid) && tHatch.getCapacity() - tHatchFluid.amount > tRecipeAmount) {
 					tCanBufferFluid = true;
 					break;
 				}
 			}
-			else if (tHatchFluid.isFluidEqual(tRecipeFluid) && tHatch.getCapacity() - tHatchFluid.amount > tRecipeAmount) {
-				tCanBufferFluid = true;
-				break;
+			if (!tCanBufferFluid) return false;
+		}
+		return true;
+	}
+
+	/**
+	 * A Static {@link Method} object which holds the current status of logging.
+	 */
+	public static Method aLogger = null;
+
+	public void log(String s) {
+		boolean isDebugLogging = CORE.DEBUG;	
+		boolean reset = false;
+		if (aLogger == null || reset) {
+			if (isDebugLogging) {
+				try {
+					aLogger = Logger.class.getMethod("INFO", String.class);
+				} catch (NoSuchMethodException | SecurityException e) {}
+			}
+			else {
+				try {
+					aLogger = Logger.class.getMethod("MACHINE_INFO", String.class);
+				} catch (NoSuchMethodException | SecurityException e) {}			
 			}
 		}
-		if (!tCanBufferFluid) return false;
+		try {
+			aLogger.invoke(null, s);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
+
 	}
-	return true;
-}
 
-/**
- * A Static {@link Method} object which holds the current status of logging.
- */
-public static Method aLogger = null;
+	public boolean checkRecipeGeneric() {
+		return checkRecipeGeneric(1, 100, 0);
+	}
 
-public void log(String s) {
-	boolean isDebugLogging = CORE.DEBUG;	
-	boolean reset = false;
-	if (aLogger == null || reset) {
-		if (isDebugLogging) {
-			try {
-				aLogger = Logger.class.getMethod("INFO", String.class);
-			} catch (NoSuchMethodException | SecurityException e) {}
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent) {
+		return checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, 10000);
+	}
+
+	public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
+	}
+
+
+	public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {		
+		if (aRecipe == null) {
+			return false;
+		}		
+		ArrayList<ItemStack> tItems = getStoredInputs();
+		ArrayList<FluidStack> tFluids = getStoredFluids();
+		ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
+		FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+		return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
+	}
+
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll) {
+		return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
+	}
+
+
+	public boolean checkRecipeGeneric(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+		// Based on the Processing Array. A bit overkill, but very flexible.
+
+
+		//Control Core to control the Multiblocks behaviour.
+		int aControlCoreTier = getControlCoreTier();
+
+		//If no core, return false;
+		if (aControlCoreTier == 0) {
+			log("No control core found.");
+			return false;
+		}
+
+
+		// Reset outputs and progress stats
+		this.mEUt = 0;
+		this.mMaxProgresstime = 0;
+		this.mOutputItems = new ItemStack[]{};
+		this.mOutputFluids = new FluidStack[]{};
+
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		log("Running checkRecipeGeneric(0)");
+
+		//Check to see if Voltage Tier > Control Core Tier
+		if (tTier > aControlCoreTier) {
+			log("Control core found is lower tier than power tier.");
+			return false;
+		}
+
+
+		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
+				getBaseMetaTileEntity(), mLastRecipe, false,
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+
+		log("Running checkRecipeGeneric(1)");
+		// Remember last recipe - an optimization for findRecipe()
+		this.mLastRecipe = tRecipe;
+
+		if (tRecipe == null) {
+			log("BAD RETURN - 1");
+			return false;
+		}
+
+		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+			log("BAD RETURN - 2");
+			return false;
+		}
+
+		// EU discount
+		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
+		float tTotalEUt = 0.0f;
+
+		int parallelRecipes = 0;
+
+		log("parallelRecipes: "+parallelRecipes);
+		log("aMaxParallelRecipes: "+aMaxParallelRecipes);
+		log("tTotalEUt: "+tTotalEUt);
+		log("tVoltage: "+tVoltage);
+		log("tRecipeEUt: "+tRecipeEUt);
+		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+				log("Broke at "+parallelRecipes+".");
+				break;
+			}
+			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+			tTotalEUt += tRecipeEUt;
+		}
+
+		if (parallelRecipes == 0) {
+			log("BAD RETURN - 3");
+			return false;
+		}
+
+		// -- Try not to fail after this point - inputs have already been consumed! --
+
+
+		// Convert speed bonus to duration multiplier
+		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
+		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
+
+		this.mEUt = (int)Math.ceil(tTotalEUt);
+
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+
+
+		//Only Overclock as high as the control circuit.
+		byte tTierOld = tTier;
+		tTier = (byte) aControlCoreTier;
+
+		// Overclock
+		if (this.mEUt <= 16) {
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+		} else {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+		}
+
+		if (this.mEUt > 0) {
+			this.mEUt = (-this.mEUt);
+		}
+
+		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+		// Collect fluid outputs
+		FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
+		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
+			if (tRecipe.getFluidOutput(h) != null) {
+				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
+				tOutputFluids[h].amount *= parallelRecipes;
+			}
+		}
+
+		// Collect output item types
+		ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
+		for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+			if (tRecipe.getOutput(h) != null) {
+				tOutputItems[h] = tRecipe.getOutput(h).copy();
+				tOutputItems[h].stackSize = 0;
+			}
+		}
+
+		// Set output item stack sizes (taking output chance into account)
+		for (int f = 0; f < tOutputItems.length; f++) {
+			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
+				for (int g = 0; g < parallelRecipes; g++) {
+					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
+						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+				}
+			}
+		}
+
+		tOutputItems = removeNulls(tOutputItems);
+
+		// Sanitize item stack size, splitting any stacks greater than max stack size
+		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
+		for (ItemStack tItem : tOutputItems) {
+			while (tItem.getMaxStackSize() < tItem.stackSize) {
+				ItemStack tmp = tItem.copy();
+				tmp.stackSize = tmp.getMaxStackSize();
+				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
+				splitStacks.add(tmp);
+			}
+		}
+
+		if (splitStacks.size() > 0) {
+			ItemStack[] tmp = new ItemStack[splitStacks.size()];
+			tmp = splitStacks.toArray(tmp);
+			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
+		}
+
+		// Strip empty stacks
+		List<ItemStack> tSList = new ArrayList<ItemStack>();
+		for (ItemStack tS : tOutputItems) {
+			if (tS.stackSize > 0) tSList.add(tS);
+		}
+		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+
+		// Commit outputs
+		this.mOutputItems = tOutputItems;
+		this.mOutputFluids = tOutputFluids;
+		updateSlots();
+
+		// Play sounds (GT++ addition - GT multiblocks play no sounds)
+		startProcess();
+
+		log("GOOD RETURN - 1");
+		return true;
+	}
+
+	public GT_Recipe reduceRecipeTimeByPercentage(final GT_Recipe tRecipe,
+			final float percentage) {
+		int cloneTime = 0;
+		GT_Recipe baseRecipe;
+		GT_Recipe cloneRecipe = null;
+
+		baseRecipe = tRecipe.copy();
+		if ((baseRecipe != null) && ((cloneRecipe != baseRecipe) || (cloneRecipe == null))) {
+			cloneRecipe = baseRecipe.copy();
+			log("Setting Recipe");
+		}
+		if ((baseRecipe != null) && ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0))) {
+			cloneTime = baseRecipe.mDuration;
+			log("Setting Time");
+		}
+
+		if ((cloneRecipe != null) && cloneRecipe.mDuration > 0) {
+			final int originalTime = cloneRecipe.mDuration;
+			final int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration,
+					(100 - percentage));
+			cloneRecipe.mDuration = tempTime;
+			if (cloneRecipe.mDuration < originalTime) {
+				log("Generated recipe with a smaller time. | "
+						+ originalTime + " | " + cloneRecipe.mDuration + " |");
+				return cloneRecipe;
+			} else {
+				log("Did not generate recipe with a smaller time. | "
+						+ originalTime + " | " + cloneRecipe.mDuration + " |");
+				return tRecipe;
+			}
+		}
+		log("Error generating recipe, returning null.");
+		return null;
+	}
+
+	public boolean isMachineRunning() {
+		boolean aRunning = this.getBaseMetaTileEntity().isActive();
+		Logger.INFO("Queried Multiblock is currently running: "+aRunning);
+		return aRunning;
+	}
+
+	@Override
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity,
+			final long aTick) {
+
+		//Time Counter
+		if (aBaseMetaTileEntity.isServerSide()){
+			this.mTotalRunTime++;
+		}
+
+		if (aBaseMetaTileEntity.isServerSide()) {
+			if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
+				this.mChargeHatches.clear();
+				this.mDischargeHatches.clear();
+				this.mControlCoreBus.clear();
+				this.mMultiDynamoHatches.clear();
+			}
+		}
+
+
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+	}
+
+	@Override
+	public void explodeMultiblock() {
+		MetaTileEntity tTileEntity;
+		for (final Iterator<GT_MetaTileEntity_Hatch_InputBattery> localIterator = this.mChargeHatches
+				.iterator(); localIterator.hasNext(); tTileEntity
+				.getBaseMetaTileEntity()
+				.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+			tTileEntity = localIterator.next();
+		}
+		tTileEntity = null;
+		for (final Iterator<GT_MetaTileEntity_Hatch_OutputBattery> localIterator = this.mDischargeHatches
+				.iterator(); localIterator.hasNext(); tTileEntity
+				.getBaseMetaTileEntity()
+				.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+			tTileEntity = localIterator.next();
+		}
+		tTileEntity = null;
+		for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mMultiDynamoHatches
+				.iterator(); localIterator.hasNext(); tTileEntity
+				.getBaseMetaTileEntity()
+				.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
+			tTileEntity = localIterator.next();
+		}
+
+
+
+		super.explodeMultiblock();
+	}
+
+	protected int getGUICircuit(ItemStack[] t) {
+		Item g = CI.getNumberedCircuit(0).getItem();
+		ItemStack guiSlot = this.mInventory[1];
+		int mMode = -1;		
+		if (guiSlot != null && guiSlot.getItem() == g) {
+			this.mInternalCircuit = true;	
+			return guiSlot.getItemDamage();
 		}
 		else {
-			try {
-				aLogger = Logger.class.getMethod("MACHINE_INFO", String.class);
-			} catch (NoSuchMethodException | SecurityException e) {}			
+			this.mInternalCircuit = false;
 		}
+
+		if (!this.mInternalCircuit) {
+			for (ItemStack j : t) {
+				if (j.getItem() == g) {
+					mMode = j.getItemDamage();
+					break;
+				}
+			}
+		}
+		return mMode;
 	}
-	try {
-		aLogger.invoke(null, s);
-	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
 
-}
+	protected ItemStack getGUIItemStack() {
+		ItemStack guiSlot = this.mInventory[1];		
+		return guiSlot;
+	}
 
-public boolean checkRecipeGeneric() {
-	return checkRecipeGeneric(1, 100, 0);
-}
+	@Override
+	public void updateSlots() {
+		for (final GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				tHatch.updateSlots();
+			}
+		}
+		for (final GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
+			if (isValidMetaTileEntity(tHatch)) {
+				tHatch.updateSlots();
+			}
+		}
+		super.updateSlots();
+	}
 
-public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent) {
-	return checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, 10000);
-}
-
-public boolean checkRecipeGeneric(int aMaxParallelRecipes, int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-	ArrayList<ItemStack> tItems = getStoredInputs();
-	ArrayList<FluidStack> tFluids = getStoredFluids();
-	ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-	FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-	return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
-}
-
-
-public boolean checkRecipeGeneric(GT_Recipe aRecipe, 
-		int aMaxParallelRecipes, int aEUPercent,
-		int aSpeedBonusPercent, int aOutputChanceRoll) {		
-	if (aRecipe == null) {
-		return false;
-	}		
-	ArrayList<ItemStack> tItems = getStoredInputs();
-	ArrayList<FluidStack> tFluids = getStoredFluids();
-	ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-	FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-	return checkRecipeGeneric(tItemInputs, tFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
-}
-
-public boolean checkRecipeGeneric(
-		ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-		int aMaxParallelRecipes, int aEUPercent,
-		int aSpeedBonusPercent, int aOutputChanceRoll) {
-	return checkRecipeGeneric(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, null);
-}
-
-
-public boolean checkRecipeGeneric(
-		ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-		int aMaxParallelRecipes, int aEUPercent,
-		int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-	// Based on the Processing Array. A bit overkill, but very flexible.
-
-
-	//Control Core to control the Multiblocks behaviour.
-	int aControlCoreTier = getControlCoreTier();
-
-	//If no core, return false;
-	if (aControlCoreTier == 0) {
-		log("No control core found.");
+	public boolean isToolCreative(ItemStack mStack){
+		Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
+		Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
+		if (t1 == Materials._NULL && t2 == Materials._NULL){
+			return true;
+		}
 		return false;
 	}
 
-
-	// Reset outputs and progress stats
-	this.mEUt = 0;
-	this.mMaxProgresstime = 0;
-	this.mOutputItems = new ItemStack[]{};
-	this.mOutputFluids = new FluidStack[]{};
-
-	long tVoltage = getMaxInputVoltage();
-	byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-	log("Running checkRecipeGeneric(0)");
-
-	//Check to see if Voltage Tier > Control Core Tier
-	if (tTier > aControlCoreTier) {
-		log("Control core found is lower tier than power tier.");
-		return false;
-	}
-
-
-	GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
-			getBaseMetaTileEntity(), mLastRecipe, false,
-			gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
-
-	log("Running checkRecipeGeneric(1)");
-	// Remember last recipe - an optimization for findRecipe()
-	this.mLastRecipe = tRecipe;
-
-	if (tRecipe == null) {
-		log("BAD RETURN - 1");
-		return false;
-	}
-
-	if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
-		log("BAD RETURN - 2");
-		return false;
-	}
-
-	// EU discount
-	float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-	float tTotalEUt = 0.0f;
-
-	int parallelRecipes = 0;
-
-	log("parallelRecipes: "+parallelRecipes);
-	log("aMaxParallelRecipes: "+aMaxParallelRecipes);
-	log("tTotalEUt: "+tTotalEUt);
-	log("tVoltage: "+tVoltage);
-	log("tRecipeEUt: "+tRecipeEUt);
-	// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-	for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
-		if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-			log("Broke at "+parallelRecipes+".");
+	/**
+	 * Causes a Random Maint. Issue.
+	 * @return {@link boolean} - Returns whether or not an issue was caused, should always be true.
+	 */
+	public boolean causeMaintenanceIssue() {
+		boolean b = false;
+		switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
+		case 0 : {
+			this.mWrench = false;
+			b = true;
 			break;
 		}
-		log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
-		tTotalEUt += tRecipeEUt;
-	}
-
-	if (parallelRecipes == 0) {
-		log("BAD RETURN - 3");
-		return false;
-	}
-
-	// -- Try not to fail after this point - inputs have already been consumed! --
-
-
-	// Convert speed bonus to duration multiplier
-	// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-	aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-	float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-	this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
-
-	this.mEUt = (int)Math.ceil(tTotalEUt);
-
-	this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-	this.mEfficiencyIncrease = 10000;
-
-
-	//Only Overclock as high as the control circuit.
-	byte tTierOld = tTier;
-	tTier = (byte) aControlCoreTier;
-
-	// Overclock
-	if (this.mEUt <= 16) {
-		this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-		this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
-	} else {
-		while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-			this.mEUt *= 4;
-			this.mMaxProgresstime /= 2;
+		case 1 : {
+			this.mScrewdriver = false;
+			b = true;
+			break;
 		}
-	}
-
-	if (this.mEUt > 0) {
-		this.mEUt = (-this.mEUt);
-	}
-
-	this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-	// Collect fluid outputs
-	FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
-	for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
-		if (tRecipe.getFluidOutput(h) != null) {
-			tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
-			tOutputFluids[h].amount *= parallelRecipes;
+		case 2 : {
+			this.mSoftHammer = false;
+			b = true;
+			break;
 		}
-	}
-
-	// Collect output item types
-	ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
-	for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-		if (tRecipe.getOutput(h) != null) {
-			tOutputItems[h] = tRecipe.getOutput(h).copy();
-			tOutputItems[h].stackSize = 0;
+		case 3 : {
+			this.mHardHammer = false;
+			b = true;
+			break;
 		}
+		case 4 : {
+			this.mSolderingTool = false;
+			b = true;
+			break;
+		}
+		case 5 : {
+			this.mCrowbar = false;
+			b = true;
+			break;
+		}
+		}
+		return b;
 	}
 
-	// Set output item stack sizes (taking output chance into account)
-	for (int f = 0; f < tOutputItems.length; f++) {
-		if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
-			for (int g = 0; g < parallelRecipes; g++) {
-				if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-					tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+
+	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
+			final int aBaseCasingIndex) {
+		if (aList.isEmpty()) {
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+				log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+				updateTexture(aTileEntity, aBaseCasingIndex);
+				return aList.add((E) aTileEntity);
 			}
-		}
-	}
-
-	tOutputItems = removeNulls(tOutputItems);
-
-	// Sanitize item stack size, splitting any stacks greater than max stack size
-	List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-	for (ItemStack tItem : tOutputItems) {
-		while (tItem.getMaxStackSize() < tItem.stackSize) {
-			ItemStack tmp = tItem.copy();
-			tmp.stackSize = tmp.getMaxStackSize();
-			tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-			splitStacks.add(tmp);
-		}
-	}
-
-	if (splitStacks.size() > 0) {
-		ItemStack[] tmp = new ItemStack[splitStacks.size()];
-		tmp = splitStacks.toArray(tmp);
-		tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
-	}
-
-	// Strip empty stacks
-	List<ItemStack> tSList = new ArrayList<ItemStack>();
-	for (ItemStack tS : tOutputItems) {
-		if (tS.stackSize > 0) tSList.add(tS);
-	}
-	tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
-
-	// Commit outputs
-	this.mOutputItems = tOutputItems;
-	this.mOutputFluids = tOutputFluids;
-	updateSlots();
-
-	// Play sounds (GT++ addition - GT multiblocks play no sounds)
-	startProcess();
-
-	log("GOOD RETURN - 1");
-	return true;
-}
-
-public GT_Recipe reduceRecipeTimeByPercentage(final GT_Recipe tRecipe,
-		final float percentage) {
-	int cloneTime = 0;
-	GT_Recipe baseRecipe;
-	GT_Recipe cloneRecipe = null;
-
-	baseRecipe = tRecipe.copy();
-	if ((baseRecipe != null) && ((cloneRecipe != baseRecipe) || (cloneRecipe == null))) {
-		cloneRecipe = baseRecipe.copy();
-		log("Setting Recipe");
-	}
-	if ((baseRecipe != null) && ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0))) {
-		cloneTime = baseRecipe.mDuration;
-		log("Setting Time");
-	}
-
-	if ((cloneRecipe != null) && cloneRecipe.mDuration > 0) {
-		final int originalTime = cloneRecipe.mDuration;
-		final int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration,
-				(100 - percentage));
-		cloneRecipe.mDuration = tempTime;
-		if (cloneRecipe.mDuration < originalTime) {
-			log("Generated recipe with a smaller time. | "
-					+ originalTime + " | " + cloneRecipe.mDuration + " |");
-			return cloneRecipe;
 		} else {
-			log("Did not generate recipe with a smaller time. | "
-					+ originalTime + " | " + cloneRecipe.mDuration + " |");
-			return tRecipe;
-		}
-	}
-	log("Error generating recipe, returning null.");
-	return null;
-}
-
-public boolean isMachineRunning() {
-	boolean aRunning = this.getBaseMetaTileEntity().isActive();
-	Logger.INFO("Queried Multiblock is currently running: "+aRunning);
-	return aRunning;
-}
-
-@Override
-public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity,
-		final long aTick) {
-
-	//Time Counter
-	if (aBaseMetaTileEntity.isServerSide()){
-		this.mTotalRunTime++;
-	}
-
-	if (aBaseMetaTileEntity.isServerSide()) {
-		if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
-			this.mChargeHatches.clear();
-			this.mDischargeHatches.clear();
-			this.mControlCoreBus.clear();
-			this.mMultiDynamoHatches.clear();
-		}
-	}
-
-
-	super.onPostTick(aBaseMetaTileEntity, aTick);
-}
-
-@Override
-public void explodeMultiblock() {
-	MetaTileEntity tTileEntity;
-	for (final Iterator<GT_MetaTileEntity_Hatch_InputBattery> localIterator = this.mChargeHatches
-			.iterator(); localIterator.hasNext(); tTileEntity
-			.getBaseMetaTileEntity()
-			.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
-		tTileEntity = localIterator.next();
-	}
-	tTileEntity = null;
-	for (final Iterator<GT_MetaTileEntity_Hatch_OutputBattery> localIterator = this.mDischargeHatches
-			.iterator(); localIterator.hasNext(); tTileEntity
-			.getBaseMetaTileEntity()
-			.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
-		tTileEntity = localIterator.next();
-	}
-	tTileEntity = null;
-	for (final Iterator<GT_MetaTileEntity_Hatch> localIterator = this.mMultiDynamoHatches
-			.iterator(); localIterator.hasNext(); tTileEntity
-			.getBaseMetaTileEntity()
-			.doExplosion(gregtech.api.enums.GT_Values.V[8])) {
-		tTileEntity = localIterator.next();
-	}
-
-
-
-	super.explodeMultiblock();
-}
-
-protected int getGUICircuit(ItemStack[] t) {
-	Item g = CI.getNumberedCircuit(0).getItem();
-	ItemStack guiSlot = this.mInventory[1];
-	int mMode = -1;		
-	if (guiSlot != null && guiSlot.getItem() == g) {
-		this.mInternalCircuit = true;	
-		return guiSlot.getItemDamage();
-	}
-	else {
-		this.mInternalCircuit = false;
-	}
-
-	if (!this.mInternalCircuit) {
-		for (ItemStack j : t) {
-			if (j.getItem() == g) {
-				mMode = j.getItemDamage();
-				break;
-			}
-		}
-	}
-	return mMode;
-}
-
-protected ItemStack getGUIItemStack() {
-	ItemStack guiSlot = this.mInventory[1];		
-	return guiSlot;
-}
-
-@Override
-public void updateSlots() {
-	for (final GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
-		if (isValidMetaTileEntity(tHatch)) {
-			tHatch.updateSlots();
-		}
-	}
-	for (final GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
-		if (isValidMetaTileEntity(tHatch)) {
-			tHatch.updateSlots();
-		}
-	}
-	super.updateSlots();
-}
-
-public boolean isToolCreative(ItemStack mStack){
-	Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
-	Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
-	if (t1 == Materials._NULL && t2 == Materials._NULL){
-		return true;
-	}
-	return false;
-}
-
-/**
- * Causes a Random Maint. Issue.
- * @return {@link boolean} - Returns whether or not an issue was caused, should always be true.
- */
-public boolean causeMaintenanceIssue() {
-	boolean b = false;
-	switch (this.getBaseMetaTileEntity().getRandomNumber(6)) {
-	case 0 : {
-		this.mWrench = false;
-		b = true;
-		break;
-	}
-	case 1 : {
-		this.mScrewdriver = false;
-		b = true;
-		break;
-	}
-	case 2 : {
-		this.mSoftHammer = false;
-		b = true;
-		break;
-	}
-	case 3 : {
-		this.mHardHammer = false;
-		b = true;
-		break;
-	}
-	case 4 : {
-		this.mSolderingTool = false;
-		b = true;
-		break;
-	}
-	case 5 : {
-		this.mCrowbar = false;
-		b = true;
-		break;
-	}
-	}
-	return b;
-}
-
-
-public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
-		final int aBaseCasingIndex) {
-	if (aList.isEmpty()) {
-		if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-			log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return aList.add((E) aTileEntity);
-		}
-	} else {
-		IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
-		BlockPos aCurPos = new BlockPos(aCur);
-		boolean aExists = false;
-		for (E m : aList) {
-			IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
-			BlockPos aPos = new BlockPos(b);
-			if (b != null && aPos != null) {
-				if (aCurPos.equals(aPos)) {
-					log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
-					return false;
+			IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
+			BlockPos aCurPos = new BlockPos(aCur);
+			boolean aExists = false;
+			for (E m : aList) {
+				IGregTechTileEntity b = ((IMetaTileEntity) m).getBaseMetaTileEntity();
+				BlockPos aPos = new BlockPos(b);
+				if (b != null && aPos != null) {
+					if (aCurPos.equals(aPos)) {
+						log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						return false;
+					}
 				}
 			}
+			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
+				log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				updateTexture(aTileEntity, aBaseCasingIndex);
+				return aList.add((E) aTileEntity);
+			}
 		}
-		if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-			log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
-			updateTexture(aTileEntity, aBaseCasingIndex);
-			return aList.add((E) aTileEntity);
-		}
+		return false;
 	}
-	return false;
-}
 
-public int getControlCoreTier() {		
-	if (mControlCoreBus.isEmpty()) {
-		log("No Control Core Modules Found.");
+	public int getControlCoreTier() {		
+		if (mControlCoreBus.isEmpty()) {
+			log("No Control Core Modules Found.");
+			return 0;
+		}		
+		GT_MetaTileEntity_Hatch_ControlCore i = getControlCoreBus();
+		if (i != null) {
+			ItemStack x = i.mInventory[0];
+			if (x != null) {
+				return x.getItemDamage();
+			}
+		}
+		log("Control Core Module was null.");
 		return 0;
-	}		
-	GT_MetaTileEntity_Hatch_ControlCore i = getControlCoreBus();
-	if (i != null) {
-		ItemStack x = i.mInventory[0];
+	}
+
+	public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
+		GT_MetaTileEntity_Hatch_ControlCore x = this.mControlCoreBus.get(0);
 		if (x != null) {
-			return x.getItemDamage();
+			log("getControlCore(ok)");
+			return x;
 		}
-	}
-	log("Control Core Module was null.");
-	return 0;
-}
-
-public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
-	GT_MetaTileEntity_Hatch_ControlCore x = this.mControlCoreBus.get(0);
-	if (x != null) {
-		log("getControlCore(ok)");
-		return x;
-	}
-	log("getControlCore(bad)");
-	return null;
-}
-
-//mControlCoreBus
-public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {		
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-	if (aMetaTileEntity == null) {
-		log("Tried to add null module entity.");
-		return false;
-	}
-	if (!mControlCoreBus.isEmpty()) {
-		log("Tried to add a secondary control core module.");
-		return false;
+		log("getControlCore(bad)");
+		return null;
 	}
 
-	log("Adding control core module.");
-	return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
-}
-
-@Override
-public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-	if (aTileEntity == null) {
-		return false;
-	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-	if (aMetaTileEntity == null) {
-		return false;
-	}
-
-	//Use this to determine the correct value, then update the hatch texture after.
-	boolean aDidAdd = false;		
-
-	//Handle Custom Hustoms
-	if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ControlCore) {
-		log("Found GT_MetaTileEntity_Hatch_ControlCore");
-		aDidAdd = addControlCoreToMachineList(aTileEntity, aBaseCasingIndex);
-	}
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-		log("Found GT_MetaTileEntity_Hatch_InputBattery");
-		aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
-	}
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-		log("Found GT_MetaTileEntity_Hatch_OutputBattery");
-		aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
-	}
-
-	//Handle TT Multi-A Dynamos
-	else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
-		log("Found isThisHatchMultiDynamo");
-		aDidAdd = addToMachineListInternal(mMultiDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
-	}		
-
-	//Handle Fluid Hatches using seperate logic
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
-		aDidAdd = addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
-		aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
-
-	//Process Remaining hatches using Vanilla GT Logic
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
-		aDidAdd = addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
-		aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
-		aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo)
-		aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
-		aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
-	else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
-		aDidAdd = addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
-
-	//return super.addToMachineList(aTileEntity, aBaseCasingIndex);
-	return aDidAdd;
-}
-
-
-
-@Override
-public boolean addMaintenanceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-	return addToMachineList(aTileEntity, aBaseCasingIndex);
-}
-
-@Override
-public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-	return addToMachineList(aTileEntity, aBaseCasingIndex);
-}
-
-@Override
-public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-	return addToMachineList(aTileEntity, aBaseCasingIndex);
-}
-
-@Override
-public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-	return addToMachineList(aTileEntity, aBaseCasingIndex);
-}
-
-public boolean addFluidInputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-	if (aTileEntity == null) {
-		return false;
-	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-	if (aMetaTileEntity == null) {
-		return false;
-	}
-	return addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
-}
-
-public boolean addFluidInputToMachineList(final IMetaTileEntity aTileEntity, final int aBaseCasingIndex) {
-	if (aTileEntity == null) {
-		return false;
-	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity;
-	if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-		((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
-		return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);			
-	}
-	return false;
-}
-
-public boolean resetRecipeMapForAllInputHatches() {
-	return resetRecipeMapForAllInputHatches(this.getRecipeMap());
-}
-
-public boolean resetRecipeMapForAllInputHatches(GT_Recipe_Map aMap) {
-	int cleared = 0;
-	for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
-		if (resetRecipeMapForHatch(g, aMap)) {
-			cleared++;
+	//mControlCoreBus
+	public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {		
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			log("Tried to add null module entity.");
+			return false;
 		}
-	}
-	for (GT_MetaTileEntity_Hatch_InputBus g : this.mInputBusses) {
-		if (resetRecipeMapForHatch(g, aMap)) {
-			cleared++;
+		if (!mControlCoreBus.isEmpty()) {
+			log("Tried to add a secondary control core module.");
+			return false;
 		}
-	}
-	return cleared > 0;
-}
-public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
-	if (aTileEntity == null) {
-		return false;
-	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
-	if (aMetaTileEntity == null) {
-		return false;
-	}
-	if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-		return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
-	}
-	else {
-		return false;
-	}
-}
 
-public boolean resetRecipeMapForHatch(GT_MetaTileEntity_Hatch aTileEntity, GT_Recipe_Map aMap) {
-	if (aTileEntity == null) {
-		return false;
+		log("Adding control core module.");
+		return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
 	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity;
-	if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
-			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
-			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+
+	@Override
+	public boolean addToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
 		}
-		else {	
-			((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
-			((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;				
-		}
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-@Override
-public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-	super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-	resetRecipeMapForAllInputHatches();
-	onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
-}
-
-public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
-}
-
-
-
-
-
-/**
- * Enable Texture Casing Support if found in GT 5.09
- */
-
-@SuppressWarnings("deprecation")
-public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-	if (aMetaTileEntity == null) {
-		return false;
-	}	
-	return updateTexture(aMetaTileEntity, aCasingID);
-}
-
-/**
- * Enable Texture Casing Support if found in GT 5.09
- */
-
-@SuppressWarnings("deprecation")
-public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID){
-	try { //gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
-
-		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) {
 			return false;
-		}			
-		Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
-		if (mProper != null){
-			if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
-				mProper.setAccessible(true);
-				mProper.invoke(aMetaTileEntity, aCasingID);
-				log("Good Method Call for updateTexture.");
-				return true;
+		}
+
+		//Use this to determine the correct value, then update the hatch texture after.
+		boolean aDidAdd = false;		
+
+		//Handle Custom Hustoms
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ControlCore) {
+			log("Found GT_MetaTileEntity_Hatch_ControlCore");
+			aDidAdd = addControlCoreToMachineList(aTileEntity, aBaseCasingIndex);
+		}
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
+			log("Found GT_MetaTileEntity_Hatch_InputBattery");
+			aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
+		}
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
+			log("Found GT_MetaTileEntity_Hatch_OutputBattery");
+			aDidAdd = addToMachineListInternal(mDischargeHatches, aMetaTileEntity, aBaseCasingIndex);
+		}
+
+		//Handle TT Multi-A Dynamos
+		else if (LoadedMods.TecTech && isThisHatchMultiDynamo(aMetaTileEntity)) {
+			log("Found isThisHatchMultiDynamo");
+			aDidAdd = addToMachineListInternal(mMultiDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+		}		
+
+		//Handle Fluid Hatches using seperate logic
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+			aDidAdd = addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
+			aDidAdd = addToMachineListInternal(mOutputHatches, aMetaTileEntity, aBaseCasingIndex);
+
+		//Process Remaining hatches using Vanilla GT Logic
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
+			aDidAdd = addToMachineListInternal(mInputBusses, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+			aDidAdd = addToMachineListInternal(mOutputBusses, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
+			aDidAdd = addToMachineListInternal(mEnergyHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo)
+			aDidAdd = addToMachineListInternal(mDynamoHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+			aDidAdd = addToMachineListInternal(mMaintenanceHatches, aMetaTileEntity, aBaseCasingIndex);
+		else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
+			aDidAdd = addToMachineListInternal(mMufflerHatches, aMetaTileEntity, aBaseCasingIndex);
+
+		//return super.addToMachineList(aTileEntity, aBaseCasingIndex);
+		return aDidAdd;
+	}
+
+
+
+	@Override
+	public boolean addMaintenanceToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	@Override
+	public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	@Override
+	public boolean addInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	@Override
+	public boolean addOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		return addToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+	public boolean addFluidInputToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		return addFluidInputToMachineList(aMetaTileEntity, aBaseCasingIndex);
+	}
+
+	public boolean addFluidInputToMachineList(final IMetaTileEntity aTileEntity, final int aBaseCasingIndex) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
+			return addToMachineListInternal(mInputHatches, aMetaTileEntity, aBaseCasingIndex);			
+		}
+		return false;
+	}
+
+	public boolean resetRecipeMapForAllInputHatches() {
+		return resetRecipeMapForAllInputHatches(this.getRecipeMap());
+	}
+
+	public boolean resetRecipeMapForAllInputHatches(GT_Recipe_Map aMap) {
+		int cleared = 0;
+		for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		for (GT_MetaTileEntity_Hatch_InputBus g : this.mInputBusses) {
+			if (resetRecipeMapForHatch(g, aMap)) {
+				cleared++;
+			}
+		}
+		return cleared > 0;
+	}
+	public boolean resetRecipeMapForHatch(IGregTechTileEntity aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			return resetRecipeMapForHatch((GT_MetaTileEntity_Hatch)aMetaTileEntity, aMap);
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean resetRecipeMapForHatch(GT_MetaTileEntity_Hatch aTileEntity, GT_Recipe_Map aMap) {
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity;
+		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
+			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+			}
+			else {	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
+				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = aMap;				
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+		resetRecipeMapForAllInputHatches();
+		onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+	}
+
+	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
+	}
+
+
+
+
+
+	/**
+	 * Enable Texture Casing Support if found in GT 5.09
+	 */
+
+	@SuppressWarnings("deprecation")
+	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}	
+		return updateTexture(aMetaTileEntity, aCasingID);
+	}
+
+	/**
+	 * Enable Texture Casing Support if found in GT 5.09
+	 */
+
+	@SuppressWarnings("deprecation")
+	public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID){
+		try { //gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
+
+			final IMetaTileEntity aMetaTileEntity = aTileEntity;
+			if (aMetaTileEntity == null) {
+				return false;
+			}			
+			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
+			if (mProper != null){
+				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
+					mProper.setAccessible(true);
+					mProper.invoke(aMetaTileEntity, aCasingID);
+					log("Good Method Call for updateTexture.");
+					return true;
+				}
+
+			}
+			else {
+				log("Bad Method Call for updateTexture.");
+				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
+					if (aCasingID <= Byte.MAX_VALUE) {
+						((GT_MetaTileEntity_Hatch) aTileEntity).mMachineBlock = (byte) aCasingID;
+						log("Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
+						return true;
+					}
+					else {
+						log("updateTexture returning false. 1.2");
+					}
+				}
+				else {
+					log("updateTexture returning false. 1.3");
+				}
+			}
+			log("updateTexture returning false. 1");
+			return false;
+		}
+		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			log("updateTexture returning false.");
+			log("updateTexture returning false. 2");
+			e.printStackTrace();
+			return false;	
+		}	
+
+	}
+
+
+
+
+
+
+
+
+
+	/**
+	 * TecTech Support
+	 */
+
+
+	/**
+	 * This is the array Used to Store the Tectech Multi-Amp hatches.
+	 */
+
+	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
+
+	/**
+	 * TecTech Multi-Amp Dynamo Support
+	 * @param aTileEntity - The Dynamo Hatch
+	 * @param aBaseCasingIndex - Casing Texture
+	 * @return
+	 */
+
+	public boolean addMultiAmpDynamoToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
+		//GT_MetaTileEntity_Hatch_DynamoMulti
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (isThisHatchMultiDynamo(aTileEntity)) {
+			updateTexture(aTileEntity, aBaseCasingIndex);
+			return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+		}
+		return false;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
+		Class mDynamoClass;
+		try {
+			mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
+			if (mDynamoClass != null){
+				if (mDynamoClass.isInstance(aMetaTileEntity)){
+					return true;
+				}
+			}
+		}
+		catch (ClassNotFoundException e) {}
+		return false;
+	}
+
+	@Override
+	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (LoadedMods.TecTech){
+			if (isThisHatchMultiDynamo(aTileEntity)) {
+				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 			}
 
 		}
+		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+	}
+
+
+	/**
+	 * Pollution Management
+	 */
+
+	public int getPollutionPerTick(ItemStack arg0) {
+		return 0;
+	}
+
+	public String getPollutionTooltip() {
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			return "Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second";
+		}
 		else {
-			log("Bad Method Call for updateTexture.");
-			if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
-				if (aCasingID <= Byte.MAX_VALUE) {
-					((GT_MetaTileEntity_Hatch) aTileEntity).mMachineBlock = (byte) aCasingID;
-					log("Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
-					return true;
+			return "";
+		}
+	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+		super.loadNBTData(aNBT);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Custom Find Recipe with Debugging
+	 */
+
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
+			final boolean aDontCheckStackSizes, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
+				(ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
+			final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
+			final FluidStack[] aFluids, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
+				(ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
+			final ItemStack aSpecialSlot, final ItemStack... aInputs) {
+		return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, true, aVoltage, aFluids, aSpecialSlot,
+				aInputs);
+	}
+
+	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
+			final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
+			final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
+		if (this.getRecipeMap().mRecipeList.isEmpty()) {
+			log("No Recipes in Map to search through.");
+			return null;
+		}
+		GT_Recipe mRecipeResult = null;
+		try {
+			if (GregTech_API.sPostloadFinished) {
+				if (this.getRecipeMap().mMinimalInputFluids > 0) {
+					if (aFluids == null) {
+						log("aFluids == null && minFluids > 0");
+						return null;
+					}
+					int tAmount = 0;
+					for (final FluidStack aFluid : aFluids) {
+						if (aFluid != null) {
+							++tAmount;
+						}
+					}
+					if (tAmount < this.getRecipeMap().mMinimalInputFluids) {
+						log("Not enough fluids?");
+						return null;
+					}
 				}
-				else {
-					log("updateTexture returning false. 1.2");
+				if (this.getRecipeMap().mMinimalInputItems > 0) {
+					if (aInputs == null) {
+						log("No inputs and minItems > 0");
+						return null;
+					}
+					int tAmount = 0;
+					for (final ItemStack aInput : aInputs) {
+						if (aInput != null) {
+							++tAmount;
+						}
+					}
+					if (tAmount < this.getRecipeMap().mMinimalInputItems) {
+						log("Not enough items?");
+						return null;
+					}
 				}
 			}
 			else {
-				log("updateTexture returning false. 1.3");
+				log("Game Not Loaded properly for recipe lookup.");
+			}
+			if (aNotUnificated) {
+				aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
+			}
+			if (aRecipe != null && !aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
+					&& aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+				mRecipeResult = (aRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= aRecipe.mEUt*/) ? aRecipe : null;
+				log("x) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+				if (mRecipeResult != null) {
+					return mRecipeResult;
+				}
+			}
+			if (mRecipeResult == null && this.getRecipeMap().mUsualInputCount >= 0 && aInputs != null && aInputs.length > 0) {
+				for (final ItemStack tStack : aInputs) {
+					if (tStack != null) {
+						Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeItemMap.get(new GT_ItemStack(tStack));
+						if (tRecipes != null) {
+							for (final GT_Recipe tRecipe : tRecipes) {
+								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+									mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
+											? tRecipe
+													: null;
+									log("1) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+									//return mRecipeResult;
+								}
+							}
+						}
+
+						//TODO - Investigate if this requires to be in it's own block
+						tRecipes = this.getRecipeMap().mRecipeItemMap
+								.get(new GT_ItemStack(GT_Utility.copyMetaData(32767L, new Object[]{tStack})));
+						if (tRecipes != null) {
+							for (final GT_Recipe tRecipe : tRecipes) {
+								if (!tRecipe.mFakeRecipe
+										&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+									mRecipeResult = (tRecipe.mEnabled /*&& aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
+											? tRecipe
+													: null;
+									log("2) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+									//return mRecipeResult;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (mRecipeResult == null && this.getRecipeMap().mMinimalInputItems == 0 && aFluids != null && aFluids.length > 0) {
+				for (final FluidStack aFluid2 : aFluids) {
+					if (aFluid2 != null) {
+						final Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeFluidMap.get(aFluid2.getFluid());
+						if (tRecipes != null) {
+							for (final GT_Recipe tRecipe : tRecipes) {
+								if (!tRecipe.mFakeRecipe
+										&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+									mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
+											? tRecipe
+													: null;
+									log("3) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
+									//return mRecipeResult;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
-		log("updateTexture returning false. 1");
-		return false;
+		catch (Throwable t) {
+			log("Invalid recipe lookup.");			
+		}		
+
+
+		if (mRecipeResult == null) {
+			log("Invalid recipe, Fallback lookup. "+this.getRecipeMap().mRecipeList.size()+" | "+this.getRecipeMap().mNEIName);	
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+				try {
+					return (GT_Recipe) findRecipe08.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+			else {
+				try {
+					return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		}
+		else {
+			return mRecipeResult;
+		}
+
+
+
+
 	}
-	catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-		log("updateTexture returning false.");
-		log("updateTexture returning false. 2");
-		e.printStackTrace();
-		return false;	
-	}	
-
-}
 
 
 
 
+	/**
+	 * Custom Tool Handling
+	 */
 
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+			float aY, float aZ) {		
+		//Do Super
+		boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+		// Do Things
+		if (this.getBaseMetaTileEntity().isServerSide()) {
+			ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+			if (tCurrentItem != null) {				
+				if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {	
 
-
-
-
-/**
- * TecTech Support
- */
-
-
-/**
- * This is the array Used to Store the Tectech Multi-Amp hatches.
- */
-
-public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList<GT_MetaTileEntity_Hatch>();	
-
-/**
- * TecTech Multi-Amp Dynamo Support
- * @param aTileEntity - The Dynamo Hatch
- * @param aBaseCasingIndex - Casing Texture
- * @return
- */
-
-public boolean addMultiAmpDynamoToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
-	//GT_MetaTileEntity_Hatch_DynamoMulti
-	if (aTileEntity == null) {
-		return false;
+				}
+			}
+		}
+		return aSuper;
 	}
-	final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-	if (aMetaTileEntity == null) {
-		return false;
-	}
-	if (isThisHatchMultiDynamo(aTileEntity)) {
-		updateTexture(aTileEntity, aBaseCasingIndex);
-		return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
-	}
-	return false;
-}
 
-@SuppressWarnings("rawtypes")
-public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
-	Class mDynamoClass;
-	try {
-		mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
-		if (mDynamoClass != null){
-			if (mDynamoClass.isInstance(aMetaTileEntity)){
+
+	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
+		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);
+		boolean aHasCore = this.getControlCoreBus() != null;	
+		return aStructureCheck && aHasCore;
+	}
+
+	public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
+	
+	
+	public boolean isValidBlockForStructure(IGregTechTileEntity aBaseMetaTileEntity, int aCasingID, boolean canBeHatch, Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
+		boolean isHatch = false;		
+		if (aBaseMetaTileEntity != null) {
+			isHatch = this.addToMachineList(aBaseMetaTileEntity, aCasingID);
+			if (isHatch) {
 				return true;
 			}
 		}
-	}
-	catch (ClassNotFoundException e) {}
-	return false;
-}
-
-@Override
-public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-	if (LoadedMods.TecTech){
-		if (isThisHatchMultiDynamo(aTileEntity)) {
-			addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
-		}
-
-	}
-	return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
-}
-
-
-/**
- * Pollution Management
- */
-
-public int getPollutionPerTick(ItemStack arg0) {
-	return 0;
-}
-
-public String getPollutionTooltip() {
-	if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-		return "Causes " + 20 * this.getPollutionPerTick(null) + " Pollution per second";
-	}
-	else {
-		return "";
-	}
-}
-
-@Override
-public void saveNBTData(NBTTagCompound aNBT) {
-	aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
-	super.saveNBTData(aNBT);
-}
-
-@Override
-public void loadNBTData(NBTTagCompound aNBT) {
-	this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
-	super.loadNBTData(aNBT);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Custom Find Recipe with Debugging
- */
-
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
-		final boolean aDontCheckStackSizes, final long aVoltage, final FluidStack[] aFluids,
-		final ItemStack... aInputs) {
-	return this.findRecipe(aTileEntity, null, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
-			(ItemStack) null, aInputs);
-}
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
-		final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
-	return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
-}
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-		final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
-		final FluidStack[] aFluids, final ItemStack... aInputs) {
-	return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage, aFluids,
-			(ItemStack) null, aInputs);
-}
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-		final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
-		final ItemStack... aInputs) {
-	return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
-}
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-		final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids,
-		final ItemStack aSpecialSlot, final ItemStack... aInputs) {
-	return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, true, aVoltage, aFluids, aSpecialSlot,
-			aInputs);
-}
-
-public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-		final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
-		final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
-	if (this.getRecipeMap().mRecipeList.isEmpty()) {
-		log("No Recipes in Map to search through.");
-		return null;
-	}
-	GT_Recipe mRecipeResult = null;
-	try {
-		if (GregTech_API.sPostloadFinished) {
-			if (this.getRecipeMap().mMinimalInputFluids > 0) {
-				if (aFluids == null) {
-					log("aFluids == null && minFluids > 0");
-					return null;
-				}
-				int tAmount = 0;
-				for (final FluidStack aFluid : aFluids) {
-					if (aFluid != null) {
-						++tAmount;
-					}
-				}
-				if (tAmount < this.getRecipeMap().mMinimalInputFluids) {
-					log("Not enough fluids?");
-					return null;
-				}
+		if (!isHatch) {
+			if (aFoundBlock != aExpectedBlock || aFoundMeta != aExpectedMeta) {
+				return false;
 			}
-			if (this.getRecipeMap().mMinimalInputItems > 0) {
-				if (aInputs == null) {
-					log("No inputs and minItems > 0");
-					return null;
-				}
-				int tAmount = 0;
-				for (final ItemStack aInput : aInputs) {
-					if (aInput != null) {
-						++tAmount;
-					}
-				}
-				if (tAmount < this.getRecipeMap().mMinimalInputItems) {
-					log("Not enough items?");
-					return null;
-				}
+			else {
+				return true;
 			}
 		}
 		else {
-			log("Game Not Loaded properly for recipe lookup.");
+			return true;
 		}
-		if (aNotUnificated) {
-			aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
-		}
-		if (aRecipe != null && !aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
-				&& aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-			mRecipeResult = (aRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= aRecipe.mEUt*/) ? aRecipe : null;
-			log("x) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
-			if (mRecipeResult != null) {
-				return mRecipeResult;
-			}
-		}
-		if (mRecipeResult == null && this.getRecipeMap().mUsualInputCount >= 0 && aInputs != null && aInputs.length > 0) {
-			for (final ItemStack tStack : aInputs) {
-				if (tStack != null) {
-					Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeItemMap.get(new GT_ItemStack(tStack));
-					if (tRecipes != null) {
-						for (final GT_Recipe tRecipe : tRecipes) {
-							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-								mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
-										? tRecipe
-												: null;
-								log("1) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
-								//return mRecipeResult;
-							}
-						}
-					}
-
-					//TODO - Investigate if this requires to be in it's own block
-					tRecipes = this.getRecipeMap().mRecipeItemMap
-							.get(new GT_ItemStack(GT_Utility.copyMetaData(32767L, new Object[]{tStack})));
-					if (tRecipes != null) {
-						for (final GT_Recipe tRecipe : tRecipes) {
-							if (!tRecipe.mFakeRecipe
-									&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-								mRecipeResult = (tRecipe.mEnabled /*&& aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
-										? tRecipe
-												: null;
-								log("2) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
-								//return mRecipeResult;
-							}
-						}
-					}
-				}
-			}
-		}
-		if (mRecipeResult == null && this.getRecipeMap().mMinimalInputItems == 0 && aFluids != null && aFluids.length > 0) {
-			for (final FluidStack aFluid2 : aFluids) {
-				if (aFluid2 != null) {
-					final Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeFluidMap.get(aFluid2.getFluid());
-					if (tRecipes != null) {
-						for (final GT_Recipe tRecipe : tRecipes) {
-							if (!tRecipe.mFakeRecipe
-									&& tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-								mRecipeResult = (tRecipe.mEnabled/* && aVoltage * this.getRecipeMap().mAmperage >= tRecipe.mEUt*/)
-										? tRecipe
-												: null;
-								log("3) Found Recipe? "+(mRecipeResult != null ? "true" : "false"));
-								//return mRecipeResult;
-							}
-						}
-					}
-				}
-			}
-		}
+		
+		
+		
 	}
-	catch (Throwable t) {
-		log("Invalid recipe lookup.");			
-	}		
-
-
-	if (mRecipeResult == null) {
-		log("Invalid recipe, Fallback lookup. "+this.getRecipeMap().mRecipeList.size()+" | "+this.getRecipeMap().mNEIName);	
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			try {
-				return (GT_Recipe) findRecipe08.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-		else {
-			try {
-				return (GT_Recipe) findRecipe09.invoke(getRecipeMap(), aTileEntity, aRecipe, aNotUnificated, aDontCheckStackSizes, aVoltage,	aFluids, aSpecialSlot, aInputs);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	}
-	else {
-		return mRecipeResult;
-	}
-
-
-
-
-}
-
-
-
-
-/**
- * Custom Tool Handling
- */
-
-@Override
-public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-		float aY, float aZ) {		
-	//Do Super
-	boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-	// Do Things
-	if (this.getBaseMetaTileEntity().isServerSide()) {
-		ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-		if (tCurrentItem != null) {				
-			if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)) {	
-
-			}
-		}
-	}
-	return aSuper;
-}
-
-
-public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
-	boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);
-	boolean aHasCore = this.getControlCoreBus() != null;	
-	return aStructureCheck && aHasCore;
-}
-
-public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 
 
 

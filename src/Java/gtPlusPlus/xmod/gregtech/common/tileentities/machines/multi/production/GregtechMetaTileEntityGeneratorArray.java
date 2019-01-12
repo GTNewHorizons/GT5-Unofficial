@@ -17,6 +17,7 @@ import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,13 +47,13 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 		return new String[]{
 				"Controller Block for the Generator Array",
 				"Runs supplied generators as if placed in the world",
-				"Size(WxHxD): 3x3x3 (Hollow), Controller (Front centered)",
-				"1x Input Hatch/Bus (Any casing)",
-				"1x Output Hatch/Bus (Any casing)",
-				"1x Maintenance Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)",
-				"Robust Tungstensteel Machine Casings for the rest (16 at least!)",
-				"Place up to 16 Single Block GT Generators into the Controller Inventory",
+				"Size(WxHxD): 3x3x3 (Hollow)", 
+				"Robust Tungstensteel Machine Casings (10 at least!)",
+				"Place up to 16 Single Block GT Generators into the Controller",
+				"Controller (Front centered)",
+				"1x Input Hatch/Bus",
+				"1x Output Hatch/Bus",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -207,32 +208,35 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 	}
 
 	@Override
-	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {		
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 2; h++) {
-					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!addMaintenanceToMachineList(tTileEntity, 48)) && (!addInputToMachineList(tTileEntity, 48)) && (!addOutputToMachineList(tTileEntity, 48)) && (!addDynamoToMachineList(tTileEntity, 48))) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GregTech_API.sBlockCasings4) {
+		} else {
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta,
+									GregTech_API.sBlockCasings4, 0)) {
+								Logger.INFO("Bad centrifuge casing");
 								return false;
 							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 0) {
-								return false;
-							}
-							tAmount++;
+							++tAmount;
+
 						}
 					}
 				}
 			}
+			return tAmount >= 10;
 		}
-		return tAmount >= 16;
 	}
 
 	@Override

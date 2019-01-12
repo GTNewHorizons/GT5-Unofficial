@@ -44,14 +44,13 @@ extends GregtechMeta_MultiBlockBase {
 				"150% faster than using single block machines of the same voltage",
 				"Only uses 80% of the eu/t normally required",
 				"Processes eight items per voltage tier",
-				"Size: 3x2x3 [WxHxL]", "Controller (front centered, top layer)",
+				"Size: 3x2x3 [WxHxL]", 
+				"Thermal processing Casings (8 at least!)",
+				"Noise Hazard Sign Blocks also count as valid casings",
+				"Controller (front centered, top layer)",
 				"1x Input Bus (Any bottom layer casing)",
 				"1x Output Bus (Any bottom layer casing)",
-				"1x Maintenance Hatch (Any bottom layer casing)",
-				"1x Muffler Hatch (Casing under controller)",
 				"1x Energy Hatch (Any bottom layer casing)",
-				"Thermal processing Casings for the rest (8 at least!)",
-				"Noise Hazard Sign Blocks also count as valid casings",
 				
 		};
 	}

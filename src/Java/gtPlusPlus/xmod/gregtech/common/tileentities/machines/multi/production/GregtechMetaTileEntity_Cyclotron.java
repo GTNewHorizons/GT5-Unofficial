@@ -234,7 +234,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	private boolean isAdvancedMachineCasing(int aX, int aY, int aZ) {
-		return (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCasing()) && (getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCasingMeta());
+		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
+		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
+		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);		
+		return isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());			
 	}
 
 	private boolean isCyclotronCoil(int aX, int aY, int aZ) {
@@ -268,11 +271,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
+				"All Hatches must be IV or better",
 				"1-16 Input Hatches", 
 				"1-16 Input Busses",
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
-				"All Hatches must be IV or better",
 				};
 	}
 

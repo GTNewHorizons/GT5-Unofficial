@@ -89,29 +89,27 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	@Override
 	public String[] getTooltip() {
 
-		//if (mCasingName1.toLowerCase().contains(".name")) {
+		if (mCasingName1.toLowerCase().contains(".name")) {
 			mCasingName1 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 9);
-		//}
-		//if (mCasingName2.toLowerCase().contains(".name")) {
+		}
+		if (mCasingName2.toLowerCase().contains(".name")) {
 			mCasingName2 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 15);
-		//}
-		//if (mCasingName3.toLowerCase().contains(".name")) {
+		}
+		if (mCasingName3.toLowerCase().contains(".name")) {
 			mCasingName3 = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasingsMisc, 8);
-		//}
+		}
 		
 		return new String[]{
 				"Controller Block for the Matter Fabricator",
-				"Produces UU-A, UU-m & Scrap",
+				"Produces UU-A, UU-M & Scrap",
 				"Size(WxHxD): 5x4x5, Controller (Bottom center)",
 				"3x1x3 "+mCasingName3+"s (Inside bottom 5x1x5 layer)",
 				"9x "+mCasingName3+" (Centered 3x1x3 area in Bottom layer)",
-				"1x Input Hatch (Any bottom layer casing)",
-				"1x Output Hatch (Any bottom layer casing)",
-				"1x Maintenance Hatch (Any bottom layer casing)",
-				"1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
-				"1x Energy Hatch (Any bottom layer casing)",
 				"24x "+mCasingName2+" for the walls",
 				mCasingName1+"s for the edges & top (40 at least!)",
+				"1x Input Hatch/Bus",
+				"1x Output Hatch/Bus",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -187,110 +185,63 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					//Utils.LOG_INFO("Logging Variables - xDir:"+xDir+" zDir:"+zDir+" h:"+h+" i:"+i+" j:"+j);
 
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-					/*if (tTileEntity != Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"))) {
-						Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
-						double tX = tTileEntity.getXCoord();
-						double tY = tTileEntity.getYCoord();
-						double tZ = tTileEntity.getZCoord();
-						Utils.LOG_INFO("Found Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
-						//return false;
-					}*/
-					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {// innerer 3x3 ohne h�he
-						if (h == 0) {// innen boden (kantal coils)
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+					
+					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
+						if (h == 0) {							
+							if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(9), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 8)) {
 								Logger.INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
 								return false;
 							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-								Logger.INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
+						} else if (h == 3) {													
+							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
+								Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 								return false;
 							}
-						} else if (h == 3) {// innen decke (ulv casings + input + muffler)
-							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
-									return false;
-								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-									Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
-									return false;
-								}
-							}
-						} else {// innen air
+						} else {
 							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
 								Logger.INFO("Make sure the inner 3x3 of the Multiblock is Air.");
 								return false;
 							}
 						}
-					} else {// Outer 5x5
-						if (h == 0) {// au�en boden (controller, output, energy, maintainance, rest ulv casings)
-							if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
-								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
-										return false;
-									}
-								}
+					} else {
+						if (h == 0) {							
+							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
+								Logger.INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
+								return false;
 							}
-						} else {// au�en �ber boden (ulv casings)
+						} else {
 							if (h == 1) {
-
-								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
+								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){									
+									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
 										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
 										return false;
 									}
 								}
 
-								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != aContainmentGlass) {
+								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){									
+									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), aContainmentGlass, aContainmentMeta)) {
 										Logger.INFO("Glass Casings Missing from somewhere in the second layer.");
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != aContainmentMeta) {
-										Logger.INFO("Glass Casings wrong meta from the second layer.");
 										return false;
 									}
 								}
 							}
 							if (h == 2) {
-								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
+								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){									
+									if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
 										Logger.INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
 										return false;
 									}
 								}
 
-								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
-									
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != aContainmentGlass) {
+								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){									
+									if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(9), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), aContainmentGlass, aContainmentMeta)) {
 										Logger.INFO("Glass Casings Missing from somewhere in the third layer.");
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != aContainmentMeta) {
-										Logger.INFO("Glass Casings wrong meta from the third layer.");
 										return false;
 									}
 								}
 							}
-							if (h == 3) {
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Logger.INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
-									return false;
-								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
+							if (h == 3) {								
+								if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(9), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasingsMisc, 9)) {
 									Logger.INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
 									return false;
 								}

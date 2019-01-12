@@ -52,13 +52,11 @@ extends GregtechMeta_MultiBlockBase {
 				"ULV = Tier 0, LV = Tier 1, etc.",
 				"-------------------------------------------------------",
 				"Size[WxHxL]: 3x6x3 (Hollow)",
+				"Maceration Stack Casings (26 at least!)",
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any bottom layer casing)",
 				"5x Output Bus (One per layer except bottom layer)",
-				"1x Maintenance Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)",
-				"1x Muffler Hatch (Any casing)",
-				"Maceration Stack Casings for the rest (26 at least!)"
+				"1x Energy Hatch (Any bottom layer casing)",
 				};
 	}
 

@@ -10,6 +10,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -46,16 +47,14 @@ extends GregtechMeta_MultiBlockBase {
 				"Process 12x materials with Heat Resistant Casings",
 				"Or 24x materials with Heat Proof Casings",
 				"Size: 3x3x3 (Hollow)",
+				"Structural Coke Oven Casings (8 at least!)",
 				"Controller (front middle at bottom)",
 				"8x Heat Resistant/Proof Coke Oven Casings (middle Layer, hollow)",
-				"1x Input Hatch (one of bottom)",
-				"1x Output Hatch (one of bottom)",
-				"1x Input Bus (one of bottom)",
-				"1x Output Bus (one of bottom)",
-				"1x Energy Hatch (one of bottom) [EV or better recommended]",
-				"1x Maintenance Hatch (one of bottom)",
-				"1x Muffler Hatch (top middle)",
-				"Structural Coke Oven Casings for the rest",
+				"1x Input Hatch",
+				"1x Output Hatch",
+				"1x Input Bus",
+				"1x Output Bus",
+				"1x Energy Hatch"
 				};
 	}
 
@@ -121,7 +120,6 @@ extends GregtechMeta_MultiBlockBase {
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
 			return false;
 		}
-		this.addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), TAE.GTPP_INDEX(1));
 
 		final byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
 		switch (tUsedMeta) {
@@ -137,16 +135,14 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((i != 0) || (j != 0)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != ModBlocks.blockCasingsMisc) {
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
+					if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(1), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), ModBlocks.blockCasingsMisc, tUsedMeta)) {
+						Logger.INFO("Heating Coils missing.");
 						return false;
 					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
-						return false;
-					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != ModBlocks.blockCasingsMisc) {
-						return false;
-					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != 1) {
+					
+					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(1), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), ModBlocks.blockCasingsMisc, 1)) {
+						Logger.INFO("Casings missing from top layer of coke oven.");
 						return false;
 					}
 				}
@@ -156,13 +152,9 @@ extends GregtechMeta_MultiBlockBase {
 			for (int j = -1; j < 2; j++) {
 				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-					if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1)))) {
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 1) {
-							return false;
-						}
+					if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(1), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasingsMisc, 1)) {
+						Logger.INFO("Casings missing from bottom layer of coke oven.");
+						return false;
 					}
 				}
 			}

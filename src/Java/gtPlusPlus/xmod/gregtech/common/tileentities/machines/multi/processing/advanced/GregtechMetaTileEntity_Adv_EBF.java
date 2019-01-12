@@ -104,17 +104,19 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 
 		return new String[] { "Controller Block for the Advanced Electric Blast Furnace",
 				"120% faster than using an equal tier EBF", "Only uses 90% of the eu/t normally required",
-				"Processes upto 8 recipes at once", "Consumes 10L of " + mHotFuelName + "/s during operation",
-				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
-				"16x Heating Coils (Two middle Layers, hollow)", "1x " + mHatchName + " (Any bottom layer casing)",
-				"1x Input Hatch/Bus (Any bottom layer casing)", "1x Output Hatch/Bus (Any bottom layer casing)",
-				"1x Energy Hatch (Any bottom layer casing)", "1x Maintenance Hatch (Any bottom layer casing)",
-				"1x Muffler Hatch (Top middle)",
-				"1x Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
-				"    Recovery scales with Muffler Hatch tier", mCasingName + "s for the rest",
+				"Processes upto 8 recipes at once", 
+				"Consumes 10L of " + mHotFuelName + "/s during operation",
 				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
 				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%"
+				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
+				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
+				"16x Heating Coils (Two middle Layers, hollow)", 
+				"1x " + mHatchName,
+				"1x Input Hatch/Bus", 
+				"1x Output Hatch/Bus (Bottom Layer)",
+				"1x Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
+				"    Recovery scales with Muffler Hatch tier", mCasingName + "s for the rest",
+				"1x Energy Hatch",
 		};
 	}
 
@@ -254,34 +256,21 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
 						return false;
-					}
-					if (!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j),
-							CASING_TEXTURE_ID)) {
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasings3Misc) {
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 11) {
-							return false;
-						}
-					}
+					}					
+					if (!isValidBlockForStructure(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+						Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+						return false;
+					}					
 				}
 			}
 		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if ((xDir + i != 0) || (zDir + j != 0)) {
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,
-							zDir + j);
-					if ((!addMaintenanceToMachineList(tTileEntity, CASING_TEXTURE_ID))
-							&& (!addInputToMachineList(tTileEntity, CASING_TEXTURE_ID))
-							&& (!addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID))
-							&& (!addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID))) {
-						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasings3Misc) {
-							return false;
-						}
-						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 11) {
-							return false;
-						}
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+						Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+						return false;
 					}
 				}
 			}

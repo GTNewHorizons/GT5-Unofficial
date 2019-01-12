@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -61,16 +62,13 @@ extends GregtechMeta_MultiBlockBase {
 				"Only uses 90% of the eu/t normally required",
 				"Processes six items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
-				"Controller (Front Center) [Orange]",
-				"1x Maintenance Hatch (Rear Center) [Green]",
-				"The rest can be placed anywhere except the Front [Red]",
+				"Centrifuge Casings (10 at least)",
+				"Controller (Front Center)",
 				"1x Input Hatch",
 				"1x Output Hatch",
 				"1x Input Bus",
 				"1x Output Bus",
-				"1x Muffler Hatch",
-				"1x Energy Hatch [Blue]",
-				"Centrifuge Casings for the rest (10 at least)",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -128,59 +126,35 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		/*if (ConfigSwitches.disableCentrifugeFormation){
-			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(this.getBaseMetaTileEntity().getOwnerName());
-			if (!player.getEntityWorld().isRemote && isDisabled == false)
-				PlayerUtils.messagePlayer(player, "This Multiblock is disabled via the config. [Only re-enable if you're bugtesting.]");
-			isDisabled = true;
-			return false;
-		}*/
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		//Utils.LOG_WARNING("X:"+xDir+" Z:"+zDir);
+		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
+
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
-		}
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) { //X-Dir
-			for (int j = -1; j < 2; j++) { //Z-Dir
-				for (int h = -1; h < 2; h++) { //Y-Dir
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
+		} else {
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						//Utils.LOG_WARNING("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
-						if ((!this.addToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addInputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addOutputToMachineList(tTileEntity, getCasingTextureIndex())) && (!this.addEnergyInputToMachineList(tTileEntity, getCasingTextureIndex()))) {
-
-							//Maintenance Hatch
-							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
-								if ((tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord()) && (tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord()) && (tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2))) {
-									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-										Logger.WARNING("MAINT HATCH IN CORRECT PLACE");
-										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
-										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
-									} else {
-										return false;
-									}
-								}
-								else {
-									Logger.WARNING("MAINT HATCH IN WRONG PLACE");
-								}
-							}
-
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+							if (!isValidBlockForStructure(tTileEntity, getCasingTextureIndex(), true, aBlock, aMeta,
+									ModBlocks.blockCasingsMisc, 0)) {
+								Logger.INFO("Bad centrifuge casing");
 								return false;
 							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 0) {
-								return false;
-							}
-							tAmount++;
+							++tAmount;
 
 						}
 					}
 				}
 			}
+			return tAmount >= 10;
 		}
-		return tAmount >= 10;
 	}
 
 	@Override

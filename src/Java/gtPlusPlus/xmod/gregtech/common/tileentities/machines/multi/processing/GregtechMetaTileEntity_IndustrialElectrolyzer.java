@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -44,15 +45,13 @@ extends GregtechMeta_MultiBlockBase {
 				"Only uses 90% of the eu/t normally required",
 				"Processes two items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
+				"Electrolyzer Casings for the rest (10 at least!)",
 				"Controller (front centered)",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Input Hatch (anywhere)",
-				"1x Output Hatch (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler (anywhere)",
-				"Electrolyzer Casings for the rest (10 at least!)"
+				"1x Input Bus",
+				"1x Output Bus",
+				"1x Input Hatch",
+				"1x Output Hatch",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -121,38 +120,35 @@ extends GregtechMeta_MultiBlockBase {
 	
 	@Override
 	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {	
-	/*if (mBluePrint == null) {
-		mBluePrint = new Blueprint_Electrolyzer();
-	}	
-	return mBluePrint.checkMachine(aBaseMetaTileEntity);*/		
-		
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
+
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
-		}
-		
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				for (int h = -1; h < 2; h++) {
-					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(5)))) {
-							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 5))) {
+		} else {
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(5), true, aBlock, aMeta,
+									ModBlocks.blockCasingsMisc, 5)) {
+								Logger.INFO("Bad Electrolyzer casing");
 								return false;
 							}
-							tAmount++;
+							++tAmount;
+
 						}
 					}
 				}
 			}
+			return tAmount >= 10;
 		}
-		return tAmount >= 10;
-	
-		
 	}
 
 	@Override
