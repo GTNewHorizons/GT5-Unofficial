@@ -102,6 +102,11 @@ extends GregtechMeta_MultiBlockBase {
 		if (aIndex == 20) {
 			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
 		}
+	}	
+
+	@Override
+	public String getSound() {
+		return (String) GregTech_API.sSoundList.get(Integer.valueOf(5)); 
 	}
 
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	

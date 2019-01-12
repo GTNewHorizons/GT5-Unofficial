@@ -135,6 +135,11 @@ public class GregtechMTE_LargeNaqReactor extends GregtechMeta_MultiBlockBase {
 					aZ);
 		}
 	}
+
+	@Override
+	public String getSound() {
+		return (String) GregTech_API.sSoundList.get(Integer.valueOf(212)); 
+	}
 	
 	private Block getCasing(int casingID) {
 		if (casingID == 1) {
