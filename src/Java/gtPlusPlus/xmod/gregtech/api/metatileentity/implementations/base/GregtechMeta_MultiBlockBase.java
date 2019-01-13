@@ -185,7 +185,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		int mPollutionReduction=0;
 		for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
 			if (isValidMetaTileEntity(tHatch)) {
-				mPollutionReduction=Math.max(tHatch.calculatePollutionReduction(100),mPollutionReduction);
+				mPollutionReduction=Math.max(calculatePollutionReductionForHatch(tHatch, 100),mPollutionReduction);
 			}
 		}
 
@@ -1250,6 +1250,22 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		else {
 			return "";
+		}
+	}
+	
+	private static Method calculatePollutionReduction;
+	public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i , int g) {		
+		if (calculatePollutionReduction == null) {
+			try {
+				calculatePollutionReduction = i.getClass().getDeclaredMethod("calculatePollutionReduction", int.class);
+			} catch (NoSuchMethodException | SecurityException e) {
+				calculatePollutionReduction = null;
+			}
+		}		
+		try {
+			return (int) calculatePollutionReduction.invoke(i, g);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			return 0;
 		}
 	}
 

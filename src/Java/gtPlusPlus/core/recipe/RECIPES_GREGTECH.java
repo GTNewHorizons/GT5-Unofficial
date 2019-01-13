@@ -4,11 +4,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.*;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -18,10 +21,13 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
+import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,7 +69,13 @@ public class RECIPES_GREGTECH {
 		electroMagneticSeperatorRecipes();
 		extruderRecipes();
 		cuttingSawRecipes();
+		breweryRecipes();
 		addFuels();
+	}
+
+	private static void breweryRecipes() {
+		CORE.RA.addBrewingRecipe(14, EnchantingUtils.getMobEssence(100), EnchantingUtils.getLiquidXP(1332), 100, 120, false);
+		CORE.RA.addBrewingRecipe(14, EnchantingUtils.getLiquidXP(1332), EnchantingUtils.getMobEssence(100), 100, 120, false);		
 	}
 
 	private static void cuttingSawRecipes() {
@@ -829,6 +841,71 @@ public class RECIPES_GREGTECH {
 		/*addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
 				GregtechItemList.Casing_Power_SubStation.get(4), 80, 120);*/
+		
+
+		
+		
+		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				 GregtechItemList.Casing_Multi_Use.get(1),
+					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 1),
+					ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 8),
+					CI.sensor_HV,
+					CI.emitter_HV,
+					CI.fieldGenerator_HV,				
+				},
+				null,
+				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame),
+				20*20,
+				2048);
+		
+		
+		
+
+
+		
+		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(ModItems.itemRope, 6)}, null, ItemUtils.getSimpleStack(ModBlocks.blockNet, 2), 1*20, 8);
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(CI.explosiveITNT, 2), ItemUtils.getSimpleStack(CI.explosiveTNT, 4), ELEMENT.getInstance().SULFUR.getDust(2), ELEMENT.getInstance().IRON.getFrameBox(1)}, null, ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3), 5*20, 60);		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {ItemUtils.getSimpleStack(Items.nether_star), ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 8), ItemUtils.getItemStackOfAmountFromOreDict("stickBlackSteel", 8)}, null, ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32), 30*20, 500);
+			
+		
+
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.electricPump_LV,
+				CI.electricMotor_LV,
+				ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("ringBrass", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("rodBrass", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", 2)				
+		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), 10*20, 30);		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.electricPump_MV,
+				CI.electricMotor_MV,
+				ItemUtils.getItemStackOfAmountFromOreDict("circuitAdvanced", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("ringMagnalium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("rodMagnalium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateAluminium", 2)				
+		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), 10*20*2, 120);		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.electricPump_HV,
+				CI.electricMotor_HV,
+				ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("ringChrome", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("rodChrome", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 2)				
+		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), 10*20*3, 480);
+		
+		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
+				CI.electricPump_EV,
+				CI.electricMotor_EV,
+				ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("ringTitanium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("rodTitanium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 2)				
+		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), 10*20*4, 1960);
+
+
 	}
 
 	private static boolean addAR(final ItemStack inputA, final ItemStack inputB, final ItemStack outputA,

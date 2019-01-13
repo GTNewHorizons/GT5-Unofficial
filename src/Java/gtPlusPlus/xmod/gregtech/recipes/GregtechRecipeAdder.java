@@ -13,12 +13,14 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -664,7 +666,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	private static final  Method mScannerTT;
 	private static final  Method[] mChemicalRecipe = new Method[3];
 	private static final  Method mLargeChemReactor;
-	
+
 	static {
 
 		//Get GT's RA class;
@@ -678,7 +680,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			mSixSlotAssembly = ReflectionUtils.getMethod(clazz, "addAssemblerRecipe", ItemStack[].class, FluidStack.class, ItemStack.class, int.class, int.class);
 			//Assembly Line
 			mAssemblyLine = ReflectionUtils.getMethod(clazz, "addAssemblylineRecipe", ItemStack.class, int.class, ItemStack[].class, FluidStack[].class, ItemStack.class, int.class, int.class);
-			
+
 
 			Method T = null;
 			if (LoadedMods.TecTech) {
@@ -699,7 +701,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				T = null;
 			}
 			mScannerTT = T;
-			
+
 			mChemicalRecipe[1] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, int.class, int.class);
 			mChemicalRecipe[2] = ReflectionUtils.getMethod(clazz, "addChemicalRecipe", ItemStack.class, ItemStack.class, FluidStack.class, FluidStack.class, ItemStack.class, ItemStack.class, int.class);
 
@@ -779,7 +781,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			}		
 		}
 	}
-	
+
 	private boolean tryAddTecTechScannerRecipe(ItemStack aResearchItem,	Object[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
 		if (!LoadedMods.TecTech) {
 			return true;
@@ -788,7 +790,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 			int compSec = (GT_Utility.getTier(assEUt)+1) * 16;
 			int compMax = (GT_Utility.getTier(assEUt)+1) * 10000;
-			
+
 			if (mScannerTT != null) {
 				try {
 					return (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
@@ -806,7 +808,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid, ItemStack output, int time, int eu){
 		return addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, null, time, eu);
 	}
-	
+
 	@Override
 	public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,	ItemStack output, Object object, int time, int eu) {
 		try {
@@ -877,6 +879,41 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return itemsNull && fluidsNull;
 	}
+
+	@Override
+	public boolean addCompressorRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
+		if ((aInput1 == null) || (aOutput1 == null)) {
+			return false;
+		}
+		if ((aInput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("compressor", aInput1, aDuration)) <= 0)) {
+			return false;
+		}
+		GT_Recipe.GT_Recipe_Map.sCompressorRecipes.addRecipe(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1}, null, null, null, aDuration, aEUt, 0);
+		return true;
+	}
+
+	@Override
+	public boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu, boolean aHidden) {
+		return addBrewingRecipe(CI.getNumberedCircuit(aCircuit), aInput, aOutput, aTime, aEu, aHidden);
+	}
+
+	@Override
+	public boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu, boolean aHidden) {
+		if ((aIngredient == null) || (aInput == null) || (aOutput == null)) {
+			return false;
+		}
+		if (!GregTech_API.sRecipeFile.get("brewing", aOutput.getUnlocalizedName(), true)) {
+			return false;
+		}
+		GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBrewingRecipes.addRecipe(false, new ItemStack[]{aIngredient}, null, null, new FluidStack[]{aInput}, new FluidStack[]{aOutput}, aTime, aEu, 0);
+		if ((aHidden) && (tRecipe != null)) {
+			tRecipe.mHidden = true;
+		}
+		return true;
+	}
+
+
+
 
 
 

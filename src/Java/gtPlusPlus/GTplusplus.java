@@ -448,6 +448,7 @@ public class GTplusplus implements ActionListener {
 		//Misc
 		mMiscCapes.put(new Pair<String, String>("doomsquirter", "3aee80ab-d982-4e6d-b8d0-7912bbd75f5d"));
 		mMiscCapes.put(new Pair<String, String>("ukdunc", "17d57521-3a1e-4eb9-91e6-901a65c15e07"));
+		mMiscCapes.put(new Pair<String, String>("q009", "520aebe6-4cd9-46cd-bc7a-d47e5e648e38"));	
 		mMiscCapes.put(new Pair<String, String>("JaidenC", "00b157e5-cd97-43a2-a080-460f550e93cd"));
 		mMiscCapes.put(new Pair<String, String>("TheGiggitygoo", "9f996c78-bddc-4dec-a522-0df7267f11f3"));
 

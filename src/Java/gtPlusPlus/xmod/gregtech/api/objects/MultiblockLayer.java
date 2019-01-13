@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -17,8 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.util.data.ArrayUtils;
-import gtPlusPlus.xmod.gregtech.api.objects.MultiblockLayer.LayerBlockData;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.init.Blocks;
@@ -112,18 +110,48 @@ public class MultiblockLayer {
 		}			
 		
 		if (canBeHatch && (aHatchTypeClass == null || aHatchTypeClass.length <= 0)){
-			aHatchTypeClass = new Class[] {
-					GT_MetaTileEntity_Hatch_DataAccess.class,
-					GT_MetaTileEntity_Hatch_Dynamo.class,
-					GT_MetaTileEntity_Hatch_Energy.class,
-					GT_MetaTileEntity_Hatch_Input.class,
-					GT_MetaTileEntity_Hatch_InputBus.class,
-					GT_MetaTileEntity_Hatch_Maintenance.class,
-					GT_MetaTileEntity_Hatch_Muffler.class,
-					GT_MetaTileEntity_Hatch_Output.class,
-					GT_MetaTileEntity_Hatch_OutputBus.class,
-					GT_MetaTileEntity_Hatch.class
-			};
+			
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+				aHatchTypeClass = new Class[] {
+						GT_MetaTileEntity_Hatch_Dynamo.class,
+						GT_MetaTileEntity_Hatch_Energy.class,
+						GT_MetaTileEntity_Hatch_Input.class,
+						GT_MetaTileEntity_Hatch_InputBus.class,
+						GT_MetaTileEntity_Hatch_Maintenance.class,
+						GT_MetaTileEntity_Hatch_Muffler.class,
+						GT_MetaTileEntity_Hatch_Output.class,
+						GT_MetaTileEntity_Hatch_OutputBus.class,
+						GT_MetaTileEntity_Hatch.class
+				};
+			}
+			else {
+				try {
+					aHatchTypeClass = new Class[] {
+							Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess"),
+							GT_MetaTileEntity_Hatch_Dynamo.class,
+							GT_MetaTileEntity_Hatch_Energy.class,
+							GT_MetaTileEntity_Hatch_Input.class,
+							GT_MetaTileEntity_Hatch_InputBus.class,
+							GT_MetaTileEntity_Hatch_Maintenance.class,
+							GT_MetaTileEntity_Hatch_Muffler.class,
+							GT_MetaTileEntity_Hatch_Output.class,
+							GT_MetaTileEntity_Hatch_OutputBus.class,
+							GT_MetaTileEntity_Hatch.class
+					};
+				} catch (ClassNotFoundException e) {
+					aHatchTypeClass = new Class[] {
+							GT_MetaTileEntity_Hatch_Dynamo.class,
+							GT_MetaTileEntity_Hatch_Energy.class,
+							GT_MetaTileEntity_Hatch_Input.class,
+							GT_MetaTileEntity_Hatch_InputBus.class,
+							GT_MetaTileEntity_Hatch_Maintenance.class,
+							GT_MetaTileEntity_Hatch_Muffler.class,
+							GT_MetaTileEntity_Hatch_Output.class,
+							GT_MetaTileEntity_Hatch_OutputBus.class,
+							GT_MetaTileEntity_Hatch.class
+					};
+				}
+			}
 		}
 		
 		

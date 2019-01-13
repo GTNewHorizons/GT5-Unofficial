@@ -588,7 +588,7 @@ public class FluidUtils {
 		FluidStack aFStack4 = (FluidUtils.getFluidStack(aFluidName, 1));
 		FluidStack aFStack5 = (FluidUtils.getFluidStack("liquid_"+aFluidName.toLowerCase(), 1));
 		FluidStack aFStack6 = (FluidUtils.getFluidStack("liquid"+"."+aFluidName.toLowerCase(), 1));			
-		return aFStack1 == null && aFStack2 == null && aFStack3 == null && aFStack4 == null && aFStack5 == null && aFStack6 == null;
+		return aFStack1 != null || aFStack2 != null || aFStack3 != null || aFStack4 != null || aFStack5 != null || aFStack6 != null;
 	}
 	
 	public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {

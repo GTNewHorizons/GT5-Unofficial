@@ -1329,6 +1329,7 @@ public class RECIPES_Machines {
 						o_Fermenter, o_Distillery, o_Extractor,
 						GregtechItemList.Industrial_MultiMachine.get(1));
 			}
+			
 			//Wireless Chargers
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.emitter_LV, CI.circuitTier1, CI.emitter_LV,

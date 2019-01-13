@@ -29,9 +29,10 @@ public class ItemBlockEntityBase extends ItemBlock {
 	@Override
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
-			list.add(EnumChatFormatting.GRAY+"Can convert Liquid Xp to Mob Essence and back.");
+			/*list.add(EnumChatFormatting.GRAY+"Can convert Liquid Xp to Mob Essence and back.");
 			list.add(EnumChatFormatting.GRAY+"Right click with a Screwdriver to change mode.");
-			list.add(EnumChatFormatting.GRAY+"Shift+Right click to view tank information.");
+			list.add(EnumChatFormatting.GRAY+"Shift+Right click to view tank information.");*/
+			list.add(EnumChatFormatting.GRAY+"Currently disabled, Use a GT Brewery instead. (New Recipes Added!)");
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

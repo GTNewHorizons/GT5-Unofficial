@@ -265,34 +265,34 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
 			}
 		}
-		
-		
-		
+
+
+
 		GregtechItemList.Cover_Overflow_ULV.set(this.addItem(71, "Overflow Valve (ULV)", "Maximum void amount: 8000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		GregtechItemList.Cover_Overflow_LV.set(this.addItem(72, "Overflow Valve (LV)", "Maximum void amount: 64000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		GregtechItemList.Cover_Overflow_MV.set(this.addItem(73, "Overflow Valve (MV)", "Maximum void amount: 512000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		GregtechItemList.Cover_Overflow_HV.set(this.addItem(74, "Overflow Valve (HV)", "Maximum void amount: 4096000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		GregtechItemList.Cover_Overflow_EV.set(this.addItem(75, "Overflow Valve (EV)", "Maximum void amount: 32768000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
 		GregtechItemList.Cover_Overflow_IV.set(this.addItem(76, "Overflow Valve (IV)", "Maximum void amount: 262144000", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 1L), getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
-			
+
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_ULV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(8));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_LV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[4][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(64));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_MV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(512));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_HV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[5][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(4096));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_EV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(32768));
 		GregTech_API.registerCover(GregtechItemList.Cover_Overflow_IV.get(1L, new Object[0]), new GT_MultiTexture(new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[8][0], new GT_RenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)}), new GTPP_Cover_Overflow(262144));
-		
-		
+
+
 		//Fusion Reactor MK4 Singularity
 		GregtechItemList.Compressed_Fusion_Reactor.set(this.addItem(100, "Hypervisor Matrix (Fusion)", "A memory unit containing an RI (Restricted Intelligence)", new Object[0]));
-		GT_Values.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
+		CORE.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
 		
 		//NanoTubes
 		GregtechItemList.NanoTube_Base_Substrate.set(this.addItem(101, "Silicon Base Substrate", "Used in the production of Carbon Nanotubes", new Object[0]));
 		GregtechItemList.NanoTube_Finished.set(this.addItem(102, "Carbon Nanotubes", "Multi-walled Zigzag nanotubes, possibly Carbon's final form", new Object[0]));
 		GregtechItemList.Carbyne_Tube_Finished.set(this.addItem(103, "Linear Acetylenic Carbon (LAC/Carbyne)", "LAC chains grown inside Multi-walled Carbon Nanotubes, highly stable", new Object[0]));
 		GregtechItemList.Carbyne_Sheet_Finished.set(this.addItem(104, "Carbyne Composite Panel", "Nanotubes which contain LAC, arranged side by side and compressed further", new Object[0]));
-		
+
 	}
 
 	private boolean registerComponents_ULV(){

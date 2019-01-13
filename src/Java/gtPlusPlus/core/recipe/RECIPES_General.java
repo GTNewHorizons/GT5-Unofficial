@@ -41,20 +41,17 @@ public class RECIPES_General {
 	static ItemStack OUTPUT_Workbench_Bronze;
 	static ItemStack RECIPE_HydrogenDust;
 
-	public static void loadRecipes(){
-		
-		RECIPE_Paper = ItemUtils.getSimpleStack(Items.paper);
-		RECIPE_Dirt = ItemUtils.getSimpleStack(Blocks.dirt);
-		RECIPE_Snow = ItemUtils.getSimpleStack(Blocks.snow);
-		RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
-		RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
-		RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);	
-		
-		OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(ModBlocks.blockWorkbench);
-		OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
-		
-		if (LoadedMods.Gregtech){
-			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
+	public static void loadRecipes(){		
+		if (LoadedMods.Gregtech){			
+			RECIPE_Paper = ItemUtils.getSimpleStack(Items.paper);
+			RECIPE_Dirt = ItemUtils.getSimpleStack(Blocks.dirt);
+			RECIPE_Snow = ItemUtils.getSimpleStack(Blocks.snow);
+			RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
+			RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
+			RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);	
+			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);			
+			OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(ModBlocks.blockWorkbench);
+			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
 			run();
 			addCompressedObsidian();
 			addHandPumpRecipes();
@@ -64,11 +61,11 @@ public class RECIPES_General {
 
 	private static void run() {
 		//Workbench Blueprint
-		RecipeUtils.recipeBuilder(
+		/*RecipeUtils.recipeBuilder(
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_LapisDust, RECIPE_LapisDust, NULL,
-				OUTPUT_Blueprint);
+				OUTPUT_Blueprint);*/
 
 		//Bronze Workbench
 		/*RecipeUtils.recipeBuilder(
@@ -381,7 +378,7 @@ public class RECIPES_General {
 			generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
 		}
 		
-		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK)
 		RecipeUtils.addShapedGregtechRecipe(
 				CI.component_Plate[4], "rotorGtStainlessSteel", CI.component_Plate[4],
 				CI.getTieredCircuitOreDictName(3), CI.machineHull_HV, CI.getTieredCircuitOreDictName(3),
@@ -403,6 +400,8 @@ public class RECIPES_General {
 				CI.getTieredCircuitOreDictName(7), CI.component_Plate[9], ItemList.Hatch_Input_ZPM.get(1),
 				CI.component_Plate[8], GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 		
+
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]), bitsd,
 				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_LV.get(1), Character.valueOf('P'),
 						GregtechItemList.Pollution_Cleaner_LV.get(1) });
@@ -430,7 +429,7 @@ public class RECIPES_General {
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L, new Object[0]), bitsd,
 				new Object[] { "M", "P", Character.valueOf('M'), ItemList.Hatch_Muffler_MAX.get(1), Character.valueOf('P'),
 						GregtechItemList.Pollution_Cleaner_MAX.get(1) });
-		
+		}
 		
 		
 		

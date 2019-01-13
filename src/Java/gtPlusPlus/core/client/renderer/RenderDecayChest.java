@@ -26,7 +26,8 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
 	public RenderDecayChest() {
 			INSTANCE = this;
 			this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
-			Logger.INFO("Registered Lead Lined Chest Renderer.");		
+			Logger.INFO("Registered Lead Lined Chest Renderer.");	
+			
 	}
 	
 	public void renderTileEntityAt(TileEntityDecayablesChest p_147500_1_, double p_147500_2_, double p_147500_4_,
