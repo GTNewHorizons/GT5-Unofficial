@@ -22,6 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.server.container;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.net.CircuitProgrammerPacket;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -39,9 +41,13 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class GT_Container_CircuitProgrammer extends Container {
 
+    EntityPlayer player;
+
     public GT_Container_CircuitProgrammer(InventoryPlayer inventory) {
 
-        IInventory inv = new pinv(inventory.player);
+        player = inventory.player;
+
+        IInventory inv = new pinv(player);
 
         addSlotToContainer(new Slot(inv, 0, 44, 61));//-45, 84));
 
@@ -66,10 +72,11 @@ public class GT_Container_CircuitProgrammer extends Container {
     @Override
     public ItemStack slotClick(int slot, int button, int aShifthold, EntityPlayer entityPlayer) {
         if (slot > 0 && slot < 25 && ((Slot) this.inventorySlots.get(0)).getStack() != null) {
-            ((Slot) this.inventorySlots.get(0)).getStack().setItemDamage(slot);
+            ((Slot) this.inventorySlots.get(0)).putStack(GT_Utility.getIntegratedCircuit(slot));
             detectAndSendChanges();
             return ((Slot) this.inventorySlots.get(0)).getStack();
         }
+        detectAndSendChanges();
         return super.slotClick(slot, button, aShifthold, entityPlayer);//( (Slot) this.inventorySlots.get(slot)).getStack();
     }
 
@@ -83,7 +90,7 @@ public class GT_Container_CircuitProgrammer extends Container {
         Slot chipslot = (Slot) this.inventorySlots.get(0);
         if (SlotNR > 24) {
             Slot slot = (Slot) this.inventorySlots.get(SlotNR);
-            if (slot != null && slot.getStack() != null  && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
+            if (slot != null && slot.getStack() != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
                 if (chipslot.getStack() == null) {
                     chipslot.putStack(slot.getStack());
                     slot.decrStackSize(1);
@@ -99,6 +106,7 @@ public class GT_Container_CircuitProgrammer extends Container {
                 }
             }
         }
+        detectAndSendChanges();
         return null;
     }
 
@@ -114,8 +122,9 @@ public class GT_Container_CircuitProgrammer extends Container {
             this.Player = Player;
             this.toBind = Player.inventory.getCurrentItem();
             tag = this.toBind.getTagCompound();
-            if (tag.getBoolean("HasChip"))
+            if (tag.getBoolean("HasChip")) {
                 Slot = GT_Utility.getIntegratedCircuit(tag.getByte("ChipConfig"));
+            }
         }
 
         @Override
@@ -154,19 +163,29 @@ public class GT_Container_CircuitProgrammer extends Container {
                 tag.setByte("ChipConfig", (byte) itemStack.getItemDamage());
                 toBind.setTagCompound(tag);
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
+                if (!Player.isClientWorld())
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), true, (byte) itemStack.getItemDamage()));
+
             } else if (BW_Util.checkStackAndPrefix(itemStack) && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit) && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.equals(Materials.Basic)) {
                 Slot = GT_Utility.getIntegratedCircuit(0);
                 itemStack.stackSize--;
                 tag = toBind.getTagCompound();
                 tag.setBoolean("HasChip", true);
-                tag.setByte("ChipConfig", (byte) itemStack.getItemDamage());
+                tag.setByte("ChipConfig", (byte) 0);
                 toBind.setTagCompound(tag);
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
+                if (!Player.isClientWorld())
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), true, (byte) 0));
+
             } else {
                 ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
                 tag = toBind.getTagCompound();
                 tag.setBoolean("HasChip", false);
                 toBind.setTagCompound(tag);
+                Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
+                if (!Player.isClientWorld())
+                    MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), false, (byte) 0));
+
             }
         }
 
@@ -202,6 +221,7 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         @Override
         public void closeInventory() {
+
 
         }
 
