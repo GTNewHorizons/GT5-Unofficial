@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.Optional;
@@ -50,5 +51,6 @@ public class NEIbartworksConfig implements IConfigureNEI {
     public void loadConfig() {
         API.hideItem(new ItemStack(ItemRegistry.tab));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
+        API.hideItem(new ItemStack(BioItemList.bw_fake_glasses));
     }
 }

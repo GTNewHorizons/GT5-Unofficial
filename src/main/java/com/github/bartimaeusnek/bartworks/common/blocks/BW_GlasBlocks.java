@@ -22,16 +22,39 @@
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
+import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BW_GlasBlocks extends BW_Blocks {
 
+    @SideOnly(Side.CLIENT)
+    IIcon[] connectedTexture;
+
+    boolean connectedTex, fake;
+    short[][] color = new short[textureNames.length][3];
+
     public BW_GlasBlocks(String name, String[] texture, CreativeTabs tabs) {
         super(name, texture, tabs, Material.glass);
+        connectedTex = false;
+    }
+
+
+    public BW_GlasBlocks(String name, String[] texture, short[][] color, CreativeTabs tabs, boolean connectedTex, boolean fake) {
+        super(name, texture, tabs, Material.glass);
+        this.connectedTex = connectedTex;
+        this.color = color;
+        this.fake = fake;
+    }
+
+    public short[] getColor(int meta) {
+        return meta < texture.length ? color[meta] : color[0];
     }
 
     @Override
@@ -47,10 +70,120 @@ public class BW_GlasBlocks extends BW_Blocks {
         return super.shouldSideBeRendered(worldClient, xCoord, yCoord, zCoord, aSide);
     }
 
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return meta < texture.length ? texture[meta] : texture[0];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister) {
+        if (!connectedTex) {
+            texture = new IIcon[textureNames.length];
+            for (int i = 0; i < textureNames.length; i++) {
+                texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+            }
+            return;
+        }
+        texture = new IIcon[textureNames.length];
+        connectedTexture = new IIcon[16];
+        for (int i = 0; i < textureNames.length; i++) {
+            texture[i] = par1IconRegister.registerIcon(textureNames[i]);
+            for (int j = 0; j < 16; j++) {
+                connectedTexture[j] = par1IconRegister.registerIcon(textureNames[0] + "_" + j);
+            }
+        }
+    }
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess worldClient, int xCoord, int yCoord, int zCoord, int aSide) {
+        if (!connectedTex)
+            return super.getIcon(worldClient, xCoord, yCoord, zCoord, aSide);
+
+        ForgeDirection dir = ForgeDirection.getOrientation(aSide);
+        byte sides = 0;
+        switch (dir) {
+            case UP:
+            case DOWN: {
+                if (worldClient.getBlock(xCoord, yCoord, zCoord - 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0001);
+                if (worldClient.getBlock(xCoord, yCoord, zCoord + 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0010);
+                if (worldClient.getBlock(xCoord - 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0100);
+                if (worldClient.getBlock(xCoord + 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b1000);
+                break;
+            }
+            case EAST: {
+                if (worldClient.getBlock(xCoord, yCoord + 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0001);
+                if (worldClient.getBlock(xCoord, yCoord - 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0010);
+                if (worldClient.getBlock(xCoord, yCoord, zCoord + 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0100);
+                if (worldClient.getBlock(xCoord, yCoord, zCoord - 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b1000);
+                break;
+            }
+            case WEST: {
+                if (worldClient.getBlock(xCoord, yCoord + 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0001);
+                if (worldClient.getBlock(xCoord, yCoord - 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0010);
+                if (worldClient.getBlock(xCoord, yCoord, zCoord - 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0100);
+                if (worldClient.getBlock(xCoord, yCoord, zCoord + 1) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b1000);
+                break;
+
+            }
+            case NORTH: {
+                if (worldClient.getBlock(xCoord, yCoord + 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0001);
+                if (worldClient.getBlock(xCoord, yCoord - 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0010);
+                if (worldClient.getBlock(xCoord + 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0100);
+                if (worldClient.getBlock(xCoord - 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b1000);
+                break;
+            }
+            case SOUTH: {
+                if (worldClient.getBlock(xCoord, yCoord + 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0001);
+                if (worldClient.getBlock(xCoord, yCoord - 1, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0010);
+                if (worldClient.getBlock(xCoord - 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b0100);
+                if (worldClient.getBlock(xCoord + 1, yCoord, zCoord) instanceof BW_GlasBlocks)
+                    sides = (byte) (sides | 0b1000);
+                break;
+            }
+            case UNKNOWN:
+            default: {
+                break;
+            }
+        }
+        return connectedTexture[sides];
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 1;
+    }
+
+    @Override
+    public int getRenderType() {
+        if (!fake)
+            return RendererGlasBlock.RID;
+        else
+            return 0;
     }
 
     @Override

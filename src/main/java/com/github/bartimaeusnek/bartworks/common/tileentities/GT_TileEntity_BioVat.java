@@ -390,7 +390,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private byte calculateGlassTier(@Nonnull Block block, @Nonnegative Byte meta) {
 
         if (block.equals(BioItemList.bw_glasses[0]))
-            return meta > 1 ? (byte) (meta + 3) : 4;
+            return meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))
             return 4;

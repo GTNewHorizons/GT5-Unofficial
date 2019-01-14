@@ -41,9 +41,9 @@ import java.util.List;
 public class BW_Blocks extends Block {
 
     @SideOnly(Side.CLIENT)
-    private IIcon[] texture;
-    private String[] textureNames;
-    private String name;
+    protected IIcon[] texture;
+    protected String[] textureNames;
+    protected String name;
 
     public BW_Blocks(String name, String[] texture) {
         super(Material.anvil);

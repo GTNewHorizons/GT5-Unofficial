@@ -26,12 +26,39 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashSet;
 
 public class ConnectedBlocksChecker {
 
     public final HashSet<Coords> hashset = new HashSet<Coords>();
+
+    public static byte check_sourroundings(Coords C, Block b) {
+        byte ret = 0;
+        World w = DimensionManager.getWorld(C.wID);
+        int x = C.x, y = C.y, z = C.z;
+
+        if (w.getBlock(x, y + 1, z).equals(b))
+            ret = (byte) (ret | 0b000001);
+
+        if (w.getBlock(x, y - 1, z).equals(b))
+            ret = (byte) (ret | 0b000010);
+
+        if (w.getBlock(x + 1, y, z).equals(b))
+            ret = (byte) (ret | 0b000100);
+
+        if (w.getBlock(x - 1, y, z).equals(b))
+            ret = (byte) (ret | 0b001000);
+
+        if (w.getBlock(x, y, z + 1).equals(b))
+            ret = (byte) (ret | 0b010000);
+
+        if (w.getBlock(x, y, z - 1).equals(b))
+            ret = (byte) (ret | 0b100000);
+
+        return ret;
+    }
 
     public int get_connected(World w, int x, int y, int z, Block b) {
         int ret = 0;
@@ -72,7 +99,6 @@ public class ConnectedBlocksChecker {
 
         return ret;
     }
-
 
     public byte check_sourroundings(World w, int x, int y, int z, Block b) {
 

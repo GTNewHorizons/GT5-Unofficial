@@ -132,7 +132,6 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         if (DNABioDataTag == null)
                             return super.checkRecipe(skipOC);
                         BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
-
                         if (cultureDNABioData == null)
                             return super.checkRecipe(skipOC);
 

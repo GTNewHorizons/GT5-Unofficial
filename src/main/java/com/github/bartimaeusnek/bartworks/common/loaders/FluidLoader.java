@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
 import com.github.bartimaeusnek.bartworks.client.renderer.RendererSwitchingColorFluid;
 import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.BWTileEntityDimIDBridge;
@@ -81,5 +82,6 @@ public class FluidLoader implements Runnable {
         GameRegistry.registerBlock(bioFluidBlock, "coloredFluidBlock");
         GameRegistry.registerTileEntity(BWTileEntityDimIDBridge.class, "bwTEDimIDBridge");
         RenderingRegistry.registerBlockHandler(RendererSwitchingColorFluid.instance);
+        RenderingRegistry.registerBlockHandler(RendererGlasBlock.instance);
     }
 }

@@ -48,16 +48,33 @@ public class BioItemList {
 
 
     public static final Block[] bw_glasses = {
-            new BW_GlasBlocks("BW_GlasBlocks", new String[]{
-                    MainMod.modID + ":BoronSilicateGlassBlock",
-                    MainMod.modID + ":NickelReinforcedBoronSilicateGlassBlock",
-                    MainMod.modID + ":TungstenReinforcedBoronSilicateGlassBlock",
-                    MainMod.modID + ":ChromeReinforcedBoronSilicateGlassBlock",
-                    MainMod.modID + ":IridiumReinforcedBoronSilicateGlassBlock",
-                    MainMod.modID + ":OsmiumReinforcedBoronSilicateGlassBlock",
-            }, MainMod.BioTab
+            new BW_GlasBlocks(
+                    "BW_GlasBlocks",
+                    new String[]{
+                            MainMod.modID + ":BoronSilicateGlassBlock",
+                            MainMod.modID + ":NickelReinforcedBoronSilicateGlassBlock",
+                            MainMod.modID + ":TungstenReinforcedBoronSilicateGlassBlock",
+                            MainMod.modID + ":ChromeReinforcedBoronSilicateGlassBlock",
+                            MainMod.modID + ":IridiumReinforcedBoronSilicateGlassBlock",
+                            MainMod.modID + ":OsmiumReinforcedBoronSilicateGlassBlock",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock1",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock2",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock3",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock4",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock5",
+                            MainMod.modID + ":ColoredBoronSilicateGlassBlock6",
+                    },
+                    new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}},
+                    MainMod.BioTab,
+                    true, false
             )
     };
+
+    public static final Block bw_fake_glasses =
+            new BW_GlasBlocks("BW_GlasBlocks", new String[]{
+                    MainMod.modID + ":BoronSilicateGlassBlockRandlos"
+            }, null, null, true, true);
+
 
     private static final Item mItemBioLabParts = new LabModule(new String[]{"DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule", "TransformationModule", "ClonalCellularSynthesisModule"});
     public static final ItemStack[] mBioLabParts = {new ItemStack(mItemBioLabParts), new ItemStack(mItemBioLabParts, 1, 1), new ItemStack(mItemBioLabParts, 1, 2), new ItemStack(mItemBioLabParts, 1, 3), new ItemStack(mItemBioLabParts, 1, 4)};
@@ -67,6 +84,7 @@ public class BioItemList {
         GameRegistry.registerItem(mItemBioLabParts, "BioLabModules");
         GameRegistry.registerItem(vanillaBioLabParts, "BioLabParts");
         GameRegistry.registerBlock(bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(bw_fake_glasses, "BW_FakeGlasBlock");
         //fixing BorosilicateGlass... -_-'
         Materials.BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
         GT_OreDictUnificator.add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(bw_glasses[0], 1, 0));
