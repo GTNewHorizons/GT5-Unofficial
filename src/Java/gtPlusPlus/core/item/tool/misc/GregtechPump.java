@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,7 +27,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -70,7 +70,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		if (aStack == null || aPlayer == null || aWorld == null || aWorld.isRemote) {
 			return false;
 		}
-		if (tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
+		if (!aWorld.isRemote && tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
 			return true;
 		} else {
 			//return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
@@ -92,18 +92,18 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	public final short mOffset, mItemAmount;
 	public final BitSet mEnabledItems;
 	public final BitSet mVisibleItems;
-	public final IIcon[][] mIconList;
 	/** The unlocalized name of this item. */
 	private String unlocalizedName;
 
-	private final ArrayList<Pair<Integer, EnumRarity>> rarity = new ArrayList<>();
-	private final ArrayList<Pair<Integer, EnumChatFormatting>> descColour = new ArrayList<>();
-	private final ArrayList<Pair<Integer, String>> itemName = new ArrayList<>();
-	private final ArrayList<Pair<Integer, String>> itemDescription = new ArrayList<>();
-	private final ArrayList<Pair<Integer, Boolean>> hasEffect = new ArrayList<>();
+	private final HashMap<Integer, IIcon> mIconMap = new LinkedHashMap<Integer, IIcon>();	
+	private final HashMap<Integer, EnumRarity> rarity = new LinkedHashMap<Integer, EnumRarity>();
+	private final HashMap<Integer, EnumChatFormatting> descColour = new LinkedHashMap<Integer, EnumChatFormatting>();
+	private final HashMap<Integer, String> itemName = new LinkedHashMap<Integer, String>();
+	private final HashMap<Integer, String> itemDescription = new LinkedHashMap<Integer, String>();
+	private final HashMap<Integer, Boolean> hasEffect = new LinkedHashMap<Integer, Boolean>();
 
-	public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
-	public final HashMap<Short, Short> mBurnValues = new HashMap<>();
+	public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<Short, Long[]>();
+	public final HashMap<Short, Short> mBurnValues = new LinkedHashMap<Short, Short>();
 
 	public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
 		ModItems.toolGregtechPump.registerItem(aID, // ID
@@ -127,7 +127,6 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		this.mVisibleItems = new BitSet(aItemAmount);
 		this.mOffset = (short) Math.min(32766, aOffset);
 		this.mItemAmount = (short) Math.min(aItemAmount, 32766 - this.mOffset);
-		this.mIconList = new IIcon[aItemAmount][1];
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.setUnlocalizedName(unlocalizedName);
@@ -158,26 +157,28 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		this.addItem(id, localizedName, EnumChatFormatting.YELLOW + "Electric", new Object[] {});
 		if (euStorage > 0 && tier > 0)
 			this.setElectricStats(this.mOffset + id, euStorage, GT_Values.V[tier], tier, -3L, true);
-		this.rarity.add(new Pair<>(id, regRarity));
-		this.itemName.add(new Pair<>(id, localizedName));
-		this.itemDescription.add(new Pair<>(id, description));
-		this.descColour.add(new Pair<>(id, colour));
-		this.hasEffect.add(new Pair<>(id, Effect));
+		this.rarity.put(id, regRarity);
+		this.itemName.put(id, localizedName);
+		this.itemDescription.put(id, description);
+		this.descColour.put(id, colour);
+		this.hasEffect.put(id, Effect);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumRarity getRarity(final ItemStack par1ItemStack) {
-		if (this.rarity.get(par1ItemStack.getItemDamage() - this.mOffset) != null) {
-			return this.rarity.get(par1ItemStack.getItemDamage() - this.mOffset).getValue();
+		int h = getCorrectMetaForItemstack(par1ItemStack);
+		if (this.rarity.get(h) != null) {
+			return this.rarity.get(h);
 		}
 		return EnumRarity.common;
 	}
 
 	@Override
 	public boolean hasEffect(final ItemStack par1ItemStack) {
-		if (this.hasEffect.get(par1ItemStack.getItemDamage() - this.mOffset) != null) {
-			return this.hasEffect.get(par1ItemStack.getItemDamage() - this.mOffset).getValue();
+		int h = getCorrectMetaForItemstack(par1ItemStack);
+		if (this.hasEffect.get(h) != null) {
+			return this.hasEffect.get(h);
 		}
 		return false;
 	}
@@ -186,14 +187,17 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	@Override
 	public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList, final boolean aF3_H) {
 		// aList.add("Meta: "+(aStack.getItemDamage()-mOffset));
-		if ((this.descColour.get(aStack.getItemDamage() - this.mOffset) != null)
-				&& (this.itemDescription.get(aStack.getItemDamage() - this.mOffset) != null)) {
-			aList.add(this.descColour.get(aStack.getItemDamage() - this.mOffset).getValue()
-					+ this.itemDescription.get(aStack.getItemDamage() - this.mOffset).getValue());
+		
+		int aOffsetMeta = getCorrectMetaForItemstack(aStack);
+		
+		if ((this.descColour.get(aOffsetMeta) != null)
+				&& (this.itemDescription.get(aOffsetMeta) != null)) {
+			aList.add(this.descColour.get(aOffsetMeta)
+					+ this.itemDescription.get(aOffsetMeta));
 		}
 
 
-		if (aStack.getItemDamage() - 1000 <= 3) {
+		if (aOffsetMeta <= 3) {
 			FluidStack f = getFluid(aStack);
 			aList.add("Can also drain any other standard fluid container block.");
 			aList.add(EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
@@ -518,13 +522,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	@SideOnly(Side.CLIENT)
 	public final void registerIcons(final IIconRegister aIconRegister) {
 		for (short i = 0, j = (short) this.mEnabledItems.length(); i < j; i++) {
-			if (this.mEnabledItems.get(i)) {
-				for (byte k = 1; k < this.mIconList[i].length; k++) {
-					this.mIconList[i][k] = aIconRegister
-							.registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i + "/" + k));
-				}
-				this.mIconList[i][0] = aIconRegister
-						.registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i));
+			if (this.mEnabledItems.get(i)) {				
+				mIconMap.put((int) i, aIconRegister.registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i)));				
 			}
 		}
 	}
@@ -533,8 +532,15 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	public final IIcon getIconFromDamage(final int aMetaData) {
 		if (aMetaData < 0) {
 			return null;
+		}		
+		if (aMetaData < this.mOffset) {
+			return mIconMap.get(0);
 		}
-		return (aMetaData - this.mOffset) < this.mIconList.length ? this.mIconList[aMetaData - this.mOffset][0] : null;
+		else {
+			int newMeta = aMetaData - this.mOffset;
+			newMeta = (Math.max(0, Math.min(3, newMeta)));
+			return mIconMap.get(newMeta);
+		}
 	}
 
 	/**
@@ -685,12 +691,12 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 	}
 
 	@Override
-	public String getItemStackDisplayName(final ItemStack par1ItemStack) {
-		int keyValue = (par1ItemStack.getItemDamage() - this.mOffset);		
+	public String getItemStackDisplayName(final ItemStack aStack) {
+		int keyValue = (getCorrectMetaForItemstack(aStack));		
 		if (keyValue < 0 || keyValue > 3) {
 			keyValue = 0;
 		}		
-		return this.itemName.get(keyValue).getValue();
+		return this.itemName.get(keyValue);
 	}
 
 	/**
@@ -756,7 +762,9 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		if (container.getTagCompound().hasKey("mInit") && container.getTagCompound().getBoolean("mInit")) {
 			return container.getTagCompound().getInteger("mCapacity");
 		}
-		return (container.getItemDamage() - 1000 + 1) * 16000;
+		int aMeta = this.getCorrectMetaForItemstack(container);
+		int aCapacity = (aMeta == 0 ? 2000 : (aMeta == 1 ? 8000 : (aMeta == 2 ? 32000 : 128000)));
+		return aCapacity;
 	}
 
 	public int fill(ItemStack container, FluidStack resource) {
@@ -893,10 +901,13 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 		}
 
 		if (!aNewNBT.hasKey("mInit")) {
+			int aMeta = this.getCorrectMetaForItemstack(aStack);
+			aNewNBT.setInteger("mMeta", aMeta);
 			aNewNBT.setBoolean("mInit", true);
 			aNewNBT.setString("mFluid", "@@@@@");
 			aNewNBT.setInteger("mFluidAmount", 0);
-			aNewNBT.setInteger("mCapacity", (aStack.getItemDamage() - 1000 + 1) * 16000);
+			int aCapacity = (aMeta == 0 ? 2000 : (aMeta == 1 ? 8000 : (aMeta == 2 ? 32000 : 128000)));
+			aNewNBT.setInteger("mCapacity", aCapacity);
 			aStack.setTagCompound(aNewNBT);
 		}
 	}
@@ -1235,6 +1246,27 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 			Logger.WARNING("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
 			return false;
 		}
+	}
+	
+	
+	public int getCorrectMetaForItemstack(ItemStack aStack) {
+		if (aStack == null) {
+			return 0;
+		}
+		else {
+			if (aStack.getItemDamage() < this.mOffset) {
+				return 0;
+			}
+			else {
+				int newMeta = aStack.getItemDamage() - this.mOffset;
+				newMeta = (Math.max(0, Math.min(3, newMeta)));
+				return newMeta;
+			}
+		}
+		
+		
+		
+		
 	}
 
 }

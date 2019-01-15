@@ -286,6 +286,13 @@ public class ItemUtils {
 		else {
 			mTemp = Utils.sanitizeString(mTemp);			
 		}
+		
+		
+		
+		if (oredictName.contains("rod")) {
+			String s = "stick"+oredictName.substring(3);
+			oredictName = s;
+		}
 
 		// Banned Materials and replacements for GT5.8 compat.
 

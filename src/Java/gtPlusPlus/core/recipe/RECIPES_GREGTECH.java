@@ -876,15 +876,15 @@ public class RECIPES_GREGTECH {
 				CI.electricMotor_LV,
 				ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("ringBrass", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("rodBrass", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickBrass", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateSteel", 2)				
 		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), 10*20, 30);		
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
 				CI.electricPump_MV,
 				CI.electricMotor_MV,
 				ItemUtils.getItemStackOfAmountFromOreDict("circuitAdvanced", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("ringMagnalium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("rodMagnalium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("ringInvar", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickInvar", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateAluminium", 2)				
 		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), 10*20*2, 120);		
 		CORE.RA.addSixSlotAssemblingRecipe(new ItemStack[] {
@@ -892,7 +892,7 @@ public class RECIPES_GREGTECH {
 				CI.electricMotor_HV,
 				ItemUtils.getItemStackOfAmountFromOreDict("circuitData", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("ringChrome", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("rodChrome", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickChrome", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateStainlessSteel", 2)				
 		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), 10*20*3, 480);
 		
@@ -901,7 +901,7 @@ public class RECIPES_GREGTECH {
 				CI.electricMotor_EV,
 				ItemUtils.getItemStackOfAmountFromOreDict("circuitElite", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("ringTitanium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("rodTitanium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("stickTitanium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("plateTungstenSteel", 2)				
 		}, null, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), 10*20*4, 1960);
 
