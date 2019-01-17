@@ -22,6 +22,7 @@ item.rotors.leatherParts.name=Leather Covered Wood Frame
 item.rotors.woolParts.name=Wool Covered Wood Frame
 item.rotors.paperParts.name=Paper Covered Wood Frame
 item.rotors.combinedParts.name=Multiple Material Covered Wood Frame
+item.BW_SimpleWindMeter.name=Simple Wind Meter
 
 itemGroup.BioTab=BartWorks BioEngineering
 filled.item.petriDish.name=Petri Dish with a Culture

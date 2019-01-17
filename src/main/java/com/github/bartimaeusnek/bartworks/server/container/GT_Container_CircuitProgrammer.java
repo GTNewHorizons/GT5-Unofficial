@@ -72,7 +72,9 @@ public class GT_Container_CircuitProgrammer extends Container {
     @Override
     public ItemStack slotClick(int slot, int button, int aShifthold, EntityPlayer entityPlayer) {
         if (slot > 0 && slot < 25 && ((Slot) this.inventorySlots.get(0)).getStack() != null) {
-            ((Slot) this.inventorySlots.get(0)).putStack(GT_Utility.getIntegratedCircuit(slot));
+            ItemStack iCircuit = GT_Utility.getIntegratedCircuit(slot);
+            iCircuit.stackSize = 1;
+            ((Slot) this.inventorySlots.get(0)).putStack(iCircuit);
             detectAndSendChanges();
             return ((Slot) this.inventorySlots.get(0)).getStack();
         }
@@ -92,7 +94,7 @@ public class GT_Container_CircuitProgrammer extends Container {
             Slot slot = (Slot) this.inventorySlots.get(SlotNR);
             if (slot != null && slot.getStack() != null && slot.getStack().getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem())) {
                 if (chipslot.getStack() == null) {
-                    chipslot.putStack(slot.getStack());
+                    chipslot.putStack(slot.getStack().copy());
                     slot.decrStackSize(1);
                 }
             }
@@ -100,7 +102,7 @@ public class GT_Container_CircuitProgrammer extends Container {
             for (int i = 25; i < this.inventorySlots.size(); i++) {
                 if (((Slot) this.inventorySlots.get(i)).getStack() == null) {
                     Slot empty = ((Slot) this.inventorySlots.get(i));
-                    empty.putStack(chipslot.getStack());
+                    empty.putStack(chipslot.getStack().copy());
                     chipslot.decrStackSize(1);
                     break;
                 }
@@ -124,6 +126,7 @@ public class GT_Container_CircuitProgrammer extends Container {
             tag = this.toBind.getTagCompound();
             if (tag.getBoolean("HasChip")) {
                 Slot = GT_Utility.getIntegratedCircuit(tag.getByte("ChipConfig"));
+                Slot.stackSize = 1;
             }
         }
 
@@ -168,6 +171,7 @@ public class GT_Container_CircuitProgrammer extends Container {
 
             } else if (BW_Util.checkStackAndPrefix(itemStack) && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit) && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.equals(Materials.Basic)) {
                 Slot = GT_Utility.getIntegratedCircuit(0);
+                Slot.stackSize = 1;
                 itemStack.stackSize--;
                 tag = toBind.getTagCompound();
                 tag.setBoolean("HasChip", true);

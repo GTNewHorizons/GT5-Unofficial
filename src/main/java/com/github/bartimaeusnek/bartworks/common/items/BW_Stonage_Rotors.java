@@ -76,6 +76,9 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         } else if (Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
             type = WIND;
         }
+        info.add("Diameter: " + this.DiaMinMax[0]);
+        info.add("Durability: " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
+        info.add("Efficiency: " + this.eff);
         if (type != null) {
             info.add(StatCollector.translateToLocal(("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type))));
         }

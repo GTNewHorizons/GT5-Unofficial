@@ -32,10 +32,10 @@ import javax.annotation.Nonnull;
 import java.io.File;
 
 public class ConfigHandler {
-    private static final int IDU = GT_Values.VN.length * 8 - 3;
+    private static final int IDU = GT_Values.VN.length * 8 + 1;
     public static int IDOffset = 12600;
     public static boolean teslastaff = false;
-    public static long energyPerCell = 100000L;
+    public static long energyPerCell = 1000000L;
     public static boolean newStuff = true;
     public static boolean BioLab = true;
     public static Configuration c;

@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.BW_RotorBlock;
+import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_AcidGenerator;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_Diode;
 import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_EnergyDistributor;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -61,6 +62,7 @@ public class ItemRegistry implements Runnable {
     public static final Item CombinedRotor = new BW_Stonage_Rotors(11, 0.22f, 1, 50, 5800, IKineticRotor.GearboxType.WIND, new ResourceLocation(MainMod.modID, "textures/items/rotors/rotorCombined.png"), "BW_CombinedRotor", "rotors/itemRotorCombined");
     public static final Item craftingParts = new SimpleSubItemClass(new String[]{"grindstone_top", "grindstone_bottom", "completed_grindstone", "rotors/leatherParts", "rotors/woolParts", "rotors/paperParts", "rotors/combinedParts"});
     public static final Item tab = new SimpleIconItem("GT2Coin");
+    public static final Item WINDMETER = new BW_SimpleWindMeter();
     public static final Block[] BW_BLOCKS = {
             new BW_Blocks("BW_ItemBlocks", new String[]
                     {
@@ -86,6 +88,7 @@ public class ItemRegistry implements Runnable {
     public static ItemStack[] Diode12A = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] Diode16A = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] EnergyDistributor = new ItemStack[GT_Values.VN.length];
+    public static ItemStack[] AcidGens = new ItemStack[3];
 
     @Override
     public void run() {
@@ -100,6 +103,7 @@ public class ItemRegistry implements Runnable {
             GameRegistry.registerItem(craftingParts, "craftingParts");
             GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
             GameRegistry.registerBlock(ROTORBLOCK, "BWRotorBlock");
+            GameRegistry.registerItem(WINDMETER, "BW_SimpleWindMeter");
 
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 ItemRegistry.Diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "Cable Diode 2A " + GT_Values.VN[i], "Cable Diode 2A " + GT_Values.VN[i], i, 2).getStackForm(1L);
@@ -110,6 +114,10 @@ public class ItemRegistry implements Runnable {
                 ItemRegistry.EnergyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "Energy Distributor " + GT_Values.VN[i], "Energy Distributor " + GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L);
 
             }
+            for (int i = 0; i < 3; i++) {
+                ItemRegistry.AcidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "Acid Generator " + GT_Values.VN[i + 2], "Acid Generator " + GT_Values.VN[i + 2], i + 2, new String[]{"An Acid Generator", "Creates Power from Chemical Energy Potentials."}).getStackForm(1);
+            }
+
         }
 
 
