@@ -64,7 +64,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     private static IIcon[] iIcons = new IIcon[2];
     private static IIconContainer[] iIconContainers = new IIconContainer[2];
-    private static ITexture[] iTextures = new ITexture[2];
+    private static ITexture[] iTextures = new ITexture[3];
 
     private final ArrayList<TileEntityDispenser> tedList = new ArrayList<TileEntityDispenser>();
     private BW_RotorBlock rotorBlock;
@@ -584,7 +584,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        iIcons[0] = aBlockIconRegister.registerIcon("brick");
+        iIcons[0] = Blocks.brick_block.getIcon(0,0);
         iIconContainers[0] = new IIconContainer() {
             @Override
             public IIcon getIcon() {
@@ -593,7 +593,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             @Override
             public IIcon getOverlayIcon() {
-                return iIcons[0];
+                return null;
             }
 
             @Override
@@ -611,7 +611,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             @Override
             public IIcon getOverlayIcon() {
-                return iIcons[1];
+                return null;
             }
 
             @Override
@@ -619,6 +619,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                 return new ResourceLocation(MainMod.modID + ":windmill_top");
             }
         };
+
+
     }
 
     @Override
@@ -628,25 +630,26 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
         if (isClientSide()) {
 
-            Arrays.fill(ret, new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE));
-
             if (aFacing == aSide || aSide == 0) {
                 iTextures[0] = new GT_RenderedTexture(iIconContainers[0]);
-
                 ret = new ITexture[6];
-                for (int i = 0; i < 6; i++) {
-                    ret[i] = iTextures[0];
+                for (int i = 0; i < ret.length; i++) {
+                    ret[i]=iTextures[0];
                 }
             }
-            if (aSide == 1) {
+            else if (aSide == 1) {
                 iTextures[1] = new GT_RenderedTexture(iIconContainers[1]);
-
                 ret = new ITexture[6];
-                for (int i = 0; i < 6; i++) {
-                    ret[i] = iTextures[1];
+                for (int i = 0; i < ret.length; i++) {
+                    ret[i]=iTextures[1];
                 }
             }
-
+            else{
+                iTextures[2] = new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE);
+                for (int i = 0; i < ret.length; i++) {
+                    ret[i]=iTextures[2];
+                }
+            }
         }
         return ret;
     }
