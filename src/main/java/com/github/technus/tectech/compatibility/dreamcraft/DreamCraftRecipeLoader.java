@@ -328,7 +328,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 8),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8),
                 CustomItemList.DATApipe.get(8),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
