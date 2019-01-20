@@ -15,9 +15,15 @@ jdk:
   - oraclejdk8  
 jobs:
  include:
+  stage: sonar
+  addons:
+   sonarcloud:
+    organization: "bartimaeusnek-github"
+    token:
+      secure: "KW2U8HenTpLQOXT+OxCsu4noCKH6ZkUATld36YTbwAwzVKt6aesqtKHkZuo+Y+a143GI184pdnhMcRB1F49Wf0IQTkOhvopfnSEg+AKWZJb+gAbZQaYkaoe04pVzdwnpBXPDZR0DnTJX09VJGlES0RMiYfaQDHAYuPRQRBf17mLWvhXf7ZfNshGLikmzQcXWoXMpB+z9BaJ9Vr9/+Jn4Geuh9MWsbc2xZyQU8hoTTtKxqj5sTVRkwmxTf0ooGrMKohoOQ5JeZLDWM0Z/7KW64kFCE3xDrKg2gnKyKNLU6qIwbgCtVkcqGb28tXuqNdRSZ5BHb70dZb0E2+9VGhS7xPA8iUVmktJRKKG+f34HtDlsXqA00SEF2u+fq+TDz7fcPHLM8z1IcUI2XF5c5A/6E1k161i3kMB9xpd5Rq4waywo+/2j+L2CE6u5aj7BeL7KUQKD7k5gx3bXUyIo2QdjzeJeUJTSaxchcae9iIO+W6rwc68fD5/UNHVp+O75QNz2B+pklz6hCFVaoUep8rl4LO58ODBU1GL4JfeTM0RzOofOFepPXIi39iCk89c61WBtxX8RPkv3nBDsrXCGU7UNH1thP1nmgCfB4HGRxixWBAnmPDHNLEW81RG+meGRpHX7RkWISmrl95x15QXb016hldvK3sAegxxVPUdyJxRplgE="
+  script: "./gradlew sonarqube"
   stage: buildAndDeploy
-  script:
-   - ./gradlew build
+  script: "./gradlew build"
   deploy:
    provider: releases
    api_key:
@@ -27,11 +33,3 @@ jobs:
    file_glob: true
    on:
     tags: false
-  stage: sonar
-  addons:
-   sonarcloud:
-    organization: "bartimaeusnek-github"
-    token:
-      secure: "KW2U8HenTpLQOXT+OxCsu4noCKH6ZkUATld36YTbwAwzVKt6aesqtKHkZuo+Y+a143GI184pdnhMcRB1F49Wf0IQTkOhvopfnSEg+AKWZJb+gAbZQaYkaoe04pVzdwnpBXPDZR0DnTJX09VJGlES0RMiYfaQDHAYuPRQRBf17mLWvhXf7ZfNshGLikmzQcXWoXMpB+z9BaJ9Vr9/+Jn4Geuh9MWsbc2xZyQU8hoTTtKxqj5sTVRkwmxTf0ooGrMKohoOQ5JeZLDWM0Z/7KW64kFCE3xDrKg2gnKyKNLU6qIwbgCtVkcqGb28tXuqNdRSZ5BHb70dZb0E2+9VGhS7xPA8iUVmktJRKKG+f34HtDlsXqA00SEF2u+fq+TDz7fcPHLM8z1IcUI2XF5c5A/6E1k161i3kMB9xpd5Rq4waywo+/2j+L2CE6u5aj7BeL7KUQKD7k5gx3bXUyIo2QdjzeJeUJTSaxchcae9iIO+W6rwc68fD5/UNHVp+O75QNz2B+pklz6hCFVaoUep8rl4LO58ODBU1GL4JfeTM0RzOofOFepPXIi39iCk89c61WBtxX8RPkv3nBDsrXCGU7UNH1thP1nmgCfB4HGRxixWBAnmPDHNLEW81RG+meGRpHX7RkWISmrl95x15QXb016hldvK3sAegxxVPUdyJxRplgE="
-  script:
-    - ./gradlew sonarqube
