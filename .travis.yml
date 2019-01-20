@@ -23,7 +23,6 @@ jdk:
 
 script:
  -./gradlew sonarqube
- -./gradlew build
 
 deploy:
  provider:releases
