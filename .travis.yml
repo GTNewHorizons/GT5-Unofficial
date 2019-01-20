@@ -22,12 +22,11 @@ jdk:
   - oraclejdk8
 
 script:
-- ./gradlew sonarqube
-- ./gradlew build
+ -./gradlew sonarqube
+ -./gradlew build
 
 deploy:
  provider:releases
  api_key: fZcmkACyjZv8rEjG9hjsNq6ZT/przBeSGYzdfpT55YV/xWXj18Lkqr4XfrY4GiTp/pJwOGYT5dUUybRSlMM3eSMWNcAjBOW7WuJDEkZIHPKTb5/H+SJgUeuxj0W7cTqANWvYlMaNv2WSQfV2UW09xvSuMJuVMUcng1E1AZj6hF5285DrbxygEiF0ZY77Rsq+Q3l29bJxrj+x5D8ui8m2rn2tug8+W5/iCxYLpNEQ0hLcxPOh/0GbdHtsett81F9CVW+aPnVE7AlVnGK6lftWfiwPHqglpbx7lwEr6/gHBFuJIasreP5+GJvMx0D96la4KRvREFfS4eAZXLG7Syx0zzVInf6SHtMtzVM7heIY/aEnZ8clYxfnOBw10hyuev4QUdCvBb0tndsrCBI4kEIqvvNVcpHatJyzr+q0gj7mvGsXu3DIN5teo6h6DBJrbuhS6QKM2Lm/FsrboeSfIFlXE94IORmQzH0evgbk8u+CER1VNvrRHBngfEqypGd06TbXVW/uvfCedpvOZ3ewuPhLqOZHCzXbjBDAf0xzIcwWIzkEcpT4hXujHexyGAPJVHZDO2KA/7oFWEks9gCdnSJ7Qet5VwsUyDHzsDACix5+9tiYc0CFyRcEuWsvfVCqYCs1NwDJcHH0KxFceah1UzvS+6QB5MFfR5uFxhgUA4qsMd0=
  file: /build/libs/bartworks[1.7.10]-*.jar
  skip_cleanup: true
- 
