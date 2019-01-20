@@ -678,7 +678,7 @@ public enum ItemList implements IItemContainer {
     Teleporter, Cover_NeedsMaintainance, Casing_Turbine, Casing_Turbine1, Casing_Turbine2, Casing_Turbine3, Casing_EngineIntake,
     Casing_Coil_Cupronickel, Casing_Coil_Kanthal, Casing_Coil_Nichrome, Casing_Coil_TungstenSteel, Casing_Coil_HSSG, Casing_Coil_Naquadah, Casing_Coil_NaquadahAlloy, Casing_Coil_Europium, Casing_Coil_Diamericiumtitanium,
     MobRep_LV, MobRep_MV, MobRep_HV, MobRep_EV, MobRep_IV, MobRep_LuV, MobRep_ZPM, MobRep_UV, Cover_PlayerDetector, Machine_Multi_HeatExchanger,
-    Block_BronzePlate, Block_IridiumTungstensteel, Block_Plascrete, Block_TungstenSteelReinforced,
+    Block_BronzePlate, Block_SteelPlate, Block_TitaniumPlate, Block_IridiumTungstensteel, Block_Plascrete, Block_TungstenSteelReinforced, Block_NaquadahPlate, Block_NeutroniumPlate,
     Honeycomb, Charcoal_Pile, Block_BrittleCharcoal, Seismic_Prospector_LV, Seismic_Prospector_MV, Seismic_Prospector_HV, Seismic_Prospector_Adv_LV, Seismic_Prospector_Adv_MV, Seismic_Prospector_Adv_HV, Seismic_Prospector_Adv_EV, 
     OilDrill1, OilDrill2, OilDrill3, ConcreteBackfiller1, ConcreteBackfiller2, OreDrill1, OreDrill2, OreDrill3, OreDrill4, PyrolyseOven, OilCracker, Crop_Drop_UUMBerry, Crop_Drop_UUABerry, Empty_Board_Basic, Empty_Board_Elite,
     Battery_Charger_4by4_ULV, Battery_Charger_4by4_LV, Battery_Charger_4by4_MV, Battery_Charger_4by4_HV, Battery_Charger_4by4_EV, Battery_Charger_4by4_IV, Battery_Charger_4by4_LuV, Battery_Charger_4by4_ZPM, Battery_Charger_4by4_UV, Battery_Charger_4by4_MAX,
