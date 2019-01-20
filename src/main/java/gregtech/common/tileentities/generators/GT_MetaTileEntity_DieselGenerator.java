@@ -65,11 +65,14 @@ public class GT_MetaTileEntity_DieselGenerator
 
     public int getFuelValue(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
-        int rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
+        long rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
         }
-        return rValue;
+        if(rValue> Integer.MAX_VALUE){
+            throw new ArithmeticException("Integer LOOPBACK!");
+        }
+        return (int)rValue;
     }
 
     public ITexture[] getFront(byte aColor) {

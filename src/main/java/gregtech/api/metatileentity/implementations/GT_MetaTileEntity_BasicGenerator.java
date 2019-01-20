@@ -198,7 +198,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                     mInventory[getStackDisplaySlot()].setStackDisplayName("Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
                 }
             } else {
-                int tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
+                long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount > tConsumed) {
                     long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
                     if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
@@ -208,7 +208,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                 }
             }
             if (mInventory[getInputSlot()] != null && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU()) && GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true) == null) {
-                int tFuelValue = getFuelValue(mInventory[getInputSlot()]);
+                long tFuelValue = getFuelValue(mInventory[getInputSlot()]);
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(mInventory[getInputSlot()]);
                     if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tEmptyContainer)) {
@@ -240,15 +240,26 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
         Collection<GT_Recipe> tRecipeList = getRecipes().mRecipeList;
         if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
             if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
-                if (aLiquid.isFluidEqual(tLiquid))
-                    return (int) (((long) tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(tLiquid)) / 100);
+            	if (aLiquid.isFluidEqual(tLiquid)){
+            		long val=(long)tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(tLiquid) / 100;
+                    if(val> Integer.MAX_VALUE){
+                        throw new ArithmeticException("Integer LOOPBACK!");
+                    }
+                    return (int) val;
+            	}
         return 0;
     }
 
     public int getFuelValue(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
         GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
-        if (tFuel != null) return (int) ((tFuel.mSpecialValue * 1000L * getEfficiency()) / 100);
+        if (tFuel != null){
+            long val=(long)tFuel.mSpecialValue * 10L /*<- 1000mb/100 */ * getEfficiency();
+            if(val> Integer.MAX_VALUE){
+                throw new ArithmeticException("Integer LOOPBACK!");
+            }
+            return (int) val;
+        }
         return 0;
     }
 
