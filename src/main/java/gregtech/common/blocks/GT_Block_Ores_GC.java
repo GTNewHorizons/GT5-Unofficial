@@ -13,11 +13,13 @@ import net.minecraft.init.Blocks;
 public class GT_Block_Ores_GC extends GT_Block_Ores_Abstract {
     Block aMoonBlock = GameRegistry.findBlock("GalacticraftCore", "tile.moonBlock");
     Block aMarsBlock = GameRegistry.findBlock("GalacticraftMars", "tile.mars");
-
+    Block aAsteroidsBlock = GameRegistry.findBlock("GalacticraftMars", "tile.asteroidsBlock");
+    
     public GT_Block_Ores_GC() {
-        super("gt.blockores.gc", 4, true, Material.rock);
+        super("gt.blockores.gc", 7, true, Material.rock);
         if (aMoonBlock == null) aMoonBlock = Blocks.stone;
         if (aMarsBlock == null) aMarsBlock = Blocks.stone;
+        if (aAsteroidsBlock == null) aAsteroidsBlock = Blocks.stone;
     }
 
     @Override
@@ -47,6 +49,6 @@ public class GT_Block_Ores_GC extends GT_Block_Ores_Abstract {
 
     @Override
     public ITexture[] getTextureSet() { //Must have 16 entries.
-        return new ITexture[]{new GT_CopiedBlockTexture(aMoonBlock, 0, 3), new GT_CopiedBlockTexture(aMoonBlock, 0, 4), new GT_CopiedBlockTexture(aMoonBlock, 0, 6), new GT_CopiedBlockTexture(aMarsBlock, 0, 9), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0),new GT_CopiedBlockTexture(aMoonBlock, 0, 3), new GT_CopiedBlockTexture(aMoonBlock, 0, 4), new GT_CopiedBlockTexture(aMoonBlock, 0, 6), new GT_CopiedBlockTexture(aMarsBlock, 0, 9), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0), new GT_CopiedBlockTexture(Blocks.stone, 0, 0)};
+        return new ITexture[]{new GT_CopiedBlockTexture(aMoonBlock, 0, 3), new GT_CopiedBlockTexture(aMoonBlock, 0, 4), new GT_CopiedBlockTexture(aMoonBlock, 0, 6), new GT_CopiedBlockTexture(aMarsBlock, 0, 9), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 0), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 1), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 2), new GT_CopiedBlockTexture(Blocks.stone, 0, 0),new GT_CopiedBlockTexture(aMoonBlock, 0, 3), new GT_CopiedBlockTexture(aMoonBlock, 0, 4), new GT_CopiedBlockTexture(aMoonBlock, 0, 6), new GT_CopiedBlockTexture(aMarsBlock, 0, 9), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 0), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 1), new GT_CopiedBlockTexture(aAsteroidsBlock, 0, 2), new GT_CopiedBlockTexture(Blocks.stone, 0, 0)};
     }
 }

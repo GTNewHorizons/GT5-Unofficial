@@ -66,6 +66,137 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     tOreBlock = GregTech_API.sBlockOresUb3;
                     aMetaData += (BlockMeta * 1000);
                 }
+            } else if (BlockName.equals("diorite")) {
+                if (GregTech_API.sBlockOresCh != null) {
+                    tOreBlock = GregTech_API.sBlockOresCh;
+                    aMetaData += (BlockMeta * 1000);
+                }
+            } else if (BlockName.equals("granite")) {
+                if (GregTech_API.sBlockOresCh != null) {
+                    tOreBlock = GregTech_API.sBlockOresCh;
+                    aMetaData += (BlockMeta * 1000);
+                }
+            } else if (BlockName.equals("limestone")) {
+                if (GregTech_API.sBlockOresCh != null) {
+                    tOreBlock = GregTech_API.sBlockOresCh;
+                    aMetaData += (BlockMeta * 1000);
+                }
+            } else if (BlockName.equals("marble")) {
+                if (GregTech_API.sBlockOresCh != null) {
+                    tOreBlock = GregTech_API.sBlockOresCh;
+                    aMetaData += (BlockMeta * 1000);
+                }
+            } else if (BlockName.equals("andesite")) {
+                if (GregTech_API.sBlockOresCh != null) {
+                    tOreBlock = GregTech_API.sBlockOresCh;
+                    aMetaData += (BlockMeta * 1000);
+                }
+            } else if (BlockName.equals("tile.mercury")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.venus")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.jupiter")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.saturn")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.uranus")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.neptune")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.pluto")) {
+                if (GregTech_API.sBlockOresEP1 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP1;
+                    aMetaData += (BlockMeta * 2000);
+                }
+            } else if (BlockName.equals("tile.ceres")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.deimos")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.phobos")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.io")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.europa")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.ganymede")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.callisto")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.rhea")) {
+                if (GregTech_API.sBlockOresEP2 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP2;
+                    aMetaData += (BlockMeta * 3000);
+                }
+            } else if (BlockName.equals("tile.titan")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            } else if (BlockName.equals("tile.iapetus")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            } else if (BlockName.equals("tile.titania")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            } else if (BlockName.equals("tile.oberon")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            } else if (BlockName.equals("tile.triton")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            } else if (BlockName.equals("tile.eris")) {
+                if (GregTech_API.sBlockOresEP3 != null) {
+                    tOreBlock = GregTech_API.sBlockOresEP3;
+                    aMetaData += (BlockMeta * 4000);
+                }
+            
             } else if (BlockName.equals("tile.moonBlock") && (BlockMeta == 3 || BlockMeta == 4)) {
                 if (GregTech_API.sBlockOresGC != null) {
                     switch (BlockMeta) {
@@ -78,6 +209,19 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
                     switch (BlockMeta) {
                         case 6: aMetaData += 2000; tOreBlock = GregTech_API.sBlockOresGC; break;
                         case 9: aMetaData += 3000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                    }
+                }
+            } else if (BlockName.equals("tile.asteroidsBlock") && (BlockMeta == 0 || BlockMeta == 1)) {
+                if (GregTech_API.sBlockOresGC != null) {
+                    switch (BlockMeta) {
+                        case 0: aMetaData += 4000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                        case 1: aMetaData += 5000; tOreBlock = GregTech_API.sBlockOresGC; break;
+                    }
+                }
+            } else if (BlockName.equals("tile.asteroidsBlock") && (BlockMeta == 2)) {
+                if (GregTech_API.sBlockOresGC != null) {
+                    switch (BlockMeta) {
+                        case 2: aMetaData += 6000; tOreBlock = GregTech_API.sBlockOresGC; break;
                     }
                 }
             } else if (tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)) {

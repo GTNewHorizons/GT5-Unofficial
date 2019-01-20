@@ -59,7 +59,11 @@ public class Behaviour_Prospecting
 		    	aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites) ||
 		    	(aBlock == GregTech_API.sBlockOresUb1)  || 
 		    	(aBlock == GregTech_API.sBlockOresUb2)  ||  
-		    	(aBlock == GregTech_API.sBlockOresUb3)  || 
+		    	(aBlock == GregTech_API.sBlockOresUb3)  ||
+		    	(aBlock == GregTech_API.sBlockOresCh)  ||
+		    	(aBlock == GregTech_API.sBlockOresEP1)  ||
+		    	(aBlock == GregTech_API.sBlockOresEP2)  ||
+		    	(aBlock == GregTech_API.sBlockOresEP3)  ||
 		    	(aBlock == GregTech_API.sBlockOres1)  ||
 		    	(aBlock == GregTech_API.sBlockOresGC)){
 	            if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {

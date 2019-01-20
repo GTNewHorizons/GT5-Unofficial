@@ -234,6 +234,14 @@ public class GT_Loader_Item_Block_And_Fluid
         if(Loader.isModLoaded("GalacticraftCore") && Loader.isModLoaded("GalacticraftMars") && GT_Mod.gregtechproxy.enableGCOres) {
             GregTech_API.sBlockOresGC = new GT_Block_Ores_GC();
         }
+        if(Loader.isModLoaded("ñhisel") && GT_Mod.gregtechproxy.enableCHOres) {
+            GregTech_API.sBlockOresCh = new GT_Block_Ores_CH();
+        }
+        if(Loader.isModLoaded("ExtraPlanets") && GT_Mod.gregtechproxy.enableEPOres) {
+            GregTech_API.sBlockOresEP1 = new GT_Block_Ores_EP1();
+            GregTech_API.sBlockOresEP2 = new GT_Block_Ores_EP2();
+            GregTech_API.sBlockOresEP3 = new GT_Block_Ores_EP3();
+        }
         GregTech_API.sBlockMetal1 = new GT_Block_Metal("gt.blockmetal1", new Materials[]{
                 Materials.Adamantium,
                 Materials.Aluminium,
