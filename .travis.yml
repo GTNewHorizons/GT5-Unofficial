@@ -35,5 +35,3 @@ jobs:
   stage: sonar
   script:
     -./gradlew sonarqube
-	
-
