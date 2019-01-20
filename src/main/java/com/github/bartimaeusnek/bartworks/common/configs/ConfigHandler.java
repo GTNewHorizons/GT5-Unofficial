@@ -39,6 +39,7 @@ public class ConfigHandler {
     public static boolean newStuff = true;
     public static boolean BioLab = true;
     public static Configuration c;
+    public static boolean DEHPDirectSteam = false;
     private static boolean ezmode = false;
 
     public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
@@ -51,7 +52,7 @@ public class ConfigHandler {
         teslastaff = c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
         newStuff = !c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
         BioLab = !c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
-
+        DEHPDirectSteam = c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
             c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);

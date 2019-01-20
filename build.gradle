@@ -16,6 +16,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.2"
+}
+
 apply plugin: 'forge'
 apply plugin: 'idea'
 apply plugin: 'signing'
@@ -118,6 +122,13 @@ artifacts {
     archives devJar
     archives sourceJar
     archives apiJar
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "bartworks"
+        property "sonar.projectKey", "bartimaeusnek_bartworks"
+    }
 }
 
 task signJar(dependsOn: 'reobf'){

@@ -49,7 +49,7 @@ public class NEIbartworksConfig implements IConfigureNEI {
     @Optional.Method(modid = "NotEnoughItems")
     @Override
     public void loadConfig() {
-        API.hideItem(new ItemStack(ItemRegistry.tab));
+        API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
         API.hideItem(new ItemStack(BioItemList.bw_fake_glasses));
     }

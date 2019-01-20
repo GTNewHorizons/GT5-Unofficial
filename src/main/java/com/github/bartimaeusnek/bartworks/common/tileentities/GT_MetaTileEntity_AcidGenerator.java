@@ -107,7 +107,8 @@ public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGene
         return aSide == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
+    @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Efficiency: " + ChatColorHelper.YELLOW + getEfficiency(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
+        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Efficiency: " + ChatColorHelper.YELLOW + getEfficiency(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks" };
     }
 }

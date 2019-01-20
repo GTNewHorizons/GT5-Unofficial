@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -122,6 +123,66 @@ public class BW_Util {
             default:
                 return EnumRarity.common;
         }
+    }
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, false, aBaseCasingIndex);
+    }
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, false, aBaseCasingIndex);
+    }
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, freeCorners, false, null, true, aBaseCasingIndex);
+    }
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, false, insideCheck, inside, true, aBaseCasingIndex);
+    }
+
+    /**
+     * @param aBaseMetaTileEntity the Multiblock controller, usually a parameter
+     * @param diameter            the diameter of the layer
+     * @param yLevel              the starting y level of the Layer, referenced to the Multiblock
+     * @param height              the height of the Layers, referenced to the Multiblock
+     * @param block               the block for the walls
+     * @param offset              the offset in most cases should be the same as the diameter
+     * @param controllerLayer     if the layer contains the controller
+     * @param freeCorners         if the corners should be checked
+     * @param insideCheck         if the inside should be empty/filled
+     * @param inside              which block should be inside
+     * @param allowHatches        if hatches are allowed in this Layer
+     * @param aBaseCasingIndex    the Index for the hatches texture
+     * @return if the layer check was completed
+     */
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck, Block inside, boolean allowHatches, int aBaseCasingIndex) {
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
+        for (int x = -diameter; x < diameter; x++) {
+            for (int y = yLevel; y < height; y++) {
+                for (int z = -diameter; z < diameter; z++) {
+                    if (freeCorners && (((Math.abs(x) == diameter && Math.abs(z) == diameter))))
+                        continue;
+                    if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
+                        continue;
+                    if (insideCheck && (Math.abs(x) < diameter && Math.abs(z) != diameter))
+                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside))
+                            return false;
+                    if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block))
+                        if (!(allowHatches && (
+                                ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                        ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                        ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                        ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                        ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
+                                        ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex)
+                        )))
+                            return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

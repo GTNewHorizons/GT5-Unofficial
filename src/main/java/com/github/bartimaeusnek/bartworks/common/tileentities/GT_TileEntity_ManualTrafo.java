@@ -348,7 +348,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                         }
             }
         }
-        if (this.mDynamoHatches.size() <= 0 || this.mEnergyHatches.size() <= 0)
+        if (this.mDynamoHatches.isEmpty() || this.mEnergyHatches.isEmpty())
             return false;
 
         return true;

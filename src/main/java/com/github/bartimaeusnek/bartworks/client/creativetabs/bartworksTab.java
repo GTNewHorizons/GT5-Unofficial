@@ -34,7 +34,7 @@ public class bartworksTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return ItemRegistry.RockcutterHV;
+        return ItemRegistry.ROCKCUTTER_HV;
     }
 
 }

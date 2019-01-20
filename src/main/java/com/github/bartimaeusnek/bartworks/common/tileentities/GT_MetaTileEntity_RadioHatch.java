@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     private byte coverage = 0;
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, new String[]{"Radioactive Item Chamber for Multiblocks", "Capacity: " + (aTier - 2) + " kg" + ((aTier - 2) >= 2 ? "s" : ""), "Use a screwdriver to set the containment level"});
+        super(aID, aName, aNameRegional, aTier, 1, new String[]{"Radioactive Item Chamber for Multiblocks", "Capacity: " + (aTier - 2) + " kg" + ((aTier - 2) >= 2 ? "s" : ""), "Use a screwdriver to set the containment level" });
         cap = aTier - 2;
     }
 
@@ -251,7 +251,9 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
-        return new String[]{"Material: " + material, "Sievert: " + sievert, "Amount: " + mass, "Time (in t/s/m/h) to decay (1kg): " + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + "t/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + "s/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + "m/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + "h"};
+        if (calcDecayTicks(this.sievert) != 0)
+            return new String[]{"Material: " + material, "Sievert: " + sievert, "Amount: " + mass, "Time (in t/s/m/h) to decay (1kg): " + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + "t/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + "s/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + "m/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + "h" };
+        else return new String[]{"Material: Empty", "Sievert: 0", "Amount: 0" };
     }
 
     public boolean isSimpleMachine() {

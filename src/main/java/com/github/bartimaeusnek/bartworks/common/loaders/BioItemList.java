@@ -76,9 +76,9 @@ public class BioItemList {
             }, null, null, true, true);
 
 
-    private static final Item mItemBioLabParts = new LabModule(new String[]{"DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule", "TransformationModule", "ClonalCellularSynthesisModule"});
+    private static final Item mItemBioLabParts = new LabModule(new String[]{"DNAExtractionModule", "PCRThermoclyclingModule", "PlasmidSynthesisModule", "TransformationModule", "ClonalCellularSynthesisModule" });
     public static final ItemStack[] mBioLabParts = {new ItemStack(mItemBioLabParts), new ItemStack(mItemBioLabParts, 1, 1), new ItemStack(mItemBioLabParts, 1, 2), new ItemStack(mItemBioLabParts, 1, 3), new ItemStack(mItemBioLabParts, 1, 4)};
-    private static final Item vanillaBioLabParts = new LabParts(new String[]{"petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule", "PlasmaMembrane"});
+    private static final Item vanillaBioLabParts = new LabParts(new String[]{"petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule", "PlasmaMembrane" });
 
     public BioItemList() {
         GameRegistry.registerItem(mItemBioLabParts, "BioLabModules");

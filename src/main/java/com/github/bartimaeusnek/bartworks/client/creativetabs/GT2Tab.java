@@ -34,6 +34,6 @@ public class GT2Tab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return ItemRegistry.tab;
+        return ItemRegistry.TAB;
     }
 }

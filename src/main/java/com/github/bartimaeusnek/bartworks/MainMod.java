@@ -82,6 +82,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
         new LoaderRegistry().run();
+
     }
 
     @Mod.EventHandler

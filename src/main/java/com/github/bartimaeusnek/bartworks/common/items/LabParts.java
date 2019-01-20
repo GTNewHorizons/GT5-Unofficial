@@ -72,7 +72,10 @@ public class LabParts extends SimpleSubItemClass {
 
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean b) {
-        if (itemStack == null || itemStack.getTagCompound() == null) {
+        if (itemStack == null)
+            return;
+
+        if (itemStack.getTagCompound() == null) {
             switch (itemStack.getItemDamage()) {
                 case 0:
                     list.add("An empty Sterilized Petri Dish.");

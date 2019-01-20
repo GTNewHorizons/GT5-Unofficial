@@ -367,6 +367,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        long startingTime = System.nanoTime();
         connectedcells = new ConnectedBlocksChecker();
         connectedcells.get_connected(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), ItemRegistry.BW_BLOCKS[1]);
 
@@ -394,6 +395,9 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         this.getBaseMetaTileEntity().enableWorking();
         this.getBaseMetaTileEntity().setActive(true);
 
+        long finishedTime = System.nanoTime();
+        if (finishedTime - startingTime > 5000000)
+            MainMod.logger.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         return true;
     }
 

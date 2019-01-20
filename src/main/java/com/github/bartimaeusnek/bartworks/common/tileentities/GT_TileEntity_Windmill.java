@@ -54,7 +54,6 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 
@@ -122,7 +121,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Ash ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Snow ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Stone ||
-                        BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.MeatRaw||
+                        BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.MeatRaw ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.MeatCooked
                 )
                     mOutputItems[1] = tRecipe.getOutput(0);
@@ -579,12 +578,12 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getInfoData() {
-        return new String[]{"Progress:", this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:", Integer.toString(this.rotorBlock.getGrindPower()) + "KU/t"};
+        return new String[]{"Progress:", this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:", Integer.toString(this.rotorBlock.getGrindPower()) + "KU/t" };
     }
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        iIcons[0] = Blocks.brick_block.getIcon(0,0);
+        iIcons[0] = Blocks.brick_block.getIcon(0, 0);
         iIconContainers[0] = new IIconContainer() {
             @Override
             public IIcon getIcon() {
@@ -632,22 +631,18 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             if (aFacing == aSide || aSide == 0) {
                 iTextures[0] = new GT_RenderedTexture(iIconContainers[0]);
-                ret = new ITexture[6];
                 for (int i = 0; i < ret.length; i++) {
-                    ret[i]=iTextures[0];
+                    ret[i] = iTextures[0];
                 }
-            }
-            else if (aSide == 1) {
+            } else if (aSide == 1) {
                 iTextures[1] = new GT_RenderedTexture(iIconContainers[1]);
-                ret = new ITexture[6];
                 for (int i = 0; i < ret.length; i++) {
-                    ret[i]=iTextures[1];
+                    ret[i] = iTextures[1];
                 }
-            }
-            else{
+            } else {
                 iTextures[2] = new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE);
                 for (int i = 0; i < ret.length; i++) {
-                    ret[i]=iTextures[2];
+                    ret[i] = iTextures[2];
                 }
             }
         }

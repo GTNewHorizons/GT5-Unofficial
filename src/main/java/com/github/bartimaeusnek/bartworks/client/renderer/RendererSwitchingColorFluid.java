@@ -64,7 +64,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
                 ++count;
             }
         }
-        if (end == 0.0f) {
+        if (end == 0.0f && count != 0) {
             end = total / count;
         }
         return end;
