@@ -22,4 +22,4 @@ jdk:
   - oraclejdk8
 
 script:
-- gradlew sonarqube
+- ./gradlew sonarqube
