@@ -32,5 +32,4 @@ jobs:
     skip_cleanup: true
     file_glob: true
     on:
-     repo: bartimausnek/bartworks
      tags: false
