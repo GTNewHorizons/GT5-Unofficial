@@ -234,7 +234,7 @@ public class GT_Loader_Item_Block_And_Fluid
         if(Loader.isModLoaded("GalacticraftCore") && Loader.isModLoaded("GalacticraftMars") && GT_Mod.gregtechproxy.enableGCOres) {
             GregTech_API.sBlockOresGC = new GT_Block_Ores_GC();
         }
-        if(Loader.isModLoaded("ñhisel") && GT_Mod.gregtechproxy.enableCHOres) {
+        if(Loader.isModLoaded("chisel") && GT_Mod.gregtechproxy.enableCHOres) {
             GregTech_API.sBlockOresCh = new GT_Block_Ores_CH();
         }
         if(Loader.isModLoaded("ExtraPlanets") && GT_Mod.gregtechproxy.enableEPOres) {
