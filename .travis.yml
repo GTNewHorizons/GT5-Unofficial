@@ -1,6 +1,16 @@
 language: java
 sudo: false
 install: true
+cache:
+  directories:
+  - "$HOME/.gradle/caches/2.14.1"
+  - "$HOME/.gradle/caches/jars-1"
+  - "$HOME/.gradle/caches/jars-2"
+  - "$HOME/.gradle/caches/jars-3"
+  - "$HOME/.gradle/native"
+  - "$HOME/.gradle/daemon"
+  - "$HOME/.gradle/wrapper"
+  - "$HOME/.gradle/minecraft"
 
 addons:
   sonarcloud:
@@ -12,4 +22,4 @@ jdk:
   - oraclejdk8
 
 script:
-- ./gradlew sonarqube
+- gradlew sonarqube
