@@ -37,7 +37,7 @@ public class GT_FuelLoader
         GT_Recipe.GT_Recipe_Map.sExtremeHugeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FluidEnrichedNaquadahFuel, 1L)}, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cell,  Materials.Naquadah, 1L)}, null, null, null, 0, 0, 4000000);
         GT_Recipe.GT_Recipe_Map.sInfiniteHugeNaquadahReactorFuels.addRecipe(true, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cell, Materials.FluidNaquadriaFuel, 1L)}, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cell,  Materials.Naquadah, 1L)}, null, null, null, 0, 0, 8000000);
         
-        GT_Recipe.GT_Recipe_Map.sFluidDarkMatterReactorFuels.addRecipe(true, null, null, null, new FluidStack[]{Materials.FluidDarkMatterFuel.getFluid(10)}, new FluidStack[]{Materials.UUMatter.getFluid(5)}, 0, 0, 8000000);
+        //GT_Recipe.GT_Recipe_Map.sFluidDarkMatterReactorFuels.addRecipe(true, null, null, null, new FluidStack[]{Materials.FluidDarkMatterFuel.getFluid(10)}, new FluidStack[]{Materials.UUMatter.getFluid(5)}, 0, 0, 8000000);
         
         GT_Recipe.GT_Recipe_Map.sAntimatterReactorFuels.addRecipe(true, new ItemStack[]{ItemList.Magnetic_Confinement_Pod_AntiHydrogen.get(1L, new Object[0]), ItemList.Magnetic_Confinement_Pod_Hydrogen.get(1L, new Object[0])},  new ItemStack[]{ItemList.Magnetic_Confinement_Pod.get(2L, new Object[0])}, null, new FluidStack[]{Materials.Nitrogen.getGas(4)}, new FluidStack[]{Materials.Nitrogen.getPlasma(4)}, 0, 0, 1800);
         

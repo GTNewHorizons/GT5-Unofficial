@@ -803,7 +803,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials EnrichedNaquadria           = new MaterialBuilder(398, TextureSet.SET_FLUID      ,                                                                                                 "Enriched Naquadria").setName("EnrichedNaquadria").addCell().addFluid().setRGB(52, 52, 52).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials FluidEnrichedNaquadahFuel   = new MaterialBuilder(399, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Enriched Naquadah Fuel").setName("FluidEnrichedNaquadahFuel").addCell().addFluid().setRGB(42, 42, 42).setColor(Dyes.dyeBlack).constructMaterial();
     public static Materials FluidNaquadriaFuel          = new MaterialBuilder(400, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Naquadria Fuel").setName("FluidNaquadriaFuel").addCell().addFluid().setRGB(32, 32, 32).setColor(Dyes.dyeBlack).constructMaterial();
-    public static Materials FluidDarkMatterFuel          = new MaterialBuilder(404, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Dark Matter Fuel").setName("FluidDarkMatterFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
+    //public static Materials FluidDarkMatterFuel          = new MaterialBuilder(404, TextureSet.SET_FLUID      ,                                                                                                 "Fluid Dark Matter Fuel").setName("FluidDarkMatterFuel").addCell().addFluid().setRGB(62, 62, 62).setColor(Dyes.dyeBlack).constructMaterial();
     
     //Custom Material
     public static Materials Quantium = new Materials( 391, TextureSet.SET_SHINY ,  18.0F,   2048,  4, 1|2  |8      |64|128      ,   0, 209,  11,   0,   "Quantium"                ,   "Quantium"                      ,     0,       0,     14000,  14000,  true, false,  4,   1,   1, Dyes.dyeLime         );
@@ -821,7 +821,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Pollution = new MaterialBuilder(396, TextureSet.SET_FLUID, "Pollution").addCell().addFluid().setRGB(90, 70, 15).setColor(Dyes.dyeBrown).constructMaterial();
     public static Materials SluiceJuice = new MaterialBuilder(413, TextureSet.SET_FLUID, "Sluice Juice").addCell().addFluid().setRGB(100, 60, 20).setColor(Dyes.dyeBrown).constructMaterial();
     public static Materials SluiceSand = new Materials(414, TextureSet.SET_SAND, 1.0F, 0, 2, 1, 20, 30, 20, 0, "SluiceSand",   "Sluice Sand", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGray);
-	
+    public static Materials AlienOrganic = new Materials(415, TextureSet.SET_DULL, 1.0F, 0, 2, 1, 75, 90, 10, 0, "AlienOrganic",   "Alien Organic", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGreen);
+    
     /**
      * Materials which are renamed automatically
      */

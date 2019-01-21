@@ -1536,7 +1536,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockElectrolyzer.get(1L, new Object[0]), bitsd, new Object[]{"WCW", "PHP", "WCW", 'H', ItemList.Hull_IV, 'C', OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.wireGt02.get(Materials.Platinum), 'P', OrePrefixes.plateDouble.get(Materials.Titanium)});
         
         //Tesseract
-        //ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract.tier.09", "Tesseract", 9).getStackForm(1L));
+        ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1L));
         
         
    }
@@ -3023,9 +3023,6 @@ public class GT_Loader_MetaTileEntities implements Runnable {
 						"Avengers, Assemble!", GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
 						6, 1, 16000, 0, 1, "CircuitAssembler.png", "",
 						false, false, 0, "CIRCUITASSEMBLER", null).getStackForm(1L));
-				
-				//DarkMatter Reactor
-				ItemList.Generator_DarkMatter_Mark_I.set(new GT_MetaTileEntity_DarkMatterGenerator(12190, "basicgenerator.darkmatter.tier.09", "Dark Matter Reactor Mark I", 9).getStackForm(1L));
 				
 		// ===================================================================================================
 		// Wet Transformers

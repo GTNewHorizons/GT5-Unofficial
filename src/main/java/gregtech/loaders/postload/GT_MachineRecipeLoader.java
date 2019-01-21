@@ -4449,6 +4449,9 @@ if(Loader.isModLoaded("Railcraft")){
             	//*/
             }
        public void run3() {
+		//Tesseract
+    	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), null, null, new int[]{2000, 6000, 4000, 10000}, 100, 8000000);
+    	
 		//Sluice Juice and Sand
 		   GT_Values.RA.addDistilleryRecipe(1, Materials.SluiceJuice.getFluid(100L), GT_ModHandler.getDistilledWater(50L), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.SluiceSand, 1), 100, 16, false);
 		   GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SluiceSand, 1), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 2), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neodymium, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Cobalt, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1), new int[]{9640,648,648,648,648,648}, 144, 16);
@@ -4472,6 +4475,12 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addBlastRecipe(ItemList.BioCarbonPlate.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("carbonPlate", 1L), GT_Values.NI, 1000, 120, 600);
            GT_Values.RA.addBlastRecipe(ItemList.BioChunk.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("coalChunk", 1L), GT_Values.NI, 1000, 120, 1200);
            GT_Values.RA.addMixerRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Flint, 2), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.BioBall.get(1L), 200, 16);
+           
+		   //===
+           
+           GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.BioMediumRaw.getFluid(1000), Materials.BioMediumSterilized.getFluid(1000), 200, 1024);
+           GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), Materials.Mutagen.getFluid(250L), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 30720);
+           GT_Values.RA.addMixerRecipe(Materials.AlienOrganic.getDust(1), Materials.MysteriousCrystal.getDustSmall(1), Materials.Oriharukon.getDustSmall(1), GT_Utility.getIntegratedCircuit(1), Materials.Mutagen.getFluid(1000), Materials.BioMediumRaw.getFluid(2500), GT_Values.NI, 360, 7680);
            
     	
       //Solar Panel
