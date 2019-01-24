@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -14,6 +15,10 @@ import org.lwjgl.opengl.GL11;
 public class BlockHint extends EntityFX {
     private IIcon[] icons = new IIcon[6];
 
+    public BlockHint(World world){
+        this(world,0,0,0, Blocks.stone,0);
+    }
+
     public BlockHint(World world, int x, int y, int z, Block block, int meta) {
         super(world, x+.25, y+.5, z+.25);
         particleGravity = 0;
@@ -21,7 +26,7 @@ public class BlockHint extends EntityFX {
         prevPosY = posY;
         prevPosZ = posZ;
         noClip = true;
-        particleMaxAge = 2000 + TecTech.Rnd.nextInt(200);
+        particleMaxAge = 2000 + TecTech.RANDOM.nextInt(200);
         for (int i = 0; i < 6; i++) {
             icons[i] = block.getIcon(i, meta);
         }

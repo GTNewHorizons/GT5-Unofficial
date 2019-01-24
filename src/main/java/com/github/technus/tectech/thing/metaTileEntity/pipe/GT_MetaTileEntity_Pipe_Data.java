@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -9,7 +8,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -30,7 +28,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConnectsToDataPipe {
+public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConnectsToDataPipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMbar;
     public byte connectionCount = 0;
@@ -111,54 +109,49 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
             if ((aTick & 31) == 31) {
                 mConnections = 0;
                 connectionCount = 0;
+                byte myColor=aBaseMetaTileEntity.getColorization();
                 if (aBaseMetaTileEntity.getColorization() < 0) {
                     return;
                 }
                 for (byte b0 = 0, b1; b0 < 6; b0++) {
                     b1 = GT_Utility.getOppositeSide(b0);
-                    //if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(b0).alwaysLookConnected(b0, aBaseMetaTileEntity.getCoverIDAtSide(b0), aBaseMetaTileEntity.getCoverDataAtSide(b0), aBaseMetaTileEntity)) {
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(b0);
-                    if (tTileEntity instanceof IColoredTileEntity) {
-                        //if (aBaseMetaTileEntity.getColorization() >= 0) {
-                        byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                        if (tColor != aBaseMetaTileEntity.getColorization()) {
+                    if (tTileEntity instanceof IConnectsToDataPipe) {
+                        byte tColor = ((IConnectsToDataPipe) tTileEntity).getColorization();
+                        if (tColor != myColor) {
                             continue;
                         }
-                        //}
-                    }
-                    if (tTileEntity instanceof iConnectsToDataPipe && ((iConnectsToDataPipe) tTileEntity).canConnect(b1)) {
-                        mConnections |= 1 << b0;
-                        connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToDataPipe) {
-                        if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
-                                ((iConnectsToDataPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                        if(((IConnectsToDataPipe) tTileEntity).canConnectData(b1)){
                             mConnections |= 1 << b0;
                             connectionCount++;
                         }
+                    }else if(tTileEntity instanceof IGregTechTileEntity){
+                        IMetaTileEntity meta=((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                        if(meta instanceof IConnectsToDataPipe){
+                            byte tColor = ((IConnectsToDataPipe) meta).getColorization();
+                            if (tColor != myColor) {
+                                continue;
+                            }
+                            if(((IConnectsToDataPipe) meta).canConnectData(b1)){
+                                mConnections |= 1 << b0;
+                                connectionCount++;
+                            }
+                        }
                     }
-                    //}
-                    //else {
-                    //    mConnections |= (1 << b0);
-                    //    if (mOld != mConnections) {
-                    //        connectionCount++;
-                    //        mOld = mConnections;
-                    //    }
-                    //}
                 }
             }
-
         } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnectData(byte side) {
         return true;
     }
 
     @Override
-    public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source) {
         if (connectionCount != 2) {
             return null;
         }
@@ -166,18 +159,21 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
             if ((mConnections & 1 << b) == 0) {
                 continue;//if not connected continue
             }
-            IGregTechTileEntity next = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(b);
-            if (next == null) {
-                continue;
-            }
-            IMetaTileEntity meta = next.getMetaTileEntity();
-            if (meta instanceof iConnectsToDataPipe && meta != source) {
-                if (meta instanceof GT_MetaTileEntity_Hatch_InputData) {
-                    return (iConnectsToDataPipe) meta;
+            TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(b);
+            if (next instanceof IConnectsToDataPipe && next != source) {
+                if(((IConnectsToDataPipe) next).isDataInputFacing(GT_Utility.getOppositeSide(b))){
+                    return (IConnectsToDataPipe) next;
                 }
-                if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
-                        ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
-                    return (iConnectsToDataPipe) meta;
+            }else if(next instanceof IGregTechTileEntity) {
+                IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
+                if (meta instanceof IConnectsToDataPipe && meta != source) {
+                    if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
+                            ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
+                        return (IConnectsToDataPipe) meta;
+                    }
+                    if (((IConnectsToDataPipe) meta).isDataInputFacing(GT_Utility.getOppositeSide(b))) {
+                        return (IConnectsToDataPipe) meta;
+                    }
                 }
             }
         }
@@ -230,5 +226,15 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
             return 0.0625F;
         }
         return 0.375f;
+    }
+
+    @Override
+    public boolean isDataInputFacing(byte side) {
+        return true;
+    }
+
+    @Override
+    public byte getColorization() {
+        return getBaseMetaTileEntity().getColorization();
     }
 }

@@ -2,9 +2,12 @@ package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.iElementalInstanceContainer;
-import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.iElementalInstanceContainer;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.bTransformationInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -21,8 +24,8 @@ import net.minecraft.world.World;
 import java.util.Collections;
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.Reference.MODID;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -71,6 +74,30 @@ public final class DebugElementalInstanceContainer_EM extends Item {
         return aPlayer instanceof EntityPlayerMP;
     }
 
+    public ItemStack setContent(ItemStack aStack,cElementalInstanceStackMap content){
+        NBTTagCompound tNBT = aStack.getTagCompound();
+        if(tNBT==null){
+            aStack.setTagCompound(new NBTTagCompound());
+        }
+        if (tNBT.hasKey("content")) {
+            try {
+                content.putUnifyAll(cElementalInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
+            } catch (tElementalException e) {
+                if (DEBUG_MODE) {
+                    e.printStackTrace();
+                }
+                return aStack;
+            }
+            tNBT.removeTag("content");
+            tNBT.removeTag("info");
+        } else if (content.hasStacks()) {
+            tNBT.setTag("info", content.getInfoNBT());
+            tNBT.setTag("content", content.toNBT());
+            content.clear();
+        }
+        return aStack;
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
@@ -98,5 +125,10 @@ public final class DebugElementalInstanceContainer_EM extends Item {
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
+        for(iElementalDefinition defintion:bTransformationInfo.stacksRegistered){
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+144),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,144))));
+            list.add(setContent(new ItemStack(this).setStackDisplayName(defintion.getName()+" x"+1000),new cElementalInstanceStackMap(new cElementalInstanceStack(defintion,1000))));
+        }
     }
 }

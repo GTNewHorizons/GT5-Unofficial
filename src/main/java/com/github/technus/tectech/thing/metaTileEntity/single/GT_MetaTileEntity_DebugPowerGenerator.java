@@ -1,8 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugPowerGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -20,6 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+
 /**
  * Created by Tec on 23.03.2017.
  */
@@ -30,6 +33,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     public GT_MetaTileEntity_DebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_DebugPowerGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -50,7 +54,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier] : GENNY};
+        return new ITexture[]{MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing ? aActive? OVERLAYS_ENERGY_OUT_POWER_TT[mTier]: OVERLAYS_ENERGY_IN_POWER_TT[mTier] : GENNY};
     }
 
     @Override

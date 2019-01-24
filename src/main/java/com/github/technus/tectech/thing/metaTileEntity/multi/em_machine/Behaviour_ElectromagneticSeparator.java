@@ -1,18 +1,20 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
 
-import static com.github.technus.tectech.Util.V;
+import java.util.ArrayList;
+
+import static com.github.technus.tectech.CommonValues.V;
 
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_machine.Behaviour {
     private final byte tier;
     private final int ticks;
     private final byte precisionFull;
@@ -20,6 +22,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     private final float maxCapacity;
     private final long maxCharge;
     private final int offsetMax;
+    private final static String[] DESCRIPTION_I =new String[]{"Full Precision Input [e/3]","Minimal Precision Input [e/3]","Offset Input [e/3]",null};
+    private final static String[] DESCRIPTION_O =new String[]{"Full Precision Limit [e/3]","Minimal Precision Limit [e/3]","Offset Limit [e/3]",null,"Max Charge [e/3]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     public Behaviour_ElectromagneticSeparator(int desiredTier){
         tier=(byte) desiredTier;
@@ -65,16 +69,47 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
     }
 
     @Override
+    protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo<=1) {
+            String desc=DESCRIPTION_I[(hatchNo << 1) + paramID];
+            if(desc!=null){
+                baseDescr.add(desc);
+            }
+        }
+    }
+
+    @Override
+    protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
+        if(hatchNo<=3){
+            String desc=DESCRIPTION_O[(hatchNo<<1)+paramID];
+            if(desc!=null){
+                baseDescr.add(desc);
+            }
+        }
+    }
+
+    @Override
     public boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix) {
         boolean check=true;
 
         te.setParameterOut(0,0,precisionFull);
         te.setParameterOut(0,1,precisionMinimal);
         te.setParameterOut(1,0,offsetMax);
+        te.setStatusOfParameterOut(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
         te.setParameterOut(2,0,maxCharge);
         te.setParameterOut(2,1,maxCapacity);
         te.setParameterOut(3,0,V[tier]);
         te.setParameterOut(3,1,ticks);
+
+        for(int i=4;i<=9;i++) {
+            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
+        te.setStatusOfParameterIn(1, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        for(int i=2;i<=3;i++) {
+            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        }
 
         double full=parametersToCheckAndFix[0];
         if(Double.isInfinite(full) && full>0) {
@@ -152,8 +187,8 @@ public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_
         }
         float excessMass = 0;
         while (inputMass > maxCapacity) {
-            cElementalInstanceStack randomStack = stacks[TecTech.Rnd.nextInt(stacks.length)];
-            int amountToRemove = TecTech.Rnd.nextInt((int) randomStack.getAmount()) + 1;
+            cElementalInstanceStack randomStack = stacks[TecTech.RANDOM.nextInt(stacks.length)];
+            int amountToRemove = TecTech.RANDOM.nextInt((int) randomStack.getAmount()) + 1;
             randomStack.amount -= amountToRemove;//mutates the parent InstanceStackMap
             if (randomStack.amount <= 0) {
                 input.remove(randomStack.definition);

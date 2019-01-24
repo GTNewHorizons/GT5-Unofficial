@@ -29,7 +29,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnectsToEMpipe {
+public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnectsToElementalPipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
@@ -125,12 +125,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
                         }
                         //}
                     }
-                    if (tTileEntity instanceof iConnectsToEMpipe && ((iConnectsToEMpipe) tTileEntity).canConnect(b1)) {
+                    if (tTileEntity instanceof IConnectsToElementalPipe && ((IConnectsToElementalPipe) tTileEntity).canConnect(b1)) {
                         mConnections |= 1 << b0;
                         connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToEMpipe) {
+                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToElementalPipe) {
                         if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
-                                ((iConnectsToEMpipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                                ((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
                             mConnections |= 1 << b0;
                             connectionCount++;
                         }

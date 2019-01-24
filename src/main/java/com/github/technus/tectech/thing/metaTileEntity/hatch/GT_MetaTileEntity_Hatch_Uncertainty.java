@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_UncertaintyAdv;
@@ -32,6 +33,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     public GT_MetaTileEntity_Hatch_Uncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Feeling certain, or not?");
+        Util.setTier(aTier,this);
         regenerate();
     }
 
@@ -55,7 +57,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier >= 10) {
+        if (mTier > 7) {
             return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
         }
         return new GT_GUIContainer_Uncertainty(aPlayerInventory, aBaseMetaTileEntity);
@@ -195,7 +197,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     public void regenerate() {
         for (int i = 0; i < matrix.length; i++) {
-            matrix[i] = (short) TecTech.Rnd.nextInt(1000);
+            matrix[i] = (short) TecTech.RANDOM.nextInt(1000);
         }
     }
 
@@ -269,7 +271,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     private void shift() {
-        int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(128);
+        int i = TecTech.RANDOM.nextInt(16), j = TecTech.RANDOM.nextInt(128);
         matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
         matrix[i] += j == 0 ? 1 : 0;
         if (matrix[i] < 0) {

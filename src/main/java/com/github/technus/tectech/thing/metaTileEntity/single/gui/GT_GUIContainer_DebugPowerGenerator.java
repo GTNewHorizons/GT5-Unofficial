@@ -5,7 +5,7 @@ import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 
-import static com.github.technus.tectech.Util.VN;
+import static com.github.technus.tectech.CommonValues.VN;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_DebugPowerGenerator extends GT_GUIContainerMetaTile_Machine {

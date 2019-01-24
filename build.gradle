@@ -18,11 +18,12 @@ buildscript {
 
 import de.undercouch.gradle.tasks.download.Download
 apply plugin: 'forge'
+apply plugin: 'signing'
 
 allprojects {
     apply plugin: 'java'
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
 
 file "build.properties" withReader {
@@ -52,20 +53,18 @@ configurations {
 repositories {
     maven {
         name 'UsrvDE'
-        url "http://jenkins.usrv.de:8082/nexus/content/repositories/releases/"
+        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
     }
     maven {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
     }
-    ivy {
-        name 'CoFHLib'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
+	
+	ivy {
+        name 'gtnh_download_source'
+        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
     }
-    ivy {
-        name 'CoFHCore'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
-    }
+	
     maven {
         name = "chickenbones"
         url = "http://chickenbones.net/maven/"
@@ -75,7 +74,7 @@ repositories {
 dependencies {
     compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+    //provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
     provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
     compile "codechicken:CodeChickenLib:${config.minecraft.version}-${config.codechickenlib.version}:dev"
     compile "codechicken:CodeChickenCore:${config.minecraft.version}-${config.codechickencore.version}:dev"
@@ -86,7 +85,7 @@ task getGregTech(type: Download) {
     onlyIf {
         !file("libs/gregtech-${config.gregtech.version}-dev.jar").exists()
     }
-    src "http://jenkins.usrv.de:8081/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
+    src "http://jenkins.usrv.eu:8080/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
     dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
     mustRunAfter "deobfBinJar"
     mustRunAfter "repackMinecraft"
@@ -115,5 +114,20 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+task signJar(dependsOn: 'reobf'){
+    doLast {
+        ant.signjar(
+            destDir: jar.destinationDir,
+            jar: jar.getArchivePath(),
+            alias: findProperty('keyStoreAlias') ?: '',
+            keystore: findProperty('keyStore') ?: '',
+            storepass: findProperty('keyStorePass') ?: '',
+            digestalg: findProperty('signDigestAlg') ?: '',
+            tsaurl: findProperty('signTSAurl') ?: '',
+            verbose: true
+            )
     }
 }

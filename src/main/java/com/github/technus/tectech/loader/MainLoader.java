@@ -1,79 +1,141 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat;
-import com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompatEnabled;
-import com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat;
-import com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompatEnabled;
-import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompatEnabled;
+import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompatEnabled;
+import com.github.technus.tectech.loader.entity.EntityLoader;
+import com.github.technus.tectech.loader.gui.CreativeTabTecTech;
+import com.github.technus.tectech.loader.gui.ModGuiHandler;
+import com.github.technus.tectech.loader.mechanics.ElementalLoader;
+import com.github.technus.tectech.loader.recipe.RecipeLoader;
+import com.github.technus.tectech.loader.thing.ComponentLoader;
+import com.github.technus.tectech.loader.thing.MachineLoader;
+import com.github.technus.tectech.loader.thing.ThingsLoader;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
-import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
-import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
-import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
+import com.github.technus.tectech.thing.metaTileEntity.Textures;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_collider;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.RotationPacketDispatcher;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 
-import static com.github.technus.tectech.TecTech.hasThaumcraft;
-import static com.github.technus.tectech.TecTech.mainTab;
-import static com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.CommonValues.*;
+import static com.github.technus.tectech.TecTech.*;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.gui.CreativeTabTecTech.creativeTabTecTech;
+import static gregtech.api.enums.Dyes.*;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {
     public static DamageSource microwaving, elementalPollution;
 
-    public void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 6);
+    private MainLoader(){}
+
+    public static void staticLoad(){
+        for(int i=0;i<16;i++){
+            GT_Values.V[i]=V[i];
+            GT_Values.VN[i]=VN[i];
+            GT_Values.VOLTAGE_NAMES[i]=VOLTAGE_NAMES[i];
+        }
+        new ComponentLoader();
+    }
+
+    public static void preLoad(){
+
+        //set expanded texture arrays for tiers
+        try {
+            new Textures();
+        }catch (Throwable t){
+            LOGGER.error("Loading textures...",t);
+        }
+    }
+
+    public static void load() {
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 8);
 
         progressBarLoad.step("Elemental Things");
         new ElementalLoader().run();
-        TecTech.Logger.info("Elemental Init Done");
+        LOGGER.info("Elemental Init Done");
 
         progressBarLoad.step("Thaumcraft Compatibility");
-        if (hasThaumcraft) {
+        if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
             essentiaContainerCompat = new EssentiaCompatEnabled();
-            essentiaContainerCompat.run();
         } else {
             essentiaContainerCompat = new EssentiaCompat();
         }
-        TecTech.Logger.info("Thaumcraft Compatibility Done");
+        LOGGER.info("Thaumcraft Compatibility Done");
 
         progressBarLoad.step("Regular Things");
         new ThingsLoader().run();
-        TecTech.Logger.info("Block/Item Init Done");
+        LOGGER.info("Block/Item Init Done");
 
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
-        TecTech.Logger.info("Machine Init Done");
+        LOGGER.info("Machine Init Done");
 
         progressBarLoad.step("Register entities");
         new EntityLoader().run();
-        TecTech.Logger.info("Entities registered");
+        LOGGER.info("Entities registered");
 
         progressBarLoad.step("Add damage types");
         microwaving =new DamageSource("microwaving").setDamageBypassesArmor();
         elementalPollution =new DamageSource("elementalPollution").setDamageBypassesArmor();
-        TecTech.Logger.info("Damage types addition Done");
+        LOGGER.info("Damage types addition Done");
+
+        progressBarLoad.step("Register Packet Dispatcher");
+        new RotationPacketDispatcher();
+        LOGGER.info("Packet Dispatcher registered");
+
+        progressBarLoad.step("Register GUI Handler");
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ModGuiHandler());
+        proxy.registerRenderInfo();
+        LOGGER.info("GUI Handler registered");
 
         ProgressManager.pop(progressBarLoad);
     }
 
-    public void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
+    public static void postLoad() {
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 6);
+
+        progressBarPostLoad.step("Dreamcraft Compatibility");
+        if(Loader.isModLoaded(Reference.DREAMCRAFT)){
+            try {
+                Class clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
+                TT_Container_Casings.sBlockCasingsNH = (Block)clazz.getField("sBlockCasingsNH").get(null);
+
+                if(TT_Container_Casings.sBlockCasingsNH==null){
+                    throw new NullPointerException("sBlockCasingsNH Is not set at this time");
+                }
+            }catch (Exception e){
+                throw new Error("Unable to get NH casings",e);
+            }
+        }
 
         progressBarPostLoad.step("Thaumcraft Compatibility");
-        if (hasThaumcraft) {
+        if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
             aspectDefinitionCompat = new AspectDefinitionCompatEnabled();
             aspectDefinitionCompat.run();
         } else {
@@ -83,32 +145,24 @@ public final class MainLoader {
         progressBarPostLoad.step("Recipes");
         new RecipeLoader().run();
 
-        TecTech.Logger.info("Recipe Init Done");
+        TecTech.LOGGER.info("Recipe Init Done");
 
-        progressBarPostLoad.step("Creative Tab part1");
-        mainTab = new MyCreativeTab();
-        progressBarPostLoad.step("Creative Tab part2");
-        registerThingsInTabs();
-        TecTech.Logger.info("CreativeTab initiation complete");
+        progressBarPostLoad.step("Creative Tab");
+        creativeTabTecTech =new CreativeTabTecTech("TecTech");
+        TecTech.LOGGER.info("CreativeTab initiation complete");
 
         progressBarPostLoad.step("Register Extra Hazmat Suits");
         registerExtraHazmats();
-        TecTech.Logger.info("Hazmat additions done");
+        TecTech.LOGGER.info("Hazmat additions done");
+
+        progressBarPostLoad.step("Nerf blocks blast resistance");
+        fixBlocks();
+        TecTech.LOGGER.info("Blocks nerf done");
 
         ProgressManager.pop(progressBarPostLoad);
     }
 
-    private void registerThingsInTabs() {
-        QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
-        TT_Container_Casings.sBlockCasingsTT.setCreativeTab(mainTab);
-        TT_Container_Casings.sHintCasingsTT.setCreativeTab(mainTab);
-        DebugElementalInstanceContainer_EM.INSTANCE.setCreativeTab(mainTab);
-        ConstructableTriggerItem.INSTANCE.setCreativeTab(mainTab);
-        ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
-        ElementalDefinitionScanStorage_EM.INSTANCE.setCreativeTab(mainTab);
-    }
-
-    private void registerExtraHazmats() {
+    private static void registerExtraHazmats() {
         ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
         ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
         ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
@@ -180,23 +234,140 @@ public final class MainLoader {
         //todo add GC GS stuff
     }
 
-    private static final class MyCreativeTab extends CreativeTabs {
-        private MyCreativeTab() {super("TecTech");}
+    public static void addAfterGregTechPostLoadRunner() {
+        GregTech_API.sAfterGTPostload.add(new Runnable() {
+            @Override
+            public void run() {
+                if(TecTech.configTecTech.NERF_FUSION) {
+                    FixBrokenFusionRecipes();
+                }
+                GT_MetaTileEntity_EM_collider.setValues(getFuelValue(Materials.Helium.getPlasma(125)));
+            }
+        });
+    }
 
-        @SideOnly(Side.CLIENT)
-        @Override
-        public Item getTabIconItem() {
-            return DebugElementalInstanceContainer_EM.INSTANCE;
-        }
-
-        @Override
-        public void displayAllReleventItems(List stuffToShow) {
-            for(CustomItemList item: CustomItemList.values()){
-                if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
-                    stuffToShow.add(item.get(1));
+    private static void FixBrokenFusionRecipes() {
+        HashMap<Fluid, Fluid> binds = new HashMap<>();
+        for (Materials material : Materials.values()) {
+            FluidStack p = material.getPlasma(1);
+            if (p != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Found Plasma of " + material.mName);
+                }
+                if (material.mElement != null &&
+                        (material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                                -material.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                                material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
+                                -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                    if (DEBUG_MODE) {
+                        LOGGER.info("Attempting to bind " + material.mName);
+                    }
+                    if (material.getMolten(1) != null) {
+                        binds.put(p.getFluid(), material.getMolten(1).getFluid());
+                    } else if (material.getGas(1) != null) {
+                        binds.put(p.getFluid(), material.getGas(1).getFluid());
+                    } else if (material.getFluid(1) != null) {
+                        binds.put(p.getFluid(), material.getFluid(1).getFluid());
+                    } else {
+                        binds.put(p.getFluid(), Materials.Iron.getMolten(1).getFluid());
+                    }
                 }
             }
-            super.displayAllReleventItems(stuffToShow);
+        }
+        for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList) {
+            Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
+                }
+                r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidOutputs[0].amount);
+            }
+            fluid = binds.get(r.mFluidInputs[0].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[0].getUnlocalizedName());
+                }
+                r.mFluidInputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
+            }
+            fluid = binds.get(r.mFluidInputs[1].getFluid());
+            if (fluid != null) {
+                if (DEBUG_MODE) {
+                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[1].getUnlocalizedName());
+                }
+                r.mFluidInputs[1] = new FluidStack(fluid, r.mFluidInputs[1].amount);
+            }
+        }
+    }
+
+    public static int getFuelValue(FluidStack aLiquid) {
+        if (aLiquid == null || GT_Recipe.GT_Recipe_Map.sTurbineFuels == null) return 0;
+        FluidStack tLiquid;
+        Collection<GT_Recipe> tRecipeList = GT_Recipe.GT_Recipe_Map.sPlasmaFuels.mRecipeList;
+        if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
+            if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
+                if (aLiquid.isFluidEqual(tLiquid)) return tFuel.mSpecialValue;
+        return 0;
+    }
+
+    private static void fixBlocks(){
+        HashSet<String> modIDs=new HashSet<>(Arrays.asList(
+                "minecraft",
+                "IC2",
+                "gregtech",
+                Reference.DREAMCRAFT,
+                Reference.GTPLUSPLUS,
+                "GT++DarkWorld",
+                "GalacticraftCore",
+                "GalacticraftMars",
+                "GalaxySpace",
+                "extracells",
+                "Avaritia",
+                "avaritiaddons",
+                "EnderStorage",
+                "enhancedportals",
+                "DraconicEvolution",
+                "IC2NuclearControl",
+                "IronChest",
+                "opensecurity",
+                "openmodularturrets",
+                "Railcraft",
+                "RIO",
+                "SGCraft",
+                "appliedenergistics2",
+                "thaumicenergistics",
+                "witchery",
+                "lootgames",
+                "utilityworlds",
+                Reference.MODID
+        ));
+        for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
+            GameRegistry.UniqueIdentifier uniqueIdentifier=GameRegistry.findUniqueIdentifierFor(block);
+            if (uniqueIdentifier != null) {
+                if (modIDs.contains(uniqueIdentifier.modId)) {//Full Whitelisted Mods
+                    continue;
+                } else if ("OpenBlocks".equals(uniqueIdentifier.modId)) {
+                    if ("grave".equals(uniqueIdentifier.name)) {
+                        continue;
+                    }
+                } else if ("TwilightForest".equals(uniqueIdentifier.modId)){
+                    if ("tile.TFShield".equals(uniqueIdentifier.name)){
+                        block.setResistance(30);
+                        continue;
+                    }else if ("tile.TFThorns".equals(uniqueIdentifier.name)){
+                        block.setResistance(10);
+                        continue;
+                    }else if ("tile.TFTowerTranslucent".equals(uniqueIdentifier.name)){
+                        block.setResistance(30);
+                        continue;
+                    }else if ("tile.TFDeadrock".equals(uniqueIdentifier.name)) {
+                        block.setResistance(5);
+                        continue;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            block.setResistance(5);
         }
     }
 }

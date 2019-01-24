@@ -1,11 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -14,15 +16,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
+import ic2.core.init.MainConfig;
+import ic2.core.util.ConfigUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.VN;
-import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.CommonValues.VN;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -33,6 +35,10 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+
+    private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
+    private static final double MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
+    private static final double MASS_TO_EU_INSTANT= MASS_TO_EU_PARTIAL *20;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -83,7 +89,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
     }
@@ -95,7 +101,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
     }
 
     @Override
@@ -115,29 +121,54 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         cElementalInstanceStackMap map= getInputsClone_EM();
-        if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()< STABLE_RAW_LIFE_TIME){
-            return startRecipe(map.getFirst());
+        if(map!=null && map.hasStacks()){
+            for(GT_MetaTileEntity_Hatch_InputElemental i:eInputHatches){
+                i.getContainerHandler().clear();
+            }
+            return startRecipe(map);
         }
         return false;
     }
 
-    private float m1,m2,m3;
-    private boolean startRecipe(cElementalInstanceStack input) {
-        m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
-        if(m3<1) {
-            explodeMultiblock();
-        }
-        if(m3>=Integer.MAX_VALUE) {
-            return false;
-        }
-        mMaxProgresstime = 1;//(int)m3;
+    private boolean startRecipe(cElementalInstanceStackMap input) {
+        mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-        m1 = input.getMass()/input.amount;
-        cElementalInstanceStackMap decayed=input.decay();
-        m2 = decayed.getMass()/input.amount;
-        //TecTech.Logger.info("I " + input.toString());
-        //TecTech.Logger.info("O " + decayed.toString());
-        return true;
+        outputEM=new cElementalInstanceStackMap[2];
+        outputEM[0]=input;
+        outputEM[1]=new cElementalInstanceStackMap();
+
+
+        for(cElementalInstanceStack stack:outputEM[0].values()){
+            if(stack.getEnergy()==0 && stack.definition.decayMakesEnergy(1)){
+                if(getBaseMetaTileEntity().decreaseStoredEnergyUnits((long)(stack.getEnergySettingCost(1)*MASS_TO_EU_INSTANT),false)){
+                    stack.setEnergy(1);
+                }else{
+                    outputEM[0].remove(stack.definition);
+                    outputEM[1].putReplace(stack);
+                }
+            }else if(!stack.definition.decayMakesEnergy(stack.getEnergy())){
+                outputEM[0].remove(stack.definition);
+                outputEM[1].putReplace(stack);
+            }
+            //System.out.println(stack.definition.getSymbol()+" "+stack.amount);
+        }
+
+
+        float preMass=outputEM[0].getMass();
+        outputEM[0].tickContent(1,0,1);
+        double energyDose=((preMass-outputEM[0].getMass())* MASS_TO_EU_PARTIAL);
+        mEUt=(int)(energyDose/getParameterInInt(0,0));
+        eAmpereFlow=getParameterInInt(0,0);
+
+        return outputEM[0].hasStacks();
+    }
+
+    @Override
+    public void outputAfterRecipe_EM() {
+        for(int i=0;i<2&&i<eOutputHatches.size();i++){
+            eOutputHatches.get(i).getContainerHandler().putUnifyAll(outputEM[i]);
+            outputEM[i]=null;
+        }
     }
 
     @Override
@@ -174,7 +205,11 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
-                m1+" "+m2+ ' ' +m3
         };
+    }
+
+    @Override
+    public long maxEUStore() {
+        return super.maxEUStore();
     }
 }

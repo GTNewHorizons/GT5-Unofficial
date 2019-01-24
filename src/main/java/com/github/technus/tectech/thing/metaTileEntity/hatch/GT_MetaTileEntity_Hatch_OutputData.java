@@ -1,19 +1,23 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.Util;
+import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.IConnectsToDataPipe;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector {
+public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
     public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Data Output for Multiblocks");
+        super(aID, aName, aNameRegional, aTier, "Quantum Data Output for Multiblocks");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -41,18 +45,27 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean isDataInputFacing(byte side) {
+        return isInputFacing(side);
+    }
+
+    @Override
+    protected QuantumDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
+        return new QuantumDataPacket(nbt);
+    }
+
+    @Override
+    public boolean canConnectData(byte side) {
         return isOutputFacing(side);
     }
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        iConnectsToDataPipe current = this, source = this, next;
+        IConnectsToDataPipe current = this, source = this, next;
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
             if (next instanceof GT_MetaTileEntity_Hatch_InputData) {
-                ((GT_MetaTileEntity_Hatch_InputData) next).q = q;
-                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay = true;
+                ((GT_MetaTileEntity_Hatch_InputData) next).setContents(q);
                 break;
             }
             source = current;
@@ -62,27 +75,23 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public iConnectsToDataPipe getNext(iConnectsToDataPipe source/*==this*/) {
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source/*==this*/) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         byte color = base.getColorization();
         if (color < 0) {
             return null;
         }
         IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (next == null || color != base.getColorization()) {
+        if (next == null) {
             return null;
         }
         IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof iConnectsToDataPipe) {
-            if (meta instanceof GT_MetaTileEntity_Hatch_InputData
-                    && GT_Utility.getOppositeSide(next.getFrontFacing()) == base.getFrontFacing()) {
-                return (iConnectsToDataPipe) meta;
-            }
-            if (meta instanceof GT_MetaTileEntity_Pipe_Data
-                    /*&& ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2*/)//Checked later
-            {
-                return (iConnectsToDataPipe) meta;
-            }
+        if (meta instanceof GT_MetaTileEntity_Pipe_Data){
+            return (IConnectsToDataPipe) meta;
+        }else if (meta instanceof GT_MetaTileEntity_Hatch_InputData &&
+                ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization()==color &&
+                ((GT_MetaTileEntity_Hatch_InputData) meta).canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
+            return (IConnectsToDataPipe) meta;
         }
         return null;
     }

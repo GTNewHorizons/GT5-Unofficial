@@ -23,9 +23,8 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
-import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sHintCasingsTT;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 /**
@@ -34,11 +33,11 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 public final class ConstructableTriggerItem extends Item {
     public static ConstructableTriggerItem INSTANCE;
 
-    public static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
+    private static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructableTriggerItem() {
-        setUnlocalizedName("em.debugBuilder");
-        setTextureName(MODID + ":itemDebugBuilder");
+        setUnlocalizedName("em.constructable");
+        setTextureName(MODID + ":itemConstructable");
     }
 
     @Override
@@ -122,20 +121,20 @@ public final class ConstructableTriggerItem extends Item {
         INSTANCE = new ConstructableTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
 
-        multiblockMap.put(GT_MetaTileEntity_ElectricBlastFurnace.class.getCanonicalName(), new MultiblockInfoContainer() {
+        registerMetaClass(GT_MetaTileEntity_ElectricBlastFurnace.class, new MultiblockInfoContainer() {
             //region Structure
             private final String[][] shape = new String[][]{
-                    {"000","111","111"," . ",},
-                    {"0!0","1A1","1A1","   ",},
-                    {"000","111","111","   ",},
+                    {"000","\"\"\"","\"\"\""," . ",},
+                    {"0!0","\"A\"","\"A\"","   ",},
+                    {"000","\"\"\"","\"\"\"","   ",},
             };
-            private final Block[] blockType = new Block[]{sBlockCasings1, sHintCasingsTT};
-            private final byte[] blockMeta = new byte[]{11, 12};
+            private final Block[] blockType = new Block[]{sBlockCasings1};
+            private final byte[] blockMeta = new byte[]{11};
             private final String[] desc=new String[]{
                     EnumChatFormatting.AQUA+"Hint Details:",
                     "1 - Classic Hatches or Heat Proof Casing",
                     "2 - Muffler Hatch",
-                    "General - Coil blocks"
+                    "3 - Coil blocks"
             };
             //endregion
 
@@ -155,5 +154,13 @@ public final class ConstructableTriggerItem extends Item {
         void construct(int stackSize, boolean hintsOnly, TileEntity tileEntity, int aSide);
         @SideOnly(Side.CLIENT)
         String[] getDescription(int stackSize);
+    }
+
+    public static void registerTileClass(Class<? extends TileEntity> clazz,MultiblockInfoContainer info){
+        multiblockMap.put(clazz.getCanonicalName(),info);
+    }
+
+    public static void registerMetaClass(Class<? extends IMetaTileEntity> clazz,MultiblockInfoContainer info){
+        multiblockMap.put(clazz.getCanonicalName(),info);
     }
 }

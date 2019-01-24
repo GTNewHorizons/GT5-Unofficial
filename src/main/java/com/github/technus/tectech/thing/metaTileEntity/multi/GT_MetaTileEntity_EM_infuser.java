@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
@@ -21,8 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
@@ -71,11 +71,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing >= 2;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_infuser(mName);
     }
@@ -97,7 +92,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity(),hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity(),this,hintsOnly);
     }
 
     @Override

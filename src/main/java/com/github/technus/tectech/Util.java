@@ -1,10 +1,12 @@
 package com.github.technus.tectech;
 
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
@@ -19,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,14 +29,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
  * Created by Tec on 21.03.2017.
  */
 public final class Util {
-    private Util() {}
+    private Util() {
+    }
 
     public static String intBitsToString(int number) {
         StringBuilder result = new StringBuilder(16);
@@ -67,6 +71,8 @@ public final class Util {
         return result.toString();
     }
 
+    //region junk
+    /*
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
     public static boolean StructureChecker(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
@@ -170,13 +176,13 @@ public final class Util {
                                     //countable air -> net.minecraft.block.BlockAir
                                     if (world.getBlock(x, y, z) != blockType[pointer]) {
                                         if (DEBUG_MODE) {
-                                            TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                            TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                         }
                                         return false;
                                     }
                                     if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                         if (DEBUG_MODE) {
-                                            TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                            TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
                                         }
                                         return false;
                                     }
@@ -219,8 +225,7 @@ public final class Util {
         IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
-        int
-                baseX=aBaseMetaTileEntity.getXCoord(),
+        int     baseX=aBaseMetaTileEntity.getXCoord(),
                 baseZ=aBaseMetaTileEntity.getZCoord(),
                 baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
@@ -305,13 +310,13 @@ public final class Util {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                                TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
                                             }
                                             return false;
                                         }
                                         if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                             if (DEBUG_MODE) {
-                                                TecTech.Logger.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                                TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
                                             }
                                             return false;
                                         }
@@ -321,13 +326,271 @@ public final class Util {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                        TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                     }
                                                     return false;
                                                 }
                                                 if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
                                                     if (DEBUG_MODE) {
-                                                        TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                        TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
+                                                    }
+                                                    return false;
+                                                }
+                                            }
+                                        } catch (InvocationTargetException | IllegalAccessException e) {
+                                            if (DEBUG_MODE) {
+                                                e.printStackTrace();
+                                            }
+                                            return false;
+                                        }
+                                    }
+                            }
+                        } else if (forceCheck) {
+                            return false;
+                        }
+                        a++;//block in horizontal layer
+                    }
+                }
+                b--;//horizontal layer
+            }
+            c++;//depth
+        }
+        return true;
+    }
+    */
+    //endregion
+
+    //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
+    //This only checks for REGULAR BLOCKS!
+    public static boolean StructureCheckerExtreme(
+            String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            Method adder,
+            String[] addingMethods,
+            short[] casingTextures,
+            Block[] blockTypeFallback,//use numbers 0-9 for casing types
+            byte[] blockMetaFallback,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset,
+            IGregTechTileEntity aBaseMetaTileEntity,
+            IFrontRotation frontRotation,
+            boolean forceCheck) {
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) {
+            return false;
+        }
+        //TE Rotation
+        int facingAndRotation = aBaseMetaTileEntity.getFrontFacing() + (frontRotation == null ? 0 : (frontRotation.getFrontRotation() << 3));
+
+        IGregTechTileEntity igt;
+        IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
+
+        int x, y, z, a, b, c, pointer;
+        int baseX = aBaseMetaTileEntity.getXCoord(),
+                baseZ = aBaseMetaTileEntity.getZCoord(),
+                baseY = aBaseMetaTileEntity.getYCoord();
+        //a,b,c - relative to block face!
+        //x,y,z - relative to block position on map!
+        //yPos  - absolute height of checked block
+
+        //perform your duties
+        c = -depthOffset;
+        for (String[] _structure : structure) {//front to back
+            b = verticalOffset;
+            for (String __structure : _structure) {//top to bottom
+                a = -horizontalOffset;
+                for (char block : __structure.toCharArray()) {//left to right
+                    if (block < ' ') {//Control chars allow skipping
+                        b -= block;
+                        break;
+                    } else if (block > '@') //characters allow to skip check A-1 skip, B-2 skips etc.
+                    {
+                        a += block - '@';
+                    }//else if (block < '+')//used to mark THINGS
+                    //    a++;
+                    else if (block == '.') {
+                        a++;
+                    } else {
+                        //get x y z from rotation
+                        switch (facingAndRotation) {//translation
+                            case 4:
+                                x = baseX + c;
+                                z = baseZ + a;
+                                y = baseY + b;
+                                break;
+                            case 12:
+                                x = baseX + c;
+                                y = baseY - a;
+                                z = baseZ + b;
+                                break;
+                            case 20:
+                                x = baseX + c;
+                                z = baseZ - a;
+                                y = baseY - b;
+                                break;
+                            case 28:
+                                x = baseX + c;
+                                y = baseY + a;
+                                z = baseZ - b;
+                                break;
+
+                            case 3:
+                                x = baseX + a;
+                                z = baseZ - c;
+                                y = baseY + b;
+                                break;
+                            case 11:
+                                y = baseY - a;
+                                z = baseZ - c;
+                                x = baseX + b;
+                                break;
+                            case 19:
+                                x = baseX - a;
+                                z = baseZ - c;
+                                y = baseY - b;
+                                break;
+                            case 27:
+                                y = baseY + a;
+                                z = baseZ - c;
+                                x = baseX - b;
+                                break;
+
+                            case 5:
+                                x = baseX - c;
+                                z = baseZ - a;
+                                y = baseY + b;
+                                break;
+                            case 13:
+                                x = baseX - c;
+                                y = baseY - a;
+                                z = baseZ - b;
+                                break;
+                            case 21:
+                                x = baseX - c;
+                                z = baseZ + a;
+                                y = baseY - b;
+                                break;
+                            case 29:
+                                x = baseX - c;
+                                y = baseY + a;
+                                z = baseZ + b;
+                                break;
+
+                            case 2:
+                                x = baseX - a;
+                                z = baseZ + c;
+                                y = baseY + b;
+                                break;
+                            case 10:
+                                y = baseY - a;
+                                z = baseZ + c;
+                                x = baseX - b;
+                                break;
+                            case 18:
+                                x = baseX + a;
+                                z = baseZ + c;
+                                y = baseY - b;
+                                break;
+                            case 26:
+                                y = baseY + a;
+                                z = baseZ + c;
+                                x = baseX + b;
+                                break;
+                            //Things get odd if the block faces up or down...
+                            case 1:
+                                x = baseX + a;
+                                z = baseZ - b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 9:
+                                z = baseZ + a;
+                                x = baseX + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 17:
+                                x = baseX - a;
+                                z = baseZ + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 25:
+                                z = baseZ - a;
+                                x = baseX - b;
+                                y = baseY - c;
+                                break;//similar to 3
+
+                            case 0:
+                                x = baseX - a;
+                                z = baseZ - b;
+                                y = baseY + c;
+                                break;//similar to 2
+                            case 8:
+                                z = baseZ + a;
+                                x = baseX - b;
+                                y = baseY + c;
+                                break;
+                            case 16:
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY + c;
+                                break;
+                            case 24:
+                                z = baseZ - a;
+                                x = baseX + b;
+                                y = baseY + c;
+                                break;
+                            default:
+                                if (DEBUG_MODE) {
+                                    TecTech.LOGGER.info("facing = " + facingAndRotation);
+                                }
+                                return false;
+                        }
+
+                        //that must be here since in some cases other axis (b,c) controls y
+                        if (y < 0 || y >= 256) {
+                            return false;
+                        }
+
+                        //Check block
+                        if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
+                            switch (block) {
+                                case '-'://must be air
+                                    if (world.getBlock(x, y, z).getMaterial() != Material.air) {
+                                        return false;
+                                    }
+                                    break;
+                                case '+'://must not be air
+                                    if (world.getBlock(x, y, z).getMaterial() == Material.air) {
+                                        return false;
+                                    }
+                                    break;
+                                default://check for block (countable)
+                                    if ((pointer = block - '0') >= 0) {
+                                        //countable air -> net.minecraft.block.BlockAir
+                                        if (world.getBlock(x, y, z) != blockType[pointer]) {
+                                            if (DEBUG_MODE) {
+                                                TecTech.LOGGER.info("Struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + blockType[pointer].getUnlocalizedName());
+                                            }
+                                            return false;
+                                        }
+                                        if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
+                                            if (DEBUG_MODE) {
+                                                TecTech.LOGGER.info("Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMeta[pointer]);
+                                            }
+                                            return false;
+                                        }
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        igt = aBaseMetaTileEntity.getIGregTechTileEntity(x, y, z);
+                                        try {
+                                            if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
+                                                if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
+                                                    }
+                                                    return false;
+                                                }
+                                                if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
+                                                    if (DEBUG_MODE) {
+                                                        TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
                                                     }
                                                     return false;
                                                 }
@@ -359,10 +622,22 @@ public final class Util {
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            IGregTechTileEntity aBaseMetaTileEntity, boolean hintsOnly) {
         byte facing = aBaseMetaTileEntity.getFrontFacing();
-        return StructureBuilder(structure,blockType,blockMeta,
-                horizontalOffset,verticalOffset,depthOffset,
-                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),
-                facing,hintsOnly);
+        return StructureBuilderExtreme(structure, blockType, blockMeta,
+                horizontalOffset, verticalOffset, depthOffset,
+                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()), null,
+                facing, hintsOnly);
+    }
+
+    public static boolean StructureBuilderExtreme(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                                  Block[] blockType,//use numbers 0-9 for casing types
+                                                  byte[] blockMeta,//use numbers 0-9 for casing types
+                                                  int horizontalOffset, int verticalOffset, int depthOffset,
+                                                  IGregTechTileEntity aBaseMetaTileEntity, IFrontRotation frontRotation, boolean hintsOnly) {
+        byte facing = aBaseMetaTileEntity.getFrontFacing();
+        return StructureBuilderExtreme(structure, blockType, blockMeta,
+                horizontalOffset, verticalOffset, depthOffset,
+                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord()), frontRotation,
+                facing, hintsOnly);
     }
 
     public static boolean StructureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
@@ -370,7 +645,15 @@ public final class Util {
                                            byte[] blockMeta,//use numbers 0-9 for casing types
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            TileEntity tileEntity, int facing, boolean hintsOnly) {
-        if(!tileEntity.hasWorldObj()) {
+        return StructureBuilderExtreme(structure, blockType, blockMeta, horizontalOffset, verticalOffset, depthOffset, tileEntity, null, facing, hintsOnly);
+    }
+
+    public static boolean StructureBuilderExtreme(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                                  Block[] blockType,//use numbers 0-9 for casing types
+                                                  byte[] blockMeta,//use numbers 0-9 for casing types
+                                                  int horizontalOffset, int verticalOffset, int depthOffset,
+                                                  TileEntity tileEntity, IFrontRotation frontRotation, int facing, boolean hintsOnly) {
+        if (!tileEntity.hasWorldObj()) {
             return false;
         }
         World world = tileEntity.getWorldObj();
@@ -382,11 +665,14 @@ public final class Util {
 
         int x, y, z, a, b, c, pointer;
         int
-                baseX=tileEntity.xCoord,
-                baseZ=tileEntity.zCoord,
-                baseY=tileEntity.yCoord;
+                baseX = tileEntity.xCoord,
+                baseZ = tileEntity.zCoord,
+                baseY = tileEntity.yCoord;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
+        if (frontRotation != null) {
+            facing += frontRotation.getFrontRotation() << 3;
+        }
 
         //perform your duties
         c = -depthOffset;
@@ -398,49 +684,147 @@ public final class Util {
                     if (block < ' ') {//Control chars allow skipping
                         b -= block;
                         break;
-                    } if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
+                    }
+                    if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
                     {
                         a += block - '@';
                     }//else if (block < '+')//used to mark THINGS
-                  //    a++;
-                    else if (block=='.')// this TE
+                    //    a++;
+                    else if (block == '.')// this TE
                     {
                         a++;
                     } else {
                         //get x y z from rotation
-                        switch (facing) {//translation
+                        switch (facing) {
                             case 4:
                                 x = baseX + c;
                                 z = baseZ + a;
                                 y = baseY + b;
                                 break;
+                            case 12:
+                                x = baseX + c;
+                                y = baseY - a;
+                                z = baseZ + b;
+                                break;
+                            case 20:
+                                x = baseX + c;
+                                z = baseZ - a;
+                                y = baseY - b;
+                                break;
+                            case 28:
+                                x = baseX + c;
+                                y = baseY + a;
+                                z = baseZ - b;
+                                break;
+
                             case 3:
                                 x = baseX + a;
                                 z = baseZ - c;
                                 y = baseY + b;
                                 break;
+                            case 11:
+                                y = baseY - a;
+                                z = baseZ - c;
+                                x = baseX + b;
+                                break;
+                            case 19:
+                                x = baseX - a;
+                                z = baseZ - c;
+                                y = baseY - b;
+                                break;
+                            case 27:
+                                y = baseY + a;
+                                z = baseZ - c;
+                                x = baseX - b;
+                                break;
+
                             case 5:
                                 x = baseX - c;
                                 z = baseZ - a;
                                 y = baseY + b;
                                 break;
+                            case 13:
+                                x = baseX - c;
+                                y = baseY - a;
+                                z = baseZ - b;
+                                break;
+                            case 21:
+                                x = baseX - c;
+                                z = baseZ + a;
+                                y = baseY - b;
+                                break;
+                            case 29:
+                                x = baseX - c;
+                                y = baseY + a;
+                                z = baseZ + b;
+                                break;
+
                             case 2:
                                 x = baseX - a;
                                 z = baseZ + c;
                                 y = baseY + b;
                                 break;
+                            case 10:
+                                y = baseY - a;
+                                z = baseZ + c;
+                                x = baseX - b;
+                                break;
+                            case 18:
+                                x = baseX + a;
+                                z = baseZ + c;
+                                y = baseY - b;
+                                break;
+                            case 26:
+                                y = baseY + a;
+                                z = baseZ + c;
+                                x = baseX + b;
+                                break;
                             //Things get odd if the block faces up or down...
                             case 1:
                                 x = baseX + a;
+                                z = baseZ - b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 9:
+                                z = baseZ + a;
+                                x = baseX + b;
+                                y = baseY - c;
+                                break;//similar to 3
+                            case 17:
+                                x = baseX - a;
                                 z = baseZ + b;
                                 y = baseY - c;
                                 break;//similar to 3
+                            case 25:
+                                z = baseZ - a;
+                                x = baseX - b;
+                                y = baseY - c;
+                                break;//similar to 3
+
                             case 0:
                                 x = baseX - a;
                                 z = baseZ - b;
                                 y = baseY + c;
                                 break;//similar to 2
+                            case 8:
+                                z = baseZ + a;
+                                x = baseX - b;
+                                y = baseY + c;
+                                break;
+                            case 16:
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY + c;
+                                break;
+                            case 24:
+                                z = baseZ - a;
+                                x = baseX + b;
+                                y = baseY + c;
+                                break;
                             default:
+                                if (DEBUG_MODE) {
+                                    TecTech.LOGGER.info("facing = " + facing);
+                                }
                                 return false;
                         }
 
@@ -451,49 +835,49 @@ public final class Util {
 
                         //Check block
                         if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded
-                            if(hintsOnly){
+                            if (hintsOnly) {
                                 switch (block) {
-                                case '-'://must be air
-                                    TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 13);
-                                    break;
-                                case '+'://must not be air
-                                    TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 14);
-                                    break;
-                                default: //check for block
-                                    if ((pointer = block - '0') >= 0) {
-                                        if(world.getBlock(x,y,z)!=blockType[pointer] || world.getBlockMetadata(x,y,z)!=blockMeta[pointer]) {
-                                            TecTech.proxy.hint_particle(world, x, y, z, blockType[pointer], blockMeta[pointer]);
-                                        }
-                                    } else if ((pointer = block - ' ') >= 0) {
-                                        if(pointer>=0 && pointer<12) {
-                                            TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, pointer);
+                                    case '-'://must be air
+                                        TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 13);
+                                        break;
+                                    case '+'://must not be air
+                                        TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 14);
+                                        break;
+                                    default: //check for block
+                                        if ((pointer = block - '0') >= 0) {
+                                            if (world.getBlock(x, y, z) != blockType[pointer] || world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
+                                                TecTech.proxy.hint_particle(world, x, y, z, blockType[pointer], blockMeta[pointer]);
+                                            }
+                                        } else if ((pointer = block - ' ') >= 0) {
+                                            if (pointer >= 0 && pointer < 12) {
+                                                TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, pointer);
+                                            } else {
+                                                TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
+                                            }
                                         } else {
-                                            TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
+                                            TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
                                         }
-                                    } else {
-                                        TecTech.proxy.hint_particle(world, x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
-                                    }
                                 }
-                            }else{
+                            } else {
                                 switch (block) {
-                                case '-'://must be air
-                                    world.setBlock(x, y, z, Blocks.air, 0, 2);
-                                    break;
-                                case '+'://must not be air
-                                    world.setBlock(x, y, z, TT_Container_Casings.sBlockCasingsTT, 14, 2);
-                                    break;
-                                default: //check for block
-                                    if ((pointer = block - '0') >= 0) {
-                                        world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
-                                    } else if (block - ' ' < 0) {
-                                        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15, 2);
-                                    } //else {
+                                    case '-'://must be air
+                                        world.setBlock(x, y, z, Blocks.air, 0, 2);
+                                        break;
+                                    case '+'://must not be air
+                                        world.setBlock(x, y, z, TT_Container_Casings.sBlockCasingsTT, 14, 2);
+                                        break;
+                                    default: //check for block
+                                        if ((pointer = block - '0') >= 0) {
+                                            world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
+                                        } else if (block - ' ' < 0) {
+                                            world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15, 2);
+                                        } //else {
                                         //switch(pointer){
                                         //    case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
                                         //        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
                                         //    default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
                                         //}
-                                    //}
+                                        //}
                                 }
                             }
                         }
@@ -506,6 +890,7 @@ public final class Util {
         }
         return true;
     }
+
 
     public static String[] StructureWriter(IGregTechTileEntity aBaseMetaTileEntity,
                                            int horizontalOffset, int verticalOffset, int depthOffset,
@@ -521,9 +906,9 @@ public final class Util {
 
         int x, y, z, a, b, c;
         int
-                baseX=aBaseMetaTileEntity.getXCoord(),
-                baseZ=aBaseMetaTileEntity.getZCoord(),
-                baseY=aBaseMetaTileEntity.getYCoord();
+                baseX = aBaseMetaTileEntity.getXCoord(),
+                baseZ = aBaseMetaTileEntity.getZCoord(),
+                baseY = aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -702,7 +1087,7 @@ public final class Util {
                 if (ignoreAir) {
                     StringBuilder builder = new StringBuilder();
                     char temp = '@';
-                    for (char ch : line.toString().toCharArray()){
+                    for (char ch : line.toString().toCharArray()) {
                         if (ch == '-') {
                             temp += 1;
                             if (temp == '~') {
@@ -717,21 +1102,21 @@ public final class Util {
                             builder.append(ch);
                         }
                     }
-                    while (builder.length()>0 && builder.charAt(builder.length() - 1) == '~') {
+                    while (builder.length() > 0 && builder.charAt(builder.length() - 1) == '~') {
                         builder.deleteCharAt(builder.length() - 1);
                     }
-                    if (builder.length()==0) {
+                    if (builder.length() == 0) {
                         builder.append("E,");
                     } else {
-                        builder.insert(0,'"');
+                        builder.insert(0, '"');
                         builder.append('"').append(',');
                     }
                     addMe.append(builder);
                 } else {
-                    if (line.length()==0) {
+                    if (line.length() == 0) {
                         line.append("E,");
                     } else {
-                        line.insert(0,'"');
+                        line.insert(0, '"');
                         line.append('"').append(',');
                     }
                     addMe.append(line);
@@ -740,11 +1125,11 @@ public final class Util {
             }
             //region less verbose
             addMe.append('}').append(',');
-            String builtStr=addMe.toString().replaceAll("(E,)+(?=})",E/*Remove Empty strings at end*/);
+            String builtStr = addMe.toString().replaceAll("(E,)+(?=})", E/*Remove Empty strings at end*/);
             Matcher matcher = matchE_.matcher(builtStr);
             while (matcher.find()) {
-                byte lenEE = (byte)(matcher.group(1).length()>>1);
-                builtStr=builtStr.replaceFirst("E,(E,)+","\"\\\\u00"+String.format("%02X", lenEE-1)+"\",");
+                byte lenEE = (byte) (matcher.group(1).length() >> 1);
+                builtStr = builtStr.replaceFirst("E,(E,)+", "\"\\\\u00" + String.format("%02X", lenEE - 1) + "\",");
                 //builtStr=builtStr.replaceFirst("E,(E,)+\"","\"\\\\u00"+String.format("%02X", lenEE));
             }
             //endregion
@@ -869,32 +1254,28 @@ public final class Util {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
     }
 
-
-    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UEV", "UIV", "UMV", "UXV", "OpV", "MAX"};
-    public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 2097152L, 8388608L, 33554432L, 134217728L, 536870912L, 1073741824L, Integer.MAX_VALUE-7};
-
     public static byte getTier(long l) {
         byte b = -1;
 
         do {
             ++b;
-            if (b >= V.length) {
+            if (b >= CommonValues.V.length) {
                 return b;
             }
-        } while(l > V[b]);
+        } while (l > CommonValues.V[b]);
 
         return b;
     }
 
-    public static String[] splitButDifferent(String string,String delimiter){
-        String[] strings= new String[StringUtils.countMatches(string,delimiter)+1];
-        int lastEnd=0;
-        for(int i=0;i<strings.length-1;i++){
-            int nextEnd=string.indexOf(delimiter,lastEnd);
-            strings[i]=string.substring(lastEnd,nextEnd);
-            lastEnd=nextEnd+delimiter.length();
+    public static String[] splitButDifferent(String string, String delimiter) {
+        String[] strings = new String[StringUtils.countMatches(string, delimiter) + 1];
+        int lastEnd = 0;
+        for (int i = 0; i < strings.length - 1; i++) {
+            int nextEnd = string.indexOf(delimiter, lastEnd);
+            strings[i] = string.substring(lastEnd, nextEnd);
+            lastEnd = nextEnd + delimiter.length();
         }
-        strings[strings.length-1]=string.substring(lastEnd);
+        strings[strings.length - 1] = string.substring(lastEnd);
         return strings;
     }
 
@@ -906,41 +1287,42 @@ public final class Util {
         return strings;
     }
 
-    public static boolean areBitsSet(int setBits,int testedValue){
-        return (testedValue&setBits)==setBits;
+    public static boolean areBitsSet(int setBits, int testedValue) {
+        return (testedValue & setBits) == setBits;
     }
 
-    public static class TT_ItemStack implements Comparable<TT_ItemStack>{
+    public static class TT_ItemStack implements Comparable<TT_ItemStack> {
         public final Item mItem;
         public final int mStackSize;
         public final int mMetaData;
 
         public TT_ItemStack(Item aItem, long aStackSize, long aMetaData) {
             this.mItem = aItem;
-            this.mStackSize = (byte)((int)aStackSize);
-            this.mMetaData = (short)((int)aMetaData);
+            this.mStackSize = (byte) ((int) aStackSize);
+            this.mMetaData = (short) ((int) aMetaData);
         }
 
         public TT_ItemStack(ItemStack aStack) {
-            if(aStack==null){
-                mItem=null;
-                mStackSize=mMetaData=0;
-            }else{
-                mItem=aStack.getItem();
-                mStackSize=aStack.stackSize;
-                mMetaData=Items.feather.getDamage(aStack);
+            if (aStack == null) {
+                mItem = null;
+                mStackSize = mMetaData = 0;
+            } else {
+                mItem = aStack.getItem();
+                mStackSize = aStack.stackSize;
+                mMetaData = Items.feather.getDamage(aStack);
             }
         }
 
         @Override
         public int compareTo(TT_ItemStack o) {
-            if(mMetaData>o.mMetaData) return 1;
-            if(mMetaData<o.mMetaData) return -1;
-            if(mStackSize>o.mStackSize) return 1;
-            if(mStackSize<o.mStackSize) return -1;
-            if(mItem!=null && o.mItem!=null) return mItem.getUnlocalizedName().compareTo(o.mItem.getUnlocalizedName());
-            if(mItem==null && o.mItem==null) return 0;
-            if(mItem!=null) return 1;
+            if (mMetaData > o.mMetaData) return 1;
+            if (mMetaData < o.mMetaData) return -1;
+            if (mStackSize > o.mStackSize) return 1;
+            if (mStackSize < o.mStackSize) return -1;
+            if (mItem != null && o.mItem != null)
+                return mItem.getUnlocalizedName().compareTo(o.mItem.getUnlocalizedName());
+            if (mItem == null && o.mItem == null) return 0;
+            if (mItem != null) return 1;
             return -1;
         }
 
@@ -948,19 +1330,29 @@ public final class Util {
         public boolean equals(Object aStack) {
             return aStack == this ||
                     (aStack instanceof TT_ItemStack &&
-                            ((mItem==((TT_ItemStack) aStack).mItem) || ((TT_ItemStack) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
+                            ((mItem == ((TT_ItemStack) aStack).mItem) || ((TT_ItemStack) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
                             ((TT_ItemStack) aStack).mStackSize == this.mStackSize &&
                             ((TT_ItemStack) aStack).mMetaData == this.mMetaData);
         }
 
         @Override
         public int hashCode() {
-            return (mItem!=null?mItem.getUnlocalizedName().hashCode():0) ^ (mMetaData << 16) ^ (mStackSize<<24);
+            return (mItem != null ? mItem.getUnlocalizedName().hashCode() : 0) ^ (mMetaData << 16) ^ (mStackSize << 24);
         }
 
         @Override
         public String toString() {
-            return Integer.toString(hashCode())+' '+(mItem==null?"null":mItem.getUnlocalizedName())+' '+mMetaData+' '+mStackSize;
+            return Integer.toString(hashCode()) + ' ' + (mItem == null ? "null" : mItem.getUnlocalizedName()) + ' ' + mMetaData + ' ' + mStackSize;
+        }
+    }
+
+    public static void setTier(int tier,Object me){
+        try{
+            Field field=GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
+            field.setAccessible(true);
+            field.set(me,(byte)tier);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

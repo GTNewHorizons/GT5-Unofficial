@@ -11,7 +11,24 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
-    hatch_CreativeMaitenance, Machine_DebugWriter,Machine_DebugGenny,
+    Casing_UEV,Casing_UIV,Casing_UMV,Casing_UXV,Casing_OPV,Casing_MAXV,
+    Hull_UEV,Hull_UIV,Hull_UMV,Hull_UXV,Hull_OPV,Hull_MAXV,
+    Transformer_UEV_UHV,Transformer_UIV_UEV,Transformer_UMV_UIV,
+    Transformer_UXV_UMV,Transformer_OPV_UXV,Transformer_MAXV_OPV,
+    WetTransformer_LV_ULV,WetTransformer_MV_LV,WetTransformer_HV_MV,WetTransformer_EV_HV,
+    WetTransformer_IV_EV,WetTransformer_LuV_IV,WetTransformer_ZPM_LuV,WetTransformer_UV_ZPM,
+    WetTransformer_UHV_UV,WetTransformer_UEV_UHV,WetTransformer_UIV_UEV,WetTransformer_UMV_UIV,
+    WetTransformer_UXV_UMV,WetTransformer_OPV_UXV,WetTransformer_MAXV_OPV,
+
+    Transformer_HA_UEV_UHV,Transformer_HA_UIV_UEV,Transformer_HA_UMV_UIV,Transformer_HA_UXV_UMV,
+    Transformer_HA_OPV_UXV,Transformer_HA_MAXV_OPV,
+
+    hatch_CreativeMaitenance,
+    Machine_OwnerDetector,Machine_DataReader,
+    Machine_BuckConverter_IV,Machine_BuckConverter_LuV,Machine_BuckConverter_ZPM,
+    Machine_BuckConverter_UV,Machine_BuckConverter_UHV,Machine_BuckConverter_UEV,
+    Machine_BuckConverter_UIV,Machine_BuckConverter_UMV, Machine_BuckConverter_UXV,
+    Machine_DebugWriter,Machine_DebugGenny,
     EMpipe, DATApipe, rack_Hatch, holder_Hatch, capacitor_Hatch,
 
     eM_dynamomulti4_IV, eM_dynamomulti16_IV, eM_dynamomulti64_IV,
@@ -37,12 +54,12 @@ public enum CustomItemList implements IItemContainer {
     eM_in_UV, eM_in_UHV, eM_in_UEV, eM_in_UIV, eM_in_UMV, eM_in_UXV,
     eM_out_UV, eM_out_UHV, eM_out_UEV, eM_out_UIV, eM_out_UMV, eM_out_UXV,
     eM_muffler_UV, eM_muffler_UHV, eM_muffler_UEV, eM_muffler_UIV, eM_muffler_UMV, eM_muffler_UXV,
-    Parametrizer_Hatch, ParametrizerX_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch,
+    Parametrizer_Hatch, ParametrizerX_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch, dataInAss_Hatch, dataOutAss_Hatch,
     eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment, eM_Ultimate_Containment_Advanced, eM_Ultimate_Containment_Field, eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
     Machine_Multi_Microwave, Machine_Multi_teslaCoil,
     Machine_Multi_Transformer,
-    Machine_Multi_Computer, Machine_Multi_Switch, Machine_Multi_Research,
+    Machine_Multi_Computer, Machine_Multi_Switch, Machine_Multi_Research, Machine_Multi_DataBank,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction, Machine_Multi_Scanner,
     Machine_Multi_EssentiaToEM, Machine_Multi_EMToEssentia,
     Machine_Multi_Infuser, Machine_Multi_Collider,

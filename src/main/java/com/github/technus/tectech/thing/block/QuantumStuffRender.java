@@ -58,9 +58,9 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
         tes.setBrightness(15728880);
         IIcon side = QuantumStuffBlock.stuff;
         for(int i=0;i<6;i++){
-            float f = 1 - TecTech.Rnd.nextFloat() / 4f, g = f - TecTech.Rnd.nextFloat() / 4f, r = g - TecTech.Rnd.nextFloat() / 4f - 0.25f;
+            float f = 1 - TecTech.RANDOM.nextFloat() / 4f, g = f - TecTech.RANDOM.nextFloat() / 4f, r = g - TecTech.RANDOM.nextFloat() / 4f - 0.25f;
             tes.setColorOpaque_F(r, g, f);
-            float rotX=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotY=TecTech.Rnd.nextFloat()*2*(float) Math.PI,rotZ=TecTech.Rnd.nextFloat()*2*(float) Math.PI;
+            float rotX=TecTech.RANDOM.nextFloat()*2*(float) Math.PI,rotY=TecTech.RANDOM.nextFloat()*2*(float) Math.PI,rotZ=TecTech.RANDOM.nextFloat()*2*(float) Math.PI;
             tesAbuse(x,y,z,-1.425f,-1.425f,.1f,rotX,rotY,rotZ,side.getMinU(), side.getMaxV());
             tesAbuse(x,y,z,-1.425f,1.425f,.1f,rotX,rotY,rotZ,side.getMinU(), side.getMinV());
             tesAbuse(x,y,z,1.425f,1.425f,.1f,rotX,rotY,rotZ,side.getMaxU(), side.getMinV());

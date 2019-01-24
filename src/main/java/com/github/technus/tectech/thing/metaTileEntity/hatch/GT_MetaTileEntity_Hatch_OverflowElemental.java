@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Locale;
 
 import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
-import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -42,30 +43,20 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     private float overflowMatter = 0f;
     public final float overflowMax;
     private final float overflowDisperse;
-    private final int eTier;
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
         super(aID, aName, aNameRegional, aTier, 0, "Disposes excess elemental Matter");
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
-        eTier=aTier;
+        Util.setTier(aTier,this);
     }
 
-    //public GT_MetaTileEntity_Hatch_MufflerElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
-    //    super(aName, aTier, 0, aDescription, aTextures);
-    //    overflowMatter = max / 2;
-    //    overflowMax = max;
-    //    overflowDisperse = overflowMax / (float) (30 - aTier);
-    //    eTier=aTier;
-    //}
-
-    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, int eTier, float max, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, float max, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
-        this.eTier=eTier;
     }
 
     @Override
@@ -121,7 +112,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OverflowElemental(mName, mTier, eTier, overflowMax, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OverflowElemental(mName, mTier, overflowMax, mDescription, mTextures);
     }
 
     @Override
@@ -211,7 +202,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     @Override
     public void onRemoval() {
         if (isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) {
-            if (TecTech.ModConfig.BOOM_ENABLE) {
+            if (TecTech.configTecTech.BOOM_ENABLE) {
                 getBaseMetaTileEntity().doExplosion(V[15]);
             } else {
                 TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + ' ' + getBaseMetaTileEntity().getYCoord() + ' ' + getBaseMetaTileEntity().getZCoord());

@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import cpw.mods.fml.relauncher.Side;
@@ -32,6 +33,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Scans Blocks Around");
+        Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -104,7 +106,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
             for (String s : result) {
-                TecTech.Logger.info(s);
+                TecTech.LOGGER.info(s);
             }
             aBaseMetaTileEntity.disableWorking();
         }
@@ -114,7 +116,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         result = StructureWriter(getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
         for (String s : result) {
-            TecTech.Logger.info(s);
+            TecTech.LOGGER.info(s);
         }
     }
 
@@ -125,7 +127,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         }
         aBaseMetaTileEntity.openGUI(aPlayer);
         //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
-        //    TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
+        //    TecTech.LOGGER.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 

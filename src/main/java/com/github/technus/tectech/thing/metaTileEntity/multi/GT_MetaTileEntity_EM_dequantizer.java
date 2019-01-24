@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.transformations.iExchangeInfo;
-import com.github.technus.tectech.elementalMatter.core.stacks.iHasElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.iHasElementalDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.iExchangeInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
@@ -23,11 +23,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.V;
-import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), hintsOnly);
+        StructureBuilderExtreme(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(),this, hintsOnly);
     }
 
     @Override
@@ -135,12 +135,12 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         float mass = from.getMass();
-        float euMult = mass / refMass;
-        eAmpereFlow = (int) Math.ceil(euMult);
+        float euMult = Math.abs(mass / refMass);
+        eAmpereFlow = (int) Math.ceil(Math.sqrt(Math.sqrt(euMult)));
         if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
-            mEUt = (int) -V[10];
-        } else {
             mEUt = (int) -V[8];
+        } else {
+            mEUt = (int) -V[6];
         }
     }
 

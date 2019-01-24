@@ -3,8 +3,8 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.loader.ModGuiHandler;
+import com.github.technus.tectech.loader.gui.ModGuiHandler;
+import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.Reference.MODID;
 
 /**
  * Created by Tec on 15.03.2017.

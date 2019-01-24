@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.casing;
 
-import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -118,6 +118,7 @@ public class GT_Container_DebugPowerGenerator
         GT_MetaTileEntity_DebugPowerGenerator dpg = (GT_MetaTileEntity_DebugPowerGenerator) mTileEntity.getMetaTileEntity();
         EUT=dpg.EUT;
         AMP=dpg.AMP;
+        dpg.producing =(long)AMP*EUT>=0;
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;

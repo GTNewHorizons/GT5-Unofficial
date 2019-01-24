@@ -4,8 +4,10 @@ tile.quantumStuff.name=Quantum Stuff
 item.em.debugContainer.name=Debug EM Container
 item.em.definitionContainer.name=EM Recipe Hint
 item.em.definitionScanStorage.name=EM Scan Storage
-item.em.debugBuilder.name=Multiblock Machine Blueprint
+item.em.constructable.name=Multiblock Machine Blueprint
+item.em.frontRotate.name=Front Rotation Scrench
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
+item.em.EuMeterGT.name=GT EU meter
 
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.

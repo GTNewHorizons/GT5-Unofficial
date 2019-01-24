@@ -4,12 +4,13 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.Vec3pos;
-import com.github.technus.tectech.dataFramework.QuantumDataPacket;
+import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -19,7 +20,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -28,9 +28,9 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.V;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.Util.StructureBuilderExtreme;
+import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new TT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }
@@ -166,7 +166,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
             Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
-            QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / eOutputData.size()).unifyTraceWith(pos);
+            if(pack==null){
+                return;
+            }
             for (GT_MetaTileEntity_Hatch_InputData hatch : eInputData) {
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
@@ -176,8 +179,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                     return;
                 }
             }
-
-            pack.computation /= eOutputData.size();
 
             for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData) {
                 o.q = pack;
@@ -251,7 +252,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         }
 
         if (!machineBusy) {
-            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
         } else if (eAvailableData <= 0) {
             setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else {
@@ -320,16 +321,16 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
         IGregTechTileEntity igt=getBaseMetaTileEntity();
-        StructureBuilder(front, blockType, blockMeta, 1, 2, 0, igt,hintsOnly);
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, -1, igt,hintsOnly);
+        StructureBuilderExtreme(front, blockType, blockMeta, 1, 2, 0, igt,this,hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, -1, igt,this,hintsOnly);
 
         byte offset=-2;
         for (int rackSlices = stackSize >12?12: stackSize; rackSlices>0 ; rackSlices--) {
-            StructureBuilder(slice, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
+            StructureBuilderExtreme(slice, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
         }
 
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
-        StructureBuilder(terminator, blockType, blockMeta, 1, 2, offset,igt,hintsOnly);
+        StructureBuilderExtreme(cap, blockType, blockMeta, 1, 2, offset--, igt,this,hintsOnly);
+        StructureBuilderExtreme(terminator, blockType, blockMeta, 1, 2, offset,igt,this,hintsOnly);
     }
 
     @Override
@@ -348,14 +349,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                Util.intBitsToString(TecTech.Rnd.nextInt()),
+                Util.intBitsToString(TecTech.RANDOM.nextInt()),
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
         };
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing >= 2;
     }
 
     //NEW METHOD
