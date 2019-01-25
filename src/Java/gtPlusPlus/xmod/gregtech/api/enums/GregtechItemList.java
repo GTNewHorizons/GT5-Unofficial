@@ -96,6 +96,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Carbyne_Tube_Finished,
 	Carbyne_Sheet_Finished,
 	
+	//End Game Laser Engraver Lens
+	Laser_Lens_Special,
+	
 
 	//----------------------------------------------------------------------------
 	

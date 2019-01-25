@@ -10,7 +10,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
@@ -315,7 +317,7 @@ public class ItemUtils {
 			return returnValue;
 		}
 		Logger.INFO("Failed to find `" + oredictName + "` in OD.");
-		return getErrorStack(amount);
+		return getErrorStack(amount, oredictName+" x"+amount);
 		//return getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
 	}
 
@@ -366,8 +368,7 @@ public class ItemUtils {
 	public static ItemStack getGregtechDust(final Materials material, final int amount) {
 		final ItemStack returnValue = GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L);
 		if (returnValue != null) {
-			if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass())
-					|| (returnValue.getItem() != ModItems.AAA_Broken)) {
+			if (ItemUtils.checkForInvalidItems(returnValue)) {
 				return returnValue.copy();
 			}
 		}
@@ -762,23 +763,23 @@ public class ItemUtils {
 		if (aGtStack == null) {
 			Logger.INFO(
 					"Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
-			return getErrorStack(mAmount);
+			return getErrorStack(mAmount, (mPrefix.toString()+MaterialUtils.getMaterialName(mMat)+" x"+mAmount));
 		} else {
 			return aGtStack;
 		}
 	}
 
-	public static ItemStack getErrorStack(int mAmount) {
-		//System.exit(1);
-		try {
-			//new GregtechException("Logging - [Issue #999]");
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
+	public static ItemStack getErrorStack(int mAmount) {		
+		return getErrorStack(mAmount, null);
+	}
 
-		return getSimpleStack(ModItems.AAA_Broken, mAmount);
-		//return null;
+	public static ItemStack getErrorStack(int mAmount, String aName) {	
+		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
+		NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);		
+		if (aName != null) {
+			NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
+		}		
+		return g;
 	}
 
 	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname) {

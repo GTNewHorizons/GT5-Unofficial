@@ -1,29 +1,31 @@
 package gtPlusPlus.core.recipe.common;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class CI {
 
 	//null
-	public static ItemStack _NULL = ItemUtils.getSimpleStack(ModItems.AAA_Broken);
+	public static ItemStack _NULL = ItemUtils.getErrorStack(1);
 
 	//bits
 	public static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
@@ -519,6 +521,266 @@ public class CI {
 
 	public static ItemStack emptyCells(int i) {
 		return ItemUtils.getEmptyCell(i);
+	}
+	
+	
+	
+	/*
+	 * 
+	 */
+	
+	private static final Material[] aMaterial_Main = new Material[] {
+			MaterialEIO.REDSTONE_ALLOY,
+			ALLOY.POTIN,
+			ALLOY.ZIRCONIUM_CARBIDE,				
+			ALLOY.EGLIN_STEEL,				
+			ALLOY.INCONEL_792,				
+			ALLOY.TUNGSTEN_TITANIUM_CARBIDE,				
+			ALLOY.NITINOL_60,				
+			ALLOY.ZERON_100,				
+			ALLOY.PIKYONIUM,				
+			ELEMENT.STANDALONE.ADVANCED_NITINOL,
+			ALLOY.ABYSSAL,
+			ALLOY.QUANTUM
+	};		
+	
+	private static final Material[] aMaterial_Secondary = new Material[] {
+			ELEMENT.getInstance().LEAD,
+			ALLOY.TUMBAGA,
+			ALLOY.SILICON_CARBIDE,
+			ALLOY.TUNGSTEN_CARBIDE,				
+			ALLOY.INCONEL_690,				
+			ALLOY.STELLITE,
+			ALLOY.ARCANITE,				
+			ALLOY.LAFIUM,
+			ALLOY.CINOBITE,
+			ALLOY.TITANSTEEL,
+			ALLOY.OCTIRON,
+			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN
+	};	
+	
+	private static final Material[] aMaterial_Tertiary = new Material[] {
+			ELEMENT.getInstance().IRON,
+			ALLOY.STEEL,
+			ELEMENT.getInstance().ALUMINIUM,
+			ALLOY.STAINLESSSTEEL,
+			ELEMENT.getInstance().TUNGSTEN,
+			ALLOY.HASTELLOY_N,
+			ALLOY.ENERGYCRYSTAL,				
+			ALLOY.TRINIUM_NAQUADAH_CARBON,				
+			ALLOY.TRINIUM_REINFORCED_STEEL, //Arceus
+			ALLOY.TITANSTEEL,
+			ELEMENT.STANDALONE.ASTRAL_TITANIUM,
+			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN
+	};	
+	
+	private static final Materials[] aMaterial_Cables = new Materials[] {
+			(CORE.ConfigSwitches.enableCustom_Cables && LoadedMods.EnderIO) ? Materials.RedstoneAlloy :  CORE.GTNH ? Materials.Lead : Materials.Tin,
+			Materials.Cobalt,
+			Materials.AnnealedCopper,
+			Materials.Gold,
+			Materials.Titanium,
+			Materials.Nichrome,
+			Materials.Platinum,
+			Materials.YttriumBariumCuprate,
+			Materials.Naquadah,
+			Materials.Duranium,
+			Materials.Superconductor,				
+	};
+	
+	private static final Materials[] aMaterial_Circuits = new Materials[] {
+			Materials.Primitive,
+			Materials.Basic,
+			Materials.Good,
+			Materials.Advanced,
+			Materials.Data,
+			Materials.Data,
+			Materials.Elite,
+			Materials.Master,
+			Materials.Ultimate,
+			Materials.Superconductor,
+			Materials.Infinite,				
+	};
+	
+	private static final Material[][] aMaster = new Material[][] {aMaterial_Main, aMaterial_Secondary, aMaterial_Tertiary};	
+	
+	
+	public static FluidStack getTieredFluid(int aTier, int aAmount) {
+		ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
+		FluidStack a = GT_Utility.getFluidForFilledItem(aCell, true);
+		if (a == null) {
+			a = aMaster[0][aTier].getFluid(aAmount);
+		}
+		a.amount = aAmount;
+		return a;
+	}
+	
+	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
+		aTier = Math.max(0, aTier);		
+	
+		Material m = null;
+		
+		
+		
+		
+		
+		
+		if (aPrefix == OrePrefixes.liquid) {
+			int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0 : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
+			ItemStack aCell = aMaster[aMatID][aTier].getCell(aAmount);
+			return aCell;
+		}
+		
+		if (aPrefix == OrePrefixes.circuit) {	
+			if (aTier == 4) {
+				return ItemUtils.getSimpleStack(CI.getDataStick(), aAmount);
+			}
+			else if (aTier == 5) {
+				return ItemUtils.getSimpleStack(CI.getDataOrb(), aAmount);
+			}			
+			return ItemUtils.getOrePrefixStack(OrePrefixes.circuit, aMaterial_Circuits[aTier], aAmount); 
+		}
+
+		//Check for Cables first, catch SuperConductor case and swap to wire.
+		if (aPrefix == OrePrefixes.cableGt01 || aPrefix == OrePrefixes.cableGt02 || aPrefix == OrePrefixes.cableGt04 || aPrefix == OrePrefixes.cableGt08 || aPrefix == OrePrefixes.cableGt12) {
+			//Special Handler
+			if (aTier == 10) {
+				if (aPrefix == OrePrefixes.cableGt01) {
+					aPrefix = OrePrefixes.wireGt02;
+				}
+				else if (aPrefix == OrePrefixes.cableGt02) {
+					aPrefix = OrePrefixes.wireGt04;
+				}
+				else if (aPrefix == OrePrefixes.cableGt04) {
+					aPrefix = OrePrefixes.wireGt08;
+				}
+				else if (aPrefix == OrePrefixes.cableGt08) {
+					aPrefix = OrePrefixes.wireGt12;
+				}
+				else if (aPrefix == OrePrefixes.cableGt12) {
+					aPrefix = OrePrefixes.wireGt16;
+				}
+			}
+			else {
+				return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
+			}
+			
+			
+		}
+		if (aPrefix == OrePrefixes.wireGt01 || aPrefix == OrePrefixes.wireGt02 || aPrefix == OrePrefixes.wireGt04 || aPrefix == OrePrefixes.wireGt08 || aPrefix == OrePrefixes.wireGt12 || aPrefix == OrePrefixes.wireGt16) {
+			return ItemUtils.getOrePrefixStack(aPrefix, aMaterial_Cables[aTier], aAmount);
+		}
+
+		if (aPrefix == OrePrefixes.pipeTiny || aPrefix == OrePrefixes.pipeSmall || aPrefix == OrePrefixes.pipe || aPrefix == OrePrefixes.pipeMedium || aPrefix == OrePrefixes.pipeLarge || aPrefix == OrePrefixes.pipeHuge) {
+			if (aTier == 0) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Lead, aAmount);				
+			}
+			else if (aTier == 1) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Steel, aAmount);	
+			}
+			else if (aTier == 2) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.StainlessSteel, aAmount);	
+			}
+			else if (aTier == 3) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Tungsten, aAmount);	
+			}
+			else if (aTier == 4) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.TungstenSteel, aAmount);	
+			}
+			else if (aTier == 5) {
+				return ItemUtils.getOrePrefixStack(aPrefix, ALLOY.MARAGING350, aAmount);	
+			}
+			else if (aTier == 6) {
+				return ItemUtils.getOrePrefixStack(aPrefix, ALLOY.STABALLOY, aAmount);	
+			}
+			else if (aTier == 7) {
+				return ItemUtils.getOrePrefixStack(aPrefix, ALLOY.HASTELLOY_X, aAmount);	
+			}
+			else if (aTier == 8) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Ultimate, aAmount);
+			}
+			else if (aTier == 9) {
+				return ItemUtils.getOrePrefixStack(OrePrefixes.pipeMedium, Materials.Superconductor, aAmount);	
+			}
+			else if (aTier == 10) {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Europium, aAmount);	
+			}
+			else {
+				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Titanium, aAmount);				
+			}			
+		}		
+
+		ItemStack aTempStack = null;
+		
+		if (aPrefix == OrePrefixes.gear || aPrefix == OrePrefixes.gearGt) {
+			m = aMaster[0][aTier];
+		}
+		else if (aPrefix == OrePrefixes.rod || aPrefix == OrePrefixes.stick) {
+			m = aMaster[0][aTier];
+		}
+		else if (aPrefix == OrePrefixes.stickLong) {
+			m = aMaster[1][aTier];
+		}
+		else if (aPrefix == OrePrefixes.bolt) {
+			m = aMaster[2][aTier];
+		}
+		else if (aPrefix == OrePrefixes.screw) {
+			m = aMaster[0][aTier];
+		}
+		else if (aPrefix == OrePrefixes.rotor) {
+			m = aMaster[1][aTier];
+		}
+		else if (aPrefix == OrePrefixes.frame || aPrefix == OrePrefixes.frameGt) {
+			m = aMaster[2][aTier];
+		}
+		else if (aPrefix == OrePrefixes.ingot) {
+			m = aMaster[1][aTier];
+		}
+		else if (aPrefix == OrePrefixes.plate) {
+			m = aMaster[0][aTier];
+		}
+		else if (aPrefix == OrePrefixes.plateDouble) {
+			m = aMaster[0][aTier];
+		}
+		else if (aPrefix == OrePrefixes.ring) {
+			m = aMaster[2][aTier];
+		}
+		else if (aPrefix == OrePrefixes.cell) {
+			m = aMaster[1][aTier];
+		}		
+		else {
+			m = aMaterial_Main[aTier];
+		}		
+		
+		ItemStack aReturn =	ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
+		
+		//If Invalid, Try First Material
+		if (!ItemUtils.checkForInvalidItems(aReturn)) {
+			m = aMaster[0][aTier];
+			aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
+			
+			//If Invalid, Try Second Material
+			if (!ItemUtils.checkForInvalidItems(aReturn)) {
+				m = aMaster[1][aTier];
+				aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
+				
+				//If Invalid, Try Third Material
+				if (!ItemUtils.checkForInvalidItems(aReturn)) {
+					m = aMaster[2][aTier];
+					aReturn = ItemUtils.getOrePrefixStack(aPrefix, m, aAmount);
+					
+					//All Invalid? Ok, shit.
+					//Let's add a special error ingot.
+					if (!ItemUtils.checkForInvalidItems(aReturn)) {
+						aReturn = ItemUtils.getErrorStack(1, (aPrefix.toString()+m.getLocalizedName()+" x"+aAmount));									
+					}
+				}
+			}
+		}
+		
+		return aReturn;
+
+		
 	}
 
 }

@@ -442,19 +442,16 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addCyclotronRecipe(ItemStack aInputs, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
-		return addCyclotronRecipe(new ItemStack[] {aInputs}, aFluidInput, aOutputs[0], aFluidOutput, aChances, aDuration, aEUt, aSpecialValue);
+		return addCyclotronRecipe(new ItemStack[] {aInputs}, aFluidInput, aOutputs, aFluidOutput, aChances, aDuration, aEUt, aSpecialValue);
 	}
 
 	@Override
-	public boolean addCyclotronRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput,
+	public boolean addCyclotronRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack[] aOutput,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
-		if (aOutput == null) {
+		if (aOutput == null || aOutput.length < 1 || !ItemUtils.checkForInvalidItems(aOutput)) {
 			return false;
 		}
-		if ((aDuration = GregTech_API.sRecipeFile.get("cyclotron", aOutput, aDuration)) <= 0) {
-			return false;
-		}
-		if (Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.addRecipe(true, aInputs, new ItemStack[] { aOutput },
+		if (Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.addRecipe(true, aInputs, aOutput,
 				null, aChances, new FluidStack[] { aFluidInput }, new FluidStack[] { aFluidOutput },
 				Math.max(1, aDuration), Math.max(1, aEUt), aSpecialValue) != null) {
 			return true;

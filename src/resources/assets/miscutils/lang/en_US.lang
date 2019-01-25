@@ -40,7 +40,7 @@ entity.sickBlaze.name=Infected Zealot
 tile.blockToolBuilder.name=GregTech Tool Constructor
 
 //Tools
-item.itemBufferCore.name=Buffer Core
+item.itemBufferCore.name=Energy Core
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
@@ -1732,16 +1732,16 @@ item.SlowBuildingRing.name=§eSlow Building Ring§7
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
-item.itemBufferCore1.name=Buffer Core [ULV].
-item.itemBufferCore2.name=Buffer Core [LV].
-item.itemBufferCore3.name=Buffer Core [MV].
-item.itemBufferCore4.name=Buffer Core [HV].
-item.itemBufferCore5.name=Buffer Core [EV].
-item.itemBufferCore6.name=Buffer Core [IV].
-item.itemBufferCore7.name=Buffer Core [LuV].
-item.itemBufferCore8.name=Buffer Core [ZPM].
-item.itemBufferCore9.name=Buffer Core [UV].
-item.itemBufferCore10.name=Buffer Core [MAX].
+item.itemBufferCore1.name=Energy Core [ULV].
+item.itemBufferCore2.name=Energy Core [LV].
+item.itemBufferCore3.name=Energy Core [MV].
+item.itemBufferCore4.name=Energy Core [HV].
+item.itemBufferCore5.name=Energy Core [EV].
+item.itemBufferCore6.name=Energy Core [IV].
+item.itemBufferCore7.name=Energy Core [LuV].
+item.itemBufferCore8.name=Energy Core [ZPM].
+item.itemBufferCore9.name=Energy Core [UV].
+item.itemBufferCore10.name=Energy Core [MAX].
 item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itembookgt.name=§oThermal Boiler Manual
 
@@ -2699,6 +2699,7 @@ item.particle.base.Lambda.name=Lambda
 item.particle.base.Omega.name=Omega
 item.particle.base.Pion.name=Pion
 item.particle.base.ETA Meson.name=ETA Meson
+item.particle.base.Unknown.name=Unknown Particle
 
 //Added 12/1/19
 

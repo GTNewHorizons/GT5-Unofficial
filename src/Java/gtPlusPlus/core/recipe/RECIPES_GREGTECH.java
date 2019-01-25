@@ -1,22 +1,25 @@
 package gtPlusPlus.core.recipe;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
-import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
-
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
-import gregtech.api.util.*;
-
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.HotFuel;
+import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -25,10 +28,12 @@ import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_GREGTECH {
@@ -70,7 +75,40 @@ public class RECIPES_GREGTECH {
 		extruderRecipes();
 		cuttingSawRecipes();
 		breweryRecipes();
+		laserEngraverRecipes();
 		addFuels();
+	}
+
+	private static void laserEngraverRecipes() {		
+
+		GT_Values.RA.addLaserEngraverRecipe(
+				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 6L),
+				GregtechItemList.Laser_Lens_Special.get(0),
+				ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1),
+				20 * 60 * 3,
+				MaterialUtils.getVoltageForTier(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.vTier));
+		
+		GT_Values.RA.addLaserEngraverRecipe(
+				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 8L),
+				GregtechItemList.Laser_Lens_Special.get(0),
+				ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(1),
+				20 * 60 * 2,
+				MaterialUtils.getVoltageForTier(ELEMENT.STANDALONE.ASTRAL_TITANIUM.vTier));
+		
+		GT_Values.RA.addLaserEngraverRecipe(
+				ALLOY.NITINOL_60.getBlock(2),
+				GregtechItemList.Laser_Lens_Special.get(0),
+				ELEMENT.STANDALONE.ADVANCED_NITINOL.getBlock(1),
+				20 * 60 * 1,
+				MaterialUtils.getVoltageForTier(ELEMENT.STANDALONE.ADVANCED_NITINOL.vTier));
+		
+		GT_Values.RA.addLaserEngraverRecipe(
+				GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 64L),
+				GregtechItemList.Laser_Lens_Special.get(0),
+				ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getDust(1),
+				20 * 60 * 5,
+				MaterialUtils.getVoltageForTier(ELEMENT.STANDALONE.CHRONOMATIC_GLASS.vTier));	
+		
 	}
 
 	private static void breweryRecipes() {
@@ -481,10 +519,9 @@ public class RECIPES_GREGTECH {
 		}
 
 		// Calcium Hydroxide
-		if ((ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() != ModItems.AAA_Broken)
-				|| LoadedMods.IHL) {
+		if ((ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1)))	|| LoadedMods.IHL) {
 			try {
-
+				
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 10) }, // Item
 						FluidUtils.getFluidStack("water", 10000), // Fluid input
@@ -1261,39 +1298,218 @@ public class RECIPES_GREGTECH {
 
 		//Polonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.bismuth", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300, 2040,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300 * 100, 2040,
 				500 * 20);
 
 		//Americium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300 * 100, 1020,
 				500 * 20); //PO Special Value
 
 		//Strontium u235
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium235", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300 * 100, 1020,
 				500 * 20); //PO Special Value
 
 		//Strontium u233
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium233", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300 * 100, 1020,
 				500 * 20); //PO Special Value
 
 		//Strontium pu239
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium239", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300 * 100, 1020,
 				500 * 20); //PO Special Value
 
 		//Plutonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium238", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300 * 100, 1020,
 				500 * 20); //PO Special Value
-
 
 		//Neptunium
 		CORE.RA.addCyclotronRecipe(new ItemStack[] {ELEMENT.getInstance().URANIUM238.getDust(1) }, FluidUtils.getFluidStack("deuterium", 400),
+				new ItemStack[] {ItemUtils.getSimpleStack(ModItems.dustNeptunium238)}, null, new int[] { 500 }, 20 * 5, 500,
+				500 * 20); //PO Special Value
+		
+		
+		/**
+		 * Particle Science
+		 */
+
+		
+		// Quark Smash
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(3),
+				FluidUtils.getFluidStack("plasma.hydrogen", 1000),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.UP),
+						Particle.getBaseParticle(Particle.DOWN),
+						Particle.getBaseParticle(Particle.CHARM),
+						Particle.getBaseParticle(Particle.STRANGE),
+						Particle.getBaseParticle(Particle.TOP),
+						Particle.getBaseParticle(Particle.BOTTOM),
+						}, 
+				null,
+				new int[] { 50, 50, 50, 50, 50, 50 },
+				20 * 300 * 38,
+				(int) GT_Values.V[7],
+				750 * 20);
+
+		// Lepton Smash
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(6),
+				FluidUtils.getFluidStack("plasma.helium", 1500),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.ELECTRON),
+						Particle.getBaseParticle(Particle.MUON),
+						Particle.getBaseParticle(Particle.TAU),
+						Particle.getBaseParticle(Particle.ELECTRON_NEUTRINO),
+						Particle.getBaseParticle(Particle.MUON_NEUTRINO),
+						Particle.getBaseParticle(Particle.TAU_NEUTRINO),
+						}, 
+				null,
+				new int[] { 60, 40, 20, 15, 10, 5 },
+				20 * 300 * 38,
+				(int) GT_Values.V[7],
+				750 * 20);
+
+		//Boson Smash
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(9),
+				FluidUtils.getFluidStack("plasma.helium", 1500),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.GLUON),
+						Particle.getBaseParticle(Particle.PHOTON),
+						Particle.getBaseParticle(Particle.Z_BOSON),
+						Particle.getBaseParticle(Particle.W_BOSON),
+						Particle.getBaseParticle(Particle.HIGGS_BOSON),
+						}, 
+				null,
+				new int[] { 60, 60, 50, 50, 1 },
+				20 * 300 * 38,
+				(int) GT_Values.V[7],
+				750 * 20);
+		
+		
+		// Mixed Smash 1
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(12),
+				FluidUtils.getFluidStack("plasma.beryllium", 2500),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.GRAVITON),
+						Particle.getBaseParticle(Particle.UP),
+						Particle.getBaseParticle(Particle.DOWN),
+						Particle.getBaseParticle(Particle.CHARM),
+						Particle.getBaseParticle(Particle.STRANGE),
+						Particle.getBaseParticle(Particle.TOP),
+						Particle.getBaseParticle(Particle.BOTTOM),
+						Particle.getBaseParticle(Particle.ELECTRON),
+						Particle.getBaseParticle(Particle.MUON),
+						Particle.getBaseParticle(Particle.TAU),
+						Particle.getBaseParticle(Particle.ELECTRON_NEUTRINO),
+						Particle.getBaseParticle(Particle.MUON_NEUTRINO),
+						Particle.getBaseParticle(Particle.TAU_NEUTRINO),
+						Particle.getBaseParticle(Particle.GLUON),
+						Particle.getBaseParticle(Particle.PHOTON),
+						Particle.getBaseParticle(Particle.Z_BOSON),
+						Particle.getBaseParticle(Particle.W_BOSON),
+						Particle.getBaseParticle(Particle.HIGGS_BOSON),
+						}, 
+				null,
+				new int[] { 5, 20, 20, 20, 20, 20, 20, 15, 15, 15, 10, 10, 10, 40, 40, 40, 40, 1 },
+				20 * 300 * 134,
+				(int) GT_Values.V[8],
+				750 * 20);
+		
+		//Graviton Smash
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(15),
+				FluidUtils.getFluidStack("plasma.hydrogen", 10),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.GRAVITON),
+						Particle.getBaseParticle(Particle.UNKNOWN)
+						}, 
+				null,
+				new int[] {15, 1000},
+				20 * 30,
+				(int) GT_Values.V[6],
+				1000 * 20);		
+		
+		//Quantum Anomaly
+		CORE.RA.addCyclotronRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(24),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+				},
+				FluidUtils.getFluidStack("plasma.osmium", 3),
+				new ItemStack[] {
+						GregtechItemList.Laser_Lens_Special.get(1)
+						}, 
+				null,
+				new int[] {100},
+				20 * 60,
+				(int) GT_Values.V[6],
+				1000 * 20);
+		
+		/*
+		 * Ions
+		 */
+		
+		String[] aElementsTest = new String[] {
+				"Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminum", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon"
+		};
+		
+		int IonCount = 2;
+		int tenCountA = 1;
+		int tenCountB = 0;
+		for (String y : IonParticles.MetaToNameMap.values()) {
+			
+			if (tenCountB == 12) {
+				tenCountB = 0;
+				tenCountA++;
+			}
+			else {
+				tenCountB++;
+			}
+			
+			FluidStack aPlasma = FluidUtils.getFluidStack("plasma."+y.toLowerCase(), 1);
+			
+			// Ionize Plasma
+			if (aPlasma != null) {
+			CORE.RA.addCyclotronRecipe(
+					CI.getNumberedCircuit(1+(tenCountA-1)),
+					aPlasma,
+					new ItemStack[] {
+							Particle.getIon(y, 1),
+							Particle.getIon(y, 2),
+							Particle.getIon(y, 3),
+							Particle.getIon(y, -1),
+							Particle.getIon(y, -2),
+							Particle.getIon(y, -3),
+							Particle.getIon(y, 1),
+							Particle.getIon(y, 2),
+							Particle.getIon(y, -1),
+							}, 
+					null,
+					new int[] { 75, 50, 25, 75, 50, 25, 75, 50, 75},
+					20 * 20 * (IonCount++) * tenCountA,
+					(int) GT_Values.V[7],
+					1500 * 20 * tenCountA);
+			}
+			else {
+				Logger.INFO("Plasma for "+y+" does not exist, please report this to Alkalus.");
+			}
+		}
+		
+		
+		
+		
+		
+		/*CORE.RA.addCyclotronRecipe(new ItemStack[] {ELEMENT.getInstance().URANIUM238.getDust(1) }, FluidUtils.getFluidStack("deuterium", 400),
 				ItemUtils.getSimpleStack(ModItems.dustNeptunium238), null, new int[] { 500 }, 20 * 5, 500,
 				500 * 20); //PO Special Value
+*/		
+		
 
 
 	}
