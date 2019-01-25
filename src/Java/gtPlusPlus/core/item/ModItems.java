@@ -292,11 +292,12 @@ public final class ModItems {
 	public static Item boxFood;
 	public static Item boxMagic;
 
-	private static DustDecayable dustMolybdenum99;
+	public static DustDecayable dustMolybdenum99;
+	public static DustDecayable dustTechnetium99;
+	public static DustDecayable dustTechnetium99M;
 
-	private static DustDecayable dustTechnetium99;
-
-	private static DustDecayable dustTechnetium99M;
+	public static IonParticles itemIonParticleBase;
+	public static StandardBaseParticles itemStandarParticleBase;
 
 	static {
 		Logger.INFO("Items!");
@@ -580,7 +581,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.ABYSSAL);
 			
 
-			MaterialGenerator.generate(ALLOY.TITANSTEEL, false);
+			MaterialGenerator.generate(ALLOY.TITANSTEEL);
 			MaterialGenerator.generate(ALLOY.ARCANITE);
 			MaterialGenerator.generate(ALLOY.OCTIRON);			
 			
@@ -630,7 +631,7 @@ public final class ModItems {
 		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", "Li2O2", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
 		dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", "LiOH", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
 
-		if ((ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() == ModItems.AAA_Broken) || !LoadedMods.IHL){
+		if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1)) && !LoadedMods.IHL){
 			dustQuicklime = ItemUtils.generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; //https://en.wikipedia.org/wiki/Calcium_oxide
 		}
 		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", "Ca(OH)2", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
@@ -814,8 +815,8 @@ public final class ModItems {
 		dustTechnetium99M = new DustDecayable("dustTechnetium99M", ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(), 8570, new String[] {""+StringUtils.superscript("99ᵐTc"), "Result: Technicium 99 ("+StringUtils.superscript("99Tc")+")"}, dustTechnetium99, 4);
 		dustMolybdenum99 = new DustDecayable("dustMolybdenum99", ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(), 16450, new String[] {""+StringUtils.superscript("99Mo"), "Result: Technicium 99ᵐ ("+StringUtils.superscript("99ᵐTc")+")"}, dustTechnetium99M, 4);
 		
-		new IonParticles();
-		new StandardBaseParticles();
+		itemIonParticleBase = new IonParticles();
+		itemStandarParticleBase = new StandardBaseParticles();
 		
 		
 		

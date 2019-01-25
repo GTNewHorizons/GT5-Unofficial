@@ -753,7 +753,7 @@ public class Material {
 				}
 			}
 			//Logger.MATERIALS("Unabled to find \"" + aKey + this.unlocalizedName + "\"");
-			return ItemUtils.getErrorStack(stacksize);
+			return ItemUtils.getErrorStack(stacksize, (aKey + this.unlocalizedName+" x"+stacksize));
 		}
 		
 	}

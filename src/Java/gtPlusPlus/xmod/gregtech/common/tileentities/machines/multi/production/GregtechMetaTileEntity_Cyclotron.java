@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -24,6 +25,9 @@ import gregtech.api.util.Recipe_GT;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -111,30 +115,30 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter + 5)) || (zCenter + 5 == getBaseMetaTileEntity().getZCoord()))
 				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter - 5)) || (zCenter - 5 == getBaseMetaTileEntity().getZCoord())) && (checkCoils(xCenter, yCenter, zCenter))
 				&& (checkHulls(xCenter, yCenter, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter + 1, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter - 1, zCenter))
-				&& (addIfEnergyInjector(xCenter + 4, yCenter, zCenter + 3, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter + 4, yCenter, zCenter - 3, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 4, yCenter, zCenter + 5, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter + 4, yCenter, zCenter - 5, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter - 4, yCenter, zCenter + 3, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 4, yCenter, zCenter - 3, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter - 4, yCenter, zCenter + 5, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 4, yCenter, zCenter - 5, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 3, yCenter, zCenter + 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 3, yCenter, zCenter + 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 5, yCenter, zCenter + 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 5, yCenter, zCenter + 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 3, yCenter, zCenter - 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 3, yCenter, zCenter - 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 5, yCenter, zCenter - 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 5, yCenter, zCenter - 4, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 1, yCenter, zCenter - 5, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 1, yCenter, zCenter + 5, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 1, yCenter, zCenter - 5, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 1, yCenter, zCenter + 5, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 1, yCenter, zCenter - 7, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 1, yCenter, zCenter + 7, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 1, yCenter, zCenter - 7, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 1, yCenter, zCenter + 7, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 5, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 5, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 5, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 5, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 7, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 7, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 7, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 7, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter + 1, yCenter + 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 1, yCenter + 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 1, yCenter + 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter + 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter + 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter + 1, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter + 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter + 1, zCenter - 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter + 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
+				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 3))
+				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 5))
+				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 3))
+				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 5))
+				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter + 4))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 4))
+				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter - 4))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 4))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 5))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 5))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 7))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 7))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter - 1))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter - 1))
 				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 1) && (this.mInputBusses.size() >= 1)) {
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
@@ -236,12 +240,35 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	private boolean isAdvancedMachineCasing(int aX, int aY, int aZ) {
 		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
 		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
-		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);		
-		return isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());			
+		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);	
+		
+		boolean debug = isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());		
+		
+		/*if (!debug) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
+			Logger.INFO(""+aX+"/"+aY+"/"+aZ);
+		}*/
+		
+		return debug;
 	}
 
 	private boolean isCyclotronCoil(int aX, int aY, int aZ) {
-		return (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCyclotronCoil() && (getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCyclotronCoilMeta()));
+		
+		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
+		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
+		
+		boolean debug = isValidBlockForStructure(null, 0, false, aBlock, aMeta, getCyclotronCoil(), getCyclotronCoilMeta());		
+		
+		/*if (!debug) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
+			Logger.INFO(""+aX+"/"+aY+"/"+aZ);
+		}*/
+		
+		return debug;
+		
+		
+		
+		
 	}
 
 	public Block getCasing() {
@@ -270,6 +297,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"Which will be extracted from the Isochronous Cyclotron",
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
+				"Any external casing can be a hatch/bus, unlike Fusion",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
 				"All Hatches must be IV or better",
 				"1-16 Input Hatches", 
@@ -296,12 +324,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	public IIconContainer getIconOverlay() {
 		if (this.getBaseMetaTileEntity().isActive()){
-			return TexturesGtBlock.Overlay_Machine_Dimensional_Orange;
+			return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
 		}
-		return TexturesGtBlock.Overlay_Machine_Dimensional_Blue;
-		//mobessence
-		
-
+		return TexturesGtBlock.Overlay_MatterFab_Animated;
 	}
 
 	@Override
@@ -311,6 +336,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		
+		/*if (CORE.DEVENV) {
+			return this.checkRecipeGeneric();
+		}*/
+		
+		
 		//Logger.INFO("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
 		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
@@ -352,6 +383,28 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					}
 				}
 
+				for (ItemStack s : outputs) {
+					if (s != null) {
+						if (s.getItem() instanceof IonParticles) {
+							long aCharge = IonParticles.getChargeState(s);
+							if (aCharge == 0) {
+								IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+										-5, -5,
+										-4, -4, -4, 
+										-3, -3, -3, -3, -3,
+										-2, -2, -2, -2, -2, -2, -2,
+										-1, -1, -1, -1, -1, -1, -1, -1,
+										1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+										2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+										3, 3, 3, 3, 3, 3, 3,
+										4, 4, 4, 4,
+										5, 5, 5,
+										6, 6}));
+							}
+						}
+					}
+				}
+				
 				this.mOutputItems = outputs;
 				this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
 				return true;
@@ -375,6 +428,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		if (aBaseMetaTileEntity.isServerSide()) {
 			if (mEfficiency < 0)
 				mEfficiency = 0;
+			
+			onRunningTick(null);
+			
+			
 			if (mRunningOnLoad && checkMultiblock(aBaseMetaTileEntity, mInventory[1])) {
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipe(mInventory[1]);
@@ -461,7 +518,34 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public boolean onRunningTick(ItemStack aStack) {
+	public boolean onRunningTick(ItemStack aStack) {	
+		if (this.mOutputBusses.size() > 0) {
+			for (GT_MetaTileEntity_Hatch_OutputBus g : this.mOutputBusses) {
+				if (g != null) {
+					for (ItemStack s : g.mInventory) {
+						if (s != null) {
+							if (s.getItem() instanceof IonParticles) {
+								long aCharge = IonParticles.getChargeState(s);
+								if (aCharge == 0) {
+									IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+											-5, -5,
+											-4, -4, -4, 
+											-3, -3, -3, -3, -3,
+											-2, -2, -2, -2, -2, -2, -2,
+											-1, -1, -1, -1, -1, -1, -1, -1,
+											1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+											2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+											3, 3, 3, 3, 3, 3, 3,
+											4, 4, 4, 4,
+											5, 5, 5,
+											6, 6}));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return true;
 	}
 

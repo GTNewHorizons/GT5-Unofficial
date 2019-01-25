@@ -485,7 +485,10 @@ public class Utils {
 		return true;
 	}
 
-	public static File getMcDir() {
+	public static File getMcDir() {		
+		if (Minecraft.getMinecraft() == null) {
+			return new File("testdir");
+		}		
 		if ((MinecraftServer.getServer() != null) && MinecraftServer.getServer().isDedicatedServer()) {
 			return new File(".");
 		}
