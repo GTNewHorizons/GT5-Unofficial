@@ -69,8 +69,12 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_BHG,
     hint_0,hint_1,hint_2,hint_3,hint_4,hint_5,hint_6,hint_7,hint_8,hint_9,hint_10,hint_11, hint_general,hint_air,hint_noAir,hint_error,
 
-    scanContainer,parametrizerMemory;
+    scanContainer,parametrizerMemory,
 
+    Machine_TeslaCoil_LV_1A, Machine_TeslaCoil_MV_1A, Machine_TeslaCoil_HV_1A, Machine_TeslaCoil_EV_1A, Machine_TeslaCoil_IV_1A,
+    Machine_TeslaCoil_LV_4A, Machine_TeslaCoil_MV_4A, Machine_TeslaCoil_HV_4A, Machine_TeslaCoil_EV_4A, Machine_TeslaCoil_IV_4A,
+    Machine_TeslaCoil_LV_9A, Machine_TeslaCoil_MV_9A, Machine_TeslaCoil_HV_9A, Machine_TeslaCoil_EV_9A, Machine_TeslaCoil_IV_9A,
+    Machine_TeslaCoil_LV_16A, Machine_TeslaCoil_MV_16A, Machine_TeslaCoil_HV_16A, Machine_TeslaCoil_EV_16A, Machine_TeslaCoil_IV_16A;
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;

@@ -296,6 +296,10 @@ public class MachineLoader implements Runnable {
         Machine_OwnerDetector.set(new GT_MetaTileEntity_OwnerDetector(15480, "machine.tt.ownerdetector", "Owner detector", 3).getStackForm(1L));
         Machine_DataReader.set(new GT_MetaTileEntity_DataReader(15481, "machine.tt.datareader", "Data Reader", 5).getStackForm(1L));
 
+        // ===================================================================================================
+        // Buck Converters
+        // ===================================================================================================
+
         Machine_BuckConverter_IV.set(new GT_MetaTileEntity_BuckConverter(15485, "machine.tt.buck.05", "Insane Buck Converter", 5).getStackForm(1L));
         Machine_BuckConverter_LuV.set(new GT_MetaTileEntity_BuckConverter(15486, "machine.tt.buck.06", "Ludicrous Buck Converter", 6).getStackForm(1L));
         Machine_BuckConverter_ZPM.set(new GT_MetaTileEntity_BuckConverter(15487, "machine.tt.buck.07", "ZPM Voltage Buck Converter", 7).getStackForm(1L));
@@ -305,6 +309,34 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UIV.set(new GT_MetaTileEntity_BuckConverter(15491, "machine.tt.buck.11", "Insanely Ultimate Buck Converter", 11).getStackForm(1L));
         Machine_BuckConverter_UMV.set(new GT_MetaTileEntity_BuckConverter(15492, "machine.tt.buck.12", "Mega Ultimate Buck Converter", 12).getStackForm(1L));
         Machine_BuckConverter_UXV.set(new GT_MetaTileEntity_BuckConverter(15493, "machine.tt.buck.13", "Extended Mega Ultimate Buck Converter", 13).getStackForm(1L));
+
+        // ===================================================================================================
+        // Tesla Transceiver
+        // ===================================================================================================
+
+        Machine_TeslaCoil_LV_1A.set(new GT_MetaTileEntity_TeslaCoil(16000, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,1).getStackForm(1L));
+        Machine_TeslaCoil_MV_1A.set(new GT_MetaTileEntity_TeslaCoil(16001, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 1).getStackForm(1L));
+        Machine_TeslaCoil_HV_1A.set(new GT_MetaTileEntity_TeslaCoil(16002, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 1).getStackForm(1L));
+        Machine_TeslaCoil_EV_1A.set(new GT_MetaTileEntity_TeslaCoil(16003, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 1).getStackForm(1L));
+        Machine_TeslaCoil_IV_1A.set(new GT_MetaTileEntity_TeslaCoil(16004, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 1).getStackForm(1L));
+
+        Machine_TeslaCoil_LV_4A.set(new GT_MetaTileEntity_TeslaCoil(16005, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,4).getStackForm(1L));
+        Machine_TeslaCoil_MV_4A.set(new GT_MetaTileEntity_TeslaCoil(16006, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 4).getStackForm(1L));
+        Machine_TeslaCoil_HV_4A.set(new GT_MetaTileEntity_TeslaCoil(16007, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 4).getStackForm(1L));
+        Machine_TeslaCoil_EV_4A.set(new GT_MetaTileEntity_TeslaCoil(16008, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 4).getStackForm(1L));
+        Machine_TeslaCoil_IV_4A.set(new GT_MetaTileEntity_TeslaCoil(16009, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 4).getStackForm(1L));
+
+        Machine_TeslaCoil_LV_9A.set(new GT_MetaTileEntity_TeslaCoil(16010, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,9).getStackForm(1L));
+        Machine_TeslaCoil_MV_9A.set(new GT_MetaTileEntity_TeslaCoil(16011, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 9).getStackForm(1L));
+        Machine_TeslaCoil_HV_9A.set(new GT_MetaTileEntity_TeslaCoil(16012, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 9).getStackForm(1L));
+        Machine_TeslaCoil_EV_9A.set(new GT_MetaTileEntity_TeslaCoil(16013, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 9).getStackForm(1L));
+        Machine_TeslaCoil_IV_9A.set(new GT_MetaTileEntity_TeslaCoil(16014, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 9).getStackForm(1L));
+
+        Machine_TeslaCoil_LV_16A.set(new GT_MetaTileEntity_TeslaCoil(16015, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1,16).getStackForm(1L));
+        Machine_TeslaCoil_MV_16A.set(new GT_MetaTileEntity_TeslaCoil(16016, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 16).getStackForm(1L));
+        Machine_TeslaCoil_HV_16A.set(new GT_MetaTileEntity_TeslaCoil(16017, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 16).getStackForm(1L));
+        Machine_TeslaCoil_EV_16A.set(new GT_MetaTileEntity_TeslaCoil(16018, "machine.tt.tesla.04", "Ultimate Power Tesla Transceiver", 4, 16).getStackForm(1L));
+        Machine_TeslaCoil_IV_16A.set(new GT_MetaTileEntity_TeslaCoil(16019, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 16).getStackForm(1L));
 
         // ===================================================================================================
         // Debug Stuff
