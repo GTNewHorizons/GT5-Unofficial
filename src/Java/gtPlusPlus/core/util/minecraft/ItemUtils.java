@@ -1,28 +1,18 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -40,6 +30,14 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import net.minecraft.block.Block;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -52,9 +50,18 @@ public class ItemUtils {
 	public static ItemStack getSimpleStack(final Block x) {
 		return simpleMetaStack(Item.getItemFromBlock(x), 0, 1);
 	}
+	
 
-	public static ItemStack getSimpleStack(final Block x, int meta) {
-		return simpleMetaStack(Item.getItemFromBlock(x), meta, 1);
+	public static ItemStack getSimpleStack(final Block x, int i) {
+		if (i == 0) {
+			return getSimpleStack(x, i, 1);			
+		}
+		
+		return getSimpleStack(x, 0, i);
+	}
+
+	public static ItemStack getSimpleStack(final Block x, int meta, int i) {
+		return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
 	}
 
 	public static ItemStack getSimpleStack(final Item x, final int i) {

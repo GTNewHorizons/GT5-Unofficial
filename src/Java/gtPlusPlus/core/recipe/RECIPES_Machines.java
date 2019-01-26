@@ -1475,17 +1475,60 @@ public class RECIPES_Machines {
 
 		}
 
-
+		int aCostMultiplier = GTNH ? 2 : 1;	
 
 		//Mystic Frame
-		Logger.RECIPE("[Inspection] Portal Frame");
-		if (RecipeUtils.addShapedGregtechRecipe(
-				"circuitMaster", ItemList.Field_Generator_MV.get(1, CI.circuitTier7), "circuitElite",
-				CI.craftingToolScrewdriver, GregtechItemList.Casing_Multi_Use.get(1), CI.craftingToolWrench,
-				ItemList.Sensor_HV.get(1, CI.circuitTier7), ItemList.Field_Generator_HV.get(1, CI.circuitTier7), ItemList.Emitter_HV.get(1, CI.circuitTier7),
-				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2))){
-			Logger.INFO("Added a recipe for the Toxic Everglades Portal frame");
+		CORE.RA.addSixSlotAssemblingRecipe(				
+				new ItemStack[] {
+						GregtechItemList.Casing_Multi_Use.get(1),
+						ItemList.Field_Generator_MV.get(1, CI.circuitTier7),
+						ItemList.Field_Generator_HV.get(1, CI.circuitTier7),
+						ItemList.Emitter_HV.get(1, CI.circuitTier7),
+						ItemList.Sensor_HV.get(1, CI.circuitTier7),
+						CI.getTieredComponent(OrePrefixes.plate, 7, 8 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.wireGt08, 8, 4 * aCostMultiplier),
+				},					
+				CI.getTieredFluid(6, (144 * 8)), //Input Fluid					
+				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2),					
+				45 * 20 * 1 * (6), 
+				MaterialUtils.getVoltageForTier(6));
+		
+		
+		//Player Doors
+		ItemStack[] aDoorInputs = new ItemStack[] {
+				ItemUtils.getSimpleStack(Blocks.log2),
+				ItemUtils.getSimpleStack(Blocks.iron_block),
+				ItemUtils.getSimpleStack(Blocks.glass),
+				ItemUtils.getSimpleStack(Blocks.packed_ice),
+				ItemUtils.getSimpleStack(Blocks.cactus),	
+		};
+		ItemStack[] aDoorOutputs = new ItemStack[] {
+				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorWooden),
+				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorIron),
+				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Glass),
+				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Ice),
+				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Cactus),	
+		};
+		
+		for (int y = 0; y < aDoorInputs.length; y++) {
+			CORE.RA.addSixSlotAssemblingRecipe(				
+					new ItemStack[] {
+							ItemUtils.getSimpleStack(Items.iron_door),
+							aDoorInputs[y],
+							ItemList.Sensor_LV.get(1, CI.circuitTier7),
+							CI.getTieredComponent(OrePrefixes.plate, 1, 2 * aCostMultiplier),
+							CI.getTieredComponent(OrePrefixes.wireGt02, 1, 2 * aCostMultiplier),
+							ItemUtils.getSimpleStack(Items.redstone, 16)
+					},					
+					CI.getTieredFluid(1, (144 * 2)), //Input Fluid					
+					aDoorOutputs[y],					
+					100, 
+					MaterialUtils.getVoltageForTier(1));			
 		}
+		
+		
+		
+
 
 
 		Logger.INFO("Done loading recipes for the Various machine blocks.");
@@ -1521,7 +1564,7 @@ public class RECIPES_Machines {
 		
 		Item aBaseCore = ModItems.itemControlCore;		
 		ItemStack[] aInputPrevTier = new ItemStack[] {
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore5", 1),
+				GTNH ? ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1) : ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1),
 				ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
 				ItemUtils.simpleMetaStack(aBaseCore, 1, 1),
 				ItemUtils.simpleMetaStack(aBaseCore, 2, 1),
@@ -1552,7 +1595,7 @@ public class RECIPES_Machines {
 						aOutput[2],
 						aMat_A[3].getGear(GTNH ? 4 : 2),
 						aMat_B[5].getPlateDouble(GTNH ? 16 : 8),
-						ItemUtils.getItemStack("miscutils:item.itemBufferCore"+(GTNH ? "5" : "4"), GTNH ? 4 : 2),
+						ItemUtils.getItemStack("miscutils:item.itemBufferCore"+(GTNH ? "4" : "3"), GTNH ? 4 : 2),
 						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 4 : 3), GTNH ? 10 : 5)
 				},					
 				aMat_B[4].getFluid(144 * 16), //Input Fluid					
@@ -1738,8 +1781,8 @@ public class RECIPES_Machines {
 		
 		for (int i = 0; i < 10; i++) {			
 					
-			ItemStack aPrevTier = (i == 0 ? CI.getTieredMachineHull(4) : aOutput[i-1]);
-			aPrevTier.stackSize = GTNH ? 4 : 2;
+			ItemStack aPrevTier = (i == 0 ? CI.getTieredMachineHull(GTNH ? 2 : 1) : aOutput[i-1]);
+			aPrevTier.stackSize = GTNH ? 2 : 1;
 			int aTier = (i + 1);
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					new ItemStack[] {

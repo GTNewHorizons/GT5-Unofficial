@@ -26,8 +26,8 @@ import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Cyclotron;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -39,7 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase {
 
-	public int mEUStore;
+	public long mEUStore;
 
 	public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
 		super(aID, aName, aNameRegional);
@@ -75,7 +75,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+		return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
@@ -96,17 +96,19 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setLong("mEUStore", mEUStore);
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
+		mEUStore = aNBT.getLong("mEUStore");
 		super.loadNBTData(aNBT);
 	}
 
 	@Override
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		Logger.INFO("Checking form of Cyclotron.");
+		log("Checking form of Cyclotron.");
 		int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
 		int yCenter = getBaseMetaTileEntity().getYCoord();
 		int zCenter = getBaseMetaTileEntity().getZCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ * 5;
@@ -143,28 +145,28 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
 				if (this.mEnergyHatches.get(i).mTier < tier()){
-					Logger.INFO("bad energy hatch");
+					log("bad energy hatch");
 					return false;
 				}
 			}
 			int mOutputHatches_sS = this.mOutputBusses.size();
 			for (int i = 0; i < mOutputHatches_sS; i++) {
 				if (this.mOutputBusses.get(i).mTier < tier()){
-					Logger.INFO("bad output hatch");
+					log("bad output hatch");
 					return false;
 				}
 			}
 			int mInputHatches_sS = this.mInputHatches.size();
 			for (int i = 0; i < mInputHatches_sS; i++) {
 				if (this.mInputHatches.get(i).mTier < tier()){
-					Logger.INFO("bad input hatch");
+					log("bad input hatch");
 					return false;
 				}
 			}
 			int mInputBusses_sS = this.mInputBusses.size();
 			for (int i = 0; i < mInputBusses_sS; i++) {
 				if (this.mInputBusses.get(i).mTier < tier()){
-					Logger.INFO("bad input hatch");
+					log("bad input hatch");
 					return false;
 				}
 			}
@@ -174,11 +176,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			mHardHammer = true;
 			mSolderingTool = true;
 			mCrowbar = true;
-			Logger.INFO("Built Cyclotron.");
+			log("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
 		}    
-		Logger.INFO("Failed building Cyclotron.");
+		log("Failed building Cyclotron.");
 		return false;
 	}
 
@@ -216,27 +218,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				&& (isAdvancedMachineCasing(aX - 2, aY, aZ + 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ - 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ + 4));
 	}
 
-	private boolean addIfEnergyInjector(int aX, int aY, int aZ, IGregTechTileEntity aBaseMetaTileEntity) {
-		if (addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
-	private boolean addIfInjector(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-		if (addInputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
-	private boolean addIfExtractor(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-		if (addOutputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
 	private boolean isAdvancedMachineCasing(int aX, int aY, int aZ) {
 		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
 		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
@@ -246,7 +227,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		
 		/*if (!debug) {
 			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
-			Logger.INFO(""+aX+"/"+aY+"/"+aZ);
+			log(""+aX+"/"+aY+"/"+aZ);
 		}*/
 		
 		return debug;
@@ -261,14 +242,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		
 		/*if (!debug) {
 			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
-			Logger.INFO(""+aX+"/"+aY+"/"+aZ);
+			log(""+aX+"/"+aY+"/"+aZ);
 		}*/
 		
-		return debug;
-		
-		
-		
-		
+		return debug;		
 	}
 
 	public Block getCasing() {
@@ -342,7 +319,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 		}*/
 		
 		
-		//Logger.INFO("Recipe Check.");
+		//log("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
 		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
 		ArrayList<FluidStack> tInputList = getStoredFluids();
@@ -427,10 +404,12 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()) {
 			if (mEfficiency < 0)
-				mEfficiency = 0;
+				mEfficiency = 0;			
 			
-			onRunningTick(null);
+			//Time Counter
+			this.mTotalRunTime++;
 			
+			onRunningTick(null);			
 			
 			if (mRunningOnLoad && checkMultiblock(aBaseMetaTileEntity, mInventory[1])) {
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
@@ -445,6 +424,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mEnergyHatches.clear();
 				mMufflerHatches.clear();
 				mMaintenanceHatches.clear();
+				mChargeHatches.clear();
+				mDischargeHatches.clear();
+				mControlCoreBus.clear();
+				mMultiDynamoHatches.clear();
 				mMachine = checkMultiblock(aBaseMetaTileEntity, mInventory[1]);
 			}
 			if (mStartUpCheck < 0) {
@@ -452,9 +435,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					if (this.mEnergyHatches != null) {
 						for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
 							if (isValidMetaTileEntity(tHatch)) {
-								if (aBaseMetaTileEntity.getStoredEU() + (2048) < maxEUStore()
-										&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048, false)) {
-									aBaseMetaTileEntity.increaseStoredEnergyUnits(2048, true);
+								if (aBaseMetaTileEntity.getStoredEU() + (2048*4) < maxEUStore()
+										&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits((2048*4), false)) {
+									aBaseMetaTileEntity.increaseStoredEnergyUnits((2048*4), true);
 								}
 							}
 					}
@@ -462,7 +445,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 						stopMachine();
 					}
 					if (getRepairStatus() > 0) {
-						if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
+						if (mMaxProgresstime > 0) {							
 							this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
 							if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
 								if (mOutputItems != null)
@@ -511,6 +494,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					stopMachine();
 				}
 			}
+			doRandomMaintenanceDamage();
 			aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
 					| (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);

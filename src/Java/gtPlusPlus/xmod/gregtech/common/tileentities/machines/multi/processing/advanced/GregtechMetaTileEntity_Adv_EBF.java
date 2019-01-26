@@ -174,10 +174,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
 			return false;
 		}
-		if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
+		/*if (!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir),
 				CASING_TEXTURE_ID)) {
 			return false;
-		}
+		}*/
 		byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
 
 		if (!CORE.GTNH) {
@@ -203,7 +203,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			case 6:
 				this.mHeatingCapacity = 9001;
 				break;
-			default:
+			default:Logger.INFO("Heating Coils are bad.");
 				return false;
 			}
 		} else {
@@ -236,31 +236,33 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				this.mHeatingCapacity = 15001;
 				break;
 			default:
+				Logger.INFO("Heating Coils are bad.");
 				return false;
 			}
 		}
 
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if ((i != 0) || (j != 0)) {
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != StaticFields59
-							.getBlockCasings5()) {
+				if ((i != 0) || (j != 0)) {					
+					//Coils 1
+					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
+						Logger.INFO("Heating Coils missing.");
 						return false;
 					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
+					
+					//Coils 2
+					if (!isValidBlockForStructure(null, CASING_TEXTURE_ID, false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j), StaticFields59.getBlockCasings5(), tUsedMeta)) {
+						Logger.INFO("Heating Coils missing.");
+						return false;
+					}	
+					
+					//Top Layer
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity2, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
+						Logger.INFO("Top Layer missing.");
 						return false;
 					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != StaticFields59
-							.getBlockCasings5()) {
-						return false;
-					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
-						return false;
-					}					
-					if (!isValidBlockForStructure(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
-						Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
-						return false;
-					}					
+					
 				}
 			}
 		}
@@ -269,9 +271,9 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				if ((xDir + i != 0) || (zDir + j != 0)) {
 					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0,zDir + j);					
 					if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasings3Misc, 11)) {
-						Logger.INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+						Logger.INFO("Bottom Layer missing.");
 						return false;
-					}
+					}					
 				}
 			}
 		}
