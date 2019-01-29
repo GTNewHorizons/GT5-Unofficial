@@ -6,15 +6,20 @@ import java.util.List;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
 
 public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 	public final String mName;
 	public final String mNEI;
 	public final byte mProgressBarDirection;
 	public final byte mProgressBarAmount;
+	public int mReduction;
 
 	public GUI_PollutionCleaner(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity,
 			final String aName, final String aTextureFile) {
@@ -49,6 +54,12 @@ public class GUI_PollutionCleaner extends GT_GUIContainerMetaTile_Machine {
 			}
 			if (x3 >= 25 && x3 <= 42) {
 				list.add("Item Auto-Output");
+			}
+			if (x3 >= 77 && x3 <= 95) {					
+				//Do Dumb shit				
+				CONTAINER_PollutionCleaner aContainerCast = (CONTAINER_PollutionCleaner) this.mContainer;				
+				mReduction = aContainerCast.mReduction;
+				list.add("Reduction: "+mReduction);	
 			}
 		}
 		if (!list.isEmpty()) {

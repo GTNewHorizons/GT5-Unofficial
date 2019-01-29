@@ -3,6 +3,7 @@ package gtPlusPlus.core.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.material.Material;
 
 import gtPlusPlus.api.objects.Logger;
@@ -73,8 +74,10 @@ public final class ModBlocks {
 	public static Block blockPlayerDoorCustom_Glass;
 	public static Block blockPlayerDoorCustom_Ice;
 	public static Block blockPlayerDoorCustom_Cactus;
-	
+
 	public static Block blockCustomMobSpawner;
+	public static Block blockCustomSuperLight;
+	public static Block blockCustomJukebox;
 
 	public static void init() {
 		Logger.INFO("Initializing Blocks.");
@@ -86,7 +89,7 @@ public final class ModBlocks {
 	public static void registerBlocks(){
 
 		Logger.INFO("Registering Blocks.");
-		GameRegistry.registerBlock(MatterFabricatorEffectBlock = new LightGlass(Material.glass, false).setHardness(0.1F).setBlockTextureName(CORE.MODID + ":" + "blockMFEffect").setStepSound(Block.soundTypeGlass), "blockMFEffect");
+		MatterFabricatorEffectBlock = new LightGlass(false);
 
 		//Fluids
 		FluidRegistryHandler.registerFluids();
@@ -121,6 +124,9 @@ public final class ModBlocks {
 		blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
 		blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
 		blockPlayerDoorCustom_Cactus = new PlayerDoors(Material.cactus, "door_cactus", false, 0.6f, Block.soundTypeGrass, "Cactus");
+		
+		blockCustomSuperLight = new BlockSuperLight();
+		blockCustomJukebox = new Machine_SuperJukebox();
 
 	}
 

@@ -2,37 +2,46 @@ package gtPlusPlus.core.block.general;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 
-public class LightGlass extends BlockBreakable
+/*public class LightGlass extends BlockBreakable
+{*/
+public class LightGlass extends BlockAir
 {
-	private int state = 0;
+
+private int state = 0;
 	private final int a = 255;
 	private int r = 255;
 	private int g = 0;
 	private int b = 0;
 	private int hex;
 
-	public LightGlass(final Material mat, final boolean bool)
+	public LightGlass(final boolean bool)
 	{
-		super("blockMFEffect", mat, bool);
+		//super("blockMFEffect", Material.air, bool);
+		super();
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		this.setBlockName("blockMFEffect");
 		this.setLightLevel(12F);
+		setHardness(0.1F);
+		setBlockTextureName(CORE.MODID + ":" + "blockMFEffect");
+		setStepSound(Block.soundTypeGlass); 
+		GameRegistry.registerBlock(this, "blockMFEffect");
+		
+		/*
 		this.setLightOpacity(0);
 		this.setTickRandomly(true);
-		this.setResistance(1);
+		this.setResistance(1);*/
 	}
 
 	/**
@@ -60,7 +69,7 @@ public class LightGlass extends BlockBreakable
 	@Override
 	public boolean renderAsNormalBlock()
 	{
-		return true;
+		return false;
 	}
 
 	/**
@@ -129,7 +138,7 @@ public class LightGlass extends BlockBreakable
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(final World world, final int posX, final int posY, final int posZ, final Random random){
-		Utils.spawnFX(world, posX, posY, posZ, "smoke", "cloud");
+		//Utils.spawnFX(world, posX, posY, posZ, "smoke", "cloud");
 
 	}
 }

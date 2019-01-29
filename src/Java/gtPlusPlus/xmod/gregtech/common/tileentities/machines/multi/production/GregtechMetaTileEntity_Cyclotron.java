@@ -27,6 +27,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Cyclotron;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -530,6 +531,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				}
 			}
 		}
+		PollutionUtils.addPollution(getBaseMetaTileEntity(), this.getPollutionPerTick(aStack));
+		
 		return true;
 	}
 

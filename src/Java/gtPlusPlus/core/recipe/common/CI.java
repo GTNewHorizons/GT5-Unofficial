@@ -606,10 +606,22 @@ public class CI {
 	
 	
 	public static FluidStack getTieredFluid(int aTier, int aAmount) {
+		return getTieredFluid(aTier, aAmount, 0);
+	}
+	
+	public static FluidStack getAlternativeTieredFluid(int aTier, int aAmount) {
+		return getTieredFluid(aTier, aAmount, 1);
+	}
+	
+	public static FluidStack getTertiaryTieredFluid(int aTier, int aAmount) {
+		return getTieredFluid(aTier, aAmount, 2);
+	}
+
+	public static FluidStack getTieredFluid(int aTier, int aAmount, int aType) {
 		ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
 		FluidStack a = GT_Utility.getFluidForFilledItem(aCell, true);
 		if (a == null) {
-			a = aMaster[0][aTier].getFluid(aAmount);
+			a = aMaster[aType][aTier].getFluid(aAmount);
 		}
 		a.amount = aAmount;
 		return a;
@@ -781,6 +793,359 @@ public class CI {
 		return aReturn;
 
 		
+	}
+	
+	public static ItemStack getElectricMotor(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricMotor_MAX;			
+		}
+		else {
+			aType = CI.electricMotor_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getElectricPiston(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPiston_MAX;			
+		}
+		else {
+			aType = CI.electricPiston_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getElectricPump(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.electricPump_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.electricPump_MAX;			
+		}
+		else {
+			aType = CI.electricPump_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getRobotArm(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.robotArm_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.robotArm_MAX;			
+		}
+		else {
+			aType = CI.robotArm_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getConveyor(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.conveyorModule_MAX;			
+		}
+		else {
+			aType = CI.conveyorModule_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getEmitter(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.emitter_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.emitter_MAX;			
+		}
+		else {
+			aType = CI.emitter_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getSensor(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.sensor_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.sensor_MAX;			
+		}
+		else {
+			aType = CI.sensor_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+	public static ItemStack getFieldGenerator(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.fieldGenerator_MAX;			
+		}
+		else {
+			aType = CI.fieldGenerator_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
+	}
+	
+
+	
+	public static ItemStack getTieredMachineHull(int aTier, int aSize) {
+		ItemStack aType;
+		int aLazyTier = 0;
+		if (aTier == aLazyTier++) {
+			aType = CI.machineHull_ULV;
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_LV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_MV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_HV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_EV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_IV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_LuV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_ZPM;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_UV;			
+		}
+		else if (aTier == aLazyTier++) {
+			aType = CI.machineHull_MAX;			
+		}
+		else {
+			aType = CI.machineHull_LV;			
+		}		
+		return ItemUtils.getSimpleStack(aType, aSize);
 	}
 
 }

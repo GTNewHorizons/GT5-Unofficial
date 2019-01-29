@@ -11,7 +11,6 @@ import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 
 public class LoadedMods {
 
-
 	//Initialize Variables
 	public static boolean Gregtech = false;
 	public static boolean PlayerAPI = false;
@@ -53,6 +52,7 @@ public class LoadedMods {
 	public static boolean TiCon = false;
 	public static boolean StevesCarts = false;
 	public static boolean Witchery = false;
+	public static boolean Waila = false;
 
 
 
@@ -183,6 +183,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Railcraft")){
 			Railcraft  = true;
 			Logger.INFO("Components enabled for: Railcraft");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("Waila")){
+			Waila  = true;
+			Logger.INFO("Components enabled for: WAILA");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Mekanism")){

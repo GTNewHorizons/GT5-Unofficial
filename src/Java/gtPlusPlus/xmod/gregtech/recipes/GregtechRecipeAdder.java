@@ -6,8 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -16,7 +14,6 @@ import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
-
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -25,7 +22,9 @@ import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -907,6 +906,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			tRecipe.mHidden = true;
 		}
 		return true;
+	}
+
+
+	/**
+	 *  Lets me add recipes for GT 5.08 & 5.09, since someone broke the method headers.
+	 */
+	@Override
+	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput) {		
+		Method m = StaticFields59.mAddFurnaceRecipe;		
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			try {
+				return (boolean) m.invoke(null, aDust, aOutput);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				return false;
+			}
+		}
+		else {
+			try {
+				return (boolean) m.invoke(null, aDust, aOutput, true);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				return false;
+			}
+		}
 	}
 
 

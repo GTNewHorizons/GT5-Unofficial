@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common;
 
 import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverflowCache;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,9 +12,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,11 +25,15 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.render.GT_Renderer_Block;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ObjMap;
@@ -34,24 +41,142 @@ import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
+import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 
 public class Meta_GT_Proxy {
 
+	static {
+		instance = new Meta_GT_Proxy();
+	}
+	
+	public static final Meta_GT_Proxy instance;
+	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
 	public static List<Runnable> GT_ItemIconload = new ArrayList<>();
 	
 	public static AutoMap<Integer> GT_ValidHeatingCoilMetas = new AutoMap<Integer>();
+
+	private static Class sBaseMetaTileEntityClass;
+	private static Class sBaseMetaTileEntityClass2;
 	
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
+	
 
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister sBlockIcons, sItemIcons;
 
 	public Meta_GT_Proxy() {
 		Logger.INFO("GT_PROXY - initialized.");
-		scheduleCoverMapCleaner();
-		setValidHeatingCoilMetas();
 	}
+	
+	public static Block sBlockMachines;
+	
+	public void preInit() {
+		
+		//New GT++ Block, yay! (Progress)
+		sBlockMachines = new GTPP_Block_Machines();
+		
+        GT_Log.out.println("GT++ Mod: Register TileEntities.");
+        BaseMetaTileEntity tBaseMetaTileEntity = constructBaseMetaTileEntity();
+        BaseMetaTileEntity tBaseMetaTileEntity2 = constructBaseMetaTileEntityCustomPower();
+
+        GT_Log.out.println("GT++ Mod: Testing BaseMetaTileEntity.");
+        if (tBaseMetaTileEntity == null || tBaseMetaTileEntity2 == null) {
+            GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            throw new RuntimeException("");
+        }
+        
+        GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
+        GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
+        GameRegistry.registerTileEntity(tBaseMetaTileEntity2.getClass(), "BaseMetaTileEntity_GTPP2");
+	}
+	
+	public void init() {
+		scheduleCoverMapCleaner();
+		setValidHeatingCoilMetas();	
+	}
+	
+	public void postInit() {
+		
+	}
+	
+	public static BaseCustomTileEntity constructBaseMetaTileEntity() {
+		if (sBaseMetaTileEntityClass == null) {
+			try {
+				sBaseMetaTileEntityClass = BaseCustomTileEntity.class;
+				return (BaseCustomTileEntity) BaseCustomTileEntity.class.newInstance();
+			} catch (Throwable arg1) {
+				try {
+					Constructor<?> g =  BaseCustomTileEntity.class.getConstructors()[0];
+					g.setAccessible(true);
+					return (BaseCustomTileEntity) g.newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | SecurityException e) {
+				}
+			}
+		}
+		try {
+			return (BaseCustomTileEntity) ((BaseCustomTileEntity) sBaseMetaTileEntityClass.newInstance());
+		} catch (Throwable arg0) {
+			arg0.printStackTrace(GT_Log.err);
+			try {
+				Constructor<?> g =  BaseCustomTileEntity.class.getConstructors()[0];
+				g.setAccessible(true);
+				return (BaseCustomTileEntity) g.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | SecurityException e) {
+				GT_Log.err
+						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				e.printStackTrace(GT_Log.err);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static BaseCustomPower_MTE constructBaseMetaTileEntityCustomPower() {
+		if (sBaseMetaTileEntityClass2 == null) {
+			try {
+				sBaseMetaTileEntityClass2 = BaseCustomPower_MTE.class;
+				return (BaseCustomPower_MTE) BaseCustomPower_MTE.class.newInstance();
+			} catch (Throwable arg1) {
+				try {
+					Constructor<?> g =  BaseCustomPower_MTE.class.getConstructors()[0];
+					g.setAccessible(true);
+					return (BaseCustomPower_MTE) g.newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | SecurityException e) {
+					// e.printStackTrace();
+				}
+			}
+		}
+
+		try {
+			return (BaseCustomPower_MTE) ((BaseCustomPower_MTE) sBaseMetaTileEntityClass2.newInstance());
+		} catch (Throwable arg0) {
+			arg0.printStackTrace(GT_Log.err);
+			try {
+				Constructor<?> g =  BaseCustomPower_MTE.class.getConstructors()[0];
+				g.setAccessible(true);
+				return (BaseCustomPower_MTE) g.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | SecurityException e) {
+				GT_Log.err
+						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				e.printStackTrace(GT_Log.err);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	public void setValidHeatingCoilMetas() {
 		for (int i = 0; i <= 6; i++ ) {

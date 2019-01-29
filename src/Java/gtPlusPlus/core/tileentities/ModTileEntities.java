@@ -3,6 +3,8 @@ package gtPlusPlus.core.tileentities;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
+import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.*;
 import gtPlusPlus.core.tileentities.machines.*;
@@ -25,7 +27,9 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityGenericSpawner.class, "TileEntityGenericSpawner");
 		GameRegistry.registerTileEntity(TileEntityCircuitProgrammer.class, "TileCircuitProgrammer");
 		GameRegistry.registerTileEntity(TileEntityPlayerDoorBase.class, "TilePlayerDoorBase");
-		GameRegistry.registerTileEntity(TileEntityDecayablesChest.class, "TileDecayablesChest");
+		GameRegistry.registerTileEntity(TileEntityDecayablesChest.class, "TileDecayablesChest");		
+		GameRegistry.registerTileEntity(TileEntitySuperJukebox.class, "TileEntitySuperJukebox");
+		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
 
 		
 		//Mod TEs

@@ -30,6 +30,7 @@ import gtPlusPlus.australia.entity.type.EntityDingo;
 import gtPlusPlus.australia.entity.type.EntityOctopus;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
+import gtPlusPlus.core.client.renderer.RenderBatKing;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderGiantChicken;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
@@ -41,6 +42,7 @@ import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
+import gtPlusPlus.core.entity.monster.EntityBatKing;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
@@ -55,7 +57,9 @@ import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
@@ -106,6 +110,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		 * Custom Block Renderers
 		 */
 		new CustomOreBlockRenderer();
+		new GTPP_Render_MachineBlock();	
 
 		super.init(e);
 	}
@@ -132,6 +137,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntityHydrofluoricAcidPotion.class, new RenderSnowball(ModItems.itemHydrofluoricPotion));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGiantChickenBase.class, new RenderGiantChicken(new ModelGiantChicken(), 1f));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBatKing.class, new RenderBatKing());
 
 		/**
 		 * Tiles

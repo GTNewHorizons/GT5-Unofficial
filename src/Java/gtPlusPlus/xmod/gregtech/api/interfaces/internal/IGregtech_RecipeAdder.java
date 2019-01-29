@@ -179,4 +179,6 @@ public interface IGregtech_RecipeAdder {
     public boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,  boolean aHidden);
     
     public boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,  boolean aHidden);
+
+	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
 }

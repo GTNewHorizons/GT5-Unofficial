@@ -209,6 +209,7 @@ public class RECIPES_Machines {
 		initModItems();
 		controlCores();
 		energyCores();
+		wirelessChargers();
 	}
 
 	private static void initModItems(){
@@ -1281,53 +1282,6 @@ public class RECIPES_Machines {
 						o_Fermenter, o_Distillery, o_Extractor,
 						GregtechItemList.Industrial_MultiMachine.get(1));
 			}
-			
-			//Wireless Chargers
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_LV, CI.circuitTier1, CI.emitter_LV,
-					CI.component_Plate[3], CI.machineHull_LV, CI.component_Plate[3],
-					CI.sensor_LV, CI.fieldGenerator_LV, CI.sensor_LV, 
-					GregtechItemList.Charger_LV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_MV, CI.circuitTier2, CI.emitter_MV,
-					CI.component_Plate[4], CI.machineHull_MV, CI.component_Plate[4],
-					CI.sensor_MV, CI.fieldGenerator_MV, CI.sensor_MV, 
-					GregtechItemList.Charger_MV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_HV, CI.circuitTier3, CI.emitter_HV,
-					CI.component_Plate[5], CI.machineHull_HV, CI.component_Plate[5],
-					CI.sensor_HV, CI.fieldGenerator_HV, CI.sensor_HV, 
-					GregtechItemList.Charger_HV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_EV, CI.circuitTier4, CI.emitter_EV,
-					CI.component_Plate[6], CI.machineHull_EV, CI.component_Plate[6],
-					CI.sensor_EV, CI.fieldGenerator_EV, CI.sensor_EV, 
-					GregtechItemList.Charger_EV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_IV, CI.circuitTier5, CI.emitter_IV,
-					CI.component_Plate[7], CI.machineHull_IV, CI.component_Plate[7],
-					CI.sensor_IV, CI.fieldGenerator_IV, CI.sensor_IV, 
-					GregtechItemList.Charger_IV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_LuV, CI.circuitTier6, CI.emitter_LuV,
-					CI.component_Plate[8], CI.machineHull_LuV, CI.component_Plate[8],
-					CI.sensor_LuV, CI.fieldGenerator_LuV, CI.sensor_LuV, 
-					GregtechItemList.Charger_LuV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_ZPM, CI.circuitTier7, CI.emitter_ZPM,
-					CI.component_Plate[9], CI.machineHull_ZPM, CI.component_Plate[9],
-					CI.sensor_ZPM, CI.fieldGenerator_ZPM, CI.sensor_ZPM, 
-					GregtechItemList.Charger_ZPM.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_UV, CI.circuitTier8, CI.emitter_UV,
-					CI.component_Plate[10], CI.machineHull_UV, CI.component_Plate[10],
-					CI.sensor_UV, CI.fieldGenerator_UV, CI.sensor_UV, 
-					GregtechItemList.Charger_UV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					CI.emitter_MAX, CI.circuitTier9, CI.emitter_MAX,
-					CI.component_Plate[11], CI.machineHull_MAX, CI.component_Plate[11],
-					CI.sensor_MAX, CI.fieldGenerator_MAX, CI.sensor_MAX, 
-					GregtechItemList.Charger_MAX.get(1));
 
 
 
@@ -1818,5 +1772,45 @@ public class RECIPES_Machines {
 		
 
 		
+	}
+	
+	private static void wirelessChargers() {
+
+		ItemStack[] aChargers = new ItemStack[] {
+				null,
+				GregtechItemList.Charger_LV.get(1), 
+				GregtechItemList.Charger_MV.get(1),
+				GregtechItemList.Charger_HV.get(1), 
+				GregtechItemList.Charger_EV.get(1), 
+				GregtechItemList.Charger_IV.get(1), 
+				GregtechItemList.Charger_LuV.get(1), 
+				GregtechItemList.Charger_ZPM.get(1), 
+				GregtechItemList.Charger_UV.get(1),
+				GregtechItemList.Charger_MAX.get(1) 
+			};
+		
+		int aCostMultiplier = GTNH ? 2 : 1;	
+		
+		for (int i = 0; i < 10; i++) {			
+			if (i == 0) {
+				continue;
+			}			
+			int aTier = (i + 1);			
+			ItemStack[] aInputs = new ItemStack[] {
+					CI.getTieredMachineHull(i, 1 * aCostMultiplier),
+					CI.getEmitter(i, 2 * aCostMultiplier),
+					CI.getSensor(i, 2 * aCostMultiplier),
+					CI.getFieldGenerator(i, 1 * aCostMultiplier),
+					CI.getTieredComponent(OrePrefixes.plate, aTier, 4 * aCostMultiplier),
+					CI.getTieredComponent(OrePrefixes.circuit, aTier, 2 * aCostMultiplier),
+			};			
+			CORE.RA.addSixSlotAssemblingRecipe(				
+					aInputs,					
+					CI.getAlternativeTieredFluid(i, (144 * 2 * aTier)), //Input Fluid					
+					aChargers[i],					
+					45 * 10 * 1 * (aTier), 
+					MaterialUtils.getVoltageForTier(i));	
+			
+		}
 	}
 }

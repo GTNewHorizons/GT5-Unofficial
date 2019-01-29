@@ -608,25 +608,40 @@ public class ItemUtils {
 
 	public static String getArrayStackNames(final ItemStack[] aStack) {
 		String itemNames = "Item Array: ";
-		for (final ItemStack alph : aStack) {
-
+		int aPos = 0;
+		for (final ItemStack alph : aStack) {			
+			if (alph == null) {
+				continue;
+			}
 			if (alph != null) {
 				final String temp = itemNames;
-				itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
-			} else {
-				final String temp = itemNames;
-				itemNames = temp + ", " + "null" + " x" + "0";
+				itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
+				aPos++;
 			}
 		}
 		return itemNames;
 	}
 
 	public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack) {
-		final String[] itemNames = {};
+		final String[] itemNames = aStack == null ? new String[] {} : new String[aStack.length];
+		Logger.INFO(""+aStack.length);
+		
+		if (aStack == null || aStack.length < 1) {
+			return itemNames;
+		}
+		
 		int arpos = 0;
-		for (final ItemStack alph : aStack) {
+		for (final ItemStack alph : aStack) {			
+			if (alph == null) {
+				continue;
+			}			
+			try {
 			itemNames[arpos] = alph.getDisplayName();
 			arpos++;
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
+			}
 		}
 		return itemNames;
 

@@ -41,23 +41,16 @@ public class CommonProxy {
 	public static Meta_GT_Proxy GtProxy;
 	private boolean mFluidsGenerated = false;
 
-	public CommonProxy(){
-		//Should Register Gregtech Materials I've Made
+	public CommonProxy() {
+		// Should Register Gregtech Materials I've Made
 		Utils.registerEvent(this);
-		if (LoadedMods.Gregtech){
-			if (!CORE.GTNH) {
-				Logger.INFO("We're using Gregtech "+Utils.getGregtechVersionAsString());				
-			}
-			else {
-				Logger.INFO("We're using GTNH's Gregtech "+Utils.getGregtechVersionAsString());				
-			}
-			
-			Logger.INFO("Setting up our own GT_Proxy.");
-			GtProxy = new Meta_GT_Proxy();
+		if (!CORE.GTNH) {
+			Logger.INFO("We're using Gregtech " + Utils.getGregtechVersionAsString());
+		} else {
+			Logger.INFO("We're using GTNH's Gregtech " + Utils.getGregtechVersionAsString());
 		}
-		else {
-			GtProxy = null;
-		}
+		Logger.INFO("Setting up our own GT_Proxy.");
+		GtProxy = Meta_GT_Proxy.instance;
 	}
 
 	public void preInit(final FMLPreInitializationEvent e) {
@@ -107,6 +100,9 @@ public class CommonProxy {
 		
 		//Must be done in pre-init.
 		generateMobSpawners();
+		
+		//Internal GT Proxy
+		GtProxy.preInit();
 		
 	}
 
@@ -160,6 +156,9 @@ public class CommonProxy {
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
 		COMPAT_IntermodStaging.init();
+		
+		//Internal GT Proxy
+		GtProxy.init();
 	}
 
 	public void postInit(final FMLPostInitializationEvent e) {
@@ -179,6 +178,8 @@ public class CommonProxy {
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 		COMPAT_IntermodStaging.postInit();
 		COMPAT_HANDLER.runQueuedRecipes();
+		//Internal GT Proxy
+		GtProxy.postInit();
 	}
 
 
