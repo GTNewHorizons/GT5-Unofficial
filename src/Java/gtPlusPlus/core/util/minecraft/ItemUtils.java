@@ -1,26 +1,18 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -38,6 +30,14 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import net.minecraft.block.Block;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -50,9 +50,18 @@ public class ItemUtils {
 	public static ItemStack getSimpleStack(final Block x) {
 		return simpleMetaStack(Item.getItemFromBlock(x), 0, 1);
 	}
+	
 
-	public static ItemStack getSimpleStack(final Block x, int meta) {
-		return simpleMetaStack(Item.getItemFromBlock(x), meta, 1);
+	public static ItemStack getSimpleStack(final Block x, int i) {
+		if (i == 0) {
+			return getSimpleStack(x, i, 1);			
+		}
+		
+		return getSimpleStack(x, 0, i);
+	}
+
+	public static ItemStack getSimpleStack(final Block x, int meta, int i) {
+		return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
 	}
 
 	public static ItemStack getSimpleStack(final Item x, final int i) {
@@ -315,7 +324,7 @@ public class ItemUtils {
 			return returnValue;
 		}
 		Logger.INFO("Failed to find `" + oredictName + "` in OD.");
-		return getErrorStack(amount);
+		return getErrorStack(amount, oredictName+" x"+amount);
 		//return getItemStackOfAmountFromOreDictNoBroken(mTemp, amount);
 	}
 
@@ -366,8 +375,7 @@ public class ItemUtils {
 	public static ItemStack getGregtechDust(final Materials material, final int amount) {
 		final ItemStack returnValue = GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L);
 		if (returnValue != null) {
-			if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass())
-					|| (returnValue.getItem() != ModItems.AAA_Broken)) {
+			if (ItemUtils.checkForInvalidItems(returnValue)) {
 				return returnValue.copy();
 			}
 		}
@@ -600,25 +608,40 @@ public class ItemUtils {
 
 	public static String getArrayStackNames(final ItemStack[] aStack) {
 		String itemNames = "Item Array: ";
-		for (final ItemStack alph : aStack) {
-
+		int aPos = 0;
+		for (final ItemStack alph : aStack) {			
+			if (alph == null) {
+				continue;
+			}
 			if (alph != null) {
 				final String temp = itemNames;
-				itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
-			} else {
-				final String temp = itemNames;
-				itemNames = temp + ", " + "null" + " x" + "0";
+				itemNames = temp + (aPos > 0 ? ", " : "") + alph.getDisplayName() + " x" + alph.stackSize;
+				aPos++;
 			}
 		}
 		return itemNames;
 	}
 
 	public static String[] getArrayStackNamesAsArray(final ItemStack[] aStack) {
-		final String[] itemNames = {};
+		final String[] itemNames = aStack == null ? new String[] {} : new String[aStack.length];
+		Logger.INFO(""+aStack.length);
+		
+		if (aStack == null || aStack.length < 1) {
+			return itemNames;
+		}
+		
 		int arpos = 0;
-		for (final ItemStack alph : aStack) {
+		for (final ItemStack alph : aStack) {			
+			if (alph == null) {
+				continue;
+			}			
+			try {
 			itemNames[arpos] = alph.getDisplayName();
 			arpos++;
+			}
+			catch (Throwable t) {
+				t.printStackTrace();
+			}
 		}
 		return itemNames;
 
@@ -762,23 +785,23 @@ public class ItemUtils {
 		if (aGtStack == null) {
 			Logger.INFO(
 					"Failed to find `" + mPrefix + MaterialUtils.getMaterialName(mMat) + "` in OD. [Prefix Search]");
-			return getErrorStack(mAmount);
+			return getErrorStack(mAmount, (mPrefix.toString()+MaterialUtils.getMaterialName(mMat)+" x"+mAmount));
 		} else {
 			return aGtStack;
 		}
 	}
 
-	public static ItemStack getErrorStack(int mAmount) {
-		//System.exit(1);
-		try {
-			//new GregtechException("Logging - [Issue #999]");
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
+	public static ItemStack getErrorStack(int mAmount) {		
+		return getErrorStack(mAmount, null);
+	}
 
-		return getSimpleStack(ModItems.AAA_Broken, mAmount);
-		//return null;
+	public static ItemStack getErrorStack(int mAmount, String aName) {	
+		ItemStack g = getSimpleStack(ModItems.AAA_Broken, 1);
+		NBTUtils.setString(g, "Lore", EnumChatFormatting.RED+aName);		
+		if (aName != null) {
+			NBTUtils.setBookTitle(g, EnumChatFormatting.YELLOW+"Maybe Alkalus should know about this");
+		}		
+		return g;
 	}
 
 	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname) {

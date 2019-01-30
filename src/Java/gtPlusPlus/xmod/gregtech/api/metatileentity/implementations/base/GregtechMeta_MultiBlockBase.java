@@ -295,15 +295,13 @@ GT_MetaTileEntity_MultiBlockBase {
 					aRequiresCoreModule,
 					aRequiresMuffler,
 					getPollutionTooltip(),
-					getMachineTooltip(),
-					CORE.GT_Tooltip};
+					getMachineTooltip()};
 		}
 		else {
 			z = new String[] {
 					aRequiresMaint,
 					aRequiresCoreModule,
-					getMachineTooltip(),
-					CORE.GT_Tooltip};		
+					getMachineTooltip(),};		
 		}
 
 		int a2, a3;
@@ -1508,28 +1506,37 @@ GT_MetaTileEntity_MultiBlockBase {
 	public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
 	
 	
-	public boolean isValidBlockForStructure(IGregTechTileEntity aBaseMetaTileEntity, int aCasingID, boolean canBeHatch, Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
-		boolean isHatch = false;		
+	public boolean isValidBlockForStructure(IGregTechTileEntity aBaseMetaTileEntity, int aCasingID, boolean canBeHatch,
+			Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
+		boolean isHatch = false;
 		if (aBaseMetaTileEntity != null) {
 			isHatch = this.addToMachineList(aBaseMetaTileEntity, aCasingID);
 			if (isHatch) {
 				return true;
 			}
+			else {
+				//Found a controller
+				if (aFoundMeta > 0 && aFoundMeta < 1000 && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}
+			}
 		}
 		if (!isHatch) {
-			if (aFoundBlock != aExpectedBlock || aFoundMeta != aExpectedMeta) {
-				return false;
-			}
-			else {
+			if (aFoundBlock == aExpectedBlock && aFoundMeta == aExpectedMeta) {
 				return true;
 			}
+			else if (aFoundBlock != aExpectedBlock) {
+				Logger.INFO("A1 - Found: "+aFoundBlock.getLocalizedName()+", Expected: "+aExpectedBlock.getLocalizedName());				
+				return false;
+			}
+			else if (aFoundMeta != aExpectedMeta) {
+				Logger.INFO("A2");
+				return false;
+			}
+
 		}
-		else {
-			return true;
-		}
-		
-		
-		
+		Logger.INFO("A3");
+		return false;
 	}
 
 

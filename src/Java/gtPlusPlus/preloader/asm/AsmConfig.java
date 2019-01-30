@@ -76,7 +76,11 @@ public class AsmConfig {
 			prop = config.get("general", "enableGcFuelChanges", true);
 			prop.comment = "Enable/Disable changes to Galacticraft Rocket Fuels.";
 			prop.setLanguageKey("gtpp.enableGcFuelChanges").setRequiresMcRestart(true);
-			enableGcFuelChanges = prop.getBoolean(true);
+			
+			//Disabled because Broken
+			//enableGcFuelChanges = prop.getBoolean(true);			
+			enableGcFuelChanges = false;
+			
 			propOrder.add(prop.getName());
 			
 			

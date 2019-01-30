@@ -43,34 +43,34 @@ public class GregtechDehydrator {
 		//Basic
 		GregtechItemList.GT_Dehydrator_MV
 		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(911, "machine.dehydrator.tier.00",
-				"Basic Dehydrator I", 2, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
+				"Basic Dehydrator I", 2, "This dehydrates your Grapes into Raisins. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png",
 				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		GregtechItemList.GT_Dehydrator_HV
 		.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(912, "machine.dehydrator.tier.01",
-				"Basic Dehydrator II", 3, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
+				"Basic Dehydrator II", 3, "This dehydrates your Grapes into Raisins. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png",
 				"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		
 		//Chemical
 		GregtechItemList.GT_Dehydrator_EV
 				.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(813, "advancedmachine.dehydrator.tier.01",
-						"Chemical Dehydrator I", 4, "This dehydrates your Grapes into Raisins. " + CORE.GT_Tooltip,
+						"Chemical Dehydrator I", 4, "This dehydrates your Grapes into Raisins. ",
 						Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png",
 						"", false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		GregtechItemList.GT_Dehydrator_IV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(814,
 				"advancedmachine.dehydrator.tier.02", "Chemical Dehydrator II", 5,
-				"A hangover is the way your body reacts to dehydration. " + CORE.GT_Tooltip,
+				"A hangover is the way your body reacts to dehydration. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png", "",
 				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		GregtechItemList.GT_Dehydrator_LuV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(815,
 				"advancedmachine.dehydrator.tier.03", "Chemical Dehydrator III", 6,
-				"You could probably make space icecream with this.. " + CORE.GT_Tooltip,
+				"You could probably make space icecream with this.. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png", "",
 				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 		GregtechItemList.GT_Dehydrator_ZPM.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(816,
 				"advancedmachine.dehydrator.tier.04", "Chemical Dehydrator IV", 7,
-				"You can definitely make space icecream with this.. " + CORE.GT_Tooltip,
+				"You can definitely make space icecream with this.. ",
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes, 2, 9, 10000, 2, 5, "Dehydrator.png", "",
 				false, false, 0, "UNBOXINATOR", null).getStackForm(1L));
 

@@ -394,7 +394,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			else {
 				aOutput = aMatInfo.getIngot(1);
 				if (ItemUtils.checkForInvalidItems(aOutput)) {
-					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
+					if (CORE.RA.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput)){
 						Logger.MATERIALS("Successfully added a furnace recipe for "+aMatInfo.getLocalizedName());
 					}
 					else {

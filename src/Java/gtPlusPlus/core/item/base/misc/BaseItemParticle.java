@@ -30,7 +30,10 @@ public abstract class BaseItemParticle extends CoreItem {
 	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
 		return aColourMap.get(stack.getItemDamage());
 	}	
-
+	
+	public int getColorFromParentClass(ItemStack stack, int aaa) {
+		return super.getColorFromItemStack(stack, aaa);
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

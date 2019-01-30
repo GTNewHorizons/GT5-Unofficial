@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -48,7 +48,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Use Screwdriver to change voltage", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Use Screwdriver to change voltage", EnumChatFormatting.GREEN+"CREATIVE MACHINE"};
 	}
 
 	/*
@@ -56,8 +56,8 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	 */
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
-		CustomIcon g = TexturesGtBlock.Casing_Material_RedSteel;
-		CustomIcon h = TexturesGtBlock.Casing_Material_Grisium;
+		CustomIcon h = TexturesGtBlock.Casing_Material_RedSteel;
+		CustomIcon g = TexturesGtBlock.Casing_Material_Grisium;
 		CustomIcon k;
 		boolean j = MathUtils.isNumberEven(this.mTier);
 		final ITexture[][][] rTextures = new ITexture[2][17][];

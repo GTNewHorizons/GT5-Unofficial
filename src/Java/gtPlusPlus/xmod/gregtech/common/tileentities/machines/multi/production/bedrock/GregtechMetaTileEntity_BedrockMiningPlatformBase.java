@@ -582,7 +582,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				"Radius is " + (this.getRadiusInChunks() << 4) + " blocks",
 				"Every tick, this machine altenates betweem consumption of Pyrotheum & Cryotheum",
 				"Pyrotheum is used to bore through the Mantle of the world",
-				"Cryotheum is used to keep the internal components cool", CORE.GT_Tooltip };
+				"Cryotheum is used to keep the internal components cool",};
 	}
 
 	static {

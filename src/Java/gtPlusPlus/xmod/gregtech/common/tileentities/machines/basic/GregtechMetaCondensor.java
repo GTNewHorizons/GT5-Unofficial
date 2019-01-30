@@ -34,7 +34,7 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "IC2 Steam + Water = Normal Steam.", "Requires no power to run, although it's not very fast.", CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "IC2 Steam + Water = Normal Steam.", "Requires no power to run, although it's not very fast.", };
 	}
 
 	@Override

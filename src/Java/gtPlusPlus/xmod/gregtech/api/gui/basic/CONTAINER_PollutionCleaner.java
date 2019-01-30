@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -23,6 +24,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
 
     public boolean mFluidTransfer = false, mItemTransfer = false, mStuttering = false;
+    public int mReduction = 0;
 
     public CONTAINER_PollutionCleaner(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -37,72 +39,11 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
         int tStartIndex = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).getInputSlot();
 
         switch (((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount) {
-            case 0:
-                break;
-            case 1: //Chemical Mixer
-            	//Add 3 Item Slots
-            	addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 7));
-            	//Add 6 Fluid Slots
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 17, 25));
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 35, 25));
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 25));
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 17, 43));
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 35, 43));
-                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 43));
-            	
-                break;
             case 2: //Pollution Scrubber
             	//Add 2 Item Slots
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 107, 25));            	
-                break;
-            case 3:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
-                break;
-            case 4:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 34));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 34));
-                break;
-            case 5:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 34));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 34));
-                break;
-            case 6:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 16));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 34));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 34));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 34));
-                break;
-            case 7:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 43));
-                break;
-            case 8:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 7));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 43));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 43));
-                break;
+                break;            
             default:
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 7));
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 7));
@@ -121,68 +62,7 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
         switch (((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mOutputItems.length) {
             case 0:
                 break;
-            case 1:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                break;
-            case 2:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 25));
-                break;
-            case 3:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 25));
-                break;
-            case 4:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 34));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 34));
-                break;
-            case 5:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 34));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 34));
-                break;
-            case 6:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 16));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 34));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 34));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 34));
-                break;
-            case 7:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 43));
-                break;
-            case 8:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 43));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 43));
-                break;
             default:
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 7));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 25));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 107, 43));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 125, 43));
-                addSlotToContainer(new GT_Slot_Output(mTileEntity, tStartIndex++, 143, 43));
                 break;
         }
 
@@ -215,6 +95,7 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
         mFluidTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mFluidTransfer;
         mItemTransfer = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mItemTransfer;
         mStuttering = ((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mStuttering;
+        mReduction = ((GregtechMetaAtmosphericReconditioner) mTileEntity.getMetaTileEntity()).mPollutionReduction;
 
         Iterator var2 = this.crafters.iterator();
         while (var2.hasNext()) {
@@ -222,6 +103,7 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
             var1.sendProgressBarUpdate(this, 102, mFluidTransfer ? 1 : 0);
             var1.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
             var1.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);
+            var1.sendProgressBarUpdate(this, 105, mReduction);
         }
     }
 
@@ -243,6 +125,9 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
                 break;
             case 104:
                 mStuttering = (par2 != 0);
+                break;
+            case 105:
+            	mReduction = (par2);
                 break;
         }
     }

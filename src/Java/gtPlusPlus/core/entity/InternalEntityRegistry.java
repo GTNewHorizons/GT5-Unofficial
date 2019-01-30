@@ -8,6 +8,7 @@ import gtPlusPlus.australia.entity.type.EntityAustralianSpiderBase;
 import gtPlusPlus.australia.entity.type.EntityBoar;
 import gtPlusPlus.australia.entity.type.EntityDingo;
 import gtPlusPlus.australia.entity.type.EntityOctopus;
+import gtPlusPlus.core.entity.monster.EntityBatKing;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
@@ -55,6 +56,7 @@ public class InternalEntityRegistry {
          */
         
         EntityRegistry.registerGlobalEntityID(EntityGiantChickenBase.class, "bigChickenFriendly", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(175, 175, 175));
+        EntityRegistry.registerGlobalEntityID(EntityBatKing.class, "batKing", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(175, 175, 0), Utils.rgbtoHexValue(0, 175, 175));
         //EntityRegistry.registerModEntity(EntityGiantChickenBase.class, "bigChickenFriendly", mEntityID++, GTplusplus.instance, 64, 20, true);
         
         

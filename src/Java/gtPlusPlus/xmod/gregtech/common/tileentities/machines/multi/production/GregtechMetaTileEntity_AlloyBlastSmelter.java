@@ -248,9 +248,9 @@ extends GregtechMeta_MultiBlockBase {
 					}	
 					
 					//Top Layer
-					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
-						Logger.INFO("Heating Coils missing.");
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
+						Logger.INFO("Top Layer missing.");
 						return false;
 					}
 				}
@@ -260,9 +260,9 @@ extends GregtechMeta_MultiBlockBase {
 			for (int j = -1; j < 2; j++) {
 				if (((xDir + i) != 0) || ((zDir + j) != 0)) {					
 					//Bottom Layer
-					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 2, zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
-						Logger.INFO("Heating Coils missing.");
+					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);					
+					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
+						Logger.INFO("Bottom Layer missing.");
 						return false;
 					}					
 				}

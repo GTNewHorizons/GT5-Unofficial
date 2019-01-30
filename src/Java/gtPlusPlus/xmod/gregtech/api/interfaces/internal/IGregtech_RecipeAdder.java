@@ -135,7 +135,7 @@ public interface IGregtech_RecipeAdder {
 	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
-	boolean addCyclotronRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, FluidStack aFluidOutput,
+	boolean addCyclotronRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack[] aOutput, FluidStack aFluidOutput,
 			int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
 	public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
@@ -179,4 +179,6 @@ public interface IGregtech_RecipeAdder {
     public boolean addBrewingRecipe(ItemStack aIngredient, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,  boolean aHidden);
     
     public boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,  boolean aHidden);
+
+	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
 }

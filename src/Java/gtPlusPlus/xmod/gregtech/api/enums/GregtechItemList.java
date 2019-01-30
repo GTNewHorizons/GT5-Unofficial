@@ -96,6 +96,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Carbyne_Tube_Finished,
 	Carbyne_Sheet_Finished,
 	
+	//End Game Laser Engraver Lens
+	Laser_Lens_Special,
+	
 
 	//----------------------------------------------------------------------------
 	
@@ -332,6 +335,19 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Hatch_Muffler_Adv_EV, Hatch_Muffler_Adv_IV, Hatch_Muffler_Adv_LuV, 
 	Hatch_Muffler_Adv_ZPM, Hatch_Muffler_Adv_UV, Hatch_Muffler_Adv_MAX, 
 
+	//Super Input Busses
+	Hatch_SuperBus_Input_ULV, Hatch_SuperBus_Input_LV, Hatch_SuperBus_Input_MV,
+	Hatch_SuperBus_Input_HV, Hatch_SuperBus_Input_EV, Hatch_SuperBus_Input_IV,
+	Hatch_SuperBus_Input_LuV, Hatch_SuperBus_Input_ZPM, Hatch_SuperBus_Input_UV,
+	Hatch_SuperBus_Input_MAX,  
+
+	//Super Output Busses
+	Hatch_SuperBus_Output_ULV, Hatch_SuperBus_Output_LV, Hatch_SuperBus_Output_MV,
+	Hatch_SuperBus_Output_HV, Hatch_SuperBus_Output_EV, Hatch_SuperBus_Output_IV,
+	Hatch_SuperBus_Output_LuV, Hatch_SuperBus_Output_ZPM, Hatch_SuperBus_Output_UV,
+	Hatch_SuperBus_Output_MAX,  
+	
+
 
 
 	//----------------------------------------------------------------------------
@@ -428,6 +444,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_LuV_Component_Maker,
 	Machine_ZPM_Component_Maker,
 	Machine_UV_Component_Maker,
+	
+	//Breakers
+	BreakerBox_ULV, BreakerBox_LV, BreakerBox_MV,
+	BreakerBox_HV, BreakerBox_EV, BreakerBox_IV,
+	BreakerBox_LuV, BreakerBox_ZPM, BreakerBox_UV,
+	BreakerBox_MAX,
 	
 
 	//Solar Generators

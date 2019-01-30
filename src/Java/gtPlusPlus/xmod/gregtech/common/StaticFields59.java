@@ -17,9 +17,13 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 public class StaticFields59 {
 
@@ -31,6 +35,7 @@ public class StaticFields59 {
 	public static final Field mCasingTexturePages;
 	
 	public static final Method mCalculatePollutionReduction;
+	public static final Method mAddFurnaceRecipe;
 
 	private static final Map<String, Materials> mMaterialCache = new LinkedHashMap<String, Materials>();
 
@@ -46,6 +51,20 @@ public class StaticFields59 {
 		mCasingTexturePages = getField(BlockIcons.class, "casingTexturePages");
 		
 		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction", int.class);		
+		
+		Logger.INFO("Initializing a recipe handler for different versions of Gregtech 5.");		
+		//Yep...
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+			Logger.INFO("Selecting GT 5.7/5.8 Recipe Set");
+			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class, ItemStack.class);			
+		}
+		else {
+			Logger.INFO("Selecting GT 5.9 Recipe Set");
+			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class, ItemStack.class, boolean.class);			
+		}
+		
+		
+		
 	}
 
 	public static synchronized final Block getBlockCasings5() {

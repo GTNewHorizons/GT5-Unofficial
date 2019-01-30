@@ -498,8 +498,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 				"Connect with pipes to extract items or fluids",
 				"Outputs from the back face",
 				"Consumes "+TESSERACT_ENERGY_COST+"EU/t for same dimension transfers",
-				"Consumes "+TESSERACT_ENERGY_COST_DIMENSIONAL+"EU/t for cross dimensional transfers",
-				CORE.GT_Tooltip };
+				"Consumes "+TESSERACT_ENERGY_COST_DIMENSIONAL+"EU/t for cross dimensional transfers", };
 	}
 
 	@Override

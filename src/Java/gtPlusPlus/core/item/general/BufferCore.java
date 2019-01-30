@@ -4,7 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gregtech.api.enums.GT_Values;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,7 +21,7 @@ public class BufferCore extends BaseItemWithDamageValue{
 	public BufferCore(final String unlocalizedName, final int i) {
 		super(unlocalizedName+i);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
-		this.setMaxStackSize(2);
+		this.setMaxStackSize(32);
 		this.coreTier = i;
 	}
 
@@ -40,7 +40,7 @@ public class BufferCore extends BaseItemWithDamageValue{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add(EnumChatFormatting.GRAY+"A key crafting component for making energy buffers.");
+		list.add(EnumChatFormatting.GRAY+"A key crafting component for "+GT_Values.VN[this.coreTier-1]+" Applicances");
 	}
 
 	public final int getCoreTier() {
@@ -48,51 +48,25 @@ public class BufferCore extends BaseItemWithDamageValue{
 	}
 
 	@Override
-	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-		//Figure Out Damage
-		final String s = String.format("%X", HEX_OxFFFFFF);
-		//Utils.LOG_INFO(s);
-		//String rgb = Utils.hex2Rgb(s);
-		//Utils.LOG_INFO(rgb);
-		if (this.coreTier == 1){
-			HEX_OxFFFFFF = 0x4d4d4d;
-		}
-		else if (this.coreTier == 2){
-			HEX_OxFFFFFF = 0x666666;
-		}
-		else if (this.coreTier == 3){
-			HEX_OxFFFFFF = 0x8c8c8c;
-		}
-		else if (this.coreTier == 4){
-			HEX_OxFFFFFF = 0xa6a6a6;
-		}
-		else if (this.coreTier == 5){
-			HEX_OxFFFFFF = 0xcccccc;
-		}
-		else if (this.coreTier == 6){
-			HEX_OxFFFFFF = 0xe6e6e6;
-		}
-		else if (this.coreTier == 7){
-			HEX_OxFFFFFF = 0xffffcc;
-		}
-		else if (this.coreTier == 8){
-			HEX_OxFFFFFF = 0xace600;
-		}
-		else if (this.coreTier == 9){
-			HEX_OxFFFFFF = 0xffff00;
-		}
-		/*else if (coreTier == 10){
-			HEX_OxFFFFFF = 0xff0000;
-		}*/
-		else if (this.coreTier == 10){
-			HEX_OxFFFFFF = Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
-		}
-		else {
-			HEX_OxFFFFFF = 0xffffff;
+	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {		
+
+		int[] mTierTypes = new int[] {
+				Utils.rgbtoHexValue(200, 180, 180),
+				Utils.rgbtoHexValue(142, 153, 161),
+				Utils.rgbtoHexValue(230, 121, 75),
+				Utils.rgbtoHexValue(215, 156, 70),
+				Utils.rgbtoHexValue(97, 97, 96), //EV
+				Utils.rgbtoHexValue(202, 202, 201),
+				Utils.rgbtoHexValue(247, 159, 157),
+				Utils.rgbtoHexValue(181, 223, 223),
+				Utils.rgbtoHexValue(187, 219, 185),
+		};
+		
+		if (this.coreTier == 10){
+			return Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
 		}
 
-
-		return HEX_OxFFFFFF;
+		return mTierTypes[this.coreTier-1];
 	}
 
 }

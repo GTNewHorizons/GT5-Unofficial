@@ -18,7 +18,7 @@ extends GregtechMetaSafeBlockBase {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription};
 	}
 
 	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier) {

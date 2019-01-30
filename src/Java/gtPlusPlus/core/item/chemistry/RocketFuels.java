@@ -404,7 +404,7 @@ public class RocketFuels {
 				480);	
 
 		ItemStack aCell11dimethylhydrazine = ItemUtils.getItemStackOfAmountFromOreDict("cell1,1Dimethylhydrazine", 2);
-		if (aCell11dimethylhydrazine != null && aCell11dimethylhydrazine.getItem() != ModItems.AAA_Broken) {
+		if (ItemUtils.checkForInvalidItems(aCell11dimethylhydrazine)) {
 			GT_Values.RA.addCentrifugeRecipe(
 					CI.getNumberedCircuit(23),
 					aCell11dimethylhydrazine,

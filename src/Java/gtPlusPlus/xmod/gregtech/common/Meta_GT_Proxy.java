@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common;
 
 import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverflowCache;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,23 +12,29 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.render.GT_Renderer_Block;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ObjMap;
@@ -34,24 +42,152 @@ import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
+import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 
 public class Meta_GT_Proxy {
 
+	static {
+		instance = new Meta_GT_Proxy();
+		Logger.INFO("GT_PROXY - initialized.");
+	}
+	
+	public static final Meta_GT_Proxy instance;
+	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<>();
 	public static List<Runnable> GT_ItemIconload = new ArrayList<>();
 	
 	public static AutoMap<Integer> GT_ValidHeatingCoilMetas = new AutoMap<Integer>();
+
+	private static Class sBaseMetaTileEntityClass;
+	private static Class sBaseMetaTileEntityClass2;
 	
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
+	
 
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister sBlockIcons, sItemIcons;
 
 	public Meta_GT_Proxy() {
-		Logger.INFO("GT_PROXY - initialized.");
-		scheduleCoverMapCleaner();
-		setValidHeatingCoilMetas();
+		
 	}
+	
+	public static Block sBlockMachines;
+	
+	public void preInit() {
+		
+		//New GT++ Block, yay! (Progress)
+		//sBlockMachines = new GTPP_Block_Machines();
+		
+        GT_Log.out.println("GT++ Mod: Register TileEntities.");
+        BaseMetaTileEntity tBaseMetaTileEntity = constructBaseMetaTileEntity();
+        BaseMetaTileEntity tBaseMetaTileEntity2 = constructBaseMetaTileEntityCustomPower();
+
+        GT_Log.out.println("GT++ Mod: Testing BaseMetaTileEntity.");
+        if (tBaseMetaTileEntity == null || tBaseMetaTileEntity2 == null) {
+            GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            throw new RuntimeException("");
+        }
+        
+        GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
+        GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
+        GameRegistry.registerTileEntity(tBaseMetaTileEntity2.getClass(), "BaseMetaTileEntity_GTPP2");
+	}
+	
+	public void init() {
+		scheduleCoverMapCleaner();
+		setValidHeatingCoilMetas();	
+	}
+	
+	public void postInit() {
+		
+	}
+	
+	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {
+		if (aMeta == 12) {
+			return Meta_GT_Proxy.constructBaseMetaTileEntityCustomPower();
+		}
+		else {
+			return Meta_GT_Proxy.constructBaseMetaTileEntity();
+		}
+	}
+	
+	public static BaseCustomTileEntity constructBaseMetaTileEntity() {
+		if (sBaseMetaTileEntityClass == null) {
+			try {
+				sBaseMetaTileEntityClass = BaseCustomTileEntity.class;
+				return (BaseCustomTileEntity) BaseCustomTileEntity.class.newInstance();
+			} catch (Throwable arg1) {
+				try {
+					Constructor<?> g =  BaseCustomTileEntity.class.getConstructors()[0];
+					g.setAccessible(true);
+					return (BaseCustomTileEntity) g.newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | SecurityException e) {
+				}
+			}
+		}
+		try {
+			return (BaseCustomTileEntity) ((BaseCustomTileEntity) sBaseMetaTileEntityClass.newInstance());
+		} catch (Throwable arg0) {
+			arg0.printStackTrace(GT_Log.err);
+			try {
+				Constructor<?> g =  BaseCustomTileEntity.class.getConstructors()[0];
+				g.setAccessible(true);
+				return (BaseCustomTileEntity) g.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | SecurityException e) {
+				GT_Log.err
+						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				e.printStackTrace(GT_Log.err);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public static BaseCustomPower_MTE constructBaseMetaTileEntityCustomPower() {
+		if (sBaseMetaTileEntityClass2 == null) {
+			try {
+				sBaseMetaTileEntityClass2 = BaseCustomPower_MTE.class;
+				return (BaseCustomPower_MTE) BaseCustomPower_MTE.class.newInstance();
+			} catch (Throwable arg1) {
+				try {
+					Constructor<?> g =  BaseCustomPower_MTE.class.getConstructors()[0];
+					g.setAccessible(true);
+					return (BaseCustomPower_MTE) g.newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | SecurityException e) {
+					// e.printStackTrace();
+				}
+			}
+		}
+
+		try {
+			return (BaseCustomPower_MTE) ((BaseCustomPower_MTE) sBaseMetaTileEntityClass2.newInstance());
+		} catch (Throwable arg0) {
+			arg0.printStackTrace(GT_Log.err);
+			try {
+				Constructor<?> g =  BaseCustomPower_MTE.class.getConstructors()[0];
+				g.setAccessible(true);
+				return (BaseCustomPower_MTE) g.newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | SecurityException e) {
+				GT_Log.err
+						.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+				e.printStackTrace(GT_Log.err);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	public void setValidHeatingCoilMetas() {
 		for (int i = 0; i <= 6; i++ ) {
@@ -182,7 +318,74 @@ public class Meta_GT_Proxy {
                         }else i++;
                     }
                 }
-                if (tTileEntity.getEUCapacity() > 0L) {
+                
+
+
+				if (tTileEntity.getEUCapacity() > 0L) {				
+
+					final long tVoltage = tTileEntity.getInputVoltage();
+					byte tTier = (byte) ((byte) Math.max(1, GT_Utility.getTier(tVoltage)));
+					
+					//Custom handling
+					if (tDamage < 30500 && tDamage >= 30400) {						
+						int aOffset = tDamage - 30400;
+						if ((aOffset) <= 10) {
+							tTier -= 2;
+							aList.add(EnumChatFormatting.BOLD+"16"+" Fuse Slots"+EnumChatFormatting.GRAY);
+							aList.add("Per each fuse, you may insert "+EnumChatFormatting.YELLOW+(GT_Values.V[tTier])+EnumChatFormatting.GRAY+" EU/t");
+							aList.add("However this "+EnumChatFormatting.ITALIC+EnumChatFormatting.RED+"MUST"+EnumChatFormatting.GRAY+" be in a single Amp");
+							aList.add("This machine can accept upto a single amp of "+GT_Values.VN[Math.min(tTier+2, 12)]+" as a result");
+							aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Breaker_Loss", "Breaker Loss: "+EnumChatFormatting.RED+""+(GT_Values.V[Math.max(tTier-1, 0)]/10)+EnumChatFormatting.GRAY+" EU/t", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
+						}
+
+						
+						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Special_Power_1", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
+						//aList.add(GT_LanguageManager.addStringLocalization("TileEntity_BreakerBox_2", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
+						//aList.add(GT_LanguageManager.addStringLocalization("TileEntity_BreakerBox_3", EnumChatFormatting.RED+"Special Power Handling, please read manual", !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);
+					}					
+					
+					
+					if (tTileEntity.getInputVoltage() > 0L) {	
+						String inA = "0";
+						if (tTileEntity.getInputAmperage() >= 1L) {
+							inA = " at " + EnumChatFormatting.YELLOW + tTileEntity.getInputAmperage() + EnumChatFormatting.GRAY +" Amps";
+						}
+						else {
+							inA = " at " + EnumChatFormatting.WHITE + tTileEntity.getInputAmperage() + EnumChatFormatting.GRAY +" Amps";							
+						}
+						String a1 = "Voltage IN: "+EnumChatFormatting.GREEN + tTileEntity.getInputVoltage()
+						+ " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")"
+						+ EnumChatFormatting.GRAY + inA;						
+						aList.add(a1);
+					}
+
+					if (tTileEntity.getOutputVoltage() > 0L) {	
+						String outA = "0";
+						if (tTileEntity.getOutputAmperage() >= 1L) {
+							outA = " at " + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY +" Amps";
+						}
+						else {
+							outA = " at " + EnumChatFormatting.WHITE + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY +" Amps";							
+						}
+						String a1 = "Voltage OUT: "+EnumChatFormatting.GREEN + tTileEntity.getOutputVoltage()
+						+ " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getOutputVoltage())] + ")"
+						+ EnumChatFormatting.GRAY + outA;						
+						aList.add(a1);
+					}
+					
+
+					if (tTileEntity.getOutputVoltage() > 0L) {						
+						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_Lossess_EU", "Transmission Loss: "+EnumChatFormatting.DARK_BLUE+""+(tDamage < 30500 && tDamage >= 30400 ? 0 : 1), !GregTech_API.sPostloadFinished) + EnumChatFormatting.GRAY);				
+					}
+					
+					if (tTileEntity.getEUCapacity() > 0) {
+						aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE2",
+								"Internal Capacity: ", !GregTech_API.sPostloadFinished) + EnumChatFormatting.BLUE
+								+ tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY + " EU");
+					}
+				}               
+                
+                /*if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
                         aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.GREEN + tTileEntity.getInputVoltage() + " (" + GT_Values.VN[GT_Utility.getTier(tTileEntity.getInputVoltage())] + ")" + EnumChatFormatting.GRAY);
                     }
@@ -193,7 +396,8 @@ public class Meta_GT_Proxy {
                         aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.YELLOW + tTileEntity.getOutputAmperage() + EnumChatFormatting.GRAY);
                     }
                     aList.add(GT_LanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ", !GregTech_API.sPostloadFinished ) + EnumChatFormatting.BLUE + tTileEntity.getEUCapacity() + EnumChatFormatting.GRAY);
-                }
+                }*/
+				
             }
             NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
@@ -216,15 +420,28 @@ public class Meta_GT_Proxy {
                     }                	
                 }
                 
-                //Add Custom Tooltips
-                for (String s : mCustomGregtechMetaTooltips.keySet()) {
-                	if (aNBT.hasKey(s)) {                		
-                		String aTip = mCustomGregtechMetaTooltips.get(s).getTooltip(aNBT.getString(s));
-                		aList.add(aTip);
-                	}                	
-                }
-                
             }
+            
+            //Add Custom Here
+            
+            //Add Custom Tooltips
+            for (String s : mCustomGregtechMetaTooltips.keySet()) {
+            	if (aNBT.hasKey(s)) {                		
+            		String aTip = mCustomGregtechMetaTooltips.get(s).getTooltip(aNBT.getString(s));
+            		aList.add(aTip);
+            	}                	
+            }
+
+            //Add GT++ Stuff
+
+			if (tDamage >= 30400 && tDamage < 30500) {
+				aList.add(EnumChatFormatting.UNDERLINE+"Special GT++ Machine");
+			}
+			if ((tDamage >= 750 && tDamage < 1000) || (tDamage >= 30000 && tDamage < 31000)) {
+				aList.add(CORE.GT_Tooltip);				
+			}
+            
+            
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
         }

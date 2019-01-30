@@ -54,7 +54,7 @@ extends MetaTileEntity {
 					"Multiblock: 3x3x5 hollow with opening on top",
 					"Same shape as Bronze/Bricked blast furnace, except one ring of 8 taller.",
 					"40 Iron Plated Bricks required",
-					CORE.GT_Tooltip};
+					};
 		}
 		else {
 			return new String[]{"Sloooowly, Skip the Bronze age, Get some Steel!",
@@ -67,7 +67,7 @@ extends MetaTileEntity {
 					"as Iron is. This machine takes 5x longer than the bronze",
 					"blast furnace as a result.",
 					"----",
-					CORE.GT_Tooltip};
+					};
 		}
 	}
 

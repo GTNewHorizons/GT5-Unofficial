@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -24,6 +25,10 @@ import gregtech.api.util.Recipe_GT;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Cyclotron;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -35,7 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase {
 
-	public int mEUStore;
+	public long mEUStore;
 
 	public GregtechMetaTileEntity_Cyclotron(int aID, String aName, String aNameRegional, int tier) {
 		super(aID, aName, aNameRegional);
@@ -71,7 +76,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
+		return new CONTAINER_Cyclotron(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
@@ -92,17 +97,19 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setLong("mEUStore", mEUStore);
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
+		mEUStore = aNBT.getLong("mEUStore");
 		super.loadNBTData(aNBT);
 	}
 
 	@Override
 	public boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		Logger.INFO("Checking form of Cyclotron.");
+		log("Checking form of Cyclotron.");
 		int xCenter = getBaseMetaTileEntity().getXCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX * 5;
 		int yCenter = getBaseMetaTileEntity().getYCoord();
 		int zCenter = getBaseMetaTileEntity().getZCoord() + ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ * 5;
@@ -111,56 +118,56 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter + 5)) || (zCenter + 5 == getBaseMetaTileEntity().getZCoord()))
 				&& ((isAdvancedMachineCasing(xCenter, yCenter, zCenter - 5)) || (zCenter - 5 == getBaseMetaTileEntity().getZCoord())) && (checkCoils(xCenter, yCenter, zCenter))
 				&& (checkHulls(xCenter, yCenter, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter + 1, zCenter)) && (checkUpperOrLowerHulls(xCenter, yCenter - 1, zCenter))
-				&& (addIfEnergyInjector(xCenter + 4, yCenter, zCenter + 3, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter + 4, yCenter, zCenter - 3, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 4, yCenter, zCenter + 5, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter + 4, yCenter, zCenter - 5, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter - 4, yCenter, zCenter + 3, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 4, yCenter, zCenter - 3, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter - 4, yCenter, zCenter + 5, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 4, yCenter, zCenter - 5, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 3, yCenter, zCenter + 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 3, yCenter, zCenter + 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 5, yCenter, zCenter + 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 5, yCenter, zCenter + 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 3, yCenter, zCenter - 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 3, yCenter, zCenter - 4, aBaseMetaTileEntity))
-				&& (addIfEnergyInjector(xCenter + 5, yCenter, zCenter - 4, aBaseMetaTileEntity)) && (addIfEnergyInjector(xCenter - 5, yCenter, zCenter - 4, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 1, yCenter, zCenter - 5, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 1, yCenter, zCenter + 5, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 1, yCenter, zCenter - 5, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 1, yCenter, zCenter + 5, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 1, yCenter, zCenter - 7, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 1, yCenter, zCenter + 7, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 1, yCenter, zCenter - 7, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 1, yCenter, zCenter + 7, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 5, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 5, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 5, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 5, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter + 7, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter + 7, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfExtractor(xCenter - 7, yCenter, zCenter - 1, aBaseMetaTileEntity)) && (addIfExtractor(xCenter - 7, yCenter, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter + 1, yCenter + 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 1, yCenter + 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 1, yCenter + 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter + 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter + 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter + 1, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter + 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter + 1, zCenter - 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter + 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
-				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
+				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 3))
+				&& (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter + 4, yCenter, zCenter - 5))
+				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 3)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 3))
+				&& (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter + 5)) && (isAdvancedMachineCasing(xCenter - 4, yCenter, zCenter - 5))
+				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter + 4))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 4))
+				&& (isAdvancedMachineCasing(xCenter + 3, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 3, yCenter, zCenter - 4))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 4)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 4))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 5))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 5)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 5))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter + 1, yCenter, zCenter + 7))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter - 7)) && (isAdvancedMachineCasing(xCenter - 1, yCenter, zCenter + 7))
+				&& (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 5, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 5, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 7, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter - 1)) && (isAdvancedMachineCasing(xCenter - 7, yCenter, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter + 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter + 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter + 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter + 1, zCenter - 1))
+				&& (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter + 1, yCenter - 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter - 6)) && (isAdvancedMachineCasing(xCenter - 1, yCenter - 1, zCenter + 6))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter + 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter + 1))
+				&& (isAdvancedMachineCasing(xCenter - 6, yCenter - 1, zCenter - 1)) && (isAdvancedMachineCasing(xCenter + 6, yCenter - 1, zCenter - 1))
 				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 1) && (this.mInputBusses.size() >= 1)) {
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
 				if (this.mEnergyHatches.get(i).mTier < tier()){
-					Logger.INFO("bad energy hatch");
+					log("bad energy hatch");
 					return false;
 				}
 			}
 			int mOutputHatches_sS = this.mOutputBusses.size();
 			for (int i = 0; i < mOutputHatches_sS; i++) {
 				if (this.mOutputBusses.get(i).mTier < tier()){
-					Logger.INFO("bad output hatch");
+					log("bad output hatch");
 					return false;
 				}
 			}
 			int mInputHatches_sS = this.mInputHatches.size();
 			for (int i = 0; i < mInputHatches_sS; i++) {
 				if (this.mInputHatches.get(i).mTier < tier()){
-					Logger.INFO("bad input hatch");
+					log("bad input hatch");
 					return false;
 				}
 			}
 			int mInputBusses_sS = this.mInputBusses.size();
 			for (int i = 0; i < mInputBusses_sS; i++) {
 				if (this.mInputBusses.get(i).mTier < tier()){
-					Logger.INFO("bad input hatch");
+					log("bad input hatch");
 					return false;
 				}
 			}
@@ -170,11 +177,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			mHardHammer = true;
 			mSolderingTool = true;
 			mCrowbar = true;
-			Logger.INFO("Built Cyclotron.");
+			log("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
 		}    
-		Logger.INFO("Failed building Cyclotron.");
+		log("Failed building Cyclotron.");
 		return false;
 	}
 
@@ -212,36 +219,34 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				&& (isAdvancedMachineCasing(aX - 2, aY, aZ + 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ - 4)) && (isAdvancedMachineCasing(aX + 2, aY, aZ + 4));
 	}
 
-	private boolean addIfEnergyInjector(int aX, int aY, int aZ, IGregTechTileEntity aBaseMetaTileEntity) {
-		if (addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
-	private boolean addIfInjector(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-		if (addInputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
-	private boolean addIfExtractor(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-		if (addOutputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(26))) {
-			return true;
-		}
-		return isAdvancedMachineCasing(aX, aY, aZ);
-	}
-
 	private boolean isAdvancedMachineCasing(int aX, int aY, int aZ) {
 		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
 		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
-		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);		
-		return isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());			
+		final IGregTechTileEntity tTileEntity2 = getBaseMetaTileEntity().getIGregTechTileEntity(aX, aY, aZ);	
+		
+		boolean debug = isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(26), true, aBlock, aMeta, getCasing(), getCasingMeta());		
+		
+		/*if (!debug) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
+			log(""+aX+"/"+aY+"/"+aZ);
+		}*/
+		
+		return debug;
 	}
 
 	private boolean isCyclotronCoil(int aX, int aY, int aZ) {
-		return (getBaseMetaTileEntity().getBlock(aX, aY, aZ) == getCyclotronCoil() && (getBaseMetaTileEntity().getMetaID(aX, aY, aZ) == getCyclotronCoilMeta()));
+		
+		final Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
+		final int aMeta = getBaseMetaTileEntity().getMetaID(aX, aY, aZ);	
+		
+		boolean debug = isValidBlockForStructure(null, 0, false, aBlock, aMeta, getCyclotronCoil(), getCyclotronCoilMeta());		
+		
+		/*if (!debug) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, ModBlocks.blockCompressedObsidian);
+			log(""+aX+"/"+aY+"/"+aZ);
+		}*/
+		
+		return debug;		
 	}
 
 	public Block getCasing() {
@@ -270,6 +275,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				"Which will be extracted from the Isochronous Cyclotron",
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
+				"Any external casing can be a hatch/bus, unlike Fusion",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
 				"All Hatches must be IV or better",
 				"1-16 Input Hatches", 
@@ -296,12 +302,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	public IIconContainer getIconOverlay() {
 		if (this.getBaseMetaTileEntity().isActive()){
-			return TexturesGtBlock.Overlay_Machine_Dimensional_Orange;
+			return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
 		}
-		return TexturesGtBlock.Overlay_Machine_Dimensional_Blue;
-		//mobessence
-		
-
+		return TexturesGtBlock.Overlay_MatterFab_Animated;
 	}
 
 	@Override
@@ -311,7 +314,13 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		//Logger.INFO("Recipe Check.");
+		
+		/*if (CORE.DEVENV) {
+			return this.checkRecipeGeneric();
+		}*/
+		
+		
+		//log("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
 		ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
 		ArrayList<FluidStack> tInputList = getStoredFluids();
@@ -352,6 +361,28 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					}
 				}
 
+				for (ItemStack s : outputs) {
+					if (s != null) {
+						if (s.getItem() instanceof IonParticles) {
+							long aCharge = IonParticles.getChargeState(s);
+							if (aCharge == 0) {
+								IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+										-5, -5,
+										-4, -4, -4, 
+										-3, -3, -3, -3, -3,
+										-2, -2, -2, -2, -2, -2, -2,
+										-1, -1, -1, -1, -1, -1, -1, -1,
+										1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+										2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+										3, 3, 3, 3, 3, 3, 3,
+										4, 4, 4, 4,
+										5, 5, 5,
+										6, 6}));
+							}
+						}
+					}
+				}
+				
 				this.mOutputItems = outputs;
 				this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
 				return true;
@@ -374,7 +405,13 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()) {
 			if (mEfficiency < 0)
-				mEfficiency = 0;
+				mEfficiency = 0;			
+			
+			//Time Counter
+			this.mTotalRunTime++;
+			
+			onRunningTick(null);			
+			
 			if (mRunningOnLoad && checkMultiblock(aBaseMetaTileEntity, mInventory[1])) {
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipe(mInventory[1]);
@@ -388,6 +425,10 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mEnergyHatches.clear();
 				mMufflerHatches.clear();
 				mMaintenanceHatches.clear();
+				mChargeHatches.clear();
+				mDischargeHatches.clear();
+				mControlCoreBus.clear();
+				mMultiDynamoHatches.clear();
 				mMachine = checkMultiblock(aBaseMetaTileEntity, mInventory[1]);
 			}
 			if (mStartUpCheck < 0) {
@@ -395,9 +436,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					if (this.mEnergyHatches != null) {
 						for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
 							if (isValidMetaTileEntity(tHatch)) {
-								if (aBaseMetaTileEntity.getStoredEU() + (2048) < maxEUStore()
-										&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048, false)) {
-									aBaseMetaTileEntity.increaseStoredEnergyUnits(2048, true);
+								if (aBaseMetaTileEntity.getStoredEU() + (2048*4) < maxEUStore()
+										&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits((2048*4), false)) {
+									aBaseMetaTileEntity.increaseStoredEnergyUnits((2048*4), true);
 								}
 							}
 					}
@@ -405,7 +446,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 						stopMachine();
 					}
 					if (getRepairStatus() > 0) {
-						if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
+						if (mMaxProgresstime > 0) {							
 							this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
 							if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
 								if (mOutputItems != null)
@@ -454,6 +495,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 					stopMachine();
 				}
 			}
+			doRandomMaintenanceDamage();
 			aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
 					| (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
@@ -461,7 +503,36 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 	}
 
 	@Override
-	public boolean onRunningTick(ItemStack aStack) {
+	public boolean onRunningTick(ItemStack aStack) {	
+		if (this.mOutputBusses.size() > 0) {
+			for (GT_MetaTileEntity_Hatch_OutputBus g : this.mOutputBusses) {
+				if (g != null) {
+					for (ItemStack s : g.mInventory) {
+						if (s != null) {
+							if (s.getItem() instanceof IonParticles) {
+								long aCharge = IonParticles.getChargeState(s);
+								if (aCharge == 0) {
+									IonParticles.setChargeState(s, MathUtils.getRandomFromArray(new int[] {
+											-5, -5,
+											-4, -4, -4, 
+											-3, -3, -3, -3, -3,
+											-2, -2, -2, -2, -2, -2, -2,
+											-1, -1, -1, -1, -1, -1, -1, -1,
+											1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+											2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+											3, 3, 3, 3, 3, 3, 3,
+											4, 4, 4, 4,
+											5, 5, 5,
+											6, 6}));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		PollutionUtils.addPollution(getBaseMetaTileEntity(), this.getPollutionPerTick(aStack));
+		
 		return true;
 	}
 

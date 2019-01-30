@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelter extends RecipeGen_Base {
@@ -208,7 +208,7 @@ public class RecipeGen_BlastSmelter extends RecipeGen_Base {
 							if (M.getComposites().get(irc) != null){
 								final int r = (int) M.vSmallestRatio[irc];
 								inputStackCount = inputStackCount+r;
-								if ((M.getComposites().get(irc).getStackMaterial().getState() != MaterialState.SOLID) || ((M.getComposites().get(irc).getDustStack(r) == null) || (M.getComposites().get(irc).getDustStack(r) == ItemUtils.getSimpleStack(ModItems.AAA_Broken)))){
+								if ((M.getComposites().get(irc).getStackMaterial().getState() != MaterialState.SOLID) || !ItemUtils.checkForInvalidItems(M.getComposites().get(irc).getDustStack(r))){
 									final int xr = r;
 									if ((xr > 0) && (xr <= 100)){
 										final int mathmatics = (r*1000);

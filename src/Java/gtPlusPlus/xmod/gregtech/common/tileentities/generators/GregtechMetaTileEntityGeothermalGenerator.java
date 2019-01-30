@@ -38,7 +38,7 @@ extends GT_MetaTileEntity_BasicGenerator
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick", CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick"};
 	}
 
 	@Override

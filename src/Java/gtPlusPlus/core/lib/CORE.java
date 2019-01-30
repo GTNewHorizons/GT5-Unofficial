@@ -115,7 +115,6 @@ public class CORE {
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static IGregtech_RecipeAdder RA;
-	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
 
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
