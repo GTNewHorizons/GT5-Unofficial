@@ -10,18 +10,22 @@ import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 
 public class PollutionUtils {
 
 	private static boolean mIsPollutionEnabled = true;
 
+	private static Method mAddPollution;
+	private static Method mAddPollution2;
+
+	private static Method mGetPollution;
+	private static Method mGetPollution2;
+
 	static {
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {
 			mIsPollutionEnabled = mPollution();
-		}
-		else {
+		} else {
 			mIsPollutionEnabled = false;
 		}
 	}
@@ -42,65 +46,123 @@ public class PollutionUtils {
 
 	public static boolean addPollution(IGregTechTileEntity te, int pollutionValue) {
 		if (mIsPollutionEnabled)
-		try {
-			Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
-			if (GT_Pollution != null) {
-				Method addPollution = GT_Pollution.getMethod("addPollution", IGregTechTileEntity.class, int.class);
-				if (addPollution != null) {
-					addPollution.invoke(null, te, pollutionValue);
+			try {
+				if (te == null) {
+					return false;
+				}
+				if (mAddPollution != null) {
+					mAddPollution.invoke(null, te, pollutionValue);
+				}
+				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				if (GT_Pollution != null) {
+					Method addPollution = GT_Pollution.getMethod("addPollution", IGregTechTileEntity.class, int.class);
+					if (addPollution != null) {
+						mAddPollution = addPollution;
+						addPollution.invoke(null, te, pollutionValue);
+						return true;
+					}
+				}
+			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+			}
+		return false;
+	}
+
+	public static boolean addPollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
+		if (mIsPollutionEnabled)
+			try {
+				if (aTileOfSomeSort == null) {
+					return false;
+				}
+				IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
+				Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
+				return addPollution(c, pollutionValue);
+			} catch (SecurityException | IllegalArgumentException e) {
+			}
+		return false;
+	}
+
+	public static boolean addPollution(Chunk aChunk, int pollutionValue) {
+		if (mIsPollutionEnabled)
+			try {
+				if (aChunk == null) {
+					return false;
+				}
+				if (mAddPollution2 != null) {
+					mAddPollution2.invoke(null, aChunk, pollutionValue);
 					return true;
 				}
+				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				if (GT_Pollution != null) {
+					Method addPollution = GT_Pollution.getMethod("addPollution", Chunk.class, int.class);
+					if (addPollution != null) {
+						mAddPollution2 = addPollution;
+						mAddPollution2.invoke(null, aChunk, pollutionValue);
+						return true;
+					}
+				}
+			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
 			}
-		} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-		}
 		return false;
+	}
+
+	public static boolean removePollution(IGregTechTileEntity te, int pollutionValue) {
+		return addPollution(te, -pollutionValue);
+	}
+
+	public static boolean removePollution(IHasWorldObjectAndCoords aTileOfSomeSort, int pollutionValue) {
+		return addPollution(aTileOfSomeSort, -pollutionValue);
+	}
+
+	public static boolean removePollution(Chunk aChunk, int pollutionValue) {
+		return addPollution(aChunk, -pollutionValue);
 	}
 
 	public static int getPollution(IGregTechTileEntity te) {
 		if (mIsPollutionEnabled)
-		try {
-			Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
-			if (GT_Pollution != null) {
-				Method addPollution = GT_Pollution.getMethod("getPollution", IGregTechTileEntity.class);
-				if (addPollution != null) {
-					return (int) addPollution.invoke(null, te);
+			try {
+				if (te == null) {
+					return 0;
 				}
+				if (mGetPollution != null) {
+					mGetPollution.invoke(null, te);
+				}
+				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				if (GT_Pollution != null) {
+					Method addPollution = GT_Pollution.getMethod("getPollution", IGregTechTileEntity.class);
+					if (addPollution != null) {
+						mGetPollution = addPollution;
+						return (int) addPollution.invoke(null, te);
+					}
+				}
+			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
 			}
-		} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-		}
 		return 0;
 	}
 
-	public static boolean addPollution(Object aTileOfSomeSort, int pollutionValue) {
+	public static int getPollution(Chunk te) {
 		if (mIsPollutionEnabled)
-		try {
-			Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
-			if (GT_Pollution != null) {
-				Method addPollution = GT_Pollution.getMethod("addPollution", Chunk.class, int.class);
-				if (addPollution != null) {
-					IHasWorldObjectAndCoords j = (IHasWorldObjectAndCoords) aTileOfSomeSort;
-					if (j != null) {
-						Chunk c = j.getWorld().getChunkFromBlockCoords(j.getXCoord(), j.getZCoord());
-						addPollution.invoke(null, c, pollutionValue);
-						return true;
-					} else {
-						TileEntity t = (TileEntity) aTileOfSomeSort;
-						if (t != null) {
-							Chunk c = t.getWorldObj().getChunkFromBlockCoords(t.xCoord, t.zCoord);
-							addPollution.invoke(null, c, pollutionValue);
-							return true;
-						}
-					}
-
+			try {
+				if (te == null) {
+					return 0;
 				}
+				if (mGetPollution2 != null) {
+					mGetPollution2.invoke(null, te);
+				}
+				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				if (GT_Pollution != null) {
+					Method addPollution = GT_Pollution.getMethod("getPollution", Chunk.class);
+					if (addPollution != null) {
+						mGetPollution2 = addPollution;
+						return (int) addPollution.invoke(null, te);
+					}
+				}
+			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
 			}
-		} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-		}
-		return false;
-
+		return 0;
 	}
 
 }

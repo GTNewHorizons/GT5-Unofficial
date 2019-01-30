@@ -18,7 +18,6 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.general.ItemAirFilter;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -30,6 +29,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_BasicMachine {
 
@@ -41,9 +42,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	protected int SLOT_FILTER = 5;
 	
 	protected boolean mSaveRotor = false;
-
-	private int mDamageFactorLow = 5;
-	private float mDamageFactorHigh =  (float) 0.6000000238418579;
 
 	public GregtechMetaAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 2, "Making sure you don't live in Gwalior - Uses 2A", 2, 0, "Recycler.png", "", 
@@ -67,21 +65,30 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
 	}*/
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public String[] getDescription() {
+		
+		boolean highTier = this.mTier >= 7;
+		
+		
 		return new String[]{
 				this.mDescription,
+				highTier ? "Will attempt to remove 1/4 pollution from 8 surrounding chunks" : "",
+						highTier ? "If these chunks are not loaded, they will be ignored" : "",
 				"Requires a turbine rotor and an Air Filter [T1/T2] to run.",
 				"The turbine rotor must be manually inserted/replaced",
 				"Can be configured with a soldering iron to change modes",
 				"Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
 				"High Efficiency: Removes full pollution, Turbine takes 100% dmg",
 				"Turbine Rotor will not break in LE mode",
+				
 				};
 	}
 
@@ -288,11 +295,48 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 
 	public int getCurrentChunkPollution(){
-		return getCurrentChunkPollution(this.getBaseMetaTileEntity());
+		int mCurrentChunkPollution = 0;
+		if (this.mTier < 7) {
+			mCurrentChunkPollution = PollutionUtils.getPollution(getBaseMetaTileEntity());			
+		}
+		else {
+			AutoMap<Chunk> aSurrounding = new AutoMap<Chunk>();				
+			World aWorld = this.getBaseMetaTileEntity().getWorld();
+			int xPos = this.getBaseMetaTileEntity().getXCoord();
+			int zPos = this.getBaseMetaTileEntity().getZCoord();
+			Chunk a1 = aWorld.getChunkFromBlockCoords(xPos-32, zPos-32);
+			Chunk a2 = aWorld.getChunkFromBlockCoords(xPos-32, zPos);
+			Chunk a3 = aWorld.getChunkFromBlockCoords(xPos-32, zPos+32);
+			Chunk b1 = aWorld.getChunkFromBlockCoords(xPos, zPos-32);
+			Chunk b2 = aWorld.getChunkFromBlockCoords(xPos, zPos);
+			Chunk b3 = aWorld.getChunkFromBlockCoords(xPos, zPos+32);
+			Chunk c1 = aWorld.getChunkFromBlockCoords(xPos+32, zPos-32);
+			Chunk c2 = aWorld.getChunkFromBlockCoords(xPos+32, zPos);
+			Chunk c3 = aWorld.getChunkFromBlockCoords(xPos+32, zPos+32);
+			aSurrounding.put(a1);		
+			aSurrounding.put(a2);		
+			aSurrounding.put(a3);		
+			aSurrounding.put(b1);		
+			aSurrounding.put(b2);		
+			aSurrounding.put(b3);		
+			aSurrounding.put(c1);		
+			aSurrounding.put(c2);		
+			aSurrounding.put(c3);			
+			for (Chunk r : aSurrounding) {
+				mCurrentChunkPollution += getPollutionInChunk(r);
+			}			
+		}		
+		if (mCurrentChunkPollution > 0){
+			mHasPollution = true;
+		}
+		else {
+			mHasPollution = false;
+		}
+		return mCurrentChunkPollution;		
 	}
 
-	public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity){
-		int mCurrentChunkPollution = PollutionUtils.getPollution(aBaseMetaTileEntity);
+	public int getPollutionInChunk(Chunk aChunk){
+		int mCurrentChunkPollution = PollutionUtils.getPollution(aChunk);
 		if (mCurrentChunkPollution > 0){
 			mHasPollution = true;
 		}
@@ -301,7 +345,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		}
 		return mCurrentChunkPollution;
 	}
-
+	
 	public boolean hasRotor(ItemStack rotorStack){
 		if(rotorStack != null){ 
 			if (rotorStack.getItem() instanceof GT_MetaGenerated_Tool  && rotorStack.getItemDamage() >= 170 && rotorStack.getItemDamage() <= 179){
@@ -432,14 +476,92 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	}
 
 	public boolean removePollution(int toRemove){
+		
+		if (this == null || this.getBaseMetaTileEntity() == null || this.getBaseMetaTileEntity().getWorld() == null) {
+			return false;
+		}
+		
+		if (this.mTier < 7) {
+			int startPollution = getCurrentChunkPollution();
+			PollutionUtils.removePollution(this.getBaseMetaTileEntity(), toRemove);
+			int after = getCurrentChunkPollution();
+			return (after<startPollution);	
+		}
+		else {
+			int chunksWithRemoval = 0;
+			int totalRemoved = 0;			
+			AutoMap<Chunk> aSurrounding = new AutoMap<Chunk>();
+			Chunk aThisChunk = this.getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getZCoord());
+			int mainChunkX = aThisChunk.xPosition;
+			int mainChunkZ = aThisChunk.zPosition;			
+			
+			World aWorld = this.getBaseMetaTileEntity().getWorld();
+			int xPos = this.getBaseMetaTileEntity().getXCoord();
+			int zPos = this.getBaseMetaTileEntity().getZCoord();
+
+			Chunk a1 = aWorld.getChunkFromBlockCoords(xPos-32, zPos-32);
+			Chunk a2 = aWorld.getChunkFromBlockCoords(xPos-32, zPos);
+			Chunk a3 = aWorld.getChunkFromBlockCoords(xPos-32, zPos+32);
+			Chunk b1 = aWorld.getChunkFromBlockCoords(xPos, zPos-32);
+			Chunk b2 = aWorld.getChunkFromBlockCoords(xPos, zPos);
+			Chunk b3 = aWorld.getChunkFromBlockCoords(xPos, zPos+32);
+			Chunk c1 = aWorld.getChunkFromBlockCoords(xPos+32, zPos-32);
+			Chunk c2 = aWorld.getChunkFromBlockCoords(xPos+32, zPos);
+			Chunk c3 = aWorld.getChunkFromBlockCoords(xPos+32, zPos+32);
+
+			aSurrounding.put(a1);		
+			aSurrounding.put(a2);		
+			aSurrounding.put(a3);		
+			aSurrounding.put(b1);		
+			aSurrounding.put(b2);		
+			aSurrounding.put(b3);		
+			aSurrounding.put(c1);		
+			aSurrounding.put(c2);		
+			aSurrounding.put(c3);			
+			
+			for (Chunk r : aSurrounding) {
+				if (!r.isChunkLoaded) {
+					continue;
+				}
+				
+				int startPollution = getPollutionInChunk(r);
+				if (startPollution == 0) {
+					continue;
+				}
+								
+				Logger.WARNING("Trying to remove pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+startPollution);
+				int after = 0;
+				boolean isMainChunk = r.isAtLocation(mainChunkX, mainChunkZ);
+				
+				int removal = Math.max(0, !isMainChunk ? (toRemove/4) : toRemove);
+				if (removePollution(r, removal)) {
+					chunksWithRemoval++;
+					after = getPollutionInChunk(r);
+				}
+				else {
+					after = 0;
+				}
+				if (startPollution - after > 0) {
+					totalRemoved += (startPollution - after);
+				}
+				Logger.WARNING("Removed "+(startPollution - after)+" pollution from chunk "+r.xPosition+", "+r.zPosition+" | "+after);				
+			}
+			return totalRemoved > 0 && chunksWithRemoval > 0;	
+		}
+	}
+	
+	public boolean removePollution(Chunk aChunk, int toRemove){
 		int before = getCurrentChunkPollution();
-		PollutionUtils.addPollution(this.getBaseMetaTileEntity(), -toRemove);
+		PollutionUtils.removePollution(aChunk, toRemove);
 		int after = getCurrentChunkPollution();
 		return (after<before);	
 	}
 
 
 	public boolean hasAirFilter(ItemStack filter){
+		if (filter == null) {
+			return false;
+		}		
 		if (filter.getItem() instanceof ItemAirFilter){
 			return true;
 		}		
@@ -448,13 +570,13 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 	public boolean damageAirFilter(){
 		ItemStack filter = this.mInventory[this.SLOT_FILTER];
+		if (filter == null) {
+			return false;
+		}
 		
 		boolean creativeRotor = false;
 		ItemStack rotorStack = this.mInventory[SLOT_ROTOR];
-		if (rotorStack == null) {
-			return false;
-		}
-		else {				
+		if (rotorStack != null) {			
 			if(rotorStack.getItem() instanceof GT_MetaGenerated_Tool_01) {
 				Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(rotorStack);
 				Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(rotorStack);
@@ -466,9 +588,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		
 		if (creativeRotor) {
 			return true;
-		}
-		if (filter == null) {
-			return false;
 		}
 		
 
@@ -560,6 +679,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		int mAirSides = getFreeSpaces();
 		int reduction = 0;
 		
+		try {
 		long tVoltage = maxEUInput();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		reduction += (((Math.max((tTier-2), 1)*2)*50)*mAirSides); 
@@ -567,6 +687,10 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		reduction = GT_Utility.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
 		
 		aTooltipSuper.put("Maximum pollution removed per second: "+reduction);	
+		}
+		catch (Throwable t) {
+			aTooltipSuper.put("Maximum pollution removed per second: "+mPollutionReduction);
+		}
 		aTooltipSuper.put("Air Sides: "+mAirSides);		
 		return aTooltipSuper.toArray();
 	}

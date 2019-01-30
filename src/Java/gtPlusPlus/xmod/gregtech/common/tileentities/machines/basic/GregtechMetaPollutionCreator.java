@@ -117,7 +117,7 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (pollutionMultiplier >= 9){
+		if (pollutionMultiplier > 99){
 			pollutionMultiplier = 1;
 		}
 		else {
@@ -354,27 +354,9 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (this.getBaseMetaTileEntity().isServerSide()) {
 			//TickTimer - 20 times a second
-			if (this.mTickTimer >= 0 || this.mTickTimer <= 19){
-				this.mTickTimer++;
-			}
-			else {
-				this.mTickTimer = 0;
-				//Perform pollution update once a second
+			this.mTickTimer++;			
+			if (mTickTimer % 20 == 0){
 				this.mCurrentPollution = getCurrentChunkPollution();
-				this.mSecondTimer++;
-			}
-			//Update Pollution array once a minute
-			if (this.mSecondTimer >= 60){
-				Utils.sendServerMessage("Udating Average of pollution array. Using Array slot"+this.mArrayPos);
-				this.mSecondTimer = 0;
-				if (this.mArrayPos<this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos++;
-				}
-				else if (this.mArrayPos==this.mAveragePollutionArray.length){
-					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
-					this.mArrayPos = 0;
-				}
 			}
 		}		
 	}
