@@ -207,7 +207,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 				"Right click to store/remove something",
 				"Ctrl + Rmb to check contents",
 				"Ctrl + Rmb with a screwdriver to lock",
-				CORE.GT_Tooltip };
+				};
 	}
 
 	@Override

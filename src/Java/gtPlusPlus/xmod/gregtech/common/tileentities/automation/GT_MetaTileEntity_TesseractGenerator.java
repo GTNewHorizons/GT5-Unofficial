@@ -629,8 +629,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 				"Generates a Tesseract for the attached Inventory",
 				"Connect with pipes to insert items",
 				"Consumes "+TESSERACT_ENERGY_COST+"EU/t for same dimension transfers",
-				"Consumes "+TESSERACT_ENERGY_COST_DIMENSIONAL+"EU/t for cross dimensional transfers",
-				CORE.GT_Tooltip };
+				"Consumes "+TESSERACT_ENERGY_COST_DIMENSIONAL+"EU/t for cross dimensional transfers", };
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Grants no byproducts, but it is fast.", CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "Grants no byproducts, but it is fast.", };
 	}
 
 	@Override

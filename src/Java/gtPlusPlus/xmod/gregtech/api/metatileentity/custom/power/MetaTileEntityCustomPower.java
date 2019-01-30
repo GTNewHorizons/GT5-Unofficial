@@ -3,7 +3,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.CustomMetaTileBase;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -12,6 +15,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 
 	public MetaTileEntityCustomPower(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
 		super(aID, aBasicName, aRegionalName, aInvSlotCount);
+		this.setBaseMetaTileEntity(Meta_GT_Proxy.constructBaseMetaTileEntityCustomPower());
 	}
 	
 	public MetaTileEntityCustomPower(String aStack, int aInvSlotCount) {
@@ -23,6 +27,12 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 	}
 
 	public void doExplosion(long aExplosionPower) {
+		
+		if (MathUtils.randInt(1, 10) > 0) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo");
+			return;
+		}
+		
 		float tStrength = aExplosionPower < GT_Values.V[0]
 				? 1.0F
 				: (aExplosionPower < GT_Values.V[1]
@@ -58,6 +68,11 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 
 	@Override
 	public void onExplosion() {
+		
+		if (MathUtils.randInt(1, 10) > 0) {
+			Logger.INFO("Machine tried to explode, let's stop that. xo");
+			return;
+		}
 		// TODO Auto-generated method stub
 		super.onExplosion();
 	}

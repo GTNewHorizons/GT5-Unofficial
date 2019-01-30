@@ -173,7 +173,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				"RTG changes output voltage depending on fuel",
 				"Generates power at " + this.getEfficiency() + "% Efficiency per tick",
 				"Output Voltage: "+this.getOutputTier()+" EU/t",
-				CORE.GT_Tooltip};
+			};
 	}
 
 	public GregtechMetaTileEntity_RTG(int aID, String aName, String aNameRegional, int aTier) {

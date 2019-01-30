@@ -2,9 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
 import static gregtech.api.enums.GT_Values.GT;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -67,7 +64,7 @@ public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPo
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (Math.min(3, mTier <= 0 ? 0 : 1 + ((mTier - 1) / 4)));
+        return 12;
     }
 
     @Override
@@ -85,8 +82,6 @@ public abstract class GTPP_MTE_TieredMachineBlock extends MetaTileEntityCustomPo
 
 		AutoMap<String> aTooltip = new AutoMap<String>();
 		String []s1 = null;
-		aTooltip.put("Special GT++ Machine");
-		aTooltip.put(CORE.GT_Tooltip);
 		s1 = new String[aTooltip.size()];
 		int u = 0;
 		for (String s : aTooltip) {

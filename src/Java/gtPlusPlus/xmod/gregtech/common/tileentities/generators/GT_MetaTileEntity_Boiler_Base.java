@@ -53,7 +53,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		return new String[]{
 				this.mDescription,
 				"Consumes "+(mSteamPerSecond/160)+"L of water per second",
-				"Produces "+this.mPollutionPerSecond+" pollution/sec", CORE.GT_Tooltip};
+				"Produces "+this.mPollutionPerSecond+" pollution/sec",};
 	}
 
 	public ITexture getOverlayIcon() {

@@ -55,7 +55,7 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
 	public String[] getDescription() {
 		return new String[] { this.mDescription, "Not Very Fast, but not very big either.",
 				"Each side pair in/out puts to different slots.", "Top & Bottom Sides are Outputs.",
-				"Front & Back are Input Plasma 1.", "Sides are Input Plasma 2.", CORE.GT_Tooltip };
+				"Front & Back are Input Plasma 1.", "Sides are Input Plasma 2." };
 	}
 
 	@Override

@@ -82,7 +82,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 				"Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
 				"High Efficiency: Removes full pollution, Turbine takes 100% dmg",
 				"Turbine Rotor will not break in LE mode",
-				CORE.GT_Tooltip};
+				};
 	}
 
 	@Override

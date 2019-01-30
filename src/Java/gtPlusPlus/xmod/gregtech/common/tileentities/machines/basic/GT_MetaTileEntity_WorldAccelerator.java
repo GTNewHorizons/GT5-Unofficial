@@ -72,7 +72,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 				String.format("Accelerating things (Radius: %d EU/t: %d Speed Bonus: x%d)", mTier,
 						getEnergyDemand(mTier, false), mAccelerateStatic[mTier]),
 				"Use a screwdriver to change mode", "To accelerate TileEntities, this machine has to be adjacent to it",
-				"This machine accepts up to 8 Amps", "Accelerating TileEntities doubles Energy-Demand", CORE.GT_Tooltip};
+				"This machine accepts up to 8 Amps", "Accelerating TileEntities doubles Energy-Demand"};
 		
 	}
 

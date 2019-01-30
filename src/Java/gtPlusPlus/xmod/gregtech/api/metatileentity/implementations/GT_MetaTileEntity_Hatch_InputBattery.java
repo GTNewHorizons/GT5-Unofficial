@@ -51,8 +51,7 @@ GT_MetaTileEntity_Hatch {
 		}		
 		return new String[]{
 				this.mDescription,
-				"Capacity: " + mSlots + " slots",
-				CORE.GT_Tooltip};
+				"Capacity: " + mSlots + " slots"};
 	}
 
 	@Override

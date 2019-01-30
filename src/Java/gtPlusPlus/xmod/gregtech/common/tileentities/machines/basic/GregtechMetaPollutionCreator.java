@@ -39,7 +39,7 @@ public class GregtechMetaPollutionCreator extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "A useful debug machine to create pollution.", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "A useful debug machine to create pollution."};
 	}
 
 	@Override

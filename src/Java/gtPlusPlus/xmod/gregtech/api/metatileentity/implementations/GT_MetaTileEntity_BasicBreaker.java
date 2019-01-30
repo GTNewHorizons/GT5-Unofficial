@@ -55,7 +55,11 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 		ITexture[][][] rTextures = new ITexture[2][17][];
 
 		for (byte i = -1; i < 16; ++i) {
-			rTextures[0][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i + 1]};
+			rTextures[0][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
+					this.mInventory.length > 4
+							? BlockIcons.OVERLAYS_ENERGY_IN_MULTI[Math.min(12, mTier)]
+							: BlockIcons.OVERLAYS_ENERGY_IN[Math.min(12, mTier)]};
+			
 			rTextures[1][i + 1] = new ITexture[]{BlockIcons.MACHINE_CASINGS[this.mTier][i + 1],
 					this.mInventory.length > 4
 							? BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
@@ -187,6 +191,7 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 	}
 
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
 			/*this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
 			this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
@@ -268,18 +273,8 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
 		return new long[]{tStored, tScale};
 	}
 
-	public String[] getInfoData() {
-		++this.count;
-		if (this.mMax == 0L || this.count % 20L == 0L) {
-			long[] tmp = this.getStoredEnergy();
-			this.mStored = tmp[0];
-			this.mMax = tmp[1];
-		}
-
-		return new String[]{this.getLocalName(), "Stored Items:", GT_Utility.formatNumbers(this.mStored) + " EU /",
-				GT_Utility.formatNumbers(this.mMax) + " EU", "Average input:",
-				this.getBaseMetaTileEntity().getAverageElectricInput() + "", "Average output:",
-				this.getBaseMetaTileEntity().getAverageElectricOutput() + ""};
+	public String[] getInfoData() {		
+		return new String[]{};
 	}
 
 	public boolean isGivingInformation() {

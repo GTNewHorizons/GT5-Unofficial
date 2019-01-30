@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_ThreadedSuperBuffer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_ThreadedSuperBuffer;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
@@ -22,7 +21,7 @@ public class GT_MetaTileEntity_ThreadedSuperBuffer extends GT_MetaTileEntity_Thr
 				"Buffers up to 256 Item Stacks",
 				"Use Screwdriver to regulate output stack size",
 				"Consumes 1EU per moved Item",
-				CORE.GT_Tooltip});
+			});
 	}
 
 	public GT_MetaTileEntity_ThreadedSuperBuffer(final String aName, final int aTier, final int aInvSlotCount,

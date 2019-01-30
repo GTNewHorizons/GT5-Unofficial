@@ -295,15 +295,13 @@ GT_MetaTileEntity_MultiBlockBase {
 					aRequiresCoreModule,
 					aRequiresMuffler,
 					getPollutionTooltip(),
-					getMachineTooltip(),
-					CORE.GT_Tooltip};
+					getMachineTooltip()};
 		}
 		else {
 			z = new String[] {
 					aRequiresMaint,
 					aRequiresCoreModule,
-					getMachineTooltip(),
-					CORE.GT_Tooltip};		
+					getMachineTooltip(),};		
 		}
 
 		int a2, a3;

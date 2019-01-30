@@ -21,6 +21,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.blocks.GT_Material_Machines;
 import gregtech.common.render.GT_Renderer_Block;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 import net.minecraft.block.Block;
@@ -98,11 +99,29 @@ public class GTPP_Block_Machines extends GT_Generic_Block implements IDebugableB
 	}
 
 	public String getUnlocalizedName() {
-		return "gtpp.blockmachines";
+		int tDamage = 0;
+		String aUnlocalName = (tDamage >= 0 && tDamage < GregTech_API.METATILEENTITIES.length)
+				? (GregTech_API.METATILEENTITIES[tDamage] != null
+				? ("gtpp.blockmachines.name" + "." + GregTech_API.METATILEENTITIES[tDamage].getMetaName())
+				: ("gtpp.blockmachines.name")) : "";
+		
+		Logger.INFO("Unlocal Name: "+aUnlocalName);
+		return aUnlocalName;
 	}
 
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal("gtpp.blockmachines" + ".name");
+		String aName = StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");;
+		if (aName.toLowerCase().contains(".name")) {
+			aName = StatCollector.translateToLocal(getUnlocalizedName() + ".name");
+		}
+		if (aName.toLowerCase().contains(".name")) {
+			aName = StatCollector.translateToLocal("gt.blockmachines" + ".name");
+		}
+		if (aName.toLowerCase().contains(".name")) {
+			aName = "BAD";
+		}
+		Logger.INFO("Name: "+aName);
+		return aName;
 	}
 
 	public int getFlammability(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {

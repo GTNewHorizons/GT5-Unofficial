@@ -25,7 +25,7 @@ public class GregtechMetaTileEntityThaumcraftResearcher extends GregtechMetaTile
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Generates Thaumcraft research notes, because it's magic.", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Generates Thaumcraft research notes, because it's magic."};
 	}
 
 	@Override
