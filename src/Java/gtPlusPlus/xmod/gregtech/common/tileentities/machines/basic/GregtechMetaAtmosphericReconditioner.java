@@ -638,7 +638,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
-	@Override
 	public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
 			float aZ) {
 		this.mSaveRotor = Utils.invertBoolean(mSaveRotor);

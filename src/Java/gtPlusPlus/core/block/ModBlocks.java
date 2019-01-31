@@ -125,7 +125,7 @@ public final class ModBlocks {
 		blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
 		blockPlayerDoorCustom_Cactus = new PlayerDoors(Material.cactus, "door_cactus", false, 0.6f, Block.soundTypeGrass, "Cactus");
 		
-		blockCustomSuperLight = new BlockSuperLight();
+		//blockCustomSuperLight = new BlockSuperLight();
 		blockCustomJukebox = new Machine_SuperJukebox();
 
 	}

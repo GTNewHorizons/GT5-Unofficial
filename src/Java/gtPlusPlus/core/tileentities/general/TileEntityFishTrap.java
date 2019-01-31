@@ -80,16 +80,17 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 				}
 				if ((waterCount >= 2) && (trapCount <= 4)) {
 					this.waterSides = waterCount;
+					Logger.MACHINE_INFO("Valid Trap. "+waterCount+" | "+(this.tickCount/20)+"/"+(this.baseTickRate/20));
 					return true;
 				}
 				else if ((waterCount >= 2) && (trapCount > 4)) {
-					Logger.WARNING("Too many fish traps surrounding this one.");
-					Logger.WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
+					Logger.MACHINE_INFO("Too many fish traps surrounding this one.");
+					Logger.MACHINE_INFO("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
 							+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
 				}
 			}
 		}
-		// Utils.LOG_WARNING("Error finding water");
+		// Utils.LOG_MACHINE_INFO("Error finding water");
 		return false;
 	}
 
@@ -103,13 +104,13 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			ItemUtils.organiseInventory(getInventory());
 			final ItemStack loot = this.generateLootForFishTrap().copy();
 			try {
-				//Utils.LOG_WARNING("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
+				//Utils.LOG_MACHINE_INFO("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
 				for (final ItemStack contents : this.getInventory().getInventory()) {
 
 
 					if (GT_Utility.areStacksEqual(loot, contents)){
 						if (contents.stackSize < contents.getMaxStackSize()) {
-							//Utils.LOG_WARNING("3-Trying to add one more "+loot.getDisplayName()+"meta: "+loot.getItemDamage()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
+							//Utils.LOG_MACHINE_INFO("3-Trying to add one more "+loot.getDisplayName()+"meta: "+loot.getItemDamage()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
 							contents.stackSize++;
 							this.markDirty();
 							return true;
@@ -120,7 +121,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 				checkingSlot = 0;
 				for (final ItemStack contents : this.getInventory().getInventory()) {
 					if (contents == null) {
-						//Utils.LOG_WARNING("Adding Item To Empty Slot. "+(checkingSlot+1));
+						//Utils.LOG_MACHINE_INFO("Adding Item To Empty Slot. "+(checkingSlot+1));
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
 						this.markDirty();
 						return true;
@@ -190,7 +191,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
 		}
 		loot.stackSize=1;
-		Logger.WARNING("Adding x"+loot.stackSize+" "+loot.getDisplayName()+".");
+		Logger.MACHINE_INFO("Adding x"+loot.stackSize+" "+loot.getDisplayName()+".");
 		return loot;
 	}
 
@@ -199,7 +200,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		try{
 			if (!this.worldObj.isRemote) {
 				this.tickCount++;
-				// Utils.LOG_WARNING("Ticking "+this.tickCount);
+				 //Logger.MACHINE_INFO("Ticking "+this.tickCount);
 				// Check if the Tile is within water once per second.
 				if ((this.tickCount % 20) == 0) {
 					this.isInWater = this.isSurroundedByWater();
@@ -210,16 +211,13 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 				}
 
 				// Try add some loot once every 30 seconds.
-				if ((this.tickCount % this.baseTickRate) == 0) {
+				if (this.tickCount >= this.baseTickRate) {
 					if (this.isInWater) {
 						// Add loot
-						// Utils.LOG_WARNING("Adding Loot to the fishtrap at
-						// x["+this.locationX+"] y["+this.locationY+"]
-						// z["+this.locationZ+"] (Ticking for loot every
-						// "+this.baseTickRate+" ticks)");
+						 Logger.MACHINE_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 						
 						int aExtraLootChance = MathUtils.randInt(1, 1000);
-						if (aExtraLootChance == 1000) {
+						if (aExtraLootChance >= 999) {
 							this.tryAddLoot();
 							this.tryAddLoot();
 							this.tryAddLoot();							
@@ -231,11 +229,13 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 						this.markDirty();
 					}
 					else {
+						Logger.MACHINE_INFO("Not in water.");
 						this.markDirty();
 					}
 					this.tickCount = 0;
 				}
-				if (this.tickCount > (this.baseTickRate + 500)) {
+				if (this.tickCount >= (this.baseTickRate + 500)) {
+					Logger.MACHINE_INFO("Resetting tick counter");
 					this.tickCount = 0;
 				}
 
@@ -246,7 +246,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
 	public void calculateTickrate() {
 		int water = this.waterSides;
-		int variance = (int) ((MathUtils.randInt(200, 2000)/water)*0.5);
+		//int variance = (int) ((MathUtils.randInt(-200, 200)/water)*0.5);
 		if (water <= 1) {
 			this.baseTickRate = 0;
 		} else if (water == 2) {
@@ -261,7 +261,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			this.baseTickRate = 1750;
 		}
 		if (water > 1) {
-			this.baseTickRate += variance;			
+			//this.baseTickRate += variance;			
 		}
 	}
 
@@ -279,7 +279,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	@Override
 	public void writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		// Utils.LOG_WARNING("Trying to write NBT data to TE.");
+		// Utils.LOG_MACHINE_INFO("Trying to write NBT data to TE.");
 		final NBTTagCompound chestData = new NBTTagCompound();
 		this.inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
@@ -291,7 +291,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		// Utils.LOG_WARNING("Trying to read NBT data from TE.");
+		// Utils.LOG_MACHINE_INFO("Trying to read NBT data from TE.");
 		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 		if (nbt.hasKey("CustomName", 8)) {
 			this.setCustomName(nbt.getString("CustomName"));

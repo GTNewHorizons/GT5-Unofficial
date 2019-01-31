@@ -46,7 +46,10 @@ public class ConfigHandler {
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines",
 				false, "Utilizes Neutronium instead.");
 		boilerSteamPerSecond = config.getInt("boilerSteamPerSecond", "machines", 750, 0, 10000, "Sets the steam per second value in LV,MV,HV boilers (respectively 1x,2x,3x this number for the tiers)");
-	
+		requireControlCores = config.getBoolean("requireControlCores", "machines", true, "Multiblocks Require Control Cores");
+		
+		
+		
 		//Circuits
 		enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", false,
 				"Adds custom circuits to expand past the Master Tier. Only really recommended to enable if enableOldGTcircuits is enabled.");

@@ -1545,17 +1545,17 @@ public class RECIPES_Machines {
 		
 		CORE.RA.addSixSlotAssemblingRecipe(				
 				new ItemStack[] {
-						CI.machineHull_IV,
-						aOutput[2],
-						aMat_A[3].getGear(GTNH ? 4 : 2),
-						aMat_B[5].getPlateDouble(GTNH ? 16 : 8),
-						ItemUtils.getItemStack("miscutils:item.itemBufferCore"+(GTNH ? "4" : "3"), GTNH ? 4 : 2),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 4 : 3), GTNH ? 10 : 5)
+						CI.machineHull_HV,
+						aOutput[1],
+						aMat_A[1].getGear(GTNH ? 4 : 2),
+						aMat_B[2].getPlateDouble(GTNH ? 16 : 8),
+						ItemUtils.getItemStack("miscutils:item.itemBufferCore"+(GTNH ? "2" : "1"), GTNH ? 4 : 2),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 3 : 2), GTNH ? 10 : 5)
 				},					
-				aMat_B[4].getFluid(144 * 16), //Input Fluid					
+				aMat_B[3].getFluid(144 * 8), //Input Fluid					
 				GregtechItemList.Hatch_Control_Core.get(1),					
 				60 * 20 * 5, 
-				MaterialUtils.getVoltageForTier(4));
+				MaterialUtils.getVoltageForTier(3));
 		
 		
 		for (int i = 0; i < 10; i++) {			

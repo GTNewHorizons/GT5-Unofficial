@@ -1,37 +1,46 @@
 package gtPlusPlus.core.container;
 
+import java.util.Iterator;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
+import gtPlusPlus.core.inventories.Inventory_SuperJukebox;
+import gtPlusPlus.core.slots.SlotIntegratedCircuit;
+import gtPlusPlus.core.slots.SlotJukebox;
+import gtPlusPlus.core.slots.SlotNoInput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
-import gtPlusPlus.core.slots.SlotIntegratedCircuit;
-import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 
 public class Container_SuperJukebox extends Container {
 
-	protected TileEntityCircuitProgrammer tile_entity;
-	public final InventoryCircuitProgrammer inventoryChest;
+	protected TileEntitySuperJukebox tile_entity;
+	public final Inventory_SuperJukebox inventoryChest;
 
 	private final World worldObj;
 	private final int posX;
 	private final int posY;
 	private final int posZ;
 
-	public static final int SLOT_OUTPUT = 25;
+
+	public static final int SLOT_HOLO_PLAY = 18;
+	public static final int SLOT_HOLO_LOOP = 19;
+	public static final int SLOT_OUTPUT = 20;
 
 	public static int StorageSlotNumber = 26; // Number of slots in storage area
 	public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-												// and Hotbar)
+	// and Hotbar)
 	public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-																				// slots
+	// slots
 
-	public Container_SuperJukebox(final InventoryPlayer inventory, final TileEntityCircuitProgrammer te) {
+	public Container_SuperJukebox(final InventoryPlayer inventory, final TileEntitySuperJukebox te) {
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 
@@ -52,79 +61,70 @@ public class Container_SuperJukebox extends Container {
 				o++;
 			}
 		}*/
-		
-		
-		int xStart = 8;
-		int yStart = 5;
+
+
+		int xStart = 9;
+		int yStart = 20;
 
 		try {
-		//0
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart, yStart));
-		//1-10
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+18));
-		//11-20
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+18));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+36));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+18, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+36, yStart+54));
-		//21-24
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+54, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+72, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+90, yStart+54));
-		this.addSlotToContainer(new SlotIntegratedCircuit(this.inventoryChest, o++, xStart+108, yStart+54));
-		Logger.INFO("2");
-		
-		//Add Output
-		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_OUTPUT, xStart+(8*18), yStart+54));
-		o++;
-		Logger.INFO("3");
 
-		
-		
-		// Player Inventory
-		for (var6 = 0; var6 < 3; ++var6) {
-			for (var7 = 0; var7 < 9; ++var7) {
-				this.addSlotToContainer(new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
+			//Row One
+			for (int c = 0; c < 9; c++) {
+				if (c >= 3 && c < 6) {
+					continue;
+				}
+				this.addSlotToContainer(new SlotJukebox(this.inventoryChest, o++, xStart+(18*c), yStart));
 			}
-		}
-		// Player Hotbar
-		for (var6 = 0; var6 < 9; ++var6) {
-			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
-		}
-		
-		
-		
-		Logger.INFO("4");
-		}
-		catch (Throwable t) {}
 
-	}
-
-	@Override
-	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-			final EntityPlayer aPlayer) {
-
-		if (!aPlayer.worldObj.isRemote) {
-			if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-				// Utils.LOG_WARNING("??? - "+aSlotIndex);
+			//Row Two
+			for (int c = 0; c < 9; c++) {
+				if (c >= 3 && c < 6) {
+					continue;
+				}
+				this.addSlotToContainer(new SlotJukebox(this.inventoryChest, o++, xStart+(18*c), yStart+18));
 			}
+
+			//Row Two
+			for (int c = 0; c < 9; c++) {
+				if (c >= 3 && c < 6) {
+					continue;
+				}
+				this.addSlotToContainer(new SlotJukebox(this.inventoryChest, o++, xStart+(18*c), yStart+36));
+			}
+
+
+			//Controls
+			int c = 4;		
+
+			//Two Control Buttons
+			this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_HOLO_PLAY, xStart+(18*c), 12));
+			this.addSlotToContainer(new SlotNoInput(this.inventoryChest, SLOT_HOLO_LOOP, xStart+(18*c), 12+(1*18)));
+
+			//Active playing slot for visual
+			this.addSlotToContainer(new SlotJukebox(this.inventoryChest, SLOT_OUTPUT, xStart+(18*c), 18+(2*18), true));
+
+
+
+
+			// Player Inventory
+			for (var6 = 0; var6 < 3; ++var6) {
+				for (var7 = 0; var7 < 9; ++var7) {
+					this.addSlotToContainer(new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
+				}
+			}
+			// Player Hotbar
+			for (var6 = 0; var6 < 9; ++var6) {
+				this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
+			}
+
+
+			Logger.INFO("3");
+
 		}
-		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class Container_SuperJukebox extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockCircuitProgrammer) {
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockCustomJukebox) {
 			return false;
 		}
 
@@ -187,4 +187,65 @@ public class Container_SuperJukebox extends Container {
 		return super.func_94530_a(p_94530_1_, p_94530_2_);
 	}
 
+
+
+	@Override
+	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+		if (tile_entity.getWorldObj().isRemote || tile_entity == null) return null;
+		switch (aSlotIndex) {
+		case SLOT_HOLO_PLAY:
+			if (tile_entity == null) return null;
+			tile_entity.mIsPlaying = !tile_entity.mIsPlaying;
+			Logger.INFO("Jukebox | Playing: "+tile_entity.mIsPlaying);
+			tile_entity.jukeboxLogicUpdate();
+			return null;
+		case SLOT_HOLO_LOOP:
+			if (tile_entity == null) return null;
+			tile_entity.mIsLooping = !tile_entity.mIsLooping;
+			Logger.INFO("Jukebox | Looping: "+tile_entity.mIsLooping);
+			return null;
+		case 20:
+			return null;
+		default:
+			return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+		}
+	}
+
+	public boolean isPlaying;
+	public boolean isLooping;
+
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		if (tile_entity.getWorldObj().isRemote || tile_entity == null) return;
+
+		isPlaying = tile_entity.mIsPlaying;
+		isLooping = tile_entity.mIsLooping;
+
+		Iterator var2 = this.crafters.iterator();
+		while (var2.hasNext()) {
+			ICrafting var1 = (ICrafting) var2.next();
+			var1.sendProgressBarUpdate(this, 102, isPlaying ? 1 : 0);
+			var1.sendProgressBarUpdate(this, 103, isLooping ? 1 : 0);
+		}
+	}
+
+	@Override
+	public void addCraftingToCrafters(ICrafting par1ICrafting) {
+		super.addCraftingToCrafters(par1ICrafting);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int par1, int par2) {
+		super.updateProgressBar(par1, par2);
+		switch (par1) {
+		case 102:
+			isPlaying = (par2 != 0);
+			break;
+		case 103:
+			isLooping = (par2 != 0);
+			break;
+		}
+	}
 }

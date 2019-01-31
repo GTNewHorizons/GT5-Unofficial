@@ -1,8 +1,14 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.IRETURN;
 
-import java.io.IOException;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -13,12 +19,7 @@ import org.objectweb.asm.MethodVisitor;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.preloader.DevHelper;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -110,21 +111,23 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 	 * 15 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
 	 */
 	public static TileEntity createTileEntity(World aWorld, int aMeta) {
-		Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
+		//Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
 		if (aMeta < 4) {
 			return GregTech_API.constructBaseMetaTileEntity();
 		} else if (aMeta < 12) {
 			return new BaseMetaPipeEntity();
-		} else {
-			return Meta_GT_Proxy.constructCustomGregtechMetaTileEntityByMeta(aMeta);
+		} else {			
+			//Because Wooden pipes/frames may exist in world, we try cast to the GT++ tile first, if tht fails, we cast a pipe.. 
+			try {
+				return Meta_GT_Proxy.constructCustomGregtechMetaTileEntityByMeta(aMeta);
+			}
+			catch (ClassCastException c) {
+				//Returns a pipe entity, once this returns, it should correct itself and no longer error in future.
+				return new BaseMetaPipeEntity();				
+			}
 		}
 	}
 
-
-
-	String aEntityPlayer;
-	String aEntityPlayerMP;
-	String aWorld;
 	int mMode;
 
 	public ClassTransformer_GT_BlockMachines_MetaPipeEntity(byte[] basicClass, boolean obfuscated, int aMode) {
@@ -136,7 +139,7 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-		aTempReader.accept(new localClassVisitor(aTempWriter), 0);		
+		aTempReader.accept(new localClassVisitor(aTempWriter, mMode), 0);		
 
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
@@ -149,11 +152,7 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 		writer = aTempWriter;
 
 
-		if (reader != null && writer != null) {		
-			aEntityPlayer = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayer") : "net/minecraft/entity/player/EntityPlayer";
-			aEntityPlayerMP = obfuscated ? DevHelper.getObfuscated("net/minecraft/entity/player/EntityPlayerMP") : "net/minecraft/entity/player/EntityPlayerMP";
-			aWorld = obfuscated ? DevHelper.getObfuscated("net/minecraft/world/World") : "net/minecraft/world/World";
-
+		if (reader != null && writer != null) {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech getTileEntityBaseType Patch", Level.INFO, "Attempting Method Injection.");
 			if (aMode == 0) {
 				injectMethod("getHarvestTool");
@@ -243,16 +242,19 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 		return didInject;
 	}
 
-	public static final class localClassVisitor extends ClassVisitor {
+	public final class localClassVisitor extends ClassVisitor {
 
-		public localClassVisitor(ClassVisitor cv) {
+		private final int mMode;
+		
+		public localClassVisitor(ClassVisitor cv, int aMode) {
 			super(ASM5, cv);
+			mMode = aMode;
 		}
 
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {		
 			MethodVisitor methodVisitor;	
-			if (name.equals("getHarvestTool") || name.equals("createTileEntity") || name.equals("getTileEntityBaseType")) {
+			if ((mMode == 0 && (name.equals("createTileEntity") || name.equals("getHarvestTool"))) || (mMode > 0 && name.equals("getTileEntityBaseType"))) {
 				FMLRelaunchLog.log("[GT++ ASM] Gregtech getTileEntityBaseType Patch", Level.INFO, "Found method "+name+", removing.");	
 				methodVisitor = null;
 			}	
