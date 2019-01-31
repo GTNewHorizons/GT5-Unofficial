@@ -97,7 +97,7 @@ item.itemPlateEnrichedSoularium.name=富集阳光合金板
 item.itemHeliumBlob.name=神秘的氢化物
 item.itemAlkalusDisk.name=Alkalus圆盘
 item.itemHotIngotRaisinBread.name=热葡萄干面包
-item.itemIngotRaisinBread.name=§5ImQ009's §f葡萄干面包
+item.itemIngotRaisinBread.name=§5ImQ009的§f葡萄干面包
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=压缩黑曜石 (9)
@@ -1467,8 +1467,8 @@ item.itemDustLi2BeF4.name=Li2BeF4 燃料复合物粉
 item.itemDustSmallLi2BeF4.name=小堆Li2BeF4燃料复合物粉
 item.itemDustTinyLi2BeF4.name=小撮Li2BeF4燃料复合物粉
 item.Li2BeF4.name=Li2BeF4单元
-item.itemCircuitLFTR.name=§a钍反应堆控制电路
-item.itemZirconiumPellet.name=锆颗粒 [氯化锆]
+item.itemCircuitLFTR.name=§a控制电路
+item.itemZirconiumPellet.name=锆颗粒[氯化锆]
 item.itemDustZrCl4.name=氯化锆粉
 item.itemDustSmallZrCl4.name=小堆氯化锆粉
 item.itemDustTinyZrCl4.name=小撮氯化锆粉
