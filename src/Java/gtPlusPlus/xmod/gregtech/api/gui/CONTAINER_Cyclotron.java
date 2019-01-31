@@ -229,4 +229,4 @@ public class CONTAINER_Cyclotron extends GT_ContainerMetaTile_Machine {
 	public String trans(String aKey, String aEnglish) {
 		return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
 	}
-}
+}        
