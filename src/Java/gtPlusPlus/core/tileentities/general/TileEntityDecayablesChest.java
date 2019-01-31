@@ -31,10 +31,10 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 	public float prevLidAngle;
 	/** The number of players currently using this chest */
 	public int numPlayersUsing;
-	private int cachedChestType;
 
 	private String customName;
 
+	private int cachedChestType;
 	private int tickCount = 0;
 
 	public TileEntityDecayablesChest() {
@@ -91,8 +91,9 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 		boolean a1, a2;
 		int u = 0;
 		a1 = b.getIsActive(world, iStack);
-		a2 = b.tickItemTag(world, iStack);
-		while (u < 19) {
+		a2 = false;
+		int SECONDS_TO_PROCESS = 1;
+		while (u < (20 * SECONDS_TO_PROCESS)) {
 			if (!a1) {
 				break;
 			}
@@ -100,7 +101,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 			a2 = b.tickItemTag(world, iStack);
 			u++;
 		}
-		Logger.INFO("| "+b.getUnlocalizedName()+" | "+a1+"/"+a2);
+		Logger.MACHINE_INFO("| "+b.getUnlocalizedName()+" | "+a1+"/"+a2);
 
 		if (!a1 && !a2) {
 			ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
@@ -352,63 +353,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 		ItemUtils.organiseInventory(getInventory());
 		cachedChestType = 0;		
 		return cachedChestType;
-		
-/*		//Try merge stacks
-		for (int i = 0; i < this.getSizeInventory(); i++) {
-			for (int i2 = 0; i2 < this.getSizeInventory(); i2++) {
-				if (i != i2) {
-					ItemStack[] t1 = new ItemStack[] {this.getStackInSlot(i), this.getStackInSlot(i2)};
-					if (t1[0] == null || t1[1] == null) {
-						continue;
-					}
-					else if (!GT_Utility.areStacksEqual(t1[0], t1[1])) {
-						continue;
-					}
-					//Try Merge
-					else {						
-						
-						if (GT_Utility.areStacksEqual(t1[0], t1[1])) {						
-						while ((t1[0].stackSize < 64 && t1[1].stackSize > 0)) {							
-							t1[0].stackSize++;
-							t1[1].stackSize--;
-							if (t1[1].stackSize <= 0) {
-								t1[1] = null;
-								break;
-							}
-							if (t1[0].stackSize == 64) {
-								break;
-							}							
-						}
-						this.setInventorySlotContents(i,  t1[1]);
-						this.setInventorySlotContents(i2,  t1[0]);	
-						
-						}
-					}
-				}
-			}
-		}
-		
-		//Move nulls to end
-		int count2 = 0;
-		for (int i = 0; i < this.getSizeInventory(); i++) 
-			if (this.getStackInSlot(i) != null) 
-				this.setInventorySlotContents(count2++,  this.getStackInSlot(i));
-		while (count2 < this.getSizeInventory()) 
-			this.setInventorySlotContents(count2++,  null);
-
-		//Sort by name
-		int arraySlot = 0;
-		HashMap<Integer, Pair<String, ItemStack>> aNameMap = new HashMap<Integer, Pair<String, ItemStack>>();
-		
-		for (ItemStack ggg : this.inventoryContents.getInventory()) {
-			aNameMap.put(arraySlot++, new Pair<String, ItemStack>(ggg != null ? ggg.getDisplayName() : "", ggg));
-		}	
-		arraySlot = 0;
-		String[] aNameMapInternal = new String[aNameMap.size()];
-		for (Pair pp : aNameMap.values()) {			
-			aNameMapInternal[arraySlot++] = pp.getKey().toString();			
-		}
-		Arrays.sort(aNameMapInternal);	*/	
 
 	}
 

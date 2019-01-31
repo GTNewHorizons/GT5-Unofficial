@@ -936,11 +936,22 @@ public class ItemUtils {
 		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
 			p[o] = aInputInventory.getStackInSlot(o);
 		}		
-		ItemStack[] g = organiseInventory(p);		
-		IInventory aTemp = aInputInventory;		
+		//ItemStack[] g = organiseInventory(p);
+		
+		IInventory aTemp = aInputInventory;	
+		for (int i = 0; i < p.length; ++i) {
+			for (int j = i + 1; j < p.length; ++j) {
+				if (p[j] != null && (p[i] == null
+						|| GT_Utility.areStacksEqual(p[i], p[j]))) {
+					GT_Utility.moveStackFromSlotAToSlotB(aTemp, aTemp, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+				}
+			}
+		}	
+		
+		/*	
 		for (int o = 0; o < aInputInventory.getSizeInventory(); o++) {
 			aTemp.setInventorySlotContents(o, g[o]);
-		}		
+		}*/		
 		return aTemp;
 	}
 	

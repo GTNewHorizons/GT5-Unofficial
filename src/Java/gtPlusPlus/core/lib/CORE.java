@@ -203,6 +203,7 @@ public class CORE {
 		public static boolean disableIC2Recipes = false;
 		public static boolean enableAlternativeDivisionSigilRecipe = false;
 		public static int boilerSteamPerSecond = 750;
+		public static boolean requireControlCores = true;
 
 		//Feature Related
 		public static boolean enableCustomCapes = false;

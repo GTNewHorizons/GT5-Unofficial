@@ -21,6 +21,7 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -516,7 +517,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		int aControlCoreTier = getControlCoreTier();
 
 		//If no core, return false;
-		if (aControlCoreTier == 0) {
+		if (aControlCoreTier == 0 && CORE.ConfigSwitches.requireControlCores) {
 			log("Invalid/No Control Core");
 			return false;
 		}
@@ -533,7 +534,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		log("Running checkRecipeGeneric(0)");
 
 		//Check to see if Voltage Tier > Control Core Tier
-		if (tTier > aControlCoreTier) {
+		if (tTier > aControlCoreTier && CORE.ConfigSwitches.requireControlCores) {
 			return false;
 		}		
 		
@@ -548,7 +549,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 		ItemStack[] mFishOutput = generateLoot(this.mMode);
 		mFishOutput = removeNulls(mFishOutput);
-		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 100, 8, 0);
+		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 100, 16, 0);
 		if (!this.canBufferOutputs(g, aMaxParallelRecipes)) {
 			log("No Space");
 			return false;
@@ -606,7 +607,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 		//Only Overclock as high as the control circuit.
 		byte tTierOld = tTier;
-		tTier = (byte) aControlCoreTier;
+		tTier = CORE.ConfigSwitches.requireControlCores ? (byte) aControlCoreTier : tTierOld;
 
 		// Overclock
 		if (this.mEUt <= 16) {

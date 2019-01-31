@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.container.box.LunchBoxContainer;
 import gtPlusPlus.core.container.box.MagicBagContainer;
@@ -51,6 +52,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI11 = 10; // Auto Lunchbox
 	public static final int GUI12 = 11; // Bag for Magic Tools
 	public static final int GUI13 = 12; // Decayables Chest
+	public static final int GUI14 = 13; // Super Jukebox
 
 	public static void init() {
 
@@ -95,6 +97,8 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
 			} else if (ID == GUI13) {
 				return new Container_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
+			}else if (ID == GUI14) {
+				return new Container_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
 			}
 		}
 
@@ -151,6 +155,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_CircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
 			} else if (ID == GUI13) {
 				return new GUI_DecayablesChest(player.inventory, (TileEntityDecayablesChest) te);
+			} else if (ID == GUI14) {
+				return new GUI_SuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
 			}
 		}
 

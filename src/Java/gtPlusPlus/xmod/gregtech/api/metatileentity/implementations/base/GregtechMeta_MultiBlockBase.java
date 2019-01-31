@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.lang.reflect.InvocationTargetException;
@@ -198,7 +199,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 
-		int tTier = this.getControlCoreTier();
+		int tTier = requireControlCores ? this.getControlCoreTier() : -1;
 
 		mInfo.add(getMachineTooltip());
 
@@ -502,7 +503,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		int aControlCoreTier = getControlCoreTier();
 
 		//If no core, return false;
-		if (aControlCoreTier == 0) {
+		if (aControlCoreTier == 0 && requireControlCores) {
 			log("No control core found.");
 			return false;
 		}
@@ -519,7 +520,7 @@ GT_MetaTileEntity_MultiBlockBase {
 		log("Running checkRecipeGeneric(0)");
 
 		//Check to see if Voltage Tier > Control Core Tier
-		if (tTier > aControlCoreTier) {
+		if (tTier > aControlCoreTier && requireControlCores) {
 			log("Control core found is lower tier than power tier.");
 			return false;
 		}
@@ -586,7 +587,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Only Overclock as high as the control circuit.
 		byte tTierOld = tTier;
-		tTier = (byte) aControlCoreTier;
+		tTier = requireControlCores ? (byte) aControlCoreTier : tTierOld;
 
 		// Overclock
 		if (this.mEUt <= 16) {
@@ -888,7 +889,14 @@ GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 
-	public int getControlCoreTier() {		
+	public int getControlCoreTier() {	
+		
+		//Always return best tier if config is off.
+		boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
+		if (!aCoresConfig) {
+			return 10;
+		}
+		
 		if (mControlCoreBus.isEmpty()) {
 			log("No Control Core Modules Found.");
 			return 0;
@@ -1499,7 +1507,10 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
 		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);
-		boolean aHasCore = this.getControlCoreBus() != null;	
+		
+		boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
+		
+		boolean aHasCore = (aCoresConfig ? (this.getControlCoreBus() != null) : true);	
 		return aStructureCheck && aHasCore;
 	}
 
