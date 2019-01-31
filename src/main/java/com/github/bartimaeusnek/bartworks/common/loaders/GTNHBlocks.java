@@ -66,7 +66,7 @@ public class GTNHBlocks implements Runnable {
         if (Loader.isModLoaded("TConstruct"))
             BioVatLogicAdder.BioVatGlass.addCustomGlass("TConstruct", "GlassBlock", 0, 3);
         if (Loader.isModLoaded("tectech"))
-            BioVatLogicAdder.BioVatGlass.addCustomGlass("tectech", "tile.quantumGlass", 0, 5);
+            BioVatLogicAdder.BioVatGlass.addCustomGlass("tectech", "tile.quantumGlass", 0, 8);
 
         if (Loader.isModLoaded("chisel"))
             BioVatLogicAdder.BioVatGlass.addCustomGlass("chisel", "glass2", 0, 3);

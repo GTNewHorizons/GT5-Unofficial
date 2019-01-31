@@ -64,7 +64,7 @@ public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator {
 
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor3f(0.5f, 0.25f, 0.07f);
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.modID, "textures/GUI/GUIPrimitiveKUBox.png"));
+        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUIPrimitiveKUBox.png"));
         int j = (this.width - this.xSize) / 2;
         int k = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(j, k, 0, 0, this.xSize, this.ySize);

@@ -44,7 +44,7 @@ public class BW_TileEntityContainer extends BlockContainer {
         this.tileEntity = tileEntity;
         this.setCreativeTab(MainMod.BWT);
         this.setBlockName(blockName);
-        this.setBlockTextureName(MainMod.modID + ":" + blockName);
+        this.setBlockTextureName(MainMod.MOD_ID + ":" + blockName);
     }
 
     @Override

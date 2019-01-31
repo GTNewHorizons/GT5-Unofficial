@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.GT_Values;
@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{this.mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + this.maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + this.maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks" };
+        return new String[]{this.mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + this.maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + this.maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
     }
 
 }

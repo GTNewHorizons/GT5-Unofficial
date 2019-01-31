@@ -40,7 +40,7 @@ public class LabParts extends SimpleSubItemClass {
 
     public LabParts(String[] tex) {
         super(tex);
-        this.setCreativeTab(MainMod.BioTab);
+        this.setCreativeTab(MainMod.BIO_TAB);
     }
 
     @Override

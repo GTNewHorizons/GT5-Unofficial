@@ -24,14 +24,17 @@ package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_Item_Destructopack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GT_GUIContainer_Destructopack extends GuiContainer {
-    public static final ResourceLocation texture = new ResourceLocation(MainMod.modID, "textures/GT2/gui/Destructopack.png");
+    public static final ResourceLocation texture = new ResourceLocation(MainMod.MOD_ID, "textures/GT2/gui/Destructopack.png");
 
     public GT_GUIContainer_Destructopack(InventoryPlayer inventory) {
         super(new GT_Container_Item_Destructopack(inventory));

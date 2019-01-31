@@ -49,7 +49,7 @@ public class BW_SimpleWindMeter extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister p_94581_1_) {
-        this.itemIcon = p_94581_1_.registerIcon(MainMod.modID + ":BW_SimpleWindMeter");
+        this.itemIcon = p_94581_1_.registerIcon(MainMod.MOD_ID + ":BW_SimpleWindMeter");
     }
 
     @Override

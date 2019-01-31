@@ -40,10 +40,11 @@ public class ConfigHandler {
     public static boolean BioLab = true;
     public static Configuration c;
     public static boolean DEHPDirectSteam = false;
+    public static int megaMachinesMax = 256;
     private static boolean ezmode = false;
 
     public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
-        c = new Configuration(new File(e.getModConfigurationDirectory().toString() + "/" + MainMod.modID + ".cfg"));
+        c = new Configuration(new File(e.getModConfigurationDirectory().toString() + "/" + MainMod.MOD_ID + ".cfg"));
 
         IDOffset = c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
         energyPerCell = c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
@@ -53,6 +54,7 @@ public class ConfigHandler {
         newStuff = !c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
         BioLab = !c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
         DEHPDirectSteam = c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
+        megaMachinesMax = c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
             c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);

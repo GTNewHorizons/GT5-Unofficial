@@ -65,7 +65,7 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(MainMod.modID + ":" + itemTex);
+        this.itemIcon = iconRegister.registerIcon(MainMod.MOD_ID + ":" + itemTex);
     }
 
     public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {

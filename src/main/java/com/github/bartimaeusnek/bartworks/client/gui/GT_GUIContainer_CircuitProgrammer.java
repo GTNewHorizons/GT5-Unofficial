@@ -24,15 +24,18 @@ package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_CircuitProgrammer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GT_GUIContainer_CircuitProgrammer extends GuiContainer {
 
-    public static final ResourceLocation texture = new ResourceLocation(MainMod.modID, "textures/GUI/GUI_CircuitP.png");
+    public static final ResourceLocation texture = new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_CircuitP.png");
 
     public GT_GUIContainer_CircuitProgrammer(InventoryPlayer p_i1072_1_) {
         super(new GT_Container_CircuitProgrammer(p_i1072_1_));

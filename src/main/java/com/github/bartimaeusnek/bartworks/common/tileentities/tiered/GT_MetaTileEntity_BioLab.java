@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.common.items.LabModule;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;

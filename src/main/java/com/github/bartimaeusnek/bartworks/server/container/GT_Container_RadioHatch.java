@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.server.container;
 
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_RadioHatch;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Container_1by1;

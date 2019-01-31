@@ -44,7 +44,7 @@ public class BW_GUIContainer_RadLevel extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor3f(1, 1, 1);
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.modID, "textures/GUI/GUI_RSC.png"));
+        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_RSC.png"));
         drawTexturedModalRect(guiLeft - 79, guiTop, 0, 0, 256, 165);
     }
 

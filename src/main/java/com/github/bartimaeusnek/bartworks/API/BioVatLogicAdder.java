@@ -94,7 +94,7 @@ public final class BioVatLogicAdder {
             if (ret)
                 BioVatGlass.glasses.put(new BlockMetaPair(block, (byte) meta), (byte) tier);
             else
-                MainMod.logger.warn("Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!");
+                MainMod.LOGGER.warn("Block: " + sUnlocBlockName + " of the Mod: " + sModname + " was NOT found!");
             block = null;
             return ret;
         }

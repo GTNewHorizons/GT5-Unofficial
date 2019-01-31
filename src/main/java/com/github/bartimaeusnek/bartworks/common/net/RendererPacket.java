@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.net;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_BioVat;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
@@ -93,7 +93,7 @@ public class RendererPacket extends GT_Packet {
         byte checksum = (byte) (coords.x % 25 + coords.y % 25 + coords.z % 25 + coords.wID % 25 + integer % 25 + removal);
 
         if (checksum != ByteBuffer.wrap(buffer).get(18)) {
-            MainMod.logger.error("BW Packet was corrupted or modified!");
+            MainMod.LOGGER.error("BW Packet was corrupted or modified!");
             return null;
         }
 

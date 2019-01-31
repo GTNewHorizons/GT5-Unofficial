@@ -23,6 +23,8 @@
 package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -30,6 +32,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class BW_GUIContainer_Windmill extends GT_GUIContainer_MultiMachine {
 
     public BW_GUIContainer_Windmill(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
@@ -46,7 +49,7 @@ public class BW_GUIContainer_Windmill extends GT_GUIContainer_MultiMachine {
 
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         GL11.glColor3f(0.5f, 0.25f, 0.07f);
-        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.modID, "textures/GUI/GUI_Windmill.png"));
+        this.mc.getTextureManager().bindTexture(new ResourceLocation(MainMod.MOD_ID, "textures/GUI/GUI_Windmill.png"));
 
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;

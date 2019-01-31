@@ -20,14 +20,15 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;
-import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.RendererPacket;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.*;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
@@ -60,8 +61,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import static gregtech.api.enums.GT_Values.V;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -242,7 +241,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             } else
                 return false;
 
-            calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, this.getMaxInputVoltage());
+            BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, this.getMaxInputVoltage(), this);
 
             if (mEUt > 0)
                 mEUt = -mEUt;
@@ -255,54 +254,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Taken from the GTNH fork, made originally by Tec?
-     * Calcualtes overclocked ness using long integers
-     *
-     * @param aEUt      - recipe EUt
-     * @param aDuration - recipe Duration
-     * @param mAmperage - should be 1 ?
-     */
-    protected void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
-        if (mTier == 0) {
-            //Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                //make impossible if too long
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = aEUt >> 2;
-                mMaxProgresstime = (int) xMaxProgresstime;
-            }
-        } else {
-            //Long EUt calculation
-            long xEUt = aEUt;
-            //Isnt too low EUt check?
-            long tempEUt = xEUt < V[1] ? V[1] : xEUt;
-
-            mMaxProgresstime = aDuration;
-
-            while (tempEUt <= V[mTier - 1] * mAmperage) {
-                tempEUt <<= 2;//this actually controls overclocking
-                //xEUt *= 4;//this is effect of everclocking
-                mMaxProgresstime >>= 1;//this is effect of overclocking
-                xEUt = mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
-            }
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = (int) xEUt;
-                if (mEUt == 0)
-                    mEUt = 1;
-                if (mMaxProgresstime == 0)
-                    mMaxProgresstime = 1;//set time to 1 tick
-            }
-        }
     }
 
     public ArrayList<FluidStack> getStoredFluidOutputs() {
@@ -389,7 +340,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     private byte calculateGlassTier(@Nonnull Block block, @Nonnegative Byte meta) {
 
-        if (block.equals(BioItemList.bw_glasses[0]))
+        if (block.equals(ItemRegistry.bw_glasses[0]))
             return meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))

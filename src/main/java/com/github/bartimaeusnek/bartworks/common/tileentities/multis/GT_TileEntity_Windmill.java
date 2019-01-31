@@ -20,10 +20,11 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_Windmill;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -578,7 +579,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getInfoData() {
-        return new String[]{"Progress:", this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:", Integer.toString(this.rotorBlock.getGrindPower()) + "KU/t" };
+        return new String[]{"Progress:", this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:", Integer.toString(this.rotorBlock.getGrindPower()) + "KU/t"};
     }
 
     @SideOnly(Side.CLIENT)
@@ -601,7 +602,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             }
         };
 
-        iIcons[1] = aBlockIconRegister.registerIcon(MainMod.modID + ":windmill_top");
+        iIcons[1] = aBlockIconRegister.registerIcon(MainMod.MOD_ID + ":windmill_top");
         iIconContainers[1] = new IIconContainer() {
             @Override
             public IIcon getIcon() {
@@ -615,7 +616,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
             @Override
             public ResourceLocation getTextureFile() {
-                return new ResourceLocation(MainMod.modID + ":windmill_top");
+                return new ResourceLocation(MainMod.MOD_ID + ":windmill_top");
             }
         };
 

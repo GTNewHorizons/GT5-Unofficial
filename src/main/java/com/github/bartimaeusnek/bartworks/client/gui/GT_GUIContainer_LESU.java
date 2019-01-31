@@ -24,8 +24,10 @@ package com.github.bartimaeusnek.bartworks.client.gui;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_LESU;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_LESU;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
@@ -35,9 +37,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+@SideOnly(Side.CLIENT)
 public class GT_GUIContainer_LESU extends GT_GUIContainer {
 
-    public static final ResourceLocation texture = new ResourceLocation(MainMod.modID, "textures/GT2/gui/LESU.png");
+    public static final ResourceLocation texture = new ResourceLocation(MainMod.MOD_ID, "textures/GT2/gui/LESU.png");
     protected GT_Container_LESU mContainer;
     private GT_TileEntity_LESU c;
 

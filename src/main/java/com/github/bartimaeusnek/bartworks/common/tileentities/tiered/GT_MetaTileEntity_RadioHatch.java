@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -57,7 +57,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     private byte coverage = 0;
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, new String[]{"Radioactive Item Chamber for Multiblocks", "Capacity: " + (aTier - 2) + " kg" + ((aTier - 2) >= 2 ? "s" : ""), "Use a screwdriver to set the containment level" });
+        super(aID, aName, aNameRegional, aTier, 1, new String[]{"Radioactive Item Chamber for Multiblocks", "Capacity: " + (aTier - 2) + " kg" + ((aTier - 2) >= 2 ? "s" : ""), "Use a screwdriver to set the containment level"});
         cap = aTier - 2;
     }
 
@@ -128,7 +128,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aPlayer.openGui(MainMod.modID, 2, this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
+        aPlayer.openGui(MainMod.MOD_ID, 2, this.getBaseMetaTileEntity().getWorld(), this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
         //super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
     }
 
@@ -252,8 +252,8 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getInfoData() {
         if (calcDecayTicks(this.sievert) != 0)
-            return new String[]{"Material: " + material, "Sievert: " + sievert, "Amount: " + mass, "Time (in t/s/m/h) to decay (1kg): " + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + "t/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + "s/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + "m/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + "h" };
-        else return new String[]{"Material: Empty", "Sievert: 0", "Amount: 0" };
+            return new String[]{"Material: " + material, "Sievert: " + sievert, "Amount: " + mass, "Time (in t/s/m/h) to decay (1kg): " + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + "t/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + "s/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + "m/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + "h"};
+        else return new String[]{"Material: Empty", "Sievert: 0", "Amount: 0"};
     }
 
     public boolean isSimpleMachine() {

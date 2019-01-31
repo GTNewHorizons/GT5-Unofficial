@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.server.container;
 
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_RadioHatch;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;

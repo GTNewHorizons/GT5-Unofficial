@@ -23,7 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import com.github.bartimaeusnek.bartworks.common.tileentities.BWTileEntityDimIDBridge;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BWTileEntityDimIDBridge;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.ITileEntityProvider;

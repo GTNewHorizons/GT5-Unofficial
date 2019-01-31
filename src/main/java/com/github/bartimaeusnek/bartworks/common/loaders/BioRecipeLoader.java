@@ -23,14 +23,17 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_BioLab;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_MetaTileEntity_RadioHatch;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_BioVat;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_BioLab;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -197,7 +200,7 @@ public class BioRecipeLoader extends RecipeLoader {
                         "GCG",
                         "KHK",
                         "GCG",
-                        'G', new ItemStack(BioItemList.bw_glasses[0], 1, 1),
+                        'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1),
                         'C', "circuit" + Materials.Data,
                         'K', GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L),
                         'H', ItemList.MACHINE_HULLS[3].get(1L)
@@ -354,33 +357,5 @@ public class BioRecipeLoader extends RecipeLoader {
                 400,
                 BW_Util.getMachineVoltageFromTier(1)
         );
-
-        GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Materials.Nickel.getMolten(5184), new ItemStack(BioItemList.bw_glasses[0], 1, 1), 800, BW_Util.getMachineVoltageFromTier(3));
-        GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 1), Materials.Tungsten.getMolten(1296), new ItemStack(BioItemList.bw_glasses[0], 1, 2), 800, BW_Util.getMachineVoltageFromTier(5));
-        GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 2), Materials.Chrome.getMolten(1296), new ItemStack(BioItemList.bw_glasses[0], 1, 3), 800, BW_Util.getMachineVoltageFromTier(6));
-        GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 3), Materials.Iridium.getMolten(3888), new ItemStack(BioItemList.bw_glasses[0], 1, 4), 800, BW_Util.getMachineVoltageFromTier(7));
-        GT_Values.RA.addFluidSolidifierRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 4), Materials.Osmium.getMolten(1296), new ItemStack(BioItemList.bw_glasses[0], 1, 5), 800, BW_Util.getMachineVoltageFromTier(8));
-
-        for (int i = 0; i < Dyes.dyeBrown.getSizeOfFluidList(); ++i) {
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyeRed.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 6), null, null, null, 64, 2);
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyeGreen.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 7), null, null, null, 64, 2);
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyePurple.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 8), null, null, null, 64, 2);
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyeYellow.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 9), null, null, null, 64, 2);
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyeLime.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 10), null, null, null, 64, 2);
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 0), Dyes.dyeBrown.getFluidDye(i, 36), new ItemStack(BioItemList.bw_glasses[0], 1, 11), null, null, null, 64, 2);
-        }
-        //and reverse recipes... cause im nice :P
-        GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 1), new ItemStack[]{Materials.BorosilicateGlass.getDust(9), Materials.Nickel.getDust(36)}, null, 800, BW_Util.getMachineVoltageFromTier(3));
-        GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 2), new ItemStack[]{Materials.BorosilicateGlass.getDust(9), Materials.Nickel.getDust(36), Materials.Tungsten.getDust(9)}, null, 800, BW_Util.getMachineVoltageFromTier(5));
-        GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 3), new ItemStack[]{Materials.BorosilicateGlass.getDust(9), Materials.Nichrome.getDust(45), Materials.Tungsten.getDust(9)}, null, 800, BW_Util.getMachineVoltageFromTier(6));
-        GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 4), new ItemStack[]{Materials.BorosilicateGlass.getDust(9), Materials.Nichrome.getDust(45), Materials.Tungsten.getDust(9), Materials.Iridium.getDust(27)}, null, 800, BW_Util.getMachineVoltageFromTier(7));
-        GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, 5), new ItemStack[]{Materials.BorosilicateGlass.getDust(9), Materials.Nichrome.getDust(45), Materials.Tungsten.getDust(9), Materials.Osmiridium.getDust(36)}, null, 800, BW_Util.getMachineVoltageFromTier(8));
-
-        for (int i = 6; i < 11; i++) {
-            GT_Values.RA.addPulveriserRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, i), new ItemStack[]{Materials.BorosilicateGlass.getDust(9)}, null, 400, BW_Util.getMachineVoltageFromTier(1));
-            GT_Values.RA.addChemicalBathRecipe(new ItemStack(BioItemList.bw_glasses[0], 1, i), Materials.Chlorine.getGas(50), new ItemStack(BioItemList.bw_glasses[0], 1, 0), null, null, null, 64, 2);
-        }
-
-
     }
 }

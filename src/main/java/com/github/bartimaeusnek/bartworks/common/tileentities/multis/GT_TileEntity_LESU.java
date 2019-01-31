@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_LESU;
@@ -169,7 +169,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     public void registerIcons(IIconRegister aBlockIconRegister) {
 
         for (int i = 0; i < iTextures.length; i++) {
-            iIcons[i] = aBlockIconRegister.registerIcon(MainMod.modID + ":LESU_CASING_" + i);
+            iIcons[i] = aBlockIconRegister.registerIcon(MainMod.MOD_ID + ":LESU_CASING_" + i);
             final int finalI = i;
             iIconContainers[i] = new IIconContainer() {
                 @Override
@@ -184,7 +184,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
                 @Override
                 public ResourceLocation getTextureFile() {
-                    return new ResourceLocation(MainMod.modID + ":LESU_CASING_" + finalI);
+                    return new ResourceLocation(MainMod.MOD_ID + ":LESU_CASING_" + finalI);
                 }
             };
         }
@@ -397,7 +397,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
         long finishedTime = System.nanoTime();
         if (finishedTime - startingTime > 5000000)
-            MainMod.logger.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         return true;
     }
 

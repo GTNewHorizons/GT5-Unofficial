@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
@@ -98,7 +98,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
     }
 
     public boolean onRunningTickTabbedMode() {
-
+        boolean ret = false;
         for (GT_MetaTileEntity_Hatch_Dynamo E : mDynamoHatches) {
             for (GT_MetaTileEntity_Hatch_Energy I : mEnergyHatches) {
 
@@ -111,11 +111,10 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
                 long avt = vtp < E.maxEUStore() ? vtp : E.maxEUStore();
                 E.setEUVar(avt);
                 I.setEUVar(I.getEUVar() - vtt);
+                ret = true;
             }
-
         }
-
-        return true;
+        return ret;
     }
 
 

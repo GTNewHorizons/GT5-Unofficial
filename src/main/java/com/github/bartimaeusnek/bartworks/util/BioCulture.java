@@ -119,7 +119,7 @@ public class BioCulture extends BioData {
 
     public Fluid getFluid() {
         if (this.mFluid == null)
-            MainMod.logger.error("Fluid has not been set yet! The issuring Culture is: " + this.name);
+            MainMod.LOGGER.error("Fluid has not been set yet! The issuring Culture is: " + this.name);
         return this.mFluid;
     }
 

@@ -33,7 +33,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import javax.annotation.Nonnegative;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import static gregtech.api.enums.GT_Values.V;
 
 public class BW_Util {
 
@@ -112,6 +117,121 @@ public class BW_Util {
         return 0;
     }
 
+    public static byte getTierFromGlasMeta(int meta) {
+        byte ret;
+        switch (meta) {
+            case 1:
+                ret = 4;
+                break;
+            case 2:
+                ret = 5;
+                break;
+            case 3:
+                ret = 6;
+                break;
+            case 4:
+                ret = 7;
+                break;
+            case 5:
+                ret = 8;
+                break;
+            default:
+                ret = 3;
+        }
+        return ret;
+    }
+
+    public static String getColorForTier(int tier) {
+        String ret;
+        switch (tier) {
+            case 0:
+                ret = ChatColorHelper.RED;
+                break;
+            case 1:
+                ret = ChatColorHelper.GRAY;
+                break;
+            case 2:
+                ret = ChatColorHelper.AQUA;
+                break;
+            case 3:
+                ret = ChatColorHelper.GOLD;
+                break;
+            case 4:
+                ret = ChatColorHelper.DARKPURPLE;
+                break;
+            case 5:
+                ret = ChatColorHelper.DARKBLUE;
+                break;
+            case 6:
+                ret = ChatColorHelper.LIGHT_PURPLE;
+                break;
+            case 7:
+                ret = ChatColorHelper.WHITE;
+                break;
+            case 8:
+                ret = ChatColorHelper.DARKAQUA;
+                break;
+            case 9:
+                ret = ChatColorHelper.DARKRED;
+                break;
+            case 10:
+                ret = ChatColorHelper.GREEN;
+                break;
+            default:
+                ret = ChatColorHelper.OBFUSCATED;
+                break;
+        }
+        return ret;
+    }
+
+    /**
+     * Taken from the GTNH fork, made originally by Tec
+     * Calcualtes overclocked ness using long integers
+     *
+     * @param aEUt      - recipe EUt
+     * @param aDuration - recipe Duration
+     * @param mAmperage - should be 1 ?
+     */
+    public static void calculateOverclockedNessMulti(@Nonnegative int aEUt, @Nonnegative int aDuration, @Nonnegative int mAmperage, @Nonnegative long maxInputVoltage, GT_MetaTileEntity_MultiBlockBase base) {
+        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage));
+        if (mTier == 0) {
+            //Long time calculation
+            long xMaxProgresstime = ((long) aDuration) << 1;
+            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
+                //make impossible if too long
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                base.mEUt = aEUt >> 2;
+                base.mMaxProgresstime = (int) xMaxProgresstime;
+            }
+        } else {
+            //Long EUt calculation
+            long xEUt = aEUt;
+            //Isnt too low EUt check?
+            long tempEUt = xEUt < V[1] ? V[1] : xEUt;
+
+            base.mMaxProgresstime = aDuration;
+
+            while (tempEUt <= V[mTier - 1] * mAmperage) {
+                tempEUt <<= 2;//this actually controls overclocking
+                //xEUt *= 4;//this is effect of everclocking
+                base.mMaxProgresstime >>= 1;//this is effect of overclocking
+                xEUt = base.mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2;//U know, if the time is less than 1 tick make the machine use less power
+            }
+            if (xEUt > Integer.MAX_VALUE - 1) {
+                base.mEUt = Integer.MAX_VALUE - 1;
+                base.mMaxProgresstime = Integer.MAX_VALUE - 1;
+            } else {
+                base.mEUt = (int) xEUt;
+                if (base.mEUt == 0)
+                    base.mEUt = 1;
+                if (base.mMaxProgresstime == 0)
+                    base.mMaxProgresstime = 1;//set time to 1 tick
+            }
+        }
+    }
+
     public static EnumRarity getRarityFromByte(byte b) {
         switch (b) {
             case 1:
@@ -125,29 +245,34 @@ public class BW_Util {
         }
     }
 
-    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, false, aBaseCasingIndex);
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, insideCheck, inside, dmginside, aBaseCasingIndex);
     }
 
-    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, false, aBaseCasingIndex);
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, false, aBaseCasingIndex);
     }
 
-    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, freeCorners, false, null, true, aBaseCasingIndex);
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, aBaseCasingIndex);
     }
 
-    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, diameter, yLevel, height, block, offset, controllerLayer, false, insideCheck, inside, true, aBaseCasingIndex);
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, freeCorners, true, block, dmg, true, aBaseCasingIndex);
+    }
+
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, false, insideCheck, inside, dmginside, true, aBaseCasingIndex);
     }
 
     /**
      * @param aBaseMetaTileEntity the Multiblock controller, usually a parameter
-     * @param diameter            the diameter of the layer
+     * @param radius              the radius of the layer
      * @param yLevel              the starting y level of the Layer, referenced to the Multiblock
      * @param height              the height of the Layers, referenced to the Multiblock
      * @param block               the block for the walls
-     * @param offset              the offset in most cases should be the same as the diameter
+     * @param offset              the offset in most cases should be the same as the radius
      * @param controllerLayer     if the layer contains the controller
      * @param freeCorners         if the corners should be checked
      * @param insideCheck         if the inside should be empty/filled
@@ -156,20 +281,21 @@ public class BW_Util {
      * @param aBaseCasingIndex    the Index for the hatches texture
      * @return if the layer check was completed
      */
-    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int diameter, int yLevel, int height, Block block, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck, Block inside, boolean allowHatches, int aBaseCasingIndex) {
+    public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck, Block inside, int dmginside, boolean allowHatches, int aBaseCasingIndex) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
-        for (int x = -diameter; x < diameter; x++) {
+        for (int x = -radius; x <= radius; x++) {
             for (int y = yLevel; y < height; y++) {
-                for (int z = -diameter; z < diameter; z++) {
-                    if (freeCorners && (((Math.abs(x) == diameter && Math.abs(z) == diameter))))
+                for (int z = -radius; z <= radius; z++) {
+                    if (freeCorners && (((Math.abs(x) == radius && Math.abs(z) == radius))))
                         continue;
                     if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
                         continue;
-                    if (insideCheck && (Math.abs(x) < diameter && Math.abs(z) != diameter))
-                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside))
+                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius))
+                        if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(inside) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmginside && dmginside > (-1))) {
                             return false;
-                    if (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block))
+                        }
+                    if (((!(Math.abs(x) < radius && Math.abs(z) != radius))) && (!aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block) || (aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) != dmg && dmg > (-1)))) {
                         if (!(allowHatches && (
                                 ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addDynamoToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
@@ -177,12 +303,35 @@ public class BW_Util {
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex) ||
                                         ((GT_MetaTileEntity_MultiBlockBase) aBaseMetaTileEntity.getMetaTileEntity()).addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), aBaseCasingIndex)
-                        )))
+                        ))) {
                             return false;
+                        }
+                    }
                 }
             }
         }
         return true;
     }
 
+    public static List<Byte> getMetasFromLayer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck) {
+        ArrayList<Byte> ret = new ArrayList<>();
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = yLevel; y < height; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    if (freeCorners && (((Math.abs(x) == radius && Math.abs(z) == radius))))
+                        continue;
+                    if (controllerLayer && (xDir + x == 0 && zDir + z == 0))
+                        continue;
+                    if (insideCheck && (Math.abs(x) < radius && Math.abs(z) != radius))
+                        ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
+                    if (!(Math.abs(x) < radius && Math.abs(z) != radius)) {
+                        ret.add(aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z));
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 }

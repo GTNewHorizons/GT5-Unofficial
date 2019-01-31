@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.common.tileentities;
+package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.GT_Values;
@@ -28,37 +28,67 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
-    private long amps;
+    private long maxAmps;
+    private long aAmps;
 
-    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier, int amps) {
+    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier, int maxAmps) {
         super(aID, aName, aNameRegional, aTier, "A Simple diode that will allow Energy Flow in only one direction.");
-        this.amps = amps;
+        this.maxAmps = maxAmps;
+        aAmps = maxAmps;
     }
 
-    public GT_MetaTileEntity_Diode(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    public GT_MetaTileEntity_Diode(String aName, int aTier, long maxAmps, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 0, aDescription, aTextures);
+        this.maxAmps = maxAmps;
+        aAmps = maxAmps;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        --aAmps;
+        if (aAmps < 0)
+            aAmps = maxAmps;
+        GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("maxAmp", maxAmps);
+        aNBT.setLong("Amps", aAmps);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        maxAmps = aNBT.getLong("maxAmp");
+        aAmps = aNBT.getLong("Amps");
+        super.loadNBTData(aNBT);
     }
 
     @Override
     public long maxAmperesOut() {
-        return amps;
+        return aAmps;
     }
 
     @Override
     public long maxAmperesIn() {
-        return amps;
+        return aAmps;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mInventory.length, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.maxAmps, this.mDescriptionArray, this.mTextures);
     }
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks" };
+        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
     }
 }

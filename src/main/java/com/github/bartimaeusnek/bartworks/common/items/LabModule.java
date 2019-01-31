@@ -31,7 +31,7 @@ import java.util.List;
 public class LabModule extends SimpleSubItemClass {
     public LabModule(String[] tex) {
         super(tex);
-        this.setCreativeTab(MainMod.BioTab);
+        this.setCreativeTab(MainMod.BIO_TAB);
     }
 
     public String getUnlocalizedName(ItemStack p_77667_1_) {

@@ -24,7 +24,7 @@ package com.github.bartimaeusnek.bartworks.client.renderer;
 
 import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import com.github.bartimaeusnek.bartworks.common.tileentities.GT_TileEntity_BioVat;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -40,7 +40,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.IFluidBlock;
 
-
+@SideOnly(Side.CLIENT)
 public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler {
     private static final float LIGHT_Y_NEG = 0.5f;
     private static final float LIGHT_Y_POS = 1f;

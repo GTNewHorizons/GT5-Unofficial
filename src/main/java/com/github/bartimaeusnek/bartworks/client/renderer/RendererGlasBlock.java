@@ -23,15 +23,18 @@
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
-import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
 
     public static final int RID = RenderingRegistry.getNextAvailableRenderId();
@@ -74,7 +77,7 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         //renderer.setRenderBounds(0.001,0.001,0.001,0.999,0.999,0.999);
-        renderer.renderStandardBlock(BioItemList.bw_fake_glasses, x, y, z);
+        renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
         //renderer.setRenderBounds(0,0,0,1,1,1);
         renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f, ((BW_GlasBlocks) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
         return true;

@@ -50,7 +50,7 @@ public class SimpleSubItemClass extends Item {
     public void registerIcons(IIconRegister iconRegister) {
         itemIcon = new IIcon[tex.length];
         for (int i = 0; i < tex.length; i++) {
-            itemIcon[i] = iconRegister.registerIcon(MainMod.modID + ":" + tex[i]);
+            itemIcon[i] = iconRegister.registerIcon(MainMod.MOD_ID + ":" + tex[i]);
         }
 
     }

@@ -23,9 +23,12 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +61,10 @@ public class BW_ItemBlocks extends ItemBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+        if (this.field_150939_a instanceof BW_GlasBlocks)
+            aList.add("Glass-Tier: " + BW_Util.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
         aList.add(this.mNoMobsToolTip);
         aList.add(this.mNoTileEntityToolTip);
         aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
