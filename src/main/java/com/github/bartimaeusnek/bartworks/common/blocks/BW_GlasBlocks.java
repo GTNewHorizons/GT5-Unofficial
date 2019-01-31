@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
 import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -180,7 +181,7 @@ public class BW_GlasBlocks extends BW_Blocks {
 
     @Override
     public int getRenderType() {
-        if (!fake)
+        if (!fake && FMLCommonHandler.instance().getSide().isClient())
             return RendererGlasBlock.RID;
         else
             return 0;

@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BWTileEnti
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.GT_Fluid;
 import ic2.core.item.ItemFluidCell;
@@ -81,7 +82,9 @@ public class FluidLoader implements Runnable {
         bioFluidBlock = new BioFluidBlock();
         GameRegistry.registerBlock(bioFluidBlock, "coloredFluidBlock");
         GameRegistry.registerTileEntity(BWTileEntityDimIDBridge.class, "bwTEDimIDBridge");
-        RenderingRegistry.registerBlockHandler(RendererSwitchingColorFluid.instance);
-        RenderingRegistry.registerBlockHandler(RendererGlasBlock.instance);
+        if (FMLCommonHandler.instance().getSide().isClient()) {
+            RenderingRegistry.registerBlockHandler(RendererSwitchingColorFluid.instance);
+            RenderingRegistry.registerBlockHandler(RendererGlasBlock.instance);
+        }
     }
 }
