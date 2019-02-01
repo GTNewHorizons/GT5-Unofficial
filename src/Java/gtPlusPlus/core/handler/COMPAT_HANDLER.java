@@ -140,6 +140,9 @@ public class COMPAT_HANDLER {
 		if (LoadedMods.MorePlanets){
 			COMPAT_MorePlanets.OreDict();
 		}
+		if (LoadedMods.OpenBlocks){
+			COMPAT_OpenBlocks.OreDict();
+		}
 		if (LoadedMods.Simply_Jetpacks){
 			COMPAT_SimplyJetpacks.OreDict();
 		}

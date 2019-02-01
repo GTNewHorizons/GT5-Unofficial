@@ -734,7 +734,7 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialSieveGrate);
 			}
 
-			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){
+			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){/*
 				//Industrial Tree Farmer
 				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
 				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(Casing_Amount);
@@ -759,7 +759,7 @@ public class RECIPES_Machines {
 						"plankWood", "frameGtTumbaga", "plankWood",
 						"plankWood", "plankWood", "plankWood",
 						RECIPE_TreeFarmFrame);
-			}
+			*/}
 
 			if (CORE.ConfigSwitches.enableMachine_Tesseracts){
 				//Tesseracts
@@ -784,11 +784,16 @@ public class RECIPES_Machines {
 				ItemStack washerPipe;
 				if (CORE.ConfigSwitches.enableCustom_Pipes){
 					washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
+					RecipeUtils.addShapedGregtechRecipe(
+							plateWrought, CI.electricPump_LV, plateWrought,
+							plateWrought, washerPipe, plateWrought,
+							plateWrought, CI.machineCasing_ULV, plateWrought,
+							GregtechItemList.SimpleDustWasher.get(1));
 				}
-				else {
-					washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);				
+				else {			
 				}
 				//Add Recipe
+				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);					
 				RecipeUtils.addShapedGregtechRecipe(
 						plateWrought, CI.electricPump_LV, plateWrought,
 						plateWrought, washerPipe, plateWrought,
@@ -1091,27 +1096,49 @@ public class RECIPES_Machines {
 						GregtechItemList.Industrial_WashPlant.get(1));
 			}
 
-			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter){
+			if (CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter) {
 
-				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Block_IridiumTungstensteel").get(1, ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1)) : ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
+				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK
+						? ItemList.valueOf("Block_IridiumTungstensteel").get(1,
+								ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1))
+						: ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
 
-				RecipeUtils.recipeBuilder(
-						"plateTungstenSteel", CI.craftingToolHammer_Hard, "plateTungstenSteel",
-						"plateStellite", aCoreBlock, "plateStellite",
-						"plateTungstenSteel", CI.craftingToolWrench, "plateTungstenSteel",
-						GregtechItemList.Casing_Autocrafter.get(Casing_Amount));
+				aCoreBlock.stackSize = GTNH ? 2 : 1;
 
-				RecipeUtils.recipeBuilder( 
-						"plateTungstenSteel", ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR),"plateTungstenSteel",
-						CI.emitter_IV,GregtechItemList.Gregtech_Computer_Cube.get(1), CI.sensor_IV,
-						"plateTungstenSteel", "cableGt08Osmium","plateTungstenSteel",
-						GregtechItemList.GT4_Multi_Crafter.get(1));
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), GTNH ? 2 : 1),
+								aCoreBlock, 
+								CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 16),
+								CI.getTieredComponent(OrePrefixes.screw, GTNH ? 6 : 5, 32),
+								CI.getTieredComponent(OrePrefixes.bolt, GTNH ? 6 : 5, 12),
+								CI.getTieredComponent(OrePrefixes.plate, GTNH ? 7 : 6, 8), },
+						CI.getTertiaryTieredFluid(6, 144 * (GTNH ? 12 : 4)),
+						GregtechItemList.Casing_Autocrafter.get(Casing_Amount), 20 * 60 * 2,
+						MaterialUtils.getVoltageForTier(GTNH ? 7 : 6));
 
-				RecipeUtils.recipeBuilder( 
-						"plateTungstenSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
-						CI.robotArm_EV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_EV,
-						"plateStainlessSteel",CI.emitter_EV,"plateTungstenSteel",
-						ItemUtils.getSimpleStack(ModBlocks.blockProjectTable));
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] { 
+								GregtechItemList.Casing_Refinery_Structural.get(4),
+								ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, GTNH ? 2 : 1),
+								CI.getTieredComponent(OrePrefixes.cableGt08, GTNH ? 7 : 6, GTNH ? 32 : 16),
+								CI.getEmitter(GTNH ? 7 : 5, 2), 
+								CI.getSensor(GTNH ? 7 : 5, 2),
+								GregtechItemList.Gregtech_Computer_Cube.get(1),
+								},
+						CI.getTieredFluid(7, 144 * (GTNH ? 32 : 8)), GregtechItemList.GT4_Multi_Crafter.get(1),
+						20 * 60 * 5, MaterialUtils.getVoltageForTier(GTNH ? 7 : 6));
+
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), Casing_Amount),
+								CI.getEmitter(GTNH ? 5 : 4, GTNH ? 4 : 2), CI.getRobotArm(GTNH ? 5 : 4, GTNH ? 4 : 2),
+								CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 8),
+								CI.getTieredComponent(OrePrefixes.screw, GTNH ? 4 : 3, 8),
+								CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 16 : 4), },
+						CI.getAlternativeTieredFluid(5, 144 * 4), ItemUtils.getSimpleStack(ModBlocks.blockProjectTable),
+						20 * 30 * 3, MaterialUtils.getVoltageForTier(GTNH ? 5 : 4));
+
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine){

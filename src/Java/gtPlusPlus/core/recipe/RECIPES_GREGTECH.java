@@ -21,6 +21,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
@@ -225,6 +226,27 @@ public class RECIPES_GREGTECH {
 				0, 
 				20 * 45,
 				120);
+			
+		//HG1223
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[] { 
+						ItemUtils.getGregtechCircuit(5),
+						ELEMENT.getInstance().MERCURY.getCell(1),
+						ELEMENT.getInstance().BARIUM.getDust(2),
+						ELEMENT.getInstance().CALCIUM.getDust(2),
+						ELEMENT.getInstance().COPPER.getDust(3),
+				},
+				ELEMENT.getInstance().OXYGEN.getFluid(8000),
+				ALLOY.HG1223.getFluid(16 * 144),
+				new ItemStack[] { 
+						CI.emptyCells(1)
+				},
+				100, //Output Chance 
+				20 * 120,
+				122880);
+		
+		
+		
 
 		// Germanium Roasting
 		CORE.RA.addBlastSmelterRecipe(
@@ -1137,7 +1159,7 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null,
 				FluidUtils.getFluidStack("hydrofluoricacid", 144 * 5),
 				FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144 * 5), null, 3000, 500);
-		GT_Values.RA.addMixerRecipe(
+		/*GT_Values.RA.addMixerRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
@@ -1146,7 +1168,7 @@ public class RECIPES_GREGTECH {
 				ALLOY.HG1223.getFluid(144*16), 
 				CI.emptyCells(1),
 				30 * 20,
-				500);
+				500);*/
 	}
 
 	private static void chemicalReactorRecipes() {
@@ -1623,14 +1645,14 @@ public class RECIPES_GREGTECH {
 
 	private static void advancedMixerRecipes() {
 		// HgBa2Ca2Cu3O8
-		CORE.RA.addMixerRecipe(
+		/*CORE.RA.addMixerRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),
 				FluidUtils.getFluidStack("oxygen", 8000),
 				null, CI.emptyCells(1), ALLOY.HG1223.getDust(16), null, null,
-				30 * 20, 500);	
+				30 * 20, 500);	*/
 
 	}
 

@@ -40,6 +40,7 @@ public class LoadedMods {
 	public static boolean ThermalFoundation = false;
 	public static boolean IHL = false;
 	public static boolean OpenComputers = false; //OpenComputers
+	public static boolean OpenBlocks = false;
 	public static boolean Computronics = false; //computronics
 	public static boolean DreamCraft = false; //GT: New Horizons
 	public static boolean BeyondRealityCore = false; //Beyond Reality - Probably Classic
@@ -138,6 +139,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("StevesCarts")){
 			StevesCarts = true;
 			Logger.INFO("Components enabled for: StevesCarts");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("OpenBlocks")){
+			OpenBlocks = true;
+			Logger.INFO("Components enabled for: OpenBlocks");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Thaumcraft")){

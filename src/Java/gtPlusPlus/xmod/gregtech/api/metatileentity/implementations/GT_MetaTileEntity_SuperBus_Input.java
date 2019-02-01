@@ -168,14 +168,31 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 			return;
 		}
 
-		PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) contains:");
-		for (String s : aNames) {
-			if (s.startsWith(" ")) {
-				s = s.substring(1);
-			}			
-			//Logger.INFO("Trying to display Super Input Bus contents. "+s);
-			PlayerUtils.messagePlayer(aPlayer, s);
-		}		
+		PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) contains: ["+getRealInventory().length+"]");
+		
+		if (aNames.length <= 12) {
+			for (String s : aNames) {
+				if (s.startsWith(" ")) {
+					s = s.substring(1);
+				}			
+				//Logger.INFO("Trying to display Super Input Bus contents. "+s);
+				PlayerUtils.messagePlayer(aPlayer, s);
+			}
+		}
+		else {
+			
+			String superString = "";
+			
+			for (String s : aNames) {
+				if (s.startsWith(" ")) {
+					s = s.substring(1);
+				}			
+				superString += (s+"\r\n");
+			}
+			PlayerUtils.messagePlayer(aPlayer, superString);
+		}
+		
+				
 	}
 
 	@Override

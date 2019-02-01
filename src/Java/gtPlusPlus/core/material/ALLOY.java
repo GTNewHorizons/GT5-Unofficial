@@ -623,8 +623,8 @@ public final class ALLOY {
 			"HG-1223", //Material Name
 			MaterialState.LIQUID, //State
 			new short[]{39,85,159, 0}, //Material Colour
-			-1, //Melting Point in C
-			-1, //Boiling Point in C
+			6357, //Melting Point in C
+			8563, //Boiling Point in C
 			-1,
 			-1,
 			false, //Uses Blast furnace?
