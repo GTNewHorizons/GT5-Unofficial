@@ -100,11 +100,11 @@ item.itemHotIngotRaisinBread.name=热葡萄干面包
 item.itemIngotRaisinBread.name=§5ImQ009的§f葡萄干面包
 
 //Misc Blocks
-tile.blockCompressedObsidian.0.name=压缩黑曜石 (9)
-tile.blockCompressedObsidian.1.name=二重压缩黑曜石 (81)
-tile.blockCompressedObsidian.2.name=三重压缩黑曜石 (729)
-tile.blockCompressedObsidian.3.name=四重压缩黑曜石 (6561)
-tile.blockCompressedObsidian.4.name=五重压缩黑曜石 (59049)
+tile.blockCompressedObsidian.0.name=压缩黑曜石(9)
+tile.blockCompressedObsidian.1.name=二重压缩黑曜石(81)
+tile.blockCompressedObsidian.2.name=三重压缩黑曜石(729)
+tile.blockCompressedObsidian.3.name=四重压缩黑曜石(6561)
+tile.blockCompressedObsidian.4.name=五重压缩黑曜石(59049)
 tile.blockCompressedObsidian.5.name=反转黑曜石
 tile.blockNet.name=网
 
@@ -135,7 +135,7 @@ item.itemHeliumBlob.name=神秘氢气物质
 
 //Normal Items
 item.itemAlkalusDisk.name=Alkalus圆盘
-item.itemSimpleFiremaker.name=基础打火器
+item.itemSimpleFiremaker.name=基础起火器
 item.itemFiber.name=植物纤维
 item.itemRope.name=绳索
 item.backpackRed.name=红色背包
@@ -154,7 +154,7 @@ item.backpackSilver.name=银色背包
 item.backpackGray.name=灰色背包
 item.backpackBlack.name=黑色背包
 item.backpackWhite.name=白色背包
-item.itemBlueprint.name=蓝图 [没什么用]
+item.itemBlueprint.name=蓝图[无用]
 item.itemGemShards.name=钻石碎片
 item.itemHalfCompleteCasings.name=半成品机械方块
 item.itemSulfuricPotion.name=喷溅型 硫酸
@@ -1928,11 +1928,11 @@ tile.fluidBlockSludge.name=污泥
 tile.blockWorkbenchGT.name=工作台
 tile.blockWorkbenchGTAdvanced.name=高级工作台
 tile.blockHeliumGenerator.name=氦发生器
-tile.blockFirePit.name=熔岩穴
+tile.blockFirePit.name=火坑
 tile.blockFishTrap.name=捕鱼者
 tile.blockInfiniteFluidTank.name=无限流体储罐
 tile.blockMiningExplosives.name=矿用炸药
-tile.blockHellFire.name=地狱火
+tile.blockHellFire.name=地狱之火
 tile.blockProjectBench.name=工程台
 tile.blockTradeBench.name=贸易台
 tile.blockModularity.name=模块化工作台
@@ -1942,7 +1942,7 @@ tile.blockTankXpConverter.name=经验转换器
 //Everglades Blocks
 tile.fluidSludge.0.name=不流动的废水
 tile.blockDarkWorldPortal.name=未来的掠影
-tile.blockDarkWorldGround.name=不稳定的地球
+tile.blockDarkWorldGround.name=不稳定的土壤
 tile.blockDarkWorldGround2.name=污染的土壤
 tile.blockDarkWorldGround2.2.name=高度污染的土壤
 tile.blockDarkWorldPortalFrame.name=遏制框架
@@ -2699,7 +2699,7 @@ item.particle.base.Lambda.name=λ
 item.particle.base.Omega.name=Ω
 item.particle.base.Pion.name=介子
 item.particle.base.ETA Meson.name=η介子
-item.particle.base.Unknown.name=未知夸克
+item.particle.base.Unknown.name=未知粒子
 
 //Added 12/1/19
 
@@ -2710,4 +2710,4 @@ tile.playerDoorIron.name=铁自动门
 tile.playerDoorWood.name=木自动门
 
 
-//This zh_CN.lang is translation by huajijam for GregTech++ (31/1/19)
+//This zh_CN.lang is translation by huajijam for GregTech++ (1/2/19)
