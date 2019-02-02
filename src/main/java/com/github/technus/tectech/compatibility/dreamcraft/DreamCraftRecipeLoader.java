@@ -823,7 +823,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                 192000, 512, 2000000, 32,  new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 8),
                 ItemList.Circuit_Biomainframe.get(2L),
-                ItemList.UHV_Coil.get(32L),
                 ItemList.Circuit_Parts_CapacitorSMD.get(64L),
                 ItemList.Circuit_Parts_ResistorSMD.get(64L),
                 ItemList.Circuit_Parts_TransistorSMD.get(64L),
