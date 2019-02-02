@@ -70,6 +70,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				"X           X",
 				"X           X", 
 				"XXXXXXXXX", 
+				"Can process (Tier + 1) * 2 recipes",
 				"Put a numbered circuit into the input bus.", 
 				"Circuit 14 for Fish",
 				"Circuit 15 for Junk", 
@@ -147,14 +148,14 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				return false;
 			}
 
-			return checkRecipeGeneric(tItemInputs, tFluidInputs, 1, 100, 80, 100);
+			return checkRecipeGeneric(tItemInputs, tFluidInputs, getMaxParallelRecipes(), 100, 80, 100);
 		}
 		return true;
 	}
 	
 	@Override
 	public int getMaxParallelRecipes() {
-		return 1;
+		return (2 * (GT_Utility.getTier(this.getMaxInputVoltage())+1));
 	}
 
 	@Override
@@ -415,7 +416,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 				if (j.getItem() == CI.getNumberedCircuit(0).getItem()) {
 					// Fish
 					if (j.getItemDamage() == 14) {
-						mMax = 8;
+						mMax = 8 + (this.getMaxParallelRecipes() - 2);
 						this.mMode = 14;
 						break;
 					}
@@ -469,7 +470,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 			for (int k = 0; k < this.mMax; k++) {
 				if (mFishOutput[k] == null)
 					for (WeightedRandomFishable g : categoryFish.values()) {
-						if (MathUtils.randInt(0, 75) <= 2) {
+						if (MathUtils.randInt(0, (65 - getMaxParallelRecipes())) <= 2) {
 							ItemStack t = reflectiveFish(g);
 							if (t != null) {
 								mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
@@ -528,6 +529,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 		this.mMaxProgresstime = 0;
 		this.mOutputItems = new ItemStack[]{};
 		this.mOutputFluids = new FluidStack[]{};
+		
 
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -549,7 +551,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 
 		ItemStack[] mFishOutput = generateLoot(this.mMode);
 		mFishOutput = removeNulls(mFishOutput);
-		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 100, 16, 0);
+		GT_Recipe g = new Recipe_GT(true, new ItemStack[] {}, mFishOutput, null, new int[] {}, aFluidInputs, mOutputFluids, 200, 16, 0);
 		if (!this.canBufferOutputs(g, aMaxParallelRecipes)) {
 			log("No Space");
 			return false;

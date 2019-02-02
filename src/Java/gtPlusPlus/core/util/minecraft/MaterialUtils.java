@@ -255,8 +255,8 @@ public class MaterialUtils {
 	}
 
 	public static int getVoltageForTier(int aTier) {
-		aTier += 1;
-		if (aTier == 0) {
+		//aTier += 1; - Probably some logic to this, idk.
+		if (aTier <= 0) {
 			return 16;
 		} else if (aTier == 1) {
 			return 30;

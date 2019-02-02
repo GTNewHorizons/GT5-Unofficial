@@ -912,7 +912,10 @@ GT_MetaTileEntity_MultiBlockBase {
 		return 0;
 	}
 
-	public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
+	public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {		
+		if (this.mControlCoreBus == null || this.mControlCoreBus.isEmpty()) {
+			return null;
+		}		
 		GT_MetaTileEntity_Hatch_ControlCore x = this.mControlCoreBus.get(0);
 		if (x != null) {
 			log("getControlCore(ok)");
@@ -1506,11 +1509,8 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
-		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);
-		
-		boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
-		
-		boolean aHasCore = (aCoresConfig ? (this.getControlCoreBus() != null) : true);	
+		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);	
+		boolean aHasCore = (requireControlCores ? (this.getControlCoreBus() != null) : true);	
 		return aStructureCheck && aHasCore;
 	}
 
@@ -1526,9 +1526,33 @@ GT_MetaTileEntity_MultiBlockBase {
 				return true;
 			}
 			else {
+				int aMetaTileID = aBaseMetaTileEntity.getMetaTileID();
 				//Found a controller
-				if (aFoundMeta > 0 && aFoundMeta < 1000 && aFoundBlock == GregTech_API.sBlockMachines) {
+				if (aMetaTileID >= 750 && aMetaTileID < 1000 && aFoundBlock == GregTech_API.sBlockMachines) {
 					return true;
+				}
+				//Vanilla Hatches/Busses
+				else if (aMetaTileID >= 10 && aMetaTileID <= 99 && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}				
+				//Adv Mufflers
+				else if (aMetaTileID >= 30001 && aMetaTileID <= 30009 && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}
+				//Control Core, Super IO
+				else if (aMetaTileID >= 30020 && aMetaTileID <= 30040 && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}
+				//Auto maint
+				else if (aMetaTileID == 111 && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}
+				//Data Ports
+				else if ((aMetaTileID == 131 || aMetaTileID == 132) && aFoundBlock == GregTech_API.sBlockMachines) {
+					return true;
+				}
+				else {
+					Logger.INFO("Found meta Tile: "+aMetaTileID);
 				}
 			}
 		}
@@ -1537,7 +1561,8 @@ GT_MetaTileEntity_MultiBlockBase {
 				return true;
 			}
 			else if (aFoundBlock != aExpectedBlock) {
-				Logger.INFO("A1 - Found: "+aFoundBlock.getLocalizedName()+", Expected: "+aExpectedBlock.getLocalizedName());				
+				Logger.INFO("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
+				Logger.INFO("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
 				return false;
 			}
 			else if (aFoundMeta != aExpectedMeta) {

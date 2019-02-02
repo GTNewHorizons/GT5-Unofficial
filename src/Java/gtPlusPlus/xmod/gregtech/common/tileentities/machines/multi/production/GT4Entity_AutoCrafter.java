@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -131,7 +131,6 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		return new String[] { 
 				"Highly Advanced Autocrafter", 
 				"Right Click with a Screwdriver to change mode",
-				"This Machine Can Autocraft, Assemble, Disassemble or Circuit Assemble",
 				"200% faster than using single block machines of the same voltage",
 				"Processes two items per voltage tier", 
 				"--------------------------------------",
@@ -239,13 +238,13 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 		if (isModernGT && !CORE.GTNH) {
 			mMachineMode = mMachineMode.nextMode();
 			if (mMachineMode == MODE.CRAFTING) {
-				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �dAutoCrafting");
+				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: "+EnumChatFormatting.AQUA+"AutoCrafting");
 			} else if (mMachineMode == MODE.ASSEMBLY) {
-				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �aAssembly");
+				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: "+EnumChatFormatting.GREEN+"Assembly");
 			} else if (mMachineMode == MODE.DISASSEMBLY) {
-				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �cDisassembly");
+				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: "+EnumChatFormatting.RED+"Disassembly");
 			} else {
-				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: �eCircuit Assembly");
+				PlayerUtils.messagePlayer(aPlayer, "Running the Auto-Crafter in mode: "+EnumChatFormatting.YELLOW+"Circuit Assembly");
 			}
 		}
 		//5.08 support
@@ -258,11 +257,11 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 			}
 			
 			if (mMachineMode == MODE.CRAFTING) {
-				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �dAutoCrafting");
+				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: "+EnumChatFormatting.AQUA+"AutoCrafting");
 			} else if (mMachineMode == MODE.ASSEMBLY) {
-				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �aAssembly");
+				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: "+EnumChatFormatting.GREEN+"Assembly");
 			} else {
-				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: �cDisassembly");
+				PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: "+EnumChatFormatting.RED+"Disassembly");
 			}
 		}
 	}
