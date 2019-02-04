@@ -8,10 +8,10 @@ itemGroup.MiscUtilOtherTab=[GT++] 物品 II
 itemGroup.MiscUtilBOP=[GT++]超多生物群系附属
 
 //Debug
-item.AAA_Broken.name=[不存在的物品] 请在Github上汇报这个合成
-item.itemBedLocator_Base.name=床定位器 [NBT 测试]
+item.AAA_Broken.name=[不存在的物品]请在Github上反馈这个合成
+item.itemBedLocator_Base.name=床定位器[NBT测试]
 item.itemBaseItemWithCharge.name=基础可充电物品
-item.miscutils_itemDebugShapeSpawner.name=[调试用] 塑形
+item.miscutils_itemDebugShapeSpawner.name=[调试用]塑形
 
 //Fluids
 tile.fluidSludge.name=不流动的废水
@@ -81,18 +81,18 @@ item.itemEnergeticRotorBlade.name=充能合金扇叶
 item.itemTungstenSteelRotorBlade.name=钨钢扇叶
 item.itemVibrantRotorBlade.name=脉冲合金扇叶
 item.itemIridiumRotorBlade.name=铱扇叶
-item.itemEnergeticShaft.name=充能合金柄
-item.itemTungstenSteelShaft.name=钨钢柄
-item.itemVibrantShaft.name=脉冲合金柄
-item.itemIridiumShaft.name=铱柄
+item.itemEnergeticShaft.name=充能合金轴
+item.itemTungstenSteelShaft.name=钨钢轴
+item.itemVibrantShaft.name=脉冲合金轴
+item.itemIridiumShaft.name=铱轴
 item.itemMagnaliumRotorBlade.name=镁铝合金扇叶
 item.itemUltimetRotorBlade.name=哈氏合金扇叶
-item.itemMagnaliumShaft.name=镁铝合金柄
-item.itemUltimetShaft.name=哈氏合金柄
+item.itemMagnaliumShaft.name=镁铝合金轴
+item.itemUltimetShaft.name=哈氏合金轴
 
 
 //Misc Items
-item.itemPLACEHOLDER_Circuit.name=夸克操纵者 (UV)
+item.itemPLACEHOLDER_Circuit.name=夸克操纵者(UV)
 item.itemPlateEnrichedSoularium.name=富集阳光合金板
 item.itemHeliumBlob.name=神秘的氢化物
 item.itemAlkalusDisk.name=Alkalus圆盘
@@ -118,8 +118,8 @@ MU-metaitem.01.0.name=MU-metaitem.01.0.name
 item.SulfurDioxide.name=优质二氧化硫单元
 item.mobessence.name=怪物精华液单元
 item.Fertiliser.name=流体肥料单元
-item.UN32Fertiliser.name=流体肥料UN-32
-item.UN18Fertiliser.name=流体肥料UN-18单元
+item.UN32Fertiliser.name=UN-32肥料单元
+item.UN18Fertiliser.name=UN-18肥料单元
 item.RaisinJuice.name=葡萄汁单元
 item.BerylliumHydroxide.name=氢氧化铍单元
 item.AmmoniumBifluoride.name=氟化氢铵单元
@@ -1658,14 +1658,14 @@ item.itemSmallGearWroughtIron.name=小型锻铁齿轮
 //Misc
 item.itemFoilUranium235.name=铀235箔
 
-item.itemBoilerChassis_0.name=高级锅炉底座 [1级]
+item.itemBoilerChassis_0.name=高级锅炉外壳[1级]
 item.itemDehydratorCoilWire_0.name=缠绕导线 [EV]
 item.itemDehydratorCoil_0.name=脱水线圈 [EV]
 item.itemAirFilter_0.name=空气过滤器
 item.itemAirFilter_1.name=空气过滤器
 item.itemLavaFilter.name=岩浆过滤器
 item.itemGrindleTablet.name=Git
-item.itemDragonJar.name=龙族封印之壶
+item.itemDragonJar.name=龙捕获之壶
 item.CoalGas.name=煤气单元
 item.Ethylbenzene.name=乙苯单元
 item.Anthracene.name=蒽单元
@@ -1691,7 +1691,7 @@ item.itemGemDull.name=沉闷宝石
 item.itemMushroomForest.name=森林蘑菇
 item.itemPlateVanadium.name=钒钢板
 item.thekeytothecity.name=通往城市的钥匙
-item.modularbauble.name=模块化小玩意
+item.modularbauble.name=模块化饰品
 item.itemDustSoularium.name=魂金粉
 item.itemDustSmallSoularium.name=小堆魂金粉
 item.itemDustTinySoularium.name=小撮魂金粉
@@ -1726,7 +1726,7 @@ item.itemPlateLudicrite.name=纯镥板
 item.itemPlateVoid.name=虚空板
 item.itemPlateDimensionShard.name=维度碎片板
 item.rfEUBattery.name=通用充电电池
-item.personalCloakingDevice.name=§9私人伪装装置§7
+item.personalCloakingDevice.name=§9个人隐形装置§7
 item.personalHealingDevice.name=§9私人治疗纳米加速器§r
 item.SlowBuildingRing.name=§e缓建指环§7
 item.itemStaballoyPickaxe.name=隧道挖掘者
