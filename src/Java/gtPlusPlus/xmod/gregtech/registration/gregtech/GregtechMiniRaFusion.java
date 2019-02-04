@@ -19,8 +19,9 @@ public class GregtechMiniRaFusion {
 	public static boolean generateSlowFusionrecipes() {		
 		for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList){
 			if (x.mEnabled) {
-				x.mDuration *= 4;
-				Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.add(x);
+				GT_Recipe y = x.copy();
+				y.mDuration *= 4;
+				Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.add(y);
 			}
 		}
 		int mRecipeCount = Recipe_GT.Gregtech_Recipe_Map.sSlowFusionRecipes.mRecipeList.size();
