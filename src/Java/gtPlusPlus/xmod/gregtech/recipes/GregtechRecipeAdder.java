@@ -17,8 +17,10 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.data.ArrayUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -942,6 +944,103 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			}
 		}
 	}
+
+	@Override
+	public void addFluidExtractionRecipe(ItemStack input, Object input2, FluidStack output, int aTime, int aEu,	int aSpecial) {
+		MaterialGenerator.addFluidExtractionRecipe(input, input2, output, aSpecial, aTime, aEu);
+		
+	}
+	
+	
+
+
+	 
+	/**
+     * Adds a Fusion reactor Recipe
+     *
+     * @param aInputStackA                        = first Input (not null, and respects StackSize)
+     * @param aInputStackB                        = second Input (not null, and respects StackSize)
+     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+     * @param aOutputChance = chance to output plasma (can be 0)
+     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+     * @param aEu           = The EU generated per Tick (can even be negative!)
+     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+     */	
+		@Override
+		public boolean addFusionReactorRecipe(FluidStack aInputStackA, FluidStack aInputStackB, FluidStack plasma,
+				int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial) {
+			if (aInputStackA == null || aInputStackB == null || plasma == null || aFusionDurationInTicks < 1 || aEu < 1 || aSpecial < 1) {
+	            return false;
+	        }			
+			Recipe_GT aFusionCustom = new Recipe_GT(
+					true,
+					null, 
+					null, 
+					null,
+					new int[] {aOutputChance},
+					new FluidStack[]{aInputStackA, aInputStackB}, 
+					new FluidStack[]{plasma},
+					aFusionDurationInTicks, 
+					aEu, 
+					aSpecial);		
+	        GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(aFusionCustom);
+	        return true;
+		}
+	
+	
+	
+	
+	
+	 
+		/**
+	     * Adds a Fusion reactor Recipe
+	     *
+	     * @param aInputStackA                        = first Input (not null, and respects StackSize)
+	     * @param aInputStackB                        = second Input (not null, and respects StackSize)
+	     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+	     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+	     * @param aEu           = The EU generated per Tick (can even be negative!)
+	     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+	     */		
+	@Override
+	public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma,
+			int aFusionDurationInTicks, int aEu, int aSpecial) {		
+		return addFusionReactorRecipe(aInputStackA, aInputStackB, plasma, 10000, aFusionDurationInTicks, aEu, aSpecial);		
+	}
+
+		 
+		/**
+	     * Adds a Fusion reactor Recipe
+	     *
+	     * @param aInputStackA                        = first Input (not null, and respects StackSize)
+	     * @param aInputStackB                        = second Input (not null, and respects StackSize)
+	     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+     * @param aOutputChance = chance to output plasma (can be 0)
+	     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+	     * @param aEu           = The EU generated per Tick (can even be negative!)
+	     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+	     */	
+		@Override
+		public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma,
+				int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial) {
+			if (aInputStackA == null || aInputStackB == null || plasma == null || aFusionDurationInTicks < 1 || aEu < 1 || aSpecial < 1) {
+	            return false;
+	        }			
+			Recipe_GT aFusionCustom = new Recipe_GT(
+					true,
+					new ItemStack[]{aInputStackA, aInputStackB}, 
+					null, 
+					null,
+					new int[] {aOutputChance},
+					null, 
+					new FluidStack[]{plasma},
+					aFusionDurationInTicks, 
+					aEu, 
+					aSpecial);		
+	        GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(aFusionCustom);
+	        return true;
+			
+		}
 
 
 

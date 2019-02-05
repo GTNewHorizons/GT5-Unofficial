@@ -136,7 +136,9 @@ public class ItemGiantEgg extends BaseItemBurnable {
 			if (player && NBTUtils.getTagCompound(aStack, "GT.CraftingComponents") == null) {
 				if (mCorrectStemCells == null) {
 					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && Utils.getGregtechSubVersion() > 28) {
-						ItemList xl = ItemList.valueOf("Circuit_Chip_Stemcell");
+						
+
+						ItemList xl = Utils.getValueOfItemList("Circuit_Chip_Stemcell", ItemList.Circuit_Elite);						
 						if (xl != null && xl.hasBeenSet()) {
 							mCorrectStemCells = xl.get(1);
 						}

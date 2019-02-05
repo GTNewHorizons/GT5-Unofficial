@@ -475,9 +475,10 @@ public class CI {
 
 	public static void init() {		
 		//Set Explosives
-		try {
-			if (ItemList.valueOf("Block_Powderbarrel") != null){
-				explosivePowderKeg = ItemList.valueOf("Block_Powderbarrel").get(1).copy();
+		try {			
+			ItemList PowerderBarrel = gtPlusPlus.core.util.Utils.getValueOfItemList("Block_Powderbarrel", null);
+			if (PowerderBarrel != null){
+				explosivePowderKeg = PowerderBarrel.get(1).copy();
 			}
 		} catch (java.lang.IllegalArgumentException Y) {
 			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
@@ -530,7 +531,6 @@ public class CI {
 	 */
 	
 	private static final Material[] aMaterial_Main = new Material[] {
-			MaterialEIO.REDSTONE_ALLOY,
 			ALLOY.POTIN,
 			ALLOY.ZIRCONIUM_CARBIDE,				
 			ALLOY.EGLIN_STEEL,				
@@ -541,11 +541,11 @@ public class CI {
 			ALLOY.PIKYONIUM,				
 			ELEMENT.STANDALONE.ADVANCED_NITINOL,
 			ALLOY.ABYSSAL,
-			ALLOY.QUANTUM
+			ALLOY.QUANTUM,
+			ELEMENT.STANDALONE.HYPOGEN
 	};		
 	
 	private static final Material[] aMaterial_Secondary = new Material[] {
-			ELEMENT.getInstance().LEAD,
 			ALLOY.TUMBAGA,
 			ALLOY.SILICON_CARBIDE,
 			ALLOY.TUNGSTEN_CARBIDE,				
@@ -556,11 +556,11 @@ public class CI {
 			ALLOY.CINOBITE,
 			ALLOY.TITANSTEEL,
 			ALLOY.OCTIRON,
-			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN
+			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
+			ELEMENT.STANDALONE.HYPOGEN
 	};	
 	
 	private static final Material[] aMaterial_Tertiary = new Material[] {
-			ELEMENT.getInstance().IRON,
 			ALLOY.STEEL,
 			ELEMENT.getInstance().ALUMINIUM,
 			ALLOY.STAINLESSSTEEL,
@@ -571,7 +571,8 @@ public class CI {
 			ALLOY.TRINIUM_REINFORCED_STEEL, //Arceus
 			ALLOY.TITANSTEEL,
 			ELEMENT.STANDALONE.ASTRAL_TITANIUM,
-			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN
+			ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN,
+			ELEMENT.STANDALONE.HYPOGEN
 	};	
 	
 	private static final Materials[] aMaterial_Cables = new Materials[] {

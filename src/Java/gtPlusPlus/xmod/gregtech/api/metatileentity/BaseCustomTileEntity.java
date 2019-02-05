@@ -23,7 +23,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 
 	public BaseCustomTileEntity() {
 		super();
-		Logger.INFO("Created new BaseCustomTileEntity");
+		Logger.MACHINE_INFO("Created new BaseCustomTileEntity");
 	}
 
 	public void writeToNBT(NBTTagCompound aNBT) {

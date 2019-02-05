@@ -246,13 +246,13 @@ extends GregtechMeta_MultiBlockBase {
 						Logger.INFO("Heating Coils missing.");
 						return false;
 					}	
-					
-					//Top Layer
-					final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
-					if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
-						Logger.INFO("Top Layer missing.");
-						return false;
-					}
+				}
+				
+				//Top Layer
+				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j);					
+				if (!isValidBlockForStructure(tTileEntity2, TAE.GTPP_INDEX(15), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j), ModBlocks.blockCasingsMisc, 15)) {
+					Logger.INFO("Top Layer missing.");
+					return false;
 				}
 			}
 		}

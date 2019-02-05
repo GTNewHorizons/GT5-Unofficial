@@ -406,7 +406,7 @@ public class ChargingHelper {
 		return mEntity.getEUVar();
 	}
 
-	public boolean isItemValid(final ItemStack itemstack) {
+	public static boolean isItemValid(final ItemStack itemstack) {
 		if (itemstack == null){
 			return false;
 		}
@@ -419,7 +419,7 @@ public class ChargingHelper {
 		return false;
 	}
 
-	public boolean accepts(final ItemStack stack) {
+	public static boolean accepts(final ItemStack stack) {
 		if (stack == null) {
 			return false;
 		}

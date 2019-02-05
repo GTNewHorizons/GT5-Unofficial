@@ -13,6 +13,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.*;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -246,7 +247,7 @@ public class RECIPES_Machines {
 				EV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
 				HV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
 				EV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);			
-				EV_MACHINE_MassFabricator= CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("Machine_LuV_Massfab").get(1, ItemList.Machine_IV_Massfab.get(1)) : ItemList.Machine_IV_Massfab.get(1);
+				EV_MACHINE_MassFabricator= CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? gtPlusPlus.core.util.Utils.getValueOfItemList("Machine_LuV_Massfab", ItemList.Machine_IV_Massfab).get(1) : ItemList.Machine_IV_Massfab.get(1);
 				EV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
 				EV_MACHINE_Cutter = ItemList.Machine_IV_Cutter.get(1);
 				EV_MACHINE_Extruder = ItemList.Machine_IV_Extruder.get(1);
@@ -338,6 +339,19 @@ public class RECIPES_Machines {
 					GregtechItemList.RTG.get(1),
 					60 * 20 * 10, 
 					8000);
+			
+			// Super Jukebox		
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+						CI.machineHull_LV,
+						ItemUtils.getItemStackOfAmountFromOreDict("circuitBaisc", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
+						ItemUtils.getSimpleStack(Blocks.jukebox)
+					}, 
+					ELEMENT.getInstance().COPPER.getFluid(144 * 2), 
+					ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox),
+					20 * 30, 
+					30);
 			
 
 			
@@ -823,7 +837,10 @@ public class RECIPES_Machines {
 
 				//Air Intake Hatch
 
-				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? ItemList.valueOf("FluidRegulator_IV").get(1, ItemList.Pump_IV.get(1)) : ItemList.Pump_IV.get(1);
+				
+
+				ItemList FluidRegulator_IV = Utils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
+				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
 
 
 				RecipeUtils.addShapedGregtechRecipe(
@@ -1393,19 +1410,7 @@ public class RECIPES_Machines {
 
 				
 				
-				ItemStack aDrillController;
-				if (GTNH) {
-					aDrillController = ItemList.valueOf("OreDrill4").get(1);
-				}
-				else {
-					ItemList g = ItemList.valueOf("OreDrill4");
-					if (g == null) {
-						aDrillController = CI.machineHull_UV;
-					}
-					else {
-						aDrillController = g.get(1);
-					}
-				}
+				ItemStack aDrillController = Utils.getValueOfItemList("OreDrill4", ItemList.Hull_UV).get(1);				
 				
 				//Drilling Platform
 				CORE.RA.addSixSlotAssemblingRecipe(

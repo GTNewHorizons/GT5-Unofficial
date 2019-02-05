@@ -18,6 +18,7 @@ public class AsmConfig {
 	public static boolean enableChunkDebugging;
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
+	public static boolean enableRcFlowFix;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -75,12 +76,18 @@ public class AsmConfig {
 			
 			prop = config.get("general", "enableGcFuelChanges", true);
 			prop.comment = "Enable/Disable changes to Galacticraft Rocket Fuels.";
-			prop.setLanguageKey("gtpp.enableGcFuelChanges").setRequiresMcRestart(true);
-			
+			prop.setLanguageKey("gtpp.enableGcFuelChanges").setRequiresMcRestart(true);			
 			//Disabled because Broken
 			//enableGcFuelChanges = prop.getBoolean(true);			
-			enableGcFuelChanges = false;
+			enableGcFuelChanges = false;			
+			propOrder.add(prop.getName());
 			
+			
+			//Railcraft Tank fix
+			prop = config.get("general", "enableRcFlowFix", true);
+			prop.comment = "Quadruples max RC IO rates on tanks";
+			prop.setLanguageKey("gtpp.enableRcFlowFix").setRequiresMcRestart(true);
+			enableRcFlowFix = prop.getBoolean(true);
 			propOrder.add(prop.getName());
 			
 			

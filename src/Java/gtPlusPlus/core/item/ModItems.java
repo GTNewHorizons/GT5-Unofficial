@@ -29,6 +29,7 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
+import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
@@ -321,6 +322,11 @@ public final class ModItems {
 
 	public static IonParticles itemIonParticleBase;
 	public static StandardBaseParticles itemStandarParticleBase;
+
+	public static BatteryPackBaseBauble itemChargePack1;
+	public static BatteryPackBaseBauble itemChargePack2;
+	public static BatteryPackBaseBauble itemChargePack3;
+	public static BatteryPackBaseBauble itemChargePack4;
 
 	static {
 		Logger.INFO("Items!");
@@ -908,10 +914,23 @@ public final class ModItems {
 			GT_OreDictUnificator.registerOre("platePhasedGold", ItemUtils.getSimpleStack(itemPlateVibrantAlloy));
 			GT_OreDictUnificator.registerOre("dustPhasedIron", ItemUtils.getSimpleStack(itemDustPulsatingIron));
 			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
-			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));
+			GT_OreDictUnificator.registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));			
+
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getPlate(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 10000, 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getIngot(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(144), 10000, 16, 4*9);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getNugget(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(16), 10000, 16, 4);
+			CORE.RA.addFluidExtractionRecipe(MaterialEIO.REDSTONE_ALLOY.getBlock(1), null, MaterialEIO.REDSTONE_ALLOY.getFluid(1294), 10000, 16, 4*9*9);
+			
 		}
 		else {
-			Logger.WARNING("EnderIO not Found - Skipping Resources.");
+			/*Logger.WARNING("EnderIO not Found - Generating our own Resources.");
+			MaterialGenerator.generate(MaterialEIO.CONDUCTIVE_IRON);
+			MaterialGenerator.generate(MaterialEIO.PULSATING_IRON);
+			MaterialGenerator.generate(MaterialEIO.REDSTONE_ALLOY);
+			MaterialGenerator.generate(MaterialEIO.SOULARIUM);
+			MaterialGenerator.generate(MaterialEIO.ELECTRICAL_STEEL);
+			MaterialGenerator.generate(MaterialEIO.ENERGETIC_ALLOY);
+			MaterialGenerator.generate(MaterialEIO.VIBRANT_ALLOY);	*/	
 		}
 
 		//Big Reactors

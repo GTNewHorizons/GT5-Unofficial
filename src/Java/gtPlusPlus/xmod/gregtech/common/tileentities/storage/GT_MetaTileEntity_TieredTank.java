@@ -146,12 +146,12 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
-		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED) {		
+		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED && !CORE.GTNH) {		
 			if (mFluid != null){
-				Logger.INFO("Setting item fluid nbt");
+				Logger.WARNING("Setting item fluid nbt");
 				aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
 				if (aNBT.hasKey("mFluid")) {
-					Logger.INFO("Set mFluid to NBT.");        		
+					Logger.WARNING("Set mFluid to NBT.");        		
 				}
 			}     
 		}
