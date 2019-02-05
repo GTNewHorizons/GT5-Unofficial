@@ -371,7 +371,7 @@ public class RECIPES_Machines {
 			//Basic Combustion Turbine
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.getElectricPiston(0, 1), "circuitPrimitive", CI.getElectricPiston(0, 1),
-					ALLOY.TUMBAGA.getRotor(1), CI.machineCasing_ULV, CI.getElectricMotor(0, 1),
+					CI.getElectricMotor(0, 1), CI.machineCasing_ULV, CI.getElectricMotor(0, 1),
 					ALLOY.TUMBAGA.getGear(1), "cableGt01RedAlloy", ALLOY.TUMBAGA.getGear(1),
 					GregtechItemList.Generator_Diesel_ULV.get(1));
 

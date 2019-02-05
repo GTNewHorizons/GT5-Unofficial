@@ -159,6 +159,27 @@ public class RECIPES_General {
 			}
 		}
 
+		
+		//Shaped Crafting for ULV Material Dusts		
+		//Potin
+		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustLead", "dustBronze", "dustTin",
+			"dustLead", "dustBronze"}, ALLOY.POTIN.getDust(5))){
+			Logger.INFO("Added shapeless recipe for Potin Dust.");
+		}
+		//Tumbaga
+		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustRoseGold", "dustGold", "dustGold",
+				"dustGold", "dustCopper", "dustCopper"}, ALLOY.TUMBAGA.getDust(10))){
+				Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//Mining Explosive
 		Logger.RECIPE("[Inspection] Explosives");
 		if (RecipeUtils.recipeBuilder(
