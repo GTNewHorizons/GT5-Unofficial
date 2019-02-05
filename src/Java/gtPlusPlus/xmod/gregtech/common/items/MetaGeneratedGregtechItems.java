@@ -170,11 +170,11 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		 */
 
 		GregtechItemList.Battery_Gem_1.set(this.addItem(tLastID = 66, "Proton Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 24L), getTcAspectStack(TC_Aspects.POTENTIA, 16L)}));
-		this.setElectricStats(32000 + tLastID, 32000000L, GT_Values.V[6], 6L, -3L, false);
+		this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 20 * 300 / 4, GT_Values.V[6], 6L, -3L, false);
 		GregtechItemList.Battery_Gem_2.set(this.addItem(tLastID = 68, "Electron Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 16L), getTcAspectStack(TC_Aspects.METALLUM, 32L), getTcAspectStack(TC_Aspects.POTENTIA, 32L)}));
-		this.setElectricStats(32000 + tLastID, 750000000L, GT_Values.V[7], 7L, -3L, false);
+		this.setElectricStats(32000 + tLastID, GT_Values.V[7] * 20 * 300 / 4, GT_Values.V[7], 7L, -3L, false);
 		GregtechItemList.Battery_Gem_3.set(this.addItem(tLastID = 70, "Quark Entanglement", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 32L), getTcAspectStack(TC_Aspects.METALLUM, 48L), getTcAspectStack(TC_Aspects.POTENTIA, 64L)}));
-		this.setElectricStats(32000 + tLastID, 64000000000L, GT_Values.V[8], 8L, -3L, false);
+		this.setElectricStats(32000 + tLastID, GT_Values.V[8] * 20 * 300 / 4, GT_Values.V[8], 8L, -3L, false);
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_1.get(1), "batteryFutureBasic");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_2.get(1), "batteryFutureGood");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_3.get(1), "batteryFutureAdvanced");

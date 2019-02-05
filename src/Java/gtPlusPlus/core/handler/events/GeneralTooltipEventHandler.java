@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -22,8 +24,13 @@ public class GeneralTooltipEventHandler {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){
 
+		
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED) {
+			return;
+		}
+		
 		if (CORE.ConfigSwitches.chanceToDropFluoriteOre > 0) {
-			if (!BlockEventHandler.blockLimestone.isEmpty()) {
+			if (BlockEventHandler.blockLimestone != null && !BlockEventHandler.blockLimestone.isEmpty()) {
 				for (ItemStack h : BlockEventHandler.blockLimestone) {
 					if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
 						if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
@@ -32,7 +39,7 @@ public class GeneralTooltipEventHandler {
 					}
 				}
 			}
-			if (!BlockEventHandler.oreLimestone.isEmpty()) {
+			if (BlockEventHandler.oreLimestone != null && !BlockEventHandler.oreLimestone.isEmpty()) {
 				for (ItemStack h : BlockEventHandler.oreLimestone) {
 					if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
 						if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {

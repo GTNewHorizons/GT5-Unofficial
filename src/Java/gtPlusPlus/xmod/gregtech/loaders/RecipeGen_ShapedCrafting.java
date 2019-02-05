@@ -3,18 +3,15 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.util.GT_ModHandler;
-
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import net.minecraft.item.ItemStack;
 
 public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
@@ -35,7 +32,7 @@ public class RecipeGen_ShapedCrafting extends RecipeGen_Base {
 
 	private void generateRecipes(final Material material){
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
-
+				
 		if (!CORE.GTNH) {
 			//Nuggets
 			if (ItemUtils.checkForInvalidItems(material.getNugget(1)) && ItemUtils.checkForInvalidItems(material.getIngot(1)))

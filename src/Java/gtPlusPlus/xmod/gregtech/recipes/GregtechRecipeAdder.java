@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -752,24 +753,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs_OLD, ItemStack aOutput, int aDuration, int aEUt) {
 		
-		FluidStack[] aFluidInputs = new FluidStack[4];		
-		if (aFluidInputs_OLD != null) {
-			int aC = 0;
-			for (FluidStack s : aFluidInputs) {
-				if (aC > 3) {
-					break;
-				}
-				if (s != null) {
-					aFluidInputs[aC++] = s;
-				}
+		FluidStack[] aFluidInputs = new FluidStack[4];	
+		AutoMap<FluidStack> aNewFluidMap = new AutoMap<FluidStack>();
+		if (aFluidInputs_OLD.length > 4) {
+			for (FluidStack s : aFluidInputs_OLD) {
+				aNewFluidMap.put(s);
 			}
+			for (int i = 0; i < 4; i++) {
+				aFluidInputs[i] = aNewFluidMap.get(i);				
+			}
+		}
+		else {
+			aFluidInputs = aFluidInputs_OLD;
 		}
 		
 		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			if (aInputs.length < 6 && aFluidInputs.length < 2) {
 				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
-				return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
+				return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
 			}        	
 			return false;
 		}
@@ -789,7 +791,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 						if (aInputs.length < 6 && aFluidInputs.length < 2) {
 							ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1],
 									aInputs[2], aInputs[3], aInputs[4] };
-							return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+							return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
 									aEUt);
 						}
 						return false;
@@ -798,7 +800,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					if (aInputs.length < 6 && aFluidInputs.length < 2) {
 						ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1], aInputs[2],
 								aInputs[3], aInputs[4] };
-						return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+						return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
 								aEUt);
 					}
 					return false;

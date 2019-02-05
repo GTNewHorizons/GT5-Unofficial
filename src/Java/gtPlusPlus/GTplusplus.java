@@ -74,7 +74,9 @@ public class GTplusplus implements ActionListener {
 		SUPER(null),
 		PRE_INIT(SUPER),
 		INIT(PRE_INIT),
-		POST_INIT(INIT);		
+		POST_INIT(INIT),
+		SERVER_START(POST_INIT),
+		STARTED(SERVER_START);		
 		protected boolean mIsPhaseActive = false;
 		private final INIT_PHASE mPrev;
 		
@@ -226,6 +228,7 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
+		INIT_PHASE.SERVER_START.setPhaseActive(true);
 		mChunkLoading.serverStarting(event);
 		event.registerServerCommand(new CommandMath());
 		event.registerServerCommand(new CommandDebugChunks());
@@ -259,6 +262,7 @@ public class GTplusplus implements ActionListener {
 	 */
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
+		INIT_PHASE.STARTED.setPhaseActive(true);
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
 	}

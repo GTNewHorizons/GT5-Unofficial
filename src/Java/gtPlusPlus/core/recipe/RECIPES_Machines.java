@@ -288,71 +288,71 @@ public class RECIPES_Machines {
 			//Computer Cube			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						ItemUtils.getSimpleStack(CI.getDataOrb(), 4 * (GTNH ? 2 : 1)),						
-						ItemList.Cover_Screen.get(4),
-						CI.machineHull_IV,
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 2)
+							ItemUtils.getSimpleStack(CI.getDataOrb(), 4 * (GTNH ? 2 : 1)),						
+							ItemList.Cover_Screen.get(4),
+							CI.machineHull_IV,
+							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 2)
 					}, 
 					ELEMENT.getInstance().TANTALUM.getFluid(144 * 16), 
 					GregtechItemList.Gregtech_Computer_Cube.get(1),
 					60 * 20 * 3, 
 					8000);
-			
+
 			//Circuit programmer			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (GTNH ? 2 : 1)),						
-						ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
-						CI.machineHull_MV,
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), 2),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 2)
+							ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (GTNH ? 2 : 1)),						
+							ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
+							CI.machineHull_MV,
+							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), 2),
+							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 2)
 					}, 
 					ELEMENT.getInstance().IRON.getFluid(144 * 4), 
 					ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
 					60 * 10 * 1, 
 					30);
-			
+
 			//Lead Lined Chest		
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						CI.machineHull_LV,
-						ItemUtils.getItemStackOfAmountFromOreDict("plateRubber", 32),
-						ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
-						ItemUtils.getSimpleStack(Blocks.chest)
+							CI.machineHull_LV,
+							ItemUtils.getItemStackOfAmountFromOreDict("plateRubber", 32),
+							ItemUtils.getItemStackOfAmountFromOreDict("plateDenseLead", 9),
+							ItemUtils.getSimpleStack(Blocks.chest)
 					}, 
 					ELEMENT.getInstance().LEAD.getFluid(144 * 16), 
 					ItemUtils.getSimpleStack(ModBlocks.blockDecayablesChest),
 					60 * 10 * 3, 
 					60);
-			
+
 			//RTG	
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
-						ALLOY.NITINOL_60.getPlate(GTNH ? 32 : 8),
-						ALLOY.MARAGING350.getGear(GTNH ? 16 : 4),
-						ItemUtils.getSimpleStack(GTNH ? CI.fieldGenerator_IV : CI.fieldGenerator_EV, 8 ),
-						ItemUtils.getItemStackOfAmountFromOreDict("wireFinePlatinum", GTNH ? 64 : 32),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 7 : 6), GTNH ? 5 : 4)
+							ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
+							ALLOY.NITINOL_60.getPlate(GTNH ? 32 : 8),
+							ALLOY.MARAGING350.getGear(GTNH ? 16 : 4),
+							ItemUtils.getSimpleStack(GTNH ? CI.fieldGenerator_IV : CI.fieldGenerator_EV, 8 ),
+							ItemUtils.getItemStackOfAmountFromOreDict("wireFinePlatinum", GTNH ? 64 : 32),
+							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 7 : 6), GTNH ? 5 : 4)
 					}, 
 					ALLOY.NIOBIUM_CARBIDE.getFluid(144 * 16), 
 					GregtechItemList.RTG.get(1),
 					60 * 20 * 10, 
 					8000);
-			
+
 			// Super Jukebox		
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
-						CI.machineHull_LV,
-						ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 4),
-						ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
-						ItemUtils.getSimpleStack(Blocks.jukebox)
+							CI.machineHull_LV,
+							ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 4),
+							ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
+							ItemUtils.getSimpleStack(Blocks.jukebox)
 					}, 
 					ELEMENT.getInstance().COPPER.getFluid(144 * 2), 
 					ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox),
 					20 * 30, 
 					30);
-			
+
 
 			//Basic Steam Turbine
 			RecipeUtils.addShapedGregtechRecipe(
@@ -367,7 +367,7 @@ public class RECIPES_Machines {
 					ALLOY.TUMBAGA.getRotor(1), CI.machineCasing_ULV, ALLOY.TUMBAGA.getRotor(1),
 					CI.getElectricMotor(0, 1), "cableGt01RedAlloy", CI.getElectricMotor(0, 1),
 					GregtechItemList.Generator_Gas_Turbine_ULV.get(1));
-			
+
 			//Basic Combustion Turbine
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.getElectricPiston(0, 1), "circuitPrimitive", CI.getElectricPiston(0, 1),
@@ -375,7 +375,7 @@ public class RECIPES_Machines {
 					ALLOY.TUMBAGA.getGear(1), "cableGt01RedAlloy", ALLOY.TUMBAGA.getGear(1),
 					GregtechItemList.Generator_Diesel_ULV.get(1));
 
-			
+
 
 			//Steam Condenser
 			if (CORE.ConfigSwitches.enableMachine_SteamConverter ){
@@ -794,7 +794,7 @@ public class RECIPES_Machines {
 						"plankWood", "frameGtTumbaga", "plankWood",
 						"plankWood", "plankWood", "plankWood",
 						RECIPE_TreeFarmFrame);
-			*/}
+			 */}
 
 			if (CORE.ConfigSwitches.enableMachine_Tesseracts){
 				//Tesseracts
@@ -858,7 +858,7 @@ public class RECIPES_Machines {
 
 				//Air Intake Hatch
 
-				
+
 
 				ItemList FluidRegulator_IV = Utils.getValueOfItemList("FluidRegulator_IV", ItemList.Pump_IV);				
 				ItemStack aTieredFluidRegulator = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK ? FluidRegulator_IV.get(1) : ItemList.Pump_IV.get(1);
@@ -1066,28 +1066,60 @@ public class RECIPES_Machines {
 				RECIPE_CyclotronController = GregtechItemList.COMET_Cyclotron.get(1);
 				RECIPE_CyclotronOuterCasing = GregtechItemList.Casing_Cyclotron_External.get(Casing_Amount);
 				RECIPE_CyclotronInnerCoil = GregtechItemList.Casing_Cyclotron_Coil.get(1);
+				
+				//Outer Casing
+				CORE.RA.addSixSlotAssemblingRecipe(				
+						new ItemStack[] {
+								ItemList.Casing_FrostProof.get(1),
+								ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 0, GTNH ? 8 : 4),
+								ALLOY.INCOLOY_DS.getPlate(GTNH ? 16 : 8),
+								ALLOY.INCONEL_690.getScrew(GTNH ? 32 : 16),
+								ALLOY.EGLIN_STEEL.getLongRod(GTNH ? 16 : 4),
+								CI.getElectricPiston(3, GTNH ? 4 : 2)
+						},					
+						ALLOY.ZIRCONIUM_CARBIDE.getFluid(144 * 8), //Input Fluid					
+						RECIPE_CyclotronOuterCasing,					
+						30 * 20 * 2, 
+						MaterialUtils.getVoltageForTier(4));
+				
+				
+				//Inner Coil
+				CORE.RA.addSixSlotAssemblingRecipe(				
+						new ItemStack[] {
+								ItemList.Casing_Coil_Nichrome.get(1),
+								ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 1, GTNH ? 32 : 8),
+								ALLOY.INCOLOY_MA956.getPlate(GTNH ? 16 : 8),
+								ALLOY.TANTALLOY_61.getBolt(GTNH ? 32 : 16),
+								ALLOY.INCOLOY_020.getScrew(GTNH ? 64 : 32),
+								CI.getFieldGenerator(4, GTNH ? 2 : 1)
+						},					
+						ALLOY.HG1223.getFluid(144 * 5), //Input Fluid					
+						RECIPE_CyclotronInnerCoil,					
+						60 * 20 * 2, 
+						MaterialUtils.getVoltageForTier(5));
 
-				GT_Values.RA.addAssemblerRecipe(
-						ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloyMA956", 8),
-						ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloy020", 1),
-						FluidUtils.getFluidStack("molten.hg1223", 32),
-						RECIPE_CyclotronOuterCasing,
-						30 * 20,
-						500);
 
-				GT_Values.RA.addAssemblerRecipe(
-						ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloyDS", 16),
-						ItemList.Field_Generator_HV.get(1),
-						FluidUtils.getFluidStack("molten.hg1223", 144),
-						RECIPE_CyclotronInnerCoil,
-						90 * 20,
-						1000);
+				//Controller
+				CORE.RA.addSixSlotAssemblingRecipe(				
+						new ItemStack[] {
+								CI.machineHull_IV,
+								ItemUtils.getSimpleStack(RECIPE_CyclotronInnerCoil, GTNH ? 4 : 2),
+								ALLOY.INCOLOY_020.getPlate(GTNH ? 16 : 8),
+								ALLOY.TANTALLOY_61.getGear(GTNH ? 4 : 2),
+								ALLOY.INCOLOY_MA956.getScrew(GTNH ? 64 : 16),
+								ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 6 : 5), GTNH ? 8 : 16)
+						},					
+						ALLOY.INCOLOY_020.getFluid(144 * 9), //Input Fluid					
+						RECIPE_CyclotronController,					
+						60 * 20 * 5, 
+						MaterialUtils.getVoltageForTier(5));
 
-				RecipeUtils.recipeBuilder(
-						"plateIncoloy020", CI.getTieredCircuit(6), "plateIncoloy020",
-						RECIPE_CyclotronInnerCoil, CI.machineHull_IV, RECIPE_CyclotronInnerCoil,
-						"plateIncoloy020", "gearGtIncoloyMA956", "plateIncoloy020",
-						RECIPE_CyclotronController);
+
+
+
+
+
+
 			}
 
 			if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
@@ -1139,43 +1171,43 @@ public class RECIPES_Machines {
 				ItemStack aCoreBlock = CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK
 						? ItemList.valueOf("Block_IridiumTungstensteel").get(1,
 								ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1))
-						: ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
+								: ItemUtils.getItemStackOfAmountFromOreDict("blockOsmiridium", 1);
 
-				aCoreBlock.stackSize = GTNH ? 2 : 1;
+						aCoreBlock.stackSize = GTNH ? 2 : 1;
 
-				CORE.RA.addSixSlotAssemblingRecipe(
-						new ItemStack[] {
-								ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), GTNH ? 2 : 1),
-								aCoreBlock, 
-								CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 16),
-								CI.getTieredComponent(OrePrefixes.screw, GTNH ? 6 : 5, 32),
-								CI.getTieredComponent(OrePrefixes.bolt, GTNH ? 6 : 5, 12),
-								CI.getTieredComponent(OrePrefixes.plate, GTNH ? 7 : 6, 8), },
-						CI.getTertiaryTieredFluid(6, 144 * (GTNH ? 12 : 4)),
-						GregtechItemList.Casing_Autocrafter.get(Casing_Amount), 20 * 60 * 2,
-						MaterialUtils.getVoltageForTier(GTNH ? 7 : 6));
+						CORE.RA.addSixSlotAssemblingRecipe(
+								new ItemStack[] {
+										ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), GTNH ? 2 : 1),
+										aCoreBlock, 
+										CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 16),
+										CI.getTieredComponent(OrePrefixes.screw, GTNH ? 6 : 5, 32),
+										CI.getTieredComponent(OrePrefixes.bolt, GTNH ? 6 : 5, 12),
+										CI.getTieredComponent(OrePrefixes.plate, GTNH ? 7 : 6, 8), },
+								CI.getTertiaryTieredFluid(6, 144 * (GTNH ? 12 : 4)),
+								GregtechItemList.Casing_Autocrafter.get(Casing_Amount), 20 * 60 * 2,
+								MaterialUtils.getVoltageForTier(GTNH ? 6 : 5));
 
-				CORE.RA.addSixSlotAssemblingRecipe(
-						new ItemStack[] { 
-								GregtechItemList.Casing_Refinery_Structural.get(4),
-								ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, GTNH ? 2 : 1),
-								CI.getTieredComponent(OrePrefixes.cableGt08, GTNH ? 7 : 6, GTNH ? 32 : 16),
-								CI.getEmitter(GTNH ? 7 : 5, 2), 
-								CI.getSensor(GTNH ? 7 : 5, 2),
-								GregtechItemList.Gregtech_Computer_Cube.get(1),
+						CORE.RA.addSixSlotAssemblingRecipe(
+								new ItemStack[] { 
+										GregtechItemList.Casing_Refinery_Structural.get(4),
+										ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, GTNH ? 2 : 1),
+										CI.getTieredComponent(OrePrefixes.cableGt08, GTNH ? 7 : 6, GTNH ? 32 : 16),
+										CI.getEmitter(GTNH ? 6 : 5, 2), 
+										CI.getSensor(GTNH ? 6 : 5, 2),
+										GregtechItemList.Gregtech_Computer_Cube.get(1),
 								},
-						CI.getTieredFluid(7, 144 * (GTNH ? 32 : 8)), GregtechItemList.GT4_Multi_Crafter.get(1),
-						20 * 60 * 5, MaterialUtils.getVoltageForTier(GTNH ? 7 : 6));
+								CI.getTieredFluid(7, 144 * (GTNH ? 32 : 8)), GregtechItemList.GT4_Multi_Crafter.get(1),
+								20 * 60 * 5, MaterialUtils.getVoltageForTier(GTNH ? 6 : 5));
 
-				CORE.RA.addSixSlotAssemblingRecipe(
-						new ItemStack[] {
-								ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), Casing_Amount),
-								CI.getEmitter(GTNH ? 5 : 4, GTNH ? 4 : 2), CI.getRobotArm(GTNH ? 5 : 4, GTNH ? 4 : 2),
-								CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 8),
-								CI.getTieredComponent(OrePrefixes.screw, GTNH ? 4 : 3, 8),
-								CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 16 : 4), },
-						CI.getAlternativeTieredFluid(5, 144 * 4), ItemUtils.getSimpleStack(ModBlocks.blockProjectTable),
-						20 * 30 * 3, MaterialUtils.getVoltageForTier(GTNH ? 5 : 4));
+						CORE.RA.addSixSlotAssemblingRecipe(
+								new ItemStack[] {
+										ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), Casing_Amount),
+										CI.getEmitter(GTNH ? 5 : 4, GTNH ? 4 : 2), CI.getRobotArm(GTNH ? 5 : 4, GTNH ? 4 : 2),
+										CI.getTieredComponent(OrePrefixes.circuit, GTNH ? 3 : 2, 8),
+										CI.getTieredComponent(OrePrefixes.screw, GTNH ? 4 : 3, 8),
+										CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 16 : 4), },
+								CI.getAlternativeTieredFluid(5, 144 * 4), ItemUtils.getSimpleStack(ModBlocks.blockProjectTable),
+								20 * 30 * 3, MaterialUtils.getVoltageForTier(GTNH ? 5 : 4));
 
 			}
 
@@ -1373,7 +1405,7 @@ public class RECIPES_Machines {
 								ItemUtils.getSimpleStack((GTNH ? CI.fieldGenerator_MAX : CI.fieldGenerator_ZPM), 5),
 								ItemList.Energy_LapotronicOrb2.get(1 * (GTNH ? 64 : 8)),
 								GTNH ? GregtechItemList.Compressed_Fusion_Reactor.get(1) : ItemList.FusionComputer_UV.get(1),
-								GregtechItemList.Casing_Fusion_Internal.get(1)
+										GregtechItemList.Casing_Fusion_Internal.get(1)
 						},
 						new FluidStack[] {
 								ALLOY.PIKYONIUM.getFluid(32 * 144 * (GTNH ? 2 : 1)),
@@ -1429,10 +1461,10 @@ public class RECIPES_Machines {
 						(int) GT_Values.V[7]);
 
 
-				
-				
+
+
 				ItemStack aDrillController = Utils.getValueOfItemList("OreDrill4", ItemList.Hull_UV).get(1);				
-				
+
 				//Drilling Platform
 				CORE.RA.addSixSlotAssemblingRecipe(
 						new ItemStack[] {
@@ -1446,7 +1478,7 @@ public class RECIPES_Machines {
 						GregtechItemList.BedrockMiner_MKI.get(1),
 						(int) GT_Values.V[5],
 						(int) GT_Values.V[7]);
-				
+
 				//Drilling Platform Casings
 				CORE.RA.addSixSlotAssemblingRecipe(
 						new ItemStack[] {
@@ -1499,8 +1531,8 @@ public class RECIPES_Machines {
 				ItemUtils.getSimpleStack(Dimension_Everglades.blockPortalFrame, 2),					
 				45 * 20 * 1 * (6), 
 				MaterialUtils.getVoltageForTier(6));
-		
-		
+
+
 		//Player Doors
 		ItemStack[] aDoorInputs = new ItemStack[] {
 				ItemUtils.getSimpleStack(Blocks.log2),
@@ -1516,7 +1548,7 @@ public class RECIPES_Machines {
 				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Ice),
 				ItemUtils.getSimpleStack(ModBlocks.blockPlayerDoorCustom_Cactus),	
 		};
-		
+
 		for (int y = 0; y < aDoorInputs.length; y++) {
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					new ItemStack[] {
@@ -1532,18 +1564,18 @@ public class RECIPES_Machines {
 					100, 
 					MaterialUtils.getVoltageForTier(1));			
 		}
-		
-		
-		
+
+
+
 
 
 
 		Logger.INFO("Done loading recipes for the Various machine blocks.");
 	}
-	
-	
+
+
 	private static void controlCores() {
-		
+
 		Material[] aMat_A = new Material[] {
 				ALLOY.POTIN,
 				ALLOY.ZIRCONIUM_CARBIDE,
@@ -1568,19 +1600,19 @@ public class RECIPES_Machines {
 				ALLOY.ZERON_100,
 				ALLOY.CINOBITE
 		};
-		
+
 		Item aBaseCore = ModItems.itemControlCore;		
 		ItemStack[] aInputPrevTier = new ItemStack[] {
 				GTNH ? ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1) : ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 1, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 2, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 3, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 4, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 5, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 6, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 7, 1),
-				ItemUtils.simpleMetaStack(aBaseCore, 8, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 1, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 2, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 3, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 4, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 5, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 6, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 7, 1),
+						ItemUtils.simpleMetaStack(aBaseCore, 8, 1),
 		};		
 		ItemStack[] aOutput = new ItemStack[] {
 				ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
@@ -1593,9 +1625,9 @@ public class RECIPES_Machines {
 				ItemUtils.simpleMetaStack(aBaseCore, 7, 1),
 				ItemUtils.simpleMetaStack(aBaseCore, 8, 1),
 				ItemUtils.simpleMetaStack(aBaseCore, 9, 1),
-				
+
 		};
-		
+
 		CORE.RA.addSixSlotAssemblingRecipe(				
 				new ItemStack[] {
 						CI.machineHull_HV,
@@ -1609,8 +1641,8 @@ public class RECIPES_Machines {
 				GregtechItemList.Hatch_Control_Core.get(1),					
 				60 * 20 * 5, 
 				MaterialUtils.getVoltageForTier(3));
-		
-		
+
+
 		for (int i = 0; i < 10; i++) {			
 			boolean aDub = i >= 5;	
 
@@ -1618,7 +1650,7 @@ public class RECIPES_Machines {
 			ItemStack aGearStack = aMat_B[i].getGear(GTNH ? 8 : 4 * (aDub ? 2 : 1));
 			ItemStack aRodStack = aMat_A[i].getLongRod(GTNH ? 32 : 16 * (aDub ? 2 : 1));
 			ItemStack aScrewStack = aMat_B[i].getScrew(32 * (aDub ? 2 : 1));
-			
+
 			if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
 				aPlateStack = aMat_A[i].getPlate((GTNH ? 16 : 8) * (aDub ? 2 : 1) * 2);
 				if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
@@ -1637,7 +1669,7 @@ public class RECIPES_Machines {
 			if (!ItemUtils.checkForInvalidItems(aScrewStack)) {
 				aScrewStack = aMat_A[i].getScrew(32 * (aDub ? 2 : 1));				
 			}
-			
+
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					new ItemStack[] {
 							aInputPrevTier[i],
@@ -1653,9 +1685,9 @@ public class RECIPES_Machines {
 					MaterialUtils.getVoltageForTier(i));
 		}		
 	}
-	
+
 	private static void energyCores() {
-		
+
 		//Simpler Recipes for normal Players, Force assembly crafting in GTNH
 		if (!GTNH) {
 			//Buffer Core
@@ -1762,15 +1794,15 @@ public class RECIPES_Machines {
 					CI.circuitTier9, RECIPE_BufferCore_MAX, CI.circuitTier9,
 					RECIPE_Buffer_MAX);*/
 		}
-		
+
 
 		ItemStack[] aBufferOutput = new ItemStack[] {
 				RECIPE_Buffer_ULV, RECIPE_Buffer_LV, RECIPE_Buffer_MV,
 				RECIPE_Buffer_HV, RECIPE_Buffer_EV, RECIPE_Buffer_IV, 
 				RECIPE_Buffer_LuV, RECIPE_Buffer_ZPM, RECIPE_Buffer_UV, RECIPE_Buffer_MAX };
-		
-		
-		
+
+
+
 		ItemStack[] aOutput = new ItemStack[] {
 				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"1", 1),
 				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"2", 1),
@@ -1783,11 +1815,11 @@ public class RECIPES_Machines {
 				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"9", 1),
 				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"10", 1)
 		};		
-		
+
 		int aCostMultiplier = GTNH ? 4 : 1;	
-		
+
 		for (int i = 0; i < 10; i++) {			
-					
+
 			ItemStack aPrevTier = (i == 0 ? CI.getTieredMachineHull(GTNH ? 2 : 1) : aOutput[i-1]);
 			aPrevTier.stackSize = GTNH ? 2 : 1;
 			int aTier = (i + 1);
@@ -1804,7 +1836,7 @@ public class RECIPES_Machines {
 					aOutput[i],					
 					45 * 10 * 1 * (aTier), 
 					MaterialUtils.getVoltageForTier(i));
-			
+
 			//Energy Buffer
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					new ItemStack[] {
@@ -1819,14 +1851,14 @@ public class RECIPES_Machines {
 					aBufferOutput[i],					
 					45 * 20 * 1 * (aTier), 
 					MaterialUtils.getVoltageForTier(i));
-			
-		}
-		
-		
 
-		
+		}
+
+
+
+
 	}
-	
+
 	private static void wirelessChargers() {
 
 		ItemStack[] aChargers = new ItemStack[] {
@@ -1840,10 +1872,10 @@ public class RECIPES_Machines {
 				GregtechItemList.Charger_ZPM.get(1), 
 				GregtechItemList.Charger_UV.get(1),
 				GregtechItemList.Charger_MAX.get(1) 
-			};
-		
+		};
+
 		int aCostMultiplier = GTNH ? 2 : 1;	
-		
+
 		for (int i = 0; i < 10; i++) {			
 			if (i == 0) {
 				continue;
@@ -1863,7 +1895,7 @@ public class RECIPES_Machines {
 					aChargers[i],					
 					45 * 10 * 1 * (aTier), 
 					MaterialUtils.getVoltageForTier(i));	
-			
+
 		}
 	}
 }

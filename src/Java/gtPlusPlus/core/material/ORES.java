@@ -807,15 +807,15 @@ public final class ORES {
 			-1,
 			4, //Radiation
 			new MaterialStack[]{// Na3AlF6
-					new MaterialStack(ELEMENT.getInstance().RADON, 3),
-					new MaterialStack(ELEMENT.getInstance().RADIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().RADON, 2),
+					new MaterialStack(ELEMENT.getInstance().RADIUM, 1),
 					new MaterialStack(ELEMENT.getInstance().URANIUM235, 1),
-					new MaterialStack(ELEMENT.getInstance().URANIUM238, 13),
-					new MaterialStack(ELEMENT.getInstance().THORIUM, 28),
-					new MaterialStack(ELEMENT.getInstance().THORIUM232, 5),
-					new MaterialStack(FLUORCAPHITE, 4),
-					new MaterialStack(SAMARSKITE_Y, 6),
-					new MaterialStack(TITANITE, 2)
+					new MaterialStack(ELEMENT.getInstance().URANIUM238, 10),
+					new MaterialStack(ELEMENT.getInstance().THORIUM, 25),
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 4),
+					new MaterialStack(FLUORCAPHITE, 6),
+					new MaterialStack(SAMARSKITE_Y, 8),
+					new MaterialStack(TITANITE, 4)
 			});
 	
 	

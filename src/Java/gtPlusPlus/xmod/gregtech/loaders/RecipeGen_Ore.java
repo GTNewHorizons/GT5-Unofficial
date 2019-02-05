@@ -164,6 +164,15 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		ItemStack matDustB = getDust(bonusB);
 
 		/**
+		 * Package
+		 */
+		//Allow ore dusts to be packaged
+		if (ItemUtils.checkForInvalidItems(material.getSmallDust(1)) && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+			RecipeGen_DustGeneration.generatePackagerRecipes(material);
+		}
+		
+		
+		/**
 		 * Macerate
 		 */
 		//Macerate ore to Crushed
