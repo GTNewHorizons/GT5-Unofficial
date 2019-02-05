@@ -99,7 +99,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		//Patching PROCESS_VOLUME to allow 4x more transfer limits
 		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_Railcraft_FluidHelper(basicClass).getWriter().toByteArray();
+			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
 		}
 
 		//Fix GC stuff
