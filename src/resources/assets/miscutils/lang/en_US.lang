@@ -2709,7 +2709,7 @@ tile.playerDoorIce.name=Ice Auto-Door
 tile.playerDoorIron.name=Iron Auto-Door
 tile.playerDoorWood.name=Wooden Auto-Door
 
-/Added 4/2/19
+//Added 4/2/19
 
 item.GTPP.BattPack.06.name=Charge Pack [LuV]
 item.GTPP.BattPack.07.name=Charge Pack [ZPM]

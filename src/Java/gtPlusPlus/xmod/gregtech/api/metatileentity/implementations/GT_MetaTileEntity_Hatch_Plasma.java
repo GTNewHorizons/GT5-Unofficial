@@ -9,6 +9,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -19,7 +20,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Output {
 
 	public final AutoMap<Fluid> mFluidsToUse = new AutoMap<Fluid>();
 	public final int mFluidCapacity;

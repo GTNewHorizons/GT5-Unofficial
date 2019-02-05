@@ -57,7 +57,7 @@ javadoc.options.encoding = 'UTF-8'
 
 //Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.02.69-nightly"
+version = "1.7.02.71"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 minecraft {

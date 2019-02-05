@@ -84,8 +84,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Computer Cube
 	Gregtech_Computer_Cube, 
 
-	//Custom Batteries (Unused)
-	Battery_Gem_1, Battery_Gem_2, Battery_Gem_3, 
+	//Casings for batteries
+	Battery_Casing_Gem_1, Battery_Casing_Gem_2,
+	Battery_Casing_Gem_3, Battery_Casing_Gem_4,
+	
+	//Custom Batteries
+	Battery_Gem_1, Battery_Gem_2, 
+	Battery_Gem_3, Battery_Gem_4,
 	
 	//Compressed Fusion MK3
 	Compressed_Fusion_Reactor,

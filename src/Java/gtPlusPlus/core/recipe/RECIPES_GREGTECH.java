@@ -174,10 +174,7 @@ public class RECIPES_GREGTECH {
 						CI.getTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
 						CI.getTertiaryTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
 						CI.getAlternativeTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
-						CI.getTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
-						CI.getTertiaryTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
-						CI.getAlternativeTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
-						
+						CI.getTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),						
 				},
 				GregtechItemList.Miniature_Fusion.get(1), 
 				20 * 60 * 5 * (GTNH ? 2 : 1),
@@ -204,6 +201,94 @@ public class RECIPES_GREGTECH {
 				GregtechItemList.Plasma_Tank.get(1), 
 				20 * 60 * 1 * (GTNH ? 2 : 1),
 				(int) GT_Values.V[5]);
+		
+		
+		/*
+		 * Contianment casings
+		 */
+		
+		ItemStack[] aGemCasings = new ItemStack[] {
+				GregtechItemList.Battery_Casing_Gem_1.get(1), 
+				GregtechItemList.Battery_Casing_Gem_2.get(1), 
+				GregtechItemList.Battery_Casing_Gem_3.get(1), 
+				GregtechItemList.Battery_Casing_Gem_4.get(1), 
+		};
+		ItemStack[] aResearch = new ItemStack[] {
+				Particle.getBaseParticle(Particle.UNKNOWN), 
+				GregtechItemList.Battery_Casing_Gem_1.get(1), 
+				GregtechItemList.Battery_Casing_Gem_2.get(1), 
+				GregtechItemList.Battery_Casing_Gem_3.get(1),
+		};
+		
+		int aCasingSlot = 0;
+		for (int j = 6; j < 10; j++) {
+			CORE.RA.addAssemblylineRecipe(
+					aResearch[aCasingSlot], 
+					20 * 60 * 60,
+					new ItemStack[] {
+							CI.getTieredComponent(OrePrefixes.plate, j-1, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.circuit, j-2, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.cableGt08, j+1, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.gearGt, j-1, GTNH ? 8 : 4),
+					}, 
+					new FluidStack[] {
+							CI.getTieredFluid(j, 144 * 3 * (GTNH ? 16 : 8)),
+							CI.getTertiaryTieredFluid(j-2, 144 * 4 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(j, 144 * 6 * (GTNH ? 16 : 8)),
+							
+					},
+					aGemCasings[aCasingSlot++], 
+					20 * 60 * 1 * (GTNH ? 2 : 1),
+					(int) GT_Values.V[j]);
+		}
+		
+		/*
+		 * Gem Battery Recipes
+		 */
+		
+		ItemStack[] aGemBatteries = new ItemStack[] {
+				GregtechItemList.Battery_Gem_1.get(1), 
+				GregtechItemList.Battery_Gem_2.get(1), 
+				GregtechItemList.Battery_Gem_3.get(1), 
+				GregtechItemList.Battery_Gem_4.get(1), 
+		};
+		
+		ItemStack[] aExoticInputs = new ItemStack[] {
+				Particle.getBaseParticle(Particle.PROTON), 
+				Particle.getBaseParticle(Particle.ELECTRON), 
+				Particle.getBaseParticle(Particle.CHARM), 
+				Particle.getBaseParticle(Particle.GRAVITON)			
+		};
+		aCasingSlot = 0;
+		for (int j = 6; j < 10; j++) {
+			CORE.RA.addAssemblylineRecipe(
+					aExoticInputs[aCasingSlot], 
+					20 * 60 * 60 * 5,
+					new ItemStack[] {
+							aGemCasings[aCasingSlot],
+							ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.plate, j, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.circuit, j, GTNH ? 16 : 8),
+							CI.getTieredComponent(OrePrefixes.wireGt16, j+1, GTNH ? 32 : 16),
+							CI.getTieredComponent(OrePrefixes.bolt, j, GTNH ? 8 : 4),
+							CI.getTieredComponent(OrePrefixes.screw, j-1, GTNH ? 8 : 4),
+					}, 
+					new FluidStack[] {
+							CI.getTieredFluid(j, 144 * 3 * (GTNH ? 16 : 8)),
+							CI.getTertiaryTieredFluid(j-2, 144 * 4 * (GTNH ? 16 : 8)),
+							CI.getAlternativeTieredFluid(j, 144 * 6 * (GTNH ? 16 : 8)),	
+							CI.getTertiaryTieredFluid(j-1, 144 * 5 * (GTNH ? 16 : 8)),							
+					},
+					aGemBatteries[aCasingSlot++], 
+					20 * 60 * 1 * (GTNH ? 2 : 1),
+					(int) GT_Values.V[j]);
+		}
+		
+		
+		
+		
+		
+		
 		
 	}
 
@@ -1482,7 +1567,7 @@ public class RECIPES_GREGTECH {
 		// Quark Smash
 		CORE.RA.addCyclotronRecipe(
 				CI.getNumberedCircuit(3),
-				FluidUtils.getFluidStack("plasma.hydrogen", 1000),
+				FluidUtils.getFluidStack("plasma.hydrogen", 100),
 				new ItemStack[] {
 						Particle.getBaseParticle(Particle.UP),
 						Particle.getBaseParticle(Particle.DOWN),
@@ -1493,7 +1578,7 @@ public class RECIPES_GREGTECH {
 						}, 
 				null,
 				new int[] { 50, 50, 50, 50, 50, 50 },
-				20 * 300 * 38,
+				20 * 300 * 9,
 				(int) GT_Values.V[7],
 				750 * 20);
 
@@ -1510,8 +1595,8 @@ public class RECIPES_GREGTECH {
 						Particle.getBaseParticle(Particle.TAU_NEUTRINO),
 						}, 
 				null,
-				new int[] { 60, 40, 20, 15, 10, 5 },
-				20 * 300 * 38,
+				new int[] { 600, 40, 20, 15, 10, 5 },
+				20 * 300 * 8,
 				(int) GT_Values.V[7],
 				750 * 20);
 
@@ -1527,8 +1612,8 @@ public class RECIPES_GREGTECH {
 						Particle.getBaseParticle(Particle.HIGGS_BOSON),
 						}, 
 				null,
-				new int[] { 60, 60, 50, 50, 1 },
-				20 * 300 * 38,
+				new int[] { 160, 260, 150, 150, 1 },
+				20 * 300 * 6,
 				(int) GT_Values.V[7],
 				750 * 20);
 		
@@ -1549,7 +1634,7 @@ public class RECIPES_GREGTECH {
 						}, 
 				null,
 				new int[] { 10, 20, 20, 10, 10, 5, 5, 2 },
-				17 * 247 * 134,
+				17 * 247 * 32,
 				(int) GT_Values.V[8],
 				750 * 20);
 		

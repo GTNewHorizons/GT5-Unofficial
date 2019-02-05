@@ -304,8 +304,8 @@ public class RECIPES_Machines {
 						ItemUtils.getSimpleStack(CI.robotArm_LV, 4 * (GTNH ? 2 : 1)),						
 						ItemList.Cover_Controller.get(1, CI.electricMotor_MV),
 						CI.machineHull_MV,
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 2),
-						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(3), 2)
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(1), 2),
+						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 2)
 					}, 
 					ELEMENT.getInstance().IRON.getFluid(144 * 4), 
 					ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
@@ -344,7 +344,7 @@ public class RECIPES_Machines {
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
 						CI.machineHull_LV,
-						ItemUtils.getItemStackOfAmountFromOreDict("circuitBaisc", 8),
+						ItemUtils.getItemStackOfAmountFromOreDict("circuitBasic", 4),
 						ItemUtils.getItemStackOfAmountFromOreDict("plateTumbaga", 8),
 						ItemUtils.getSimpleStack(Blocks.jukebox)
 					}, 
@@ -353,6 +353,27 @@ public class RECIPES_Machines {
 					20 * 30, 
 					30);
 			
+
+			//Basic Steam Turbine
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getTieredComponent(OrePrefixes.pipeSmall, 0, 1), "circuitPrimitive", CI.getTieredComponent(OrePrefixes.pipeSmall, 0, 1),
+					ALLOY.TUMBAGA.getRotor(1), CI.machineCasing_ULV, ALLOY.TUMBAGA.getRotor(1),
+					CI.getElectricMotor(0, 1), "cableGt01RedAlloy", CI.getElectricMotor(0, 1),
+					GregtechItemList.Generator_Steam_Turbine_ULV.get(1));
+
+			//Basic Gas Turbine
+			RecipeUtils.addShapedGregtechRecipe(
+					"circuitPrimitive", ALLOY.TUMBAGA.getRotor(1), "circuitPrimitive",
+					ALLOY.TUMBAGA.getRotor(1), CI.machineCasing_ULV, ALLOY.TUMBAGA.getRotor(1),
+					CI.getElectricMotor(0, 1), "cableGt01RedAlloy", CI.getElectricMotor(0, 1),
+					GregtechItemList.Generator_Gas_Turbine_ULV.get(1));
+			
+			//Basic Combustion Turbine
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getElectricPiston(0, 1), "circuitPrimitive", CI.getElectricPiston(0, 1),
+					ALLOY.TUMBAGA.getRotor(1), CI.machineCasing_ULV, CI.getElectricMotor(0, 1),
+					ALLOY.TUMBAGA.getGear(1), "cableGt01RedAlloy", ALLOY.TUMBAGA.getGear(1),
+					GregtechItemList.Generator_Diesel_ULV.get(1));
 
 			
 

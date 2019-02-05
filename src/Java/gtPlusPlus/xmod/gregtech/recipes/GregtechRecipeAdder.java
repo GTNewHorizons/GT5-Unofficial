@@ -750,7 +750,22 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		return CORE.RA.addComponentMakerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);		
 	}
 
-	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs_OLD, ItemStack aOutput, int aDuration, int aEUt) {
+		
+		FluidStack[] aFluidInputs = new FluidStack[4];		
+		if (aFluidInputs_OLD != null) {
+			int aC = 0;
+			for (FluidStack s : aFluidInputs) {
+				if (aC > 3) {
+					break;
+				}
+				if (s != null) {
+					aFluidInputs[aC++] = s;
+				}
+			}
+		}
+		
+		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			if (aInputs.length < 6 && aFluidInputs.length < 2) {
 				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
