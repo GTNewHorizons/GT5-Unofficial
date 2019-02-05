@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -111,20 +112,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-			ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-			tBus.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tBus)) {
-				for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-					if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-						tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-				}
-			}
-
-			if (checkRecipeGeneric(tBusItems.toArray(new ItemStack[]{}), new FluidStack[]{},
-					(8 * GT_Utility.getTier(this.getMaxInputVoltage())), 100, 250, 10000)) return true;
-		}
-		return false;
+		return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 250);		
 	}
 	
 	@Override
@@ -152,31 +140,40 @@ extends GregtechMeta_MultiBlockBase {
 			for (int j = -1; j < 2; j++) {
 				for (int h = -1; h < 3; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
+						
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!this.addMufflerToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!this.addInputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!this.addOutputToMachineList(tTileEntity, CASING_TEXTURE_ID)) && (!this.addEnergyInputToMachineList(tTileEntity, CASING_TEXTURE_ID))) {
-							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if (h == 0 || h == 1){
-								if (i == 0 && j == 0){
-									if (((tBlock != GregTech_API.sBlockCasings4) || (tMeta != 11))) {
-										return false;
-									}
-									tAmount++;
+						final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+						final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+						
+						if (h == 0 || h == 1) {
+							if (i == 0 && j == 0){
+								if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, false, tBlock, tMeta, GregTech_API.sBlockCasings4, 11)) {
+									Logger.INFO("Inner casings missing");
+									return false;
 								}
 								else {
-									if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 2))) {
-										return false;
-									}
 									tAmount++;
 								}
 							}
 							else {
-								if (((tBlock != ModBlocks.blockCasings3Misc) || (tMeta != 2))) {
+								if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, tBlock, tMeta, ModBlocks.blockCasings3Misc, 2)) {
+									Logger.INFO("Middle layer casings missing");
 									return false;
 								}
-								tAmount++;
+								else {
+									tAmount++;
+								}
 							}
 						}
+						else {
+							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, tBlock, tMeta, ModBlocks.blockCasings3Misc, 2)) {
+								Logger.INFO("Top Or Bottom casings missing");
+								return false;
+							}
+							else {
+								tAmount++;
+							}
+						}						
 					}
 				}
 			}

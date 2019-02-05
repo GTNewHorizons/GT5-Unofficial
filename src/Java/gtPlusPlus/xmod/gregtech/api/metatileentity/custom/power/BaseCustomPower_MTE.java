@@ -10,7 +10,7 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
 
 	public BaseCustomPower_MTE() {
 		super();
-		Logger.INFO("Created new BaseCustomPower_MTE");
+		Logger.MACHINE_INFO("Created new BaseCustomPower_MTE");
 	}
 
 	public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {		

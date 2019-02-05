@@ -61,6 +61,7 @@ public class RECIPES_GREGTECH {
 
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			largeChemReactorRecipes();
+			fusionRecipes();
 		}
 
 		fissionFuelRecipes();
@@ -80,11 +81,48 @@ public class RECIPES_GREGTECH {
 		breweryRecipes();
 		laserEngraverRecipes();
 		assemblyLineRecipes();
+		
 		addFuels();
+	}
+
+	private static void fusionRecipes() {		
+
+	    /**
+	     * Adds a Fusion reactor Recipe
+	     *
+	     * @param aInput1                        = first Input (not null, and respects StackSize)
+	     * @param aInput2                        = second Input (not null, and respects StackSize)
+	     * @param aOutput                        = Output of the Fusion (can be null, and respects StackSize)
+	     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+	     * @param aFusionEnergyPerTick           = The EU generated per Tick (can even be negative!)
+	     * @param aEnergyNeededForStartingFusion = EU needed for heating the Reactor up (must be >= 0)
+	     */		
+		
+		//Hydrogen Plasma
+        /*CORE.RA.addFusionReactorRecipe(
+        		Particle.getIon("Hydrogen", 0),
+        		Particle.getIon("Hydrogen", 0),
+        		Materials.Hydrogen.getPlasma(1),
+        		5000,
+        		16,
+        		4096,
+        		40000000);*/
+		
+		
+		//Hypogen Creation
+		GT_Values.RA.addFusionReactorRecipe(
+				Materials.Neutronium.getMolten(128),
+				ALLOY.QUANTUM.getFluid(256),
+				ELEMENT.STANDALONE.HYPOGEN.getFluid(4),
+				2048 * 4,
+				(int) GT_Values.V[9],
+				600000000 * 2);
+		
 	}
 
 	private static void assemblyLineRecipes() {
 		
+		//Containment Casings
 		CORE.RA.addAssemblylineRecipe(
 				ItemList.Field_Generator_IV.get(1), 
 				20 * 60 * 30,
@@ -113,6 +151,59 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32), 
 				20 * 60 * 10 * (GTNH ? 2 : 1),
 				(int) GT_Values.V[6]);
+		
+		//Slow Fusion Controller
+		CORE.RA.addAssemblylineRecipe(
+				GregtechItemList.COMET_Cyclotron.get(1), 
+				20 * 60 * 30,
+				new ItemStack[] {
+						CI.getFieldGenerator(6, GTNH ? 32 : 8),
+						ItemList.Electric_Motor_EV.get(GTNH ? 32 : 8),
+						ItemList.Tool_Scanner.get(GTNH ? 4 : 2),
+						CI.getTieredComponent(OrePrefixes.cableGt12, 6, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.wireGt16, 5, GTNH ? 64 : 32),
+						CI.getTieredComponent(OrePrefixes.plate, 6, GTNH ? 64 : 32),
+						ELEMENT.getInstance().GADOLINIUM.getDust(GTNH ? 32 : 8),
+						ELEMENT.getInstance().SAMARIUM.getDust(GTNH ? 16 : 4),
+						ALLOY.INCOLOY_MA956.getGear(GTNH ? 8 : 2),
+						CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 64 : 32),
+						CI.getTieredComponent(OrePrefixes.circuit, 6, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.circuit, 7, GTNH ? 16 : 8)
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
+						CI.getTertiaryTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
+						CI.getAlternativeTieredFluid(6, 144 * 9 * (GTNH ? 8 : 4)),
+						CI.getTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
+						CI.getTertiaryTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
+						CI.getAlternativeTieredFluid(5, 144 * 9 * (GTNH ? 16 : 8)),
+						
+				},
+				GregtechItemList.Miniature_Fusion.get(1), 
+				20 * 60 * 5 * (GTNH ? 2 : 1),
+				(int) GT_Values.V[7]);
+		
+		
+		//Plasma Tank
+		CORE.RA.addAssemblylineRecipe(
+				ItemUtils.getOrePrefixStack(OrePrefixes.pipeMedium, Materials.Superconductor, 1), 
+				20 * 60 * 5,
+				new ItemStack[] {
+						CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 16 : 4),
+						CI.getTieredComponent(OrePrefixes.pipeHuge, 5, GTNH ? 16 : 4),
+						CI.getTieredComponent(OrePrefixes.cableGt08, 7, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.gearGt, 6, GTNH ? 8 : 4),
+				}, 
+				new FluidStack[] {
+						CI.getTieredFluid(4, 144 * 9 * (GTNH ? 16 : 8)),
+						CI.getTertiaryTieredFluid(4, 144 * 9 * (GTNH ? 16 : 8)),
+						CI.getAlternativeTieredFluid(4, 144 * 9 * (GTNH ? 16 : 8)),
+						
+				},
+				GregtechItemList.Plasma_Tank.get(1), 
+				20 * 60 * 1 * (GTNH ? 2 : 1),
+				(int) GT_Values.V[5]);
 		
 	}
 
@@ -1347,39 +1438,39 @@ public class RECIPES_GREGTECH {
 
 	private static void cyclotronRecipes() {
 
-		//Polonium
+		// Polonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.bismuth", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300 * 100, 2040,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_PO210.get(1) }, null, new int[] { 100 }, 20 * 300 * 100, 2040 * 4,
 				500 * 20);
 
-		//Americium
+		// Americium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.americium", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300 * 100, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_AM241.get(4) }, null, new int[] { 2500 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
-		//Strontium u235
+		// Strontium u235
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium235", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300 * 100, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 570 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
-		//Strontium u233
+		// Strontium u233
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.uranium233", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300 * 100, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 660 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
-		//Strontium pu239
+		// Strontium pu239
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium239", 10),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300 * 100, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) }, null, new int[] { 220 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
-		//Plutonium
+		// Plutonium
 		CORE.RA.addCyclotronRecipe(CI.getNumberedCircuit(0), FluidUtils.getFluidStack("molten.plutonium238", 1),
-				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300 * 100, 1020,
+				new ItemStack[] { GregtechItemList.Pellet_RTG_PU238.get(2) }, null, new int[] { 780 }, 20 * 300 * 100, 1020 * 4,
 				500 * 20); //PO Special Value
 
-		//Neptunium
+		// Neptunium
 		CORE.RA.addCyclotronRecipe(new ItemStack[] {ELEMENT.getInstance().URANIUM238.getDust(1) }, FluidUtils.getFluidStack("deuterium", 400),
-				new ItemStack[] {ItemUtils.getSimpleStack(ModItems.dustNeptunium238)}, null, new int[] { 500 }, 20 * 5, 500,
+				new ItemStack[] {ItemUtils.getSimpleStack(ModItems.dustNeptunium238)}, null, new int[] { 500 }, 20 * 5, 500 * 4,
 				500 * 20); //PO Special Value
 		
 		
@@ -1424,7 +1515,7 @@ public class RECIPES_GREGTECH {
 				(int) GT_Values.V[7],
 				750 * 20);
 
-		//Boson Smash
+		// Boson Smash
 		CORE.RA.addCyclotronRecipe(
 				CI.getNumberedCircuit(9),
 				FluidUtils.getFluidStack("plasma.helium", 1500),
@@ -1462,7 +1553,7 @@ public class RECIPES_GREGTECH {
 				(int) GT_Values.V[8],
 				750 * 20);
 		
-		//Graviton Smash
+		// Graviton Smash
 		CORE.RA.addCyclotronRecipe(
 				CI.getNumberedCircuit(15),
 				FluidUtils.getFluidStack("plasma.hydrogen", GTNH ? 50 : 10),
@@ -1483,7 +1574,7 @@ public class RECIPES_GREGTECH {
 			aPlasma = Materials.Americium.getMolten(GTNH ? 20 : 5);
 		}
 		
-		//Quantum Anomaly
+		// Quantum Anomaly
 		CORE.RA.addCyclotronRecipe(
 				new ItemStack[] {
 						CI.getNumberedCircuit(24),
@@ -1506,7 +1597,10 @@ public class RECIPES_GREGTECH {
 		int IonCount = 2;
 		int tenCountA = (GTNH ? 2 : 1);
 		int tenCountB = 0;
-		for (String y : IonParticles.MetaToNameMap.values()) {		
+		for (String y : IonParticles.MetaToNameMap.values()) {			
+			if (y.toLowerCase().contains("hydrogen")) {
+				continue;
+			}			
 			FluidStack aPlasma2 = FluidUtils.getFluidStack("plasma."+y.toLowerCase(), 2);
 			Materials aTestMat = MaterialUtils.getMaterial(y);
 			FluidStack aPlasma3 = aTestMat != null ? aTestMat.getPlasma(2) : aPlasma2;			
@@ -1528,7 +1622,7 @@ public class RECIPES_GREGTECH {
 							Particle.getIon(y, -1),
 							}, 
 					null,
-					new int[] { 75, 50, 25, 75, 50, 25, 75, 50, 75},
+					new int[] { 275, 250, 225, 275, 250, 225, 275, 250, 275},
 					20 * 20 * (IonCount++) * tenCountA,
 					(int) GT_Values.V[7],
 					1500 * 20 * tenCountA);
@@ -1545,6 +1639,101 @@ public class RECIPES_GREGTECH {
 				tenCountB++;
 			}
 		}
+		
+		// Generate Hydrogen Ion Recipe
+		CORE.RA.addCyclotronRecipe(
+				CI.getNumberedCircuit(24),
+				FluidUtils.getWildcardFluidStack("hydrogen", 1000),
+				new ItemStack[] {
+						Particle.getIon("Hydrogen", 1),
+						Particle.getIon("Hydrogen", 2),
+						Particle.getIon("Hydrogen", 3),
+						Particle.getIon("Hydrogen", 1),
+						Particle.getIon("Hydrogen", 2),
+						Particle.getIon("Hydrogen", 3),
+						Particle.getIon("Hydrogen", -1),
+						Particle.getIon("Hydrogen", -2),
+						Particle.getIon("Hydrogen", -3)
+						}, 
+				null,
+				new int[] { 125, 125, 125, 125, 125, 125, 125, 125, 125 },
+				20 * 20,
+				(int) GT_Values.V[6],
+				15000);
+		
+		// Generate Hydrogen Plasma Recipe
+		CORE.RA.addCyclotronRecipe(
+				new ItemStack[] {
+						Particle.getIon("Hydrogen", 0),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1)
+						},
+				null,
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.NEUTRON),
+						Particle.getBaseParticle(Particle.ELECTRON),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						CI.emptyCells(1)
+						}, 
+				FluidUtils.getFluidStack("plasma.hydrogen", 1),
+				new int[] { 250, 250, 250, 500, 500, 500, 10000 },
+				20 * 60 * 2,
+				(int) GT_Values.V[7],
+				750 * 20);
+
+		
+		// Generate Protons Easily
+		CORE.RA.addCyclotronRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(20),
+						Particle.getIon("Hydrogen", 0)
+						},
+				FluidUtils.getWildcardFluidStack("hydrogen", 100),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						}, 
+				null,
+				new int[] { 750, 750, 750, 750, 750, 750,  750, 750, 750 },
+				20 * 20,
+				(int) GT_Values.V[6],
+				15000);
+		
+		CORE.RA.addCyclotronRecipe(
+				new ItemStack[] {
+						CI.getNumberedCircuit(22),
+						Particle.getBaseParticle(Particle.UNKNOWN),
+						},
+				FluidUtils.getWildcardFluidStack("hydrogen", 100),
+				new ItemStack[] {
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						Particle.getBaseParticle(Particle.PROTON),
+						}, 
+				null,
+				new int[] { 375, 375, 375, 375, 375, 375, 375, 375, 375  },
+				20 * 20,
+				(int) GT_Values.V[6],
+				15000);
+		
+		
+		
+		
 
 	}
 

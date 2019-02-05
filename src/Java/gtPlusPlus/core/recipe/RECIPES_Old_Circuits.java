@@ -445,7 +445,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 
 			for (String component : CircuitToHide){
 				try {
-					API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
+					API.hideItem(Utils.getValueOfItemList(component, null).get(1L, new Object[0]));
 				} catch (IllegalArgumentException I){
 					Logger.INFO("Could not find "+component+" in the Gregtech item list.");
 					Logger.INFO("This is NOT an error, simply a notification.");

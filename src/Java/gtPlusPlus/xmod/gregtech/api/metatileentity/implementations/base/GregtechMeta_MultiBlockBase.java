@@ -74,8 +74,8 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		Method a08 = findRecipe08 = ReflectionUtils.getMethod(GT_Recipe_Map.class, "findRecipe", IHasWorldObjectAndCoords.class, GT_Recipe.class, boolean.class, long.class, FluidStack[].class, ItemStack.class, ItemStack[].class);
 		Method a09 = findRecipe09 = ReflectionUtils.getMethod(GT_Recipe_Map.class, "findRecipe", IHasWorldObjectAndCoords.class, GT_Recipe.class, boolean.class, boolean.class, long.class, FluidStack[].class, ItemStack.class, ItemStack[].class);
-		Logger.INFO("Found .08 findRecipe method? "+(a08 != null));
-		Logger.INFO("Found .09 findRecipe method? "+(a09 != null));
+		Logger.MACHINE_INFO("Found .08 findRecipe method? "+(a08 != null));
+		Logger.MACHINE_INFO("Found .09 findRecipe method? "+(a09 != null));
 
 		//gregtech.api.util.GT_Recipe.GT_Recipe_Map.findRecipe(IHasWorldObjectAndCoords, GT_Recipe, boolean, long, FluidStack[], ItemStack, ItemStack...)
 
@@ -709,7 +709,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public boolean isMachineRunning() {
 		boolean aRunning = this.getBaseMetaTileEntity().isActive();
-		Logger.INFO("Queried Multiblock is currently running: "+aRunning);
+		log("Queried Multiblock is currently running: "+aRunning);
 		return aRunning;
 	}
 
@@ -1552,7 +1552,7 @@ GT_MetaTileEntity_MultiBlockBase {
 					return true;
 				}
 				else {
-					Logger.INFO("Found meta Tile: "+aMetaTileID);
+					log("Found meta Tile: "+aMetaTileID);
 				}
 			}
 		}
@@ -1561,17 +1561,17 @@ GT_MetaTileEntity_MultiBlockBase {
 				return true;
 			}
 			else if (aFoundBlock != aExpectedBlock) {
-				Logger.INFO("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
-				Logger.INFO("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+				log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
+				log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
 				return false;
 			}
 			else if (aFoundMeta != aExpectedMeta) {
-				Logger.INFO("A2");
+				log("A2");
 				return false;
 			}
 
 		}
-		Logger.INFO("A3");
+		log("A3");
 		return false;
 	}
 

@@ -31,7 +31,9 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.util.GT_LanguageManager;
@@ -914,6 +916,27 @@ public class Utils {
 			}	
 		Logger.INFO("[Spawn] Mob Spawner creation for "+aEntity.getName()+" failed");	
 		return false;
+	}
+
+	public static ItemList getValueOfItemList(String string, ItemList aOther) {
+		try {
+			Method method = ItemList.class.getDeclaredMethod("values");
+	        Object obj = method.invoke(null);
+			String y = Arrays.toString((Object[]) obj);
+			String[] aCurrentItemsInList = y.split(",");
+			boolean found = false;
+			for (String g : aCurrentItemsInList) {
+				if (g.equals(string)) {
+					found = true;
+					break;
+				}
+			}
+			if (found) {
+				return ItemList.valueOf(string);
+			}
+		}
+		catch (Throwable t) {}
+		return aOther;
 	}
 
 }

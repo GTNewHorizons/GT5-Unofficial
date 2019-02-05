@@ -14,6 +14,67 @@ GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
 GTPP.multiblock.usage=Probably uses
 
+
+
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
 GTPP.CC.parallel=Maximum Parallel Processing
+
+
+
+//Some Generic Words
+GTPP.info.eu=EU
+GTPP.info.euInfo=EU Information
+GTPP.info.inputLimit=Input Limit
+GTPP.info.currentPower=Current Power
+GTPP.info.hidden=Hidden
+
+
+
+
+
+
+
+
+//Achievements
+achievement.gt.blockmachines.fusioncomputer.tier.09=Fusion Computer Mark IV
+achievement.gt.blockmachines.fusioncomputer.tier.09.desc=Pickup this item to see the recipe in NEI
+
+achievement.gtplusplus.blockcasings.3.12=Fusion Casing MK III
+achievement.gtplusplus.blockcasings.3.12.desc=Pickup this item to see the recipe in NEI
+
+achievement.gtplusplus.blockcasings.3.13=Advanced Magnetic Containment!
+achievement.gtplusplus.blockcasings.3.13.desc=Pickup this item to see the recipe in NEI
+
+achievement.gtplusplus.blockcasings.3.15=Quantum Containment!
+achievement.gtplusplus.blockcasings.3.15.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.blockmachines.gtplusplus.fusion.single=Alternative Fusion
+achievement.gt.blockmachines.gtplusplus.fusion.single.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.blockmachines.gtplusplus.tank.plasma=Plasma Storage
+achievement.gt.blockmachines.gtplusplus.tank.plasma.desc=Pickup this item to see the recipe in NEI
+
+
+
+
+
+
+
+
+
+//Tooltips for the Charger Packs
+GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
+GTPP.battpack.tooltip.2=Drains
+GTPP.battpack.tooltip.3=to charge worn armour
+GTPP.battpack.tooltip.4=Also charges items on the hotbar
+
+
+
+//Tooltips for the Personal Healing Bauble
+GTPP.nanohealer.tooltip.1=Worn as a Necklace within Baubles
+GTPP.nanohealer.tooltip.2=Drains 1638400EU per operation
+GTPP.nanohealer.tooltip.3=Can restore HP, Hunger and Saturation
+GTPP.nanohealer.tooltip.4=WILL NOT PREVENT DEATH
+GTPP.nanohealer.tooltip.5=Shift+RMB to toggle notifications
+GTPP.nanohealer.hidden=Hiding Info?

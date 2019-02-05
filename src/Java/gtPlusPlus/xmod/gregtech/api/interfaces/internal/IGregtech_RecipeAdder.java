@@ -198,4 +198,42 @@ public interface IGregtech_RecipeAdder {
     public boolean addBrewingRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aTime, int aEu,  boolean aHidden);
 
 	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aDust, ItemStack aOutput);
+
+	public void addFluidExtractionRecipe(ItemStack input, Object input2, FluidStack output, int aTime, int aEu, int aSpecial);
+	 
+	/**
+     * Adds a Fusion reactor Recipe
+     *
+     * @param aInput1                        = first Input (not null, and respects StackSize)
+     * @param aInput2                        = second Input (not null, and respects StackSize)
+     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+     * @param aEu           = The EU generated per Tick (can even be negative!)
+     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+     */		
+	public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma, int aFusionDurationInTicks, int aEu, int aSpecial);
+	/**
+     * Adds a Fusion reactor Recipe
+     *
+     * @param aInput1                        = first Input (not null, and respects StackSize)
+     * @param aInput2                        = second Input (not null, and respects StackSize)
+     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+     * @param aOutputChance = chance to output plasma (can be 0)
+     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+     * @param aEu           = The EU generated per Tick (can even be negative!)
+     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+     */		
+	public boolean addFusionReactorRecipe(FluidStack aInputStackA, FluidStack aInputStackB, FluidStack plasma, int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial);
+	/**
+     * Adds a Fusion reactor Recipe
+     *
+     * @param aInput1                        = first Input (not null, and respects StackSize)
+     * @param aInput2                        = second Input (not null, and respects StackSize)
+     * @param plasma                        = Output of the Fusion (can be null, and respects StackSize)
+     * @param aOutputChance = chance to output plasma (can be 0)
+     * @param aFusionDurationInTicks         = How many ticks the Fusion lasts (must be > 0)
+     * @param aEu           = The EU generated per Tick (can even be negative!)
+     * @param aSpecial = EU needed for heating the Reactor up (must be >= 0)
+     */		
+	public boolean addFusionReactorRecipe(ItemStack aInputStackA, ItemStack aInputStackB, FluidStack plasma, int aOutputChance, int aFusionDurationInTicks, int aEu, int aSpecial);
 }

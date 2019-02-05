@@ -36,12 +36,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		System.out.println("[GT++ ASM] Asm Config Location: "+mConfig.config.getConfigFile().getAbsolutePath());
 		System.out.println("[GT++ ASM] Is DevHelper Valid? "+gtPlusPlus.preloader.DevHelper.mIsValidHelper);
 	}
-
-	@SuppressWarnings("static-access")
-	public byte[] transform(String name, String transformedName, byte[] basicClass) {
-
-
-		// Is this environment obfuscated? (Extra checks just in case some weird shit happens during the check)
+	
+	private static Boolean mObf = null;
+	
+	public boolean checkObfuscated() {
+		if (mObf != null) {
+			return mObf;
+		}		
 		boolean obfuscated = false;
 		try {
 			obfuscated = !(boolean) ReflectionHelper.findField(CoreModManager.class, "deobfuscatedEnvironment").get(null);
@@ -59,8 +60,14 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				e1.printStackTrace();
 				obfuscated = false;
 			}
-		}
+		}	
+		mObf = obfuscated;
+		return obfuscated;
+	}
 
+	public byte[] transform(String name, String transformedName, byte[] basicClass) {
+		// Is this environment obfuscated? (Extra checks just in case some weird shit happens during the check)
+		boolean obfuscated = checkObfuscated();
 		boolean probablyShouldBeFalse = false;
 
 		//Enable mapping of Tickets and loaded chunks. - Forge
@@ -86,6 +93,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid") && mConfig.enableTiConFluidLighting) {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_TiConFluids("getLightValue", probablyShouldBeFalse, basicClass).getWriter().toByteArray();
+		}
+		
+		//Fix RC stuff
+		//Patching PROCESS_VOLUME to allow 4x more transfer limits
+		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
+			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_Railcraft_FluidHelper(basicClass).getWriter().toByteArray();
 		}
 
 		//Fix GC stuff

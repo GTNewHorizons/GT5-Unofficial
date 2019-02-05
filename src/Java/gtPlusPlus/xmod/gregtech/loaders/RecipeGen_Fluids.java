@@ -214,11 +214,12 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 				// Shape_Mold_Screw,
 				// Shape_Mold_Ring,
 
-				ItemList mold_Rod = ItemList.valueOf("Shape_Mold_Rod");
-				ItemList mold_Rod_Long = ItemList.valueOf("Shape_Mold_Rod_Long");
-				ItemList mold_Bolt = ItemList.valueOf("Shape_Mold_Bolt");
-				ItemList mold_Screw = ItemList.valueOf("Shape_Mold_Screw");
-				ItemList mold_Ring = ItemList.valueOf("Shape_Mold_Ring");
+				
+				ItemList mold_Rod = gtPlusPlus.core.util.Utils.getValueOfItemList("Shape_Mold_Rod", null);
+				ItemList mold_Rod_Long = gtPlusPlus.core.util.Utils.getValueOfItemList("Shape_Mold_Rod_Long", null);
+				ItemList mold_Bolt = gtPlusPlus.core.util.Utils.getValueOfItemList("Shape_Mold_Bolt", null);
+				ItemList mold_Screw = gtPlusPlus.core.util.Utils.getValueOfItemList("Shape_Mold_Screw", null);
+				ItemList mold_Ring = gtPlusPlus.core.util.Utils.getValueOfItemList("Shape_Mold_Ring", null);
 
 				// Rod
 				if (ItemUtils.checkForInvalidItems(material.getRod(1)))

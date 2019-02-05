@@ -9,6 +9,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
 
@@ -54,17 +55,17 @@ public class GregtechHiAmpTransformer {
 		ItemStack mItem_2;
 		ItemStack mItem_3;
 			try {
-				mItem_1 = ItemList.valueOf("Casing_Coil_TungstenSteel").get(1);
+				mItem_1 = Utils.getValueOfItemList("Casing_Coil_TungstenSteel", ItemList.Circuit_Elite).get(1);
 			} catch (Throwable t){	
 				mItem_1 = ItemList.Circuit_Elite.get(1);
 			}
 			try {
-				mItem_2 = ItemList.valueOf("Casing_Coil_Naquadah").get(1);
+				mItem_2 = Utils.getValueOfItemList("Casing_Coil_Naquadah", ItemList.Circuit_Master).get(1);
 			} catch (Throwable t){	
 				mItem_2 = ItemList.Circuit_Master.get(1);
 			}
 			try {
-				mItem_3 = ItemList.valueOf("Casing_Coil_NaquadahAlloy").get(1);
+				mItem_3 = Utils.getValueOfItemList("Casing_Coil_NaquadahAlloy", ItemList.Circuit_Ultimate).get(1);
 			} catch (Throwable t){	
 				mItem_3 = ItemList.Circuit_Ultimate.get(1);
 			}

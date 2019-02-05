@@ -544,6 +544,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//GT RTG
 	RTG,
 	
+	//Plasma Tank
+	Plasma_Tank,
+	
 	
 	//----------------------------------------------------------------------------
 	

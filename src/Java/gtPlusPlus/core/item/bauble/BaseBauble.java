@@ -51,9 +51,20 @@ public class BaseBauble extends Item implements IBauble {
 		this.setUnlocalizedName(Utils.sanitizeString(displayName.toLowerCase()));
 		GameRegistry.registerItem(this, getUnlocalizedName());
 	}
+	
+	public BaseBauble(BaubleType type, String unlocalName, int register) {
+		this.mThisBauble = type;
+		this.mDisplayName = "";
+		Utils.registerEvent(this);
+		this.setMaxStackSize(1);
+		this.setCreativeTab(AddToCreativeTab.tabMisc);
+	}
 
 	@Override
-	public String getItemStackDisplayName(final ItemStack tItem) {
+	public String getItemStackDisplayName(final ItemStack tItem) {		
+		if (this.mDisplayName == null || this.mDisplayName.length() < 1) {
+			return super.getItemStackDisplayName(tItem).replaceAll(".name", "");
+		}		
 		return this.mDisplayName;
 	}
 

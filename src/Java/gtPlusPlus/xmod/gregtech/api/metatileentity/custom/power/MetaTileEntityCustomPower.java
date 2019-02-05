@@ -29,7 +29,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 	public void doExplosion(long aExplosionPower) {
 		
 		if (MathUtils.randInt(1, 10) > 0) {
-			Logger.INFO("Machine tried to explode, let's stop that. xo");
+			//Logger.INFO("Machine tried to explode, let's stop that. xo");
 			return;
 		}
 		
@@ -70,7 +70,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
 	public void onExplosion() {
 		
 		if (MathUtils.randInt(1, 10) > 0) {
-			Logger.INFO("Machine tried to explode, let's stop that. xo");
+			//Logger.INFO("Machine tried to explode, let's stop that. xo");
 			return;
 		}
 		// TODO Auto-generated method stub

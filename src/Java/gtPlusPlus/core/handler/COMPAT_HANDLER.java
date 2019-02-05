@@ -143,6 +143,9 @@ public class COMPAT_HANDLER {
 		if (LoadedMods.OpenBlocks){
 			COMPAT_OpenBlocks.OreDict();
 		}
+		if (LoadedMods.Railcraft){
+			COMPAT_Railcraft.OreDict();
+		}
 		if (LoadedMods.Simply_Jetpacks){
 			COMPAT_SimplyJetpacks.OreDict();
 		}
