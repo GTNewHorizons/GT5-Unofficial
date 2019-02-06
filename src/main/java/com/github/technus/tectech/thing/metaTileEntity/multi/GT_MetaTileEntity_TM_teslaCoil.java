@@ -303,7 +303,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         float energyFrac = (float)energyStored/energyMax;
 
+<<<<<<< HEAD
         if (parametrized && histScaleParam > 0 && histLowParam > 0 && histScaleParam <= histHighParam && histLowParam < histHighParam) {
+=======
+        System.out.println(energyFrac);
+
+        if (parametrized && histScaleParam > 0 && histLowParam > 0 && histScaleParam <= histHighParam && histLowParam < histHighParam) {
+            //TODO Ugly Math because someone I am bad at datatypes :(
+>>>>>>> bassAdditions
             histLow = (float)histLowParam/histScaleParam;
             histHigh = (float)histHighParam/histScaleParam;
         }
@@ -378,6 +385,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             			}
             		}
             	}
+<<<<<<< HEAD
             }
 
         }
@@ -415,6 +423,45 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             	}
             }
 
+=======
+            }
+
+        }
+
+        //Stuff to do if ePowerPass
+        if (ePowerPass) {
+            outputVoltage = 512;//TODO Generate depending on kind of capacitors
+            outputCurrent = 1;//TODO Generate depending on count of capacitors
+
+            if (parametrized && outputVoltageParam > 0 && outputVoltage > outputVoltageParam){
+            outputVoltage = outputVoltageParam;}
+
+            if (parametrized && outputCurrentParam > 0 && outputCurrent > outputCurrentParam){
+            outputCurrent = outputCurrentParam;}
+
+            outputEuT = outputVoltage * outputCurrent;
+
+            long requestedSumEU = 0;
+
+            //Clean the Smol Tesla list
+            for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TeslaCoil[eTeslaList.size()])) {
+            	try {
+            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+            	} catch (Exception e) {
+            		eTeslaList.remove(Rx);
+            	}
+            }
+
+            //Clean the large tesla list
+            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaTowerList.size()])) {
+            	try {
+            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+            	} catch (Exception e) {
+            		eTeslaTowerList.remove(Rx);
+            	}
+            }
+
+>>>>>>> bassAdditions
             //Try to send EU to the smol teslas
             for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList) {
                 if (!Rx.ePowerPass) {
