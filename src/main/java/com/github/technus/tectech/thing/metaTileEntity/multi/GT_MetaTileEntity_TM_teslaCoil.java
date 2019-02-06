@@ -6,6 +6,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -39,10 +40,35 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>();
     private int tier = 0;
     private int orientation = 0;
-    private int scanTime = 0;
-    private int scanRadius = 64;//TODO Generate depending on power stored
-    private long euTOutMax = V[9] / 8;//TODO Generate depending on count and kind of capacitors
-    private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaList = new ArrayList<>();
+//    private boolean ePowerPass = false; //TODO Make sure this only in the small tesla
+
+    private int scanTime = 0; //Sets scan time to Z E R O :epic:
+    private int scanTimeMin = 100; //Min scan time in ticks
+    private int scanTimeTill = scanTimeMin; //Set default scan time
+
+    private ArrayList<GT_MetaTileEntity_TeslaCoil> eTeslaList = new ArrayList<>(); //Makes a list of Smol Teslas
+    private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
+
+    private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
+    private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
+
+    private int scanRadius = 64; //Radius for small to tower transfers
+    private int scanRadiusTower = scanRadius * 2; //Radius for tower to tower transfers
+
+    private long outputVoltage = 512L; //Tesla Voltage Output
+    private long outputCurrent = 1; //Tesla Current Output
+    private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
+
+    private boolean parametrized = false; //Assumes no parametrizer on initialisation
+    //Default parametrized variables
+    private long histLowParam = 0;
+    private long histHighParam = 0;
+    private long histScaleParam = 0;
+    private int scanRadiusParam = 0;
+    private int scanRadiusTowerParam = 0;
+    private long outputVoltageParam = 0;
+    private long outputCurrentParam = 0;
+    private int scanTimeMinParam = 0;
 
     //region structure
     private static final String[][] shape0 = new String[][]{//3 16 0
@@ -256,53 +282,160 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return true;
         }
 
-        if (!ePowerPass && getEUVar() > maxEUStore() / 2 * 0.8) {
+        //Parametrizer hatch loader TODO Add parametrizer detection
+        if (false) {
+            parametrized = true;
+            histLowParam = 0;
+            histHighParam = 0;
+            histScaleParam = 0;
+            scanRadiusParam = 0;
+            scanRadiusTowerParam = 0;
+            outputVoltageParam = 0;
+            outputCurrentParam = 0;
+            scanTimeMin = 0;
+        } else {
+            parametrized = false;
+        }
+
+        ////Hysteresis based ePowerPass Config
+        long energyMax = maxEUStore() / 2;
+        long energyStored = getEUVar();
+
+        float energyFrac = (float)energyStored/energyMax;
+
+        System.out.println(energyFrac);
+
+        if (parametrized && histScaleParam > 0 && histLowParam > 0 && histScaleParam <= histHighParam && histLowParam < histHighParam) {
+            //TODO Ugly Math because someone I am bad at datatypes :(
+            histLow = (float)histLowParam/histScaleParam;
+            histHigh = (float)histHighParam/histScaleParam;
+        }
+
+        //ePowerPass hist toggle
+        if (!ePowerPass && energyFrac > histHigh) {
             ePowerPass = true;
-        } else if (ePowerPass && getEUVar() < maxEUStore() / 2 * 0.2) {
+        } else if (ePowerPass && energyFrac < histLow) {
             ePowerPass = false;
         }
 
-        if (ePowerPass) {
-            scanTime++;
-            if (scanTime == 100) {
-                scanTime = 0;
-                eTeslaList.clear();
+        ////Scanning for active teslas
 
-                for (int xPosOffset = -scanRadius; xPosOffset <= scanRadius; xPosOffset++) {
-                    for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
-                        for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
-                            IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
-                            if (node == null) {
-                                continue;
-                            }
-                            IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
-                                eTeslaList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
-                            }
+
+        if (parametrized && scanTimeMinParam > scanTimeMin) {
+            scanTimeTill = scanTimeMinParam;
+        }
+
+        scanTime++;
+        if (scanTime >= scanTimeTill) {
+            scanTime = 0;
+
+            scanRadius = 64; //TODO Generate depending on power stored
+            eTeslaList.clear();
+
+            if (parametrized && scanRadiusParam > 0 && scanRadiusParam < scanRadius) {
+                scanRadius = scanRadiusParam;
+            }
+
+            for (int xPosOffset = -scanRadius; xPosOffset <= scanRadius; xPosOffset++) {
+            	for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
+            		for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
+                        if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                            continue;
                         }
-                    }
-                }
+
+                        IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+            			if (node == null) {
+            				continue;
+            			}
+
+            			IMetaTileEntity nodeInside = node.getMetaTileEntity();
+            			if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
+            				eTeslaList.add((GT_MetaTileEntity_TeslaCoil) nodeInside);
+            			}
+            		}
+            	}
             }
 
-            float xPos = mte.getXCoord() + 0.5f;
-            float yPos = mte.getYCoord() + 0.5f;
-            float zPos = mte.getZCoord() + 0.5f;
-            long reqSum = 0;
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaList.size()])) {
-                try {
-                    reqSum += Rx.maxEUStore() - Rx.getEUVar();
-                } catch (Exception e) {
-                    eTeslaList.remove(Rx);
-                }
+            scanRadiusTower = scanRadius * 2;
+            eTeslaTowerList.clear();
+
+            if (parametrized && scanRadiusTowerParam > 0 && scanRadiusTowerParam < scanRadiusTower) {
+                scanRadiusTower = scanRadiusTowerParam;
             }
 
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaList) {
+            for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
+            	for (int yPosOffset = -scanRadiusTower; yPosOffset <= scanRadiusTower; yPosOffset++) {
+            		for (int zPosOffset = -scanRadiusTower; zPosOffset <= scanRadiusTower; zPosOffset++) {
+            		    if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                            continue;
+                        }
+
+            			IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+            			if (node == null) {
+            				continue;
+            			}
+
+            			IMetaTileEntity nodeInside = node.getMetaTileEntity();
+            			if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
+            				eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
+            			}
+            		}
+            	}
+            }
+
+        }
+
+        //Stuff to do if ePowerPass
+        if (ePowerPass) {
+            outputVoltage = 512;//TODO Generate depending on kind of capacitors
+            outputCurrent = 1;//TODO Generate depending on count of capacitors
+
+            if (parametrized && outputVoltageParam > 0 && outputVoltage > outputVoltageParam){
+            outputVoltage = outputVoltageParam;}
+
+            if (parametrized && outputCurrentParam > 0 && outputCurrent > outputCurrentParam){
+            outputCurrent = outputCurrentParam;}
+
+            outputEuT = outputVoltage * outputCurrent;
+
+            long requestedSumEU = 0;
+
+            //Clean the Smol Tesla list
+            for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TeslaCoil[eTeslaList.size()])) {
+            	try {
+            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+            	} catch (Exception e) {
+            		eTeslaList.remove(Rx);
+            	}
+            }
+
+            //Clean the large tesla list
+            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaTowerList.size()])) {
+            	try {
+            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+            	} catch (Exception e) {
+            		eTeslaTowerList.remove(Rx);
+            	}
+            }
+
+            //Try to send EU to the smol teslas
+            for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList) {
                 if (!Rx.ePowerPass) {
-                    long euTran = (euTOutMax * (Rx.maxEUStore() - Rx.getEUVar())) / reqSum;
-                    if (Rx.getEUVar() + euTran <= Rx.maxEUStore() && getEUVar() - euTran >= 0) {
+                    long euTran = outputVoltage;
+                    if (Rx.getBaseMetaTileEntity().injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
                         setEUVar(getEUVar() - euTran);
-                        Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);//might work QUESTION POINT;
-                        //mte.getWorld().playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
+                    }
+                } else {
+                }
+            }
+
+            //Try to send EU to big teslas
+            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList) {
+                if (!Rx.ePowerPass) {
+                    long euTran = outputVoltage;
+                    if (Rx.getEUVar() + euTran <= (Rx.maxEUStore()/2)) {
+                        setEUVar(getEUVar() - euTran);
+                        Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
                     }
                 }
             }
