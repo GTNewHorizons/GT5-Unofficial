@@ -16,6 +16,7 @@ import static com.github.technus.tectech.CommonValues.V;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
     public boolean ePowerPass = false;
+    public boolean teslaCompatible = true;
 
     private int scanTime = 0;
     private int scanRadius = 64;//TODO Generate depending on power stored
