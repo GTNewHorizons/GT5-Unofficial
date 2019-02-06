@@ -25,3 +25,12 @@ SetupDevWorkspaces.bat
 .idea/
 
 \.directory
+asm/
+config/
+saves/
+usernamecache.json
+PlayerCache.dat
+GregTech.cfg
+options.txt
+GregTech.lang
+mods/
