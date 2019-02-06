@@ -199,7 +199,9 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
 
 		if (aOffsetMeta <= 3) {
 			FluidStack f = getFluid(aStack);
-			aList.add("Can also drain any other standard fluid container block.");
+			aList.add("Can also drain any other standard fluid container block");
+			aList.add("Cannot be emptied via RMB, use inside a tank with GUI");
+			aList.add(EnumChatFormatting.DARK_GRAY+"This is technically just a fancy fluid cell");
 			aList.add(EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName() : "No Fluids Contained"));
 			aList.add(EnumChatFormatting.BLUE + (f != null ? ""+f.amount : ""+0) + "L" + " / " + getCapacity(aStack) + "L");
 		}
