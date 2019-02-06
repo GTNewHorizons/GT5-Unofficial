@@ -12,6 +12,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.Logger;
@@ -783,7 +784,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				if (mAssemblyLine != null) {
 					try {						
 						if (!tryAddTecTechScannerRecipe(aResearchItem, aInputs, aFluidInputs, aOutput, aDuration, aEUt)) {
-							Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus.");
+							try {								
+								Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus.");
+							}
+							catch (Throwable t) {
+								
+							}
 						}
 						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
 								aFluidInputs, aOutput, aDuration, aEUt);
@@ -820,10 +826,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 			if (mScannerTT != null) {
 				try {
-					return (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
-							(assEUt/2), 16, aInputs, aFluidInputs, aOutput, assDuration, assEUt);
+					boolean aResult = (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
+							(assEUt/2), 16, aInputs, aFluidInputs, aOutput, assDuration, assEUt);					
+					Logger.INFO("Added TecTech Scanner Recipe for "+ItemUtils.getItemName(aResearchItem)+"? "+aResult);
+					return aResult;
+					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus. [Severe]");
+					Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus. [Severe]");
 					e.printStackTrace();
 				}
 			}			
@@ -1058,11 +1067,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	        return true;
 			
 		}
-
-
-
-
-
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 }

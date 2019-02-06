@@ -1955,7 +1955,7 @@ public class RECIPES_GREGTECH {
 						Particle.getBaseParticle(Particle.UNKNOWN),
 						Particle.getBaseParticle(Particle.UNKNOWN),
 						},
-				FluidUtils.getWildcardFluidStack("ender", 1000),
+				FluidUtils.getFluidStack(FluidUtils.getWildcardFluidStack("ender", 1000), 1000),
 				new ItemStack[] {
 						ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT.getDust(1)
 						}, 
