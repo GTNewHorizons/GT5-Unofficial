@@ -1,27 +1,41 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
+import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.CommonValues.V;
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
-    public boolean ePowerPass = false;
-    public boolean teslaCompatible = true;
+    public boolean powerPassToggle = false; //Power Pass for public viewing
 
-    private int scanTime = 0;
-    private int scanRadius = 64;//TODO Generate depending on power stored
-    private long euTOutMax = V[9] / 8;//TODO Generate depending on count and kind of capacitors
-    private ArrayList<GT_MetaTileEntity_TeslaCoil> eTeslaList = new ArrayList<>();
+    private int scanTime = 0; //Sets scan time to Z E R O :epic:
+    private int scanTimeMin = 100; //Min scan time in ticks
+    private int scanTimeTill = scanTimeMin; //Set default scan time
+
+    private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
+
+    private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
+    private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
+
+    private float histLowLimit = 0.25F; //How low can you configure it?
+    private float histHighLimit = 0.75F; //How high can you configure it?
+
+    private int scanRadiusTower = 64; //Radius for tower to tower transfers
+
+    private long outputVoltage = 512; //Tesla Voltage Output
+    private long outputCurrent = 1; //Tesla Current Output
+    private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
+
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -32,6 +46,15 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
+    //TODO Redo the string formatting to be actually sane-ish
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            PlayerChatHelper.SendInfo(aPlayer, String.join("", String.format("Hysteresis High Changed to %d ", histHigh*100), "%"));
+        } else {
+            PlayerChatHelper.SendInfo(aPlayer, String.join("", String.format("Hysteresis Low Changed to %d ", histLow*100), "%"));
+        }
+    }
+
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
@@ -40,6 +63,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            IGregTechTileEntity mte = getBaseMetaTileEntity();
             this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
             this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
             this.mBatteryCount = 0;
@@ -56,7 +80,78 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                     ++this.mChargeableCount;
                 }
             }
-            //This is where most things happen~~
+
+            ////Hysteresis based ePowerPass Config
+            long energyMax = getStoredEnergy()[1];
+            long energyStored = getStoredEnergy()[0];
+
+            float energyFrac = (float)energyStored/energyMax;
+            System.err.println(energyFrac);
+
+            //ePowerPass hist toggle
+            if (!powerPassToggle && energyFrac > histHigh) {
+                powerPassToggle = true;
+            } else if (powerPassToggle && energyFrac < histLow) {
+                powerPassToggle = false;
+            }
+
+            ////Scanning for active teslas
+            scanTime++;
+            if (scanTime >= scanTimeTill) {
+                scanTime = 0;
+
+                scanRadiusTower = 64; //TODO Generate depending on power stored
+                eTeslaTowerList.clear();
+
+                for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
+                    for (int yPosOffset = -scanRadiusTower; yPosOffset <= scanRadiusTower; yPosOffset++) {
+                        for (int zPosOffset = -scanRadiusTower; zPosOffset <= scanRadiusTower; zPosOffset++) {
+                            if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                                continue;
+                            }
+                            IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+                            if (node == null) {
+                                continue;
+                            }
+                            IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
+                                eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Stuff to do if ePowerPass
+            if (powerPassToggle) {
+                outputVoltage = 512;//TODO Set Depending On Tier
+                outputCurrent = 1;//TODO Generate depending on count of batteries
+
+                outputEuT = outputVoltage * outputCurrent;
+
+                long requestedSumEU = 0;
+
+                //Clean the large tesla list
+                for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaTowerList.size()])) {
+                    try {
+                        requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+                    } catch (Exception e) {
+                        eTeslaTowerList.remove(Rx);
+                    }
+                }
+
+                //Try to send EU to big teslas
+                for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList) {
+                    if (!Rx.powerPassToggle) {
+                        long euTran = outputVoltage;
+                        if (Rx.getEUVar() + euTran <= (Rx.maxEUStore()/2)) {
+                            setEUVar(getEUVar() - euTran);
+                            Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
+                            System.err.println("Energy Sent!");
+                        }
+                    }
+                }
+            }
         }
     }
 }

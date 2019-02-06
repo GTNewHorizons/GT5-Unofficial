@@ -40,7 +40,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>();
     private int tier = 0;
     private int orientation = 0;
-//    private boolean ePowerPass = false; //TODO Make sure this only in the small tesla
 
     private int scanTime = 0; //Sets scan time to Z E R O :epic:
     private int scanTimeMin = 100; //Min scan time in ticks
@@ -52,12 +51,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
     private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
 
+    private float histLowLimit = 0.05F; //How low can you configure it?
+    private float histHighLimit = 0.95F; //How high can you configure it?
+
     private int scanRadius = 64; //Radius for small to tower transfers
     private int scanRadiusTower = scanRadius * 2; //Radius for tower to tower transfers
 
-    private long outputVoltage = 512L; //Tesla Voltage Output
+    private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
+
+    public boolean powerPassToggle = false; //Power Pass for public viewing
 
     private boolean parametrized = false; //Assumes no parametrizer on initialisation
     //Default parametrized variables
@@ -303,11 +307,21 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         float energyFrac = (float)energyStored/energyMax;
 
-
+        //Hysteresis Parameters sanity check
         if (parametrized && histScaleParam > 0 && histLowParam > 0 && histScaleParam <= histHighParam && histLowParam < histHighParam) {
-            //TODO Ugly Math because someone I am bad at datatypes :(
-            histLow = (float)histLowParam/histScaleParam;
-            histHigh = (float)histHighParam/histScaleParam;
+            float histLowt = (float)histLowParam/histScaleParam;
+            if (histLowt >= histLowLimit){
+                histLow = histLowt;
+            } else {
+                histLow = histLowLimit;
+            }
+
+            float histHight = (float)histHighParam/histScaleParam;
+            if (histHight <= histHighLimit){
+                histHigh = histHight;
+            } else {
+                histHigh = histHighLimit;
+            }
         }
 
         //ePowerPass hist toggle
@@ -316,9 +330,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         } else if (ePowerPass && energyFrac < histLow) {
             ePowerPass = false;
         }
+        powerPassToggle = ePowerPass;
 
         ////Scanning for active teslas
-
 
         if (parametrized && scanTimeMinParam > scanTimeMin) {
             scanTimeTill = scanTimeMinParam;
@@ -341,12 +355,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                         if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
                             continue;
                         }
-
                         IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
             			if (node == null) {
             				continue;
             			}
-
             			IMetaTileEntity nodeInside = node.getMetaTileEntity();
             			if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
             				eTeslaList.add((GT_MetaTileEntity_TeslaCoil) nodeInside);
@@ -368,12 +380,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             		    if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
                             continue;
                         }
-
             			IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
             			if (node == null) {
             				continue;
             			}
-
             			IMetaTileEntity nodeInside = node.getMetaTileEntity();
             			if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
             				eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
@@ -384,7 +394,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         }
 
         //Stuff to do if ePowerPass
-        if (ePowerPass) {
+        if (powerPassToggle) {
             outputVoltage = 512;//TODO Generate depending on kind of capacitors
             outputCurrent = 1;//TODO Generate depending on count of capacitors
 
@@ -418,18 +428,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
             //Try to send EU to the smol teslas
             for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList) {
-                if (!Rx.ePowerPass) {
+                if (!Rx.powerPassToggle) {
                     long euTran = outputVoltage;
                     if (Rx.getBaseMetaTileEntity().injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
                         setEUVar(getEUVar() - euTran);
                     }
-                } else {
                 }
             }
 
             //Try to send EU to big teslas
             for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList) {
-                if (!Rx.ePowerPass) {
+                if (!Rx.powerPassToggle) {
                     long euTran = outputVoltage;
                     if (Rx.getEUVar() + euTran <= (Rx.maxEUStore()/2)) {
                         setEUVar(getEUVar() - euTran);
