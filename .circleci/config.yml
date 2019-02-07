@@ -16,8 +16,8 @@ jobs:
       
       #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
       
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      #- restore_cache:
+      #    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           
       - run:
           name: Download Forge
@@ -25,7 +25,7 @@ jobs:
           
       - run:
           name: Unzip Forge
-          command: unzip forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+          command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
           
       - run:
           name: Setup Forge/MCP
