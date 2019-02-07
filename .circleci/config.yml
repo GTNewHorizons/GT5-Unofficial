@@ -28,12 +28,16 @@ jobs:
           command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
           
       - run:
+         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+         command: sudo chmod +x ./gradlew
+         
+      - run:
           name: Setup Forge/MCP
-          command: sudo chmod +x ./gradlew setupDecompWorkspace
+          command: ./gradlew setupDecompWorkspace
           
       - run:
           name: Eclipse Setup
-          command: sudo chmod +x ./gradlew eclipse
+          command: ./gradlew eclipse
           
       - run:
           name: Build GT++
