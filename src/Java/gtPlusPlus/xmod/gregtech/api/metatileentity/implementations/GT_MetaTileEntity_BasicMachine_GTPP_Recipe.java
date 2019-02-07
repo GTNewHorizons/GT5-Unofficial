@@ -27,7 +27,7 @@ public class GT_MetaTileEntity_BasicMachine_GTPP_Recipe extends GT_MetaTileEntit
 			GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
 			int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName,
 			String aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, int aSpecialEffect) {
-		super(aName, aTier, aDescription, aRecipes, aInputSlots, aOutputSlots, aTankCapacity, aAmperage, aGUIParameterA,
+		super(aName, aTier, aDescription[0], aRecipes, aInputSlots, aOutputSlots, aTankCapacity, aAmperage, aGUIParameterA,
 				aGUIParameterB, aTextures, aGUIName, aNEIName, aSound, aSharedTank, aRequiresFluidForFiltering, aSpecialEffect);
 	}
 

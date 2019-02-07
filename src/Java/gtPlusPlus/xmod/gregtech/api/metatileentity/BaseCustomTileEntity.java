@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import ic2.api.Direction;
 import net.minecraft.item.ItemStack;
@@ -88,7 +89,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity {
 				}
 			}
 
-			GT_Pollution.addPollution(this, 100000);
+			PollutionUtils.addPollution(this, 100000);
 			this.mMetaTileEntity.doExplosion(aAmount);
 		}
 

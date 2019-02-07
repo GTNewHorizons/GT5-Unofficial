@@ -142,15 +142,20 @@ public class AssLineAchievements {
 		if (player == null || stack == null) {
 			return;
 		}
+		
+		if (StaticFields59.sAssemblylineVisualRecipes == null) {
+			return;
+		}
+		
 		Logger.INFO("Trying to check for achievements");
 		// Debug scanner unlocks all AL recipes in creative
 		if (player.capabilities.isCreativeMode && aPickupUnlocalSafe.equals("gt.metaitem.01.32761")) {
-			for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
+			for (GT_Recipe recipe : StaticFields59.sAssemblylineVisualRecipes.mRecipeList) {
 				issueAchievement(player, recipe.getOutput(0).getUnlocalizedName());
 				recipe.mHidden = false;
 			}
 		}
-		for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
+		for (GT_Recipe recipe : StaticFields59.sAssemblylineVisualRecipes.mRecipeList) {
 			
 			String aSafeUnlocalName;
 			if (recipe.getOutput(0) == null) {

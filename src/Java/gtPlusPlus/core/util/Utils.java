@@ -46,6 +46,7 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -791,6 +792,12 @@ public class Utils {
 		if (GT_Mod.VERSION == 509){
 			Class<GT_Mod> clazz;
 			try {
+				
+				if (LoadedMods.BeyondRealityCore) {
+					//Safely assume it's Beyond Reality running .28-pre (If it's not, tough shit really?)
+					return new Pair<Integer, Integer>(9, 28);
+				}
+				
 				clazz = (Class<GT_Mod>) Class.forName("gregtech.GT_Mod");
 				Field mSubversion = ReflectionUtils.getField(clazz, "SUBVERSION");
 				if (mSubversion != null){
@@ -802,7 +809,9 @@ public class Utils {
 					}
 				}
 			}
-			catch (Throwable t){}
+			catch (Throwable t){
+				
+			}
 		}
 		//5.08.33
 		else if (GT_Mod.VERSION == 508){
