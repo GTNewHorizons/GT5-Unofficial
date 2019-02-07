@@ -13,39 +13,20 @@ jobs:
       
     steps:
       - checkout
+      - run: sudo chmod +x gradlew
       
       #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
       
-      #- restore_cache:
-      #    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           
       - run:
-          name: Download Forge
-          command: wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+          name: Download Build Script
+          command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
           
       - run:
-          name: Unzip Forge
-          command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
-         
-      #- run:
-      #    name: Dependencies
-      #    command: gradle dependencies
-          
-      - run:
-         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-         command: sudo chmod +x ./gradlew
-         
-      - run:
-          name: Setup Forge/MCP
-          command: gradle SetupCIWorkspace
-          
-      - run:
-          name: Eclipse Setup
-          command: gradle eclipse
-          
-      - run:
-          name: Build GT++
-          command: gradle build
+          name: Run Build Script
+          command: sh GTPP_BuildScript.sh
           
       - save_cache:
           paths:
