@@ -1,51 +1,50 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
 version: 2
 jobs:
   build:
+    working_directory: ~/code
+    
     docker:
-      # specify the version you desire here
       - image: circleci/openjdk:8-jdk
       
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
-
+      
     environment:
-      # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
-      TERM: dumb
-    
+      
+      
     steps:
       - checkout
-
-      # Download and cache dependencies
+      #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: gradle setupDecompWorkspace eclipse clean build test
-      # - run: gradle eclipse
-      # - run: gradle clean build
-      # - run: gradle dependencies
-
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          
+      - forge:
+          name: Setup Forge/MCP
+          command: wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+          
+      - zip:
+          name: Setup Forge/MCP
+          command: unzip forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+          
+      - eclipse:
+          name: Setup Forge/MCP
+          command: ./gradlew setupDecompWorkspace
+          
+      - clean:
+          name: Ugh...
+          command: ./gradlew eclipse
+          
+      - build:
+          name: Build GT++
+          command: ./gradlew build
+          
       - save_cache:
           paths:
             - ~/.gradle
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-        
-      # run tests!
-      - run: gradle test
-      # Build!
-      - run: gradle build
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
-
-
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: app/build/reports
+          destination: reports
+      - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: app/build/test-results
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
