@@ -13,27 +13,29 @@ jobs:
       
     steps:
       - checkout
+      
       #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+      
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           
-      - forge:
-          name: Setup Forge/MCP
+      - run:
+          name: Download Forge
           command: wget https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
           
-      - zip:
-          name: Setup Forge/MCP
+      - run:
+          name: Unzip Forge
           command: unzip forge-1.7.10-10.13.4.1614-1.7.10-src.zip
           
-      - eclipse:
+      - run:
           name: Setup Forge/MCP
           command: ./gradlew setupDecompWorkspace
           
-      - clean:
+      - run:
           name: Ugh...
           command: ./gradlew eclipse
           
-      - build:
+      - run:
           name: Build GT++
           command: ./gradlew build
           
