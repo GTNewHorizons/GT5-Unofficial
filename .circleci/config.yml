@@ -27,9 +27,9 @@ jobs:
           name: Unzip Forge
           command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
          
-      - run:
-          name: Dependencies
-          command: gradle dependencies
+      #- run:
+      #    name: Dependencies
+      #    command: gradle dependencies
           
       - run:
          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
