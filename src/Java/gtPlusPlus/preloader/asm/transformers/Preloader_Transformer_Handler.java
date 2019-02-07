@@ -2,7 +2,6 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
@@ -11,14 +10,10 @@ import org.objectweb.asm.ClassWriter;
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import galaxyspace.SolarSystem.core.configs.GSConfigDimensions;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
+import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
 
 @SuppressWarnings("static-access")
 public class Preloader_Transformer_Handler implements IClassTransformer {
@@ -118,6 +113,28 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
+		
+		
+		
+		
+		
+		/**
+		 * Gregtech ASM Patches
+		 */
+		
+		//Try patch achievements
+		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Achievements(basicClass).getWriter().toByteArray();
+		}
+		if (transformedName.equals("gregtech.common.GT_Client")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Client(basicClass).getByteArray();
+		}
+		
+		
+		
+		
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines") && mConfig.enableGtTooltipFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);

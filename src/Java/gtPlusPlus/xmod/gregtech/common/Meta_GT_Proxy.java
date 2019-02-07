@@ -15,26 +15,15 @@ import java.util.TimerTask;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
-import gregtech.common.blocks.GT_Block_Machines;
-import gregtech.common.render.GT_Renderer_Block;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ObjMap;
@@ -44,8 +33,15 @@ import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
-import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
-import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
+import gtPlusPlus.xmod.gregtech.loaders.misc.AssLineAchievements;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Meta_GT_Proxy {
 
@@ -63,6 +59,8 @@ public class Meta_GT_Proxy {
 
 	private static Class sBaseMetaTileEntityClass;
 	private static Class sBaseMetaTileEntityClass2;
+	
+	public static AssLineAchievements mAssemblyAchievements;
 	
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
 	
@@ -97,6 +95,7 @@ public class Meta_GT_Proxy {
 	}
 	
 	public void init() {
+		mAssemblyAchievements = new AssLineAchievements();	
 		scheduleCoverMapCleaner();
 		setValidHeatingCoilMetas();	
 	}

@@ -222,11 +222,6 @@ public class GTplusplus implements ActionListener {
 	}
 
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-	}
-
-	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
 		INIT_PHASE.SERVER_START.setPhaseActive(true);
 		mChunkLoading.serverStarting(event);

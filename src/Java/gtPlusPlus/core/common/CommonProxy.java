@@ -23,6 +23,7 @@ import gtPlusPlus.core.handler.BurnableFuelHandler;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.handler.StopAnnoyingFuckingAchievements;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
@@ -130,6 +131,10 @@ public class CommonProxy {
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		// Handles Custom Tooltips for GC
 		Utils.registerEvent(new HandlerTooltip_GC());
+		
+		if (CORE.DEVENV) {
+			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
+		}
 
 		// Register Chunkloader
 		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());

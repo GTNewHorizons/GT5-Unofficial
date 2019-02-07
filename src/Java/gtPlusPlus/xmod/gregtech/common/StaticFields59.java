@@ -33,6 +33,7 @@ public class StaticFields59 {
 	public static final Field mMultiblockChemicalRecipes;
 	public static final Field mDescriptionArray;
 	public static final Field mCasingTexturePages;
+	public static final Field mAssLineVisualMapNEI;
 	
 	public static final Method mCalculatePollutionReduction;
 	public static final Method mAddFurnaceRecipe;
@@ -49,6 +50,7 @@ public class StaticFields59 {
 		mMultiblockChemicalRecipes = getField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes");
 		mDescriptionArray = getField(GT_MetaTileEntity_TieredMachineBlock.class, "mDescriptionArray");
 		mCasingTexturePages = getField(BlockIcons.class, "casingTexturePages");
+		mAssLineVisualMapNEI = getField(GT_Recipe_Map.class, "sAssemblylineVisualRecipes");
 		
 		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction", int.class);		
 		

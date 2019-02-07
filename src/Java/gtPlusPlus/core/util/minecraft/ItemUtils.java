@@ -1042,4 +1042,21 @@ public class ItemUtils {
 		return aDisplay;
 	}
 
+	public static String getUnlocalizedItemName(ItemStack aStack) {
+		if (aStack == null) {
+			return "ERROR.Empty.Stack";
+		}
+		String aDisplay = null;
+		try {
+			aDisplay = (aStack.getUnlocalizedName()).trim();
+			
+		} catch (Throwable t) {
+			aDisplay = aStack.getItem().getUnlocalizedName();
+		}
+		if (aDisplay == null || aDisplay.length() <= 0) {
+			aDisplay = aStack.getItem().getUnlocalizedNameInefficiently(aStack);
+		}
+		return aDisplay;
+	}
+
 }
