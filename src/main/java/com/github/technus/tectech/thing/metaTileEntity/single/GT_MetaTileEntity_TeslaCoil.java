@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 
+import static java.lang.Math.round;
+
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
     public boolean powerPassToggle = false; //Power Pass for public viewing
@@ -36,6 +38,14 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
 
+    //All credit to https://stackoverflow.com/questions/8911356/whats-the-best-practice-to-round-a-float-to-2-decimals
+    public static float round2(float number, int scale) {
+        int pow = 10;
+        for (int i = 1; i < scale; i++)
+            pow *= 10;
+        float tmp = number * pow;
+        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
+    }
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -46,22 +56,23 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
-    //TODO Redo the string formatting to be actually sane-ish
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            if (histHigh < histHighLimit && histHigh - histStep != histLow) {
+            if (histHigh < histHighLimit) {
                 histHigh += histStep;
             } else {
                 histHigh = histLow + histStep;
             }
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + (histHigh * 100F)+ "%");
+            histHigh = round2(histHigh,2);
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + (histHigh * 100F) + "%");
         } else {
-            if (histLow > histLowLimit && histLow - histStep != histLow) {
+            if (histLow > histLowLimit) {
                 histLow -= histStep;
             } else {
                 histLow = histHigh - histStep;
             }
-            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + (histLow * 100F)+ "%");
+            histLow = round2(histLow,2);
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + (histLow * 100F) + "%");
         }
     }
 
