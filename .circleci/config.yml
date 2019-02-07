@@ -28,16 +28,12 @@ jobs:
           command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
           
       - run:
-          name: chmod Wrapper
-          command: chmod 777 /home/circleci/.gradle/wrapper/dists/gradle-2.0-bin/
-          
-      - run:
           name: Setup Forge/MCP
-          command: ./gradlew setupDecompWorkspace
+          command: sudo chmod +x ./gradlew setupDecompWorkspace
           
       - run:
           name: Eclipse Setup
-          command: ./gradlew eclipse
+          command: sudo chmod +x ./gradlew eclipse
           
       - run:
           name: Build GT++
