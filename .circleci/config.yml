@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/code
+    working_directory: ~/repo
     
     docker:
       - image: circleci/openjdk:8-jdk
@@ -26,6 +26,10 @@ jobs:
       - run:
           name: Unzip Forge
           command: unzip -o forge-1.7.10-10.13.4.1614-1.7.10-src.zip
+         
+      - run:
+          name: Dependencies
+          command: gradle dependencies
           
       - run:
          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
@@ -33,15 +37,15 @@ jobs:
          
       - run:
           name: Setup Forge/MCP
-          command: ./gradlew SetupCIWorkspace
+          command: gradle SetupCIWorkspace
           
       - run:
           name: Eclipse Setup
-          command: ./gradlew eclipse
+          command: gradle eclipse
           
       - run:
           name: Build GT++
-          command: ./gradlew build
+          command: gradle build
           
       - save_cache:
           paths:
