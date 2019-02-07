@@ -33,7 +33,7 @@ jobs:
          
       - run:
           name: Setup Forge/MCP
-          command: ./gradlew setupDecompWorkspace
+          command: ./gradlew SetupCIWorkspace
           
       - run:
           name: Eclipse Setup
