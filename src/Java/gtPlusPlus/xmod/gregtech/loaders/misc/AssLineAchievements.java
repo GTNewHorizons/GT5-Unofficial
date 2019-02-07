@@ -4,11 +4,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
@@ -94,7 +93,7 @@ public class AssLineAchievements {
 			aYouDidSomethingInGT = null;
 		}
 		if (recipeCount >= recipeTotal) {
-			Logger.INFO("Critical mass achieved, releasing toxic Assembly Line recipes into new reservoir. ["+recipeCount+"]");
+			Logger.INFO("Critical mass achieved. ["+recipeCount+"]");
 			registerAchievements();
 		}
 		
@@ -111,7 +110,7 @@ public class AssLineAchievements {
 			achievement.setSpecial();
 		}
 		achievement.registerStat();
-		if (GT_Values.D2) {
+		if (CORE.DEVENV) {
 			GT_Log.out.println("achievement." + textId + "=");
 			GT_Log.out.println("achievement." + textId + ".desc=");
 		}
@@ -123,11 +122,13 @@ public class AssLineAchievements {
 		if (entityplayer == null || !GT_Mod.gregtechproxy.mAchievements) {
 			return;
 		}
-		entityplayer.triggerAchievement((StatBase) mAchievementMap.get(textId));
+		
+		entityplayer.triggerAchievement((StatBase) getAchievement(textId));
 	}
 
 	public static Achievement getAchievement(String textId) {
 		if (mAchievementMap.containsKey(textId)) {
+			Logger.INFO("Found Achivement: "+textId);
 			return (Achievement) mAchievementMap.get(textId);
 		}
 		return null;
@@ -137,21 +138,35 @@ public class AssLineAchievements {
 	public void onItemPickup(EntityItemPickupEvent event) {
 		EntityPlayer player = event.entityPlayer;
 		ItemStack stack = event.item.getEntityItem();
+		String aPickupUnlocalSafe = ItemUtils.getUnlocalizedItemName(stack);
 		if (player == null || stack == null) {
 			return;
 		}
 		Logger.INFO("Trying to check for achievements");
 		// Debug scanner unlocks all AL recipes in creative
-		if (player.capabilities.isCreativeMode && stack.getUnlocalizedName().equals("gt.metaitem.01.32761")) {
+		if (player.capabilities.isCreativeMode && aPickupUnlocalSafe.equals("gt.metaitem.01.32761")) {
 			for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
 				issueAchievement(player, recipe.getOutput(0).getUnlocalizedName());
 				recipe.mHidden = false;
 			}
 		}
 		for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList) {
-			if (recipe.getOutput(0).getUnlocalizedName().equals(stack.getUnlocalizedName())) {
-				issueAchievement(player, recipe.getOutput(0).getUnlocalizedName());
+			
+			String aSafeUnlocalName;
+			if (recipe.getOutput(0) == null) {
+				Logger.INFO(
+						"Someone tried to register an achievement for a recipe with null output. Please report this to Alkalus.");
+				continue;
+			}
+			ItemStack aStack = recipe.getOutput(0);
+			aSafeUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);			
+			if (aSafeUnlocalName.equals(aPickupUnlocalSafe)) {
+				issueAchievement(player, aSafeUnlocalName);
 				recipe.mHidden = false;
+				Logger.INFO("FOUND: " + aSafeUnlocalName + " | " + aPickupUnlocalSafe);
+			}
+			else {
+				//Logger.INFO(aSafeUnlocalName + " | " + aPickupUnlocalSafe);
 			}
 		}
 	}

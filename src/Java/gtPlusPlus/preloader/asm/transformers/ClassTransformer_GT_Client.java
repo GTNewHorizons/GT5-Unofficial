@@ -529,7 +529,17 @@ public class ClassTransformer_GT_Client {
 							} catch (Throwable t) {
 								aSafeUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);
 							}
-							aFakeAssLineRecipe.mHidden  = !tList.hasAchievementUnlocked(AssLineAchievements.getAchievement(aSafeUnlocalName)); 
+							boolean aHidden = true;
+							try {
+								aHidden = tList.hasAchievementUnlocked(AssLineAchievements.getAchievement(aSafeUnlocalName));
+								Logger.INFO("Found achievement for "+aSafeUnlocalName);
+							}
+							catch (NullPointerException rrr) {
+								aHidden = true;
+								//Logger.INFO("Exception handling achievement for "+aSafeUnlocalName);
+								//rrr.printStackTrace();
+							}							
+							aFakeAssLineRecipe.mHidden  = !aHidden; 
 						}						
 					} catch (IllegalArgumentException | IllegalAccessException e) {
 					}

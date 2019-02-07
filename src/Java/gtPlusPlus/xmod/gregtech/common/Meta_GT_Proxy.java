@@ -95,13 +95,12 @@ public class Meta_GT_Proxy {
 	}
 	
 	public void init() {
-		mAssemblyAchievements = new AssLineAchievements();	
 		scheduleCoverMapCleaner();
 		setValidHeatingCoilMetas();	
 	}
 	
 	public void postInit() {
-		
+		mAssemblyAchievements = new AssLineAchievements();			
 	}
 	
 	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {
