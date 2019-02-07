@@ -329,6 +329,12 @@ public class BWRecipes {
         return false;
     }
 
+    public boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
+        if (sBiolab.addRecipe(new BioLabRecipe(true, new ItemStack[]{BioItemList.getPetriDish(null), aInput}, new ItemStack[]{BioItemList.getPetriDish(aOutput)}, null, aChances, new FluidStack[]{aFluidInputs}, new FluidStack[]{GT_Values.NF}, aDuration, aEUt, aSpecialValue)) != null)
+            return true;
+        return false;
+    }
+
     @Deprecated
     public boolean addBioLabRecipeDNAExtraction(ItemStack[] aInputs, ItemStack aOutput, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         if (sBiolab.addRecipe(new BioLabRecipe(true, aInputs, new ItemStack[]{aOutput}, BioItemList.mBioLabParts[0], aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue)) != null)

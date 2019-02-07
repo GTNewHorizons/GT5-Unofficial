@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
@@ -67,6 +68,8 @@ public class ItemRegistry {
     public static final Item CRAFTING_PARTS = new SimpleSubItemClass(new String[]{"grindstone_top", "grindstone_bottom", "completed_grindstone", "rotors/leatherParts", "rotors/woolParts", "rotors/paperParts", "rotors/combinedParts"});
     public static final Item TAB = new SimpleIconItem("GT2Coin");
     public static final Item WINDMETER = new BW_SimpleWindMeter();
+    public static final Block PUMPBLOCK = new BW_TileEntityContainer(Material.anvil, BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPump");
+    public static final Item PUMPPARTS = new SimpleSubItemClass(new String[]{"BWrawtube", "BWmotor"});
 
     public static final Block[] bw_glasses = {
             new BW_GlasBlocks(
@@ -136,7 +139,10 @@ public class ItemRegistry {
             GameRegistry.registerItem(COMBINED_ROTOR, "BW_CombinedRotor");
             GameRegistry.registerItem(CRAFTING_PARTS, "craftingParts");
             GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
-            GameRegistry.registerBlock(ROTORBLOCK, "BWRotorBlock");
+            GameRegistry.registerBlock(ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
+            GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
+            GameRegistry.registerBlock(PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
+            GameRegistry.registerItem(PUMPPARTS, "BWPumpParts");
             GameRegistry.registerItem(WINDMETER, "BW_SimpleWindMeter");
 
             for (int i = 0; i < GT_Values.VN.length; i++) {

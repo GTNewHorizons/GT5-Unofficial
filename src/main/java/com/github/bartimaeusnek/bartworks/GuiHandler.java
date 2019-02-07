@@ -22,9 +22,12 @@
 
 package com.github.bartimaeusnek.bartworks;
 
+import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.client.gui.BW_GUIContainer_RadLevel;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_CircuitProgrammer;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_Destructopack;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
+import com.github.bartimaeusnek.bartworks.server.container.BW_Container_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.server.container.BW_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_CircuitProgrammer;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_Item_Destructopack;
@@ -49,6 +52,8 @@ public class GuiHandler implements IGuiHandler {
                     return new BW_Container_RadioHatch(player.inventory, te.getMetaTileEntity());
                 }
             }
+            case 3:
+                return new BW_Container_HeatedWaterPump((BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player);
         }
         return null;
     }
@@ -67,6 +72,8 @@ public class GuiHandler implements IGuiHandler {
                         return new BW_GUIContainer_RadLevel(new BW_Container_RadioHatch(player.inventory, te.getMetaTileEntity()));
                     }
                 }
+                case 3:
+                    return new BW_GUIContainer_HeatedWaterPump(new BW_Container_HeatedWaterPump((BW_TileEntity_HeatedWaterPump) world.getTileEntity(x, y, z), player));
             }
         } else
             return getServerGuiElement(ID, player, world, x, y, z);

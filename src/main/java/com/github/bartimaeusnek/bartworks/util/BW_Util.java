@@ -259,7 +259,7 @@ public class BW_Util {
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, int aBaseCasingIndex) {
-        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, freeCorners, true, block, dmg, true, aBaseCasingIndex);
+        return check_layer(aBaseMetaTileEntity, radius, yLevel, height, block, dmg, offset, controllerLayer, freeCorners, false, block, dmg, true, aBaseCasingIndex);
     }
 
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height, Block block, int dmg, int offset, boolean controllerLayer, boolean insideCheck, Block inside, int dmginside, int aBaseCasingIndex) {

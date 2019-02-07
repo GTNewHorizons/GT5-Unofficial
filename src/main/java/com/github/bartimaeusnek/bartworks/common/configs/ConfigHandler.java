@@ -41,6 +41,7 @@ public class ConfigHandler {
     public static Configuration c;
     public static boolean DEHPDirectSteam = false;
     public static int megaMachinesMax = 256;
+    public static int mbWaterperSec = 150;
     private static boolean ezmode = false;
 
     public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
@@ -55,6 +56,7 @@ public class ConfigHandler {
         BioLab = !c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
         DEHPDirectSteam = c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
         megaMachinesMax = c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
+        mbWaterperSec = c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
             c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);

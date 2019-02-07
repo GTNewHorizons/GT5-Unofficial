@@ -33,6 +33,7 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -181,6 +182,42 @@ public class RecipeLoader implements Runnable {
                     });
 
         if (newStuff) {
+
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0),//tube
+                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                    new Object[]{
+                            " fG",
+                            " G ",
+                            "G  ",
+                            'G', ItemList.Circuit_Parts_Glass_Tube.get(1L)
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ItemRegistry.PUMPPARTS, 1, 1),//motor
+                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                    new Object[]{
+                            "GLP",
+                            "LSd",
+                            "PfT",
+                            'G', GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 1L),
+                            'L', GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 1L),
+                            'S', GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L),
+                            'P', new ItemStack(Blocks.piston),
+                            'T', new ItemStack(ItemRegistry.PUMPPARTS, 1, 0)
+                    }
+            );
+            GT_ModHandler.addCraftingRecipe(new ItemStack(ItemRegistry.PUMPBLOCK, 1, 0),
+                    GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                    new Object[]{
+                            "IPI",
+                            "PMP",
+                            "ISI",
+                            'I', GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
+                            'P', GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L),
+                            'M', new ItemStack(ItemRegistry.PUMPPARTS, 1, 1),
+                            'S', Ic2Items.ironFurnace
+                    }
+            );
+
             if (!MainMod.GTNH)
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.dehp,

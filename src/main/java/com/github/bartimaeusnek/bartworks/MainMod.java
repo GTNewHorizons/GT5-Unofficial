@@ -56,6 +56,7 @@ public final class MainMod {
     public static final String NAME = "BartWorks";
     public static final String VERSION = "@version@";
     public static final String MOD_ID = "bartworks";
+    public static final String APIVERSION = "@apiversion@";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
@@ -72,7 +73,7 @@ public final class MainMod {
     public void preInit(FMLPreInitializationEvent preinit) {
         //fixing BorosilicateGlass... -_-'
         Materials.BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-        if (!(API_REFERENCE.VERSION.equals(VERSION))) {
+        if (!(API_REFERENCE.VERSION.equals(APIVERSION))) {
             LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
         }
 

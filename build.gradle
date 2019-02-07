@@ -51,6 +51,7 @@ minecraft {
     replaceIn "MainMod.java"
     replaceIn "API_REFERENCE.java"
     replace "@version@", project.version
+    replace "@apiversion@", config.APIVersion
     runDir = "run"
 }
 

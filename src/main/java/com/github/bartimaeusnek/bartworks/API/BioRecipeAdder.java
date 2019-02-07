@@ -53,7 +53,7 @@ public final class BioRecipeAdder {
      * @param aSpecialValue 0 = STANDART, -100 = LowGravity, -200 = Cleanroom
      * @return if the recipe was added.
      */
-    public static boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
+    public static boolean addBioLabRecipeIncubation(ItemStack aInput, BioCulture aOutput, int[] aChances, FluidStack aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
         return BWRecipes.instance.addBioLabRecipeIncubation(aInput, aOutput, aChances, aFluidInputs, aDuration, aEUt, aSpecialValue);
     }
 

@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
+import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -31,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -65,8 +67,14 @@ public class BW_ItemBlocks extends ItemBlock {
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
         if (this.field_150939_a instanceof BW_GlasBlocks)
             aList.add("Glass-Tier: " + BW_Util.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
+        if (this.field_150939_a instanceof ITileAddsInformation) {
+            for (int i = 0; i < ((ITileAddsInformation) this.field_150939_a).getInfoData().length; i++) {
+                aList.add(((ITileAddsInformation) this.field_150939_a).getInfoData()[i]);
+            }
+        }
         aList.add(this.mNoMobsToolTip);
-        aList.add(this.mNoTileEntityToolTip);
+        if (!(this.field_150939_a instanceof ITileEntityProvider))
+            aList.add(this.mNoTileEntityToolTip);
         aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 

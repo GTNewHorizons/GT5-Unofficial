@@ -20,8 +20,45 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.API;
+package com.github.bartimaeusnek.bartworks.client.renderer;
 
-public final class API_REFERENCE {
-    public static final String VERSION = "@apiversion@";
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IIconContainer;
+import net.minecraft.block.Block;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
+
+@SideOnly(Side.CLIENT)
+public class BW_GT_Vanilla_Texture implements IIconContainer {
+
+    IIcon packed;
+
+    public BW_GT_Vanilla_Texture(Block block, ForgeDirection side) {
+        this.packed = block.getBlockTextureFromSide(side.flag);
+    }
+
+    public BW_GT_Vanilla_Texture(Block block, int side) {
+        this.packed = block.getBlockTextureFromSide(side);
+    }
+
+    public BW_GT_Vanilla_Texture(IIcon packed) {
+        this.packed = packed;
+    }
+
+    @Override
+    public IIcon getIcon() {
+        return packed;
+    }
+
+    @Override
+    public IIcon getOverlayIcon() {
+        return null;
+    }
+
+    @Override
+    public ResourceLocation getTextureFile() {
+        return new ResourceLocation(packed.getIconName());
+    }
 }

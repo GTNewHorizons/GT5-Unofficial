@@ -22,6 +22,27 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
-public final class API_REFERENCE {
-    public static final String VERSION = "@apiversion@";
+import com.github.bartimaeusnek.bartworks.MainMod;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+
+public interface ITileWithGUI {
+
+    /**
+     * @return the ID of the GUI, see @link com.github.bartimaeusnek.bartworks.GuiHandler
+     */
+    int getGUIID();
+
+    /**
+     * gets called from BW_TileEntityContainer(or _Multiple) when right clicked.
+     *
+     * @param tileEntity this tile entity
+     * @param player     the player right clicking it
+     * @return true always.
+     */
+    default boolean openGUI(TileEntity tileEntity, EntityPlayer player) {
+        if (!tileEntity.getWorldObj().isRemote)
+            player.openGui(MainMod.MOD_ID, getGUIID(), tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+        return true;
+    }
 }

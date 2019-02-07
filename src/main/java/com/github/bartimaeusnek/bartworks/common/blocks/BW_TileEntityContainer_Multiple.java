@@ -22,11 +22,8 @@
 
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
-import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
-import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
@@ -35,27 +32,37 @@ import ic2.core.IHasGui;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class BW_TileEntityContainer extends BlockContainer implements ITileAddsInformation {
+import java.util.List;
 
-    Class<? extends TileEntity> tileEntity = null;
+public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
-    public BW_TileEntityContainer(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
+    final protected String[] textureNames;
+    final protected String name;
+    final Class<? extends TileEntity>[] tileEntityArray;
+    @SideOnly(Side.CLIENT)
+    protected IIcon[] texture;
+
+    public BW_TileEntityContainer_Multiple(Material p_i45386_1_, Class<? extends TileEntity>[] tileEntity, String blockName, String[] textureNames, CreativeTabs tabs) {
         super(p_i45386_1_);
-        this.tileEntity = tileEntity;
-        this.setCreativeTab(MainMod.BWT);
+        this.setHardness(15.0F);
+        this.setResistance(30.0F);
+        tileEntityArray = tileEntity;
+        name = blockName;
+        this.textureNames = textureNames;
+        this.setCreativeTab(tabs);
         this.setBlockName(blockName);
         this.setBlockTextureName(MainMod.MOD_ID + ":" + blockName);
     }
@@ -65,27 +72,17 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         if (worldObj.isRemote) {
             return true;
         }
-        final TileEntity tile = worldObj.getTileEntity(x, y, z);
-        if (tile instanceof BW_TileEntity_HeatedWaterPump) {
-            if (player.getHeldItem() != null && (player.getHeldItem().getItem().equals(Items.bucket) || player.getHeldItem().getItem() instanceof IFluidContainerItem) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
-                if (player.getHeldItem().getItem().equals(Items.bucket)) {
-                    player.getHeldItem().stackSize--;
-                    if (player.getHeldItem().stackSize <= 0)
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                    player.inventory.addItemStackToInventory(new ItemStack(Items.water_bucket));
-                    return true;
-                }
-        }
         if (!player.isSneaking()) {
+            final TileEntity tile = worldObj.getTileEntity(x, y, z);
             if (tile instanceof IHasGui) {
                 return worldObj.isRemote || IC2.platform.launchGui(player, (IHasGui) tile);
             } else if (tile instanceof ITileWithGUI) {
                 return worldObj.isRemote || ((ITileWithGUI) tile).openGUI(tile, player);
             }
         }
+
         return false;
     }
-
 
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack itemStack) {
         final TileEntity tile = world.getTileEntity(x, y, z);
@@ -114,40 +111,31 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     }
 
     @Override
+    public int damageDropped(final int meta) {
+        return meta;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
+        for (int i = 0; i < textureNames.length; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        if (ITileHasDifferentTextureSides.class.isAssignableFrom(this.tileEntity)) {
-            try {
-                return ((ITileHasDifferentTextureSides) this.tileEntity.newInstance()).getTextureForSide(side, meta);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-                return super.getIcon(side, meta);
-            }
-        } else
-            return super.getIcon(side, meta);
+        return meta < texture.length ? texture[meta] : texture[0];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        if (ITileHasDifferentTextureSides.class.isAssignableFrom(this.tileEntity)) {
-            try {
-                ((ITileHasDifferentTextureSides) this.tileEntity.newInstance()).registerBlockIcons(par1IconRegister);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } else
-            super.registerBlockIcons(par1IconRegister);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        try {
-            return this.tileEntity.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        texture = new IIcon[textureNames.length];
+        for (int i = 0; i < textureNames.length; i++) {
+            texture[i] = par1IconRegister.registerIcon(textureNames[i]);
         }
-        return null;
     }
 
     @Override
@@ -166,14 +154,12 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     }
 
     @Override
-    public String[] getInfoData() {
-        if (ITileAddsInformation.class.isAssignableFrom(this.tileEntity)) {
-            try {
-                return ((ITileAddsInformation) this.tileEntity.newInstance()).getInfoData();
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+        try {
+            return this.tileEntityArray[p_149915_2_].newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return new String[0];
+        return null;
     }
 }

@@ -78,6 +78,7 @@ public class BW_Blocks extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
         for (int i = 0; i < textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));

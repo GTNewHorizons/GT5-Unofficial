@@ -52,6 +52,10 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+
+        if (this.getBaseMetaTileEntity().getWorld().isRemote)
+            return;
+
         --aAmps;
         if (aAmps < 0)
             aAmps = maxAmps;

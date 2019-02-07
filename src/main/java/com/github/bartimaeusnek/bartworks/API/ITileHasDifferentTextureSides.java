@@ -22,6 +22,32 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
-public final class API_REFERENCE {
-    public static final String VERSION = "@apiversion@";
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
+
+public interface ITileHasDifferentTextureSides {
+
+    IIcon[] texture = new IIcon[7];
+
+    @SideOnly(Side.CLIENT)
+    default IIcon getTextureForSide(ForgeDirection side, int meta) {
+        return texture[side.ordinal()];
+    }
+
+    ;
+
+    @SideOnly(Side.CLIENT)
+    default IIcon getTextureForSide(int side, int meta) {
+        return getTextureForSide(ForgeDirection.values()[side], meta);
+    }
+
+    ;
+
+    @SideOnly(Side.CLIENT)
+    void registerBlockIcons(IIconRegister par1IconRegister);
+
 }
