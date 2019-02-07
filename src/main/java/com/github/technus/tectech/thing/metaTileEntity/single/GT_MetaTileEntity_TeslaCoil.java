@@ -24,11 +24,11 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
 
+    private float histStep = 0.05F; //Hysteresis Resolution
     private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
     private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
-
-    private float histLowLimit = 0.25F; //How low can you configure it?
-    private float histHighLimit = 0.75F; //How high can you configure it?
+    private float histLowLimit = 0.05F; //How low can you configure it?
+    private float histHighLimit = 0.95F; //How high can you configure it?
 
     private int scanRadiusTower = 64; //Radius for tower to tower transfers
 
@@ -49,9 +49,19 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     //TODO Redo the string formatting to be actually sane-ish
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            PlayerChatHelper.SendInfo(aPlayer, String.join("", String.format("Hysteresis High Changed to %d ", histHigh*100), "%"));
+            if (histHigh < histHighLimit && histHigh - histStep != histLow) {
+                histHigh += histStep;
+            } else {
+                histHigh = histLow + histStep;
+            }
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + (histHigh * 100F)+ "%");
         } else {
-            PlayerChatHelper.SendInfo(aPlayer, String.join("", String.format("Hysteresis Low Changed to %d ", histLow*100), "%"));
+            if (histLow > histLowLimit && histLow - histStep != histLow) {
+                histLow -= histStep;
+            } else {
+                histLow = histHigh - histStep;
+            }
+            PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + (histLow * 100F)+ "%");
         }
     }
 
