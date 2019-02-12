@@ -316,7 +316,7 @@ public class BioRecipeLoader extends RecipeLoader {
                     new ItemStack[]{new ItemStack(Items.sugar, 64)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
                     BioCulture.BIO_CULTURE_ARRAY_LIST.get(1),
-                    new FluidStack[]{(Loader.isModLoaded("berriespp") ? FluidRegistry.getFluidStack("potion.GHP", 1) : Materials.Ethanol.getFluid(1L))},
+                    new FluidStack[]{(Loader.isModLoaded("berriespp") ? FluidRegistry.getFluidStack("potion.ghp", 1) : Materials.Ethanol.getFluid(1L))},
                     350,
                     BW_Util.getMachineVoltageFromTier(4)
             );

@@ -155,6 +155,11 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (mMode != 3) {
             this.isPickingPipes = false;
+            try {
+                Field workState = this.getClass().getField("workState");
+                workState.setInt(this, 0);
+            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException e) {
+            }
             return true;
         }
         return super.workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
@@ -162,6 +167,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (this.getBaseMetaTileEntity().getWorld().isRemote)
+            return;
         ++mMode;
         if (mMode >= 4)
             mMode = 0;
@@ -172,6 +179,11 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe, int yHead, int oldYHead) {
         if (mMode == 3) {
             this.isPickingPipes = true;
+            try {
+                Field workState = this.getClass().getSuperclass().getDeclaredField("workState");
+                workState.setInt(this, 2);
+            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException e) {
+            }
             return true;
         }
 
@@ -179,6 +191,8 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             if (this.waitForPipes()) {
                 return false;
             } else {
+                if (mMode == 0)
+                    mMode = 1;
                 if (ConfigHandler.DEHPDirectSteam) {
                     if (mMode == 1) {
                         long steamProduced = (mTier * 600 * 2L * this.mEfficiency / 10000L);
@@ -223,8 +237,6 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     }
 
     private boolean consumeFluid(Fluid fluid, long ammount) {
-
-
         if (ammount > Integer.MAX_VALUE) {
             int[] tmp = new int[(int) (ammount / Integer.MAX_VALUE)];
             Arrays.fill(tmp, (int) (ammount / Integer.MAX_VALUE));

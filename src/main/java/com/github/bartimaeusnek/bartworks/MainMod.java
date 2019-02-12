@@ -51,6 +51,9 @@ import org.apache.logging.log4j.Logger;
         modid = MainMod.MOD_ID, name = MainMod.NAME, version = MainMod.VERSION,
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
+                + "after:berriespp;"
+                + "after:dreamcraft;"
+                + "after:miscutils;"
 )
 public final class MainMod {
     public static final String NAME = "BartWorks";
