@@ -68,7 +68,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         final TileEntity tile = worldObj.getTileEntity(x, y, z);
         if (tile instanceof BW_TileEntity_HeatedWaterPump) {
             if (player.getHeldItem() != null && (player.getHeldItem().getItem().equals(Items.bucket) || player.getHeldItem().getItem() instanceof IFluidContainerItem) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false) != null)
-                if (player.getHeldItem().getItem().equals(Items.bucket)) {
+                if (player.getHeldItem().getItem().equals(Items.bucket) && ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, false).amount == 1000) {
+                    ((BW_TileEntity_HeatedWaterPump) tile).drain(1000, true);
                     player.getHeldItem().stackSize--;
                     if (player.getHeldItem().stackSize <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
