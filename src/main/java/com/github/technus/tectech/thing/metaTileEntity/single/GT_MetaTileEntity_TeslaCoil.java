@@ -26,26 +26,21 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
 
-    private float histStep = 0.05F; //Hysteresis Resolution
-    private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
-    private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
-    private float histLowLimit = 0.05F; //How low can you configure it?
-    private float histHighLimit = 0.95F; //How high can you configure it?
+    private int histSteps = 20; //Hysteresis Resolution
+    private int histSettingLow = 3;
+    private int histSettingHigh = 15;
+    private int histLowLimit = 1; //How low can you configure it?
+    private int histHighLimit = histSteps-1; //How high can you configure it?
+
+    private float histLow = (float)histSettingLow/histSteps; //Power pass is disabled if power is under this fraction
+    private float histHigh = (float)histSettingHigh/histSteps; //Power pass is enabled if power is over this fraction
+
 
     private int scanRadiusTower = 64; //Radius for tower to tower transfers
 
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
-
-    //All credit to ivan-stin who gave a solution at https://stackoverflow.com/questions/8911356/whats-the-best-practice-to-round-a-float-to-2-decimals
-    public static float round2(float number, int scale) {
-        int pow = 10;
-        for (int i = 1; i < scale; i++)
-            pow *= 10;
-        float tmp = number * pow;
-        return ( (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) ) / pow;
-    }
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -58,20 +53,20 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            if (histHigh < histHighLimit) {
-                histHigh += histStep;
+            if (histSettingHigh<histHighLimit) {
+                histSettingHigh++;
             } else {
-                histHigh = histLow + histStep;
+                histSettingHigh=histSettingLow+1;
             }
-            histHigh = round2(histHigh,2);
+            histHigh = (float)histSettingHigh/histSteps;
             PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + round(histHigh * 100F) + "%");
         } else {
-            if (histLow > histLowLimit) {
-                histLow -= histStep;
+            if (histSettingLow>histLowLimit) {
+                histSettingLow--;
             } else {
-                histLow = histHigh - histStep;
+                histSettingLow=histSettingHigh-1;
             }
-            histLow = round2(histLow,2);
+            histLow = (float)histSettingLow/histSteps;
             PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + round(histLow * 100F) + "%");
         }
     }
