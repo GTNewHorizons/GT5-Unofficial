@@ -116,7 +116,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             long energyStored = getStoredEnergy()[0];
 
             float energyFrac = (float)energyStored/energyMax;
-            System.err.println(energyFrac);
+            //System.err.println(energyFrac); Debug energy fraction display
 
             //ePowerPass hist toggle
             if (!powerPassToggle && energyFrac > histHigh) {
@@ -147,7 +147,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             IMetaTileEntity nodeInside = node.getMetaTileEntity();
                             if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
                                 eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
-                                int distance = (int)round(Math.abs(Math.sqrt(xPosOffset^2 + yPosOffset^2 + zPosOffset^2)));
+                                int distance = (int)Math.ceil(Math.sqrt(xPosOffset*xPosOffset + yPosOffset*yPosOffset + zPosOffset*zPosOffset));
                                 eTeslaTowerMap.put(node,distance);
                             }
                         }
@@ -156,20 +156,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             }
 
             for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
-                System.out.println("yote @ : " + Rx.getValue());
+                System.out.println("yote @: " + Rx.getValue());
             }
 
-            for (IGregTechTileEntity RxRee : eTeslaTowerMap.keySet()) {
-                GT_MetaTileEntity_TM_teslaCoil Rx = (GT_MetaTileEntity_TM_teslaCoil) RxRee.getMetaTileEntity();
-                if (!Rx.powerPassToggle) {
-                    long euTran = outputVoltage;
-                    if (Rx.getEUVar() + euTran <= (Rx.maxEUStore() / 2)) {
-                        setEUVar(getEUVar() - euTran);
-                        Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
-                        System.err.println("Energy Sent!");
-                    }
-                }
-            }
             //Stuff to do if ePowerPass
             if (powerPassToggle) {
                 outputVoltage = 512;//TODO Set Depending On Tier
@@ -188,14 +177,14 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                     }
                 }
 
-                //Try to send EU to big teslas
-                for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList) {
+                for (IGregTechTileEntity RxRee : eTeslaTowerMap.keySet()) {
+                    GT_MetaTileEntity_TM_teslaCoil Rx = (GT_MetaTileEntity_TM_teslaCoil) RxRee.getMetaTileEntity();
                     if (!Rx.powerPassToggle) {
                         long euTran = outputVoltage;
-                        if (Rx.getEUVar() + euTran <= (Rx.maxEUStore()/2)) {
+                        if (Rx.getEUVar() + euTran <= (Rx.maxEUStore() / 2)) {
                             setEUVar(getEUVar() - euTran);
                             Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
-                            System.err.println("Energy Sent!");
+                            //System.err.println("Energy Sent!"); Debug energy sent message
                         }
                     }
                 }

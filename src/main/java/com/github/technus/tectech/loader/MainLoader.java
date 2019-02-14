@@ -12,6 +12,7 @@ import com.github.technus.tectech.loader.gui.ModGuiHandler;
 import com.github.technus.tectech.loader.mechanics.ElementalLoader;
 import com.github.technus.tectech.loader.recipe.RecipeLoader;
 import com.github.technus.tectech.loader.thing.ComponentLoader;
+import com.github.technus.tectech.loader.thing.CoverLoader;
 import com.github.technus.tectech.loader.thing.MachineLoader;
 import com.github.technus.tectech.loader.thing.ThingsLoader;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
@@ -74,7 +75,7 @@ public final class MainLoader {
     }
 
     public static void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 8);
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 9);
 
         progressBarLoad.step("Elemental Things");
         new ElementalLoader().run();
@@ -95,6 +96,10 @@ public final class MainLoader {
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
         LOGGER.info("Machine Init Done");
+
+        progressBarLoad.step("Cover Things");
+        new CoverLoader().run();
+        LOGGER.info("Cover Init Done");
 
         progressBarLoad.step("Register entities");
         new EntityLoader().run();

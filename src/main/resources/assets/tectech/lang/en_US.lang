@@ -9,6 +9,8 @@ item.em.frontRotate.name=Front Rotation Scrench
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
 item.em.EuMeterGT.name=GT EU meter
 
+item.tm.teslaCoilCover.name=Tesla Coil Cover
+
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
 
