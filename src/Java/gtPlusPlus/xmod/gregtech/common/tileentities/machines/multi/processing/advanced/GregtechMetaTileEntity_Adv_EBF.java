@@ -103,21 +103,14 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 968);
 		}
 
-		return new String[] { "Controller Block for the Advanced Electric Blast Furnace",
-				"120% faster than using an equal tier EBF", "Only uses 90% of the eu/t normally required",
-				"Processes upto 8 recipes at once", 
-				"Consumes 10L of " + mHotFuelName + "/s during operation",
-				"Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
-				"Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-				"Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
-				"Size(WxHxD): 3x4x3 (Hollow), Controller (Front middle bottom)",
-				"16x Heating Coils (Two middle Layers, hollow)", 
-				"1x " + mHatchName,
-				"1x Input Hatch/Bus", 
-				"1x Output Hatch/Bus (Bottom Layer)",
-				"1x Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
-				"    Recovery scales with Muffler Hatch tier", mCasingName + "s for the rest",
-				"1x Energy Hatch",
+		return new String[] { 
+				"Factory Grade Advanced Blast Furnace",
+				"Speed: 120% | Eu Usage: 90% | Parallel: 8",
+				"Consumes 10L of " + mHotFuelName + " per second during operation",
+				"Constructed exactly the same as a normal EBF",
+				"Use "+mCasingName+"s (10 at least!)",
+				"1x " + mHatchName + " (Required)",
+				"TAG_HIDE_HATCHES"
 		};
 	}
 

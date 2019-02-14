@@ -86,8 +86,8 @@ extends GregtechMetaCasingBlocksAbstract {
 				case 2:
 					return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
 					//Coke Oven Casing Tier 2
-				case 3:
-					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+				case 3:					
+					return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
 					//Material Press Casings
 				case 4:
 					return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();				

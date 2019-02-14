@@ -47,6 +47,10 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		return set(object);
 	}
 	
+	public synchronized V add(V object){
+		return set(object);
+	}
+	
 	public synchronized V set(V object){
 		if (object == null) {
 			return null;
@@ -90,15 +94,19 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		return true;
 	}
 	
+	private final Class getMapType() {
+		Class<? extends Object> g = mInternalMap.get(0).getClass();
+		return g;
+	}
+	
 	public synchronized V[] toArray() {		
-		Collection<V> col = this.mInternalMap.values();		
-		V[] val = (V[]) new Object[col.size()];
-		int counter = 0;
-		for (V i : col) {
-			val[counter] = i;
-			counter++;
+		/*Collection<V> col = this.mInternalMap.values();	
+		List<V> abcList = new ArrayList<V>();		
+		for (V g : col) {
+			abcList.add(g);
 		}
-		return val;
+		return (V[]) abcList.toArray();*/
+		return (V[]) new AutoArray(this).getGenericArray();
 	}
 
 	public synchronized final int getInternalID() {
@@ -106,10 +114,35 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 	}
 	
 	public synchronized final boolean remove(V value) {
+		value.getClass();
 		if (this.mInternalMap.containsValue(value)) {
 			return this.mInternalMap.remove(mInternalNameMap.get(""+value.hashCode()), value);
 		}
 		return false;
+	}
+	
+	private class AutoArray<E> {
+		
+		private final V[] arr;
+		public final int length;
+		
+		public AutoArray(AutoMap aMap) {		
+			this.arr = (V[]) java.lang.reflect.Array.newInstance(aMap.getMapType(), aMap.size());
+			this.length = aMap.size();
+		}
+		private V get(int i) {
+			return arr[i];
+		}
+		private void set(int i, V e) {
+			arr[i] = e;
+		}
+		protected V[] getGenericArray() {
+			return arr;
+		}
+		@Override
+		public String toString() {
+			return Arrays.toString(arr);
+		}
 	}
   
 }

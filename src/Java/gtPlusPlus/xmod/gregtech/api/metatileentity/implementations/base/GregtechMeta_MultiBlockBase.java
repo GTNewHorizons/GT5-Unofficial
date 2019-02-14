@@ -39,6 +39,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -265,6 +266,10 @@ GT_MetaTileEntity_MultiBlockBase {
 	private final String aRequiresCoreModule = "1x Core Module";
 	private final String aRequiresMaint = "1x Maintanence Hatch";*/
 
+	public final static String TAG_HIDE_HATCHES = "TAG_HIDE_HATCHES";
+	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
+	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
+	
 	@Override
 	public final String[] getDescription() {		
 		/*if (aCachedToolTip != null) {
@@ -287,22 +292,62 @@ GT_MetaTileEntity_MultiBlockBase {
 		String aRequiresCoreModule = "1x Core Module";
 		String aRequiresMaint = "1x Maintanence Hatch";
 		
-		String[] x = getTooltip();		
-		//Add Stock Tooltip to bottom of list
-		String[] z;		
-		if (getPollutionPerTick(null) > 0) {
-			z = new String[] {
-					aRequiresMaint,
-					aRequiresCoreModule,
-					aRequiresMuffler,
-					getPollutionTooltip(),
-					getMachineTooltip()};
+		String[] x = getTooltip();
+		
+		//Filter List, toggle switches, rebuild map without flags
+		boolean showHatches = true;
+		boolean showMachineType = true;
+		boolean showPollution = getPollutionPerTick(null) > 0;
+		AutoMap<String> aTempMap = new AutoMap<String>();	
+		for (int ee = 0; ee < x.length; ee++) {
+			String hh = x[ee];
+			if (hh.equals(TAG_HIDE_HATCHES)) {
+				showHatches = false;
+			}
+			else if (hh.equals(TAG_HIDE_POLLUTION)) {
+				showPollution = false;
+			}
+			else if (hh.equals(TAG_HIDE_MACHINE_TYPE)) {
+				showMachineType = false;
+			}
+			else {
+				aTempMap.put(x[ee]);
+			}
 		}
-		else {
-			z = new String[] {
-					aRequiresMaint,
-					aRequiresCoreModule,
-					getMachineTooltip(),};		
+		//Rebuild
+		x = new String[aTempMap.size()];
+		for (int ee = 0; ee < x.length; ee++) {
+			x[ee] = aTempMap.get(ee);
+		}
+		
+		
+		//Assemble ordered map for misc tooltips
+		AutoMap<String> aOrderedMap = new AutoMap<String>();		
+		if (showHatches) {
+			aOrderedMap.put(aRequiresMaint);
+			aOrderedMap.put(aRequiresCoreModule);
+			if (showPollution) {
+				aOrderedMap.put(aRequiresMuffler);				
+			}
+		}
+
+		if (showMachineType) {
+			aOrderedMap.put(getMachineTooltip());			
+		}
+		
+		if (showPollution) {
+			aOrderedMap.put(getPollutionTooltip());				
+		}
+		
+		
+		
+		
+		
+		//Add Stock Tooltip to bottom of list
+		String[] z;	
+		z = new String[aOrderedMap.size()];
+		for (int ee = 0; ee < z.length; ee++) {
+			z[ee] = aOrderedMap.get(ee);
 		}
 
 		int a2, a3;
