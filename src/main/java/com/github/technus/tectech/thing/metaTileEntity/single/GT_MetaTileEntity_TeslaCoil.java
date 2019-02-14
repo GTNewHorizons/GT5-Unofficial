@@ -9,10 +9,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import java.util.ArrayList;
+
+import java.util.*;
 
 import static java.lang.Math.round;
 
@@ -25,6 +25,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
     private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
+    private Map<IGregTechTileEntity, Integer> eTeslaTowerMap = new HashMap<IGregTechTileEntity, Integer>();
 
     private int histSteps = 20; //Hysteresis Resolution
     private int histSettingLow = 3;
@@ -35,12 +36,25 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private float histLow = (float)histSettingLow/histSteps; //Power pass is disabled if power is under this fraction
     private float histHigh = (float)histSettingHigh/histSteps; //Power pass is enabled if power is over this fraction
 
-
     private int scanRadiusTower = 64; //Radius for tower to tower transfers
 
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
+
+    static <K,V extends Comparable<? super V>> SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map) {
+        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
+                new Comparator<Map.Entry<K,V>>() {
+                    @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
+                        int res = e1.getValue().compareTo(e2.getValue());
+                        return res != 0 ? res : 1; // Special fix to preserve items with equal values
+                    }
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        return sortedEntries;
+    }
+
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "Tesla Coil Transceiver", aSlotCount);
@@ -118,6 +132,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
                 scanRadiusTower = 64; //TODO Generate depending on power stored
                 eTeslaTowerList.clear();
+                eTeslaTowerMap.clear();
 
                 for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
                     for (int yPosOffset = -scanRadiusTower; yPosOffset <= scanRadiusTower; yPosOffset++) {
@@ -132,12 +147,29 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             IMetaTileEntity nodeInside = node.getMetaTileEntity();
                             if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
                                 eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
+                                int distance = (int)round(Math.abs(Math.sqrt(xPosOffset^2 + yPosOffset^2 + zPosOffset^2)));
+                                eTeslaTowerMap.put(node,distance);
                             }
                         }
                     }
                 }
             }
 
+            for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
+                System.out.println("yote @ : " + Rx.getValue());
+            }
+
+            for (IGregTechTileEntity RxRee : eTeslaTowerMap.keySet()) {
+                GT_MetaTileEntity_TM_teslaCoil Rx = (GT_MetaTileEntity_TM_teslaCoil) RxRee.getMetaTileEntity();
+                if (!Rx.powerPassToggle) {
+                    long euTran = outputVoltage;
+                    if (Rx.getEUVar() + euTran <= (Rx.maxEUStore() / 2)) {
+                        setEUVar(getEUVar() - euTran);
+                        Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
+                        System.err.println("Energy Sent!");
+                    }
+                }
+            }
             //Stuff to do if ePowerPass
             if (powerPassToggle) {
                 outputVoltage = 512;//TODO Set Depending On Tier
