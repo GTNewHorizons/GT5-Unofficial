@@ -207,10 +207,20 @@ public class RECIPES_Machines {
 	}
 
 	private static void run(){
+		
+		//Determines Casing Recipe Output
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !GTNH){
+			Casing_Amount=2;
+		}
+		else {
+			Casing_Amount=1;
+		}	
+		
 		initModItems();
 		controlCores();
 		energyCores();
 		wirelessChargers();
+		largeArcFurnace();
 	}
 
 	private static void initModItems(){
@@ -276,15 +286,7 @@ public class RECIPES_Machines {
 
 	private static void runModRecipes(){
 		if (LoadedMods.Gregtech){
-			//Determines Casing Recipe Output
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && !GTNH){
-				Casing_Amount=2;
-			}
-			else {
-				Casing_Amount=1;
-			}
-
-
+			
 			//Computer Cube			
 			CORE.RA.addSixSlotAssemblingRecipe(
 					new ItemStack[] {
@@ -1897,5 +1899,35 @@ public class RECIPES_Machines {
 					MaterialUtils.getVoltageForTier(i));	
 
 		}
+	}
+	
+	private static void largeArcFurnace() {
+		int aCostMultiplier = GTNH ? 2 : 1;		
+		CORE.RA.addSixSlotAssemblingRecipe(				
+				new ItemStack[] {
+						CI.getTieredMachineHull(-1, 1 * aCostMultiplier),
+						CI.getEmitter(2, 2 * aCostMultiplier),
+						CI.getElectricPiston(4, 2 * aCostMultiplier),
+						CI.getSensor(4, 1 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.plate, 5, 4 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.pipeSmall, 4, 1 * aCostMultiplier),
+				},					
+				CI.getAlternativeTieredFluid(5, (144 * 2 * 4)), //Input Fluid					
+				GregtechItemList.Casing_Industrial_Arc_Furnace.get(Casing_Amount),					
+				20 * 10 * 1 * (6), 
+				MaterialUtils.getVoltageForTier(5));		
+		CORE.RA.addSixSlotAssemblingRecipe(				
+				new ItemStack[] {
+						GregtechItemList.Casing_Industrial_Arc_Furnace.get(Casing_Amount),
+						CI.getFieldGenerator(4, 2 * aCostMultiplier),
+						CI.getRobotArm(5, 4 * aCostMultiplier),
+						CI.getEnergyCore(4, 2 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.plate, 6, 8 * aCostMultiplier),
+						CI.getTieredComponent(OrePrefixes.circuit, 5, 8 * aCostMultiplier),
+				},					
+				CI.getAlternativeTieredFluid(6, (144 * 4 * 5)), //Input Fluid					
+				GregtechItemList.Industrial_Arc_Furnace.get(1),					
+				60 * 20 * 8, 
+				MaterialUtils.getVoltageForTier(6));
 	}
 }

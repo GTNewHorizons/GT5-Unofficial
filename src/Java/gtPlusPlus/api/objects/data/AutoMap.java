@@ -3,7 +3,7 @@ package gtPlusPlus.api.objects.data;
 import java.io.Serializable;
 import java.util.*;
 
-public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
+public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collection<V>, Queue<V> {
 
 	/**
 	 * The Internal Map
@@ -47,8 +47,8 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		return set(object);
 	}
 	
-	public synchronized V add(V object){
-		return set(object);
+	public synchronized boolean add(V object){
+		return set(object) != null;
 	}
 	
 	public synchronized V set(V object){
@@ -87,62 +87,129 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable {
 		return mInternalMap.isEmpty();
 	}
 	
-	public synchronized boolean clear(){
+	public synchronized void clear(){
 		this.mInternalID = 0;
 		this.mInternalMap.clear();
 		this.mInternalNameMap.clear();
-		return true;
+		return;
 	}
 	
-	private final Class getMapType() {
-		Class<? extends Object> g = mInternalMap.get(0).getClass();
-		return g;
-	}
-	
+	@SuppressWarnings("unchecked")
 	public synchronized V[] toArray() {		
-		/*Collection<V> col = this.mInternalMap.values();	
+		Collection<V> col = this.mInternalMap.values();	
 		List<V> abcList = new ArrayList<V>();		
 		for (V g : col) {
 			abcList.add(g);
 		}
-		return (V[]) abcList.toArray();*/
-		return (V[]) new AutoArray(this).getGenericArray();
+		return (V[]) abcList.toArray();
+		//return (V[]) new AutoArray(this).getGenericArray();
 	}
 
 	public synchronized final int getInternalID() {
 		return mInternalID;
-	}
+	}	
 	
-	public synchronized final boolean remove(V value) {
+	public synchronized final boolean remove(Object value) {
 		value.getClass();
 		if (this.mInternalMap.containsValue(value)) {
 			return this.mInternalMap.remove(mInternalNameMap.get(""+value.hashCode()), value);
 		}
 		return false;
+	}	
+
+	@Override
+	public boolean contains(Object o) {
+		for (V g : this.mInternalMap.values()) {
+			if (g.equals(o)) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
-	private class AutoArray<E> {
-		
-		private final V[] arr;
-		public final int length;
-		
-		public AutoArray(AutoMap aMap) {		
-			this.arr = (V[]) java.lang.reflect.Array.newInstance(aMap.getMapType(), aMap.size());
-			this.length = aMap.size();
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <V> V[] toArray(V[] a) {
+		return (V[]) toArray();
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		boolean aTrue = true;
+		for (Object g : c) {
+			if (!this.contains(g)) {
+				aTrue = false;
+			}
+		}		
+		return aTrue;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends V> c) {
+		boolean aTrue = true;
+		for (V g : c) {
+			if (!this.add(g)) {
+				aTrue = false;
+			}
+		}		
+		return aTrue;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		boolean aTrue = true;
+		for (Object g : c) {
+			if (!this.remove(g)) {
+				aTrue = false;
+			}
+		}		
+		return aTrue;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		AutoMap<?> aTempAllocation = new AutoMap();
+		boolean aTrue = false;
+		aTempAllocation = this;
+		aTempAllocation.removeAll(c);		
+		aTrue = this.removeAll(aTempAllocation);
+		aTempAllocation.clear();
+		return aTrue;
+	}
+
+	@Override
+	public boolean offer(V e) {
+		return add(e);
+	}
+
+	@Override
+	public V remove() {
+		V y = this.get(0);
+		if (remove(y))
+			return y;
+		else
+			return null;
+	}
+
+	@Override
+	public V poll() {
+		if (this.mInternalMap.isEmpty()) {
+			return null;
 		}
-		private V get(int i) {
-			return arr[i];
+		return remove();
+	}
+
+	@Override
+	public V element() {
+		if (this.mInternalMap.isEmpty()) {
+			return null;
 		}
-		private void set(int i, V e) {
-			arr[i] = e;
-		}
-		protected V[] getGenericArray() {
-			return arr;
-		}
-		@Override
-		public String toString() {
-			return Arrays.toString(arr);
-		}
+		return this.get(0);
+	}
+
+	@Override
+	public V peek() {
+		return element();
 	}
   
 }

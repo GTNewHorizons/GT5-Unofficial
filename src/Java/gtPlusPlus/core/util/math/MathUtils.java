@@ -681,4 +681,15 @@ public class MathUtils {
 		return i;	
 	}
 
+	/**
+	 * Balances a number within a range.
+	 * @param aInput - The number to balance
+	 * @param aMin - The minimum bounds
+	 * @param aMax - The maximum bounds
+	 * @return - An Integer which will be between the bounds, or a boundary value.
+	 */
+	public static int balance(int aInput, int aMin, int aMax) {		
+		return Math.max(Math.min(aInput, aMax), aMin);
+	}
+
 }

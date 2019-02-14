@@ -13,6 +13,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -628,6 +629,38 @@ public class CI {
 		return a;
 	}
 	
+	public static ItemStack getEnergyCore(int aTier, int aAmount) {
+		ItemStack[] aOutput = new ItemStack[] {
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"1", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"2", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"3", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"4", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"5", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"6", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"7", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"8", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"9", 1),
+				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"10", 1)
+		};
+		return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
+	}
+	
+	public static ItemStack getPlate(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.plate, aTier, aAmount);
+	}
+	
+	public static ItemStack getGear(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.gearGt, aTier, aAmount);
+	}
+	
+	public static ItemStack getIngot(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.ingot, aTier, aAmount);
+	}
+	
+	public static ItemStack getBolt(int aTier, int aAmount) {
+		return getTieredComponent(OrePrefixes.bolt, aTier, aAmount);
+	}
+	
 	public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
 		aTier = Math.max(0, aTier);		
 	
@@ -1144,7 +1177,7 @@ public class CI {
 			aType = CI.machineHull_MAX;			
 		}
 		else {
-			aType = CI.machineHull_LV;			
+			aType = GregtechItemList.Casing_Multi_Use.get(1, CI.machineHull_MV);			
 		}		
 		return ItemUtils.getSimpleStack(aType, aSize);
 	}

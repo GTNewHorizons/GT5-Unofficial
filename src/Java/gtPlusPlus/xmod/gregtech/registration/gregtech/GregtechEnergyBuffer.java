@@ -41,20 +41,20 @@ public class GregtechEnergyBuffer
 
 
 		//Energy Buffers
-		GregtechItemList.Energy_Buffer_1by1_ULV.set(new GregtechMetaEnergyBuffer(770, "energybuffer.01.tier.00", "Ultra Low Voltage Energy Buffer", 0, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_LV.set(new GregtechMetaEnergyBuffer(771, "energybuffer.01.tier.01", "Low Voltage Energy Buffer", 1, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_MV.set(new GregtechMetaEnergyBuffer(772, "energybuffer.01.tier.02", "Medium Voltage Energy Buffer", 2, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_HV.set(new GregtechMetaEnergyBuffer(773, "energybuffer.01.tier.03", "High Voltage Energy Buffer", 3, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_EV.set(new GregtechMetaEnergyBuffer(774, "energybuffer.01.tier.04", "Extreme Voltage Energy Buffer", 4, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_IV.set(new GregtechMetaEnergyBuffer(775, "energybuffer.01.tier.05", "Insane Voltage Energy Buffer", 5, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_LuV.set(new GregtechMetaEnergyBuffer(776, "energybuffer.01.tier.06", "Ludicrous Voltage Energy Buffer", 6, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_ZPM.set(new GregtechMetaEnergyBuffer(777, "energybuffer.01.tier.07", "ZPM Voltage Energy Buffer", 7, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_UV.set(new GregtechMetaEnergyBuffer(778, "energybuffer.01.tier.08", "Ultimate Voltage Energy Buffer", 8, "", 1).getStackForm(1L));
-		GregtechItemList.Energy_Buffer_1by1_MAX.set(new GregtechMetaEnergyBuffer(779, "energybuffer.01.tier.09", "MAX Voltage Energy Buffer", 9, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_ULV.set(new GregtechMetaEnergyBuffer(770, "energybuffer.tier.00", "Ultra Low Voltage Energy Buffer", 0, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_LV.set(new GregtechMetaEnergyBuffer(771, "energybuffer.tier.01", "Low Voltage Energy Buffer", 1, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_MV.set(new GregtechMetaEnergyBuffer(772, "energybuffer.tier.02", "Medium Voltage Energy Buffer", 2, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_HV.set(new GregtechMetaEnergyBuffer(773, "energybuffer.tier.03", "High Voltage Energy Buffer", 3, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_EV.set(new GregtechMetaEnergyBuffer(774, "energybuffer.tier.04", "Extreme Voltage Energy Buffer", 4, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_IV.set(new GregtechMetaEnergyBuffer(775, "energybuffer.tier.05", "Insane Voltage Energy Buffer", 5, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_LuV.set(new GregtechMetaEnergyBuffer(776, "energybuffer.tier.06", "Ludicrous Voltage Energy Buffer", 6, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_ZPM.set(new GregtechMetaEnergyBuffer(777, "energybuffer.tier.07", "ZPM Voltage Energy Buffer", 7, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_UV.set(new GregtechMetaEnergyBuffer(778, "energybuffer.tier.08", "Ultimate Voltage Energy Buffer", 8, "", 1).getStackForm(1L));
+		GregtechItemList.Energy_Buffer_1by1_MAX.set(new GregtechMetaEnergyBuffer(779, "energybuffer.tier.09", "MAX Voltage Energy Buffer", 9, "", 1).getStackForm(1L));
 		// Creative Buffer Has Special ID
 		GregtechItemList.Energy_Buffer_CREATIVE
 		.set(new GregtechMetaCreativeEnergyBuffer(750,
-				"energybuffer.01.tier.xx",
+				"energybuffer.tier.xx",
 				"512V Creative Energy Buffer", 3, "", 0)
 				.getStackForm(1L));
 

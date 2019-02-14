@@ -294,7 +294,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		cur = String.format(fmt, cur);
 
 		return new String[] {
-				this.getLocalName(),
 				cur+" EU stored",
 				max+" EU capacity"};
 	}
@@ -345,7 +344,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String getInventoryName() {
-		return null;
+		return super.getInventoryName();
 	}
 
 	@Override
