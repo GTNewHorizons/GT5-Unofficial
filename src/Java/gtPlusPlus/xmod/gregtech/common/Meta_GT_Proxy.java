@@ -28,6 +28,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.ObjMap;
 import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
+import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -60,7 +61,7 @@ public class Meta_GT_Proxy {
 	private static Class sBaseMetaTileEntityClass;
 	private static Class sBaseMetaTileEntityClass2;
 	
-	public static AssLineAchievements mAssemblyAchievements;
+	public static AchievementHandler mAssemblyAchievements;
 	
 	public static final Map<String, FormattedTooltipString> mCustomGregtechMetaTooltips = new LinkedHashMap<String, FormattedTooltipString>();
 	
@@ -100,7 +101,7 @@ public class Meta_GT_Proxy {
 	}
 	
 	public void postInit() {
-		//mAssemblyAchievements = new AssLineAchievements();			
+		mAssemblyAchievements = new AchievementHandler();			
 	}
 	
 	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {
