@@ -100,7 +100,7 @@ public class Meta_GT_Proxy {
 	}
 	
 	public void postInit() {
-		mAssemblyAchievements = new AssLineAchievements();			
+		//mAssemblyAchievements = new AssLineAchievements();			
 	}
 	
 	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {

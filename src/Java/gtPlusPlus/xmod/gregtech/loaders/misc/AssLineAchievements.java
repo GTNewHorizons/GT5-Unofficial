@@ -46,7 +46,8 @@ public class AssLineAchievements {
 				recipeTotal = 0;
 			}
 			mAchievementMap = new ConcurrentHashMap<String, Achievement>();
-			mIssuedAchievementMap = new ConcurrentHashMap<String, Boolean>();			
+			mIssuedAchievementMap = new ConcurrentHashMap<String, Boolean>();	
+			ready = true;
 		}		
 		
 	}
