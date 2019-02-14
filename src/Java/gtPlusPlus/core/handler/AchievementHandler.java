@@ -10,6 +10,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Log;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -37,14 +38,20 @@ public class AchievementHandler {
 
 	public AchievementHandler() {		
 		
+		Logger.INFO("Initializing GT++ achievements");
+		GT_Log.out.println("Initializing GT++ achievements");
+		
 		//register first
 		this.registerAchievement(aBaseAchievementName, 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, Materials.Neutronium, Materials.Osmium, null), "", true);
 	       
 		//Useful Info
-		this.registerAchievement("hatch.control", -2, -2, GregtechItemList.Hatch_Control_Core.get(1), aBaseAchievementName, false);
+		boolean cores = CORE.ConfigSwitches.requireControlCores;
+		if (cores) {
+			this.registerAchievement("hatch.control", -2, -2, GregtechItemList.Hatch_Control_Core.get(1), aBaseAchievementName, false);			
+		}
 		this.registerAchievement("hatch.dynamo.buffered", 2, -2, GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1), aBaseAchievementName, false);
 		//First multi anyone really needs
-		this.registerAchievement("multi.abs", -4, -2, GregtechItemList.Industrial_AlloyBlastSmelter.get(1), "hatch.control", true);
+		this.registerAchievement("multi.abs", -4, -2, GregtechItemList.Industrial_AlloyBlastSmelter.get(1), cores ? "hatch.control" : aBaseAchievementName, true);
 		
 		//Material Advancement
 		this.registerAchievement("dust.potin", 0, 2, ALLOY.POTIN.getDust(1), aBaseAchievementName, false);
@@ -95,8 +102,8 @@ public class AchievementHandler {
 		this.registerAchievement("decay.neptunium238", 11, 8, ItemUtils.getSimpleStack(ModItems.dustNeptunium238), "multi.cyclo", false);
 		this.registerAchievement("decay.radium226", 12, 8, ItemUtils.getSimpleStack(ModItems.dustRadium226), "multi.cyclo", false);
 		this.registerAchievement("decay.molybdenum99", 13, 8, ItemUtils.getSimpleStack(ModItems.dustMolybdenum99), "multi.cyclo", false);
-		this.registerAchievement("decay.technetium99m", 14, 8, ItemUtils.getSimpleStack(ModItems.dustTechnetium99M), "multi.cyclo", true);
-		this.registerAchievement("decay.technetium99", 15, 8, ItemUtils.getSimpleStack(ModItems.dustTechnetium99), "multi.cyclo", true);
+		this.registerAchievement("decay.technetium99m", 14, 8, ItemUtils.getSimpleStack(ModItems.dustTechnetium99M), "multi.cyclo", false);
+		this.registerAchievement("decay.technetium99", 15, 8, ItemUtils.getSimpleStack(ModItems.dustTechnetium99), "multi.cyclo", false);
 		
 		
 		
@@ -195,15 +202,24 @@ public class AchievementHandler {
 				this.issueAchievement(aPlayer, aBaseAchievementName);
 			}
 			
+			if (aUnlocalName.contains("item.")) {
+				aUnlocalName = aUnlocalName.substring(5);
+			}
+			else if (aUnlocalName.contains("tile.")) {
+				aUnlocalName = aUnlocalName.substring(5);
+			}			
+			
+			//Logger.INFO("Picked up "+aUnlocalName);
+			
 			
 			/**
 			 * Misc Blocks
 			 */
 			
-			if (aUnlocalName.equalsIgnoreCase("blockFishTrap")) {
+			if (aUnlocalName.equals("blockFishTrap")) {
 				this.issueAchievement(aPlayer, "block.fishtrap");				
 			}			
-			if (aUnlocalName.equalsIgnoreCase("blockBlackGate")) {
+			if (aUnlocalName.equals("blockBlackGate")) {
 				this.issueAchievement(aPlayer, "block.withercage");				
 			}			
 			
@@ -211,38 +227,38 @@ public class AchievementHandler {
 			/**
 			 * Decayables
 			 */			
-			if (aUnlocalName.equalsIgnoreCase("dustNeptunium238")) {
+			if (aUnlocalName.equals("dustNeptunium238")) {
 				this.issueAchievement(aPlayer, "decay.neptunium238");				
 			}			
-			else if (aUnlocalName.equalsIgnoreCase("dustRadium226")) {
+			else if (aUnlocalName.equals("dustRadium226")) {
 				this.issueAchievement(aPlayer, "decay.radium226");				
 			}			
-			else if (aUnlocalName.equalsIgnoreCase("dustMolybdenum99")) {
+			else if (aUnlocalName.equals("dustMolybdenum99")) {
 				this.issueAchievement(aPlayer, "decay.molybdenum99");				
 			}			
-			else if (aUnlocalName.equalsIgnoreCase("dustTechnetium99M")) {
+			else if (aUnlocalName.equals("dustTechnetium99M")) {
 				this.issueAchievement(aPlayer, "decay.technetium99m");				
 			}			
-			else if (aUnlocalName.equalsIgnoreCase("dustTechnetium99")) {
+			else if (aUnlocalName.equals("dustTechnetium99")) {
 				this.issueAchievement(aPlayer, "decay.technetium99");				
 			}
 
 			/**
 			 * Random Materials worthy of Achievements
 			 */
-			else if (aUnlocalName.equalsIgnoreCase("itemDustPotin")) {
+			else if (aUnlocalName.equals("itemDustPotin")) {
 				this.issueAchievement(aPlayer, "dust.potin");				
 			}
-			else if (aUnlocalName.equalsIgnoreCase("itemDustEglinSteel")) {
+			else if (aUnlocalName.equals("itemDustEglinSteel")) {
 				this.issueAchievement(aPlayer, "dust.eglin");				
 			}
-			else if (aUnlocalName.equalsIgnoreCase("itemDustStaballoy")) {
+			else if (aUnlocalName.equals("itemDustStaballoy")) {
 				this.issueAchievement(aPlayer, "dust.staballoy");				
 			}
-			else if (aUnlocalName.equalsIgnoreCase("itemDustQuantum")) {
+			else if (aUnlocalName.equals("itemDustQuantum")) {
 				this.issueAchievement(aPlayer, "dust.quantum");				
 			}
-			else if (aUnlocalName.equalsIgnoreCase("itemDustHypogen")) {
+			else if (aUnlocalName.equals("itemDustHypogen")) {
 				this.issueAchievement(aPlayer, "dust.hypogen");
 			}
 
@@ -339,18 +355,18 @@ public class AchievementHandler {
 			 * Casings
 			 */
 			
-			else if (aUnlocalName.equalsIgnoreCase("gtplusplus.blockcasings.14")) {
+			else if (aUnlocalName.equals("gtplusplus.blockcasings.14")) {
 				this.issueAchievement(aPlayer, "casing.abs");
 			} 
 			
-			else if (aUnlocalName.equalsIgnoreCase("gtplusplus.blockcasings.2.9")) {
+			else if (aUnlocalName.equals("gtplusplus.blockcasings.2.9")) {
 				this.issueAchievement(aPlayer, "casing.cyclotron.coil");
 			} 
 
-			else if (aUnlocalName.equalsIgnoreCase("gtplusplus.blockcasings.3.2")) {
+			else if (aUnlocalName.equals("gtplusplus.blockcasings.3.2")) {
 				this.issueAchievement(aPlayer, "casing.multiuse");
 			}
-			else if (aUnlocalName.equalsIgnoreCase("gtplusplus.blockcasings.3.15")) {
+			else if (aUnlocalName.equals("gtplusplus.blockcasings.3.15")) {
 				this.issueAchievement(aPlayer, "casing.containment");
 			}
 		}

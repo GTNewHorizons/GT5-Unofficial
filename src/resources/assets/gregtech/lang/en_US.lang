@@ -98,7 +98,73 @@ achievement.item.GTPP.BattPack.09.name.desc=[AL] Pickup this item to see the rec
 
 
 
-
+//14/2/19
+achievement.gtpp.start=Gregtech++
+achievement.gtpp.start.desc=So, think you've got what it takes?
+achievement.hatch.control=This is where you put the Control Core
+achievement.hatch.control.desc=A special hatch required by all GT++ Multiblocks.
+achievement.hatch.dynamo.buffered=Buffered Dynamo Hatch
+achievement.hatch.dynamo.buffered.desc=Don't EVER use these on large turbines.
+achievement.multi.abs=Alloy Blast Smelter [ABS]
+achievement.multi.abs.desc=Used to create most late game alloys.
+achievement.dust.potin=Potin!
+achievement.dust.potin.desc=Well, you gotta start somewhere...
+achievement.dust.eglin=Eglin Steel!
+achievement.dust.eglin.desc=Progress, albeit slow...
+achievement.dust.staballoy=Staballoy!
+achievement.dust.staballoy.desc=Now we're talking...
+achievement.dust.quantum=Quantum!
+achievement.dust.quantum.desc=Raw Matter.
+achievement.dust.hypogen=Hypogen!
+achievement.dust.hypogen.desc=What even is this material?
+achievement.block.fishtrap=Free Fish
+achievement.block.fishtrap.desc=Better than HarvestCraft.
+achievement.block.withercage=Jail
+achievement.block.withercage.desc=Trap a Wither/Dragon with this.
+achievement.rtg=Radioisotope Thermoelectric Generation!
+achievement.rtg.desc=Probably stolen from Russia, use with care.
+achievement.dehydrate=Dehydration
+achievement.dehydrate.desc=Drink some water.
+achievement.semifluid=It's like a fluid, but it's not
+achievement.semifluid.desc=Semifluids are confusing.
+achievement.earlywasher=Simple Ore Washer
+achievement.earlywasher.desc=Runs on ULV only.
+achievement.advancedsteam=Alternative Steam options
+achievement.advancedsteam.desc=Smart fuel consumption
+achievement.pollutionremoval=Pollution, no more!
+achievement.pollutionremoval.desc=POLLUTION IS BAD
+achievement.hiampxform=High Amp Transformers
+achievement.hiampxform.desc=Advanced power transformation
+achievement.multi.pss=Power Sub-Station [PSS]
+achievement.multi.pss.desc=Grid Power Storage.
+achievement.multi.cyclo=Cyclotron
+achievement.multi.cyclo.desc=Advanced Science
+achievement.multi.sifter=Industrial Sifter
+achievement.multi.sifter.desc=Faster than a turtle.
+achievement.multi.cokeoven=Industrial Coke Oven [ICO]
+achievement.multi.cokeoven.desc=Better than a Pyrolyse
+achievement.multi.boiler.thermal=Thermal Boiler
+achievement.multi.boiler.thermal.desc=Pahoehoe works too!
+achievement.multi.zhuhai=Zhuhai, Fishing Port
+achievement.multi.zhuhai.desc=Actually exists
+achievement.casing.abs=Slow Progress
+achievement.casing.abs.desc=Eventually, you will have your ABS.
+achievement.casing.cyclotron.coil=Slower Progress
+achievement.casing.cyclotron.coil.desc=Consider why you're even doing this..
+achievement.casing.multiuse=I'm going to make lots of these
+achievement.casing.multiuse.desc=Don't start counting.
+achievement.casing.containment=What's this for?
+achievement.casing.containment.desc=I should probably try find out.
+achievement.decay.neptunium238=Neptunium 238
+achievement.decay.neptunium238.desc=Cyclotron Product
+achievement.decay.radium226=Radium 226
+achievement.decay.radium226.desc=Cyclotron Product
+achievement.decay.molybdenum99=Molybdenum 99
+achievement.decay.molybdenum99.desc=Cyclotron Product
+achievement.decay.technetium99m=Technetium 99M
+achievement.decay.technetium99m.desc=Cyclotron Product
+achievement.decay.technetium99=Technetium 99
+achievement.decay.technetium99.desc=Cyclotron Product
 
 
 
