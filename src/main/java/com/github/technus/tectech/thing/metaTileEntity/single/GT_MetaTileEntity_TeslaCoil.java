@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
@@ -24,7 +25,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
-    private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
     private Map<IGregTechTileEntity, Integer> eTeslaTowerMap = new HashMap<IGregTechTileEntity, Integer>();
 
     private int histSteps = 20; //Hysteresis Resolution
@@ -101,6 +101,10 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             ItemStack[] var4 = this.mInventory;
             int var5 = var4.length;
 
+            if (aBaseMetaTileEntity.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil && scanTime == 0){
+                System.out.println("I myself feel quite tesla enabled indeed!");
+            }
+
             for (int var6 = 0; var6 < var5; ++var6) {
                 ItemStack tStack = var4[var6];
                 if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
@@ -131,7 +135,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 scanTime = 0;
 
                 scanRadiusTower = 64; //TODO Generate depending on power stored
-                eTeslaTowerList.clear();
                 eTeslaTowerMap.clear();
 
                 for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
@@ -145,10 +148,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 continue;
                             }
                             IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
-                                eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
-                                int distance = (int)Math.ceil(Math.sqrt(xPosOffset*xPosOffset + yPosOffset*yPosOffset + zPosOffset*zPosOffset));
-                                eTeslaTowerMap.put(node,distance);
+                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil)){
+                                eTeslaTowerMap.put(node,(int)Math.ceil(Math.sqrt(xPosOffset*xPosOffset + yPosOffset*yPosOffset + zPosOffset*zPosOffset)));
                             }
                         }
                     }
@@ -166,25 +167,41 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
                 outputEuT = outputVoltage * outputCurrent;
 
-                long requestedSumEU = 0;
+                long requestedSumEU = 0;//TODO Find a use for requestedSumEU
 
-                //Clean the large tesla list
-                for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaTowerList.size()])) {
+                //Clean the node list SMALL INSTANCE REAPING DOESN'T WORK
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
+                    IGregTechTileEntity node = Rx.getKey();
+                    if (node == null) {
+                        eTeslaTowerMap.remove(Rx.getKey());
+                        System.err.println("Dead Tesla Reaped!");
+                        continue;
+                    }
+                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
                     try {
-                        requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
+                        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
+                            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                            requestedSumEU += teslaTower.maxEUStore() - teslaTower.getEUVar();
+                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+                            requestedSumEU += node.getEUCapacity() - node.getStoredEU();
+                        } else {
+                            eTeslaTowerMap.remove(Rx.getKey());
+                            System.err.println("Dead Tesla Reaped!");
+                        }
                     } catch (Exception e) {
-                        eTeslaTowerList.remove(Rx);
+                        eTeslaTowerMap.remove(Rx.getKey());
+                        System.err.println("Dead Tesla Reaped!");
                     }
                 }
 
-                for (IGregTechTileEntity RxRee : eTeslaTowerMap.keySet()) {
-                    GT_MetaTileEntity_TM_teslaCoil Rx = (GT_MetaTileEntity_TM_teslaCoil) RxRee.getMetaTileEntity();
-                    if (!Rx.powerPassToggle) {
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
+                    GT_MetaTileEntity_TM_teslaCoil nodeInside = (GT_MetaTileEntity_TM_teslaCoil) Rx.getKey().getMetaTileEntity();
+                    if (!nodeInside.powerPassToggle) {
                         long euTran = outputVoltage;
-                        if (Rx.getEUVar() + euTran <= (Rx.maxEUStore() / 2)) {
+                        if (nodeInside.getEUVar() + euTran <= (nodeInside.maxEUStore() / 2)) {
                             setEUVar(getEUVar() - euTran);
-                            Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
-                            //System.err.println("Energy Sent!"); Debug energy sent message
+                            nodeInside.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
+                            System.err.println("Energy Sent!");
                         }
                     }
                 }
