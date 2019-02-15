@@ -184,6 +184,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             requestedSumEU += teslaTower.maxEUStore() - teslaTower.getEUVar();
                         } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
                             requestedSumEU += node.getEUCapacity() - node.getStoredEU();
+                            System.err.println("3rd party tesla verified?");
                         } else {
                             eTeslaTowerMap.remove(Rx.getKey());
                             System.err.println("Dead Tesla Reaped!");
