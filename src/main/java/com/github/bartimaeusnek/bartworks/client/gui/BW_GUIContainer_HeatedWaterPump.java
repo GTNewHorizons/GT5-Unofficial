@@ -45,7 +45,7 @@ public class BW_GUIContainer_HeatedWaterPump extends GuiContainer {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        this.drawString(this.fontRendererObj, "Fuel:" + container.fuel + " Water:" + container.water, k, l, 0xffffff);
+//      this.drawString(this.fontRendererObj, "Fuel:" + container.fuel + " Water:" + container.water, k, l, 0xffffff);
 
         if (this.container.fuel > 0) {
             this.mc.getTextureManager().bindTexture(furnaceGuiTextures);

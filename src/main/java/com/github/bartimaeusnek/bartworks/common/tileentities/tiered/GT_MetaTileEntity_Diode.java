@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
@@ -34,19 +35,24 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
-    private long maxAmps;
-    private long aAmps;
+    private long maxAmps = 0L;
+    private long aAmps = 0L;
 
-    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier, int maxAmps) {
+    public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "A Simple diode that will allow Energy Flow in only one direction.");
-        this.maxAmps = maxAmps;
-        aAmps = maxAmps;
     }
 
-    public GT_MetaTileEntity_Diode(String aName, int aTier, long maxAmps, String[] aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        this.maxAmps = maxAmps;
-        aAmps = maxAmps;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
+            maxAmps = getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
+            aAmps=maxAmps;
+        }
     }
 
     @Override
@@ -88,7 +94,22 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.maxAmps, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    private long getAmpsfromMeta(int meta){
+        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*2)
+            return 2L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*2 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*3)
+            return 4L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*3 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*4)
+            return 8L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*4 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*5)
+            return 12L;
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*5 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*6)
+            return 16L;
+        else
+            return 0L;
     }
 
     @SuppressWarnings("deprecation")
