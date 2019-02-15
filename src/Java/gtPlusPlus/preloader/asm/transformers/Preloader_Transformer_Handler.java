@@ -131,6 +131,17 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_Client(basicClass).getByteArray();
 		}*/
+
+		//Make GT packets safer, fill them with debug info.
+		if (transformedName.equals("gregtech.api.net.GT_Packet_TileEntity")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech GT_Packet_TileEntity Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Packet_TileEntity(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		//Make the setting of GT Tiles safer, so as not to crash the client.
+		if (transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech setMetaTileEntity Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_BaseMetaTileEntity(basicClass).getWriter().toByteArray();
+		}
 		
 		
 		
@@ -182,12 +193,10 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		//Fix IC2 Shit	
 		for (String y : aIC2ClassNames) {
 			if (transformedName.equals(y)) {
-				//Fix GT NBT Persistency issue		
 				FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Transforming %s", transformedName);
 				return new ClassTransformer_IC2_GetHarvestTool(basicClass, probablyShouldBeFalse, transformedName).getWriter().toByteArray();			
 			}
-		}		
-
+		}
 		return basicClass;
 	}
 

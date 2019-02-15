@@ -42,7 +42,7 @@ configurations {
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-	testCompile 'junit:junit:4.12'
+	//testCompile 'junit:junit:4.12'
     //fatJar files('libs/Segment-2.1.1.jar')
 }
 
@@ -57,7 +57,7 @@ javadoc.options.encoding = 'UTF-8'
 
 //Jar Info
 archivesBaseName = "GT-PlusPlus"
-version = "1.7.02.75"
+version = "1.7.02.88-debug"
 minecraft.version = "1.7.10-10.13.4.1614-1.7.10"
 
 minecraft {

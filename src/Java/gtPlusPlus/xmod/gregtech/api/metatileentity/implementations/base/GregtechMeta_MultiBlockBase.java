@@ -38,6 +38,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -904,10 +906,15 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
-			final int aBaseCasingIndex) {
+			final int aBaseCasingIndex) {		
+		if (aTileEntity == null) {
+			return false;
+		}		
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());				
+				}
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -920,13 +927,17 @@ GT_MetaTileEntity_MultiBlockBase {
 				BlockPos aPos = new BlockPos(b);
 				if (b != null && aPos != null) {
 					if (aCurPos.equals(aPos)) {
-						log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+							log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						}
 						return false;
 					}
 				}
 			}
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				}
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -1607,7 +1618,9 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 			else if (aFoundBlock != aExpectedBlock) {
 				log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
-				log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+				}
 				return false;
 			}
 			else if (aFoundMeta != aExpectedMeta) {

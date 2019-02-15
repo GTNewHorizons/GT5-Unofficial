@@ -19,7 +19,9 @@ import org.objectweb.asm.MethodVisitor;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -45,6 +47,9 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 		return "wrench";
 	}
 
+	/*
+	 * Used to patch the method in Fluid pipes, Frame Boxes and Item Pipes
+	 */
 	/**
 	 * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
 	 * <p/>
@@ -68,15 +73,20 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 	 * <p/> 
 	 * == Reserved For Alkalus (Was previously used to allow axes on wooden blocks, but that's fucking stupid.)
 	 * <p/>
-	 * 12 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
-	 * 13 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
+	 * 12 = BaseCustomPower_MTE, Wrench lvl 0 to dismantle
+	 * 13 = BaseCustomTileEntity, Wrench lvl 1 to dismantle
 	 * <p/>
-	 * 14 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
-	 * 15 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+	 * 14 = BaseCustomTileEntity, Wrench lvl 2 to dismantle
+	 * 15 = BaseCustomTileEntity, Wrench lvl 3 to dismantle
 	 */
 	public static byte getTileEntityBaseType(Materials mMaterial) {	
-		//FMLRelaunchLog.log("[GT++ ASM] Gregtech getTileEntityBaseType Patch", Level.INFO, "Attempting to call getTileEntityBaseType.");
-		return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+		byte mMetaID;
+		//Modified code that should never return 12-15 for Wooden items.
+		//mMetaID = (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+		//Original Code for debug purposes
+		mMetaID = mMaterial == null ? 4 : (byte) ((mMaterial.contains(SubTag.WOOD) ? 4 : 4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+		//FMLRelaunchLog.log("[GT++ ASM] Gregtech getTileEntityBaseType Patch", Level.INFO, "Attempting to call getTileEntityBaseType. Using Meta: "+mMetaID);
+		return mMetaID;
 	}
 
 
@@ -104,14 +114,14 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 	 * <p/> 
 	 * == Reserved For Alkalus (Was previously used to allow axes on wooden blocks, but that's fucking stupid.)
 	 * <p/>
-	 * 12 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
-	 * 13 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
+	 * 12 = BaseCustomPower_MTE, Wrench lvl 2 to dismantle
+	 * 13 = BaseCustomTileEntity, Wrench lvl 2 to dismantle
 	 * <p/>
-	 * 14 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
-	 * 15 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+	 * 14 = BaseCustomTileEntity, Wrench lvl 3 to dismantle
+	 * 15 = BaseCustomTileEntity, Wrench lvl 3 to dismantle
 	 */
 	public static TileEntity createTileEntity(World aWorld, int aMeta) {
-		//Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
+		Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
 		if (aMeta < 4) {
 			return GregTech_API.constructBaseMetaTileEntity();
 		} else if (aMeta < 12) {
@@ -121,10 +131,19 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 			try {
 				return Meta_GT_Proxy.constructCustomGregtechMetaTileEntityByMeta(aMeta);
 			}
-			catch (ClassCastException c) {
+			catch (Throwable c) {
 				//Returns a pipe entity, once this returns, it should correct itself and no longer error in future.
 				return new BaseMetaPipeEntity();				
 			}
+		}
+	}
+	
+	public static TileEntity createTileEntity_Original(World aWorld, int aMeta) {
+		// Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
+		if (aMeta < 4) {
+			return GregTech_API.constructBaseMetaTileEntity();
+		} else {
+			return new BaseMetaPipeEntity();
 		}
 	}
 
