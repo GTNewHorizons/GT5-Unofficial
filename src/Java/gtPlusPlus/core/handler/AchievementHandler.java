@@ -189,8 +189,14 @@ public class AchievementHandler {
 			
 			
 			boolean isValid = false;			
-			//Check if valid name // mod			
-			if (ItemUtils.getModId(aStack).equals(CORE.MODID) || ItemUtils.getModId(aStack).equalsIgnoreCase("gregtech")) {
+			//Check if valid name // mod
+			String aModID = ItemUtils.getModId(aStack);		
+			
+			if (aModID == null || aModID.length() <= 0 || aModID.isEmpty()) {
+				return;
+			}			
+			
+			if (aModID != null && (ItemUtils.getModId(aStack).equals(CORE.MODID) || ItemUtils.getModId(aStack).equalsIgnoreCase("gregtech"))) {
 				isValid = true;
 			}		
 			if (!isValid) {

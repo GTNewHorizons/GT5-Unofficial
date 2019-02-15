@@ -125,7 +125,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		//Try patch achievements
 		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GT_Achievements_CrashFix(basicClass).getWriter().toByteArray();
+			return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated).getWriter().toByteArray();
 		}
 		/*if (transformedName.equals("gregtech.common.GT_Client")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
