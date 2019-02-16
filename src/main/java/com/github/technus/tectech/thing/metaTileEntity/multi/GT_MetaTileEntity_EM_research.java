@@ -73,7 +73,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
             "1 - Classic/Data Hatches or Computer casing",
-            "2 - Holder ParameterDefinition",
+            "2 - Holder ParameterGroup",
     };
     //endregion
 
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         }
         for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
             if (tRecipe.mFluidInputs[i] != null) {
-                tNBTList.appendTag(new NBTTagString("Input ParameterDefinition " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
+                tNBTList.appendTag(new NBTTagString("Input ParameterGroup " + (i + 1) + ": " + tRecipe.mFluidInputs[i].amount + "L " + GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
             }
         }
         tNBT.setTag("pages", tNBTList);
@@ -382,7 +382,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         s = tRecipe.mFluidInputs[i].getLocalizedName();
                     }
                 }
-                tNBTList.appendTag(new NBTTagString("Input ParameterDefinition "+(i+1)+": "+tRecipe.mFluidInputs[i].amount+"L "+s));
+                tNBTList.appendTag(new NBTTagString("Input ParameterGroup "+(i+1)+": "+tRecipe.mFluidInputs[i].amount+"L "+s));
             }
         }
         tNBT.setTag("pages", tNBTList);

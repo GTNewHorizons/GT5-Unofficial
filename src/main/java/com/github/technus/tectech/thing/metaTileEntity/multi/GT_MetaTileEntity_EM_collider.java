@@ -16,6 +16,8 @@ import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,8 +52,6 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     private static double MASS_TO_EU_PARTIAL,MASS_TO_EU_INSTANT;
     private static int STARTUP_COST,KEEPUP_COST;
-
-    private long plasmaEnergy;
 
     public static void setValues(int heliumPlasmaValue){
         MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
@@ -267,6 +267,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected byte eTier = 0;
     protected cElementalInstanceStack stack;
+    private long plasmaEnergy;
+    public Parameters.ParameterGroup.In mode;
 
     protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
     protected boolean started=false;
@@ -326,6 +328,35 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     public GT_MetaTileEntity_EM_collider(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.ParameterGroup group=parametrization.makeGroup(0,false);
+        mode=group.makeInParameter(0,FUSE_MODE,()->{
+            if(isMaster()){
+                if(mode.get()==FUSE_MODE){
+                    return "Mode: Fuse";
+                }else if(mode.get()==COLLIDE_MODE){
+                    return "Mode: Collide";
+                }
+                return "Mode: Undefined";
+            }
+            return "Currently Slaves...";
+        },()->{
+            if(isMaster()){
+                if (mode.get() == FUSE_MODE || mode.get() == COLLIDE_MODE) {
+                    return STATUS_OK;
+                } else if (mode.get() > 1) {
+                    return STATUS_TOO_HIGH;
+                } else if (mode.get() < 0) {
+                    return STATUS_TOO_LOW;
+                }else{
+                    return STATUS_WRONG;
+                }
+            }
+            return STATUS_UNUSED;
+        });
     }
 
     @Override
@@ -441,16 +472,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         if(isMaster()) {
-            double mode = getParameterIn(0, 0);
-            if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
-                setStatusOfParameterIn(0, 0, STATUS_OK);
-            } else if (mode > 1) {
-                setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-            } else if (mode < 0) {
-                setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-            }else{
-                setStatusOfParameterIn(0,0,STATUS_WRONG);
-            }
+            super.parametersOutAndStatusesWrite_EM(machineBusy);
         }
     }
 
@@ -600,7 +622,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             return;
         }
         if (isMaster()) {
-            switch (getParameterInInt(0,0)){
+            switch ((int)mode.get()){
                 case FUSE_MODE:
                     makeEU(fuse(partner));
                     break;

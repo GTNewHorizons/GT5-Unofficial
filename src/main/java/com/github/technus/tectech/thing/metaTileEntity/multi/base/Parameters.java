@@ -9,12 +9,13 @@ import java.util.function.Supplier;
 public class Parameters {
     private static final Supplier<LedStatus> LED_STATUS_FUNCTION_DEFAULT = ()->LedStatus.STATUS_UNDEFINED;
     private static final int ZERO_FLOAT=Float.floatToIntBits(0);
-    private final ParameterDefinition[] parameterDefinitions =new ParameterDefinition[10];
+
+    final ParameterGroup[] parameterGroups =new ParameterGroup[10];
 
     final int[] iParamsIn = new int[20];//number I from parametrizers
     final int[] iParamsOut = new int[20];//number O to parametrizers
-    final ArrayList<ParameterDefinition.In> inArrayList=new ArrayList<>();
-    final ArrayList<ParameterDefinition.Out> outArrayList=new ArrayList<>();
+    final ArrayList<ParameterGroup.In> inArrayList=new ArrayList<>();
+    final ArrayList<ParameterGroup.Out> outArrayList=new ArrayList<>();
 
     final boolean[] bParamsAreFloats =new boolean[10];
 
@@ -24,9 +25,9 @@ public class Parameters {
 
     Parameters(){}
 
-    void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats){
+    public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats){
         for (int hatch=0;hatch<10;hatch++) {
-            ParameterDefinition p= parameterDefinitions[hatch];
+            ParameterGroup p= parameterGroups[hatch];
             if (p!=null){
                 p.setToDefaults(defaultIn,defaultOut,defaultAreFloats);
             }else{
@@ -69,30 +70,42 @@ public class Parameters {
         setToDefaults(true,true,false);
         inArrayList.clear();
         outArrayList.clear();
-        for(int i = 0; i< parameterDefinitions.length; i++){
-            parameterDefinitions[i]=null;
+        for(int i = 0; i< parameterGroups.length; i++){
+            parameterGroups[i]=null;
         }
+    }
+
+    public ParameterGroup makeGroup(int hatchNo, boolean aParamsDefaultsAreFloats){
+        return new ParameterGroup( hatchNo,  aParamsDefaultsAreFloats);
     }
 
     /**
      * most likely used locally in parametersInstantiation_EM()
      */
-    public class ParameterDefinition {
+    public class ParameterGroup {
         private final boolean bParamsDefaultsAreStoredAsFloats;
         private final int hatchNo;
-        private final In[] in=new In[2];
-        private final Out[] out=new Out[2];
+        final In[] in=new In[2];
+        final Out[] out=new Out[2];
 
-        private ParameterDefinition(int hatchNo, boolean aParamsDefaultsAreFloats){
+        private ParameterGroup(int hatchNo, boolean aParamsDefaultsAreFloats){
             if(hatchNo<0 || hatchNo>=10){
-                throw new IllegalArgumentException("ParameterDefinition id must be in 0 to 9 range");
+                throw new IllegalArgumentException("ParameterGroup id must be in 0 to 9 range");
             }
             this.hatchNo=hatchNo;
             bParamsDefaultsAreStoredAsFloats =aParamsDefaultsAreFloats;
-            parameterDefinitions[hatchNo]=this;
+            parameterGroups[hatchNo]=this;
         }
 
-        private void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats) {
+        public In makeInParameter(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
+            return new In(paramID, defaultValue,name, status);
+        }
+
+        public Out makeOutParameter(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
+            return new Out(paramID, defaultValue, name, status);
+        }
+
+        public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats) {
             if(defaultAreFloats){
                 bParamsAreFloats[hatchNo] = bParamsDefaultsAreStoredAsFloats;
             }
@@ -135,8 +148,10 @@ public class Parameters {
             public final int id;
             public final double defaultValue;
             private final Supplier<LedStatus> status;
+            public Supplier<String> name;
 
-            public Out(int paramID, double defaultValue, Supplier< LedStatus> status){
+            private Out(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
+                this.name=name;
                 this.id=hatchNo+10*paramID;
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");
@@ -193,8 +208,10 @@ public class Parameters {
             public final int id;
             public final double defaultValue;
             private final Supplier<LedStatus> status;
+            public Supplier<String> name;
 
-            public In(int paramID, double defaultValue,Supplier<LedStatus> status){
+            private In(int paramID, double defaultValue,Supplier<String> name,Supplier<LedStatus> status){
+                this.name=name;
                 this.id=hatchNo+10*paramID;
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");

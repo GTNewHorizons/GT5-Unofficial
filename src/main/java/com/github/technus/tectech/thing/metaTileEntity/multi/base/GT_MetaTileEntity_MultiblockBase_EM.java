@@ -453,6 +453,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"I");
+        try{
+            list.add(parametrization.parameterGroups[hatchNo].in[paramID].name.get());
+        }catch (NullPointerException e){
+            list.add("Unused");
+        }
         return list;
     }
 
@@ -470,6 +475,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"O");
+        try{
+            list.add(parametrization.parameterGroups[hatchNo].out[paramID].name.get());
+        }catch (NullPointerException e){
+            list.add("Unused");
+        }
         return list;
     }
 
@@ -730,13 +740,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         if(!machineBusy){
-            for (Parameters.ParameterDefinition.In in : parametrization.inArrayList) {
+            for (Parameters.ParameterGroup.In in : parametrization.inArrayList) {
                 if (in != null) {
                     in.updateStatus();
                 }
             }
         }
-        for (Parameters.ParameterDefinition.Out out : parametrization.outArrayList) {
+        for (Parameters.ParameterGroup.Out out : parametrization.outArrayList) {
             if (out != null) {
                 out.updateStatus();
             }

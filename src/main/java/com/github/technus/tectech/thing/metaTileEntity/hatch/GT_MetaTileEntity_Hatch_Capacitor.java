@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Capacitor(aPlayerInventory, aBaseMetaTileEntity, "Capacitor ParameterDefinition");
+        return new GT_GUIContainer_Capacitor(aPlayerInventory, aBaseMetaTileEntity, "Capacitor ParameterGroup");
     }
 
     @Override

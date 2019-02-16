@@ -53,7 +53,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA + "Hint Details:",
             "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Input ParameterDefinition",
+            "2 - Elemental Input ParameterGroup",
             "3 - Elemental Overflow Hatches or Molecular Casing",
     };
     //endregion

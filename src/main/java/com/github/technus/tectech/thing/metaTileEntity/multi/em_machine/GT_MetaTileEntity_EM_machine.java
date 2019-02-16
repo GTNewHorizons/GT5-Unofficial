@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -31,7 +32,6 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-
     public static final String machine = "EM Machinery";
 
     private Behaviour currentBehaviour;
@@ -376,9 +376,12 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     public static abstract class Behaviour {
         public Behaviour(){}
 
-        public abstract void setOnMachine(){
-
+        public final void setOnMachine(GT_MetaTileEntity_EM_machine te){
+            te.parametrization.ClearDefinitions();
+            parametersInstantiation(te.parametrization);
         }
+
+        public abstract void parametersInstantiation(Parameters parameters);
 
         /**
          * handle parameters pre recipe, and cyclically
@@ -397,22 +400,6 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
          * @return null if recipe should not start, control object to set machine state and start recipe
          */
         public abstract MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters);
-
-        /**
-         * get input param description, only for 4 first hatches
-         * @param baseDescr
-         * @param hatchNo
-         * @param paramID
-         */
-        protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID){}
-
-        /**
-         * get output param description
-         * @param baseDescr
-         * @param hatchNo
-         * @param paramID
-         */
-        protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID){}
     }
 
     @Override

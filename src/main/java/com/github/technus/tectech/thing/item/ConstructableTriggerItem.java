@@ -133,7 +133,7 @@ public final class ConstructableTriggerItem extends Item {
             private final String[] desc=new String[]{
                     EnumChatFormatting.AQUA+"Hint Details:",
                     "1 - Classic Hatches or Heat Proof Casing",
-                    "2 - Muffler ParameterDefinition",
+                    "2 - Muffler ParameterGroup",
                     "3 - Coil blocks"
             };
             //endregion

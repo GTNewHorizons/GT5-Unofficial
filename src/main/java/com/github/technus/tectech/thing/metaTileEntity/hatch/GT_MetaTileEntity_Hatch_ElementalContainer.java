@@ -259,7 +259,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),
-                "Place Overflow ParameterDefinition behind,on top or below",
+                "Place Overflow ParameterGroup behind,on top or below",
                 "to provide overflow protection while this block",
                 "is not attached to multi block.",
                 "Transport range can be extended in straight",
