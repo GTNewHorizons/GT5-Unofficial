@@ -34,7 +34,6 @@ import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -209,55 +208,55 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double ocRatio = getParameterIn(0, 0);
         if (ocRatio < 0) {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else if (ocRatio < 1) {
-            setStatusOfParameterIn(0, 0, STATUS_LOW);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
         } else if (ocRatio == 1) {
-            setStatusOfParameterIn(0, 0, STATUS_OK);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         } else if (ocRatio <= 3) {
-            setStatusOfParameterIn(0, 0, STATUS_HIGH);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
         } else if (Double.isNaN(ocRatio)) {
-            setStatusOfParameterIn(0, 0, STATUS_WRONG);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
         } else {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
+            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
         }
 
         double ovRatio = getParameterIn(0, 1);
         if (ovRatio < 0.7f) {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else if (ovRatio < 0.8f) {
-            setStatusOfParameterIn(0, 1, STATUS_LOW);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
         } else if (ovRatio <= 1.2f) {
-            setStatusOfParameterIn(0, 1, STATUS_OK);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         } else if (ovRatio <= 2) {
-            setStatusOfParameterIn(0, 1, STATUS_HIGH);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
         } else if (Double.isNaN(ovRatio)) {
-            setStatusOfParameterIn(0, 1, STATUS_WRONG);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
         } else {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
+            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
         }
 
         setParameterOut(0, 0, maxCurrentTemp);
         setParameterOut(0, 1, eAvailableData);
 
         if (maxCurrentTemp < -10000) {
-            setStatusOfParameterOut(0, 0, STATUS_TOO_LOW);
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else if (maxCurrentTemp < 0) {
-            setStatusOfParameterOut(0, 0, STATUS_LOW);
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
         } else if (maxCurrentTemp == 0) {
-            setStatusOfParameterOut(0, 0, STATUS_OK);
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         } else if (maxCurrentTemp <= 5000) {
-            setStatusOfParameterOut(0, 0, STATUS_HIGH);
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
         } else {
-            setStatusOfParameterOut(0, 0, STATUS_TOO_HIGH);
+            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
         }
 
         if (!machineBusy) {
-            setStatusOfParameterOut(0, 1, STATUS_NEUTRAL);
+            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
         } else if (eAvailableData <= 0) {
-            setStatusOfParameterOut(0, 1, STATUS_TOO_LOW);
+            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
         } else {
-            setStatusOfParameterOut(0, 1, STATUS_OK);
+            setStatusOfParameterOut(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
         }
     }
 

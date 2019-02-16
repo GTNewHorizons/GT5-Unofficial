@@ -15,7 +15,6 @@ import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -85,27 +84,27 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
         for (int i = 0; i < 10; i++) {
             src = getParameterIn(i, 0);
             if (src <= 0) {
-                setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
-                setStatusOfParameterIn(i, 1, STATUS_NEUTRAL);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
             } else if (src > eInputHatches.size()) {
-                setStatusOfParameterIn(i, 0, STATUS_TOO_HIGH);
-                setStatusOfParameterIn(i, 1, STATUS_NEUTRAL);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
             } else if (Double.isNaN(src)) {
-                setStatusOfParameterIn(i, 0, STATUS_WRONG);
-                setStatusOfParameterIn(i, 1, STATUS_NEUTRAL);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_NEUTRAL);
             } else {
-                setStatusOfParameterIn(i, 0, STATUS_OK);
+                setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 dest = getParameterIn(i, 1);
                 if (dest < 0) {
-                    setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
                 } else if (dest == 0) {
-                    setStatusOfParameterIn(i, 1, STATUS_LOW);
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
                 } else if (dest > eOutputHatches.size()) {
-                    setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
                 } else if (Double.isNaN(dest)) {
-                    setStatusOfParameterIn(i, 1, STATUS_WRONG);
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
                 } else {
-                    setStatusOfParameterIn(i, 1, STATUS_OK);
+                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
                 }
             }
         }

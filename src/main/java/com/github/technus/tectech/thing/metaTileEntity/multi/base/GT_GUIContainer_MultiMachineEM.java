@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL12;
 import java.util.List;
 
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.*;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_UNUSED;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 /**
@@ -201,7 +200,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         }
     }
 
-    private void LEDdrawP(int x, int y, int i, int j, LedStatus status) {
+    private void LEDdrawP(int x, int y, int i, int j, byte status) {
         int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
             case STATUS_WRONG: //fallthrough
