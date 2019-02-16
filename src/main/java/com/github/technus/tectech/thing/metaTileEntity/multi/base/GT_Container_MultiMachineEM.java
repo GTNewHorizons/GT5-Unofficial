@@ -11,8 +11,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
-    public LedStatus[] eParamsInStatus = new LedStatus[20];//unused 0,G ok 1, B too low 2, R too high 3, Y blink dangerous 4,5
-    public LedStatus[] eParamsOutStatus = new LedStatus[20];
+    public byte[] eParamsInStatus = new byte[20];//unused 0,G ok 1, B too low 2, R too high 3, Y blink dangerous 4,5
+    public byte[] eParamsOutStatus = new byte[20];
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
     public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
@@ -118,9 +118,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ICrafting var1 = (ICrafting) crafter;
             int i = 100;
             for (int j = 0; j < eParamsInStatus.length; j++) {
-                var1.sendProgressBarUpdate(this, i++, (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
+                var1.sendProgressBarUpdate(this, i++, eParamsInStatus[j] | eParamsOutStatus[j] << 8);
             }
-            var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
+            var1.sendProgressBarUpdate(this, 120, eCertainMode | eCertainStatus << 8);
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
         }
     }
@@ -132,8 +132,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             return;
         }
         if (par1 >= 100 && par1 < 120) {
-            eParamsInStatus[par1 - 100] = LedStatus.getStatus ((byte) (par2 & 0xff));
-            eParamsOutStatus[par1 - 100] = LedStatus.getStatus ((byte) (par2 >>> 8));
+            eParamsInStatus[par1 - 100] = (byte) (par2 & 0xff);
+            eParamsOutStatus[par1 - 100] = (byte) (par2 >>> 8);
         } else if (par1 == 120) {
             eCertainMode = (byte) (par2 & 0xff);
             eCertainStatus = (byte) (par2 >>> 8);
