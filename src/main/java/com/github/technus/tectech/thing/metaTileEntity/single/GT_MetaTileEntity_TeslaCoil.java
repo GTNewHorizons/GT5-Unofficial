@@ -25,27 +25,32 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
-    private Map<IGregTechTileEntity, Integer> eTeslaTowerMap = new HashMap<IGregTechTileEntity, Integer>();
+    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
 
     private int histSteps = 20; //Hysteresis Resolution
     private int histSettingLow = 3;
     private int histSettingHigh = 15;
     private int histLowLimit = 1; //How low can you configure it?
-    private int histHighLimit = histSteps-1; //How high can you configure it?
+    private int histHighLimit = histSteps - 1; //How high can you configure it?
 
-    private float histLow = (float)histSettingLow/histSteps; //Power pass is disabled if power is under this fraction
-    private float histHigh = (float)histSettingHigh/histSteps; //Power pass is enabled if power is over this fraction
+    private float histLow = (float) histSettingLow / histSteps; //Power pass is disabled if power is under this fraction
+    private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
 
-    private int scanRadiusTower = 64; //Radius for tower to tower transfers
+    private int scanRadius = 32; //Tesla scan radius
+
+    private int transferRadiusTower = 32; //Radius for transceiver to tower transfers
+    private int transferRadiusCover = 16; //Radius for transceiver to cover transfers
+
 
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
 
-    static <K,V extends Comparable<? super V>> SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map) {
-        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<Map.Entry<K,V>>(
-                new Comparator<Map.Entry<K,V>>() {
-                    @Override public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
+    static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
+        SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
+                new Comparator<Map.Entry<K, V>>() {
+                    @Override
+                    public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2) {
                         int res = e1.getValue().compareTo(e2.getValue());
                         return res != 0 ? res : 1; // Special fix to preserve items with equal values
                     }
@@ -67,20 +72,20 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            if (histSettingHigh<histHighLimit) {
+            if (histSettingHigh < histHighLimit) {
                 histSettingHigh++;
             } else {
-                histSettingHigh=histSettingLow+1;
+                histSettingHigh = histSettingLow + 1;
             }
-            histHigh = (float)histSettingHigh/histSteps;
+            histHigh = (float) histSettingHigh / histSteps;
             PlayerChatHelper.SendInfo(aPlayer, "Hysteresis High Changed to " + round(histHigh * 100F) + "%");
         } else {
-            if (histSettingLow>histLowLimit) {
+            if (histSettingLow > histLowLimit) {
                 histSettingLow--;
             } else {
-                histSettingLow=histSettingHigh-1;
+                histSettingLow = histSettingHigh - 1;
             }
-            histLow = (float)histSettingLow/histSteps;
+            histLow = (float) histSettingLow / histSteps;
             PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + round(histLow * 100F) + "%");
         }
     }
@@ -101,10 +106,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             ItemStack[] var4 = this.mInventory;
             int var5 = var4.length;
 
-            if (aBaseMetaTileEntity.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil && scanTime == 0){
-                System.out.println("I myself feel quite tesla enabled indeed!");
-            }
-
             for (int var6 = 0; var6 < var5; ++var6) {
                 ItemStack tStack = var4[var6];
                 if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
@@ -119,8 +120,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             long energyMax = getStoredEnergy()[1];
             long energyStored = getStoredEnergy()[0];
 
-            float energyFrac = (float)energyStored/energyMax;
-            //System.err.println(energyFrac); Debug energy fraction display
+            float energyFrac = (float) energyStored / energyMax;
 
             //ePowerPass hist toggle
             if (!powerPassToggle && energyFrac > histHigh) {
@@ -133,14 +133,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             scanTime++;
             if (scanTime >= scanTimeTill) {
                 scanTime = 0;
+                eTeslaMap.clear();
 
-                scanRadiusTower = 64; //TODO Generate depending on power stored
-                eTeslaTowerMap.clear();
-
-                for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
-                    for (int yPosOffset = -scanRadiusTower; yPosOffset <= scanRadiusTower; yPosOffset++) {
-                        for (int zPosOffset = -scanRadiusTower; zPosOffset <= scanRadiusTower; zPosOffset++) {
-                            if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                for (int xPosOffset = -scanRadius; xPosOffset <= scanRadius; xPosOffset++) {
+                    for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
+                        for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
+                            if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
                                 continue;
                             }
                             IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
@@ -148,16 +146,12 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 continue;
                             }
                             IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil)){
-                                eTeslaTowerMap.put(node,(int)Math.ceil(Math.sqrt(xPosOffset*xPosOffset + yPosOffset*yPosOffset + zPosOffset*zPosOffset)));
+                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
+                                eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));
                             }
                         }
                     }
                 }
-            }
-
-            for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
-                System.out.println("yote @: " + Rx.getValue());
             }
 
             //Stuff to do if ePowerPass
@@ -167,41 +161,45 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
                 outputEuT = outputVoltage * outputCurrent;
 
-                long requestedSumEU = 0;//TODO Find a use for requestedSumEU
+                transferRadiusTower = 32; //TODO generate based on power stored
+                transferRadiusCover = 16; //TODO generate based on power stored
 
-                //Clean the node list SMALL INSTANCE REAPING DOESN'T WORK
-                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
+                //Clean the eTeslaMap
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
                     IGregTechTileEntity node = Rx.getKey();
-                    if (node == null) {
-                        eTeslaTowerMap.remove(Rx.getKey());
-                        System.err.println("Dead Tesla Reaped!");
-                        continue;
-                    }
-                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                    try {
-                        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
-                            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                            requestedSumEU += teslaTower.maxEUStore() - teslaTower.getEUVar();
-                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil)) {
-                            requestedSumEU += node.getEUCapacity() - node.getStoredEU();
-                        } else {
-                            eTeslaTowerMap.remove(Rx.getKey());
-                            System.err.println("Dead Tesla Reaped!");
+                    if (node != null) {
+                        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                        try {
+                            if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
+                                GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                                if (teslaTower.maxEUStore() > 0) {
+                                    continue;
+                                }
+                            } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && node.getEUCapacity() > 0) {
+                                continue;
+                            }
+                        } catch (Exception e) {
                         }
-                    } catch (Exception e) {
-                        eTeslaTowerMap.remove(Rx.getKey());
-                        System.err.println("Dead Tesla Reaped!");
                     }
+                    eTeslaMap.remove(Rx.getKey());
                 }
 
-                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaTowerMap)) {
-                    GT_MetaTileEntity_TM_teslaCoil nodeInside = (GT_MetaTileEntity_TM_teslaCoil) Rx.getKey().getMetaTileEntity();
-                    if (!nodeInside.powerPassToggle) {
-                        long euTran = outputVoltage;
-                        if (nodeInside.getEUVar() + euTran <= (nodeInside.maxEUStore() / 2)) {
+                //Power transfer
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
+                    IGregTechTileEntity node = Rx.getKey();
+                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                    long euTran = outputVoltage;
+                    if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
+                        GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                        if (!nodeTesla.powerPassToggle) {
+                            if (nodeTesla.getEUVar() + euTran <= (nodeTesla.maxEUStore() / 2)) {
+                                setEUVar(getEUVar() - euTran);
+                                node.increaseStoredEnergyUnits(euTran, true);
+                            }
+                        }
+                    } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && Rx.getValue() <= transferRadiusCover){
+                        if (node.injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
                             setEUVar(getEUVar() - euTran);
-                            nodeInside.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
-                            System.err.println("Energy Sent!");
                         }
                     }
                 }

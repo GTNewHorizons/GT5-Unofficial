@@ -54,6 +54,7 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Reactor Simulator registered");
 
         TeslaCoilCover.run();
+        TeslaCoilCoverUltimate.run();
         TecTech.LOGGER.info("Covers Items registered");
 
         ConstructableTriggerItem.run();
