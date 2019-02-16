@@ -30,9 +30,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int scanTimeTill = scanTimeMin; //Set default scan time
     private int scanRadiusMax = 20; //Tesla scan radius
     private int scanRadiusMin = 4; //Tesla scan radius
-    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maixTier - minTier + 1) * (mTier - 1); //Tesla scan actual maximum radius Formula
-    private int scanRadiusLimitBottom = 1; //Configurable Scan range minimum
-    private int scanRadius = scanRadiusLimitTop; // Sets default scan radius first run
+    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maixTier - minTier + 1) * (mTier - 1); //Tesla scan radius Formula
+    private int scanRadiusLimitBottom = 1;
+    private int scanRadius = scanRadiusLimitTop;
     private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
     private int transferRadiusCover = 0; //Radius for transceiver to cover transfers
 
@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private long lossPerBlock = 2; //EU lost per block traveled
     private float energyEfficiencyMax = 0.95F; //Max efficiency
     private float energyEfficiencyMin = 0.75F; //Min efficiency
-    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1) * (mTier - 1); //Energy efficiency Formula
+    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1) * (mTier - 1); //Efficiency Formula
 
     private long outputVoltage = V[mTier]; //Tesla Voltage Output
     private long outputVoltagePostEfficency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
