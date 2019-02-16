@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
+import static com.github.technus.tectech.Util.entriesSortedByValues;
 import static java.lang.Math.round;
 
 
@@ -41,24 +42,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int transferRadiusTower = 32; //Radius for transceiver to tower transfers
     private int transferRadiusCover = 16; //Radius for transceiver to cover transfers
 
-
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
     private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
-
-    static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
-        SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
-                new Comparator<Map.Entry<K, V>>() {
-                    @Override
-                    public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2) {
-                        int res = e1.getValue().compareTo(e2.getValue());
-                        return res != 0 ? res : 1; // Special fix to preserve items with equal values
-                    }
-                }
-        );
-        sortedEntries.addAll(map.entrySet());
-        return sortedEntries;
-    }
 
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
