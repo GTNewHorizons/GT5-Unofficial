@@ -13,6 +13,7 @@ import java.util.Comparator;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 24.12.2017.
@@ -69,33 +70,33 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         te.setParameterOut(2, 1, maxCapacity);// eV/c^2
 
         for(int i=4;i<=9;i++) {
-            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 0, STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 1, STATUS_UNUSED);
         }
         for(int i=1;i<=3;i++) {
-            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 0, STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 1, STATUS_UNUSED);
         }
 
         double RPM = parametersToCheckAndFix[0];
         if (RPM > maxRPM) {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            te.setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
             te.setParameterOut(0, 0, maxRPM);//rpm
             te.setParameterOut(0, 1, maxRCF);//rcf
             check=false;
         } else if (RPM > maxRPM / 3f * 2f) {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+            te.setStatusOfParameterIn(0, 0, STATUS_HIGH);
         } else if (RPM > maxRPM / 3f) {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            te.setStatusOfParameterIn(0, 0, STATUS_OK);
         } else if (RPM > 0) {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+            te.setStatusOfParameterIn(0, 0, STATUS_LOW);
         } else if (RPM <= 0) {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            te.setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
             te.setParameterOut(0, 0, 0);//rpm
             te.setParameterOut(0, 1, 0);//rcf
             check=false;
         } else {
-            te.setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            te.setStatusOfParameterIn(0, 0, STATUS_WRONG);
             te.setParameterOut(0, 0, 0);//rpm
             te.setParameterOut(0, 1, 0);//rcf
             check=false;
@@ -109,16 +110,16 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         double fractionCount = parametersToCheckAndFix[1];
         if (fractionCount > 6) {
             parametersToCheckAndFix[1] = 6;
-            te.setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            te.setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
             check=false;
         } else if (fractionCount >= 2) {
-            te.setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            te.setStatusOfParameterIn(0, 1, STATUS_OK);
         } else if (fractionCount < 2) {
             parametersToCheckAndFix[1] = 2;
-            te.setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            te.setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
             check=false;
         } else {
-            te.setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            te.setStatusOfParameterIn(0, 1, STATUS_WRONG);
             check=false;
         }
 

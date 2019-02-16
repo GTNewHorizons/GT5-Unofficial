@@ -105,12 +105,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private final int[] iParamsOut = new int[20];//number O to parametrizers
     private final boolean[] bParamsAreFloats = new boolean[10];
 
-    final byte[] eParamsInStatus = new byte[20];//LED status for I
-    final byte[] eParamsOutStatus = new byte[20];//LED status for O
-    public static final byte STATUS_UNUSED =7, STATUS_NEUTRAL = 0,
-            STATUS_TOO_LOW = 1,  STATUS_LOW = 2,
-            STATUS_WRONG = 3,    STATUS_OK = 4,
-            STATUS_TOO_HIGH = 5, STATUS_HIGH = 6;
+    final LedStatus[] eParamsInStatus = new LedStatus[20];//LED status for I
+    final LedStatus[] eParamsOutStatus = new LedStatus[20];//LED status for O
     // 0,2,4,6 - ok
     //  1,3,5  - nok
 
@@ -699,11 +695,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //    return false;
     //}
 
-    public final void setStatusOfParameterIn(int hatchNo, int paramID, byte status){
+    public final void setStatusOfParameterIn(int hatchNo, int paramID, LedStatus status){
         eParamsInStatus[hatchNo+10*paramID]=status;
     }
 
-    public final void setStatusOfParameterOut(int hatchNo, int paramID, byte status){
+    public final void setStatusOfParameterOut(int hatchNo, int paramID, LedStatus status){
         eParamsOutStatus[hatchNo+10*paramID]=status;
     }
 
@@ -965,13 +961,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         NBTTagCompound paramIs = new NBTTagCompound();
         for (int i = 0; i < eParamsInStatus.length; i++) {
-            paramIs.setByte(Integer.toString(i), eParamsInStatus[i]);
+            paramIs.setByte(Integer.toString(i), eParamsInStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsInS", paramIs);
 
         NBTTagCompound paramOs = new NBTTagCompound();
         for (int i = 0; i < eParamsOutStatus.length; i++) {
-            paramOs.setByte(Integer.toString(i), eParamsOutStatus[i]);
+            paramOs.setByte(Integer.toString(i), eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
     }
@@ -1055,12 +1051,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         NBTTagCompound paramIs = aNBT.getCompoundTag("eParamsInS");
         for (int i = 0; i < eParamsInStatus.length; i++) {
-            eParamsInStatus[i] = paramIs.getByte(Integer.toString(i));
+            eParamsInStatus[i] = LedStatus.getStatus(paramIs.getByte(Integer.toString(i)));
         }
 
         NBTTagCompound paramOs = aNBT.getCompoundTag("eParamsOutS");
         for (int i = 0; i < eParamsOutStatus.length; i++) {
-            eParamsOutStatus[i] = paramOs.getByte(Integer.toString(i));
+            eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
     }
 

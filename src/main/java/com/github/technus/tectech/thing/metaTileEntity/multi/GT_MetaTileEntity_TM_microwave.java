@@ -28,6 +28,7 @@ import java.util.HashSet;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.loader.MainLoader.microwaving;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
 /**
@@ -221,28 +222,28 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         double powerParameter = getParameterIn(0, 0);
         if (powerParameter < 300) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
         } else if (powerParameter < 1000) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+            setStatusOfParameterIn(0, 0, STATUS_LOW);
         } else if (powerParameter == 1000) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            setStatusOfParameterIn(0, 0, STATUS_OK);
         } else if (powerParameter == Double.POSITIVE_INFINITY) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
         } else if (Double.isNaN(powerParameter)) {
-            setStatusOfParameterIn(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            setStatusOfParameterIn(0, 0, STATUS_WRONG);
         } else {
-            setStatusOfParameterOut(0, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+            setStatusOfParameterOut(0, 0, STATUS_HIGH);
         }
 
         double timerParameter = getParameterIn(0, 1);
         if (timerParameter <= 1) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
         } else if (timerParameter <= 3000) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            setStatusOfParameterIn(0, 1, STATUS_OK);
         } else if (Double.isNaN(timerParameter)) {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            setStatusOfParameterIn(0, 1, STATUS_WRONG);
         } else {
-            setStatusOfParameterIn(0, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
         }
 
         setParameterOut(0, 0, timerValue);

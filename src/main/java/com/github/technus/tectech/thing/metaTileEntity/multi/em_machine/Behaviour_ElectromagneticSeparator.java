@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockCont
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.CommonValues.V;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 24.12.2017.
@@ -95,79 +96,79 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
         te.setParameterOut(0,0,precisionFull);
         te.setParameterOut(0,1,precisionMinimal);
         te.setParameterOut(1,0,offsetMax);
-        te.setStatusOfParameterOut(1,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        te.setStatusOfParameterOut(1,1,STATUS_UNUSED);
         te.setParameterOut(2,0,maxCharge);
         te.setParameterOut(2,1,maxCapacity);
         te.setParameterOut(3,0,V[tier]);
         te.setParameterOut(3,1,ticks);
 
         for(int i=4;i<=9;i++) {
-            te.setStatusOfParameterOut(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterOut(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 0, STATUS_UNUSED);
+            te.setStatusOfParameterOut(i, 1, STATUS_UNUSED);
         }
-        te.setStatusOfParameterIn(1, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+        te.setStatusOfParameterIn(1, 1, STATUS_UNUSED);
         for(int i=2;i<=3;i++) {
-            te.setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
-            te.setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 0, STATUS_UNUSED);
+            te.setStatusOfParameterIn(i, 1, STATUS_UNUSED);
         }
 
         double full=parametersToCheckAndFix[0];
         if(Double.isInfinite(full) && full>0) {
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            te.setStatusOfParameterIn(0,0,STATUS_TOO_HIGH);
             check=false;
         }else if(full>precisionFull){
-            te.setStatusOfParameterIn(0,0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+            te.setStatusOfParameterIn(0,0, STATUS_HIGH);
         }else if(full==precisionFull){
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            te.setStatusOfParameterIn(0,0,STATUS_OK);
         }else if(full<precisionFull){
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            te.setStatusOfParameterIn(0,0,STATUS_TOO_LOW);
             check=false;
         }else {
-            te.setStatusOfParameterIn(0,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            te.setStatusOfParameterIn(0,0,STATUS_WRONG);
             check=false;
         }
 
         double minimal=parametersToCheckAndFix[1];
         if(Double.isInfinite(minimal) && minimal>0) {
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            te.setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
             check=false;
         }else if(minimal>precisionMinimal){
             if(minimal>full){
-                te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                te.setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
                 check=false;
             }else {
-                te.setStatusOfParameterIn(0,1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+                te.setStatusOfParameterIn(0,1, STATUS_HIGH);
             }
         }else if(minimal==precisionMinimal){
             if(minimal>full){
-                te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                te.setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
                 check=false;
             }else {
-                te.setStatusOfParameterIn(0,1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                te.setStatusOfParameterIn(0,1, STATUS_OK);
             }
         }else if(minimal<precisionMinimal){
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            te.setStatusOfParameterIn(0,1,STATUS_TOO_LOW);
             check=false;
         }else {
-            te.setStatusOfParameterIn(0,1,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            te.setStatusOfParameterIn(0,1,STATUS_WRONG);
             check=false;
         }
 
         double offset=parametersToCheckAndFix[2];
         if(offset>offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+            te.setStatusOfParameterIn(1,0,STATUS_TOO_HIGH);
             check=false;
         }else if(offset>0){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_HIGH);
+            te.setStatusOfParameterIn(1,0,STATUS_HIGH);
         }else if(offset==0){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+            te.setStatusOfParameterIn(1,0,STATUS_OK);
         }else if(offset>=-offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+            te.setStatusOfParameterIn(1,0,STATUS_LOW);
         }else if(offset<-offsetMax){
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+            te.setStatusOfParameterIn(1,0,STATUS_TOO_LOW);
             check=false;
         }else {
-            te.setStatusOfParameterIn(1,0,GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+            te.setStatusOfParameterIn(1,0,STATUS_WRONG);
             check=false;
         }
 
