@@ -143,6 +143,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    public void onRemoval(){}//Literally stops this machine from exploding if you break it with some power left, it doesn't deal with any EM ffs
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_WH");
