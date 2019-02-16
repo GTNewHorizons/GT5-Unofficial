@@ -57,8 +57,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int transferRadiusTransceiver = 16; //Radius for tower to transceiver transfers
     private int transferRadiusCoverUltimate = 16; //Radius for tower to ultimate cover transfers
 
-    private long outputVoltage = 512; //Tesla Voltage Output
-    private long outputCurrent = 1; //Tesla Current Output
+    private long outputVoltage = 0; //Tesla Voltage Output
+    private long outputCurrent = 0; //Tesla Current Output
 
     public boolean powerPassToggle = false; //Power Pass for public viewing
 

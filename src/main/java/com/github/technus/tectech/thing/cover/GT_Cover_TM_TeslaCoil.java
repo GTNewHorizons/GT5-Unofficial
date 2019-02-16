@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.cover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 import static ic2.api.info.Info.DMG_ELECTRIC;
