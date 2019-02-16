@@ -44,7 +44,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
-    private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
 
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
@@ -145,13 +144,11 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 outputVoltage = 512;//TODO Set Depending On Tier
                 outputCurrent = 1;//TODO Generate depending on count of batteries
 
-                outputEuT = outputVoltage * outputCurrent;
-
                 transferRadiusTower = 32; //TODO generate based on power stored
                 transferRadiusCover = 16; //TODO generate based on power stored
 
                 //Clean the eTeslaMap
-                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
                     IGregTechTileEntity node = Rx.getKey();
                     if (node != null) {
                         IMetaTileEntity nodeInside = node.getMetaTileEntity();
@@ -167,6 +164,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                         } catch (Exception e) {
                         }
                     }
+                    System.out.println("Something just got purged!");
                     eTeslaMap.remove(Rx.getKey());
                 }
 
@@ -183,8 +181,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                 node.increaseStoredEnergyUnits(euTran, true);
                             }
                         }
-                    } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && Rx.getValue() <= transferRadiusCover){
-                        if (node.injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
+                    } else if ((node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil) && Rx.getValue() <= transferRadiusCover){
+                        if (node.injectEnergyUnits((byte)1, euTran, 1L) > 0L) {
                             setEUVar(getEUVar() - euTran);
                         }
                     }

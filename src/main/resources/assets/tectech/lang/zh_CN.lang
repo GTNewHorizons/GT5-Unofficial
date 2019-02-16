@@ -6,9 +6,6 @@ item.em.definitionContainer.name=EM配方指引
 item.em.debugBuilder.name=多方块机器蓝图
 item.em.parametrizerMemoryCard.name=参量机记忆卡
 
-item.tm.teslaCoilCover.name=Tesla Coil Cover
-item.tm.teslaCoilCoverUltimate=Tesla Coil Cover Rich Edition
-
 death.attack.microwaving=%1$s 被辐射脱水
 death.attack.microwaving.player=%1$s 在与 %2$s 战斗中被辐射脱水
 

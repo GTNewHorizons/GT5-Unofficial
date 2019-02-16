@@ -31,10 +31,6 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.E;
 
-/**
- * Created by danie_000 on 17.12.2016.
- * edited by Bass on like 2018-02-05
- */
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {//TODO Add capacitors
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -55,7 +51,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private float histLowLimit = 0.05F; //How low can you configure it?
     private float histHighLimit = 0.95F; //How high can you configure it?
 
-    private int scanRadius = 64; //Tesla scan radius
+    private int scanRadius = 32; //Tesla scan radius
 
     private int transferRadiusTower = 32; //Radius for tower to tower transfers
     private int transferRadiusTransceiver = 16; //Radius for tower to transceiver transfers
@@ -63,7 +59,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
     private long outputVoltage = 512; //Tesla Voltage Output
     private long outputCurrent = 1; //Tesla Current Output
-    private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
 
     public boolean powerPassToggle = false; //Power Pass for public viewing
 
@@ -384,8 +379,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             outputCurrent = outputCurrentParam;
             }
 
-            outputEuT = outputVoltage * outputCurrent;
-
             transferRadiusTower = 32; //TODO generate based on power stored
             transferRadiusTransceiver = 16; //TODO generate based on power stored
             transferRadiusCoverUltimate = 16; //TODO generate based on power stored
@@ -403,7 +396,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
 
             //Clean the eTeslaMap
-            for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
+            for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
                 IGregTechTileEntity node = Rx.getKey();
                 if (node != null) {
                     IMetaTileEntity nodeInside = node.getMetaTileEntity();
@@ -424,6 +417,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                     } catch (Exception e) {
                     }
                 }
+                System.out.println("Something just got purged!");
                 eTeslaMap.remove(Rx.getKey());
             }
 
@@ -448,8 +442,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                             setEUVar(getEUVar() - euTran);
                         }
                     }
-                } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate){
-                    if (node.injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
+                } else if ((node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate){
+                    if (node.injectEnergyUnits((byte)1, euTran, 1L) > 0L) {
                         setEUVar(getEUVar() - euTran);
                     }
                 }
