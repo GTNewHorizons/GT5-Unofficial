@@ -127,7 +127,7 @@ public final class ParametrizerMemoryCard extends Item {
 
         int temp;
         if(tNBT!=null && tNBT.hasKey("param")) {
-            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+            aList.add("ParameterDefinition ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
             temp=tNBT.getInteger("value0i");
             aList.add("Value 0|I: "+EnumChatFormatting.AQUA + temp);
             aList.add("Value 0|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));

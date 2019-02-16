@@ -106,8 +106,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         if (mTileEntity.isClientSide() || mTileEntity.getMetaTileEntity() == null || eParamsInStatus == null) {
             return;
         }
-        eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsInStatus;
-        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eParamsOutStatus;
+        eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsInStatus;
+        eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsOutStatus;
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
         eCertainStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainStatus;
         ePowerPass = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).ePowerPass;

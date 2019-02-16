@@ -94,7 +94,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_Holder(aPlayerInventory, aBaseMetaTileEntity, "Holder Hatch");
+        return new GT_GUIContainer_Holder(aPlayerInventory, aBaseMetaTileEntity, "Holder ParameterDefinition");
     }
 
     @Override

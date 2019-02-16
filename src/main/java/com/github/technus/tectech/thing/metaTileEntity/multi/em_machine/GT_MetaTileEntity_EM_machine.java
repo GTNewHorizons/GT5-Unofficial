@@ -376,6 +376,10 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     public static abstract class Behaviour {
         public Behaviour(){}
 
+        public abstract void setOnMachine(){
+
+        }
+
         /**
          * handle parameters pre recipe, and cyclically
          * this shouldn't write to input parameters! only to the provided array and/or output parameters

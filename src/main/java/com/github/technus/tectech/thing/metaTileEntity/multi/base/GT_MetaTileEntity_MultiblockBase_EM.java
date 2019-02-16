@@ -95,20 +95,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
-    //endregion
-
-    //region PARAMETERS! GO AWAY and use proper get/set methods
-    // 0 and 10 are from first parametrizer
-    // 1 and 11 are from second etc...
-
-    private final int[] iParamsIn = new int[20];//number I from parametrizers
-    private final int[] iParamsOut = new int[20];//number O to parametrizers
-    private final boolean[] bParamsAreFloats = new boolean[10];
-
-    final LedStatus[] eParamsInStatus = new LedStatus[20];//LED status for I
-    final LedStatus[] eParamsOutStatus = new LedStatus[20];//LED status for O
-    // 0,2,4,6 - ok
-    //  1,3,5  - nok
+    //region parameters
+    public final Parameters parametrization;
 
     //endregion
 
@@ -164,12 +152,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        parametersLoadDefault_EM();
+        parametrization=new Parameters();
+        parametersInstantiation_EM();
+        parametrization.setToDefaults(true,true,true);
     }
 
     protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
-        parametersLoadDefault_EM();
+        parametrization=new Parameters();
+        parametersInstantiation_EM();
+        parametrization.setToDefaults(true,true,true);
     }
 
     //region SUPER STRUCT
@@ -631,80 +623,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //endregion
 
-    //region PARAMETERS AND STATUSES - actually use it to work with parameters in other overrides
-
-    public final boolean setParameterPairIn_ClearOut(int hatchNo, boolean usesFloats, double value0, double value1) {
-        if (mMaxProgresstime > 0) {
-            return false;
-        }
-        bParamsAreFloats[hatchNo] = usesFloats;
-        if (usesFloats) {
-            iParamsIn[hatchNo] = Float.floatToIntBits((float) value0);
-            iParamsIn[hatchNo + 10] = Float.floatToIntBits((float) value1);
-        } else {
-            iParamsIn[hatchNo] = (int) value0;
-            iParamsIn[hatchNo + 10] = (int) value1;
-        }
-        iParamsOut[hatchNo] = 0;
-        iParamsOut[hatchNo + 10] = 0;
-        return true;
-    }
-
-    public final boolean isParametrizerUsingFloat(int hatchNo){
-        return bParamsAreFloats[hatchNo];
-    }
-
-    public final double getParameterIn(int hatchNo, int paramID){
-        return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]):iParamsIn[hatchNo+10*paramID];
-    }
-
-    public final int getParameterInInt(int hatchNo, int paramID){
-        if(bParamsAreFloats[hatchNo]) {
-            return (int) Float.intBitsToFloat(iParamsIn[hatchNo + 10 * paramID]);
-        }
-        return iParamsIn[hatchNo+10*paramID];
-    }
-
-    //public final int getParameterInIntRaw(int hatchNo, int paramID){
-    //    return iParamsIn[hatchNo+10*paramID];
-    //}
-
-    //public final float getParameterInFloatRaw(int hatchNo, int paramID){
-    //    return Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]);
-    //}
-
-    public final void setParameterOut(int hatchNo, int paramID, double value){
-        if(bParamsAreFloats[hatchNo]) {
-            iParamsOut[hatchNo+10*paramID]=Float.floatToIntBits((float) value);
-        }else{
-            iParamsOut[hatchNo+10*paramID]=(int)value;
-        }
-    }
-
-    //public final boolean setParameterOutInt(int hatchNo, int paramID, int value){
-    //    if(bParamsAreFloats[hatchNo]) return false;
-    //    iParamsOut[hatchNo+10*paramID]=value;
-    //    return true;
-    //}
-
-    //public final boolean setParameterOutFloat(int hatchNo, int paramID, float value){
-    //    if(bParamsAreFloats[hatchNo]) {
-    //        iParamsOut[hatchNo + 10 * paramID] = Float.floatToIntBits(value);
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    public final void setStatusOfParameterIn(int hatchNo, int paramID, LedStatus status){
-        eParamsInStatus[hatchNo+10*paramID]=status;
-    }
-
-    public final void setStatusOfParameterOut(int hatchNo, int paramID, LedStatus status){
-        eParamsOutStatus[hatchNo+10*paramID]=status;
-    }
-
-    //endregion
-
     //region Methods to maybe override (if u implement certain stuff)
 
     /**
@@ -787,30 +705,43 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * loads default parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
+     * instantiate parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
      */
-    protected void parametersLoadDefault_EM(){
-        //load default parameters with setParameterPairIn_ClearOut
-    }
+    protected void parametersInstantiation_EM(){}
 
     /**
-     * This is called automatically when there was parameters data update, copy it to your variables for safe storage
-     * although the base code only downloads the values from parametrizers when machines is NOT OPERATING
+     * This is called automatically when there was IN parameters data update and machine IS RUNNING
+     * although the base code only downloads the IN values from parametrizers when machine is NOT OPERATING
      *
-     * good place to get Parameters
+     * this can be used to update the IN values on the fly when machine is running to affect the current process
+     *
      */
-    protected void parametersInRead_EM(){}
+    protected void parametersInReadWhileActive_EM() {
+    }
 
     /**
      * It is automatically called OFTEN
      * update status of parameters in guis (and "machine state" if u wish)
-     * Called before check recipe, before outputting, and every second the machine is active
+     * Called before check recipe, before outputting, and every second the machine is complete
      *
-     * good place for set Parameters
+     * good place to update parameter statuses, default implementation handles it well
      *
      * @param machineBusy is machine doing SHIT
      */
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy){}
+    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+        if(!machineBusy){
+            for (Parameters.ParameterDefinition.In in : parametrization.inArrayList) {
+                if (in != null) {
+                    in.updateStatus();
+                }
+            }
+        }
+        for (Parameters.ParameterDefinition.Out out : parametrization.outArrayList) {
+            if (out != null) {
+                out.updateStatus();
+            }
+        }
+    }
 
     /**
      * For extra types of hatches initiation, LOOK HOW IT IS CALLED! in onPostTick
@@ -942,32 +873,32 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
 
         NBTTagCompound paramI = new NBTTagCompound();
-        for (int i = 0; i < iParamsIn.length; i++) {
-            paramI.setInteger(Integer.toString(i), iParamsIn[i]);
+        for (int i = 0; i < parametrization.iParamsIn.length; i++) {
+            paramI.setInteger(Integer.toString(i), parametrization.iParamsIn[i]);
         }
         aNBT.setTag("eParamsIn", paramI);
 
         NBTTagCompound paramO = new NBTTagCompound();
-        for (int i = 0; i < iParamsOut.length; i++) {
-            paramO.setInteger(Integer.toString(i), iParamsOut[i]);
+        for (int i = 0; i < parametrization.iParamsOut.length; i++) {
+            paramO.setInteger(Integer.toString(i), parametrization.iParamsOut[i]);
         }
         aNBT.setTag("eParamsOut", paramO);
 
         NBTTagCompound paramB = new NBTTagCompound();
-        for (int i = 0; i < bParamsAreFloats.length; i++) {
-            paramB.setBoolean(Integer.toString(i), bParamsAreFloats[i]);
+        for (int i = 0; i < parametrization.bParamsAreFloats.length; i++) {
+            paramB.setBoolean(Integer.toString(i), parametrization.bParamsAreFloats[i]);
         }
         aNBT.setTag("eParamsB", paramB);
 
         NBTTagCompound paramIs = new NBTTagCompound();
-        for (int i = 0; i < eParamsInStatus.length; i++) {
-            paramIs.setByte(Integer.toString(i), eParamsInStatus[i].getOrdinalByte());
+        for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+            paramIs.setByte(Integer.toString(i), parametrization.eParamsInStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsInS", paramIs);
 
         NBTTagCompound paramOs = new NBTTagCompound();
-        for (int i = 0; i < eParamsOutStatus.length; i++) {
-            paramOs.setByte(Integer.toString(i), eParamsOutStatus[i].getOrdinalByte());
+        for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
+            paramOs.setByte(Integer.toString(i), parametrization.eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
     }
@@ -1035,28 +966,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
 
         NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
-        for (int i = 0; i < iParamsIn.length; i++) {
-            iParamsIn[i] = paramI.getInteger(Integer.toString(i));
+        for (int i = 0; i < parametrization.iParamsIn.length; i++) {
+            parametrization.iParamsIn[i] = paramI.getInteger(Integer.toString(i));
         }
 
         NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
-        for (int i = 0; i < iParamsOut.length; i++) {
-            iParamsOut[i] = paramO.getInteger(Integer.toString(i));
+        for (int i = 0; i < parametrization.iParamsOut.length; i++) {
+            parametrization.iParamsOut[i] = paramO.getInteger(Integer.toString(i));
         }
 
         NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
-        for (int i = 0; i < bParamsAreFloats.length; i++) {
-            bParamsAreFloats[i] = paramB.getBoolean(Integer.toString(i));
+        for (int i = 0; i < parametrization.bParamsAreFloats.length; i++) {
+            parametrization.bParamsAreFloats[i] = paramB.getBoolean(Integer.toString(i));
         }
 
         NBTTagCompound paramIs = aNBT.getCompoundTag("eParamsInS");
-        for (int i = 0; i < eParamsInStatus.length; i++) {
-            eParamsInStatus[i] = LedStatus.getStatus(paramIs.getByte(Integer.toString(i)));
+        for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+            parametrization.eParamsInStatus[i] = LedStatus.getStatus(paramIs.getByte(Integer.toString(i)));
         }
 
         NBTTagCompound paramOs = aNBT.getCompoundTag("eParamsOutS");
-        for (int i = 0; i < eParamsOutStatus.length; i++) {
-            eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
+        for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
+            parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
     }
 
@@ -1235,7 +1166,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * callback for updating parameters, change this if u really need dynamic (inside recipe time) parameter updates
+     * callback for updating parameters and new hatches
      */
     protected void hatchesStatusUpdate_EM() {
         boolean busy=mMaxProgresstime>0;
@@ -1245,29 +1176,29 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     continue;
                 }
                 int paramID = hatch.param;
-                if(bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
-                    hatch.input0i = iParamsOut[paramID];
-                    hatch.input1i = iParamsOut[paramID + 10];
+                if(parametrization.bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
+                    hatch.input0i = parametrization.iParamsOut[paramID];
+                    hatch.input1i = parametrization.iParamsOut[paramID + 10];
                 }else if(hatch.isUsingFloats()){
-                    hatch.input0i = Float.floatToIntBits((float)iParamsOut[paramID]);
-                    hatch.input1i = Float.floatToIntBits((float)iParamsOut[paramID + 10]);
+                    hatch.input0i = Float.floatToIntBits((float)parametrization.iParamsOut[paramID]);
+                    hatch.input1i = Float.floatToIntBits((float)parametrization.iParamsOut[paramID + 10]);
                 }else {
-                    hatch.input0i = (int)Float.intBitsToFloat(iParamsOut[paramID]);
-                    hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
+                    hatch.input0i = (int)Float.intBitsToFloat(parametrization.iParamsOut[paramID]);
+                    hatch.input1i = (int)Float.intBitsToFloat(parametrization.iParamsOut[paramID + 10]);
                 }
             }
-            parametersInRead_EM();
+            parametersInReadWhileActive_EM();
         } else {//if has nothing to do update all
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
                     continue;
                 }
                 int paramID = hatch.param;
-                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
-                iParamsIn[paramID] = hatch.value0i;
-                iParamsIn[paramID + 10] = hatch.value1i;
-                hatch.input0i = iParamsOut[paramID];
-                hatch.input1i = iParamsOut[paramID + 10];
+                parametrization.bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                parametrization.iParamsIn[paramID] = hatch.value0i;
+                parametrization.iParamsIn[paramID + 10] = hatch.value1i;
+                hatch.input0i = parametrization.iParamsOut[paramID];
+                hatch.input1i = parametrization.iParamsOut[paramID + 10];
             }
         }
         for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches) {
@@ -1479,7 +1410,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                             hatch.getBaseMetaTileEntity().setActive(true);
                             if(hatch.param>=0) {
-                                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                                parametrization.bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
                             }
                         }
                     }

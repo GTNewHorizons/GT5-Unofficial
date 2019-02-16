@@ -52,7 +52,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
             "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Input Hatch",
+            "2 - Elemental Input ParameterDefinition",
             "3 - Elemental Overflow Hatches or Elemental Casing",
             "General - Some sort of Essentia Storage",
     };

@@ -210,7 +210,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    protected void parametersInRead_EM() {
+    protected void parametersInReadWhileActive_EM() {
         powerSetting = (int) getParameterIn(0, 0);
         timerSetting = (int) getParameterIn(0, 1);
     }

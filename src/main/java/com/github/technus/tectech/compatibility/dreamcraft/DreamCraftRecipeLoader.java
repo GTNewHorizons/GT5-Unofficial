@@ -716,7 +716,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         Materials.SolderingAlloy.getMolten(9216)},
                 ItemList.Field_Generator_UEV.get(1L), 4000, 800000);
 
-        //UHV Energy Hatch
+        //UHV Energy ParameterDefinition
         TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Energy_UV.get(1L),
                 24000, 16, 50000, 2,  new Object[]{
                         ItemList.Hull_MAX.get(1L),
