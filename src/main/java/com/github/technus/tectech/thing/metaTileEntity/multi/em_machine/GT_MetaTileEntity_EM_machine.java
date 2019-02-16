@@ -25,6 +25,7 @@ import java.util.HashMap;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -286,37 +287,37 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             for (int i = 4; i <= 6; i++) {
                 pointer = getParameterInInt(i, 0);
                 if (Double.isNaN(pointer)) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                    setStatusOfParameterIn(i, 0, STATUS_WRONG);
                 } else if (pointer <= 0) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                    setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
                 }//else if(pointer==0)
                 //    setStatusOfParameterIn(i,0,STATUS_LOW);
                 else if (pointer <= eInputHatches.size()) {
                     if (checkArray.get(pointer)) {
-                        setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                        setStatusOfParameterIn(i, 0, STATUS_WRONG);
                     } else {
-                        setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                        setStatusOfParameterIn(i, 0, STATUS_OK);
                         checkArray.set(pointer);
                     }
                 } else {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                    setStatusOfParameterIn(i, 0, STATUS_TOO_HIGH);
                 }
                 pointer = getParameterInInt(i, 1);
                 if (Double.isNaN(pointer)) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                    setStatusOfParameterIn(i, 1, STATUS_WRONG);
                 } else if (pointer < 0) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                    setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
                 } else if (pointer == 0) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                    setStatusOfParameterIn(i, 1, STATUS_LOW);
                 } else if (pointer <= eInputHatches.size()) {
                     if (checkArray.get(pointer)) {
-                        setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                        setStatusOfParameterIn(i, 1, STATUS_WRONG);
                     } else {
-                        setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                        setStatusOfParameterIn(i, 1, STATUS_OK);
                         checkArray.set(pointer);
                     }
                 } else {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                    setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
                 }
             }
         }
@@ -324,27 +325,27 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
             for (int i = 7; i <= 9; i++) {
                 pointer = getParameterInInt(i, 0);
                 if (Double.isNaN(pointer)) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                    setStatusOfParameterIn(i, 0, STATUS_WRONG);
                 } else if (pointer < 0) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                    setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
                 } else if (pointer == 0) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                    setStatusOfParameterIn(i, 0, STATUS_LOW);
                 } else if (pointer <= eOutputHatches.size()) {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                    setStatusOfParameterIn(i, 0, STATUS_OK);
                 } else {
-                    setStatusOfParameterIn(i, 0, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                    setStatusOfParameterIn(i, 0, STATUS_TOO_HIGH);
                 }
                 pointer = getParameterInInt(i, 1);
                 if (Double.isNaN(pointer)) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_WRONG);
+                    setStatusOfParameterIn(i, 1, STATUS_WRONG);
                 } else if (pointer < 0) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_LOW);
+                    setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
                 } else if (pointer == 0) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_LOW);
+                    setStatusOfParameterIn(i, 1, STATUS_LOW);
                 } else if (pointer <= eOutputHatches.size()) {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_OK);
+                    setStatusOfParameterIn(i, 1, STATUS_OK);
                 } else {
-                    setStatusOfParameterIn(i, 1, GT_MetaTileEntity_MultiblockBase_EM.STATUS_TOO_HIGH);
+                    setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
                 }
             }
         }
