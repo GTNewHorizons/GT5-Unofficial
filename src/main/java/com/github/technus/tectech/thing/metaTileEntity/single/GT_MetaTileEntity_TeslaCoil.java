@@ -21,33 +21,38 @@ import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
+    private int maixTier = 4; //Max tier of transceiver
+    private int minTier = 1; //Min tier of transceiver
+
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
     private int scanTime = 0; //Sets scan time to Z E R O :epic:
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
-    private int scanRadius = 32; //Tesla scan radius
-    private int transferRadiusTower = 32; //Radius for transceiver to tower transfers
-    private int transferRadiusCover = 16; //Radius for transceiver to cover transfers
+    private int scanRadiusMax = 20; //Tesla scan radius
+    private int scanRadiusMin = 4; //Tesla scan radius
+    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maixTier - minTier + 1) * (mTier - 1); //Tesla scan actual maximum radius Formula
+    private int scanRadiusLimitBottom = 1; //Configurable Scan range minimum
+    private int scanRadius = scanRadiusLimitTop; // Sets default scan radius first run
+    private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
+    private int transferRadiusCover = 0; //Radius for transceiver to cover transfers
 
     public boolean powerPassToggle = false; //Power Pass for public viewing
     private int histSteps = 20; //Hysteresis Resolution
-    private int histSettingLow = 3;
-    private int histSettingHigh = 15;
+    private int histSettingLow = 3; //Hysteresis Low Limit
+    private int histSettingHigh = 15; //Hysteresis High Limit
     private int histLowLimit = 1; //How low can you configure it?
     private int histHighLimit = histSteps - 1; //How high can you configure it?
     private float histLow = (float) histSettingLow / histSteps; //Power pass is disabled if power is under this fraction
     private float histHigh = (float) histSettingHigh / histSteps; //Power pass is enabled if power is over this fraction
 
     private long lossPerBlock = 2; //EU lost per block traveled
-    private float energyEfficiencyMax = 1F; //Max efficiency
-    private float energyEfficiencyMin = 0.8F; //Min efficiency
-    private int maixTier = 4; //Max tier of transceiver
-    private int minTier = 1; //Min tier of transceiver
-    private float energyEfficiency = energyEfficiencyMin + ((energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1)); //Efficiency Formula
+    private float energyEfficiencyMax = 0.95F; //Max efficiency
+    private float energyEfficiencyMin = 0.75F; //Min efficiency
+    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1) * (mTier - 1); //Energy efficiency Formula
 
     private long outputVoltage = V[mTier]; //Tesla Voltage Output
     private long outputVoltagePostEfficency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
-    private long outputVoltageInjectable = 0;
+    private long outputVoltageInjectable = 0; //How much EU will be received post distance losses
     private long outputCurrent = 0; //Tesla Current Output
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
@@ -59,10 +64,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        energyEfficiency = energyEfficiencyMin + ((energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1));
-    }
-
+    @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (histSettingHigh < histHighLimit) {
@@ -81,6 +83,51 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             histLow = (float) histSettingLow / histSteps;
             PlayerChatHelper.SendInfo(aPlayer, "Hysteresis Low Changed to " + round(histLow * 100F) + "%");
         }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (aPlayer.isSneaking()) {
+            if (scanRadius > scanRadiusLimitBottom) {
+                scanRadius--;
+            } else {
+                scanRadius = scanRadiusLimitTop;
+            }
+        } else {
+            if (scanRadius < scanRadiusLimitTop) {
+                scanRadius++;
+            } else {
+                scanRadius = scanRadiusLimitBottom;
+            }
+        }
+        PlayerChatHelper.SendInfo(aPlayer, "Scan Radius Limit Changed to " + scanRadius + " Blocks");
+        return false;
+    }
+
+    // Cheeky skrub stuff to get machine to switch powerPass on soft mallet
+    @Override
+    public boolean hasAlternativeModeText() {
+        return true;
+    }
+
+    @Override
+    public String getAlternativeModeText() {
+        ////Hysteresis based ePowerPass Config
+        long energyMax = getStoredEnergy()[1];
+        long energyStored = getStoredEnergy()[0];
+        float energyFrac = (float) energyStored / energyMax;
+
+        //ePowerPass hist toggle
+        if (energyFrac > histHigh) {
+            powerPassToggle = true;
+        } else if (energyFrac < histLow) {
+            powerPassToggle = false;
+        } else {
+            powerPassToggle = !powerPassToggle;
+        }
+
+        //And after this cheeky-ness, toss the string XD
+        return powerPassToggle ? "Sending Power!" : "Receiving Power!";
     }
 
     @Override
@@ -152,8 +199,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             //Stuff to do if ePowerPass
             if (powerPassToggle) {
                 outputCurrent = mBatteryCount;
-                transferRadiusTower = 32; //TODO generate based on power stored
-                transferRadiusCover = 16; //TODO generate based on power stored
+                transferRadiusTower = (int) (scanRadius * energyFrac);
+                transferRadiusCover = (int) (transferRadiusTower/1.5);
 
                 //Clean the eTeslaMap
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
@@ -211,29 +258,5 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 }
             }
         }
-    }
-    
-    // Cheeky skrub stuff to get machine to switch powerPass on soft mallet
-    public boolean hasAlternativeModeText() {
-        return true;
-    }
-
-    public String getAlternativeModeText() {
-        ////Hysteresis based ePowerPass Config
-        long energyMax = getStoredEnergy()[1];
-        long energyStored = getStoredEnergy()[0];
-        float energyFrac = (float) energyStored / energyMax;
-
-        //ePowerPass hist toggle
-        if (energyFrac > histHigh) {
-            powerPassToggle = true;
-        } else if (energyFrac < histLow) {
-            powerPassToggle = false;
-        } else {
-            powerPassToggle = !powerPassToggle;
-        }
-
-        //And after this cheeky-ness, toss the string XD
-        return powerPassToggle ? "Sending Power!" : "Receiving Power!";
     }
 }
