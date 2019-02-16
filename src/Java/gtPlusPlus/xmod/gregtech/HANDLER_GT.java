@@ -12,18 +12,23 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.Recipe_GT;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.australia.gen.gt.WorldGen_GT_Australia;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.*;
@@ -104,6 +109,7 @@ public class HANDLER_GT {
 	
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
 		removeCrudeTurbineRotors();
+		cleanAssemblyLineRecipeMap();
 	}
 	
 	private static int removeCrudeTurbineRotors() {
@@ -164,6 +170,84 @@ public class HANDLER_GT {
 		Logger.INFO("Removed "+aRemoved+" useless Turbines.");
 		
 		return aRemoved;
+	}
+	
+	/**
+	 * Should clean out any invalid Assembly Line recipes, if the map actually exists.
+	 * Prevents NPE's being thrown by GT's AL handler. (Fucking Annoying)
+	 * @return - Amount of Recipes removed, which were invalid in some way.
+	 */
+	private static int cleanAssemblyLineRecipeMap() {		
+		GT_Recipe_Map g = StaticFields59.sAssemblylineVisualRecipes;
+		if (g == null) {
+			return 0;
+		}
+		else {
+			AutoMap<GT_Recipe> aNewMap = new AutoMap<GT_Recipe>();
+			AutoMap<GT_Recipe> aBadRecipeTempMap = new AutoMap<GT_Recipe>();
+			for (GT_Recipe r : g.mRecipeList) {
+				if (r != null) {
+					if (r.mOutputs == null || r.mOutputs.length == 0 || r.mOutputs[0] == null) {
+						aBadRecipeTempMap.put(r.copy());
+						continue;
+					}
+					else {
+						aNewMap.put(r.copy());
+					}					
+				}
+			}			
+			if (aNewMap.size() > 0) {
+				g.mRecipeList.clear();
+				for (GT_Recipe i : aNewMap) {
+					g.add(i);
+				}
+			}
+			if (aBadRecipeTempMap.size() > 0) {
+				Logger.INFO("Found "+aBadRecipeTempMap.size()+" bad Assembly Line Recipes, attempting to dump all data about them.");
+				Logger.INFO("This data should be given to the mod author for the recipe in question.");
+				for (GT_Recipe i : aBadRecipeTempMap) {
+					if (i == null) {
+						Logger.INFO("Found NULL recipe. Impossible to determine who added this one. Please Report to Alkalus on Github.");
+					}
+					else {
+						if (i.mOutputs == null || i.mOutputs.length == 0 || i.mOutputs[0] == null) {
+							Logger.INFO("Found recipe with NULL output array, this will cause some issues. Attempting to determine other info about recipe.");
+							if (i.mInputs != null && i.mInputs.length > 0) {
+								Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(i.mInputs));
+							}
+							else {
+								Logger.INFO("Recipe had no valid inputs.");								
+							}
+							Logger.INFO("Time: "+i.mDuration);
+							Logger.INFO("EU/T: "+i.mEUt);
+							Logger.INFO("Special: "+i.mSpecialValue);							
+						}
+						else {
+							Logger.INFO("Found bad recipe, Attempting to determine other info.");
+							if (i.mInputs != null && i.mInputs.length > 0) {
+								Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(i.mInputs));
+							}
+							else {
+								Logger.INFO("Recipe had no valid inputs.");								
+							}
+							if (i.mOutputs != null && i.mOutputs.length > 0) {
+								Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(i.mOutputs));
+							}
+							else {
+								Logger.INFO("Recipe had no valid outputs.");								
+							}
+							Logger.INFO("Time: "+i.mDuration);
+							Logger.INFO("EU/T: "+i.mEUt);
+							Logger.INFO("Special: "+i.mSpecialValue);
+						}
+					}
+				}				
+			}
+			else {
+				Logger.INFO("No bad Assembly Line recipes found, this is great news!");				
+			}
+			return aBadRecipeTempMap.size();			
+		}		
 	}
 
 }
