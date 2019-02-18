@@ -9,9 +9,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
-import gregtech.api.util.GT_ModHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+
 
 import java.util.*;
 
@@ -21,7 +20,7 @@ import static java.lang.Math.round;
 
 
 public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryBuffer {
-    private int maixTier = 4; //Max tier of transceiver
+    private int maxTier = 4; //Max tier of transceiver
     private int minTier = 1; //Min tier of transceiver
 
     private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
@@ -30,9 +29,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private int scanTimeTill = scanTimeMin; //Set default scan time
     private int scanRadiusMax = 20; //Tesla scan radius
     private int scanRadiusMin = 4; //Tesla scan radius
-    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maixTier - minTier + 1) * (mTier - 1); //Tesla scan radius Formula
-    private int scanRadiusLimitBottom = 1;
-    private int scanRadius = scanRadiusLimitTop;
+    private int scanRadiusLimitTop = scanRadiusMin + (scanRadiusMax - scanRadiusMin) / (maxTier - minTier + 1) * (mTier - 1); //Tesla scan radius Formula
+    private int scanRadiusLimitBottom = 1; //Minimum user configurable scanRadius
+    private int scanRadius = scanRadiusLimitTop; //Default scanRadius setting
     private int transferRadiusTower = 0; //Radius for transceiver to tower transfers
     private int transferRadiusCover = 0; //Radius for transceiver to cover transfers
 
@@ -48,11 +47,16 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     private long lossPerBlock = 2; //EU lost per block traveled
     private float energyEfficiencyMax = 0.95F; //Max efficiency
     private float energyEfficiencyMin = 0.75F; //Min efficiency
-    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maixTier - minTier + 1) * (mTier - 1); //Efficiency Formula
+    private float overdriveEfficiency = 0.95F; //Overdrive efficiency
+    private float energyEfficiency = energyEfficiencyMin + (energyEfficiencyMax - energyEfficiencyMin) / (maxTier - minTier + 1) * (mTier - 1); //Efficiency Formula
+    private float sumOverdriveEfficiency = (2-energyEfficiency)*(2- overdriveEfficiency); //Sum overdrive efficiency formula
 
+    public boolean overDriveToggle = false; //Overdrive toggle
     private long outputVoltage = V[mTier]; //Tesla Voltage Output
-    private long outputVoltagePostEfficency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
+    private long outputVoltagePostEfficiency = (long) (outputVoltage * energyEfficiency); //Max power a machine can actually receive
+    private long outputVoltagePostOverdrive = (long) (outputVoltage * sumOverdriveEfficiency); //Max power the sender can consume
     private long outputVoltageInjectable = 0; //How much EU will be received post distance losses
+    private long outputVoltageConsumption = 0; //How much EU will be drained
     private long outputCurrent = 0; //Tesla Current Output
 
     public GT_MetaTileEntity_TeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
@@ -62,6 +66,18 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (overDriveToggle) {
+            overDriveToggle = false;
+            PlayerChatHelper.SendInfo(aPlayer, "Overdrive Disengaged");
+        } else {
+            overDriveToggle = true;
+            PlayerChatHelper.SendInfo(aPlayer, "Overdrive Engaged");
+        }
+        return true;
     }
 
     @Override
@@ -100,7 +116,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 scanRadius = scanRadiusLimitBottom;
             }
         }
-        PlayerChatHelper.SendInfo(aPlayer, "Scan Radius Limit Changed to " + scanRadius + " Blocks");
+        PlayerChatHelper.SendInfo(aPlayer, "Tesla Radius Changed to " + scanRadius + " Blocks");
         return false;
     }
 
@@ -137,37 +153,18 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            IGregTechTileEntity mte = getBaseMetaTileEntity();
-
-            //region BasicBatteryBuffer
-            this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
-            this.mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3L;
-            this.mBatteryCount = 0;
-            this.mChargeableCount = 0;
-            ItemStack[] var4 = this.mInventory;
-
-            int var5 = var4.length;
-            for (int var6 = 0; var6 < var5; ++var6) {
-                ItemStack tStack = var4[var6];
-                if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
-                    if (GT_ModHandler.isChargerItem(tStack)) {
-                        ++this.mBatteryCount;
-                    }
-                    ++this.mChargeableCount;
-                }
-            }
-            //endregion
 
             ////Hysteresis based ePowerPass Config
             long energyMax = getStoredEnergy()[1];
             long energyStored = getStoredEnergy()[0];
-            float energyFrac = (float) energyStored / energyMax;
+            float energyFraction = (float) energyStored / energyMax;
 
             //ePowerPass hist toggle
-            if (!powerPassToggle && energyFrac > histHigh) {
+            if (!powerPassToggle && energyFraction > histHigh) {
                 powerPassToggle = true;
-            } else if (powerPassToggle && energyFrac < histLow) {
+            } else if (powerPassToggle && energyFraction < histLow) {
                 powerPassToggle = false;
             }
 
@@ -183,7 +180,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
                                 continue;
                             }
-                            IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
+                            IGregTechTileEntity node = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
                             if (node == null) {
                                 continue;
                             }
@@ -199,8 +196,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
             //Stuff to do if ePowerPass
             if (powerPassToggle) {
                 outputCurrent = mBatteryCount;
-                transferRadiusTower = (int) (scanRadius * energyFrac);
-                transferRadiusCover = (int) (transferRadiusTower/1.5);
+                transferRadiusTower = (int) (scanRadius * energyFraction);
+                transferRadiusCover = (int) (transferRadiusTower / 1.5);
 
                 //Clean the eTeslaMap
                 for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
@@ -226,23 +223,29 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                 while (outputCurrent > 0) {
                     boolean idle = true;
                     for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
-                        if (getEUVar() >= outputVoltage) {
+                        if (getEUVar() >= (overDriveToggle ? outputVoltage*2 : outputVoltage)) {
                             IGregTechTileEntity node = Rx.getKey();
                             IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                            outputVoltageInjectable = outputVoltagePostEfficency - (lossPerBlock * Rx.getValue());
+                            if (overDriveToggle){
+                                outputVoltageInjectable = outputVoltage;
+                                outputVoltageConsumption = outputVoltagePostOverdrive + (lossPerBlock * Rx.getValue());
+                            } else {
+                                outputVoltageInjectable = outputVoltagePostEfficiency - (lossPerBlock * Rx.getValue());
+                                outputVoltageConsumption = outputVoltage;
+                            }
                             if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
                                 GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
                                 if (!nodeTesla.powerPassToggle) {
-                                    if (nodeTesla.getEUVar() + outputVoltage <= (nodeTesla.maxEUStore() / 2)) {
-                                        setEUVar(getEUVar() - outputVoltage);
-                                        node.increaseStoredEnergyUnits(outputVoltageInjectable, true);
-                                        outputCurrent--;
-                                        idle = false;
-                                    }
+                                   if (nodeTesla.getEUVar() + outputVoltageInjectable <= (nodeTesla.maxEUStore() / 2)) {
+                                       setEUVar(getEUVar() - outputVoltageConsumption);
+                                       node.increaseStoredEnergyUnits(outputVoltageInjectable, true);
+                                       outputCurrent--;
+                                       idle = false;
+                                   }
                                 }
                             } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && Rx.getValue() <= transferRadiusCover) {
                                 if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
-                                    setEUVar(getEUVar() - outputVoltage);
+                                    setEUVar(getEUVar() - outputVoltageConsumption);
                                     outputCurrent--;
                                     idle = false;
                                 }
@@ -250,6 +253,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                             if (outputCurrent == 0) {
                                 break;
                             }
+                        } else {
+                            idle = true;
+                            break;
                         }
                     }
                     if (idle) {

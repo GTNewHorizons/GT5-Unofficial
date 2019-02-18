@@ -3,9 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import cpw.mods.fml.relauncher.Side;
@@ -35,7 +33,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>();
     private int tier = 0;
     private int orientation = 0;
 
@@ -43,7 +40,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
-    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>();//Tesla Map to map them tesla bois!
+    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>(); //Tesla Map to map them tesla bois!
+    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
 
     private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
     private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
@@ -487,6 +485,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
     }
