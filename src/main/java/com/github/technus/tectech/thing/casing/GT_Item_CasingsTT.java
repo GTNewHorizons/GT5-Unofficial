@@ -8,8 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
-import static com.github.technus.tectech.CommonValues.TEC_MARK_GENERAL;
+import static com.github.technus.tectech.CommonValues.*;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -19,12 +18,16 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
         super(par1);
     }
 
-    @Override
+    @Override //TODO Negotiate Casing space with Tec
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if(aStack.getItemDamage()>0 && aStack.getItemDamage()<15) {
+        if(aStack.getItemDamage() < 15) {
             aList.add(TEC_MARK_EM);
-        } else {
+        } else if ((aStack.getItemDamage() < 200)) {
             aList.add(TEC_MARK_GENERAL);
+        } else if (aStack.getItemDamage() < 300){
+            aList.add(BASS_MARK);
+        } else {
+            aList.add(COSMIC_MARK);
         }
         switch (aStack.getItemDamage()) {
             case 0://"High Power Casing"
@@ -88,6 +91,42 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Meh...");
                 break;
             case 15://"Debug Sides"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 200://"Tesla Base Casing"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 201://"Tesla Toroid Casing"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 202://"Tesla Structural Frame"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 203://"T0 Primary Tesla Windings"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 204://"T1 Primary Tesla Windings"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 205://"T2 Primary Tesla Windings"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 206://"T0 Secondary Tesla Windings"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 207://"T1 Secondary Tesla Windings"
+                aList.add("Lazy man way of determining sides.");
+                aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
+                break;
+            case 208://"T2 Secondary Tesla Windings"
                 aList.add("Lazy man way of determining sides.");
                 aList.add(EnumChatFormatting.BLUE.toString() + "0, 1, 2, 3, 4, 5, 6?!");
                 break;
