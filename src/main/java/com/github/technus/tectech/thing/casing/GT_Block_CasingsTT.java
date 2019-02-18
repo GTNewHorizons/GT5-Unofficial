@@ -234,7 +234,12 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        //Add Tec's Casings
         for (int i = 0; i <= 15; i++) {
+            aList.add(new ItemStack(aItem, 1, i));
+        }
+        //Add Bass' Casings
+        for (int i = 200; i <= 208; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }
