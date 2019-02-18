@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +44,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
+    //region parameters
+    protected Parameters.Group.ParameterIn overclock,overvolt;
+
+    //endregion
+
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
     private int maxCurrentTemp = 0;
 
@@ -74,6 +80,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         super(aName);
         eCertainMode = 5;
         eCertainStatus = -128;//no-brain value
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        
     }
 
     @Override

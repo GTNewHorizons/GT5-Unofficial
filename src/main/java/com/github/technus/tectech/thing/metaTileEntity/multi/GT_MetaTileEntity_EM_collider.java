@@ -34,6 +34,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
+import java.util.function.Function;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -50,11 +51,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenON_Slave;
     private static Textures.BlockIcons.CustomIcon ScreenOFF_Slave;
 
-    private static double MASS_TO_EU_PARTIAL,MASS_TO_EU_INSTANT;
+    protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
+    private static double MASS_TO_EU_INSTANT;
     private static int STARTUP_COST,KEEPUP_COST;
 
     public static void setValues(int heliumPlasmaValue){
-        MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST=-heliumPlasmaValue*10000;
         KEEPUP_COST=-heliumPlasmaValue;
@@ -268,9 +270,36 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     protected byte eTier = 0;
     protected cElementalInstanceStack stack;
     private long plasmaEnergy;
-    public Parameters.ParameterGroup.In mode;
 
-    protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
+    //region parameters
+    protected Parameters.Group.ParameterIn mode;
+    private static final Function<GT_MetaTileEntity_EM_collider, LedStatus> MODE_STATUS = base_EM->{
+        if(base_EM.isMaster()){
+            if (base_EM.mode.get() == FUSE_MODE || base_EM.mode.get() == COLLIDE_MODE) {
+                return STATUS_OK;
+            } else if (base_EM.mode.get() > 1) {
+                return STATUS_TOO_HIGH;
+            } else if (base_EM.mode.get() < 0) {
+                return STATUS_TOO_LOW;
+            }else{
+                return STATUS_WRONG;
+            }
+        }
+        return STATUS_UNUSED;
+    };
+    private static final Function<GT_MetaTileEntity_EM_collider,String> MODE_NAME = base_EM->{
+        if(base_EM.isMaster()){
+            if(base_EM.mode.get()==FUSE_MODE){
+                return "Mode: Fuse";
+            }else if(base_EM.mode.get()==COLLIDE_MODE){
+                return "Mode: Collide";
+            }
+            return "Mode: Undefined";
+        }
+        return "Currently Slaves...";
+    };
+    //endregion
+
     protected boolean started=false;
 
     //region Structure
@@ -332,31 +361,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.ParameterGroup group=parametrization.makeGroup(0,false);
-        mode=group.makeInParameter(0,FUSE_MODE,()->{
-            if(isMaster()){
-                if(mode.get()==FUSE_MODE){
-                    return "Mode: Fuse";
-                }else if(mode.get()==COLLIDE_MODE){
-                    return "Mode: Collide";
-                }
-                return "Mode: Undefined";
-            }
-            return "Currently Slaves...";
-        },()->{
-            if(isMaster()){
-                if (mode.get() == FUSE_MODE || mode.get() == COLLIDE_MODE) {
-                    return STATUS_OK;
-                } else if (mode.get() > 1) {
-                    return STATUS_TOO_HIGH;
-                } else if (mode.get() < 0) {
-                    return STATUS_TOO_LOW;
-                }else{
-                    return STATUS_WRONG;
-                }
-            }
-            return STATUS_UNUSED;
-        });
+        Parameters.Group group=parametrization.makeGroup(0,false);
+        mode=group.makeInParameter(0,FUSE_MODE, MODE_NAME, MODE_STATUS);
     }
 
     @Override

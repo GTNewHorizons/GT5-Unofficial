@@ -1,33 +1,38 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * Instantiate parameters as field in parametersInstantiation_EM();
  */
 public class Parameters {
-    private static final Supplier<LedStatus> LED_STATUS_FUNCTION_DEFAULT = ()->LedStatus.STATUS_UNDEFINED;
-    private static final int ZERO_FLOAT=Float.floatToIntBits(0);
+    public static final Function<GT_MetaTileEntity_MultiblockBase_EM,LedStatus> LED_STATUS_FUNCTION_DEFAULT = o->LedStatus.STATUS_UNDEFINED;
+    public static final Function<GT_MetaTileEntity_MultiblockBase_EM,String> NAME_FUNCTION_DEFAULT=o->"Undefined";
+    public static final int ZERO_FLOAT=Float.floatToIntBits(0);
 
-    final ParameterGroup[] parameterGroups =new ParameterGroup[10];
+    final Group[] groups = new Group[10];
 
     final int[] iParamsIn = new int[20];//number I from parametrizers
     final int[] iParamsOut = new int[20];//number O to parametrizers
-    final ArrayList<ParameterGroup.In> inArrayList=new ArrayList<>();
-    final ArrayList<ParameterGroup.Out> outArrayList=new ArrayList<>();
+    final ArrayList<Group.ParameterIn> parameterInArrayList =new ArrayList<>();
+    final ArrayList<Group.ParameterOut> parameterOutArrayList =new ArrayList<>();
 
     final boolean[] bParamsAreFloats =new boolean[10];
 
     //package private for use in gui
-    final LedStatus[] eParamsInStatus = new LedStatus[20];//LED status for I
-    final LedStatus[] eParamsOutStatus = new LedStatus[20];//LED status for O
+    final LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for I
+    final LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for O
 
-    Parameters(){}
+    private final GT_MetaTileEntity_MultiblockBase_EM parent;
+
+    Parameters(GT_MetaTileEntity_MultiblockBase_EM parent){
+        this.parent=parent;
+    }
 
     public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats){
         for (int hatch=0;hatch<10;hatch++) {
-            ParameterGroup p= parameterGroups[hatch];
+            Group p= groups[hatch];
             if (p!=null){
                 p.setToDefaults(defaultIn,defaultOut,defaultAreFloats);
             }else{
@@ -68,41 +73,41 @@ public class Parameters {
 
     public void ClearDefinitions(){
         setToDefaults(true,true,false);
-        inArrayList.clear();
-        outArrayList.clear();
-        for(int i = 0; i< parameterGroups.length; i++){
-            parameterGroups[i]=null;
+        parameterInArrayList.clear();
+        parameterOutArrayList.clear();
+        for(int i = 0; i< groups.length; i++){
+            groups[i]=null;
         }
     }
 
-    public ParameterGroup makeGroup(int hatchNo, boolean aParamsDefaultsAreFloats){
-        return new ParameterGroup( hatchNo,  aParamsDefaultsAreFloats);
+    public Group makeGroup(int hatchNo, boolean aParamsDefaultsAreFloats){
+        return new Group( hatchNo,  aParamsDefaultsAreFloats);
     }
 
     /**
      * most likely used locally in parametersInstantiation_EM()
      */
-    public class ParameterGroup {
+    public class Group {
         private final boolean bParamsDefaultsAreStoredAsFloats;
         private final int hatchNo;
-        final In[] in=new In[2];
-        final Out[] out=new Out[2];
+        final ParameterIn[] parameterIn =new ParameterIn[2];
+        final ParameterOut[] parameterOut =new ParameterOut[2];
 
-        private ParameterGroup(int hatchNo, boolean aParamsDefaultsAreFloats){
+        private Group(int hatchNo, boolean aParamsDefaultsAreFloats){
             if(hatchNo<0 || hatchNo>=10){
                 throw new IllegalArgumentException("ParameterGroup id must be in 0 to 9 range");
             }
             this.hatchNo=hatchNo;
             bParamsDefaultsAreStoredAsFloats =aParamsDefaultsAreFloats;
-            parameterGroups[hatchNo]=this;
+            groups[hatchNo]=this;
         }
 
-        public In makeInParameter(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
-            return new In(paramID, defaultValue,name, status);
+        public ParameterIn makeInParameter(int paramID, double defaultValue, Function<? extends GT_MetaTileEntity_MultiblockBase_EM,String> name, Function<? extends GT_MetaTileEntity_MultiblockBase_EM,LedStatus> status){
+            return new ParameterIn(paramID, defaultValue,name, status);
         }
 
-        public Out makeOutParameter(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
-            return new Out(paramID, defaultValue, name, status);
+        public ParameterOut makeOutParameter(int paramID, double defaultValue, Function<? extends GT_MetaTileEntity_MultiblockBase_EM,String> name, Function<? extends GT_MetaTileEntity_MultiblockBase_EM,LedStatus> status){
+            return new ParameterOut(paramID, defaultValue, name, status);
         }
 
         public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats) {
@@ -111,8 +116,8 @@ public class Parameters {
             }
             if(defaultIn){
                 for(int in=0;in<2;in++){
-                    if(this.in[in]!=null){
-                        this.in[in].setDefault();
+                    if(this.parameterIn[in]!=null){
+                        this.parameterIn[in].setDefault();
                     }else {
                         if (bParamsAreFloats[hatchNo]) {
                             iParamsIn[hatchNo] = ZERO_FLOAT;
@@ -126,8 +131,8 @@ public class Parameters {
             }
             if(defaultOut){
                 for(int out=0;out<2;out++){
-                    if(this.out[out]!=null){
-                        this.out[out].setDefault();
+                    if(this.parameterOut[out]!=null){
+                        this.parameterOut[out].setDefault();
                     }else {
                         if (bParamsAreFloats[hatchNo]) {
                             iParamsIn[hatchNo] = ZERO_FLOAT;
@@ -144,29 +149,26 @@ public class Parameters {
         /**
          * Make a field out of this...
          */
-        public class Out {
+        public class ParameterOut {
             public final int id;
             public final double defaultValue;
-            private final Supplier<LedStatus> status;
-            public Supplier<String> name;
+            Function<GT_MetaTileEntity_MultiblockBase_EM,LedStatus> status;
+            Function<GT_MetaTileEntity_MultiblockBase_EM,String> name;
 
-            private Out(int paramID, double defaultValue,Supplier<String> name, Supplier<LedStatus> status){
-                this.name=name;
+            @SuppressWarnings("unchecked")
+            private ParameterOut(int paramID, double defaultValue, Function name, Function status){
+                this.name= name;
                 this.id=hatchNo+10*paramID;
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");
                 }
                 this.defaultValue=defaultValue;
-                if(out[paramID]!=null){
+                if(parameterOut[paramID]!=null){
                     throw new InstantiationError("This parameter already exists!");
                 }
-                if(status ==null){
-                    this.status =LED_STATUS_FUNCTION_DEFAULT;
-                }else{
-                    this.status = status;
-                }
-                outArrayList.add(this);
-                out[paramID]=this;
+                this.status = status;
+                parameterOutArrayList.add(this);
+                parameterOut[paramID]=this;
             }
 
             private void setDefault() {
@@ -185,48 +187,45 @@ public class Parameters {
                 }
             }
 
-            public LedStatus getStatus(){
-                return eParamsOutStatus[id];
-            }
-
             public void updateStatus(){
-                eParamsOutStatus[id]=status.get();
+                eParamsOutStatus[id]=status.apply(parent);
             }
 
-            public LedStatus getStaus(boolean update){
+            public LedStatus getStatus(boolean update){
                 if(update){
                     updateStatus();
                 }
                 return eParamsOutStatus[id];
+            }
+
+            public String getBrief(){
+                return name.apply(parent);
             }
         }
 
         /**
          * Make a field out of this...
          */
-        public class In {
+        public class ParameterIn {
             public final int id;
             public final double defaultValue;
-            private final Supplier<LedStatus> status;
-            public Supplier<String> name;
+            Function<GT_MetaTileEntity_MultiblockBase_EM,LedStatus> status;
+            Function<GT_MetaTileEntity_MultiblockBase_EM,String> name;
 
-            private In(int paramID, double defaultValue,Supplier<String> name,Supplier<LedStatus> status){
-                this.name=name;
+            @SuppressWarnings("unchecked")
+            private ParameterIn(int paramID, double defaultValue, Function name, Function status){
+                this.name= name;
                 this.id=hatchNo+10*paramID;
                 if(paramID<0 || paramID>2){
                     throw new IllegalArgumentException("Parameter id must be in 0 to 1 range");
                 }
                 this.defaultValue=defaultValue;
-                if(in[paramID]!=null){
+                if(parameterIn[paramID]!=null){
                     throw new InstantiationError("This parameter already exists!");
                 }
-                if(status ==null){
-                    this.status =LED_STATUS_FUNCTION_DEFAULT;
-                }else{
-                    this.status = status;
-                }
-                inArrayList.add(this);
-                in[paramID]=this;
+                this.status = status;
+                parameterInArrayList.add(this);
+                parameterIn[paramID]=this;
             }
 
             private void setDefault() {
@@ -242,14 +241,18 @@ public class Parameters {
             }
 
             public void updateStatus(){
-                eParamsInStatus[id]=status.get();
+                eParamsInStatus[id]=status.apply(parent);
             }
 
-            public LedStatus getStaus(boolean update){
+            public LedStatus getStatus(boolean update){
                 if(update){
                     updateStatus();
                 }
                 return eParamsInStatus[id];
+            }
+
+            public String getBrief(){
+                return name.apply(parent);
             }
         }
     }

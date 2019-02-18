@@ -97,7 +97,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //region parameters
     public final Parameters parametrization;
-
     //endregion
 
     //region Control variables
@@ -152,14 +151,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        parametrization=new Parameters();
+        parametrization=new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true,true,true);
     }
 
     protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
-        parametrization=new Parameters();
+        parametrization=new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true,true,true);
     }
@@ -454,7 +453,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"I");
         try{
-            list.add(parametrization.parameterGroups[hatchNo].in[paramID].name.get());
+            list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         }catch (NullPointerException e){
             list.add("Unused");
         }
@@ -476,7 +475,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"O");
         try{
-            list.add(parametrization.parameterGroups[hatchNo].out[paramID].name.get());
+            list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         }catch (NullPointerException e){
             list.add("Unused");
         }
@@ -740,15 +739,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      */
     public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
         if(!machineBusy){
-            for (Parameters.ParameterGroup.In in : parametrization.inArrayList) {
-                if (in != null) {
-                    in.updateStatus();
+            for (Parameters.Group.ParameterIn parameterIn : parametrization.parameterInArrayList) {
+                if (parameterIn != null) {
+                    parameterIn.updateStatus();
                 }
             }
         }
-        for (Parameters.ParameterGroup.Out out : parametrization.outArrayList) {
-            if (out != null) {
-                out.updateStatus();
+        for (Parameters.Group.ParameterOut parameterOut : parametrization.parameterOutArrayList) {
+            if (parameterOut != null) {
+                parameterOut.updateStatus();
             }
         }
     }

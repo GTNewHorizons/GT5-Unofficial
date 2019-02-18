@@ -231,7 +231,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             case STATUS_HIGH:// too high
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
                 break;
-            case STATUS_UNUSED:
+            default:
                 if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
                     int tColor = this.mContainer.mTileEntity.getColorization() & 15;
                     if (tColor < ItemDye.field_150922_c.length) {

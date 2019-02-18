@@ -377,7 +377,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
         public Behaviour(){}
 
         public final void setOnMachine(GT_MetaTileEntity_EM_machine te){
-            te.parametrization.ClearDefinitions();
+            te.parametrization.clearGroups();
             parametersInstantiation(te.parametrization);
         }
 

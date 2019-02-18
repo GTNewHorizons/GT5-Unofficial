@@ -11,8 +11,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
-    public LedStatus[] eParamsInStatus = new LedStatus[20];//unused 0,G ok 1, B too low 2, R too high 3, Y blink dangerous 4,5
-    public LedStatus[] eParamsOutStatus = new LedStatus[20];
+    public LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
+    public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
     public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
