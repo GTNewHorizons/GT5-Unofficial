@@ -25,6 +25,9 @@ package com.github.bartimaeusnek.bartworks.util;
 import net.minecraft.item.EnumRarity;
 
 public class BioPlasmid extends BioData {
+
+    public static final BioPlasmid NULLPLASMID = convertDataToPlasmid(BioData.convertBioDNAToBioData(BioDNA.NULLDNA));
+
     private BioPlasmid(String name, int ID, EnumRarity rarity) {
         super(name, ID, rarity);
     }

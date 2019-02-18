@@ -315,7 +315,7 @@ public class BioRecipeLoader extends RecipeLoader {
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[]{new ItemStack(Items.sugar, 64)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
-                    BioCulture.BIO_CULTURE_ARRAY_LIST.get(1),
+                    BioCultureLoader.CommonYeast,
                     new FluidStack[]{(Loader.isModLoaded("berriespp") ? FluidRegistry.getFluidStack("potion.ghp", 1) : Materials.Ethanol.getFluid(1L))},
                     350,
                     BW_Util.getMachineVoltageFromTier(4)
@@ -324,7 +324,7 @@ public class BioRecipeLoader extends RecipeLoader {
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[]{ItemList.Crop_Drop_Grapes.get(16)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
-                    BioCulture.BIO_CULTURE_ARRAY_LIST.get(2),
+                    BioCultureLoader.WhineYeast,
                     new FluidStack[]{FluidRegistry.getFluidStack("potion.wine", 12)},
                     200,
                     BW_Util.getMachineVoltageFromTier(2)
@@ -333,7 +333,7 @@ public class BioRecipeLoader extends RecipeLoader {
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[]{new ItemStack(Items.sugar, 4), ItemList.IC2_Hops.get(16L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 8L)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
-                    BioCulture.BIO_CULTURE_ARRAY_LIST.get(3),
+                    BioCultureLoader.BeerYeast,
                     new FluidStack[]{FluidRegistry.getFluidStack("potion.beer", 5)},
                     600,
                     BW_Util.getMachineVoltageFromTier(1)
@@ -341,7 +341,7 @@ public class BioRecipeLoader extends RecipeLoader {
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[]{ItemList.IC2_Hops.get(32L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L)},
                     new FluidStack[]{new FluidStack(fluidStack, 100)},
-                    BioCulture.BIO_CULTURE_ARRAY_LIST.get(3),
+                    BioCultureLoader.BeerYeast,
                     new FluidStack[]{FluidRegistry.getFluidStack("potion.darkbeer", 10)},
                     600,
                     BW_Util.getMachineVoltageFromTier(1)
@@ -352,7 +352,7 @@ public class BioRecipeLoader extends RecipeLoader {
         BWRecipes.instance.addBacterialVatRecipe(
                 null,
                 new FluidStack[]{FluidRegistry.getFluidStack("potion.grapejuice", 100)},
-                BioCulture.BIO_CULTURE_ARRAY_LIST.get(2),
+                BioCultureLoader.WhineYeast,
                 new FluidStack[]{FluidRegistry.getFluidStack("potion.wine", 12)},
                 400,
                 BW_Util.getMachineVoltageFromTier(1)

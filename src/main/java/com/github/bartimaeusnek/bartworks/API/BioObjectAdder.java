@@ -26,7 +26,9 @@ import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import com.github.bartimaeusnek.bartworks.util.BioDNA;
 import com.github.bartimaeusnek.bartworks.util.BioData;
 import com.github.bartimaeusnek.bartworks.util.BioPlasmid;
+import gregtech.api.objects.GT_Fluid;
 import net.minecraft.item.EnumRarity;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.awt.*;
 
@@ -47,7 +49,11 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna, EnumRarity rarity, boolean breedable) {
-        return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, rarity, breedable);
+        if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
+            return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, rarity, breedable);
+        else
+            new Exception("Too Early to register a BioCulture! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -61,7 +67,11 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna, boolean breedable) {
-        return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, breedable);
+        if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
+            return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, breedable);
+        else
+            new Exception("Too Early to register a BioCulture! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -74,7 +84,10 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
-        return BioData.createAndRegisterBioData(aName, rarity, chance, tier);
+        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
+            return BioData.createAndRegisterBioData(aName, rarity, chance, tier);
+        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -85,7 +98,10 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
-        return BioDNA.createAndRegisterBioDNA(aName, rarity);
+        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
+            return BioDNA.createAndRegisterBioDNA(aName, rarity);
+        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -96,7 +112,10 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity) {
-        return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity);
+        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
+            return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity);
+        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -107,7 +126,10 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
-        return BioDNA.createAndRegisterBioDNA(aName, rarity, chance, tier);
+        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
+            return BioDNA.createAndRegisterBioDNA(aName, rarity, chance, tier);
+        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
     /**
@@ -118,8 +140,31 @@ public final class BioObjectAdder {
      * @return
      */
     public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity, int chance, int tier) {
-        return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity, chance, tier);
+        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
+            return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity, chance, tier);
+        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!").printStackTrace();
+        return null;
     }
 
+    /**
+     * @param voltageTier (i.e. 6 for LuV, 7 for ZPM, only intresting for LuV+)
+     * @return the propper Bacteria Tier (at least 0)
+     */
+    public static int getBacteriaTierFromVoltageTier(int voltageTier){
+        return voltageTier-6 > 0 ? voltageTier-6 : 0;
+    }
+
+    /**
+     * If you get NPE's related to BioCultures (most likely because of Load Order or creating BioCultures after the postinit Phase) execute this.
+     */
+    public static void regenerateBioFluids(){
+        for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
+            if (B.getFluidNotSet()) {
+                B.setFluid(new GT_Fluid(B.getName().replaceAll(" ", "").toLowerCase() + "fluid", "molten.autogenerated", new short[]{(short) B.getColor().getRed(), (short) B.getColor().getBlue(), (short) B.getColor().getGreen()}));
+                if (!FluidRegistry.registerFluid(B.getFluid()))
+                    new Exception("FAILED TO REGISTER FLUID FOR: "+B.getName()).printStackTrace();
+            }
+        }
+    }
 
 }

@@ -30,9 +30,6 @@ public class LoaderRegistry implements Runnable {
     public void run() {
         new ItemRegistry().run();
         new RecipeLoader().run();
-        if (ConfigHandler.BioLab) {
-            new BioLabLoader().run();
-        }
     }
 
 }

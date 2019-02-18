@@ -34,8 +34,6 @@ import java.awt.*;
 public class BioCultureLoader implements Runnable {
 
     public static final BioData BIO_DATA_BETA_LACMATASE = BioData.createAndRegisterBioData("beta-Lactamase", EnumRarity.uncommon, 10000, 0);
-    private static final BioDNA NULLLDNA = BioDNA.createAndRegisterBioDNA("", EnumRarity.epic);
-    private static final BioPlasmid NULLPLASMID = BioPlasmid.createAndRegisterBioPlasmid("", EnumRarity.epic);
     private static final BioData BIO_DATA_YEAST = BioData.createAndRegisterBioData("Saccharomyces cerevisiae", EnumRarity.common);
     private static final BioDNA BIO_DNA_WHINE_YEAST = BioDNA.createAndRegisterBioDNA("Saccharomyces cerevisiae var bayanus", EnumRarity.uncommon);
     private static final BioDNA BIO_DNA_BEER_YEAST = BioDNA.createAndRegisterBioDNA("Saccharomyces cerevisiae var cerevisiae", EnumRarity.uncommon);
@@ -48,7 +46,6 @@ public class BioCultureLoader implements Runnable {
 
     @Override
     public void run() {
-        BioCulture.createAndRegisterBioCulture(Color.BLUE, "", NULLPLASMID, NULLLDNA, false); //fallback NULL culture
         CommonYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BioDNA.convertDataToDNA(BIO_DATA_YEAST), true);
         WhineYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var bayanus", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BIO_DNA_WHINE_YEAST, true);
         BeerYeast = BioCulture.createAndRegisterBioCulture(new Color(255, 248, 200), "Saccharomyces cerevisiae var cerevisiae", BioPlasmid.convertDataToPlasmid(BIO_DATA_YEAST), BIO_DNA_BEER_YEAST, true);

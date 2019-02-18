@@ -30,12 +30,15 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class BioCulture extends BioData {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<BioCulture>();
+    public static final BioCulture NULLCULTURE = BioCulture.createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID,BioDNA.NULLDNA, false); //fallback NULL culture, also Blue =)
 
     Color color;
     BioPlasmid plasmid;
@@ -75,7 +78,7 @@ public class BioCulture extends BioData {
             return new NBTTagCompound();
         NBTTagCompound ret = new NBTTagCompound();
         ret.setString("Name", bioCulture.name);
-        ret.setInteger("ID", bioCulture.ID);
+        //ret.setInteger("ID", bioCulture.ID);
         ret.setIntArray("Color", new int[]{bioCulture.color.getRed(), bioCulture.color.getGreen(), bioCulture.color.getBlue()});
         ret.setTag("Plasmid", BioData.getNBTTagFromBioData(BioData.convertBioPlasmidToBioData(bioCulture.plasmid)));
         ret.setTag("DNA", BioData.getNBTTagFromBioData(BioData.convertBioDNAToBioData(bioCulture.dDNA)));
@@ -89,17 +92,21 @@ public class BioCulture extends BioData {
     public static BioCulture getBioCultureFromNBTTag(NBTTagCompound tag) {
         if (tag == null || tag.getIntArray("Color").length == 0)
             return null;
-        BioCulture ret = new BioCulture(
-                new Color(tag.getIntArray("Color")[0], tag.getIntArray("Color")[1], tag.getIntArray("Color")[2]),
-                tag.getString("Name"),
-                tag.getInteger("ID"),
-                BioPlasmid.convertDataToPlasmid(getBioDataFromNBTTag(tag.getCompoundTag("Plasmid"))),
-                BioDNA.convertDataToDNA(getBioDataFromNBTTag(tag.getCompoundTag("DNA"))),
-                BW_Util.getRarityFromByte(tag.getByte("Rarety")),
-                tag.getBoolean("Breedable")
-        );
+        BioCulture ret = getBioCulture(tag.getString("Name"));
+
+        if (ret == null)
+                ret = createAndRegisterBioCulture(
+                            new Color(tag.getIntArray("Color")[0], tag.getIntArray("Color")[1], tag.getIntArray("Color")[2]),
+                            tag.getString("Name"),
+                            BioPlasmid.convertDataToPlasmid(getBioDataFromNBTTag(tag.getCompoundTag("Plasmid"))),
+                            BioDNA.convertDataToDNA(getBioDataFromNBTTag(tag.getCompoundTag("DNA"))),
+                            BW_Util.getRarityFromByte(tag.getByte("Rarety")),
+                            tag.getBoolean("Breedable")
+                        );
         if (ret.bBreedable)
             ret.setFluid(FluidRegistry.getFluid(tag.getString("Fluid")));
+        if (ret.getFluidNotSet()) //should never happen, but better safe than sorry
+            ret.setbBreedable(false);
         return ret;
     }
 
@@ -121,6 +128,10 @@ public class BioCulture extends BioData {
         if (this.mFluid == null)
             MainMod.LOGGER.error("Fluid has not been set yet! The issuring Culture is: " + this.name);
         return this.mFluid;
+    }
+
+    public boolean getFluidNotSet(){
+        return this.mFluid == null && this.isBreedable();
     }
 
     public void setFluid(Fluid mFluid) {
@@ -184,6 +195,6 @@ public class BioCulture extends BioData {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), this.getColor(), this.getPlasmid(), this.getdDNA(), this.isBreedable(), this.mFluid);
+        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(17).putInt(MurmurHash3.murmurhash3_x86_32(this.getName(),0,this.getName().length(),31)).putInt(this.getColorRGB()).putInt(this.getPlasmid().ID).putInt(this.getdDNA().ID).put((byte) (isBreedable() ? 1 : 0)).array(),0,17,31);
     }
 }
