@@ -28,7 +28,6 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.util.*;
-import com.sun.istack.internal.NotNull;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -261,7 +260,9 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private BioCulture checkForExisting(@NotNull BioCulture culture){
+    private BioCulture checkForExisting(BioCulture culture){
+        if (culture == null)
+            return null;
         for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
             if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
                 return bc;
