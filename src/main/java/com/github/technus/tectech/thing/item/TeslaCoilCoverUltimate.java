@@ -30,7 +30,6 @@ public final class TeslaCoilCoverUltimate extends Item {
 
     public static void run() {
         INSTANCE = new TeslaCoilCoverUltimate();
-        System.out.print(INSTANCE.getUnlocalizedName());
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 }
