@@ -1,10 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import cpw.mods.fml.relauncher.Side;
@@ -20,24 +19,20 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.entriesSortedByValues;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.E;
 
-/**
- * Created by danie_000 on 17.12.2016.
- * edited by Bass on like 2018-02-05
- */
 public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {//TODO Add capacitors
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>();
     private int tier = 0;
     private int orientation = 0;
 
@@ -45,8 +40,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
-    private ArrayList<GT_MetaTileEntity_TeslaCoil> eTeslaList = new ArrayList<>(); //Makes a list of Smol Teslas
-    private ArrayList<GT_MetaTileEntity_TM_teslaCoil> eTeslaTowerList = new ArrayList<>(); //Makes a list for BIGG Teslas
+    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>(); //Tesla Map to map them tesla bois!
+    private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
 
     private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
     private float histHigh = 0.75F; //Power pass is enabled if power is over this fraction
@@ -54,12 +49,14 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private float histLowLimit = 0.05F; //How low can you configure it?
     private float histHighLimit = 0.95F; //How high can you configure it?
 
-    private int scanRadius = 64; //Radius for small to tower transfers
-    private int scanRadiusTower = scanRadius * 2; //Radius for tower to tower transfers
+    private int scanRadius = 32; //Tesla scan radius
 
-    private long outputVoltage = 512; //Tesla Voltage Output
-    private long outputCurrent = 1; //Tesla Current Output
-    private long outputEuT = outputVoltage * outputCurrent; //Tesla Power Output
+    private int transferRadiusTower = 32; //Radius for tower to tower transfers
+    private int transferRadiusTransceiver = 16; //Radius for tower to transceiver transfers
+    private int transferRadiusCoverUltimate = 16; //Radius for tower to ultimate cover transfers
+
+    private long outputVoltage = 0; //Tesla Voltage Output
+    private long outputCurrent = 0; //Tesla Current Output
 
     public boolean powerPassToggle = false; //Power Pass for public viewing
 
@@ -68,8 +65,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private long histLowParam = 0;
     private long histHighParam = 0;
     private long histScaleParam = 0;
-    private int scanRadiusParam = 0;
-    private int scanRadiusTowerParam = 0;
+    private int transferRadiusTowerParam = 0;
+    private int transferRadiusTransceiverParam = 0;
+    private int transferRadiusCoverUltimateParam = 0;
     private long outputVoltageParam = 0;
     private long outputCurrentParam = 0;
     private int scanTimeMinParam = 0;
@@ -141,6 +139,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_TM_teslaCoil(mName);
     }
+
+    @Override
+    public void onRemoval(){}//Literally stops this machine from exploding if you break it with some power left, it doesn't deal with any EM ffs
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -292,8 +293,9 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             histLowParam = 0;
             histHighParam = 0;
             histScaleParam = 0;
-            scanRadiusParam = 0;
-            scanRadiusTowerParam = 0;
+            transferRadiusTowerParam = 0;
+            transferRadiusTransceiverParam = 0;
+            transferRadiusCoverUltimateParam = 0;
             outputVoltageParam = 0;
             outputCurrentParam = 0;
             scanTimeMin = 0;
@@ -341,55 +343,24 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         scanTime++;
         if (scanTime >= scanTimeTill) {
             scanTime = 0;
-
-            scanRadius = 64; //TODO Generate depending on power stored
-            eTeslaList.clear();
-
-            if (parametrized && scanRadiusParam > 0 && scanRadiusParam < scanRadius) {
-                scanRadius = scanRadiusParam;
-            }
+            eTeslaMap.clear();
 
             for (int xPosOffset = -scanRadius; xPosOffset <= scanRadius; xPosOffset++) {
-            	for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
-            		for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
-                        if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                for (int yPosOffset = -scanRadius; yPosOffset <= scanRadius; yPosOffset++) {
+                    for (int zPosOffset = -scanRadius; zPosOffset <= scanRadius; zPosOffset++) {
+                        if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0) {
                             continue;
                         }
                         IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
-            			if (node == null) {
-            				continue;
-            			}
-            			IMetaTileEntity nodeInside = node.getMetaTileEntity();
-            			if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil){
-            				eTeslaList.add((GT_MetaTileEntity_TeslaCoil) nodeInside);
-            			}
-            		}
-            	}
-            }
-
-            scanRadiusTower = scanRadius * 2;
-            eTeslaTowerList.clear();
-
-            if (parametrized && scanRadiusTowerParam > 0 && scanRadiusTowerParam < scanRadiusTower) {
-                scanRadiusTower = scanRadiusTowerParam;
-            }
-
-            for (int xPosOffset = -scanRadiusTower; xPosOffset <= scanRadiusTower; xPosOffset++) {
-            	for (int yPosOffset = -scanRadiusTower; yPosOffset <= scanRadiusTower; yPosOffset++) {
-            		for (int zPosOffset = -scanRadiusTower; zPosOffset <= scanRadiusTower; zPosOffset++) {
-            		    if (xPosOffset == 0 && yPosOffset == 0 && zPosOffset == 0){
+                        if (node == null) {
                             continue;
                         }
-            			IGregTechTileEntity node = mte.getIGregTechTileEntityOffset(xPosOffset, yPosOffset, zPosOffset);
-            			if (node == null) {
-            				continue;
-            			}
-            			IMetaTileEntity nodeInside = node.getMetaTileEntity();
-            			if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()){
-            				eTeslaTowerList.add((GT_MetaTileEntity_TM_teslaCoil) nodeInside);
-            			}
-            		}
-            	}
+                        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                        if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil || nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive() || (node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate)) {
+                            eTeslaMap.put(node, (int) Math.ceil(Math.sqrt(xPosOffset * xPosOffset + yPosOffset * yPosOffset + zPosOffset * zPosOffset)));
+                        }
+                    }
+                }
             }
         }
 
@@ -399,50 +370,79 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             outputCurrent = 1;//TODO Generate depending on count of capacitors
 
             if (parametrized && outputVoltageParam > 0 && outputVoltage > outputVoltageParam){
-            outputVoltage = outputVoltageParam;}
+            outputVoltage = outputVoltageParam;
+            }
 
             if (parametrized && outputCurrentParam > 0 && outputCurrent > outputCurrentParam){
-            outputCurrent = outputCurrentParam;}
-
-            outputEuT = outputVoltage * outputCurrent;
-
-            long requestedSumEU = 0;
-
-            //Clean the Smol Tesla list
-            for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList.toArray(new GT_MetaTileEntity_TeslaCoil[eTeslaList.size()])) {
-            	try {
-            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
-            	} catch (Exception e) {
-            		eTeslaList.remove(Rx);
-            	}
+            outputCurrent = outputCurrentParam;
             }
 
-            //Clean the large tesla list
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList.toArray(new GT_MetaTileEntity_TM_teslaCoil[eTeslaTowerList.size()])) {
-            	try {
-            		requestedSumEU += Rx.maxEUStore() - Rx.getEUVar();
-            	} catch (Exception e) {
-            		eTeslaTowerList.remove(Rx);
-            	}
+            transferRadiusTower = 32; //TODO generate based on power stored
+            transferRadiusTransceiver = 16; //TODO generate based on power stored
+            transferRadiusCoverUltimate = 16; //TODO generate based on power stored
+
+            if(parametrized && transferRadiusTowerParam > 0 && transferRadiusTowerParam < transferRadiusTower){
+                transferRadiusTower = transferRadiusTowerParam;
             }
 
-            //Try to send EU to the smol teslas
-            for (GT_MetaTileEntity_TeslaCoil Rx : eTeslaList) {
-                if (!Rx.powerPassToggle) {
-                    long euTran = outputVoltage;
-                    if (Rx.getBaseMetaTileEntity().injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
-                        setEUVar(getEUVar() - euTran);
+            if(parametrized && transferRadiusTransceiverParam > 0 && transferRadiusTransceiverParam < transferRadiusTransceiver){
+                transferRadiusTransceiver = transferRadiusTransceiverParam;
+            }
+
+            if(parametrized && transferRadiusCoverUltimateParam > 0 && transferRadiusCoverUltimateParam < transferRadiusCoverUltimate){
+                transferRadiusCoverUltimate = transferRadiusCoverUltimateParam;
+            }
+
+            //Clean the eTeslaMap
+            for (Map.Entry<IGregTechTileEntity, Integer> Rx : eTeslaMap.entrySet()) {
+                IGregTechTileEntity node = Rx.getKey();
+                if (node != null) {
+                    IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                    try {
+                        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && node.isActive()) {
+                            GT_MetaTileEntity_TM_teslaCoil teslaTower = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                            if (teslaTower.maxEUStore() > 0) {
+                                continue;
+                            }
+                        } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil) {
+                            GT_MetaTileEntity_TeslaCoil teslaCoil = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+                            if (teslaCoil.getStoredEnergy()[1] > 0) {
+                                continue;
+                            }
+                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && node.getEUCapacity() > 0) {
+                            continue;
+                        }
+                    } catch (Exception e) {
                     }
                 }
+                System.out.println("Something just got purged!");
+                eTeslaMap.remove(Rx.getKey());
             }
 
-            //Try to send EU to big teslas
-            for (GT_MetaTileEntity_TM_teslaCoil Rx : eTeslaTowerList) {
-                if (!Rx.powerPassToggle) {
-                    long euTran = outputVoltage;
-                    if (Rx.getEUVar() + euTran <= (Rx.maxEUStore()/2)) {
+            //Power transfer
+            for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
+                IGregTechTileEntity node = Rx.getKey();
+                IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                long euTran = outputVoltage;
+
+                if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
+                    GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                    if (!nodeTesla.powerPassToggle) {
+                        if (nodeTesla.getEUVar() + euTran <= (nodeTesla.maxEUStore() / 2)) {
+                            setEUVar(getEUVar() - euTran);
+                            node.increaseStoredEnergyUnits(euTran, true);
+                        }
+                    }
+                } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil && Rx.getValue() <= transferRadiusTransceiver) {
+                    GT_MetaTileEntity_TeslaCoil nodeTesla = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+                    if (!nodeTesla.powerPassToggle) {
+                        if (node.injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
+                            setEUVar(getEUVar() - euTran);
+                        }
+                    }
+                } else if ((node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate){
+                    if (node.injectEnergyUnits((byte)1, euTran, 1L) > 0L) {
                         setEUVar(getEUVar() - euTran);
-                        Rx.getBaseMetaTileEntity().increaseStoredEnergyUnits(euTran, true);
                     }
                 }
             }
@@ -485,6 +485,10 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
     }
