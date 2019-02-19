@@ -14,6 +14,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.network.Rotati
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,6 +47,7 @@ import static com.github.technus.tectech.Util.StructureCheckerExtreme;
 import static com.github.technus.tectech.Util.getTier;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
+import static gregtech.api.enums.GT_Values.B;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -452,6 +454,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"I");
+        list.add(EnumChatFormatting.WHITE+"Value: "+
+                EnumChatFormatting.AQUA+parametrization.getIn(hatchNo,paramID)+
+                EnumChatFormatting.GOLD+(((parametrization.bParamsAreFloats& B[hatchNo])!=0)?" float":" int"));
         try{
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         }catch (NullPointerException e){
@@ -474,6 +479,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"O");
+        list.add(EnumChatFormatting.WHITE+"Value: "+
+                EnumChatFormatting.AQUA+parametrization.getOut(hatchNo,paramID)+
+                EnumChatFormatting.GOLD+(((parametrization.bParamsAreFloats& B[hatchNo])!=0)?" float":" int"));
         try{
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         }catch (NullPointerException e){
@@ -737,7 +745,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
      *
      * @param machineBusy is machine doing SHIT
      */
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+    protected void parametersOutAndStatusesWrite_EM(boolean machineBusy) {//todo unimplement
         if(!machineBusy){
             for (Parameters.Group.ParameterIn parameterIn : parametrization.parameterInArrayList) {
                 if (parameterIn != null) {
@@ -893,11 +901,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         aNBT.setTag("eParamsOut", paramO);
 
-        NBTTagCompound paramB = new NBTTagCompound();
-        for (int i = 0; i < parametrization.bParamsAreFloats.length; i++) {
-            paramB.setBoolean(Integer.toString(i), parametrization.bParamsAreFloats[i]);
-        }
-        aNBT.setTag("eParamsB", paramB);
+        aNBT.setShort("eParamsS",parametrization.bParamsAreFloats);
 
         NBTTagCompound paramIs = new NBTTagCompound();
         for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
@@ -984,9 +988,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             parametrization.iParamsOut[i] = paramO.getInteger(Integer.toString(i));
         }
 
-        NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
-        for (int i = 0; i < parametrization.bParamsAreFloats.length; i++) {
-            parametrization.bParamsAreFloats[i] = paramB.getBoolean(Integer.toString(i));
+        if(aNBT.hasKey("eParamsB")) {
+            NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
+            parametrization.bParamsAreFloats=0;
+            for (int i = 0; i < 10; i++) {
+                parametrization.bParamsAreFloats|=paramB.getBoolean(Integer.toString(i))? B[i]:0;
+            }
+        }else{
+            parametrization.bParamsAreFloats=aNBT.getShort("eParamsS");
         }
 
         NBTTagCompound paramIs = aNBT.getCompoundTag("eParamsInS");
@@ -1185,7 +1194,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     continue;
                 }
                 int paramID = hatch.param;
-                if(parametrization.bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
+                if((parametrization.bParamsAreFloats&B[hatch.param])!=0){
                     hatch.input0i = parametrization.iParamsOut[paramID];
                     hatch.input1i = parametrization.iParamsOut[paramID + 10];
                 }else if(hatch.isUsingFloats()){
@@ -1203,7 +1212,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     continue;
                 }
                 int paramID = hatch.param;
-                parametrization.bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                if(hatch.isUsingFloats()){
+                    parametrization.bParamsAreFloats |= B[hatch.param];
+                }else {
+                    parametrization.bParamsAreFloats &=~B[hatch.param];
+                }
                 parametrization.iParamsIn[paramID] = hatch.value0i;
                 parametrization.iParamsIn[paramID + 10] = hatch.value1i;
                 hatch.input0i = parametrization.iParamsOut[paramID];
@@ -1419,7 +1432,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                             hatch.getBaseMetaTileEntity().setActive(true);
                             if(hatch.param>=0) {
-                                parametrization.bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                                if(hatch.isUsingFloats()){
+                                    parametrization.bParamsAreFloats |= B[hatch.param];
+                                }else {
+                                    parametrization.bParamsAreFloats &=~B[hatch.param];
+                                }
                             }
                         }
                     }

@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
@@ -28,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
@@ -46,11 +48,29 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     //region parameters
     protected Parameters.Group.ParameterIn overclock,overvolt;
-
+    protected Parameters.Group.ParameterOut maxCurrentTemp,availableData;
+    private static final Function<GT_MetaTileEntity_EM_computer,String> OC_NAME = base-> "Overclock ratio";
+    private static final Function<GT_MetaTileEntity_EM_computer,String> OV_NAME = base-> "Overvoltage ratio";
+    private static final Function<GT_MetaTileEntity_EM_computer,String> MAX_TEMP_NAME = base-> "Current max. heat";
+    private static final Function<GT_MetaTileEntity_EM_computer,String> COMPUTE_NAME = base-> "Produced computation";
+    private static final Function<GT_MetaTileEntity_EM_computer, LedStatus> OC_STATUS=
+            base->LedStatus.fromLimitsInclusiveOuterBoundary(base.overclock.get(),0,1,1,3);
+    private static final Function<GT_MetaTileEntity_EM_computer,LedStatus> OV_STATUS=
+            base->LedStatus.fromLimitsInclusiveOuterBoundary(base.overvolt.get(),.7,.8,1.2,2);
+    private static final Function<GT_MetaTileEntity_EM_computer,LedStatus> MAX_TEMP_STATUS=
+            base->LedStatus.fromLimitsInclusiveOuterBoundary(base.maxCurrentTemp.get(),-10000,0,0,5000);
+    private static final Function<GT_MetaTileEntity_EM_computer,LedStatus> COMPUTE_STATUS=base->{
+        if(base.eAvailableData<0){
+            return STATUS_TOO_LOW;
+        }
+        if(base.eAvailableData==0){
+            return STATUS_NEUTRAL;
+        }
+        return STATUS_OK;
+    };
     //endregion
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
-    private int maxCurrentTemp = 0;
 
     //region Structure
     private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
@@ -84,7 +104,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        
+        Parameters.Group hatch_0=parametrization.makeGroup(0,true);
+        overclock=hatch_0.makeInParameter(0,1,OC_NAME,OC_STATUS);
+        overvolt=hatch_0.makeInParameter(1,1,OV_NAME,OV_STATUS);
+        maxCurrentTemp=hatch_0.makeOutParameter(0,0,MAX_TEMP_NAME,MAX_TEMP_STATUS);
+        availableData=hatch_0.makeOutParameter(1,0,COMPUTE_NAME,COMPUTE_STATUS);
     }
 
     @Override
@@ -116,14 +140,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
+        parametrization.setToDefaults(false,true,false);
         eAvailableData = 0;
-        maxCurrentTemp = 0;
-        double overClockRatio= getParameterIn(0,0);
-        double overVoltageRatio= getParameterIn(0,1);
+        double maxTemp=0;
+        double overClockRatio= overclock.get();
+        double overVoltageRatio= overvolt.get();
         if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
             return false;
         }
-        if(overClockRatio>0 && overVoltageRatio>=0.7f && overClockRatio<=3 && overVoltageRatio<=2){
+        if(overclock.getStatus(true).isOk() && overvolt.getStatus(true).isOk()){
             float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
             if(eut<Integer.MAX_VALUE-7) {
                 mEUt = -(int) eut;
@@ -138,8 +163,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
                     continue;
                 }
-                if (rack.heat > maxCurrentTemp) {
-                    maxCurrentTemp = rack.heat;
+                if (rack.heat > maxTemp) {
+                    maxTemp=rack.heat;
                 }
                 rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
@@ -161,6 +186,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 eAmpereFlow = 1 + (thingsActive >> 2);
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
+                maxCurrentTemp.set(maxTemp);
+                availableData.set(eAvailableData);
                 return true;
             } else {
                 eAvailableData=0;
@@ -168,6 +195,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 eAmpereFlow = 1;
                 mMaxProgresstime = 20;
                 mEfficiencyIncrease = 10000;
+                maxCurrentTemp.set(maxTemp);
+                availableData.set(eAvailableData);
                 return true;
             }
         }
@@ -210,68 +239,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             r.getBaseMetaTileEntity().setActive(false);
         }
     }
-
-    @Override
-    protected void parametersLoadDefault_EM() {
-        setParameterPairIn_ClearOut(0, false, 1, 1);
-    }
-
-    @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        double ocRatio = getParameterIn(0, 0);
-        if (ocRatio < 0) {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-        } else if (ocRatio < 1) {
-            setStatusOfParameterIn(0, 0, STATUS_LOW);
-        } else if (ocRatio == 1) {
-            setStatusOfParameterIn(0, 0, STATUS_OK);
-        } else if (ocRatio <= 3) {
-            setStatusOfParameterIn(0, 0, STATUS_HIGH);
-        } else if (Double.isNaN(ocRatio)) {
-            setStatusOfParameterIn(0, 0, STATUS_WRONG);
-        } else {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-        }
-
-        double ovRatio = getParameterIn(0, 1);
-        if (ovRatio < 0.7f) {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-        } else if (ovRatio < 0.8f) {
-            setStatusOfParameterIn(0, 1, STATUS_LOW);
-        } else if (ovRatio <= 1.2f) {
-            setStatusOfParameterIn(0, 1, STATUS_OK);
-        } else if (ovRatio <= 2) {
-            setStatusOfParameterIn(0, 1, STATUS_HIGH);
-        } else if (Double.isNaN(ovRatio)) {
-            setStatusOfParameterIn(0, 1, STATUS_WRONG);
-        } else {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
-        }
-
-        setParameterOut(0, 0, maxCurrentTemp);
-        setParameterOut(0, 1, eAvailableData);
-
-        if (maxCurrentTemp < -10000) {
-            setStatusOfParameterOut(0, 0, STATUS_TOO_LOW);
-        } else if (maxCurrentTemp < 0) {
-            setStatusOfParameterOut(0, 0, STATUS_LOW);
-        } else if (maxCurrentTemp == 0) {
-            setStatusOfParameterOut(0, 0, STATUS_OK);
-        } else if (maxCurrentTemp <= 5000) {
-            setStatusOfParameterOut(0, 0, STATUS_HIGH);
-        } else {
-            setStatusOfParameterOut(0, 0, STATUS_TOO_HIGH);
-        }
-
-        if (!machineBusy) {
-            setStatusOfParameterOut(0, 1, STATUS_NEUTRAL);
-        } else if (eAvailableData <= 0) {
-            setStatusOfParameterOut(0, 1, STATUS_TOO_LOW);
-        } else {
-            setStatusOfParameterOut(0, 1, STATUS_OK);
-        }
-    }
-
 
     @Override
     public void onRemoval() {

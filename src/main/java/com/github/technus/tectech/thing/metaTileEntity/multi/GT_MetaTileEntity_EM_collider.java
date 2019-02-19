@@ -361,8 +361,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group group=parametrization.makeGroup(0,false);
-        mode=group.makeInParameter(0,FUSE_MODE, MODE_NAME, MODE_STATUS);
+        Parameters.Group hatch_0=parametrization.makeGroup(0,false);
+        mode=hatch_0.makeInParameter(0,FUSE_MODE, MODE_NAME, MODE_STATUS);
     }
 
     @Override

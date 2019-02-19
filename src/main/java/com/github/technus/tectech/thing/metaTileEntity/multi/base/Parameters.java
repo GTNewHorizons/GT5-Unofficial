@@ -1,7 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
+import gregtech.api.enums.GT_Values;
+
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.function.Function;
+
+import static gregtech.api.enums.GT_Values.B;
 
 /**
  * Instantiate parameters as field in parametersInstantiation_EM();
@@ -13,16 +18,24 @@ public class Parameters {
 
     final Group[] groups = new Group[10];
 
-    final int[] iParamsIn = new int[20];//number I from parametrizers
-    final int[] iParamsOut = new int[20];//number O to parametrizers
+    int[] iParamsIn = new int[20];//number I from parametrizers
+    int[] iParamsOut = new int[20];//number O to parametrizers
     final ArrayList<Group.ParameterIn> parameterInArrayList =new ArrayList<>();
     final ArrayList<Group.ParameterOut> parameterOutArrayList =new ArrayList<>();
 
-    final boolean[] bParamsAreFloats =new boolean[10];
+    short bParamsAreFloats=0;
 
     //package private for use in gui
-    final LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for I
-    final LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for O
+    LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for I
+    LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNUSED);//LED status for O
+
+    public double getIn(int hatchNo,int parameterId){
+        return (bParamsAreFloats& B[hatchNo])!=0?Float.intBitsToFloat(iParamsIn[hatchNo+10*parameterId]):iParamsIn[hatchNo+10*parameterId];
+    }
+
+    public double getOut(int hatchNo,int parameterId){
+        return (bParamsAreFloats& B[hatchNo])!=0?Float.intBitsToFloat(iParamsOut[hatchNo+10*parameterId]):iParamsOut[hatchNo+10*parameterId];
+    }
 
     private final GT_MetaTileEntity_MultiblockBase_EM parent;
 
@@ -37,7 +50,7 @@ public class Parameters {
                 p.setToDefaults(defaultIn,defaultOut,defaultAreFloats);
             }else{
                 if(defaultAreFloats){
-                    bParamsAreFloats[hatch]=false;
+                    bParamsAreFloats&=~B[hatch];
                     if(defaultIn){
                         iParamsIn[hatch] = 0;
                         iParamsIn[hatch + 10] = 0;
@@ -47,7 +60,7 @@ public class Parameters {
                         iParamsOut[hatch + 10] = 0;
                     }
                 }else{
-                    if(bParamsAreFloats[hatch]){
+                    if((bParamsAreFloats& B[hatch])!=0){
                         if(defaultIn){
                             iParamsIn[hatch] = ZERO_FLOAT;
                             iParamsIn[hatch + 10] = ZERO_FLOAT;
@@ -110,16 +123,20 @@ public class Parameters {
             return new ParameterOut(paramID, defaultValue, name, status);
         }
 
-        public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultAreFloats) {
-            if(defaultAreFloats){
-                bParamsAreFloats[hatchNo] = bParamsDefaultsAreStoredAsFloats;
+        public void setToDefaults(boolean defaultIn, boolean defaultOut,boolean defaultConfigureAreFloats) {
+            if(defaultConfigureAreFloats){
+                if(bParamsDefaultsAreStoredAsFloats){
+                    bParamsAreFloats|= B[hatchNo];
+                }else {
+                    bParamsAreFloats&=~B[hatchNo];
+                }
             }
             if(defaultIn){
                 for(int in=0;in<2;in++){
                     if(this.parameterIn[in]!=null){
                         this.parameterIn[in].setDefault();
                     }else {
-                        if (bParamsAreFloats[hatchNo]) {
+                        if ((bParamsAreFloats& B[hatchNo])!=0) {
                             iParamsIn[hatchNo] = ZERO_FLOAT;
                             iParamsIn[hatchNo + 10] = ZERO_FLOAT;
                         } else {
@@ -134,7 +151,7 @@ public class Parameters {
                     if(this.parameterOut[out]!=null){
                         this.parameterOut[out].setDefault();
                     }else {
-                        if (bParamsAreFloats[hatchNo]) {
+                        if ((bParamsAreFloats& B[hatchNo])!=0) {
                             iParamsIn[hatchNo] = ZERO_FLOAT;
                             iParamsIn[hatchNo + 10] = ZERO_FLOAT;
                         } else {
@@ -176,11 +193,11 @@ public class Parameters {
             }
 
             public double get(){
-                return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsOut[id]):iParamsOut[id];
+                return (bParamsAreFloats& B[hatchNo])!=0?Float.intBitsToFloat(iParamsOut[id]):iParamsOut[id];
             }
 
             public void set(double value){
-                if(bParamsAreFloats[hatchNo]) {
+                if((bParamsAreFloats& B[hatchNo])!=0) {
                     iParamsOut[id]=Float.floatToIntBits((float) value);
                 }else{
                     iParamsOut[id]=(int)value;
@@ -229,7 +246,7 @@ public class Parameters {
             }
 
             private void setDefault() {
-                if(bParamsAreFloats[hatchNo]) {
+                if((bParamsAreFloats& B[hatchNo])!=0) {
                     iParamsIn[id]=Float.floatToIntBits((float) defaultValue);
                 }else{
                     iParamsIn[id]=(int)defaultValue;
@@ -237,7 +254,7 @@ public class Parameters {
             }
 
             public double get(){
-                return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[id]):iParamsIn[id];
+                return (bParamsAreFloats& B[hatchNo])!=0?Float.intBitsToFloat(iParamsIn[id]):iParamsIn[id];
             }
 
             public void updateStatus(){

@@ -114,16 +114,6 @@ public class GT_MetaTileEntity_EM_dataBank extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void parametersLoadDefault_EM() {
-        for(int i=0;i<10;i++){
-            setStatusOfParameterIn(i,0,STATUS_UNUSED);
-            setStatusOfParameterIn(i,1,STATUS_UNUSED);
-            setStatusOfParameterOut(i,0,STATUS_UNUSED);
-            setStatusOfParameterOut(i,1,STATUS_UNUSED);
-        }
-    }
-
-    @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         if (eDataAccessHatches.size() > 0 && eStacksDataOutputs.size() > 0) {
             mEUt = -(int) V[7];
