@@ -89,7 +89,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         super(aName);
     }
 
-    private static int[] specialValueUnpack(int aSpecialValure) {
+    public static int[] specialValueUnpack(int aSpecialValure) {
         int[] ret = new int[4];
         ret[0] = aSpecialValure & 0xF; // = glas tier
         ret[1] = aSpecialValure >>> 4 & 0b11; // = special valure
@@ -389,7 +389,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
 
         staticColorMap.remove(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
-        staticColorMap.put(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId), lCulture == null ? BioCulture.BIO_CULTURE_ARRAY_LIST.get(0).getColorRGB() : lCulture.getColorRGB());
+        staticColorMap.put(new Coords(xDir + x + this.getBaseMetaTileEntity().getXCoord(), y + this.getBaseMetaTileEntity().getYCoord(), zDir + z + this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId), lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
 
         if (FMLCommonHandler.instance().getSide().isServer()) {
             MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
@@ -401,7 +401,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                                     zDir + z + this.getBaseMetaTileEntity().getZCoord(),
                                     this.getBaseMetaTileEntity().getWorld().provider.dimensionId
                             ),
-                            lCulture == null ? BioCulture.BIO_CULTURE_ARRAY_LIST.get(0).getColorRGB() : lCulture.getColorRGB(),
+                            lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
                             true
                     ),
                     this.getBaseMetaTileEntity().getXCoord(),
@@ -416,7 +416,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                                     zDir + z + this.getBaseMetaTileEntity().getZCoord(),
                                     this.getBaseMetaTileEntity().getWorld().provider.dimensionId
                             ),
-                            lCulture == null ? BioCulture.BIO_CULTURE_ARRAY_LIST.get(0).getColorRGB() : lCulture.getColorRGB(),
+                            lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
                             false
                     ),
                     this.getBaseMetaTileEntity().getXCoord(),
@@ -571,7 +571,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                                                 zDir + z + this.getBaseMetaTileEntity().getZCoord(),
                                                 this.getBaseMetaTileEntity().getWorld().provider.dimensionId
                                         ),
-                                        mCulture == null ? BioCulture.BIO_CULTURE_ARRAY_LIST.get(0).getColorRGB() : mCulture.getColorRGB(),
+                                        mCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : mCulture.getColorRGB(),
                                         true
                                 ),
                                 this.getBaseMetaTileEntity().getXCoord(),

@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         FluidStack dnaFluid = Loader.isModLoaded("gendustry") ? FluidRegistry.getFluidStack("liquiddna", 1000) : Materials.Biomass.getFluid(1000L);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot().getItem() instanceof LabModule) {
-            int damage = getSpecialSlot().getItemDamage() + 1;
+            int damage = getSpecialSlot().getItemDamage();
             switch (damage) {
                 case 0:
                     if (GT_Utility.isStackValid(this.mInventory[4]) && this.mInventory[4].getItem() instanceof LabParts && this.mInventory[4].getItemDamage() == 0 && this.mInventory[4].getTagCompound() != null &&  //checks if it is a Culture
@@ -197,9 +197,9 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                 case 3: {
                     if (
                             GT_Utility.isStackValid(this.mInventory[4]) && GT_Utility.areStacksEqual(this.mInventory[4], BioItemList.getPetriDish(null), true) && this.mInventory[4].getTagCompound() != null &&
-                                    GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], BioItemList.getPlasmidCell(null), true) && this.mInventory[5].getTagCompound() != null &&
-                                    GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[2]) &&
-                                    this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
+                            GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], BioItemList.getPlasmidCell(null), true) && this.mInventory[5].getTagCompound() != null &&
+                            GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[2]) &&
+                            this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioData.getBioDataFromNBTTag(this.mInventory[5].getTagCompound());
                         BioCulture bioCulture = BioCulture.getBioCultureFromNBTTag(this.mInventory[4].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null)
@@ -213,7 +213,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                         this.mFluid.amount -= 1000;
                         bioCulture.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList.getPetriDish(bioCulture);
+                            this.mOutputItems[0] = BioItemList.getPetriDish(checkForExisting(bioCulture));
                         }
                         this.mOutputItems[1] = ItemList.Cell_Universal_Fluid.get(1L);
                         this.calculateOverclockedNess(BW_Util.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()), 500);
@@ -258,5 +258,14 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
             }
         }
         return super.checkRecipe(skipOC);
+    }
+
+    private BioCulture checkForExisting(BioCulture culture){
+        if (culture == null)
+            return null;
+        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
+            if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
+                return bc;
+        return culture;
     }
 }

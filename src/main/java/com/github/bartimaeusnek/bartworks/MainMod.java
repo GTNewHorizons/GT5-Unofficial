@@ -24,11 +24,14 @@ package com.github.bartimaeusnek.bartworks;
 
 
 import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
+import com.github.bartimaeusnek.bartworks.API.BioObjectAdder;
 import com.github.bartimaeusnek.bartworks.client.ClientEventHandler.ClientEventHandler;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.BioTab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.GT2Tab;
 import com.github.bartimaeusnek.bartworks.client.creativetabs.bartworksTab;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
+import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
@@ -52,8 +55,6 @@ import org.apache.logging.log4j.Logger;
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "after:berriespp;"
-                + "after:dreamcraft;"
-                + "after:miscutils;"
 )
 public final class MainMod {
     public static final String NAME = "BartWorks";
@@ -86,6 +87,11 @@ public final class MainMod {
         CHandler = new ConfigHandler(preinit);
         if (GTNH)
             LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
+
+        if (ConfigHandler.BioLab) {
+            BioCultureLoader bioCultureLoader = new BioCultureLoader();
+            bioCultureLoader.run();
+        }
     }
 
     @Mod.EventHandler
@@ -93,6 +99,8 @@ public final class MainMod {
         if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.BioLab)
             MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         new LoaderRegistry().run();
+        if (ConfigHandler.BioLab)
+            new BioLabLoader().run();
     }
 
     @Mod.EventHandler
@@ -100,5 +108,6 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, GH);
         if (ConfigHandler.BioLab)
             new GTNHBlocks().run();
+        BioObjectAdder.regenerateBioFluids();
     }
 }

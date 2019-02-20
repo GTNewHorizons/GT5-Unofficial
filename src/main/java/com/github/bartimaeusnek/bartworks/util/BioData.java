@@ -25,11 +25,13 @@ package com.github.bartimaeusnek.bartworks.util;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class BioData {
     public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<BioData>();
+
     protected String name;
     protected int ID;
     protected EnumRarity rarity;
@@ -83,7 +85,7 @@ public class BioData {
         NBTTagCompound ret = new NBTTagCompound();
         ret.setByte("Rarity", BW_Util.getByteFromRarity(bioData.rarity));
         ret.setString("Name", bioData.name);
-        ret.setInteger("ID", bioData.ID);
+        //ret.setInteger("ID", bioData.ID); buggy when load Order changes
         ret.setInteger("Chance", bioData.chance);
         ret.setInteger("Tier", bioData.tier);
         return ret;
@@ -107,16 +109,16 @@ public class BioData {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         BioData bioData = (BioData) o;
-        return this.getID() == bioData.getID() &&
+        return this.getID() == bioData.getID() || (
                 this.getChance() == bioData.getChance() &&
                 this.getTier() == bioData.getTier() &&
                 Objects.equals(this.getName(), bioData.getName()) &&
-                this.getRarity() == bioData.getRarity();
+                this.getRarity() == bioData.getRarity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getName(), this.getID(), this.getRarity(), this.getChance(), this.getTier());
+        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(13).putInt(MurmurHash3.murmurhash3_x86_32(this.getName(),0,this.getName().length(),31)).put(BW_Util.getByteFromRarity(this.getRarity())).putInt(this.getChance()).putInt(this.getTier()).array(),0,13,31);
     }
 
     public int getTier() {

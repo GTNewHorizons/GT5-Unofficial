@@ -26,6 +26,8 @@ import net.minecraft.item.EnumRarity;
 
 public class BioDNA extends BioData {
 
+    public static final BioDNA NULLDNA = createAndRegisterBioDNA("", EnumRarity.epic);
+
     protected BioDNA(String name, int ID, EnumRarity rarity) {
         super(name, ID, rarity);
     }

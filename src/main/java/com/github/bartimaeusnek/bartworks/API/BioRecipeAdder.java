@@ -37,7 +37,7 @@ public final class BioRecipeAdder {
     public static final int LOWGRAVITY = -100;
     public static final int CLEANROOM = -200;
 
-    public static boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+    public static boolean addBioLabRecipe(ItemStack[] aInputs, ItemStack aOutput, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         return BWRecipes.instance.addBioLabRecipe(aInputs, aOutput, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
     }
 
