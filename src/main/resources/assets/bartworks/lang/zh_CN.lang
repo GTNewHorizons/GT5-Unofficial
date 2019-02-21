@@ -1,4 +1,4 @@
-itemGroup.GT2C=Gregtech 2兼容
+itemGroup.GT2C=Gregtech2兼容
 item.GT_Rockcutter_Item_LV.name=岩石切割者 LV
 item.GT_Rockcutter_Item_MV.name=岩石切割者 MV
 item.GT_Rockcutter_Item_HV.name=岩石切割者 HV
@@ -7,7 +7,7 @@ BW_ItemBlocks.0.name=蚀刻青金石单元
 BW_ItemBlocks.1.name=镀青金石单元
 GT_LESU_CASING.0.name=LESU框架
 
-itemGroup.bartworks=BartWorks 跨时代
+itemGroup.bartworks=BartWorks-跨时代
 BW_Machinery_Casings.0.name=镍锌铁氧体块
 BW_Machinery_Casings.1.name=变压器线圈方块
 item.BW_PaperRotor.name=原始纸转子 (风车专用)
@@ -28,7 +28,7 @@ item.BWrawtube.name=加长玻璃管
 item.BWmotor.name=简易斯特林电机
 item.BWstove.name=简易加热炉
 
-itemGroup.BioTab=BartWorks 生物工程
+itemGroup.BioTab=BartWorks-生物工程
 filled.item.petriDish.name=培养皿
 item.petriDish.name=无菌培养皿
 item.DNASampleFlask.name=DNA样品瓶
@@ -99,7 +99,7 @@ tooltip.tile.waterpump.0.name=产出
 tooltip.tile.waterpump.1.name=升/秒 加油时的水.
 tooltip.tile.waterpump.2.name=必须放在地上.
 
-tooltip.tile.mbf.0.name=巨型高炉的控制器;大小(宽x高x长):15x20x15(中空);控制器:第3层中间中心;内部13x18x13加热线圈(中空);外部15x18x1硼硅酸盐玻璃;玻璃将限制能量输入等级;1个以上的输入仓/总线(任意机械方块);1个以上的输出仓/总线(任意机械方块);1个以上的能源仓(任意机械方块);1x维护仓(任意机械方块);13x13消音仓(顶部正中);外部15x15的防热机械方块(第20层);1个输出仓以回收CO2/CO/SO2(可选,任何顶层机械方块);回收比例取决于消音仓等级;防热机械方块为基础;每分钟900K.热容量增加5%(乘法);每分钟1800K.热容量允许一个升级的超频;升级的超频将配方时间减少到25%并将EU/t增加到400%;造成最大化
+tooltip.tile.mbf.0.name=巨型工业高炉的控制器;大小(宽x高x长):15x20x15(中空);控制器:第3层中间中心;内部13x18x13加热线圈(中空);外部15x18x1硼硅酸盐玻璃;玻璃将限制能量输入等级;1个以上的输入仓/总线(任意机械方块);1个以上的输出仓/总线(任意机械方块);1个以上的能源仓(任意机械方块);1x维护仓(任意机械方块);13x13消音仓(顶部正中);外部15x15的防热机械方块(第20层);1个输出仓以回收CO2/CO/SO2(可选,任何顶层机械方块);回收比例取决于消音仓等级;底层为隔热机械方块;自配方的最小温度起,温度每高出900K会减少5%的能耗(使用乘法);自配方的最小温度起，每高出1800K的温度将允许进行一次无损超频;无损超频将减少配方加工时间至25%并提升功率至400%
 tooltip.tile.mbf.1.name=污染每秒
 tooltip.tile.mvf.0.name=巨型真空冷冻机的控制器;超级冷却热金属锭和单元;大小(宽x高x长):15x15x15(中空);控制器:(正面中心);1个输入总线(任意机械方块);1个输出总线(任意机械方块);1个维护仓(任意机械方块);1个能源仓(任意机械方块);其余为的防冻机械方块
 tooltip.tile.bvat.0.name=发酵锅的控制器;大小(宽x高x长):5x4x5;底部和顶部是不锈钢外壳;底部和顶部必须包含:;1个维护仓,1个输出仓;1个或以上的输入仓,1个或以上的输入仓,0-1个辐射输入总线;两个中间层必须由玻璃构成,中空;玻璃可以是任何玻璃,例如,匠魂的通透玻璃;一些配方需要更高级的玻璃;为了最大限度地提高效率,请保持输出仓始终为半满!
@@ -135,11 +135,11 @@ nei.biovat.2.name=最少需要
 tile.diode.name=电缆二极管
 tile.energydistributor.name=能量分配器
 tile.acidgenerator.name=酸发生器
-tile.bw.mbf.name=巨型高炉
-tile.bw.mvf.name=超级真空冷冻柜
+tile.bw.mbf.name=巨型工业高炉
+tile.bw.mvf.name=巨型真空冷冻机
 tile.biolab.name=生物实验室
-tile.biovat.name=发酵锅
-tile.radiohatch.name=无线电舱口
+tile.biovat.name=生物培养缸
+tile.radiohatch.name=放射仓
 tile.bw.windmill.name=风车
 tile.manutrafo.name=手动变压器
 //This zh_CN.lang is translation by huajijam for bartworks (21/2/19)
