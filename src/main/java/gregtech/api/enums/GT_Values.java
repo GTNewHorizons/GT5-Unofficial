@@ -183,9 +183,16 @@ public class GT_Values {
      * This will prevent NEI from crashing but spams the Log.
      */
     public static boolean allow_broken_recipemap = false;
-
     /**
      * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
      */
     public static float cleanroomGlass = 5.0f;
+    /**
+     * This will let machines such as drills and pumps chunkload their work area.
+     */
+    public static boolean enableChunkloaders = true;
+    /**
+     * This will make all chunkloading machines act as World Anchors (true) or Passive Anchors (false)
+     */
+    public static boolean alwaysReloadChunkloaders = false;
 }
