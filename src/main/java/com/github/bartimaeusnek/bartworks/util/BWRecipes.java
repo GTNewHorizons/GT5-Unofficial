@@ -42,6 +42,7 @@ import ic2.core.Ic2Items;
 import ic2.core.item.ItemFluidCell;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -62,7 +63,7 @@ public class BWRecipes {
     private final GT_Recipe.GT_Recipe_Map sBiolab = new GT_Recipe.GT_Recipe_Map(
             new HashSet<GT_Recipe>(150),
             "bw.recipe.biolab",
-            "Bio Lab",
+            StatCollector.translateToLocal("tile.biolab.name"),
             null,
             "gregtech:textures/gui/basicmachines/BW.GUI.BioLab",
             6, 2, 1, 1, 1,
@@ -71,7 +72,7 @@ public class BWRecipes {
     private final BacteriaVatRecipeMap sBacteriaVat = new BacteriaVatRecipeMap(
             new HashSet<GT_Recipe>(50),
             "bw.recipe.BacteriaVat",
-            "Bacterial Vat",
+            StatCollector.translateToLocal("tile.biovat.name"),
             null,
             "gregtech:textures/gui/basicmachines/Default",
             6, 2, 0, 1, 1,
@@ -80,7 +81,7 @@ public class BWRecipes {
     private final BW_Recipe_Map_LiquidFuel sAcidGenFuels = new BW_Recipe_Map_LiquidFuel(
             new HashSet<GT_Recipe>(10),
             "bw.fuels.acidgens",
-            "Acid Generator",
+            StatCollector.translateToLocal("tile.acidgenerator.name"),
             null,
             "gregtech:textures/gui/basicmachines/Default",
             1, 1, 1, 1, 1,

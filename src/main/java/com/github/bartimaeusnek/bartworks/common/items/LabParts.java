@@ -31,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -78,19 +79,19 @@ public class LabParts extends SimpleSubItemClass {
         if (itemStack.getTagCompound() == null) {
             switch (itemStack.getItemDamage()) {
                 case 0:
-                    list.add("An empty Sterilized Petri Dish.");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.0.name"));
                     break;
                 case 1:
-                    list.add("An empty DNA Flask.");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.1.name"));
                     break;
                 case 2:
-                    list.add("An empty Plasmid Cell.");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.2.name"));
                     break;
                 case 3:
-                    list.add("A special washing power for Bio Engineering.");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.3.name"));
                     break;
                 case 4:
-                    list.add("A powder for the separation of DNA by electrophoresis.");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.4.name"));
                     break;
                 default:
                     break;
@@ -102,16 +103,16 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add("A Petri Dish containing: " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name")+" " + itemStack.getTagCompound().getString("Name"));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
-                    list.add("This is a weak culture, it can not be bred in the Bacterial Vat");
+                    list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add("A DNA Flask containing: " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name")+" " + itemStack.getTagCompound().getString("Name"));
                 break;
             case 2:
-                list.add("A Plasmid Cell containing: " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name")+" "+ itemStack.getTagCompound().getString("Name"));
                 break;
             default:
                 break;

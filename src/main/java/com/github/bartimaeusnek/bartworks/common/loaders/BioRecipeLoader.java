@@ -40,6 +40,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -131,7 +132,7 @@ public class BioRecipeLoader extends RecipeLoader {
                 }
         );
 
-        if (Loader.isModLoaded("croploadcore"))
+        if (Loader.isModLoaded("croploadcore") && OreDictionary.getOres("cropVine").size() > 1)
             for (int i = 0; i < OreDictionary.getOres("cropVine").size(); i++) {
                 GT_Values.RA.addExtractorRecipe(OreDictionary.getOres("cropVine").get(i).splitStack(12), BioItemList.getOther(1), 500, BW_Util.getMachineVoltageFromTier(3));
             }
@@ -157,8 +158,8 @@ public class BioRecipeLoader extends RecipeLoader {
         Materials[] circuits = {Materials.Advanced, Materials.Data, Materials.Elite, Materials.Master, Materials.Ultimate, Materials.Superconductor};
         for (int i = 3; i < GT_Values.VN.length; i++) {
             //12625
-            BioLab[(i - 3)] = new GT_MetaTileEntity_BioLab(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + i, GT_Values.VN[i] + " Bio Lab", GT_Values.VN[i] + " Bio Lab", i, "The BioLab, a Multi-Use Bioengineering Station").getStackForm(1L);
-            RadioHatch[(i - 3)] = new GT_MetaTileEntity_RadioHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 7 - 2 + i, GT_Values.VN[i] + " Radio Hatch", GT_Values.VN[i] + " Radio Hatch", i).getStackForm(1L);
+            BioLab[(i - 3)] = new GT_MetaTileEntity_BioLab(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + i, "bw.biolab"+GT_Values.VN[i], GT_Values.VN[i] + " "+StatCollector.translateToLocal("tile.biolab.name"), i).getStackForm(1L);
+            RadioHatch[(i - 3)] = new GT_MetaTileEntity_RadioHatch(ConfigHandler.IDOffset + GT_Values.VN.length * 7 - 2 + i ,"bw.radiohatch"+ GT_Values.VN[i], GT_Values.VN[i] + " "+StatCollector.translateToLocal("tile.radiohatch.name"), i).getStackForm(1L);
             try {
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
                 GT_ModHandler.addCraftingRecipe(
@@ -194,7 +195,7 @@ public class BioRecipeLoader extends RecipeLoader {
             }
         }
         GT_ModHandler.addCraftingRecipe(
-                new GT_TileEntity_BioVat(ConfigHandler.IDOffset + GT_Values.VN.length * 7, "BioVat", "BioVat").getStackForm(1L),
+                new GT_TileEntity_BioVat(ConfigHandler.IDOffset + GT_Values.VN.length * 7, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
                 RecipeLoader.BITSD,
                 new Object[]{
                         "GCG",

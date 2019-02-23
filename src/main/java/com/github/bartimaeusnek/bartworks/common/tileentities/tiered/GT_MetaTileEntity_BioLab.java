@@ -45,6 +45,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -52,21 +53,17 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
     private static final String MGUINAME = "BW.GUI.BioLab.png";
 
-    public GT_MetaTileEntity_BioLab(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, 1, aDescription, 6, 2, MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
+    public GT_MetaTileEntity_BioLab(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 1, null, 6, 2, MGUINAME, null, new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")/*this is topactive*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT")/*this is top*/), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")), new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM")));
     }
 
     public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String aDescription, ITexture[][][] aTextures, String aNEIName) {
         super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2, MGUINAME, aNEIName);
     }
 
-    public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures, String aNEIName) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2, MGUINAME, aNEIName);
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_BioLab(this.mName, this.mTier, this.mAmperage, this.mDescriptionArray, this.mTextures, this.mNEIName);
+        return new GT_MetaTileEntity_BioLab(this.mName, this.mTier, this.mAmperage, this.mDescription, this.mTextures, this.mNEIName);
     }
 
     @Override
@@ -267,5 +264,11 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
             if (culture.getdDNA().equals(bc.getdDNA()) && culture.getPlasmid().equals(bc.getPlasmid()))
                 return bc;
         return culture;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public String[] getDescription() {
+        return new String[]{ StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

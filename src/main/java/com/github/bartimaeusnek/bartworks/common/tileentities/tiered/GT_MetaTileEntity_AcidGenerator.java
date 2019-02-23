@@ -32,11 +32,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGenerator {
 
-    public GT_MetaTileEntity_AcidGenerator(int aID, String aName, String aNameRegional, int aTier, String[] aDescription, ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, aDescription, aTextures);
+    public GT_MetaTileEntity_AcidGenerator(int aID, String aName, String aNameRegional, int aTier,  ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, new String[]{}, aTextures);
     }
 
     public GT_MetaTileEntity_AcidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -109,6 +110,6 @@ public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGene
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Efficiency: " + ChatColorHelper.YELLOW + getEfficiency(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.acidgen.0.name"), StatCollector.translateToLocal("tooltip.tile.acidgen.1.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name")+" "+ ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.rotor.2.name")+" "+ ChatColorHelper.YELLOW + getEfficiency(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name")+" "+ ChatColorHelper.YELLOW + maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

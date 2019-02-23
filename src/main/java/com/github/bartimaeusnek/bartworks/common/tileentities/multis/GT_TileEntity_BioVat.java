@@ -48,6 +48,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -604,18 +605,13 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Bio Vat",
-                "LxHxD: 5x4x5",
-                "Bottom and top are Stainless Steel Casings",
-                "Bottom and top must contain:",
-                "1x Maintenance, 1x Output Hatch, 1 or more Input Hatches, 1 or more Input Buses, 0-1 Radiation Input Bus",
-                "The two middle layers must be build out of glass, hollow",
-                "The glass can be any glass, i.e. Tinkers Construct Clear Glass",
-                "Some Recipes need more advanced Glass Types",
-                "For maximum efficiency boost keep the Output Hatch always half filled!",
-                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
-        };
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.bvat.0.name").split(";");
+        String[] fdsc =  new String[dsc.length+1];
+        for (int i = 0; i < dsc.length; i++) {
+            fdsc[i]=dsc[i];
+            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return fdsc;
     }
 
     @Override

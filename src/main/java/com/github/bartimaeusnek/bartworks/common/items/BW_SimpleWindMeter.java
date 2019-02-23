@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -55,9 +56,9 @@ public class BW_SimpleWindMeter extends Item {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean p_77624_4_) {
         super.addInformation(itemStack, entityPlayer, list, p_77624_4_);
-        list.add("A simple Windmeter to choose a place for the Windmill.");
-        list.add("Uses left: " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
-        list.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
+        list.add(StatCollector.translateToLocal("tooltip.windmeter.0.name"));
+        list.add(StatCollector.translateToLocal("tooltip.windmeter.1.name")+" " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
+        list.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override
@@ -66,8 +67,8 @@ public class BW_SimpleWindMeter extends Item {
             return itemStack;
 
         float windStrength = (float) WorldData.get(world).windSim.getWindAt(entityPlayer.posY);
-        String windS = windStrength < 1f ? "non existant" : windStrength < 10f ? "pretty low" : windStrength < 20f ? "common" : windStrength < 30f ? "rather strong" : windStrength < 50f ? "very strong" : "too strong";
-        entityPlayer.addChatMessage(new ChatComponentText("The wind here seems to be " + windS + "."));
+        String windS = windStrength < 1f ? StatCollector.translateToLocal("tooltip.windmeter.2.name") : windStrength < 10f ? StatCollector.translateToLocal("tooltip.windmeter.3.name") : windStrength < 20f ? StatCollector.translateToLocal("tooltip.windmeter.4.name") : windStrength < 30f ? StatCollector.translateToLocal("tooltip.windmeter.5.name") : windStrength < 50f ? StatCollector.translateToLocal("tooltip.windmeter.6.name") : StatCollector.translateToLocal("tooltip.windmeter.7.name");
+        entityPlayer.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("tooltip.windmeter.8.name")+" " + windS + "."));
         itemStack.damageItem(1, entityPlayer);
         return itemStack;
     }

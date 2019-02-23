@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -57,7 +58,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     private byte coverage = 0;
 
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, new String[]{"Radioactive Item Chamber for Multiblocks", "Capacity: " + (aTier - 2) + " kg" + ((aTier - 2) >= 2 ? "s" : ""), "Use a screwdriver to set the containment level"});
+        super(aID, aName, aNameRegional, aTier, 1, new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"), StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name")+" " + (aTier - 2) + " " + ((aTier - 2) >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name") : StatCollector.translateToLocal("tooltip.bw.kg.0.name")), StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"});
         cap = aTier - 2;
     }
 
@@ -156,7 +157,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
                 if (timer % (calcDecayTicks(this.sievert)) == 0) {
                     this.mass--;
                     if (mass == 0) {
-                        material = "Empty";
+                        material = StatCollector.translateToLocal("tooltip.bw.empty.name");
                         sievert = 0;
                     }
                     timer = 1;
@@ -252,8 +253,8 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getInfoData() {
         if (calcDecayTicks(this.sievert) != 0)
-            return new String[]{"Material: " + material, "Sievert: " + sievert, "Amount: " + mass, "Time (in t/s/m/h) to decay (1kg): " + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + "t/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + "s/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + "m/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + "h"};
-        else return new String[]{"Material: Empty", "Sievert: 0", "Amount: 0"};
+            return new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.2.name")+" "+ material, StatCollector.translateToLocal("tooltip.tile.radhatch.3.name")+" "+ sievert, StatCollector.translateToLocal("tooltip.tile.radhatch.4.name")+" "+mass, StatCollector.translateToLocal("tooltip.tile.radhatch.5.name")+" "+ + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert) * 60)) + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")+"/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")+"/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")+"/" + ((calcDecayTicks(this.sievert)) - timer % (calcDecayTicks(this.sievert))) / 20 / 60 / 60 + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name")};
+        else return new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.2.name")+" "+StatCollector.translateToLocal("tooltip.bw.empty.name"), StatCollector.translateToLocal("tooltip.tile.radhatch.3.name")+" "+"0", StatCollector.translateToLocal("tooltip.tile.radhatch.4.name")+" "+"0"};
     }
 
     public boolean isSimpleMachine() {

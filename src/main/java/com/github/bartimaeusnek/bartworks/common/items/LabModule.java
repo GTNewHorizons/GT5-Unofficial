@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.items;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class LabModule extends SimpleSubItemClass {
 
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
-        aList.add("A Module used to change the BioLab's working Mode");
+        aList.add(StatCollector.translateToLocal("tooltip.labmodule.0.name"));
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
     }
 }

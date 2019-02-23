@@ -48,7 +48,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
 
 
 public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
@@ -152,17 +155,19 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the GT2-Styled L.E.S.U.",
-                "Size: ANY",
-                "Storage per LESU Casing: " + ConfigHandler.energyPerCell + "EU",
-                "Output EU: LESU Casings amount" +
-                        "Input EU: Next Voltage Tier to Output EU",
-                "Input/Output Amps can be configured via 4 Circuits in GUI",
-                "Output Side has a dot on it.",
-                ChatColorHelper.RED + "Only one Controller allowed, no Wallsharing!",
-                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
-        };
+        ArrayList<String> e = new ArrayList<>();
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.lesu.0.name").split(";");
+        for (int i = 0; i < dsc.length; i++) {
+            e.add(dsc[i]);
+        }
+        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name")+" " + ConfigHandler.energyPerCell + "EU");
+        dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
+        for (int i = 0; i < dsc.length; i++) {
+            e.add(dsc[i]);
+        }
+        e.add(ChatColorHelper.RED +StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
+        e.add(StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks");
+        return e.toArray(new String[0]);
     }
 
     @SideOnly(Side.CLIENT)

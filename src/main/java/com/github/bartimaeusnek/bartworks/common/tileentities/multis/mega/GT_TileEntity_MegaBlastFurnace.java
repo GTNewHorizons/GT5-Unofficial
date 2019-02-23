@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -35,10 +36,12 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -59,26 +62,15 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     }
 
     public String[] getDescription() {
-        return new String[]{"Controller Block for the Blast Furnace",
-                "Size(WxHxD): 15x20x15 (Hollow)",
-                "Controller 2nd Layer Middle Center",
-                "Inner 14x18x14 Heating Coils (Hollow)",
-                "Outer 15x18x15 Boronsilicate Glass",
-                "The glass limits the the Energy Input tier",
-                "1+ Input Hatch/Bus (Any casing)",
-                "1+ Output Hatch/Bus (Any casing)",
-                "1+ Energy Hatch (Any casing)",
-                "1x Maintenance Hatch (Any casing)",
-                "14x14 Muffler Hatches (Top middle)",
-                "Heat Proof Machine Casings for the outer 15x15 (Layer 20)",
-                "1+ Output Hatch to recover CO2/CO/SO2 (optional, any top layer casing),",
-                "    Recovery scales with Muffler Hatch tier",
-                "Heat Proof Machine Casings for Base",
-                "Each 900K over the min. Heat Capacity grants 5% speedup (multiplicatively)",
-                "Each 1800K over the min. Heat Capacity allows for one upgraded overclock",
-                "Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%",
-                "Causes maximal" + 20 * this.getPollutionPerTick((ItemStack) null) + " Pollution per second"
-        };
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.mbf.0.name").split(";");
+        String tmp = dsc[dsc.length-1];
+        dsc[dsc.length-1]=tmp+" "+Integer.toString(20 * this.getPollutionPerTick((ItemStack) null))+" "+StatCollector.translateToLocal("tooltip.tile.mbf.1.name");
+        String[] fdsc =  new String[dsc.length+1];
+        for (int i = 0; i < dsc.length; i++) {
+            fdsc[i]=dsc[i];
+            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return fdsc;
     }
 
     @Override

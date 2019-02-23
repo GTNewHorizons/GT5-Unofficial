@@ -33,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -61,10 +62,10 @@ public class GT_GUIContainer_LESU extends GT_GUIContainer {
             this.drawString(this.fontRendererObj, "EU/t OUT: " + String.valueOf(this.mContainer.mOutput), 11, 40, 16448255);
             this.drawString(this.fontRendererObj, "AMP/t IN/OUT: " + String.valueOf(c.getBaseMetaTileEntity().getInputAmperage()), 11, 48, 16448255);
             if (c.maxEUStore() >= Long.MAX_VALUE - 1) {
-                this.drawString(this.fontRendererObj, "Maximum Capacity!", 11, 56, Color.YELLOW.getRGB());
+                this.drawString(this.fontRendererObj, StatCollector.translateToLocal("tooltip.LESU.0.name"), 11, 56, Color.YELLOW.getRGB());
             }
             if (!this.c.getBaseMetaTileEntity().isActive()) {
-                this.drawString(this.fontRendererObj, "Multiple Controllers!", 11, 56, Color.RED.getRGB());
+                this.drawString(this.fontRendererObj, StatCollector.translateToLocal("tooltip.LESU.1.name"), 11, 56, Color.RED.getRGB());
             }
         }
     }

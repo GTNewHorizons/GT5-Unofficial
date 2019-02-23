@@ -33,6 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import java.util.HashMap;
@@ -54,9 +55,14 @@ public class ClientEventHandler {
         final HashMap<BioVatLogicAdder.BlockMetaPair, Byte> GLASSMAP = BioVatLogicAdder.BioVatGlass.getGlassMap();
         if (GLASSMAP.containsKey(PAIR)) {
             int tier = GLASSMAP.get(PAIR);
-            event.toolTip.add("Glass-Tier: " + BW_Util.getColorForTier(tier) + GT_Values.VN[tier] + ChatColorHelper.RESET);
+            event.toolTip.add(
+                    StatCollector.translateToLocal("tooltip.glas.0.name")+
+                    " "
+                            + BW_Util.getColorForTier(tier) + GT_Values.VN[tier] + ChatColorHelper.RESET);
         } else if (BLOCK.getMaterial().equals(Material.glass)) {
-            event.toolTip.add("Glass-Tier: " + BW_Util.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
+            event.toolTip.add(StatCollector.translateToLocal("tooltip.glas.0.name")+
+                    " "
+                    +  BW_Util.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
         }
     }
 }

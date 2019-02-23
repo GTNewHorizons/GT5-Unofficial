@@ -54,6 +54,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
@@ -555,26 +556,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "A primitive Grinder powered by Kinetic energy.",
-                "WxHxL: 7x12x7",
-                "Layer 1: 7x7 Bricks, corners are air, controller at front centered.",
-                "Layer 2-5: 5x5 Hardened Clay, corners are air, can contain one door,",
-                "hollow, Wall must contain at least one Dispenser",
-                "Layer 6: 5x5 Wood Planks. Corners are filled, hollow.",
-                "Layer 7: 7x7 Wood Planks. Corners are air, hollow.",
-                "Layer 8: 7x7 Wood Planks. Corners are air, hollow,",
-                "front centered must be a Primitive Kinetic Shaftbox",
-                "Layer 9: 7x7 Wood Planks. Corners are air, hollow.",
-                "Layer 10: 5x5 Wood Planks. Corners are filled, hollow.",
-                "Layer 11: 3x3 Wood Planks. Corners are filled, hollow.",
-                "Layer 12: 1x1 Wood Plank.",
-                "Needs a Wind Mill Rotor in the Shaftbox to operate",
-                "Input items in Controller",
-                "Output items will appear in the dispensers",
-                "It is faster in regions with more wind (like IC2 Windmills)",
-                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
-        };
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.windmill.0.name").split(";");
+        String[] fdsc =  new String[dsc.length+1];
+        for (int i = 0; i < dsc.length; i++) {
+            fdsc[i]=dsc[i];
+            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return fdsc;
     }
 
     @Override

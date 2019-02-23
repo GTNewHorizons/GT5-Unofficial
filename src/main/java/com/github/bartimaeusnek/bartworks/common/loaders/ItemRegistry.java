@@ -47,6 +47,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.BWT;
 import static com.github.bartimaeusnek.bartworks.MainMod.GT2;
@@ -146,20 +147,20 @@ public class ItemRegistry {
             GameRegistry.registerItem(WINDMETER, "BW_SimpleWindMeter");
 
             for (int i = 0; i < GT_Values.VN.length; i++) {
-                ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "Cable Diode 2A " + GT_Values.VN[i], "Cable Diode 2A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "Cable Diode 4A " + GT_Values.VN[i], "Cable Diode 4A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "Cable Diode 8A " + GT_Values.VN[i], "Cable Diode 8A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "Cable Diode 12A " + GT_Values.VN[i], "Cable Diode 12A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i, "Cable Diode 16A " + GT_Values.VN[i], "Cable Diode 16A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "Energy Distributor " + GT_Values.VN[i], "Energy Distributor " + GT_Values.VN[i], i, "Splits Amperage into several Sides").getStackForm(1L);
+                ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode"+"2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 2A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode"+"4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 4A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "diode"+"8A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 8A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "diode"+"12A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 12A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i, "diode"+"16A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 16A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "energydistributor" + GT_Values.VN[i], StatCollector.translateToLocal("tile.energydistributor.name")+ " " + GT_Values.VN[i], i).getStackForm(1L);
 
             }
             for (int i = 0; i < 3; i++) {
-                ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "Acid Generator " + GT_Values.VN[i + 2], "Acid Generator " + GT_Values.VN[i + 2], i + 2, new String[]{"An Acid Generator", "Creates Power from Chemical Energy Potentials."}).getStackForm(1);
+                ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "acidgenerator"+GT_Values.VN[i + 2], StatCollector.translateToLocal("tile.acidgenerator.name")+" " + GT_Values.VN[i + 2], i + 2).getStackForm(1);
             }
             dehp = new GT_TileEntity_DEHP(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1, 1, "DEHP", "Deep Earth Heating Pump").getStackForm(1L);
-            megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", "Mega Blast Furnace").getStackForm(1L);
-            megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVaccumFreezer", "Mega Vaccum Freezer").getStackForm(1L);
+            megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
+            megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
 
         }
 

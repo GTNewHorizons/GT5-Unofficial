@@ -32,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class SimpleSubItemClass extends Item {
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
-        aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name")  + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override

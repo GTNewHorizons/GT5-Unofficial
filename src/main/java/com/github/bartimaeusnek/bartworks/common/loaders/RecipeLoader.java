@@ -37,6 +37,7 @@ import ic2.core.Ic2Items;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -89,7 +90,7 @@ public class RecipeLoader implements Runnable {
          */
 
         GT_ModHandler.addCraftingRecipe(
-                new GT_TileEntity_LESU(ConfigHandler.IDOffset, "LESU", "LESU").getStackForm(1L),
+                new GT_TileEntity_LESU(ConfigHandler.IDOffset, "LESU", "L.E.S.U.").getStackForm(1L),
                 RecipeLoader.BITSD,
                 new Object[]{
                         "CDC",
@@ -465,7 +466,7 @@ public class RecipeLoader implements Runnable {
             );
 
             GT_ModHandler.addCraftingRecipe(
-                    new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "Manual Travo", "Manual Travo").getStackForm(1L),
+                    new GT_TileEntity_ManualTrafo(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 1, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name")).getStackForm(1L),
                     RecipeLoader.BITSD,
                     new Object[]{
                             "SCS",
@@ -481,7 +482,7 @@ public class RecipeLoader implements Runnable {
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1L), Materials.Aluminium.getPlates(1), ItemList.Circuit_Board_Plastic.get(1L), ItemList.Battery_RE_LV_Lithium.get(1L)}, Materials.SolderingAlloy.getMolten(288L), new ItemStack(ItemRegistry.CIRCUIT_PROGRAMMER), 600, (int) (GT_Values.V[2] - (GT_Values.V[2] / 10)));
 
             GT_ModHandler.addCraftingRecipe(
-                    new GT_TileEntity_Windmill(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 2, "Windmill", "Windmill").getStackForm(1L),
+                    new GT_TileEntity_Windmill(ConfigHandler.IDOffset + GT_Values.VN.length * 6 + 2, "bw.windmill", StatCollector.translateToLocal("tile.bw.windmill.name")).getStackForm(1L),
                     RecipeLoader.BITSD,
                     new Object[]{
                             "BHB",
