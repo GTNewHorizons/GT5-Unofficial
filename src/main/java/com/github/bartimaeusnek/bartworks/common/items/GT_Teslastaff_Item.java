@@ -39,6 +39,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 import java.util.Set;
@@ -65,8 +66,8 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
 
     @Override
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
-        aList.add("No warranty!");
-        aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.teslastaff.0.name"));
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     public boolean hitEntity(ItemStack aStack, EntityLivingBase aTarget, EntityLivingBase aPlayer) {

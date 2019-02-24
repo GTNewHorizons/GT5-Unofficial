@@ -28,11 +28,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Transformer {
 
-    public GT_MetaTileEntity_EnergyDistributor(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public GT_MetaTileEntity_EnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, null);
     }
 
     public GT_MetaTileEntity_EnergyDistributor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -70,7 +71,7 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{this.mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + this.maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + this.maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name"),  StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name")+ " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name")+ " "  + ChatColorHelper.YELLOW + this.maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name")+ " "  + ChatColorHelper.YELLOW + this.maxAmperesOut(),  StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 
 }

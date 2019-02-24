@@ -32,6 +32,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
@@ -39,7 +40,9 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     private long aAmps = 0L;
 
     public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "A Simple diode that will allow Energy Flow in only one direction.");
+        super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("tooltip.tile.diode.0.name"));
+        maxAmps = getAmpsfromMeta(aID);
+        aAmps=maxAmps;
     }
 
     public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -114,6 +117,6 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, "Voltage: " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], "Amperage IN: " + ChatColorHelper.YELLOW + maxAmperesIn(), "Amperage OUT: " + ChatColorHelper.YELLOW + maxAmperesOut(), "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"};
+        return new String[]{mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name")+ " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier],  StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + maxAmperesIn(),  StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") +" " + ChatColorHelper.YELLOW + maxAmperesOut(),  StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

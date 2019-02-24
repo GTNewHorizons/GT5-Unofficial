@@ -35,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -267,7 +268,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ISidedI
 
     @Override
     public String[] getInfoData() {
-        return new String[]{"Produces " + ConfigHandler.mbWaterperSec + "L/s Water when fueled.", "Must be placed on the Ground."};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name")+" " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
     }
 
     @Override

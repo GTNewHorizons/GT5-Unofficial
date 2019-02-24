@@ -30,6 +30,7 @@ import gregtech.api.items.GT_Generic_Item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        aList.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name")  + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override

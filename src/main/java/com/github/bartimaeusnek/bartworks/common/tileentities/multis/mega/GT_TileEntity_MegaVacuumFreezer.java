@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,6 +33,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,16 +51,13 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     }
 
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Mega Vacuum Freezer",
-                "Super cools hot ingots and cells",
-                "Size(WxHxD): 15x15x15 (Hollow), Controller (Front centered)",
-                "1x Input Bus (Any casing)",
-                "1x Output Bus (Any casing)",
-                "1x Maintenance Hatch (Any casing)",
-                "1x Energy Hatch (Any casing)",
-                "Frost Proof Machine Casings for the rest"
-        };
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.mvf.0.name").split(";");
+        String[] fdsc =  new String[dsc.length+1];
+        for (int i = 0; i < dsc.length; i++) {
+            fdsc[i]=dsc[i];
+            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return fdsc;
     }
 
     @Override

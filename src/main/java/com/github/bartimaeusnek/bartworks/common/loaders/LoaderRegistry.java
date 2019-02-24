@@ -22,8 +22,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-
 public class LoaderRegistry implements Runnable {
 
     @Override

@@ -34,6 +34,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.nei.GT_NEI_DefaultHandler;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.awt.*;
 
@@ -83,7 +84,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
 
             int[] tSpecialA = GT_TileEntity_BioVat.specialValueUnpack(tSpecial);
 
-            drawText(10, lines[5], "Needs Glas Tier: "+ tSpecialA[0],-16777216);
+            drawText(10, lines[5], StatCollector.translateToLocal("nei.biovat.0.name")+" " + tSpecialA[0],-16777216);
 
             if (tSpecialA[1] == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {
                 drawText(10, lines[7], this.trans("159", "Needs Low Gravity"), -16777216);
@@ -94,7 +95,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
             } else if (tSpecialA[1] == -400) {
                 drawText(10, lines[7], this.trans("216", "Deprecated Recipe"), -16777216);
             } else if (GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePre) || GT_Utility.isStringValid(this.mRecipeMap.mNEISpecialValuePost)) {
-                drawText(10, lines[6],(tSpecialA[2] == 1 ? "Need exactly": "Need minimum") + this.mRecipeMap.mNEISpecialValuePre + tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
+                drawText(10, lines[6],(tSpecialA[2] == 1 ? StatCollector.translateToLocal("nei.biovat.1.name"): StatCollector.translateToLocal("nei.biovat.2.name")) + this.mRecipeMap.mNEISpecialValuePre + tSpecialA[3] * this.mRecipeMap.mNEISpecialValueMultiplier + this.mRecipeMap.mNEISpecialValuePost, -16777216);
             }
         } else {
             tSpecial = 0;

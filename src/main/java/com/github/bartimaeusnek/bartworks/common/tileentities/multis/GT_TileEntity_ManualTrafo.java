@@ -37,6 +37,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static gregtech.api.enums.GT_Values.V;
@@ -380,23 +381,13 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_MultiBlockBase 
 
     @Override
     public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Manual Trafo",
-                //"Operates in 4 Differents Modes:",
-                "Operates currently in 2 Differents Modes:",
-                "Mode 1: Circuit 0 in controller: Direct-Upstep",
-                "Mode 2: Circuit 1 in controller: Direct-Downstep",
-                //"Mode 3: Circuit 2 in controller: Tapped-Upstep",
-                //"Mode 4: Circuit 3 in controller: Tapped-Downstep",
-                "For direct Modes: 3xHx3",
-                "Base Contains at least 1 Energy Hatch",
-                "1 Layer of Dynamo Coils for each Tier transformed",
-                "Middle of Dynamo Coils needs to be a NickelFerrite Core",
-                "Top Contains at least 1 Dynamo Hatch",
-                "Maintenance Hatch can be placed anywhere",
-                "Added by bartimaeusnek via " + ChatColorHelper.DARKGREEN + "BartWorks"
-                //"Tapped Mode is disabled."
-        };
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.manualtravo.0.name").split(";");
+        String[] fdsc =  new String[dsc.length+1];
+        for (int i = 0; i < dsc.length; i++) {
+            fdsc[i]=dsc[i];
+            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return fdsc;
     }
 
     @Override

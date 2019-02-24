@@ -76,13 +76,13 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         } else if (Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
             type = WIND;
         }
-        info.add("Diameter: " + this.DiaMinMax[0]);
-        info.add("Durability: " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
-        info.add("Efficiency: " + this.eff);
+        info.add(StatCollector.translateToLocal("tooltip.rotor.0.name")+" " + this.DiaMinMax[0]);
+        info.add(StatCollector.translateToLocal("tooltip.rotor.1.name")+" " + (this.getMaxDamage() - this.getDamage(itemStack)) + "/" + this.getMaxDamage());
+        info.add(StatCollector.translateToLocal("tooltip.rotor.2.name")+" " + this.eff);
         if (type != null) {
             info.add(StatCollector.translateToLocal(("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type))));
         }
-        info.add("Added by" + ChatColorHelper.DARKGREEN + " BartWorks");
+        info.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override
