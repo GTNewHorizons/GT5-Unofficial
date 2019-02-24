@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.util;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -230,6 +231,22 @@ public class BW_Util {
                     base.mMaxProgresstime = 1;//set time to 1 tick
             }
         }
+    }
+
+    public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base){
+        long rVoltage = 0L;
+        long rAmperage = 0L;
+        Iterator var3 = base.mEnergyHatches.iterator();
+
+        while(var3.hasNext()) {
+            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy)var3.next();
+            if (base.isValidMetaTileEntity(tHatch)) {
+                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+                rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
+            }
+        }
+
+        return rVoltage * rAmperage;
     }
 
     public static EnumRarity getRarityFromByte(byte b) {
