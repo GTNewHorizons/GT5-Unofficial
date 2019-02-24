@@ -31,6 +31,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
@@ -40,10 +41,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -87,8 +85,11 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
         boolean found_Recipe = false;
         int processed = 0;
+
+        long nominalV = BW_Util.getnominalVoltage(this);
+
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && this.mHeatingCapacity >= tRecipe.mSpecialValue && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
+            if (tRecipe != null && this.mHeatingCapacity >= tRecipe.mSpecialValue && tRecipe.isRecipeInputEqual(true, tFluids, tInputs) && (tRecipe.mEUt*processed) < nominalV ) {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     outputItems.add(tRecipe.getOutput(i));
@@ -115,7 +116,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 }
                 overclockCount = calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), tVoltage);
             } else
-                overclockCount = calculateOverclockednessEBF(tRecipe.mEUt * 64, tRecipe.mDuration, tVoltage);
+                overclockCount = calculateOverclockednessEBF(actualEUT, tRecipe.mDuration, tVoltage);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;
@@ -148,7 +149,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
      * @param aEUt      - recipe EUt
      * @param aDuration - recipe Duration
      */
-    protected byte calculateOverclockednessEBF(int aEUt, int aDuration, long maxInputVoltage) {
+    protected byte calculateOverclockednessEBF(long aEUt, int aDuration, long maxInputVoltage) {
         byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage)), timesOverclocked = 0;
         if (mTier == 0) {
             //Long time calculation
@@ -158,7 +159,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                 mEUt = Integer.MAX_VALUE - 1;
                 mMaxProgresstime = Integer.MAX_VALUE - 1;
             } else {
-                mEUt = aEUt >> 2;
+                mEUt = (int) (aEUt >> 2);
                 mMaxProgresstime = (int) xMaxProgresstime;
             }
             //return 0;
