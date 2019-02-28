@@ -19,37 +19,38 @@ import net.minecraft.util.IIcon;
 
 public class ItemGenericToken extends CoreItem {
 
-	public final static HashMap<Integer, String> mLocalNames;
-	public final static HashMap<Integer, Integer> mMaxStackSizes;
-	public final static HashMap<Integer, String[]> mDescriptionArrays;
-	public final static HashMap<Integer, EnumRarity> mRarities;
-	public final static HashMap<Integer, EnumChatFormatting> mCustomNameColours;
-	public final static HashMap<Integer, IIcon> mIcons;
+	public final HashMap<Integer, String> mLocalNames;
+	public final HashMap<Integer, Integer> mMaxStackSizes;
+	public final HashMap<Integer, String[]> mDescriptionArrays;
+	public final HashMap<Integer, EnumRarity> mRarities;
+	public final HashMap<Integer, EnumChatFormatting> mCustomNameColours;
+	public final HashMap<Integer, IIcon> mIcons;
+	private final String mTextureDir;
 
-	static {
+	public ItemGenericToken() {
+		this("itemGenericToken", "Token", new String[] { "Can be reclaimed in some way, shape or form" }, "token");
+	}
+	
+	public ItemGenericToken(String aUnlocalName, String aInternalName, String[] aBaseTooltip, String aTextureDir) {
+		super(aUnlocalName, aInternalName, AddToCreativeTab.tabMisc, 64, 1000, aBaseTooltip, EnumRarity.common,	EnumChatFormatting.RESET, false, null);
 		mLocalNames = new HashMap<Integer, String>();
 		mMaxStackSizes = new HashMap<Integer, Integer>();
 		mDescriptionArrays = new HashMap<Integer, String[]>();
 		mRarities = new HashMap<Integer, EnumRarity>();
 		mCustomNameColours = new HashMap<Integer, EnumChatFormatting>();
 		mIcons = new HashMap<Integer, IIcon>();
+		mTextureDir = aTextureDir;
 	}
 
-	public ItemGenericToken() {
-		super("itemGenericToken", "Token", AddToCreativeTab.tabMisc, 64, 1000,
-				new String[] { "Can be reclaimed in some way, shape or form" }, EnumRarity.common,
-				EnumChatFormatting.RESET, false, null);
-	}
-
-	public static boolean register(int id, String aLocalName, int aMaxStack, String aDescript) {
+	public boolean register(int id, String aLocalName, int aMaxStack, String aDescript) {
 		return register(id, aLocalName, aMaxStack, new String[] { aDescript });
 	}
 
-	public static boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript) {
+	public boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript) {
 		return register(id, aLocalName, aMaxStack, aDescript, EnumRarity.common, EnumChatFormatting.RESET);
 	}
 
-	public static boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript, EnumRarity aRarity,
+	public boolean register(int id, String aLocalName, int aMaxStack, String[] aDescript, EnumRarity aRarity,
 			EnumChatFormatting aCustomNameColour) {
 		int[][] sizes = new int[2][6];
 		sizes[0][0] = mLocalNames.size();
@@ -153,9 +154,9 @@ public class ItemGenericToken extends CoreItem {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerIcons(final IIconRegister aIconRegister) {
+	public void registerIcons(final IIconRegister aIconRegister) {
 		for (int i = 0, j = mLocalNames.size(); i < j; i++) {
-			mIcons.put(i, aIconRegister.registerIcon(CORE.MODID + ":" + "token" + "/" + i));
+			mIcons.put(i, aIconRegister.registerIcon(CORE.MODID + ":" + mTextureDir + "/" + i));
 		}
 	}
 

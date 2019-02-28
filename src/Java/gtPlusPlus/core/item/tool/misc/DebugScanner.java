@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.tool.misc;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -20,6 +21,7 @@ public class DebugScanner extends CoreItem {
 					"Right Click to use",
 					},
 				EnumRarity.epic);
+		setTextureName(CORE.MODID + ":itemStickyRubber");
 	}
 
 	@Override

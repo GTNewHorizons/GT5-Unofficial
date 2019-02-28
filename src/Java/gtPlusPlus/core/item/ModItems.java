@@ -37,6 +37,7 @@ import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.BaseItemGrindle;
 import gtPlusPlus.core.item.general.BufferCore;
@@ -308,7 +309,7 @@ public final class ModItems {
 
 	public static GregtechPump toolGregtechPump;
 
-	public static Item itemGenericToken;
+	public static ItemGenericToken itemGenericToken;
 
 	public static Item itemControlCore;
 
@@ -332,7 +333,9 @@ public final class ModItems {
 	public static BatteryPackBaseBauble itemChargePack3;
 	public static BatteryPackBaseBauble itemChargePack4;
 
-	public static Item itemDebugScanner;
+	public static DebugScanner itemDebugScanner;
+
+	public static ItemDummyResearch itemDummyResearch;
 
 	static {
 		Logger.INFO("Items!");
@@ -343,11 +346,12 @@ public final class ModItems {
 
 	public static final void init(){
 		
-		itemDebugScanner = new DebugScanner().setTextureName(CORE.MODID + ":itemStickyRubber");
+		itemDebugScanner = new DebugScanner();
 		
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 		itemBigEgg = new ItemGiantEgg("itemBigEgg", "Ginourmous Chicken Egg", tabMisc, 64, 0, "I had best try disassemble this.. for science!", "fuelLargeChickenEgg", 5000, 0).setTextureName(CORE.MODID + ":itemBigEgg");
 		itemGenericToken = new ItemGenericToken();
+		itemDummyResearch = new ItemDummyResearch();
 		
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -1076,10 +1080,10 @@ public final class ModItems {
 	}
 	
 	public static void registerCustomTokens() {
-		ItemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
-		ItemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
-		ItemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
-		ItemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
-		ItemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
+		itemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
+		itemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
+		itemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
+		itemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
+		itemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 	}
 }

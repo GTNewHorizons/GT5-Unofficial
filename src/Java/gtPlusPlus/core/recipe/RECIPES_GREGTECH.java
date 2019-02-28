@@ -17,6 +17,8 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
@@ -137,7 +139,7 @@ public class RECIPES_GREGTECH {
 		
 		//Containment Casings
 		CORE.RA.addAssemblylineRecipe(
-				ItemList.Field_Generator_IV.get(1), 
+				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1), 
 				20 * 60 * 30,
 				new ItemStack[] {
 						ItemList.Field_Generator_IV.get(GTNH ? 32 : 16),
@@ -424,6 +426,15 @@ public class RECIPES_GREGTECH {
 				ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getDust(1),
 				20 * 60 * 5,
 				MaterialUtils.getVoltageForTier(ELEMENT.STANDALONE.CHRONOMATIC_GLASS.vTier));	
+
+		
+		GT_Values.RA.addLaserEngraverRecipe(
+				CI.getFieldGenerator(6, 1),
+				CI.getEmitter(7, 2),
+				ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1),
+				20 * 60 * 5,
+				MaterialUtils.getVoltageForTier(5));
+		
 		
 	}
 
