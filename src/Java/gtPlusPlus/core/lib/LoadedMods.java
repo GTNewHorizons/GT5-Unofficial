@@ -54,6 +54,7 @@ public class LoadedMods {
 	public static boolean StevesCarts = false;
 	public static boolean Witchery = false;
 	public static boolean Waila = false;
+	public static boolean CropsPlusPlus = false; //Barts Crop Mod
 
 
 
@@ -94,6 +95,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("PlayerAPI")){
 			PlayerAPI = true;
 			Logger.INFO("Components enabled for: PlayerAPI");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("berriespp")) {
+			CropsPlusPlus = true;
+			Logger.INFO("Components enabled for: Crops++");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("TConstruct")){

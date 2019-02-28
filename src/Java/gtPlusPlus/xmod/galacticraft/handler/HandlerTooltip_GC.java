@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.preloader.asm.AsmConfig;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.Fluid;
 
@@ -21,11 +22,11 @@ public class HandlerTooltip_GC {
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
-		if (LoadedMods.GalacticraftCore) {
+		if (LoadedMods.GalacticraftCore && AsmConfig.enableGcFuelChanges) {
 
 			if (mBlock == null) {
 				try {
-					Class<?> GCBlocks = Class.forName("micdoodle8.mods.galacticraft.core.blocks.GCBlocks");
+					Class<?> GCBlocks = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.blocks.GCBlocks");
 					if (GCBlocks != null) {
 						oMainClass = GCBlocks;
 

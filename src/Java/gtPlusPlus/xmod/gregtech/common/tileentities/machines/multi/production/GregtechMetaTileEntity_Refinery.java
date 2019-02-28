@@ -1,23 +1,25 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.ArrayList;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-import gregtech.api.enums.GT_Values;
+import java.util.HashSet;
+
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase {
 
@@ -69,42 +71,30 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 
 	@Override
 	public String getCustomGUIResourceName() {
-		return "LFTR";
+		return "MatterFabricator";
 	}	
 	
+	private static final GT_Recipe_Map mGregTypeRecipeMap = new GT_Recipe_Map(new HashSet<GT_Recipe>(), "internal.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
+	
 	@Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS=tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--); tFluidList_sS=tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--); tFluidList_sS=tFluidList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        if (tFluidList.size() > 1) {
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-            GT_Recipe tRecipe = CustomRecipeMap.sFissionFuelProcessing.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[4], tFluids, new ItemStack[]{});
-            if (tRecipe == null) {
-                this.mLastRecipe = null;
-                return false;
-            }
-            if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-            this.mLastRecipe = tRecipe;
-            this.mEUt = this.mLastRecipe.mEUt;
-            this.mMaxProgresstime = this.mLastRecipe.mDuration;
-            this.mEfficiencyIncrease = 10000;
-            this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-            return true;
-            }
-        }
-        return false;
+	public GT_Recipe_Map getRecipeMap() {		
+		if (mGregTypeRecipeMap.mRecipeList.size() <= 0) {
+			for (GT_Recipe g : CustomRecipeMap.sFissionFuelProcessing.mRecipeList) {
+				mGregTypeRecipeMap.mRecipeList.add(g);
+			}
+		}	
+		return mGregTypeRecipeMap;
+	}
+
+	@Override
+    public boolean checkRecipe(ItemStack aStack) {	
+		//this.resetRecipeMapForAllInputHatches();		
+		for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
+			g.mRecipeMap = null;
+		}		
+		boolean ab = super.checkRecipeGeneric();
+		Logger.INFO("Did Recipe? "+ab);
+		return ab;
     }	
 	
 	@Override
@@ -261,7 +251,8 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 				Logger.INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
 			}
 		}		
-		Logger.INFO("Fission Fuel Production Plant Formed.");
+		Logger.INFO("Fission Fuel Production Plant Formed. "+mGregTypeRecipeMap.mRecipeList.size());
+		this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
 		return true;
 	}
 

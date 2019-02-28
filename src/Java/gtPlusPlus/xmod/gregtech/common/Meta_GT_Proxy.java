@@ -5,6 +5,7 @@ import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverfl
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,11 +19,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -30,6 +36,9 @@ import gtPlusPlus.api.objects.data.ObjMap;
 import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
@@ -102,6 +111,120 @@ public class Meta_GT_Proxy {
 	
 	public void postInit() {
 		mAssemblyAchievements = new AchievementHandler();			
+	}
+	
+	public static boolean generatePlasmaRecipesForAdvVacFreezer() {
+		
+		AutoMap<Recipe_GT> aFreezerMapRebaked = new AutoMap<Recipe_GT>();
+		AutoMap<Recipe_GT> aRemovedRecipes = new AutoMap<Recipe_GT>();
+		
+		//Find recipes containing Plasma and map them
+		for (Recipe_GT y : Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList) {			
+			if (y.mFluidInputs.length > 0) {
+				for (FluidStack r : y.mFluidInputs) {
+					if (r.getUnlocalizedName().toLowerCase().contains("plasma")) {
+						aRemovedRecipes.put(y);
+						continue;
+					}
+				}
+				aFreezerMapRebaked.put(y);
+			}			
+		}
+		
+		AutoMap<Recipe_GT> aNewRecipes = new AutoMap<Recipe_GT>();
+		int aAtomicMass = 0;
+		int aAtomicTier = 0;
+		
+		final FluidStack NULL_PLASMA = Materials._NULL.getPlasma(1);
+		
+		for (String s : ELEMENT.NAMES) {
+			
+			aAtomicMass++;
+			aAtomicTier = (aAtomicMass/30)+1;
+			FluidStack aMoltenFluid = null;
+			FluidStack aPlasma = null;
+			
+			//Try Get Material via Gregtech
+			Materials aGregMaterial = MaterialUtils.getMaterial(s);
+			if (aGregMaterial != null) {
+				aMoltenFluid = aGregMaterial.getMolten(1);
+				if (aMoltenFluid == null) {
+					aMoltenFluid = aGregMaterial.getFluid(1);
+					if (aMoltenFluid == null) {
+						aMoltenFluid = aGregMaterial.getGas(1);
+						if (aMoltenFluid == null) {
+							aMoltenFluid = aGregMaterial.getSolid(1);
+						}
+					}
+				}
+				aPlasma = aGregMaterial.getPlasma(100);
+			}
+			
+			//Just wildcard values
+			if (aMoltenFluid == null || aPlasma == null) {
+				if (aMoltenFluid == null) {
+					aMoltenFluid = FluidUtils.getWildcardFluidStack(s, 1);
+				}
+				if (aPlasma == null) {
+					aPlasma = FluidUtils.getFluidStack("plasma."+s.toLowerCase(), 1);
+				}
+			}
+			
+			//Skip this material
+			if (aMoltenFluid == null || aPlasma == null || aPlasma.isFluidEqual(NULL_PLASMA)) {
+				Logger.INFO("Could not generate Advanced Vacuum Freezer recipe. Cooling "+s+" plasma. Molten Form Exists? "+(aMoltenFluid != null)+" | Plasma Exists? "+(aPlasma != null));
+				continue;
+			}
+			else {				
+				//Build a new plasma recipe
+				int aTotalTickTime = (20 * 1 + (aAtomicMass));
+				Recipe_GT aTempRecipe = new Recipe_GT(true,
+						new ItemStack[] {},
+						new ItemStack[] {},
+						null, 
+						new int[] {10000},
+						new FluidStack[] {
+							aPlasma,
+							FluidUtils.getFluidStack("cryotheum", aTotalTickTime)
+						}, 
+						new FluidStack[] {
+							aMoltenFluid
+						}, 
+						aTotalTickTime, 
+						(int) GT_Values.V[4+aAtomicTier],
+						aAtomicMass);
+				
+				//Add it to the map if it's valid
+				if (aTempRecipe != null) {
+					aNewRecipes.put(aTempRecipe);					
+				}				
+			}	
+			
+		}
+		
+
+		//Add the new recipes to the map we will rebake over the original
+		for (Recipe_GT w : aNewRecipes) {
+			aFreezerMapRebaked.put(w);
+		}
+		
+		//Best not touch the original map if we don't have a valid map to override it with.
+		if (aFreezerMapRebaked.size() > 0) {
+			
+			int aOriginalCount = Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size();
+			
+			//Empty the original map
+			Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.clear();
+			
+			//Rebake the real map
+			for (Recipe_GT w : aFreezerMapRebaked) {
+				Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.add(w);
+			}
+			
+			return Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes.mRecipeList.size() >= aOriginalCount;
+		}			
+		
+		return false;
 	}
 	
 	public static TileEntity constructCustomGregtechMetaTileEntityByMeta(int aMeta) {
@@ -279,7 +402,7 @@ public class Meta_GT_Proxy {
 		if (proxyGT != null && proxyGT instanceof GT_Proxy) {
 			try {
 				return ReflectionUtils.getField(proxyGT.getClass(), fieldName).get(proxyGT);
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+			} catch (IllegalArgumentException | IllegalAccessException e) {
 			}
 		}
 		return null;

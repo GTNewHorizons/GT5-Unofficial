@@ -221,7 +221,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase {
 						return r;
 					}
 				}
-			} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {			
+			} catch (IllegalArgumentException | IllegalAccessException e) {			
 			}			
 		}		
 		return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;

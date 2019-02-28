@@ -18,34 +18,34 @@ public class SlotToolBox extends SlotGtTool {
 		Class temp;
 
 		//IHL Pumps
-		temp = ReflectionUtils.getClassByName("ihl.handpump.IHLHandPump");
+		temp = ReflectionUtils.getClass("ihl.handpump.IHLHandPump");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
 		}
 
 		//IC2 Electrics
-		temp = ReflectionUtils.getClassByName("ic2.api.item.IElectricItem");
+		temp = ReflectionUtils.getClass("ic2.api.item.IElectricItem");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
 		}
 		
 		//IC2 Boxables
-		temp = ReflectionUtils.getClassByName(" ic2.api.item.IBoxable");
+		temp = ReflectionUtils.getClass(" ic2.api.item.IBoxable");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
 		}
 		
 		//Tinkers Tools
-		temp = ReflectionUtils.getClassByName("tconstruct.library.tools.Weapon");
+		temp = ReflectionUtils.getClass("tconstruct.library.tools.Weapon");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
 		}
 		//BattleGear Weapons
-		temp = ReflectionUtils.getClassByName("mods.battlegear2.api.weapons.IBattlegearWeapon");
+		temp = ReflectionUtils.getClass("mods.battlegear2.api.weapons.IBattlegearWeapon");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
@@ -55,7 +55,7 @@ public class SlotToolBox extends SlotGtTool {
 		//OpenMods	
 		String[] OpenModsContent = new String[] {"openblocks.common.item.ItemDevNull", "openblocks.common.item.ItemHangGlider", "openblocks.common.item.ItemWrench", "openblocks.common.item.ItemSleepingBag"};
 		for (String t : OpenModsContent) {
-			temp = ReflectionUtils.getClassByName(t);
+			temp = ReflectionUtils.getClass(t);
 			if (temp != null) {
 				mSupportedCustomTools.put(temp);
 				temp = null;
@@ -63,7 +63,7 @@ public class SlotToolBox extends SlotGtTool {
 		}
 
 		//GC Wrench
-		temp = ReflectionUtils.getClassByName("micdoodle8.mods.galacticraft.core.items.ItemUniversalWrench");
+		temp = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.items.ItemUniversalWrench");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;
@@ -72,7 +72,7 @@ public class SlotToolBox extends SlotGtTool {
 		//EIO
 		String[] EioContent = new String[] {"crazypants.enderio.api.tool.ITool", "crazypants.enderio.item.ItemMagnet", "crazypants.enderio.item.ItemConduitProbe"};
 		for (String t : EioContent) {
-			temp = ReflectionUtils.getClassByName(t);
+			temp = ReflectionUtils.getClass(t);
 			if (temp != null) {
 				mSupportedCustomTools.put(temp);
 				temp = null;
@@ -80,7 +80,7 @@ public class SlotToolBox extends SlotGtTool {
 		}
 		
 		//Forestry
-		temp = ReflectionUtils.getClassByName("forestry.core.items.ItemForestryTool");
+		temp = ReflectionUtils.getClass("forestry.core.items.ItemForestryTool");
 		if (temp != null) {
 			mSupportedCustomTools.put(temp);
 			temp = null;

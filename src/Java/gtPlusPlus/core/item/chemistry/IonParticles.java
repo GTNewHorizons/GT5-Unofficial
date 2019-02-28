@@ -6,6 +6,7 @@ import java.util.List;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,18 +23,16 @@ public class IonParticles extends BaseItemParticle {
 	
 	
 	public IonParticles() {
-		super("Ion", aElements.length, EnumRarity.rare);
+		super("Ion", ELEMENT.NAMES.length, EnumRarity.rare);
 	}
 	
-	private static final String[] aElements = new String[]{"Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminum", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Cesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};
-
-	public static IIcon[] overlays = new IIcon[aElements.length];
+	public static IIcon[] overlays = new IIcon[ELEMENT.NAMES.length];
 	public static IIcon baseTexture;
 	
 	static {
 		//Generate Ions
 		int key = 0;
-		for (String s : aElements) {
+		for (String s : ELEMENT.NAMES) {
 			//Map names to Meta
 			NameToMetaMap.put(Utils.sanitizeString(s.toLowerCase()), key);
 			MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
@@ -62,7 +61,7 @@ public class IonParticles extends BaseItemParticle {
 	
 	@Override
     public String getUnlocalizedName(final ItemStack itemStack) {
-        return "item.particle.ion" + "." + aElements[itemStack.getItemDamage()];
+        return "item.particle.ion" + "." + ELEMENT.NAMES[itemStack.getItemDamage()];
     }
 	
 	private static boolean createNBT(ItemStack rStack){

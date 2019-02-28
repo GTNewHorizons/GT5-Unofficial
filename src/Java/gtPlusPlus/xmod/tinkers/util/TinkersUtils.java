@@ -1,9 +1,16 @@
 package gtPlusPlus.xmod.tinkers.util;
 
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import tconstruct.library.TConstructRegistry;
+import tconstruct.library.crafting.FluidType;
+import tconstruct.library.crafting.Smeltery;
+import tconstruct.smeltery.TinkerSmeltery;
 
 public class TinkersUtils {
 
@@ -17,16 +24,13 @@ public class TinkersUtils {
 		else {
 			if (mSmelteryInstance == null || mSmelteryClassInstance == null) {
 				if (mSmelteryClassInstance == null) {
-					try {
-						mSmelteryClassInstance = Class.forName("tconstruct.library.crafting.Smeltery");
-					}
-					catch (ClassNotFoundException e) {}
+					mSmelteryClassInstance = ReflectionUtils.getClass("tconstruct.library.crafting.Smeltery");
 				}
 				if (mSmelteryClassInstance != null) {
 					try {
 						mSmelteryInstance = ReflectionUtils.getField(mSmelteryClassInstance, "instance").get(null);
 					}
-					catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+					catch (IllegalArgumentException | IllegalAccessException e) {
 					}
 				}
 			}						
@@ -40,9 +44,8 @@ public class TinkersUtils {
 	public static final boolean isTiConFirstInOD() {
 		if (LoadedMods.TiCon) {
 			try {
-				return (boolean) ReflectionUtils.getField(Class.forName("PHConstruct"), "tconComesFirst").get(null);
-			}
-			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | ClassNotFoundException e) {
+				return (boolean) ReflectionUtils.getField(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst").get(null);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
 			}
 		}
 		return false;
@@ -51,8 +54,8 @@ public class TinkersUtils {
 	public static final boolean stopTiconLoadingFirst() {
 		if (isTiConFirstInOD()) {
 			try {
-				ReflectionUtils.setFieldValue(Class.forName("PHConstruct"), "tconComesFirst", false);
-				if ((boolean) ReflectionUtils.getField(Class.forName("PHConstruct"), "tconComesFirst").get(null) == false) {
+				ReflectionUtils.setFinalFieldValue(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst", false);
+				if ((boolean) ReflectionUtils.getField(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst").get(null) == false) {
 					return true;
 				}
 				//Did not work, let's see where TiCon uses this and prevent it.
@@ -95,5 +98,48 @@ public class TinkersUtils {
 	public static int getFuelDuration (Fluid fluid){
 		return (int) ReflectionUtils.invokeNonBool(getSmelteryInstance(), "getFuelDuration", new Class[] {Fluid.class}, new Object[] {fluid});
 	}
+	
+	public static boolean registerFluidType(String name, Block block, int meta, int baseTemperature, Fluid fluid, boolean isToolpart) {
+		
+		
+		
+		//FluidType.registerFluidType(mLocalName, aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(0).getFluid(), true);
+		return false;
+	}
+	
+	public static boolean addMelting(Material aMaterial) {
+		Smeltery.addMelting(aMaterial.getBlock(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144*9));
+		Smeltery.addMelting(aMaterial.getIngot(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144));
+		return false;
+	}
+	
+	public static boolean addBasinRecipe(Material aMaterial) {
+		TConstructRegistry.getBasinCasting().addCastingRecipe(aMaterial.getBlock(1),
+				aMaterial.getFluid(144*9), (ItemStack) null, true, 100);
+		return false;
+	}
+	
+	public static boolean addCastingTableRecipe(Material aMaterial) {		
+		ItemStack ingotcast = new ItemStack(TinkerSmeltery.metalPattern, 1, 0);		
+		TConstructRegistry.getTableCasting().addCastingRecipe(aMaterial.getIngot(1), aMaterial.getFluid(144), ingotcast, false, 50);
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

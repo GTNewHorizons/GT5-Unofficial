@@ -798,7 +798,7 @@ public class Utils {
 					return new Pair<Integer, Integer>(9, 28);
 				}
 				
-				clazz = (Class<GT_Mod>) Class.forName("gregtech.GT_Mod");
+				clazz = (Class<GT_Mod>) ReflectionUtils.getClass("gregtech.GT_Mod");
 				Field mSubversion = ReflectionUtils.getField(clazz, "SUBVERSION");
 				if (mSubversion != null){
 					int mSub = 0;

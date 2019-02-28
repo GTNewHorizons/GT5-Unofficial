@@ -321,14 +321,12 @@ public class TreeFarmHelper {
 			return blockHumus;
 		}
 		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
-			try {
-				final Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
+				final Class<?> humusClass = ReflectionUtils.getClass("forestry.core.blocks.BlockSoil");
 				final ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
 				if (humusClass != null){
 					blockHumus = Block.getBlockFromItem(humusStack.getItem());
 					return Block.getBlockFromItem(humusStack.getItem());
 				}
-			} catch (final ClassNotFoundException e) {}
 		}
 		return null;
 	}

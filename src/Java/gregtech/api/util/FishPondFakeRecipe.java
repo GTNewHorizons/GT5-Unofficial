@@ -27,7 +27,7 @@ public class FishPondFakeRecipe {
 			junk = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "junk").get(null);
 			treasure = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "treasure").get(null);
 		}
-		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+		catch (IllegalArgumentException | IllegalAccessException e) {
 			Logger.INFO("Error generating Fish Pond Recipes. [1]");
 			e.printStackTrace();
 		}
@@ -46,7 +46,7 @@ public class FishPondFakeRecipe {
 						ItemStack t = (ItemStack) ReflectionUtils.getField(WeightedRandomFishable.class, "field_150711_b").get(u);
 						addNewFishPondLoot(mType, new ItemStack[]{t}, new int[] {10000});
 					}
-					catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
+					catch (IllegalArgumentException | IllegalAccessException e1) {
 						Logger.INFO("Error generating Fish Pond Recipes. [2]");
 						e1.printStackTrace();
 					}

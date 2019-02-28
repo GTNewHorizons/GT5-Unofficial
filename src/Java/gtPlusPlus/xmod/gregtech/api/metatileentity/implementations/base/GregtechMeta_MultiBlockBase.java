@@ -482,9 +482,9 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public void log(String s) {
 		boolean isDebugLogging = CORE.DEBUG;	
-		boolean reset = false;
+		boolean reset = true;
 		if (aLogger == null || reset) {
-			if (isDebugLogging) {
+			if (true) {
 				try {
 					aLogger = Logger.class.getMethod("INFO", String.class);
 				} catch (NoSuchMethodException | SecurityException e) {}
@@ -1141,7 +1141,8 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
 				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
-				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;	
+				log("Remapped Input Hatch to "+aMap.mNEIName);
 			}
 			else {	
 				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
@@ -1173,7 +1174,6 @@ GT_MetaTileEntity_MultiBlockBase {
 	 * Enable Texture Casing Support if found in GT 5.09
 	 */
 
-	@SuppressWarnings("deprecation")
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) {
@@ -1194,7 +1194,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			if (aMetaTileEntity == null) {
 				return false;
 			}			
-			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
+			Method mProper = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);					
 			if (mProper != null){
 				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
 					mProper.setAccessible(true);
@@ -1202,7 +1202,6 @@ GT_MetaTileEntity_MultiBlockBase {
 					log("Good Method Call for updateTexture.");
 					return true;
 				}
-
 			}
 			else {
 				log("Bad Method Call for updateTexture.");
@@ -1223,7 +1222,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("updateTexture returning false. 1");
 			return false;
 		}
-		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			log("updateTexture returning false.");
 			log("updateTexture returning false. 2");
 			e.printStackTrace();
@@ -1277,15 +1276,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	@SuppressWarnings("rawtypes")
 	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
 		Class mDynamoClass;
-		try {
-			mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
+			mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
 			if (mDynamoClass != null){
 				if (mDynamoClass.isInstance(aMetaTileEntity)){
 					return true;
 				}
 			}
-		}
-		catch (ClassNotFoundException e) {}
 		return false;
 	}
 

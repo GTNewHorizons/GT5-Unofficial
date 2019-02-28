@@ -21,7 +21,7 @@ public class RenderGiantChicken extends RenderChicken {
 		try {
 			mChicken = (ResourceLocation) ReflectionUtils.getField(RenderGiantChicken.class, "chickenTextures").get(null);
 		}
-		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+		catch (IllegalArgumentException | IllegalAccessException e) {
 			mChicken = new ResourceLocation("textures/entity/chicken.png");
 		}
         chickenTexturesEx = mChicken;

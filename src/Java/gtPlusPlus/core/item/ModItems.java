@@ -61,6 +61,7 @@ import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
+import gtPlusPlus.core.item.tool.misc.DebugScanner;
 import gtPlusPlus.core.item.tool.misc.GregtechPump;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
@@ -87,6 +88,7 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -328,6 +330,8 @@ public final class ModItems {
 	public static BatteryPackBaseBauble itemChargePack3;
 	public static BatteryPackBaseBauble itemChargePack4;
 
+	public static Item itemDebugScanner;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -336,6 +340,9 @@ public final class ModItems {
 	}
 
 	public static final void init(){
+		
+		itemDebugScanner = new DebugScanner().setTextureName(CORE.MODID + ":itemStickyRubber");
+		
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 		itemBigEgg = new ItemGiantEgg("itemBigEgg", "Ginourmous Chicken Egg", tabMisc, 64, 0, "I had best try disassemble this.. for science!", "fuelLargeChickenEgg", 5000, 0).setTextureName(CORE.MODID + ":itemBigEgg");
 		itemGenericToken = new ItemGenericToken();
@@ -1002,7 +1009,7 @@ public final class ModItems {
 
 			//Baubles Mod Test
 			try {
-				final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
+				final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
 				if (baublesTest != null){
 					COMPAT_Baubles.run();
 				}

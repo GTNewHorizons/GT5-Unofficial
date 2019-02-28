@@ -322,7 +322,7 @@ public class MaterialUtils {
 				mName = (String) ReflectionUtils.getField(Materials.class, "mName").get(mat);
 			}
 		}
-		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+		catch (IllegalArgumentException | IllegalAccessException e) {
 		}
 
 

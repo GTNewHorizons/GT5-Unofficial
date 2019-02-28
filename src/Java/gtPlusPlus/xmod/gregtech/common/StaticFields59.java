@@ -108,11 +108,7 @@ public class StaticFields59 {
 	}
 
 	public static Field getField(Class a, String b) {
-		try {
-			return ReflectionUtils.getField(a, b);
-		} catch (NoSuchFieldException e) {
-			return null;
-		}
+		return ReflectionUtils.getField(a, b);		
 	}
 
 	public static Method getMethod(Class a, String b, Class... params) {

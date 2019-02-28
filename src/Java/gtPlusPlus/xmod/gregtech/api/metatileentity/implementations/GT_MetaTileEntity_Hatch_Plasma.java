@@ -50,11 +50,9 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
 		
 		//Get all Plasmas, but the easiest way to do this is to just ask the Fluid Registry what exists and filter through them lazily.
 		Field fluidNameCache;
-		try {
-			fluidNameCache = ReflectionUtils.getField(FluidRegistry.class, "fluidNames");
-		} catch (NoSuchFieldException e) {
-			fluidNameCache = null;
-		}
+		
+		fluidNameCache = ReflectionUtils.getField(FluidRegistry.class, "fluidNames");
+		
 		AutoMap<String> mValidPlasmaNameCache = new AutoMap<String>();		
 		if (fluidNameCache != null) {
 			try {
@@ -199,7 +197,7 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
 			a2 = F2.getByte(this);
 		}
 		}
-		catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException n) {}
+		catch (IllegalArgumentException | IllegalAccessException n) {}
 		
 		int textureIndex = a1 | a2 << 7;
 		byte texturePointer = (byte) (a1 & 127);

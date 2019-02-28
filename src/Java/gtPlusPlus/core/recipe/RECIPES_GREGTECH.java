@@ -1607,6 +1607,8 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 1));
 		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9),
 				ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1));
+		
+		CORE.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
 	}
 
 	private static void macerationRecipes() {

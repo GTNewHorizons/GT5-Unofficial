@@ -23,6 +23,7 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
@@ -291,12 +292,11 @@ public class ChargingHelper {
 					}
 
 					//Try get charge direct from NBT for GT and IC2 stacks
-					try { 
 						Logger.WARNING("3");						
 						if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01 
 								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_01 
 								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_02 
-								|| Class.forName("gregtech.common.items.GT_MetaGenerated_Item_03").isInstance(mTemp.getItem()) 
+								|| ReflectionUtils.getClass("gregtech.common.items.GT_MetaGenerated_Item_03").isInstance(mTemp.getItem()) 
 								|| mTemp.getItem().getClass().getName().toLowerCase().equals(("gregtech.common.items.GT_MetaGenerated_Tool_01").toLowerCase())){
 							if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")){
 								if (!mTemp.getDisplayName().toLowerCase().contains("battery")){
@@ -314,10 +314,7 @@ public class ChargingHelper {
 						}
 						else if (mTemp.getItem() instanceof IElectricItem){
 							mitemCurrentCharge = NBTUtils.getLong(mTemp, "charge");
-						}
-					} catch (ClassNotFoundException e) {
-
-					}				
+						}			
 
 					double mVoltageIncrease;
 					if (mItemEuTLimit >= mVoltage){

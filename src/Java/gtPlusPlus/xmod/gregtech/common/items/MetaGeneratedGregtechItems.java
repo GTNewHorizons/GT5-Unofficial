@@ -285,7 +285,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//Fusion Reactor MK4 Singularity
 		GregtechItemList.Compressed_Fusion_Reactor.set(this.addItem(100, "Hypervisor Matrix (Fusion)", "A memory unit containing an RI (Restricted Intelligence)", new Object[0]));
-		CORE.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
+
 		
 		//NanoTubes
 		GregtechItemList.NanoTube_Base_Substrate.set(this.addItem(101, "Silicon Base Substrate", "Used in the production of Carbon Nanotubes", new Object[0]));

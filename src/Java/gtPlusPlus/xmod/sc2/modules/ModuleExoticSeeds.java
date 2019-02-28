@@ -87,11 +87,11 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
 		else {
 			if (mForestryHumusBlockClass == null || mForestryHumusBlock == null) {
 				try {
-					mForestryHumusBlockClass = Class.forName("forestry.plugins.PluginCore");
+					mForestryHumusBlockClass = ReflectionUtils.getClass("forestry.plugins.PluginCore");
 					Field blocks = ReflectionUtils.getField(mForestryHumusBlockClass, "blocks");
 					if (blocks != null) {
 						Object blockRegistryCoreObject = blocks.get(null);
-						mForestryBlockRegistryCoreClass = Class.forName("forestry.core.blocks.BlockRegistryCore");
+						mForestryBlockRegistryCoreClass = ReflectionUtils.getClass("forestry.core.blocks.BlockRegistryCore");
 						if (mForestryBlockRegistryCoreClass != null && blockRegistryCoreObject != null) {
 							Field soil = ReflectionUtils.getField(mForestryBlockRegistryCoreClass, "soil");
 							if (soil != null) {

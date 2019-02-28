@@ -67,20 +67,17 @@ public class WitchUtils {
         }
     }
     
-    public static Field getField(String aClassName, String aFieldName) {    	
-    	Class c;
-		try {
-			c = Class.forName(aClassName);
-	    	if (c != null) {
-	    		Field f = ReflectionUtils.getField(c, aFieldName);
-	    		if (f != null) {
-	    			return f;
-	    		}
-	    	}
-		} catch (ClassNotFoundException | NoSuchFieldException e) {
+	public static Field getField(String aClassName, String aFieldName) {
+		Class c;
+		c = ReflectionUtils.getClass(aClassName);
+		if (c != null) {
+			Field f = ReflectionUtils.getField(c, aFieldName);
+			if (f != null) {
+				return f;
+			}
 		}
 		return null;
-    }
+	}
     
     public static boolean isEqual(final GameProfile a, final GameProfile b) {
         return a != null && b != null && a.getId() != null && b.getId() != null && a.getId().equals(b.getId());

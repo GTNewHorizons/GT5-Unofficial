@@ -41,7 +41,7 @@ public class GppModuleData extends ModuleData {
 
 			validModules.put(ID_ExoticSeedAddon, true);
 
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}

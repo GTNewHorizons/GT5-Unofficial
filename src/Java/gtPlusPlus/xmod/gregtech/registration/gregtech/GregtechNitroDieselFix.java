@@ -22,6 +22,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechNitroDieselFix {
@@ -34,7 +35,7 @@ public class GregtechNitroDieselFix {
 				int mSub = Utils.getGregtechSubVersion();
 				if (mSub != 0){
 					if (mSub >= 30){							
-						Class mb = Class.forName("gregtech.api.enums.MaterialBuilder");
+						Class mb = ReflectionUtils.getClass("gregtech.api.enums.MaterialBuilder");
 						Object df = mb.getConstructor(int.class, TextureSet.class, String.class).newInstance(975, TextureSet.SET_FLUID, "Nitro-Diesel [Old]");
 						if (mb.isInstance(df)){
 
@@ -158,7 +159,7 @@ public class GregtechNitroDieselFix {
 					}
 				}
 			}
-			catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			catch (IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				Logger.INFO("[Nitro] ================ Error ================");
 				e.printStackTrace();
 				Logger.INFO("[Nitro] ================ Error ================");

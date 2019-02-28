@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
+import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -317,28 +318,13 @@ public class Material {
 				this.vDurability = durability;
 			}
 			else {
-				if (inputs != null){
-					long durabilityTemp = 0;
-					int counterTemp = 0;
-					for (final MaterialStack m : inputs){
-						if (m.getStackMaterial() != null){
-							if (m.getStackMaterial().vDurability != 0){
-								durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
-								counterTemp++;
-
-							}
-						}
-					}
-					if ((durabilityTemp != 0) && (counterTemp != 0)){
-						this.vDurability = (durabilityTemp/counterTemp);
-					}
-					else {
-						this.vDurability = 8196;
+				long aTempDura = 0;
+				for (MaterialStack g : this.getComposites()) {
+					if (g != null) {
+						aTempDura += safeCast_LongToInt(g.getStackMaterial().getMass() * 2000);
 					}
 				}
-				else {
-					this.vDurability = 0;
-				}
+				this.vDurability = aTempDura > 0 ? aTempDura : (this.getComposites().isEmpty() ? 51200 : 32000 * this.getComposites().size());
 			}
 
 			if ((this.vDurability >= 0) && (this.vDurability < 64000)){
@@ -362,8 +348,8 @@ public class Material {
 				this.vHarvestLevel = 4;
 			}
 			else {
-				this.vToolQuality = 0;
-				this.vHarvestLevel = 0;
+				this.vToolQuality = 1;
+				this.vHarvestLevel = 1;
 			}
 
 			//Sets the Rad level

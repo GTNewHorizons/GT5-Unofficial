@@ -410,9 +410,13 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			//Time Counter
 			this.mTotalRunTime++;
 			
-			onRunningTick(null);			
+			onRunningTick(null);	
 			
-			if (mRunningOnLoad && checkMultiblock(aBaseMetaTileEntity, mInventory[1])) {
+			boolean aFormCheck = (aTick % 100 == 0 ? checkMultiblock(aBaseMetaTileEntity, mInventory[1]) : true);
+			
+			
+			
+			if (mRunningOnLoad && aFormCheck) {
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipe(mInventory[1]);
 			}
@@ -429,7 +433,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 				mDischargeHatches.clear();
 				mControlCoreBus.clear();
 				mMultiDynamoHatches.clear();
-				mMachine = checkMultiblock(aBaseMetaTileEntity, mInventory[1]);
+				mMachine = aFormCheck;
 			}
 			if (mStartUpCheck < 0) {
 				if (mMachine) {

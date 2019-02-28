@@ -204,7 +204,7 @@ public class Preloader_ClassTransformer2 {
 			}
 			return new ArrayList<ItemStack>(Arrays.asList(rStack));
 		}		
-		catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){
+		catch (IllegalArgumentException | IllegalAccessException a){
 			Logger.REFLECTION("getDropsHack2");
 			a.printStackTrace();
 		}
@@ -242,7 +242,7 @@ public class Preloader_ClassTransformer2 {
 					Logger.INFO("Set NBT Tag Value to map.");			
 				}
 			}
-			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 
@@ -360,7 +360,7 @@ public class Preloader_ClassTransformer2 {
 					Logger.INFO("Returning Invalid NBT data");					
 				}
 			}		
-			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException a){
+			catch (IllegalArgumentException | IllegalAccessException a){
 				Logger.REFLECTION("getDropsHack2");
 				a.printStackTrace();
 			}

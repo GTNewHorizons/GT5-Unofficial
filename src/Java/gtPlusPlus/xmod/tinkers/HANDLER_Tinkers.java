@@ -33,7 +33,7 @@ public class HANDLER_Tinkers {
 
 	public static final void postInit() {
 		if (LoadedMods.TiCon) {
-				Class aTinkersSmeltery = ReflectionUtils.getClassByName("tconstruct.smeltery.TinkerSmeltery");
+				Class aTinkersSmeltery = ReflectionUtils.getClass("tconstruct.smeltery.TinkerSmeltery");
 				AutoMap<Fluid> aTweakedFluids = new AutoMap<Fluid>();
 				if (aTinkersSmeltery != null) {
 					try {
@@ -84,7 +84,7 @@ public class HANDLER_Tinkers {
 								}
 							}
 						}
-					} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+					} catch (IllegalArgumentException | IllegalAccessException e) {
 					}
 				}
 		}

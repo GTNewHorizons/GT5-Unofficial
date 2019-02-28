@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiResourcePackAvailable;
@@ -145,9 +146,9 @@ public class GUI_ScrollTest extends GuiScreen
 
                 try
                 {
-                    Class<?> oclass = Class.forName("java.awt.Desktop");
-                    Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-                    oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {file1.toURI()});
+                    Class<?> oclass = ReflectionUtils.getClass("java.awt.Desktop");
+                    Object object = ReflectionUtils.getMethod(oclass, "getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+                    ReflectionUtils.getMethod(oclass, "browse", new Class[] {URI.class}).invoke(object, new Object[] {file1.toURI()});
                 }
                 catch (Throwable throwable)
                 {

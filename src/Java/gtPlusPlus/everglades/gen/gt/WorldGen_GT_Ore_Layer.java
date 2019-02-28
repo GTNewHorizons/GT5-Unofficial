@@ -72,7 +72,7 @@ extends WorldGen_GT {
 				Field temp = ReflectionUtils.getField(GregTech_API.class, "sBlockStones");
 				tempBlock = temp.get(null);				
 			}
-			catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {}
+			catch (IllegalArgumentException | IllegalAccessException e) {}
 			mStoneTypes = (Block) tempBlock;	
 		}
 		else {

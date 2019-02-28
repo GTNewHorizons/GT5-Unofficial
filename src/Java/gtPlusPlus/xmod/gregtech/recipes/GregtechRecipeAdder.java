@@ -696,8 +696,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 			Method T = null;
 			if (LoadedMods.TecTech) {
-				try {
-					Class TTRecipeAdder = Class.forName("com.github.technus.tectech.recipe.TT_recipeAdder");
+					Class TTRecipeAdder = ReflectionUtils.getClass("com.github.technus.tectech.recipe.TT_recipeAdder");
 					if (TTRecipeAdder != null) {
 						Method ttTest = ReflectionUtils.getMethod(TTRecipeAdder, "addResearchableAssemblylineRecipe",
 								ItemStack.class, int.class, int.class, int.class, int.class, Object[].class,
@@ -706,8 +705,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 							T = ttTest;
 						}
 					}
-				} catch (ClassNotFoundException e) {
-				}
 			}
 			else {
 				T = null;

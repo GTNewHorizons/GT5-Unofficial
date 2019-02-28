@@ -141,7 +141,7 @@ public class GTPP_Bees {
     	Class gtCombEnumClass = Class.forName("gregtech.common.items.CombType");
     	Field gtCombs = FieldUtils.getDeclaredField(gtBees, "combs", true);
     	gtCombs.setAccessible(true);
-    	ReflectionUtils.makeAccessible(gtCombs);
+    	ReflectionUtils.makeFieldAccessible(gtCombs);
     	Enum gtCombTypeSlag = Enum.valueOf(gtCombEnumClass, "SLAG");
     	Enum gtCombTypeStone = Enum.valueOf(gtCombEnumClass, "STONE");    	
     	Object oCombObject = gtCombs.get(null);

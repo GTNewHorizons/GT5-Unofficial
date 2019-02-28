@@ -82,7 +82,7 @@ public class CommonProxy {
 		ModBlocks.init();
 		CI.preInit();
 
-		COMPAT_IntermodStaging.preInit();
+		COMPAT_IntermodStaging.preInit(e);
 		BookHandler.run();
 		// Registration of entities and renderers
 		Logger.INFO("[Proxy] Calling Entity registrator.");
@@ -152,7 +152,7 @@ public class CommonProxy {
 		// Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
-		COMPAT_IntermodStaging.init();
+		COMPAT_IntermodStaging.init(e);
 	}
 
 	public void postInit(final FMLPostInitializationEvent e) {
@@ -170,7 +170,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
-		COMPAT_IntermodStaging.postInit();
+		COMPAT_IntermodStaging.postInit(e);
 		COMPAT_HANDLER.runQueuedRecipes();
 	}
 

@@ -37,10 +37,9 @@ public class HANDLER_Thaumcraft {
 	public static void init(){
 		if (LoadedMods.Thaumcraft){
 			try {
-				mResearchNotes = (Item) ReflectionUtils.getField(Class.forName("thaumcraft.common.config.ConfigItems"), "itemResearchNotes").get(null);
+				mResearchNotes = (Item) ReflectionUtils.getField(ReflectionUtils.getClass("thaumcraft.common.config.ConfigItems"), "itemResearchNotes").get(null);
 			}
-			catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
-					| ClassNotFoundException e) {
+			catch (IllegalArgumentException | IllegalAccessException e) {
 				mResearchNotes = Items.paper;
 			}
 		}

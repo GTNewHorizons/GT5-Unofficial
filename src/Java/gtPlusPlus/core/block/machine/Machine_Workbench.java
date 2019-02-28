@@ -121,34 +121,24 @@ public class Machine_Workbench extends BlockContainer
 	}
 
 	@Optional.Method(modid = "EnderIO")
-	private static boolean checkEnderIOWrench(final ItemStack item){
-		if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")){
+	private static boolean checkEnderIOWrench(final ItemStack item) {
+		if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")) {
 			Class<?> wrenchClass;
-			try {
-				wrenchClass = Class.forName("crazypants.enderio.api.tool.ITool");
-				if (wrenchClass.isInstance(item.getItem())){
-					return true;
-				}
-			}
-			catch (final ClassNotFoundException e1) {
-				return false;
+			wrenchClass = ReflectionUtils.getClass("crazypants.enderio.api.tool.ITool");
+			if (wrenchClass.isInstance(item.getItem())) {
+				return true;
 			}
 		}
 		return false;
 	}
 
 	@Optional.Method(modid = "Buildcraft")
-	private static boolean checkBuildcraftWrench(final ItemStack item){
-		if (ReflectionUtils.doesClassExist("buildcraft.api.tools.IToolWrench")){
+	private static boolean checkBuildcraftWrench(final ItemStack item) {
+		if (ReflectionUtils.doesClassExist("buildcraft.api.tools.IToolWrench")) {
 			Class<?> wrenchClass;
-			try {
-				wrenchClass = Class.forName("buildcraft.api.tools.IToolWrench");
-				if (wrenchClass.isInstance(item.getItem())){
-					return true;
-				}
-			}
-			catch (final ClassNotFoundException e1) {
-				return false;
+			wrenchClass = ReflectionUtils.getClass("buildcraft.api.tools.IToolWrench");
+			if (wrenchClass.isInstance(item.getItem())) {
+				return true;
 			}
 		}
 		return false;

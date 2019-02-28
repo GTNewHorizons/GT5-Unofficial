@@ -331,7 +331,7 @@ public class GuiBaseGrindle extends GuiContainer {
 			try {			 
 				r = (ResourceLocation) ReflectionUtils.getField(GuiScreenBook.class, "bookGuiTextures").get(null);
 
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+			} catch (IllegalArgumentException | IllegalAccessException e) {
 				r = new ResourceLocation("textures/gui/book.png");
 			}
 			mBookTexture = r;
