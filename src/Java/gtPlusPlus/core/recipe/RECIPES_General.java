@@ -162,14 +162,25 @@ public class RECIPES_General {
 
 
 		//Shaped Crafting for ULV Material Dusts		
+		
 		//Potin
 		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustLead", "dustBronze", "dustTin",
 				"dustLead", "dustBronze"}, ALLOY.POTIN.getDust(5))){
 			Logger.INFO("Added shapeless recipe for Potin Dust.");
 		}
+		
 		//Tumbaga
-		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {"dustRoseGold", "dustGold", "dustGold",
-				"dustGold", "dustCopper", "dustCopper"}, ALLOY.TUMBAGA.getDust(10))){
+		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {
+				"dustGold", "dustGold", "dustCopper"}, ItemUtils.getSimpleStack(ModItems.dustTumbagaMix))){
+			Logger.INFO("Added shapeless recipe for Tumbaga Mix.");
+		}	
+		if (RecipeUtils.addShapelessGregtechRecipe(new Object[] {
+				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
+				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
+				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
+				"dustCopper"
+				},
+				ALLOY.TUMBAGA.getDust(10))){
 			Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
 		}
 

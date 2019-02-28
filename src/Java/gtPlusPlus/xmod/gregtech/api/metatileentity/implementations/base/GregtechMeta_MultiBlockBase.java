@@ -483,8 +483,13 @@ GT_MetaTileEntity_MultiBlockBase {
 	public void log(String s) {
 		boolean isDebugLogging = CORE.DEBUG;	
 		boolean reset = true;
+		
+		if (!isDebugLogging) {
+			return;
+		}
+		
 		if (aLogger == null || reset) {
-			if (true) {
+			if (isDebugLogging) {
 				try {
 					aLogger = Logger.class.getMethod("INFO", String.class);
 				} catch (NoSuchMethodException | SecurityException e) {}
