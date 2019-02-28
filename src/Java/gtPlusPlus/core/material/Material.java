@@ -15,6 +15,7 @@ import gregtech.api.enums.TextureSet;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -23,6 +24,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -77,6 +79,8 @@ public class Material {
 	public int vHarvestLevel;
 
 	private GTPP_Aspects[] vAspects;
+	
+	public BaseTinkersMaterial vTiConHandler;
 
 
 	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
@@ -492,6 +496,10 @@ public class Material {
 			}			
 
 			this.textureSet = setTextureSet(set, vTier);
+			
+			if (LoadedMods.TiCon) {
+				this.vTiConHandler = new BaseTinkersMaterial(this);
+			}
 
 			Logger.MATERIALS("Creating a Material instance for "+materialName);
 			Logger.MATERIALS("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
