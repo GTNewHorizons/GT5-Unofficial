@@ -2,6 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.GT_Values;
@@ -1067,6 +1068,23 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2) }, // Output		
 				3 * 20, // Time in ticks
 				30); // EU
+		
+		/*
+		 * Try Add custom Recipe for drying leather
+		 */		
+		if (LoadedMods.PamsHarvestcraft && Loader.isModLoaded("Backpack")) {			
+			ItemStack aLeather1, aLeather2;			
+			aLeather1 = ItemUtils.getCorrectStacktype("harvestcraft:hardenedleatherItem", 1);
+			aLeather2 = ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1);			
+			CORE.RA.addDehydratorRecipe(
+					aLeather1,
+					GT_Values.NF,
+					new ItemStack[] {
+							aLeather2
+					},
+					5 * 20,
+					180);
+		}
 
 	}
 
