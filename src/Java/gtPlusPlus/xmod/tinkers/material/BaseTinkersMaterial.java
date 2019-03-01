@@ -30,7 +30,7 @@ public class BaseTinkersMaterial {
 	private final Material mMaterial;
 	
 	static {
-		aNextFreeID = Short.MAX_VALUE+420;
+		aNextFreeID = (Short.MAX_VALUE/2)+420;
 	}
 	
 	public BaseTinkersMaterial(Material aMaterial) {

@@ -9,6 +9,8 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.google.common.reflect.ClassPath;
 
 import gtPlusPlus.api.objects.Logger;
@@ -77,9 +79,9 @@ public class ReflectionUtils {
 			return false;
 		}		
 		boolean isStatic = Modifier.isStatic(aMethod.getModifiers());		
-		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethod.getName()+"."+aMethod.getParameterTypes().toString());
+		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethod.getName()+"."+ArrayUtils.toString(aMethod.getParameterTypes()));
 		if (y == null) {
-			mCachedMethods.put(aClass.getName()+"."+aMethod.getName()+"."+aMethod.getParameterTypes().toString(), new CachedMethod(aMethod, isStatic));
+			mCachedMethods.put(aClass.getName()+"."+aMethod.getName()+"."+ArrayUtils.toString(aMethod.getParameterTypes()), new CachedMethod(aMethod, isStatic));
 			return true;
 		}		
 		return false;
@@ -138,7 +140,8 @@ public class ReflectionUtils {
 	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
 	 */
 	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
-		String aMethodKey = aTypes.toString();
+		String aMethodKey = ArrayUtils.toString(aTypes);
+		//Logger.REFLECTION("Looking up method in cache: "+(aClass.getName()+"."+aMethodName + "." + aMethodKey));
 		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethodName + "." + aMethodKey);
 		if (y == null) {
 			Method u = getMethod_Internal(aClass, aMethodName, aTypes);
@@ -169,7 +172,7 @@ public class ReflectionUtils {
 			try {
 				u = getField_Internal(aClass, aFieldName);
 				if (u != null) {
-					Logger.REFLECTION("Caching Field '"+aFieldName+"' from "+aClass.getCanonicalName());
+					Logger.REFLECTION("Caching Field '"+aFieldName+"' from "+aClass.getName());
 					cacheField(aClass, u);
 					return u;
 				}
@@ -426,16 +429,20 @@ public class ReflectionUtils {
 
 	private static Field getField_Internal(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
 		try {
+			Logger.REFLECTION("Field: Internal Lookup: "+fieldName);
 			Field k = clazz.getDeclaredField(fieldName);
 			makeFieldAccessible(k);
 			//Logger.REFLECTION("Got Field from Class. "+fieldName+" did exist within "+clazz.getCanonicalName()+".");
 			return k;
 		} catch (final NoSuchFieldException e) {
+			Logger.REFLECTION("Field: Internal Lookup Failed: "+fieldName);
 			final Class<?> superClass = clazz.getSuperclass();
 			if (superClass == null) {
+				Logger.REFLECTION("Unable to find field '"+fieldName+"'");	
 				//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+".");
 				throw e;
 			}
+			Logger.REFLECTION("Method: Recursion Lookup: "+fieldName+" - Checking in "+superClass.getName());
 			//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+". Trying super class.");
 			return getField_Internal(superClass, fieldName);
 		}
@@ -511,7 +518,7 @@ public class ReflectionUtils {
 	}	
 	
 	private static void dumpClassInfo(Class aClass) {
-		Logger.INFO("We ran into an error processing reflection in "+aClass.getCanonicalName()+", dumping all data for debugging.");	
+		Logger.INFO("We ran into an error processing reflection in "+aClass.getName()+", dumping all data for debugging.");	
 		// Get the methods
 	    Method[] methods = aClass.getDeclaredMethods();
 	    Field[] fields = aClass.getDeclaredFields();

@@ -178,7 +178,7 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
 				ItemUtils.getSimpleStack(ModItems.dustTumbagaMix),
-				"dustCopper"
+				"dustGold"
 				},
 				ALLOY.TUMBAGA.getDust(10))){
 			Logger.INFO("Added shapeless recipe for Tumbaga Dust.");

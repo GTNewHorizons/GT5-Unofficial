@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -23,40 +24,41 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TinkersUtils {
 
-	private static Object mSmelteryInstance;
-	private static Class mSmelteryClassInstance;
-	
-	private static Object mTinkersRegistryInstance;
-	private static Class mTinkersRegistryClass;
-	
-	private static final Class mToolMaterialClass;	
-	
+	private static final Class mClass_Smeltery;
+	private static final Class mClass_TConstructRegistry;	
+	private static final Class mClass_ToolMaterial;	
 	private static final Class mClass_IPattern;
 	private static final Class mClass_DynamicToolPart;
 	private static final Class mClass_FluidType;
 	private static final Class mClass_CastingRecipe;
+	private static final Class mClass_TinkerSmeltery;
 	
 	private static final Field mField_MoltenIronFluid;
 	
 	private static final Method mMethod_getFluidType;
 	private static final Method mMethod_getCastingRecipes;
+
+	private static Object mSmelteryInstance;	
+	private static Object mTinkersRegistryInstance;
 	
 	private static final HashMap<String, Method> mMethodCache = new LinkedHashMap<String, Method>();
 		
 	
-	static {
-		setRegistries();	
-		mToolMaterialClass = ReflectionUtils.getClass("tconstruct.library.tools.ToolMaterial");	
+	static {		
+		mClass_Smeltery = ReflectionUtils.getClass("tconstruct.library.crafting.Smeltery");
+		mClass_TConstructRegistry = ReflectionUtils.getClass("tconstruct.library.TConstructRegistry");
+		
+		mClass_ToolMaterial = ReflectionUtils.getClass("tconstruct.library.tools.ToolMaterial");	
 		mClass_IPattern = ReflectionUtils.getClass("tconstruct.library.util.IPattern");
 		mClass_DynamicToolPart = ReflectionUtils.getClass("tconstruct.library.tools.DynamicToolPart");
 		mClass_FluidType = ReflectionUtils.getClass("tconstruct.library.crafting.FluidType");
 		mClass_CastingRecipe = ReflectionUtils.getClass("tconstruct.library.crafting.CastingRecipe");
+		mClass_TinkerSmeltery = ReflectionUtils.getClass("tconstruct.smeltery.TinkerSmeltery");
 		
-		mField_MoltenIronFluid = ReflectionUtils.getField(mSmelteryClassInstance, "moltenIronFluid");	
+		mField_MoltenIronFluid = ReflectionUtils.getField(mClass_TinkerSmeltery, "moltenIronFluid");	
 		
 		mMethod_getFluidType = ReflectionUtils.getMethod(mClass_FluidType, "getFluidType", String.class);
-		mMethod_getCastingRecipes = ReflectionUtils.getMethod(getCastingInstance(0), "getCastingRecipes", new Class[] {});
-		
+		mMethod_getCastingRecipes = ReflectionUtils.getMethod(getCastingInstance(0), "getCastingRecipes", new Class[] {});		
 	}
 	
 	
@@ -67,65 +69,23 @@ public class TinkersUtils {
 	private static void setTiConDataInstance() {
 		if (!LoadedMods.TiCon) {
 			return;
-		}
-		else {
-
-			if (mTinkersRegistryClass == null || mSmelteryClassInstance == null) {
-				setRegistries();				
+		} else {
+			if (mSmelteryInstance == null) {
+				if (mClass_Smeltery != null) {
+					try {
+						mSmelteryInstance = ReflectionUtils.getField(mClass_Smeltery, "instance").get(null);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+					}
+				}
 			}
-			
-			// getSmelteryInstance
-				
-				//Set Smeltery Instance
-				if (mSmelteryInstance == null || mSmelteryClassInstance == null) {
-					if (mSmelteryClassInstance == null) {
-						mSmelteryClassInstance = ReflectionUtils.getClass("tconstruct.library.crafting.Smeltery");
-					}
-					if (mSmelteryClassInstance != null) {
-						try {
-							mSmelteryInstance = ReflectionUtils.getField(mSmelteryClassInstance, "instance").get(null);
-						}
-						catch (IllegalArgumentException | IllegalAccessException e) {
-						}
+			if (mTinkersRegistryInstance == null) {
+				if (mClass_TConstructRegistry != null) {
+					try {
+						mTinkersRegistryInstance = ReflectionUtils.getField(mClass_TConstructRegistry, "instance").get(null);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
 					}
 				}
-				
-				//Return Smeltery Instance
-				if (mSmelteryInstance != null) {
-					//return mSmelteryInstance;
-				}
-			
-			
-			// getTableCastingInstance || getBasinCastingInstance
-				if (mTinkersRegistryClass == null || mTinkersRegistryInstance == null) {					
-					if (mTinkersRegistryClass == null) {
-						mTinkersRegistryClass = ReflectionUtils.getClass("tconstruct.library.TConstructRegistry");
-					}
-					if (mTinkersRegistryClass != null) {						
-						if (mTinkersRegistryInstance == null) {
-							try {
-								mTinkersRegistryInstance = ReflectionUtils.getField(mTinkersRegistryClass, "instance").get(null);
-							}
-							catch (IllegalArgumentException | IllegalAccessException e) {
-							}
-						}
-					}					
-				}
-				
-				//Return Smeltery Instance
-				if (mTinkersRegistryInstance != null) {
-					//return mTinkersRegistryInstance;
-				}		
-
-		}
-	}
-	
-	private static void setRegistries() {
-		if (mTinkersRegistryClass == null) {
-			mTinkersRegistryClass = ReflectionUtils.getClass("tconstruct.library.TConstructRegistry");
-		}
-		if (mSmelteryClassInstance == null) {
-			mSmelteryClassInstance = ReflectionUtils.getClass("tconstruct.library.crafting.Smeltery");
+			}
 		}
 	}
 
@@ -224,7 +184,7 @@ public class TinkersUtils {
 	
 	public static boolean addMelting(ItemStack input, Block block, int metadata, int temperature, FluidStack liquid) {
 		if (mMethodCache.get("addMelting") == null) {
-			Method m = ReflectionUtils.getMethod(mSmelteryClassInstance, "addMelting", ItemStack.class, Block.class, int.class, int.class, FluidStack.class);
+			Method m = ReflectionUtils.getMethod(mClass_Smeltery, "addMelting", ItemStack.class, Block.class, int.class, int.class, FluidStack.class);
 			mMethodCache.put("addMelting", m);
 		}
 		try {			
@@ -237,7 +197,7 @@ public class TinkersUtils {
 
 	public static boolean addMelting(Object type, ItemStack input, int temperatureDifference, int fluidAmount) {
 		if (mMethodCache.get("addMelting") == null) {
-			Method m = ReflectionUtils.getMethod(mSmelteryClassInstance, "addMelting", mClass_FluidType, ItemStack.class, int.class, int.class);
+			Method m = ReflectionUtils.getMethod(mClass_Smeltery, "addMelting", mClass_FluidType, ItemStack.class, int.class, int.class);
 			mMethodCache.put("addMelting", m);
 		}
 		try {			
@@ -341,7 +301,7 @@ public class TinkersUtils {
 	private static Item mTinkerMetalPattern;
 	public static ItemStack getPattern(int aType) {		
 		if (mTinkerMetalPattern == null) {
-			Field m = ReflectionUtils.getField(ReflectionUtils.getClass("tconstruct.smeltery.TinkerSmeltery"), "metalPattern");
+			Field m = ReflectionUtils.getField(mClass_TinkerSmeltery, "metalPattern");
 			if (m != null) {
 				try {
 					mTinkerMetalPattern = (Item) m.get(null);
@@ -380,7 +340,7 @@ public class TinkersUtils {
 	 */
 	public static Object generateToolMaterial(String name, String localizationString, int level, int durability, int speed, int damage,	float handle, int reinforced, float stonebound, String style, int primaryColor) {
 		try {
-			Constructor constructor = mToolMaterialClass.getConstructor(String.class, String.class, int.class, int.class, int.class, int.class, float.class, int.class, float.class, String.class, int.class);
+			Constructor constructor = mClass_ToolMaterial.getConstructor(String.class, String.class, int.class, int.class, int.class, int.class, float.class, int.class, float.class, String.class, int.class);
 			Object myObject = constructor.newInstance(name, localizationString, level, durability, speed, damage, handle, reinforced, stonebound, style, primaryColor);
 			return myObject;
 		} catch (Throwable t) {
@@ -399,51 +359,47 @@ public class TinkersUtils {
 	
 	
 	
-	public static void addToolMaterial(int id, Object aToolMaterial) {	
-		setRegistries();		
+	public static void addToolMaterial(int id, Object aToolMaterial) {
 		if (mMethodCache.get("addToolMaterial") == null) {					
-			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addtoolMaterial", int.class, mToolMaterialClass);
+			Method m = ReflectionUtils.getMethod(mClass_TConstructRegistry, "addtoolMaterial", int.class, mClass_ToolMaterial);
 			mMethodCache.put("addToolMaterial", m);
 		}
 		try {
-			mMethodCache.get("addToolMaterial").invoke(mTinkersRegistryClass, id, aToolMaterial);			
+			mMethodCache.get("addToolMaterial").invoke(mClass_TConstructRegistry, id, aToolMaterial);			
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			
 		}		
 	}
 	
-	public static void addDefaultToolPartMaterial(int id) {		
-		setRegistries();		
+	public static void addDefaultToolPartMaterial(int id) {
 		if (mMethodCache.get("addDefaultToolPartMaterial") == null) {					
-			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addDefaultToolPartMaterial", int.class);
+			Method m = ReflectionUtils.getMethod(mClass_TConstructRegistry, "addDefaultToolPartMaterial", int.class);
 			mMethodCache.put("addDefaultToolPartMaterial", m);
 		}
 		try {
-			mMethodCache.get("addDefaultToolPartMaterial").invoke(mTinkersRegistryClass, id);			
+			mMethodCache.get("addDefaultToolPartMaterial").invoke(mClass_TConstructRegistry, id);			
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {			
 		}
 	}
 	
-	public static void addBowMaterial(int id, int drawspeed, float maxSpeed) {		
-		setRegistries();		
+	public static void addBowMaterial(int id, int drawspeed, float maxSpeed) {
 		if (mMethodCache.get("addBowMaterial") == null) {					
-			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addBowMaterial", int.class, int.class, float.class);
+			Method m = ReflectionUtils.getMethod(mClass_TConstructRegistry, "addBowMaterial", int.class, int.class, float.class);
 			mMethodCache.put("addBowMaterial", m);
 		}
 		try {
-			mMethodCache.get("addBowMaterial").invoke(mTinkersRegistryClass, id, drawspeed, maxSpeed);			
+			mMethodCache.get("addBowMaterial").invoke(mClass_TConstructRegistry, id, drawspeed, maxSpeed);			
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {			
 		}
 	}
 	
-	public static void addArrowMaterial(int id, float mass, float fragility) {		
-		setRegistries();		
+	public static void addArrowMaterial(int id, float mass, float fragility) {
 		if (mMethodCache.get("addArrowMaterial") == null) {					
-			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addArrowMaterial", int.class, float.class, float.class);
+			Method m = ReflectionUtils.getMethod(mClass_TConstructRegistry, "addArrowMaterial", int.class, float.class, float.class);
 			mMethodCache.put("addArrowMaterial", m);
 		}
 		try {
-			mMethodCache.get("addArrowMaterial").invoke(mTinkersRegistryClass, id, mass, fragility);			
+			mMethodCache.get("addArrowMaterial").invoke(mClass_TConstructRegistry, id, mass, fragility);			
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {			
 		}
 	}	
@@ -464,29 +420,40 @@ public class TinkersUtils {
 		
 		List newRecipies = new LinkedList();		
         
-		if (true) {
-			Iterator i$ = getTableCastingRecipes().iterator();
-			while (i$.hasNext()) {
-				CastingRecipeHandler recipe = new CastingRecipeHandler(i$.next());
+			
+			Iterator iterator1 = getTableCastingRecipes().iterator();
+			Fluid aMoltenIron = null;
+			if (aMoltenIron == null) {
 				try {
-					if (recipe.valid && recipe.castingMetal.getFluid() == mField_MoltenIronFluid.get(null) && recipe.cast != null
+					aMoltenIron = (Fluid) mField_MoltenIronFluid.get(null);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+					aMoltenIron = Materials.Iron.getMolten(0).getFluid();
+				}
+			}
+			while (iterator1.hasNext()) {
+				CastingRecipeHandler recipe = new CastingRecipeHandler(iterator1.next());
+				if (recipe == null || !recipe.valid) {
+					continue;
+				}
+				try {
+					if (recipe.castingMetal.getFluid() == aMoltenIron && recipe.cast != null
 							&& mClass_IPattern.isInstance(recipe.cast.getItem()) && mClass_DynamicToolPart.isInstance(recipe.getResult().getItem())) {
 						newRecipies.add(recipe);
 					}
-				} catch (IllegalArgumentException | IllegalAccessException e) {
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					return false;
 				}
 			}
-		}
-		
-		if (true) {
+			
+			
 			Object ft;
 			try {
 				ft = mMethod_getFluidType.invoke(null, aMaterial.getLocalizedName());
-				Iterator i$ = newRecipies.iterator();
-				while (i$.hasNext()) {
-					CastingRecipeHandler recipe = new CastingRecipeHandler(i$.next());
+				Iterator iterator2 = newRecipies.iterator();
+				while (iterator2.hasNext()) {
+					CastingRecipeHandler recipe = new CastingRecipeHandler(iterator2.next());
 					if (!recipe.valid){
 						continue;
 					}
@@ -501,7 +468,7 @@ public class TinkersUtils {
 				e.printStackTrace();
 				return false;
 			}
-		}
+		
 		return true;
 	}
 	
