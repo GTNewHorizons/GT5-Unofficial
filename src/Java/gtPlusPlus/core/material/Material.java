@@ -497,7 +497,7 @@ public class Material {
 
 			this.textureSet = setTextureSet(set, vTier);
 			
-			if (LoadedMods.TiCon) {
+			if (LoadedMods.TiCon && this.materialState == MaterialState.SOLID) {
 				this.vTiConHandler = new BaseTinkersMaterial(this);
 			}
 

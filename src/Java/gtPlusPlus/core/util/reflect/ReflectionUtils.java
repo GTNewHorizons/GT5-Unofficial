@@ -108,6 +108,7 @@ public class ReflectionUtils {
 		if (y == null) {
 			y = getClass_Internal(aClassCanonicalName);
 			if (y != null) {
+				Logger.REFLECTION("Caching Class: "+aClassCanonicalName);
 				cacheClass(y);
 			}
 		}
@@ -128,6 +129,7 @@ public class ReflectionUtils {
 		if (y == null) {
 			Method u = getMethod_Internal(aClass, aMethodKey, aTypes);
 			if (u != null) {
+				Logger.REFLECTION("Caching Method: "+aMethodName + "." + aMethodKey);
 				cacheMethod(u);
 				return u;
 			} else {
@@ -153,6 +155,7 @@ public class ReflectionUtils {
 			try {
 				u = getField_Internal(aClass, aFieldName);
 				if (u != null) {
+					Logger.REFLECTION("Caching Field '"+aFieldName+"' from "+aClass.getCanonicalName());
 					cacheField(u);
 					return u;
 				}
@@ -468,25 +471,48 @@ public class ReflectionUtils {
 			try {
 				m = getMethodRecursively(aClass, aMethodName);
 			} catch (NoSuchMethodException e) {
+				Logger.REFLECTION("Unable to find method '"+aMethodName+"'");	
 				e.printStackTrace();
+				dumpClassInfo(aClass);
 			}
 		}
 		return m;
 	}
 
-	public static Method getMethodRecursively(final Class<?> clazz, final String fieldName) throws NoSuchMethodException {
+	private static Method getMethodRecursively(final Class<?> clazz, final String fieldName) throws NoSuchMethodException {
 		try {
 			Method k = clazz.getDeclaredMethod(fieldName);
 			makeMethodAccessible(k);
 			return k;
 		} catch (final NoSuchMethodException e) {
 			final Class<?> superClass = clazz.getSuperclass();
-			if (superClass == null) {
+			if (superClass == null || superClass == Object.class) {
 				throw e;
 			}
 			return getMethod_Internal(superClass, fieldName);
 		}
 	}	
+	
+	private static void dumpClassInfo(Class aClass) {
+		Logger.INFO("We ran into an error processing reflection in "+aClass.getCanonicalName()+", dumping all data for debugging.");	
+		// Get the methods
+	    Method[] methods = aClass.getDeclaredMethods();
+	    Field[] fields = aClass.getDeclaredFields();
+	    Constructor[] consts = aClass.getDeclaredConstructors(); 
+
+		Logger.INFO("Dumping all Methods.");	
+	    for (Method method : methods) {
+		      System.out.println(method.getName());
+		    }
+		Logger.INFO("Dumping all Fields.");	
+	    for (Field f : fields) {
+		      System.out.println(f.getName());
+		    }
+		Logger.INFO("Dumping all Constructors.");	
+	    for (Constructor c : consts) {
+		      System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+c.getParameterTypes().toString());
+		    }
+	}
 
 	private static Class<?> getNonPublicClass(final String className) {
 		Class<?> c = null;
