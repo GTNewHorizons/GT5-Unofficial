@@ -10,14 +10,18 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
 
 public class BaseTinkersMaterial {
+	
+	
 
 	private static HashMap<String, Integer> aInternalMaterialIdMap = new HashMap<String, Integer>();
-	private static int aNextFreeID = 440;
+	private static int aNextFreeID;
 	
 	public final String mLocalName;
 	
@@ -25,11 +29,16 @@ public class BaseTinkersMaterial {
 	private final int mID;
 	private final Material mMaterial;
 	
+	static {
+		aNextFreeID = Short.MAX_VALUE+420;
+	}
+	
 	public BaseTinkersMaterial(Material aMaterial) {
 		mLocalName = Utils.sanitizeString(aMaterial.getLocalizedName());
 		mUnlocalName = "material.gtpp."+Utils.sanitizeString(mLocalName);
 		mMaterial = aMaterial;
 		mID = aNextFreeID++;
+		Logger.INFO("[TiCon] Assigning ID "+mID+" to "+mLocalName+".");
 		aInternalMaterialIdMap.put(mUnlocalName, mID);	
 		HANDLER_Tinkers.mTinkerMaterials.put(this);
 	}
@@ -123,12 +132,12 @@ public class BaseTinkersMaterial {
 
 	public void generate() {
 
-		Logger.INFO("Trying to generate TiCon Material: "+mLocalName);
+		Logger.INFO("[TiCon] Trying to generate Material: "+mLocalName);
 		int id = mID;
 		if (id > 0) {
 
 			Object aTinkersCustomMaterial = generateToolMaterial(mMaterial);
-			Logger.INFO("Created TiCon Material: "+mLocalName);
+			Logger.INFO("[TiCon] Created Material: "+mLocalName);
 
 			TinkersUtils.addToolMaterial(id, aTinkersCustomMaterial);
 			TinkersUtils.addDefaultToolPartMaterial(id);
@@ -152,33 +161,34 @@ public class BaseTinkersMaterial {
 			tag.setString("Style", calcStyle(mMaterial));
 			tag.setInteger("Color", calcColour(mMaterial));
 			
-			Logger.INFO("Sending IMC to TConstruct: addMaterial - "+mLocalName+".");
-			FMLInterModComms.sendMessage("TConstruct", "addMaterial", tag);
-			
 
-			generateRecipes(mMaterial);			
+			boolean generate = generateRecipes(mMaterial);			
 			
+			if (generate) {				
+				Logger.INFO("[TiCon] Sending IMC: addMaterial - "+mLocalName+".");
+				FMLInterModComms.sendMessage("TConstruct", "addMaterial", tag);
 
-			ItemStack itemstack = mMaterial.getIngot(1);
-			tag = new NBTTagCompound();
-			tag.setInteger("MaterialId", id);
-			NBTTagCompound item = new NBTTagCompound();
-			itemstack.writeToNBT(item);
-			tag.setTag("Item", item);
-			tag.setInteger("Value", 2); // What is value for?
-			
-			Logger.INFO("Sending IMC to TConstruct: addPartBuilderMaterial - "+mLocalName+".");
-			FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+				ItemStack itemstack = mMaterial.getIngot(1);
+				tag = new NBTTagCompound();
+				tag.setInteger("MaterialId", id);
+				NBTTagCompound item = new NBTTagCompound();
+				itemstack.writeToNBT(item);
+				tag.setTag("Item", item);
+				tag.setInteger("Value", 2); // What is value for?
+				
+				Logger.INFO("[TiCon] Sending IMC: addPartBuilderMaterial - "+mLocalName+".");
+				FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
 
-			tag = new NBTTagCompound();
-			tag.setInteger("MaterialId", id);
-			tag.setInteger("Value", 2); // What is value for?
-			item = new NBTTagCompound();
-			itemstack.writeToNBT(item);
-			tag.setTag("Item", item);
-			
-			Logger.INFO("Sending IMC to TConstruct: addMaterialItem - "+mLocalName+".");
-			FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
+				tag = new NBTTagCompound();
+				tag.setInteger("MaterialId", id);
+				tag.setInteger("Value", 2); // What is value for?
+				item = new NBTTagCompound();
+				itemstack.writeToNBT(item);
+				tag.setTag("Item", item);
+				
+				Logger.INFO("[TiCon] Sending IMC: addMaterialItem - "+mLocalName+".");
+				FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
+			}
 
 
 		}
@@ -186,11 +196,30 @@ public class BaseTinkersMaterial {
 	}
 	
 	private boolean generateRecipes(Material aMaterial) {		
+		
+		Block aMatBlock;
+		Integer aMelt;
+		Fluid aFluid;
+		
+		try {
+			aMatBlock = aMaterial.getBlock();
+			aMelt = aMaterial.getMeltingPointC();
+			aFluid = aMaterial.getFluid(0).getFluid();
+		}
+		catch (Throwable t) {
+			return false;
+		}
+		
+		if (aMatBlock == null || aMelt == null || aFluid == null) {
+			return false;
+		}
+		
+		
 		//Smeltery.addMelting(new ItemStack(ExtraUtils.unstableIngot, 1, 0), ExtraUtils.decorative1, 5, 850,	aMaterial.getFluid(72));		
-		TinkersUtils.registerFluidType(mLocalName, aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(0).getFluid(), true);		
-		TinkersUtils.addMelting(aMaterial.getBlock(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144*9));
-		TinkersUtils.addMelting(aMaterial.getIngot(1), aMaterial.getBlock(), 0, aMaterial.getMeltingPointC(), aMaterial.getFluid(144));		
-		if (aMaterial.getMeltingPointC() <= 3600) {
+		TinkersUtils.registerFluidType(mLocalName, aMatBlock, 0, aMelt, aFluid, true);		
+		TinkersUtils.addMelting(aMaterial.getBlock(1), aMatBlock, 0, aMelt, aMaterial.getFluid(144*9));
+		TinkersUtils.addMelting(aMaterial.getIngot(1), aMatBlock, 0, aMelt, aMaterial.getFluid(144));		
+		if (aMelt <= 3600) {
 			ItemStack ingotcast = TinkersUtils.getPattern(1);
 			TinkersUtils.addBasinRecipe(aMaterial.getBlock(1),
 					aMaterial.getFluid(144*9), (ItemStack) null, true, 100);

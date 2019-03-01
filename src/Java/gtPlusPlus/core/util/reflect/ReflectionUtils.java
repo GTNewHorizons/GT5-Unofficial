@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.common.reflect.ClassPath;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.util.data.StringUtils;
 
 public class ReflectionUtils {
 
@@ -116,6 +117,19 @@ public class ReflectionUtils {
 	}
 
 
+
+	/**
+	 * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
+	 * @param aObject - Object containing the Method.
+	 * @param aMethodName - Method's name in {@link String} form.
+	 * @param aTypes - Class Array of Types for {@link Method}'s constructor.
+	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
+	 */
+	public static Method getMethod(Object aObject, String aMethodName, Class[] aTypes) {
+		return getMethod(aObject.getClass(), aMethodName, aTypes);
+	}
+	
+	
 	/**
 	 * Returns a cached {@link Method} object.
 	 * @param aClass - Class containing the Method.
@@ -127,7 +141,7 @@ public class ReflectionUtils {
 		String aMethodKey = aTypes.toString();
 		CachedMethod y = mCachedMethods.get(aMethodName + "." + aMethodKey);
 		if (y == null) {
-			Method u = getMethod_Internal(aClass, aMethodKey, aTypes);
+			Method u = getMethod_Internal(aClass, aMethodName, aTypes);
 			if (u != null) {
 				Logger.REFLECTION("Caching Method: "+aMethodName + "." + aMethodKey);
 				cacheMethod(u);
@@ -457,6 +471,7 @@ public class ReflectionUtils {
 	private static Method getMethod_Internal(Class aClass, String aMethodName, Class... aTypes) {
 		Method m = null;
 		try {
+			Logger.REFLECTION("Method: Internal Lookup: "+aMethodName);
 			m = aClass.getDeclaredMethod(aMethodName, aTypes);	
 			if (m != null) {
 				m.setAccessible(true);
@@ -468,6 +483,7 @@ public class ReflectionUtils {
 			}
 		}
 		catch (Throwable t) {
+			Logger.REFLECTION("Method: Internal Lookup Failed: "+aMethodName);
 			try {
 				m = getMethodRecursively(aClass, aMethodName);
 			} catch (NoSuchMethodException e) {
@@ -479,9 +495,10 @@ public class ReflectionUtils {
 		return m;
 	}
 
-	private static Method getMethodRecursively(final Class<?> clazz, final String fieldName) throws NoSuchMethodException {
+	private static Method getMethodRecursively(final Class<?> clazz, final String aMethodName) throws NoSuchMethodException {
 		try {
-			Method k = clazz.getDeclaredMethod(fieldName);
+			Logger.REFLECTION("Method: Recursion Lookup: "+aMethodName);
+			Method k = clazz.getDeclaredMethod(aMethodName);
 			makeMethodAccessible(k);
 			return k;
 		} catch (final NoSuchMethodException e) {
@@ -489,7 +506,7 @@ public class ReflectionUtils {
 			if (superClass == null || superClass == Object.class) {
 				throw e;
 			}
-			return getMethod_Internal(superClass, fieldName);
+			return getMethod_Internal(superClass, aMethodName);
 		}
 	}	
 	
@@ -502,7 +519,7 @@ public class ReflectionUtils {
 
 		Logger.INFO("Dumping all Methods.");	
 	    for (Method method : methods) {
-		      System.out.println(method.getName());
+		      System.out.println(method.getName()+" | "+StringUtils.getDataStringFromArray(method.getParameterTypes()));
 		    }
 		Logger.INFO("Dumping all Fields.");	
 	    for (Field f : fields) {
@@ -510,7 +527,7 @@ public class ReflectionUtils {
 		    }
 		Logger.INFO("Dumping all Constructors.");	
 	    for (Constructor c : consts) {
-		      System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+c.getParameterTypes().toString());
+		      System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+StringUtils.getDataStringFromArray(c.getParameterTypes()));
 		    }
 	}
 

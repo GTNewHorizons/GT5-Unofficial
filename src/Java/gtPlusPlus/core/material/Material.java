@@ -498,7 +498,9 @@ public class Material {
 			this.textureSet = setTextureSet(set, vTier);
 			
 			if (LoadedMods.TiCon && this.materialState == MaterialState.SOLID) {
-				this.vTiConHandler = new BaseTinkersMaterial(this);
+				if (this.getProtons() >= 98 || this.getComposites().size() > 1 || this.getMeltingPointC() >= 3600) {
+					this.vTiConHandler = new BaseTinkersMaterial(this);
+				}
 			}
 
 			Logger.MATERIALS("Creating a Material instance for "+materialName);
@@ -753,7 +755,11 @@ public class Material {
 	}
 
 	final public Block getBlock(){
-		return Block.getBlockFromItem(getBlock(1).getItem());
+		Block b = Block.getBlockFromItem(getBlock(1).getItem());
+		if (b == null) {
+			Logger.INFO("[ERROR] Tried to get invalid block for "+this.getLocalizedName()+", returning debug block instead.");
+		}
+		return b != null ? b : Blocks.lit_furnace;
 	}
 
 	public final ItemStack getBlock(final int stacksize){

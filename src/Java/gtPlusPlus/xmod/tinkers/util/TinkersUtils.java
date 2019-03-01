@@ -251,7 +251,7 @@ public class TinkersUtils {
 	
 	public static boolean addCastingTableRecipe(ItemStack output, FluidStack metal, ItemStack cast, boolean consume, int delay) {		
 		if (mMethodCache.get("addCastingTableRecipe") == null) {					
-			Method m = ReflectionUtils.getMethod(ReflectionUtils.getClass("tconstruct.library.crafting.LiquidCasting"), "addBasinRecipe", ItemStack.class, FluidStack.class, ItemStack.class, boolean.class, int.class);
+			Method m = ReflectionUtils.getMethod(ReflectionUtils.getClass("tconstruct.library.crafting.LiquidCasting"), "addCastingRecipe", ItemStack.class, FluidStack.class, ItemStack.class, boolean.class, int.class);
 			mMethodCache.put("addCastingTableRecipe", m);
 		}
 		try {
@@ -270,15 +270,30 @@ public class TinkersUtils {
 	
 	
 	public static Object getCastingInstance(int aType) {
+		
+		
+		
+		Method m = null;
 		if (aType == 0) {
-			return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getTableCasting", new Class[] {}, new Object[] {});			
+			m = ReflectionUtils.getMethod(getTiConDataInstance(1), "getTableCasting", new Class[] {});			
+			//return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getTableCasting", new Class[] {}, new Object[] {});			
 		}
 		else if (aType == 1) {
-			return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getBasinCasting", new Class[] {}, new Object[] {});			
+			m = ReflectionUtils.getMethod(getTiConDataInstance(1), "getBasinCasting", new Class[] {});
+			//return ReflectionUtils.invokeVoid(getTiConDataInstance(1), "getBasinCasting", new Class[] {}, new Object[] {});			
 		}
 		else {
-			return null;
-		}		
+			//return null;
+		}
+		
+		if (m != null) {
+			try {
+				return m.invoke(getTiConDataInstance(1), new Object[] {});
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 	
 	
@@ -346,7 +361,7 @@ public class TinkersUtils {
 	public static void addToolMaterial(int id, Object aToolMaterial) {	
 		setRegistries();		
 		if (mMethodCache.get("addToolMaterial") == null) {					
-			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addToolMaterial", int.class, mToolMaterialClass);
+			Method m = ReflectionUtils.getMethod(mTinkersRegistryClass, "addtoolMaterial", int.class, mToolMaterialClass);
 			mMethodCache.put("addToolMaterial", m);
 		}
 		try {
