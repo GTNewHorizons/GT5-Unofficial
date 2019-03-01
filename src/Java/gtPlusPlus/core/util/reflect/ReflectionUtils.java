@@ -72,27 +72,27 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	private static boolean cacheMethod(Method aMethod) {		
+	private static boolean cacheMethod(Class aClass, Method aMethod) {		
 		if (aMethod == null) {
 			return false;
 		}		
 		boolean isStatic = Modifier.isStatic(aMethod.getModifiers());		
-		CachedMethod y = mCachedMethods.get(aMethod.getName()+"."+aMethod.getParameterTypes().toString());
+		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethod.getName()+"."+aMethod.getParameterTypes().toString());
 		if (y == null) {
-			mCachedMethods.put(aMethod.getName()+"."+aMethod.getParameterTypes().toString(), new CachedMethod(aMethod, isStatic));
+			mCachedMethods.put(aClass.getName()+"."+aMethod.getName()+"."+aMethod.getParameterTypes().toString(), new CachedMethod(aMethod, isStatic));
 			return true;
 		}		
 		return false;
 	}
 
-	private static boolean cacheField(Field aField) {		
+	private static boolean cacheField(Class aClass, Field aField) {		
 		if (aField == null) {
 			return false;
 		}		
 		boolean isStatic = Modifier.isStatic(aField.getModifiers());
-		CachedField y = mCachedFields.get(aField.getName());
+		CachedField y = mCachedFields.get(aClass.getName()+"."+aField.getName());
 		if (y == null) {
-			mCachedFields.put(aField.getName(), new CachedField(aField, isStatic));
+			mCachedFields.put(aClass.getName()+"."+aField.getName(), new CachedField(aField, isStatic));
 			return true;
 		}		
 		return false;
@@ -139,12 +139,12 @@ public class ReflectionUtils {
 	 */
 	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
 		String aMethodKey = aTypes.toString();
-		CachedMethod y = mCachedMethods.get(aMethodName + "." + aMethodKey);
+		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethodName + "." + aMethodKey);
 		if (y == null) {
 			Method u = getMethod_Internal(aClass, aMethodName, aTypes);
 			if (u != null) {
 				Logger.REFLECTION("Caching Method: "+aMethodName + "." + aMethodKey);
-				cacheMethod(u);
+				cacheMethod(aClass, u);
 				return u;
 			} else {
 				return null;
@@ -163,14 +163,14 @@ public class ReflectionUtils {
 	 * @return - Valid, non-final, {@link Field} object, or {@link null}.
 	 */
 	public static Field getField(final Class aClass, final String aFieldName) {
-		CachedField y = mCachedFields.get(aFieldName);
+		CachedField y = mCachedFields.get(aClass.getName()+"."+aFieldName);
 		if (y == null) {
 			Field u;
 			try {
 				u = getField_Internal(aClass, aFieldName);
 				if (u != null) {
 					Logger.REFLECTION("Caching Field '"+aFieldName+"' from "+aClass.getCanonicalName());
-					cacheField(u);
+					cacheField(aClass, u);
 					return u;
 				}
 			} catch (NoSuchFieldException e) {

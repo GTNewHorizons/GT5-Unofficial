@@ -34,7 +34,7 @@ public class BaseTinkersMaterial {
 	}
 	
 	public BaseTinkersMaterial(Material aMaterial) {
-		mLocalName = Utils.sanitizeString(aMaterial.getLocalizedName());
+		mLocalName = aMaterial.getLocalizedName();
 		mUnlocalName = "material.gtpp."+Utils.sanitizeString(mLocalName);
 		mMaterial = aMaterial;
 		mID = aNextFreeID++;
@@ -136,18 +136,18 @@ public class BaseTinkersMaterial {
 		int id = mID;
 		if (id > 0) {
 
-			Object aTinkersCustomMaterial = generateToolMaterial(mMaterial);
-			Logger.INFO("[TiCon] Created Material: "+mLocalName);
+			//Object aTinkersCustomMaterial = generateToolMaterial(mMaterial);
+			//Logger.INFO("[TiCon] Created Material: "+mLocalName);
 
-			TinkersUtils.addToolMaterial(id, aTinkersCustomMaterial);
-			TinkersUtils.addDefaultToolPartMaterial(id);
-			TinkersUtils.addBowMaterial(id, calcBowDrawSpeed(mMaterial), 1.0F);
-			TinkersUtils.addArrowMaterial(id, calcProjectileMass(mMaterial), calcProjectileFragility(mMaterial));
+			//TinkersUtils.addToolMaterial(id, aTinkersCustomMaterial);
+			//TinkersUtils.addDefaultToolPartMaterial(id);
+			//TinkersUtils.addBowMaterial(id, calcBowDrawSpeed(mMaterial), 1.0F);
+			//TinkersUtils.addArrowMaterial(id, calcProjectileMass(mMaterial), calcProjectileFragility(mMaterial));
 
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setInteger("Id", id);
-			tag.setString("Name", mLocalName);
-			tag.setString("localizationString", mUnlocalName);
+			tag.setString("Name", mUnlocalName);
+			tag.setString("localizationString", mLocalName);
 			tag.setInteger("Durability", calcDurability(mMaterial)); // 97
 			tag.setInteger("MiningSpeed", calcMiningSpeed(mMaterial)); // 150
 			tag.setInteger("HarvestLevel", calcHarvestLevel(mMaterial)); // 1
@@ -162,7 +162,7 @@ public class BaseTinkersMaterial {
 			tag.setInteger("Color", calcColour(mMaterial));
 			
 
-			boolean generate = generateRecipes(mMaterial);			
+			boolean generate = generateRecipes(mMaterial, id);			
 			
 			if (generate) {				
 				Logger.INFO("[TiCon] Sending IMC: addMaterial - "+mLocalName+".");
@@ -195,7 +195,7 @@ public class BaseTinkersMaterial {
 		
 	}
 	
-	private boolean generateRecipes(Material aMaterial) {		
+	private boolean generateRecipes(Material aMaterial, int aID) {		
 		
 		Block aMatBlock;
 		Integer aMelt;
@@ -226,6 +226,40 @@ public class BaseTinkersMaterial {
 			TinkersUtils.addCastingTableRecipe(aMaterial.getIngot(1),
 					aMaterial.getFluid(144), ingotcast, false, 50);
 		}
+		
+		boolean extended = TinkersUtils.generateCastingRecipes(aMaterial, aID);
+		
+		
+		
+		
+		
+		
+        //TConstructRegistry.getBasinCasting().addCastingRecipe(new ItemStack(ExtraUtils.decorative1, 1, 5), new FluidStack(unstable, 1296), (ItemStack)null, true, 100);
+
+        
+		
+	          
+	
+	            
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 
 		return true;
