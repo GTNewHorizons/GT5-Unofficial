@@ -7,6 +7,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 import gtPlusPlus.preloader.DevHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +18,11 @@ public class VanillaBedHeightFix implements IBugFix {
 	private final Method mSleepInBedAt;
 
 	public VanillaBedHeightFix() {
-		if (DevHelper.isValidHelperObject()) {
-			Method m = DevHelper.getForgeMethod(EntityPlayer.class, "sleepInBedAt", int.class, int.class,
-					int.class);
+		if (DevHelper.isValidHelperObject()) {			
+			Method m = ReflectionUtils.getMethod(EntityPlayer.class, "sleepInBedAt", int.class, int.class,	int.class);
+			if (m == null) {
+				m = ReflectionUtils.getMethod(EntityPlayer.class, "func_71018_a", int.class, int.class,	int.class);
+			}			
 			if (m != null) {
 				mSleepInBedAt = m;
 				Utils.registerEvent(this);

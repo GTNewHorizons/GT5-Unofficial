@@ -29,7 +29,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 		ClassWriter aTempWriter = null;
 		boolean obfuscated = obfuscated2;
 		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Are we patching obfuscated methods? "+obfuscated);
-		String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : DevHelper.getForge("getColorFromItemStack");
+		String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : "getColorFromItemStack";
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
 		aTempReader.accept(new AddAdapter(aTempWriter, new String[] {"getAspects", aGetColour}), 0);

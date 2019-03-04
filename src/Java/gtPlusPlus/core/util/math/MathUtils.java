@@ -463,14 +463,14 @@ public class MathUtils {
 			return 0;
 		}
 		int divisor = aDataSet.length;
-		Logger.INFO("Calculating Average Short. Divisor: "+divisor);
+		Logger.WARNING("Calculating Average Short. Divisor: "+divisor);
 		short total = 0;		
 		for (short i : aDataSet) {
-			Logger.INFO("Adding "+i);
+			Logger.WARNING("Adding "+i);
 			total += i;
 		}
 		short result = safeShort((total/divisor));
-		Logger.INFO("Average: "+result);
+		Logger.WARNING("Average: "+result);
 		return result;		
 	}
 	public static int getIntAverage(int[] aDataSet) {

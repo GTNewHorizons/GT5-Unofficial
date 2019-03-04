@@ -188,13 +188,17 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				"ic2.core.block.reactor.block.BlockReactorFluidPort",
 				"ic2.core.block.reactor.block.BlockReactorRedstonePort", 
 				"ic2.core.block.reactor.block.BlockReactorVessel",
+				"ic2.core.block.personal.BlockPersonal.class",
+				"ic2.core.block.wiring.BlockChargepad.class",
+				"ic2.core.block.wiring.BlockElectric.class",
+				"ic2.core.block.wiring.BlockLuminator.class",				
 		};
 
 		//Fix IC2 Shit	
 		for (String y : aIC2ClassNames) {
 			if (transformedName.equals(y)) {
 				FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Transforming %s", transformedName);
-				return new ClassTransformer_IC2_GetHarvestTool(basicClass, probablyShouldBeFalse, transformedName).getWriter().toByteArray();			
+				return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter().toByteArray();			
 			}
 		}
 		

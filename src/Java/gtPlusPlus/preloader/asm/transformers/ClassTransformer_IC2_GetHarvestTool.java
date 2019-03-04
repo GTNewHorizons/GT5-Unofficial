@@ -22,6 +22,9 @@ public class ClassTransformer_IC2_GetHarvestTool {
 	private final ClassWriter writer;
 	private final String className;
 
+	private final String aName_getItemDropped;
+	private final String aName_damageDropped;
+
 	public static String getHarvestTool(int aMeta) {
 		return "wrench";
 	}
@@ -37,7 +40,10 @@ public class ClassTransformer_IC2_GetHarvestTool {
 	public ClassTransformer_IC2_GetHarvestTool(byte[] basicClass, boolean obfuscated, String aClassName) {
 		className = aClassName;
 		ClassReader aTempReader = null;
-		ClassWriter aTempWriter = null;
+		ClassWriter aTempWriter = null;		
+		
+		aName_getItemDropped = obfuscated ? "func_149650_a" : "getItemDropped";
+		aName_damageDropped = obfuscated ? "func_149692_a" : "damageDropped";		
 
 		FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO,
 				"Attempting to patch in mode " + className + ".");
@@ -51,6 +57,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 		} else {
 			isValid = false;
 		}
+		
 		FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Valid patch? " + isValid + ".");
 		reader = aTempReader;
 		writer = aTempWriter;
@@ -58,15 +65,15 @@ public class ClassTransformer_IC2_GetHarvestTool {
 		if (reader != null && writer != null) {
 			FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Attempting Method Injection.");
 			injectMethod("getHarvestTool");
-
 			if (aClassName.equals("ic2.core.block.machine.BlockMachine2")
-					|| aClassName.equals("ic2.core.block.machine.BlockMachine3")) {
-				injectMethod("getItemDropped");
-				injectMethod("damageDropped");
+					|| aClassName.equals("ic2.core.block.machine.BlockMachine3") 
+					|| aClassName.equals("ic2.core.block.wiring.BlockElectric")) {
+				injectMethod(aName_getItemDropped);
+				injectMethod(aName_damageDropped);
 			}
 			else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
 					|| aClassName.equals("ic2.core.block.machine.BlockMachine")) {
-				injectMethod("damageDropped");
+				injectMethod(aName_damageDropped);
 			}
 		}
 
@@ -111,8 +118,8 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			mv.visitEnd();
 			didInject = true;
 		}
-		else if (aMethodName.equals("getItemDropped")) {
-			mv = cw.visitMethod(ACC_PUBLIC, "getItemDropped", "(ILjava/util/Random;I)Lnet/minecraft/item/Item;", null, null);
+		else if (aMethodName.equals(aName_getItemDropped)) {
+			mv = cw.visitMethod(ACC_PUBLIC, aName_getItemDropped, "(ILjava/util/Random;I)Lnet/minecraft/item/Item;", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
@@ -121,7 +128,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			mv.visitVarInsn(ILOAD, 1);
 			mv.visitVarInsn(ALOAD, 2);
 			mv.visitVarInsn(ILOAD, 3);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", "getItemDropped", "(Lnet/minecraft/block/Block;ILjava/util/Random;I)Lnet/minecraft/item/Item;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", aName_getItemDropped, "(Lnet/minecraft/block/Block;ILjava/util/Random;I)Lnet/minecraft/item/Item;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -133,14 +140,14 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			mv.visitEnd();
 			didInject = true;
 		}
-		else if (aMethodName.equals("damageDropped")) {
-			mv = cw.visitMethod(ACC_PUBLIC, "damageDropped", "(I)I", null, null);
+		else if (aMethodName.equals(aName_damageDropped)) {
+			mv = cw.visitMethod(ACC_PUBLIC, aName_damageDropped, "(I)I", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
 			mv.visitLineNumber(48, l0);
 			mv.visitVarInsn(ILOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", "damageDropped", "(I)I", false);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", aName_damageDropped, "(I)I", false);
 			mv.visitInsn(IRETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -167,10 +174,11 @@ public class ClassTransformer_IC2_GetHarvestTool {
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			MethodVisitor methodVisitor;
 			if (aClassName.equals("ic2.core.block.machine.BlockMachine2")
-					|| aClassName.equals("ic2.core.block.machine.BlockMachine3")) {
-				if (name.equals("getItemDropped")) {
+					|| aClassName.equals("ic2.core.block.machine.BlockMachine3")
+					|| aClassName.equals("ic2.core.block.wiring.BlockElectric")) {
+				if (name.equals(aName_getItemDropped)) {
 					methodVisitor = null;
-				} else if (name.equals("damageDropped")) {
+				} else if (name.equals(aName_damageDropped)) {
 					methodVisitor = null;
 				} else if (name.equals("getHarvestTool")) {
 					methodVisitor = null;
@@ -180,7 +188,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			}
 			else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
 					|| aClassName.equals("ic2.core.block.machine.BlockMachine")) {
-				if (name.equals("damageDropped")) {
+				if (name.equals(aName_damageDropped)) {
 					methodVisitor = null;
 				} else if (name.equals("getHarvestTool")) {
 					methodVisitor = null;
