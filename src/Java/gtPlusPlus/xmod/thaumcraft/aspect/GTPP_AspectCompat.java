@@ -1,40 +1,29 @@
 package gtPlusPlus.xmod.thaumcraft.aspect;
 
-import gregtech.common.GT_ThaumcraftCompat;
-
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
-import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
-
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
-import gregtech.api.util.GT_LanguageManager;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.GT_ThaumcraftCompat;
+import gtPlusPlus.api.objects.Logger;
 import net.minecraft.util.ResourceLocation;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 
-public class GTPP_AspectCompat implements IThaumcraftCompat {
+public class GTPP_AspectCompat {
 	
 	public static volatile Method m = null;
 	
-	private static HashMap<String, TC_Aspect> mAspectCache = new LinkedHashMap<String, TC_Aspect>();
+	private static HashMap<String, TC_Aspect_Wrapper> mAspectCache = new LinkedHashMap<String, TC_Aspect_Wrapper>();
 	
 
-	public static TC_Aspect ASPECT_BALANCE;
-	public static TC_Aspect ASPECT_LUST;
-	public static TC_Aspect ASPECT_STARBOUND;
-	public static TC_Aspect ASPECT_TOXIC;
-	public static TC_Aspect ASPECT_HEAVEN;
+	public static TC_Aspect_Wrapper ASPECT_BALANCE;
+	public static TC_Aspect_Wrapper ASPECT_LUST;
+	public static TC_Aspect_Wrapper ASPECT_STARBOUND;
+	public static TC_Aspect_Wrapper ASPECT_TOXIC;
+	public static TC_Aspect_Wrapper ASPECT_HEAVEN;
 	
 	
 /*	TC_Aspects.AER.mAspect = Aspect.AIR;
@@ -92,11 +81,11 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 		
 		
 		// Generate all existing Aspects as TC_Aspects
-		LinkedHashMap<String, Object> h = TC_Aspect.getVanillaAspectList();
+		LinkedHashMap<String, Object> h = TC_Aspect_Wrapper.getVanillaAspectList();
 		for (String g : h.keySet()) {
 			Object aBaseAspect = h.get(g);
-			if (aBaseAspect != null && TC_Aspect.isObjectAnAspect(aBaseAspect)) {
-				TC_Aspect aS = TC_Aspect.getAspect(g);
+			if (aBaseAspect != null && TC_Aspect_Wrapper.isObjectAnAspect(aBaseAspect)) {
+				TC_Aspect_Wrapper aS = TC_Aspect_Wrapper.getAspect(g);
 				if (aS != null) {
 					mAspectCache.put(g, aS);
 					continue;
@@ -109,10 +98,10 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 		
 		// Custom Aspects
 		ASPECT_BALANCE = 
-				new TC_Aspect(
+				new TC_Aspect_Wrapper(
 						"Purity",
 						15647411,
-						new TC_Aspect[]{
+						new TC_Aspect_Wrapper[]{
 								get(TC_Aspects.GELUM),
 								get(TC_Aspects.IGNIS)
 								},
@@ -120,10 +109,10 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 				false,
 				1);
 		ASPECT_LUST = 
-				new TC_Aspect(
+				new TC_Aspect_Wrapper(
 						"Vengeance",
 						15647411,
-						new TC_Aspect[]{
+						new TC_Aspect_Wrapper[]{
 								get(TC_Aspects.CORPUS),
 								get(TC_Aspects.ORDO)
 								},
@@ -149,24 +138,24 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 		GT_LanguageManager.addStringLocalization("tc.aspect.custom5", "Heaven");
 	}
 	
-	private TC_Aspect get(TC_Aspects aGtObjects) {
+	private TC_Aspect_Wrapper get(TC_Aspects aGtObjects) {
 		try {
-			return TC_Aspect.generate(aGtObjects.mAspect);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+			return TC_Aspect_Wrapper.generate(aGtObjects.mAspect);
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static synchronized final AspectList getAspectList(final List<TC_AspectStack_Ex> aAspects) {
-		AspectList o = null;
+	public static synchronized final TC_AspectList_Wrapper getTC_AspectList_Wrapper(final List<GTPP_AspectStack> aAspects) {
+		TC_AspectList_Wrapper o = null;
 		try {
 			if (m == null || (m != null && !m.isAccessible())) {
-				m = GT_ThaumcraftCompat.class.getDeclaredMethod("getAspectList", List.class);
+				m = GT_ThaumcraftCompat.class.getDeclaredMethod("getTC_AspectList_Wrapper", List.class);
 				m.setAccessible(true);				
 			}
 			if (m != null) {
-				o = (AspectList) m.invoke(null, aAspects);				
+				o = (TC_AspectList_Wrapper) m.invoke(null, aAspects);				
 			}
 		}
 		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -177,44 +166,6 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 		}
 		return o;
 	}
-	
-	public static synchronized final AspectList getAspectList_Ex(final List<TC_AspectStack_Ex> aAspects) {
-		final AspectList rAspects = new AspectList();
-		for (final TC_AspectStack_Ex tAspect : aAspects) {
-			rAspects.add((Aspect) tAspect.mAspect.mAspect, (int) tAspect.mAmount);
-		}
-		return rAspects;
-	}
 
-	@Override
-	public boolean registerPortholeBlacklistedBlock(Block p0) {
-		return ThaumcraftUtils.registerPortholeBlacklistedBlock(p0);
-	}
-
-	@Override
-	public boolean registerThaumcraftAspectsToItem(ItemStack p0, List<TC_AspectStack> p1, boolean p2) {
-		return ThaumcraftUtils.registerThaumcraftAspectsToItem(p0, ThaumcraftUtils.convertAspectStack(p1), p2);
-	}
-
-	@Override
-	public boolean registerThaumcraftAspectsToItem(ItemStack p0, List<TC_AspectStack> p1, String p2) {
-		return ThaumcraftUtils.registerThaumcraftAspectsToItem(p0, ThaumcraftUtils.convertAspectStack(p1), p2);
-	}
-
-	@Override
-	public Object addCrucibleRecipe(String p0, Object p1, ItemStack p2, List<TC_AspectStack> p3) {
-		return ThaumcraftUtils.addCrucibleRecipe(p0, p1, p2, ThaumcraftUtils.convertAspectStack(p3));
-	}
-
-	@Override
-	public Object addInfusionRecipe(String p0, ItemStack p1, ItemStack[] p2, ItemStack p3, int p4, List<TC_AspectStack> p5) {
-		return ThaumcraftUtils.addInfusionRecipe(p0, p1, p2, p3, p4, ThaumcraftUtils.convertAspectStack(p5));
-	}
-
-	@Override
-	public Object addResearch(String p0, String p1, String p2, String[] p3, String p4, ItemStack p5, int p6, int p7,
-			int p8, int p9, List<TC_AspectStack> p10, ItemStack[] p11, Object[] p12) {
-		return ThaumcraftUtils.addResearch(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, ThaumcraftUtils.convertAspectStack(p10), p11, p12);
-	}
 	
 }

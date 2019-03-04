@@ -1,8 +1,10 @@
 package gtPlusPlus.xmod.thaumcraft.util;
 
 import static gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft.sItemsToGetAspects;
-import static gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectCompat.getAspectList_Ex;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import net.minecraft.block.Block;
@@ -11,53 +13,50 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects.TC_AspectStack_Ex;
-import gtPlusPlus.xmod.thaumcraft.objects.ResearchNoteDataWrapper;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.*;
-import thaumcraft.api.research.*;
-import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.research.ResearchNoteData;
-import thaumcraft.common.lib.utils.HexUtils;
+import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectStack;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_Aspect_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_AspectList_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchCategories_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchCategoryList_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchItem_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchNoteData_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchPage_Wrapper;
 
 public class ThaumcraftUtils {
 
-	public static boolean addAspectToItem(ItemStack item, Aspect aspect, int amount) {
-		return addAspectToItem(item, getEnumAspect(aspect.getName()), amount);
-	}
+
+	private static Class mClass_Aspect;
+	private static Field mField_Aspects;
 
 	/*public static boolean addAspectToItem(ItemStack item, Aspect[] aspects, int amount) {
 		return addAspectToItem(item, getEnumAspect(aspect.getName()), amount);
 	}*/
 
-	public static boolean addAspectToItem(ItemStack item, GTPP_Aspects aspect, int amount) {
-		return addAspectToItem(item, new GTPP_Aspects[] {aspect}, new Integer[] {amount});
+	public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper aspect, int amount) {
+		return addAspectToItem(item, new TC_Aspect_Wrapper[] {aspect}, new Integer[] {amount});
 
 	}
 
-	public static boolean addAspectToItem(ItemStack item, GTPP_Aspects[] aspect, Integer[] amounts) {
-		TC_AspectStack_Ex[] aspects = new TC_AspectStack_Ex[aspect.length];
+	public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper[] aspect, Integer[] amounts) {
+		GTPP_AspectStack[] aspects = new GTPP_AspectStack[aspect.length];
 		for (int g=0;g<aspect.length;g++) {
 			if (amounts[g] != null && amounts[g] > 0) {
-				aspects[g] = new TC_AspectStack_Ex(aspect[g], amounts[g]);
+				//aspects[g] = new GTPP_AspectStack(aspect[g], amounts[g]);
 			}
 		}		
-		Pair<ItemStack, TC_AspectStack_Ex[]> k = new Pair<ItemStack, TC_AspectStack_Ex[]>(item, aspects);
+		Pair<ItemStack, GTPP_AspectStack[]> k = new Pair<ItemStack, GTPP_AspectStack[]>(item, aspects);
 		int mSizeA = sItemsToGetAspects.size();
 		sItemsToGetAspects.put(k);
 		if (sItemsToGetAspects.size() > mSizeA) {
@@ -70,59 +69,51 @@ public class ThaumcraftUtils {
 	}
 
 
-	public static Aspect getAspect(String name) {
-		GTPP_Aspects r = getAspectEnum(name);
-		return (r == null ? null : r.mAspect);
+	public static TC_Aspect_Wrapper getAspect(String name) {
+		return TC_Aspect_Wrapper.getAspect(name);
 	}
 
-	public static GTPP_Aspects getEnumAspect(String name) {
-		GTPP_Aspects r = getAspectEnum(name);
-		return (r == null ? null : r);
+	public static TC_Aspects getEnumAspect(String name) {
+		TC_Aspect_Wrapper r = getAspect(name);
+		return r.mGtEnumField;
 	}
+	
+	
 
-	private static GTPP_Aspects getAspectEnum(String name) {
-		GTPP_Aspects h = null;
-		for (GTPP_Aspects f : GTPP_Aspects.values()) {
-			if (f.mAspect.getName().toLowerCase().contains(name.toLowerCase())) {
-				h = f;
-			}
-		}
-		return h;		
-	}
-
-	public static Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<TC_AspectStack_Ex> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
+	public static Object addResearch(String aResearch, String aName, String aText, String[] aParentResearches, String aCategory, ItemStack aIcon, int aComplexity, int aType, int aX, int aY, List<GTPP_AspectStack> aAspects, ItemStack[] aResearchTriggers, Object[] aPages) {
 		if (!GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
 			return null;
 		}
-		ResearchCategoryList tCategory = ResearchCategories.getResearchList(aCategory);
+		TC_ResearchCategoryList_Wrapper tCategory = TC_ResearchCategories_Wrapper.getResearchList(aCategory);
 		if (tCategory == null) {
 			return null;
 		}
-		for (Iterator<ResearchItem> i$ = tCategory.research.values().iterator(); i$.hasNext(); ) {
-			ResearchItem tResearch = (ResearchItem) i$.next();
+		for (Iterator<TC_ResearchItem_Wrapper> i$ = tCategory.research.values().iterator(); i$.hasNext(); ) {
+			TC_ResearchItem_Wrapper tResearch = (TC_ResearchItem_Wrapper) i$.next();
 			if ((tResearch.displayColumn == aX) && (tResearch.displayRow == aY)) {
 				aX += (aX > 0 ? 5 : -5);
 				aY += (aY > 0 ? 5 : -5);
 			}
 		}
-		ResearchItem rResearch = new ResearchItem(aResearch, aCategory, getAspectList_Ex(aAspects), aX, aY, aComplexity, aIcon);
-		ArrayList<ResearchPage> tPages = new ArrayList<ResearchPage>(aPages.length);
+		TC_ResearchItem_Wrapper rResearch = new TC_ResearchItem_Wrapper(aResearch, aCategory, getAspectList_Ex(aAspects), aX, aY, aComplexity, aIcon);
+		ArrayList<Object> tPages = new ArrayList<Object>(aPages.length);
 		GT_LanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
 		GT_LanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT++] " + aText);
 		for (Object tPage : aPages) {
 			if ((tPage instanceof String)) {
-				tPages.add(new ResearchPage((String) tPage));
+				tPages.add(new TC_ResearchPage_Wrapper((String) tPage));
 			} else if ((tPage instanceof IRecipe)) {
-				tPages.add(new ResearchPage((IRecipe) tPage));
-			} else if ((tPage instanceof IArcaneRecipe)) {
-				tPages.add(new ResearchPage((IArcaneRecipe) tPage));
+				tPages.add(new TC_ResearchPage_Wrapper((IRecipe) tPage));
+			} 
+			/*else if ((tPage instanceof IArcaneRecipe)) {
+				tPages.add(new TC_ResearchPage_Wrapper((IArcaneRecipe) tPage));
 			} else if ((tPage instanceof CrucibleRecipe)) {
-				tPages.add(new ResearchPage((CrucibleRecipe) tPage));
+				tPages.add(new TC_ResearchPage_Wrapper((CrucibleRecipe) tPage));
 			} else if ((tPage instanceof InfusionRecipe)) {
-				tPages.add(new ResearchPage((InfusionRecipe) tPage));
+				tPages.add(new TC_ResearchPage_Wrapper((InfusionRecipe) tPage));
 			} else if ((tPage instanceof InfusionEnchantmentRecipe)) {
-				tPages.add(new ResearchPage((InfusionEnchantmentRecipe) tPage));
-			}
+				tPages.add(new TC_ResearchPage_Wrapper((InfusionEnchantmentRecipe) tPage));
+			}*/
 		}
 		if ((aType & 0x40) != 0) {
 			rResearch.setAutoUnlock();
@@ -161,58 +152,58 @@ public class ThaumcraftUtils {
 			rResearch.setItemTriggers(aResearchTriggers);
 			rResearch.setHidden();
 		}
-		rResearch.setPages((ResearchPage[]) tPages.toArray(new ResearchPage[tPages.size()]));
+		rResearch.setPages((TC_ResearchPage_Wrapper[]) tPages.toArray(new TC_ResearchPage_Wrapper[tPages.size()]));
 		return rResearch.registerResearchItem();
 	}
 
 
 	public static Object addCrucibleRecipe(final String aResearch, final Object aInput, final ItemStack aOutput,
-			final List<TC_AspectStack_Ex> aAspects) {
+			final List<GTPP_AspectStack> aAspects) {
 		if (GT_Utility.isStringInvalid((Object) aResearch) || aInput == null || aOutput == null || aAspects == null
 				|| aAspects.isEmpty()) {
 			return null;
 		}
-		return ThaumcraftApi.addCrucibleRecipe(aResearch, GT_Utility.copy(new Object[]{aOutput}),
+		return addCrucibleRecipe(aResearch, GT_Utility.copy(new Object[]{aOutput}),
 				(aInput instanceof ItemStack || aInput instanceof ArrayList) ? aInput : aInput.toString(),
 						getAspectList_Ex(aAspects));
 	}
 
 	public static Object addInfusionRecipe(final String aResearch, final ItemStack aMainInput, final ItemStack[] aSideInputs,
-			final ItemStack aOutput, final int aInstability, final List<TC_AspectStack_Ex> aAspects) {
+			final ItemStack aOutput, final int aInstability, final List<GTPP_AspectStack> aAspects) {
 		if (GT_Utility.isStringInvalid((Object) aResearch) || aMainInput == null || aSideInputs == null
 				|| aOutput == null || aAspects == null || aAspects.isEmpty()) {
 			return null;
 		}
-		return ThaumcraftApi.addInfusionCraftingRecipe(aResearch, (Object) GT_Utility.copy(new Object[]{aOutput}),
+		return addInfusionCraftingRecipe(aResearch, (Object) GT_Utility.copy(new Object[]{aOutput}),
 				aInstability, getAspectList_Ex(aAspects), aMainInput, aSideInputs);
 	}
 
 	public static boolean registerThaumcraftAspectsToItem(final ItemStack aExampleStack,
-			final List<TC_AspectStack_Ex> aAspects, final String aOreDict) {
+			final List<GTPP_AspectStack> aAspects, final String aOreDict) {
 		if (aAspects.isEmpty()) {
 			return false;
 		}
-		ThaumcraftApi.registerObjectTag(aOreDict, getAspectList_Ex(aAspects));
+		registerObjectTag(aOreDict, getAspectList_Ex(aAspects));
 		return true;
 	}
 
 	public static boolean registerThaumcraftAspectsToItem(final ItemStack aStack,
-			final List<TC_AspectStack_Ex> aAspects, final boolean aAdditive) {
+			final List<GTPP_AspectStack> aAspects, final boolean aAdditive) {
 		try {
 			if (aAspects.isEmpty()) {
 				return false;
 			}
-			AspectList h = getAspectList_Ex(aAspects);
+			TC_AspectList_Wrapper h = getAspectList_Ex(aAspects);
 			if (aAdditive && (h != null && h.size() > 0)) {
-				ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList_Ex(aAspects));
+				registerComplexObjectTag(aStack, getAspectList_Ex(aAspects));
 				return true;
 			}
 			else {
 				Logger.MATERIALS("[Aspect] Failed adding aspects to "+aStack.getDisplayName()+".");
 			}
-			final AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
+			final TC_AspectList_Wrapper tAlreadyRegisteredAspects = getObjectAspects(aStack);
 			if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
-				ThaumcraftApi.registerObjectTag(aStack, getAspectList_Ex(aAspects));
+				registerObjectTag(aStack, getAspectList_Ex(aAspects));
 			}
 			return true;
 		}
@@ -222,44 +213,154 @@ public class ThaumcraftUtils {
 			return false;
 		}
 	}
+	
 
-	public static boolean registerPortholeBlacklistedBlock(final Block aBlock) {
-		ThaumcraftApi.portableHoleBlackList.add(aBlock);
+	private static final Class mClass_ThaumcraftApi;
+	private static final Class mClass_ThaumcraftApiHelper;
+	private static final Class mClass_AspectList;
+	private static final Class mClass_ResearchManager;
+	private static final Method mMethod_registerObjectTag1;
+	private static final Method mMethod_registerObjectTag2;
+	private static final Method mMethod_registerComplexObjectTag;
+	private static final Method mMethod_addInfusionCraftingRecipe;
+	private static final Method mMethod_addCrucibleRecipe;
+	private static final Method mMethod_getObjectAspects;
+	private static final Method mMethod_updateData;	
+
+	private static final Field mField_PortholeBlacklist;
+	static {
+		/*
+		 * Classes
+		 */
+		mClass_ThaumcraftApi = ReflectionUtils.getClass("thaumcraft.api.ThaumcraftApi");
+		mClass_ThaumcraftApiHelper = ReflectionUtils.getClass("thaumcraft.api.ThaumcraftApiHelper");
+		mClass_AspectList = ReflectionUtils.getClass("thaumcraft.api.aspects.AspectList");
+		mClass_ResearchManager = ReflectionUtils.getClass("thaumcraft.common.lib.research.ResearchManager");
+
+		/*
+		 * Methods
+		 */
+		mMethod_registerObjectTag1 = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "registerObjectTag",
+				ItemStack.class, mClass_AspectList);
+
+		mMethod_registerObjectTag2 = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "registerObjectTag", String.class,
+				mClass_AspectList);
+
+		mMethod_registerComplexObjectTag = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "registerComplexObjectTag",
+				ItemStack.class, mClass_AspectList);
+
+		mMethod_addInfusionCraftingRecipe = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "addInfusionCraftingRecipe",
+				String.class, Object.class, int.class, mClass_AspectList, ItemStack.class, ItemStack[].class);
+
+		mMethod_addCrucibleRecipe = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "addCrucibleRecipe", String.class,
+				ItemStack.class, Object.class, mClass_AspectList);
+
+		mMethod_getObjectAspects = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "getObjectAspects", ItemStack.class);
+		mMethod_updateData = ReflectionUtils.getMethod(mClass_ResearchManager, "updateData", ItemStack.class, ReflectionUtils.getClass("thaumcraft.common.lib.research.ResearchNoteData"));
+		
+		/*
+		 * Fields
+		 */
+		mField_PortholeBlacklist = ReflectionUtils.getField(mClass_ThaumcraftApi, "portableHoleBlackList");
+
+	}
+	
+	public static void registerObjectTag(ItemStack aStack, TC_AspectList_Wrapper aAspectList) {
+		try {
+			mMethod_registerObjectTag1.invoke(null, aStack, aAspectList.getVanillaAspectList());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void registerObjectTag(String aOreDict, TC_AspectList_Wrapper aAspectList) {
+		try {
+			mMethod_registerObjectTag2.invoke(null, aOreDict, aAspectList.getVanillaAspectList());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void registerComplexObjectTag(ItemStack aStack, TC_AspectList_Wrapper aAspectList) {
+		try {
+			mMethod_registerComplexObjectTag.invoke(null, aStack, aAspectList.getVanillaAspectList());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static TC_AspectList_Wrapper getObjectAspects(ItemStack aStack) {
+		try {
+			return new TC_AspectList_Wrapper(mMethod_getObjectAspects.invoke(null, aStack));
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+
+	public static Object addCrucibleRecipe(String aResearch, ItemStack copy, Object aOutput,
+			TC_AspectList_Wrapper aAspectList) {		
+		try {
+			return mMethod_addCrucibleRecipe.invoke(null, aResearch, copy, aOutput, aAspectList);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Object addInfusionCraftingRecipe(String aResearch, Object copy, int aInstability,
+			TC_AspectList_Wrapper aAspectList, ItemStack aMainInput, ItemStack[] aSideInputs) {		
+		try {
+			return mMethod_addInfusionCraftingRecipe.invoke(null, aResearch, copy, aInstability, aAspectList, aMainInput, aSideInputs);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+
+	public static boolean registerPortholeBlacklistedBlock(final Block aBlock) {		
+		try {
+			((ArrayList<Block>) mField_PortholeBlacklist.get(null)).add(aBlock);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+			return false;
+		}		
 		return true;
 	}
 
-	public static TC_AspectStack_Ex convertAspectStack(TC_AspectStack gtType) {
-		TC_AspectStack_Ex g = null;
-		if (gtType == null) {
-			return null;
+	
+	public static String getTagFromAspectObject(Object aAspect) {
+		try {
+			Field aTagF = ReflectionUtils.getField(mClass_Aspect, "tag");		
+			if (aTagF == null) {
+				return null;
+			}		
+			String aTafB = (String) aTagF.get(aAspect);
+			if (aTafB == null) {
+				return null;
+			}
+			String aTag = aTafB.toLowerCase();	
+			return aTag;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "error";
 		}
-		else {
-			String oldName = gtType.mAspect.name().toLowerCase();
-			long oldAmount = gtType.mAmount;				
-			for (GTPP_Aspects r : GTPP_Aspects.values()) {
-				if (r.mAspect.getName().toLowerCase().contains(oldName)) {
-					g = new TC_AspectStack_Ex(r, oldAmount);
-					break;
-				}
-			}			
-		}		
-		return g;
-	}
-
-	public static List<TC_AspectStack_Ex> convertAspectStack(List<TC_AspectStack> p5) {
-		List<TC_AspectStack_Ex> list = new ArrayList<TC_AspectStack_Ex>();
-		for (TC_AspectStack h : p5) {
-			list.add(convertAspectStack(h));
-		}		
-		return list;		
 	}
 	
-	public static void updateResearchNote(ItemStack a, ResearchNoteData b) {
-		updateResearchNote(a, new ResearchNoteDataWrapper(b));
-	}
 
-	public static void updateResearchNote(ItemStack a, ResearchNoteDataWrapper b) {
-		ResearchManager.updateData(a, b);
+	public static void updateResearchNote(ItemStack a, TC_ResearchNoteData_Wrapper b) {
+		//updateData(a, b.getResearchNoteData());		
+		try {
+			mMethod_updateData.invoke(a, b.getResearchNoteData());
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static boolean isItemResearchNotes(ItemStack aStack) {
@@ -276,16 +377,16 @@ public class ThaumcraftUtils {
 		return false;
 	}
 
-	public static ResearchNoteDataWrapper gatherResults(ItemStack note) {
-		ResearchNoteDataWrapper research = null;
+	public static TC_ResearchNoteData_Wrapper gatherResults(ItemStack note) {
+		TC_ResearchNoteData_Wrapper research = null;
 		if (isItemResearchNotes(note)) {
-			research = new ResearchNoteDataWrapper(ResearchManager.getData(note));
+			research = new TC_ResearchNoteData_Wrapper(ResearchManager.getData(note));
 		}
 		return research;
 	}
 
 	public static void placeAspectIntoResearchNote(ItemStack note, World aWorld, final int q, final int r, final Aspect aspect) {
-		ResearchNoteDataWrapper data = gatherResults(note);
+		TC_ResearchNoteData_Wrapper data = gatherResults(note);
 		String mGTPP = CORE.gameProfile.getName();
 		EntityPlayer player = CORE.getFakePlayer(aWorld);
 
@@ -324,5 +425,18 @@ public class ThaumcraftUtils {
 				aStack.setItemDamage(64);
 			}
 		}
+	}
+	
+	public static synchronized final TC_AspectList_Wrapper getAspectList_Ex(final List<GTPP_AspectStack> aAspects) {
+		final TC_AspectList_Wrapper rAspects = new TC_AspectList_Wrapper();
+		for (final GTPP_AspectStack tAspect : aAspects) {
+			rAspects.add(tAspect.mAspect, tAspect.mAmount);
+		}
+		return rAspects;
+	}
+
+	public static void addResearch(TC_ResearchItem_Wrapper tc_ResearchItem_Wrapper) {
+		// TODO Auto-generated method stub
+		
 	}
 }

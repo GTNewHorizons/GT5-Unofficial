@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.api.enums.TC_Aspects;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -18,19 +19,24 @@ import net.minecraft.util.ResourceLocation;
  * @author Alkalus
  *
  */
-public class TC_Aspect {
+public class TC_Aspect_Wrapper {
 
 	private static Class mClass_Aspect;
 	private static Field mField_Aspects;	
 	
 	private final String tag;
-	private final TC_Aspect[] components;
+	private final TC_Aspect_Wrapper[] components;
 	private final int color;
 	private String chatcolor;
 	private final ResourceLocation image;
 	private final int blend;
 	
-	private final Object mAspect;
+	public final Object mAspect;
+	
+	/**
+	 * May be null, but links back to the TC_Aspects class from GT for convinience.
+	 */
+	public final TC_Aspects mGtEnumField;
 	
 	
 	
@@ -82,8 +88,8 @@ public class TC_Aspect {
 	 * @param chatcolor
 	 * @param blend
 	 */
-	public TC_Aspect(String tag, int color, String chatcolor, int blend) {
-		this(tag, color, (TC_Aspect[]) null, blend);
+	public TC_Aspect_Wrapper(String tag, int color, String chatcolor, int blend) {
+		this(tag, color, (TC_Aspect_Wrapper[]) null, blend);
 		this.chatcolor = chatcolor;
 	}
 
@@ -94,7 +100,7 @@ public class TC_Aspect {
 	 * @param color
 	 * @param components
 	 */
-	public TC_Aspect(String tag, int color, TC_Aspect[] components) {
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components) {
 		this(tag, color, components, false, 1);
 	}
 
@@ -106,7 +112,7 @@ public class TC_Aspect {
 	 * @param components
 	 * @param blend
 	 */
-	public TC_Aspect(String tag, int color, TC_Aspect[] components, int blend) {
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, int blend) {
 		this(tag, color, components, false, blend);
 	}
 	
@@ -120,12 +126,12 @@ public class TC_Aspect {
 	 * @param image
 	 * @param blend
 	 */
-	public TC_Aspect(String tag, int color, TC_Aspect[] components, boolean vanilla, int blend) {
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, boolean vanilla, int blend) {
 		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), vanilla, blend);
 	}
 	
 
-	public TC_Aspect(String tag, int color, TC_Aspect[] components, ResourceLocation image, boolean vanilla, int blend) {
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend) {
 		if (getAspectList().containsKey(tag.toLowerCase())) {
 			throw new IllegalArgumentException(tag + " already registered!");
 		} else {
@@ -134,7 +140,28 @@ public class TC_Aspect {
 			this.color = color;
 			this.image = image;
 			this.blend = blend;
-			this.mAspect = vanilla ? getVanillaAspectObject(this.tag) : this.generateTcAspect();
+			this.mAspect = vanilla ? getVanillaAspectObject(this.tag) : this.generateTcAspect();			
+			
+			//Set GT Type if exists
+			TC_Aspects y = null;
+			for (TC_Aspects e : TC_Aspects.values()) {
+				TC_Aspect_Wrapper g;
+				try {
+					g = generate(e.mAspect);
+					if (g != null) {
+						if (g.tag.equals(this.tag)) {
+							y = e;
+							break;
+						}
+					}
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				}
+			}
+			mGtEnumField = y;			
+			
+			
+			Logger.INFO("[Thaumcraft++] Adding support for Aspect: "+tag);
 		}
 	}
 	
@@ -148,12 +175,21 @@ public class TC_Aspect {
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unused")
-	public static TC_Aspect generate(Object aBaseAspect) throws IllegalArgumentException, IllegalAccessException {		
-		String aTag = ((String) ReflectionUtils.getField(mClass_Aspect, "tag").get(aBaseAspect)).toLowerCase();			
+	public static TC_Aspect_Wrapper generate(Object aBaseAspect) {	
+		try {
+		Field aTagF = ReflectionUtils.getField(mClass_Aspect, "tag");		
+		if (aTagF == null) {
+			return null;
+		}		
+		String aTafB = (String) aTagF.get(aBaseAspect);
+		if (aTafB == null) {
+			return null;
+		}
+		String aTag = aTafB.toLowerCase();			
 		if (aTag != null && getAspectList().containsKey(aTag.toLowerCase())) {
 			return  getAspect(aTag);
 		} else {
-			TC_Aspect aTemp = new TC_Aspect(
+			TC_Aspect_Wrapper aTemp = new TC_Aspect_Wrapper(
 					aTag,
 					(int) ReflectionUtils.getField(mClass_Aspect, "color").get(aBaseAspect),
 					generateAspectArrayInternal(ReflectionUtils.getField(mClass_Aspect, "components"), (aBaseAspect)),
@@ -168,52 +204,57 @@ public class TC_Aspect {
 			else {
 				return null;
 			}
-		}		
+		}	
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+			return null;
+		}
 	}
 	
 	
 	/**
 	 * Internal Map containing all the TC_Aspects.
 	 */
-	private static Map<String, TC_Aspect> mInternalAspectCache = new LinkedHashMap<String, TC_Aspect>();
+	private static Map<String, TC_Aspect_Wrapper> mInternalAspectCache = new LinkedHashMap<String, TC_Aspect_Wrapper>();
 	
 	/**
 	 * Public getter for all TC_Aspects
 	 * @param aAspectName - Aspect Name
 	 * @return - A GT++ Aspect wrapper or null. (TC_Aspect)
 	 */
-	public static TC_Aspect getAspect(String aAspectName) {
+	public static TC_Aspect_Wrapper getAspect(String aAspectName) {
 		String aName = aAspectName.toLowerCase();
-		TC_Aspect g = mInternalAspectCache.get(aName);
+		TC_Aspect_Wrapper g = mInternalAspectCache.get(aName);
 		if (g != null) {
 			return g;
 		}
 		else {
 			try {
-				TC_Aspect aTemp = generate(getVanillaAspectList().get(aName));
+				TC_Aspect_Wrapper aTemp = generate(getVanillaAspectList().get(aName));
 				if (aTemp != null) {
 					mInternalAspectCache.put(aName, aTemp);
 					return aTemp;
 				}
-			} catch (IllegalArgumentException | IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
 	
-	public static Map<String, TC_Aspect> getAspectList(){
+	public static Map<String, TC_Aspect_Wrapper> getAspectList(){
 		return mInternalAspectCache;
 	}
 	
 	
-	private static TC_Aspect[] generateAspectArrayInternal(Field aField, Object aInstance) {
+	private static TC_Aspect_Wrapper[] generateAspectArrayInternal(Field aField, Object aInstance) {
 		//thaumcraft.api.aspects.Aspect.Aspect()
 		Object[] components;
-		TC_Aspect[] aAspectArray;
+		TC_Aspect_Wrapper[] aAspectArray;
 		try {
 			components = (Object[]) aField.get(aInstance);
-			aAspectArray = new TC_Aspect[components.length];
+			aAspectArray = new TC_Aspect_Wrapper[components.length];
 			if (components.length > 0) {
 				int i = 0;
 				for (Object g : components) {
@@ -223,7 +264,7 @@ public class TC_Aspect {
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
-			aAspectArray = new TC_Aspect[0];
+			aAspectArray = new TC_Aspect_Wrapper[0];
 		}			
 		return aAspectArray;
 	}
@@ -239,7 +280,7 @@ public class TC_Aspect {
 			if (components.length > 0) {
 				aAspectArray = (Object[]) Array.newInstance(mClass_Aspect, components.length);
 				int i = 0;
-				for (TC_Aspect g : components) {
+				for (TC_Aspect_Wrapper g : components) {
 					((Object[]) aAspectArray)[i++] = g.mAspect;
 				}
 			}			
