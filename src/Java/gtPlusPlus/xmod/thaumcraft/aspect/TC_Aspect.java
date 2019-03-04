@@ -58,6 +58,10 @@ public class TC_Aspect {
 		}
 	}
 	
+	public static Object getVanillaAspectObject(String aAspectName) {
+		return getVanillaAspectList().get(aAspectName);
+	}
+	
 	
 	
 	
@@ -91,7 +95,7 @@ public class TC_Aspect {
 	 * @param components
 	 */
 	public TC_Aspect(String tag, int color, TC_Aspect[] components) {
-		this(tag, color, components, true, 1);
+		this(tag, color, components, false, 1);
 	}
 
 	/**
@@ -103,7 +107,7 @@ public class TC_Aspect {
 	 * @param blend
 	 */
 	public TC_Aspect(String tag, int color, TC_Aspect[] components, int blend) {
-		this(tag, color, components, true, blend);
+		this(tag, color, components, false, blend);
 	}
 	
 	
@@ -117,20 +121,20 @@ public class TC_Aspect {
 	 * @param blend
 	 */
 	public TC_Aspect(String tag, int color, TC_Aspect[] components, boolean vanilla, int blend) {
-		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), blend);
+		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), vanilla, blend);
 	}
 	
 
-	public TC_Aspect(String tag, int color, TC_Aspect[] components, ResourceLocation image, int blend) {
-		if (getAspectList().containsKey(tag)) {
+	public TC_Aspect(String tag, int color, TC_Aspect[] components, ResourceLocation image, boolean vanilla, int blend) {
+		if (getAspectList().containsKey(tag.toLowerCase())) {
 			throw new IllegalArgumentException(tag + " already registered!");
 		} else {
-			this.tag = tag;
+			this.tag = tag.toLowerCase();
 			this.components = components;
 			this.color = color;
 			this.image = image;
 			this.blend = blend;
-			this.mAspect = this.generateTcAspect();
+			this.mAspect = vanilla ? getVanillaAspectObject(this.tag) : this.generateTcAspect();
 		}
 	}
 	
@@ -139,13 +143,32 @@ public class TC_Aspect {
 	/**
 	 * Generates a TC_Aspect from an object, presummed to be a TC Aspect.
 	 * @param aBaseAspect - The TC Aspect to generate from.
+	 * @return 
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public TC_Aspect(Object aBaseAspect) throws IllegalArgumentException, IllegalAccessException {		
-		this((String) ReflectionUtils.getField(mClass_Aspect, "tag").get(aBaseAspect), (int) ReflectionUtils.getField(mClass_Aspect, "color").get(aBaseAspect), generateAspectArrayInternal(ReflectionUtils.getField(mClass_Aspect, "components"), aBaseAspect), (ResourceLocation) ReflectionUtils.getField(mClass_Aspect, "image").get(aBaseAspect), (int) ReflectionUtils.getField(mClass_Aspect, "blend").get(aBaseAspect));
-		Field aChatColour = ReflectionUtils.getField(mClass_Aspect, "chatcolor");
-		chatcolor = (String) aChatColour.get(aBaseAspect);
+	@SuppressWarnings("unused")
+	public static TC_Aspect generate(Object aBaseAspect) throws IllegalArgumentException, IllegalAccessException {		
+		String aTag = ((String) ReflectionUtils.getField(mClass_Aspect, "tag").get(aBaseAspect)).toLowerCase();			
+		if (aTag != null && getAspectList().containsKey(aTag.toLowerCase())) {
+			return  getAspect(aTag);
+		} else {
+			TC_Aspect aTemp = new TC_Aspect(
+					aTag,
+					(int) ReflectionUtils.getField(mClass_Aspect, "color").get(aBaseAspect),
+					generateAspectArrayInternal(ReflectionUtils.getField(mClass_Aspect, "components"), (aBaseAspect)),
+					(ResourceLocation) ReflectionUtils.getField(mClass_Aspect, "image").get(aBaseAspect),
+					true,
+					(int) ReflectionUtils.getField(mClass_Aspect, "blend").get(aBaseAspect)
+					);
+			if (aTemp != null) {
+				aTemp.chatcolor = (String) ReflectionUtils.getField(mClass_Aspect, "chatcolor").get(aBaseAspect);				
+				return aTemp;
+			}
+			else {
+				return null;
+			}
+		}		
 	}
 	
 	
@@ -160,15 +183,16 @@ public class TC_Aspect {
 	 * @return - A GT++ Aspect wrapper or null. (TC_Aspect)
 	 */
 	public static TC_Aspect getAspect(String aAspectName) {
-		TC_Aspect g = mInternalAspectCache.get(aAspectName);
+		String aName = aAspectName.toLowerCase();
+		TC_Aspect g = mInternalAspectCache.get(aName);
 		if (g != null) {
 			return g;
 		}
 		else {
 			try {
-				TC_Aspect aTemp = new TC_Aspect(getAspectList().get(aAspectName));
+				TC_Aspect aTemp = generate(getVanillaAspectList().get(aName));
 				if (aTemp != null) {
-					mInternalAspectCache.put(aAspectName, aTemp);
+					mInternalAspectCache.put(aName, aTemp);
 					return aTemp;
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
