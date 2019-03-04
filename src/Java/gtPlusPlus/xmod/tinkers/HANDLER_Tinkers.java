@@ -38,7 +38,7 @@ public class HANDLER_Tinkers {
 		if (LoadedMods.TiCon) {
 			
 				for (BaseTinkersMaterial y : mTinkerMaterials) {
-					y.generate();
+					//y.generate();
 				}			
 			
 				Class aTinkersSmeltery = ReflectionUtils.getClass("tconstruct.smeltery.TinkerSmeltery");

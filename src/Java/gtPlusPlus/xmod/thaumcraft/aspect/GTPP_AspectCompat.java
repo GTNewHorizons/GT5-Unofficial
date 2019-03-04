@@ -13,6 +13,8 @@ import gregtech.api.util.GT_LanguageManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -25,62 +27,26 @@ public class GTPP_AspectCompat implements IThaumcraftCompat {
 	
 	public static volatile Method m = null;
 	
+	private static HashMap<String, TC_Aspect> mAspectCache = new LinkedHashMap<String, TC_Aspect>();
+	
 	public GTPP_AspectCompat() {
-		// Standard Aspects
-		GTPP_Aspects.AER.mAspect = Aspect.AIR;
-		GTPP_Aspects.ALIENIS.mAspect = Aspect.ELDRITCH;
-		GTPP_Aspects.AQUA.mAspect = Aspect.WATER;
-		GTPP_Aspects.ARBOR.mAspect = Aspect.TREE;
-		GTPP_Aspects.AURAM.mAspect = Aspect.AURA;
-		GTPP_Aspects.BESTIA.mAspect = Aspect.BEAST;
-		GTPP_Aspects.COGNITIO.mAspect = Aspect.MIND;
-		GTPP_Aspects.CORPUS.mAspect = Aspect.FLESH;
-		GTPP_Aspects.EXANIMIS.mAspect = Aspect.UNDEAD;
-		GTPP_Aspects.FABRICO.mAspect = Aspect.CRAFT;
-		GTPP_Aspects.FAMES.mAspect = Aspect.HUNGER;
-		GTPP_Aspects.GELUM.mAspect = Aspect.COLD;
-		GTPP_Aspects.GRANUM.mAspect = Aspect.PLANT;
-		GTPP_Aspects.HERBA.mAspect = Aspect.PLANT;
-		GTPP_Aspects.HUMANUS.mAspect = Aspect.MAN;
-		GTPP_Aspects.IGNIS.mAspect = Aspect.FIRE;
-		GTPP_Aspects.INSTRUMENTUM.mAspect = Aspect.TOOL;
-		GTPP_Aspects.ITER.mAspect = Aspect.TRAVEL;
-		GTPP_Aspects.LIMUS.mAspect = Aspect.SLIME;
-		GTPP_Aspects.LUCRUM.mAspect = Aspect.GREED;
-		GTPP_Aspects.LUX.mAspect = Aspect.LIGHT;
-		GTPP_Aspects.MACHINA.mAspect = Aspect.MECHANISM;
-		GTPP_Aspects.MESSIS.mAspect = Aspect.CROP;
-		GTPP_Aspects.METALLUM.mAspect = Aspect.METAL;
-		GTPP_Aspects.METO.mAspect = Aspect.HARVEST;
-		GTPP_Aspects.MORTUUS.mAspect = Aspect.DEATH;
-		GTPP_Aspects.MOTUS.mAspect = Aspect.MOTION;
-		GTPP_Aspects.ORDO.mAspect = Aspect.ORDER;
-		GTPP_Aspects.PANNUS.mAspect = Aspect.CLOTH;
-		GTPP_Aspects.PERDITIO.mAspect = Aspect.ENTROPY;
-		GTPP_Aspects.PERFODIO.mAspect = Aspect.MINE;
-		GTPP_Aspects.PERMUTATIO.mAspect = Aspect.EXCHANGE;
-		GTPP_Aspects.POTENTIA.mAspect = Aspect.ENERGY;
-		GTPP_Aspects.PRAECANTATIO.mAspect = Aspect.MAGIC;
-		GTPP_Aspects.SANO.mAspect = Aspect.HEAL;
-		GTPP_Aspects.SENSUS.mAspect = Aspect.SENSES;
-		GTPP_Aspects.SPIRITUS.mAspect = Aspect.SOUL;
-		GTPP_Aspects.TELUM.mAspect = Aspect.WEAPON;
-		GTPP_Aspects.TERRA.mAspect = Aspect.EARTH;
-		GTPP_Aspects.TEMPESTAS.mAspect = Aspect.WEATHER;
-		GTPP_Aspects.TENEBRAE.mAspect = Aspect.DARKNESS;
-		GTPP_Aspects.TUTAMEN.mAspect = Aspect.ARMOR;
-		GTPP_Aspects.VACUOS.mAspect = Aspect.VOID;
-		GTPP_Aspects.VENENUM.mAspect = Aspect.POISON;
-		GTPP_Aspects.VICTUS.mAspect = Aspect.LIFE;
-		GTPP_Aspects.VINCULUM.mAspect = Aspect.TRAP;
-		GTPP_Aspects.VITIUM.mAspect = Aspect.TAINT;
-		GTPP_Aspects.VITREUS.mAspect = Aspect.CRYSTAL;
-		GTPP_Aspects.VOLATUS.mAspect = Aspect.FLIGHT;
-		GTPP_Aspects.STRONTIO.mAspect = (Aspect) TC_Aspects.STRONTIO.mAspect;
-		GTPP_Aspects.NEBRISUM.mAspect = (Aspect) TC_Aspects.NEBRISUM.mAspect;
-		GTPP_Aspects.ELECTRUM.mAspect = (Aspect) TC_Aspects.ELECTRUM.mAspect;
-		GTPP_Aspects.MAGNETO.mAspect = (Aspect) TC_Aspects.MAGNETO.mAspect;
-		GTPP_Aspects.RADIO.mAspect = (Aspect) TC_Aspects.RADIO.mAspect;		
+		
+		
+		//Generate all existing Aspects as TC_Aspects
+		LinkedHashMap<String, Object> h = TC_Aspect.getVanillaAspectList();
+		for (String g : h.keySet()) {
+			Object aBaseAspect = h.get(g);
+			if (aBaseAspect != null && TC_Aspect.isObjectAnAspect(aBaseAspect)) {
+				TC_Aspect aS = TC_Aspect.getAspect(g);
+				if (aS != null) {
+					mAspectCache.put(g, aS);
+					continue;
+				}
+			}
+		}
+		
+		
+		
 		
 		// Custom Aspects
 		GTPP_Aspects.CUSTOM_1.mAspect = new Aspect("custom1", 15647411, new Aspect[]{Aspect.COLD, Aspect.FIRE},
