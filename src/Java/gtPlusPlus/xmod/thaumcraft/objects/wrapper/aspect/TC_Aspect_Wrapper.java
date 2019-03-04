@@ -295,6 +295,7 @@ public class TC_Aspect_Wrapper {
 				aAspectArray = (Object[]) Array.newInstance(mClass_Aspect, components.length);
 				int i = 0;
 				for (TC_Aspect_Wrapper g : components) {
+					if (g != null && g.mAspect != null)					
 					((Object[]) aAspectArray)[i++] = g.mAspect;
 				}
 			}			
