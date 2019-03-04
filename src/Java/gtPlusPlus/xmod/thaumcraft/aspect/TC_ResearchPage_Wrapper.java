@@ -1,6 +1,11 @@
 package gtPlusPlus.xmod.thaumcraft.aspect;
 
 import java.util.List;
+
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_CrucibleRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_IArcaneRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionEnchantmentRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionRecipe_Wrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
@@ -66,7 +71,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipe = recipe;
 	}
 
-	public TC_ResearchPage_Wrapper(IArcaneRecipe[] recipe) {
+	public TC_ResearchPage_Wrapper(TC_IArcaneRecipe_Wrapper[] recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -78,7 +83,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipe = recipe;
 	}
 
-	public TC_ResearchPage_Wrapper(CrucibleRecipe[] recipe) {
+	public TC_ResearchPage_Wrapper(TC_CrucibleRecipe_Wrapper[] recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -90,7 +95,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipe = recipe;
 	}
 
-	public TC_ResearchPage_Wrapper(InfusionRecipe[] recipe) {
+	public TC_ResearchPage_Wrapper(TC_InfusionRecipe_Wrapper[] recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -114,7 +119,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipe = recipe;
 	}
 
-	public TC_ResearchPage_Wrapper(IArcaneRecipe recipe) {
+	public TC_ResearchPage_Wrapper(TC_IArcaneRecipe_Wrapper recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -127,7 +132,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipeOutput = recipe.getRecipeOutput();
 	}
 
-	public TC_ResearchPage_Wrapper(CrucibleRecipe recipe) {
+	public TC_ResearchPage_Wrapper(TC_CrucibleRecipe_Wrapper recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -153,7 +158,7 @@ public class TC_ResearchPage_Wrapper {
 		this.recipeOutput = FurnaceRecipes.smelting().getSmeltingResult(input);
 	}
 
-	public TC_ResearchPage_Wrapper(InfusionRecipe recipe) {
+	public TC_ResearchPage_Wrapper(TC_InfusionRecipe_Wrapper recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;
@@ -171,7 +176,7 @@ public class TC_ResearchPage_Wrapper {
 
 	}
 
-	public TC_ResearchPage_Wrapper(InfusionEnchantmentRecipe recipe) {
+	public TC_ResearchPage_Wrapper(TC_InfusionEnchantmentRecipe_Wrapper recipe) {
 		this.type = TC_PageType_Wrapper.TEXT;
 		this.text = null;
 		this.research = null;

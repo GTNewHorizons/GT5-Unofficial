@@ -5,44 +5,41 @@ import static gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft.sItemsToGetAspects;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectStack;
-import gtPlusPlus.xmod.thaumcraft.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_AspectList_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchCategories_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchCategoryList_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchItem_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchNoteData_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.aspect.TC_ResearchPage_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_CrucibleRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_IArcaneRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionEnchantmentRecipe_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionRecipe_Wrapper;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
 
 public class ThaumcraftUtils {
 
 
 	private static Class mClass_Aspect;
 	private static Field mField_Aspects;
-
-	/*public static boolean addAspectToItem(ItemStack item, Aspect[] aspects, int amount) {
-		return addAspectToItem(item, getEnumAspect(aspect.getName()), amount);
-	}*/
 
 	public static boolean addAspectToItem(ItemStack item, TC_Aspect_Wrapper aspect, int amount) {
 		return addAspectToItem(item, new TC_Aspect_Wrapper[] {aspect}, new Integer[] {amount});
@@ -105,15 +102,15 @@ public class ThaumcraftUtils {
 			} else if ((tPage instanceof IRecipe)) {
 				tPages.add(new TC_ResearchPage_Wrapper((IRecipe) tPage));
 			} 
-			/*else if ((tPage instanceof IArcaneRecipe)) {
-				tPages.add(new TC_ResearchPage_Wrapper((IArcaneRecipe) tPage));
-			} else if ((tPage instanceof CrucibleRecipe)) {
-				tPages.add(new TC_ResearchPage_Wrapper((CrucibleRecipe) tPage));
-			} else if ((tPage instanceof InfusionRecipe)) {
-				tPages.add(new TC_ResearchPage_Wrapper((InfusionRecipe) tPage));
-			} else if ((tPage instanceof InfusionEnchantmentRecipe)) {
-				tPages.add(new TC_ResearchPage_Wrapper((InfusionEnchantmentRecipe) tPage));
-			}*/
+			else if ((tPage instanceof TC_IArcaneRecipe_Wrapper)) {
+				tPages.add(new TC_ResearchPage_Wrapper((TC_IArcaneRecipe_Wrapper) tPage));
+			} else if ((tPage instanceof TC_CrucibleRecipe_Wrapper)) {
+				tPages.add(new TC_ResearchPage_Wrapper((TC_CrucibleRecipe_Wrapper) tPage));
+			} else if ((tPage instanceof TC_InfusionRecipe_Wrapper)) {
+				tPages.add(new TC_ResearchPage_Wrapper((TC_InfusionRecipe_Wrapper) tPage));
+			} else if ((tPage instanceof TC_InfusionEnchantmentRecipe_Wrapper)) {
+				tPages.add(new TC_ResearchPage_Wrapper((TC_InfusionEnchantmentRecipe_Wrapper) tPage));
+			}
 		}
 		if ((aType & 0x40) != 0) {
 			rResearch.setAutoUnlock();
@@ -226,6 +223,7 @@ public class ThaumcraftUtils {
 	private static final Method mMethod_addCrucibleRecipe;
 	private static final Method mMethod_getObjectAspects;
 	private static final Method mMethod_updateData;	
+	private static final Method mMethod_getData;	
 
 	private static final Field mField_PortholeBlacklist;
 	static {
@@ -255,8 +253,12 @@ public class ThaumcraftUtils {
 		mMethod_addCrucibleRecipe = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "addCrucibleRecipe", String.class,
 				ItemStack.class, Object.class, mClass_AspectList);
 
-		mMethod_getObjectAspects = ReflectionUtils.getMethod(mClass_ThaumcraftApi, "getObjectAspects", ItemStack.class);
+		
+		mMethod_getObjectAspects = ReflectionUtils.getMethod(mClass_ThaumcraftApiHelper, "getObjectAspects", ItemStack.class);
+		
+		
 		mMethod_updateData = ReflectionUtils.getMethod(mClass_ResearchManager, "updateData", ItemStack.class, ReflectionUtils.getClass("thaumcraft.common.lib.research.ResearchNoteData"));
+		mMethod_getData = ReflectionUtils.getMethod(mClass_ResearchManager, "getData", ItemStack.class);
 		
 		/*
 		 * Fields
@@ -359,8 +361,17 @@ public class ThaumcraftUtils {
 			mMethod_updateData.invoke(a, b.getResearchNoteData());
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
-		}
-		
+		}		
+	}
+	
+	public static Object getResearchNoteData(ItemStack a) {
+		//getData(a);		
+		try {
+			return mMethod_getData.invoke(a);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}	
+		return null;
 	}
 
 	public static boolean isItemResearchNotes(ItemStack aStack) {
@@ -380,13 +391,13 @@ public class ThaumcraftUtils {
 	public static TC_ResearchNoteData_Wrapper gatherResults(ItemStack note) {
 		TC_ResearchNoteData_Wrapper research = null;
 		if (isItemResearchNotes(note)) {
-			research = new TC_ResearchNoteData_Wrapper(ResearchManager.getData(note));
+			research = new TC_ResearchNoteData_Wrapper(getResearchNoteData(note));
 		}
 		return research;
 	}
 
-	public static void placeAspectIntoResearchNote(ItemStack note, World aWorld, final int q, final int r, final Aspect aspect) {
-		TC_ResearchNoteData_Wrapper data = gatherResults(note);
+	public static void placeAspectIntoResearchNote(ItemStack note, World aWorld, final int q, final int r, final TC_Aspect_Wrapper aspect) {
+		/*TC_ResearchNoteData_Wrapper data = gatherResults(note);
 		String mGTPP = CORE.gameProfile.getName();
 		EntityPlayer player = CORE.getFakePlayer(aWorld);
 
@@ -416,7 +427,7 @@ public class ThaumcraftUtils {
 			if (!aWorld.isRemote && ResearchManager.checkResearchCompletion(note, data,	player.getCommandSenderName())) {
 				note.setItemDamage(64);
 			}
-		}
+		}*/
 	}
 
 	public static void completeResearchNote(World aWorld, ItemStack aStack) {
