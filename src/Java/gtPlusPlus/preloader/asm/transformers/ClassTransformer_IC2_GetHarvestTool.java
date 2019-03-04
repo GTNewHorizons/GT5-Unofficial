@@ -46,7 +46,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 		aName_damageDropped = obfuscated ? "func_149692_a" : "damageDropped";		
 
 		FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO,
-				"Attempting to patch in mode " + className + ".");
+				"Attempting to patch in mode " + className + ". Obfuscated? "+obfuscated);
 
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
@@ -128,7 +128,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			mv.visitVarInsn(ILOAD, 1);
 			mv.visitVarInsn(ALOAD, 2);
 			mv.visitVarInsn(ILOAD, 3);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", aName_getItemDropped, "(Lnet/minecraft/block/Block;ILjava/util/Random;I)Lnet/minecraft/item/Item;", false);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", "getItemDropped", "(Lnet/minecraft/block/Block;ILjava/util/Random;I)Lnet/minecraft/item/Item;", false);
 			mv.visitInsn(ARETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);
@@ -147,7 +147,7 @@ public class ClassTransformer_IC2_GetHarvestTool {
 			mv.visitLabel(l0);
 			mv.visitLineNumber(48, l0);
 			mv.visitVarInsn(ILOAD, 1);
-			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", aName_damageDropped, "(I)I", false);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_IC2_GetHarvestTool", "damageDropped", "(I)I", false);
 			mv.visitInsn(IRETURN);
 			Label l1 = new Label();
 			mv.visitLabel(l1);

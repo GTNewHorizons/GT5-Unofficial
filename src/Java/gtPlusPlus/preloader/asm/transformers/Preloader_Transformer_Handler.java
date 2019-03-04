@@ -81,13 +81,13 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		// Fix the OreDictionary COFH
 		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter") && (mConfig.enableCofhPatch || !obfuscated)) {
 			FMLRelaunchLog.log("[GT++ ASM] COFH", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
+			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
 		}
 
 		// Fix Tinkers Fluids
 		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid") && mConfig.enableTiConFluidLighting) {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_TiConFluids("getLightValue", probablyShouldBeFalse, basicClass).getWriter().toByteArray();
+			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
 		}
 		
 		//Fix RC stuff

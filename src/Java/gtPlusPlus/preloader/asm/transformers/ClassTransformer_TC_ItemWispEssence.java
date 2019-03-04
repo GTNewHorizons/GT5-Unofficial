@@ -63,7 +63,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 		boolean didInject = false;
 		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Injecting " + aMethodName + ".");
 
-		String aGetColour = obfuscated ? DevHelper.getSRG("getColorFromItemStack") : DevHelper.getForge("getColorFromItemStack");
+		String aGetColour = obfuscated ? "func_82790_a" : "getColorFromItemStack";
 
 		if (aMethodName.equals("getAspects")) {
 			mv = cw.visitMethod(ACC_PUBLIC, "getAspects", "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;", null, null);

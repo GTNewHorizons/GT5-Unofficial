@@ -10,7 +10,7 @@ public class Core_VanillaFixes implements IPlugin {
 
 	static {
 		mInstance = new Core_VanillaFixes();
-		mBedFixInstance = new VanillaBedHeightFix();
+		mBedFixInstance = new VanillaBedHeightFix(mInstance);
 		mInstance.log("Preparing "+mInstance.getPluginName()+" for use.");
 	}
 	
