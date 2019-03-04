@@ -19,6 +19,7 @@ public class AsmConfig {
 	public static boolean enableCofhPatch;
 	public static boolean enableGcFuelChanges;
 	public static boolean enableRcFlowFix;
+	public static boolean enableTcAspectSafety;
 
 	public AsmConfig(File file) {
 		if (!loaded) {
@@ -91,6 +92,13 @@ public class AsmConfig {
 			propOrder.add(prop.getName());
 			
 			
+			//TC Aspect Safety			
+			prop = config.get("general", "enableTcAspectSafety", true);
+			prop.comment = "Fixes small oversights in Thaumcraft 4.";
+			prop.setLanguageKey("gtpp.enableTcAspectSafety").setRequiresMcRestart(true);
+			enableTcAspectSafety = prop.getBoolean(true);
+			propOrder.add(prop.getName());
+			
 
 			config.setCategoryPropertyOrder("general", propOrder);
 			config.setCategoryPropertyOrder("debug", propOrderDebug);
@@ -104,6 +112,8 @@ public class AsmConfig {
 			FMLLog.log(Level.INFO, "[GT++ ASM] Gt Tooltip Fix - Enabled: "+enableGtTooltipFix, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] COFH Patch - Enabled: "+enableCofhPatch, new Object[0]);
 			FMLLog.log(Level.INFO, "[GT++ ASM] Gc Fuel Changes Patch - Enabled: "+enableGcFuelChanges, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Railcraft Fluid Flow Patch - Enabled: "+enableRcFlowFix, new Object[0]);
+			FMLLog.log(Level.INFO, "[GT++ ASM] Thaumcraft Aspect Safety Patch - Enabled: "+enableTcAspectSafety, new Object[0]);
 			
 		} catch (Exception var3) {
 			FMLLog.log(Level.ERROR, var3, "GT++ ASM had a problem loading it's config", new Object[0]);

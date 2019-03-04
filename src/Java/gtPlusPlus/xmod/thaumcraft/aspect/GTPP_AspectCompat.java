@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.GT_ThaumcraftCompat;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
@@ -105,10 +105,10 @@ public class GTPP_AspectCompat {
 						"Sagrausten",
 						Utils.rgbtoHexValue(125, 125, 125),
 						new TC_Aspect_Wrapper[]{
-								get(TC_Aspects.GELUM),
-								get(TC_Aspects.IGNIS)
+								ASPECT_STARBOUND,
+								get(TC_Aspects.RADIO)
 								},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"),
+				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Sagrausten.png"),
 				false,
 				1);
 
@@ -117,10 +117,10 @@ public class GTPP_AspectCompat {
 						"Slusium",
 						Utils.rgbtoHexValue(175, 125, 25),
 						new TC_Aspect_Wrapper[]{
-								get(TC_Aspects.CORPUS),
-								get(TC_Aspects.ORDO)
+								ASPECT_BALANCE,
+								get(TC_Aspects.NEBRISUM)
 								},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
+				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Slusium.png"),
 				false,
 				1);
 
@@ -129,10 +129,8 @@ public class GTPP_AspectCompat {
 						"Xenil",
 						Utils.rgbtoHexValue(25, 25, 25),
 						new TC_Aspect_Wrapper[]{
-								get(TC_Aspects.ALIENIS),
-								ASPECT_BALANCE
 								},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
+				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Xenil.png"),
 				false,
 				1);
 
@@ -141,10 +139,10 @@ public class GTPP_AspectCompat {
 						"Xablum",
 						Utils.rgbtoHexValue(25, 185, 25),
 						new TC_Aspect_Wrapper[]{
-								get(TC_Aspects.CORPUS),
+								ASPECT_STARBOUND,
 								ASPECT_LUST
 								},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
+				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Xablum.png"),
 				false,
 				1);
 
@@ -153,29 +151,12 @@ public class GTPP_AspectCompat {
 						"Zetralt",
 						Utils.rgbtoHexValue(225, 225, 225),
 						new TC_Aspect_Wrapper[]{
-								get(TC_Aspects.COGNITIO),
-								ASPECT_BALANCE
+								get(TC_Aspects.AURAM),
+								ASPECT_TOXIC
 								},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
+				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Zetralt.png"),
 				false,
 				1);
-		
-		
-		
-		
-		/*GTPP_Aspects.CUSTOM_2.mAspect = new Aspect("custom2", 15658622, new Aspect[]{Aspect.MAGIC, Aspect.SLIME},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);
-		GTPP_Aspects.CUSTOM_3.mAspect = new Aspect("custom3", 12644078, new Aspect[]{Aspect.ENERGY, Aspect.ARMOR},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);
-		GTPP_Aspects.CUSTOM_4.mAspect = new Aspect("custom4", 12632256, new Aspect[]{Aspect.METAL, Aspect.POISON},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);
-		GTPP_Aspects.CUSTOM_5.mAspect = new Aspect("custom4", 12648384, new Aspect[]{Aspect.LIGHT, Aspect.SOUL},
-				new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"), 1);*/
-		GT_LanguageManager.addStringLocalization("tc.aspect.Sagrausten", "Balance");
-		GT_LanguageManager.addStringLocalization("tc.aspect.Slusium", "Lust");
-		GT_LanguageManager.addStringLocalization("tc.aspect.Xenil", "Starbound");
-		GT_LanguageManager.addStringLocalization("tc.aspect.Xablum", "Toxic");
-		GT_LanguageManager.addStringLocalization("tc.aspect.Zetralt", "Zetralt");
 	}
 	
 	private TC_Aspect_Wrapper get(TC_Aspects aGtObjects) {

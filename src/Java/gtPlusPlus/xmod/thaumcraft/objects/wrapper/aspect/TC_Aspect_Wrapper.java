@@ -131,28 +131,32 @@ public class TC_Aspect_Wrapper {
 		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), vanilla, blend);
 	}
 	
+	private static int aInternalAspectIDAllocation = 0;
 
-	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend) {
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend) {		
+		if (components == null) {
+			components = new TC_Aspect_Wrapper[] {};
+		}	
+		String aTag = vanilla ? tag.toLowerCase() : "custom"+(aInternalAspectIDAllocation++);		
 		if (getAspectList().containsKey(tag.toLowerCase())) {
-			this.tag = tag.toLowerCase();
+			this.tag = aTag;
 			this.components = components;
 			this.color = color;
 			this.image = image;
 			this.blend = blend;
 			this.mAspect = null;
 			this.mGtEnumField = null;
-		} else {
-			this.tag = tag.toLowerCase();
+		} else {			
+			this.tag = aTag;			
 			this.components = components;
 			this.color = color;
 			this.image = image;
 			this.blend = blend;
 			this.mAspect = vanilla ? getVanillaAspectObject(this.tag) : this.generateTcAspect();			
 			
-			//Set GT Type if exists
+			// Set GT Type if exists
 			TC_Aspects y = null;
 			for (TC_Aspects e : TC_Aspects.values()) {
-				TC_Aspect_Wrapper g;
 				try {
 					String gtTag = ThaumcraftUtils.getTagFromAspectObject(e.mAspect);
 					if (gtTag != null) {
@@ -166,7 +170,11 @@ public class TC_Aspect_Wrapper {
 				}
 			}
 			this.mGtEnumField = y;
-			mInternalAspectCache.put(this.tag, this);			
+			mInternalAspectCache.put(this.tag, this);
+			// Double link custom Aspects, but internalise names using custom# instead
+			if (!vanilla) {
+				mInternalAspectCache.put(tag.toLowerCase(), this);				
+			}			
 			Logger.INFO("[Thaumcraft++] Adding support for Aspect: "+tag);
 		}
 	}
@@ -282,7 +290,7 @@ public class TC_Aspect_Wrapper {
 	public Object generateTcAspect() {
 		try {			
 			//thaumcraft.api.aspects.Aspect.Aspect()
-			Object aAspectArray = (Object[]) Array.newInstance(mClass_Aspect, 1);
+			Object aAspectArray = (Object[]) Array.newInstance(mClass_Aspect, 0);
 			if (components.length > 0) {
 				aAspectArray = (Object[]) Array.newInstance(mClass_Aspect, components.length);
 				int i = 0;

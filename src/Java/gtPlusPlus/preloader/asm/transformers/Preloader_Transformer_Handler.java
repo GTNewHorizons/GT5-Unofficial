@@ -197,6 +197,15 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				return new ClassTransformer_IC2_GetHarvestTool(basicClass, probablyShouldBeFalse, transformedName).getWriter().toByteArray();			
 			}
 		}
+		
+		//Fix Thaumcraft Shit
+		//Patching ItemWispEssence to allow invalid item handling
+		if (transformedName.equals("thaumcraft.common.items.ItemWispEssence") && mConfig.enableTcAspectSafety) {	
+			FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		
+		
 		return basicClass;
 	}
 
