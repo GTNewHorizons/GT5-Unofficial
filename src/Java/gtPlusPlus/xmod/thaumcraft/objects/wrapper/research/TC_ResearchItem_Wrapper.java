@@ -1,5 +1,7 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

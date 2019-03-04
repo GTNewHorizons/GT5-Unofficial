@@ -107,6 +107,9 @@ public class ReflectionUtils {
 	 * @return - Valid, {@link Class} object, or {@link null}.
 	 */
 	public static Class getClass(String aClassCanonicalName) {
+		if (aClassCanonicalName == null || aClassCanonicalName.length() <= 0) {
+			return null;
+		}		
 		Class y = mCachedClasses.get(aClassCanonicalName);
 		if (y == null) {
 			y = getClass_Internal(aClassCanonicalName);
@@ -140,6 +143,9 @@ public class ReflectionUtils {
 	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
 	 */
 	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
+		if (aClass == null || aMethodName == null || aMethodName.length() <= 0) {
+			return null;
+		}		
 		String aMethodKey = ArrayUtils.toString(aTypes);
 		//Logger.REFLECTION("Looking up method in cache: "+(aClass.getName()+"."+aMethodName + "." + aMethodKey));
 		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethodName + "." + aMethodKey);
@@ -166,6 +172,9 @@ public class ReflectionUtils {
 	 * @return - Valid, non-final, {@link Field} object, or {@link null}.
 	 */
 	public static Field getField(final Class aClass, final String aFieldName) {
+		if (aClass == null || aFieldName == null || aFieldName.length() <= 0) {
+			return null;
+		}		
 		CachedField y = mCachedFields.get(aClass.getName()+"."+aFieldName);
 		if (y == null) {
 			Field u;

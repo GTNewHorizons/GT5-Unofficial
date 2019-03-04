@@ -23,7 +23,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -78,7 +78,7 @@ public class Material {
 	public int vToolQuality;
 	public int vHarvestLevel;
 
-	private GTPP_Aspects[] vAspects;
+	private TC_Aspect_Wrapper[] vAspects;
 	
 	public BaseTinkersMaterial vTiConHandler;
 

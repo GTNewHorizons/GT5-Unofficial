@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
 import java.util.HashMap;
 import java.util.Map;

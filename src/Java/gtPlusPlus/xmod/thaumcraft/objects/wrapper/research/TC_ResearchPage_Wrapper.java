@@ -1,7 +1,8 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
 import java.util.List;
 
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_CrucibleRecipe_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_IArcaneRecipe_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.recipe.TC_InfusionEnchantmentRecipe_Wrapper;

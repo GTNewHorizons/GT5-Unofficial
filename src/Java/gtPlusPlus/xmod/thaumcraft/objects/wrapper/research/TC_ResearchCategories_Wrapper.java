@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.research;
 
 import cpw.mods.fml.common.FMLLog;
 import java.util.Collection;

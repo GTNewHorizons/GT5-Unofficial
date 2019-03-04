@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -26,7 +27,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
 public class BaseOreComponent extends Item{
@@ -57,9 +58,9 @@ public class BaseOreComponent extends Item{
 		registerComponent();
 		GT_OreDictUnificator.registerOre(componentType.getComponent()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
-			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 2);
+			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
 			if (componentMaterial.isRadioactive) {
-				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.RADIO, 4);				
+				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
 			}
 		}
 		

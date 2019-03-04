@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -11,6 +11,7 @@ import gregtech.api.enums.TC_Aspects;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -133,7 +134,13 @@ public class TC_Aspect_Wrapper {
 
 	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend) {
 		if (getAspectList().containsKey(tag.toLowerCase())) {
-			throw new IllegalArgumentException(tag + " already registered!");
+			this.tag = tag.toLowerCase();
+			this.components = components;
+			this.color = color;
+			this.image = image;
+			this.blend = blend;
+			this.mAspect = null;
+			this.mGtEnumField = null;
 		} else {
 			this.tag = tag.toLowerCase();
 			this.components = components;
@@ -147,9 +154,9 @@ public class TC_Aspect_Wrapper {
 			for (TC_Aspects e : TC_Aspects.values()) {
 				TC_Aspect_Wrapper g;
 				try {
-					g = generate(e.mAspect);
-					if (g != null) {
-						if (g.tag.equals(this.tag)) {
+					String gtTag = ThaumcraftUtils.getTagFromAspectObject(e.mAspect);
+					if (gtTag != null) {
+						if (gtTag.equals(this.tag)) {
 							y = e;
 							break;
 						}
@@ -158,9 +165,8 @@ public class TC_Aspect_Wrapper {
 					e1.printStackTrace();
 				}
 			}
-			mGtEnumField = y;			
-			
-			
+			this.mGtEnumField = y;
+			mInternalAspectCache.put(this.tag, this);			
 			Logger.INFO("[Thaumcraft++] Adding support for Aspect: "+tag);
 		}
 	}
@@ -254,8 +260,8 @@ public class TC_Aspect_Wrapper {
 		TC_Aspect_Wrapper[] aAspectArray;
 		try {
 			components = (Object[]) aField.get(aInstance);
-			aAspectArray = new TC_Aspect_Wrapper[components.length];
-			if (components.length > 0) {
+			aAspectArray = new TC_Aspect_Wrapper[components == null ? 0 : components.length];
+			if (aAspectArray.length > 0) {
 				int i = 0;
 				for (Object g : components) {
 					aAspectArray[i] = getAspect((String) ReflectionUtils.getField(mClass_Aspect, "tag").get(g));

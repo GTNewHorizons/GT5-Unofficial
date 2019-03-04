@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.thaumcraft.aspect;
+package gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect;
 
 import net.minecraft.item.ItemStack;
 

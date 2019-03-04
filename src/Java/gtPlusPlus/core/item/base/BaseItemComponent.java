@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -21,7 +22,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -66,9 +67,9 @@ public class BaseItemComponent extends Item{
 
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
-			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 1);
+			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
 			if (componentMaterial.isRadioactive) {
-				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.RADIO, 2);				
+				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
 			}
 		}
 		registerComponent();		
