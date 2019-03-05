@@ -31,7 +31,7 @@ public class VanillaBedHeightFix implements IBugFix {
 			}			
 			if (m != null) {
 				mSleepInBedAt = m;
-				mParent.log("Registering Bed Heigh Fix.");
+				mParent.log("Registering Bed Height Fix.");
 				Utils.registerEvent(this);
 			} else {
 				mSleepInBedAt = null;

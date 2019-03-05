@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.GT_ThaumcraftCompat;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -110,7 +111,8 @@ public class GTPP_AspectCompat {
 								},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Sagrausten.png"),
 				false,
-				1);
+				1,
+				"Ancient Knowledge");
 
 		ASPECT_LUST = 
 				new TC_Aspect_Wrapper(
@@ -122,7 +124,8 @@ public class GTPP_AspectCompat {
 								},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Slusium.png"),
 				false,
-				1);
+				1,
+				"Warped Thoughts");
 
 		ASPECT_STARBOUND = 
 				new TC_Aspect_Wrapper(
@@ -132,7 +135,8 @@ public class GTPP_AspectCompat {
 								},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Xenil.png"),
 				false,
-				1);
+				1,
+				"A beginning to something new");
 
 		ASPECT_TOXIC = 
 				new TC_Aspect_Wrapper(
@@ -144,7 +148,8 @@ public class GTPP_AspectCompat {
 								},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Xablum.png"),
 				false,
-				1);
+				1,
+				"Insanity");
 
 		ASPECT_HEAVEN = 
 				new TC_Aspect_Wrapper(
@@ -156,7 +161,10 @@ public class GTPP_AspectCompat {
 								},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Zetralt.png"),
 				false,
-				1);
+				1,
+				"Control, Respect, Glory");	
+		
+		
 	}
 	
 	private TC_Aspect_Wrapper get(TC_Aspects aGtObjects) {

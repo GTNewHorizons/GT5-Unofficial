@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -89,8 +90,8 @@ public class TC_Aspect_Wrapper {
 	 * @param chatcolor
 	 * @param blend
 	 */
-	public TC_Aspect_Wrapper(String tag, int color, String chatcolor, int blend) {
-		this(tag, color, (TC_Aspect_Wrapper[]) null, blend);
+	public TC_Aspect_Wrapper(String tag, int color, String chatcolor, int blend, String aTooltip) {
+		this(tag, color, (TC_Aspect_Wrapper[]) null, blend, aTooltip);
 		this.chatcolor = chatcolor;
 	}
 
@@ -101,8 +102,8 @@ public class TC_Aspect_Wrapper {
 	 * @param color
 	 * @param components
 	 */
-	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components) {
-		this(tag, color, components, false, 1);
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, String aTooltip) {
+		this(tag, color, components, false, 1, aTooltip);
 	}
 
 	/**
@@ -113,8 +114,8 @@ public class TC_Aspect_Wrapper {
 	 * @param components
 	 * @param blend
 	 */
-	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, int blend) {
-		this(tag, color, components, false, blend);
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, int blend, String aTooltip) {
+		this(tag, color, components, false, blend, aTooltip);
 	}
 	
 	
@@ -127,17 +128,18 @@ public class TC_Aspect_Wrapper {
 	 * @param image
 	 * @param blend
 	 */
-	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, boolean vanilla, int blend) {
-		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), vanilla, blend);
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, boolean vanilla, int blend, String aTooltip) {
+		this(tag, color, components, vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png") : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"), vanilla, blend, aTooltip);
 	}
 	
-	private static int aInternalAspectIDAllocation = 0;
+	private static int aInternalAspectIDAllocation = 1;
 
-	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend) {		
+	public TC_Aspect_Wrapper(String tag, int color, TC_Aspect_Wrapper[] components, ResourceLocation image, boolean vanilla, int blend, String aTooltip) {		
 		if (components == null) {
 			components = new TC_Aspect_Wrapper[] {};
-		}	
-		String aTag = vanilla ? tag.toLowerCase() : "custom"+(aInternalAspectIDAllocation++);		
+		}
+		//String aTag = vanilla ? tag.toLowerCase() : "custom"+(aInternalAspectIDAllocation++);		
+		String aTag = tag.toLowerCase();		
 		if (getAspectList().containsKey(tag.toLowerCase())) {
 			this.tag = aTag;
 			this.components = components;
@@ -173,7 +175,8 @@ public class TC_Aspect_Wrapper {
 			mInternalAspectCache.put(this.tag, this);
 			// Double link custom Aspects, but internalise names using custom# instead
 			if (!vanilla) {
-				mInternalAspectCache.put(tag.toLowerCase(), this);				
+				mInternalAspectCache.put("custom"+(aInternalAspectIDAllocation++), this);
+				GT_LanguageManager.addStringLocalization("tc.aspect."+aTag, aTooltip);				
 			}			
 			Logger.INFO("[Thaumcraft++] Adding support for Aspect: "+tag);
 		}
@@ -209,7 +212,8 @@ public class TC_Aspect_Wrapper {
 					generateAspectArrayInternal(ReflectionUtils.getField(mClass_Aspect, "components"), (aBaseAspect)),
 					(ResourceLocation) ReflectionUtils.getField(mClass_Aspect, "image").get(aBaseAspect),
 					true,
-					(int) ReflectionUtils.getField(mClass_Aspect, "blend").get(aBaseAspect)
+					(int) ReflectionUtils.getField(mClass_Aspect, "blend").get(aBaseAspect),
+					""
 					);
 			if (aTemp != null) {
 				aTemp.chatcolor = (String) ReflectionUtils.getField(mClass_Aspect, "chatcolor").get(aBaseAspect);				
