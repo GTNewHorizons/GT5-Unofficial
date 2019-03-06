@@ -177,6 +177,13 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Parts_RawCrystalParts.set(addItem(tLastID = 74, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
         ItemList.Circuit_Chip_Biocell.set(addItem(tLastID = 76, "Biocells", "Mutated Raw Intiligence", o));
         ItemList.Circuit_Chip_BioCPU.set(addItem(tLastID = 77, "Bio Processing Unit", "Bio CPU", o));
+        
+        ItemList.Circuit_Parts_RawMCrystalChip.set(addItem(tLastID = 116, "Raw Mysterious Crystal Chip", "Raw Mysterious Crystal Processor", o));
+        ItemList.Circuit_Chip_MCrystalCPU.set(addItem(tLastID = 117, "Mysterious Crystal Processing Unit", "Mysterious Crystal CPU", o)); //Crystal chip elite part
+        ItemList.Circuit_Parts_RawMCrystalParts.set(addItem(tLastID = 118, "Raw Mysterious Crystal Chip Parts", "Raw Mysterious Crystal Processor Parts", o));
+        ItemList.Circuit_Parts_MCrystal_Chip_Elite.set(addItem(tLastID = 127, "Engraved Mysterious Crystal Chip", "Needed for Circuits", o));
+        ItemList.Circuit_Parts_MECrystal_Chip_Elite.set(addItem(tLastID = 128, "Engraved Mysterious Energy Crystal Chip", "Needed for Orbs", o));
+        
         //Nand Chip
         ItemList.NandChip.set(addItem(tLastID = 75, "Nand Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive), SubTag.NO_UNIFICATION}));
 
@@ -249,6 +256,12 @@ public class GT_MetaGenerated_Item_03
 		
 	    ItemList.EnergyCrystal_IV.set(addItem(tLastID = 204, "Energium Orb (T5)", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L)}));
 	    setElectricStats(32000 + tLastID, 819200000L, GT_Values.V[5], 5L, -3L, true);
+	    
+	    ItemList.MysteriousCrystal.set(addItem(tLastID = 205, "Mysterious Energy Crystal", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L)}));
+	    setElectricStats(32000 + tLastID, 5000000000L, GT_Values.V[9], 9L, -3L, true);
+	    
+	    ItemList.MysteriousCrystalOrb.set(addItem(tLastID = 206, "Mysterious Energy Crystal Orb", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}));
+	    setElectricStats(32000 + tLastID, 50000000000L, GT_Values.V[10], 10L, -3L, true);
 	    
 	    
 	    ItemList.ULV_Coil.set(addItem(tLastID = 210, "Ultra Low Voltage Coil", "Primitive Coil", o));

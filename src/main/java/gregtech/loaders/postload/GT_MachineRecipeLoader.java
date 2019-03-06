@@ -2078,9 +2078,6 @@ if(Loader.isModLoaded("Railcraft")){
         
         GT_Values.RA.addAutoclaveRecipe(ItemList.Circuit_Parts_RawCrystalParts.get(1L), FluidRegistry.getFluidStack("bacterialsludge", 250), ItemList.Circuit_Parts_RawCrystalChip.get(1L), 6000, 12000, 480);
         
-        //GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), FluidRegistry.getFluidStack("mutagen", 250), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 1920);
-		GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), Materials.Mutagen.getFluid(250L), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 1920);
-
 //      Motors
         
         GT_Values.RA.addAssemblylineRecipe(ItemList.Electric_Motor_IV.get(1, new Object(){}),144000,new ItemStack[]{
@@ -2501,7 +2498,7 @@ if(Loader.isModLoaded("Railcraft")){
 
         GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Chip_NeuroCPU.get(1L), 144000, new ItemStack[]{
                 ItemList.Circuit_Board_Bio_Ultra.get(1L),
-                ItemList.Circuit_Chip_Biocell.get(32L),
+                ItemList.Circuit_Chip_Biocell.get(8L),
                 ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(16L),
                 GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 16),
                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tungsten, 16),
@@ -2664,6 +2661,7 @@ if(Loader.isModLoaded("Railcraft")){
     				GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 48L), Materials.Polybenzimidazole.getMolten(4608L),
     				ItemList.BatteryHull_UIV.get(1L), 300, 2000000);
 
+    		
     		GT_ModHandler.addExtractionRecipe(ItemList.BatteryHull_EV_Full.get(1L), ItemList.BatteryHull_EV.get(1L));
     	    GT_ModHandler.addExtractionRecipe(ItemList.BatteryHull_IV_Full.get(1L), ItemList.BatteryHull_IV.get(1L));
     	    GT_ModHandler.addExtractionRecipe(ItemList.BatteryHull_LuV_Full.get(1L), ItemList.BatteryHull_LuV.get(1L));
@@ -4449,9 +4447,11 @@ if(Loader.isModLoaded("Railcraft")){
             	//*/
             }
        public void run3() {
-		//Tesseract
-    	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), null, null, new int[]{2000, 6000, 4000, 10000}, 100, 8000000);
     	
+    	   
+    	//Tesseract
+    	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), null, null, new int[]{2000, 6000, 4000, 10000}, 100, 8000000);
+    	   
 		//Sluice Juice and Sand
 		   GT_Values.RA.addDistilleryRecipe(1, Materials.SluiceJuice.getFluid(100L), GT_ModHandler.getDistilledWater(50L), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.SluiceSand, 1), 100, 16, false);
 		   GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SluiceSand, 1), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 2), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neodymium, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Cobalt, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1), new int[]{9640,648,648,648,648,648}, 144, 16);
@@ -4476,7 +4476,7 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addBlastRecipe(ItemList.BioChunk.get(1L), GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_ModHandler.getIC2Item("coalChunk", 1L), GT_Values.NI, 1000, 120, 1200);
            GT_Values.RA.addMixerRecipe(GT_ModHandler.getModItem("IC2", "itemFuelPlantBall", 16L, 0), GT_OreDictUnificator.get(OrePrefixes.dust,Materials.Flint, 2), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.BioBall.get(1L), 200, 16);
            
-		   //===
+           //===
            
            GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.BioMediumRaw.getFluid(1000), Materials.BioMediumSterilized.getFluid(1000), 200, 1024);
            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), Materials.Mutagen.getFluid(250L), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 30720);
@@ -5191,7 +5191,7 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot4.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer4.get(48, new Object[0]), null, 1200, 240, true);
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 24), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 2), Materials.Argon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), null, 2400, 30720, 9000);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot5.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer5.get(64, new Object[0]),null, 3700, 7680, true);
-        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.MysteriousCrystal, 2), Materials.Argon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), null, 3200, 500000, 9000);
+        GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 4), Materials.Argon.getGas(16000), null, ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), null, 3200, 500000, 9000);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot6.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer6.get(64, new Object[0]),ItemList.Circuit_Silicon_Wafer6.get(64, new Object[0]), 4800, 122880, true);
         GT_Values.RA.addBlastRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Silicon, 32), GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Europium, 2), Materials.Radon.getGas(8000), null, ItemList.Circuit_Silicon_Ingot7.get(1, new Object[0]), null, 18000, 7680, 6484);
         GT_Values.RA.addCutterRecipe(ItemList.Circuit_Silicon_Ingot7.get(1, new Object[0]), ItemList.Circuit_Silicon_Wafer7.get(64, new Object[0]), ItemList.Circuit_Silicon_Wafer7.get(32, new Object[0]), 2400, 1920, true);
@@ -5234,7 +5234,49 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Wafer_SoC2.get(1L),GT_OreDictUnificator.get(OrePrefixes.lens,Materials.NetherStar,1L).copy().splitStack(0), ItemList.Circuit_Chip_RPico.get(1L),600,128800,true);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{ItemList.Circuit_Chip_RPico.get(1L),Materials.NetherStar.getDustTiny(1)},new FluidStack[]{Materials.EnrichedNaquadria.getFluid(100L)},new FluidStack[]{GT_Values.NF},new ItemStack[]{ItemList.Circuit_Chip_Pico.get(1L)},400,128800);
 
+      //Energy Crystals UHV-UIV
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
+				ItemList.Circuit_Crystalmainframe.get(2L), null,
+				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
+				ItemList.Circuit_Wetwaresupercomputer.get(2L), null,
+				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
+				ItemList.Circuit_Biowarecomputer.get(2L), null,
+				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
+				ItemList.Circuit_Piko.get(2L), null,
+				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+		
+        GT_Values.RA.addLaserEngraverRecipe(ItemList.MysteriousCrystal.get(1L),GT_OreDictUnificator.get(OrePrefixes.lens,Materials.EnrichedMysteriousCrystal,1L).copy().splitStack(0), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(3L),450,500000,true);
+        
+        for (Materials tMat : Materials.values()) {//TODO dream things using soldering go in here!
+            if (tMat.mStandardMoltenFluid != null && tMat.contains(SubTag.SOLDERING_MATERIAL) && !(GregTech_API.mUseOnlyGoodSolderingMaterials && !tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD))) {
+                int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+
+        if(Loader.isModLoaded("GalacticraftCore")){
+        GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1), ItemList.Circuit_Chip_PPIC.get(4), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(24), ItemList.Circuit_Chip_NanoCPU.get(6), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.MysteriousCrystalOrb.get(1), 600, 2000000, true);
+        }else {
+        GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1), ItemList.Circuit_Chip_PPIC.get(4), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(24), ItemList.Circuit_Chip_NanoCPU.get(6), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.MysteriousCrystalOrb.get(1), 600, 2000000, true);	
+        }
+            
+            }
+        }
       //Circuits UV-UEV
+	  
+	  if(Loader.isModLoaded("GalacticraftCore")){
+            GT_Values.RA.addAutoclaveSpaceRecipe(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.MysteriousCrystal, 1), Materials.Neutronium.getMolten(16), ItemList.Circuit_Parts_RawMCrystalChip.get(1), 1000, 12000, 7680, true);
+            GT_Values.RA.addAutoclaveSpaceRecipe(ItemList.Circuit_Parts_RawMCrystalParts.get(1L), FluidRegistry.getFluidStack("mutagen", 250), ItemList.Circuit_Parts_RawMCrystalChip.get(1L), 6000, 12000, 30720, true);
+            GT_Values.RA.addAutoclaveSpaceRecipe(ItemList.Circuit_Parts_RawMCrystalParts.get(1L), Materials.BioMediumSterilized.getFluid(250L), ItemList.Circuit_Parts_RawMCrystalChip.get(1L), 9000, 12000, 30720, true);
+	  }else {
+			GT_Values.RA.addAutoclaveRecipe(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, Materials.MysteriousCrystal, 1), Materials.Neutronium.getMolten(16), ItemList.Circuit_Parts_RawMCrystalChip.get(1), 1000, 12000, 7680, true);
+			GT_Values.RA.addAutoclaveRecipe(ItemList.Circuit_Parts_RawMCrystalParts.get(1L), FluidRegistry.getFluidStack("mutagen", 250), ItemList.Circuit_Parts_RawMCrystalChip.get(1L), 6000, 12000, 30720, true);
+			GT_Values.RA.addAutoclaveRecipe(ItemList.Circuit_Parts_RawMCrystalParts.get(1L), Materials.BioMediumSterilized.getFluid(250L), ItemList.Circuit_Parts_RawMCrystalChip.get(1L), 9000, 12000, 30720, true);
+            }   
+        GT_Values.RA.addForgeHammerRecipe(ItemList.Circuit_Parts_RawMCrystalChip.get(1), ItemList.Circuit_Parts_RawMCrystalParts.get(9), 200, 30720);
+        GT_Values.RA.addBlastRecipe(ItemList.Circuit_Parts_RawMCrystalChip.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 1), Materials.Radon.getGas(1000), null, ItemList.Circuit_Parts_MCrystal_Chip_Elite.get(1), null, 900, 122880, 11000);
+        
+        
         GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Chip_Pico.get(1L), 72000, new ItemStack[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Duranium, 4),
         		ItemList.Circuit_Chip_Pico.get(1L),
@@ -5792,5 +5834,5 @@ if(Loader.isModLoaded("Railcraft")){
             ItemList.Field_Generator_UEV.get(1, new Object[]{}), 1000, 500000);
             
         }
-        }
+    }
 }
