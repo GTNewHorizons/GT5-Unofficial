@@ -64,6 +64,8 @@ public class ClassTransformer_TC_ItemWispEssence {
 		FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Injecting " + aMethodName + ".");
 
 		String aGetColour = obfuscated ? "func_82790_a" : "getColorFromItemStack";
+		String aHasTagCompound = obfuscated ? "func_77942_o" : "hasTagCompound";
+		String aGetTagCompound = obfuscated ? "func_77978_p" : "getTagCompound";
 
 		if (aMethodName.equals("getAspects")) {
 			mv = cw.visitMethod(ACC_PUBLIC, "getAspects", "(Lnet/minecraft/item/ItemStack;)Lthaumcraft/api/aspects/AspectList;", null, null);
@@ -83,7 +85,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 			mv.visitLineNumber(144, l1);
 			mv.visitFrame(F_SAME, 0, null, 0, null);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", "hasTagCompound", "()Z", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", aHasTagCompound, "()Z", false);
 			Label l3 = new Label();
 			mv.visitJumpInsn(IFEQ, l3);
 			Label l4 = new Label();
@@ -98,7 +100,7 @@ public class ClassTransformer_TC_ItemWispEssence {
 			mv.visitLineNumber(146, l5);
 			mv.visitVarInsn(ALOAD, 2);
 			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", "getTagCompound", "()Lnet/minecraft/nbt/NBTTagCompound;", false);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "net/minecraft/item/ItemStack", aGetTagCompound, "()Lnet/minecraft/nbt/NBTTagCompound;", false);
 			mv.visitMethodInsn(INVOKEVIRTUAL, "thaumcraft/api/aspects/AspectList", "readFromNBT", "(Lnet/minecraft/nbt/NBTTagCompound;)V", false);
 			Label l6 = new Label();
 			mv.visitLabel(l6);
