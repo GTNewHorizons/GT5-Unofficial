@@ -757,8 +757,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GasolinePremium = new MaterialBuilder(998, TextureSet.SET_FLUID, "High Octane Gasoline").addCell().addFluid().setRGB(255,165,0).setColor(Dyes.dyeOrange).setFuelType(MaterialBuilder.DIESEL).setFuelPower(1152).constructMaterial();
     
     public static Materials Oriharukon              = new Materials( 389, TextureSet.SET_SHINY             ,  32.0F,  10240,  5, 1|2|8 |64|128      , 103, 125, 104,   0,   "Oriharukon"              ,   "Oriharukon"                    ,     0,       0,     5400,  5400,  true, false,  4,   1,   1, Dyes.dyeLime         , Element.Oh, Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 2),new TC_AspectStack(TC_Aspects.LUCRUM, 2), new TC_AspectStack(TC_Aspects.ALIENIS, 1)));
-    public static Materials MysteriousCrystal       = new Materials( 394, TextureSet.SET_SHINY             ,   8.0F,    256,  6, 1|4|8 |64|128      ,  22, 133, 108,   0,   "MysteriousCrystal"       ,   "Mysterious Crystal"            ,     0,       0,     11000,  11000,  true, false,  4,   1,   1, Dyes.dyeCyan         );
-	public static Materials EnrichedMysteriousCrystal       = new Materials( 395, TextureSet.SET_SHINY     ,   8.0F,    256,  6, 1|4|8 |64|128      ,  28, 162, 108,   0,   "EnrichedMysteriousCrystal"       ,   "Enriched Mysterious Crystal"            ,     0,       0,     11000,  11000,  true, false,  4,   1,   1, Dyes.dyeCyan         );
+    public static Materials MysteriousCrystal       = new Materials( 394, TextureSet.SET_DIAMOND ,   8.0F,    256,  6, 1|4|8 |64      ,  22, 133, 108,   0,   "MysteriousCrystal"       ,  "Mysterious Crystal"         ,0,       0,     11000,  11000,  true, true, 5, 64, 1, Dyes.dyeCyan         );
+	public static Materials EnrichedMysteriousCrystal= new Materials( 395, TextureSet.SET_DIAMOND,   8.0F,    256,  6, 1|4|8 |64      ,  28, 162, 108,   0,   "EnrichedMysteriousCrystal", "Enriched Mysterious Crystal",0,       0,     11000,  11000,  true, true, 5, 64, 1, Dyes.dyeCyan         );
 	
     public static Materials Pentacadmiummagnesiumhexaoxid                                   = new Materials( 987, TextureSet.SET_SHINY          ,   1.0F,      0,  3, 1|2                ,  85, 85,  85,   0,   "Pentacadmiummagnesiumhexaoxid"                                 ,   "Superconductor Base MV"       ,     0,       0,     2500,  2500,  true,  false,  1,   1,   1, Dyes.dyeGray       , 1, Arrays.asList(new MaterialStack(Cadmium, 5), new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 6)), Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 3)));
     public static Materials Titaniumonabariumdecacoppereikosaoxid                           = new Materials( 988, TextureSet.SET_METALLIC       ,   1.0F,      0,  3, 1|2                ,  51, 25,   0,   0,   "Titaniumonabariumdecacoppereikosaoxid"                         ,   "Superconductor Base HV"       ,     0,       0,     3300,  3300,  true,  false,  1,   1,   1, Dyes.dyeBrown      , 1, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Barium, 9),  new MaterialStack(Copper, 10), new MaterialStack(Oxygen, 20)), Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 6)));
@@ -1376,7 +1376,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         Glass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
 		ReinforcedGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
-        Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
+		MysteriousCrystal.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		EnrichedMysteriousCrystal.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+		Diamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.FLAMMABLE);
         Emerald.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Amethyst.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Tanzanite.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
