@@ -957,10 +957,10 @@ public class DreamCraftRecipeLoader implements Runnable {
 
             TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.ZPM2.get(1L),24000,64,200000,6,new Object[]{
                     GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 64L),
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
-                    new Object[]{OrePrefixes.circuit, Materials.Bio, 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
+                    new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1L},
                     ItemList.ZPM2.get(8),
                     ItemList.Field_Generator_UHV.get(4),
                     ItemList.Circuit_Wafer_UHPIC.get(64),
