@@ -10,9 +10,12 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.GregtechException;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.item.base.itemblock.FluidItemBlock;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -51,7 +54,7 @@ public class FluidFactory {
 	public static final Map<Integer, Block> mMetaToBlockMap = new LinkedHashMap<Integer, Block>();
 
 
-	private static Fluid mErrorFluid;
+	private static FluidPackage mErrorFluid;
 	private static AutoMap<FluidPackage> mGeneratedFluids = new AutoMap<FluidPackage>();
 
 	public static void preInit() {
@@ -62,7 +65,7 @@ public class FluidFactory {
 		GameRegistry.registerItem(new ItemGenericFluidBucket(Blocks.air), "gtpp.bucket.generic");
 		for (FluidPackage y : mGeneratedFluids) {
 			FluidRegistry.registerFluid(y.get());
-			GameRegistry.registerBlock(y.mBlock, "gtpp_" + y.mName);
+			GameRegistry.registerBlock(y.mBlock, FluidItemBlock.class, "gtpp_" + y.mName);
 			FluidContainerRegistry.registerFluidContainer(y.get(), y.mBucket, new ItemStack(Items.bucket));
 		}
 		Utils.registerEvent(BucketHandler.INSTANCE);
@@ -73,7 +76,7 @@ public class FluidFactory {
 	}
 
 	public static FluidPackage generate(int aID, String aUnlocalName, int luminosity, int density, int temp,
-			int viscosity) {
+			int viscosity, short[] aRGB) {
 
 		FluidPackage aFluidToGenerate = null;
 
@@ -86,40 +89,41 @@ public class FluidFactory {
 			}
 		}
 		
-		Fluid aGenFluid = fluid(aUnlocalName, 0, 0, 0, 0);
-		Block aGenBlock = block();
+		Fluid aGenFluid = fluid(aUnlocalName, luminosity, density, temp, viscosity, aRGB);
+		Block aGenBlock = block(aGenFluid, aRGB);
 		ItemStack aGenBucket = bucket();
 
 		aFluidToGenerate = new FluidPackage(aID, aUnlocalName, aGenFluid, aGenBucket, aGenBlock);
 
-		if (aFluidToGenerate.valid()) {
-			FluidRegistry.registerFluid(aFluidToGenerate.get());			
+		if (aFluidToGenerate != null && aFluidToGenerate.valid()) {
+			FluidRegistry.registerFluid(aFluidToGenerate.get());	
+			mGeneratedFluids.put(aFluidToGenerate);		
+		}
+		else {
+			// Handle Bad generation
+			if (mErrorFluid == null) {
+				mErrorFluid = new FluidPackage(0, "", FluidUtils.getWater(1).getFluid(), ItemUtils.getSimpleStack(Items.water_bucket), Blocks.water);
+			}
+			return mErrorFluid;
 		}
 		
 
-		// Handle Bad generation
-		if (mErrorFluid == null) {
-			mErrorFluid = new Fluid("baderrorfluid.gtpp").setViscosity(4000);
-		}
-		if (aFluidToGenerate != null) {
-			mGeneratedFluids.put(aFluidToGenerate);
-		}
 		return aFluidToGenerate;
 	}
 	
 	
 	
 	private static Fluid fluid(String aUnlocalName, int luminosity, int density, int temp,
-			int viscosity) {
-		return new FactoryFluid(aUnlocalName, 0, 0, 0, 0);
+			int viscosity, short[] aRGB) {
+		return new FactoryFluid(aUnlocalName, luminosity, density, temp, viscosity, aRGB);
 	}
 	
 	private static ItemStack bucket() {
 		return null;
 	}
 	
-	private static Block block() {
-		return null;
+	private static Block block(Fluid aFluidForBlock, short[] aRGB) {
+		return new BlockFluidBase(aFluidForBlock, Material.water, aRGB);
 	}
 
 	/**
