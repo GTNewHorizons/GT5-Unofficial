@@ -10,6 +10,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -20,7 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RocketFuels {
+public class RocketFuels extends ItemPackage {
 	
 	public static HashSet<String> mValidRocketFuelNames = new HashSet<String>();
 	public static HashMap<Integer, Fluid> mValidRocketFuels = new HashMap<Integer, Fluid>();
@@ -45,107 +46,7 @@ public class RocketFuels {
 
 	public static Item Ammonium_Nitrate_Dust;
 	public static Item Formaldehyde_Catalyst;
-
-	public static void run(){
-
-		//Create Kerosene
-		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 500, new short[]{150, 40, 150, 100}, null, null);
-
-		//RP! Focket Fuel
-		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1 Rocket Fuel", 500, new short[]{210, 50, 50, 100}, null, null);
-
-		//Create Nitrogen Tetroxide
-		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
-
-		//Create Hydrazine
-		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 2, new short[]{250, 250, 250, 100}, null, null);
-
-		//Create Monomethylhydrazine
-		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", -52, new short[]{125, 125, 125, 100}, null, null);
-
-		//Create Anthracene
-		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100}, null, null);
-
-		//Nos
-		if (!FluidUtils.doesFluidExist("NitrousOxide")){
-			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100});
-		}
-		else {
-			Nitrous_Oxide = FluidUtils.getWildcardFluidStack("NitrousOxide", 1).getFluid();
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellNitrousOxide", 1) == null){				
-				new BaseItemComponent("NitrousOxide", "Nitrous Oxide", new short[] {10, 10, 175});
-			}
-		}
-		
-		//Unsymmetrical_Dimethylhydrazine		
-		if (FluidUtils.getFluidStack("1,1dimethylhydrazine", 1) == null){
-			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", -57, new short[]{70, 210, 20, 100}, null, null);
-		}
-		else {
-			Unsymmetrical_Dimethylhydrazine = FluidUtils.getFluidStack("1,1dimethylhydrazine", 1000).getFluid();
-		}
-
-		//Create Hydrated_Ammonium_Nitrate_Slurry
-		Hydrated_Ammonium_Nitrate_Slurry = FluidUtils.generateFluidNonMolten("AmmoniumNitrateSlurry", "Hydrated Ammonium Nitrate Slurry", 450, new short[]{150, 75, 150, 100}, null, null);
-
-		//Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
-		Ammonium_Nitrate_Dust = ItemUtils.generateSpecialUseDusts("AmmoniumNitrate", "Ammonium Nitrate", "N2H4O3", Utils.rgbtoHexValue(150, 75, 150))[0];
-
-		//Create Liquid_Oxygen
-		if (FluidUtils.getFluidStack("LiquidOxygen", 1) == null && FluidUtils.getFluidStack("liquidoxygen", 1) == null){
-			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", -240, new short[]{75, 75, 220, 100}, null, null);
-		}
-		else {
-			if (FluidUtils.getFluidStack("LiquidOxygen", 1) != null ) {
-				Liquid_Oxygen = FluidUtils.getFluidStack("LiquidOxygen", 1).getFluid();				
-			}
-			else {
-				Liquid_Oxygen = FluidUtils.getFluidStack("liquidoxygen", 1).getFluid();
-			}
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellLiquidOxygen", 1) == null){				
-				new BaseItemComponent("LiquidOxygen", "Liquid Oxygen", new short[] {10, 10, 175});
-			}
-		}	
-
-		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
-		Formaldehyde_Catalyst = ItemUtils.generateSpecialUseDusts("FormaldehydeCatalyst", "Formaldehyde Catalyst", "Fe16V1", Utils.rgbtoHexValue(25, 5, 25))[0];
-
-
-		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
-		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Fuel Mixture", -250, new short[]{250, 50, 50, 100}, null, null);
-		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", -300, new short[]{125, 75, 180, 100}, null, null);
-		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", -250, new short[]{175, 80, 120, 100}, null, null);
-
-
-
-		createRecipes();
-
-
-	}
-
-	private static void createRecipes() {
-		createKerosene();	
-		createRP1();
-		createNitrogenTetroxide();
-		createHydrazine();
-		createMonomethylhydrazine();
-
-		if (!CORE.GTNH) {
-			createLOX();
-		}
-
-
-		createHydratedAmmoniumNitrateSlurry();		
-		createAmmoniumNitrateDust();		
-		createFormaldehyde();
-		createFormaldehydeCatalyst();		
-		createUnsymmetricalDimethylhydrazine();
-
-		createRocketFuels();
-		addRocketFuelsToMap();
-
-	}
-
+	
 	public static void createKerosene(){
 		FluidStack fuelA = FluidUtils.getFluidStack("diesel", 400);
 		FluidStack fuelB = FluidUtils.getFluidStack("fuel", 400);
@@ -498,6 +399,118 @@ public class RocketFuels {
 				20*32,
 				240);
 
+	}
+
+	@Override
+	public String errorMessage() {
+		// TODO Auto-generated method stub
+		return "Bad Rocket Fuel Science!";
+	}
+
+	@Override
+	public boolean generateRecipes() {
+		createKerosene();	
+		createRP1();
+		createNitrogenTetroxide();
+		createHydrazine();
+		createMonomethylhydrazine();
+
+		if (!CORE.GTNH) {
+			createLOX();
+		}
+
+
+		createHydratedAmmoniumNitrateSlurry();		
+		createAmmoniumNitrateDust();		
+		createFormaldehyde();
+		createFormaldehydeCatalyst();		
+		createUnsymmetricalDimethylhydrazine();
+
+		createRocketFuels();
+		addRocketFuelsToMap();
+		
+		return true;
+	}
+
+	@Override
+	public void items() {
+		Formaldehyde_Catalyst = ItemUtils.generateSpecialUseDusts("FormaldehydeCatalyst", "Formaldehyde Catalyst", "Fe16V1", Utils.rgbtoHexValue(25, 5, 25))[0];
+	}
+
+	@Override
+	public void blocks() {
+	}
+
+	@Override
+	public void fluids() {
+		//Create Kerosene
+		Kerosene = FluidUtils.generateFluidNonMolten("Kerosene", "Kerosene", 500, new short[]{150, 40, 150, 100}, null, null);
+
+		//RP! Focket Fuel
+		RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1 Rocket Fuel", 500, new short[]{210, 50, 50, 100}, null, null);
+
+		//Create Nitrogen Tetroxide
+		Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("NitrogenTetroxide", "Nitrogen Tetroxide", -11, new short[]{170, 170, 0, 100}, null, null);
+
+		//Create Hydrazine
+		Hydrazine = FluidUtils.generateFluidNonMolten("Hydrazine", "Hydrazine", 2, new short[]{250, 250, 250, 100}, null, null);
+
+		//Create Monomethylhydrazine
+		Monomethylhydrazine = FluidUtils.generateFluidNonMolten("Monomethylhydrazine", "Monomethylhydrazine", -52, new short[]{125, 125, 125, 100}, null, null);
+
+		//Create Anthracene
+		Nitrous_Oxide = FluidUtils.generateFluidNonMolten("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100}, null, null);
+
+		//Nos
+		if (!FluidUtils.doesFluidExist("NitrousOxide")){
+			Nitrous_Oxide = FluidUtils.generateFluidNoPrefix("NitrousOxide", "Nitrous Oxide", -91, new short[]{255, 255, 255, 100});
+		}
+		else {
+			Nitrous_Oxide = FluidUtils.getWildcardFluidStack("NitrousOxide", 1).getFluid();
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellNitrousOxide", 1) == null){				
+				new BaseItemComponent("NitrousOxide", "Nitrous Oxide", new short[] {10, 10, 175});
+			}
+		}
+		
+		//Unsymmetrical_Dimethylhydrazine		
+		if (FluidUtils.getFluidStack("1,1dimethylhydrazine", 1) == null){
+			Unsymmetrical_Dimethylhydrazine = FluidUtils.generateFluidNonMolten("UnsymmetricalDimethylhydrazine", "Unsymmetrical Dimethylhydrazine", -57, new short[]{70, 210, 20, 100}, null, null);
+		}
+		else {
+			Unsymmetrical_Dimethylhydrazine = FluidUtils.getFluidStack("1,1dimethylhydrazine", 1000).getFluid();
+		}
+
+		//Create Hydrated_Ammonium_Nitrate_Slurry
+		Hydrated_Ammonium_Nitrate_Slurry = FluidUtils.generateFluidNonMolten("AmmoniumNitrateSlurry", "Hydrated Ammonium Nitrate Slurry", 450, new short[]{150, 75, 150, 100}, null, null);
+
+		//Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
+		Ammonium_Nitrate_Dust = ItemUtils.generateSpecialUseDusts("AmmoniumNitrate", "Ammonium Nitrate", "N2H4O3", Utils.rgbtoHexValue(150, 75, 150))[0];
+
+		//Create Liquid_Oxygen
+		if (FluidUtils.getFluidStack("LiquidOxygen", 1) == null && FluidUtils.getFluidStack("liquidoxygen", 1) == null){
+			Liquid_Oxygen = FluidUtils.generateFluidNonMolten("LiquidOxygen", "Liquid Oxygen", -240, new short[]{75, 75, 220, 100}, null, null);
+		}
+		else {
+			if (FluidUtils.getFluidStack("LiquidOxygen", 1) != null ) {
+				Liquid_Oxygen = FluidUtils.getFluidStack("LiquidOxygen", 1).getFluid();				
+			}
+			else {
+				Liquid_Oxygen = FluidUtils.getFluidStack("liquidoxygen", 1).getFluid();
+			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellLiquidOxygen", 1) == null){				
+				new BaseItemComponent("LiquidOxygen", "Liquid Oxygen", new short[] {10, 10, 175});
+			}
+		}
+		
+
+		Formaldehyde = FluidUtils.generateFluidNonMolten("Formaldehyde", "Formaldehyde", -92, new short[]{150, 75, 150, 100}, null, null);
+		
+		Unsymmetrical_Dimethylhydrazine_Plus_Nitrogen_Tetroxide = FluidUtils.generateFluidNonMolten("RocketFuelMixA", "H8N4C2O4 Rocket Fuel", -185, new short[]{50, 220, 50, 100}, null, null);
+		RP1_Plus_Liquid_Oxygen = FluidUtils.generateFluidNonMolten("RocketFuelMixB", "Rp-1 Fuel Mixture", -250, new short[]{250, 50, 50, 100}, null, null);
+		Monomethylhydrazine_Plus_Nitric_Acid = FluidUtils.generateFluidNonMolten("RocketFuelMixC", "CN3H7O3 Rocket Fuel", -300, new short[]{125, 75, 180, 100}, null, null);
+		Dense_Hydrazine_Mix = FluidUtils.generateFluidNonMolten("RocketFuelMixD", "Dense Hydrazine Fuel Mixture", -250, new short[]{175, 80, 120, 100}, null, null);
+
+		
 	}
 
 

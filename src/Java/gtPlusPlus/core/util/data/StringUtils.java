@@ -1,6 +1,8 @@
 package gtPlusPlus.core.util.data;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.Utils;
 
 public class StringUtils {
 
@@ -134,19 +136,62 @@ public class StringUtils {
 		}		
 	}
 	
+	
+	
+	/**
+	 * Is this a special regex character for delimination? (.$|()[]{}^?*+\\)
+	 * @param aChar - The char to test
+	 * @return - Is this a special character?
+	 */
+	public static boolean isSpecialCharacter(char aChar) {
+		if (aChar == '"' || aChar == '.' || aChar == '$' || aChar == '|' || aChar == '(' || aChar == ')' || aChar == '['
+				|| aChar == ']' || aChar == '{' || aChar == '}' || aChar == '^' || aChar == '?' || aChar == '*'
+				|| aChar == '+' || aChar == '\\') {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isEscaped(String aString) {
+		return aString.substring(0, 1).equals("\\");
+	}
+	
 	public static String splitAndUppercase(String aInput, String aDelim) {
+		
+		if (!isEscaped(aDelim)) {
+			boolean isSpecial = false;
+			for (int o=0;o<aInput.length();o++) {
+				if (isSpecialCharacter(aInput.charAt(o))) {
+					isSpecial = true;
+				}
+			}
+			if (isSpecial) {
+				aDelim = "\\"+aDelim;
+			}
+		}
+		
+		
+		Logger.INFO("Splitting "+aInput);
 		String[] aSplit = aInput.split(aDelim);
+		Logger.INFO("Split into "+aSplit == null ? ""+0 : aSplit.length+" parts.");
 		if (aSplit == null || aSplit.length == 0) {
 			return aInput;
 		}
 		else {
 			AutoMap<String> aTemp = new AutoMap<String>();
 			for (String s : aSplit) {
-				aTemp.put(firstLetterCaps(s));
+				Logger.INFO("Found: "+s);
+				s = s.replace(".", "");
+				s = Utils.sanitizeString(s);
+				s = firstLetterCaps(s);
+				Logger.INFO("Formatted & Captilized: "+s);
+				aTemp.put(s);
 			}
+			Logger.INFO("Rebuilding");
 			String aReturn = "";
 			for (String s : aTemp) {
 				aReturn += s;
+				Logger.INFO("Step: "+aReturn);
 			}
 			return aReturn;
 		}	

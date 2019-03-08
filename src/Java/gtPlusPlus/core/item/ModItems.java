@@ -880,14 +880,14 @@ public final class ModItems {
 		itemControlCore = new ItemControlCore();
 
 		//Chemistry
-		CoalTar.run();
-		RocketFuels.run();
+		new CoalTar();
+		new RocketFuels();
 		
 		//Nuclear Processing
-		NuclearChem.run();
+		new NuclearChem();
 		
 		//Farm Animal Fun
-		AgriculturalChem.run();
+		new AgriculturalChem();
 		
 		//Only used for debugging.
 		/*if (CORE.DEVENV) {
