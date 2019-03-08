@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import forestry.plugins.PluginCore;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import scala.xml.dtd.ELEMENTS;
 
 public class AgriculturalChem {
 
@@ -144,10 +146,7 @@ public class AgriculturalChem {
 		
 		//Sewage
 		FertileManureSlurry = FluidUtils.generateFluidNonMolten("fertile.manure.slurry", "Fertile Manure Slurry", 45+175, new short[]{65, 50, 15, 100}, null, null, 0, true);
-		
-		
-		
-		//Ca5(PO4)3(OH)
+	
 		
 		
 		// Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
@@ -276,8 +275,9 @@ public class AgriculturalChem {
 	
 	
 	private static void addBasicSlurryRecipes() {
-		
-		ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);	
+
+		ItemStack aManureByprod1 = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);
+		ItemStack aManureByprod2 = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);	
 		ItemStack aDirtDust = ItemUtils.getSimpleStack(dustDirt, 1);
 		
 		//Poop Juice to Basic Slurry
@@ -288,10 +288,10 @@ public class AgriculturalChem {
 				FluidUtils.getFluidStack(ManureSlurry, 250), //Out Fluid
 				aDirtDust, 
 				aDirtDust,
-				aManureByprod, 
-				aManureByprod, 
-				aManureByprod,
-				aManureByprod, 
+				aManureByprod1, 
+				aManureByprod1, 
+				aManureByprod1,
+				aManureByprod1, 
 				new int[]{2000, 2000, 500, 500, 250, 250}, //Chances
 				10*20, //Time
 				30); //EU
@@ -304,10 +304,10 @@ public class AgriculturalChem {
 				FluidUtils.getFluidStack(ManureSlurry, 50), //Out Fluid
 				aDirtDust, 
 				aDirtDust,
-				aManureByprod, 
-				aManureByprod, 
-				aManureByprod,
-				aManureByprod, 
+				aManureByprod1, 
+				aManureByprod1, 
+				aManureByprod2,
+				aManureByprod2, 
 				new int[]{4000, 3000, 1250, 1250, 675, 675}, //Chances
 				20*20, //Time
 				60); //EU
@@ -429,10 +429,30 @@ public class AgriculturalChem {
 		// Dirt Production
 		CORE.RA.addCompressorRecipe(ItemUtils.getSimpleStack(dustDirt, 9), ItemUtils.getSimpleStack(Blocks.dirt), 20 * 2, 8);
 		
+		//Centrifuge Byproducts
+
+
+		// Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedCircuit(20),
+				ItemUtils.getSimpleStack(aManureByprod, 4),
+				FluidUtils.getFluidStack("sulfuricacid", 250), //In Fluid
+				FluidUtils.getFluidStack("sulfuricapatite", 50), //Out Fluid
+				Materials.Phosphorus.getDustSmall(2), 
+				Materials.Calcium.getDustSmall(2), 
+				Materials.Copper.getDustTiny(1), 
+				Materials.Carbon.getDust(1), 
+				ItemUtils.getSimpleStack(dustDirt, 1), 
+				ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1),
+				new int[]{2500, 2500, 750, 1000, 5000, 250}, //Chances
+				20*20, //Time
+				60); //EU
+		
+		
 		// Add Fuel Usages
-		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12000);
-		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(ManureSlurry, 1000), 24000);
-		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32000);
+		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12);
+		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(ManureSlurry, 1000), 24);
+		CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32);
 		
 		
 	}

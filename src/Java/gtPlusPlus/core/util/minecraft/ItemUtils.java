@@ -396,6 +396,61 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
 				new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
 				new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
+		
+		//Generate Shaped/Shapeless Recipes
+
+		final ItemStack normalDust = ItemUtils.getSimpleStack(output[0]);
+		final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
+		final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
+
+
+		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					tinyDust,	tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					normalDust)){
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+materialName+" - Failed");
+			}
+
+			if (RecipeUtils.recipeBuilder(
+					normalDust, null, null,
+					null, null, null,
+					null, null, null,
+					ItemUtils.getSimpleStack(tinyDust, 9))){
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+materialName+" - Failed");
+			}
+		}
+
+		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					smallDust, smallDust, null,
+					smallDust, smallDust, null,
+					null, null, null,
+					normalDust)){
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+materialName+" - Failed");
+			}
+			if (RecipeUtils.recipeBuilder(
+					null, normalDust, null,
+					null, null, null,
+					null, null, null,
+					ItemUtils.getSimpleStack(smallDust, 4))){
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+materialName+" - Failed");
+			}
+		}
+		
 		return output;
 	}
 

@@ -5,12 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -22,9 +16,12 @@ import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -33,7 +30,8 @@ public class RecipeUtils {
 public static int mInvalidID = 1;
 	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, ItemStack resultItem){
 		
-		if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
+		//Old Debug Code, useful for finding recipes loading too early.
+		/*if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
 			Logger.INFO(ReflectionUtils.getMethodName(1));
 			Logger.INFO(ReflectionUtils.getMethodName(2));
 			Logger.INFO(ReflectionUtils.getMethodName(3));
@@ -44,7 +42,7 @@ public static int mInvalidID = 1;
 			Logger.INFO(ReflectionUtils.getMethodName(8));
 			Logger.INFO(ReflectionUtils.getMethodName(9));
 			System.exit(1);
-		}
+		}*/
 		
 		if (resultItem == null){
 			Logger.RECIPE("[Fix] Found a recipe with an invalid output, yet had a valid inputs. Using Dummy output so recipe can be found..");
@@ -395,6 +393,7 @@ public static int mInvalidID = 1;
 				else {
 					Logger.RECIPE("[Fix] Output is Null for a recipe. Report to Alkalus.");
 					output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
+					RegistrationHandler.recipesFailed++;
 				}
 			}
 		}
