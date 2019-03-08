@@ -12,17 +12,6 @@ item.em.EuMeterGT.name=GT EU meter
 item.tm.teslaCoilCover.name=Tesla Coil Cover
 item.tm.teslaCoilCoverUltimate.name=Tesla Coil Cover Rich Edition
 
-//TODO Improve names of everything involved with tesla
-
-item.tm.teslaCoilCapacitor_1.name=LV Tesla Capacitor
-item.tm.teslaCoilCapacitor_2.name=MV Tesla Capacitor
-item.tm.teslaCoilCapacitor_3.name=HV Tesla Capacitor
-item.tm.teslaCoilCapacitor_4.name=EV Tesla Capacitor
-item.tm.teslaCoilCapacitor_5.name=IV Tesla Capacitor
-item.tm.teslaCoilCapacitor_6.name=LuV Tesla Capacitor
-item.tm.teslaCoilCapacitor_7.name=ZPM Tesla Capacitor
-item.tm.teslaCoilCapacitor_8.name=UV Tesla Capacitor
-
 death.attack.microwaving=%1$s was dehydrated by radiation.
 death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
 

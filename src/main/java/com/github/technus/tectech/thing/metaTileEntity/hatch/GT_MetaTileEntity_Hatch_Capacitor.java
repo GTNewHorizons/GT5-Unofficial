@@ -102,19 +102,15 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        //if(aBaseMetaTileEntity.isActive())
-        //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        //else if(heat>0)
-        //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        //else
         aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 1;
+    public int getSizeInventory() {//HACK TO NOT DROP CONTENTS!!!
+        return energyStoredFrac >= 0.25 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
+
 
     @Override
     public String[] getDescription() {

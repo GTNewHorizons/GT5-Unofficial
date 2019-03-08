@@ -63,9 +63,8 @@ public class ThingsLoader implements Runnable {
         ElementalDefinitionScanStorage_EM.run();
         EuMeterGT.run();
 
-        for(int i=1;i <= 8; i++){
-            TeslaCoilCapacitor.run(i);//TODO Verify the category of capacitors!
-        }
+
+        TeslaCoilCapacitor.run();
 
         TecTech.LOGGER.info("Useful Items registered");
 
