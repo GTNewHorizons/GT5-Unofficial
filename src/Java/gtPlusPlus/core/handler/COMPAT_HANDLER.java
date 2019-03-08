@@ -204,7 +204,8 @@ public class COMPAT_HANDLER {
 				}
 			}
 		}
-		RecipeGen_Recycling.executeGenerators();		
+		RecipeGen_Recycling.executeGenerators();	
+		runQueuedMisc();
 	}
 
 	public static final AutoMap<RunnableWithInfo<String>> mRecipesToGenerate = new AutoMap<RunnableWithInfo<String>>();
