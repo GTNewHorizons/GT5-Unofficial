@@ -277,7 +277,7 @@ public class GT_RecipeAdder
         return true;
     }
 
-    public boolean addCannerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
+	public boolean addCannerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
@@ -331,6 +331,7 @@ public class GT_RecipeAdder
         return true;
     }
 
+    @Override
     public boolean addCutterRecipe(ItemStack aInput, FluidStack aLubricant, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
         if ((aInput == null) || (aLubricant == null) || (aOutput1 == null)) {
             return false;
@@ -342,32 +343,45 @@ public class GT_RecipeAdder
         return true;
     }
 
-    public boolean addCutterRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
-        if ((aInput == null) || (aOutput1 == null)) {
-            return false;
-        }
-        if ((aDuration = GregTech_API.sRecipeFile.get("cutting", aInput, aDuration)) <= 0) {
-            return false;
-        }
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 2, aEUt, 0);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, 0);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(1, Math.min(250, aDuration * aEUt / 1280)))}, null, aDuration, aEUt, 0);
-        return true;
-    }
-    
     public boolean addCutterRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, boolean aCleanroom) {
-        if ((aInput == null) || (aOutput1 == null)) {
+      return addCutterRecipe(aInput,null,aOutput1,aOutput2,aDuration,aEUt,aCleanroom);
+    }
+    public boolean addCutterRecipe(ItemStack aInput, int aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt){
+        return addCutterRecipe(aInput,aCircuit,aOutput1,aOutput2,aDuration,aEUt,false);
+    }
+    public boolean addCutterRecipe(ItemStack aInput, int aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, boolean aCleanroom) {
+        return addCutterRecipe(aInput,GT_Utility.getIntegratedCircuit(aCircuit),aOutput1,aOutput2,aDuration,aEUt,aCleanroom);
+    }
+
+    public boolean addCutterRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
+        return addCutterRecipe(aInput, aOutput1, aOutput2, aDuration, aEUt,false);
+    }
+
+    public boolean addCutterRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
+        return addCutterRecipe(aInput, aCircuit, aOutput1, aOutput2, aDuration, aEUt,false);
+    }
+
+    public boolean addCutterRecipe(ItemStack aInput, ItemStack aCircuit, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, boolean aCleanroom) {
+        return addCutterRecipe(new ItemStack[]{aInput,aCircuit},new ItemStack[]{aOutput1,aOutput2},aDuration,aEUt,aCleanroom ? -200 : 0);
+    }
+
+    public boolean addCutterRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, boolean aCleanroom) {
+        return addCutterRecipe(aInputs, aOutputs, aDuration, aEUt, aCleanroom ? -200 : 0);
+    }
+
+    public boolean addCutterRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, int aDuration, int aEUt, int aSpecial) {
+        if ((aInputs == null) || (aOutputs == null) || aInputs.length == 0 || aOutputs.length == 0) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("cutting", aInput, aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get("cutting", aInputs[0], aDuration)) <= 0) {
             return false;
         }
-        if (!GT_Mod.gregtechproxy.mEnableCleanroom){
-            aCleanroom = false;
+        if (!GT_Mod.gregtechproxy.mEnableCleanroom && aSpecial == -200){
+            aSpecial = 0;
         }
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 2, aEUt, aCleanroom ? -200 : 0);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, aCleanroom ? -200 : 0);
-        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2}, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(1, Math.min(250, aDuration * aEUt / 1280)))}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Water.getFluid(Math.max(4, Math.min(1000, aDuration * aEUt / 320)))}, null, aDuration * 2, aEUt, aSpecial);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, aDuration * aEUt / 426)))}, null, aDuration * 2, aEUt, aSpecial);
+        GT_Recipe.GT_Recipe_Map.sCutterRecipes.addRecipe(true, aInputs, aOutputs, null, new FluidStack[]{Materials.Lubricant.getFluid(Math.max(1, Math.min(250, aDuration * aEUt / 1280)))}, null, aDuration, aEUt, aSpecial);
         return true;
     }
     
@@ -1118,10 +1132,11 @@ public class GT_RecipeAdder
         return true;
     }
     
-	public boolean addTesseractRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
+    public boolean addTesseractRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {
     	GT_Recipe.GT_Recipe_Map.sTesseractRecipes.addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4, aOutput5, aOutput6}, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
         return true;
     }
+    
     
     @Override
     public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput, FluidStack aFluidOutput, int aDuration, int aEUt) {
