@@ -35,6 +35,8 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Wetware.set(addItem(tLastID = 6, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
         ItemList.Circuit_Board_Plastic.set(addItem(tLastID = 7, "Plastic Circuit Board", "A Good Board", o));
         ItemList.Circuit_Board_Bio.set(addItem(tLastID = 8, "Bio Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Crystal.set(addItem(tLastID = 9, "Crystal Circuit Board", "Crystal Board on Oriharukon base", o));
+        
         /**
          * electronic components:
          * vacuum tube (glass tube + red alloy cables)
@@ -161,6 +163,9 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Silicon_Ingot8.set(addItem(tLastID = 152, "Americium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer8.set(addItem(tLastID = 153, "Americium doped Wafer", "Raw Circuit", o));
         
+        ItemList.Circuit_Silicon_Ingot9.set(addItem(tLastID = 129, "Vibrant Alloy doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer9.set(addItem(tLastID = 130, "Vibrant Alloy doped Wafer", "Raw Circuit", o));
+        
         /**
          * Engraved Crystal Chip
          * Engraved Lapotron Chip
@@ -234,6 +239,7 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Board_Wetware_Extreme.set(addItem(tLastID = 105, "Extreme Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
         ItemList.Circuit_Board_Plastic_Advanced.set(addItem(tLastID = 106, "Plastic Circuit Board", "A good Board", o));
         ItemList.Circuit_Board_Bio_Ultra.set(addItem(tLastID = 107, "Ultra Bio Mutted Circuit Board", "Bio genetic mutated Board", o));
+        ItemList.Circuit_Board_Crystal_Extreme.set(addItem(tLastID = 119, "Super Crystal Circuit Board", "Crystal coolant Board", o));
         ItemList.Circuit_Biomainframe.set(addItem(tLastID = 120, "Bio Mainframe", "A Bio Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Bio), SubTag.NO_UNIFICATION}));
         
         ItemList.Circuit_Piko.set(addItem(tLastID = 123, "Piko Circuit", "A Super Circuit",  new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), SubTag.NO_UNIFICATION}));
