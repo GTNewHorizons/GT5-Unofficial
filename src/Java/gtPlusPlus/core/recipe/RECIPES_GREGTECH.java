@@ -1465,6 +1465,52 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallThorium", 20),
 				ELEMENT.getInstance().URANIUM232.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI,
 				new int[] { 0, 0, 10 }, 500 * 20, 2000);
+		
+
+		//Process Used Fuel Rods for Krypton
+		
+		//Uranium
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedCircuit(20),
+				ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
+				GT_Values.NF,
+				ELEMENT.getInstance().KRYPTON.getFluid(60),
+				ItemList.IC2_Fuel_Rod_Empty.get(8),
+				ELEMENT.getInstance().URANIUM238.getDust(2),
+				ELEMENT.getInstance().URANIUM232.getSmallDust(1),
+				ELEMENT.getInstance().URANIUM233.getSmallDust(1),
+				ELEMENT.getInstance().URANIUM235.getSmallDust(1),
+				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
+				new int[] { 0, 0, 1000, 1000, 1000, 500 }, 500 * 20, 4000);
+		//Mox
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedCircuit(20),
+				ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
+				GT_Values.NF,
+				ELEMENT.getInstance().KRYPTON.getFluid(90),
+				ItemList.IC2_Fuel_Rod_Empty.get(8),
+				ELEMENT.getInstance().PLUTONIUM244.getDust(2),
+				ELEMENT.getInstance().PLUTONIUM241.getTinyDust(1),
+				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
+				ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
+				ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
+				new int[] { 0, 0, 500, 500, 500, 500 }, 750 * 20, 4000);
+		
+		//Thorium
+		GT_Values.RA.addCentrifugeRecipe(
+				CI.getNumberedCircuit(20),
+				ItemList.Depleted_Thorium_1.get(8),
+				GT_Values.NF,
+				ELEMENT.getInstance().KRYPTON.getFluid(30),
+				ItemList.IC2_Fuel_Rod_Empty.get(8),
+				ELEMENT.getInstance().THORIUM.getDust(2),
+				ELEMENT.getInstance().THORIUM232.getDust(1),
+				ELEMENT.getInstance().LUTETIUM.getSmallDust(1),
+				ELEMENT.getInstance().POLONIUM.getSmallDust(1),
+				ELEMENT.getInstance().THALLIUM.getTinyDust(1),
+				new int[] { 0, 0, 5000, 5000, 5000, 2500 }, 250 * 20, 4000);
+		
+		
 
 	}
 
