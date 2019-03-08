@@ -18,6 +18,7 @@ import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.fluids.FluidFactory;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.BurnableFuelHandler;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
@@ -81,7 +82,7 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		CI.preInit();
-
+		FluidFactory.preInit();
 		COMPAT_IntermodStaging.preInit(e);
 		BookHandler.run();
 		// Registration of entities and renderers
@@ -117,6 +118,7 @@ public class CommonProxy {
 			Logger.ERROR("[ERROR] Did not generate fluids at all.");
 		}
 		CI.init();
+		FluidFactory.init();
 
 		/**
 		 * Register the Event Handlers.
@@ -158,6 +160,7 @@ public class CommonProxy {
 	public void postInit(final FMLPostInitializationEvent e) {
 		Logger.INFO("Cleaning up, doing postInit.");
 		PlayerCache.initCache();
+		FluidFactory.postInit();
 
 		// Make Burnables burnable
 		if (!CORE.burnables.isEmpty()) {

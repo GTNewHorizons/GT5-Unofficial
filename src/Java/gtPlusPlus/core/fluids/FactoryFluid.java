@@ -10,17 +10,25 @@ public class FactoryFluid extends Fluid implements Runnable {
 	private final String mTextureName;
 	private final short[] mRGBa;
 
-	public FactoryFluid(String fluidName, int luminosity, int density, int temp, int viscosity, final short[] aRGBa) {
-		this(fluidName, null, luminosity, density, temp, viscosity, false, EnumRarity.common, aRGBa);
+	public FactoryFluid(String fluidName, final short[] aRGBa) {
+		this(fluidName, null, Short.MIN_VALUE, Short.MIN_VALUE, Short.MIN_VALUE, Short.MIN_VALUE, false, EnumRarity.common, aRGBa);
 	}
 
+	public FactoryFluid(String fluidName, int luminosity, int density, int temp, int viscosity, final short[] aRGBa) {
+		this(fluidName, null, luminosity, density, temp, viscosity, (density == Short.MIN_VALUE || density >= 0 ? false : true), EnumRarity.common, aRGBa);
+	}
+	
 	public FactoryFluid(String fluidName, Block aBlock, int luminosity, int density, int temp, int viscosity, boolean gas, EnumRarity aRarity, final short[] aRGBa) {
 		super(fluidName);
 		this.mRGBa = aRGBa;
 		this.setBlock(aBlock);
+		if (luminosity != Short.MIN_VALUE)
 		this.setLuminosity(luminosity);
+		if (density != Short.MIN_VALUE)
 		this.setDensity(density);
+		if (temp != Short.MIN_VALUE)
 		this.setTemperature(temp);
+		if (viscosity != Short.MIN_VALUE)
 		this.setViscosity(viscosity);
 		this.setGaseous(gas);
 		this.setRarity(aRarity);

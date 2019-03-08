@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import gtPlusPlus.api.objects.GregtechException;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,10 +27,28 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 
 public class ItemGenericFluidBucket extends ItemBucket {
 
+	private static IIcon mBaseBucketTexture;
+	private static IIcon mOverlayBucketTexture;	
+	private static AutoMap<Block> mInternalFluidCache = new AutoMap<Block>();	
+	
 	public ItemGenericFluidBucket(Block aFluid) {
 		super(aFluid);
 		this.setContainerItem(Items.bucket);
 		this.maxStackSize = 1;
+		mInternalFluidCache.put(aFluid);
+	}
+	
+	public static ItemStack registerFluidForBucket(int aID) {
+		
+		if (FluidFactory.mMetaToBucketMap.containsKey(aID)) {
+			try {
+				throw new GregtechException(""+aID+" is already registered! Unable to register fluid: "+FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
+			} catch (GregtechException e) {
+				System.exit(0);
+			}
+		}		
+		mInternalFluidCache.put(FluidFactory.mMetaToBlockMap.get(aID));
+		return ItemUtils.simpleMetaStack(FluidFactory.mGenericBucket, aID, 1);
 	}
 
 	Map<Integer, IIcon> mIconCache = new LinkedHashMap<Integer, IIcon>();
@@ -36,7 +59,7 @@ public class ItemGenericFluidBucket extends ItemBucket {
 	 */
 	public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
-		Block isFull = FluidFactory.mBucketToBlockMap.get(aStack);
+		Block isFull = FluidFactory.mMetaToBlockMap.get(aStack.getItemDamage());
 
 		boolean flag = isFull == Blocks.air;
 		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(aWorld, aPlayer, flag);
@@ -179,19 +202,27 @@ public class ItemGenericFluidBucket extends ItemBucket {
 	}
 
 	@Override
-	public int getMetadata(int p_77647_1_) {
-		// TODO Auto-generated method stub
-		return super.getMetadata(p_77647_1_);
+	public boolean getHasSubtypes() {
+		return mInternalFluidCache.size() > 0;
 	}
 
 	@Override
-	public boolean getHasSubtypes() {
-		return super.getHasSubtypes();
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
+		list.add(new ItemStack(item, 1, 0));			
+			for (Block f : mInternalFluidCache) {
+				Integer aMeta;
+				if (f != null) {
+					aMeta = FluidFactory.mBlockToMetaMap.get(f);
+					if (aMeta != null) {
+						list.add(new ItemStack(item, 1, aMeta));						
+					}
+				}			
+			}		
 	}
 
 	@Override
 	public int getMaxDamage() {
-		return super.getMaxDamage();
+		return 512;
 	}
 
 	@Override
@@ -211,20 +242,20 @@ public class ItemGenericFluidBucket extends ItemBucket {
 	}
 
 	@Override
-	public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
-		// TODO Auto-generated method stub
-		super.getSubItems(p_150895_1_, p_150895_2_, p_150895_3_);
-	}
-
-	@Override
 	public boolean isRepairable() {
 		return false;
 	}
 
 	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		IIcon aTemp = mIconCache.get(stack.getItemDamage());
-		return aTemp != null ? aTemp : super.getIcon(stack, renderPass, player, usingItem, useRemaining);
+	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {		
+		if (stack != null && renderPass == 1) {
+			return mOverlayBucketTexture;
+		}
+		else {
+			return mBaseBucketTexture;
+		}		
+		/*IIcon aTemp = mIconCache.get(stack.getItemDamage());
+		return aTemp != null ? aTemp : super.getIcon(stack, renderPass, player, usingItem, useRemaining);*/
 	}
 
 	@Override
@@ -234,7 +265,7 @@ public class ItemGenericFluidBucket extends ItemBucket {
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
-		return 0;
+		return 512;
 	}
 
 	@Override
@@ -245,6 +276,43 @@ public class ItemGenericFluidBucket extends ItemBucket {
 	@Override
 	public int getItemEnchantability(ItemStack stack) {
 		return 0;
+	}	
+	
+	@Override
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+		if (pass == 1) {
+			return mOverlayBucketTexture;
+		}
+		else {
+			return mBaseBucketTexture;
+		}
 	}
+
+	@Override
+	public void registerIcons(final IIconRegister i) {
+		mBaseBucketTexture = i.registerIcon("bucket_empty");
+		mOverlayBucketTexture = i.registerIcon(CORE.MODID+":bucket.generic.overlay");		
+	}
+
+	@Override
+	public boolean tryPlaceContainedLiquid(World p_77875_1_, int p_77875_2_, int p_77875_3_, int p_77875_4_) {
+		return tryPlaceContainedLiquid(Blocks.air, p_77875_1_, p_77875_2_, p_77875_3_, p_77875_4_);
+	}
+
+	@Override
+	public int getColorFromItemStack(ItemStack aStack, int aPass) {
+		if (aPass == 0) {
+			return super.getColorFromItemStack(aStack, aPass);
+		}
+		else {
+			return FluidFactory.mMetaToColourMap.get(aStack.getItemDamage());
+		}
+	}
+
+	@Override
+	public boolean requiresMultipleRenderPasses() {
+		return true;
+	}
+	
 
 }

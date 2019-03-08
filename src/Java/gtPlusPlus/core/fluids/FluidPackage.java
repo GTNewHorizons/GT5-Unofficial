@@ -1,9 +1,26 @@
 package gtPlusPlus.core.fluids;
 
-import static gtPlusPlus.core.fluids.FluidFactory.*;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import static gtPlusPlus.core.fluids.FluidFactory.mBlockToBucketMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBlockToFluidMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBlockToMetaMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBlockToNameMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBucketToBlockMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBucketToFluidMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBucketToMetaMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mBucketToNameMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mFluidToBlockMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mFluidToBucketMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mFluidToMetaMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mFluidToNameMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mMetaToBlockMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mMetaToBucketMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mMetaToColourMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mMetaToFluidMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mMetaToNameMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mNameToBlockMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mNameToBucketMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mNameToFluidMap;
+import static gtPlusPlus.core.fluids.FluidFactory.mNameToMetaMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -45,6 +62,7 @@ public class FluidPackage {
 		mMetaToBucketMap.put(aID, aBucket);
 		mMetaToBlockMap.put(aID, aBlock);
 		
+		mMetaToColourMap.put(aID, aFluid.getColor());
 		
 		mID = aID;
 		mName = aName;

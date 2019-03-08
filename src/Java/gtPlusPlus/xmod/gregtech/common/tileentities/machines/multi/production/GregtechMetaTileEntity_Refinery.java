@@ -93,7 +93,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
 			g.mRecipeMap = null;
 		}		
 		boolean ab = super.checkRecipeGeneric();
-		Logger.INFO("Did Recipe? "+ab);
+		//Logger.INFO("Did Recipe? "+ab);
 		return ab;
     }	
 	
