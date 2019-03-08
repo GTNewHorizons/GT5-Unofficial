@@ -1538,7 +1538,6 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         //Tesseract
         ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1L));
         
-        
    }
 
     private static void run4() {
@@ -1597,7 +1596,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         makeWires(Materials.Duranium, 1820, bEC ? 8L : 64L, bEC ? 16L : 128L, 1L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
         makeWires(Materials.ElectrumFlux, 1900, bEC ? 2L : 16L, bEC ? 4L : 64L, 3L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
 
-        makeWires(Materials.Superconductor, 2020, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[9], aBoolConst_0, true);
+        makeWires(Materials.Superconductor, 2020, 0L, 0L, 24L, gregtech.api.enums.GT_Values.V[9], aBoolConst_0, true);
         makeWires(Materials.Europium, 11310, 1L, 32L, 2L, GT_Values.V[9], aBoolConst_0, true);
         
         makeWires(Materials.Diamericiumtitanium, 11330, 1L, 32L, 8L, GT_Values.V[10], aBoolConst_0, true);
@@ -1618,12 +1617,15 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         makeWires(Materials.SuperconductorIV, 2380, 0L, 0L, 4L, gregtech.api.enums.GT_Values.V[5], aBoolConst_0, true);
         makeWires(Materials.SuperconductorLuV, 2400, 0L, 0L, 8L, gregtech.api.enums.GT_Values.V[6], aBoolConst_0, true);
         makeWires(Materials.SuperconductorZPM, 2420, 0L, 0L, 8L, gregtech.api.enums.GT_Values.V[7], aBoolConst_0, true);
-        makeWires(Materials.SuperconductorUV, 2440, 0L, 0L, 12L, gregtech.api.enums.GT_Values.V[8], aBoolConst_0, true);
-        makeWires(Materials.SuperconductorUEV, 2460, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[10], aBoolConst_0, true);
-        makeWires(Materials.Longasssuperconductornameforuvwire, 2480, 2L, 2L, 4L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
-        makeWires(Materials.Longasssuperconductornameforuhvwire, 2500, 2L, 2L, 4L, gregtech.api.enums.GT_Values.V[9], true, aBoolConst_0);
-        makeWires(Materials.Longasssuperconductornameforuevwire, 2520, 2L, 2L, 4L, gregtech.api.enums.GT_Values.V[10], true, aBoolConst_0);
+        makeWires(Materials.SuperconductorUV, 2440, 0L, 0L, 16L, gregtech.api.enums.GT_Values.V[8], aBoolConst_0, true);
+        makeWires(Materials.SuperconductorUEV, 2460, 0L, 0L, 32L, gregtech.api.enums.GT_Values.V[10], aBoolConst_0, true);
+        makeWires(Materials.Longasssuperconductornameforuvwire, 2480, 2L, 2L, 8L, gregtech.api.enums.GT_Values.V[8], true, aBoolConst_0);
+        makeWires(Materials.Longasssuperconductornameforuhvwire, 2500, 2L, 2L, 12L, gregtech.api.enums.GT_Values.V[9], true, aBoolConst_0);
+        makeWires(Materials.Longasssuperconductornameforuevwire, 2520, 2L, 2L, 16L, gregtech.api.enums.GT_Values.V[10], true, aBoolConst_0);
         
+        if (Loader.isModLoaded("Thaumcraft")){
+        makeWires(Materials.Ichorium, 2540, 2L, 2L, 12L, GT_Values.V[9], false, true);
+        }
         if (Loader.isModLoaded("DraconicEvolution")){
         makeWires(Materials.Draconium, 11390, bEC ? 4L : 16L, bEC ? 32L : 64L, 8L, GT_Values.V[10], true, false);
         makeWires(Materials.DraconiumAwakened, 11410, bEC ? 4L : 16L, bEC ? 16L : 32L, 1L, GT_Values.V[14], false, false);
