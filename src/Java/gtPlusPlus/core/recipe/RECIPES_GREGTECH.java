@@ -326,7 +326,7 @@ public class RECIPES_GREGTECH {
 						CI.getAlternativeTieredFluid(7, 144 * 18 * (GTNH ? 16 : 8)),
 						
 				},
-				ItemUtils.getItemStack("miscutils:personalHealingDevice", 1), 
+				ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1), 
 				20 * 60 * 30 * (GTNH ? 2 : 1),
 				(int) GT_Values.V[7]);
 		
@@ -335,7 +335,7 @@ public class RECIPES_GREGTECH {
 		//Charge Pack LuV-UV
 
 		ItemStack[] aChargeResearch = new ItemStack[] {
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore7", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
 				ItemUtils.getSimpleStack(ModItems.itemChargePack1, 1),
 				ItemUtils.getSimpleStack(ModItems.itemChargePack2, 1),
 				ItemUtils.getSimpleStack(ModItems.itemChargePack3, 1),
@@ -349,10 +349,10 @@ public class RECIPES_GREGTECH {
 		};
 
 		ItemStack[] aBufferCoreInputs = new ItemStack[] {
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore7", GTNH ? 8 : 4),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore8", GTNH ? 8 : 4),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore9", GTNH ? 8 : 4),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore10", GTNH ? 8 : 4),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", GTNH ? 8 : 4),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", GTNH ? 8 : 4),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", GTNH ? 8 : 4),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", GTNH ? 8 : 4),
 		};
 		
 		int aCurrSlot = 0;
@@ -696,21 +696,29 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion),
 				ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("sulfuricacid", 250));
 
-		// Hydrofluoric Acid
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
-				ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
-				FluidUtils.getFluidStack("hydrofluoricacid", 250), null);
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
-				ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 250));
 
+		
+		// Hydrofluoric Acid
+		boolean addedGtExtraction = false;
+		// Try use Internal GT Fluid first
 		if (Utils.getGregtechVersionAsInt() >= 50929) {
 			// Hydrofluoric Acid
 			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
 					ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 					FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250), null);
-			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+			addedGtExtraction = GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
 					ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 250));
 		}
+		//Add a Fill recipe for GT++ Acid
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle),
+				ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+				FluidUtils.getFluidStack("hydrofluoricacid", 125), null);
+		//Add an empty recipe, but only if we didn't for the standard GT HF. Prevents Fluid transformation exploits.
+		if (!addedGtExtraction)
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion),
+				ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 125));
+
+		
 	}
 
 	private static void cokeOvenRecipes() {

@@ -124,7 +124,7 @@ public class ItemUtils {
 			final int meta) {
 		try {
 			Item em = null;
-			final Item em1 = getItem(FQRN);
+			final Item em1 = getItemFromFQRN(FQRN);
 			// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null) {
 				em = em1;
@@ -158,7 +158,7 @@ public class ItemUtils {
 		if (MOD) {
 			try {
 				Item em = null;
-				final Item em1 = getItem(FQRN);
+				final Item em1 = getItemFromFQRN(FQRN);
 				// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 				if (em1 != null) {
 					if (null == em) {
@@ -181,7 +181,7 @@ public class ItemUtils {
 	public static ItemStack simpleMetaStack(final String FQRN, final int meta, final int itemstackSize) {
 		try {
 			Item em = null;
-			final Item em1 = getItem(FQRN);
+			final Item em1 = getItemFromFQRN(FQRN);
 			// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null) {
 				if (null == em) {
@@ -233,7 +233,7 @@ public class ItemUtils {
 		ItemStack temp;
 		if (fqrn.toLowerCase().contains(oreDict.toLowerCase())) {
 			final String sanitizedName = fqrn.replace(oreDict, "");
-			temp = ItemUtils.getItemStack(sanitizedName, stackSize);
+			temp = ItemUtils.getItemStackFromFQRN(sanitizedName, stackSize);
 			return temp;
 		}
 		final String[] fqrnSplit = fqrn.split(":");
@@ -258,13 +258,13 @@ public class ItemUtils {
 		return null;
 	}
 
-	public static Item getItem(final String fqrn) // fqrn = fully qualified resource name
+	public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
 	{
 		final String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
 	}
 
-	public static ItemStack getItemStack(final String fqrn, final int Size) // fqrn = fully qualified resource name
+	public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource name
 	{
 		final String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);

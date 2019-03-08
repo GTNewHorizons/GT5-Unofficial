@@ -97,16 +97,16 @@ public class RECIPES_Machines {
 
 
 	//Buffer Cores
-	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
-	public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1);
-	public static ItemStack RECIPE_BufferCore_MV = ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1);
-	public static ItemStack RECIPE_BufferCore_HV = ItemUtils.getItemStack("miscutils:item.itemBufferCore4", 1);
-	public static ItemStack RECIPE_BufferCore_EV = ItemUtils.getItemStack("miscutils:item.itemBufferCore5", 1);
-	public static ItemStack RECIPE_BufferCore_IV = ItemUtils.getItemStack("miscutils:item.itemBufferCore6", 1);
-	public static ItemStack RECIPE_BufferCore_LuV = ItemUtils.getItemStack("miscutils:item.itemBufferCore7", 1);
-	public static ItemStack RECIPE_BufferCore_ZPM = ItemUtils.getItemStack("miscutils:item.itemBufferCore8", 1);
-	public static ItemStack RECIPE_BufferCore_UV = ItemUtils.getItemStack("miscutils:item.itemBufferCore9", 1);
-	public static ItemStack RECIPE_BufferCore_MAX = ItemUtils.getItemStack("miscutils:item.itemBufferCore10", 1);
+	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore1", 1);
+	public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore2", 1);
+	public static ItemStack RECIPE_BufferCore_MV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore3", 1);
+	public static ItemStack RECIPE_BufferCore_HV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore4", 1);
+	public static ItemStack RECIPE_BufferCore_EV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore5", 1);
+	public static ItemStack RECIPE_BufferCore_IV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore6", 1);
+	public static ItemStack RECIPE_BufferCore_LuV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1);
+	public static ItemStack RECIPE_BufferCore_ZPM = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", 1);
+	public static ItemStack RECIPE_BufferCore_UV = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", 1);
+	public static ItemStack RECIPE_BufferCore_MAX = ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", 1);
 
 
 	//Wire
@@ -181,7 +181,7 @@ public class RECIPES_Machines {
 
 	//Lava Boiler
 	public static ItemStack boiler_Coal;
-	public static ItemStack blockBricks = ItemUtils.getItemStack("minecraft:brick_block", 1);
+	public static ItemStack blockBricks = ItemUtils.getItemStackFromFQRN("minecraft:brick_block", 1);
 
 	//Batteries
 	public static String batteryBasic = "batteryBasic";
@@ -990,7 +990,7 @@ public class RECIPES_Machines {
 						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
 						RECIPE_LFTRInnerCasing);
 
-				ItemStack IC2HeatPlate = ItemUtils.getItemStack("IC2:reactorPlatingHeat", 1);
+				ItemStack IC2HeatPlate = ItemUtils.getItemStackFromFQRN("IC2:reactorPlatingHeat", 1);
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
 						IC2HeatPlate, "frameGtHastelloyC276", IC2HeatPlate,
@@ -1605,7 +1605,7 @@ public class RECIPES_Machines {
 
 		Item aBaseCore = ModItems.itemControlCore;		
 		ItemStack[] aInputPrevTier = new ItemStack[] {
-				GTNH ? ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1) : ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1),
+				GTNH ? ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore3", 1) : ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore2", 1),
 						ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
 						ItemUtils.simpleMetaStack(aBaseCore, 1, 1),
 						ItemUtils.simpleMetaStack(aBaseCore, 2, 1),
@@ -1636,7 +1636,7 @@ public class RECIPES_Machines {
 						aOutput[1],
 						aMat_A[1].getGear(GTNH ? 4 : 2),
 						aMat_B[2].getPlateDouble(GTNH ? 16 : 8),
-						ItemUtils.getItemStack("miscutils:item.itemBufferCore"+(GTNH ? "2" : "1"), GTNH ? 4 : 2),
+						ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+(GTNH ? "2" : "1"), GTNH ? 4 : 2),
 						ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(GTNH ? 3 : 2), GTNH ? 10 : 5)
 				},					
 				aMat_B[3].getFluid(144 * 8), //Input Fluid					
@@ -1806,16 +1806,16 @@ public class RECIPES_Machines {
 
 
 		ItemStack[] aOutput = new ItemStack[] {
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"1", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"2", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"3", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"4", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"5", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"6", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"7", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"8", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"9", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"10", 1)
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"1", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"2", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"3", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"4", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"5", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"6", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"7", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"8", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"9", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"10", 1)
 		};		
 
 		int aCostMultiplier = GTNH ? 4 : 1;	

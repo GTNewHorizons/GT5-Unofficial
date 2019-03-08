@@ -631,16 +631,16 @@ public class CI {
 	
 	public static ItemStack getEnergyCore(int aTier, int aAmount) {
 		ItemStack[] aOutput = new ItemStack[] {
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"1", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"2", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"3", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"4", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"5", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"6", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"7", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"8", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"9", 1),
-				ItemUtils.getItemStack("miscutils:item.itemBufferCore"+"10", 1)
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"1", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"2", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"3", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"4", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"5", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"6", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"7", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"8", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"9", 1),
+				ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore"+"10", 1)
 		};
 		return ItemUtils.getSimpleStack(aOutput[MathUtils.balance(aTier, 0, 9)], aAmount);
 	}

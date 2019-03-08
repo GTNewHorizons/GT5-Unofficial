@@ -13,12 +13,58 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class SemiFluidFuelHandler {
 
+	
+	public static boolean addSemiFluidFuel(ItemStack aFuelItem, int aFuelValue) {
+		FluidStack p = FluidContainerRegistry.getFluidForFilledItem(aFuelItem);
+		if (p != null && aFuelValue > 0) {
+			return addSemiFluidFuel(p, aFuelValue);
+		} else {
+			Logger.INFO("Fuel value for " + aFuelItem.getDisplayName() + " is <= 0, ignoring.");
+		}
+		return false;
+	}
+	
+	
+	public static boolean addSemiFluidFuel(FluidStack aFuel, int aFuelValue) {
+		FluidStack p = aFuel;
+		if (p != null && aFuelValue > 0) {
+			GT_Recipe aRecipe =
+					new Recipe_GT(true,
+							new ItemStack[] {},
+							new ItemStack[] {},
+							null,
+							new int[] {},
+							new FluidStack[] { p },
+							null,
+							0,
+							0,
+							aFuelValue);
+			if (aRecipe.mSpecialValue > 0) {
+				Logger.INFO("Added " + aRecipe.mFluidInputs[0].getLocalizedName() + " to the Semi-Fluid Generator fuel map. Fuel Produces "+(aRecipe.mSpecialValue*1000)+"EU per 1000L.");
+				sSemiFluidLiquidFuels.add(aRecipe);
+				return true;
+			}
+		} else {
+			Logger.INFO("Fuel value for " + p != null ? p.getLocalizedName() : "NULL Fluid" + " is <= 0, ignoring.");
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
 	public static boolean generateFuels() {
 		final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
 		final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
 		final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<Integer, Pair<FluidStack, Integer>>();
 		// Find Fluids From items
-		for (GT_Recipe g : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
+		for (final GT_Recipe r : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
+			
+			GT_Recipe g = r.copy();
+			
+			
 			if (g != null && g.mEnabled && g.mInputs.length > 0 && g.mInputs[0] != null) {
 				for (ItemStack i : g.mInputs) {
 					FluidStack f = FluidContainerRegistry.getFluidForFilledItem(i);

@@ -13,7 +13,7 @@ public class COMPAT_OpenBlocks {
 
 	private static final void run(){
 
-		Item aGraveItem = ItemUtils.getItem("OpenBlocks:grave");
+		Item aGraveItem = ItemUtils.getItemFromFQRN("OpenBlocks:grave");
 		if (aGraveItem == null) {
 			return;
 		}

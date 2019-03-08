@@ -10,7 +10,7 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 public class COMPAT_ExtraUtils {
 
 	public static void OreDict(){
-		RECIPES_Tools.RECIPE_DivisionSigil = new ItemStack(ItemUtils.getItem("ExtraUtilities:divisionSigil"));
+		RECIPES_Tools.RECIPE_DivisionSigil = new ItemStack(ItemUtils.getItemFromFQRN("ExtraUtilities:divisionSigil"));
 		run();
 
 	}

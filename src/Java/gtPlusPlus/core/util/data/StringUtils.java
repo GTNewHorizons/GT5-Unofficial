@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util.data;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+
 public class StringUtils {
 
 	public static String superscript(String str) {
@@ -130,5 +132,43 @@ public class StringUtils {
 			}
 			return aData;
 		}		
+	}
+	
+	public static String splitAndUppercase(String aInput, String aDelim) {
+		String[] aSplit = aInput.split(aDelim);
+		if (aSplit == null || aSplit.length == 0) {
+			return aInput;
+		}
+		else {
+			AutoMap<String> aTemp = new AutoMap<String>();
+			for (String s : aSplit) {
+				aTemp.put(firstLetterCaps(s));
+			}
+			String aReturn = "";
+			for (String s : aTemp) {
+				aReturn += s;
+			}
+			return aReturn;
+		}	
+	}
+	
+	public static int characterCount(String aString, char aChar) {
+		return characterCount(aString, ""+aChar);
+	}
+	
+	public static int characterCount(String aString, String aChar) {
+		int aLength = aString.length();
+		int aFound = 0;
+		if (aLength == 0 || !aString.contains(aChar)) {
+			return 0;
+		}
+		else {
+			for (int index = 0; index < aLength; index++) {
+				if (aString.substring(index, index+1).equals(aChar)) {
+					aFound++;
+				}
+			}
+			return aFound;
+		}
 	}
 }

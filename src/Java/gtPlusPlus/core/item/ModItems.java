@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
@@ -366,7 +367,7 @@ public final class ModItems {
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));
 
 
 		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0).setTextureName(CORE.MODID + ":itemCoalCoke");
@@ -884,7 +885,10 @@ public final class ModItems {
 		
 		//Nuclear Processing
 		NuclearChem.run();
-
+		
+		//Farm Animal Fun
+		AgriculturalChem.run();
+		
 		//Only used for debugging.
 		/*if (CORE.DEVENV) {
 			new ConnectedBlockFinder();

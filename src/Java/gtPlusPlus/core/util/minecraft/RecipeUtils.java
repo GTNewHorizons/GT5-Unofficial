@@ -212,7 +212,7 @@ public static int mInvalidID = 1;
 	public static boolean removeCraftingRecipe(Object x){
 		if (null == x){return false;}
 		if (x instanceof String){
-			final Item R = ItemUtils.getItem((String) x);
+			final Item R = ItemUtils.getItemFromFQRN((String) x);
 			if (R != null){
 				x = R;
 			}

@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
@@ -1063,6 +1064,16 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	        GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(aFusionCustom);
 	        return true;
 			
+		}
+
+		@Override
+		public boolean addSemifluidFuel(ItemStack aFuelItem, int aFuelValue) {
+			return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
+		}
+
+		@Override
+		public boolean addSemifluidFuel(FluidStack aFuelItem, int aFuelValue) {
+			return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
 		}
 		
 		

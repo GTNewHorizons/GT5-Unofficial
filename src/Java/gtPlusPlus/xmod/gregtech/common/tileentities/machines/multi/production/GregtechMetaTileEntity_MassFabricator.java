@@ -134,13 +134,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	public static ItemStack getScrapPile() {
 		if (mScrap[0] == null) {
-			mScrap[0] = ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrap"));
+			mScrap[0] = ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrap"));
 		}
 		return mScrap[0];
 	}	
 	public static ItemStack getScrapBox() {		
 		if (mScrap[1] == null) {
-			mScrap[1] = ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrapbox"));
+			mScrap[1] = ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrapbox"));
 		}
 		return mScrap[1];
 	}

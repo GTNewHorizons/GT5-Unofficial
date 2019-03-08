@@ -50,7 +50,7 @@ public class RECIPES_General {
 			RECIPE_Obsidian = ItemUtils.getSimpleStack(Blocks.obsidian);
 			RECIPE_CraftingTable = ItemUtils.getSimpleStack(Blocks.crafting_table);
 			RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);	
-			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);			
+			RECIPE_BasicCasingIC2 = ItemUtils.getItemStackFromFQRN("IC2:blockMachine", 1);			
 			OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(ModBlocks.blockWorkbench);
 			OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase);	
 			run();
@@ -127,9 +127,9 @@ public class RECIPES_General {
 		//Iron bars
 		final ItemStack ironBars;
 		if (CORE.GTNH) {
-			ironBars = ItemUtils.getItemStack("dreamcraft:item.SteelBars", 1);
+			ironBars = ItemUtils.getItemStackFromFQRN("dreamcraft:item.SteelBars", 1);
 		} else {
-			ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
+			ironBars = ItemUtils.getItemStackFromFQRN("minecraft:iron_bars", 1);
 		}
 
 		//Fish Trap
@@ -154,7 +154,7 @@ public class RECIPES_General {
 						null, CI.craftingToolWrench, null,
 						ironRecipe, ironRecipe, ironRecipe,
 						ironRecipe, ironRecipe, ironRecipe,
-						ItemUtils.getItemStack("minecraft:iron_bars", 8))) {
+						ItemUtils.getItemStackFromFQRN("minecraft:iron_bars", 8))) {
 					Logger.INFO("Re-added old GT recipe for Iron Bars.");			
 				}
 			}
@@ -287,7 +287,7 @@ public class RECIPES_General {
 						ItemUtils.getSimpleStack(ModBlocks.blockNet, 8), ItemUtils.getSimpleStack(Blocks.vine, 8),
 						ALLOY.TUMBAGA.getRing(1), },
 				FluidUtils.getWater(1000), // Fluid
-				ItemUtils.getItemStack("miscutils:SlowBuildingRing", 1), // Output
+				ItemUtils.getItemStackFromFQRN("miscutils:SlowBuildingRing", 1), // Output
 				20 * 30, // Dur
 				16); // Eu
 

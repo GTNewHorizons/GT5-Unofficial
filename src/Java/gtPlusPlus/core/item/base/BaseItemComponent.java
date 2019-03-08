@@ -18,6 +18,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -77,18 +78,33 @@ public class BaseItemComponent extends Item{
 
 	//For Cell Generation
 	public BaseItemComponent(final String unlocalName, final String localName, final short[] RGBA) {
+		
+		// Handles .'s from fluid internal names.
+		String aFormattedNameForFluids;
+		if (unlocalName.contains(".")) {			
+			if (StringUtils.characterCount(unlocalName, '.') > 1) {
+				aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName, ".");			
+			}
+			else {
+				aFormattedNameForFluids = unlocalName.replace(".", "");
+			}			
+		}
+		else {
+			aFormattedNameForFluids = unlocalName;
+		}		
+		 	
 		this.componentMaterial = null;
-		this.unlocalName = "itemCell"+unlocalName;
+		this.unlocalName = "itemCell"+aFormattedNameForFluids;
 		this.materialName = localName;
 		this.componentType = ComponentTypes.CELL;
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalName);
+		this.setUnlocalizedName(aFormattedNameForFluids);
 		this.setMaxStackSize(64);
 		this.componentColour = MathUtils.getRgbAsHex(RGBA);
 		this.extraData = RGBA;
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
-		GameRegistry.registerItem(this, unlocalName);
-		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
+		GameRegistry.registerItem(this, aFormattedNameForFluids);
+		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+aFormattedNameForFluids, ItemUtils.getSimpleStack(this));
 		registerComponent();
 	}
 
