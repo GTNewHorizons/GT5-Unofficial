@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
     	return new String[]{"Flotation Unit",
     			"Has the all recipes as the Ore Washer and Chemical Bath",
 				"Does not lose efficiency when overclocked",
-                "Size: 3x4x8",
+                "Size: 3x4x7",
                 "Chemically Inert Machine Casing = CIMC",
                 "Bottom: Controller/CIMC/Output Hatch(Bus),",
                 "Middle: Reinforced Glass, PTFE Pipe Machine Casing, Reinforced Glass",
@@ -179,9 +179,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 4, zDir+5)) {
             return false;
         }
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 4, zDir+6)) {
-            return false;
-        }
         //air check done
         //3 check
         mInputHatches.clear();
@@ -242,14 +239,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
             return false;
         }
         }
-        if(!addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 3, zDir+6), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 3, zDir+6)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 3, zDir+6)!= 0) {
-            return false;
-        }
-        }
         // ===
         if(!addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 3, zDir-1), 176)){
         if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 3, zDir-1)!= GregTech_API.sBlockCasings8) {
@@ -304,14 +293,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
             return false;
         }
         if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 3, zDir+5)!= 0) {
-            return false;
-        }
-        }
-        if(!addInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 3, zDir+6), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 3, zDir+6)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 3, zDir+6)!= 0) {
             return false;
         }
         }
@@ -381,14 +362,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                     return false;
                 }
             }
-            if(!addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir+6), 176)){
-                if(aBaseMetaTileEntity.getBlockOffset(xDir, 3, zDir+6)!= GregTech_API.sBlockCasings8) {
-                    return false;
-                }
-                if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 3, zDir+6)!= 0) {
-                    return false;
-                }
-            }
             if(mMufflerHatches.isEmpty()) {
                 return false;
             }
@@ -452,14 +425,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                 return false;
             }
             }
-            if(!addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 2, zDir+6), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 2, zDir+6)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 2, zDir+6)!= 0) {
-                return false;
-            }
-            }
             // ===
             if(!addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 2, zDir-1), 176)){
             if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 2, zDir-1)!= GregTech_API.sBlockCasings8) {
@@ -514,14 +479,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                 return false;
             }
             if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 2, zDir+5)!= 0) {
-                return false;
-            }
-            }
-            if(!addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 2, zDir+6), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 2, zDir+6)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 2, zDir+6)!= 0) {
                 return false;
             }
             }
@@ -580,13 +537,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                 return false;
             }
          
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 2, zDir+6)!= GregTech_API.sBlockCasings2) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 2, zDir+6)!= 4) {
-                return false;
-            }
-         
         //2 casing check done
             
         //1 check
@@ -619,10 +569,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                 return false;
             }
             
-            if (!aBaseMetaTileEntity.getBlockOffset(xDir-1, 1, zDir+6).getUnlocalizedName().equals("blockAlloyGlass")) {
-                return false;
-            }
-            
         // ===
             
             if (!aBaseMetaTileEntity.getBlockOffset(xDir+1, 1, zDir-1).getUnlocalizedName().equals("blockAlloyGlass")) {
@@ -650,10 +596,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
             }
             
             if (!aBaseMetaTileEntity.getBlockOffset(xDir+1, 1, zDir+5).getUnlocalizedName().equals("blockAlloyGlass")) {
-                return false;
-            }
-            
-            if (!aBaseMetaTileEntity.getBlockOffset(xDir+1, 1, zDir+6).getUnlocalizedName().equals("blockAlloyGlass")) {
                 return false;
             }
             
@@ -707,18 +649,11 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
                 return false;
             }
          
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 1, zDir+6)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 1, zDir+6)!= 1) {
-                return false;
-            }
-            
         //1 casing check done
             
         //bottom casing
         for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 7; j++) {
+            for (int j = -1; j < 6; j++) {
                 if (xDir + i != 0 || zDir + j != 0) {//sneak exclusion of the controller block
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
                     if (!addOutputToMachineList(tTileEntity, 176)) {
@@ -733,137 +668,6 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
             }
         }
         
-        // ===
-        /*mOutputHatches.clear();
-        mOutputBusses.clear();
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 0, zDir+2), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 0, zDir+2)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 0, zDir+2)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 0, zDir+3), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 0, zDir+3)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 0, zDir+3)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 0, zDir+4), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 0, zDir+4)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 0, zDir+4)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 0, zDir+5), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 0, zDir+5)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 0, zDir+5)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir-1, 0, zDir+6), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir-1, 0, zDir+6)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir-1, 0, zDir+6)!= 0) {
-            return false;
-        }
-        }
-        // ===
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 0, zDir+2), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 0, zDir+2)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 0, zDir+2)!= 0) {
-                return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 0, zDir+3), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 0, zDir+3)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 0, zDir+3)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 0, zDir+4), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 0, zDir+4)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 0, zDir+4)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 0, zDir+5), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 0, zDir+5)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 0, zDir+5)!= 0) {
-            return false;
-        }
-        }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+1, 0, zDir+6), 176)){
-        if(aBaseMetaTileEntity.getBlockOffset(xDir+1, 0, zDir+6)!= GregTech_API.sBlockCasings8) {
-            return false;
-        }
-        if(aBaseMetaTileEntity.getMetaIDOffset(xDir+1, 0, zDir+6)!= 0) {
-            return false;
-        }
-        }
-        // ===
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, zDir+2), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir+2)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir+2)!= 0) {
-                return false;
-            }
-            }
-        if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, zDir+3), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir+3)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir+3)!= 0) {
-                return false;
-            }
-            }
-            if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, zDir+4), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir+4)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir+4)!= 0) {
-                return false;
-            }
-            }
-            if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, zDir+5), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir+5)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir+5)!= 0) {
-                return false;
-            }
-            }
-            if(!addOutputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 0, zDir+6), 176)){
-            if(aBaseMetaTileEntity.getBlockOffset(xDir, 0, zDir+6)!= GregTech_API.sBlockCasings8) {
-                return false;
-            }
-            if(aBaseMetaTileEntity.getMetaIDOffset(xDir, 0, zDir+6)!= 0) {
-                return false;
-            }
-            }
-        if(mOutputHatches.isEmpty()) {
-            return false;
-        }
-        if(mOutputBusses.isEmpty()) {
-            return false;
-        }*/
         //bottom casing done
         return true;
     }
@@ -876,7 +680,7 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
             int Ypos = aBaseMetaTileEntity.getYCoord()+3;
             int Zpos = aBaseMetaTileEntity.getZCoord() + ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
             try {
-                aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(Xpos - 1, Ypos, Zpos - 1, Xpos + 1, Ypos, Zpos + 7);
+                aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(Xpos - 1, Ypos, Zpos - 1, Xpos + 1, Ypos, Zpos + 6);
             } catch (Exception ignored) {}
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
