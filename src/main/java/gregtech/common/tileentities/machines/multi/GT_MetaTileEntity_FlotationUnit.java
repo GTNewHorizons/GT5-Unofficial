@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_FlotationUnit extends GT_MetaTileEntity_MultiBloc
     	return new String[]{"Flotation Unit",
     			"Has the all recipes as the Ore Washer and Chemical Bath",
 				"Does not lose efficiency when overclocked",
-                "Size: 3x8x4",
+                "Size: 3x4x8",
                 "Chemically Inert Machine Casing = CIMC",
                 "Bottom: Controller/CIMC/Output Hatch(Bus),",
                 "Middle: Reinforced Glass, PTFE Pipe Machine Casing, Reinforced Glass",
