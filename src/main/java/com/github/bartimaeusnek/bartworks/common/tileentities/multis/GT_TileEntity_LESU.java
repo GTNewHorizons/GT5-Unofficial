@@ -206,10 +206,6 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         return new GT_Container_LESU(aPlayerInventory, aBaseMetaTileEntity);
     }
 
-    public boolean isServerSide() {
-        return !isClientSide();
-    }
-
     public boolean isClientSide() {
         if (getWorld() != null)
             return getWorld().isRemote ? FMLCommonHandler.instance().getSide() == Side.CLIENT : FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;

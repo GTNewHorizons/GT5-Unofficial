@@ -75,21 +75,25 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
     public boolean checkRecipe(ItemStack itemStack) {
         ItemStack[] tInputs = (ItemStack[]) this.getStoredInputs().toArray(new ItemStack[0]);
         FluidStack[] tFluids = (FluidStack[]) this.getStoredFluids().toArray(new FluidStack[0]);
-
-        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
-        ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
-
         long tVoltage = this.getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tFluids, tInputs);
+        if (tRecipe == null)
+            return false;
+
+        ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>();
+        ArrayList<FluidStack> outputFluids = new ArrayList<FluidStack>();
+
         boolean found_Recipe = false;
         int processed = 0;
 
         long nominalV = BW_Util.getnominalVoltage(this);
+        int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+        long precutRecipeVoltage = (long) (tRecipe.mEUt*Math.pow(0.95, tHeatCapacityDivTiers));
 
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && this.mHeatingCapacity >= tRecipe.mSpecialValue && tRecipe.isRecipeInputEqual(true, tFluids, tInputs) && (tRecipe.mEUt*processed) < nominalV ) {
+            if (this.mHeatingCapacity >= tRecipe.mSpecialValue && (precutRecipeVoltage*(processed+1)) < nominalV  && tRecipe.isRecipeInputEqual(true, tFluids, tInputs))  {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     outputItems.add(tRecipe.getOutput(i));
@@ -105,7 +109,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
         if (found_Recipe) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
+
             byte overclockCount = 0;
             long actualEUT = (long) (tRecipe.mEUt) * processed;
             if (actualEUT > Integer.MAX_VALUE) {
@@ -228,7 +232,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
         if (glasTier != 8 && !mEnergyHatches.isEmpty())
             for (GT_MetaTileEntity_Hatch_Energy hatchEnergy : mEnergyHatches) {
-                if (glasTier > hatchEnergy.mTier)
+                if (glasTier < hatchEnergy.mTier)
                     return false;
             }
 
