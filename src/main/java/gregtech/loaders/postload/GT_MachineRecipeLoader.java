@@ -2513,7 +2513,7 @@ if(Loader.isModLoaded("Railcraft")){
 		
             GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1,o), 288000, new ItemStack[]{
             		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4),
-            		ItemList.Circuit_Wetwaresupercomputer.get(8,o),
+            		ItemList.Circuit_Wetwaresupercomputer.get(2,o),
             		ItemList.Circuit_Parts_Coil.get(4,o),
             		ItemList.Circuit_Parts_CapacitorSMD.get(24,o),
             		ItemList.Circuit_Parts_ResistorSMD.get(64,o),
