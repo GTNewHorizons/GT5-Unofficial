@@ -290,6 +290,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
         int blockcounter = 0;
+        this.mRadHatches.clear();
 
         for (int x = -2; x <= 2; x++)
             for (int z = -2; z <= 2; z++)
@@ -320,13 +321,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
                         }
                     }
                 }
-
-//        this.mWrench = true;
-//        this.mScrewdriver = true;
-//        this.mSoftHammer = true;
-//        this.mHardHammer = true;
-//        this.mSolderingTool = true;
-//        this.mCrowbar = true;
 
         if (blockcounter > 18)
             if (this.mRadHatches.size() < 2)
