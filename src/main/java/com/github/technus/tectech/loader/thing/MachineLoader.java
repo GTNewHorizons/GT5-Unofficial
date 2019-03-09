@@ -351,6 +351,7 @@ public class MachineLoader implements Runnable {
 
         GT_MetaTileEntity_MultiblockBase_EM.run();
         GT_MetaTileEntity_Hatch_Rack.run();
+        GT_MetaTileEntity_Hatch_Capacitor.run();
         GT_MetaTileEntity_EM_computer.run();
         GT_MetaTileEntity_EM_research.run();
         GT_MetaTileEntity_EM_dataBank.run();
