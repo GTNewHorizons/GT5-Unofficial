@@ -4492,6 +4492,43 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), Materials.Mutagen.getFluid(250L), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 30720);
            GT_Values.RA.addMixerRecipe(Materials.AlienOrganic.getDust(1), Materials.MysteriousCrystal.getDustSmall(1), Materials.Oriharukon.getDustSmall(1), GT_Utility.getIntegratedCircuit(1), Materials.Mutagen.getFluid(1000), Materials.BioMediumRaw.getFluid(2500), GT_Values.NI, 360, 7680);
            
+		   //===
+           
+           GT_Values.RA.addPyrolyseRecipe(Materials.AlienOrganic.getDust(1), Materials.Radon.getGas(1000), 1, null, Materials.AlienBiomass.getFluid(1000L), 200, 122880);
+           GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.EnrichedMysteriousCrystal.getDustTiny(1),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AlienBiomass.getFluid(900), Materials.Hydrogen.getGas(100)},  new FluidStack[]{Materials.FermentedAlienBiomass.getFluid(1000)}, new ItemStack[]{Materials.MysteriousCrystal.getDustTiny(1)}, 750, 90000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.FermentedAlienBiomass.getFluid(1000), new FluidStack[]{Materials.Oil.getFluid(200), Materials.Water.getFluid(200), Materials.Ethanol.getFluid(150), Materials.Methanol.getFluid(150), Materials.GrowthMediumRaw.getFluid(75), Materials.GrowthMediumSterilized.getFluid(40), Materials.Bacteria.getFluid(35), Materials.PerroxSuperHeavy.getFluid(65), Materials.PerroxHeavy.getFluid(35), Materials.PerroxLight.getFluid(30), Materials.PerroxSuperLight.getFluid(20)}, Ash.getDust(1), 500, 500000);
+           GT_Values.RA.addCrackingRecipe(24, Materials.PerroxSuperHeavy.getFluid(100), Materials.Nickel.getPlasma(1), Materials.PerroxSuperHeavyCracked.getGas(100), 500, 500000);
+           GT_Values.RA.addCrackingRecipe(24, Materials.PerroxHeavy.getFluid(100), Materials.Zinc.getPlasma(1), Materials.PerroxHeavyCracked.getGas(100), 500, 500000);
+           GT_Values.RA.addCrackingRecipe(24, Materials.PerroxLight.getFluid(100), Materials.Niobium.getPlasma(1), Materials.PerroxLightCracked.getGas(100), 500, 500000);
+           GT_Values.RA.addCrackingRecipe(24, Materials.PerroxSuperLight.getFluid(100), Materials.Silver.getPlasma(1), Materials.PerroxSuperLightCracked.getGas(100), 500, 500000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.PerroxSuperHeavyCracked.getGas(1000), new FluidStack[]{Materials.FermentedBiomass.getFluid(400), Materials.EnrichedBacterialSludge.getFluid(300), Materials.PerroxSuperHeavy.getFluid(100), Materials.Radon.getGas(80), Materials.PerroxHeavy.getFluid(80), Materials.PerroxGas.getGas(40)}, null, 200, 500000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.PerroxHeavyCracked.getGas(1000), new FluidStack[]{Materials.FermentedBiomass.getFluid(350), Materials.EnrichedBacterialSludge.getFluid(250), Materials.PerroxHeavy.getFluid(120), Materials.Radon.getGas(100), Materials.PerroxLight.getFluid(100), Materials.PerroxGas.getGas(80)}, null, 200, 500000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.PerroxLightCracked.getGas(1000), new FluidStack[]{Materials.FermentedBiomass.getFluid(330), Materials.EnrichedBacterialSludge.getFluid(220), Materials.PerroxLight.getFluid(150), Materials.Radon.getGas(120), Materials.PerroxSuperLight.getFluid(80), Materials.PerroxGas.getGas(100)}, null, 200, 500000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.PerroxSuperLightCracked.getGas(1000), new FluidStack[]{Materials.FermentedBiomass.getFluid(300), Materials.EnrichedBacterialSludge.getFluid(200), Materials.PerroxSuperLight.getFluid(200), Materials.Radon.getGas(150), Materials.PerroxGas.getGas(150)}, null, 200, 500000);
+           GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.PerroxGas.getGas(1000), Materials.Ledox.getMolten(144)},  new FluidStack[]{Materials.PerroxGasCoolant.getFluid(1000), new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)}, null, 600, 122880);
+           GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{GT_Utility.getIntegratedCircuit(2)}, new FluidStack[]{Materials.PerroxGasCoolant.getFluid(2160), Materials.Nitrogen.getPlasma(7500L), Materials.Tin.getPlasma(100L)},  new FluidStack[]{Materials.PerroxHot.getFluid(4320)}, null, 800, 500000);
+           GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), Materials.PerroxHot.getFluid(144), GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.PerroxPolymer, 1L), 100, 500000);
+           GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot,Materials.PerroxPolymer,1L),GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.PerroxPolymer,1L),200,500000);
+           
+           if(Loader.isModLoaded("GalacticraftCore")){
+           //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
+           GT_Values.RA.addAutoclaveSpaceRecipe(Materials.Naquadah.getDust(1),Materials.PerroxLight.getFluid(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,true);
+
+            //super heavy -> heavy radox conversion
+           GT_Values.RA.addCentrifugeRecipe(null,null,Materials.PerroxSuperHeavy.getFluid(1000),Materials.PerroxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
+
+            //heavy radox + Nq+ -> Nq*
+           GT_Values.RA.addAutoclaveSpaceRecipe(Materials.NaquadahEnriched.getDust(1),Materials.PerroxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,true);
+           }else {
+        	 //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
+               GT_Values.RA.addAutoclaveRecipe(Materials.Naquadah.getDust(1),Materials.PerroxLight.getFluid(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,false);
+
+                //super heavy -> heavy radox conversion
+               GT_Values.RA.addCentrifugeRecipe(null,null,Materials.PerroxSuperHeavy.getFluid(1000),Materials.PerroxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
+
+                //heavy radox + Nq+ -> Nq*
+               GT_Values.RA.addAutoclaveRecipe(Materials.NaquadahEnriched.getDust(1),Materials.PerroxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,false); 
+           }
     	
       //Solar Panel
 		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Cover_SolarPanel_MV.get(3L), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2L), ItemList.Circuit_Silicon_Wafer2.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenSteel, 2), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polytetrafluoroethylene, 2), GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 4)},Materials.SolderingAlloy.getMolten(144), ItemList.Cover_SolarPanel_HV.get(1L), 120, 1920, true);
