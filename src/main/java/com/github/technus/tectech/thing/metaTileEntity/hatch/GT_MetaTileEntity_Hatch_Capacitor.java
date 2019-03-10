@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.HashMap;
@@ -36,15 +37,32 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_H;
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
-    private float energyStoredFrac = 0;
+    public float energyStoredFrac = 0;
 
     public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier, String descr) {
-        super(aID, aName, aNameRegional, aTier, 1, descr);
+        super(aID, aName, aNameRegional, aTier, 16, descr);
         Util.setTier(aTier,this);
     }
 
     public GT_MetaTileEntity_Hatch_Capacitor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
+        super(aName, aTier, 16, aDescription, aTextures);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setFloat("energyStoredFrac", energyStoredFrac);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        energyStoredFrac = aNBT.getFloat("energyStoredFrac");
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
     }
 
     @Override
@@ -121,7 +139,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
 
     @Override
     public int getSizeInventory() {
-        return energyStoredFrac >= 0.25 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
+        return energyStoredFrac > 0.2 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
 
     @Override
@@ -133,32 +151,66 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         };
     }
 
+    public long[] getCapacitors() {
+        long tier = -1;
+        long tCurrent = 0;
+        long tEnergyMax = 0;
+        for (int i = 0; i < mInventory.length; i++) {
+            if (mInventory[i] == null || mInventory[i].stackSize != 1) {
+                continue;
+            }
+            CapacitorComponent cap = componentBinds.get(getUniqueIdentifier(mInventory[i]));
+            if (cap != null && cap.tier > tier) {
+                tier = cap.tier;
+            }
+        }
+        if (tier >= 0) {
+            for (int i = 0; i < mInventory.length; i++) {
+                if (mInventory[i] == null || mInventory[i].stackSize != 1) {
+                    continue;
+                }
+                CapacitorComponent cap = componentBinds.get(getUniqueIdentifier(mInventory[i]));
+                if (cap == null) {
+                    continue;
+                }
+                if (cap.tier < tier) {
+                    if (getBaseMetaTileEntity().isActive()) {
+                        mInventory[i] = null;
+                        getBaseMetaTileEntity().setOnFire();
+                    }
+                } else {
+                    tCurrent = +cap.current;
+                    tEnergyMax = +cap.energyMax;
+                }
+            }
+        }
+        return new long[]{tier, tCurrent, tEnergyMax};
+    }
+
     public static void run() {
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.0", 0, 1, 1024, 1);//LV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.1", 1, 1, 1024, 1);//MV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.2", 2, 1, 1024, 1);//HV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.3", 3, 1, 1024, 1);//EV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.4", 4, 1, 1024, 1);//IV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.5", 5, 1, 1024, 1);//LuV Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.6", 6, 1, 1024, 1);//ZPM Capacitor
-        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":tm.teslaCoilCapacitor.7", 7, 1, 1024, 1);//UV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.0", 0, 1, V[0]*512);//LV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.1", 1, 1, V[1]*512);//MV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.2", 2, 1, V[2]*512);//HV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.3", 3, 1, V[3]*512);//EV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.4", 4, 1, V[4]*512);//IV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.5", 5, 1, V[5]*512);//LuV Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.6", 6, 1, V[6]*512);//ZPM Capacitor
+        new GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent(Reference.MODID+":item.tm.teslaCoilCapacitor.7", 7, 1, V[7]*512);//UV Capacitor
     }
 
     public static class CapacitorComponent implements Comparable<GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> {
         private final String unlocalizedName;
         private final long tier, current, energyMax;
-        private final float efficiency;
 
-        CapacitorComponent(ItemStack is, long tier, long current, long energyMax, float efficiency) {
-            this(getUniqueIdentifier(is), tier, current, energyMax, efficiency);
+        CapacitorComponent(ItemStack is, long tier, long current, long energyMax) {
+            this(getUniqueIdentifier(is), tier, current, energyMax);
         }
 
-        CapacitorComponent(String is, long tier, long current, long energyMax, float efficiency) {
+        CapacitorComponent(String is, long tier, long current, long energyMax) {
             unlocalizedName = is;
             this.tier = tier;
             this.current = current;
             this.energyMax = energyMax;
-            this.efficiency = efficiency;
             componentBinds.put(unlocalizedName, this);
             if (DEBUG_MODE) {
                 TecTech.LOGGER.info("Tesla Capacitor registered: " + unlocalizedName);
