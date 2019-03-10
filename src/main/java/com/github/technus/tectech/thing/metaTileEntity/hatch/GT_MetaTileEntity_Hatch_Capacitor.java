@@ -166,14 +166,14 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
         }
 
         @Override
-        public int compareTo(GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent o) {
+        public int compareTo(CapacitorComponent o) {
             return unlocalizedName.compareTo(o.unlocalizedName);
         }
 
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent) {
-                return compareTo((GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent) obj) == 0;
+            if(obj instanceof CapacitorComponent) {
+                return compareTo((CapacitorComponent) obj) == 0;
             }
             return false;
         }
