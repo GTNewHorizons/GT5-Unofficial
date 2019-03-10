@@ -2,6 +2,7 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IFrontRotation;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,6 +14,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,8 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -59,6 +60,22 @@ public final class Util {
         StringBuilder result = new StringBuilder(16);
 
         for (int i = 31; i >= 0; i--) {
+            int mask = 1 << i;
+            result.append((number & mask) != 0 ? ":" : ".");
+
+            if (i % 8 == 0) {
+                result.append('|');
+            }
+        }
+        result.replace(result.length() - 1, result.length(), "");
+
+        return result.toString();
+    }
+
+    public static String longBitsToShortString(long number) {
+        StringBuilder result = new StringBuilder(16);
+
+        for (int i = 63; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? ":" : ".");
 
@@ -360,14 +377,14 @@ public final class Util {
     */
     //endregion
 
+
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
     public static boolean StructureCheckerExtreme(
             String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            Method adder,
-            String[] addingMethods,
+            HatchAdder[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
@@ -578,28 +595,22 @@ public final class Util {
                                             }
                                             return false;
                                         }
-                                    } else if ((pointer = block - ' ') >= 0) {
+                                    } else //noinspection ConstantConditions
+                                        if ((pointer = block - ' ') >= 0) {
                                         igt = aBaseMetaTileEntity.getIGregTechTileEntity(x, y, z);
-                                        try {
-                                            if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
-                                                if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
-                                                    if (DEBUG_MODE) {
-                                                        TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
-                                                    }
-                                                    return false;
+                                        if (igt == null || !addingMethods[pointer].apply(igt, casingTextures[pointer])) {
+                                            if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
+                                                if (DEBUG_MODE) {
+                                                    TecTech.LOGGER.info("Fallback-struct-block-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + ' ' + (blockTypeFallback[pointer] == null ? "null" : blockTypeFallback[pointer].getUnlocalizedName()));
                                                 }
-                                                if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
-                                                    if (DEBUG_MODE) {
-                                                        TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
-                                                    }
-                                                    return false;
+                                                return false;
+                                            }
+                                            if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
+                                                if (DEBUG_MODE) {
+                                                    TecTech.LOGGER.info("Fallback-Struct-meta-id-error " + x + ' ' + y + ' ' + z + " / " + a + ' ' + b + ' ' + c + " / " + world.getBlockMetadata(x, y, z) + ' ' + blockMetaFallback[pointer]);
                                                 }
+                                                return false;
                                             }
-                                        } catch (InvocationTargetException | IllegalAccessException e) {
-                                            if (DEBUG_MODE) {
-                                                e.printStackTrace();
-                                            }
-                                            return false;
                                         }
                                     }
                             }
@@ -1291,18 +1302,18 @@ public final class Util {
         return (testedValue & setBits) == setBits;
     }
 
-    public static class TT_ItemStack implements Comparable<TT_ItemStack> {
+    public static class ItemStack_NoNBT implements Comparable<ItemStack_NoNBT> {
         public final Item mItem;
         public final int mStackSize;
         public final int mMetaData;
 
-        public TT_ItemStack(Item aItem, long aStackSize, long aMetaData) {
+        public ItemStack_NoNBT(Item aItem, long aStackSize, long aMetaData) {
             this.mItem = aItem;
             this.mStackSize = (byte) ((int) aStackSize);
             this.mMetaData = (short) ((int) aMetaData);
         }
 
-        public TT_ItemStack(ItemStack aStack) {
+        public ItemStack_NoNBT(ItemStack aStack) {
             if (aStack == null) {
                 mItem = null;
                 mStackSize = mMetaData = 0;
@@ -1314,7 +1325,7 @@ public final class Util {
         }
 
         @Override
-        public int compareTo(TT_ItemStack o) {
+        public int compareTo(ItemStack_NoNBT o) {
             if (mMetaData > o.mMetaData) return 1;
             if (mMetaData < o.mMetaData) return -1;
             if (mStackSize > o.mStackSize) return 1;
@@ -1329,10 +1340,10 @@ public final class Util {
         @Override
         public boolean equals(Object aStack) {
             return aStack == this ||
-                    (aStack instanceof TT_ItemStack &&
-                            ((mItem == ((TT_ItemStack) aStack).mItem) || ((TT_ItemStack) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
-                            ((TT_ItemStack) aStack).mStackSize == this.mStackSize &&
-                            ((TT_ItemStack) aStack).mMetaData == this.mMetaData);
+                    (aStack instanceof ItemStack_NoNBT &&
+                            ((mItem == ((ItemStack_NoNBT) aStack).mItem) || ((ItemStack_NoNBT) aStack).mItem.getUnlocalizedName().equals(this.mItem.getUnlocalizedName())) &&
+                            ((ItemStack_NoNBT) aStack).mStackSize == this.mStackSize &&
+                            ((ItemStack_NoNBT) aStack).mMetaData == this.mMetaData);
         }
 
         @Override
@@ -1346,7 +1357,7 @@ public final class Util {
         }
     }
 
-    public static void setTier(int tier,Object me){
+    public static void setTier(int tier,GT_MetaTileEntity_TieredMachineBlock me){
         try{
             Field field=GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
             field.setAccessible(true);
@@ -1354,5 +1365,71 @@ public final class Util {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static double receiveDouble(double previousValue, int startIndex, int index, int value){
+        return Double.longBitsToDouble(receiveLong(Double.doubleToLongBits(previousValue),startIndex,index,value));
+    }
+
+    public static long receiveLong(long previousValue, int startIndex, int index, int value){
+        value &=0xFFFF;
+        switch (index-startIndex){
+            case 0:
+                previousValue&= 0xFFFF_FFFF_FFFF_0000L;
+                previousValue|=value;
+                break;
+            case 1:
+                previousValue&=0xFFFF_FFFF_0000_FFFFL;
+                previousValue|=value<<16;
+                break;
+            case 2:
+                previousValue&=0xFFFF_0000_FFFF_FFFFL;
+                previousValue|=(long)value<<32;
+                break;
+            case 3:
+                previousValue&=0x0000_FFFF_FFFF_FFFFL;
+                previousValue|=(long)value<<48;
+                break;
+        }
+        return previousValue;
+    }
+
+    public static void sendDouble(double value,Container container, ICrafting crafter,int startIndex){
+        sendLong(Double.doubleToLongBits(value),container,crafter,startIndex);
+    }
+
+    public static void sendLong(long value,Container container, ICrafting crafter,int startIndex){
+        crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
+        crafter.sendProgressBarUpdate(container, startIndex++, (int)((value & 0xFFFF0000L)>>>16));
+        crafter.sendProgressBarUpdate(container, startIndex++, (int)((value & 0xFFFF00000000L)>>>32));
+        crafter.sendProgressBarUpdate(container, startIndex,   (int)((value & 0xFFFF000000000000L)>>>48));
+    }
+
+    public static float receiveFloat(float previousValue, int startIndex, int index, int value){
+        return Float.intBitsToFloat(receiveInteger(Float.floatToIntBits(previousValue),startIndex,index,value));
+    }
+
+    public static int receiveInteger(int previousValue, int startIndex, int index, int value){
+        value &=0xFFFF;
+        switch (index-startIndex){
+            case 0:
+                previousValue&= 0xFFFF_0000;
+                previousValue|=value;
+                break;
+            case 1:
+                previousValue&=0x0000_FFFF;
+                previousValue|=value<<16;
+                break;
+        }
+        return previousValue;
+    }
+
+    public static void sendFloat(float value,Container container, ICrafting crafter,int startIndex){
+        sendInteger(Float.floatToIntBits(value),container,crafter,startIndex);
+    }
+
+    public static void sendInteger(int value,Container container, ICrafting crafter,int startIndex){
+        crafter.sendProgressBarUpdate(container, startIndex++, (int)(value & 0xFFFFL));
+        crafter.sendProgressBarUpdate(container, startIndex, (value & 0xFFFF0000)>>>16);
     }
 }

@@ -8,6 +8,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,7 +43,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{3};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset+1};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{1};
@@ -49,12 +53,49 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     };
     //endregion
 
+    //region parameters
+    private static final NameFunction<GT_MetaTileEntity_EM_switch> ROUTE_NAME=
+            (base,p)->(p.parameterId()==0?"Destination ":"Weight ")+p.hatchId();
+    private static final StatusFunction<GT_MetaTileEntity_EM_switch> WEI_STATUS =
+            (base,p)-> {
+                double v=p.get();
+                if (Double.isNaN(v)) return STATUS_WRONG;
+                if(v<0) return STATUS_TOO_LOW;
+                if(v==0) return STATUS_LOW;
+                if(Double.isInfinite(v)) return STATUS_HIGH;
+                return STATUS_OK;
+            };
+    private static final StatusFunction<GT_MetaTileEntity_EM_switch> DST_STATUS =
+            (base,p)->{
+                if(base.weight[p.hatchId()].getStatus(false).isOk) {
+                    double v = p.get();
+                    if (Double.isNaN(v)) return STATUS_WRONG;
+                    v = (int) v;
+                    if (v <= 0) return STATUS_TOO_LOW;
+                    if (v >= base.eOutputHatches.size()) return STATUS_TOO_HIGH;
+                    return STATUS_OK;
+                }
+                return STATUS_NEUTRAL;
+            };
+    protected Parameters.Group.ParameterIn[] dst=new Parameters.Group.ParameterIn[10];
+    protected Parameters.Group.ParameterIn[] weight =new Parameters.Group.ParameterIn[10];
+    //endregion
+
     public GT_MetaTileEntity_EM_switch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     public GT_MetaTileEntity_EM_switch(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        for (int i = 0; i < 10; i++) {
+            Parameters.Group hatch = parametrization.getGroup(i);
+            dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);
+            weight[i] = hatch.makeInParameter(1,0, ROUTE_NAME, WEI_STATUS);
+        }
     }
 
     public final static ResourceLocation activitySound=new ResourceLocation(Reference.MODID+":fx_hi_freq");
@@ -117,12 +158,10 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
             double total = 0;
-            double dest;
             double weight;
             for (int i = 0; i < 10; i++) {//each param pair
-                dest= getParameterIn(i,1);
-                weight= getParameterIn(i,0);
-                if (weight > 0 && dest >= 0) {
+                weight= this.weight[i].get();
+                if (weight > 0 && dst[i].get() >= 0) {
                     total += weight;//Total weighted div
                 }
             }
@@ -144,9 +183,10 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
             long remaining = pack.getContent();
 
+            double dest;
             for (int i = 0; i < 10; i++) {
-                dest= getParameterIn(i,1);
-                weight= getParameterIn(i,0);
+                dest= dst[i].get();
+                weight= this.weight[i].get();
                 if (weight > 0 && dest >= 0) {
                     int outIndex = (int)dest - 1;
                     if (outIndex < 0 || outIndex >= eOutputData.size()) {
@@ -172,35 +212,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        double weight, dest;
-        for (int i = 0; i < 10; i++) {
-            weight = getParameterIn(i, 0);
-            if (weight < 0) {
-                setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
-                setStatusOfParameterIn(i, 1, STATUS_NEUTRAL);
-            } else if (Double.isNaN(weight)) {
-                setStatusOfParameterIn(i, 0, STATUS_WRONG);
-                setStatusOfParameterIn(i, 1, STATUS_NEUTRAL);
-            } else {
-                setStatusOfParameterIn(i, 0, weight==0?STATUS_LOW:STATUS_OK);
-                dest = getParameterIn(i, 1);
-                if (dest < 0) {
-                    setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
-                } else if (dest == 0) {
-                    setStatusOfParameterIn(i, 1, STATUS_LOW);
-                } else if (dest > eOutputData.size()) {
-                    setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
-                } else if (Double.isNaN(dest)) {
-                    setStatusOfParameterIn(i, 1, STATUS_WRONG);
-                } else {
-                    setStatusOfParameterIn(i, 1, STATUS_OK);
                 }
             }
         }

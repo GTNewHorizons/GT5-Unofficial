@@ -16,8 +16,10 @@ import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,7 +36,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
-import java.util.function.Function;
 
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -273,25 +274,26 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     //region parameters
     protected Parameters.Group.ParameterIn mode;
-    private static final Function<GT_MetaTileEntity_EM_collider, LedStatus> MODE_STATUS = base_EM->{
+    private static final StatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p)->{
         if(base_EM.isMaster()){
-            if (base_EM.mode.get() == FUSE_MODE || base_EM.mode.get() == COLLIDE_MODE) {
+            double mode=p.get();
+            if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
                 return STATUS_OK;
-            } else if (base_EM.mode.get() > 1) {
+            } else if (mode > 1) {
                 return STATUS_TOO_HIGH;
-            } else if (base_EM.mode.get() < 0) {
+            } else if (mode < 0) {
                 return STATUS_TOO_LOW;
-            }else{
-                return STATUS_WRONG;
             }
+            return STATUS_WRONG;
         }
         return STATUS_UNUSED;
     };
-    private static final Function<GT_MetaTileEntity_EM_collider,String> MODE_NAME = base_EM->{
+    private static final NameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p)->{
         if(base_EM.isMaster()){
-            if(base_EM.mode.get()==FUSE_MODE){
+            double mode=p.get();
+            if(mode==FUSE_MODE){
                 return "Mode: Fuse";
-            }else if(base_EM.mode.get()==COLLIDE_MODE){
+            }else if(mode==COLLIDE_MODE){
                 return "Mode: Collide";
             }
             return "Mode: Undefined";
@@ -337,7 +339,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalInputToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{
+            this::addClassicToMachineList,
+            this::addElementalInputToMachineList,
+            this::addElementalOutputToMachineList,
+            this::addElementalMufflerToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
@@ -361,7 +367,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.makeGroup(0,false);
+        Parameters.Group hatch_0=parametrization.getGroup(0);
         mode=hatch_0.makeInParameter(0,FUSE_MODE, MODE_NAME, MODE_STATUS);
     }
 
@@ -476,9 +482,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+    public void parametersStatusesWrite_EM(boolean machineBusy) {
         if(isMaster()) {
-            super.parametersOutAndStatusesWrite_EM(machineBusy);
+            super.parametersStatusesWrite_EM(machineBusy);
         }
     }
 

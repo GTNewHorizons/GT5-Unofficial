@@ -7,8 +7,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,14 +27,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.function.Function;
-
 import static com.github.technus.tectech.CommonValues.VN;
 import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -47,9 +48,9 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     //region parameters
     protected Parameters.Group.ParameterIn ampereFlow;
-    private final Function<GT_MetaTileEntity_EM_decay,String> FLOW_NAME=base->"Ampere divider";
-    private final Function<GT_MetaTileEntity_EM_decay, LedStatus> FLOW_STATUS=base->{
-        if(eAmpereFlow<=0){
+    private static final NameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
+    private static final StatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
+        if(base.eAmpereFlow<=0){
             return STATUS_TOO_LOW;
         }
         return STATUS_OK;
@@ -70,7 +71,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
@@ -91,7 +92,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     protected void parametersInstantiation_EM() {
-        Parameters.Group hatch_0=parametrization.makeGroup(0,false);
+        Parameters.Group hatch_0=parametrization.getGroup(0, true);
         ampereFlow=hatch_0.makeInParameter(0,1,FLOW_NAME,FLOW_STATUS);
     }
 
@@ -179,8 +180,12 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         float preMass=outputEM[0].getMass();
         outputEM[0].tickContent(1,0,1);
         double energyDose=((preMass-outputEM[0].getMass())* MASS_TO_EU_PARTIAL);
-        mEUt=(int)(energyDose/(eAmpereFlow=(long) ampereFlow.get()));
-
+        eAmpereFlow=(long) ampereFlow.get();
+        if (eAmpereFlow <= 0) {
+            mEUt=0;
+            return false;
+        }
+        mEUt=(int)(energyDose/eAmpereFlow);
         return outputEM[0].hasStacks();
     }
 

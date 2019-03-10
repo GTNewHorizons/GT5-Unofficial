@@ -15,7 +15,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_machine.Behaviour {
+public class Behaviour_ElectromagneticSeparator implements GT_MetaTileEntity_EM_machine.Behaviour {
     private final byte tier;
     private final int ticks;
     private final byte precisionFull;
@@ -101,16 +101,6 @@ public class Behaviour_ElectromagneticSeparator extends GT_MetaTileEntity_EM_mac
         te.setParameterOut(2,1,maxCapacity);
         te.setParameterOut(3,0,V[tier]);
         te.setParameterOut(3,1,ticks);
-
-        for(int i=4;i<=9;i++) {
-            te.setStatusOfParameterOut(i, 0, STATUS_UNUSED);
-            te.setStatusOfParameterOut(i, 1, STATUS_UNUSED);
-        }
-        te.setStatusOfParameterIn(1, 1, STATUS_UNUSED);
-        for(int i=2;i<=3;i++) {
-            te.setStatusOfParameterIn(i, 0, STATUS_UNUSED);
-            te.setStatusOfParameterIn(i, 1, STATUS_UNUSED);
-        }
 
         double full=parametersToCheckAndFix[0];
         if(Double.isInfinite(full) && full>0) {

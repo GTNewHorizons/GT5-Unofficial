@@ -37,7 +37,7 @@ import static com.github.technus.tectech.Reference.MODID;
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine {
-    private static final HashMap<Util.TT_ItemStack,ArrayList<DataRender>> RENDER_REGISTRY =new HashMap<>();
+    private static final HashMap<Util.ItemStack_NoNBT,ArrayList<DataRender>> RENDER_REGISTRY =new HashMap<>();
     private static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
             return DID_NOT_FIND_RECIPE;
         }
         ItemStack input=getInputAt(0);
-        ArrayList<DataRender> renders=getRenders(new Util.TT_ItemStack(input));
+        ArrayList<DataRender> renders=getRenders(new Util.ItemStack_NoNBT(input));
         for(DataRender render:renders){
             if(render.canRender(input,mTier)){
                 mOutputItems[0]=input.copy();
@@ -173,7 +173,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         return maxEUInput()*4L;
     }
 
-    public static void addDataRender(Util.TT_ItemStack stack,DataRender render){
+    public static void addDataRender(Util.ItemStack_NoNBT stack, DataRender render){
         ArrayList<DataRender> renders=RENDER_REGISTRY.get(stack);
         if(renders==null){
             RENDER_REGISTRY.put(stack,renders=new ArrayList<>());
@@ -184,7 +184,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
         renders.add(render);
     }
 
-    public static ArrayList<DataRender> getRenders(Util.TT_ItemStack stack){
+    public static ArrayList<DataRender> getRenders(Util.ItemStack_NoNBT stack){
         return RENDER_REGISTRY.get(stack);
     }
 
@@ -205,7 +205,7 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     }
 
     public static void run(){
-        addDataRender(new Util.TT_ItemStack(ItemList.Tool_DataStick.get(1)),new DataRender() {
+        addDataRender(new Util.ItemStack_NoNBT(ItemList.Tool_DataStick.get(1)),new DataRender() {
             @SideOnly(Side.CLIENT)
             private ResourceLocation bg;
             @SideOnly(Side.CLIENT)

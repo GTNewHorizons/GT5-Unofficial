@@ -4,12 +4,11 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.function.BiFunction;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -18,10 +17,22 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 /**
  * Created by danie_000 on 24.12.2017.
  */
-public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour {
-    private final float radius, maxRPM, maxRCF, maxForce, maxCapacity;
+public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behaviour {
     private final byte tier;
-    private final static String[] DESCRIPTION_I =new String[]{"RPM Input","Fraction Count Input"};
+    private float radius, maxRPM, maxRCF, maxForce, maxCapacity;
+    private Parameters.Group.ParameterIn settingRPM, settingFraction;
+    private final static NameFunction<GT_MetaTileEntity_EM_machine> rpmName= (gt_metaTileEntity_em_machine, iParameter) -> "RPM Setting";
+    private static final StatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+        double v=iParameter.get();
+        if(Double.isNaN(v)){
+            return STATUS_WRONG;
+        }
+
+    };
+    private final static NameFunction<GT_MetaTileEntity_EM_machine> fractionName= (gt_metaTileEntity_em_machine, iParameter) -> "Fraction Count";
+    private static final StatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+
+    };
     private final static String[] DESCRIPTION_O =new String[]{"RPM Setting","RCF Setting","Radius [mm]","Max RPM","Max Force [eV/c^2 * m/s]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     private static final double[/*tier+5*/][/*outputHatches+2*/] MIXING_FACTORS =new double[][]{
@@ -47,38 +58,44 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
     }
 
     @Override
-    protected void getFullLedDescriptionIn(ArrayList<String> baseDescr, int hatchNo, int paramID) {
-        if(hatchNo==0) {
-            baseDescr.add(DESCRIPTION_I[(hatchNo << 1) + paramID]);
-        }
-    }
-
-    @Override
     protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
         if(hatchNo<=2) {
             baseDescr.add(DESCRIPTION_O[(hatchNo<<1)+paramID]);
         }
     }
 
+    private double getRCF(double RPM) {
+        return RPM * RPM * radius * 0.001118;
+    }
+
+    private void addRandomly(cElementalInstanceStack me, cElementalInstanceStackMap[] toThis, int fractionCount) {
+        long amountPerFraction = me.amount / fractionCount;
+        cElementalInstanceStack[] stacks = new cElementalInstanceStack[fractionCount];
+        for (int i = 0; i < fractionCount; i++) {
+            stacks[i] = me.clone();
+            stacks[i].amount = amountPerFraction;
+            toThis[i].putReplace(stacks[i]);
+        }
+        int remainingAmount = (int) (me.amount % fractionCount);
+        while (remainingAmount > 0) {
+            int amountToAdd = TecTech.RANDOM.nextInt(remainingAmount) + 1;
+            stacks[TecTech.RANDOM.nextInt(fractionCount)].amount += amountToAdd;
+            remainingAmount -= amountToAdd;
+        }
+    }
+
     @Override
-    public boolean setAndCheckParametersOutAndStatuses(GT_MetaTileEntity_EM_machine te, double[] parametersToCheckAndFix) {
+    public void parametersInstantiation(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
+        Parameters.Group hatch1=parameters.getGroup(7);
+        settingRPM=hatch1.makeInParameter(0,0,,);
+        settingFraction=hatch1.makeInParameter(1,2,,);
+    }
+
+    @Override
+    public boolean checkParametersInAndSetStatuses(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         boolean check=true;
 
-        te.setParameterOut(1, 0, radius * 1000);//in mm
-        te.setParameterOut(1, 1, maxRPM);
-        te.setParameterOut(2, 0, maxForce * 9.80665);// (eV/c^2 * m/s)
-        te.setParameterOut(2, 1, maxCapacity);// eV/c^2
-
-        for(int i=4;i<=9;i++) {
-            te.setStatusOfParameterOut(i, 0, STATUS_UNUSED);
-            te.setStatusOfParameterOut(i, 1, STATUS_UNUSED);
-        }
-        for(int i=1;i<=3;i++) {
-            te.setStatusOfParameterIn(i, 0, STATUS_UNUSED);
-            te.setStatusOfParameterIn(i, 1, STATUS_UNUSED);
-        }
-
-        double RPM = parametersToCheckAndFix[0];
+        double RPM = settingRPM.get();
         if (RPM > maxRPM) {
             te.setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
             te.setParameterOut(0, 0, maxRPM);//rpm
@@ -107,7 +124,7 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
             te.setParameterOut(0, 1, getRCF(RPM));
         }
 
-        double fractionCount = parametersToCheckAndFix[1];
+        double fractionCount = settingFraction.get();
         if (fractionCount > 6) {
             parametersToCheckAndFix[1] = 6;
             te.setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
@@ -130,7 +147,7 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
     }
 
     @Override
-    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, double[] checkedAndFixedParameters) {
+    public MultiblockControl<cElementalInstanceStackMap[]> process(cElementalInstanceStackMap[] inputs, GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         cElementalInstanceStackMap input = inputs[0];
         if (input == null || input.isEmpty()) return null;//nothing in only valid input
 
@@ -181,15 +198,12 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
         //take all from hatch handler and put into new map - this takes from hatch to inner data storage
         stacks = input.takeAllToNewMap().values();//cleanup stacks
         if (stacks.length > 1) {
-            Arrays.sort(stacks, new Comparator<cElementalInstanceStack>() {
-                @Override
-                public int compare(cElementalInstanceStack o1, cElementalInstanceStack o2) {
-                    float m1 = o1.definition.getMass();
-                    float m2 = o2.definition.getMass();
-                    if (m1 < m2) return -1;
-                    if (m1 > m2) return 1;
-                    return o1.compareTo(o2);
-                }
+            Arrays.sort(stacks, (o1, o2) -> {
+                float m1 = o1.definition.getMass();
+                float m2 = o2.definition.getMass();
+                if (m1 < m2) return -1;
+                if (m1 > m2) return 1;
+                return o1.compareTo(o2);
             });
 
             double absMassPerOutput = 0;//"volume"
@@ -257,25 +271,5 @@ public class Behaviour_Centrifuge extends GT_MetaTileEntity_EM_machine.Behaviour
             addRandomly(stacks[0], outputs, fractionCount);
         }
         return new MultiblockControl<>(outputs, mEut, 1, 0, 10000, mTicks, 0, excessMass);
-    }
-
-    private double getRCF(double RPM) {
-        return RPM * RPM * radius * 0.001118;
-    }
-
-    private void addRandomly(cElementalInstanceStack me, cElementalInstanceStackMap[] toThis, int fractionCount) {
-        long amountPerFraction = me.amount / fractionCount;
-        cElementalInstanceStack[] stacks = new cElementalInstanceStack[fractionCount];
-        for (int i = 0; i < fractionCount; i++) {
-            stacks[i] = me.clone();
-            stacks[i].amount = amountPerFraction;
-            toThis[i].putReplace(stacks[i]);
-        }
-        int remainingAmount = (int) (me.amount % fractionCount);
-        while (remainingAmount > 0) {
-            int amountToAdd = TecTech.RANDOM.nextInt(remainingAmount) + 1;
-            stacks[TecTech.RANDOM.nextInt(fractionCount)].amount += amountToAdd;
-            remainingAmount -= amountToAdd;
-        }
     }
 }

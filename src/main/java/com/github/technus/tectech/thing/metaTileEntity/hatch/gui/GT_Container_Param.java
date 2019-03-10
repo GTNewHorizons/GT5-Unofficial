@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch.gui;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,10 +16,10 @@ import net.minecraft.item.ItemStack;
 
 public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
     public int param = 0;
-    public int value0f = 0;
-    public int value1f = 0;
-    public int input0f = 0;
-    public int input1f = 0;
+    public double value0f = 0;
+    public double value1f = 0;
+    public double input0f = 0;
+    public double input1f = 0;
 
     public GT_Container_Param(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -67,8 +68,8 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.value1i -= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 3:
-                    paramH.value0i >>= aShifthold == 1 ? 16 : 4;
-                    paramH.value1i >>= aShifthold == 1 ? 16 : 4;
+                    paramH.value0i /= aShifthold == 1 ? 4096 : 256;
+                    paramH.value1i /= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 4:
                     paramH.param -= aShifthold == 1 ? 2 : 1;
@@ -80,8 +81,8 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.value1i -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 7:
-                    paramH.value0i >>= aShifthold == 1 ? 2 : 1;
-                    paramH.value1i >>= aShifthold == 1 ? 2 : 1;
+                    paramH.value0i /= aShifthold == 1 ? 16 : 2;
+                    paramH.value1i /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 8:
                     paramH.param += aShifthold == 1 ? 16 : 4;
@@ -93,8 +94,8 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.value1i += aShifthold == 1 ? 4096 : 256;
                     break;
                 case 11:
-                    paramH.value0i <<= aShifthold == 1 ? 16 : 4;
-                    paramH.value1i <<= aShifthold == 1 ? 16 : 4;
+                    paramH.value0i *= aShifthold == 1 ? 4096 : 256;
+                    paramH.value1i *= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 12:
                     paramH.param += aShifthold == 1 ? 2 : 1;
@@ -106,8 +107,8 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.value1i += aShifthold == 1 ? 16 : 1;
                     break;
                 case 15:
-                    paramH.value0i <<= aShifthold == 1 ? 2 : 1;
-                    paramH.value1i <<= aShifthold == 1 ? 2 : 1;
+                    paramH.value0i *= aShifthold == 1 ? 16 : 2;
+                    paramH.value1i *= aShifthold == 1 ? 16 : 2;
                     break;
                 default:
                     doStuff = false;
@@ -139,16 +140,11 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            var1.sendProgressBarUpdate(this, 100, param & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 101, param >>> 16);
-            var1.sendProgressBarUpdate(this, 102, value0f & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 103, value0f >>> 16);
-            var1.sendProgressBarUpdate(this, 104, value1f & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 105, value1f >>> 16);
-            var1.sendProgressBarUpdate(this, 106, input0f & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 107, input0f >>> 16);
-            var1.sendProgressBarUpdate(this, 108, input1f & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 109, input1f >>> 16);
+            Util.sendInteger(param,this,var1,100);
+            Util.sendDouble(value0f,this,var1,102);
+            Util.sendDouble(value1f,this,var1, 106);
+            Util.sendDouble(input0f,this,var1, 110);
+            Util.sendDouble(input1f,this,var1, 114);
         }
     }
 
@@ -158,34 +154,32 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 100:
-                param = param & 0xFFFF0000 | par2;
-                return;
             case 101:
-                param = param & 0xFFFF | par2 << 16;
+                param=Util.receiveInteger(param,100,par1,par2);
                 return;
             case 102:
-                value0f = value0f & 0xFFFF0000 | par2;
-                break;
             case 103:
-                value0f = value0f & 0xFFFF | par2 << 16;
-                break;
             case 104:
-                value1f = value1f & 0xFFFF0000 | par2;
-                break;
             case 105:
-                value1f = value1f & 0xFFFF | par2 << 16;
-                break;
-            case 106:
-                input0f = input0f & 0xFFFF0000 | par2;
-                break;
-            case 107:
-                input0f = input0f & 0xFFFF | par2 << 16;
-                break;
-            case 108:
-                input1f = input1f & 0xFFFF0000 | par2;
+                value0f=Util.receiveDouble(value0f,102,par1,par2);
                 return;
+            case 106:
+            case 107:
+            case 108:
             case 109:
-                input1f = input1f & 0xFFFF | par2 << 16;
+                value1f=Util.receiveDouble(value1f,106,par1,par2);
+                return;
+            case 110:
+            case 111:
+            case 112:
+            case 113:
+                input0f=Util.receiveDouble(input0f,110,par1,par2);
+                return;
+            case 114:
+            case 115:
+            case 116:
+            case 117:
+                input1f=Util.receiveDouble(input1f,114,par1,par2);
                 return;
             default:
         }

@@ -3,9 +3,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -19,7 +19,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -35,8 +34,6 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
-    public static final int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
-    private int powerSetting,timerSetting,timerValue;
     private boolean hasBeenPausedThisCycle=false;
 
     //region Structure
@@ -51,7 +48,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final Block[] blockType = new Block[]{sBlockCasings4};
     private static final byte[] blockMeta = new byte[]{1};
 
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList};
     private static final short[] casingTextures = new short[]{49};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
@@ -62,12 +59,40 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     };
     //endregion
 
+    //region parameters
+    protected Parameters.Group.ParameterIn powerSetting,timerSetting;
+    protected Parameters.Group.ParameterOut timerValue,remainingTime;
+    private static final NameFunction<GT_MetaTileEntity_TM_microwave> POWER_NAME = (base, p)-> "Power setting";
+    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_SETTING_NAME = (base, p)-> "Timer setting";
+    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_REMAINING_NAME = (base, p)-> "Timer remaining";
+    private static final NameFunction<GT_MetaTileEntity_TM_microwave> TIMER_VALUE_NAME = (base,p)-> "Timer value";
+    private static final StatusFunction<GT_MetaTileEntity_TM_microwave> POWER_STATUS=
+            (base,p)-> LedStatus.fromLimitsInclusiveOuterBoundary(p.get(),300,1000,1000,Double.POSITIVE_INFINITY);
+    private static final StatusFunction<GT_MetaTileEntity_TM_microwave> TIMER_STATUS=(base,p)->{
+        double value=p.get();
+        if(Double.isNaN(value)) return STATUS_WRONG;
+        value=(int)value;
+        if(value<=0) return STATUS_TOO_LOW;
+        if(value>3000) return STATUS_TOO_HIGH;
+        return STATUS_OK;
+    };
+    //endregion
+
     public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     public GT_MetaTileEntity_TM_microwave(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0=parametrization.getGroup(0, true);
+        powerSetting=hatch_0.makeInParameter(0,1000, POWER_NAME,POWER_STATUS);
+        timerSetting=hatch_0.makeInParameter(1,360, TIMER_SETTING_NAME,TIMER_STATUS);
+        timerValue=hatch_0.makeOutParameter(0,0,TIMER_VALUE_NAME,TIMER_STATUS);
+        remainingTime=hatch_0.makeOutParameter(0,360,TIMER_REMAINING_NAME,TIMER_STATUS);
     }
 
     @Override
@@ -123,13 +148,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
         hasBeenPausedThisCycle =false;
-        if(powerSetting<300 || timerSetting<=0 || timerSetting>3000) {
+        if((int)powerSetting.get()<300 || timerSetting.get()<=0 || timerSetting.get()>3000) {
             return false;
         }
-        if (timerValue <= 0) {
-            timerValue=timerSetting;
+        if (remainingTime.get() <= 0) {
+            remainingTime.set(timerSetting.get());
+            timerValue.set(0);
         }
-        mEUt = -(powerSetting >> 1);
+        mEUt = -((int)powerSetting.get() >> 1);
         eAmpereFlow = 1;
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
@@ -141,7 +167,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         if(hasBeenPausedThisCycle) {
             return;//skip timer and actions if paused
         }
-        timerValue--;
+        timerValue.set(timerValue.get()+1);
+        remainingTime.set(timerSetting.get()-timerValue.get());
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         double[] xyzOffsets= getTranslatedOffsets(0,-1,2);
         double xPos=mte.getXCoord()+0.5f+xyzOffsets[0];
@@ -153,12 +180,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         for(int i=0;i<3;i++){//gets ABS from translated to get expansion values
             if(xyzExpansion[i]<0)xyzExpansion[i]=-xyzExpansion[i];
         }
-
+        int power=(int)powerSetting.get();
         int damagingFactor =
-                Math.min(powerSetting >> 6,8)+
-                Math.min(powerSetting >> 8,24)+
-                Math.min(powerSetting >> 12,48)+
-                        (powerSetting >> 18);
+                Math.min(power >> 6,8)+
+                Math.min(power >> 8,24)+
+                Math.min(power >> 12,48)+
+                        (power >> 18);
 
         ArrayList<ItemStack> itemsToOutput=new ArrayList<>();
         HashSet<Entity> tickedStuff=new HashSet<>();
@@ -194,57 +221,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             damagingFactor>>=1;
         } while(damagingFactor>0);
 
-        mOutputItems= itemsToOutput.toArray(new ItemStack[itemsToOutput.size()]);
+        mOutputItems= itemsToOutput.toArray(new ItemStack[0]);
 
-        if(timerValue<=0) {
+        if(remainingTime.get() <=0) {
             mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
             stopMachine();
         }
-    }
-
-    @Override
-    protected void parametersLoadDefault_EM() {
-        powerSetting = POWER_SETTING_DEFAULT;
-        timerSetting = TIMER_SETTING_DEFAULT;
-        setParameterPairIn_ClearOut(0,false, POWER_SETTING_DEFAULT, TIMER_SETTING_DEFAULT);
-    }
-
-    @Override
-    protected void parametersInReadWhileActive_EM() {
-        powerSetting = (int) getParameterIn(0, 0);
-        timerSetting = (int) getParameterIn(0, 1);
-    }
-
-    @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
-        double powerParameter = getParameterIn(0, 0);
-        if (powerParameter < 300) {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-        } else if (powerParameter < 1000) {
-            setStatusOfParameterIn(0, 0, STATUS_LOW);
-        } else if (powerParameter == 1000) {
-            setStatusOfParameterIn(0, 0, STATUS_OK);
-        } else if (powerParameter == Double.POSITIVE_INFINITY) {
-            setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-        } else if (Double.isNaN(powerParameter)) {
-            setStatusOfParameterIn(0, 0, STATUS_WRONG);
-        } else {
-            setStatusOfParameterOut(0, 0, STATUS_HIGH);
-        }
-
-        double timerParameter = getParameterIn(0, 1);
-        if (timerParameter <= 1) {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-        } else if (timerParameter <= 3000) {
-            setStatusOfParameterIn(0, 1, STATUS_OK);
-        } else if (Double.isNaN(timerParameter)) {
-            setStatusOfParameterIn(0, 1, STATUS_WRONG);
-        } else {
-            setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
-        }
-
-        setParameterOut(0, 0, timerValue);
-        setParameterOut(0, 1, timerSetting - timerValue);
     }
 
     @Override
@@ -258,19 +240,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public void stopMachine() {
         super.stopMachine();
-        timerValue=0;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("eTimerVal", timerValue);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        timerValue = aNBT.getInteger("eTimerVal");
+        remainingTime.set(timerSetting.get());
+        timerValue.set(0);
     }
 
     @Override

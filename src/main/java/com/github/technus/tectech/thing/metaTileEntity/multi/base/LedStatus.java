@@ -19,14 +19,6 @@ public enum LedStatus {
         this.isOk=ok;
     }
 
-    public boolean isOk(){
-        return isOk;
-    }
-
-    public boolean isBad(){
-        return !isOk;
-    }
-
     public byte getOrdinalByte(){
         return (byte)ordinal();
     }
@@ -61,7 +53,6 @@ public enum LedStatus {
     }
 
     public static LedStatus fromLimitsExclusiveOuterBoundary(double value, double min,double low, double high,double max, double... excludedNumbers){
-        if(Double.isNaN(value)) return STATUS_WRONG;
         if(value<=min) return STATUS_TOO_LOW;
         if(value>=max) return STATUS_TOO_HIGH;
 
@@ -75,10 +66,8 @@ public enum LedStatus {
     }
 
     public static LedStatus fromLimitsInclusiveBoundary(double value, double min, double max, double... excludedNumbers){
-        if(Double.isNaN(value)) return STATUS_WRONG;
-        if(value<=min) return STATUS_TOO_LOW;
-        else if(value==min)
-            if(value>=max) return STATUS_TOO_HIGH;
+        if(value<min) return STATUS_TOO_LOW;
+        if(value>max) return STATUS_TOO_HIGH;
 
         for (double val : excludedNumbers) {
             if(val==value) return STATUS_WRONG;
@@ -88,10 +77,8 @@ public enum LedStatus {
     }
 
     public static LedStatus fromLimitsExclusiveBoundary(double value, double min, double max, double... excludedNumbers){
-        if(Double.isNaN(value)) return STATUS_WRONG;
         if(value<=min) return STATUS_TOO_LOW;
-        else if(value==min)
-            if(value>=max) return STATUS_TOO_HIGH;
+        if(value>=max) return STATUS_TOO_HIGH;
 
         for (double val : excludedNumbers) {
             if(val==value) return STATUS_WRONG;
