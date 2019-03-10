@@ -1357,13 +1357,13 @@ public final class Util {
         }
     }
 
-    public static void setTier(int tier,GT_MetaTileEntity_TieredMachineBlock me){
+    public static void setTier(int tier,Object me){
         try{
             Field field=GT_MetaTileEntity_TieredMachineBlock.class.getField("mTier");
             field.setAccessible(true);
             field.set(me,(byte)tier);
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
