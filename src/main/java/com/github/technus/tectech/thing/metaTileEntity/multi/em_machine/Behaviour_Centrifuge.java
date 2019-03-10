@@ -4,11 +4,12 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.BiFunction;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
@@ -22,18 +23,33 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
     private float radius, maxRPM, maxRCF, maxForce, maxCapacity;
     private Parameters.Group.ParameterIn settingRPM, settingFraction;
     private final static NameFunction<GT_MetaTileEntity_EM_machine> rpmName= (gt_metaTileEntity_em_machine, iParameter) -> "RPM Setting";
-    private static final StatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
+    private final StatusFunction<GT_MetaTileEntity_EM_machine> rpmStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
         double v=iParameter.get();
         if(Double.isNaN(v)){
             return STATUS_WRONG;
         }
-
+        if (v <=0) {
+            return STATUS_TOO_LOW;
+        }else if (v>maxRPM){
+            return STATUS_TOO_HIGH;
+        }
+        return STATUS_OK;
     };
     private final static NameFunction<GT_MetaTileEntity_EM_machine> fractionName= (gt_metaTileEntity_em_machine, iParameter) -> "Fraction Count";
     private static final StatusFunction<GT_MetaTileEntity_EM_machine> fractionStatus= (gt_metaTileEntity_em_machine, iParameter) -> {
-
+        double v=iParameter.get();
+        if(Double.isNaN(v)){
+            return STATUS_WRONG;
+        }
+        v=(int)v;
+        if (v <= 1) {
+            return STATUS_TOO_LOW;
+        }else if (v>6){
+            return STATUS_TOO_HIGH;
+        }
+        return STATUS_OK;
     };
-    private final static String[] DESCRIPTION_O =new String[]{"RPM Setting","RCF Setting","Radius [mm]","Max RPM","Max Force [eV/c^2 * m/s]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
+    //private final static String[] DESCRIPTION_O =new String[]{"RPM Setting","RCF Setting","Radius [mm]","Max RPM","Max Force [eV/c^2 * m/s]","Max Capacity [eV/c^2]","Max Power Usage[EU/t]","Max Recipe Rime [tick]"};
 
     private static final double[/*tier+5*/][/*outputHatches+2*/] MIXING_FACTORS =new double[][]{
             {.45,.85,.95,1,1,},
@@ -55,13 +71,6 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
         float maxSafeMass = dAtomDefinition.getSomethingHeavy().getMass() * (1 << tier);
         maxForce = maxSafeMass * maxRCF;// (eV/c^2 * m/s) / g
         maxCapacity = maxSafeMass * 4f * radius;// eV/c^2
-    }
-
-    @Override
-    protected void getFullLedDescriptionOut(ArrayList<String> baseDescr, int hatchNo, int paramID) {
-        if(hatchNo<=2) {
-            baseDescr.add(DESCRIPTION_O[(hatchNo<<1)+paramID]);
-        }
     }
 
     private double getRCF(double RPM) {
@@ -87,63 +96,13 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
     @Override
     public void parametersInstantiation(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
         Parameters.Group hatch1=parameters.getGroup(7);
-        settingRPM=hatch1.makeInParameter(0,0,,);
-        settingFraction=hatch1.makeInParameter(1,2,,);
+        settingRPM=hatch1.makeInParameter(0,0,rpmName,rpmStatus);
+        settingFraction=hatch1.makeInParameter(1,2,fractionName,fractionStatus);
     }
 
     @Override
     public boolean checkParametersInAndSetStatuses(GT_MetaTileEntity_EM_machine te, Parameters parameters) {
-        boolean check=true;
-
-        double RPM = settingRPM.get();
-        if (RPM > maxRPM) {
-            te.setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-            te.setParameterOut(0, 0, maxRPM);//rpm
-            te.setParameterOut(0, 1, maxRCF);//rcf
-            check=false;
-        } else if (RPM > maxRPM / 3f * 2f) {
-            te.setStatusOfParameterIn(0, 0, STATUS_HIGH);
-        } else if (RPM > maxRPM / 3f) {
-            te.setStatusOfParameterIn(0, 0, STATUS_OK);
-        } else if (RPM > 0) {
-            te.setStatusOfParameterIn(0, 0, STATUS_LOW);
-        } else if (RPM <= 0) {
-            te.setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-            te.setParameterOut(0, 0, 0);//rpm
-            te.setParameterOut(0, 1, 0);//rcf
-            check=false;
-        } else {
-            te.setStatusOfParameterIn(0, 0, STATUS_WRONG);
-            te.setParameterOut(0, 0, 0);//rpm
-            te.setParameterOut(0, 1, 0);//rcf
-            check=false;
-        }
-
-        if(check) {
-            te.setParameterOut(0, 0, RPM);
-            te.setParameterOut(0, 1, getRCF(RPM));
-        }
-
-        double fractionCount = settingFraction.get();
-        if (fractionCount > 6) {
-            parametersToCheckAndFix[1] = 6;
-            te.setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
-            check=false;
-        } else if (fractionCount >= 2) {
-            te.setStatusOfParameterIn(0, 1, STATUS_OK);
-        } else if (fractionCount < 2) {
-            parametersToCheckAndFix[1] = 2;
-            te.setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
-            check=false;
-        } else {
-            te.setStatusOfParameterIn(0, 1, STATUS_WRONG);
-            check=false;
-        }
-
-        te.setParameterOut(3,0,(int) (Math.pow(parametersToCheckAndFix[0] / maxRPM, 3f) * V[tier]));//max eut
-        te.setParameterOut(3,1,(int) (20 * (fractionCount - 1)));//max time
-
-        return check;
+        return settingRPM.getStatus(true).isOk && settingFraction.getStatus(true).isOk;
     }
 
     @Override
@@ -172,11 +131,11 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
 
         inputMass = Math.abs(input.getMass());
 
-        double RCF = getRCF(checkedAndFixedParameters[0]);
+        double RCF = getRCF(settingRPM.get());
         if (inputMass * RCF > maxForce) return new MultiblockControl<>(excessMass);//AND THEN IT EXPLODES
 
         // how many output hatches to use
-        int fractionCount = (int) checkedAndFixedParameters[1];
+        int fractionCount = (int) settingFraction.get();
         cElementalInstanceStackMap[] outputs = new cElementalInstanceStackMap[fractionCount];
         for (int i = 0; i < fractionCount; i++) {
             outputs[i] = new cElementalInstanceStackMap();
@@ -188,7 +147,7 @@ public class Behaviour_Centrifuge implements GT_MetaTileEntity_EM_machine.Behavi
             TecTech.LOGGER.info("mixingFactor "+mixingFactor);
         }
 
-        int mEut = (int) (Math.pow(checkedAndFixedParameters[0] / maxRPM, 3f) * V[tier]);
+        int mEut = (int) (Math.pow(settingRPM.get() / maxRPM, 3f) * V[tier]);
         mEut = Math.max(mEut, 512);
         mEut = -mEut;
         int mTicks = (int) (20 * (inputMass / maxCapacity) * (fractionCount - 1));
