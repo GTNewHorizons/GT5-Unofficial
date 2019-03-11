@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil;
+import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_TM_teslaCoil;
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.interfaces.ITexture;
@@ -243,7 +244,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
                                        idle = false;
                                    }
                                 }
-                            } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && Rx.getValue() <= transferRadiusCover) {
+                            } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil) && !(node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCover) {
                                 if (node.injectEnergyUnits((byte) 1, outputVoltageInjectable, 1L) > 0L) {
                                     setEUVar(getEUVar() - outputVoltageConsumption);
                                     outputCurrent--;

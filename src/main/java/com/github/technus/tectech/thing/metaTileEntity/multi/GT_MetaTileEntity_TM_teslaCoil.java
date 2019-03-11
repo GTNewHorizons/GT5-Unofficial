@@ -309,6 +309,8 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
         vTier = -1;
+        energyCapacity = 0;
+        outputCurrent = 0;
         long[] capacitorData;
         for (GT_MetaTileEntity_Hatch_Capacitor cap : eCaps) {
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
@@ -324,16 +326,17 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(cap)) {
                 continue;
             }
+            cap.getBaseMetaTileEntity().setActive(true);
             capacitorData = cap.getCapacitors();
             if (capacitorData[0] < vTier) {
-                if(getEUVar() > 0){
+                if(getEUVar() > 0 && capacitorData[0] != 0){
                     cap.getBaseMetaTileEntity().setToFire();
+                    System.out.println("Oman oman a hatch burst into flame!");
                 }
                 eCaps.remove(cap);
             } else {
-                cap.getBaseMetaTileEntity().setActive(true);
-                outputCurrent =+ capacitorData[1];
-                energyCapacity =+ capacitorData[2];
+                outputCurrent += capacitorData[1];
+                energyCapacity += capacitorData[2];
             }
         }
         return true;
@@ -390,6 +393,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
         }
 
+        //TODO Fix this because something broke it :L
         //ePowerPass hist toggle
         if (!ePowerPass && energyFrac > histHigh) {
             ePowerPass = true;
@@ -430,27 +434,27 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
 
         //Stuff to do if ePowerPass
         if (powerPassToggle) {
-            if (parametrized && outputVoltageParam > 0 && outputVoltage > outputVoltageParam){
-            outputVoltage = outputVoltageParam;
+            if (parametrized && outputVoltageParam > 0 && outputVoltage > outputVoltageParam) {
+                outputVoltage = outputVoltageParam;
             }
 
-            if (parametrized && outputCurrentParam > 0 && outputCurrent > outputCurrentParam){
-            outputCurrent = outputCurrentParam;
+            if (parametrized && outputCurrentParam > 0 && outputCurrent > outputCurrentParam) {
+                outputCurrent = outputCurrentParam;
             }
 
             transferRadiusTower = 32; //TODO generate based on power stored
             transferRadiusTransceiver = 16; //TODO generate based on power stored
             transferRadiusCoverUltimate = 16; //TODO generate based on power stored
 
-            if(parametrized && transferRadiusTowerParam > 0 && transferRadiusTowerParam < transferRadiusTower){
+            if (parametrized && transferRadiusTowerParam > 0 && transferRadiusTowerParam < transferRadiusTower) {
                 transferRadiusTower = transferRadiusTowerParam;
             }
 
-            if(parametrized && transferRadiusTransceiverParam > 0 && transferRadiusTransceiverParam < transferRadiusTransceiver){
+            if (parametrized && transferRadiusTransceiverParam > 0 && transferRadiusTransceiverParam < transferRadiusTransceiver) {
                 transferRadiusTransceiver = transferRadiusTransceiverParam;
             }
 
-            if(parametrized && transferRadiusCoverUltimateParam > 0 && transferRadiusCoverUltimateParam < transferRadiusCoverUltimate){
+            if (parametrized && transferRadiusCoverUltimateParam > 0 && transferRadiusCoverUltimateParam < transferRadiusCoverUltimate) {
                 transferRadiusCoverUltimate = transferRadiusCoverUltimateParam;
             }
 
@@ -480,32 +484,62 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             }
 
             //Power transfer
-            for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
-                IGregTechTileEntity node = Rx.getKey();
-                IMetaTileEntity nodeInside = node.getMetaTileEntity();
-                long euTran = outputVoltage;
+            long sparks = outputCurrent;
+            System.out.println("Output Current at: " + outputCurrent + "A" );
+            long sparkz = 0;
+            while (sparks > 0) {
+                boolean idle = true;
+                for (Map.Entry<IGregTechTileEntity, Integer> Rx : entriesSortedByValues(eTeslaMap)) {
+                    if(energyStored > outputVoltage) {
+                        IGregTechTileEntity node = Rx.getKey();
+                        IMetaTileEntity nodeInside = node.getMetaTileEntity();
+                        long euTran = outputVoltage;//TODO Efficency?
 
-                if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
-                    GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
-                    if (!nodeTesla.powerPassToggle) {
-                        if (nodeTesla.getEUVar() + euTran <= (nodeTesla.maxEUStore() / 2)) {
-                            setEUVar(getEUVar() - euTran);
-                            node.increaseStoredEnergyUnits(euTran, true);
+                        if (nodeInside instanceof GT_MetaTileEntity_TM_teslaCoil && Rx.getValue() <= transferRadiusTower) {
+                            GT_MetaTileEntity_TM_teslaCoil nodeTesla = (GT_MetaTileEntity_TM_teslaCoil) nodeInside;
+                            if (!nodeTesla.powerPassToggle) {
+                                if (nodeTesla.getEUVar() + euTran <= (nodeTesla.maxEUStore() / 2)) {
+                                    setEUVar(getEUVar() - euTran);
+                                    node.increaseStoredEnergyUnits(euTran, true);
+                                    sparks--;
+                                    sparkz++;
+                                    idle = false;
+                                }
+                            }
+                        } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil && Rx.getValue() <= transferRadiusTransceiver) {
+                            GT_MetaTileEntity_TeslaCoil nodeTesla = (GT_MetaTileEntity_TeslaCoil) nodeInside;
+                            if (!nodeTesla.powerPassToggle) {
+                                if (node.injectEnergyUnits((byte) 6, euTran, 1L) > 0L) {
+                                    setEUVar(getEUVar() - euTran);
+                                    sparks--;
+                                    sparkz++;
+                                    idle = false;
+                                }
+                            }
+                        } else if ((node.getCoverBehaviorAtSide((byte) 1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate) {
+                            if (node.injectEnergyUnits((byte) 1, euTran, 1L) > 0L) {
+                                setEUVar(getEUVar() - euTran);
+                                sparks--;
+                                sparkz++;
+                                idle = false;
+                            }
                         }
-                    }
-                } else if (nodeInside instanceof GT_MetaTileEntity_TeslaCoil && Rx.getValue() <= transferRadiusTransceiver) {
-                    GT_MetaTileEntity_TeslaCoil nodeTesla = (GT_MetaTileEntity_TeslaCoil) nodeInside;
-                    if (!nodeTesla.powerPassToggle) {
-                        if (node.injectEnergyUnits((byte)6, euTran, 1L) > 0L) {
-                            setEUVar(getEUVar() - euTran);
+                        if (sparks == 0) {
+                            System.out.println("Fresh out of sparks!");
+                            break;
                         }
-                    }
-                } else if ((node.getCoverBehaviorAtSide((byte)1) instanceof GT_Cover_TM_TeslaCoil_Ultimate) && Rx.getValue() <= transferRadiusCoverUltimate){
-                    if (node.injectEnergyUnits((byte)1, euTran, 1L) > 0L) {
-                        setEUVar(getEUVar() - euTran);
+                    } else {
+                        idle = true;
+                        System.out.println("ENERGY LOW!");
+                        break;
                     }
                 }
+                if (idle) {
+                    System.out.println("IDLE DROP!");
+                    break;
+                }
             }
+            System.out.println("I sent a total of :" + sparkz + " This tick!");
         }
         return true;
     }

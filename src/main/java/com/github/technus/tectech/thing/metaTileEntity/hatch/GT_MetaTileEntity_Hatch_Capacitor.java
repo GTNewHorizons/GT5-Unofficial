@@ -179,8 +179,8 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch {
                         getBaseMetaTileEntity().setOnFire();
                     }
                 } else {
-                    tCurrent = +cap.current;
-                    tEnergyMax = +cap.energyMax;
+                    tCurrent += cap.current;
+                    tEnergyMax += cap.energyMax;
                 }
             }
         }
