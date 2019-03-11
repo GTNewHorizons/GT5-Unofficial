@@ -7,13 +7,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.cElementalInsta
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_junction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.MultiblockControl;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -88,7 +82,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 }
                 return STATUS_NEUTRAL;
             };
-    private static final NameFunction<GT_MetaTileEntity_EM_junction> ROUTE_NAME=
+    private static final NameFunction<GT_MetaTileEntity_EM_machine> ROUTE_NAME=
             (base,p)->(p.parameterId()==0?"Source ":"Destination ")+p.hatchId();
     //endregion
 
