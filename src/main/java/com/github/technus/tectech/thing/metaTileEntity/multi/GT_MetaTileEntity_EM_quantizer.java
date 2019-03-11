@@ -63,7 +63,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
             "1 - Classic Hatches or High Power Casing",
-            "2 - Elemental Output ParameterGroup",
+            "2 - Elemental Output Hatch",
             "3 - Elemental Overflow Hatches or Molecular Casing",
     };
     //endregion

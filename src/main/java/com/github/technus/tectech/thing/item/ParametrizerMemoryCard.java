@@ -115,7 +115,7 @@ public final class ParametrizerMemoryCard extends Item {
 
         long temp;
         if(tNBT!=null && tNBT.hasKey("param")) {
-            aList.add("ParameterGroup ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
             temp=tNBT.getInteger("value0D");
             aList.add("Value 0D: "+EnumChatFormatting.AQUA + temp);
             aList.add("Value 0B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));

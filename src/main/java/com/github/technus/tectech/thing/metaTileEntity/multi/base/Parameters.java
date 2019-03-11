@@ -125,7 +125,7 @@ public class Parameters {
 
         private Group(int hatchNo, boolean updateWhileRunning){
             if(hatchNo<0 || hatchNo>=10){
-                throw new IllegalArgumentException("ParameterGroup id must be in 0 to 9 range");
+                throw new IllegalArgumentException("Hatch id must be in 0 to 9 range");
             }
             this.hatchNo=hatchNo;
             this.updateWhileRunning=updateWhileRunning;
