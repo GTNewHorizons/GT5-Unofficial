@@ -7,6 +7,10 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,6 +32,8 @@ import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -39,6 +45,17 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static final double URANIUM_INGOT_MASS_DIFF = 1.6114516E10;
     private static final double MASS_TO_EU_PARTIAL = ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/nuclear") * 3_000_000.0 / URANIUM_INGOT_MASS_DIFF;
     private static final double MASS_TO_EU_INSTANT= MASS_TO_EU_PARTIAL *20;
+
+    //region parameters
+    protected Parameters.Group.ParameterIn ampereFlow;
+    private static final NameFunction<GT_MetaTileEntity_EM_decay> FLOW_NAME= (base, p)->"Ampere divider";
+    private static final StatusFunction<GT_MetaTileEntity_EM_decay> FLOW_STATUS= (base, p)->{
+        if(base.eAmpereFlow<=0){
+            return STATUS_TOO_LOW;
+        }
+        return STATUS_OK;
+    };
+    //endregion
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -54,7 +71,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addClassicToMachineList, this::addElementalToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
@@ -71,6 +88,12 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     public GT_MetaTileEntity_EM_decay(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0=parametrization.getGroup(0, true);
+        ampereFlow=hatch_0.makeInParameter(0,1,FLOW_NAME,FLOW_STATUS);
     }
 
     @Override
@@ -157,9 +180,12 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         float preMass=outputEM[0].getMass();
         outputEM[0].tickContent(1,0,1);
         double energyDose=((preMass-outputEM[0].getMass())* MASS_TO_EU_PARTIAL);
-        mEUt=(int)(energyDose/getParameterInInt(0,0));
-        eAmpereFlow=getParameterInInt(0,0);
-
+        eAmpereFlow=(long) ampereFlow.get();
+        if (eAmpereFlow <= 0) {
+            mEUt=0;
+            return false;
+        }
+        mEUt=(int)(energyDose/eAmpereFlow);
         return outputEM[0].hasStacks();
     }
 
@@ -191,17 +217,17 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         return new String[]{
                 "Progress:",
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s",
                 "Energy Hatches:",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
                 (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
                         " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                        " Efficiency: " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,

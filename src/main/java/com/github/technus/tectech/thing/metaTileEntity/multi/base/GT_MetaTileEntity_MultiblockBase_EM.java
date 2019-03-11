@@ -35,11 +35,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureCheckerExtreme;
@@ -55,12 +51,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //Placeholders for nothing feel free to use
     public static final ItemStack[] nothingI = new ItemStack[0];
     public static final FluidStack[] nothingF = new FluidStack[0];
-    //endregion
-
-    //region Reflection based hatch adding...
-    //Example how to add custom method is in computer and research station
-    protected static final Map<String, Method> adderMethodMap = new HashMap<>();
-    private static Method adderMethod;
     //endregion
 
     //region Client side variables (static - one per class)
@@ -95,25 +85,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
-    //endregion
-
-    //region PARAMETERS! GO AWAY and use proper get/set methods
-    // 0 and 10 are from first parametrizer
-    // 1 and 11 are from second etc...
-
-    private final int[] iParamsIn = new int[20];//number I from parametrizers
-    private final int[] iParamsOut = new int[20];//number O to parametrizers
-    private final boolean[] bParamsAreFloats = new boolean[10];
-
-    final byte[] eParamsInStatus = new byte[20];//LED status for I
-    final byte[] eParamsOutStatus = new byte[20];//LED status for O
-    public static final byte STATUS_UNUSED =7, STATUS_NEUTRAL = 0,
-            STATUS_TOO_LOW = 1,  STATUS_LOW = 2,
-            STATUS_WRONG = 3,    STATUS_OK = 4,
-            STATUS_TOO_HIGH = 5, STATUS_HIGH = 6;
-    // 0,2,4,6 - ok
-    //  1,3,5  - nok
-
+    //region parameters
+    public final Parameters parametrization;
     //endregion
 
     //region Control variables
@@ -168,12 +141,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        parametersLoadDefault_EM();
+        parametrization=new Parameters(this);
+        parametersInstantiation_EM();
+        parametrization.setToDefaults(true,true);
     }
 
     protected GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
-        parametersLoadDefault_EM();
+        parametrization=new Parameters(this);
+        parametersInstantiation_EM();
+        parametrization.setToDefaults(true,true);
     }
 
     //region SUPER STRUCT
@@ -386,12 +363,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             String[][] structure,//0-9 casing, +- air no air, a-z ignore
             Block[] blockType,//use numbers 0-9 for casing types
             byte[] blockMeta,//use numbers 0-9 for casing types
-            String[] addingMethods,
+            HatchAdder[] addingMethods,
             short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerExtreme(structure, blockType, blockMeta, adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+        return StructureCheckerExtreme(structure, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
                 horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), this, !mMachine);
     }
 
@@ -446,7 +423,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
         }
     }
-
     //endregion
 
     //region tooltip and scanner result
@@ -465,6 +441,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"I");
+        list.add(EnumChatFormatting.WHITE+"Value: "+
+                EnumChatFormatting.AQUA+parametrization.getIn(hatchNo,paramID));
+        try{
+            list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
+        }catch (NullPointerException|IndexOutOfBoundsException e){
+            list.add("Unused");
+        }
         return list;
     }
 
@@ -482,6 +465,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EnumChatFormatting.AQUA+paramID +
                 EnumChatFormatting.YELLOW+ ":"+
                 EnumChatFormatting.AQUA+"O");
+        list.add(EnumChatFormatting.WHITE+"Value: "+
+                EnumChatFormatting.AQUA+parametrization.getOut(hatchNo,paramID));
+        try{
+            list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
+        }catch (NullPointerException|IndexOutOfBoundsException e){
+            list.add("Unused");
+        }
         return list;
     }
 
@@ -521,17 +511,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return new String[]{
                 "Progress:",
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
-                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+                        EnumChatFormatting.YELLOW + mMaxProgresstime / 20 + EnumChatFormatting.RESET + " s",
                 "Energy Hatches:",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
-                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
-                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
-                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.YELLOW + maxEnergy + EnumChatFormatting.RESET + " EU",
+                (mEUt*eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") +
+                        EnumChatFormatting.RED + Math.abs(mEUt) + EnumChatFormatting.RESET + " EU/t at " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
                         " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
-                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                        " Efficiency: " + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
                 "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET
@@ -635,80 +625,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //endregion
 
-    //region PARAMETERS AND STATUSES - actually use it to work with parameters in other overrides
-
-    public final boolean setParameterPairIn_ClearOut(int hatchNo, boolean usesFloats, double value0, double value1) {
-        if (mMaxProgresstime > 0) {
-            return false;
-        }
-        bParamsAreFloats[hatchNo] = usesFloats;
-        if (usesFloats) {
-            iParamsIn[hatchNo] = Float.floatToIntBits((float) value0);
-            iParamsIn[hatchNo + 10] = Float.floatToIntBits((float) value1);
-        } else {
-            iParamsIn[hatchNo] = (int) value0;
-            iParamsIn[hatchNo + 10] = (int) value1;
-        }
-        iParamsOut[hatchNo] = 0;
-        iParamsOut[hatchNo + 10] = 0;
-        return true;
-    }
-
-    public final boolean isParametrizerUsingFloat(int hatchNo){
-        return bParamsAreFloats[hatchNo];
-    }
-
-    public final double getParameterIn(int hatchNo, int paramID){
-        return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]):iParamsIn[hatchNo+10*paramID];
-    }
-
-    public final int getParameterInInt(int hatchNo, int paramID){
-        if(bParamsAreFloats[hatchNo]) {
-            return (int) Float.intBitsToFloat(iParamsIn[hatchNo + 10 * paramID]);
-        }
-        return iParamsIn[hatchNo+10*paramID];
-    }
-
-    //public final int getParameterInIntRaw(int hatchNo, int paramID){
-    //    return iParamsIn[hatchNo+10*paramID];
-    //}
-
-    //public final float getParameterInFloatRaw(int hatchNo, int paramID){
-    //    return Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]);
-    //}
-
-    public final void setParameterOut(int hatchNo, int paramID, double value){
-        if(bParamsAreFloats[hatchNo]) {
-            iParamsOut[hatchNo+10*paramID]=Float.floatToIntBits((float) value);
-        }else{
-            iParamsOut[hatchNo+10*paramID]=(int)value;
-        }
-    }
-
-    //public final boolean setParameterOutInt(int hatchNo, int paramID, int value){
-    //    if(bParamsAreFloats[hatchNo]) return false;
-    //    iParamsOut[hatchNo+10*paramID]=value;
-    //    return true;
-    //}
-
-    //public final boolean setParameterOutFloat(int hatchNo, int paramID, float value){
-    //    if(bParamsAreFloats[hatchNo]) {
-    //        iParamsOut[hatchNo + 10 * paramID] = Float.floatToIntBits(value);
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    public final void setStatusOfParameterIn(int hatchNo, int paramID, byte status){
-        eParamsInStatus[hatchNo+10*paramID]=status;
-    }
-
-    public final void setStatusOfParameterOut(int hatchNo, int paramID, byte status){
-        eParamsOutStatus[hatchNo+10*paramID]=status;
-    }
-
-    //endregion
-
     //region Methods to maybe override (if u implement certain stuff)
 
     /**
@@ -791,30 +707,43 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * loads default parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
+     * instantiate parameters in CONSTRUCTOR! CALLED ONCE on creation, don't call it in your classes
      */
-    protected void parametersLoadDefault_EM(){
-        //load default parameters with setParameterPairIn_ClearOut
-    }
-
-    /**
-     * This is called automatically when there was parameters data update, copy it to your variables for safe storage
-     * although the base code only downloads the values from parametrizers when machines is NOT OPERATING
-     *
-     * good place to get Parameters
-     */
-    protected void parametersInRead_EM(){}
+    protected void parametersInstantiation_EM(){}
 
     /**
      * It is automatically called OFTEN
      * update status of parameters in guis (and "machine state" if u wish)
-     * Called before check recipe, before outputting, and every second the machine is active
+     * Called before check recipe, before outputting, and every second the machine is complete
      *
-     * good place for set Parameters
+     * good place to update parameter statuses, default implementation handles it well
      *
      * @param machineBusy is machine doing SHIT
      */
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy){}
+    protected void parametersStatusesWrite_EM(boolean machineBusy) {//todo unimplement?
+        if(!machineBusy){
+            for (Parameters.Group.ParameterIn parameterIn : parametrization.parameterInArrayList) {
+                if (parameterIn != null) {
+                    parameterIn.updateStatus();
+                }
+            }
+        }else{
+            for (Parameters.Group hatch:parametrization.groups){
+                if(hatch!=null && hatch.updateWhileRunning){
+                    for (Parameters.Group.ParameterIn in:hatch.parameterIn) {
+                        if(in!=null){
+                            in.updateStatus();
+                        }
+                    }
+                }
+            }
+        }
+        for (Parameters.Group.ParameterOut parameterOut : parametrization.parameterOutArrayList) {
+            if (parameterOut != null) {
+                parameterOut.updateStatus();
+            }
+        }
+    }
 
     /**
      * For extra types of hatches initiation, LOOK HOW IT IS CALLED! in onPostTick
@@ -946,32 +875,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
 
         NBTTagCompound paramI = new NBTTagCompound();
-        for (int i = 0; i < iParamsIn.length; i++) {
-            paramI.setInteger(Integer.toString(i), iParamsIn[i]);
+        for (int i = 0; i < parametrization.iParamsIn.length; i++) {
+            paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
         }
-        aNBT.setTag("eParamsIn", paramI);
+        aNBT.setTag("eParamsInD", paramI);
 
         NBTTagCompound paramO = new NBTTagCompound();
-        for (int i = 0; i < iParamsOut.length; i++) {
-            paramO.setInteger(Integer.toString(i), iParamsOut[i]);
+        for (int i = 0; i < parametrization.iParamsOut.length; i++) {
+            paramO.setDouble(Integer.toString(i), parametrization.iParamsOut[i]);
         }
-        aNBT.setTag("eParamsOut", paramO);
-
-        NBTTagCompound paramB = new NBTTagCompound();
-        for (int i = 0; i < bParamsAreFloats.length; i++) {
-            paramB.setBoolean(Integer.toString(i), bParamsAreFloats[i]);
-        }
-        aNBT.setTag("eParamsB", paramB);
+        aNBT.setTag("eParamsOutD", paramO);
 
         NBTTagCompound paramIs = new NBTTagCompound();
-        for (int i = 0; i < eParamsInStatus.length; i++) {
-            paramIs.setByte(Integer.toString(i), eParamsInStatus[i]);
+        for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+            paramIs.setByte(Integer.toString(i), parametrization.eParamsInStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsInS", paramIs);
 
         NBTTagCompound paramOs = new NBTTagCompound();
-        for (int i = 0; i < eParamsOutStatus.length; i++) {
-            paramOs.setByte(Integer.toString(i), eParamsOutStatus[i]);
+        for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
+            paramOs.setByte(Integer.toString(i), parametrization.eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
     }
@@ -1038,29 +961,38 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             outputEM = null;
         }
 
-        NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
-        for (int i = 0; i < iParamsIn.length; i++) {
-            iParamsIn[i] = paramI.getInteger(Integer.toString(i));
-        }
-
-        NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
-        for (int i = 0; i < iParamsOut.length; i++) {
-            iParamsOut[i] = paramO.getInteger(Integer.toString(i));
-        }
-
-        NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
-        for (int i = 0; i < bParamsAreFloats.length; i++) {
-            bParamsAreFloats[i] = paramB.getBoolean(Integer.toString(i));
+        if(aNBT.hasKey("eParamsIn") && aNBT.hasKey("eParamsOut") && aNBT.hasKey("eParamsB")){
+            NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
+            NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOut");
+            NBTTagCompound paramB = aNBT.getCompoundTag("eParamsB");
+            for (int i = 0; i < 10; i++) {
+                if(paramB.getBoolean(Integer.toString(i))){
+                    parametrization.iParamsIn[i] = Float.intBitsToFloat(paramI.getInteger(Integer.toString(i)));
+                    parametrization.iParamsOut[i] =Float.intBitsToFloat(paramO.getInteger(Integer.toString(i)));
+                }else {
+                    parametrization.iParamsIn[i] = paramI.getInteger(Integer.toString(i));
+                    parametrization.iParamsOut[i] = paramO.getInteger(Integer.toString(i));
+                }
+            }
+        }else{
+            NBTTagCompound paramI = aNBT.getCompoundTag("eParamsInD");
+            for (int i = 0; i < parametrization.iParamsIn.length; i++) {
+                parametrization.iParamsIn[i] = paramI.getDouble(Integer.toString(i));
+            }
+            NBTTagCompound paramO = aNBT.getCompoundTag("eParamsOutD");
+            for (int i = 0; i < parametrization.iParamsOut.length; i++) {
+                parametrization.iParamsOut[i] = paramO.getDouble(Integer.toString(i));
+            }
         }
 
         NBTTagCompound paramIs = aNBT.getCompoundTag("eParamsInS");
-        for (int i = 0; i < eParamsInStatus.length; i++) {
-            eParamsInStatus[i] = paramIs.getByte(Integer.toString(i));
+        for (int i = 0; i < parametrization.eParamsInStatus.length; i++) {
+            parametrization.eParamsInStatus[i] = LedStatus.getStatus(paramIs.getByte(Integer.toString(i)));
         }
 
         NBTTagCompound paramOs = aNBT.getCompoundTag("eParamsOutS");
-        for (int i = 0; i < eParamsOutStatus.length; i++) {
-            eParamsOutStatus[i] = paramOs.getByte(Integer.toString(i));
+        for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
+            parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
     }
 
@@ -1239,46 +1171,43 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     /**
-     * callback for updating parameters, change this if u really need dynamic (inside recipe time) parameter updates
+     * callback for updating parameters and new hatches
      */
     protected void hatchesStatusUpdate_EM() {
+        if(getBaseMetaTileEntity().isClientSide()){
+            return;
+        }
         boolean busy=mMaxProgresstime>0;
         if (busy) {//write from buffer to hatches only
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
                     continue;
                 }
-                int paramID = hatch.param;
-                if(bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
-                    hatch.input0i = iParamsOut[paramID];
-                    hatch.input1i = iParamsOut[paramID + 10];
-                }else if(hatch.isUsingFloats()){
-                    hatch.input0i = Float.floatToIntBits((float)iParamsOut[paramID]);
-                    hatch.input1i = Float.floatToIntBits((float)iParamsOut[paramID + 10]);
-                }else {
-                    hatch.input0i = (int)Float.intBitsToFloat(iParamsOut[paramID]);
-                    hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
+                int hatchId = hatch.param;
+                if(parametrization.groups[hatchId]!=null && parametrization.groups[hatchId].updateWhileRunning){
+                    parametrization.iParamsIn[hatchId] = hatch.value0D;
+                    parametrization.iParamsIn[hatchId + 10] = hatch.value1D;
                 }
+                hatch.input0D = parametrization.iParamsOut[hatchId];
+                hatch.input1D = parametrization.iParamsOut[hatchId + 10];
             }
-            parametersInRead_EM();
         } else {//if has nothing to do update all
             for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
                 if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch) || hatch.param < 0) {
                     continue;
                 }
-                int paramID = hatch.param;
-                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
-                iParamsIn[paramID] = hatch.value0i;
-                iParamsIn[paramID + 10] = hatch.value1i;
-                hatch.input0i = iParamsOut[paramID];
-                hatch.input1i = iParamsOut[paramID + 10];
+                int hatchId = hatch.param;
+                parametrization.iParamsIn[hatchId] = hatch.value0D;
+                parametrization.iParamsIn[hatchId + 10] = hatch.value1D;
+                hatch.input0D = parametrization.iParamsOut[hatchId];
+                hatch.input1D = parametrization.iParamsOut[hatchId + 10];
             }
         }
         for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches) {
             eCertainStatus = uncertainty.update(eCertainMode);
         }
         eAvailableData = getAvailableData_EM();
-        parametersOutAndStatusesWrite_EM(busy);
+        parametersStatusesWrite_EM(busy);
     }
 
     @Deprecated
@@ -1482,9 +1411,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches){
                         if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                             hatch.getBaseMetaTileEntity().setActive(true);
-                            if(hatch.param>=0) {
-                                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
-                            }
                         }
                     }
                 } else {
@@ -2668,48 +2594,4 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         return false;
     }
-
-    public static void run() {
-        try {
-            adderMethodMap.put("addToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addEnergyInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addDynamoToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDynamoToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addEnergyIOToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyIOToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addParametrizerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addParametrizerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addUncertainToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addUncertainToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addDataConnectorToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDataConnectorToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethod = GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addThing", String.class, IGregTechTileEntity.class, int.class);
-        } catch (NoSuchMethodException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //CALLBACK from hatches adders
-    public boolean addThing(String methodName, IGregTechTileEntity igt, int casing) {
-        try {
-            return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    //endregion
 }

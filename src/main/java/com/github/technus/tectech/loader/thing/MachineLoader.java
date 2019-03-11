@@ -6,7 +6,6 @@ import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
@@ -349,12 +348,7 @@ public class MachineLoader implements Runnable {
         // MetaTE init
         // ===================================================================================================
 
-        GT_MetaTileEntity_MultiblockBase_EM.run();
         GT_MetaTileEntity_Hatch_Rack.run();
-        GT_MetaTileEntity_Hatch_Capacitor.run();
-        GT_MetaTileEntity_EM_computer.run();
-        GT_MetaTileEntity_EM_research.run();
-        GT_MetaTileEntity_EM_dataBank.run();
         GT_MetaTileEntity_TM_teslaCoil.run();
 
         GT_MetaTileEntity_DataReader.run();

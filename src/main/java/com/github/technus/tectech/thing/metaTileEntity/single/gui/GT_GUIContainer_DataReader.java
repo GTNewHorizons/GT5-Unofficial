@@ -115,7 +115,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
 
     private void renderDataBG(ItemStack thing, int mouseX, int mouseY, int x, int y, byte mTier) {
         if (thing != null) {
-            ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.TT_ItemStack(thing));
+            ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(thing));
             for (GT_MetaTileEntity_DataReader.DataRender render : renders) {
                 if (render.canRender(thing, mTier)) {
                     if (!GT_Utility.areStacksEqual(stack, thing, false)) {
@@ -133,7 +133,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
         if(stack==null){
             return false;
         }
-        ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.TT_ItemStack(stack));
+        ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack));
         for (GT_MetaTileEntity_DataReader.DataRender render : renders) {
             if (render.canRender(stack, mTier)) {
                 render.renderForeground(stack, mouseX, mouseY, this, fontRendererObj);
@@ -147,7 +147,7 @@ public class GT_GUIContainer_DataReader extends GT_GUIContainerMetaTile_Machine 
         if(stack==null){
             return false;
         }
-        ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.TT_ItemStack(stack));
+        ArrayList<GT_MetaTileEntity_DataReader.DataRender> renders = GT_MetaTileEntity_DataReader.getRenders(new Util.ItemStack_NoNBT(stack));
         for (GT_MetaTileEntity_DataReader.DataRender render : renders) {
             if (render.canRender(stack, mTier)) {
                 render.renderTooltips(stack, mouseX, mouseY, this);

@@ -26,13 +26,12 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
-    private boolean usesFloat = false;
     public int pointer = 0;
     public int param = -1;
-    public int value0i = 0;
-    public int value1i = 0;
-    public int input0i = 0;
-    public int input1i = 0;
+    public double value0D = 0;
+    public double value1D = 0;
+    public double input0D = 0;
+    public double input1D = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
@@ -105,15 +104,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
-        if(mTier>7) {
-            return new String[]{"Parametrizer ID: " + EnumChatFormatting.GREEN + param, "Value 0I: " + EnumChatFormatting.AQUA + value0i, "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i) + ' ' + Util.intBitsToShortString(value0i), "Value 1I: " + EnumChatFormatting.BLUE + value1i, "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i) + ' ' + Util.intBitsToShortString(value1i), "Input 0I: " + EnumChatFormatting.GOLD + input0i, "Input 0FB: " + EnumChatFormatting.GOLD + Float.intBitsToFloat(input0i) + ' ' + Util.intBitsToShortString(input0i), "Input 1I: " + EnumChatFormatting.YELLOW + input1i, "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i) + ' ' + Util.intBitsToShortString(input1i),};
-        }
         return new String[]{
                 "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
-                "Value 0I: " + EnumChatFormatting.AQUA + value0i,
-                "Value 1I: " + EnumChatFormatting.BLUE + value1i,
-                "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
-                "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
+                "Value 0D: " + EnumChatFormatting.AQUA + value0D,
+                "Value 1D: " + EnumChatFormatting.BLUE + value1D,
+                "Input 0D: " + EnumChatFormatting.GOLD   + input0D,
+                "Input 1D: " + EnumChatFormatting.YELLOW + input1D,
         };
     }
 
@@ -135,24 +131,41 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("eFloats", usesFloat);
         aNBT.setInteger("ePointer", pointer);
-        aNBT.setInteger("eValue0i", value0i);
-        aNBT.setInteger("eValue1i", value1i);
-        aNBT.setInteger("eInput0i", value0i);
-        aNBT.setInteger("eInput1i", value1i);
+        aNBT.setDouble("eValue0D", value0D);
+        aNBT.setDouble("eValue1D", value1D);
+        aNBT.setDouble("eInput0D", input0D);
+        aNBT.setDouble("eInput1D", input1D);
         aNBT.setInteger("eParam", param);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        usesFloat = aNBT.getBoolean("eFloats");
         pointer = aNBT.getInteger("ePointer");
-        value0i=aNBT.getInteger("eValue0i");
-        value1i=aNBT.getInteger("eValue1i");
-        value0i=aNBT.getInteger("eInput0i");
-        value1i=aNBT.getInteger("eInput1i");
+        if(aNBT.hasKey("eFloats") ||
+                aNBT.hasKey("eValue0i") ||
+                aNBT.hasKey("eValue1i") ||
+                aNBT.hasKey("eInput0i") ||
+                aNBT.hasKey("eInput1i")){
+            boolean usesFloat = aNBT.getBoolean("eFloats");
+            if(usesFloat){
+                value0D=Float.intBitsToFloat(aNBT.getInteger("eValue0i"));
+                value1D=Float.intBitsToFloat(aNBT.getInteger("eValue1i"));
+                input0D=Float.intBitsToFloat(aNBT.getInteger("eInput0i"));
+                input1D=Float.intBitsToFloat(aNBT.getInteger("eInput1i"));
+            }else {
+                value0D=aNBT.getInteger("eValue0i");
+                value1D=aNBT.getInteger("eValue1i");
+                input0D=aNBT.getInteger("eInput0i");
+                input1D=aNBT.getInteger("eInput1i");
+            }
+        }else{
+            value0D=aNBT.getDouble("eValue0D");
+            value1D=aNBT.getDouble("eValue1D");
+            input0D=aNBT.getDouble("eInput0D");
+            input1D=aNBT.getDouble("eInput1D");
+        }
         param = aNBT.getInteger("eParam");
     }
 
@@ -197,18 +210,5 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
                 mDescription,
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft\u00b2"
         };
-    }
-
-    public boolean isUsingFloats() {
-        return mTier > 7 && usesFloat;
-    }
-
-    //returns - succeded
-    public boolean setUsingFloats(boolean value){
-        if(mTier>7){
-            usesFloat=value;
-            return true;
-        }
-        return !value;
     }
 }

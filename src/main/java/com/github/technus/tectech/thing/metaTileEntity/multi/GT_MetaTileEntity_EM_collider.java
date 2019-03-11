@@ -16,6 +16,10 @@ import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.NameFunction;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.StatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedTexture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,6 +41,7 @@ import static com.github.technus.tectech.Util.StructureBuilderExtreme;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -47,13 +52,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenON_Slave;
     private static Textures.BlockIcons.CustomIcon ScreenOFF_Slave;
 
-    private static double MASS_TO_EU_PARTIAL,MASS_TO_EU_INSTANT;
+    protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
+    private static double MASS_TO_EU_INSTANT;
     private static int STARTUP_COST,KEEPUP_COST;
 
-    private long plasmaEnergy;
-
     public static void setValues(int heliumPlasmaValue){
-        MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
+        double MASS_TO_EU_PARTIAL = heliumPlasmaValue / 1.75893000478707E07;//mass diff
         MASS_TO_EU_INSTANT = MASS_TO_EU_PARTIAL * 20;
         STARTUP_COST=-heliumPlasmaValue*10000;
         KEEPUP_COST=-heliumPlasmaValue;
@@ -266,8 +270,38 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected byte eTier = 0;
     protected cElementalInstanceStack stack;
+    private long plasmaEnergy;
 
-    protected static final byte FUSE_MODE=0, COLLIDE_MODE =1;
+    //region parameters
+    protected Parameters.Group.ParameterIn mode;
+    private static final StatusFunction<GT_MetaTileEntity_EM_collider> MODE_STATUS = (base_EM, p)->{
+        if(base_EM.isMaster()){
+            double mode=p.get();
+            if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
+                return STATUS_OK;
+            } else if (mode > 1) {
+                return STATUS_TOO_HIGH;
+            } else if (mode < 0) {
+                return STATUS_TOO_LOW;
+            }
+            return STATUS_WRONG;
+        }
+        return STATUS_UNUSED;
+    };
+    private static final NameFunction<GT_MetaTileEntity_EM_collider> MODE_NAME = (base_EM, p)->{
+        if(base_EM.isMaster()){
+            double mode=p.get();
+            if(mode==FUSE_MODE){
+                return "Mode: Fuse";
+            }else if(mode==COLLIDE_MODE){
+                return "Mode: Collide";
+            }
+            return "Mode: Undefined";
+        }
+        return "Currently Slaves...";
+    };
+    //endregion
+
     protected boolean started=false;
 
     //region Structure
@@ -305,7 +339,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalInputToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{
+            this::addClassicToMachineList,
+            this::addElementalInputToMachineList,
+            this::addElementalOutputToMachineList,
+            this::addElementalMufflerToMachineList};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
@@ -325,6 +363,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     public GT_MetaTileEntity_EM_collider(String aName) {
         super(aName);
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        Parameters.Group hatch_0=parametrization.getGroup(0);
+        mode=hatch_0.makeInParameter(0,FUSE_MODE, MODE_NAME, MODE_STATUS);
     }
 
     @Override
@@ -438,18 +482,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void parametersOutAndStatusesWrite_EM(boolean machineBusy) {
+    public void parametersStatusesWrite_EM(boolean machineBusy) {
         if(isMaster()) {
-            double mode = getParameterIn(0, 0);
-            if (mode == FUSE_MODE || mode == COLLIDE_MODE) {
-                setStatusOfParameterIn(0, 0, STATUS_OK);
-            } else if (mode > 1) {
-                setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
-            } else if (mode < 0) {
-                setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
-            }else{
-                setStatusOfParameterIn(0,0,STATUS_WRONG);
-            }
+            super.parametersStatusesWrite_EM(machineBusy);
         }
     }
 
@@ -599,7 +634,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             return;
         }
         if (isMaster()) {
-            switch (getParameterInInt(0,0)){
+            switch ((int)mode.get()){
                 case FUSE_MODE:
                     makeEU(fuse(partner));
                     break;
