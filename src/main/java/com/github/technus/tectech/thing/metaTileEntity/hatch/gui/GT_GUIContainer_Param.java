@@ -27,8 +27,8 @@ public class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
             proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+.5E", ((GT_Container_Param) mContainer).value1f), 46, 41, 167, 0x0077ff);
             GL11.glPushMatrix();
             GL11.glScalef(.5f,.5f,.5f);
-            proxy.renderUnicodeString("\u24EA\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value0f)), 46*2, 50*2, 167*2, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value1f)), 46*2, 58*2, 167*2, 0x0077ff);
+            proxy.renderUnicodeString("\u24EA\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value0f)), 92, 100, 334, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06" + Util.longBitsToShortString(Double.doubleToLongBits(((GT_Container_Param) mContainer).value1f)), 92, 116, 334, 0x0077ff);
             GL11.glPopMatrix();
         } else {
             proxy.renderUnicodeString("Parameters", 46, 7, 167, 0xffffff);
