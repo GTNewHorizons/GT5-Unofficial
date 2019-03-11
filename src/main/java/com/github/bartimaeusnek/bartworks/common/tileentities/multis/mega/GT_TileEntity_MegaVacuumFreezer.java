@@ -78,7 +78,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         int processed = 0;
         long nominalV = BW_Util.getnominalVoltage(this);
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, null, tInputs) && (tRecipe.mEUt*processed) < nominalV ) {
+            if (tRecipe != null && (tRecipe.mEUt*(processed+1)) < nominalV  && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     outputItems.add(tRecipe.getOutput(i));
