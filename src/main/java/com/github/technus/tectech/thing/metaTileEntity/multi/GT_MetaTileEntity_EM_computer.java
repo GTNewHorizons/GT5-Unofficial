@@ -261,11 +261,13 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
 
-    @Override
+    @Override//Had a crash bug with breaking a rack and then the multi
     public void onRemoval() {
         super.onRemoval();
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
 
@@ -273,8 +275,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public void stopMachine() {
         super.stopMachine();
         eAvailableData=0;
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
 
