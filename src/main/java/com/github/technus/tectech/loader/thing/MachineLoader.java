@@ -349,7 +349,6 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         GT_MetaTileEntity_Hatch_Rack.run();
-        GT_MetaTileEntity_TM_teslaCoil.run();
 
         GT_MetaTileEntity_DataReader.run();
 

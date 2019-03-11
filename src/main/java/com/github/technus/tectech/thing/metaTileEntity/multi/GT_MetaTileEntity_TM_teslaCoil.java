@@ -3,8 +3,12 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.cover.GT_Cover_TM_TeslaCoil_Ultimate;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Capacitor;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.HatchAdder;
 import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_TeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,12 +23,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.V;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.entriesSortedByValues;
-import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.GregTech_API.*;
 import static gregtech.api.enums.GT_Values.E;
@@ -40,7 +45,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private int scanTimeMin = 100; //Min scan time in ticks
     private int scanTimeTill = scanTimeMin; //Set default scan time
 
-    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<IGregTechTileEntity, Integer>(); //Tesla Map to map them tesla bois!
+    private Map<IGregTechTileEntity, Integer> eTeslaMap = new HashMap<>(); //Tesla Map to map them tesla bois!
     private final ArrayList<GT_MetaTileEntity_Hatch_Capacitor> eCaps = new ArrayList<>(); //Capacitor List
 
     private float histLow = 0.25F; //Power pass is disabled if power is under this fraction
@@ -121,7 +126,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaT1 = new byte[]{15, 1, 13, 0};
     private static final byte[] blockMetaT2 = new byte[]{15, 2, 13, 0};
     private static final byte[][] blockMetas = new byte[][]{blockMetaT0,blockMetaT1,blockMetaT2};
-    private static final String[] addingMethods = new String[]{"addCapacitorToMachineList", "addFrameToMachineList"};
+    private final HatchAdder[] addingMethods = new HatchAdder[]{this::addCapacitorToMachineList, this::addFrameToMachineList};
     private static final short[] casingTextures = new short[]{29, 0};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings2, null};
     private static final byte[] blockMetaFallback = new byte[]{13, 0};
@@ -585,16 +590,5 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
-    }
-
-    public static void run() {
-        try {
-            adderMethodMap.put("addFrameToMachineList", GT_MetaTileEntity_TM_teslaCoil.class.getMethod("addFrameToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addCapacitorToMachineList", GT_MetaTileEntity_TM_teslaCoil.class.getMethod("addCapacitorToMachineList", IGregTechTileEntity.class, int.class));
-        } catch (NoSuchMethodException e) {
-            if (DEBUG_MODE) {
-                e.printStackTrace();
-            }
-        }
     }
 }
