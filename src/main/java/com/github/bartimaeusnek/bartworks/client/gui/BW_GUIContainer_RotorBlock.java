@@ -40,7 +40,7 @@ public class BW_GUIContainer_RotorBlock extends GuiWindKineticGenerator {
     public BW_GUIContainer_RotorBlock(ContainerWindKineticGenerator container1) {
         super(container1);
         this.container = container1;
-        this.name = StatCollector.translateToLocal("tile.BWRotorBlock.name");
+        this.name = StatCollector.translateToLocal("tile.BWRotorBlock.0.name");
     }
 
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {

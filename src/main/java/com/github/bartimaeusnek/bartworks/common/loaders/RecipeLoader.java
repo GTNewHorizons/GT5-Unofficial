@@ -575,7 +575,7 @@ public class RecipeLoader implements Runnable {
                             "WLh",
                             "WLf",
                             'L', new ItemStack(Items.leather),
-                            'W', new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
+                            'W', "logWood",
                     }
             );
             GT_ModHandler.addCraftingRecipe(
@@ -586,7 +586,7 @@ public class RecipeLoader implements Runnable {
                             "WLh",
                             "WLf",
                             'L', new ItemStack(Blocks.carpet),
-                            'W', new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
+                            'W', "logWood",
                     }
             );
             GT_ModHandler.addCraftingRecipe(
@@ -597,7 +597,7 @@ public class RecipeLoader implements Runnable {
                             "WLh",
                             "WLf",
                             'L', new ItemStack(Items.paper),
-                            'W', new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
+                            'W', "logWood",
                     }
             );
             GT_ModHandler.addCraftingRecipe(
@@ -610,7 +610,7 @@ public class RecipeLoader implements Runnable {
                             'E', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 3),
                             'Z', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 4),
                             'D', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 5),
-                            'W', new ItemStack(Blocks.log, 1, OreDictionary.WILDCARD_VALUE),
+                            'W', "logWood",
                     }
             );
             GT_ModHandler.addCraftingRecipe(
@@ -665,7 +665,7 @@ public class RecipeLoader implements Runnable {
                             "RGR",
                             "WRW",
                             'R', GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1L),
-                            'W', new ItemStack(Blocks.planks),
+                            'W', "plankWood",
                             'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
                     }
             );
