@@ -63,8 +63,8 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     //endregion
 
     //region parameters
-    protected Parameters.Group.ParameterIn[] inputMux=new Parameters.Group.ParameterIn[6];
-    protected Parameters.Group.ParameterIn[] outputMux=new Parameters.Group.ParameterIn[6];
+    protected Parameters.Group.ParameterIn[] inputMux;
+    protected Parameters.Group.ParameterIn[] outputMux;
     private static final StatusFunction<GT_MetaTileEntity_EM_machine> SRC_STATUS =
             (base,p)-> {
                 double v = p.get();
@@ -118,6 +118,8 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     protected void parametersInstantiation_EM() {
+        inputMux=new Parameters.Group.ParameterIn[6];
+        outputMux=new Parameters.Group.ParameterIn[6];
         for (int i=0;i<6;i++){
             Parameters.Group hatch=parametrization.getGroup(i);
             inputMux[i]=hatch.makeInParameter(0,i,ROUTE_NAME,SRC_STATUS);

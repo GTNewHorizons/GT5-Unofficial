@@ -81,8 +81,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 }
                 return STATUS_NEUTRAL;
             };
-    protected Parameters.Group.ParameterIn[] src=new Parameters.Group.ParameterIn[10];
-    protected Parameters.Group.ParameterIn[] dst=new Parameters.Group.ParameterIn[10];
+    protected Parameters.Group.ParameterIn[] src;
+    protected Parameters.Group.ParameterIn[] dst;
     //endregion
 
     public GT_MetaTileEntity_EM_junction(int aID, String aName, String aNameRegional) {
@@ -95,6 +95,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     protected void parametersInstantiation_EM() {
+        src=new Parameters.Group.ParameterIn[10];
+        dst=new Parameters.Group.ParameterIn[10];
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             src[i] = hatch.makeInParameter(0, i, ROUTE_NAME, SRC_STATUS);

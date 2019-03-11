@@ -62,53 +62,53 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.param -= aShifthold == 1 ? 16 : 4;
                     break;
                 case 1:
-                    paramH.value0i -= aShifthold == 1 ? 4096 : 256;
+                    paramH.value0D -= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 2:
-                    paramH.value1i -= aShifthold == 1 ? 4096 : 256;
+                    paramH.value1D -= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 3:
-                    paramH.value0i /= aShifthold == 1 ? 4096 : 256;
-                    paramH.value1i /= aShifthold == 1 ? 4096 : 256;
+                    paramH.value0D /= aShifthold == 1 ? 4096 : 256;
+                    paramH.value1D /= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 4:
                     paramH.param -= aShifthold == 1 ? 2 : 1;
                     break;
                 case 5:
-                    paramH.value0i -= aShifthold == 1 ? 16 : 1;
+                    paramH.value0D -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 6:
-                    paramH.value1i -= aShifthold == 1 ? 16 : 1;
+                    paramH.value1D -= aShifthold == 1 ? 16 : 1;
                     break;
                 case 7:
-                    paramH.value0i /= aShifthold == 1 ? 16 : 2;
-                    paramH.value1i /= aShifthold == 1 ? 16 : 2;
+                    paramH.value0D /= aShifthold == 1 ? 16 : 2;
+                    paramH.value1D /= aShifthold == 1 ? 16 : 2;
                     break;
                 case 8:
                     paramH.param += aShifthold == 1 ? 16 : 4;
                     break;
                 case 9:
-                    paramH.value0i += aShifthold == 1 ? 4096 : 256;
+                    paramH.value0D += aShifthold == 1 ? 4096 : 256;
                     break;
                 case 10:
-                    paramH.value1i += aShifthold == 1 ? 4096 : 256;
+                    paramH.value1D += aShifthold == 1 ? 4096 : 256;
                     break;
                 case 11:
-                    paramH.value0i *= aShifthold == 1 ? 4096 : 256;
-                    paramH.value1i *= aShifthold == 1 ? 4096 : 256;
+                    paramH.value0D *= aShifthold == 1 ? 4096 : 256;
+                    paramH.value1D *= aShifthold == 1 ? 4096 : 256;
                     break;
                 case 12:
                     paramH.param += aShifthold == 1 ? 2 : 1;
                     break;
                 case 13:
-                    paramH.value0i += aShifthold == 1 ? 16 : 1;
+                    paramH.value0D += aShifthold == 1 ? 16 : 1;
                     break;
                 case 14:
-                    paramH.value1i += aShifthold == 1 ? 16 : 1;
+                    paramH.value1D += aShifthold == 1 ? 16 : 1;
                     break;
                 case 15:
-                    paramH.value0i *= aShifthold == 1 ? 16 : 2;
-                    paramH.value1i *= aShifthold == 1 ? 16 : 2;
+                    paramH.value0D *= aShifthold == 1 ? 16 : 2;
+                    paramH.value1D *= aShifthold == 1 ? 16 : 2;
                     break;
                 default:
                     doStuff = false;
@@ -133,10 +133,10 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
             return;
         }
         param = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).param;
-        value0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0i;
-        value1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1i;
-        input0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0i;
-        input1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1i;
+        value0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0D;
+        value1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1D;
+        input0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0D;
+        input1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1D;
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;

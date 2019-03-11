@@ -81,19 +81,19 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                 case 3:
                     if (aShifthold == 1) {
                         if (secondRow) {
-                            paramH.value1i = Double.longBitsToDouble(0xFFFF_FFFF_FFFF_FFFFL);
+                            paramH.value1D = Double.longBitsToDouble(0xFFFF_FFFF_FFFF_FFFFL);
                         } else {
-                            paramH.value0i = Double.longBitsToDouble(0xFFFF_FFFF_FFFF_FFFFL);
+                            paramH.value0D = Double.longBitsToDouble(0xFFFF_FFFF_FFFF_FFFFL);
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1i);
+                            long temp=Double.doubleToLongBits(paramH.value1D);
                             temp |= 1 << columnPointer;
-                            paramH.value1i=Double.longBitsToDouble(temp);
+                            paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0i);
+                            long temp=Double.doubleToLongBits(paramH.value0D);
                             temp |= 1 << columnPointer;
-                            paramH.value0i=Double.longBitsToDouble(temp);
+                            paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -117,19 +117,19 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                 case 7:
                     if (aShifthold == 1) {
                         if (secondRow) {
-                            paramH.value1i = Double.longBitsToDouble(0);
+                            paramH.value1D = Double.longBitsToDouble(0);
                         } else {
-                            paramH.value0i = Double.longBitsToDouble(0);
+                            paramH.value0D = Double.longBitsToDouble(0);
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1i);
+                            long temp=Double.doubleToLongBits(paramH.value1D);
                             temp &= ~(1 << columnPointer);
-                            paramH.value1i=Double.longBitsToDouble(temp);
+                            paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0i);
+                            long temp=Double.doubleToLongBits(paramH.value0D);
                             temp &= ~(1 << columnPointer);
-                            paramH.value0i=Double.longBitsToDouble(temp);
+                            paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -151,8 +151,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                     }
                     break;
                 case 11:
-                    paramH.value0i=paramH.input0i;
-                    paramH.value1i=paramH.input1i;
+                    paramH.value0D=paramH.input0D;
+                    paramH.value1D=paramH.input1D;
                     break;
                 case 12:
                     paramH.param += aShifthold == 1 ? 2 : 1;
@@ -174,19 +174,19 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
                 case 15:
                     if (aShifthold == 1) {
                         if (secondRow) {
-                            paramH.value1i = Double.longBitsToDouble(~Double.doubleToLongBits(paramH.value1i));
+                            paramH.value1D = Double.longBitsToDouble(~Double.doubleToLongBits(paramH.value1D));
                         } else {
-                            paramH.value0i = Double.longBitsToDouble(~Double.doubleToLongBits(paramH.value1i));
+                            paramH.value0D = Double.longBitsToDouble(~Double.doubleToLongBits(paramH.value1D));
                         }
                     } else {
                         if (secondRow) {
-                            long temp=Double.doubleToLongBits(paramH.value1i);
+                            long temp=Double.doubleToLongBits(paramH.value1D);
                             temp ^= 1 << columnPointer;
-                            paramH.value1i=Double.longBitsToDouble(temp);
+                            paramH.value1D=Double.longBitsToDouble(temp);
                         } else {
-                            long temp=Double.doubleToLongBits(paramH.value0i);
+                            long temp=Double.doubleToLongBits(paramH.value0D);
                             temp ^= 1 << columnPointer;
-                            paramH.value0i=Double.longBitsToDouble(temp);
+                            paramH.value0D=Double.longBitsToDouble(temp);
                         }
                     }
                     break;
@@ -219,10 +219,10 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             return;
         }
         param = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).param;
-        value0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0i;
-        value1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1i;
-        input0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0i;
-        input1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1i;
+        value0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value0D;
+        value1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).value1D;
+        input0f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input0D;
+        input1f = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).input1D;
         pointer = ((GT_MetaTileEntity_Hatch_Param) mTileEntity.getMetaTileEntity()).pointer;
 
         for (Object crafter : crafters) {

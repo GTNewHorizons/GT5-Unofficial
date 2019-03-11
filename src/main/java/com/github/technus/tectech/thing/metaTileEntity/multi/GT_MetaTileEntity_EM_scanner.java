@@ -77,7 +77,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                 if(v<0) return LedStatus.STATUS_TOO_LOW;
                 return LedStatus.STATUS_OK;
             };
-    protected Parameters.Group.ParameterIn[] scanConfiguration=new Parameters.Group.ParameterIn[20];
+    protected Parameters.Group.ParameterIn[] scanConfiguration;
     //endregion
 
     //region structure
@@ -122,6 +122,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     protected void parametersInstantiation_EM() {
+        scanConfiguration=new Parameters.Group.ParameterIn[20];
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             scanConfiguration[i*2] = hatch.makeInParameter(0, 0, CONFIG_NAME, CONFIG_STATUS);

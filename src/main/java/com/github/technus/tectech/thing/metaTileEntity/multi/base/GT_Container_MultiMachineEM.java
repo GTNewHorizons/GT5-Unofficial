@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,15 +11,12 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.BitSet;
-
 public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public LedStatus[] eParamsInStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
     public LedStatus[] eParamsOutStatus = LedStatus.makeArray(20,LedStatus.STATUS_UNDEFINED);
-    public int[] eParamsIn = new int[20];//number I from parametrizers
-    public int[] eParamsOut = new int[20];//number O to parametrizers
+    public double[] eParamsIn = new double[20];//number I from parametrizers
+    public double[] eParamsOut = new double[20];//number O to parametrizers
     public byte eCertainMode = 5, eCertainStatus = 127;
-    public short eParamsAreFloats;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
     public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
 
@@ -113,9 +111,8 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         }
         eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsInStatus;
         eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.eParamsOutStatus;
-        int[] iParamsIn= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsIn;
-        int[] iParamsOut= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsOut;
-        eParamsAreFloats=((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.bParamsAreFloats;
+        eParamsIn= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsIn;
+        eParamsOut= ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).parametrization.iParamsOut;
         eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainMode;
         eCertainStatus = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).eCertainStatus;
         ePowerPass = ((GT_MetaTileEntity_MultiblockBase_EM) mTileEntity.getMetaTileEntity()).ePowerPass;
@@ -124,31 +121,14 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
 
         for (Object crafter : crafters) {
             ICrafting var1 = (ICrafting) crafter;
-            int i = 100;
-            for (int j = 0; j < eParamsInStatus.length; j++) {
+            for (int i=100, j = 0; j < eParamsInStatus.length; j++) {
                 var1.sendProgressBarUpdate(this, i++, (eParamsInStatus[j].getOrdinalByte() | (eParamsOutStatus[j].getOrdinalByte() << 8)));
             }
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
             var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
-            var1.sendProgressBarUpdate(this,122,eParamsAreFloats);
-            i=130;
-            for(int j=0;j<eParamsOut.length;j++){
-                if(eParamsOut[j]==iParamsOut[j]){
-                    i+=2;
-                    continue;
-                }
-                eParamsOut[j]=iParamsOut[j];
-                var1.sendProgressBarUpdate(this,i++,eParamsOut[j]&0xFFFF);
-                var1.sendProgressBarUpdate(this,i++,eParamsOut[j]>>>16);
-            }
-            for(int j=0;j<eParamsIn.length;j++){
-                if(eParamsIn[j]==iParamsIn[j]){
-                    i+=2;
-                    continue;
-                }
-                eParamsIn[j]=iParamsIn[j];
-                var1.sendProgressBarUpdate(this,i++,eParamsIn[j]&0xFFFF);
-                var1.sendProgressBarUpdate(this,i++,eParamsIn[j]>>>16);
+            for(int i=124,k=204,j=0;j<20;j++,i+=4,k+=4) {
+                Util.sendDouble(eParamsOut[j], this, var1, i);
+                Util.sendDouble(eParamsIn[j], this, var1, k);
             }
         }
     }
@@ -169,14 +149,12 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             ePowerPass = (par2 & 1) == 1;
             eSafeVoid = (par2 & 2) == 2;
             allowedToWork = (par2 & 4) == 4;
-        } else if (par1 == 122) {
-            eParamsAreFloats=(short) par2;
-        }else if(par1>=130 && par1<170){
-            int pointer=(par1-130)>>1;
-            eParamsOut[pointer]=(par1&1)==0?eParamsOut[pointer]&0xFFFF0000|par2:eParamsOut[pointer]&0xFFFF|(par2<<16);
-        }else if(par1>=170 && par1<210){
-            int pointer=(par1-170)>>1;
-            eParamsIn[pointer]=(par1&1)==0?eParamsIn[pointer]&0xFFFF0000|par2:eParamsIn[pointer]&0xFFFF|(par2<<16);
+        } else if(par1>=130 && par1<210){
+            int pos=(par1-130)>>2;
+            eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
+        }else if(par1>=210 && par1<290){
+            int pos=(par1-210)>>2;
+            eParamsIn[pos]=Util.receiveDouble(eParamsIn[pos],par1&0xFFFFFFFC,par1,par2);
         }
     }
 

@@ -77,8 +77,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 }
                 return STATUS_NEUTRAL;
             };
-    protected Parameters.Group.ParameterIn[] dst=new Parameters.Group.ParameterIn[10];
-    protected Parameters.Group.ParameterIn[] weight =new Parameters.Group.ParameterIn[10];
+    protected Parameters.Group.ParameterIn[] dst;
+    protected Parameters.Group.ParameterIn[] weight;
     //endregion
 
     public GT_MetaTileEntity_EM_switch(int aID, String aName, String aNameRegional) {
@@ -91,6 +91,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     protected void parametersInstantiation_EM() {
+        dst=new Parameters.Group.ParameterIn[10];
+        weight =new Parameters.Group.ParameterIn[10];
         for (int i = 0; i < 10; i++) {
             Parameters.Group hatch = parametrization.getGroup(i);
             dst[i] = hatch.makeInParameter(0, i, ROUTE_NAME, DST_STATUS);

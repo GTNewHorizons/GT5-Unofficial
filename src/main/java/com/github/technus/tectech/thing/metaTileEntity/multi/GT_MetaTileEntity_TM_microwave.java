@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         powerSetting=hatch_0.makeInParameter(0,1000, POWER_NAME,POWER_STATUS);
         timerSetting=hatch_0.makeInParameter(1,360, TIMER_SETTING_NAME,TIMER_STATUS);
         timerValue=hatch_0.makeOutParameter(0,0,TIMER_VALUE_NAME,TIMER_STATUS);
-        remainingTime=hatch_0.makeOutParameter(0,360,TIMER_REMAINING_NAME,TIMER_STATUS);
+        remainingTime=hatch_0.makeOutParameter(1,360,TIMER_REMAINING_NAME,TIMER_STATUS);
     }
 
     @Override

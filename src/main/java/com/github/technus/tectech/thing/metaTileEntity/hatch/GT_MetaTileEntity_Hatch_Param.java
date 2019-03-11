@@ -28,10 +28,10 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     public int pointer = 0;
     public int param = -1;
-    public double value0i = 0;
-    public double value1i = 0;
-    public double input0i = 0;
-    public double input1i = 0;
+    public double value0D = 0;
+    public double value1D = 0;
+    public double input0D = 0;
+    public double input1D = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
@@ -106,10 +106,10 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     public String[] getInfoData() {
         return new String[]{
                 "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
-                "Value 0I: " + EnumChatFormatting.AQUA + value0i,
-                "Value 1I: " + EnumChatFormatting.BLUE + value1i,
-                "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
-                "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
+                "Value 0D: " + EnumChatFormatting.AQUA + value0D,
+                "Value 1D: " + EnumChatFormatting.BLUE + value1D,
+                "Input 0D: " + EnumChatFormatting.GOLD   + input0D,
+                "Input 1D: " + EnumChatFormatting.YELLOW + input1D,
         };
     }
 
@@ -132,10 +132,10 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("ePointer", pointer);
-        aNBT.setDouble("eDValue0i", value0i);
-        aNBT.setDouble("eDValue1i", value1i);
-        aNBT.setDouble("eDInput0i", input0i);
-        aNBT.setDouble("eDInput1i", input1i);
+        aNBT.setDouble("eValue0D", value0D);
+        aNBT.setDouble("eValue1D", value1D);
+        aNBT.setDouble("eInput0D", input0D);
+        aNBT.setDouble("eInput1D", input1D);
         aNBT.setInteger("eParam", param);
     }
 
@@ -150,21 +150,21 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
                 aNBT.hasKey("eInput1i")){
             boolean usesFloat = aNBT.getBoolean("eFloats");
             if(usesFloat){
-                value0i=Float.intBitsToFloat(aNBT.getInteger("eValue0i"));
-                value1i=Float.intBitsToFloat(aNBT.getInteger("eValue1i"));
-                input0i=Float.intBitsToFloat(aNBT.getInteger("eInput0i"));
-                input1i=Float.intBitsToFloat(aNBT.getInteger("eInput1i"));
+                value0D=Float.intBitsToFloat(aNBT.getInteger("eValue0i"));
+                value1D=Float.intBitsToFloat(aNBT.getInteger("eValue1i"));
+                input0D=Float.intBitsToFloat(aNBT.getInteger("eInput0i"));
+                input1D=Float.intBitsToFloat(aNBT.getInteger("eInput1i"));
             }else {
-                value0i=aNBT.getInteger("eValue0i");
-                value1i=aNBT.getInteger("eValue1i");
-                input0i=aNBT.getInteger("eInput0i");
-                input1i=aNBT.getInteger("eInput1i");
+                value0D=aNBT.getInteger("eValue0i");
+                value1D=aNBT.getInteger("eValue1i");
+                input0D=aNBT.getInteger("eInput0i");
+                input1D=aNBT.getInteger("eInput1i");
             }
         }else{
-            value0i=aNBT.getDouble("eDValue0i");
-            value1i=aNBT.getDouble("eDValue1i");
-            input0i=aNBT.getDouble("eDInput0i");
-            input1i=aNBT.getDouble("eDInput1i");
+            value0D=aNBT.getDouble("eValue0D");
+            value1D=aNBT.getDouble("eValue1D");
+            input0D=aNBT.getDouble("eInput0D");
+            input1D=aNBT.getDouble("eInput1D");
         }
         param = aNBT.getInteger("eParam");
     }

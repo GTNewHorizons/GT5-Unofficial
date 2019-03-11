@@ -57,19 +57,13 @@ public final class ParametrizerMemoryCard extends Item {
                         if (aStack.getItemDamage() == 1) {
                             //write to parametrizer
                             parametrizer.param = tNBT.getInteger("param");
-                            if (parametrizer.setUsingFloats(tNBT.getBoolean("usesFloats"))) {
-                                parametrizer.value0i = (int) Float.intBitsToFloat(tNBT.getInteger("value0i"));
-                                parametrizer.value1i = (int) Float.intBitsToFloat(tNBT.getInteger("value1i"));
-                            } else {
-                                parametrizer.value0i = tNBT.getInteger("value0i");
-                                parametrizer.value1i = tNBT.getInteger("value1i");
-                            }
+                            parametrizer.value0D = tNBT.getDouble("value0D");
+                            parametrizer.value1D = tNBT.getDouble("value1D");
                         } else {
                             //read from parametrizer
                             tNBT.setInteger("param", parametrizer.param);
-                            tNBT.setBoolean("usesFloats", parametrizer.isUsingFloats());
-                            tNBT.setInteger("value0i", parametrizer.value0i);
-                            tNBT.setInteger("value1i", parametrizer.value1i);
+                            tNBT.setDouble("value0D", parametrizer.value0D);
+                            tNBT.setDouble("value1D", parametrizer.value1D);
                         }
                         return true;
                     }else if(metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM){
@@ -79,16 +73,10 @@ public final class ParametrizerMemoryCard extends Item {
                         }
                         NBTTagCompound tNBT = aStack.getTagCompound();
                         if(aStack.getItemDamage()== 1){
-                            //write to base
-                            if(tNBT.getBoolean("usesFloats")){
-                                base.setParameterPairIn_ClearOut(tNBT.getInteger("param"),true
-                                        ,Float.intBitsToFloat(tNBT.getInteger("value0i"))
-                                        ,Float.intBitsToFloat(tNBT.getInteger("value1i")));
-                            }else{
-                                base.setParameterPairIn_ClearOut(tNBT.getInteger("param"),false
-                                        ,tNBT.getInteger("value0i")
-                                        ,tNBT.getInteger("value1i"));
-                            }
+                            base.parametrization.trySetParameters(
+                                    tNBT.getInteger("param"),
+                                    tNBT.getDouble("value0D"),
+                                    tNBT.getDouble("value1D"));
                             return true;
                         }
                     }
@@ -125,17 +113,15 @@ public final class ParametrizerMemoryCard extends Item {
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
-        int temp;
+        long temp;
         if(tNBT!=null && tNBT.hasKey("param")) {
             aList.add("ParameterGroup ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            temp=tNBT.getInteger("value0i");
-            aList.add("Value 0|I: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 0|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
-            aList.add("Value 0|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString(temp));
-            temp=tNBT.getInteger("value1i");
-            aList.add("Value 1|I: "+EnumChatFormatting.AQUA + temp);
-            aList.add("Value 1|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
-            aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString(temp));
+            temp=tNBT.getInteger("value0D");
+            aList.add("Value 0D: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
+            temp=tNBT.getInteger("value1D");
+            aList.add("Value 1D: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1B: "+EnumChatFormatting.AQUA + Util.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Uses Floats: "+(tNBT.getBoolean("usesFloats")?EnumChatFormatting.GREEN+"TRUE":EnumChatFormatting.RED+"FALSE"));
         }
 

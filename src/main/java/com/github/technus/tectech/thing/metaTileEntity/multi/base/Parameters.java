@@ -34,6 +34,16 @@ public class Parameters {
         this.parent=parent;
     }
 
+    public boolean trySetParameters(int hatch,double parameter0,double parameter1){
+        Group p=groups[hatch];
+        if(parent.mMaxProgresstime<=0 || (p!=null && p.updateWhileRunning)){
+            iParamsIn[hatch]=parameter0;
+            iParamsIn[hatch+10]=parameter1;
+            return true;
+        }
+        return false;
+    }
+
     public void setToDefaults(int hatch,boolean defaultIn, boolean defaultOut) {
         Group p= groups[hatch];
         if (p == null) {

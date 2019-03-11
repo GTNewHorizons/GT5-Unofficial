@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL12;
 
 import java.util.List;
 
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.*;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_UNUSED;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 /**
@@ -281,7 +279,6 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             IMetaTileEntity mte=mContainer.mTileEntity.getMetaTileEntity();
             if(mte instanceof GT_MetaTileEntity_MultiblockBase_EM){
                 Parameters parametrization=((GT_MetaTileEntity_MultiblockBase_EM)mte).parametrization;
-                parametrization.bParamsAreFloats=mContainer.eParamsAreFloats;
                 parametrization.eParamsInStatus=mContainer.eParamsInStatus;
                 parametrization.eParamsOutStatus=mContainer.eParamsOutStatus;
                 parametrization.iParamsIn=mContainer.eParamsIn;
@@ -293,15 +290,15 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     for(int param=0;param<2;param++){
                         if(x<(u+=su)){
                             if(y<v){
-                                if(mContainer.eParamsInStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                    return;
-                                }
+                                //if(mContainer.eParamsInStatus[hatch + (10*param)]==STATUS_UNUSED){
+                                //    return;
+                                //}
                                 hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionIn(hatch,param), renderPosX, renderPosY, fontRendererObj);
                                 return;
                             }else if(y>=v && y<v+sv){
-                                if(mContainer.eParamsOutStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                    return;
-                                }
+                                //if(mContainer.eParamsOutStatus[hatch + (10*param)]==STATUS_UNUSED){
+                                //    return;
+                                //}
                                 hoveringText(((GT_MetaTileEntity_MultiblockBase_EM) mte).getFullLedDescriptionOut(hatch,param), renderPosX, renderPosY, fontRendererObj);
                                 return;
                             }
