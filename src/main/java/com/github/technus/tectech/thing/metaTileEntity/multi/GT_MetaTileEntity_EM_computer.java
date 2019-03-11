@@ -236,8 +236,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     protected void afterRecipeCheckFailed() {
         super.afterRecipeCheckFailed();
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            r.getBaseMetaTileEntity().setActive(false);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(rack)) {
+                rack.getBaseMetaTileEntity().setActive(false);
+            }
         }
     }
 
