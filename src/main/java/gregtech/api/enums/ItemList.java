@@ -587,9 +587,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV, Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX,
     Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV, Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX,
     Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV, Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX,
-    Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV, Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM, Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX,
-    Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV, Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX,
-    Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV, Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM, Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX,
+    Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV, Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM, Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX, 
+    Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV, Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX, 
+    Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV, Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM, Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX, 
     Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV, Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV, Hatch_Muffler_MAX,
     Hatch_Maintenance, Hatch_DataAccess_EV, Hatch_DataAccess_LuV, Hatch_DataAccess_UV,
 
@@ -653,7 +653,7 @@ public enum ItemList implements IItemContainer {
     Machine_LV_FluidHeater, Machine_MV_FluidHeater, Machine_HV_FluidHeater, Machine_EV_FluidHeater, Machine_IV_FluidHeater, Machine_LuV_FluidHeater, Machine_ZPM_FluidHeater, Machine_UV_FluidHeater,
     Machine_LV_Miner, Machine_MV_Miner, Machine_HV_Miner, Machine_EV_Miner, Machine_IV_Miner, 
 
-    Neutron_Reflector, neutroniumHeatCapacitor,
+    Neutron_Reflector, neutroniumHeatCapacitor, Reactor_Coolant_Le_1, Reactor_Coolant_Le_2, Reactor_Coolant_Le_3, 
     Reactor_Coolant_He_1, Reactor_Coolant_He_3, Reactor_Coolant_He_6, Reactor_Coolant_NaK_1, Reactor_Coolant_NaK_3, Reactor_Coolant_NaK_6,
     ThoriumCell_1, ThoriumCell_2, ThoriumCell_4,
     ULV_Coil, LV_Coil, MV_Coil, HV_Coil, EV_Coil, IV_Coil, LuV_Coil, ZPM_Coil, UV_Coil, UHV_Coil, UEV_Coil, UIV_Coil,
@@ -701,6 +701,10 @@ public enum ItemList implements IItemContainer {
     
     Hatch_Dynamo_UEV, Hatch_Dynamo_UIV, Hatch_Dynamo_UMV, Hatch_Dynamo_UXV, Hatch_Dynamo_OPV,
 	Hatch_Energy_UEV, Hatch_Energy_UIV, Hatch_Energy_UMV, Hatch_Energy_UXV, Hatch_Energy_OPV,
+	Hatch_Input_UEV,
+	Hatch_Input_Bus_UEV,
+	Hatch_Output_UEV,
+	Hatch_Output_Bus_UEV,
 	Battery_Charger_4by4_UEV, Battery_Charger_4by4_UIV, Battery_Charger_4by4_UMV, Battery_Charger_4by4_UXV, Battery_Charger_4by4_OPV, Battery_Charger_4by4_MAXV,
 	Battery_Buffer_1by1_UEV, Battery_Buffer_1by1_UIV, Battery_Buffer_1by1_UMV, Battery_Buffer_1by1_UXV, Battery_Buffer_1by1_OPV, Battery_Buffer_1by1_MAXV,
 	Battery_Buffer_2by2_UEV, Battery_Buffer_2by2_UIV, Battery_Buffer_2by2_UMV, Battery_Buffer_2by2_UXV, Battery_Buffer_2by2_OPV, Battery_Buffer_2by2_MAXV,
