@@ -13,7 +13,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_ParamAdv extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_ParamAdv(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new GT_Container_Param(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "ParametrizerAdv.png");
+        super(new GT_Container_ParamAdv(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "ParametrizerAdv.png");
     }
 
     @Override

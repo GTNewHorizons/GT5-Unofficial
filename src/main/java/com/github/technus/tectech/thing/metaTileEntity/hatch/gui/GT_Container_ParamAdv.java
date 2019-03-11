@@ -196,8 +196,8 @@ public class GT_Container_ParamAdv extends GT_ContainerMetaTile_Machine {
             if (doStuff) {
                 IGregTechTileEntity base=paramH.getBaseMetaTileEntity();
                 TecTech.proxy.playSound(base,"fx_click");
-                if(columnPointer>=32) {
-                    columnPointer = 31;
+                if(columnPointer>=64) {
+                    columnPointer = 63;
                 } else if(columnPointer<0) {
                     columnPointer = 0;
                 }
