@@ -15,8 +15,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
-
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -144,7 +145,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public boolean isOutputFacing(final byte aSide) {
-		return true;
+		return this.getBaseMetaTileEntity().getFrontFacing() == aSide;
 	}
 
 	@Override
@@ -154,7 +155,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public long maxEUOutput() {
-		return this.getBaseMetaTileEntity().isAllowedToWork() ? V[this.mTier] : 0;
+		return V[this.mTier];
 	}
 
 	@Override
@@ -164,22 +165,22 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public boolean doesFillContainers() {
-		return this.getBaseMetaTileEntity().isAllowedToWork();
+		return false;
 	}
 
 	@Override
 	public boolean doesEmptyContainers() {
-		return this.getBaseMetaTileEntity().isAllowedToWork();
+		return true;
 	}
 
 	@Override
 	public boolean canTankBeFilled() {
-		return this.getBaseMetaTileEntity().isAllowedToWork();
+		return true;
 	}
 
 	@Override
 	public boolean canTankBeEmptied() {
-		return this.getBaseMetaTileEntity().isAllowedToWork();
+		return false;
 	}
 
 	@Override
@@ -199,6 +200,61 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+		
+		
+		//super.onPostTick(aBaseMetaTileEntity, aTick);		
+
+		/*if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10L == 0L) {
+			int tFuelValue;
+			if (this.mFluid == null) {
+				if (aBaseMetaTileEntity.getUniversalEnergyStored() < this.maxEUOutput() + this.getMinimumStoredEU()) {
+					this.mInventory[this.getStackDisplaySlot()] = null;
+				} else {
+					if (this.mInventory[this.getStackDisplaySlot()] == null) {
+						this.mInventory[this.getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
+					}
+
+					this.mInventory[this.getStackDisplaySlot()].setStackDisplayName("Generating: "
+							+ (aBaseMetaTileEntity.getUniversalEnergyStored() - this.getMinimumStoredEU()) + " EU");
+				}
+			} else {
+				tFuelValue = this.getFuelValue(this.mFluid);
+				int tConsumed = this.consumedFluidPerOperation(this.mFluid);
+				if (tFuelValue > 0 && tConsumed > 0 && this.mFluid.amount > tConsumed) {
+					long tFluidAmountToUse = Math.min((long) (this.mFluid.amount / tConsumed),
+							(this.maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / (long) tFuelValue);
+					if (tFluidAmountToUse > 0L && aBaseMetaTileEntity
+							.increaseStoredEnergyUnits(tFluidAmountToUse * (long) tFuelValue, true)) {
+						PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
+						this.mFluid.amount = (int) ((long) this.mFluid.amount - tFluidAmountToUse * (long) tConsumed);
+					}
+				}
+			}
+
+			if (this.mInventory[this.getInputSlot()] != null
+					&& aBaseMetaTileEntity.getUniversalEnergyStored() < this.maxEUOutput() * 20L
+							+ this.getMinimumStoredEU()
+					&& GT_Utility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true) == null) {
+				tFuelValue = this.getFuelValue(this.mInventory[this.getInputSlot()]);
+				if (tFuelValue > 0) {
+					ItemStack tEmptyContainer = this.getEmptyContainer(this.mInventory[this.getInputSlot()]);
+					if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tEmptyContainer)) {
+						aBaseMetaTileEntity.increaseStoredEnergyUnits((long) tFuelValue, true);
+						aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+						PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
+					}
+				}
+			}
+		}
+
+		if (aBaseMetaTileEntity.isServerSide()) {
+			aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity
+					.getUniversalEnergyStored() >= this.maxEUOutput() + this.getMinimumStoredEU());
+		}*/
+
+	
+		
+		
 		if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && ((aTick % 10) == 0)) {
 			if (this.mFluid == null) {
 				if (aBaseMetaTileEntity.getUniversalEnergyStored() < (this.maxEUOutput() + this.getMinimumStoredEU())) {
@@ -211,16 +267,14 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 				}
 			} else {
 				final int tFuelValue = this.getFuelValue(this.mFluid), tConsumed = this.consumedFluidPerOperation(this.mFluid);
-				if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount > tConsumed)) {
+				if ((tFuelValue > 0) && (tConsumed > 0) && (this.mFluid.amount >= tConsumed)) {
 					final long tFluidAmountToUse = Math.min(this.mFluid.amount / tConsumed, (((this.maxEUOutput() * 20) + this.getMinimumStoredEU()) - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-					if ((tFluidAmountToUse > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)){
-						if (this.useFuel){
-							this.mFluid.amount -= tFluidAmountToUse * tConsumed;
-							this.useFuel = false;
-						}
-						else {
-							this.useFuel = true;
-						}
+					if ((tFluidAmountToUse > 0) && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)){					
+						useFuel = Utils.invertBoolean(useFuel);			
+						int aSafeFloor= (int) Math.max(((tFluidAmountToUse * tConsumed)/3), 1);
+						int toConsumeTrue = (int) (useFuel ? aSafeFloor : 0);
+						//Logger.INFO("True consumption: "+toConsumeTrue+" | Consuming this tick? "+useFuel);
+						this.mFluid.amount -= toConsumeTrue;
 						PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
 					}
 				}
@@ -260,14 +314,25 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 		FluidStack tLiquid;
 		final Collection<GT_Recipe> tRecipeList = this.getRecipes().mRecipeList;
 		if (tRecipeList != null) {
+			//Logger.INFO("Step A");
 			for (final GT_Recipe tFuel : tRecipeList) {
-				if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null) {
+				//Logger.INFO("Step B");
+				if ((tLiquid = tFuel.mFluidInputs[0]) != null) {
+					//Logger.INFO("Step C");
 					if (aLiquid.isFluidEqual(tLiquid)) {
-						return (int) (((long) tFuel.mSpecialValue * this.getEfficiency() * this.consumedFluidPerOperation(tLiquid)) / 100);
+						//Logger.INFO("Found some fuel?");
+						int aperOp = this.consumedFluidPerOperation(tLiquid);
+						int aConsume = (int) (((long) tFuel.mSpecialValue * this.getEfficiency() * aperOp) / 100);
+						//Logger.INFO("Fuel Value: "+tFuel.mSpecialValue);
+						//Logger.INFO("Efficiency: "+getEfficiency());
+						//Logger.INFO("Consumed per op: "+aperOp);
+						//Logger.INFO("Consuming "+aConsume);						
+						return aConsume;
 					}
 				}
 			}
 		}
+		//Logger.INFO("No Fuel Value | Valid? "+(aLiquid != null));
 		return 0;
 	}
 

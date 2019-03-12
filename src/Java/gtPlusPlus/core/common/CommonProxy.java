@@ -183,6 +183,7 @@ public class CommonProxy {
 
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		COMPAT_IntermodStaging.onLoadComplete(event);
+		COMPAT_HANDLER.onLoadComplete(event);
 	}
 
 	public void registerNetworkStuff() {

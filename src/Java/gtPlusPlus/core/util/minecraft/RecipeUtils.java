@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -570,6 +571,14 @@ public static int mInvalidID = 1;
 			return "";
 		}
 
+	}
+
+
+	public static boolean removeGtRecipe(GT_Recipe aRecipeToRemove, GT_Recipe_Map aRecipeMap) {		
+		if (aRecipeMap.mRecipeList.contains(aRecipeToRemove)) {
+			return aRecipeMap.mRecipeList.remove(aRecipeToRemove);
+		}
+		return false;		
 	}
 
 

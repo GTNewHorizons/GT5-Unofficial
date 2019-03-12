@@ -348,11 +348,29 @@ public class MaterialUtils {
 		TextureSet o =  (r != null && r.isPresent() && r.get() != null) ? r.get() : null;
 		return o;*/
 	}
+	
+
+
+	public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
+		Materials g = getMaterial(aMaterialName);
+		if (g == null) {
+			g = getMaterial(aFallbackMaterialName);
+		}
+		if (g == null) {
+			Logger.INFO("Failed finding material '"+aMaterialName+"' & fallback '"+aFallbackMaterialName+"', returning _NULL.");
+			g = Materials._NULL;
+		}
+		return g;		
+	}
 
 	public static Materials getMaterial(String aMaterialName) {
 		Materials m = gtPlusPlus.xmod.gregtech.common.StaticFields59.getMaterial(aMaterialName);
 		if (m == null) {
 			m = getMaterialByName(aMaterialName);
+		}
+		if (m == null) {
+			Logger.INFO("Failed finding material '"+aMaterialName+"', returning _NULL.");
+			m = Materials._NULL;
 		}
 		return m;
 	}

@@ -15,6 +15,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -41,6 +42,7 @@ extends GregtechRocketFuelGeneratorBase {
 
 	@Override
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		Logger.INFO("Valid Fuels: "+Recipe_GT.Gregtech_Recipe_Map.sRocketFuels.mRecipeList.size());
 		return new GregtechMetaTileEntityRocketFuelGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
@@ -60,7 +62,10 @@ extends GregtechRocketFuelGeneratorBase {
 
 	@Override
 	public int getEfficiency() {
-		return ((40+((this.mTier) * 16))/4)+(this.mTier);
+		int eff = ((40+((this.mTier) * 16))/4)+(this.mTier);
+		
+		return eff;
+		
 	}
 
 	@Override
@@ -69,6 +74,7 @@ extends GregtechRocketFuelGeneratorBase {
 		if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
 			rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
 		}
+		Logger.INFO("Fuel Item is worth: "+rValue);
 		return rValue;
 	}
 

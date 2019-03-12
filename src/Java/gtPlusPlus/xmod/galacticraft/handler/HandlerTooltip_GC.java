@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.galacticraft.handler;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
@@ -18,7 +20,7 @@ public class HandlerTooltip_GC {
 	private static Block mBlock;
 	private static Class<?> oMainClass;
 	private static Class<?> oFuelLoaderClass;
-	private static String[] mFuelNames;
+	private static HashMap <Integer, String> mFuelNames;
 
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event) {
@@ -30,8 +32,7 @@ public class HandlerTooltip_GC {
 					if (GCBlocks != null) {
 						oMainClass = GCBlocks;
 
-						Class<?> GCFuelLoader = Class
-								.forName("micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader");
+						Class<?> GCFuelLoader = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader");
 
 						if (GCFuelLoader != null) {
 							oFuelLoaderClass = GCFuelLoader;
@@ -49,24 +50,26 @@ public class HandlerTooltip_GC {
 				} catch (Throwable t) {
 				}
 			}			
-			if (mFuelNames == null || mFuelNames.length == 0) {
-				mFuelNames = new String[RocketFuels.mValidRocketFuels.size()];
-				int slot = 0;
-				for (Fluid f : RocketFuels.mValidRocketFuels.values()) {
-					mFuelNames[slot++] = f.getLocalizedName();
+			
+			if (mFuelNames == null || mFuelNames.isEmpty()) {
+				mFuelNames = new LinkedHashMap<Integer, String>();
+				for (int aMapKey : RocketFuels.mValidRocketFuels.keySet()) {
+					Fluid aFuel = RocketFuels.mValidRocketFuels.get(aMapKey);
+					if (aFuel != null) {
+						mFuelNames.put(aMapKey, aFuel.getLocalizedName());
+					}
 				}
-			}
-			if (mItemBlock != null) {
+			}			
+			if (mItemBlock != null && !mFuelNames.isEmpty()) {
 				Item aTempItem = event.itemStack.getItem();
 				Block aTempBlock = Block.getBlockFromItem(aTempItem);
-				if (aTempItem == mItemBlock || oFuelLoaderClass.isInstance(aTempBlock)
-						|| event.itemStack.getUnlocalizedName().toLowerCase().contains("fuelloader")) {					
-					int aTier = 0;
-					for (String s : mFuelNames) {
-						if (s != null) {
-							event.toolTip.add("Tier "+aTier+": "+s);
+				if (aTempItem == mItemBlock || oFuelLoaderClass.isInstance(aTempBlock) || event.itemStack.getUnlocalizedName().toLowerCase().contains("fuelloader")) {										
+					for (int aMapKey : mFuelNames.keySet()) {
+						String aFuel = mFuelNames.get(aMapKey);						
+						if (aFuel != null) {
+							event.toolTip.add("Tier "+(aMapKey+1)+": "+aFuel);
 						}
-					}				
+					}							
 				}
 			}
 		}
