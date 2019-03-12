@@ -4460,7 +4460,7 @@ if(Loader.isModLoaded("Railcraft")){
     	
     	   
     	//Tesseract
-    	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), null, null, new int[]{2000, 6000, 4000, 10000}, 100, 8000000);
+    	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ledox, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1L), new int[]{2000, 6000, 4000, 10000, 9000, 5000}, 100, 8000000);
     	   
 		//Sluice Juice and Sand
 		   GT_Values.RA.addDistilleryRecipe(1, Materials.SluiceJuice.getFluid(100L), GT_ModHandler.getDistilledWater(50L), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.SluiceSand, 1), 100, 16, false);

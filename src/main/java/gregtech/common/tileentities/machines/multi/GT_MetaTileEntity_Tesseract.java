@@ -16,7 +16,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
-import gregtech.common.gui.GT_GUIContainer_AntimatterReactor;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -44,7 +43,7 @@ public class GT_MetaTileEntity_Tesseract extends GT_MetaTileEntity_MultiBlockBas
         return new String[]{
         		"Small WORMHOLE on The Earth!!!",
                 "Size(WxHxD): 9x9x9",
-                "75 x Robust Naquadah Alloy Machine Casing",
+                "92 x Robust Naquadah Alloy Machine Casing",
                 "24 x Dyson Ring Casing",
                 "4 x Fusion Casing MKII",
                 "1 x Fusion Coil Block",
@@ -71,16 +70,10 @@ public class GT_MetaTileEntity_Tesseract extends GT_MetaTileEntity_MultiBlockBas
         return sTexture;
     }
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_MultiMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AntimatterReactor.png");
+        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "Tesseract.png");
     }
-
+    
     @Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return true;
