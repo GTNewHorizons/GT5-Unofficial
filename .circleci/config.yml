@@ -13,6 +13,12 @@ jobs:
       
     steps:
       - checkout
+      
+      - run:
+          name: Run build
+          command:  export TERM=${TERM:-dumb} 
+          # && ./gradlew clean build
+      
       - run: sudo chmod +x gradlew
       
       #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
