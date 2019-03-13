@@ -3,13 +3,25 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.List;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -21,9 +33,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityPooCollector extends TileEntity implements IFluidHandler {
+public class TileEntityPooCollector extends TileEntityBase implements IFluidHandler {
 
-	public FluidTank tank = new FluidTank(Integer.MAX_VALUE);
+	public FluidTank tank = new BTF_FluidTank(64000);
 	private boolean needsUpdate = false;
 	private int updateTimer = 0;
 	private boolean hasRegistered = false;
@@ -31,7 +43,7 @@ public class TileEntityPooCollector extends TileEntity implements IFluidHandler 
 	private BlockPos internalBlockLocation;
 	
 	public TileEntityPooCollector() {	
-		super();
+		super(9);
 	}
 
 	@Override
@@ -133,15 +145,6 @@ public class TileEntityPooCollector extends TileEntity implements IFluidHandler 
 				}
 			}
 		}
-		if (!hasRegistered) {
-			//Register to the Handler.
-			/*if (!this.worldObj.isRemote) {
-				ThreadPooCollector.addTask(this);
-				if (!ThreadPooCollector.getInstance().isRunning) {
-					ThreadPooCollector.getInstance().run();
-				}
-			}*/
-		}
 	}
 	
 	public void onTick() {
@@ -149,7 +152,7 @@ public class TileEntityPooCollector extends TileEntity implements IFluidHandler 
 		if (this.worldObj == null || this.worldObj.isRemote) {
 			return;
 		}
-		if (internalTickCounter % 100 == 0) {
+		if (internalTickCounter % MathUtils.randInt(200, 300) == 0) {
 			if (internalBlockLocation == null) {
 				internalBlockLocation = new BlockPos(this);
 			}
@@ -191,12 +194,73 @@ public class TileEntityPooCollector extends TileEntity implements IFluidHandler 
 
 	public void onPostTick(List<EntityAnimal> animals) {
 		for (EntityAnimal aPooMaker : animals) {
-			Logger.INFO("Sewer found "+aPooMaker.getCommandSenderName());
+			//Logger.INFO("Sewer found "+aPooMaker.getCommandSenderName());
+			addDrop(aPooMaker);
+			if (this.tank.getFluidAmount() < this.tank.getCapacity()) {
+				
+				int aPooAmount = 0;
+				if (aPooMaker instanceof EntityChicken) {
+					aPooAmount = MathUtils.randInt(1, 40);
+				}
+				else if (aPooMaker instanceof EntityHorse) {
+					aPooAmount = MathUtils.randInt(20, 40);
+				}
+				else if (aPooMaker instanceof EntityCow) {
+					aPooAmount = MathUtils.randInt(18, 45);
+				}
+				else if (aPooMaker instanceof EntityMooshroom) {
+					aPooAmount = 17;
+				}
+				else if (aPooMaker instanceof EntitySheep) {
+					aPooAmount = MathUtils.randInt(8, 30);
+				}
+				else {
+					aPooAmount = MathUtils.randInt(5, 35);
+				}
+				
+				aPooAmount = Math.max(Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount), 1);
+				
+				this.tank.fill(FluidUtils.getFluidStack(AgriculturalChem.PoopJuice, aPooAmount), true);
+			}
+			else {
+				ItemStack aDirtStack = ItemUtils.getSimpleStack(AgriculturalChem.dustDirt);
+				if (!this.mInventory.addItemStack(aDirtStack)) {
+					EntityItem entity = new EntityItem(worldObj, xCoord, yCoord+1.5, zCoord, aDirtStack);
+					worldObj.spawnEntityInWorld(entity);
+				}
+			}
 		}
 		
 	}
 	
 	public boolean addDrop(EntityAnimal aAnimal) {
+		int aChance = MathUtils.randInt(0, 50000);
+		if (aChance > 0) {
+			ItemStack aPoop;
+			if (aChance<= 100) {
+				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1);
+			}
+			else if (aChance <= 500) {
+				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);				
+			}
+			else if (aChance <= 1250) {
+				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);				
+			}
+			else {
+				return false;
+			}
+			//Add poop to world
+			Logger.INFO("Adding animal waste for "+aAnimal.getCommandSenderName());
+			
+			//Add to inventory if not full, else espawn in world
+			if (!this.mInventory.addItemStack(aPoop)) {
+				EntityItem entity = new EntityItem(worldObj, xCoord, yCoord+1.5, zCoord, aPoop);
+				worldObj.spawnEntityInWorld(entity);
+			}			
+			
+		}
+		
+		
 		return false;
 	}
 

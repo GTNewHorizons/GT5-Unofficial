@@ -663,7 +663,7 @@ public class ItemUtils {
 	}
 
 	public static String getArrayStackNames(final ItemStack[] aStack) {
-		String itemNames = "Item Array: ";
+		String itemNames = "";
 		int aPos = 0;
 		for (final ItemStack alph : aStack) {			
 			if (alph == null) {

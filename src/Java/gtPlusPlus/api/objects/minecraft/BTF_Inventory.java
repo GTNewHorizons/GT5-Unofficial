@@ -3,6 +3,7 @@ package gtPlusPlus.api.objects.minecraft;
 import java.util.ArrayList;
 
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -158,6 +159,48 @@ public class BTF_Inventory implements ISidedInventory{
 	@Override
 	public final String getInventoryName() {
 		return  this.mTile != null ? mTile.getInventoryName() : "";
+	}
+
+	public boolean isFull() {
+		for (int s=0;s<this.getSizeInventory();s++) {
+			ItemStack slot = mInventory[s];
+			if (slot == null || slot.stackSize != slot.getMaxStackSize()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isEmpty() {
+		for (int s=0;s<this.getSizeInventory();s++) {
+			ItemStack slot = mInventory[s];
+			if (slot == null) {
+				continue;
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean addItemStack(ItemStack aInput) {
+		if (isEmpty() || !isFull()) {
+			for (int s = 0; s < this.getSizeInventory(); s++) {
+				ItemStack slot = mInventory[s];
+				if (slot == null
+						|| (GT_Utility.areStacksEqual(aInput, slot) && slot.stackSize != slot.getMaxStackSize())) {
+					if (slot == null) {
+						slot = aInput.copy();
+					} else {
+						slot.stackSize++;
+					}
+					this.setInventorySlotContents(s, slot);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

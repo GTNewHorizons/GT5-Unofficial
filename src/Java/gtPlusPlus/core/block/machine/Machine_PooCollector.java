@@ -5,22 +5,18 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
+import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.ItemFluidContainer;
 
 public class Machine_PooCollector extends BlockContainer {
 
@@ -42,7 +38,7 @@ public class Machine_PooCollector extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-		return p_149691_1_ == 1 ? this.textureTop : this.blockIcon;
+		return p_149691_1_ <= 1 ? this.textureTop : this.blockIcon;
 	}
 
 	@Override
@@ -61,7 +57,7 @@ public class Machine_PooCollector extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		} else {
-			TileEntityInfiniteFluid tank = (TileEntityInfiniteFluid) world.getTileEntity(x, y, z);
+			TileEntityPooCollector tank = (TileEntityPooCollector) world.getTileEntity(x, y, z);
 			if (tank != null) {
 				Item handItem;
 				try {
@@ -69,7 +65,9 @@ public class Machine_PooCollector extends BlockContainer {
 				} catch (Throwable t) {
 					handItem = null;
 				}
-				if (handItem != null
+				
+				//Fluid container code
+				/*if (handItem != null
 						&& (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
 								|| FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
 					if (tank.tank.getFluid() == null) {
@@ -94,9 +92,17 @@ public class Machine_PooCollector extends BlockContainer {
 						}
 					}
 
+				}*/
+				
+				if (!tank.mInventory.isEmpty()) {
+					PlayerUtils.messagePlayer(player, "Inventory contains:");
+					PlayerUtils.messagePlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
+				}
+				else {
+					PlayerUtils.messagePlayer(player, "No solids collected yet.");					
 				}
 				if (tank.tank.getFluid() != null) {
-					PlayerUtils.messagePlayer(player, "This tank contains " + tank.tank.getFluidAmount() + "L of "
+					PlayerUtils.messagePlayer(player, "Tank contains " + tank.tank.getFluidAmount() + "L of "
 							+ tank.tank.getFluid().getLocalizedName());
 				}
 			}
@@ -106,12 +112,12 @@ public class Machine_PooCollector extends BlockContainer {
 
 	@Override
 	public int getRenderBlockPass() {
-		return 1;
+		return 0;
 	}
 
 	@Override
 	public boolean isOpaqueCube() {
-		return false;
+		return super.isOpaqueCube();
 	}
 
 	@Override

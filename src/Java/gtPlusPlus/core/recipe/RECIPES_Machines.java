@@ -354,6 +354,22 @@ public class RECIPES_Machines {
 					ItemUtils.getSimpleStack(ModBlocks.blockCustomJukebox),
 					20 * 30, 
 					30);
+			
+			//Poo Collector		
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.machineHull_MV,
+							CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
+							CI.getTieredComponent(OrePrefixes.pipe, 2, GTNH ? 4 : 2),
+							CI.getElectricPump(2, GTNH ? 4 : 2),
+							ALLOY.EGLIN_STEEL.getPlate(GTNH ? 8 : 4),
+							ALLOY.POTIN.getScrew(GTNH ? 12 : 6)
+					}, 
+					ALLOY.TUMBAGA.getFluid(144 * 4), 
+					ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
+					20 * 60, 
+					30);
+			
 
 
 			//Basic Steam Turbine
