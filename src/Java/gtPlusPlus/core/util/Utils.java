@@ -948,4 +948,16 @@ public class Utils {
 		return aOther;
 	}
 
+	public static long getMillisSince(long aStartTime, long aCurrentTime) {		
+		return (aCurrentTime - aStartTime);
+	}
+	
+	public static long getSecondsFromMillis(long aMillis) {
+		return (aMillis/1000);
+	}
+	
+	public static long getTicksFromSeconds(long aSeconds) {
+		return (aSeconds*20);
+	}
+
 }

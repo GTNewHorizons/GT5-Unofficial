@@ -1,23 +1,32 @@
 package gtPlusPlus.core.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockJukebox;
-import net.minecraft.block.material.Material;
-
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.block.general.*;
+import gtPlusPlus.core.block.general.BlockCompressedObsidian;
+import gtPlusPlus.core.block.general.BlockNet;
+import gtPlusPlus.core.block.general.BlockTankXpConverter;
+import gtPlusPlus.core.block.general.FirePit;
+import gtPlusPlus.core.block.general.FluidTankInfinite;
+import gtPlusPlus.core.block.general.HellFire;
+import gtPlusPlus.core.block.general.LightGlass;
+import gtPlusPlus.core.block.general.MiningExplosives;
+import gtPlusPlus.core.block.general.PlayerDoors;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
-import gtPlusPlus.core.block.machine.*;
+import gtPlusPlus.core.block.machine.CircuitProgrammer;
+import gtPlusPlus.core.block.machine.DecayablesChest;
+import gtPlusPlus.core.block.machine.FishTrap;
+import gtPlusPlus.core.block.machine.HeliumGenerator;
+import gtPlusPlus.core.block.machine.Machine_ModularityTable;
+import gtPlusPlus.core.block.machine.Machine_PooCollector;
+import gtPlusPlus.core.block.machine.Machine_ProjectTable;
+import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
+import gtPlusPlus.core.block.machine.Machine_TradeTable;
+import gtPlusPlus.core.block.machine.Machine_Workbench;
+import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
 import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 
 public final class ModBlocks {
@@ -78,6 +87,8 @@ public final class ModBlocks {
 	public static Block blockCustomMobSpawner;
 	public static Block blockCustomSuperLight;
 	public static Block blockCustomJukebox;
+	
+	public static Block blockPooCollector;
 
 	public static void init() {
 		Logger.INFO("Initializing Blocks.");
@@ -127,6 +138,8 @@ public final class ModBlocks {
 		
 		//blockCustomSuperLight = new BlockSuperLight();
 		blockCustomJukebox = new Machine_SuperJukebox();
+		
+		blockPooCollector = new Machine_PooCollector();
 
 	}
 

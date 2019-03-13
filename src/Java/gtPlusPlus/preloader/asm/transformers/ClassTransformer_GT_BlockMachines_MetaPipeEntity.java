@@ -121,7 +121,7 @@ public class ClassTransformer_GT_BlockMachines_MetaPipeEntity {
 	 * 15 = BaseCustomTileEntity, Wrench lvl 3 to dismantle
 	 */
 	public static TileEntity createTileEntity(World aWorld, int aMeta) {
-		Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
+		//Logger.INFO("Creating Tile Entity with Meta of "+aMeta);
 		if (aMeta < 4) {
 			return GregTech_API.constructBaseMetaTileEntity();
 		} else if (aMeta < 12) {

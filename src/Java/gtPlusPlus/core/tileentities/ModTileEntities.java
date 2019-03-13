@@ -14,7 +14,7 @@ public class ModTileEntities {
 
 	public static void init() {
 		Logger.INFO("Registering Tile Entities.");
-		GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "HeliumGenerator");
+		GameRegistry.registerTileEntity(TileEntityPooCollector.class, "TileEntityPooCollector");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
 		GameRegistry.registerTileEntity(TileEntityFishTrap.class, "TileFishTrap");
