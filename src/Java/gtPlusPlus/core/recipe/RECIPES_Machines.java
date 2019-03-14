@@ -1676,11 +1676,10 @@ public class RECIPES_Machines {
 
 
 		for (int i = 0; i < 10; i++) {			
-			boolean aDub = i >= 5;	
-
+			boolean aDub = false;
 			ItemStack aPlateStack = aMat_A[i].getPlateDouble((GTNH ? 16 : 8) * (aDub ? 2 : 1));
-			ItemStack aGearStack = aMat_B[i].getGear(GTNH ? 8 : 4 * (aDub ? 2 : 1));
-			ItemStack aRodStack = aMat_A[i].getLongRod(GTNH ? 32 : 16 * (aDub ? 2 : 1));
+			ItemStack aGearStack = aMat_B[i].getGear(GTNH ? 4 : 2 * (aDub ? 2 : 1));
+			ItemStack aRodStack = aMat_A[i].getLongRod(GTNH ? 16 : 8 * (aDub ? 2 : 1));
 			ItemStack aScrewStack = aMat_B[i].getScrew(32 * (aDub ? 2 : 1));
 
 			if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
@@ -1704,14 +1703,14 @@ public class RECIPES_Machines {
 
 			CORE.RA.addSixSlotAssemblingRecipe(				
 					new ItemStack[] {
-							aInputPrevTier[i],
+							CI.getEnergyCore(i, 4),
 							aPlateStack,
 							aGearStack,
 							aRodStack,
 							aScrewStack,
-							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName((int) (4+Math.ceil((double) i / (double) 2))), GTNH ? (i * 2 * 2 * 2) : (i * 2 * 2))
+							ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName((int) (4+Math.ceil((double) i / (double) 2))), GTNH ? (i * 2 * 2) : (i * 2))
 					},					
-					aMat_A[i].getFluid(144 * 4 * (i+1)), //Input Fluid					
+					CI.getTieredFluid(i, 144 * 4 * (i+1)), //Input Fluid					
 					aOutput[i],					
 					60 * 20 * 1 * (i+1), 
 					MaterialUtils.getVoltageForTier(i));

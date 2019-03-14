@@ -71,7 +71,7 @@ extends
 GT_MetaTileEntity_MultiBlockBase {
 
 
-	private static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
+	public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
 
 	static {
@@ -203,7 +203,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 
-		int tTier = requireControlCores ? this.getControlCoreTier() : -1;
+		int tTier = this.getControlCoreTier();
 
 		mInfo.add(getMachineTooltip());
 
@@ -554,8 +554,8 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Control Core to control the Multiblocks behaviour.
 		int aControlCoreTier = getControlCoreTier();
-
-		//If no core, return false;
+		
+		//If no core, return false;				
 		if (aControlCoreTier == 0 && requireControlCores) {
 			log("No control core found.");
 			return false;
@@ -640,7 +640,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Only Overclock as high as the control circuit.
 		byte tTierOld = tTier;
-		tTier = requireControlCores ? (byte) aControlCoreTier : tTierOld;
+		tTier = getControlCoreTier() > 0 ? (byte) aControlCoreTier : tTierOld;
 
 		// Overclock
 		if (this.mEUt <= 16) {
@@ -954,10 +954,10 @@ GT_MetaTileEntity_MultiBlockBase {
 	public int getControlCoreTier() {	
 		
 		//Always return best tier if config is off.
-		boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
+		/*boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
 		if (!aCoresConfig) {
 			return 10;
-		}
+		}*/
 		
 		if (mControlCoreBus.isEmpty()) {
 			log("No Control Core Modules Found.");
@@ -998,9 +998,16 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("Tried to add a secondary control core module.");
 			return false;
 		}
-
-		log("Adding control core module.");
-		return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
+		
+		GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) aMetaTileEntity;
+		
+		if (Module != null) {
+			if (Module.setOwner(aTileEntity)) {
+				log("Adding control core module.");
+				return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);	
+			}
+		}
+		return false;
 	}
 
 	@Override

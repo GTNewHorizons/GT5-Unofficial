@@ -12,7 +12,7 @@ jobs:
       
       
     steps:
-      - checkout
+    # - checkout
       
       - run:
           name: Run build
@@ -21,11 +21,26 @@ jobs:
       
       - run: sudo chmod +x gradlew
       
-      #https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-src.zip
-      
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "build.gradle" }}
+          key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
+        
+        # Build Forge and MCP
+      - run:
+          name: Download Build Script
+          command: wget https://alkcorp.overminddl1.com/GTPP_BuildRepo.sh
           
+      - run:
+          name: Run Build Script
+          command: sh GTPP_BuildRepo.sh        
+          
+        # Cache All Libs
+      - save_cache:
+          paths:
+            - ~/.gradle
+            - ~/home/circleci/repo
+          key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
+          
+        # Build Mod  
       - run:
           name: Download Build Script
           command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
@@ -33,11 +48,6 @@ jobs:
       - run:
           name: Run Build Script
           command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
-          
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "build.gradle" }}
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: build/libs

@@ -18,6 +18,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -46,7 +47,7 @@ public class AchievementHandler {
 	       
 		//Useful Info
 		boolean cores = CORE.ConfigSwitches.requireControlCores;
-		if (cores) {
+		if (cores || GregtechMeta_MultiBlockBase.DEBUG_DISABLE_CORES_TEMPORARILY) {
 			this.registerAchievement("hatch.control", -2, -2, GregtechItemList.Hatch_Control_Core.get(1), aBaseAchievementName, false);			
 		}
 		this.registerAchievement("hatch.dynamo.buffered", 2, -2, GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1), aBaseAchievementName, false);
