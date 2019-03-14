@@ -2726,3 +2726,8 @@ item.itemDustTinyDemicheleiteBr.name=Tiny Pile of Demicheleite (Br)
 item.itemDustSmallDemicheleiteBr.name=Small Pile of Demicheleite (Br)
 tile.blockPooCollector.name=Agricultural Sewer
 tile.Block of Lithium 7.name=Block of Lithium 7
+
+//Added 14/3/19
+item.blood.name=Cell of Blood
+tile.blockPooCollector.0.name=Agricultural Sewer
+tile.blockPooCollector.8.name=Biocomposite Collector 

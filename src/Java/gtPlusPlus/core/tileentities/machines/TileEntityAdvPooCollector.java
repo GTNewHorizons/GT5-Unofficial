@@ -19,10 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
+public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 	
-	public TileEntityPooCollector() {	
-		super(9, 64000);
+	public TileEntityAdvPooCollector() {	
+		super(18, 128000);
 	}
 
 
@@ -44,20 +44,18 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 		int aChance = MathUtils.randInt(0, 50000);
 		if (aChance > 0) {
 			ItemStack aPoop;
-			if (aChance<= 100) {
+			if (aChance<= 200) {
 				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1);
 			}
-			else if (aChance <= 500) {
+			else if (aChance <= 1000) {
 				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);				
 			}
-			else if (aChance <= 1250) {
+			else if (aChance <= 2000) {
 				aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);				
 			}
 			else {
 				return false;
 			}
-			//Add poop to world
-			//Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());
 			
 			//Add to inventory if not full, else espawn in world
 			if (!this.mInventory.addItemStack(aPoop)) {
@@ -120,7 +118,7 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 					}					
 				}				
 				aPooAmount = Math.max(Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount), 1);				
-				return aPooAmount;
+				return aPooAmount * 4;
 			}
 			else {
 				return 0;
@@ -134,16 +132,16 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
 	@Override
 	public Item itemToSpawnInWorldIfTankIsFull() {
-		int a = MathUtils.randInt(0, 100);
+		int a = MathUtils.randInt(0, 75);
 		Item aItem = null;		
 		if (a <= 30) {
 			aItem = AgriculturalChem.dustDirt;
 		}
 		else if (a <= 40) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1).getItem();
 		}
 		else if (a <= 55) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1).getItem();
 		}		
 		return aItem;
 	}

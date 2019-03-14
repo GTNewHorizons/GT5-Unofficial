@@ -360,7 +360,7 @@ public class RECIPES_Machines {
 					new ItemStack[] {
 							CI.machineHull_MV,
 							CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 4 : 2),
-							CI.getTieredComponent(OrePrefixes.pipe, 2, GTNH ? 4 : 2),
+							CI.getTieredComponent(OrePrefixes.pipeMedium, 2, GTNH ? 4 : 2),
 							CI.getElectricPump(2, GTNH ? 4 : 2),
 							ALLOY.EGLIN_STEEL.getPlate(GTNH ? 8 : 4),
 							ALLOY.POTIN.getScrew(GTNH ? 12 : 6)

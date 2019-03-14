@@ -718,6 +718,11 @@ public class CI {
 		}
 
 		if (aPrefix == OrePrefixes.pipeTiny || aPrefix == OrePrefixes.pipeSmall || aPrefix == OrePrefixes.pipe || aPrefix == OrePrefixes.pipeMedium || aPrefix == OrePrefixes.pipeLarge || aPrefix == OrePrefixes.pipeHuge) {
+			
+			if (aPrefix == OrePrefixes.pipe) {
+				aPrefix = OrePrefixes.pipeMedium;
+			}			
+			
 			if (aTier == 0) {
 				return ItemUtils.getOrePrefixStack(aPrefix, Materials.Lead, aAmount);				
 			}

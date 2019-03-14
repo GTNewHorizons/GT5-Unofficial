@@ -1,19 +1,26 @@
 package gtPlusPlus.core.block.machine;
 
+import java.util.List;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
+import gtPlusPlus.core.tileentities.machines.TileEntityBaseFluidCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
-import gtPlusPlus.core.util.data.StringUtils;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -29,7 +36,7 @@ public class Machine_PooCollector extends BlockContainer {
 		super(Material.iron);
 		this.setBlockName("blockPooCollector");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, "blockPooCollector");
+		GameRegistry.registerBlock(this, ItemBlockMeta.class,"blockPooCollector");
 	}
 
 	/**
@@ -57,7 +64,7 @@ public class Machine_PooCollector extends BlockContainer {
 		if (world.isRemote) {
 			return true;
 		} else {
-			TileEntityPooCollector tank = (TileEntityPooCollector) world.getTileEntity(x, y, z);
+			TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
 			if (tank != null) {
 				Item handItem;
 				try {
@@ -121,13 +128,35 @@ public class Machine_PooCollector extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
-		return new TileEntityPooCollector();
+	public TileEntity createNewTileEntity(final World world, final int aMeta) {
+		return aMeta <= 7 ? new TileEntityPooCollector() : new TileEntityAdvPooCollector();
 	}
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		super.onBlockAdded(world, x, y, z);
+	}
+
+	@Override
+	public int getBlockColor() {
+		// TODO Auto-generated method stub
+		return super.getBlockColor();
+	}
+
+	@Override
+	public int getRenderColor(int aMeta) {
+		if (aMeta <= 7) {
+			return super.getRenderColor(aMeta);			
+		}
+		else {
+			return Utils.rgbtoHexValue(128, 45, 45);		
+		}
+	}
+
+	@Override
+	public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
+		aList.add(new ItemStack(aItem, 1, 0));
+		aList.add(new ItemStack(aItem, 1, 8));		
 	}
 
 }
