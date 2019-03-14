@@ -436,8 +436,11 @@ public class CI {
 		else if (tier == 8){
 			return machineHull_UV;
 		}
+		else if (tier == 9){
+			return machineHull_MAX;
+		}
 		else {
-			return machineHull_MAX;			
+			return GregtechItemList.Casing_Multi_Use.get(1);			
 		}
 	}
 
@@ -469,8 +472,11 @@ public class CI {
 		else if (tier == 8){
 			return machineCasing_UV;
 		}
+		else if (tier == 9){
+			return machineCasing_MAX;
+		}
 		else {
-			return machineCasing_MAX;			
+			return GregtechItemList.Casing_Multi_Use.get(1);			
 		}
 	}
 

@@ -381,7 +381,7 @@ public class RECIPES_Machines {
 							CI.getTieredComponent(OrePrefixes.screw, 6, GTNH ? 32 : 16)
 					}, 
 					CI.getAlternativeTieredFluid(5, 144 * 9), 
-					ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 1, 8),
+					ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1),
 					20 * 60 * 5, 
 					500);
 

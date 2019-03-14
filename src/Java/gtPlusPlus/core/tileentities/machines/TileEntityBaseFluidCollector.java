@@ -2,6 +2,7 @@ package gtPlusPlus.core.tileentities.machines;
 
 import java.util.List;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -10,7 +11,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -141,6 +141,10 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 		readFromNBT(tag);
 	}
 	
+	public int getBaseTickRate() {
+		return MathUtils.randInt(200, 300);
+	}
+	
 	public abstract AutoMap<Class> aThingsToLookFor();
 	
 	public abstract void onPreLogicTick();
@@ -150,7 +154,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 		if (this.worldObj == null || this.worldObj.isRemote) {
 			return;
 		}
-		if (internalTickCounter % MathUtils.randInt(200, 300) == 0) {
+		if (internalTickCounter % getBaseTickRate() == 0) {
 			if (internalBlockLocation == null) {
 				internalBlockLocation = new BlockPos(this);
 			}
@@ -173,6 +177,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 							AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
 							if (box != null) {								
 								for (Class c2 : aThingsToLookFor()) {
+									Logger.INFO("Looking for "+c2.getName());
 									tickEntityType(w, box, c2);										
 								}														
 							} else {
@@ -190,9 +195,10 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 	
 	@SuppressWarnings("unchecked")
 	public final void tickEntityType(World w, AxisAlignedBB box, Class aClassToFind) {
-		List<EntityAnimal> entities = w.getEntitiesWithinAABB(aClassToFind, box);	
+		List<?> entities = w.getEntitiesWithinAABB(aClassToFind, box);	
 		if (entities != null && !entities.isEmpty()) {
-			onPostTick(entities);
+			Logger.INFO("Found some "+aClassToFind.getName());
+			interactWithEntities(entities);
 		}
 	}
 	

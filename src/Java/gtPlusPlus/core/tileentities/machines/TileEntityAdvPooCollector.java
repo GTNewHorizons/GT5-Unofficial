@@ -120,7 +120,7 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 					}					
 				}				
 				aPooAmount = Math.max(Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount), 1);				
-				return aPooAmount * 4;
+				return aPooAmount * MathUtils.getRandomFromArray(new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4});
 			}
 			else {
 				return 0;
@@ -146,6 +146,10 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1).getItem();
 		}		
 		return aItem;
+	}
+	
+	public int getBaseTickRate() {
+		return MathUtils.randInt(50, 200);
 	}
 	
 	

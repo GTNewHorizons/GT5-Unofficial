@@ -11,9 +11,7 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -78,8 +76,6 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 		if (aEntityToDrain.isEmpty()) {
 			aEntityToDrain.add(EntityAnimal.class);
 			aEntityToDrain.add(IAnimals.class);
-			aEntityToDrain.add(EntityVillager.class);
-			aEntityToDrain.add(EntityPlayer.class);
 		}
 		return aEntityToDrain;
 	}
@@ -108,12 +104,6 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 				else {					
 					if (aPooMaker instanceof EntityAnimal || aPooMaker instanceof IAnimals) {
 						aPooAmount = MathUtils.randInt(5, 35);						
-					}
-					else if (aPooMaker instanceof EntityVillager) {
-						aPooAmount = MathUtils.randInt(25, 30);
-					}
-					else if (aPooMaker instanceof EntityPlayer) {
-						aPooAmount = MathUtils.randInt(1, 3);
 					}
 					else {
 						aPooAmount = MathUtils.randInt(1, 10);

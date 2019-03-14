@@ -3,12 +3,14 @@ package gtPlusPlus.core.handler.events;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -26,6 +28,9 @@ public class GeneralTooltipEventHandler {
 
 		
 		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED) {
+			return;
+		}
+		if (event.itemStack == null) {
 			return;
 		}
 		
@@ -50,6 +55,24 @@ public class GeneralTooltipEventHandler {
 			}
 		}
 
+		//Material Collector Tooltips
+		if (event.itemStack.getItem() == Item.getItemFromBlock(ModBlocks.blockPooCollector)) {			
+			//Normal
+			if (event.itemStack.getItemDamage() == 0) {
+				event.toolTip.add("Used to collect animal waste");
+				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
+				event.toolTip.add("Use Hoppers/Pipes to empty");
+			}
+			//Advanced
+			else {
+				event.toolTip.add("Used to collect waste (Works on more than animals)");
+				event.toolTip.add("Significantly faster than the simple version");
+				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
+				event.toolTip.add("Use Hoppers/Pipes to empty");
+			}
+		}
+		
+		
 
 		if (CORE.ConfigSwitches.enableAnimatedTurbines) {
 			boolean shift = false;					

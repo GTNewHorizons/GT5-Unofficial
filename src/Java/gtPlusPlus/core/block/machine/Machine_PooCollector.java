@@ -12,7 +12,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityBaseFluidCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.BlockContainer;
@@ -169,12 +168,7 @@ public class Machine_PooCollector extends BlockContainer {
 
 	@Override
 	public int getRenderColor(int aMeta) {
-		if (aMeta <= 7) {
-			return super.getRenderColor(aMeta);			
-		}
-		else {
-			return Utils.rgbtoHexValue(128, 45, 45);		
-		}
+		return super.getRenderColor(aMeta);	
 	}
 
 	@Override
