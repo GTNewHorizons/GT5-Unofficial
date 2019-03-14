@@ -1770,10 +1770,9 @@ public class RECIPES_GREGTECH {
 
 		GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 9));
-		/*
-		 * GT_ModHandler.addPulverisationRecipe( FLUORIDES.FLUORITE.getOre(1),
-		 * FLUORIDES.FLUORITE.getDust(4));
-		 */
+
+		GT_ModHandler.addPulverisationRecipe(GregtechItemList.Bomb_Cast_Broken.get(1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustClay", 3));
 
 		if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getItemStackOfAmountFromOreDict("limestone", 1),
