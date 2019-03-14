@@ -12,14 +12,14 @@ jobs:
       
       
     steps:
-    # - checkout
+      - checkout
       
       - run:
           name: Run build
           command:  export TERM=${TERM:-dumb} 
           # && ./gradlew clean build
       
-    # - run: sudo chmod +x gradlew
+      - run: sudo chmod +x gradlew
       
       - restore_cache:
           key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
