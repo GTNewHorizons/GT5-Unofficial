@@ -15,22 +15,22 @@ jobs:
       - checkout
       
       - run:
-          name: Run build
+          name: Set Terminal
           command:  export TERM=${TERM:-dumb} 
           # && ./gradlew clean build
       
       - run: sudo chmod +x gradlew
-      
+
+        # Build Forge and MCP
+      - run:
+          name: Download Resource Builder [MCP/Forge]
+          command: wget https://alkcorp.overminddl1.com/GTPP_BuildRepo.sh
+                
       - restore_cache:
           key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
         
-        # Build Forge and MCP
       - run:
-          name: Download Build Script
-          command: wget https://alkcorp.overminddl1.com/GTPP_BuildRepo.sh
-          
-      - run:
-          name: Run Build Script
+          name: Run Resource Builder [MCP/Forge]
           command: sh GTPP_BuildRepo.sh        
           
         # Cache All Libs
@@ -46,7 +46,7 @@ jobs:
           command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
           
       - run:
-          name: Run Build Script
+          name: Run "${CIRCLE_PROJECT_REPONAME}" Build Script
           command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
