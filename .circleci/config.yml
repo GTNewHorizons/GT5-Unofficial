@@ -8,7 +8,7 @@ jobs:
       
       
     environment:
-      JVM_OPTS: -Xmx3200m
+      JVM_OPTS: -Xms2048m Xmx4000m
       
       
     steps:
@@ -46,7 +46,7 @@ jobs:
           command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
           
       - run:
-          name: Run "${CIRCLE_PROJECT_REPONAME}" Build Script
+          name: Run Build Script
           command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 

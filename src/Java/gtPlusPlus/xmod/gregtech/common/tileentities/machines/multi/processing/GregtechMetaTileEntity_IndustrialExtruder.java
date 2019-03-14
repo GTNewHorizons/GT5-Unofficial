@@ -176,17 +176,6 @@ extends GregtechMeta_MultiBlockBase {
 				Logger.WARNING("Incorrect amount of Input || Output busses.");
 				return false;
 			}
-			this.mMaintenanceHatches.clear();
-			final IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-			if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
-				if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-					this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
-					((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
-				} else {
-					Logger.WARNING("Maintenance hatch must be in the middle block on the back.");
-					return false;
-				}
-			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
 				Logger.WARNING("Incorrect amount of Maintenance hatches.");
 				return false;

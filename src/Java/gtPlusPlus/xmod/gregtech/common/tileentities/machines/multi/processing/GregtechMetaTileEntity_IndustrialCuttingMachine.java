@@ -51,7 +51,6 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output Bus",
 				"1x Input Hatch",
 				"1x Energy Hatch",
-				"Maintenance Hatch must be at the back, centered",
 		};
 	}
 
@@ -129,24 +128,9 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
-				return false;
-			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
 				Logger.INFO("Incorrect amount of Input & Output busses.");
 				return false;
-			}
-			this.mMaintenanceHatches.clear();
-			final IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-			if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
-				if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-					this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
-					((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
-				} else {
-					Logger.INFO("Maintenance hatch must be in the middle block on the back.");
-					return false;
-				}
 			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
 				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
