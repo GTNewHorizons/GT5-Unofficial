@@ -113,9 +113,9 @@ extends GregtechMeta_MultiBlockBase {
 			}			
 			if (inputs.length > 0) {				
 				int para = (4* GT_Utility.getTier(this.getMaxInputVoltage()));
-				Logger.WARNING("Recipe. ["+inputs.length+"]["+para+"]");				
+				log("Recipe. ["+inputs.length+"]["+para+"]");				
 				if (checkRecipeGeneric(inputs, new FluidStack[]{}, para, 100, 250, 10000)) {
-					Logger.WARNING("Recipe 2.");
+					log("Recipe 2.");
 					return true;
 				}
 			}			
@@ -152,6 +152,22 @@ extends GregtechMeta_MultiBlockBase {
 					return false;
 				}
 			}
+			
+			//Check Rear Middle
+			{
+				Block aBlock = this.getBaseMetaTileEntity()
+						.getBlockAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				int aMeta = this.getBaseMetaTileEntity()
+						.getMetaIDAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				IGregTechTileEntity aTile = this.getBaseMetaTileEntity()
+						.getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(),
+						getCasingMeta())) {
+					log("Bad Casing on Extruder.");
+					return false;
+				}
+			}
+			
 			final int tX = this.getBaseMetaTileEntity().getXCoord();
 			final int tY = this.getBaseMetaTileEntity().getYCoord();
 			final int tZ = this.getBaseMetaTileEntity().getZCoord();
@@ -164,7 +180,7 @@ extends GregtechMeta_MultiBlockBase {
 							int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 							IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 							if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
-								Logger.INFO("Bad Casing on Extruder.");
+								log("Bad Casing on Extruder.");
 								return false;
 							}
 							
@@ -173,18 +189,18 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				Logger.WARNING("Incorrect amount of Input || Output busses.");
+				log("Incorrect amount of Input || Output busses.");
 				return false;
 			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
-				Logger.WARNING("Incorrect amount of Maintenance hatches.");
+				log("Incorrect amount of Maintenance hatches.");
 				return false;
 			}
 		} else {
-			Logger.WARNING("False 5");
+			log("False 5");
 			return false;
 		}
-		Logger.WARNING("True");
+		log("True");
 		return true;
 	}
 

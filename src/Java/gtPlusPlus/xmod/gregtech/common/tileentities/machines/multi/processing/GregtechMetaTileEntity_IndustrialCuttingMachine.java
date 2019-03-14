@@ -113,6 +113,24 @@ extends GregtechMeta_MultiBlockBase {
 			final int tX = this.getBaseMetaTileEntity().getXCoord();
 			final int tY = this.getBaseMetaTileEntity().getYCoord();
 			final int tZ = this.getBaseMetaTileEntity().getZCoord();
+			
+
+			//Check Rear Middle
+			{
+				Block aBlock = this.getBaseMetaTileEntity()
+						.getBlockAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				int aMeta = this.getBaseMetaTileEntity()
+						.getMetaIDAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				IGregTechTileEntity aTile = this.getBaseMetaTileEntity()
+						.getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(),
+						getCasingMeta())) {
+					log("Bad Casing on Cutting Machine.");
+					return false;
+				}
+			}
+			
+			
 			for (byte i = -1; i < 2; i = (byte) (i + 1)) {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
 					if ((i != 0) || (j != 0)) {
@@ -121,7 +139,7 @@ extends GregtechMeta_MultiBlockBase {
 								int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 								IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 								if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
-									Logger.INFO("Bad Casing on Cutting Machine.");
+									log("Bad Casing on Cutting Machine.");
 									return false;
 								}	
 						}
@@ -129,18 +147,18 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				Logger.INFO("Incorrect amount of Input & Output busses.");
+				log("Incorrect amount of Input & Output busses.");
 				return false;
 			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
-				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
+				log("Incorrect amount of Maintenance or Energy hatches.");
 				return false;
 			}
 		} else {
-			Logger.INFO("False 5");
+			log("False 5");
 			return false;
 		}
-		Logger.INFO("True");
+		log("True");
 		return true;
 	}
 
