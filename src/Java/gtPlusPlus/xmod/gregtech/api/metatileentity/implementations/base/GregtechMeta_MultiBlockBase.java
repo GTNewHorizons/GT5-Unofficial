@@ -71,6 +71,7 @@ extends
 GT_MetaTileEntity_MultiBlockBase {
 
 
+	private static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
 
 	static {
@@ -1567,7 +1568,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
 		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);	
-		boolean aHasCore = (requireControlCores ? (this.getControlCoreBus() != null) : true);	
+		boolean aHasCore = DEBUG_DISABLE_CORES_TEMPORARILY; //(requireControlCores ? (this.getControlCoreBus() != null) : true);	
 		return aStructureCheck && aHasCore;
 	}
 

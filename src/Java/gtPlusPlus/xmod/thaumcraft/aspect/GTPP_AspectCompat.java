@@ -132,7 +132,8 @@ public class GTPP_AspectCompat {
 						"Xenil",
 						Utils.rgbtoHexValue(25, 25, 25),
 						new TC_Aspect_Wrapper[]{
-								},
+								get(TC_Aspects.MAGNETO),
+								get(TC_Aspects.RADIO)},
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Xenil.png"),
 				false,
 				1,
