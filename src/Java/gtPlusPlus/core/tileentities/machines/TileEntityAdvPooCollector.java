@@ -1,5 +1,6 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -23,6 +24,7 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 	
 	public TileEntityAdvPooCollector() {	
 		super(18, 128000);
+		Logger.INFO("Created");
 	}
 
 

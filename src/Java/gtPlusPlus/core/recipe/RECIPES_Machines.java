@@ -369,7 +369,21 @@ public class RECIPES_Machines {
 					ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
 					20 * 60, 
 					30);
-			
+
+			//Adv. Poo Collector		
+			CORE.RA.addSixSlotAssemblingRecipe(
+					new ItemStack[] {
+							CI.getTieredMachineHull(-1),
+							ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
+							CI.getTieredComponent(OrePrefixes.circuit, 5, GTNH ? 8 : 4),
+							CI.getTieredComponent(OrePrefixes.pipeHuge, 6, GTNH ? 8 : 4),
+							CI.getElectricPump(5, GTNH ? 12 : 6),
+							CI.getTieredComponent(OrePrefixes.screw, 6, GTNH ? 32 : 16)
+					}, 
+					CI.getAlternativeTieredFluid(5, 144 * 9), 
+					ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 1, 8),
+					20 * 60 * 5, 
+					500);
 
 
 			//Basic Steam Turbine

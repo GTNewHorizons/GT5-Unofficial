@@ -1,6 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,7 +31,11 @@ public class Machine_PooCollector extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	private IIcon textureTop;
 	@SideOnly(Side.CLIENT)
+	private IIcon textureTop2;
+	@SideOnly(Side.CLIENT)
 	private IIcon textureSide;
+	@SideOnly(Side.CLIENT)
+	private IIcon textureSide2;
 
 	public Machine_PooCollector() {
 		super(Material.iron);
@@ -44,15 +49,24 @@ public class Machine_PooCollector extends BlockContainer {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-		return p_149691_1_ <= 1 ? this.textureTop : this.blockIcon;
+	public IIcon getIcon(final int aSide, final int aMeta) {
+		if (aMeta <= 7) {
+			blockIcon = textureSide;
+			return aSide <= 1 ? this.textureTop : this.textureSide;			
+		}
+		else {
+			blockIcon = textureSide2;
+			return aSide <= 1 ? this.textureTop2 : this.textureSide2;			
+		}	
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister p_149651_1_) {
 		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_top");
-		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_sides");
+		this.textureTop2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_top");
+		this.textureSide = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_sides");
+		this.textureSide2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_sides");
 	}
 
 	/**
@@ -140,7 +154,17 @@ public class Machine_PooCollector extends BlockContainer {
 	@Override
 	public int getBlockColor() {
 		// TODO Auto-generated method stub
-		return super.getBlockColor();
+		return 0;
+	}
+
+	@Override
+	public int damageDropped(final int damage) {
+		return damage;
+	}
+
+	@Override
+	public Item getItemDropped(final int meta, final Random rand, final int fortune) {
+		return Item.getItemFromBlock(this);
 	}
 
 	@Override

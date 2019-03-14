@@ -15,7 +15,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata
 	{
 		super(p_i45326_1_, p_i45326_1_);
 		this.mBlock = p_i45326_1_;
-		this.setMaxDamage(0);
+		this.setMaxDamage(15);
 		this.setHasSubtypes(true);
 	}
 
