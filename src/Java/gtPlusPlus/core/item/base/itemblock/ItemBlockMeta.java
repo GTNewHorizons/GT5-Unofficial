@@ -22,7 +22,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata
 	{
 		super(aBlock, aBlock);
 		this.mBlock = aBlock;
-		this.setMaxDamage(15);
+		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 		if (aBlock instanceof ITileTooltip) {
 			ITileTooltip aTooltip = (ITileTooltip) aBlock;

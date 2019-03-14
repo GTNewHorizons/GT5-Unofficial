@@ -8,8 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -27,13 +29,12 @@ public class GeneralTooltipEventHandler {
 	public void onItemTooltip(ItemTooltipEvent event){
 
 		
-		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED) {
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
 			return;
 		}
 		if (event.itemStack == null) {
 			return;
 		}
-		
 		if (CORE.ConfigSwitches.chanceToDropFluoriteOre > 0) {
 			if (BlockEventHandler.blockLimestone != null && !BlockEventHandler.blockLimestone.isEmpty()) {
 				for (ItemStack h : BlockEventHandler.blockLimestone) {
@@ -55,13 +56,14 @@ public class GeneralTooltipEventHandler {
 			}
 		}
 
-		//Material Collector Tooltips
-		if (event.itemStack.getItem() == Item.getItemFromBlock(ModBlocks.blockPooCollector)) {			
+		//Material Collector Tooltips		
+		if (ModBlocks.blockPooCollector != null && Block.getBlockFromItem(event.itemStack.getItem()) == ModBlocks.blockPooCollector) {			
 			//Normal
 			if (event.itemStack.getItemDamage() == 0) {
 				event.toolTip.add("Used to collect animal waste");
 				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
 				event.toolTip.add("Use Hoppers/Pipes to empty");
+				event.toolTip.add(EnumChatFormatting.GOLD+"Capacity: "+EnumChatFormatting.AQUA+"8000L");
 			}
 			//Advanced
 			else {
@@ -69,6 +71,7 @@ public class GeneralTooltipEventHandler {
 				event.toolTip.add("Significantly faster than the simple version");
 				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
 				event.toolTip.add("Use Hoppers/Pipes to empty");
+				event.toolTip.add(EnumChatFormatting.GOLD+"Capacity: "+EnumChatFormatting.AQUA+"128000L");
 			}
 		}
 		

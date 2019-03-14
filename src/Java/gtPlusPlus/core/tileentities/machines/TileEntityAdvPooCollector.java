@@ -24,7 +24,6 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 	
 	public TileEntityAdvPooCollector() {	
 		super(18, 128000);
-		Logger.INFO("Created");
 	}
 
 
@@ -120,7 +119,7 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 					}					
 				}				
 				aPooAmount = Math.max(Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount), 1);				
-				return aPooAmount * MathUtils.getRandomFromArray(new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4});
+				return Math.max(1, (aPooAmount * MathUtils.getRandomFromArray(new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4}) / 10));
 			}
 			else {
 				return 0;

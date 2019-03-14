@@ -104,6 +104,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//End Game Laser Engraver Lens
 	Laser_Lens_Special,
 	
+	//Bombs
+	Bomb_Cast, Bomb_Cast_Molten, 
+	Bomb_Cast_Set, Bomb_Cast_Broken,
+	Bomb_Cast_Mold,
+	
 
 	//----------------------------------------------------------------------------
 	
@@ -561,7 +566,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	 */
 
 	//Fluid Void Covers
-	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,  
+	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,   
 	
 	
 	

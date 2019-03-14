@@ -230,6 +230,7 @@ public class GTplusplus implements ActionListener {
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
+		INIT_PHASE.STARTED.setPhaseActive(true);
 	}
 
 	@Mod.EventHandler
@@ -257,7 +258,6 @@ public class GTplusplus implements ActionListener {
 	 */
 	@Mod.EventHandler
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
-		INIT_PHASE.STARTED.setPhaseActive(true);
 		proxy.onLoadComplete(event);
 		generateGregtechRecipeMaps();
 	}

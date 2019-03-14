@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.Fluid;
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 	
 	public TileEntityPooCollector() {	
-		super(9, 64000);
+		super(9, 8000);
 	}
 
 
@@ -109,7 +109,7 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 						aPooAmount = MathUtils.randInt(1, 10);
 					}					
 				}				
-				aPooAmount = Math.max(Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount), 1);				
+				aPooAmount = Math.max((Math.min(this.tank.getCapacity()-this.tank.getFluidAmount(), aPooAmount)/10), 1);				
 				return aPooAmount;
 			}
 			else {

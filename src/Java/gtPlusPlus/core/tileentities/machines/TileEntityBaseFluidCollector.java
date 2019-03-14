@@ -177,7 +177,6 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 							AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
 							if (box != null) {								
 								for (Class c2 : aThingsToLookFor()) {
-									Logger.INFO("Looking for "+c2.getName());
 									tickEntityType(w, box, c2);										
 								}														
 							} else {
@@ -197,7 +196,6 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 	public final void tickEntityType(World w, AxisAlignedBB box, Class aClassToFind) {
 		List<?> entities = w.getEntitiesWithinAABB(aClassToFind, box);	
 		if (entities != null && !entities.isEmpty()) {
-			Logger.INFO("Found some "+aClassToFind.getName());
 			interactWithEntities(entities);
 		}
 	}

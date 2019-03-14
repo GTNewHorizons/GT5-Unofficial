@@ -18,6 +18,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
+import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.lib.CORE;
@@ -85,8 +86,32 @@ public class RECIPES_GREGTECH {
 		breweryRecipes();
 		laserEngraverRecipes();
 		assemblyLineRecipes();
+		latheRecipes();
+		vacuumFreezerRecipes();
 		
 		addFuels();
+	}
+
+	private static void vacuumFreezerRecipes() {
+		GT_Values.RA.addVacuumFreezerRecipe(GregtechItemList.Bomb_Cast_Molten.get(1), GregtechItemList.Bomb_Cast_Set.get(1), 20 * 30);		
+	}
+
+	private static void latheRecipes() {
+		
+		GT_Values.RA.addLatheRecipe(
+				ALLOY.EGLIN_STEEL.getBlock(1),
+				GregtechItemList.Bomb_Cast_Mold.get(1),
+				null,
+				20 * 60 * 15,
+				120);
+		
+		GT_Values.RA.addLatheRecipe(
+				GregtechItemList.Bomb_Cast_Set.get(1),
+				GregtechItemList.Bomb_Cast_Broken.get(2),
+				ItemUtils.getSimpleStack(ModItems.itemBombCasing, 2),
+				20 * 60 * 5,
+				30);
+		
 	}
 
 	private static void fusionRecipes() {		
@@ -1249,6 +1274,21 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("molten.krypton", 500),
 				T6, 2000, 512000);
 
+		addAR(ItemUtils.getItemStackOfAmountFromOreDict(
+				"dustClay", 32),
+				GregtechItemList.Bomb_Cast_Mold.get(0),
+				FluidUtils.getWater(4000),
+				GregtechItemList.Bomb_Cast.get(4),
+				30, 120);
+		addAR(ItemUtils.getSimpleStack(Items.redstone, 32),
+				ItemUtils.getSimpleStack(ModItems.itemRope, 16),
+				Materials.Glue.getFluid(500),
+				ItemUtils.getSimpleStack(ModItems.itemDetCable, 24),
+				30, 
+				120);
+		
+
+
 		/*addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16),
 				ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null,
 				GregtechItemList.Casing_Power_SubStation.get(4), 80, 120);*/
@@ -1564,6 +1604,24 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16), FluidUtils.getFluidStack("water", 1000),
 				FluidUtils.getFluidStack("lithiumhydroxide", 144 * 4),
 				CI.emptyCells(1), 300 * 20);
+		
+		//Bombs
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getSimpleStack(ModItems.itemBombCasing, 4),
+				ItemUtils.getSimpleStack(RocketFuels.Ammonium_Nitrate_Dust, 8),
+				Materials.Fuel.getFluid(1000),
+				null,
+				ItemUtils.getSimpleStack(ModItems.itemBombUnf, 4),
+				300 * 20);
+		
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getSimpleStack(ModItems.itemBombUnf, 4),
+				ItemUtils.getSimpleStack(ModItems.itemDetCable, 4),
+				FluidUtils.getFluidStack(RocketFuels.Kerosene, 100),
+				null,
+				ItemUtils.getSimpleStack(ModItems.itemBomb, 4),
+				10 * 20);
+		
 
 		// LFTR Fuel Related Compounds
 		if (GTNH) {
@@ -1665,6 +1723,18 @@ public class RECIPES_GREGTECH {
 				60 * 20,
 				MaterialUtils.getVoltageForTier(GTNH ? 5 : 4),
 				4500);
+		
+		//Bomb Casings
+		GT_Values.RA.addBlastRecipe(
+				GregtechItemList.Bomb_Cast.get(4),
+				ALLOY.STEEL.getDust(16),
+				ELEMENT.getInstance().OXYGEN.getFluid(2000),
+				GT_Values.NF,
+				GregtechItemList.Bomb_Cast_Molten.get(4),
+				null,
+				4 * 60 * 20,
+				MaterialUtils.getVoltageForTier(GTNH ? 3 : 2),
+				2800);
 		
 		
 	}
