@@ -3,8 +3,8 @@ package gtPlusPlus.api.objects.minecraft;
 import java.util.ArrayList;
 
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -20,6 +20,7 @@ public class BTF_Inventory implements ISidedInventory{
 	}
 
 	public ItemStack[] getRealInventory() {
+		purgeNulls();
 		return this.mInventory;
 	}
 	
@@ -140,6 +141,7 @@ public class BTF_Inventory implements ISidedInventory{
 
 	public void markDirty() {
 		if (mTile != null) {
+			purgeNulls();
 			mTile.markDirty();
 		}
 	}
@@ -184,23 +186,42 @@ public class BTF_Inventory implements ISidedInventory{
 		return true;
 	}
 
-	public boolean addItemStack(ItemStack aInput) {
-		if (isEmpty() || !isFull()) {
+	public boolean addItemStack(ItemStack aInput) {		
+		if (aInput != null & (isEmpty() || !isFull())) {
 			for (int s = 0; s < this.getSizeInventory(); s++) {
-				ItemStack slot = mInventory[s];
-				if (slot == null
-						|| (GT_Utility.areStacksEqual(aInput, slot) && slot.stackSize != slot.getMaxStackSize())) {
-					if (slot == null) {
-						slot = aInput.copy();
-					} else {
-						slot.stackSize++;
+				if (mInventory != null && mInventory[s] != null) {
+					ItemStack slot = mInventory[s];
+					if (slot == null || (slot != null && GT_Utility.areStacksEqual(aInput, slot) && slot.stackSize != slot.getItem().getItemStackLimit(slot))) {
+						if (slot == null) {
+							slot = aInput.copy();
+						} else {
+							slot.stackSize++;
+						}
+						this.setInventorySlotContents(s, slot);
+						return true;
 					}
-					this.setInventorySlotContents(s, slot);
-					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	public final void purgeNulls() {
+		ItemStack[] aTemp = ArrayUtils.removeNulls(this.mInventory);
+		for (int g=0;g<this.getSizeInventory();g++) {
+			if (aTemp.length < this.getSizeInventory()) {
+				if (g <= aTemp.length-1) {
+					this.mInventory[g] = aTemp[g];
+				}
+				else {
+					this.mInventory[g] = null;
+				}
+			}
+			else {
+				this.mInventory[g] = aTemp[g];				
+			}		
+		}
+		
 	}
 
 

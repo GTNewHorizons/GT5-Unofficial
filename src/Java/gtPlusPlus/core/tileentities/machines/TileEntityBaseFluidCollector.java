@@ -98,11 +98,10 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 	}
 
 	@Override
-	public final void updateEntity() {	
-		
+	public final void updateEntity() {		
+		super.updateEntity();
 		onPreLogicTick();
-		logicTick();	
-		
+		logicTick();		
 		if (needsUpdate) {			
 			if (updateTimer == 0) {
 				updateTimer = 10; // every 10 ticks it will send an update
@@ -210,6 +209,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 			}
 			else {
 				ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull());
+				if (aDirtStack != null)
 				if (!this.mInventory.addItemStack(aDirtStack)) {
 					EntityItem entity = new EntityItem(worldObj, xCoord, yCoord+1.5, zCoord, aDirtStack);
 					worldObj.spawnEntityInWorld(entity);

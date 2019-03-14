@@ -34,6 +34,7 @@ import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
@@ -894,6 +895,9 @@ public final class ModItems {
 		
 		//Farm Animal Fun
 		new AgriculturalChem();
+		
+		//General Chemistry
+		new GenericChem();
 		
 		
 		//Bombs

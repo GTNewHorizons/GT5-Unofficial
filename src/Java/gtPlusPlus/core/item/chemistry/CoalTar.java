@@ -119,6 +119,15 @@ public class CoalTar extends ItemPackage {
 
 
 	public static void recipeCoalToCoalTar(){
+		//Charcoal
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
+				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32L),
+				8,
+				GT_Values.NF,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2),
+				FluidUtils.getFluidStack("fluid.coaltar", 800), 
+				15,
+				120);
 		//Lignite
 		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
 				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L),
@@ -126,7 +135,7 @@ public class CoalTar extends ItemPackage {
 				GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
 				FluidUtils.getFluidStack("fluid.coaltar", 800), 
-				90,
+				45,
 				60);
 
 		//Coal
@@ -136,7 +145,7 @@ public class CoalTar extends ItemPackage {
 				GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
 				FluidUtils.getFluidStack("fluid.coaltar", 2200), 
-				60,
+				30,
 				120);
 
 		//Coke
@@ -146,7 +155,7 @@ public class CoalTar extends ItemPackage {
 				GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3),
 				FluidUtils.getFluidStack("fluid.coaltar", 3400), 
-				30,
+				15,
 				240);
 
 	}
@@ -189,8 +198,8 @@ public class CoalTar extends ItemPackage {
 				);		
 		GT_Values.RA.addDistilleryRecipe(
 				CI.getNumberedCircuit(5), //Circuit
-				FluidUtils.getFluidStack("fluid.coaltar", 1430), //aInput
-				FluidUtils.getFluidStack("fluid.kerosene", 360), //aOutput
+				FluidUtils.getFluidStack("fluid.coaltar", 1500), //aInput
+				FluidUtils.getFluidStack("fluid.kerosene", 400), //aOutput
 				300, //aDuration
 				64,//aEUt
 				false //Hidden?
@@ -358,9 +367,9 @@ public class CoalTar extends ItemPackage {
 
 		//Burn the coal gas!
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
-		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), 32);
-		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), 64);
-		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), 128);		
+		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), 64);
+		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTarOil", 1), 32);
+		CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalTar", 1), 16);		
 		
 		return true;
 	}
