@@ -32,7 +32,7 @@ jobs:
           
       - run:
           name: Run Build Script
-          command: sh GTPP_BuildScript.sh CIRCLE_BUILD_NUM CIRCLE_BRANCH
+          command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}"
           
       - save_cache:
           paths:
