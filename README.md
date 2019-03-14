@@ -1,19 +1,19 @@
 # Welcome to the GT++ Github!  
 
 ## Current Build Status  
-### CircleCI - [![CircleCI](https://circleci.com/gh/draknyte1/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/draknyte1/GTplusplus/tree/master)   
+### CircleCI - [![CircleCI](https://circleci.com/gh/alkcorp/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/alkcorp/GTplusplus/tree/master)   
   
 ### Discord  
 [Join the GT++ Channel - Click here](https://discord.gg/YdXJbgb)  
    
 ## Issues & Suggestions  
-[Github Issue Template - Click here](https://github.com/draknyte1/GTplusplus/wiki/Github-Issue-Format)  
+[Github Issue Template - Click here](https://github.com/alkcorp/GTplusplus/wiki/Github-Issue-Format)  
 Please read this before you submit any issues or suggestions.  
 I will Happily take the form of code criticism or suggestions in the form of PRs.  
   
 ## Download   
-[Recommended Version](https://github.com/draknyte1/GTplusplus/wiki/Downloads!#click-here-to-download) 
-[Modpack Permissions - Click here](https://github.com/draknyte1/GTplusplus/issues/24#issuecomment-252458551)   
+[Recommended Version](https://github.com/alkcorp/GTplusplus/wiki/Downloads!#click-here-to-download) 
+[Modpack Permissions - Click here](https://github.com/alkcorp/GTplusplus/issues/24#issuecomment-252458551)   
 
 ## License  
 Copyright 2016-2018  

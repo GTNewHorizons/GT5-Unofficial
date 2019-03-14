@@ -32,7 +32,7 @@ jobs:
           
       - run:
           name: Run Build Script
-          command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}"
+          command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
           
       - save_cache:
           paths:
