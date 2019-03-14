@@ -223,10 +223,10 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase 
 				this.mHeatingCapacity = 9001;
 				break;
 			case 7:
-				this.mHeatingCapacity = 12001;
+				this.mHeatingCapacity = 9901;
 				break;
 			case 8:
-				this.mHeatingCapacity = 15001;
+				this.mHeatingCapacity = 10801;
 				break;
 			default:
 				Logger.INFO("Heating Coils are bad.");
