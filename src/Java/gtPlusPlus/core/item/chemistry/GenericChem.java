@@ -20,6 +20,7 @@ public class GenericChem extends ItemPackage {
 	
 	public static final Material BAKELITE = new Material("Bakelite", MaterialState.SOLID, TextureSet.SET_DULL, new short[]{90, 140, 140}, 120, 240, 23, 24, true, "", 0);//Not a GT Inherited Material
 	public static final Material NYLON = new Material("Nylon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[]{45, 45, 45}, 300, 600, 44, 48, true, "", 0);//Not a GT Inherited Material
+	public static final Material TEFLON = new Material("Teflon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[]{75, 45, 75}, 300, 600, 44, 48, true, "", 0);//Not a GT Inherited Material
 
 	//public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 	//public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
@@ -55,6 +56,7 @@ public class GenericChem extends ItemPackage {
 		PhenolicResins = ItemUtils.generateSpecialUseDusts("phenolicresins", "Phenolic Resin", "HOC6H4CH2OH", Utils.rgbtoHexValue(80, 40, 40))[0];		
 		MaterialGenerator.generate(BAKELITE, false);	
 		MaterialGenerator.generate(NYLON, false);
+		MaterialGenerator.generate(TEFLON, false);
 	}
 
 	@Override
