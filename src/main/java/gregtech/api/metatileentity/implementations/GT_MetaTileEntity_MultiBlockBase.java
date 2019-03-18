@@ -505,15 +505,73 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
     }
 
     public boolean addEnergyOutput(long aEU) {
-        if (aEU <= 0) return true;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                if (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false)) {
-                    return true;
+    	if (aEU <= 0) {
+    		return true;
+    		}
+    	if (mDynamoHatches.size() > 0) {
+    		return addEnergyOutputMultipleDynamos(aEU, true);
+        }
+        return false;
+    }
+    public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
+        int injected = 0;
+        long totalOutput = 0;
+        long aFirstVoltageFound = -1;
+        boolean aFoundMixedDynamos = false;
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+            if( aDynamo == null ) {
+                return false;
+            }
+            if (isValidMetaTileEntity(aDynamo)) {
+                long aVoltage = aDynamo.maxEUOutput();
+                long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+                // Check against voltage to check when hatch mixing
+                if (aFirstVoltageFound == -1) {
+                    aFirstVoltageFound = aVoltage;
+          }
+                else {
+                    /**
+                      * Calcualtes overclocked ness using long integers
+                      * @param aEUt          - recipe EUt
+                      * @param aDuration     - recipe Duration
+                      * @param mAmperage     - should be 1 ?
+                      */
+                    //Long time calculation
+                    if (aFirstVoltageFound != aVoltage) {
+                        aFoundMixedDynamos = true;
+                    }
+                }
+                totalOutput += aTotal;
+            }
+        }
+        if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
+            explodeMultiblock();
+            return false;
+        }
+
+         long leftToInject;
+        //Long EUt calculation
+        long aVoltage;
+        //Isnt too low EUt check?
+        int aAmpsToInject;
+        int aRemainder;
+
+         //xEUt *= 4;//this is effect of everclocking
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
+            if (isValidMetaTileEntity(aDynamo)) {
+                leftToInject = aEU - injected;
+                aVoltage = aDynamo.maxEUOutput();
+                aAmpsToInject = (int) (leftToInject / aVoltage);
+                aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+                long powerGain;
+                for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject > 0 ? aAmpsToInject : 1); i++) {
+                    powerGain = aAmpsToInject > 0 ? aVoltage : aRemainder;
+                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(powerGain, false);
+                    injected += powerGain;
                 }
             }
         }
-        return false;
+        return injected > 0;
     }
 
     public long getMaxInputVoltage() {
