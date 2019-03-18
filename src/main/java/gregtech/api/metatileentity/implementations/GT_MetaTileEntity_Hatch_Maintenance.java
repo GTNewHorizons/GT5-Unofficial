@@ -214,11 +214,53 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
+    	if(!(mAuto && GT_Mod.gregtechproxy.mAMHInteraction))
+            return false;
+        ItemStack[] mInputs = new ItemStack[]{ItemList.Duct_Tape.get(32, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 32), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 32)};
+        ItemStack[] aInputs = mInventory;
+        for(ItemStack nStack :mInputs) {
+            if (GT_Utility.areUnificationsEqual(aStack, nStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), GT_OreDictUnificator.get(false, nStack), true)) {
+                for (byte i = 0;i<mInventory.length;i++) {
+                    ItemStack tStack =aInputs[i];
+                    if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), GT_OreDictUnificator.get(false, tStack), true)) {
+                        if ((tStack.stackSize < 64)){
+                            return true;
+                        }
+                        return false;
+                    }
+                    if(i == 3){
+                        return true;
+                    }
+
+                 }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
+    	if(!(mAuto && GT_Mod.gregtechproxy.mAMHInteraction))
+            return false;
+        ItemStack[] mInputs = new ItemStack[]{ItemList.Duct_Tape.get(32, new Object[]{}), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 32), GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 32), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 32)};
+        ItemStack[] aInputs = mInventory;
+        for(ItemStack nStack :mInputs) {
+            if (GT_Utility.areUnificationsEqual(aStack, nStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), GT_OreDictUnificator.get(false, nStack), true)) {
+                for (byte i = 0;i<mInventory.length;i++) {
+                    ItemStack tStack =aInputs[i];
+                    if (GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), GT_OreDictUnificator.get(false, tStack), true)) {
+                        if ((tStack.stackSize < 64)){
+                            return true;
+                        }
+                        return false;
+                    }
+                    if(i == 3){
+                        return true;
+                    }
+
+                 }
+            }
+        }
+        return false;
     }
 }
