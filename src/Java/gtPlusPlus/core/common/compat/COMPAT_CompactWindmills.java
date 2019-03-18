@@ -40,17 +40,17 @@ public class COMPAT_CompactWindmills {
 	public static ItemStack evWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 4, 1);
 
 	//Compact Rotors
-	public static ItemStack rotor2 = ItemUtils.getItemStack("CompactWindmills:WOOL", 1);
-	public static ItemStack rotor1 = ItemUtils.getItemStack("CompactWindmills:WOOD", 1);
-	public static ItemStack rotor3 = ItemUtils.getItemStack("CompactWindmills:ALLOY", 1);
-	public static ItemStack rotor4 = ItemUtils.getItemStack("CompactWindmills:CARBON", 1);
-	public static ItemStack rotor5 = ItemUtils.getItemStack("CompactWindmills:IRIDIUM", 1);
+	public static ItemStack rotor2 = ItemUtils.getItemStackFromFQRN("CompactWindmills:WOOL", 1);
+	public static ItemStack rotor1 = ItemUtils.getItemStackFromFQRN("CompactWindmills:WOOD", 1);
+	public static ItemStack rotor3 = ItemUtils.getItemStackFromFQRN("CompactWindmills:ALLOY", 1);
+	public static ItemStack rotor4 = ItemUtils.getItemStackFromFQRN("CompactWindmills:CARBON", 1);
+	public static ItemStack rotor5 = ItemUtils.getItemStackFromFQRN("CompactWindmills:IRIDIUM", 1);
 
 	//IC2 Rotors
-	public static ItemStack rotorIC1 = ItemUtils.getItemStack("IC2:itemwoodrotor", 1);
-	public static ItemStack rotorIC2 = ItemUtils.getItemStack("IC2:itemironrotor", 1);
-	public static ItemStack rotorIC3 = ItemUtils.getItemStack("IC2:itemsteelrotor", 1);
-	public static ItemStack rotorIC4 = ItemUtils.getItemStack("IC2:itemwcarbonrotor", 1);
+	public static ItemStack rotorIC1 = ItemUtils.getItemStackFromFQRN("IC2:itemwoodrotor", 1);
+	public static ItemStack rotorIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemironrotor", 1);
+	public static ItemStack rotorIC3 = ItemUtils.getItemStackFromFQRN("IC2:itemsteelrotor", 1);
+	public static ItemStack rotorIC4 = ItemUtils.getItemStackFromFQRN("IC2:itemwcarbonrotor", 1);
 	public static ItemStack rotorBlade1 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 7, 1);
 	public static ItemStack rotorBlade2 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 8, 1);
 	public static ItemStack rotorBlade3 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 10, 1);

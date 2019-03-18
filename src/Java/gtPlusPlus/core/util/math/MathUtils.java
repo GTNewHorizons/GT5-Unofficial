@@ -463,14 +463,14 @@ public class MathUtils {
 			return 0;
 		}
 		int divisor = aDataSet.length;
-		Logger.INFO("Calculating Average Short. Divisor: "+divisor);
+		Logger.WARNING("Calculating Average Short. Divisor: "+divisor);
 		short total = 0;		
 		for (short i : aDataSet) {
-			Logger.INFO("Adding "+i);
+			Logger.WARNING("Adding "+i);
 			total += i;
 		}
 		short result = safeShort((total/divisor));
-		Logger.INFO("Average: "+result);
+		Logger.WARNING("Average: "+result);
 		return result;		
 	}
 	public static int getIntAverage(int[] aDataSet) {
@@ -679,6 +679,17 @@ public class MathUtils {
 	public static short safeCast_ByteToshort(byte o) {
 		short i = (short) o;		
 		return i;	
+	}
+
+	/**
+	 * Balances a number within a range.
+	 * @param aInput - The number to balance
+	 * @param aMin - The minimum bounds
+	 * @param aMax - The maximum bounds
+	 * @return - An Integer which will be between the bounds, or a boundary value.
+	 */
+	public static int balance(int aInput, int aMin, int aMax) {		
+		return Math.max(Math.min(aInput, aMax), aMin);
 	}
 
 }

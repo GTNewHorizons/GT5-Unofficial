@@ -35,6 +35,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -123,7 +124,7 @@ public class ItemUtils {
 			final int meta) {
 		try {
 			Item em = null;
-			final Item em1 = getItem(FQRN);
+			final Item em1 = getItemFromFQRN(FQRN);
 			// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null) {
 				em = em1;
@@ -157,7 +158,7 @@ public class ItemUtils {
 		if (MOD) {
 			try {
 				Item em = null;
-				final Item em1 = getItem(FQRN);
+				final Item em1 = getItemFromFQRN(FQRN);
 				// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 				if (em1 != null) {
 					if (null == em) {
@@ -180,7 +181,7 @@ public class ItemUtils {
 	public static ItemStack simpleMetaStack(final String FQRN, final int meta, final int itemstackSize) {
 		try {
 			Item em = null;
-			final Item em1 = getItem(FQRN);
+			final Item em1 = getItemFromFQRN(FQRN);
 			// Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null) {
 				if (null == em) {
@@ -232,7 +233,7 @@ public class ItemUtils {
 		ItemStack temp;
 		if (fqrn.toLowerCase().contains(oreDict.toLowerCase())) {
 			final String sanitizedName = fqrn.replace(oreDict, "");
-			temp = ItemUtils.getItemStack(sanitizedName, stackSize);
+			temp = ItemUtils.getItemStackFromFQRN(sanitizedName, stackSize);
 			return temp;
 		}
 		final String[] fqrnSplit = fqrn.split(":");
@@ -257,13 +258,13 @@ public class ItemUtils {
 		return null;
 	}
 
-	public static Item getItem(final String fqrn) // fqrn = fully qualified resource name
+	public static Item getItemFromFQRN(final String fqrn) // fqrn = fully qualified resource name
 	{
 		final String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
 	}
 
-	public static ItemStack getItemStack(final String fqrn, final int Size) // fqrn = fully qualified resource name
+	public static ItemStack getItemStackFromFQRN(final String fqrn, final int Size) // fqrn = fully qualified resource name
 	{
 		final String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
@@ -395,6 +396,61 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
 				new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
 				new BaseItemDustUnique("itemDustTiny" + unlocalizedName, materialName, mChemForm, Colour, "Tiny") };
+		
+		//Generate Shaped/Shapeless Recipes
+
+		final ItemStack normalDust = ItemUtils.getSimpleStack(output[0]);
+		final ItemStack smallDust = ItemUtils.getSimpleStack(output[1]);
+		final ItemStack tinyDust = ItemUtils.getSimpleStack(output[2]);
+
+
+		if (ItemUtils.checkForInvalidItems(tinyDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					tinyDust,	tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					tinyDust, tinyDust, tinyDust,
+					normalDust)){
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust to 1 Dust Recipe: "+materialName+" - Failed");
+			}
+
+			if (RecipeUtils.recipeBuilder(
+					normalDust, null, null,
+					null, null, null,
+					null, null, null,
+					ItemUtils.getSimpleStack(tinyDust, 9))){
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("9 Tiny dust from 1 Recipe: "+materialName+" - Failed");
+			}
+		}
+
+		if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(normalDust)) {
+			if (RecipeUtils.recipeBuilder(
+					smallDust, smallDust, null,
+					smallDust, smallDust, null,
+					null, null, null,
+					normalDust)){
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust to 1 Dust Recipe: "+materialName+" - Failed");
+			}
+			if (RecipeUtils.recipeBuilder(
+					null, normalDust, null,
+					null, null, null,
+					null, null, null,
+					ItemUtils.getSimpleStack(smallDust, 4))){
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+materialName+" - Success");
+			}
+			else {
+				Logger.WARNING("4 Small dust from 1 Dust Recipe: "+materialName+" - Failed");
+			}
+		}
+		
 		return output;
 	}
 
@@ -607,7 +663,7 @@ public class ItemUtils {
 	}
 
 	public static String getArrayStackNames(final ItemStack[] aStack) {
-		String itemNames = "Item Array: ";
+		String itemNames = "";
 		int aPos = 0;
 		for (final ItemStack alph : aStack) {			
 			if (alph == null) {
@@ -1010,6 +1066,52 @@ public class ItemUtils {
 		return newArray2;
 
 	
+	}
+
+	public static String getItemName(ItemStack aStack) {
+		if (aStack == null) {
+			return "ERROR - Empty Stack";
+		}
+		String aDisplay = null;
+		try {
+			aDisplay = ("" + StatCollector
+					.translateToLocal(aStack.getItem().getUnlocalizedNameInefficiently(aStack) + ".name"))
+							.trim();
+			if (aStack.hasTagCompound()) {
+				if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
+					NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
+
+					if (nbttagcompound.hasKey("Name", 8)) {
+						aDisplay = nbttagcompound.getString("Name");
+					}
+				}
+			}
+		} catch (Throwable t) {
+
+		}
+		if (aDisplay == null || aDisplay.length() <= 0) {
+			aDisplay = aStack.getUnlocalizedName() + ":" + aStack.getItemDamage();
+		} else {
+			aDisplay += " | Meta: " + aStack.getItemDamage();
+		}
+		return aDisplay;
+	}
+
+	public static String getUnlocalizedItemName(ItemStack aStack) {
+		if (aStack == null) {
+			return "ERROR.Empty.Stack";
+		}
+		String aDisplay = null;
+		try {
+			aDisplay = (aStack.getUnlocalizedName()).trim();
+			
+		} catch (Throwable t) {
+			aDisplay = aStack.getItem().getUnlocalizedName();
+		}
+		if (aDisplay == null || aDisplay.length() <= 0) {
+			aDisplay = aStack.getItem().getUnlocalizedNameInefficiently(aStack);
+		}
+		return aDisplay;
 	}
 
 }

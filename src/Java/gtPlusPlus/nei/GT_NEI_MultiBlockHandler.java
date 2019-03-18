@@ -842,7 +842,7 @@ extends TemplateRecipeHandler {
 				if (sFields[u] == null) {
 					if (u==0) {						
 						for (Field f : GT_OreDictUnificator.class.getDeclaredFields()) {
-							ReflectionUtils.makeAccessible(f);
+							ReflectionUtils.makeFieldAccessible(f);
 							if (f.getName().equalsIgnoreCase("sUnificationTable")) {
 								hasLooked = true;
 							}

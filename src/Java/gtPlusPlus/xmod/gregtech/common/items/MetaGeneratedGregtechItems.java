@@ -169,12 +169,12 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		 * Power Gems
 		 */
 
-		GregtechItemList.Battery_Gem_1.set(this.addItem(tLastID = 66, "Fission Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 24L), getTcAspectStack(TC_Aspects.POTENTIA, 16L)}));
-		this.setElectricStats(32000 + tLastID, 32000000L, GT_Values.V[5], 5L, -3L, false);
-		GregtechItemList.Battery_Gem_2.set(this.addItem(tLastID = 68, "Fusion Power Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 16L), getTcAspectStack(TC_Aspects.METALLUM, 32L), getTcAspectStack(TC_Aspects.POTENTIA, 32L)}));
-		this.setElectricStats(32000 + tLastID, 750000000L, GT_Values.V[6], 6L, -3L, false);
-		GregtechItemList.Battery_Gem_3.set(this.addItem(tLastID = 70, "Portable Neutron Star", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 32L), getTcAspectStack(TC_Aspects.METALLUM, 48L), getTcAspectStack(TC_Aspects.POTENTIA, 64L)}));
-		this.setElectricStats(32000 + tLastID, 64000000000L, GT_Values.V[7], 7L, -3L, false);
+		GregtechItemList.Battery_Gem_1.set(this.addItem(tLastID = 66, "Proton Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 24L), getTcAspectStack(TC_Aspects.POTENTIA, 16L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 20 * 300 / 4, GT_Values.V[6], 6L, -3L, false);
+		GregtechItemList.Battery_Gem_2.set(this.addItem(tLastID = 68, "Electron Cell", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 16L), getTcAspectStack(TC_Aspects.METALLUM, 32L), getTcAspectStack(TC_Aspects.POTENTIA, 32L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[7] * 20 * 300 / 4, GT_Values.V[7], 7L, -3L, false);
+		GregtechItemList.Battery_Gem_3.set(this.addItem(tLastID = 70, "Quark Entanglement", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 32L), getTcAspectStack(TC_Aspects.METALLUM, 48L), getTcAspectStack(TC_Aspects.POTENTIA, 64L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[8] * 20 * 300 / 4, GT_Values.V[8], 8L, -3L, false);
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_1.get(1), "batteryFutureBasic");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_2.get(1), "batteryFutureGood");
 		//ItemUtils.addItemToOreDictionary(GregtechItemList.Battery_Gem_3.get(1), "batteryFutureAdvanced");
@@ -285,7 +285,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//Fusion Reactor MK4 Singularity
 		GregtechItemList.Compressed_Fusion_Reactor.set(this.addItem(100, "Hypervisor Matrix (Fusion)", "A memory unit containing an RI (Restricted Intelligence)", new Object[0]));
-		CORE.RA.addCompressorRecipe(ItemList.FusionComputer_UV.get(9), GregtechItemList.Compressed_Fusion_Reactor.get(1), (int) GT_Values.V[7], (int) GT_Values.V[8]);
+
 		
 		//NanoTubes
 		GregtechItemList.NanoTube_Base_Substrate.set(this.addItem(101, "Silicon Base Substrate", "Used in the production of Carbon Nanotubes", new Object[0]));
@@ -294,6 +294,30 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Carbyne_Sheet_Finished.set(this.addItem(104, "Carbyne Composite Panel", "Nanotubes which contain LAC, arranged side by side and compressed further", new Object[0]));
 		GregtechItemList.Laser_Lens_Special.set(this.addItem(105, "Quantum Anomaly", "Probably should shoot it with lasers", new Object[0]));
 
+		GregtechItemList.Battery_Casing_Gem_1.set(this.addItem(106, "Containment Unit I", "Used in crafting", new Object[0]));
+		GregtechItemList.Battery_Casing_Gem_2.set(this.addItem(107, "Containment Unit II", "Used in crafting", new Object[0]));
+		GregtechItemList.Battery_Casing_Gem_3.set(this.addItem(108, "Advanced Containment Unit", "Used in crafting", new Object[0]));
+		GregtechItemList.Battery_Casing_Gem_4.set(this.addItem(109, "Exotic Containment Unit", "Used in crafting", new Object[0]));		
+
+		GregtechItemList.Battery_Gem_4.set(this.addItem(tLastID = 110, "Graviton Anomaly", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 64L), getTcAspectStack(TC_Aspects.METALLUM, 64L), getTcAspectStack(TC_Aspects.POTENTIA, 64L)}));
+		this.setElectricStats(32000 + tLastID, (64000000000L*16), GT_Values.V[9], 9L, -3L, false);
+		
+		
+		
+		/*
+		 * Bombs
+		 */
+		GregtechItemList.Bomb_Cast.set(this.addItem(111, "Bomb Cast", "Used in the production of Bombs", new Object[0]));
+		GregtechItemList.Bomb_Cast_Molten.set(this.addItem(112, "Bomb Cast (Hot)", "Consider cooling this off", new Object[0]));
+		GregtechItemList.Bomb_Cast_Set.set(this.addItem(113, "Bomb Cast (Set)", "Break it open for the goodies inside!", new Object[0]));
+		GregtechItemList.Bomb_Cast_Broken.set(this.addItem(114, "Bomb Cast (Broken)", "This is probably just junk", new Object[0]));
+		GregtechItemList.Bomb_Cast_Mold.set(this.addItem(115, "Mold (Bomb Cast)", "Used in the production of Bombs", new Object[0]));
+		
+		
+		
+		
+		
+		
 	}
 
 	private boolean registerComponents_ULV(){

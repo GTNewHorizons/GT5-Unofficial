@@ -11,6 +11,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {
@@ -31,14 +32,14 @@ public class FishTrapHandler {
 	private final static Object setFishTrapRegistry(){
 		Class mFishingRegistryClass;
 		try {
-			mFishingRegistryClass = Class.forName("growthcraft.api.fishtrap.FishTrapRegistry");
+			mFishingRegistryClass = ReflectionUtils.getClass("growthcraft.api.fishtrap.FishTrapRegistry");
 			final Method mFishingRegistryMethod = mFishingRegistryClass.getDeclaredMethod("getInstance");
 			mFishingRegistry = mFishingRegistryMethod.invoke(null);
 			if (mFishingRegistry != null){
 				return mFishingRegistry;
 			}
 		}
-		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 		}
 		return null;
 	}

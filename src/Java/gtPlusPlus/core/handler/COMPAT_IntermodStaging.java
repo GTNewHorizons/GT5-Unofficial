@@ -1,6 +1,10 @@
 package gtPlusPlus.core.handler;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gtPlusPlus.xmod.bartcrops.HANDLER_CropsPlusPlus;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.computronics.HANDLER_Computronics;
 import gtPlusPlus.xmod.forestry.HANDLER_FR;
@@ -15,7 +19,7 @@ import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
 
 public class COMPAT_IntermodStaging {
 
-	public static void preInit(){
+	public static void preInit(FMLPreInitializationEvent preinit){
 		HANDLER_GT.preInit();
 		HANDLER_GC.preInit();
 		HANDLER_TF.preInit();
@@ -28,9 +32,10 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Tinkers.preInit();
 		HANDLER_SC2.preInit();
 		HANDLER_GalactiCraft.preInit();
+		HANDLER_CropsPlusPlus.preInit(preinit);
 	}
 
-	public static void init(){
+	public static void init(FMLInitializationEvent init){
 		HANDLER_GT.init();
 		HANDLER_GC.init();
 		HANDLER_TF.init();
@@ -43,9 +48,10 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Tinkers.init();
 		HANDLER_SC2.init();
 		HANDLER_GalactiCraft.init();
+		HANDLER_CropsPlusPlus.init(init);
 	}
 
-	public static void postInit(){
+	public static void postInit(FMLPostInitializationEvent postinit){
 		HANDLER_GT.postInit();
 		HANDLER_GC.postInit();
 		HANDLER_TF.postInit();
@@ -58,6 +64,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Tinkers.postInit();
 		HANDLER_SC2.postInit();
 		HANDLER_GalactiCraft.postInit();
+		HANDLER_CropsPlusPlus.postInit(postinit);
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {

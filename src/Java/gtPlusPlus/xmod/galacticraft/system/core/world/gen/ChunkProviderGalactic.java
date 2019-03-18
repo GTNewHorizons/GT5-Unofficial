@@ -4,12 +4,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -46,20 +45,37 @@ public abstract class ChunkProviderGalactic extends ChunkProviderGalaxyLakes {
 	}
 
 	protected SpawnListEntry[] getMonsters() {
-		SpawnListEntry skele = new SpawnListEntry(EntityEvolvedSkeleton.class, 100, 4, 4);
-		SpawnListEntry creeper = new SpawnListEntry(EntityEvolvedCreeper.class, 100, 4, 4);
-		SpawnListEntry spider = new SpawnListEntry(EntityEvolvedSpider.class, 100, 4, 4);
+
+		Class aSkele = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton");
+		Class aCreeper = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper");
+		Class aSpider = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider");
+		Class aEnderman = ReflectionUtils.getClass("galaxyspace.SolarSystem.planets.pluto.entities.EntityEvolvedEnderman");
+
+		SpawnListEntry skele;
+		SpawnListEntry creeper;
+		SpawnListEntry spider;
+		SpawnListEntry enderman;
 		
-		Class<?> aEnderman;
-		try {
-			aEnderman = Class.forName("galaxyspace.SolarSystem.planets.pluto.entities.EntityEvolvedEnderman");
-			if (aEnderman != null) {
-				SpawnListEntry enderman = new SpawnListEntry(aEnderman, 100, 4, 4);	
-				return new SpawnListEntry[] { skele, creeper, spider, enderman };			
-			}
-		} catch (ClassNotFoundException e) {}
+		AutoMap<SpawnListEntry> aMobs = new AutoMap<SpawnListEntry>();
 		
-		return new SpawnListEntry[] { skele, creeper, spider };
+		if (aSkele != null) {
+			skele = new SpawnListEntry(aSkele, 100, 4, 4);
+			aMobs.put(skele);
+		}
+		if (aCreeper != null) {
+			creeper = new SpawnListEntry(aCreeper, 100, 4, 4);
+			aMobs.put(creeper);
+		}
+		if (aSpider != null) {
+			spider = new SpawnListEntry(aSpider, 100, 4, 4);
+			aMobs.put(spider);
+		}
+		if (aEnderman != null) {
+			enderman = new SpawnListEntry(aEnderman, 100, 4, 4);
+			aMobs.put(enderman);
+		}
+
+		return aMobs.toArray();
 	}
 
 	public void onPopulate(IChunkProvider arg0, int arg1, int arg2) {

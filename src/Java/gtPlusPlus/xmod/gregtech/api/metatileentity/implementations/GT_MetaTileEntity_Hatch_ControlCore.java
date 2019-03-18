@@ -8,16 +8,20 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.general.ItemControlCore;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch {
 	
     public GT_Recipe_Map mRecipeMap = null;
+    
+    public BlockPos mControllerLocation;
 
     public GT_MetaTileEntity_Hatch_ControlCore(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Core determines maximum tier machine will operate at");
@@ -113,4 +117,24 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return aSide == getBaseMetaTileEntity().getFrontFacing() && (aStack != null && aStack.getItem() instanceof ItemControlCore);
     }
+    
+    public boolean setOwner(TileEntity aTileEntity) {    	
+    	if (mControllerLocation != null) {
+    		return false;
+    	}
+    	else {
+    		mControllerLocation = new BlockPos(aTileEntity);
+    		return true;
+    	}    	
+    }
+
+	public boolean setOwner(IGregTechTileEntity aTileEntity) {    	
+    	if (mControllerLocation != null) {
+    		return false;
+    	}
+    	else {
+    		mControllerLocation = new BlockPos(aTileEntity);
+    		return true;
+    	}		
+	}
 }

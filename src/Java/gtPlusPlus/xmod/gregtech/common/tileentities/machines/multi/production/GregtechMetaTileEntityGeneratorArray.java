@@ -22,6 +22,7 @@ import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gregtech.common.GT_Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -401,7 +402,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 				if (this.addOutput(tEmptyContainer1)) {
 					aBaseMetaTileEntity.increaseStoredEnergyUnits((long) tFuelValue, true);
 					this.depleteInput(a);
-					GT_Pollution.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollutionPerTick(null));
+					PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollutionPerTick(null));
 				}
 			}
 		}
@@ -418,7 +419,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GregtechMeta_MultiBloc
 							(this.maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / (long) tFuelValue);
 					if (tFluidAmountToUse > 0L && aBaseMetaTileEntity
 							.increaseStoredEnergyUnits(tFluidAmountToUse * (long) tFuelValue, true)) {
-						GT_Pollution.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollutionPerTick(null));
+						PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollutionPerTick(null));
 						mFluid.amount = (int) ((long) mFluid.amount
 								- tFluidAmountToUse * (long) tEmptyContainer);
 					}

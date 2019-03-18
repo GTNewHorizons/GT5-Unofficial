@@ -10,9 +10,7 @@ import gregtech.api.util.GT_LanguageManager;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
-import gtPlusPlus.core.fluids.GenericFluid;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -92,82 +90,6 @@ public class FluidUtils {
 		}
 
 	}
-
-
-	/**
-	 * @param String displayName
-	 * @param String fluidName
-	 * @param int meltingPointC Temp
-	 * @param short[] rgba
-	 * @param byte state
-	 * States: 0 (Solid), 1 (Fluid), 2(Gas), 3(Plasma) 4(Fuel I think? Don't use.)
-	 *
-	 * @return short[]
-	 */
-	public static Fluid generateFluid(final String displayName, final String fluidName, final int tempK, final short[] rgba ,final int aState){
-		Fluid generatedFluid = null;
-		switch (aState) {
-			case 0: {
-				generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 10000, false, rgba);
-				break;
-			}
-			default:
-			case 1:
-			case 4: {
-				generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 1000, false, rgba);
-				break;
-			}
-			case 2: {
-				generatedFluid = new GenericFluid(displayName, fluidName, 0, -100, tempK, 200, true, rgba);
-				break;
-			}
-			case 3: {
-				generatedFluid = new GenericFluid(displayName, fluidName, 15, -10000, tempK, 10, true, rgba);
-				break;
-			}
-		}
-		return generatedFluid;
-	}
-	/**
-	 *
-	 * @param String fluidName
-	 * @param int meltingPointC Temp
-	 * @param short[] rgba
-	 * @param byte state
-	 * States: 0 (Solid), 1 (Fluid), 2(Gas), 3(Plasma) 4(Fuel I think? Don't use.)
-	 *
-	 * @return short[]
-	 */
-	public static Fluid generateFluid(final Material material ,final int aState){
-		final int tempK = material.getMeltingPointC();
-		Fluid generatedFluid = null;
-		switch (aState) {
-			case 0: {
-				generatedFluid = new GenericFluid(material, 0, 100, tempK, 10000, false);
-				break;
-			}
-			default:
-			case 1:
-			case 4: {
-				generatedFluid = new GenericFluid(material, 0, 100, tempK, 1000, false);
-				break;
-			}
-			case 2: {
-				generatedFluid = new GenericFluid(material, 0, -100, tempK, 200, true);
-				break;
-			}
-			case 3: {
-				generatedFluid = new GenericFluid(material, 15, -10000, tempK, 10, true);
-				break;
-			}
-		}
-		return generatedFluid;
-	}
-
-
-
-
-
 
 	public static Fluid addGtFluid(final String aName, final String aLocalized, final GT_Materials aMaterial, final int aState, final long aTemperatureK, final ItemStack aFullContainer, final ItemStack aEmptyContainer, final int aFluidAmount) {
 		return addGtFluid(aName, aLocalized, aMaterial, aState, aTemperatureK, aFullContainer, aEmptyContainer, aFluidAmount, true);

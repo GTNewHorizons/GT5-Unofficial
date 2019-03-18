@@ -18,8 +18,8 @@ public class BaseItemScrew extends BaseItemComponent{
 
 	private void addLatheRecipe(){
 		Logger.WARNING("Adding recipe for "+this.materialName+" Screws");
-		final ItemStack boltStack = ItemUtils.getItemStackOfAmountFromOreDict(this.unlocalName.replace("itemScrew", "bolt"), 1);
-		if (null != boltStack){
+		ItemStack boltStack = this.componentMaterial.getBolt(1);
+		if (ItemUtils.checkForInvalidItems(boltStack)){
 			GT_Values.RA.addLatheRecipe(
 					boltStack,
 					ItemUtils.getSimpleStack(this),

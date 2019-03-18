@@ -2,7 +2,6 @@ package gtPlusPlus.preloader.asm.transformers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
@@ -11,14 +10,10 @@ import org.objectweb.asm.ClassWriter;
 import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import galaxyspace.SolarSystem.core.configs.GSConfigDimensions;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
+import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
 
 @SuppressWarnings("static-access")
 public class Preloader_Transformer_Handler implements IClassTransformer {
@@ -86,20 +81,20 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		// Fix the OreDictionary COFH
 		if (transformedName.equals("cofh.core.util.oredict.OreDictionaryArbiter") && (mConfig.enableCofhPatch || !obfuscated)) {
 			FMLRelaunchLog.log("[GT++ ASM] COFH", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass, probablyShouldBeFalse).getWriter().toByteArray();
+			return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
 		}
 
 		// Fix Tinkers Fluids
 		if (transformedName.equals("tconstruct.smeltery.blocks.TConstructFluid") && mConfig.enableTiConFluidLighting) {
 			FMLRelaunchLog.log("[GT++ ASM] Bright Fluids", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_TiConFluids("getLightValue", probablyShouldBeFalse, basicClass).getWriter().toByteArray();
+			return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
 		}
 		
 		//Fix RC stuff
 		//Patching PROCESS_VOLUME to allow 4x more transfer limits
 		if (transformedName.equals("mods.railcraft.common.fluids.FluidHelper") && mConfig.enableRcFlowFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Railcraft PROCESS_VOLUME Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_Railcraft_FluidHelper(basicClass).getWriter().toByteArray();
+			return new ClassTransformer_Railcraft_FluidHelper(basicClass, obfuscated).getWriter().toByteArray();
 		}
 
 		//Fix GC stuff
@@ -118,6 +113,39 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			}
 		}
 
+		
+		
+		
+		
+		
+		/**
+		 * Gregtech ASM Patches
+		 */
+		
+		//Try patch achievements
+		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		/*if (transformedName.equals("gregtech.common.GT_Client")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Client(basicClass).getByteArray();
+		}*/
+
+		//Make GT packets safer, fill them with debug info.
+		if (transformedName.equals("gregtech.api.net.GT_Packet_TileEntity")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech GT_Packet_TileEntity Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Packet_TileEntity(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		//Make the setting of GT Tiles safer, so as not to crash the client.
+		if (transformedName.equals("gregtech.api.metatileentity.BaseMetaTileEntity")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech setMetaTileEntity Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_BaseMetaTileEntity(basicClass).getWriter().toByteArray();
+		}
+		
+		
+		
+		
 		//Patching Meta Tile Tooltips
 		if (transformedName.equals("gregtech.common.blocks.GT_Item_Machines") && mConfig.enableGtTooltipFix) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Tooltip Patch", Level.INFO, "Transforming %s", transformedName);
@@ -160,17 +188,28 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				"ic2.core.block.reactor.block.BlockReactorFluidPort",
 				"ic2.core.block.reactor.block.BlockReactorRedstonePort", 
 				"ic2.core.block.reactor.block.BlockReactorVessel",
+				"ic2.core.block.personal.BlockPersonal.class",
+				"ic2.core.block.wiring.BlockChargepad.class",
+				"ic2.core.block.wiring.BlockElectric.class",
+				"ic2.core.block.wiring.BlockLuminator.class",				
 		};
 
 		//Fix IC2 Shit	
 		for (String y : aIC2ClassNames) {
 			if (transformedName.equals(y)) {
-				//Fix GT NBT Persistency issue		
 				FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Transforming %s", transformedName);
-				return new ClassTransformer_IC2_GetHarvestTool(basicClass, probablyShouldBeFalse, transformedName).getWriter().toByteArray();			
+				return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter().toByteArray();			
 			}
-		}		
-
+		}
+		
+		//Fix Thaumcraft Shit
+		//Patching ItemWispEssence to allow invalid item handling
+		if (transformedName.equals("thaumcraft.common.items.ItemWispEssence") && mConfig.enableTcAspectSafety) {	
+			FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_TC_ItemWispEssence(basicClass, obfuscated).getWriter().toByteArray();
+		}
+		
+		
 		return basicClass;
 	}
 

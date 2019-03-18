@@ -1,8 +1,12 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.RETURN;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.Level;
@@ -34,16 +38,11 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
 		
 		private final boolean isValid;
 		private final ClassReader reader;
-		private final ClassWriter writer;	
-		private final boolean isObfuscated;
+		private final ClassWriter writer;
 
-		public ClassTransformer_COFH_OreDictionaryArbiter(byte[] basicClass, boolean obfuscated) {
-			
+		public ClassTransformer_COFH_OreDictionaryArbiter(byte[] basicClass) {			
 			ClassReader aTempReader = null;
-			ClassWriter aTempWriter = null;
-			
-			isObfuscated = obfuscated;
-			
+			ClassWriter aTempWriter = null;			
 			aTempReader = new ClassReader(basicClass);
 			aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
 			aTempReader.accept(new localClassVisitor(aTempWriter), 0);	
@@ -75,7 +74,14 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
 			return writer;
 		}
 
-		public void injectMethod(String aMethodName) {			
+		public void injectMethod(String aMethodName) {	
+			
+			boolean isObfuscated;
+			try {
+				isObfuscated = Class.forName("net.minecraft.item.ItemStack") != null ? false : true;
+			} catch (ClassNotFoundException e) {
+				isObfuscated = true;
+			}
 			String aItemStack = isObfuscated ? DevHelper.getObfuscated("net/minecraft/item/ItemStack") : "net/minecraft/item/ItemStack";
 			MethodVisitor mv;		
 			if (aMethodName.equals("registerOreDictionaryEntry")) {

@@ -1,8 +1,14 @@
 package gtPlusPlus.core.item.base.itemblock;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
+import gtPlusPlus.api.interfaces.ITileTooltip;
+import gtPlusPlus.api.objects.data.AutoMap;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -10,13 +16,36 @@ import net.minecraft.util.IIcon;
 public class ItemBlockMeta extends ItemBlockWithMetadata
 {
 	private final Block mBlock;
+	private HashMap<Integer, AutoMap<String>> aTooltips = new LinkedHashMap<Integer, AutoMap<String>>();
 
-	public ItemBlockMeta(final Block p_i45326_1_)
+	public ItemBlockMeta(final Block aBlock)
 	{
-		super(p_i45326_1_, p_i45326_1_);
-		this.mBlock = p_i45326_1_;
+		super(aBlock, aBlock);
+		this.mBlock = aBlock;
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
+		if (aBlock instanceof ITileTooltip) {
+			ITileTooltip aTooltip = (ITileTooltip) aBlock;
+			//aTooltips.put(aTooltip.getTooltipID(), aTooltip.getTooltipMap());
+		}
+	}
+	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		Block aThis = Block.getBlockFromItem(stack.getItem());
+		if (aThis != null) {
+			if (!aTooltips.isEmpty()) {
+				AutoMap<String> h = aTooltips.get(stack.getItemDamage());
+				if (h != null && !h.isEmpty()) {
+					for (String s : h) {
+						list.add(s);
+					}
+				}
+			}
+		}		
+		super.addInformation(stack, aPlayer, list, bool);		
 	}
 
 	/**
@@ -41,5 +70,45 @@ public class ItemBlockMeta extends ItemBlockWithMetadata
 	@Override
 	public String getUnlocalizedName(final ItemStack stack) {
 		return this.getUnlocalizedName() + "." + stack.getItemDamage();
+	}
+
+	@Override
+	public boolean isDamageable() {
+		return false;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+		return 0;
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public int getDisplayDamage(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public int getItemEnchantability(ItemStack stack) {
+		return 0;
 	}
 }

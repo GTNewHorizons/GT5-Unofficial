@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
+import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import gregtech.api.enums.TextureSet;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -21,7 +23,8 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
+import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -75,7 +78,9 @@ public class Material {
 	public int vToolQuality;
 	public int vHarvestLevel;
 
-	private GTPP_Aspects[] vAspects;
+	private TC_Aspect_Wrapper[] vAspects;
+	
+	public BaseTinkersMaterial vTiConHandler;
 
 
 	public static AutoMap<Materials> invalidMaterials = new AutoMap<Materials>();
@@ -317,28 +322,13 @@ public class Material {
 				this.vDurability = durability;
 			}
 			else {
-				if (inputs != null){
-					long durabilityTemp = 0;
-					int counterTemp = 0;
-					for (final MaterialStack m : inputs){
-						if (m.getStackMaterial() != null){
-							if (m.getStackMaterial().vDurability != 0){
-								durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
-								counterTemp++;
-
-							}
-						}
-					}
-					if ((durabilityTemp != 0) && (counterTemp != 0)){
-						this.vDurability = (durabilityTemp/counterTemp);
-					}
-					else {
-						this.vDurability = 8196;
+				long aTempDura = 0;
+				for (MaterialStack g : this.getComposites()) {
+					if (g != null) {
+						aTempDura += safeCast_LongToInt(g.getStackMaterial().getMass() * 2000);
 					}
 				}
-				else {
-					this.vDurability = 0;
-				}
+				this.vDurability = aTempDura > 0 ? aTempDura : (this.getComposites().isEmpty() ? 51200 : 32000 * this.getComposites().size());
 			}
 
 			if ((this.vDurability >= 0) && (this.vDurability < 64000)){
@@ -362,8 +352,8 @@ public class Material {
 				this.vHarvestLevel = 4;
 			}
 			else {
-				this.vToolQuality = 0;
-				this.vHarvestLevel = 0;
+				this.vToolQuality = 1;
+				this.vHarvestLevel = 1;
 			}
 
 			//Sets the Rad level
@@ -506,6 +496,12 @@ public class Material {
 			}			
 
 			this.textureSet = setTextureSet(set, vTier);
+			
+			if (LoadedMods.TiCon && this.materialState == MaterialState.SOLID) {
+				if (this.getProtons() >= 98 || this.getComposites().size() > 1 || this.getMeltingPointC() >= 3600) {
+					this.vTiConHandler = new BaseTinkersMaterial(this);
+				}
+			}
 
 			Logger.MATERIALS("Creating a Material instance for "+materialName);
 			Logger.MATERIALS("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
@@ -759,7 +755,11 @@ public class Material {
 	}
 
 	final public Block getBlock(){
-		return Block.getBlockFromItem(getBlock(1).getItem());
+		Block b = Block.getBlockFromItem(getBlock(1).getItem());
+		if (b == null) {
+			Logger.INFO("[ERROR] Tried to get invalid block for "+this.getLocalizedName()+", returning debug block instead.");
+		}
+		return b != null ? b : Blocks.lit_furnace;
 	}
 
 	public final ItemStack getBlock(final int stacksize){

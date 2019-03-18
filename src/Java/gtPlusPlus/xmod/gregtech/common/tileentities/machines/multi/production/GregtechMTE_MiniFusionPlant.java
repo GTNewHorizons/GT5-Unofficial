@@ -130,19 +130,18 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 				//"Input voltage can be changed within the GUI",				
 				"Place Input/Output Hatches on sides and bottom",
 				"Power can only be inserted into the back",
-				"Power can only be extracted from the top",
+				//e"Power can only be extracted from the top",
+				TAG_HIDE_HATCHES
 				};
 	}
 
 	@Override
 	public int getMaxParallelRecipes() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 
 	@Override
 	public int getEuDiscountForParallelism() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -317,7 +316,7 @@ public class GregtechMTE_MiniFusionPlant extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean isEnetOutput() {
-		return true;
+		return false;
 	}
 
 	@Override

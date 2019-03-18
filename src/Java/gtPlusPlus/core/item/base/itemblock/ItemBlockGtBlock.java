@@ -15,6 +15,7 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
@@ -44,7 +45,16 @@ public class ItemBlockGtBlock extends ItemBlock {
 			this.blockColour = block.getBlockColor();
 		} else {
 			this.blockColour = block.getBlockColor();
+		}	
+
+		if (block instanceof BlockBaseModular){
+			BlockBaseModular g = (BlockBaseModular) block;
+			this.mMaterial = g.getMaterialEx();
 		}
+		else {
+			this.mMaterial = null;
+		}
+		
 		// GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block",
 		// "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block",
 		// "").replace("-", "").replace("_", "").replace(" ", ""),
@@ -59,24 +69,32 @@ public class ItemBlockGtBlock extends ItemBlock {
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
 		if (this.mMaterial != null) {
-			list.add(this.mMaterial.vChemicalFormula);
-			if (this.mMaterial.vRadiationLevel > 0) {
-				list.add(CORE.GT_Tooltip_Radioactive);
-			}
+			list.add(this.mMaterial.vChemicalFormula);			
 		} else {
-			list.add("Material is Null.");
+			
+			try {
+				BlockBaseModular g = (BlockBaseModular) thisBlock;
+				this.mMaterial = g.getMaterialEx();
+			}
+			catch (Throwable t) {
+				
+			}
+			
+			
+			//list.add("Material is Null.");
 		}
 
+		if (this.isOre) {
 		if (KeyboardUtils.isCtrlKeyDown()) {
 			Block b = Block.getBlockFromItem(stack.getItem());
 			if (b != null) {
 
 				String aTool = b.getHarvestTool(stack.getItemDamage());
 				int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-				list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
 
 				if (this.mMaterial != null) {
-					list.add("Ore contains:    ");
+					list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+					list.add("Contains:    ");
 					if (mMaterial.getComposites().isEmpty()) {
 						list.add("- " + mMaterial.getLocalizedName());
 					} else {
@@ -89,6 +107,22 @@ public class ItemBlockGtBlock extends ItemBlock {
 		} else {
 			list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
 		}
+		}
+		else {
+			Block b = Block.getBlockFromItem(stack.getItem());
+			if (b != null) {
+				String aTool = b.getHarvestTool(stack.getItemDamage());
+				int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
+				list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+			}
+		}
+		
+		if (this.mMaterial != null) {
+			if (this.mMaterial.vRadiationLevel > 0) {
+				list.add(CORE.GT_Tooltip_Radioactive);
+			}
+		}
+		
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

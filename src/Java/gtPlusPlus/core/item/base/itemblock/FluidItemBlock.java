@@ -13,26 +13,18 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public class ItemBlockFluid extends ItemBlock{
+public class FluidItemBlock extends ItemBlock{
 
 	protected final int blockColour;
-	protected final int sRadiation;
-	protected Material thisFluid;
 	final BlockFluidBase baseBlock;
 	String name;
 
-	public ItemBlockFluid(final Block block) {
+	public FluidItemBlock(final Block block) {
 		super(block);
 		this.baseBlock = (BlockFluidBase) block;
 		this.blockColour = this.baseBlock.getRenderColor(1);
-		this.thisFluid = this.baseBlock.getFluidMaterial();
-		this.sRadiation=ItemUtils.getRadioactivityLevel(this.baseBlock.getUnlocalizedName());
 		this.name = this.baseBlock.getLocalizedName().replace("tile", "").replace("fluid", "").replace("name", "").replace("block", "").replace(".", "");
 		//GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), UtilsItems.getSimpleStack(this));
-	}
-
-	public final Material setFluidMaterial(final Material M){
-		return this.thisFluid=M;
 	}
 
 	public int getRenderColor(final int aMeta) {
@@ -41,10 +33,10 @@ public class ItemBlockFluid extends ItemBlock{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack iStack) {
-		if (this.thisFluid != null){
+		/*if (this.thisFluid != null){
 			this.name = "Molten "+this.thisFluid.getLocalizedName();
 			return this.name;
-		}
+		}*/
 		this.name = "Molten "+this.baseBlock.getLocalizedName().replace("tile", "").replace("fluid", "").replace("name", "").replace("block", "").replace(".", "");
 		return this.name;
 	}
@@ -55,24 +47,15 @@ public class ItemBlockFluid extends ItemBlock{
 			return MathUtils.generateSingularRandomHexValue();
 		}
 		return this.blockColour;
-
 	}
 
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		list.add("Temperature: "+MathUtils.celsiusToKelvin(this.thisFluid.getMeltingPointC())+"K");
+		/*list.add("Temperature: "+MathUtils.celsiusToKelvin(this.thisFluid.getMeltingPointC())+"K");
 		if (this.sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
-		}
+		}*/
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
-	public String GetProperName() {
-		String tempIngot;
-
-		tempIngot = "Molten "+this.baseBlock.getLocalizedName();
-
-		return tempIngot;
 	}
 
 }

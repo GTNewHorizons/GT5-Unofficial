@@ -21,6 +21,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
@@ -117,14 +118,10 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		}
 		Class<? extends Entity> mEntityClass;
 		String mClassName;
-		mClassName = NBTUtils.getString(aStack,"mClassName");
-		try {
-			mEntityClass = (Class<? extends Entity>) Class.forName(mClassName);
-			if (mEntityClass != null) {
-				return mEntityClass;
-			}
-		}
-		catch (ClassNotFoundException e) {
+		mClassName = NBTUtils.getString(aStack, "mClassName");
+		mEntityClass = (Class<? extends Entity>) ReflectionUtils.getClass(mClassName);
+		if (mEntityClass != null) {
+			return mEntityClass;
 		}
 		return null;
 	}

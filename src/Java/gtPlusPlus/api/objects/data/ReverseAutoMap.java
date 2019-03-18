@@ -151,11 +151,11 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
 	}
 
 	@Override
-	public synchronized boolean clear(){
+	public synchronized void clear(){
 		this.mInternalID = 0;
 		this.mInternalMap.clear();
 		this.mInternalMapReverseLookup.clear();
-		return true;
+		return;
 	}
 
 	@Override

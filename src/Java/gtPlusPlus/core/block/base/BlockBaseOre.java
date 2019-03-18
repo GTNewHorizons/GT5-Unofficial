@@ -113,7 +113,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 						hiddenTextureArray = new IIconContainer[6];
 					}
 				}
-				catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+				catch (IllegalArgumentException | IllegalAccessException e) {
 					hiddenTextureArray = new IIconContainer[6];
 				}
 			}
@@ -216,7 +216,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
 							hiddenTextureArray = new IIconContainer[6];
 						}
 					}
-					catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+					catch (IllegalArgumentException | IllegalAccessException e) {
 						hiddenTextureArray = new IIconContainer[6];
 					}
 				}

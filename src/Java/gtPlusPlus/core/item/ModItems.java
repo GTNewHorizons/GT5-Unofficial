@@ -32,11 +32,14 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.BaseItemGrindle;
 import gtPlusPlus.core.item.general.BufferCore;
@@ -59,8 +62,10 @@ import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
 import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
+import gtPlusPlus.core.item.general.throwables.ItemThrowableBomb;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
+import gtPlusPlus.core.item.tool.misc.DebugScanner;
 import gtPlusPlus.core.item.tool.misc.GregtechPump;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
@@ -87,6 +92,7 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -217,6 +223,8 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dustLi2CO3CaOH2;
 	public static Item dustLi2BeF4;
+	
+	public static Item dustTumbagaMix;
 
 	public static Item dustAer;
 	public static Item dustIgnis;
@@ -304,7 +312,7 @@ public final class ModItems {
 
 	public static GregtechPump toolGregtechPump;
 
-	public static Item itemGenericToken;
+	public static ItemGenericToken itemGenericToken;
 
 	public static Item itemControlCore;
 
@@ -328,6 +336,15 @@ public final class ModItems {
 	public static BatteryPackBaseBauble itemChargePack3;
 	public static BatteryPackBaseBauble itemChargePack4;
 
+	public static DebugScanner itemDebugScanner;
+
+	public static ItemDummyResearch itemDummyResearch;
+
+	public static CoreItem itemBombCasing;
+	public static CoreItem itemBombUnf;
+	public static CoreItem itemDetCable;
+	public static ItemThrowableBomb itemBomb;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -336,9 +353,13 @@ public final class ModItems {
 	}
 
 	public static final void init(){
+		
+		itemDebugScanner = new DebugScanner();
+		
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 		itemBigEgg = new ItemGiantEgg("itemBigEgg", "Ginourmous Chicken Egg", tabMisc, 64, 0, "I had best try disassemble this.. for science!", "fuelLargeChickenEgg", 5000, 0).setTextureName(CORE.MODID + ":itemBigEgg");
 		itemGenericToken = new ItemGenericToken();
+		itemDummyResearch = new ItemDummyResearch();
 		
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -353,7 +374,7 @@ public final class ModItems {
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(CORE.MODID+":itemStickyRubber", 1));
 
 
 		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0).setTextureName(CORE.MODID + ":itemCoalCoke");
@@ -689,7 +710,8 @@ public final class ModItems {
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
-		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf		
+		
 		//Zirconium Tetrafluoride
 		/*GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));*/
@@ -830,7 +852,9 @@ public final class ModItems {
 		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(ELEMENT.getInstance().EUROPIUM);
 		}
-
+		
+		//Tumbaga Mix (For Simple Crafting)
+		dustTumbagaMix = ItemUtils.generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
 		
 		/*
 		 * Decayable Materials
@@ -863,12 +887,28 @@ public final class ModItems {
 		itemControlCore = new ItemControlCore();
 
 		//Chemistry
-		CoalTar.run();
-		RocketFuels.run();
+		new CoalTar();
+		new RocketFuels();
 		
 		//Nuclear Processing
-		NuclearChem.run();
-
+		new NuclearChem();
+		
+		//Farm Animal Fun
+		new AgriculturalChem();
+		
+		//General Chemistry
+		new GenericChem();
+		
+		
+		//Bombs
+		itemBombCasing = new CoreItem("itemBombCasing", "Bomb Casing", tabMisc);
+		itemBombCasing.setTextureName(CORE.MODID + ":bomb_casing");		
+		itemBombUnf = new CoreItem("itemBombUnf", "Bomb (unf)", tabMisc);
+		itemBombUnf.setTextureName(CORE.MODID + ":bomb_casing");		
+		itemDetCable = new CoreItem("itemDetCable", "Det. Cable", tabMisc);
+		itemDetCable.setTextureName("string");		
+		itemBomb = new ItemThrowableBomb();
+		
 		//Only used for debugging.
 		/*if (CORE.DEVENV) {
 			new ConnectedBlockFinder();
@@ -1002,7 +1042,7 @@ public final class ModItems {
 
 			//Baubles Mod Test
 			try {
-				final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
+				final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
 				if (baublesTest != null){
 					COMPAT_Baubles.run();
 				}
@@ -1064,10 +1104,10 @@ public final class ModItems {
 	}
 	
 	public static void registerCustomTokens() {
-		ItemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
-		ItemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
-		ItemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
-		ItemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
-		ItemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
+		itemGenericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
+		itemGenericToken.register(1, "Hand Pump Trade Token I", 1, "Craft into a Tier I Hand pump");
+		itemGenericToken.register(2, "Hand Pump Trade Token II", 1, "Craft into a Tier II Hand pump");
+		itemGenericToken.register(3, "Hand Pump Trade Token III", 1, "Craft into a Tier III Hand pump");
+		itemGenericToken.register(4, "Hand Pump Trade Token IV", 1, "Craft into a Tier IV Hand pump");
 	}
 }

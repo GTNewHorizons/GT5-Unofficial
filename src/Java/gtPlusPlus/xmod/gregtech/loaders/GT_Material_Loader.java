@@ -38,8 +38,7 @@ public class GT_Material_Loader {
 		instance = this;				 
 
 		//Try Reflectively add ourselves to the GT loader.
-		try {
-			Class mInterface = Class.forName("gregtech.api.interfaces.IMaterialHandler");
+			Class mInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");
 			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && mInterface != null){
 
 				//Make this class Dynamically implement IMaterialHandler
@@ -49,7 +48,7 @@ public class GT_Material_Loader {
 							new MaterialHandler(getInstance()));		
 				}
 
-				if (ReflectionUtils.invoke(Materials.class, "add", new Class[]{Class.forName("gregtech.api.interfaces.IMaterialHandler")}, new Object[]{mProxyObject})){
+				if (ReflectionUtils.invoke(Materials.class, "add", new Class[]{ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler")}, new Object[]{mProxyObject})){
 					Logger.REFLECTION("Successfully invoked add, on the proxied object implementing IMaterialHandler.");
 
 
@@ -65,9 +64,7 @@ public class GT_Material_Loader {
 				else {
 					Logger.REFLECTION("Failed to invoke add, on the proxied object implementing IMaterialHandler.");
 				}
-			}
-		}
-		catch (ClassNotFoundException e) {}		
+			}	
 		//Materials.add(this);
 		
 		//Stupid shit running twice, I don't think so.
@@ -139,12 +136,12 @@ public class GT_Material_Loader {
 			return false;
 		}		
 		try {
-			Method enableComponent = Class.forName("gregtech.api.enums.OrePrefixes").getDeclaredMethod("enableComponent", Materials.class);
+			Method enableComponent = ReflectionUtils.getClass("gregtech.api.enums.OrePrefixes").getDeclaredMethod("enableComponent", Materials.class);
 			enableComponent.invoke(prefix, mMaterial);
 			Logger.DEBUG_MATERIALS("Enabled "+prefix.name()+" for "+mMaterial.mDefaultLocalName+".");
 			return true;
 		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException error) {
+		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException error) {
 			Logger.DEBUG_MATERIALS("Failed to enabled "+prefix.name()+" for "+mMaterial.mDefaultLocalName+". Caught "+error.getCause().toString()+".");
 			error.printStackTrace();			
 		}		
@@ -228,7 +225,7 @@ public class GT_Material_Loader {
 
 		//Loading the class at runtime
 		public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException {
-		    Class<?> someInterface = Class.forName("gregtech.api.interfaces.IMaterialHandler");
+		    Class<?> someInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");
 		    Object instance = Proxy.newProxyInstance(someInterface.getClassLoader(), new Class<?>[]{someInterface}, new InvocationHandler() {
 
 		        @Override
@@ -274,7 +271,7 @@ public class GT_Material_Loader {
 
 	    public static void init(){ 
 
-	    	Class<?> someInterface = Class.forName("gregtech.api.interfaces.IMaterialHandler");		   
+	    	Class<?> someInterface = ReflectionUtils.getClass("gregtech.api.interfaces.IMaterialHandler");		   
 	        GT_Material_Loader original = GT_Material_Loader.instance;
 	        MaterialHandler handler = new MaterialHandler(original);
 

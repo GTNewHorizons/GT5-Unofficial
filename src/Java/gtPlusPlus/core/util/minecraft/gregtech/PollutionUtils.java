@@ -39,7 +39,7 @@ public class PollutionUtils {
 					return mPollution.getBoolean(GT_Pollution);
 				}
 			}
-		} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 		}
 		return false;
 	}
@@ -53,16 +53,16 @@ public class PollutionUtils {
 				if (mAddPollution != null) {
 					mAddPollution.invoke(null, te, pollutionValue);
 				}
-				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
 				if (GT_Pollution != null) {
-					Method addPollution = GT_Pollution.getMethod("addPollution", IGregTechTileEntity.class, int.class);
+					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "addPollution", IGregTechTileEntity.class, int.class);
 					if (addPollution != null) {
 						mAddPollution = addPollution;
 						addPollution.invoke(null, te, pollutionValue);
 						return true;
 					}
 				}
-			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+			} catch (SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
 			}
 		return false;
@@ -92,16 +92,16 @@ public class PollutionUtils {
 					mAddPollution2.invoke(null, aChunk, pollutionValue);
 					return true;
 				}
-				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
 				if (GT_Pollution != null) {
-					Method addPollution = GT_Pollution.getMethod("addPollution", Chunk.class, int.class);
+					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "addPollution", Chunk.class, int.class);
 					if (addPollution != null) {
 						mAddPollution2 = addPollution;
 						mAddPollution2.invoke(null, aChunk, pollutionValue);
 						return true;
 					}
 				}
-			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+			} catch (SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
 			}
 		return false;
@@ -128,15 +128,15 @@ public class PollutionUtils {
 				if (mGetPollution != null) {
 					mGetPollution.invoke(null, te);
 				}
-				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
 				if (GT_Pollution != null) {
-					Method addPollution = GT_Pollution.getMethod("getPollution", IGregTechTileEntity.class);
+					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "getPollution", IGregTechTileEntity.class);
 					if (addPollution != null) {
 						mGetPollution = addPollution;
 						return (int) addPollution.invoke(null, te);
 					}
 				}
-			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+			} catch (SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
 			}
 		return 0;
@@ -151,15 +151,15 @@ public class PollutionUtils {
 				if (mGetPollution2 != null) {
 					mGetPollution2.invoke(null, te);
 				}
-				Class<?> GT_Pollution = Class.forName("gregtech.common.GT_Pollution");
+				Class<?> GT_Pollution = ReflectionUtils.getClass("gregtech.common.GT_Pollution");
 				if (GT_Pollution != null) {
-					Method addPollution = GT_Pollution.getMethod("getPollution", Chunk.class);
+					Method addPollution = ReflectionUtils.getMethod(GT_Pollution, "getPollution", Chunk.class);
 					if (addPollution != null) {
 						mGetPollution2 = addPollution;
 						return (int) addPollution.invoke(null, te);
 					}
 				}
-			} catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalAccessException
+			} catch (SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
 			}
 		return 0;

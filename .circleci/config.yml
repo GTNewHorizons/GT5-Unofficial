@@ -1,51 +1,57 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
 version: 2
 jobs:
   build:
+    working_directory: ~/repo
+    
     docker:
-      # specify the version you desire here
       - image: circleci/openjdk:8-jdk
       
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
-
+      
     environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-    
+      JVM_OPTS: -Xms2048m Xmx4000m
+      
+      
     steps:
       - checkout
+      
+      - run:
+          name: Set Terminal
+          command:  export TERM=${TERM:-dumb} 
+          # && ./gradlew clean build
+      
+      - run: sudo chmod +x gradlew
 
-      # Download and cache dependencies
+        # Build Forge and MCP
+      - run:
+          name: Download Resource Builder [MCP/Forge]
+          command: wget https://alkcorp.overminddl1.com/GTPP_BuildRepo.sh
+                
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: gradle setupDecompWorkspace eclipse clean build test
-      # - run: gradle eclipse
-      # - run: gradle clean build
-      # - run: gradle dependencies
-
+          key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
+        
+      - run:
+          name: Run Resource Builder [MCP/Forge]
+          command: sh GTPP_BuildRepo.sh        
+          
+        # Cache All Libs
       - save_cache:
           paths:
             - ~/.gradle
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-        
-      # run tests!
-      - run: gradle test
-      # Build!
-      - run: gradle build
+            - ~/home/circleci/repo
+          key: jars-{{ checksum "GTPP_BuildRepo.sh" }}-{{ checksum  "GTPP_BuildRepo.sh" }}
+          
+        # Build Mod  
+      - run:
+          name: Download Build Script
+          command: wget https://alkcorp.overminddl1.com/GTPP_BuildScript.sh
+          
+      - run:
+          name: Run Build Script
+          command: sh GTPP_BuildScript.sh ${CIRCLE_BUILD_NUM} "${CIRCLE_BRANCH}" "${CIRCLE_USERNAME}" "${CIRCLE_SHA1}" "${CIRCLE_PROJECT_REPONAME}" "${CIRCLE_PROJECT_USERNAME}" "https://github.com/draknyte1/GTplusplus/archive/master.zip"
 
-
-
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
+          path: build/libs
+          #destination: builds
+      #- store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          #path: build/libs
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples

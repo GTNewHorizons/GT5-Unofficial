@@ -221,14 +221,14 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 					}
 
 					//Add Shapeless recipe for low tier alloys.
-					if (tVoltageMultiplier <= 30){
+					/*if (tVoltageMultiplier <= 30){
 						if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
 							Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");
 						}
 						else {
 							Logger.WARNING("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
 						}
-					}
+					}*/
 				}
 			}
 		}

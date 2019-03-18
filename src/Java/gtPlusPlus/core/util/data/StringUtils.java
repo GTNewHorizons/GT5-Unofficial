@@ -1,5 +1,9 @@
 package gtPlusPlus.core.util.data;
 
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.util.Utils;
+
 public class StringUtils {
 
 	public static String superscript(String str) {
@@ -115,5 +119,101 @@ public class StringUtils {
 		String firstLetter = data.substring(0,1).toUpperCase();
 		String restLetters = data.substring(1).toLowerCase();
 		return firstLetter + restLetters;
+	}
+
+	public static <V> String getDataStringFromArray(V[] parameterTypes) {
+		if (parameterTypes == null || parameterTypes.length == 0) {
+			return "empty/null";
+		}
+		else {
+			String aData = "";
+			for (V y : parameterTypes) {
+				if (y != null) {
+					aData += ", "+y.toString();
+				}
+			}
+			return aData;
+		}		
+	}
+	
+	
+	
+	/**
+	 * Is this a special regex character for delimination? (.$|()[]{}^?*+\\)
+	 * @param aChar - The char to test
+	 * @return - Is this a special character?
+	 */
+	public static boolean isSpecialCharacter(char aChar) {
+		if (aChar == '"' || aChar == '.' || aChar == '$' || aChar == '|' || aChar == '(' || aChar == ')' || aChar == '['
+				|| aChar == ']' || aChar == '{' || aChar == '}' || aChar == '^' || aChar == '?' || aChar == '*'
+				|| aChar == '+' || aChar == '\\') {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isEscaped(String aString) {
+		return aString.substring(0, 1).equals("\\");
+	}
+	
+	public static String splitAndUppercase(String aInput, String aDelim) {
+		
+		if (!isEscaped(aDelim)) {
+			boolean isSpecial = false;
+			for (int o=0;o<aInput.length();o++) {
+				if (isSpecialCharacter(aInput.charAt(o))) {
+					isSpecial = true;
+				}
+			}
+			if (isSpecial) {
+				aDelim = "\\"+aDelim;
+			}
+		}
+		
+		
+		Logger.INFO("Splitting "+aInput);
+		String[] aSplit = aInput.split(aDelim);
+		Logger.INFO("Split into "+aSplit == null ? ""+0 : aSplit.length+" parts.");
+		if (aSplit == null || aSplit.length == 0) {
+			return aInput;
+		}
+		else {
+			AutoMap<String> aTemp = new AutoMap<String>();
+			for (String s : aSplit) {
+				Logger.INFO("Found: "+s);
+				s = s.replace(".", "");
+				s = Utils.sanitizeString(s);
+				s = firstLetterCaps(s);
+				Logger.INFO("Formatted & Captilized: "+s);
+				aTemp.put(s);
+			}
+			Logger.INFO("Rebuilding");
+			String aReturn = "";
+			for (String s : aTemp) {
+				aReturn += s;
+				Logger.INFO("Step: "+aReturn);
+			}
+			return aReturn;
+		}	
+	}
+	
+	public static int characterCount(String aString, char aChar) {
+		return characterCount(aString, ""+aChar);
+	}
+	
+	public static int characterCount(String aString, String aChar) {
+		int aLength = aString.length();
+		int aFound = 0;
+		if (aLength == 0 || !aString.contains(aChar)) {
+			return 0;
+		}
+		else {
+			for (int index = 0; index < aLength; index++) {
+				if (aString.substring(index, index+1).equals(aChar)) {
+					aFound++;
+				}
+			}
+			return aFound;
+		}
 	}
 }

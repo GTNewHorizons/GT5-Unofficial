@@ -363,18 +363,15 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 			}
 
 			//Get a private field from a super class if it exists.
-			try {
-				if (mFirstUpdateField == null) {
-					mFirstUpdateField = ReflectionUtils.getField(Class.forName("net.minecraft.entity.Entity"), "firstUpdate");
-				}			
-				if (mFirstUpdateField != null && mReflectFirstUpdate == true){
-					try {
-						this.mReflectFirstUpdate = (boolean) mFirstUpdateField.get(this);
-					}
-					catch (IllegalArgumentException | IllegalAccessException e) {}
+			if (mFirstUpdateField == null) {
+				mFirstUpdateField = ReflectionUtils.getField(this.getClass(), "firstUpdate");
+			}			
+			if (mFirstUpdateField != null && mReflectFirstUpdate == true){
+				try {
+					this.mReflectFirstUpdate = (boolean) mFirstUpdateField.get(this);
 				}
+				catch (IllegalArgumentException | IllegalAccessException e) {}
 			}
-			catch (NoSuchFieldException | ClassNotFoundException e) {}
 		}
 		super.onEntityUpdate();
 	}

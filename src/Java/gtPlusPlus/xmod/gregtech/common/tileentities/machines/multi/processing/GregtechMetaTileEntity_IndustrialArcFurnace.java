@@ -65,15 +65,13 @@ extends GregtechMeta_MultiBlockBase {
 				"Size: nx3xn [WxHxL] (Hollow)",
 				"n can be 3, 5 or 7",
 				"Max Size required to process Plasma recipes",
+				mCasingName+"s (10 at least!)",
 				"Controller (top centered)",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Input Hatch (anywhere)",
-				"1x Output Hatch (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Muffler Hatch (anywhere)",
-				"1x Maintenance Hatch (Back Center)",
-				mCasingName+"s for the rest",
+				"1x Input Bus",
+				"1x Output Bus",
+				"1x Input Hatch",
+				"1x Output Hatch",
+				"1x Energy Hatch",
 				};
 	}
 
@@ -85,10 +83,10 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 0 || aSide == 1) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[mCasingTextureID],
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.getIndexFromPage(2, 1)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[mCasingTextureID]};
 	}
 
 	@Override

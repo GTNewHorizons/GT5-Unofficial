@@ -229,7 +229,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										//I stole this code
 										reduction = (MathUtils.safeInt((long)reduction*this.mBaseEff)/100000)*mAirSides*Math.max((tTier-2), 1);
 										Logger.WARNING("reduction[2]:"+reduction);
-										reduction = GT_Utility.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
+										reduction = MathUtils.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
 										Logger.WARNING("reduction[3]:"+reduction);
 
 										mPollutionReduction = reduction;
@@ -683,7 +683,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		reduction += (((Math.max((tTier-2), 1)*2)*50)*mAirSides); 
 		reduction = (MathUtils.safeInt((long)reduction*this.mBaseEff)/100000)*mAirSides*Math.max((tTier-2), 1);		
-		reduction = GT_Utility.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
+		reduction = MathUtils.safeInt(((long)reduction/100)*this.mOptimalAirFlow);
 		
 		aTooltipSuper.put("Maximum pollution removed per second: "+reduction);	
 		}

@@ -105,7 +105,7 @@ public class GregtechDehydrator {
 						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[] { "ECE", "WMW", "GPG", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('P'),
 						ItemList.Robot_Arm_MV, Character.valueOf('E'), OrePrefixes.wireFine.get(Materials.RedAlloy), Character.valueOf('C'),
-						OrePrefixes.circuit.get(Materials.Basic), Character.valueOf('W'),
+						OrePrefixes.circuit.get(Materials.Good), Character.valueOf('W'),
 						OrePrefixes.cableGt04.get(Materials.Copper), Character.valueOf('G'),
 						OrePrefixes.gearGt.get(Materials.Steel) });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Dehydrator_HV.get(1L, new Object[0]),
@@ -113,7 +113,7 @@ public class GregtechDehydrator {
 						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[] { "ECE", "WMW", "GPG", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('P'),
 						ItemList.Robot_Arm_HV, Character.valueOf('E'), OrePrefixes.wireFine.get(Materials.Electrum), Character.valueOf('C'),
-						OrePrefixes.circuit.get(Materials.Good), Character.valueOf('W'),
+						OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('W'),
 						OrePrefixes.cableGt04.get(Materials.Silver), Character.valueOf('G'),
 						ALLOY.POTIN.getGear(1) });
 		
@@ -123,7 +123,7 @@ public class GregtechDehydrator {
 						| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[] { "ECE", "WMW", "GPG", Character.valueOf('M'), ItemList.Hull_EV, Character.valueOf('P'),
 						ItemList.Robot_Arm_EV, Character.valueOf('E'), coilT1, Character.valueOf('C'),
-						OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('W'),
+						OrePrefixes.circuit.get(Materials.Data), Character.valueOf('W'),
 						OrePrefixes.cableGt04.get(Materials.Aluminium), Character.valueOf('G'),
 						ALLOY.TUMBAGA.getGear(1) });
 

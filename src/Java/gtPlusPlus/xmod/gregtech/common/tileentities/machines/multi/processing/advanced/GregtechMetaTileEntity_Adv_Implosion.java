@@ -47,15 +47,12 @@ extends GregtechMeta_MultiBlockBase {
 		if (mCasingName.contains("gt.blockcasings")) {
 			mCasingName = ItemList.Casing_RobustTungstenSteel.get(1).getDisplayName();
 		}    	
-		return new String[]{
-				"Controller Block for the Advanced Implosion Compressor",
-				"Processes upto ((Tier/2)+1) recipes at once",
-				"Size(WxHxD): 3x3x3 (Hollow)",
-				mCasingName+"s (10 at least!)",
-				"Controller (Front centered)",
-				"1x Input Bus",
-				"1x Output Bus",
-				"1x Energy Hatch",
+		return new String[]{				
+				"Factory Grade Advanced Implosion Compressor",
+				"Speed: 100% | Eu Usage: 100% | Parallel: ((Tier/2)+1)",	
+				"Constructed exactly the same as a normal Implosion Compressor",
+				"Use "+mCasingName+"s (10 at least!)",
+				"TAG_HIDE_HATCHES"
 		};
 	}
 
