@@ -4496,7 +4496,7 @@ if(Loader.isModLoaded("Railcraft")){
            
            GT_Values.RA.addPyrolyseRecipe(Materials.AlienOrganic.getDust(1), Materials.Radon.getGas(1000), 1, null, Materials.AlienBiomass.getFluid(1000L), 200, 122880);
            GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{Materials.EnrichedMysteriousCrystal.getDustTiny(1),   GT_Utility.getIntegratedCircuit(24)}, new FluidStack[]{Materials.AlienBiomass.getFluid(900), Materials.Hydrogen.getGas(100)},  new FluidStack[]{Materials.FermentedAlienBiomass.getFluid(1000)}, new ItemStack[]{Materials.MysteriousCrystal.getDustTiny(1)}, 750, 90000);
-           GT_Values.RA.addUniversalDistillationRecipe(Materials.FermentedAlienBiomass.getFluid(1000), new FluidStack[]{Materials.Oil.getFluid(200), Materials.Water.getFluid(200), Materials.Ethanol.getFluid(150), Materials.Methanol.getFluid(150), Materials.GrowthMediumRaw.getFluid(75), Materials.GrowthMediumSterilized.getFluid(40), Materials.Bacteria.getFluid(35), Materials.PerroxSuperHeavy.getFluid(65), Materials.PerroxHeavy.getFluid(35), Materials.PerroxLight.getFluid(30), Materials.PerroxSuperLight.getFluid(20)}, Ash.getDust(1), 500, 500000);
+           GT_Values.RA.addUniversalDistillationRecipe(Materials.FermentedAlienBiomass.getFluid(1000), new FluidStack[]{Materials.Oil.getFluid(200), Materials.Water.getFluid(200), Materials.Ethanol.getFluid(150), Materials.Methanol.getFluid(150), Materials.GrowthMediumRaw.getFluid(75), Materials.GrowthMediumSterilized.getFluid(40), Materials.Bacteria.getFluid(35), Materials.PerroxSuperHeavy.getFluid(65), Materials.PerroxHeavy.getFluid(35), Materials.PerroxLight.getFluid(30), Materials.PerroxSuperLight.getFluid(20)}, Materials.Ash.getDust(1), 500, 500000);
            GT_Values.RA.addCrackingRecipe(24, Materials.PerroxSuperHeavy.getFluid(100), Materials.Nickel.getPlasma(1), Materials.PerroxSuperHeavyCracked.getGas(100), 500, 500000);
            GT_Values.RA.addCrackingRecipe(24, Materials.PerroxHeavy.getFluid(100), Materials.Zinc.getPlasma(1), Materials.PerroxHeavyCracked.getGas(100), 500, 500000);
            GT_Values.RA.addCrackingRecipe(24, Materials.PerroxLight.getFluid(100), Materials.Niobium.getPlasma(1), Materials.PerroxLightCracked.getGas(100), 500, 500000);
@@ -4511,22 +4511,22 @@ if(Loader.isModLoaded("Railcraft")){
            GT_Values.RA.addVacuumFreezerRecipe(GT_OreDictUnificator.get(OrePrefixes.ingotHot,Materials.PerroxPolymer,1L),GT_OreDictUnificator.get(OrePrefixes.ingot,Materials.PerroxPolymer,1L),200,500000);
            
            if(Loader.isModLoaded("GalacticraftCore")){
-           //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
+           //Light perrox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
            GT_Values.RA.addAutoclaveSpaceRecipe(Materials.Naquadah.getDust(1),Materials.PerroxLight.getFluid(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,true);
 
-            //super heavy -> heavy radox conversion
+            //super heavy perrox -> heavy perrox conversion
            GT_Values.RA.addCentrifugeRecipe(null,null,Materials.PerroxSuperHeavy.getFluid(1000),Materials.PerroxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
 
-            //heavy radox + Nq+ -> Nq*
+            //heavy perrox + Nq+ -> Nq*
            GT_Values.RA.addAutoclaveSpaceRecipe(Materials.NaquadahEnriched.getDust(1),Materials.PerroxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,true);
            }else {
-        	 //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
+        	 //Light perrox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
                GT_Values.RA.addAutoclaveRecipe(Materials.Naquadah.getDust(1),Materials.PerroxLight.getFluid(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,false);
 
-                //super heavy -> heavy radox conversion
+                //super heavy perrox -> heavy perrox conversion
                GT_Values.RA.addCentrifugeRecipe(null,null,Materials.PerroxSuperHeavy.getFluid(1000),Materials.PerroxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
 
-                //heavy radox + Nq+ -> Nq*
+                //heavy perrox + Nq+ -> Nq*
                GT_Values.RA.addAutoclaveRecipe(Materials.NaquadahEnriched.getDust(1),Materials.PerroxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,false); 
            }
     	
