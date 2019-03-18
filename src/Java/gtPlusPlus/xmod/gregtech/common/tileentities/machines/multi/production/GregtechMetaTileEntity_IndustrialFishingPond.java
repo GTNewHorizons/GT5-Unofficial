@@ -459,7 +459,7 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends GregtechMeta_M
 			ItemStack k = ItemUtils.getSimpleStack(t, 1);
 			reflectiveFishMap.put(y, k);
 			return t;
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 		}
 		return null;
 	}

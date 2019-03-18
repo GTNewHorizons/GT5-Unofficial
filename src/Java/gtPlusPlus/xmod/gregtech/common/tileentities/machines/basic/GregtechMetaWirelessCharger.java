@@ -17,7 +17,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -457,7 +456,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		}		
 	}
 
-	public BlockPos getTileEntityPosition(){
+	public BlockPos getTileEntityPosition(){		
 		return new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld());
 	}
 
@@ -533,10 +532,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override
 	public void onServerStart() {
 		mWirelessChargingMap.clear();
-		mLocalChargingMap.clear();
-		if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
-			mHasBeenMapped = true;
-		}
+		mLocalChargingMap.clear();		
 		super.onServerStart();
 	}
 
@@ -550,6 +546,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	public void doExplosion(long aExplosionPower) {
 		ChargingHelper.removeEntry(getTileEntityPosition(), this);
 		super.doExplosion(aExplosionPower);
+	}
+
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
+			mHasBeenMapped = true;
+		}
+		super.onPreTick(aBaseMetaTileEntity, aTick);
 	}
 
 }

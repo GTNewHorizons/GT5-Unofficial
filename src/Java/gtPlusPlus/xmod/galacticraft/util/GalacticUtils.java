@@ -26,11 +26,11 @@ public class GalacticUtils {
 		Class<?> a1, a2, a3, a4, a5;
 		Method m1, m2, m3;
 		try {
-			a1 = Class.forName("micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket");
-			a2 = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad");
-			a3 = Class.forName("micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler");
-			a4 = Class.forName("micdoodle8.mods.galacticraft.api.entity.IDockable");
-			a5 = Class.forName("micdoodle8.mods.galacticraft.api.entity.IFuelable");			
+			a1 = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket");
+			a2 = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad");
+			a3 = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler");
+			a4 = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.api.entity.IDockable");
+			a5 = ReflectionUtils.getClass("micdoodle8.mods.galacticraft.api.entity.IFuelable");			
 			m1 = ReflectionUtils.getMethod(a1, "getRocketTier");
 			m2 = ReflectionUtils.getMethod(a2, "getDockedEntity");
 			m3 = ReflectionUtils.getMethod(a3, "getDockedEntity");			

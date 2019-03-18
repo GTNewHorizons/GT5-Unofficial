@@ -16,6 +16,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -38,7 +39,10 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -68,6 +72,7 @@ extends
 GT_MetaTileEntity_MultiBlockBase {
 
 
+	public static final boolean DEBUG_DISABLE_CORES_TEMPORARILY = true;
 
 
 	static {
@@ -199,7 +204,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 
-		int tTier = requireControlCores ? this.getControlCoreTier() : -1;
+		int tTier = this.getControlCoreTier();
 
 		mInfo.add(getMachineTooltip());
 
@@ -265,6 +270,10 @@ GT_MetaTileEntity_MultiBlockBase {
 	private final String aRequiresCoreModule = "1x Core Module";
 	private final String aRequiresMaint = "1x Maintanence Hatch";*/
 
+	public final static String TAG_HIDE_HATCHES = "TAG_HIDE_HATCHES";
+	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
+	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
+	
 	@Override
 	public final String[] getDescription() {		
 		/*if (aCachedToolTip != null) {
@@ -287,22 +296,62 @@ GT_MetaTileEntity_MultiBlockBase {
 		String aRequiresCoreModule = "1x Core Module";
 		String aRequiresMaint = "1x Maintanence Hatch";
 		
-		String[] x = getTooltip();		
-		//Add Stock Tooltip to bottom of list
-		String[] z;		
-		if (getPollutionPerTick(null) > 0) {
-			z = new String[] {
-					aRequiresMaint,
-					aRequiresCoreModule,
-					aRequiresMuffler,
-					getPollutionTooltip(),
-					getMachineTooltip()};
+		String[] x = getTooltip();
+		
+		//Filter List, toggle switches, rebuild map without flags
+		boolean showHatches = true;
+		boolean showMachineType = true;
+		boolean showPollution = getPollutionPerTick(null) > 0;
+		AutoMap<String> aTempMap = new AutoMap<String>();	
+		for (int ee = 0; ee < x.length; ee++) {
+			String hh = x[ee];
+			if (hh.equals(TAG_HIDE_HATCHES)) {
+				showHatches = false;
+			}
+			else if (hh.equals(TAG_HIDE_POLLUTION)) {
+				showPollution = false;
+			}
+			else if (hh.equals(TAG_HIDE_MACHINE_TYPE)) {
+				showMachineType = false;
+			}
+			else {
+				aTempMap.put(x[ee]);
+			}
 		}
-		else {
-			z = new String[] {
-					aRequiresMaint,
-					aRequiresCoreModule,
-					getMachineTooltip(),};		
+		//Rebuild
+		x = new String[aTempMap.size()];
+		for (int ee = 0; ee < x.length; ee++) {
+			x[ee] = aTempMap.get(ee);
+		}
+		
+		
+		//Assemble ordered map for misc tooltips
+		AutoMap<String> aOrderedMap = new AutoMap<String>();		
+		if (showHatches) {
+			aOrderedMap.put(aRequiresMaint);
+			aOrderedMap.put(aRequiresCoreModule);
+			if (showPollution) {
+				aOrderedMap.put(aRequiresMuffler);				
+			}
+		}
+
+		if (showMachineType) {
+			aOrderedMap.put(getMachineTooltip());			
+		}
+		
+		if (showPollution) {
+			aOrderedMap.put(getPollutionTooltip());				
+		}
+		
+		
+		
+		
+		
+		//Add Stock Tooltip to bottom of list
+		String[] z;	
+		z = new String[aOrderedMap.size()];
+		for (int ee = 0; ee < z.length; ee++) {
+			z[ee] = aOrderedMap.get(ee);
 		}
 
 		int a2, a3;
@@ -435,7 +484,12 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public void log(String s) {
 		boolean isDebugLogging = CORE.DEBUG;	
-		boolean reset = false;
+		boolean reset = true;
+		
+		if (!isDebugLogging) {
+			return;
+		}
+		
 		if (aLogger == null || reset) {
 			if (isDebugLogging) {
 				try {
@@ -501,8 +555,8 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Control Core to control the Multiblocks behaviour.
 		int aControlCoreTier = getControlCoreTier();
-
-		//If no core, return false;
+		
+		//If no core, return false;				
 		if (aControlCoreTier == 0 && requireControlCores) {
 			log("No control core found.");
 			return false;
@@ -587,7 +641,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		//Only Overclock as high as the control circuit.
 		byte tTierOld = tTier;
-		tTier = requireControlCores ? (byte) aControlCoreTier : tTierOld;
+		tTier = getControlCoreTier() > 0 ? (byte) aControlCoreTier : tTierOld;
 
 		// Overclock
 		if (this.mEUt <= 16) {
@@ -859,10 +913,15 @@ GT_MetaTileEntity_MultiBlockBase {
 
 
 	public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IMetaTileEntity aTileEntity,
-			final int aBaseCasingIndex) {
+			final int aBaseCasingIndex) {		
+		if (aTileEntity == null) {
+			return false;
+		}		
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Adding " + aTileEntity.getInventoryName() + " at " + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());				
+				}
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -875,13 +934,17 @@ GT_MetaTileEntity_MultiBlockBase {
 				BlockPos aPos = new BlockPos(b);
 				if (b != null && aPos != null) {
 					if (aCurPos.equals(aPos)) {
-						log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+							log("Found Duplicate "+b.getInventoryName()+" at " + aPos.getLocationString());
+						}
 						return false;
 					}
 				}
 			}
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
-				log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+				}
 				updateTexture(aTileEntity, aBaseCasingIndex);
 				return aList.add((E) aTileEntity);
 			}
@@ -892,10 +955,10 @@ GT_MetaTileEntity_MultiBlockBase {
 	public int getControlCoreTier() {	
 		
 		//Always return best tier if config is off.
-		boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
+		/*boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
 		if (!aCoresConfig) {
 			return 10;
-		}
+		}*/
 		
 		if (mControlCoreBus.isEmpty()) {
 			log("No Control Core Modules Found.");
@@ -936,9 +999,16 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("Tried to add a secondary control core module.");
 			return false;
 		}
-
-		log("Adding control core module.");
-		return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);		
+		
+		GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) aMetaTileEntity;
+		
+		if (Module != null) {
+			if (Module.setOwner(aTileEntity)) {
+				log("Adding control core module.");
+				return addToMachineListInternal(mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);	
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -1085,7 +1155,8 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
 			if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input){				
 				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = null;	
-				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;					
+				((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = aMap;	
+				log("Remapped Input Hatch to "+aMap.mNEIName);
 			}
 			else {	
 				((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = null;	
@@ -1117,7 +1188,6 @@ GT_MetaTileEntity_MultiBlockBase {
 	 * Enable Texture Casing Support if found in GT 5.09
 	 */
 
-	@SuppressWarnings("deprecation")
 	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
 		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null) {
@@ -1138,7 +1208,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			if (aMetaTileEntity == null) {
 				return false;
 			}			
-			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
+			Method mProper = ReflectionUtils.getMethod(GT_MetaTileEntity_Hatch.class, "updateTexture", int.class);					
 			if (mProper != null){
 				if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)){
 					mProper.setAccessible(true);
@@ -1146,7 +1216,6 @@ GT_MetaTileEntity_MultiBlockBase {
 					log("Good Method Call for updateTexture.");
 					return true;
 				}
-
 			}
 			else {
 				log("Bad Method Call for updateTexture.");
@@ -1167,7 +1236,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("updateTexture returning false. 1");
 			return false;
 		}
-		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			log("updateTexture returning false.");
 			log("updateTexture returning false. 2");
 			e.printStackTrace();
@@ -1221,15 +1290,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	@SuppressWarnings("rawtypes")
 	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
 		Class mDynamoClass;
-		try {
-			mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
+			mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
 			if (mDynamoClass != null){
 				if (mDynamoClass.isInstance(aMetaTileEntity)){
 					return true;
 				}
 			}
-		}
-		catch (ClassNotFoundException e) {}
 		return false;
 	}
 
@@ -1510,7 +1576,7 @@ GT_MetaTileEntity_MultiBlockBase {
 
 	public final boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {	
 		boolean aStructureCheck = checkMultiblock(aBaseMetaTileEntity, aStack);	
-		boolean aHasCore = (requireControlCores ? (this.getControlCoreBus() != null) : true);	
+		boolean aHasCore = DEBUG_DISABLE_CORES_TEMPORARILY; //(requireControlCores ? (this.getControlCoreBus() != null) : true);	
 		return aStructureCheck && aHasCore;
 	}
 
@@ -1521,6 +1587,11 @@ GT_MetaTileEntity_MultiBlockBase {
 			Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
 		boolean isHatch = false;
 		if (aBaseMetaTileEntity != null) {
+			
+			if (aCasingID < 64) {
+				aCasingID = TAE.GTPP_INDEX(aCasingID);
+			}
+			
 			isHatch = this.addToMachineList(aBaseMetaTileEntity, aCasingID);
 			if (isHatch) {
 				return true;
@@ -1562,7 +1633,9 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 			else if (aFoundBlock != aExpectedBlock) {
 				log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
-				log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
+				}
 				return false;
 			}
 			else if (aFoundMeta != aExpectedMeta) {

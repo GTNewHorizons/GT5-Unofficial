@@ -70,13 +70,11 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase {
 				"Only uses 75% of the eu/t normally required",
 				"Processes five items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
+				"Supply Depot. Casings (10 at least!)",
 				"Controller (front centered)",
-				"1x Input Bus (anywhere)",
-				"1x Output Bus (anywhere)",
-				"1x Energy Hatch (anywhere)",
-				"1x Maintenance Hatch (anywhere)",
-				"1x Muffler (anywhere)",
-				"Supply Depot. Casings for the rest (10 at least!)"
+				"1x Input Bus",
+				"1x Output Bus",
+				"1x Energy Hatch",
 		};
 	}
 

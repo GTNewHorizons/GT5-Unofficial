@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -17,11 +18,12 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_Aspects;
+import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -66,9 +68,9 @@ public class BaseItemComponent extends Item{
 
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
-			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.METALLUM, 1);
+			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
 			if (componentMaterial.isRadioactive) {
-				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), GTPP_Aspects.RADIO, 2);				
+				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
 			}
 		}
 		registerComponent();		
@@ -76,18 +78,28 @@ public class BaseItemComponent extends Item{
 
 	//For Cell Generation
 	public BaseItemComponent(final String unlocalName, final String localName, final short[] RGBA) {
+		
+		// Handles .'s from fluid internal names.
+		String aFormattedNameForFluids;
+		if (unlocalName.contains(".")) {			
+			aFormattedNameForFluids = StringUtils.splitAndUppercase(unlocalName, ".");						
+		}
+		else {
+			aFormattedNameForFluids = unlocalName;
+		}		
+		 	
 		this.componentMaterial = null;
-		this.unlocalName = "itemCell"+unlocalName;
+		this.unlocalName = "itemCell"+aFormattedNameForFluids;
 		this.materialName = localName;
 		this.componentType = ComponentTypes.CELL;
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalName);
+		this.setUnlocalizedName(aFormattedNameForFluids);
 		this.setMaxStackSize(64);
 		this.componentColour = MathUtils.getRgbAsHex(RGBA);
 		this.extraData = RGBA;
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
-		GameRegistry.registerItem(this, unlocalName);
-		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
+		GameRegistry.registerItem(this, aFormattedNameForFluids);
+		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+aFormattedNameForFluids, ItemUtils.getSimpleStack(this));
 		registerComponent();
 	}
 

@@ -17,7 +17,7 @@ public class TypeCounter<V> implements Set<V> {
 	private final Class mClass;
 
 	public TypeCounter(Class o) {
-		Logger.INFO("Created new TypeCounter for "+o.getName());
+		Logger.WARNING("Created new TypeCounter for "+o.getName());
 		mClass = o;
 	}
 
@@ -56,17 +56,17 @@ public class TypeCounter<V> implements Set<V> {
 		InternalTypeCounterObject<V> aValue = mInternalMap.get(aKey);
 		if (aValue == null) {
 			aValue = new InternalTypeCounterObject<V>((V) arg0);
-			Logger.INFO("Adding new key to map: "+aKey);
+			Logger.WARNING("Adding new key to map: "+aKey);
 		}
 		aValue.add();
 		int a = aValue.count();
 		if (a > mHighestValue) {
 			mHighestValue = a;
 			mHighestValueKey = aKey;
-			Logger.INFO("New Highest Count - "+aKey+":"+a);
+			Logger.WARNING("New Highest Count - "+aKey+":"+a);
 		}		
 		mInternalMap.put(aKey, aValue);
-		Logger.INFO(aKey+":"+a);
+		Logger.WARNING(aKey+":"+a);
 		return true;
 	}
 

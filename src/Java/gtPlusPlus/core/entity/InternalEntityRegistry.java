@@ -14,6 +14,7 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.util.Utils;
 
@@ -50,6 +51,8 @@ public class InternalEntityRegistry {
 
         //EntityRegistry.registerGlobalEntityID(EntityTeslaTowerLightning.class, "plasmaBolt", EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(125, 125, 125));
         EntityRegistry.registerModEntity(EntityTeslaTowerLightning.class, "plasmaBolt", mEntityID++, GTplusplus.instance, 64, 5, true);
+        
+        EntityRegistry.registerModEntity(EntityThrowableBomb.class, "EntityThrowableBomb", mEntityID++, GTplusplus.instance, 64, 10, true);
         
         /**
          * Globals, which generate spawn eggs. (Currently required for Giant chicken spawning)

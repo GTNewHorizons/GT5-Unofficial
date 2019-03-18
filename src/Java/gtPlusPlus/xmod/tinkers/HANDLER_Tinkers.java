@@ -6,6 +6,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -13,6 +14,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class HANDLER_Tinkers {
 
+	public static AutoMap<BaseTinkersMaterial> mTinkerMaterials = new AutoMap<BaseTinkersMaterial>();
+	
 	public static final void preInit() {
 		if (LoadedMods.TiCon) {
 
@@ -31,9 +34,14 @@ public class HANDLER_Tinkers {
 		}
 	}
 
-	public static final void postInit() {
+	public static final void postInit() {		
 		if (LoadedMods.TiCon) {
-				Class aTinkersSmeltery = ReflectionUtils.getClassByName("tconstruct.smeltery.TinkerSmeltery");
+			
+				for (BaseTinkersMaterial y : mTinkerMaterials) {
+					//y.generate();
+				}			
+			
+				Class aTinkersSmeltery = ReflectionUtils.getClass("tconstruct.smeltery.TinkerSmeltery");
 				AutoMap<Fluid> aTweakedFluids = new AutoMap<Fluid>();
 				if (aTinkersSmeltery != null) {
 					try {
@@ -84,7 +92,7 @@ public class HANDLER_Tinkers {
 								}
 							}
 						}
-					} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+					} catch (IllegalArgumentException | IllegalAccessException e) {
 					}
 				}
 		}

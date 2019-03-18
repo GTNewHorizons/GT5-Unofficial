@@ -12,9 +12,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -694,8 +697,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 			Method T = null;
 			if (LoadedMods.TecTech) {
-				try {
-					Class TTRecipeAdder = Class.forName("com.github.technus.tectech.recipe.TT_recipeAdder");
+					Class TTRecipeAdder = ReflectionUtils.getClass("com.github.technus.tectech.recipe.TT_recipeAdder");
 					if (TTRecipeAdder != null) {
 						Method ttTest = ReflectionUtils.getMethod(TTRecipeAdder, "addResearchableAssemblylineRecipe",
 								ItemStack.class, int.class, int.class, int.class, int.class, Object[].class,
@@ -704,8 +706,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 							T = ttTest;
 						}
 					}
-				} catch (ClassNotFoundException e) {
-				}
 			}
 			else {
 				T = null;
@@ -750,11 +750,27 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		return CORE.RA.addComponentMakerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);		
 	}
 
-	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+	public boolean addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[] aFluidInputs_OLD, ItemStack aOutput, int aDuration, int aEUt) {
+		
+		FluidStack[] aFluidInputs = new FluidStack[4];	
+		AutoMap<FluidStack> aNewFluidMap = new AutoMap<FluidStack>();
+		if (aFluidInputs_OLD.length > 4) {
+			for (FluidStack s : aFluidInputs_OLD) {
+				aNewFluidMap.put(s);
+			}
+			for (int i = 0; i < 4; i++) {
+				aFluidInputs[i] = aNewFluidMap.get(i);				
+			}
+		}
+		else {
+			aFluidInputs = aFluidInputs_OLD;
+		}
+		
+		
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
 			if (aInputs.length < 6 && aFluidInputs.length < 2) {
 				ItemStack[] aInputStack = new ItemStack[] {aResearchItem, aInputs[0], aInputs[1], aInputs[2], aInputs[3], aInputs[4]};
-				return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
+				return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration, aEUt);
 			}        	
 			return false;
 		}
@@ -766,7 +782,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				if (mAssemblyLine != null) {
 					try {						
 						if (!tryAddTecTechScannerRecipe(aResearchItem, aInputs, aFluidInputs, aOutput, aDuration, aEUt)) {
-							Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus.");
+							try {								
+								Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus.");
+							}
+							catch (Throwable t) {
+								
+							}
 						}
 						return (boolean) mAssemblyLine.invoke(GT_Values.RA, aResearchItem, aResearchTime, aInputs,
 								aFluidInputs, aOutput, aDuration, aEUt);
@@ -774,7 +795,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 						if (aInputs.length < 6 && aFluidInputs.length < 2) {
 							ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1],
 									aInputs[2], aInputs[3], aInputs[4] };
-							return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+							return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
 									aEUt);
 						}
 						return false;
@@ -783,7 +804,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					if (aInputs.length < 6 && aFluidInputs.length < 2) {
 						ItemStack[] aInputStack = new ItemStack[] { aResearchItem, aInputs[0], aInputs[1], aInputs[2],
 								aInputs[3], aInputs[4] };
-						return CORE.RA.addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
+						return addSixSlotAssemblingRecipe(aInputStack, aFluidInputs[0], aOutput, aDuration,
 								aEUt);
 					}
 					return false;
@@ -803,10 +824,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 			if (mScannerTT != null) {
 				try {
-					return (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
-							(assEUt/2), 16, aInputs, aFluidInputs, aOutput, assDuration, assEUt);
+					boolean aResult = (boolean) mScannerTT.invoke(null, aResearchItem, compMax, compSec,
+							(assEUt/2), 16, aInputs, aFluidInputs, aOutput, assDuration, assEUt);					
+					Logger.INFO("Added TecTech Scanner Recipe for "+ItemUtils.getItemName(aResearchItem)+"? "+aResult);
+					return aResult;
+					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					Logger.INFO("Failed to generate TecTech recipe for "+aResearchItem.getDisplayName()+", please report this to Alkalus. [Severe]");
+					Logger.INFO("Failed to generate TecTech recipe for "+ItemUtils.getItemName(aResearchItem)+", please report this to Alkalus. [Severe]");
 					e.printStackTrace();
 				}
 			}			
@@ -851,7 +875,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@Override
 	public boolean addMultiblockChemicalRecipe(ItemStack[] itemStacks, FluidStack[] fluidStacks, FluidStack[] fluidStacks2, ItemStack[] outputs, int time, int eu) {
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || mLargeChemReactor == null) {
 			return false;
 		}		
 		try {			
@@ -1042,10 +1066,29 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			
 		}
 
+		@Override
+		public boolean addSemifluidFuel(ItemStack aFuelItem, int aFuelValue) {
+			return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
+		}
 
-
-
-
+		@Override
+		public boolean addSemifluidFuel(FluidStack aFuelItem, int aFuelValue) {
+			return SemiFluidFuelHandler.addSemiFluidFuel(aFuelItem, aFuelValue);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 }

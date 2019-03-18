@@ -31,7 +31,7 @@ public class FR_Gregtech_Recipes {
 	private static ItemStack hiveFrameClay = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameClay);
 	private static ItemStack hiveFrameNova = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameNova);
 
-	private static ItemStack hiveFrameImpregnated = ItemUtils.getItemStack("Forestry:frameImpregnated", 1);
+	private static ItemStack hiveFrameImpregnated = ItemUtils.getItemStackFromFQRN("Forestry:frameImpregnated", 1);
 	private static ItemStack blockSoulSand = new ItemStack(Blocks.soul_sand, 1);
 	private static ItemStack blockIronBars = new ItemStack (Blocks.iron_bars, 1);
 	private static ItemStack itemClayDust = new ItemStack(Items.clay_ball, 1);

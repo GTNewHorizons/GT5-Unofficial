@@ -157,15 +157,10 @@ public class EntityNativeAustralian extends EntityVillager {
 	 */
 
 	protected float getField_82191_bN() {
-		Field v82191;
+		Field v82191 = ReflectionUtils.getField(getClass(), "field_82191_bN");
 		try {
-			v82191 = ReflectionUtils.getField(getClass(), "field_82191_bN");
-			try {
-				return v82191 != null ? v82191.getFloat(this) : 0f;
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				return 0f;
-			}
-		} catch (NoSuchFieldException e1) {
+			return v82191 != null ? v82191.getFloat(this) : 0f;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return 0f;
 		}
 	}
@@ -178,15 +173,10 @@ public class EntityNativeAustralian extends EntityVillager {
 	}
 
 	protected boolean getNeedsInitilization() {
-		Field v82191;
+		Field v82191 = ReflectionUtils.getField(EntityVillager.class, "needsInitilization");
 		try {
-			v82191 = ReflectionUtils.getField(EntityVillager.class, "needsInitilization");
-			try {
-				return v82191 != null ? v82191.getBoolean(this) : false;
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				return false;
-			}
-		} catch (NoSuchFieldException e1) {
+			return v82191 != null ? v82191.getBoolean(this) : false;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return false;
 		}
 	}
@@ -201,18 +191,13 @@ public class EntityNativeAustralian extends EntityVillager {
 	protected MerchantRecipeList getBuyingList() {
 		Field v82191;
 		MerchantRecipeList o;
+		v82191 = ReflectionUtils.getField(getClass(), "buyingList");
 		try {
-			v82191 = ReflectionUtils.getField(getClass(), "buyingList");
-			try {
-				o = (MerchantRecipeList) v82191.get(this);
-				Logger.WARNING("Is BuyingList Valid? "+(v82191 != null));
-				return v82191 != null ? o : null;
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-				return null;
-			}
-		} catch (NoSuchFieldException e1) {
-			e1.printStackTrace();
+			o = (MerchantRecipeList) v82191.get(this);
+			Logger.WARNING("Is BuyingList Valid? " + (v82191 != null));
+			return v82191 != null ? o : null;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -226,29 +211,19 @@ public class EntityNativeAustralian extends EntityVillager {
 	}
 
 	protected Village getVillageObject() {
-		Field v82191;
+		Field v82191 = ReflectionUtils.getField(getClass(), "villageObj");
 		try {
-			v82191 = ReflectionUtils.getField(getClass(), "villageObj");
-			try {
-				return v82191 != null ? (Village) v82191.get(this) : null;
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				return null;
-			}
-		} catch (NoSuchFieldException e1) {
+			return v82191 != null ? (Village) v82191.get(this) : null;
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return null;
 		}
 	}
 
 	protected String getLastBuyingPlayer() {
-		Field v82191;
+		Field v82191 = ReflectionUtils.getField(getClass(), "lastBuyingPlayer");
 		try {
-			v82191 = ReflectionUtils.getField(getClass(), "lastBuyingPlayer");
-			try {
-				return v82191 != null ? (String) v82191.get(this) : "";
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				return "";
-			}
-		} catch (NoSuchFieldException e1) {
+			return v82191 != null ? (String) v82191.get(this) : "";
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			return "";
 		}
 	}

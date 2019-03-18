@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 	}
 
 	public GT_MetaTileEntity_SuperBus_Input(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, aDescription, aTextures);
+		super(aName, aTier, aDescription[0], aTextures);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 	}
 
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return new GT_MetaTileEntity_SuperBus_Input(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {

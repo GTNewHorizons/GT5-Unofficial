@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import gtPlusPlus.api.interfaces.ILazyCoverable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
+import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import ic2.api.Direction;
 
@@ -81,6 +82,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 	public void updateEntity() {
 		long aTick = System.currentTimeMillis();
 		this.isDead = false;
+		if (!firstTicked) {
+			onFirstTick();			
+		}		
 		try{
 			if (this.isServerSide()){
 				onPreTick(aTick);
@@ -1297,7 +1301,22 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 	public boolean energyStateReady() {
 		return false;
 	}
-    
+	
+	
+	private boolean firstTicked = false;
+    	
+	public boolean onFirstTick() {
+		if (!firstTicked) {
+			firstTicked = true;
+			if (this.mInventory != null) {
+				this.mInventory.purgeNulls();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 
 
 

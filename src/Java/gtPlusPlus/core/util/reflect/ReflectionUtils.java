@@ -1,42 +1,225 @@
 package gtPlusPlus.core.util.reflect;
 
 import java.io.IOException;
-import java.lang.reflect.*;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.reflect.ClassPath;
 
-import net.minecraft.client.Minecraft;
-
-import gregtech.GT_Mod;
-import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.data.StringUtils;
 
 public class ReflectionUtils {
 
-	public static Field getField(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
-		try {
-			Field k = clazz.getDeclaredField(fieldName);
-			makeAccessible(k);
-			//Logger.REFLECTION("Got Field from Class. "+fieldName+" did exist within "+clazz.getCanonicalName()+".");
-			return k;
-		} catch (final NoSuchFieldException e) {
-			final Class<?> superClass = clazz.getSuperclass();
-			if (superClass == null) {
-				//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+".");
-				throw e;
+	public static Map<String, Class> mCachedClasses = new LinkedHashMap<String, Class>();
+	public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<String, CachedMethod>();
+	public static Map<String, CachedField> mCachedFields = new LinkedHashMap<String, CachedField>();
+
+	private static class CachedMethod {
+
+		private final boolean STATIC;
+		private final Method METHOD;
+
+		public CachedMethod(Method aMethod, boolean isStatic) {
+			METHOD = aMethod;
+			STATIC = isStatic;
+		}
+
+		public Method get() {
+			return METHOD;
+		}
+
+		public boolean type() {
+			return STATIC;
+		}
+
+	}
+
+	private static class CachedField {
+
+		private final boolean STATIC;
+		private final Field FIELD;
+
+		public CachedField(Field aField, boolean isStatic) {
+			FIELD = aField;
+			STATIC = isStatic;
+		}
+
+		public Field get() {
+			return FIELD;
+		}
+
+		public boolean type() {
+			return STATIC;
+		}
+
+	}
+
+	private static boolean cacheClass(Class aClass) {		
+		if (aClass == null) {
+			return false;
+		}		
+		Class y = mCachedClasses.get(aClass.getCanonicalName());
+		if (y == null) {
+			mCachedClasses.put(aClass.getCanonicalName(), aClass);
+			return true;
+		}		
+		return false;
+	}
+
+	private static boolean cacheMethod(Class aClass, Method aMethod) {		
+		if (aMethod == null) {
+			return false;
+		}		
+		boolean isStatic = Modifier.isStatic(aMethod.getModifiers());		
+		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethod.getName()+"."+ArrayUtils.toString(aMethod.getParameterTypes()));
+		if (y == null) {
+			mCachedMethods.put(aClass.getName()+"."+aMethod.getName()+"."+ArrayUtils.toString(aMethod.getParameterTypes()), new CachedMethod(aMethod, isStatic));
+			return true;
+		}		
+		return false;
+	}
+
+	private static boolean cacheField(Class aClass, Field aField) {		
+		if (aField == null) {
+			return false;
+		}		
+		boolean isStatic = Modifier.isStatic(aField.getModifiers());
+		CachedField y = mCachedFields.get(aClass.getName()+"."+aField.getName());
+		if (y == null) {
+			mCachedFields.put(aClass.getName()+"."+aField.getName(), new CachedField(aField, isStatic));
+			return true;
+		}		
+		return false;
+	}
+
+
+	/**
+	 * Returns a cached {@link Class} object.
+	 * @param aClassCanonicalName - The canonical name of the underlying class.
+	 * @return - Valid, {@link Class} object, or {@link null}.
+	 */
+	public static Class getClass(String aClassCanonicalName) {
+		if (aClassCanonicalName == null || aClassCanonicalName.length() <= 0) {
+			return null;
+		}		
+		Class y = mCachedClasses.get(aClassCanonicalName);
+		if (y == null) {
+			y = getClass_Internal(aClassCanonicalName);
+			if (y != null) {
+				Logger.REFLECTION("Caching Class: "+aClassCanonicalName);
+				cacheClass(y);
 			}
-			//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+". Trying super class.");
-			return getField(superClass, fieldName);
+		}
+		return y;
+	}
+
+
+
+	/**
+	 * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
+	 * @param aObject - Object containing the Method.
+	 * @param aMethodName - Method's name in {@link String} form.
+	 * @param aTypes - Class Array of Types for {@link Method}'s constructor.
+	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
+	 */
+	public static Method getMethod(Object aObject, String aMethodName, Class[] aTypes) {
+		return getMethod(aObject.getClass(), aMethodName, aTypes);
+	}
+	
+	
+	/**
+	 * Returns a cached {@link Method} object.
+	 * @param aClass - Class containing the Method.
+	 * @param aMethodName - Method's name in {@link String} form.
+	 * @param aTypes - Varags Class Types for {@link Method}'s constructor.
+	 * @return - Valid, non-final, {@link Method} object, or {@link null}.
+	 */
+	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
+		if (aClass == null || aMethodName == null || aMethodName.length() <= 0) {
+			return null;
+		}		
+		String aMethodKey = ArrayUtils.toString(aTypes);
+		//Logger.REFLECTION("Looking up method in cache: "+(aClass.getName()+"."+aMethodName + "." + aMethodKey));
+		CachedMethod y = mCachedMethods.get(aClass.getName()+"."+aMethodName + "." + aMethodKey);
+		if (y == null) {
+			Method u = getMethod_Internal(aClass, aMethodName, aTypes);
+			if (u != null) {
+				Logger.REFLECTION("Caching Method: "+aMethodName + "." + aMethodKey);
+				cacheMethod(aClass, u);
+				return u;
+			} else {
+				return null;
+			}
+		} else {
+			return y.get();
 		}
 	}
 
-	public static void makeAccessible(final Field field) {
+
+
+	/**
+	 * Returns a cached {@link Field} object.
+	 * @param aClass - Class containing the Method.
+	 * @param aFieldName - Field name in {@link String} form.
+	 * @return - Valid, non-final, {@link Field} object, or {@link null}.
+	 */
+	public static Field getField(final Class aClass, final String aFieldName) {
+		if (aClass == null || aFieldName == null || aFieldName.length() <= 0) {
+			return null;
+		}		
+		CachedField y = mCachedFields.get(aClass.getName()+"."+aFieldName);
+		if (y == null) {
+			Field u;
+			try {
+				u = getField_Internal(aClass, aFieldName);
+				if (u != null) {
+					Logger.REFLECTION("Caching Field '"+aFieldName+"' from "+aClass.getName());
+					cacheField(aClass, u);
+					return u;
+				}
+			} catch (NoSuchFieldException e) {
+			}
+			return null;
+
+		} else {
+			return y.get();
+		}
+	}
+	
+	/**
+	 * Returns a cached {@link Field} object.
+	 * @param aInstance - {@link Object} to get the field instance from.
+	 * @param aFieldName - Field name in {@link String} form.
+	 * @return - Valid, non-final, {@link Field} object, or {@link null}.
+	 */
+	public static <T> T getField(final Object aInstance, final String aFieldName) {
+		try {
+			return (T) getField(aInstance.getClass(), aFieldName).get(aInstance);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			return null;
+		}
+	}
+
+
+
+
+	/*
+	 * Utility Functions
+	 */
+
+	public static boolean doesClassExist(final String classname) {
+		return isClassPresent(classname);
+	}
+
+	public static void makeFieldAccessible(final Field field) {
 		if (!Modifier.isPublic(field.getModifiers()) ||
 				!Modifier.isPublic(field.getDeclaringClass().getModifiers()))
 		{
@@ -44,25 +227,51 @@ public class ReflectionUtils {
 		}
 	}
 
-	//Some Reflection utils - http://stackoverflow.com/questions/14374878/using-reflection-to-set-an-object-property
-	@SuppressWarnings("unchecked")
-	public static <V> V getField(final Object object, final String fieldName) {
-		Class<?> clazz = object.getClass();
-		while (clazz != null) {
-			try {
-				final Field field = clazz.getDeclaredField(fieldName);
-				field.setAccessible(true);
-				return (V) field.get(object);
-			} catch (final NoSuchFieldException e) {
-				Logger.REFLECTION("getField("+object.toString()+", "+fieldName+") failed.");
-				clazz = clazz.getSuperclass();
-			} catch (final Exception e) {
-				Logger.REFLECTION("getField("+object.toString()+", "+fieldName+") failed.");
-				throw new IllegalStateException(e);
-			}
+	public static void makeMethodAccessible(final Method field) {
+		if (!Modifier.isPublic(field.getModifiers()) ||
+				!Modifier.isPublic(field.getDeclaringClass().getModifiers()))
+		{
+			field.setAccessible(true);
 		}
-		return null;
 	}
+
+	/**
+	 * Get the method name for a depth in call stack. <br />
+	 * Utility function
+	 * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
+	 * @return Method name
+	 */
+	public static String getMethodName(final int depth) {
+		final StackTraceElement[] ste = new Throwable().getStackTrace();
+		//System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
+		return ste[depth+1].getMethodName();
+	}
+
+
+	/**
+	 * 
+	 * @param aPackageName - The full {@link Package} name in {@link String} form. 
+	 * @return - {@link Boolean} object. True if loaded > 0 classes.
+	 */
+	public static boolean dynamicallyLoadClassesInPackage(String aPackageName) {
+		ClassLoader classLoader = ReflectionUtils.class.getClassLoader();
+		int loaded = 0;
+		try {
+			ClassPath path = ClassPath.from(classLoader);
+			for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
+				Class<?> clazz = Class.forName(info.getName(), true, classLoader);
+				if (clazz != null) {
+					loaded++;
+					Logger.INFO("Found "+clazz.getCanonicalName()+". ["+loaded+"]");
+				}
+			}
+		} catch (ClassNotFoundException | IOException e) {
+
+		}
+
+		return loaded > 0;
+	}
+	
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
@@ -70,7 +279,7 @@ public class ReflectionUtils {
 			try {
 				final Field field = getField(clazz, fieldName);
 				if (field != null) {
-					setValue(object, field, fieldValue);					
+					setFieldValue_Internal(object, field, fieldValue);					
 					return true;
 				}
 			} catch (final NoSuchFieldException e) {
@@ -84,72 +293,16 @@ public class ReflectionUtils {
 		return false;
 	}
 
-	public static boolean becauseIWorkHard(){
-		/* TODO: fix this stuff \u002a\u002f\u0066\u0069\u006e\u0061\u006c\u0020\u0048\u0061\u0073\u0068\u0053\u0065\u0074\u003c\u0053\u0074\u0072\u0069\u006e\u0067\u003e\u0020\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0048\u0061\u0073\u0068\u0053\u0065\u0074\u003c\u003e\u0028\u0029\u003b\u000a\u0009\u0009\u004f\u0062\u006a\u0065\u0063\u0074\u0020\u0070\u0072\u006f\u0078\u0079\u0043\u006c\u0069\u0065\u006e\u0074\u0047\u0054\u003b\u0009\u000a\u0009\u0009\u0074\u0072\u0079\u0020\u007b\u000a\u0009\u0009\u0009\u0070\u0072\u006f\u0078\u0079\u0043\u006c\u0069\u0065\u006e\u0074\u0047\u0054\u0020\u003d\u0020\u0043\u006c\u0069\u0065\u006e\u0074\u0050\u0072\u006f\u0078\u0079\u0046\u0069\u006e\u0064\u0065\u0072\u002e\u0067\u0065\u0074\u0049\u006e\u0073\u0074\u0061\u006e\u0063\u0065\u0028\u0047\u0054\u005f\u004d\u006f\u0064\u002e\u0069\u006e\u0073\u0074\u0061\u006e\u0063\u0065\u0029\u003b\u0009\u0009\u0009\u0009\u000a\u0009\u0009\u007d\u0020\u0063\u0061\u0074\u0063\u0068\u0020\u0028\u0066\u0069\u006e\u0061\u006c\u0020\u0052\u0065\u0066\u006c\u0065\u0063\u0074\u0069\u0076\u0065\u004f\u0070\u0065\u0072\u0061\u0074\u0069\u006f\u006e\u0045\u0078\u0063\u0065\u0070\u0074\u0069\u006f\u006e\u0020\u0065\u0031\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0070\u0072\u006f\u0078\u0079\u0043\u006c\u0069\u0065\u006e\u0074\u0047\u0054\u0020\u003d\u0020\u006e\u0075\u006c\u006c\u003b\u000a\u0009\u0009\u0009Logger\u002eINFO\u0028\u0022\u0046\u0061\u0069\u006c\u0065\u0064\u0020\u006f\u0062\u0074\u0061\u0069\u006e\u0065\u0064\u0020\u0069\u006e\u0073\u0074\u0061\u006e\u0063\u0065\u0020\u006f\u0066\u0020\u0061\u0020\u0063\u006c\u0069\u0065\u006e\u0074\u0020\u0070\u0072\u006f\u0078\u0079\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0072\u0065\u0074\u0075\u0072\u006e\u0020\u0066\u0061\u006c\u0073\u0065\u003b\u000a\u0009\u0009\u007d\u000a\u0009\u0009\u0074\u0072\u0079\u0020\u007b\u000a\u0009\u0009\u0009\u0066\u0069\u006e\u0061\u006c\u0020\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u0020\u0074\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u0028\u006e\u0065\u0077\u0020\u0055\u0052\u004c\u0028\u0022\u0068\u0074\u0074\u0070\u003a\u002f\u002f\u0067\u0072\u0065\u0067\u0074\u0065\u0063\u0068\u002e\u006f\u0076\u0065\u0072\u006d\u0069\u006e\u0064\u0064\u006c\u0031\u002e\u0063\u006f\u006d\u002f\u0063\u006f\u006d\u002f\u0067\u0072\u0065\u0067\u006f\u0072\u0069\u0075\u0073\u0074\u002f\u0067\u0072\u0065\u0067\u0074\u0065\u0063\u0068\u002f\u0073\u0075\u0070\u0070\u006f\u0072\u0074\u0065\u0072\u006c\u0069\u0073\u0074\u002e\u0074\u0078\u0074\u0022\u0029\u002e\u006f\u0070\u0065\u006e\u0053\u0074\u0072\u0065\u0061\u006d\u0028\u0029\u0029\u003b\u000a\u0009\u0009\u0009Logger\u002eWARNING\u0028\u0022\u0054\u0072\u0079\u0069\u006e\u0067\u0020\u0074\u006f\u0020\u0062\u0075\u0069\u006c\u0064\u0020\u0061\u0020\u0048\u0061\u0073\u0068\u0053\u0065\u0074\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0077\u0068\u0069\u006c\u0065\u0020\u0028\u0074\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u002e\u0068\u0061\u0073\u004e\u0065\u0078\u0074\u004c\u0069\u006e\u0065\u0028\u0029\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0066\u0069\u006e\u0061\u006c\u0020\u0053\u0074\u0072\u0069\u006e\u0067\u0020\u0074\u004e\u0061\u006d\u0065\u0020\u003d\u0020\u0074\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u002e\u006e\u0065\u0078\u0074\u004c\u0069\u006e\u0065\u0028\u0029\u003b\u000a\u000a\u0009\u0009\u0009\u0009\u0069\u0066\u0020\u0028\u0021\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0063\u006f\u006e\u0074\u0061\u0069\u006e\u0073\u0028\u0074\u004e\u0061\u006d\u0065\u002e\u0074\u006f\u004c\u006f\u0077\u0065\u0072\u0043\u0061\u0073\u0065\u0028\u0029\u0029\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0009\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0061\u0064\u0064\u0028\u0074\u004e\u0061\u006d\u0065\u002e\u0074\u006f\u004c\u006f\u0077\u0065\u0072\u0043\u0061\u0073\u0065\u0028\u0029\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u007d\u000a\u0009\u0009\u0009\u0009\u000a\u0009\u0009\u0009\u0009\u002f\u002f\u0041\u0064\u0064\u0020\u004d\u0079\u0073\u0065\u006c\u0066\u000a\u0009\u0009\u0009\u0009\u0069\u0066\u0020\u0028\u0021\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0063\u006f\u006e\u0074\u0061\u0069\u006e\u0073\u0028\u0022\u0064\u0072\u0061\u006b\u006e\u0079\u0074\u0065\u0031\u0022\u0029\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0009Logger\u002eWARNING\u0028\u0022\u0041\u0064\u0064\u0065\u0064\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067\u0020\u0076\u0061\u006c\u0075\u0065\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0061\u0064\u0064\u0028\u0022\u0064\u0072\u0061\u006b\u006e\u0079\u0074\u0065\u0031\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u007d\u000a\u0009\u0009\u0009\u0009\u000a\u0009\u0009\u0009\u0009\u002f\u002f\u0041\u0064\u0064\u0020\u0074\u0068\u0065\u0020\u0063\u0061\u0070\u0065\u0064\u0020\u0074\u0065\u0073\u0074\u0020\u0068\u0065\u0072\u006f\u000a\u0009\u0009\u0009\u0009\u0069\u0066\u0020\u0028\u0043\u004f\u0052\u0045\u002e\u0044\u0045\u0056\u0045\u004e\u0056\u0029\u007b\u000a\u0009\u0009\u0009\u0009\u0009\u0074\u0072\u0079\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0009\u0009\u0053\u0074\u0072\u0069\u006e\u0067\u0020\u0064\u0065\u0076\u0050\u006c\u0061\u0079\u0065\u0072\u0020\u003d\u0020\u004d\u0069\u006e\u0065\u0063\u0072\u0061\u0066\u0074\u002e\u0067\u0065\u0074\u004d\u0069\u006e\u0065\u0063\u0072\u0061\u0066\u0074\u0028\u0029\u002e\u0067\u0065\u0074\u0053\u0065\u0073\u0073\u0069\u006f\u006e\u0028\u0029\u002e\u0067\u0065\u0074\u0055\u0073\u0065\u0072\u006e\u0061\u006d\u0065\u0028\u0029\u002e\u0074\u006f\u004c\u006f\u0077\u0065\u0072\u0043\u0061\u0073\u0065\u0028\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u0009Logger\u002eINFO\u0028\u0022\u0046\u006f\u0075\u006e\u0064\u0020\u0022\u002b\u0064\u0065\u0076\u0050\u006c\u0061\u0079\u0065\u0072\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u0009\u0069\u0066\u0020\u0028\u0021\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0063\u006f\u006e\u0074\u0061\u0069\u006e\u0073\u0028\u0064\u0065\u0076\u0050\u006c\u0061\u0079\u0065\u0072\u0029\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0009\u0009\u0009Logger\u002eWARNING\u0028\u0022\u0041\u0064\u0064\u0065\u0064\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067\u0020\u0076\u0061\u006c\u0075\u0065\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u0009\u0009\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002e\u0061\u0064\u0064\u0028\u0064\u0065\u0076\u0050\u006c\u0061\u0079\u0065\u0072\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u0009\u007d\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0009\u000a\u0009\u0009\u0009\u0009\u0009\u007d\u0020\u0063\u0061\u0074\u0063\u0068\u0020\u0028\u0054\u0068\u0072\u006f\u0077\u0061\u0062\u006c\u0065\u0020\u0074\u0029\u007b\u000a\u0009\u0009\u0009\u0009\u0009\u0009Logger\u002eINFO\u0028\u0022\u0046\u0061\u0069\u006c\u0065\u0064\u0020\u0061\u0064\u0064\u0069\u006e\u0067\u0020\u006d\u0069\u0073\u0073\u0069\u006e\u0067\u0020\u0076\u0061\u006c\u0075\u0065\u0020\u0069\u006e\u0020\u0063\u0075\u0072\u0072\u0065\u006e\u0074\u0020\u0065\u006e\u0076\u0069\u0072\u006f\u006e\u006d\u0065\u006e\u0074\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0009\u007d\u000a\u0009\u0009\u0009\u0009\u007d\u000a\u000a\u0009\u0009\u0009\u007d\u000a\u0009\u0009\u0009\u0074\u0053\u0063\u0061\u006e\u006e\u0065\u0072\u002e\u0063\u006c\u006f\u0073\u0065\u0028\u0029\u003b\u000a\u0009\u0009\u007d\u0020\u0063\u0061\u0074\u0063\u0068\u0020\u0028\u0066\u0069\u006e\u0061\u006c\u0020\u0054\u0068\u0072\u006f\u0077\u0061\u0062\u006c\u0065\u0020\u0065\u0029\u0020\u007b\u000a\u0009\u0009\u0009Logger\u002eWARNING\u0028\u0022\u0046\u0061\u0069\u006c\u0065\u0064\u0020\u0067\u0065\u0074\u0074\u0069\u006e\u0067\u0020\u0074\u0068\u0065\u0020\u0077\u0065\u0062\u0020\u006c\u0069\u0073\u0074\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0072\u0065\u0074\u0075\u0072\u006e\u0020\u0066\u0061\u006c\u0073\u0065\u003b\u0020\u0020\u0020\u0020\u0020\u0009\u000a\u0009\u0009\u007d\u0009\u0009\u000a\u000a\u0009\u0009\u0074\u0072\u0079\u0020\u007b\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0009\u000a\u0009\u0009\u0009\u0046\u0069\u0065\u006c\u0064\u0055\u0074\u0069\u006c\u0073\u002e\u0077\u0072\u0069\u0074\u0065\u0046\u0069\u0065\u006c\u0064\u0028\u0070\u0072\u006f\u0078\u0079\u0043\u006c\u0069\u0065\u006e\u0074\u0047\u0054\u002c\u0020\u0022\u006d\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u0022\u002c\u0020\u0078\u0043\u0061\u0070\u0065\u004c\u0069\u0073\u0074\u002c\u0020\u0074\u0072\u0075\u0065\u0029\u003b\u000a\u0009\u0009\u0009Logger\u002eWARNING\u0028\u0022\u0041\u0064\u0064\u0065\u0064\u0020\u006d\u006f\u0064\u0069\u0066\u0069\u0065\u0064\u0020\u0068\u0061\u0073\u0068\u0073\u0065\u0074\u0020\u0062\u0061\u0063\u006b\u0020\u0069\u006e\u0074\u006f\u0020\u0074\u0068\u0065\u0020\u0069\u006e\u0073\u0074\u0061\u006e\u0063\u0065\u002e\u0022\u0029\u003b\u0020\u0020\u0009\u0009\u0009\u000a\u0009\u0009\u0009\u0072\u0065\u0074\u0075\u0072\u006e\u0020\u0074\u0072\u0075\u0065\u003b\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u000a\u0009\u0009\u007d\u0020\u0063\u0061\u0074\u0063\u0068\u0020\u0028\u0066\u0069\u006e\u0061\u006c\u0020\u0054\u0068\u0072\u006f\u0077\u0061\u0062\u006c\u0065\u0020\u0065\u0029\u0020\u007b\u000a\u0009\u0009\u0009Logger\u002eINFO\u0028\u0022\u0052\u0065\u0066\u006c\u0065\u0063\u0074\u0069\u006f\u006e\u0020\u0069\u006e\u0074\u006f\u0020\u0061\u0063\u0074\u0069\u0076\u0065\u0020\u0063\u006c\u0069\u0065\u006e\u0074\u0020\u0070\u0072\u006f\u0078\u0079\u0020\u0069\u006e\u0073\u0074\u0061\u006e\u0063\u0065\u0020\u0066\u0061\u0069\u006c\u0065\u0064\u002e\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0065\u002e\u0070\u0072\u0069\u006e\u0074\u0053\u0074\u0061\u0063\u006b\u0054\u0072\u0061\u0063\u0065\u0028\u0029\u003b\u0020\u0020\u0020\u0020\u0020\u0020\u000a\u0009\u0009\u0009\u0072\u0065\u0074\u0075\u0072\u006e\u0020\u0066\u0061\u006c\u0073\u0065\u003b\u0020\u0020\u0009\u000a\u0009\u0009\u007d\u002f\u002a */
-	}
-
-	public static boolean doesClassExist(final String classname) {
-		boolean exists = true;
-		try {
-			// Load any class that should be present if driver's available
-			Class.forName(classname);
-		} catch (final ClassNotFoundException e) {
-			// Driver is not available
-			exists = false;
-		}
-		return exists;
-	}
-
-	/**
-	 * Get the method name for a depth in call stack. <br />
-	 * Utility function
-	 * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
-	 * @return method name
-	 */
-	public static String getMethodName(final int depth) {
-		final StackTraceElement[] ste = new Throwable().getStackTrace();
-		//System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
-		return ste[depth+1].getMethodName();
-	}
-
 
 	/**
 	 * Allows to change the state of an immutable instance. Huh?!?
 	 */
-	public static void setFieldValue(Class<?> clazz,  String fieldName, Object newValue) throws Exception {
+	public static void setFinalFieldValue(Class<?> clazz,  String fieldName, Object newValue) throws Exception {
 		Field nameField = getField(clazz, fieldName);
-		setValue(clazz, nameField, newValue);
+		setFieldValue_Internal(clazz, nameField, newValue);
 	}
 
-	/**
-	 * Allows to change the state of final statics. Huh?!?
-	 */
-	public static void setDefault(Class<?> clazz, String fieldName, Object newValue) throws Exception {
-		Field staticField = clazz.getDeclaredField(fieldName);
-		setValue(null, staticField, newValue);
-	}
-
-	/**
-	 * 
-	 * Set the value of a field reflectively.
-	 */
-	protected static void setValue(Object owner, Field field, Object value) throws Exception {
-		makeModifiable(field);
-		field.set(owner, value);
-	}
-
-	/**
-	 * Force the field to be modifiable and accessible.
-	 */
-	protected static void makeModifiable(Field nameField) throws Exception {
-		nameField.setAccessible(true);
-		int modifiers = nameField.getModifiers();
-		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
-		modifiers = modifiers & ~Modifier.FINAL;
-		modifierField.setAccessible(true);
-		modifierField.setInt(nameField, modifiers);
-	}
-
+	@Deprecated
 	public static void setFinalStatic(Field field, Object newValue) throws Exception {
 		field.setAccessible(true);
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -258,13 +411,58 @@ public class ReflectionUtils {
 		return null;
 	}
 
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
 	/*
-	 * @ if (isPresent("com.optionaldependency.DependencyClass")) { // This
-	 * block will never execute when the dependency is not present // There is
+	 * Internal Magic that probably should not get exposed.
+	 */	
+
+
+	private static Field getField_Internal(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
+		try {
+			Logger.REFLECTION("Field: Internal Lookup: "+fieldName);
+			Field k = clazz.getDeclaredField(fieldName);
+			makeFieldAccessible(k);
+			//Logger.REFLECTION("Got Field from Class. "+fieldName+" did exist within "+clazz.getCanonicalName()+".");
+			return k;
+		} catch (final NoSuchFieldException e) {
+			Logger.REFLECTION("Field: Internal Lookup Failed: "+fieldName);
+			final Class<?> superClass = clazz.getSuperclass();
+			if (superClass == null) {
+				Logger.REFLECTION("Unable to find field '"+fieldName+"'");	
+				//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+".");
+				throw e;
+			}
+			Logger.REFLECTION("Method: Recursion Lookup: "+fieldName+" - Checking in "+superClass.getName());
+			//Logger.REFLECTION("Failed to get Field from Class. "+fieldName+" does not existing within "+clazz.getCanonicalName()+". Trying super class.");
+			return getField_Internal(superClass, fieldName);
+		}
+	}	
+
+	/**
+	 * if (isPresent("com.optionaldependency.DependencyClass")) || 
+	 * This block will never execute when the dependency is not present. There is
 	 * therefore no more risk of code throwing NoClassDefFoundException.
-	 * executeCodeLinkingToDependency(); }
 	 */
-	public static boolean isPresent(final String className) {
+	private static boolean isClassPresent(final String className) {
 		try {
 			Class.forName(className);
 			return true;
@@ -274,7 +472,6 @@ public class ReflectionUtils {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Deprecated
 	public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName,
 			final boolean invoke) throws Exception {
@@ -287,16 +484,10 @@ public class ReflectionUtils {
 		return m;
 	}
 
-	/**
-	 * Removes final modifier & returns a {@link Method} object.
-	 * @param aClass - Class containing the Method.
-	 * @param aMethodName - Method's name in {@link String} form.
-	 * @param aTypes - Varags Class Types for {@link Method}'s constructor.
-	 * @return - Valid, non-final, {@link Method} object.
-	 */
-	public static Method getMethod(Class aClass, String aMethodName, Class... aTypes) {
+	private static Method getMethod_Internal(Class aClass, String aMethodName, Class... aTypes) {
 		Method m = null;
 		try {
+			Logger.REFLECTION("Method: Internal Lookup: "+aMethodName);
 			m = aClass.getDeclaredMethod(aMethodName, aTypes);	
 			if (m != null) {
 				m.setAccessible(true);
@@ -308,35 +499,55 @@ public class ReflectionUtils {
 			}
 		}
 		catch (Throwable t) {
+			Logger.REFLECTION("Method: Internal Lookup Failed: "+aMethodName);
+			try {
+				m = getMethodRecursively(aClass, aMethodName);
+			} catch (NoSuchMethodException e) {
+				Logger.REFLECTION("Unable to find method '"+aMethodName+"'");	
+				e.printStackTrace();
+				dumpClassInfo(aClass);
+			}
 		}
 		return m;
 	}
-	
-	public static Method getMethodRecursively(final Class<?> clazz, final String fieldName) throws NoSuchMethodException {
+
+	private static Method getMethodRecursively(final Class<?> clazz, final String aMethodName) throws NoSuchMethodException {
 		try {
-			Method k = clazz.getDeclaredMethod(fieldName);
+			Logger.REFLECTION("Method: Recursion Lookup: "+aMethodName);
+			Method k = clazz.getDeclaredMethod(aMethodName);
 			makeMethodAccessible(k);
 			return k;
 		} catch (final NoSuchMethodException e) {
 			final Class<?> superClass = clazz.getSuperclass();
-			if (superClass == null) {
+			if (superClass == null || superClass == Object.class) {
 				throw e;
 			}
-			return getMethod(superClass, fieldName);
+			return getMethod_Internal(superClass, aMethodName);
 		}
+	}	
+	
+	private static void dumpClassInfo(Class aClass) {
+		Logger.INFO("We ran into an error processing reflection in "+aClass.getName()+", dumping all data for debugging.");	
+		// Get the methods
+	    Method[] methods = aClass.getDeclaredMethods();
+	    Field[] fields = aClass.getDeclaredFields();
+	    Constructor[] consts = aClass.getDeclaredConstructors(); 
+
+		Logger.INFO("Dumping all Methods.");	
+	    for (Method method : methods) {
+		      System.out.println(method.getName()+" | "+StringUtils.getDataStringFromArray(method.getParameterTypes()));
+		    }
+		Logger.INFO("Dumping all Fields.");	
+	    for (Field f : fields) {
+		      System.out.println(f.getName());
+		    }
+		Logger.INFO("Dumping all Constructors.");	
+	    for (Constructor c : consts) {
+		      System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+StringUtils.getDataStringFromArray(c.getParameterTypes()));
+		    }
 	}
 
-	public static void makeMethodAccessible(final Method field) {
-		if (!Modifier.isPublic(field.getModifiers()) ||
-				!Modifier.isPublic(field.getDeclaringClass().getModifiers()))
-		{
-			field.setAccessible(true);
-		}
-	}
-	
-	
-
-	public static Class<?> getNonPublicClass(final String className) {
+	private static Class<?> getNonPublicClass(final String className) {
 		Class<?> c = null;
 		try {
 			c = Class.forName(className);
@@ -377,7 +588,7 @@ public class ReflectionUtils {
 		return null;
 	}
 
-	public static Class<?> getClassByName(String string) {
+	private static Class<?> getClass_Internal(String string) {
 		if (ReflectionUtils.doesClassExist(string)) {
 			try {
 				return Class.forName(string);
@@ -389,23 +600,25 @@ public class ReflectionUtils {
 		return null;
 	}
 
-	public static boolean dynamicallyLoadClassesInPackage(String aPackageName) {
-		ClassLoader classLoader = GTplusplus.class.getClassLoader();
-		int loaded = 0;
-		try {
-			ClassPath path = ClassPath.from(classLoader);
-			for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
-				Class<?> clazz = Class.forName(info.getName(), true, classLoader);
-				if (clazz != null) {
-					loaded++;
-					Logger.INFO("Found "+clazz.getCanonicalName()+". ["+loaded+"]");
-				}
-			}
-		} catch (ClassNotFoundException | IOException e) {
+	/**
+	 * 
+	 * Set the value of a field reflectively.
+	 */
+	private static void setFieldValue_Internal(Object owner, Field field, Object value) throws Exception {
+		makeModifiable(field);
+		field.set(owner, value);
+	}
 
-		}
-
-		return loaded > 0;
+	/**
+	 * Force the field to be modifiable and accessible.
+	 */
+	private static void makeModifiable(Field nameField) throws Exception {
+		nameField.setAccessible(true);
+		int modifiers = nameField.getModifiers();
+		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
+		modifiers = modifiers & ~Modifier.FINAL;
+		modifierField.setAccessible(true);
+		modifierField.setInt(nameField, modifiers);
 	}
 
 

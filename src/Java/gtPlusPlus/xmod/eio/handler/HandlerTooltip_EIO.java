@@ -12,6 +12,7 @@ import gregtech.api.enums.Materials;
 
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
@@ -30,11 +31,10 @@ public class HandlerTooltip_EIO {
 			//If it is, reflect in.
 			if (mIngot == null){
 				try {
-					oMainClass = Class.forName("crazypants.enderio.EnderIO");
-					oIngotClass = Class.forName("crazypants.enderio.material.ItemAlloy");
+					oMainClass = ReflectionUtils.getClass("crazypants.enderio.EnderIO");
+					oIngotClass = ReflectionUtils.getClass("crazypants.enderio.material.ItemAlloy");
 					if (oMainClass != null && oIngotClass != null){
-						Field oAlloyField = oMainClass.getDeclaredField("itemAlloy");	
-						oAlloyField.setAccessible(true);						
+						Field oAlloyField = ReflectionUtils.getField(oMainClass, "itemAlloy");
 						Object oAlloy = oAlloyField.get(oMainClass);
 						if (oAlloy != null){							
 							if (oIngotClass.isInstance(oAlloy) || Item.class.isInstance(oAlloy)){

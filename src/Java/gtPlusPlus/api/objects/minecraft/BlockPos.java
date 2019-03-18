@@ -6,6 +6,7 @@ import java.util.Set;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -47,6 +48,10 @@ public class BlockPos implements Serializable{
 	
 	public BlockPos(IGregTechTileEntity b) {
 		this (b.getXCoord(), b.getYCoord(), b.getZCoord(), b.getWorld());
+	}
+	
+	public BlockPos(TileEntity b) {
+		this (b.xCoord, b.yCoord, b.zCoord, b.getWorldObj());
 	}
 
 	public String getLocationString() {

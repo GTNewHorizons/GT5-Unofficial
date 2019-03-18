@@ -3,10 +3,16 @@ package gtPlusPlus.core.handler.events;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.GTplusplus.INIT_PHASE;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -22,8 +28,15 @@ public class GeneralTooltipEventHandler {
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){
 
+		
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
+			return;
+		}
+		if (event.itemStack == null) {
+			return;
+		}
 		if (CORE.ConfigSwitches.chanceToDropFluoriteOre > 0) {
-			if (!BlockEventHandler.blockLimestone.isEmpty()) {
+			if (BlockEventHandler.blockLimestone != null && !BlockEventHandler.blockLimestone.isEmpty()) {
 				for (ItemStack h : BlockEventHandler.blockLimestone) {
 					if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
 						if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
@@ -32,7 +45,7 @@ public class GeneralTooltipEventHandler {
 					}
 				}
 			}
-			if (!BlockEventHandler.oreLimestone.isEmpty()) {
+			if (BlockEventHandler.oreLimestone != null && !BlockEventHandler.oreLimestone.isEmpty()) {
 				for (ItemStack h : BlockEventHandler.oreLimestone) {
 					if (h != null && Block.getBlockFromItem(h.getItem()) == Block.getBlockFromItem(event.itemStack.getItem())) {
 						if (ItemUtils.getModId(h) != null && !ItemUtils.getModId(h).toLowerCase().contains("biomesoplenty")) {
@@ -43,6 +56,26 @@ public class GeneralTooltipEventHandler {
 			}
 		}
 
+		//Material Collector Tooltips		
+		if (ModBlocks.blockPooCollector != null && Block.getBlockFromItem(event.itemStack.getItem()) == ModBlocks.blockPooCollector) {			
+			//Normal
+			if (event.itemStack.getItemDamage() == 0) {
+				event.toolTip.add("Used to collect animal waste");
+				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
+				event.toolTip.add("Use Hoppers/Pipes to empty");
+				event.toolTip.add(EnumChatFormatting.GOLD+"Capacity: "+EnumChatFormatting.AQUA+"8000L");
+			}
+			//Advanced
+			else {
+				event.toolTip.add("Used to collect waste (Works on more than animals)");
+				event.toolTip.add("Significantly faster than the simple version");
+				event.toolTip.add("Collects in a 5x4x5 area starting at Y+1");
+				event.toolTip.add("Use Hoppers/Pipes to empty");
+				event.toolTip.add(EnumChatFormatting.GOLD+"Capacity: "+EnumChatFormatting.AQUA+"128000L");
+			}
+		}
+		
+		
 
 		if (CORE.ConfigSwitches.enableAnimatedTurbines) {
 			boolean shift = false;					

@@ -11,6 +11,8 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class ELEMENT {
 
+	public static final String[] NAMES = new String[]{"Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminum", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Cesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};	
+	
 	//First 50 Elements
 	public final Material HYDROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Hydrogen);
 	public final Material HELIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Helium);
@@ -148,8 +150,8 @@ public final class ELEMENT {
 	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, TextureSets.NUCLEAR.get(), Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2, false);//Not a GT Inherited Material
 
 	public final Material MAGIC = MaterialUtils.generateMaterialFromGtENUM(Materials.Magic, new short[] {10, 185, 140});
-	public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);	
-
+	public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
+	
 	static {
 		Logger.MATERIALS("Initialising Base Elements.");
 	}

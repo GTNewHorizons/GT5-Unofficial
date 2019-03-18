@@ -221,10 +221,10 @@ public class GregtechIndustrialMassFabricator {
 
 
 	public static ItemStack getScrapPile() {
-		return ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrap"));
+		return ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrap"));
 	}	
 	public static ItemStack getScrapBox() {
-		return ItemUtils.getSimpleStack(ItemUtils.getItem("IC2:itemScrapbox"));
+		return ItemUtils.getSimpleStack(ItemUtils.getItemFromFQRN("IC2:itemScrapbox"));
 	}
 	
 }

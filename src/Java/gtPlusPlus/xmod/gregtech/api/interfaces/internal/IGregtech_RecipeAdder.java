@@ -141,7 +141,23 @@ public interface IGregtech_RecipeAdder {
 	public boolean addLFTRRecipe(ItemStack aInput1, FluidStack aInput2, ItemStack aOutput1, FluidStack aOutput2, int aDuration, int aEUt);
 	public boolean addLFTRRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt);
 
-
+	
+	/**
+	 * Adds a custom Semifluid fuel for the GT++ SemiFluid Generators.
+	 * @param aFuelItem - A Fluidstack to be consumed.
+	 * @param aFuelValue - Fuel value in thousands (1 = 1000)
+	 * @return - Was the Fuel added?
+	 */
+	public boolean addSemifluidFuel(FluidStack aFuelItem, int aFuelValue);
+	
+	/**
+	 * Adds a custom Semifluid fuel for the GT++ SemiFluid Generators.
+	 * @param aFuelItem - A Fluidstack to be consumed.
+	 * @param aFuelValue - Fuel value in thousands (1 = 1000)
+	 * @return - Was the Fuel added?
+	 */
+	public boolean addSemifluidFuel(ItemStack aFuelItem, int aFuelValue);
+	
 	public boolean addFissionFuel(
 			FluidStack aInput1, FluidStack aInput2, FluidStack aInput3,
 			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6,

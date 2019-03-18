@@ -164,6 +164,15 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 		ItemStack matDustB = getDust(bonusB);
 
 		/**
+		 * Package
+		 */
+		//Allow ore dusts to be packaged
+		if (ItemUtils.checkForInvalidItems(material.getSmallDust(1)) && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
+			RecipeGen_DustGeneration.generatePackagerRecipes(material);
+		}
+		
+		
+		/**
 		 * Macerate
 		 */
 		//Macerate ore to Crushed
@@ -255,8 +264,8 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustA,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Eu
-				tVoltageMultiplier/2)){ //Time
+				5*20, //Time
+				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Purified Dust to Clean Dust");
 		}
 
@@ -268,8 +277,8 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 				matDust, tinyDustB,null, 
 				null, null,null, 
 				new int[]{10000, 10000}, //Chances
-				5*20, //Eu
-				tVoltageMultiplier/2)){ //Time
+				5*20, //Time
+				tVoltageMultiplier/2)){ //Eu
 			Logger.MATERIALS("[Centrifuge] Added Recipe: Inpure Dust to Clean Dust");
 		}
 

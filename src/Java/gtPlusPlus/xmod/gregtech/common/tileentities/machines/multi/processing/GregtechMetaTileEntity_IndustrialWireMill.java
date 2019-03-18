@@ -118,6 +118,21 @@ extends GregtechMeta_MultiBlockBase {
 					return false;
 				}
 			}
+			
+			//Check Rear Middle
+			{
+				Block aBlock = this.getBaseMetaTileEntity()
+						.getBlockAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				int aMeta = this.getBaseMetaTileEntity()
+						.getMetaIDAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				IGregTechTileEntity aTile = this.getBaseMetaTileEntity()
+						.getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
+				if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(),
+						getCasingMeta())) {
+					log("Bad Casing on Wiremill.");
+					return false;
+				}
+			}
 			final int tX = this.getBaseMetaTileEntity().getXCoord();
 			final int tY = this.getBaseMetaTileEntity().getYCoord();
 			final int tZ = this.getBaseMetaTileEntity().getZCoord();
@@ -129,7 +144,7 @@ extends GregtechMeta_MultiBlockBase {
 								int aMeta = this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 								IGregTechTileEntity aTile = this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i));
 								if (!isValidBlockForStructure(aTile, getCasingTextureIndex(), true, aBlock, aMeta, getCasingBlock(), getCasingMeta())) {
-									Logger.INFO("Bad Casing on Wiremill.");
+									log("Bad Casing on Wiremill.");
 									return false;
 								}	
 						}
@@ -137,33 +152,22 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 			if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
-				Logger.INFO("Use Busses, Not Hatches for Input/Output.");
+				log("Use Busses, Not Hatches for Input/Output.");
 				return false;
 			}
 			if ((this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0)) {
-				Logger.INFO("Incorrect amount of Input & Output busses.");
+				log("Incorrect amount of Input & Output busses.");
 				return false;
 			}
-			this.mMaintenanceHatches.clear();
-			final IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(), 4);
-			if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
-				if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-					this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
-					((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = this.getCasingTextureIndex();
-				} else {
-					Logger.INFO("Maintenance hatch must be in the middle block on the back.");
-					return false;
-				}
-			}
 			if ((this.mMaintenanceHatches.size() != 1)) {
-				Logger.INFO("Incorrect amount of Maintenance or Energy hatches.");
+				log("Incorrect amount of Maintenance or Energy hatches.");
 				return false;
 			}
 		} else {
-			Logger.INFO("False 5");
+			log("False 5");
 			return false;
 		}
-		Logger.INFO("True");
+		log("True");
 		return true;
 	}
 
@@ -199,13 +203,5 @@ extends GregtechMeta_MultiBlockBase {
 
 	public byte getCasingTextureIndex() {
 		return (byte) TAE.GTPP_INDEX(6);
-	}
-
-	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addMaintenanceToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addInputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addOutputToMachineList(tTileEntity, this.getCasingTextureIndex())) || (this.addMufflerToMachineList(tTileEntity, this.getCasingTextureIndex())));
-	}
-
-	private boolean addEnergyInputToMachineList(final IGregTechTileEntity tTileEntity) {
-		return ((this.addEnergyInputToMachineList(tTileEntity, this.getCasingTextureIndex())));
 	}
 }

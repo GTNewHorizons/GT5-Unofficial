@@ -524,11 +524,11 @@ public final class ALLOY {
 			"Zirconium Carbide", //Material Name
 			MaterialState.SOLID, //State
 			new short[]{222, 202, 180, 0}, //Material Colour
-			1855, //Melting Point in C
+			1555, //Melting Point in C
 			-1,
 			-1,
 			-1,
-			true, //Uses Blast furnace?
+			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 50),
@@ -787,7 +787,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 6),
 					new MaterialStack(ELEMENT.getInstance().ANTIMONY, 4),
 					new MaterialStack(ELEMENT.getInstance().PLATINUM, 4),					
-					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
 					new MaterialStack(ALLOY.TUNGSTENSTEEL, 8)
 			});
 	

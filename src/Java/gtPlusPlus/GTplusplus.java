@@ -74,7 +74,9 @@ public class GTplusplus implements ActionListener {
 		SUPER(null),
 		PRE_INIT(SUPER),
 		INIT(PRE_INIT),
-		POST_INIT(INIT);		
+		POST_INIT(INIT),
+		SERVER_START(POST_INIT),
+		STARTED(SERVER_START);		
 		protected boolean mIsPhaseActive = false;
 		private final INIT_PHASE mPrev;
 		
@@ -220,18 +222,15 @@ public class GTplusplus implements ActionListener {
 	}
 
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
-	}
-
-	@EventHandler
 	public synchronized void serverStarting(final FMLServerStartingEvent event) {
+		INIT_PHASE.SERVER_START.setPhaseActive(true);
 		mChunkLoading.serverStarting(event);
 		event.registerServerCommand(new CommandMath());
 		event.registerServerCommand(new CommandDebugChunks());
 		if (LoadedMods.Thaumcraft) {
 			event.registerServerCommand(new CommandDumpAspects());
 		}
+		INIT_PHASE.STARTED.setPhaseActive(true);
 	}
 
 	@Mod.EventHandler
@@ -302,6 +301,9 @@ public class GTplusplus implements ActionListener {
 					if (CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
 						mValidCount[0]++;
 					}
+					else {
+						mInvalidCount[0]++;
+					}
 				}
 				else {
 					Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
@@ -329,6 +331,9 @@ public class GTplusplus implements ActionListener {
 				if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) {
 					if (CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances, x.mDuration, x.mEUt, x.mSpecialValue)) {
 						mValidCount[1]++;
+					}
+					else {
+						mInvalidCount[1]++;
 					}
 				}
 				else {
@@ -371,11 +376,19 @@ public class GTplusplus implements ActionListener {
 						mValidCount[2]++;
 					}
 				}
+				else {
+					mInvalidCount[2]++;
+				}
 			}
 			else {
 				mInvalidCount[2]++;
 			}
 		}
+		
+		//Redo plasma recipes in Adv. Vac.
+		//Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer();
+		
+		
 		String[] machineName = new String[] {"Centrifuge", "Electrolyzer", "Vacuum Freezer"};
 		for (int i=0;i<3;i++) {
 			Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]+". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]+" are invalid for this Multiblock's processing in some way.");

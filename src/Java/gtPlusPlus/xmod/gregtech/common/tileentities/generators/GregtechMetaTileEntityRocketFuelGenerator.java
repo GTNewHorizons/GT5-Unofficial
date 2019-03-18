@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
@@ -18,6 +15,7 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntityRocketFuelGenerator
 extends GregtechRocketFuelGeneratorBase {
@@ -25,7 +23,7 @@ extends GregtechRocketFuelGeneratorBase {
 	public int mEfficiency;
 
 	public GregtechMetaTileEntityRocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
-		super(aID, aName, aNameRegional, aTier, "Requires Rocket Fuels.", new ITexture[0]);
+		super(aID, aName, aNameRegional, aTier, "Requires GT++ Rocket Fuels", new ITexture[0]);
 		this.onConfigLoad();
 	}
 
@@ -41,6 +39,7 @@ extends GregtechRocketFuelGeneratorBase {
 
 	@Override
 	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		//Logger.INFO("Valid Fuels: "+Recipe_GT.Gregtech_Recipe_Map.sRocketFuels.mRecipeList.size());
 		return new GregtechMetaTileEntityRocketFuelGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
@@ -60,7 +59,9 @@ extends GregtechRocketFuelGeneratorBase {
 
 	@Override
 	public int getEfficiency() {
-		return ((40+((this.mTier) * 16))/4)+(this.mTier);
+		int eff = ((40+((this.mTier) * 16))/4)+(this.mTier);		
+		return eff;
+		
 	}
 
 	@Override

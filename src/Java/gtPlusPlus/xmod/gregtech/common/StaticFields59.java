@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +32,8 @@ public class StaticFields59 {
 	public static final Field mMultiblockChemicalRecipes;
 	public static final Field mDescriptionArray;
 	public static final Field mCasingTexturePages;
+	public static final Field mAssLineVisualMapNEI;
+	public static final GT_Recipe_Map sAssemblylineVisualRecipes;
 	
 	public static final Method mCalculatePollutionReduction;
 	public static final Method mAddFurnaceRecipe;
@@ -43,28 +44,51 @@ public class StaticFields59 {
 	//OrePrefixes
 
 	static {
+		Logger.INFO("[SH] Creating Static Helper for various fields which require reflective access.");
 		mGtBlockCasings5 = getField(GregTech_API.class, "sBlockCasings5");
+		Logger.INFO("[SH] Got Field: sBlockCasings5");
 		mPreventableComponents = getField(OrePrefixes.class, "mPreventableComponents");
+		Logger.INFO("[SH] Got Field: mPreventableComponents");
 		mDisabledItems = getField(OrePrefixes.class, "mDisabledItems");
-		mMultiblockChemicalRecipes = getField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes");
+		Logger.INFO("[SH] Got Field: mDisabledItems");
 		mDescriptionArray = getField(GT_MetaTileEntity_TieredMachineBlock.class, "mDescriptionArray");
+		Logger.INFO("[SH] Got Field: mDescriptionArray");
 		mCasingTexturePages = getField(BlockIcons.class, "casingTexturePages");
-		
-		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction", int.class);		
-		
-		Logger.INFO("Initializing a recipe handler for different versions of Gregtech 5.");		
-		//Yep...
+		Logger.INFO("[SH] Got Field: casingTexturePages");
+
+		mAssLineVisualMapNEI = getField(GT_Recipe_Map.class, "sAssemblylineVisualRecipes");
+		Logger.INFO("[SH] Got Field: mAssLineVisualMapNEI");
+		GT_Recipe_Map aTemp;
+		if (mAssLineVisualMapNEI != null) {
+			try {
+				aTemp = (GT_Recipe_Map) mAssLineVisualMapNEI.get(null);
+				Logger.INFO("[SH] Got Field: sAssemblylineVisualRecipes");
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				aTemp = null;
+			}
+		} else {
+			aTemp = null;
+		}
+
+		sAssemblylineVisualRecipes = aTemp;
+		mMultiblockChemicalRecipes = getField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes");
+		Logger.INFO("[SH] Got Field: sMultiblockChemicalRecipes");
+
+		mCalculatePollutionReduction = getMethod(GT_MetaTileEntity_Hatch_Muffler.class, "calculatePollutionReduction",
+				int.class);
+		Logger.INFO("[SH] Got Method: calculatePollutionReduction");
+
+		// Yep...
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-			Logger.INFO("Selecting GT 5.7/5.8 Recipe Set");
-			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class, ItemStack.class);			
+			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class,
+					ItemStack.class);
+			Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
+		} else {
+			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class,
+					ItemStack.class, boolean.class);
+			Logger.INFO("[SH] Got Method: addSmeltingAndAlloySmeltingRecipe");
 		}
-		else {
-			Logger.INFO("Selecting GT 5.9 Recipe Set");
-			mAddFurnaceRecipe = getMethod(GT_ModHandler.class, "addSmeltingAndAlloySmeltingRecipe", ItemStack.class, ItemStack.class, boolean.class);			
-		}
-		
-		
-		
+
 	}
 
 	public static synchronized final Block getBlockCasings5() {
@@ -84,11 +108,7 @@ public class StaticFields59 {
 	}
 
 	public static Field getField(Class a, String b) {
-		try {
-			return ReflectionUtils.getField(a, b);
-		} catch (NoSuchFieldException e) {
-			return null;
-		}
+		return ReflectionUtils.getField(a, b);		
 	}
 
 	public static Method getMethod(Class a, String b, Class... params) {

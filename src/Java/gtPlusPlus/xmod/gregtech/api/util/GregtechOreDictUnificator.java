@@ -38,12 +38,9 @@ public class GregtechOreDictUnificator {
     private static boolean mRunThroughTheList = true;
 
     static {
-    	try {
 			if (ReflectionUtils.getField(GT_OreDictUnificator.class, "sUnificationTable") == null) {
 		        GregTech_API.sItemStackMappings.add(sUnificationTable);
 			}
-		}
-		catch (NoSuchFieldException e) {}
     }
 
     /**

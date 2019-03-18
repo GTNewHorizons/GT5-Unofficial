@@ -45,14 +45,14 @@ public class HANDLER_FR {
 		if (LoadedMods.Forestry){
 			Class oClass;
 			try {
-				oClass = Class.forName("forestry.core.proxy.ProxyCommon");
+				oClass = ReflectionUtils.getClass("forestry.core.proxy.ProxyCommon");
 				Object oProxy = ReflectionUtils.getField(oClass, "common");				
-				if (oProxy != null && oClass.isInstance(oProxy)){
-					Method mParticles = oClass.getDeclaredMethod("addBlockDestroyEffects", World.class, int.class, int.class, int.class, Block.class, int.class);
+				if (oProxy != null && oClass.isInstance(oProxy)){					
+					Method mParticles = ReflectionUtils.getMethod(oClass, "addBlockDestroyEffects", World.class, int.class, int.class, int.class, Block.class, int.class);					
 					mParticles.invoke(oProxy, world, x, y, z, block, 0);				
 				}
 			}
-			catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			}
 		}		
 	}

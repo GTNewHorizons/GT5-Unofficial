@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes;
 import static gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map.sAdvFreezerRecipes_GT;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -28,6 +29,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 	public static int CASING_TEXTURE_ID;
 	public static String mCryoFuelName = "Gelid Cryotheum";
 	public static String mCasingName = "Advanced Cryogenic Casing";
+	public static String mHatchName = "Cryotheum Hatch";
 	public static FluidStack mFuelStack;
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
@@ -36,6 +38,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
+		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
 	public GregtechMetaTileEntity_IndustrialVacuumFreezer(final String aName) {
@@ -44,6 +47,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
 		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings3Misc, 10);
+		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -63,21 +67,19 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends GregtechMeta
 		if (mCryoFuelName.toLowerCase().contains(".")) {
 			mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
 		}
+		if (mHatchName.toLowerCase().contains(".name")) {
+			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
+		}
 		
 		return new String[]{
-				"Controller Block for the Advanced Cryogenic Freezer",
-				"Super cools hot ingots and cells",
-				"Processes four Vacuum Freezer Recipes at 200% speed",
+				"Factory Grade Advanced Vacuum Freezer",
+				"Speed: 200% | Eu Usage: 100% | Parallel: 4",				
 				"Consumes 1L of "+mCryoFuelName+"/t during operation",
-				"Size(WxHxD): 3x3x3 (Hollow)", 
-				mCasingName+"s for the rest (10 at least!)",
-				"Controller (Front centered)",
-				"1x Input Bus",
-				"1x Output Bus", 
-				"1x Input Hatch",
-				"1x Output Hatch (optional)",
-				"1x Energy Hatch",
-				};
+				"Constructed exactly the same as a normal Vacuum Freezer",
+				"Use "+mCasingName+"s (10 at least!)",
+				"1x " + mHatchName + " (Required)",
+				"TAG_HIDE_HATCHES"
+		};
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,

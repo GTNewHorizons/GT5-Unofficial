@@ -82,14 +82,14 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 		AbstractClientPlayer aPlayer = (AbstractClientPlayer) aEvent.entityPlayer;
 		if (!ConfigSwitches.enableCustomCapes) {
 			aEvent.setCanceled(true);
-			Logger.INFO("A1");
+			Logger.WARNING("A1");
 			return;
 		}
 		
 		if (hasResourceChecked) {
 			if (!hasCape && !CORE.DEVENV) {
 				aEvent.setCanceled(true);
-				Logger.INFO("A2");
+				Logger.WARNING("A2");
 				return;
 			}		
 		}
@@ -141,7 +141,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 		if (GT_Utility.getFullInvisibility(aPlayer) || aPlayer.isInvisible()
 				|| GT_Utility.getPotion(aPlayer, Integer.valueOf(Potion.invisibility.id).intValue())) {
 			aEvent.setCanceled(true);
-			Logger.INFO("A3");
+			Logger.WARNING("A3");
 			return;
 		}
 
@@ -209,7 +209,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 						Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
 						GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
 						if (profile != null) {
-							Logger.INFO("[Capes++] Found for UUID check: " + profile.getName() + ".");
+							Logger.WARNING("[Capes++] Found for UUID check: " + profile.getName() + ".");
 							return profile.getName();
 						}
 					} else {
@@ -218,7 +218,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 							Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
 							GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
 							if (profile != null) {
-								Logger.INFO("[Capes++] Found for UUID check 2: " + profile.getName() + ".");
+								Logger.WARNING("[Capes++] Found for UUID check 2: " + profile.getName() + ".");
 								return profile.getName();
 							}
 						}
@@ -230,7 +230,7 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 					Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
 					GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
 					if (profile != null) {
-						Logger.INFO("[Capes++] Found for name check: " + profile.getName() + ".");
+						Logger.WARNING("[Capes++] Found for name check: " + profile.getName() + ".");
 						return profile.getName();
 					}
 				}

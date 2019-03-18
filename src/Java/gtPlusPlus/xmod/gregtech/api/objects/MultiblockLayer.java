@@ -17,6 +17,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.init.Blocks;
@@ -124,10 +125,11 @@ public class MultiblockLayer {
 						GT_MetaTileEntity_Hatch.class
 				};
 			}
-			else {
-				try {
+			else {				
+				Class aDataHatch = ReflectionUtils.getClass("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess");				
+				if (aDataHatch != null) {
 					aHatchTypeClass = new Class[] {
-							Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess"),
+							aDataHatch,
 							GT_MetaTileEntity_Hatch_Dynamo.class,
 							GT_MetaTileEntity_Hatch_Energy.class,
 							GT_MetaTileEntity_Hatch_Input.class,
@@ -138,7 +140,7 @@ public class MultiblockLayer {
 							GT_MetaTileEntity_Hatch_OutputBus.class,
 							GT_MetaTileEntity_Hatch.class
 					};
-				} catch (ClassNotFoundException e) {
+				} else {
 					aHatchTypeClass = new Class[] {
 							GT_MetaTileEntity_Hatch_Dynamo.class,
 							GT_MetaTileEntity_Hatch_Energy.class,

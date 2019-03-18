@@ -18,11 +18,13 @@ import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.fluids.FluidFactory;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.BurnableFuelHandler;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.handler.StopAnnoyingFuckingAchievements;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
@@ -80,8 +82,8 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		CI.preInit();
-
-		COMPAT_IntermodStaging.preInit();
+		FluidFactory.preInit();
+		COMPAT_IntermodStaging.preInit(e);
 		BookHandler.run();
 		// Registration of entities and renderers
 		Logger.INFO("[Proxy] Calling Entity registrator.");
@@ -116,6 +118,7 @@ public class CommonProxy {
 			Logger.ERROR("[ERROR] Did not generate fluids at all.");
 		}
 		CI.init();
+		FluidFactory.init();
 
 		/**
 		 * Register the Event Handlers.
@@ -130,6 +133,10 @@ public class CommonProxy {
 		Utils.registerEvent(new HandlerTooltip_EIO());
 		// Handles Custom Tooltips for GC
 		Utils.registerEvent(new HandlerTooltip_GC());
+		
+		if (CORE.DEVENV) {
+			Utils.registerEvent(new StopAnnoyingFuckingAchievements());
+		}
 
 		// Register Chunkloader
 		ForgeChunkManager.setForcedChunkLoadingCallback(GTplusplus.instance, ChunkManager.getInstance());
@@ -147,12 +154,13 @@ public class CommonProxy {
 		// Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
-		COMPAT_IntermodStaging.init();
+		COMPAT_IntermodStaging.init(e);
 	}
 
 	public void postInit(final FMLPostInitializationEvent e) {
 		Logger.INFO("Cleaning up, doing postInit.");
 		PlayerCache.initCache();
+		FluidFactory.postInit();
 
 		// Make Burnables burnable
 		if (!CORE.burnables.isEmpty()) {
@@ -165,7 +173,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
-		COMPAT_IntermodStaging.postInit();
+		COMPAT_IntermodStaging.postInit(e);
 		COMPAT_HANDLER.runQueuedRecipes();
 	}
 
@@ -175,6 +183,7 @@ public class CommonProxy {
 
 	public void onLoadComplete(FMLLoadCompleteEvent event) {
 		COMPAT_IntermodStaging.onLoadComplete(event);
+		COMPAT_HANDLER.onLoadComplete(event);
 	}
 
 	public void registerNetworkStuff() {

@@ -864,7 +864,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 			Enum gtBeeEnumObject = Enum.valueOf(gtBeeTypes, name); 	
 			Field gtBeesField = FieldUtils.getDeclaredField(gtBeeTypes, "species", true);
 			gtBeesField.setAccessible(true);
-			ReflectionUtils.makeAccessible(gtBeesField);
+			ReflectionUtils.makeFieldAccessible(gtBeesField);
 			Object beeType = gtBeesField.get(gtBeeEnumObject);	    		    	
 			return (IAlleleBeeSpecies) beeType;
 		}		

@@ -13,7 +13,7 @@ public class FoodUtils {
 	public static final Class IEdibleClass;
 	
 	static {
-		IEdibleClass = ReflectionUtils.getClassByName("squeek.applecore.api.food.IEdible");
+		IEdibleClass = ReflectionUtils.getClass("squeek.applecore.api.food.IEdible");
 	}
 	
 	public static boolean isFood(ItemStack food) {

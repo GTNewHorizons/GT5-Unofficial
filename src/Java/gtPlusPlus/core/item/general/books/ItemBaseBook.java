@@ -27,6 +27,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ItemBaseBook extends ItemWritableBook{
 
@@ -113,11 +114,11 @@ public class ItemBaseBook extends ItemWritableBook{
 		
 		if (player.worldObj.isRemote){
 			try {
-				Class<?> clazz = Class.forName("net.minecraft.client.gui.GuiScreenBook");
+				Class<?> clazz = ReflectionUtils.getClass("net.minecraft.client.gui.GuiScreenBook");
 				Constructor<?> ctor = clazz.getConstructor(EntityPlayer.class, ItemStack.class, boolean.class);
 				Object object = ctor.newInstance(new Object[] { player, bookstack, false });
 				Minecraft.getMinecraft().displayGuiScreen((GuiScreen) object);
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
