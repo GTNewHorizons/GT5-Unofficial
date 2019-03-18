@@ -7,6 +7,7 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -27,9 +28,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectSourceHelper;
-import thaumcraft.api.aspects.IAspectSource;
+import thaumcraft.api.aspects.*;
 import thaumcraft.api.visnet.VisNetHandler;
 
 import java.util.*;
@@ -567,14 +566,21 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             IGregTechTileEntity tBaseMetaTileEntity = mAbsorber.getBaseMetaTileEntity();
             if (tBaseMetaTileEntity.isInvalidTileEntity()) return;
             int tRange = getRange();
+            int tY = tBaseMetaTileEntity.getYCoord();
+            int tMaxY = tBaseMetaTileEntity.getWorld().getHeight()-1;
+            // Make sure relative Y range stays between 0 and world max Y
+            int rYMin = (tY - tRange >= 0) ? -tRange : -(tY);
+            int rYMax = (((tY + tRange) <= tMaxY)? tRange : tMaxY - tY);
             mAvailableAspects.clear();
             for (int rX = -tRange; rX <= tRange; rX++) {
                 for (int rZ = -tRange; rZ <= tRange; rZ++) {
-                    // rY < tRange is not a bug. See: thaumcraft.common.lib.events.EssentiaHandler.getSources()
-                    for (int rY = -tRange; rY < tRange; rY++) {
+                	// rY < rYMax is not a bug. See: thaumcraft.common.lib.events.EssentiaHandler.getSources()
+                	for (int rY = rYMin; rY < rYMax; rY++) {
                         TileEntity tTile = tBaseMetaTileEntity.getTileEntityOffset(rX, rY, rZ);
-                        if (tTile instanceof IAspectSource) {
-                            Set<Aspect> tAspects = ((IAspectSource) tTile).getAspects().aspects.keySet();
+                        if (tTile instanceof IAspectContainer) {
+                        	AspectList tAspectList = ((IAspectContainer) tTile).getAspects();
+                        	if (tAspectList == null || tAspectList.aspects.isEmpty()) continue;
+                            Set<Aspect> tAspects = tAspectList.aspects.keySet();
                             mAvailableAspects.addAll(tAspects);
                         }
                     }
