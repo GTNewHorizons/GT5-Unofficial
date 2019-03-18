@@ -30,7 +30,7 @@ public class GT_Block_Casings5
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Fusion Machine Casing MK III");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Fusion Machine Casing MK IV");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Superconductor Fusion Coil Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Europium Coil Block");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Electrum Flux Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Diamericium Titanium Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dyson Ring Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Core Chamber Casing");
@@ -48,7 +48,7 @@ public class GT_Block_Casings5
         ItemList.Casing_Fusion3.set(new ItemStack(this, 1, 9));
         ItemList.Casing_Fusion4.set(new ItemStack(this, 1, 10));
         ItemList.Casing_Fusion_Coil2.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Coil_Europium.set(new ItemStack(this, 1, 12));
+        ItemList.Casing_Coil_ElectrumFlux.set(new ItemStack(this, 1, 12));
         ItemList.Casing_Coil_Diamericiumtitanium.set(new ItemStack(this, 1, 13));
         ItemList.Casing_Dyson_Ring.set(new ItemStack(this, 1, 14));
         ItemList.Casing_Core_Chamber.set(new ItemStack(this, 1, 15));
@@ -82,7 +82,7 @@ public class GT_Block_Casings5
             case 11:
                 return Textures.BlockIcons.MACHINE_CASING_FUSION_COIL2.getIcon();
             case 12:
-                return Textures.BlockIcons.MACHINE_COIL_EUROPIUM.getIcon();
+                return Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX.getIcon();
             case 13:
                 return Textures.BlockIcons.MACHINE_COIL_DIAMERICIUM.getIcon();
             case 14:
@@ -93,4 +93,5 @@ public class GT_Block_Casings5
         return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
     }
 }
+
 
