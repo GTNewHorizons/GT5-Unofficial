@@ -8,10 +8,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public class GT_MetaTileEntity_OreDrillingPlant3 extends GT_MetaTileEntity_OreDrillingPlantBase {
     public GT_MetaTileEntity_OreDrillingPlant3(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        mTier=3;
     }
 
     public GT_MetaTileEntity_OreDrillingPlant3(String aName) {
         super(aName);
+        mTier=3;
     }
 
     @Override

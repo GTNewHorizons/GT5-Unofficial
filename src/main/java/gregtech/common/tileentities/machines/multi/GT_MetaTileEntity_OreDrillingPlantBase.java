@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase {
     
     private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
+    protected int mTier=1;
 
     public GT_MetaTileEntity_OreDrillingPlantBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -138,7 +139,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             return new ArrayList<ItemStack>() {{
                 add(new ItemStack(oreBlock, 1, blockMeta));
             }};
-        } else return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 1);
+        } else return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier*5+1);
     }
 
     private boolean tryConsumeDrillingFluid() {
@@ -194,6 +195,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 "1x Output Bus (Any bottom layer casing)",
                 "1x Maintenance Hatch (Any bottom layer casing)",
                 "1x " + VN[getMinTier()] + "+ Energy Hatch (Any bottom layer casing)",
-                "Radius is " + (getRadiusInChunks() << 4) + " blocks"};
+                "Radius is " + (getRadiusInChunks() << 4) + " blocks",
+                "Fortune bonus of " + mTier * 5};
     }
 }
