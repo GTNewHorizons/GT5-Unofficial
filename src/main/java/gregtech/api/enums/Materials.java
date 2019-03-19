@@ -294,7 +294,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Peanutwood = new Materials(-1, TextureSet.SET_NONE, 	1.0F, 0, 1, 0, 255, 255, 255, 0, "Peanutwood", "Peanut Wood", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
     public static Materials Petroleum = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 1, 1, 255, 255, 255, 0, "Petroleum", "Petroleum", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
     public static Materials Pewter = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 1, 0, 255, 255, 255, 0, "Pewter", "Pewter", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
-    public static Materials Phoenixite = new Materials(-1, TextureSet.SET_NONE, 	6.0F, 64, 1, 1|2|64, 255, 255, 255, 0, "Phoenixite", "Phoenixite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes._NULL);
+    public static Materials Phoenixite = new Materials(420, TextureSet.SET_SHINY ,  40.0F,655360, 8, 1|2|  16|64|128  , 220, 220, 220, 0, "Phoenixite", "Phoenixite", 0, 0, -1, 0, false, false, 20, 1, 1, Dyes._NULL);
     public static Materials Prometheum = new Materials(-1/*960*/, TextureSet.SET_METALLIC,8.0F, 512, 1, 1 | 2 | 8 | 64, 90, 129, 86, 0, "Prometheum", "Prometheum", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
     public static Materials Quartzite = new Materials(523, TextureSet.SET_QUARTZ, 	1.0F, 0, 1, 1|4|8 , 210, 230, 210, 0, "Quartzite", "Quartzite", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeWhite, 1, Arrays.asList(new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 2)));
     public static Materials Randomite = new Materials(-1, TextureSet.SET_NONE, 		1.0F, 0, 1, 1, 255, 255, 255, 0, "Randomite", "Randomite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes._NULL);
