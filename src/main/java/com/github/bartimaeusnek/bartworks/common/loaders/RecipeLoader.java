@@ -600,6 +600,7 @@ public class RecipeLoader implements Runnable {
                             'W', "logWood",
                     }
             );
+
             GT_ModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6),
                     GT_ModHandler.RecipeBits.NOT_REMOVABLE,

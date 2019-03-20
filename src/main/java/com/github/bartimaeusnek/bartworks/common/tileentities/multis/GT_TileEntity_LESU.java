@@ -295,7 +295,7 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
             case 1:
                 return true;
             default:
-                return p_94041_2_.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
+                return p_94041_2_ != null && p_94041_2_.getItem().equals(GT_Utility.getIntegratedCircuit(0).getItem());
         }
     }
 
