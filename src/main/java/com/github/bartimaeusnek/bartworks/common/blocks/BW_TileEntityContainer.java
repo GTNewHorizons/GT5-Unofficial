@@ -55,6 +55,8 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     public BW_TileEntityContainer(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
         super(p_i45386_1_);
         this.tileEntity = tileEntity;
+        this.setHardness(15.0F);
+        this.setResistance(30.0F);
         this.setCreativeTab(MainMod.BWT);
         this.setBlockName(blockName);
         this.setBlockTextureName(MainMod.MOD_ID + ":" + blockName);
@@ -86,7 +88,6 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
         }
         return false;
     }
-
 
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack itemStack) {
         final TileEntity tile = world.getTileEntity(x, y, z);

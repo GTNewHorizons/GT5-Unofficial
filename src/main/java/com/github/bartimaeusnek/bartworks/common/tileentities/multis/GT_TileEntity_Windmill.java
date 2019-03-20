@@ -114,7 +114,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             if (new XSTR().nextInt(2) == 0) {
                 if (tRecipe.getOutput(1) != null)
                     mOutputItems[1] = tRecipe.getOutput(1);
-                else if (GT_OreDictUnificator.getAssociation(aStack) == null || GT_OreDictUnificator.getAssociation(aStack).mMaterial == null || GT_OreDictUnificator.getAssociation(aStack).mMaterial.mMaterial == null ||
+                if( !BW_Util.checkStackAndPrefix(mOutputItems[0]) ||
+                        !(
+                                BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial.mSubTags.contains(SubTag.METAL) ||
+                                BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTAL)||
+                                BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTALLISABLE)
+                        )
+                        ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Flint ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Sugar ||
                         BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial == Materials.Wheat ||
