@@ -114,7 +114,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             if (new XSTR().nextInt(2) == 0) {
                 if (tRecipe.getOutput(1) != null)
                     mOutputItems[1] = tRecipe.getOutput(1);
-                if( !BW_Util.checkStackAndPrefix(mOutputItems[0]) ||
+                else if( !BW_Util.checkStackAndPrefix(mOutputItems[0]) ||
                         !(
                                 BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial.mSubTags.contains(SubTag.METAL) ||
                                 BW_Util.checkStackAndPrefix(mOutputItems[0]) && GT_OreDictUnificator.getAssociation(mOutputItems[0]).mMaterial.mMaterial.mSubTags.contains(SubTag.CRYSTAL)||
