@@ -137,7 +137,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
             return 400.0F;
         }
         if (tMeta == 2) {
-            return 400.0F;
+            return 40.0F;
         }
         if (tMeta == 3) {
             return 250.0F;
