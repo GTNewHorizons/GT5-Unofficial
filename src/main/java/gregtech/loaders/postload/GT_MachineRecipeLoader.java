@@ -3039,8 +3039,8 @@ if(Loader.isModLoaded("Railcraft")){
             //SMD Capacitor
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 2), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 2)}, Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(16), 160, 480);
             GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 2)},Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(24), 160, 480);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Tantalum, 1)}, Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(32), 240, 480);
-            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 8), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Tantalum, 1)},Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(48), 240, 480);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 2), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Tantalum, 2)}, Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(32), 240, 480);
+            GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.foil, Materials.PolyvinylChloride, 4), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Tantalum, 2)},Materials.Plastic.getMolten(144), ItemList.Circuit_Parts_CapacitorSMD.get(48), 240, 480);
             
 			//Lapotron Crystal
 			GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lapotron, 1), ItemList.Circuit_Advanced.get(2L), GT_Values.NF, GT_ModHandler.getIC2Item("lapotronCrystal", 1L), 600, 1024);
