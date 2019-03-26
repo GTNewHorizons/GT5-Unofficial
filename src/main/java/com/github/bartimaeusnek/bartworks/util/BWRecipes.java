@@ -88,6 +88,8 @@ public class BWRecipes {
             "EU generated: ", 1000, "", false, true
     );
 
+
+
     public BWRecipes() {
 
         if (ConfigHandler.BioLab) {
@@ -480,6 +482,12 @@ public class BWRecipes {
         if (sBacteriaVat.addRecipe(new BacteriaVatRecipe(true, aInputs, null, BioItemList.getPetriDish(aCulture), new int[]{}, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSievert)) != null)
             return true;
         return false;
+    }
+
+    public static class DynamicGTRecipe extends GT_Recipe{
+        public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+        }
     }
 
     public static class BW_Recipe_Map_LiquidFuel extends GT_Recipe.GT_Recipe_Map_Fuel {
