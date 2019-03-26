@@ -23,11 +23,13 @@
 package com.github.bartimaeusnek.bartworks.server.container;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
 import com.github.bartimaeusnek.bartworks.common.net.CircuitProgrammerPacket;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,10 +65,13 @@ public class GT_Container_CircuitProgrammer extends Container {
                 addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
-        for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
-        }
 
+        for (int i = 0; i < 9; i++) {
+            if (GT_Utility.isStackValid(inventory.getStackInSlot(i)) && inventory.getStackInSlot(i).getItem() instanceof Circuit_Programmer)
+                addSlotToContainer(new GT_Slot_Render(inventory, i, 8 + i * 18, 142));
+            else
+                addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+        }
     }
 
     @Override
@@ -79,7 +84,7 @@ public class GT_Container_CircuitProgrammer extends Container {
             return ((Slot) this.inventorySlots.get(0)).getStack();
         }
         detectAndSendChanges();
-        return super.slotClick(slot, button, aShifthold, entityPlayer);//( (Slot) this.inventorySlots.get(slot)).getStack();
+        return super.slotClick(slot, button, aShifthold, entityPlayer);
     }
 
     @Override
@@ -168,7 +173,6 @@ public class GT_Container_CircuitProgrammer extends Container {
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
                 if (!Player.isClientWorld())
                     MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), true, (byte) itemStack.getItemDamage()));
-
             } else if (BW_Util.checkStackAndPrefix(itemStack) && GT_OreDictUnificator.getAssociation(itemStack).mPrefix.equals(OrePrefixes.circuit) && GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.equals(Materials.Basic)) {
                 Slot = GT_Utility.getIntegratedCircuit(0);
                 Slot.stackSize = 1;
@@ -180,8 +184,11 @@ public class GT_Container_CircuitProgrammer extends Container {
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
                 if (!Player.isClientWorld())
                     MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), true, (byte) 0));
-
-            } else {
+            }/* else if (GT_Utility.isStackValid(itemStack) && itemStack.getItem() instanceof Circuit_Programmer) {
+                ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
+                this.closeInventory();
+                Player.closeScreen();
+            }*/ else {
                 ForgeHooks.onPlayerTossEvent(Player, itemStack, false);
                 tag = toBind.getTagCompound();
                 tag.setBoolean("HasChip", false);
@@ -189,7 +196,6 @@ public class GT_Container_CircuitProgrammer extends Container {
                 Player.inventory.setInventorySlotContents(Player.inventory.currentItem, toBind);
                 if (!Player.isClientWorld())
                     MainMod.BW_Network_instance.sendToServer(new CircuitProgrammerPacket(Player.worldObj.provider.dimensionId, Player.getEntityId(), false, (byte) 0));
-
             }
         }
 
@@ -225,7 +231,6 @@ public class GT_Container_CircuitProgrammer extends Container {
 
         @Override
         public void closeInventory() {
-
 
         }
 
