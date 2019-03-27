@@ -17,6 +17,7 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'signing'
 import de.undercouch.gradle.tasks.download.Download
 
 version = "1.7.10-1.0.7"
@@ -92,5 +93,20 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+task signJar(dependsOn: 'reobf'){
+    doLast {
+        ant.signjar(
+            destDir: jar.destinationDir,
+            jar: jar.getArchivePath(),
+            alias: findProperty('keyStoreAlias') ?: '',
+            keystore: findProperty('keyStore') ?: '',
+            storepass: findProperty('keyStorePass') ?: '',
+            digestalg: findProperty('signDigestAlg') ?: '',
+            tsaurl: findProperty('signTSAurl') ?: '',
+            verbose: true
+            )
     }
 }
