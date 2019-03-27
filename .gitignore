@@ -8,6 +8,7 @@ eclipse/
 .project
 libs/
 libs2/
+out/
 
 # Compiled class file
 *.class
@@ -20,6 +21,10 @@ libs2/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+*.ipr
+*.iws
+*.iml
 
 # Package Files #
 *.war
