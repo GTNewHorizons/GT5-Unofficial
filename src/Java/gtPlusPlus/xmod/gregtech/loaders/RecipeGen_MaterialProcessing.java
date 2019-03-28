@@ -42,7 +42,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
 
 		if (material.getMaterialComposites().length > 1){
 			Logger.MATERIALS("[Recipe Generator Debug] ["+material.getLocalizedName()+"]");
-			final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;	
+			final int tVoltageMultiplier = material.vVoltageMultiplier;	
 			int[] partSizes = new int[99];
 			if (material.vSmallestRatio != null) {
 				partSizes = new int[material.vSmallestRatio.length];

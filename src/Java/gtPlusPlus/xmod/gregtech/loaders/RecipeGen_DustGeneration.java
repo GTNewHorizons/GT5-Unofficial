@@ -47,7 +47,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 	}
 
 	private void generateRecipes(final Material material, final boolean disableOptional){
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
+		final int tVoltageMultiplier = material.vVoltageMultiplier;
 
 		Logger.WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
@@ -212,7 +212,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 							null,
 							outputStacks,
 							(int) Math.max(material.getMass() * 2L * 1, 1),
-							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
+							material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 					{
 						Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 					}
@@ -318,7 +318,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 								null,
 								outputStacks,
 								(int) Math.max(material.getMass() * 2L * 1, 1),
-								2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
+								material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 						{
 							Logger.WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 							return true;
@@ -421,7 +421,7 @@ public class RecipeGen_DustGeneration extends RecipeGen_Base {
 			if (aSlot < 2) {
 				aSlot = 2;
 			}
-			long aVoltage = MaterialUtils.getVoltageForTier(aSlot);
+			long aVoltage = aMatInfo.vVoltageMultiplier;
 
 			return GT_Values.RA.addBlastRecipe(
 					input1,

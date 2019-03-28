@@ -51,7 +51,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 				ingotStackTwo,
 				plate_Single,
 				(int) Math.max(material.getMass(), 1L),
-				16)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -63,7 +63,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 				ingotStackOne,
 				plate_Single,
 				(int) Math.max(material.getMass() * 1L, 1L),
-				24)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -76,7 +76,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 				shape_Mold,
 				plate_Single,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				2 * tVoltageMultiplier)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -90,7 +90,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 				ingotStackTwo,
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				96)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -102,7 +102,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
 				plate_SingleTwo,
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				96)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {

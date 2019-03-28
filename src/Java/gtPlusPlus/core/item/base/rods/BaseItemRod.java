@@ -13,12 +13,12 @@ public class BaseItemRod extends BaseItemComponent{
 
 	public BaseItemRod(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.ROD);
-		this.addExtruderRecipe();
-		this.addLatheRecipe();
+		this.addCutterRecipe(material);
+		this.addLatheRecipe(material);
 	}
 
 
-	private void addExtruderRecipe(){
+	private void addCutterRecipe(Material material){
 		Logger.WARNING("Adding cutter recipe for "+this.materialName+" Rods");
 		final ItemStack stackStick = this.componentMaterial.getRod(1);
 		final ItemStack stackBolt = this.componentMaterial.getBolt(4);
@@ -29,20 +29,20 @@ public class BaseItemRod extends BaseItemComponent{
 					stackBolt,
 					null,
 					(int) Math.max(this.componentMaterial.getMass() * 2L, 1L),
-					4);
+					material.vVoltageMultiplier);
 	}
 
 
-	private void addLatheRecipe(){
+	private void addLatheRecipe(Material material){
 		Logger.WARNING("Adding recipe for "+this.materialName+" Rod");
 		ItemStack boltStack = this.componentMaterial.getIngot(1);
 		if (ItemUtils.checkForInvalidItems(boltStack)){
 			GT_Values.RA.addLatheRecipe(
 					boltStack,
 					ItemUtils.getSimpleStack(this),
-					null,
+					material.getSmallDust(2),
 					(int) Math.max(this.componentMaterial.getMass() / 8L, 1L),
-					4);
+					material.vVoltageMultiplier);
 		}
 	}
 
