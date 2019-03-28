@@ -708,6 +708,11 @@ GT_MetaTileEntity_MultiBlockBase {
 					mHasBoostedCurrentRecipe = true;
 					tRecipe = mBoostedRecipe;
 				}
+				//Bad boost
+				else {
+					mBoostedRecipe = null;
+					mHasBoostedCurrentRecipe = false;				
+				}
 			}
 		}
 		//We have changed inputs, so we should generate a new boosted recipe
@@ -717,6 +722,11 @@ GT_MetaTileEntity_MultiBlockBase {
 				mBoostedRecipe = aBoostedRecipe;
 				mHasBoostedCurrentRecipe = true;
 				tRecipe = mBoostedRecipe;
+			}
+			//Bad boost
+			else {
+				mBoostedRecipe = null;
+				mHasBoostedCurrentRecipe = false;				
 			}
 		}
 		
