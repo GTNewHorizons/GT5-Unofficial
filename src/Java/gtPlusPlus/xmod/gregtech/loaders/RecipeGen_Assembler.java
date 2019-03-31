@@ -39,7 +39,7 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
 				ItemUtils.getGregtechCircuit(4),
 				material.getFrameBox(1),
 				60,
-				8);
+				material.vVoltageMultiplier);
 
 		//Rotor
 		if (ItemUtils.checkForInvalidItems(new ItemStack[] {material.getPlate(1), material.getRing(1), material.getRotor(1)}))
@@ -48,7 +48,7 @@ public class RecipeGen_Assembler extends RecipeGen_Base {
 				material.getRing(1),
 				material.getRotor(1),
 				240,
-				24);
+				material.vVoltageMultiplier);
 
 	}
 

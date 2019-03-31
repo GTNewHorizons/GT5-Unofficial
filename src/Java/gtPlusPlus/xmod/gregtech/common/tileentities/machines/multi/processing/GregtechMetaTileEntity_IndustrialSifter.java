@@ -12,7 +12,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -117,6 +116,11 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		return checkRecipeGeneric((4* GT_Utility.getTier(this.getMaxInputVoltage())), 75, 400, 8800);
+	}
+	
+	@Override
+	protected boolean doesMachineBoostOutput() {
+		return true;
 	}
 	
 	@Override

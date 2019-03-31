@@ -57,7 +57,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 					shape_Ingot,
 					material.getIngot(9),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
-					4 * material.vVoltageMultiplier)){
+					material.vVoltageMultiplier)){
 				Logger.WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
@@ -70,7 +70,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 					shape_Block,
 					material.getBlock(1),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
-					8 * material.vVoltageMultiplier)){
+					material.vVoltageMultiplier)){
 				Logger.WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
@@ -85,7 +85,8 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 				itemIngot,
 				shape_Plate,
 				itemPlate,
-				10, 4 * tVoltageMultiplier)){
+				10, 
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -100,7 +101,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 					shape_Ring,
 					material.getRing(4),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
-					6 * material.vVoltageMultiplier)){
+					material.vVoltageMultiplier)){
 				Logger.WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
@@ -117,7 +118,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 					shape_Gear,
 					itemGear,
 					(int) Math.max(material.getMass() * 5L, 1),
-					8 * material.vVoltageMultiplier)){
+					material.vVoltageMultiplier)){
 				Logger.WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
@@ -133,7 +134,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 				shape_Rod,
 				material.getRod(2),
 				(int) Math.max(material.getMass() * 2L * 1, 1),
-				6 * material.vVoltageMultiplier)){
+				material.vVoltageMultiplier)){
 			Logger.WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
@@ -149,7 +150,7 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
 					shape_Bolt,
 					material.getBolt(8),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
-					6 * material.vVoltageMultiplier)){
+					material.vVoltageMultiplier)){
 				Logger.WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {

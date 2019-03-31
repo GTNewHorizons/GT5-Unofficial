@@ -476,6 +476,62 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return true;
 	}
+	
+	private int boostOutput(int aAmount) {		
+		if (aAmount <= 0) {
+			return 10000;
+		}		
+		if (aAmount <= 250) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);
+		}
+		else if (aAmount <= 500) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
+		}
+		else if (aAmount <= 750) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
+		}
+		else if (aAmount <= 1000) {
+			aAmount = (aAmount*2);
+		}
+		else if (aAmount <= 1500) {
+			aAmount = (aAmount*2);			
+		}
+		else if (aAmount <= 2000) {
+			aAmount = (int) (aAmount*1.5);		
+		}
+		else if (aAmount <= 3000) {
+			aAmount = (int) (aAmount*1.5);			
+		}
+		else if (aAmount <= 4000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 5000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 7000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 9000) {
+			aAmount = (int) (aAmount*1.1);			
+		}		
+		return Math.min(10000, aAmount);
+	}
+	
+	public GT_Recipe generateAdditionalOutputForRecipe(GT_Recipe aRecipe) {
+		AutoMap<Integer> aNewChances = new AutoMap<Integer>();
+		for (int chance : aRecipe.mChances) {
+			aNewChances.put(boostOutput(chance));
+		}
+		GT_Recipe aClone = aRecipe.copy();
+		int[] aTemp = new int[aNewChances.size()];
+		int slot = 0;
+		for (int g : aNewChances) {
+			aTemp[slot] = g;
+			slot++;
+		}		
+		aClone.mChances = aTemp;		
+		return aClone;
+	}
 
 	/**
 	 * A Static {@link Method} object which holds the current status of logging.
@@ -550,8 +606,161 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+		
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+
+		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
+				getBaseMetaTileEntity(), mLastRecipe, false,
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+
+		if (tRecipe == null) {
+			log("BAD RETURN - 1");
+			return false;
+		}
+		
+		//Boost output if machine implements this strategy
+		if (doesMachineBoostOutput()) {
+			return checkRecipeBoostedOutputs(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, tRecipe);
+		}		
+		else {
+			return checkRecipeGeneric(tRecipe, aSpeedBonusPercent, aOutputChanceRoll);
+		}
+		
+	}
+	
+
+	/*
+	 * Here we handle recipe boosting, which grants additional output %'s to recipes that do not have 100%.
+	 */
+	
+	private boolean mHasBoostedCurrentRecipe = false;
+	private GT_Recipe mBoostedRecipe = null;
+	private ItemStack[] mInputVerificationForBoosting = null;
+	
+	/**
+	 * Does this machine boost it's output?
+	 * @return - if true, gives additional % to output chances.
+	 */
+	protected boolean doesMachineBoostOutput() {
+		return false;
+	}
+
+	/**
+	 * Processes recipes but provides a bonus to the output % of items if they are < 100%.
+	 * 
+	 * @param aItemInputs
+	 * @param aFluidInputs
+	 * @param aMaxParallelRecipes
+	 * @param aEUPercent
+	 * @param aSpeedBonusPercent
+	 * @param aOutputChanceRoll
+	 * @param aRecipe
+	 * @return
+	 */
+	public boolean checkRecipeBoostedOutputs(
+			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+			int aMaxParallelRecipes, int aEUPercent,
+			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+		
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		
+		log("Running checkRecipeGeneric(0)");
+
+		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
+				getBaseMetaTileEntity(), mLastRecipe, false,
+				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+
+		log("Running checkRecipeGeneric(1)");
+		
+		//First we check whether or not we have an input cached for boosting.
+		//If not, we set it to the current recipe.
+		//If we do, we compare it against the current recipe, if thy are the same, we try return a boosted recipe, if not, we boost a new recipe.
+		boolean isRecipeInputTheSame = false;	
+		
+		//No cached recipe inputs, assume first run.
+		if (mInputVerificationForBoosting == null) {
+			mInputVerificationForBoosting = tRecipe.mInputs;	
+			isRecipeInputTheSame = true;
+		}
+		//If the inputs match, we are good.
+		else {
+			if (tRecipe.mInputs == mInputVerificationForBoosting) {
+				isRecipeInputTheSame = true;
+			}
+			else {
+				isRecipeInputTheSame = false;
+			}
+		}
+		
+		//Inputs are the same, let's see if there's a boosted version.
+		if (isRecipeInputTheSame) {
+			//Yes, let's just set that as the recipe
+			if (mHasBoostedCurrentRecipe && mBoostedRecipe != null) {
+				tRecipe = mBoostedRecipe;
+			}
+			//We have yet to generate a new boosted recipe
+			else {
+				GT_Recipe aBoostedRecipe = this.generateAdditionalOutputForRecipe(tRecipe);
+				if (aBoostedRecipe != null) {
+					mBoostedRecipe = aBoostedRecipe;
+					mHasBoostedCurrentRecipe = true;
+					tRecipe = mBoostedRecipe;
+				}
+			}
+		}
+		//We have changed inputs, so we should generate a new boosted recipe
+		else {
+			GT_Recipe aBoostedRecipe = this.generateAdditionalOutputForRecipe(tRecipe);
+			if (aBoostedRecipe != null) {
+				mBoostedRecipe = aBoostedRecipe;
+				mHasBoostedCurrentRecipe = true;
+				tRecipe = mBoostedRecipe;
+			}
+		}
+		
+		//Bad modify, let's just use the original recipe.
+		if (!mHasBoostedCurrentRecipe || mBoostedRecipe == null) {
+			tRecipe = aRecipe != null ? aRecipe : findRecipe(
+					getBaseMetaTileEntity(), mLastRecipe, false,
+					gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
+		}		
+		
+		// Remember last recipe - an optimization for findRecipe()
+		this.mLastRecipe = tRecipe;
+
+		if (tRecipe == null) {
+			log("BAD RETURN - 1");
+			return false;
+		}
+		
+		// -- Try not to fail after this point - inputs have already been consumed! --
+		return checkRecipeGeneric(tRecipe, aSpeedBonusPercent, aOutputChanceRoll);
+	}
+	
+
+	/**
+	 * Directly processes a recipe from a non-generic recipe handler
+	 * @param aRecipe - A pre-modified GT_Recipe
+	 * @return - Did we process?
+	 */
+	public boolean checkRecipeGeneric(GT_Recipe tRecipe, int rSpeedBonus, int aMaxOutputChance) {
 		// Based on the Processing Array. A bit overkill, but very flexible.
 
+		if (tRecipe == null) {
+			return false;
+		}
+		
+
+		ItemStack[] aItemInputs = tRecipe.mInputs;
+		FluidStack[] aFluidInputs = tRecipe.mFluidInputs;
+		int aMaxParallelRecipes = getMaxParallelRecipes();
+		int aEUPercent = this.getEuDiscountForParallelism();
+		int aSpeedBonusPercent = rSpeedBonus;
+		int aOutputChanceRoll = aMaxOutputChance;
+		
+		
 
 		//Control Core to control the Multiblocks behaviour.
 		int aControlCoreTier = getControlCoreTier();
@@ -561,7 +770,6 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("No control core found.");
 			return false;
 		}
-
 
 		// Reset outputs and progress stats
 		this.mEUt = 0;
@@ -578,11 +786,6 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("Control core found is lower tier than power tier.");
 			return false;
 		}
-
-
-		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
-				getBaseMetaTileEntity(), mLastRecipe, false,
-				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
 		log("Running checkRecipeGeneric(1)");
 		// Remember last recipe - an optimization for findRecipe()

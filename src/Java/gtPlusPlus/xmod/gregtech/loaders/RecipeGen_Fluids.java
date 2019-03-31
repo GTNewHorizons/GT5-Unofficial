@@ -53,7 +53,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(144), // Fluid Output
 							0, // Chance
 							1 * 20, // Duration
-							16 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING("144l fluid extractor from 1 ingot Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -69,7 +69,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(144), // Fluid Output
 							0, // Chance
 							1 * 20, // Duration
-							16 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING("144l fluid extractor from 1 plate Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -85,7 +85,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(288), // Fluid Output
 							0, // Chance
 							1 * 20, // Duration
-							16 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING("144l fluid extractor from 1 double plate Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -101,7 +101,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(16), // Fluid Output
 							0, // Chance
 							16, // Duration
-							8 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING("16l fluid extractor from 1 nugget Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -117,7 +117,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(144 * 9), // Fluid Output
 							0, // Chance
 							288, // Duration
-							16 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid extractor from 1 block Recipe: "
 								+ material.getLocalizedName() + " - Success");
@@ -136,7 +136,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						material.getFluid(144), // Fluid Input
 						material.getIngot(1), // output
 						32, // Duration
-						8 // Eu Tick
+						material.vVoltageMultiplier // Eu Tick
 				)) {
 					Logger.WARNING(
 							"144l fluid molder for 1 ingot Recipe: " + material.getLocalizedName() + " - Success");
@@ -151,7 +151,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						material.getFluid(144), // Fluid Input
 						material.getPlate(1), // output
 						32, // Duration
-						8 // Eu Tick
+						material.vVoltageMultiplier // Eu Tick
 				)) {
 					Logger.WARNING(
 							"144l fluid molder for 1 plate Recipe: " + material.getLocalizedName() + " - Success");
@@ -166,7 +166,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						material.getFluid(16), // Fluid Input
 						material.getNugget(1), // output
 						16, // Duration
-						4 // Eu Tick
+						material.vVoltageMultiplier // Eu Tick
 				)) {
 					Logger.WARNING(
 							"16l fluid molder for 1 nugget Recipe: " + material.getLocalizedName() + " - Success");
@@ -181,7 +181,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						material.getFluid(576), // Fluid Input
 						material.getGear(1), // output
 						128, // Duration
-						8 // Eu Tick
+						material.vVoltageMultiplier // Eu Tick
 				)) {
 					Logger.WARNING(
 							"576l fluid molder for 1 gear Recipe: " + material.getLocalizedName() + " - Success");
@@ -195,7 +195,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 						material.getFluid(144 * 9), // Fluid Input
 						material.getBlock(1), // output
 						288, // Duration
-						16 // Eu Tick
+						material.vVoltageMultiplier // Eu Tick
 				)) {
 					Logger.WARNING((144 * 9) + "l fluid molder from 1 block Recipe: " + material.getLocalizedName()
 							+ " - Success");
@@ -227,7 +227,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(72), // Fluid Input
 							material.getRod(1), // output
 							150, // Duration
-							24 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -243,7 +243,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(144), // Fluid Input
 							material.getLongRod(1), // output
 							300, // Duration
-							24 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 rod long Recipe: "
 								+ material.getLocalizedName() + " - Success");
@@ -258,7 +258,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(18), // Fluid Input
 							material.getBolt(1), // output
 							50, // Duration
-							6 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 bolt Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -273,7 +273,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(18), // Fluid Input
 							material.getScrew(1), // output
 							50, // Duration
-							6 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 screw Recipe: " + material.getLocalizedName()
 								+ " - Success");
@@ -288,7 +288,7 @@ public class RecipeGen_Fluids extends RecipeGen_Base {
 							material.getFluid(36), // Fluid Input
 							material.getRing(1), // output
 							100, // Duration
-							12 // Eu Tick
+							material.vVoltageMultiplier // Eu Tick
 					)) {
 						Logger.WARNING((144 * 9) + "l fluid molder from 1 ring Recipe: " + material.getLocalizedName()
 								+ " - Success");
