@@ -31,6 +31,7 @@ import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_AcidGenerator;
@@ -161,7 +162,7 @@ public class ItemRegistry {
             dehp = new GT_TileEntity_DEHP(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1, 1, "DEHP", "Deep Earth Heating Pump").getStackForm(1L);
             megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
             megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
-
+            new GT_TileEntity_ElectricImplosionCompressor( ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 4,"Electric Implosion Compressor","Electric Implosion Compressor");
         }
 
 
