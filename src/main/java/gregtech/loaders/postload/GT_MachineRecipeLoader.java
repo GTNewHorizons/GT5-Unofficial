@@ -4510,6 +4510,43 @@ if(Loader.isModLoaded("Railcraft")){
     	//Tesseract
     	   GT_Values.RA.addTesseractRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Oriharukon, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AlienOrganic, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ledox, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1L), new int[]{2000, 6000, 4000, 10000, 9000, 5000}, 100, 8000000);
     	   
+		   if(Loader.isModLoaded("tectech")){
+    		    TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Core_Chamber.get(1L),48000,128,1000000,6,new ItemStack[]{
+    		    		ItemList.Teleporter.get(1L),
+    	                ItemList.Casing_Dyson_Ring.get(16L),
+    	                ItemList.Casing_Fusion_Coil.get(16L),
+    	                ItemList.Field_Generator_UHV.get(4L),
+    	                ItemList.Sensor_UHV.get(4L),
+    	                ItemList.Emitter_UHV.get(4L),
+    	                GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 4L),
+    	                GT_OreDictUnificator.get(OrePrefixes.lens,Materials.ReinforcedGlass,32),
+    	                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 16)
+    	        }, new FluidStack[]{
+    	        		Materials.UUMatter.getFluid(2000),
+                        Materials.Neutronium.getMolten(2592),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
+                        Materials.Osmiridium.getMolten(1296)
+    	        }, ItemList.Machine_MultiblockTesseract.get(1L), 8000, 2000000);
+    	        
+    	        }else{
+    	            
+    	            GT_Values.RA.addAssemblylineRecipe(ItemList.Casing_Core_Chamber.get(1L), 1152000, new Object[]{
+    	            		ItemList.Teleporter.get(1L),
+    	            		ItemList.Casing_Dyson_Ring.get(16L),
+    	            		ItemList.Casing_Fusion_Coil.get(16L),
+        	                ItemList.Field_Generator_UHV.get(4L),
+        	                ItemList.Sensor_UHV.get(4L),
+        	                ItemList.Emitter_UHV.get(4L),
+    	                    new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4},
+    	                    GT_OreDictUnificator.get(OrePrefixes.lens,Materials.ReinforcedGlass,32),
+    	                    GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 16)
+    	            }, new FluidStack[]{
+    	            		Materials.UUMatter.getFluid(2000),
+                            Materials.Neutronium.getMolten(2592),
+                            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
+                            Materials.Osmiridium.getMolten(1296)
+    	            }, ItemList.Machine_MultiblockTesseract.get(1L), 8000, 2000000);
+    	        }
 		//Sluice Juice and Sand
 		   GT_Values.RA.addDistilleryRecipe(1, Materials.SluiceJuice.getFluid(100L), GT_ModHandler.getDistilledWater(50L), GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.SluiceSand, 1), 100, 16, false);
 		   GT_Values.RA.addCentrifugeRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,Materials.SluiceSand, 1), null, null, null, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 2), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Neodymium, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Cobalt, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1), new int[]{9640,648,648,648,648,648}, 144, 16);
