@@ -53,13 +53,18 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 	 * A map of the textures used for this blocks. The key is the meta, then each internal map holds textures tied to each forge direction. Do not use unknown direction.
 	 * @return
 	 */
-	public abstract HashMap<Integer, HashMap<ForgeDirection, IIcon>> getTextureArray();
+	public HashMap<Integer, HashMap<ForgeDirection, IIcon>> getTextureArray() {		
+		return mTextures;
+	}
+	
+	public abstract void generateTextureArray(final IIconRegister iicon);
 
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerBlockIcons(final IIconRegister p_149651_1_) {
-		this.blockIcon = p_149651_1_.registerIcon("redstone_block");
+	public final void registerBlockIcons(final IIconRegister iicon) {
+		generateTextureArray(iicon);
+		this.blockIcon = iicon.registerIcon("redstone_block");		
 	}
 
 	
@@ -305,8 +310,18 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 	 * Ticks the block if it's been scheduled
 	 */
 	public void updateTick(World aWorld, int aX, int aY, int aZ, Random p_149674_5_) {
-		if (!aWorld.isRemote && !aWorld.isBlockIndirectlyGettingPowered(aX, aY, aZ)) {
-			// aWorld.setBlock(aX, aY, aZ, Blocks.redstone_lamp, 0, 2);
+		TileEntityRedstoneHandler aTile = getTileEntity(aWorld, aX, aY, aZ);
+		// Client side handling
+		if (aTile != null) {
+			this.setLightLevel(aTile.getLightBrightness());
+		}
+		// Only continue on server
+		if (aWorld.isRemote) {
+			return;
+		}
+		if (aTile != null) {
+			if (aTile.isGettingIndirectlyPowered()) {
+			}
 		}
 	}
 

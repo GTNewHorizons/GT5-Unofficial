@@ -11,6 +11,7 @@ import gtPlusPlus.core.block.general.LightGlass;
 import gtPlusPlus.core.block.general.MiningExplosives;
 import gtPlusPlus.core.block.general.PlayerDoors;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
+import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneDetector;
 import gtPlusPlus.core.block.machine.CircuitProgrammer;
 import gtPlusPlus.core.block.machine.DecayablesChest;
 import gtPlusPlus.core.block.machine.FishTrap;
@@ -140,6 +141,8 @@ public final class ModBlocks {
 		blockCustomJukebox = new Machine_SuperJukebox();
 		
 		blockPooCollector = new Machine_PooCollector();
+		
+		new BlockGenericRedstoneDetector();
 
 	}
 

@@ -17,7 +17,9 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	private BlockPos mTilePos;
 	private boolean mRequiresUpdate = false;
 	private Long mStartTime;
-	private int mLightValue = 0;
+	
+	public boolean mLightMode = false;
+	public int mLightValue = 0;	
 	
 	/**
 	 * Sets the Redstone Handler Type. 
@@ -30,13 +32,26 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	public Block getBlock() {
 		return mTilePos != null ? mTilePos.getBlockAtPos() : Blocks.redstone_block;
 	}
+
+	public final boolean isLight() {
+		return mLightMode;
+	}	
 	
+	public final int getLightBrightness() {
+		if (!isLight()) {
+			return 0;
+		}
+		else {
+			return mLightValue;
+		}
+	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound aNBT) {
 		mStartTime = aNBT.getLong("mStartTime");
 		mInvName = aNBT.getString("mInvName");
 		mLightValue = aNBT.getInteger("mLightValue");
+		mLightMode = aNBT.getBoolean("mLightMode");
 		super.readFromNBT(aNBT);
 	}
 
@@ -46,6 +61,7 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 		aNBT.setLong("mStartTime", mStartTime);
 		aNBT.setString("mInvName", mInvName);
 		aNBT.setInteger("mLightValue", mLightValue);
+		aNBT.setBoolean("mLightMode", mLightMode);
 		super.writeToNBT(aNBT);
 	}
 	
@@ -250,6 +266,45 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	}
 	
 	
+	public boolean providesWeakPower() {
+		return isProvidingPower();
+	}
+	
+	public boolean providesStrongPower() {
+		return isProvidingPower();
+	}
+
+
+	/**
+	 * Returns the amount of week power this block is providing to a side.
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param side
+	 * @return
+	 */
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {		
+		if (!providesWeakPower()) {
+			return 0;
+		}
+		return getOutputPowerLevel();
+	}
+	/**
+	 * Returns the amount of strong power this block is providing to a side.
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param side
+	 * @return
+	 */
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+		if (!providesStrongPower()) {
+			return 0;
+		}
+		return getOutputPowerLevel();
+	}
 	
 	
 	
@@ -378,16 +433,6 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 
 	public boolean hasCustomInventoryName() {
 		return (this.mInvName != null) && !this.mInvName.equals("");
-	}
-
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	
