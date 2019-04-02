@@ -30,6 +30,8 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -1120,14 +1122,14 @@ public class ItemUtils {
 			return false;
 		}
 		final Item mItem = aStack.getItem();
-		if (mItem instanceof GT_MetaGenerated_Tool_01) {
+		if (mItem instanceof GT_MetaGenerated_Tool_01 || mItem instanceof MetaGeneratedGregtechTools || mItem instanceof Gregtech_MetaTool) {
 			return true;
-		}		
+		}
 		return false;
 	}
 	
 	public static boolean isToolWrench(ItemStack aWrench) {
-		if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120 || aWrench.getItemDamage() == 122 || aWrench.getItemDamage() == 124)) {
+		if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120 || aWrench.getItemDamage() == 122 || aWrench.getItemDamage() == 124 || aWrench.getItemDamage() == 7734)) {
 			return true;
 		}
 		return false;
@@ -1162,7 +1164,7 @@ public class ItemUtils {
 	}
 	
 	public static boolean isToolHammer(ItemStack aHammer) {
-		if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12)) {
+		if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12 || aHammer.getItemDamage() == 7734)) {
 			return true;
 		}
 		return false;

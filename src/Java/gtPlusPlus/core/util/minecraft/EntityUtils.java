@@ -1,10 +1,13 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +19,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import gregtech.api.util.GT_Utility;
 
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 
@@ -124,6 +128,35 @@ public class EntityUtils {
 
 	public static void doDamage(Entity entity, DamageSource dmg, int i) {		
 		entity.attackEntityFrom(dmg, i);		
+	}
+	
+	public static boolean isTileEntityRegistered(Class aTileClass, String aTileName) {
+		Field aRegistry = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "nameToClassMap");	
+		Field aRegistry2 = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "classToNameMap");
+		try {
+			Object o = aRegistry.get(null);
+			if (o != null) {
+			    Map nameToClassMap = (Map) o;			    
+			    if (!nameToClassMap.containsKey(aTileName)) {			    	
+			    	 o = aRegistry2.get(null);
+						if (o != null) {
+						    Map classToNameMap = (Map) o;			    
+						    if (!classToNameMap.containsKey(aTileClass)) {
+								return false;		    	
+						    }	
+						    else {
+						    	return true;
+						    } 
+						}			    		    	
+			    }	
+			    else {
+			    	return true;
+			    }
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {			
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

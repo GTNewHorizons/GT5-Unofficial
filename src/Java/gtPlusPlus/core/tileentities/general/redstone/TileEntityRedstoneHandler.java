@@ -1,10 +1,16 @@
 package gtPlusPlus.core.tileentities.general.redstone;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IToolable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +39,9 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 	}
 	
 	private void registerTileEntity() {
-		GameRegistry.registerTileEntity(getTileEntityClass(), getTileEntityNameForRegistration());
+		if (!EntityUtils.isTileEntityRegistered(getTileEntityClass(), getTileEntityNameForRegistration())) {
+			GameRegistry.registerTileEntity(getTileEntityClass(), getTileEntityNameForRegistration());
+		}
 	}
 	
 	protected abstract Class<? extends TileEntity> getTileEntityClass();
@@ -109,9 +117,9 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 			mRequiresUpdate = false;
 			mHasUpdatedRecently = true;
 			mLastUpdate = System.currentTimeMillis();
-			if (mTilePos.world.getBlockLightValue(xCoord, yCoord, zCoord) != getLightBrightness()) {
-				mTilePos.getBlockAtPos().setLightLevel(getLightBrightness());
-				mTilePos.world.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, (int) (getLightBrightness()/0.625f));	
+			if (mTilePos.world.getBlockLightValue(xCoord, yCoord, zCoord) != getLightBrightness()/0.0625f) {
+				mTilePos.getBlockAtPos().setLightLevel(getLightBrightness()/0.0625f);
+				mTilePos.world.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, (int) (getLightBrightness()/0.0625f));	
 				mTilePos.world.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
 				Logger.INFO("Updating Light");
 			}	

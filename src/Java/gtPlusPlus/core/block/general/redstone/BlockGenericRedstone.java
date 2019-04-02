@@ -92,17 +92,19 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 				
 				final TileEntityRedstoneHandler tile = (TileEntityRedstoneHandler) world.getTileEntity(x, y, z);
 				if (tile != null) {					
-					if (tile.isScrewdriverable() || player.capabilities.isCreativeMode) {
+					if (tile.isScrewdriverable()) {
 						if (ItemUtils.isToolScrewdriver(mHandStack)){
 							mDidTool = tile.onScrewdriverRMB();
+							PlayerUtils.messagePlayer(player, "Adjusted Light level by 0.0625f. "+tile.getLightBrightness());
 						}
 					}
-					if (tile.isMalletable() || player.capabilities.isCreativeMode) {
+					if (tile.isMalletable()) {
 						if (ItemUtils.isToolMallet(mHandStack)){
 							mDidTool = tile.onMalletRMB();
+							PlayerUtils.messagePlayer(player, "Light Mode active: "+mDidTool);
 						}
 					}
-					if (tile.isWrenchable() || player.capabilities.isCreativeMode) {
+					if (tile.isWrenchable()) {
 						if (ItemUtils.isToolWrench(mHandStack)){
 							mDidTool = tile.onWrenchRMB();
 						}

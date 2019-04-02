@@ -10,6 +10,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -50,15 +51,14 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		public boolean onScrewdriverRMB() {
-			if (this.mLightValue + 1 <= 1) {
-				this.mLightValue += 1;
+			if (this.mLightValue + 0.0625f <= 1) {
+				this.mLightValue += 0.0625f;
 			}
 			else {
 				this.mLightValue = 0;
 			}
-			Logger.INFO("Screwdriver | "+this.getLightBrightness());
 			this.markForUpdate();
-			return super.onScrewdriverRMB();
+			return true;
 		}
 
 		@Override
@@ -75,7 +75,8 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 		@Override
 		public boolean onMalletRMB() {
 			this.mLightMode = Utils.invertBoolean(mLightMode);
-			return super.onMalletRMB();
+			this.markForUpdate();
+			return mLightMode;
 		}
 
 		@Override
@@ -91,8 +92,10 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		public boolean onWrenchRMB() {
-			// TODO Auto-generated method stub
-			return super.onWrenchRMB();
+			Logger.INFO("Found Wrench");
+			ExplosionHandler explode = new ExplosionHandler();
+			explode.createExplosion(this.worldObj, null, this.xCoord, this.yCoord, this.zCoord, 1f, false, true);
+			return true;
 		}	
 
 		@Override
