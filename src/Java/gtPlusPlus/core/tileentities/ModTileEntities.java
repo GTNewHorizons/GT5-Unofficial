@@ -7,6 +7,7 @@ import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.*;
+import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
 import gtPlusPlus.core.tileentities.machines.*;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 
@@ -31,6 +32,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityDecayablesChest.class, "TileDecayablesChest");		
 		GameRegistry.registerTileEntity(TileEntitySuperJukebox.class, "TileEntitySuperJukebox");
 		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
+		GameRegistry.registerTileEntity(TileEntityRedstoneHandler.class, "TileEntityRedstoneHandler");
 
 		
 		//Mod TEs
