@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,25 +16,84 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockGenericRedstoneDetector extends BlockGenericRedstone {
+public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
-	public BlockGenericRedstoneDetector() {
-		super("detector", "Redstone Detector");
+	public BlockGenericRedstoneTest() {
+		super("test", "Redstone Test");
 		setTickRandomly(true);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
-		return new TileEntityRedstoneDetector();
+		return new TileEntityRedstoneTest();
 	}
 	
-	public class TileEntityRedstoneDetector extends TileEntityRedstoneHandler {
-		public TileEntityRedstoneDetector() {
-			super(0);
+	public class TileEntityRedstoneTest extends TileEntityRedstoneHandler {
+		public TileEntityRedstoneTest() {
+			super(2);
 		}
+
+		@Override
+		public boolean isScrewdriverable() {
+			return true;
+		}
+
+		@Override
+		public boolean onScrewdriverLMB() {
+			// TODO Auto-generated method stub
+			return super.onScrewdriverLMB();
+		}
+
+		@Override
+		public boolean onScrewdriverRMB() {
+			if (this.mLightValue + 1 <= 1) {
+				this.mLightValue += 1;
+			}
+			else {
+				this.mLightValue = 0;
+			}
+			Logger.INFO("Screwdriver | "+this.getLightBrightness());
+			this.markForUpdate();
+			return super.onScrewdriverRMB();
+		}
+
+		@Override
+		public boolean isMalletable() {
+			return true;
+		}
+
+		@Override
+		public boolean onMalletLMB() {
+			// TODO Auto-generated method stub
+			return super.onMalletLMB();
+		}
+
+		@Override
+		public boolean onMalletRMB() {
+			this.mLightMode = Utils.invertBoolean(mLightMode);
+			return super.onMalletRMB();
+		}
+
+		@Override
+		public boolean isWrenchable() {
+			return true;
+		}
+
+		@Override
+		public boolean onWrenchLMB() {
+			// TODO Auto-generated method stub
+			return super.onWrenchLMB();
+		}
+
+		@Override
+		public boolean onWrenchRMB() {
+			// TODO Auto-generated method stub
+			return super.onWrenchRMB();
+		}	
 
 		@Override
 		protected Class<? extends TileEntity> getTileEntityClass() {
@@ -41,8 +102,21 @@ public class BlockGenericRedstoneDetector extends BlockGenericRedstone {
 
 		@Override
 		protected String getTileEntityNameForRegistration() {
-			return "TileEntityRedstoneDetector";
-		}		
+			// TODO Auto-generated method stub
+			return "TileEntityRedstoneTest";
+		}
+
+		@Override
+		public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+			// TODO Auto-generated method stub
+			return super.isProvidingWeakPower(world, x, y, z, side);
+		}
+
+		@Override
+		public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+			// TODO Auto-generated method stub
+			return super.isProvidingStrongPower(world, x, y, z, side);
+		}	
 	}
 
 	@Override

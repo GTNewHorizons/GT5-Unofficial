@@ -13,6 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -1112,6 +1113,66 @@ public class ItemUtils {
 			aDisplay = aStack.getItem().getUnlocalizedNameInefficiently(aStack);
 		}
 		return aDisplay;
+	}
+	
+	public static boolean isItemGregtechTool(ItemStack aStack) {
+		if (aStack == null) {
+			return false;
+		}
+		final Item mItem = aStack.getItem();
+		if (mItem instanceof GT_MetaGenerated_Tool_01) {
+			return true;
+		}		
+		return false;
+	}
+	
+	public static boolean isToolWrench(ItemStack aWrench) {
+		if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120 || aWrench.getItemDamage() == 122 || aWrench.getItemDamage() == 124)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolMallet(ItemStack aMallet) {
+		if (isItemGregtechTool(aMallet) && (aMallet.getItemDamage() == 14)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
+		if (isItemGregtechTool(aScrewdriver) && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolCrowbar(ItemStack aCrowbar) {
+		if (isItemGregtechTool(aCrowbar) && (aCrowbar.getItemDamage() == 20)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolWirecutters(ItemStack aWirecutters) {
+		if (isItemGregtechTool(aWirecutters) && (aWirecutters.getItemDamage() == 26)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolHammer(ItemStack aHammer) {
+		if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolSolderingIron(ItemStack aSoldering) {
+		if (isItemGregtechTool(aSoldering) && (aSoldering.getItemDamage() == 160)) {
+			return true;
+		}
+		return false;
 	}
 
 }

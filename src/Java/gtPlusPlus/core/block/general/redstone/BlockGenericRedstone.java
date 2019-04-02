@@ -10,10 +10,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -86,20 +88,22 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 			final Item mHandItem = mHandStack.getItem();
 			if (mHandItem instanceof GT_MetaGenerated_Tool_01) {
 
+				Logger.INFO("Found Tool in players hand!");
+				
 				final TileEntityRedstoneHandler tile = (TileEntityRedstoneHandler) world.getTileEntity(x, y, z);
 				if (tile != null) {					
-					if (tile.isScrewdriverable()) {
-						if ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)){
+					if (tile.isScrewdriverable() || player.capabilities.isCreativeMode) {
+						if (ItemUtils.isToolScrewdriver(mHandStack)){
 							mDidTool = tile.onScrewdriverRMB();
 						}
 					}
-					if (tile.isMalletable()) {
-						if ((mHandItem.getDamage(mHandStack) == 24) || (mHandItem.getDamage(mHandStack) == 154)){
+					if (tile.isMalletable() || player.capabilities.isCreativeMode) {
+						if (ItemUtils.isToolMallet(mHandStack)){
 							mDidTool = tile.onMalletRMB();
 						}
 					}
-					if (tile.isWrenchable()) {
-						if ((mHandItem.getDamage(mHandStack) == 26) || (mHandItem.getDamage(mHandStack) == 164)){
+					if (tile.isWrenchable() || player.capabilities.isCreativeMode) {
+						if (ItemUtils.isToolWrench(mHandStack)){
 							mDidTool = tile.onWrenchRMB();
 						}
 					}					
@@ -129,17 +133,17 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 				final TileEntityRedstoneHandler tile = (TileEntityRedstoneHandler) aWorld.getTileEntity(aX, aY, aZ);
 				if (tile != null) {					
 					if (tile.isScrewdriverable()) {
-						if ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)){
+						if (ItemUtils.isToolScrewdriver(mHandStack)){
 							mDidTool = tile.onScrewdriverLMB();
 						}
 					}
 					if (tile.isMalletable()) {
-						if ((mHandItem.getDamage(mHandStack) == 24) || (mHandItem.getDamage(mHandStack) == 154)){
+						if (ItemUtils.isToolMallet(mHandStack)){
 							mDidTool = tile.onMalletLMB();
 						}
 					}
 					if (tile.isWrenchable()) {
-						if ((mHandItem.getDamage(mHandStack) == 26) || (mHandItem.getDamage(mHandStack) == 164)){
+						if (ItemUtils.isToolWrench(mHandStack)){
 							mDidTool = tile.onWrenchLMB();
 						}
 					}					
@@ -148,7 +152,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 		}
 		catch (Throwable t) {}
 
-		if (!mDidTool) {
+		if (!mDidTool && !aPlayer.capabilities.isCreativeMode) {
 			super.onBlockClicked(aWorld, aX, aY, aZ, aPlayer);			
 		}
 		else {

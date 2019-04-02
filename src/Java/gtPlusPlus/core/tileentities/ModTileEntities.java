@@ -32,7 +32,6 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityDecayablesChest.class, "TileDecayablesChest");		
 		GameRegistry.registerTileEntity(TileEntitySuperJukebox.class, "TileEntitySuperJukebox");
 		GameRegistry.registerTileEntity(TileEntitySuperLight.class, "TileEntitySuperLight");
-		GameRegistry.registerTileEntity(TileEntityRedstoneHandler.class, "TileEntityRedstoneHandler");
 
 		
 		//Mod TEs

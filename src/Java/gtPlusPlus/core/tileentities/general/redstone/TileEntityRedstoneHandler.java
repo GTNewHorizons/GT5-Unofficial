@@ -1,6 +1,8 @@
 package gtPlusPlus.core.tileentities.general.redstone;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IToolable;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
@@ -11,7 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 
-public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
+public abstract class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 
 	private final int mTileType;
 	private BlockPos mTilePos;
@@ -19,7 +21,7 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	private Long mStartTime;
 	
 	public boolean mLightMode = false;
-	public int mLightValue = 0;	
+	public float mLightValue = 0;	
 	
 	/**
 	 * Sets the Redstone Handler Type. 
@@ -27,7 +29,16 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	 */
 	public TileEntityRedstoneHandler(int aTileType) {
 		mTileType = aTileType;
+		registerTileEntity();
 	}
+	
+	private void registerTileEntity() {
+		GameRegistry.registerTileEntity(getTileEntityClass(), getTileEntityNameForRegistration());
+	}
+	
+	protected abstract Class<? extends TileEntity> getTileEntityClass();
+	
+	protected abstract String getTileEntityNameForRegistration();
 	
 	public Block getBlock() {
 		return mTilePos != null ? mTilePos.getBlockAtPos() : Blocks.redstone_block;
@@ -37,7 +48,7 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 		return mLightMode;
 	}	
 	
-	public final int getLightBrightness() {
+	public final float getLightBrightness() {
 		if (!isLight()) {
 			return 0;
 		}
@@ -50,7 +61,7 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 	public void readFromNBT(NBTTagCompound aNBT) {
 		mStartTime = aNBT.getLong("mStartTime");
 		mInvName = aNBT.getString("mInvName");
-		mLightValue = aNBT.getInteger("mLightValue");
+		mLightValue = aNBT.getFloat("mLightValue");
 		mLightMode = aNBT.getBoolean("mLightMode");
 		super.readFromNBT(aNBT);
 	}
@@ -60,8 +71,8 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 		aNBT.setInteger("mTileType", mTileType);
 		aNBT.setLong("mStartTime", mStartTime);
 		aNBT.setString("mInvName", mInvName);
-		aNBT.setInteger("mLightValue", mLightValue);
-		aNBT.setBoolean("mLightMode", mLightMode);
+		aNBT.setFloat("mLightValue", getLightBrightness());
+		aNBT.setBoolean("mLightMode", isLight());
 		super.writeToNBT(aNBT);
 	}
 	
@@ -94,18 +105,23 @@ public class TileEntityRedstoneHandler extends TileEntity implements IToolable {
 		if (!init()) {
 			return;
 		}		
-		if (mRequiresUpdate) {
+		if (mRequiresUpdate || mLastUpdate == null) {
 			mRequiresUpdate = false;
 			mHasUpdatedRecently = true;
 			mLastUpdate = System.currentTimeMillis();
-			if (mTilePos.world.getBlockLightValue(xCoord, yCoord, zCoord) != mLightValue) {
-				mTilePos.world.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, mLightValue);				
-			}			
+			if (mTilePos.world.getBlockLightValue(xCoord, yCoord, zCoord) != getLightBrightness()) {
+				mTilePos.getBlockAtPos().setLightLevel(getLightBrightness());
+				mTilePos.world.setLightValue(EnumSkyBlock.Block, xCoord, yCoord, zCoord, (int) (getLightBrightness()/0.625f));	
+				mTilePos.world.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+				Logger.INFO("Updating Light");
+			}	
+			mTilePos.world.scheduleBlockUpdate(xCoord, yCoord, zCoord, mTilePos.getBlockAtPos(), 1);		
 			markDirty();
 		}		
 		if (Utils.getMillisSince(mLastUpdate, System.currentTimeMillis()) >= 5000) {
 			if (mHasUpdatedRecently) {
 				mHasUpdatedRecently = false;
+				this.markForUpdate();
 			}
 		}		
 		
