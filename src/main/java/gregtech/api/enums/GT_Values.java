@@ -112,7 +112,10 @@ public class GT_Values {
      * Debug parameter for cleanroom testing.
      */     
     public static boolean debugCleanroom = false;
-    
+    /**
+     * Debug parameter for driller testing.
+     */     
+    public static boolean debugDriller = false;
     /**
      * If you have to give something a World Parameter but there is no World... (Dummy World)
      */
