@@ -35,7 +35,9 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WordGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -104,6 +106,7 @@ public final class MainMod {
             BioCultureLoader bioCultureLoader = new BioCultureLoader();
             bioCultureLoader.run();
         }
+        WerkstoffLoader.INSTANCE.init();
     }
 
     @Mod.EventHandler
@@ -113,6 +116,7 @@ public final class MainMod {
         new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
+        WerkstoffLoader.INSTANCE.runInit();
     }
 
     @Mod.EventHandler
@@ -121,6 +125,8 @@ public final class MainMod {
         if (ConfigHandler.BioLab)
             new GTNHBlocks().run();
         BioObjectAdder.regenerateBioFluids();
+        new BW_WordGenerator();
+        WerkstoffLoader.INSTANCE.run();
     }
 
     @Mod.EventHandler

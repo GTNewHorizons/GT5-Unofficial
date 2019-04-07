@@ -142,3 +142,10 @@ tile.biovat.name=Bacterial Vat
 tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
+
+itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
+
+planet.Ross128b=Ross128b
+moon.Ross128ba=Ross128ba
+star.Ross128=Ross128
+solarsystem.Ross128System=Ross128-System

@@ -29,6 +29,7 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.items.*;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
+import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
@@ -72,6 +73,7 @@ public class ItemRegistry {
     public static final Item WINDMETER = new BW_SimpleWindMeter();
     public static final Block PUMPBLOCK = new BW_TileEntityContainer(Material.anvil, BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPump");
     public static final Item PUMPPARTS = new SimpleSubItemClass(new String[]{"BWrawtube", "BWmotor"});
+    public static final Block EXPPUMP = new BW_TileEntityContainer(Material.coral, BW_TileEntity_ExperimentalFloodGate.class,"ExpReversePump");
 
     public static final Block[] bw_glasses = {
             new BW_GlasBlocks(
@@ -146,7 +148,8 @@ public class ItemRegistry {
             GameRegistry.registerBlock(PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
             GameRegistry.registerItem(PUMPPARTS, "BWPumpParts");
             GameRegistry.registerItem(WINDMETER, "BW_SimpleWindMeter");
-
+            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class,"BWExpReversePump");
+            GameRegistry.registerBlock(EXPPUMP,BW_ItemBlocks.class,"BWExpReversePumpBlock");
             for (int i = 0; i < GT_Values.VN.length; i++) {
                 ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode"+"2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 2A " + GT_Values.VN[i], i).getStackForm(1L);
                 ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode"+"4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 4A " + GT_Values.VN[i], i).getStackForm(1L);

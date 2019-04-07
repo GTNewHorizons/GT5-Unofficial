@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import gregtech.api.interfaces.IColorModulationContainer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class BioCulture extends BioData {
+public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<BioCulture>();
     public static final BioCulture NULLCULTURE = BioCulture.createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID,BioDNA.NULLDNA, false); //fallback NULL culture, also Blue =)
@@ -196,5 +197,10 @@ public class BioCulture extends BioData {
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(17).putInt(MurmurHash3.murmurhash3_x86_32(this.getName(),0,this.getName().length(),31)).putInt(this.getColorRGB()).putInt(this.getPlasmid().ID).putInt(this.getdDNA().ID).put((byte) (isBreedable() ? 1 : 0)).array(),0,17,31);
+    }
+
+    @Override
+    public short[] getRGBA() {
+        return new short[]{(short) getColor().getRed(), (short) getColor().getGreen(), (short) getColor().getBlue(), (short) getColor().getAlpha()};
     }
 }

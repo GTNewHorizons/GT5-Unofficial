@@ -20,29 +20,14 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
+import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
+import net.minecraft.util.ResourceLocation;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public class SkyProviderRoss128b extends SkyProviderOverworld {
 
-    public static boolean sIsAdded = true;
-
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
-    }
-
-    public String getName() {
-        return "BartWorks NEI Plugin";
-    }
-
-    public String getVersion() {
-        return MainMod.APIVERSION;
-    }
+    //ASM enables this texture
+    public static final ResourceLocation sunTex = new ResourceLocation(BartWorksCrossmod.MOD_ID+":galacticraft/Ross128b/World/SunRoss128.png");
 }

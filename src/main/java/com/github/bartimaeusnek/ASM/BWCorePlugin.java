@@ -20,29 +20,44 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.ASM;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-public class NEI_BW_Config implements IConfigureNEI {
+import java.util.Map;
 
-    public static boolean sIsAdded = true;
+@IFMLLoadingPlugin.MCVersion("1.7.10")
+@IFMLLoadingPlugin.TransformerExclusions({"com.github.bartimaeusnek.ASM"})
+@IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)
+public class BWCorePlugin implements IFMLLoadingPlugin {
 
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+    public static final String BWCORE_PLUGIN_NAME="BartWorks ASM Core Plugin";
+
+    @Override
+    public String[] getASMTransformerClass() {
+        return new String[]{BWCoreTransformer.class.getName()};
     }
 
-    public String getName() {
-        return "BartWorks NEI Plugin";
+    @Override
+    public String getModContainerClass() {
+        return BWCore.class.getName();
     }
 
-    public String getVersion() {
-        return MainMod.APIVERSION;
+    @Override
+    public String getSetupClass() {
+        return null;
+    }
+
+    @Override
+    public void injectData(Map<String, Object> data) {
+        if (data.get("runtimeDeobfuscationEnabled") != null){
+            BWCoreTransformer.obfs=(boolean)data.get("runtimeDeobfuscationEnabled");
+        }
+
+    }
+
+    @Override
+    public String getAccessTransformerClass() {
+        return null;
     }
 }

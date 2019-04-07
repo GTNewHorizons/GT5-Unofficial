@@ -20,29 +20,29 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.bartworks.API;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import java.util.HashSet;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public final class WerkstoffAdderRegistry implements Runnable {
 
-    public static boolean sIsAdded = true;
+    private WerkstoffAdderRegistry(){}
 
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+    static final WerkstoffAdderRegistry INSTANCE = new WerkstoffAdderRegistry();
+
+    final HashSet<Runnable> toRun= new HashSet<>();
+
+    public static final WerkstoffAdderRegistry getINSTANCE() {
+        return INSTANCE;
     }
 
-    public String getName() {
-        return "BartWorks NEI Plugin";
+    public static void addWerkstoffAdder(Runnable adder){
+        INSTANCE.toRun.add(adder);
     }
 
-    public String getVersion() {
-        return MainMod.APIVERSION;
+    @Override
+    public void run() {
+        for (Runnable r : toRun)
+            r.run();
     }
 }

@@ -20,29 +20,26 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.crossmod.galacticraft.creativetabs;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public class SpaceTab extends CreativeTabs {
 
-    public static boolean sIsAdded = true;
+    private static final SpaceTab instance = new SpaceTab("SpaceTab");
 
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+    public static SpaceTab getInstance(){
+        return instance;
     }
 
-    public String getName() {
-        return "BartWorks NEI Plugin";
+    private SpaceTab(String label) {
+        super(label);
     }
 
-    public String getVersion() {
-        return MainMod.APIVERSION;
+    @Override
+    public Item getTabIconItem() {
+        return ItemRegistry.DESTRUCTOPACK;
     }
 }

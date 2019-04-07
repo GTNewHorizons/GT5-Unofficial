@@ -20,29 +20,55 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.bartworks.util;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Map;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public class Pair<A,B> implements Map.Entry {
+    Object[] pair= new Object[2];
 
-    public static boolean sIsAdded = true;
 
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+    public Pair(Object[] pair) {
+        this.pair = pair;
     }
 
-    public String getName() {
-        return "BartWorks NEI Plugin";
+
+    public Pair(A k, B v) {
+        this.pair[0] = k;
+        this.pair[1] = v;
     }
 
-    public String getVersion() {
-        return MainMod.APIVERSION;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pair)) return false;
+
+        Pair<?, ?> pair1 = (Pair<?, ?>) o;
+
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(this.pair, pair1.pair);
+    }
+
+    @Override
+    public int hashCode() {
+        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(8).putInt(pair[0].hashCode()).putInt(pair[1].hashCode()).array(),0,8,31);
+    }
+
+    @Override
+    public A getKey() {
+        return (A) pair[0];
+    }
+
+    @Override
+    public B getValue() {
+        return (B) pair[1];
+    }
+
+    @Override
+    public B setValue(Object value) {
+        pair[1]=value;
+        return (B) pair[1];
     }
 }

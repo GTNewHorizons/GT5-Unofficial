@@ -20,29 +20,27 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.crossmod.galacticraft.blocks;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
+import com.github.bartimaeusnek.crossmod.galacticraft.creativetabs.SpaceTab;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.world.IBlockAccess;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public class UniversalSpaceBlocks extends BW_Blocks {
 
-    public static boolean sIsAdded = true;
-
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
+    public UniversalSpaceBlocks(String name, String[] texture) {
+        super(name, texture, SpaceTab.getInstance(), Material.rock);
     }
 
-    public String getName() {
-        return "BartWorks NEI Plugin";
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+        return true;
     }
 
-    public String getVersion() {
-        return MainMod.APIVERSION;
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return true;
     }
 }

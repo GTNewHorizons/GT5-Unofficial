@@ -20,29 +20,12 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.neiHandler;
+package com.github.bartimaeusnek.ASM;
 
-import codechicken.nei.api.IConfigureNEI;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider.WorldProviderRoss128b;
+import net.minecraft.client.multiplayer.WorldClient;
 
-public class NEI_BW_Config implements IConfigureNEI {
+public class BWCoreStaticReplacementMethodes {
+    private BWCoreStaticReplacementMethodes(){}
 
-    public static boolean sIsAdded = true;
-
-    public void loadConfig() {
-        sIsAdded = false;
-        new BW_NEI_OreHandler();
-        new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
-        new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
-        sIsAdded = true;
-    }
-
-    public String getName() {
-        return "BartWorks NEI Plugin";
-    }
-
-    public String getVersion() {
-        return MainMod.APIVERSION;
-    }
 }
