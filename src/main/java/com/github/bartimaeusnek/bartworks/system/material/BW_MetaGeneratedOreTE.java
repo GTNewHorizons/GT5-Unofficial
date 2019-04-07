@@ -29,16 +29,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.blocks.GT_Packet_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -48,6 +44,16 @@ import static com.github.bartimaeusnek.bartworks.MainMod.BW_Network_instance;
 public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEntity {
 
     public short mMetaData = 0;
+
+    public static boolean placeOre(World aWorld, Coords coords, Werkstoff werkstoff) {
+        short meta = werkstoff.getmID();
+        aWorld.setBlock(coords.x, coords.y, coords.z, WerkstoffLoader.BWOres, 0, 0);
+        TileEntity tTileEntity = aWorld.getTileEntity(coords.x, coords.y, coords.z);
+        if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
+            ((BW_MetaGeneratedOreTE) tTileEntity).mMetaData = meta;
+        }
+        return true;
+    }
 
     public boolean canUpdate() {
         return false;
@@ -61,16 +67,6 @@ public class BW_MetaGeneratedOreTE extends TileEntity implements ITexturedTileEn
     public void writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
         aNBT.setShort("m", this.mMetaData);
-    }
-
-    public static boolean placeOre(World aWorld,Coords coords, Werkstoff werkstoff) {
-        short meta = werkstoff.getmID();
-        aWorld.setBlock(coords.x, coords.y, coords.z, WerkstoffLoader.BWOres, 0, 0);
-        TileEntity tTileEntity = aWorld.getTileEntity(coords.x, coords.y, coords.z);
-        if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
-            ((BW_MetaGeneratedOreTE) tTileEntity).mMetaData = meta;
-        }
-        return true;
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre) {

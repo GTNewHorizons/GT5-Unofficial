@@ -24,7 +24,6 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
@@ -730,6 +729,6 @@ public class RecipeLoader implements Runnable {
             );
 
         }
-   }
+    }
 
 }

@@ -22,16 +22,36 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.common.config.Configuration;
 
+import java.io.File;
 import java.util.Map;
 
+@IFMLLoadingPlugin.SortingIndex(999999999)//Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({"com.github.bartimaeusnek.ASM"})
 @IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)
 public class BWCorePlugin implements IFMLLoadingPlugin {
 
-    public static final String BWCORE_PLUGIN_NAME="BartWorks ASM Core Plugin";
+    public static final String BWCORE_PLUGIN_NAME = "BartWorks ASM Core Plugin";
+
+    public static File minecraftDir = null;
+
+    public BWCorePlugin() {
+        //Injection Code taken from CodeChickenLib
+        if (minecraftDir != null)
+            return;//get called twice, once for IFMLCallHook
+        minecraftDir = (File) FMLInjectionData.data()[6];
+
+        Configuration asmconfighandler = new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg"));
+        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
+            BWCoreTransformer.shouldTransform[i] = asmconfighandler.get("ASM fixes", BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i], true).getBoolean(true);
+        }
+        if (asmconfighandler.hasChanged())
+            asmconfighandler.save();
+    }
 
     @Override
     public String[] getASMTransformerClass() {
@@ -50,10 +70,9 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        if (data.get("runtimeDeobfuscationEnabled") != null){
-            BWCoreTransformer.obfs=(boolean)data.get("runtimeDeobfuscationEnabled");
+        if (data.get("runtimeDeobfuscationEnabled") != null) {
+            BWCoreTransformer.obfs = (boolean) data.get("runtimeDeobfuscationEnabled");
         }
-
     }
 
     @Override

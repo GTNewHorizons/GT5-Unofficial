@@ -43,26 +43,23 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
     }
 
     @SideOnly(Side.CLIENT)
-    public Vec3 getFogColor(float cy, float noidea)
-    {
-        float angle = MathHelper.cos(cy * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
+    public Vec3 getFogColor(float cy, float noidea) {
+        float angle = MathHelper.cos(cy * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
-        if (angle < 0.0F)
-        {
+        if (angle < 0.0F) {
             angle = 0.0F;
         }
 
-        if (angle > 1.0F)
-        {
+        if (angle > 1.0F) {
             angle = 1.0F;
         }
 
-        float red = 200/255f;
-        float green = 80/255f;
+        float red = 200 / 255f;
+        float green = 80 / 255f;
         float blue = 0.0F;
         red *= angle * 0.94F + 0.06F;
         green *= angle * 0.94F + 0.06F;
-        return Vec3.createVectorHelper((double)red, (double)green, (double)blue);
+        return Vec3.createVectorHelper((double) red, (double) green, (double) blue);
     }
 
 
@@ -74,7 +71,7 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
 
     @Override
     public float getSunBrightness(float par1) {
-        return super.getSunBrightness(par1)*0.975f;
+        return super.getSunBrightness(par1) * 0.975f;
     }
 
     @Override
@@ -84,10 +81,10 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
 
     @Override
     public Vector3 getSkyColor() {
-        float red = 200/255f;
-        float green = 120/255f;
+        float red = 200 / 255f;
+        float green = 120 / 255f;
         float blue = 0.0F;
-        return new Vector3(red,green,blue);
+        return new Vector3(red, green, blue);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
 
     @Override
     public long getDayLength() {
-        return (long) (24000*9.9f);
+        return (long) (24000 * 9.9f);
     }
 
     @Override

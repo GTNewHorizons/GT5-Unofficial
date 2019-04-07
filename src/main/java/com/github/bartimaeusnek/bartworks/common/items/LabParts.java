@@ -103,16 +103,16 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name")+" " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name"));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name")+" " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name"));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name")+" "+ itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name"));
                 break;
             default:
                 break;

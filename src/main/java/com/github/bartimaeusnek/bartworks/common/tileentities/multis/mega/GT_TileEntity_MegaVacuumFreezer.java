@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
@@ -52,10 +53,10 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
 
     public String[] getDescription() {
         String[] dsc = StatCollector.translateToLocal("tooltip.tile.mvf.0.name").split(";");
-        String[] fdsc =  new String[dsc.length+1];
+        String[] fdsc = new String[dsc.length + 1];
         for (int i = 0; i < dsc.length; i++) {
-            fdsc[i]=dsc[i];
-            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+            fdsc[i] = dsc[i];
+            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
         }
         return fdsc;
     }
@@ -63,6 +64,28 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_TileEntity_MegaVacuumFreezer(this.mName);
+    }
+
+    public boolean drainEnergyInput(long aEU) {
+        if (aEU <= 0)
+            return true;
+        long allTheEu = 0;
+        int hatches = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                allTheEu += tHatch.getEUVar();
+                hatches++;
+            }
+        if (allTheEu < aEU)
+            return false;
+        long euperhatch = aEU / hatches;
+        HashSet<Boolean> returnset = new HashSet<>();
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false))
+                returnset.add(true);
+            else
+                returnset.add(false);
+        return returnset.size() > 0 && !returnset.contains(false);
     }
 
     @Override
@@ -78,7 +101,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
         int processed = 0;
         long nominalV = BW_Util.getnominalVoltage(this);
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (tRecipe != null && (tRecipe.mEUt*(processed+1)) < nominalV  && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
+            if (tRecipe != null && (tRecipe.mEUt * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     outputItems.add(tRecipe.getOutput(i));
@@ -98,9 +121,9 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_MetaTileEntity_VacuumFre
                     actualEUT = actualEUT / 2;
                     divider++;
                 }
-                BW_Util.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, this.getMaxInputVoltage(), this);
+                BW_Util.calculateOverclockedNessMulti((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), 1, nominalV, this);
             } else
-                BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, this.getMaxInputVoltage(), this);
+                BW_Util.calculateOverclockedNessMulti((int) actualEUT, tRecipe.mDuration, 1, nominalV, this);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;

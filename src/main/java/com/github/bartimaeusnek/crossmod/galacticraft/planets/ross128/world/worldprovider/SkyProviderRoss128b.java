@@ -29,5 +29,5 @@ import net.minecraft.util.ResourceLocation;
 public class SkyProviderRoss128b extends SkyProviderOverworld {
 
     //ASM enables this texture
-    public static final ResourceLocation sunTex = new ResourceLocation(BartWorksCrossmod.MOD_ID+":galacticraft/Ross128b/World/SunRoss128.png");
+    public static final ResourceLocation sunTex = new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/World/SunRoss128.png");
 }

@@ -30,12 +30,12 @@ public class SpaceTab extends CreativeTabs {
 
     private static final SpaceTab instance = new SpaceTab("SpaceTab");
 
-    public static SpaceTab getInstance(){
-        return instance;
-    }
-
     private SpaceTab(String label) {
         super(label);
+    }
+
+    public static SpaceTab getInstance() {
+        return instance;
     }
 
     @Override

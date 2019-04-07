@@ -31,7 +31,6 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
-import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,12 +54,6 @@ public class BWCore extends DummyModContainer {
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration asmconfighandler = new Configuration(event.getSuggestedConfigurationFile());
-        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
-            BWCoreTransformer.shouldTransform[i]=asmconfighandler.get("ASM fixes",BWCoreTransformer.DESCRIPTIONFORCONFIG[i]+" in class: "+BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i],true).getBoolean(true);
-        }
-        if (asmconfighandler.hasChanged())
-            asmconfighandler.save();
     }
 
     @Override

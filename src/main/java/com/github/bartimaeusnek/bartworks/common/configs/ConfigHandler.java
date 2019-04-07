@@ -67,4 +67,13 @@ public class ConfigHandler {
 
     }
 
+    public static void setUpComments(){
+        c.addCustomCategoryComment("ASM fixes","Disable ASM fixes here.");
+        c.addCustomCategoryComment("Multiblocks","Multliblock Options can be set here.");
+        c.addCustomCategoryComment("Singleblocks","Singleblock Options can be set here.");
+        c.addCustomCategoryComment("System","Different System Settings can be set here.");
+        c.addCustomCategoryComment("CrossMod Interactions","CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
+        c.save();
+    }
+
 }

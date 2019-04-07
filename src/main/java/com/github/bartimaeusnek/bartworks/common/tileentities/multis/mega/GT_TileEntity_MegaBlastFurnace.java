@@ -31,7 +31,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
@@ -41,7 +40,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -61,14 +62,36 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
     public String[] getDescription() {
         String[] dsc = StatCollector.translateToLocal("tooltip.tile.mbf.0.name").split(";");
-        String tmp = dsc[dsc.length-1];
-        dsc[dsc.length-1]=tmp+" "+Integer.toString(20 * this.getPollutionPerTick((ItemStack) null))+" "+StatCollector.translateToLocal("tooltip.tile.mbf.1.name");
-        String[] fdsc =  new String[dsc.length+1];
+        String tmp = dsc[dsc.length - 1];
+        dsc[dsc.length - 1] = tmp + " " + Integer.toString(20 * this.getPollutionPerTick((ItemStack) null)) + " " + StatCollector.translateToLocal("tooltip.tile.mbf.1.name");
+        String[] fdsc = new String[dsc.length + 1];
         for (int i = 0; i < dsc.length; i++) {
-            fdsc[i]=dsc[i];
-            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+            fdsc[i] = dsc[i];
+            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
         }
         return fdsc;
+    }
+
+    public boolean drainEnergyInput(long aEU) {
+        if (aEU <= 0)
+            return true;
+        long allTheEu = 0;
+        int hatches = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (isValidMetaTileEntity(tHatch)) {
+                allTheEu += tHatch.getEUVar();
+                hatches++;
+            }
+        if (allTheEu < aEU)
+            return false;
+        long euperhatch = aEU / hatches;
+        HashSet<Boolean> returnset = new HashSet<>();
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euperhatch, false))
+                returnset.add(true);
+            else
+                returnset.add(false);
+        return returnset.size() > 0 && !returnset.contains(false);
     }
 
     @Override
@@ -90,10 +113,10 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
 
         long nominalV = BW_Util.getnominalVoltage(this);
         int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-        long precutRecipeVoltage = (long) (tRecipe.mEUt*Math.pow(0.95, tHeatCapacityDivTiers));
+        long precutRecipeVoltage = (long) (tRecipe.mEUt * Math.pow(0.95, tHeatCapacityDivTiers));
 
         while (this.getStoredInputs().size() > 0 && processed < ConfigHandler.megaMachinesMax) {
-            if (this.mHeatingCapacity >= tRecipe.mSpecialValue && (precutRecipeVoltage*(processed+1)) < nominalV  && tRecipe.isRecipeInputEqual(true, tFluids, tInputs))  {
+            if (this.mHeatingCapacity >= tRecipe.mSpecialValue && (precutRecipeVoltage * (processed + 1)) < nominalV && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
                 found_Recipe = true;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     outputItems.add(tRecipe.getOutput(i));
@@ -118,9 +141,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
                     actualEUT = actualEUT / 2;
                     divider++;
                 }
-                overclockCount = calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), tVoltage);
+                overclockCount = calculateOverclockednessEBF((int) (actualEUT / (divider * 2)), tRecipe.mDuration * (divider * 2), nominalV);
             } else
-                overclockCount = calculateOverclockednessEBF(actualEUT, tRecipe.mDuration, tVoltage);
+                overclockCount = calculateOverclockednessEBF(actualEUT, tRecipe.mDuration, nominalV);
             //In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return false;
@@ -129,7 +152,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_MetaTileEntity_ElectricBl
             }
             if (tHeatCapacityDivTiers > 0) {
                 this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-                this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount);//extra free overclocking if possible
+                this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount); //extra free overclocking if possible
                 if (this.mMaxProgresstime < 1)
                     this.mMaxProgresstime = 1;//no eu efficiency correction
             }

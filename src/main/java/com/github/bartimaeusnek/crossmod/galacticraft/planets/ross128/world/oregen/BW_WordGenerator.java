@@ -50,13 +50,13 @@ public class BW_WordGenerator implements IWorldGenerator {
     }
 
     public static class WorldGenContainer implements Runnable {
-        public int mX;
-        public int mZ;
+        public static HashSet<ChunkCoordIntPair> mGenerated = new HashSet<>(2000);
         public final int mDimensionType;
         public final World mWorld;
         public final IChunkProvider mChunkGenerator;
         public final IChunkProvider mChunkProvider;
-        public static HashSet<ChunkCoordIntPair> mGenerated = new HashSet<>(2000);
+        public int mX;
+        public int mZ;
 
         public WorldGenContainer(int aX, int aZ, int aDimensionType, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
             this.mX = aX;
@@ -64,7 +64,8 @@ public class BW_WordGenerator implements IWorldGenerator {
             this.mDimensionType = aDimensionType;
             this.mWorld = aWorld;
             this.mChunkGenerator = aChunkGenerator;
-            this.mChunkProvider = aChunkProvider;;
+            this.mChunkProvider = aChunkProvider;
+            ;
         }
 
         //returns a coordinate of a center chunk of 3x3 square; the argument belongs to this square

@@ -233,15 +233,16 @@ public class BW_Util {
         }
     }
 
-    public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base){
+    public static long getnominalVoltage(GT_MetaTileEntity_MultiBlockBase base) {
         long rVoltage = 0L;
         long rAmperage = 0L;
         Iterator var3 = base.mEnergyHatches.iterator();
 
-        while(var3.hasNext()) {
-            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy)var3.next();
+        while (var3.hasNext()) {
+            GT_MetaTileEntity_Hatch_Energy tHatch = (GT_MetaTileEntity_Hatch_Energy) var3.next();
             if (base.isValidMetaTileEntity(tHatch)) {
-                rVoltage += tHatch.getBaseMetaTileEntity().getInputVoltage();
+                if (rVoltage == 0 || rVoltage > tHatch.getBaseMetaTileEntity().getInputVoltage())
+                    rVoltage = tHatch.getBaseMetaTileEntity().getInputVoltage();
                 rAmperage += tHatch.getBaseMetaTileEntity().getInputAmperage();
             }
         }

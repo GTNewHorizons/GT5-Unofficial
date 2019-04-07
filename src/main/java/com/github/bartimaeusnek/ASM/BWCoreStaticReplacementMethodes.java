@@ -22,10 +22,8 @@
 
 package com.github.bartimaeusnek.ASM;
 
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider.WorldProviderRoss128b;
-import net.minecraft.client.multiplayer.WorldClient;
-
 public class BWCoreStaticReplacementMethodes {
-    private BWCoreStaticReplacementMethodes(){}
+    private BWCoreStaticReplacementMethodes() {
+    }
 
 }

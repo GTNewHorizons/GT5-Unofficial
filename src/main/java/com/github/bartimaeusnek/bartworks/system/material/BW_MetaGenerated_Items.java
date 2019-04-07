@@ -22,12 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
@@ -51,29 +48,35 @@ import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.werks
 
 public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
 
-    private final short aNumToGen= (short) werkstoffHashMap.size();
+    public static final CreativeTabs metaTab = new CreativeTabs("bartworksMetaMaterials") {
 
+        @Override
+        public Item getTabIconItem() {
+            return new ItemStack(Blocks.iron_ore).getItem();
+        }
+    };
     protected final OrePrefixes orePrefixes;
+    private final short aNumToGen = (short) werkstoffHashMap.size();
 
     public BW_MetaGenerated_Items(OrePrefixes orePrefixes) {
-        super("bwMetaGenerated"+orePrefixes.name(), (short) 32766, (short) 0);
+        super("bwMetaGenerated" + orePrefixes.name(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
         this.setCreativeTab(metaTab);
         for (int i = 0; i < aNumToGen; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
-            Werkstoff w = werkstoffHashMap.get((short)i);
-            if (w == null || ((w.getFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0) )
+            Werkstoff w = werkstoffHashMap.get((short) i);
+            if (w == null || ((w.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) == 0))
                 continue;
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".name", this.getDefaultLocalization(w));
             GT_LanguageManager.addStringLocalization(this.getUnlocalizedName(tStack) + ".tooltip", w.getToolTip());
-            GT_OreDictUnificator.registerOre(this.orePrefixes.name()+w.getDefaultName(),tStack);
+            GT_OreDictUnificator.registerOre(this.orePrefixes.name() + w.getDefaultName(), tStack);
         }
     }
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         int aDamage = aItemEntity.getEntityItem().getItemDamage();
-        if ( (aDamage >= 0) && (!aItemEntity.worldObj.isRemote) ) {
-            Werkstoff aMaterial = werkstoffHashMap.get((short)aDamage);
+        if ((aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
+            Werkstoff aMaterial = werkstoffHashMap.get((short) aDamage);
             if ((aMaterial != null) && (aMaterial != Werkstoff.default_null_Werkstoff)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
                 int tY = MathHelper.floor_double(aItemEntity.posY);
@@ -108,11 +111,11 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
         if (orePrefixes == OrePrefixes.dustImpure || orePrefixes == OrePrefixes.dustPure) {
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }
-        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name")+ ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
-    public String getDefaultLocalization(Werkstoff werkstoff){
-        return werkstoff != null ? orePrefixes.mLocalizedMaterialPre+ werkstoff.getDefaultName()+orePrefixes.mLocalizedMaterialPost : Werkstoff.default_null_Werkstoff.getDefaultName();
+    public String getDefaultLocalization(Werkstoff werkstoff) {
+        return werkstoff != null ? orePrefixes.mLocalizedMaterialPre + werkstoff.getDefaultName() + orePrefixes.mLocalizedMaterialPost : Werkstoff.default_null_Werkstoff.getDefaultName();
     }
 
     @Override
@@ -122,17 +125,17 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return werkstoffHashMap.get((short)aMetaData) == null ? null : werkstoffHashMap.get((short)aMetaData).getTexSet().mTextures[orePrefixes.mTextureIndex];
+        return werkstoffHashMap.get((short) aMetaData) == null ? null : werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[orePrefixes.mTextureIndex];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < aNumToGen; i++) {
-            Werkstoff werkstoff = werkstoffHashMap.get((short)i);
-            if (werkstoff != null && ((werkstoff.getFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) != 0)) {
-                    ItemStack tStack = new ItemStack(this, 1, i);
-                    aList.add(tStack);
+            Werkstoff werkstoff = werkstoffHashMap.get((short) i);
+            if (werkstoff != null && ((werkstoff.getGenerationFeatures().toGenerate & orePrefixes.mMaterialGenerationBits) != 0)) {
+                ItemStack tStack = new ItemStack(this, 1, i);
+                aList.add(tStack);
             }
         }
         super.getSubItems(var1, aCreativeTab, aList);
@@ -140,7 +143,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        Werkstoff werkstoff = werkstoffHashMap.get((short)getDamage(aStack));
+        Werkstoff werkstoff = werkstoffHashMap.get((short) getDamage(aStack));
         return werkstoff == null ? Materials._NULL.mRGBa : werkstoff.getRGBA();
     }
 
@@ -148,7 +151,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0)
             return null;
-        Werkstoff tMaterial = werkstoffHashMap.get((short)aMetaData);
+        Werkstoff tMaterial = werkstoffHashMap.get((short) aMetaData);
         if (tMaterial == null)
             return null;
         IIconContainer tIcon = getIconContainer(aMetaData);
@@ -161,12 +164,4 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
     public int getItemStackLimit(ItemStack aStack) {
         return 64;
     }
-
-    public static final CreativeTabs metaTab = new CreativeTabs("bartworksMetaMaterials") {
-
-        @Override
-        public Item getTabIconItem() {
-            return new ItemStack(Blocks.iron_ore).getItem();
-        }
-    };
 }

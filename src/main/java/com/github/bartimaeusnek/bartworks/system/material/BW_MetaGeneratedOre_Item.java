@@ -44,7 +44,7 @@ public class BW_MetaGeneratedOre_Item extends BW_ItemBlocks {
     }
 
     public String getItemStackDisplayName(ItemStack aStack) {
-        return GT_LanguageManager.getTranslation("bw.blockores.01."+aStack.getItemDamage()+".name");
+        return GT_LanguageManager.getTranslation("bw.blockores.01." + aStack.getItemDamage() + ".name");
     }
 
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side, float hitX, float hitY, float hitZ, int aMeta) {

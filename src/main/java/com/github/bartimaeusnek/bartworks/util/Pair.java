@@ -26,8 +26,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 
-public class Pair<A,B> implements Map.Entry {
-    Object[] pair= new Object[2];
+public class Pair<A, B> implements Map.Entry {
+    Object[] pair = new Object[2];
 
 
     public Pair(Object[] pair) {
@@ -53,7 +53,7 @@ public class Pair<A,B> implements Map.Entry {
 
     @Override
     public int hashCode() {
-        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(8).putInt(pair[0].hashCode()).putInt(pair[1].hashCode()).array(),0,8,31);
+        return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(8).putInt(pair[0].hashCode()).putInt(pair[1].hashCode()).array(), 0, 8, 31);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class Pair<A,B> implements Map.Entry {
 
     @Override
     public B setValue(Object value) {
-        pair[1]=value;
+        pair[1] = value;
         return (B) pair[1];
     }
 }

@@ -89,7 +89,6 @@ public class BWRecipes {
     );
 
 
-
     public BWRecipes() {
 
         if (ConfigHandler.BioLab) {
@@ -484,7 +483,7 @@ public class BWRecipes {
         return false;
     }
 
-    public static class DynamicGTRecipe extends GT_Recipe{
+    public static class DynamicGTRecipe extends GT_Recipe {
         public DynamicGTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
         }
@@ -507,13 +506,6 @@ public class BWRecipes {
             return super.addFuel(ItemFluidCell.getUniversalFluidCell(fluidStack), Ic2Items.FluidCell.copy(), burn);
         }
 
-
-    }
-
-    class BioLabRecipe extends GT_Recipe {
-        protected BioLabRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-            super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
-        }
 
     }
 
@@ -644,5 +636,12 @@ public class BWRecipes {
             }
             return this.addRecipe(aRecipe, false, false, false);
         }
+    }
+
+    class BioLabRecipe extends GT_Recipe {
+        protected BioLabRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, ItemStack aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+        }
+
     }
 }

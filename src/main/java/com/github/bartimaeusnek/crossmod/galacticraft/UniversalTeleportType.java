@@ -42,13 +42,13 @@ public class UniversalTeleportType implements ITeleportType {
 
     @Override
     public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player) {
-        return getEntitySpawnLocation(world,player);
+        return getEntitySpawnLocation(world, player);
     }
 
     @Override
     public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity) {
-        if (entity instanceof EntityPlayerMP){
-            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP)entity);
+        if (entity instanceof EntityPlayerMP) {
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) entity);
             return new Vector3(stats.coordsTeleportedFromX, 500D, stats.coordsTeleportedFromZ);
         }
         return new Vector3(entity.posX, 500D, entity.posZ);
@@ -61,8 +61,7 @@ public class UniversalTeleportType implements ITeleportType {
 
     @Override
     public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket) {
-        if ((player != null) && (GCPlayerStats.get(player).teleportCooldown <= 0))
-        {
+        if ((player != null) && (GCPlayerStats.get(player).teleportCooldown <= 0)) {
             if (player.capabilities.isFlying) {
                 player.capabilities.isFlying = false;
             }
@@ -74,6 +73,7 @@ public class UniversalTeleportType implements ITeleportType {
             GCPlayerStats.get(player).teleportCooldown = 10;
         }
     }
+
     @Override
     public void setupAdventureSpawn(EntityPlayerMP player) {
 

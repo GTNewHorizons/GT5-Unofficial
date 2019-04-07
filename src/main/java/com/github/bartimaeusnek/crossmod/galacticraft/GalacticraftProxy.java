@@ -31,15 +31,17 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
-import static com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128.*;
+import static com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128.init_OresRoss128;
+import static com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128.init_undergroundFluidsRoss128;
 
 public class GalacticraftProxy {
-    private GalacticraftProxy(){}
-    static Configuration gtConf;
     public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();
+    static Configuration gtConf;
+    private GalacticraftProxy() {
+    }
 
-    public static void preInit(FMLPreInitializationEvent e){
-        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()){
+    public static void preInit(FMLPreInitializationEvent e) {
+        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             serverpreInit(e);
         } else {
             clientpreInit(e);
@@ -47,38 +49,48 @@ public class GalacticraftProxy {
         commonpreInit(e);
     }
 
-    private static void serverpreInit(FMLPreInitializationEvent e){
+    private static void serverpreInit(FMLPreInitializationEvent e) {
 
     }
-    private static void clientpreInit(FMLPreInitializationEvent e){
+
+    private static void clientpreInit(FMLPreInitializationEvent e) {
     }
-    private static void commonpreInit(FMLPreInitializationEvent e){
-        Configuration c = new Configuration(e.getSuggestedConfigurationFile());
+
+    private static void commonpreInit(FMLPreInitializationEvent e) {
         gtConf = new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
         uo_dimensionList.getConfig(gtConf, "undergroundfluid");
         init_undergroundFluidsRoss128();
-        gtConf.save();
-        Ross128.ross128ID=c.get("System","DimID",-64,"The Dim ID for Ross128").getInt(-64);
+        if (gtConf.hasChanged())
+            gtConf.save();
+
+        Configuration c = new Configuration(new File(e.getModConfigurationDirectory(), "bartworks.cfg"));
+        Ross128.ross128ID = c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
+        Ross128.enabled = c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
+        if (c.hasChanged())
+            c.save();
+
         init_OresRoss128();
     }
 
-    public static void init(FMLInitializationEvent e){
-        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()){
+    public static void init(FMLInitializationEvent e) {
+        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             serverInit(e);
         } else {
             clientInit(e);
         }
         commonInit(e);
     }
-    
-    private static void serverInit(FMLInitializationEvent e){
-        
-    }
-    private static void clientInit(FMLInitializationEvent e){
-        
-    }
-    private static void commonInit(FMLInitializationEvent e){
-        Ross128.init();
 
+    private static void serverInit(FMLInitializationEvent e) {
+
+    }
+
+    private static void clientInit(FMLInitializationEvent e) {
+
+    }
+
+    private static void commonInit(FMLInitializationEvent e) {
+        if (Ross128.enabled)
+            Ross128.init();
     }
 }

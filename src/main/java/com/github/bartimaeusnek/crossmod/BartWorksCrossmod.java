@@ -27,12 +27,11 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
-        modid =BartWorksCrossmod.MOD_ID, name = BartWorksCrossmod.NAME, version = BartWorksCrossmod.VERSION,
+        modid = BartWorksCrossmod.MOD_ID, name = BartWorksCrossmod.NAME, version = BartWorksCrossmod.VERSION,
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "required-after:bartworks;"
@@ -48,7 +47,7 @@ public class BartWorksCrossmod {
     public static BartWorksCrossmod instance;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent preinit){
+    public void preInit(FMLPreInitializationEvent preinit) {
 
 
         if (Loader.isModLoaded("GalacticraftCore"))

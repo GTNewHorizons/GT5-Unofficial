@@ -26,17 +26,17 @@ import java.util.HashSet;
 
 public final class WerkstoffAdderRegistry implements Runnable {
 
-    private WerkstoffAdderRegistry(){}
-
     static final WerkstoffAdderRegistry INSTANCE = new WerkstoffAdderRegistry();
+    final HashSet<Runnable> toRun = new HashSet<>();
 
-    final HashSet<Runnable> toRun= new HashSet<>();
+    private WerkstoffAdderRegistry() {
+    }
 
     public static final WerkstoffAdderRegistry getINSTANCE() {
         return INSTANCE;
     }
 
-    public static void addWerkstoffAdder(Runnable adder){
+    public static void addWerkstoffAdder(Runnable adder) {
         INSTANCE.toRun.add(adder);
     }
 

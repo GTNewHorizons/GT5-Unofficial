@@ -73,7 +73,7 @@ public class ItemRegistry {
     public static final Item WINDMETER = new BW_SimpleWindMeter();
     public static final Block PUMPBLOCK = new BW_TileEntityContainer(Material.anvil, BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPump");
     public static final Item PUMPPARTS = new SimpleSubItemClass(new String[]{"BWrawtube", "BWmotor"});
-    public static final Block EXPPUMP = new BW_TileEntityContainer(Material.coral, BW_TileEntity_ExperimentalFloodGate.class,"ExpReversePump");
+    public static final Block EXPPUMP = new BW_TileEntityContainer(Material.coral, BW_TileEntity_ExperimentalFloodGate.class, "ExpReversePump");
 
     public static final Block[] bw_glasses = {
             new BW_GlasBlocks(
@@ -148,24 +148,24 @@ public class ItemRegistry {
             GameRegistry.registerBlock(PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
             GameRegistry.registerItem(PUMPPARTS, "BWPumpParts");
             GameRegistry.registerItem(WINDMETER, "BW_SimpleWindMeter");
-            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class,"BWExpReversePump");
-            GameRegistry.registerBlock(EXPPUMP,BW_ItemBlocks.class,"BWExpReversePumpBlock");
+            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
+            GameRegistry.registerBlock(EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
             for (int i = 0; i < GT_Values.VN.length; i++) {
-                ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode"+"2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 2A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode"+"4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 4A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "diode"+"8A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 8A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "diode"+"12A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 12A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i, "diode"+"16A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name")+" 16A " + GT_Values.VN[i], i).getStackForm(1L);
-                ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "energydistributor" + GT_Values.VN[i], StatCollector.translateToLocal("tile.energydistributor.name")+ " " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i, "diode" + "2A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i, "diode" + "4A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i, "diode" + "8A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i, "diode" + "12A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i, "diode" + "16A" + GT_Values.VN[i], StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i], i).getStackForm(1L);
+                ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(ConfigHandler.IDOffset + 1 + i, "energydistributor" + GT_Values.VN[i], StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i], i).getStackForm(1L);
 
             }
             for (int i = 0; i < 3; i++) {
-                ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "acidgenerator"+GT_Values.VN[i + 2], StatCollector.translateToLocal("tile.acidgenerator.name")+" " + GT_Values.VN[i + 2], i + 2).getStackForm(1);
+                ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i, "acidgenerator" + GT_Values.VN[i + 2], StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[i + 2], i + 2).getStackForm(1);
             }
             dehp = new GT_TileEntity_DEHP(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1, 1, "DEHP", "Deep Earth Heating Pump").getStackForm(1L);
             megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2, "MegaBlastFurnace", StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
             megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3, "MegaVacuumFreezer", StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
-            new GT_TileEntity_ElectricImplosionCompressor( ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 4,"Electric Implosion Compressor","Electric Implosion Compressor");
+//            new GT_TileEntity_ElectricImplosionCompressor(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 4, "Electric Implosion Compressor", "Electric Implosion Compressor");
         }
 
 
