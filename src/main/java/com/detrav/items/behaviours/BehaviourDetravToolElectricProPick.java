@@ -1,14 +1,11 @@
 package com.detrav.items.behaviours;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SplittableRandom;
-
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
 import com.detrav.net.DetravProPickPacket00;
+import com.detrav.utils.BartWorksHelper;
 import com.detrav.utils.GTppHelper;
-
+import cpw.mods.fml.common.Loader;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -16,8 +13,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.material.Material;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,10 +20,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -92,56 +89,42 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                         int ySize = c.getHeightValue(x, z);//(int)aPlayer.posY;//c.getHeightValue(x, z);
                         for (int y = 1; y < ySize; y++) {
                             switch (data) {
-                                case 0: 
+                                case 0:
                                 case 1:
-                                    Block tBlock = c.getBlock(x,y,z);
-                                    short tMetaID = (short)c.getBlockMetadata(x,y,z);
+                                    Block tBlock = c.getBlock(x, y, z);
+                                    short tMetaID = (short) c.getBlockMetadata(x, y, z);
                                     if (tBlock instanceof GT_Block_Ores_Abstract) {
-                                        TileEntity tTileEntity = c.getTileEntityUnsafe(x,y,z);
-                                        if ((tTileEntity!=null)
+                                        TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
+                                        if ((tTileEntity != null)
                                                 && (tTileEntity instanceof GT_TileEntity_Ores)
                                                 && ((GT_TileEntity_Ores) tTileEntity).mNatural == true) {
-                                            tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
+                                            tMetaID = (short) ((GT_TileEntity_Ores) tTileEntity).getMetaData();
                                             try {
 
                                                 String name = GT_LanguageManager.getTranslation(
                                                         tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
                                                 if (name.startsWith("Small")) if (data != 1) continue;
                                                 packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                            }
-                                            catch(Exception e) {
+                                            } catch (Exception e) {
                                                 String name = tBlock.getUnlocalizedName() + ".";
                                                 if (name.contains(".small.")) if (data != 1) continue;
                                                 packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                             }
                                         }
-                                    }
-                                    else if (tBlock instanceof BlockBaseOre) {
-                                    	Short packaged = 0;
-                                    	Material m = ((BlockBaseOre) tBlock).getMaterialEx();
-                                    	packaged = GTppHelper.encodeoresGTpp.get(m);
-                                    	try {
-                                    	packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) (packaged+7000));
-                                    	}
-                                        catch(Exception e) {
-                                        	
-                                        }
-                                    	}
-                                    else if (data == 1) {
+                                    } else if (Loader.isModLoaded("miscutils") && GTppHelper.isGTppBlock(tBlock)) {
+                                        short meta = GTppHelper.getGTppMeta(tBlock);
+                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, meta);
+                                    } else if (Loader.isModLoaded("bartworks") && BartWorksHelper.isOre(tBlock)) {
+                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
+                                    } else if (data == 1) {
                                         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                                         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                                            try {
-                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
-                                            }
-                                            catch (Exception e)
-                                            {
-
-                                            }
+                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
                                         }
                                     }
                                     break;
                                 case 2:
-                                    if(( x == 0 ) || ( z == 0 )){ //Skip doing the locations with the grid on them.
+                                    if ((x == 0) || (z == 0)) { //Skip doing the locations with the grid on them.
                                         break;
                                     }
                                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
@@ -160,8 +143,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                     packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
                                     break;
                             }
-                            if (data > 1) 
-                            	break;
+                            if (data > 1)
+                                break;
                         }
                     }
             }

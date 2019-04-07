@@ -1,5 +1,6 @@
 package com.detrav;
 
+import com.detrav.net.DetravProPickPacket00;
 import org.apache.logging.log4j.LogManager;
 
 import com.detrav.net.DetravNetwork;
@@ -19,11 +20,11 @@ import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech;after:miscutils")
+@Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "1.5.3";
+    public static final String VERSION = "1.5.4";
     public static final boolean DEBUGBUILD = false;
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
@@ -73,6 +74,8 @@ public class DetravScannerMod
         proxy.onPostLoad();
         if (Loader.isModLoaded("miscutils"))
         	GTppHelper.generate_OreIDs();
+
+        DetravProPickPacket00.reFillFluidColors();
     }
 
 }

@@ -1,10 +1,11 @@
 package com.detrav.utils;
 
-import java.util.HashMap;
-
-import com.detrav.DetravScannerMod;
-
+import cpw.mods.fml.common.Loader;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
+import net.minecraft.block.Block;
+
+import java.util.HashMap;
 
 /**
  * Created by bartimaeusnek on 19.04.2018.
@@ -24,6 +25,20 @@ public class GTppHelper {
 			}
 			
 		}
+	}
+
+
+	public static boolean isGTppBlock(Block tBlock){
+		return tBlock instanceof BlockBaseOre;
+	}
+
+
+	public static short getGTppMeta(Block tBlock){
+			return (short) (GTppHelper.encodeoresGTpp.get(((BlockBaseOre) tBlock).getMaterialEx()) +7000);
+	}
+
+	public static String getGTppVeinName(Block tBlock){
+			return tBlock.getLocalizedName();
 	}
 
 }

@@ -1,12 +1,10 @@
 package com.detrav.items.behaviours;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.SplittableRandom;
-
 import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
-
+import com.detrav.utils.BartWorksHelper;
+import com.detrav.utils.GTppHelper;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -18,7 +16,6 @@ import gregtech.common.GT_UndergroundOil;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_None;
-import gtPlusPlus.core.block.base.BlockBaseOre;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +27,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.HashMap;
+import java.util.SplittableRandom;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -216,10 +216,12 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                     addOreToHashMap(name, aPlayer);
                                 }
                             }
-                        } else if (tBlock instanceof BlockBaseOre) {
-                        	String name = tBlock.getLocalizedName();
-                            addOreToHashMap(name, aPlayer);
-                        	
+                        } else if (Loader.isModLoaded("miscutils") && GTppHelper.isGTppBlock(tBlock) ) {
+                            String name = GTppHelper.getGTppVeinName(tBlock);
+                            if (!name.isEmpty())
+                                addOreToHashMap(name, aPlayer);
+                        } else if (Loader.isModLoaded("bartworks") && BartWorksHelper.isOre(tBlock)){
+                                addOreToHashMap(GT_LanguageManager.getTranslation("bw.blockores.01." + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {

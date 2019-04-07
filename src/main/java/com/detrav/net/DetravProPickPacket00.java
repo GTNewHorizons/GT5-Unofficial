@@ -4,6 +4,7 @@ import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.gui.textures.DetravMapTexture;
 import com.detrav.utils.GTppHelper;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -36,8 +37,47 @@ public class DetravProPickPacket00 extends DetravPacket {
     public int size;
     public int ptype;
     HashMap<Byte,Short>[][] map = null;
-    static HashMap<Integer, short[]> fluidColors = null;
-    
+    public static HashMap<Integer, short[]> fluidColors = null;
+
+    public static void reFillFluidColors(){
+        if( fluidColors == null ) {  // Should probably be put somewhere else, but I suck at Java
+            fluidColors = new HashMap<Integer, short[]>();
+
+            fluidColors.put( Materials.NatruralGas.mGas.getID(),                         new short[]{0x00,0xff,0xff} );
+            fluidColors.put( Materials.OilLight.mFluid.getID(),                          new short[]{0xff,0xff,0x00} );
+            fluidColors.put( Materials.OilMedium.mFluid.getID(),                         new short[]{0x00,0xFF,0x00} );
+            fluidColors.put( Materials.OilHeavy.mFluid.getID(),                          new short[]{0xFF,0x00,0xFF} );
+            fluidColors.put( Materials.Oil.mFluid.getID(),                               new short[]{0x00,0x00,0x00} );
+            fluidColors.put( Materials.Helium_3.mGas.getID(),                            new short[]{0x80,0x20,0xe0} );
+            fluidColors.put( Materials.SaltWater.mFluid.getID(),                         new short[]{0x80,0xff,0x80} );
+            fluidColors.put( Materials.Naquadah.getMolten(0).getFluid().getID(),         new short[]{0x20,0x20,0x20} );
+            fluidColors.put( Materials.NaquadahEnriched.getMolten(0).getFluid().getID(), new short[]{0x60,0x60,0x60} );
+            fluidColors.put( Materials.Lead.getMolten(0).getFluid().getID(),             new short[]{0xd0,0xd0,0xd0} );
+            fluidColors.put( Materials.Chlorobenzene.mFluid.getID(),                     new short[]{0x40,0x80,0x40} );
+            fluidColors.put( FluidRegistry.getFluid("liquid_extra_heavy_oil").getID(),   new short[]{0x00,0x00,0x50} );
+            fluidColors.put( Materials.Oxygen.mGas.getID(),                              new short[]{0x40,0x40,0xA0} );
+            fluidColors.put( Materials.Nitrogen.mGas.getID(),                            new short[]{0x00,0x80,0xd0} );
+            fluidColors.put( Materials.Methane.mGas.getID(),                             new short[]{0x80,0x20,0x20} );
+            fluidColors.put( Materials.Ethane.mGas.getID(),                              new short[]{0x40,0x80,0x20} );
+            fluidColors.put( Materials.Ethylene.mGas.getID(),                            new short[]{0xd0,0xd0,0xd0} );
+            fluidColors.put( Materials.LiquidAir.mFluid.getID(),                         new short[]{0x40,0x80,0x40} );
+            fluidColors.put( FluidRegistry.LAVA.getID(),                                 new short[]{0xFF,0x00,0x00} );
+
+/*
+                   Set set = fluidColors.entrySet();
+                   Iterator iterator = set.iterator();
+                   System.out.println( "DETRAV SCANNER DEBUG" );
+                   while(iterator.hasNext()) {
+                       Map.Entry mentry = (Map.Entry) iterator.next();
+                       System.out.println( "key is: "+ (Integer)mentry.getKey() + " & Value is: " +
+                                           ((short[])mentry.getValue())[0] + " " +
+                                           ((short[])mentry.getValue())[1] + " " +
+                                           ((short[])mentry.getValue())[2] );
+                   }
+*/
+        }
+    }
+
     @Override
     public int getPacketID() {
         return 0;
@@ -159,23 +199,38 @@ public class DetravProPickPacket00 extends DetravPacket {
                             } catch (Exception e) {
                                 tMaterial = null;
                             }
-                            if (meta<7000||meta>7500) {
-                            if (tMaterial == null) {
-                                exception++;
-                                continue;
+                            if ((meta > 0 && meta<7000) || meta>7500) {
+                                if (tMaterial == null) {
+                                    exception++;
+                                    continue;
+                                }
+                                rgba = tMaterial.getRGBA();
+                                //ores.put(GT_Ore)
+
+                                name = getLocalizedNameForItem(tMaterial.mDefaultLocalName, GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
+
+                                raster.setSample(i, j, 0, rgba[0]);
+                                raster.setSample(i, j, 1, rgba[1]);
+                                raster.setSample(i, j, 2, rgba[2]);
+                                raster.setSample(i, j, 3, 255);
+                                if (!ores.containsKey(name))
+                                    ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
                             }
-                            rgba = tMaterial.getRGBA();
-                            //ores.put(GT_Ore)
-                            name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
-                            
-                            raster.setSample(i, j, 0, rgba[0]);
-                            raster.setSample(i, j, 1, rgba[1]);
-                            raster.setSample(i, j, 2, rgba[2]);
-                            raster.setSample(i, j, 3, 255);
-                            if (!ores.containsKey(name))
-                                ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
-                            }
-                            else{
+                            else if (meta<=0){
+                                name = GT_LanguageManager.getTranslation("bw.blockores.01." + (meta*-1) + ".name");
+                                rgba = new short[]{0,0,0,0};
+                                try {
+                                    rgba = Werkstoff.werkstoffHashMap.get((short) (meta*-1)).getRGBA();
+                                    //name = getLocalizedNameForItem(Werkstoff.werkstoffHashMap.get((short) (meta - 7250)).getDefaultName(),GT_LanguageManager.getTranslation("bw.blockores.01." + (meta-7250) + ".name"));
+                                } catch (Exception e){
+                                }
+                                raster.setSample(i, j, 0, rgba[0]);
+                                raster.setSample(i, j, 1, rgba[1]);
+                                raster.setSample(i, j, 2, rgba[2]);
+                                raster.setSample(i, j, 3, 255);
+                                if (!ores.containsKey(name))
+                                    ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+                            } else {
                                 if (pMaterial == null) {
                                     exception++;
                                     continue;
@@ -191,7 +246,6 @@ public class DetravProPickPacket00 extends DetravPacket {
                                 if (!ores.containsKey(name))
                                     ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
                                 }
-                            	
                         }
                     }
                     if (playerI == i || playerJ == j) {
@@ -207,41 +261,6 @@ public class DetravProPickPacket00 extends DetravPacket {
                 }
                 break;
             case 2:
-                if( fluidColors == null ) {  // Should probably be put somewhere else, but I suck at Java
-                    fluidColors = new HashMap<Integer, short[]>();
-
-                    fluidColors.put( Materials.NatruralGas.mGas.getID(),                         new short[]{0x00,0xff,0xff} );
-                    fluidColors.put( Materials.OilLight.mFluid.getID(),                          new short[]{0xff,0xff,0x00} );
-                    fluidColors.put( Materials.OilMedium.mFluid.getID(),                         new short[]{0x00,0xFF,0x00} );
-                    fluidColors.put( Materials.OilHeavy.mFluid.getID(),                          new short[]{0xFF,0x00,0xFF} );
-                    fluidColors.put( Materials.Oil.mFluid.getID(),                               new short[]{0x00,0x00,0x00} );
-                    fluidColors.put( Materials.Helium_3.mGas.getID(),                            new short[]{0x80,0x20,0xe0} );
-                    fluidColors.put( Materials.SaltWater.mFluid.getID(),                         new short[]{0x80,0xff,0x80} );
-                    fluidColors.put( Materials.Naquadah.getMolten(0).getFluid().getID(),         new short[]{0x20,0x20,0x20} );
-                    fluidColors.put( Materials.NaquadahEnriched.getMolten(0).getFluid().getID(), new short[]{0x60,0x60,0x60} );
-                    fluidColors.put( Materials.Lead.getMolten(0).getFluid().getID(),             new short[]{0xd0,0xd0,0xd0} );
-                    fluidColors.put( Materials.Chlorobenzene.mFluid.getID(),                     new short[]{0x40,0x80,0x40} );
-                    fluidColors.put( FluidRegistry.getFluid("liquid_extra_heavy_oil").getID(),   new short[]{0x00,0x00,0x50} );
-                    fluidColors.put( Materials.Oxygen.mGas.getID(),                              new short[]{0x40,0x40,0xA0} );
-                    fluidColors.put( Materials.Nitrogen.mGas.getID(),                            new short[]{0x00,0x80,0xd0} );
-                    fluidColors.put( Materials.Methane.mGas.getID(),                             new short[]{0x80,0x20,0x20} );
-                    fluidColors.put( Materials.Ethane.mGas.getID(),                              new short[]{0x40,0x80,0x20} );
-                    fluidColors.put( Materials.Ethylene.mGas.getID(),                            new short[]{0xd0,0xd0,0xd0} );
-                    fluidColors.put( Materials.LiquidAir.mFluid.getID(),                         new short[]{0x40,0x80,0x40} );
-
-/*
-                   Set set = fluidColors.entrySet();
-                   Iterator iterator = set.iterator();
-                   System.out.println( "DETRAV SCANNER DEBUG" );
-                   while(iterator.hasNext()) {
-                       Map.Entry mentry = (Map.Entry) iterator.next();
-                       System.out.println( "key is: "+ (Integer)mentry.getKey() + " & Value is: " +
-                                           ((short[])mentry.getValue())[0] + " " + 
-                                           ((short[])mentry.getValue())[1] + " " + 
-                                           ((short[])mentry.getValue())[2] );
-                   }
-*/
-               }
 
                 short[] metas = new short[2];
                 for (int i = 0; i < wh; i++)
@@ -353,6 +372,9 @@ public class DetravProPickPacket00 extends DetravPacket {
         return ores;
     }
 
+    private static String getLocalizedNameForItem(String mDefaultLocalName, String aFormat) {
+        return String.format(aFormat.replace("%s", "%temp").replace("%material", "%s"), mDefaultLocalName).replace("%temp", "%s");
+    }
 
     public int getSize() {
         return (size*2+1)*16;

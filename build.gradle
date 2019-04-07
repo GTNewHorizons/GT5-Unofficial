@@ -61,26 +61,26 @@ repositories {
     maven { // AppleCore
         url "http://www.ryanliptak.com/maven/"
     }
-    ivy {
-        name "BuildCraft"
-        artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
-    }
-    ivy {
-        name 'CoFHLib'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name 'CoFHCore'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
-    }
-    ivy {
-        name 'Railcraft'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
-    }
-	ivy {
-        name 'IC2NuclearControl'
-        artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
-    }
+    //ivy {
+    //    name "BuildCraft"
+    //    artifactPattern "http://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
+    //}
+    //ivy {
+    //    name 'CoFHLib'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhlib.cf}/[module]-[revision].[ext]"
+    //}
+    //ivy {
+    //    name 'CoFHCore'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.cofhcore.cf}/[module]-[revision].[ext]"
+    //}
+    //ivy {
+    //    name 'Railcraft'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.railcraft.cf}/[module]_[revision].[ext]"
+    //}
+	//ivy {
+    //    name 'IC2NuclearControl'
+    //    artifactPattern "http://addons-origin.cursecdn.com/files/${config.nc.cf}/[module]-[revision].[ext]"
+    //}
 }
 
 dependencies {
@@ -97,11 +97,11 @@ dependencies {
     provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {
         transitive = false
     }
-    provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
-    provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
-    provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
-    provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
-    provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
+   // provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
+   // provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
+   // provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
+   // provided name: 'Railcraft', version: config.railcraft.version, ext: 'jar'
+   // provided name: 'IC2NuclearControl', version: config.nc.version, ext: 'jar'
 }
 
 processResources

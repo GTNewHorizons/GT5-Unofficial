@@ -7,6 +7,7 @@ import com.detrav.enums.DetravToolDictNames;
 import com.detrav.items.tools.DetravProPick;
 import com.detrav.items.tools.DetravToolElectricProPick;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
@@ -19,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
+
+import static com.detrav.DetravScannerMod.DEBUGBUILD;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -298,32 +301,34 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
-		
-        //Materials at tiers 
-        dStack = getToolWithStats(0,1,Materials.Polycaprolactam,Materials.Polycaprolactam, null);
-        list.add(dStack);
-        dStack = getToolWithStats(2,1,Materials.Steel,Materials.Steel, null);
-        list.add(dStack);
-        dStack = getToolWithStats(2,1,Materials.Bronze,Materials.Steel, null);
-        list.add(dStack);
-        dStack = getToolWithStats(4,1,Materials.Manyullyn,Materials.Aluminium, null);
-        list.add(dStack);
-        dStack = getToolWithStats(6,1,Materials.DamascusSteel,Materials.DamascusSteel, null);
-        list.add(dStack);
-        dStack = getToolWithStats(8,1,Materials.Titanium,Materials.Titanium, null);
-        list.add(dStack);
-        dStack = getToolWithStats(10,1,Materials.TungstenSteel,Materials.TungstenSteel, null);
-        list.add(dStack);
-        dStack = getToolWithStats(12,1,Materials.Iridium,Materials.Iridium, null);
-        list.add(dStack);
-        dStack = getToolWithStats(12,1,Materials.Osmium,Materials.Osmium, null);
-        list.add(dStack);
-        dStack = getToolWithStats(14,1,Materials.Neutronium,Materials.Neutronium, null);
-        list.add(dStack);
-        dStack = getToolWithStats(16,1,Materials.InfinityCatalyst,Materials.InfinityCatalyst, null);
-        list.add(dStack);
-        dStack = getToolWithStats(18,1,Materials.Infinity,Materials.Infinity, null);
-        list.add(dStack);
+        if (Loader.isModLoaded("dreamcraft")) {
+            //Materials at tiers
+            dStack = getToolWithStats(0, 1, Materials.Polycaprolactam, Materials.Polycaprolactam, null);
+            list.add(dStack);
+            dStack = getToolWithStats(2, 1, Materials.Steel, Materials.Steel, null);
+            list.add(dStack);
+            dStack = getToolWithStats(2, 1, Materials.Bronze, Materials.Steel, null);
+            list.add(dStack);
+            dStack = getToolWithStats(4, 1, Materials.Manyullyn, Materials.Aluminium, null);
+            list.add(dStack);
+            dStack = getToolWithStats(6, 1, Materials.DamascusSteel, Materials.DamascusSteel, null);
+            list.add(dStack);
+            dStack = getToolWithStats(8, 1, Materials.Titanium, Materials.Titanium, null);
+            list.add(dStack);
+            dStack = getToolWithStats(10, 1, Materials.TungstenSteel, Materials.TungstenSteel, null);
+            list.add(dStack);
+            dStack = getToolWithStats(12, 1, Materials.Iridium, Materials.Iridium, null);
+            list.add(dStack);
+            dStack = getToolWithStats(12, 1, Materials.Osmium, Materials.Osmium, null);
+            list.add(dStack);
+            dStack = getToolWithStats(14, 1, Materials.Neutronium, Materials.Neutronium, null);
+            list.add(dStack);
+
+            dStack = getToolWithStats(16, 1, Materials.InfinityCatalyst, Materials.InfinityCatalyst, null);
+            list.add(dStack);
+            dStack = getToolWithStats(18, 1, Materials.Infinity, Materials.Infinity, null);
+            list.add(dStack);
+        }
         
         //Steel for comparison
         dStack = getToolWithStats(0,1,Materials.Steel,Materials.Steel, null);
@@ -354,12 +359,18 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         dStack = getToolWithStats(102, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, GT_Values.V[7], 7L, -1L});
         setCharge(dStack,409600000L);
         list.add(dStack);
-        dStack = getToolWithStats(104, 1, Materials.InfinityCatalyst, Materials.TungstenSteel, new long[]{1638400000L, GT_Values.V[8], 8L, -1L});
-        setCharge(dStack,1638400000L);
-        list.add(dStack);
-        dStack = getToolWithStats(106, 1, Materials.Infinity, Materials.TungstenSteel, new long[]{6553600000L, GT_Values.V[9], 9L, -1L});
-        setCharge(dStack,6553600000L);
-        list.add(dStack);
 
+        if (Loader.isModLoaded("dreamcraft")) {
+            dStack = getToolWithStats(104, 1, Materials.InfinityCatalyst, Materials.TungstenSteel, new long[]{1638400000L, GT_Values.V[8], 8L, -1L});
+            setCharge(dStack, 1638400000L);
+            list.add(dStack);
+            dStack = getToolWithStats(106, 1, Materials.Infinity, Materials.TungstenSteel, new long[]{6553600000L, GT_Values.V[9], 9L, -1L});
+            setCharge(dStack, 6553600000L);
+            list.add(dStack);
+        } else {
+            dStack = getToolWithStats(106, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{6553600000L, GT_Values.V[9], 9L, -1L});
+            setCharge(dStack, 6553600000L);
+            list.add(dStack);
+        }
     }
 }

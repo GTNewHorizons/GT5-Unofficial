@@ -58,7 +58,7 @@ hs_err_pid*
 *.iml
 *.ipr
 *.iws
-
+libs/
 .idea/
 .idea_modules/
 
