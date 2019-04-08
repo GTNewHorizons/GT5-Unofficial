@@ -20,6 +20,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 	private BlockPos mTilePos;
 	private boolean mRequiresUpdate = false;
 	private Long mStartTime;
+	private Byte mRedstoneLevel;
 	
 	public boolean mLightMode = false;
 	public float mLightValue = 0;	
@@ -66,6 +67,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 		mInvName = aNBT.getString("mInvName");
 		mLightValue = aNBT.getFloat("mLightValue");
 		mLightMode = aNBT.getBoolean("mLightMode");
+		mRedstoneLevel = aNBT.getByte("mRedstoneLevel");
 		super.readFromNBT(aNBT);
 	}
 
@@ -76,6 +78,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 		aNBT.setString("mInvName", mInvName);
 		aNBT.setFloat("mLightValue", getLightBrightness());
 		aNBT.setBoolean("mLightMode", isLight());
+		aNBT.setByte("mRedstoneLevel", mRedstoneLevel);
 		super.writeToNBT(aNBT);
 	}
 	
@@ -272,15 +275,18 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 	 * @return
 	 */
 	public int getRedstoneLevel() {
-		if (mTilePos == null) {
+		if (mTilePos == null || mRedstoneLevel == null) {
 			return 0;
 		}
-		if (canSupplyRedstoneSignal()) {
-			int aInputPower = getInputPowerLevel();
-			if (aInputPower > 0) {
-				return aInputPower;
+		else {
+			if (canSupplyRedstoneSignal()) {				
+				if (this.hasUpdatedRecently()) {
+					int aInputPower = getInputPowerLevel();
+					mRedstoneLevel = (byte) ((aInputPower >= 0 && aInputPower <= 127) ? aInputPower : 0);					
+				}
+				return mRedstoneLevel;				
 			}
-		}
+		}		
 		return 0;
 	}
 	
