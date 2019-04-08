@@ -1,22 +1,16 @@
 package gtPlusPlus.core.handler.events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class GeneralTooltipEventHandler {
@@ -29,7 +23,7 @@ public class GeneralTooltipEventHandler {
 	public void onItemTooltip(ItemTooltipEvent event){
 
 		
-		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED || GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
 			return;
 		}
 		if (event.itemStack == null) {
