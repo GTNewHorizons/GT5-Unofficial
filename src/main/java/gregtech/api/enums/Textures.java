@@ -379,7 +379,9 @@ public class Textures {
                 FUSIONII_9,
                 FUSIONII_10,
                 FUSIONII_11,
-                FUSIONII_12,
+                FUSIONII_12
+            },
+            CONNECTED_FUSHULLS = new IIconContainer[]{
                 FUSIONIV_1,
                 FUSIONIV_2,
                 FUSIONIV_3,
@@ -391,22 +393,8 @@ public class Textures {
                 FUSIONIV_9,
                 FUSIONIV_10,
                 FUSIONIV_11,
-                FUSIONIV_12,
-            },
-            CONNECTED_FUSHULLS = new IIconContainer[]{
-                    FUSIONIV_1,
-                    FUSIONIV_2,
-                    FUSIONIV_3,
-                    FUSIONIV_4,
-                    FUSIONIV_5,
-                    FUSIONIV_6,
-                    FUSIONIV_7,
-                    FUSIONIV_8,
-                    FUSIONIV_9,
-                    FUSIONIV_10,
-                    FUSIONIV_11,
-                    FUSIONIV_12,
-                },
+                FUSIONIV_12
+			},
             STORAGE_BLOCKS1 = new IIconContainer[]{
                 BLOCK_ADAMANTIUM,
                 BLOCK_ALUMINIUM,
