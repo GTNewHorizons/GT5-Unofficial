@@ -16,6 +16,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L), new Object[]{" s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial)});
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
             GT_Values.RA.addCutterRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L), null, (int) Math.max(aMaterial.getMass(), 1L), 4);
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
