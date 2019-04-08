@@ -23,7 +23,7 @@ public class GeneralTooltipEventHandler {
 	public void onItemTooltip(ItemTooltipEvent event){
 
 		
-		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED || GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
 			return;
 		}
 		if (event.itemStack == null) {

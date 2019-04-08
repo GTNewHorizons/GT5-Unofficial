@@ -45,7 +45,6 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		public boolean onScrewdriverLMB() {
-			// TODO Auto-generated method stub
 			return super.onScrewdriverLMB();
 		}
 
@@ -68,7 +67,6 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		public boolean onMalletLMB() {
-			// TODO Auto-generated method stub
 			return super.onMalletLMB();
 		}
 
@@ -86,7 +84,6 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		public boolean onWrenchLMB() {
-			// TODO Auto-generated method stub
 			return super.onWrenchLMB();
 		}
 
@@ -105,23 +102,21 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 		@Override
 		protected String getTileEntityNameForRegistration() {
-			// TODO Auto-generated method stub
 			return "TileEntityRedstoneTest";
 		}
 
 		@Override
 		public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-			// TODO Auto-generated method stub
 			return super.isProvidingWeakPower(world, x, y, z, side);
 		}
 
 		@Override
 		public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
-			// TODO Auto-generated method stub
 			return super.isProvidingStrongPower(world, x, y, z, side);
 		}	
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List aList) {
 		aList.add(ItemUtils.getSimpleStack(this));
@@ -135,13 +130,11 @@ public class BlockGenericRedstoneTest extends BlockGenericRedstone {
 
 	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-		// TODO Auto-generated method stub
 		return ItemUtils.getSimpleStack(this).getItem();
 	}
 
 	@Override
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
-		// TODO Auto-generated method stub
 		return ItemUtils.getSimpleStack(this).getItem();
 	}
 

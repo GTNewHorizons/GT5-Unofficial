@@ -16,12 +16,14 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
 import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class HazmatUtils {
@@ -29,7 +31,7 @@ public class HazmatUtils {
 
 	public static final GT_HashSet<GT_ItemStack> sHazmatList = new GT_HashSet<GT_ItemStack>();	
 	
-	private static final HashMap<ItemStack, AutoMap<String>> mToolTips = new HashMap<ItemStack, AutoMap<String>>();
+	private static final HashMap<GT_ItemStack, AutoMap<String>> mToolTips = new HashMap<GT_ItemStack, AutoMap<String>>();
 	
 	
 	private static boolean mInit = false;
@@ -67,20 +69,27 @@ public class HazmatUtils {
 	
 	@SubscribeEvent
 	public void onItemTooltip(ItemTooltipEvent event){	
-		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED || GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
+		Logger.INFO("Ticking Hazmat handler");
+		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
+			Logger.INFO("Bad Phase : "+GTplusplus.CURRENT_LOAD_PHASE);
 			return;
 		}
 		if (event.itemStack == null || isVanillaHazmatPiece(event.itemStack)) {
+			Logger.INFO("Invalid Itemstack or vanilla hazmat");
 			return;
 		}
 		else {
-			ItemStack aStack = event.itemStack;
+			Logger.INFO("Finding Tooltip Data");
+			ItemStack aStackTemp = event.itemStack;
+			GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
 			String[] aTooltips = getTooltips(aStack);
 			if (aTooltips == null || aTooltips.length == 0) {
+				Logger.INFO("No Info!");
 				return;
 			}
-			else {				
-				if (providesProtection(aStack)) {	
+			else {	
+				Logger.INFO("Found Tooltips!");			
+				if (providesProtection(aStackTemp)) {	
 					event.toolTip.add("Provides full hazmat protection.");					
 				}	
 				else {
@@ -134,11 +143,20 @@ public class HazmatUtils {
 	}
 	
 	
-	
+	/**
+	 * Is this item vanilla IC2 hazmat?
+	 * @param aArmour - The Armour to provide protection.
+	 * @return
+	 */
 	public static boolean isVanillaHazmatPiece(ItemStack aArmour) {
 		return aArmour != null ?  aArmour.getItem() instanceof ItemArmorHazmat : false;
 	}	
 	
+	/**
+	 * Is this item a registered piece of full hazmat? (Provides all 6 protections)
+	 * @param aStack - The Armour to provide protection.
+	 * @return
+	 */
 	public static boolean isHazmatPiece(ItemStack aStack) {
 		return isVanillaHazmatPiece(aStack) || providesProtection(aStack);
 	}
@@ -149,7 +167,8 @@ public class HazmatUtils {
 	 * @param aStack - The Armour to provide protection.
 	 * @return - Did we register this ItemStack properly?
 	 */
-	public static boolean addProtection(ItemStack aStack) {		
+	public static boolean addProtection(ItemStack aVanStack) {	
+		GT_ItemStack aStack = getGtStackFromVanilla(aVanStack);
 		AutoMap<Boolean> aAdded = new AutoMap<Boolean>();
 		aAdded.put(addProtection_Frost(aStack));
 		aAdded.put(addProtection_Fire(aStack));
@@ -165,37 +184,43 @@ public class HazmatUtils {
 		sHazmatList.add(aStack);
 		return true;		
 	}
-	public static boolean addProtection_Frost(ItemStack aStack) {
-		registerTooltip(aStack, "Frost");
+	public static boolean addProtection_Frost(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.AQUA+"Frost");
 		return addProtection_Generic(sFrostHazmatList, aStack);
 	}
-	public static boolean addProtection_Fire(ItemStack aStack) {
-		registerTooltip(aStack, "Heat");
+	public static boolean addProtection_Fire(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.DARK_RED+"Heat");
 		return addProtection_Generic(sHeatHazmatList, aStack);
 	}
-	public static boolean addProtection_Biohazard(ItemStack aStack) {
-		registerTooltip(aStack, "Biohazards");
+	public static boolean addProtection_Biohazard(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.GREEN+"Biohazards");
 		return addProtection_Generic(sBioHazmatList, aStack);
 	}
-	public static boolean addProtection_Gas(ItemStack aStack) {
-		registerTooltip(aStack, "Gas");
+	public static boolean addProtection_Gas(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.WHITE+"Gas");
 		return addProtection_Generic(sGasHazmatList, aStack);
 	}
-	public static boolean addProtection_Radiation(ItemStack aStack) {
-		registerTooltip(aStack, "Radiation");
+	public static boolean addProtection_Radiation(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.DARK_GREEN+"Radiation");
 		return addProtection_Generic(sRadioHazmatList, aStack);
 	}
-	public static boolean addProtection_Electricty(ItemStack aStack) {
-		registerTooltip(aStack, "Electricity");
+	public static boolean addProtection_Electricty(GT_ItemStack aStack) {
+		registerTooltip(aStack, EnumChatFormatting.YELLOW+"Electricity");
 		return addProtection_Generic(sElectroHazmatList, aStack);
 	}
 	
-	private static boolean addProtection_Generic(GT_HashSet aSet, ItemStack aStack) {
+	private static boolean addProtection_Generic(GT_HashSet<GT_ItemStack> aSet, GT_ItemStack aStack) {
 		int aMapSize = aSet.size();
 		aSet.add(aStack);
 		return aMapSize < aSet.size();
 	}
 	
+	/**
+	 * Does this item provide hazmat protection? (Protection against Frost, Heat, Bio, Gas, Rads, Elec)
+	 * An item may return false even if it protects against all six damage types. This is because it's not actually registered as hazmat correct.
+	 * @param aStack - The item to check for protection
+	 * @return
+	 */
 	public static boolean providesProtection(ItemStack aStack) {
 		return providesProtetion_Generic(sHazmatList, aStack);
 	}
@@ -225,23 +250,35 @@ public class HazmatUtils {
 		return aSet.getMap().containsKey(aStack);
 	}
 	
-	private static String[] getTooltips(ItemStack aStack) {		
+	
+	private static String[] getTooltips(GT_ItemStack aStack) {		
 		AutoMap<String> aTempTooltipData = mToolTips.get(aStack);
 		if (aTempTooltipData == null) {
+			Logger.INFO("Item was not mapped for TTs");
 			return new String[] {};
 		}
 		else {
+			Logger.INFO("Item was mapped for TTs");
 			Collections.sort(aTempTooltipData);
+			Logger.INFO("Sorted TTs");
 			return aTempTooltipData.toArray();
 		}
 	}
 	
-	private static void registerTooltip(ItemStack aStack, String aTooltip) {
+	private static void registerTooltip(GT_ItemStack aStack, String aTooltip) {
 		AutoMap<String> aTempTooltipData = mToolTips.get(aStack);
 		if (aTempTooltipData == null) {
 			aTempTooltipData = new AutoMap<String>();
 		}
 		aTempTooltipData.add(aTooltip);
+	}
+	
+	public static ItemStack getStackFromGtStack(GT_ItemStack aGtStack) {
+		return ItemUtils.simpleMetaStack(aGtStack.mItem, aGtStack.mMetaData, aGtStack.mStackSize);
+	}
+	
+	public static GT_ItemStack getGtStackFromVanilla(ItemStack aStack) {
+		return new GT_ItemStack(aStack);
 	}
 	
 }
