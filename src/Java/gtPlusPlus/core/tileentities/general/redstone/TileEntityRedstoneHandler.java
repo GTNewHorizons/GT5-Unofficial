@@ -1,16 +1,11 @@
 package gtPlusPlus.core.tileentities.general.redstone;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IToolable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -233,7 +228,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 		if (mTilePos == null) {
 			return false;
 		}
-		return getBlock().canConnectRedstone(world, xCoord, yCoord, zCoord, side);
+		return canAcceptRedstoneSignal() || canSupplyRedstoneSignal();
 	}
 
     /**
@@ -249,7 +244,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 		if (mTilePos == null) {
 			return false;
 		}
-		return getBlock().shouldCheckWeakPower(world, xCoord, yCoord, zCoord, side);
+        return getBlock().isNormalCube();
 	}
 
     /**
@@ -268,7 +263,7 @@ public abstract class TileEntityRedstoneHandler extends TileEntity implements IT
 		if (mTilePos == null) {
 			return false;
 		}
-		return getBlock().getWeakChanges(world, xCoord, yCoord, zCoord);
+		return false;
 	}
 	
 	

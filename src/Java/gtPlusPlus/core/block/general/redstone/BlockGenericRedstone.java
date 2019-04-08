@@ -86,7 +86,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 		try {
 			final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
 			final Item mHandItem = mHandStack.getItem();
-			if (mHandItem instanceof GT_MetaGenerated_Tool_01) {
+			if (ItemUtils.isItemGregtechTool(mHandStack)) {
 
 				Logger.INFO("Found Tool in players hand!");
 				
@@ -250,7 +250,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
 		if (aThis != null) {
 			return aThis.shouldCheckWeakPower(world, x, y, z, side);
 		}
-		return false;
+        return isNormalCube();
 	}
 
 	@Override

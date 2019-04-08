@@ -1122,7 +1122,9 @@ public class ItemUtils {
 			return false;
 		}
 		final Item mItem = aStack.getItem();
-		if (mItem instanceof GT_MetaGenerated_Tool_01 || mItem instanceof MetaGeneratedGregtechTools || mItem instanceof Gregtech_MetaTool) {
+		final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
+		final Class aSkookClass = aSkookum.getClass();
+		if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01 || mItem instanceof MetaGeneratedGregtechTools || mItem instanceof Gregtech_MetaTool || mItem == aSkookum) {
 			return true;
 		}
 		return false;
