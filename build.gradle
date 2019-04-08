@@ -91,7 +91,10 @@ repositories {
 
 dependencies {
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
-    compileOnly "applecore:AppleCore:1.7.10-3.1.1:api"
+    compileOnly "applecore:AppleCore:${config.applecore.version}:api"
+    compile "micdoodle8.mods:MicdoodleCore:${config.galacticraft.version}:Dev"
+    compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
+    compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
 }
 
 //task getGregTech(type: Download) {
