@@ -35,6 +35,8 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -104,6 +106,10 @@ public final class MainMod {
             BioCultureLoader bioCultureLoader = new BioCultureLoader();
             bioCultureLoader.run();
         }
+        if (ConfigHandler.newStuff) {
+            WerkstoffLoader.INSTANCE.init();
+            Werkstoff.init();
+        }
     }
 
     @Mod.EventHandler
@@ -113,6 +119,8 @@ public final class MainMod {
         new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
+        if (ConfigHandler.newStuff)
+            WerkstoffLoader.INSTANCE.runInit();
     }
 
     @Mod.EventHandler
@@ -121,30 +129,33 @@ public final class MainMod {
         if (ConfigHandler.BioLab)
             new GTNHBlocks().run();
         BioObjectAdder.regenerateBioFluids();
+        if (ConfigHandler.newStuff)
+            WerkstoffLoader.INSTANCE.run();
+        ConfigHandler.setUpComments();
     }
 
-    @Mod.EventHandler
-    public void onServerStarted(FMLServerStartedEvent event){
-        eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String)null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList){
-            if (recipe == null || recipe.mInputs == null)
-                continue;
-            ItemStack input = recipe.mInputs[0];
-            int i = 0;
-            while(checkForExplosives(input)){
-                try {
-                    i++;
-                    input = recipe.mInputs[i];
-                }catch (ArrayIndexOutOfBoundsException e){
-                    LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE.");
-                    e.printStackTrace();
-                }
-            }
-            eicMap.addRecipe(true,new ItemStack[]{input}, recipe.mOutputs,null,null,null,recipe.mDuration, BW_Util.getMachineVoltageFromTier(10),0);
-        }
-    }
-
-    private boolean checkForExplosives(ItemStack input){
-        return (GT_Utility.areStacksEqual(input,new ItemStack(Blocks.tnt)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L))|| GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
-    }
+//    @Mod.EventHandler
+//    public void onServerStarted(FMLServerStartedEvent event) {
+//        eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+//        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
+//            if (recipe == null || recipe.mInputs == null)
+//                continue;
+//            ItemStack input = recipe.mInputs[0];
+//            int i = 0;
+//            while (checkForExplosives(input)) {
+//                try {
+//                    i++;
+//                    input = recipe.mInputs[i];
+//                } catch (ArrayIndexOutOfBoundsException e) {
+//                    LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE.");
+//                    e.printStackTrace();
+//                }
+//            }
+//            eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, recipe.mDuration, BW_Util.getMachineVoltageFromTier(10), 0);
+//        }
+//    }
+//
+//    private boolean checkForExplosives(ItemStack input) {
+//        return (GT_Utility.areStacksEqual(input, new ItemStack(Blocks.tnt)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)) || GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("dynamite", 1L)) || GT_Utility.areStacksEqual(input, ItemList.Block_Powderbarrel.get(1L)));
+//    }
 }

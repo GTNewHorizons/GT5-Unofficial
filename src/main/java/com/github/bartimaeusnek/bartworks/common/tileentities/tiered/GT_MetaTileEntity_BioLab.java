@@ -194,9 +194,9 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                 case 3: {
                     if (
                             GT_Utility.isStackValid(this.mInventory[4]) && GT_Utility.areStacksEqual(this.mInventory[4], BioItemList.getPetriDish(null), true) && this.mInventory[4].getTagCompound() != null &&
-                            GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], BioItemList.getPlasmidCell(null), true) && this.mInventory[5].getTagCompound() != null &&
-                            GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[2]) &&
-                            this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
+                                    GT_Utility.isStackValid(this.mInventory[5]) && GT_Utility.areStacksEqual(this.mInventory[5], BioItemList.getPlasmidCell(null), true) && this.mInventory[5].getTagCompound() != null &&
+                                    GT_Utility.isStackValid(this.mInventory[6]) && GT_Utility.areStacksEqual(this.mInventory[6], FluidLoader.BioLabFluidCells[2]) &&
+                                    this.mFluid.isFluidEqual(FluidRegistry.getFluidStack("ic2distilledwater", 1000)) && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioData.getBioDataFromNBTTag(this.mInventory[5].getTagCompound());
                         BioCulture bioCulture = BioCulture.getBioCultureFromNBTTag(this.mInventory[4].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null)
@@ -257,7 +257,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
         return super.checkRecipe(skipOC);
     }
 
-    private BioCulture checkForExisting(BioCulture culture){
+    private BioCulture checkForExisting(BioCulture culture) {
         if (culture == null)
             return null;
         for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST)
@@ -269,6 +269,6 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     @Override
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{ StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.biolab.0.name"), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

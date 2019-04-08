@@ -160,12 +160,12 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         for (int i = 0; i < dsc.length; i++) {
             e.add(dsc[i]);
         }
-        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name")+" " + ConfigHandler.energyPerCell + "EU");
+        e.add(StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " " + ConfigHandler.energyPerCell + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name").split(";");
         for (int i = 0; i < dsc.length; i++) {
             e.add(dsc[i]);
         }
-        e.add(ChatColorHelper.RED +StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
+        e.add(ChatColorHelper.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
         e.add(StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks");
         return e.toArray(new String[0]);
     }

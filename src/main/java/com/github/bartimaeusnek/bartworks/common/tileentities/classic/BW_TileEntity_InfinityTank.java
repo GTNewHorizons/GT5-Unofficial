@@ -35,7 +35,7 @@ import java.util.HashSet;
 
 public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank, IFluidHandler, ITileWithGUI {
 
-    final ArrayList<FluidStack> INTERNALTANKS =new ArrayList<FluidStack>();
+    final ArrayList<FluidStack> INTERNALTANKS = new ArrayList<FluidStack>();
 
     int selectedTank;
 
@@ -46,12 +46,12 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        return drain(from,resource != null ? resource.amount : 0,doDrain);
+        return drain(from, resource != null ? resource.amount : 0, doDrain);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return drain(maxDrain,doDrain);
+        return drain(maxDrain, doDrain);
     }
 
     @Override
@@ -78,8 +78,8 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
     @Override
     public FluidStack getFluid() {
         if (INTERNALTANKS.get(selectedTank) == null || INTERNALTANKS.get(selectedTank).amount == 0)
-            if (selectedTank>0)
-                selectedTank = this.INTERNALTANKS.size()-1;
+            if (selectedTank > 0)
+                selectedTank = this.INTERNALTANKS.size() - 1;
         return INTERNALTANKS.get(selectedTank);
     }
 
@@ -103,10 +103,9 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
                 lInternalTank.appendTag(entry);
             }
         }
-        p_145841_1_.setTag("InternalTank",lInternalTank);
+        p_145841_1_.setTag("InternalTank", lInternalTank);
     }
 
-    
 
     @Override
     public int getCapacity() {
@@ -128,7 +127,7 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
 
         int id = 0;
 
-        if (canDrain(null,resource.getFluid())) {
+        if (canDrain(null, resource.getFluid())) {
             for (FluidStack stack : INTERNALTANKS)
                 if (GT_Utility.areFluidsEqual(stack, resource)) {
                     this.INTERNALTANKS.get(id = this.INTERNALTANKS.indexOf(stack)).amount += resource.amount;
@@ -136,7 +135,7 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
                 }
         } else {
             this.INTERNALTANKS.add(resource);
-            id = this.INTERNALTANKS.size()-1;
+            id = this.INTERNALTANKS.size() - 1;
             selectedTank = id;
         }
         return this.INTERNALTANKS.get(id).amount;

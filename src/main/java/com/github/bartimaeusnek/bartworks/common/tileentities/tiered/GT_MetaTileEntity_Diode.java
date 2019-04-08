@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     public GT_MetaTileEntity_Diode(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, StatCollector.translateToLocal("tooltip.tile.diode.0.name"));
         maxAmps = getAmpsfromMeta(aID);
-        aAmps=maxAmps;
+        aAmps = maxAmps;
     }
 
     public GT_MetaTileEntity_Diode(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,7 +54,7 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
         super.onFirstTick(aBaseMetaTileEntity);
         if (maxAmps == 0 && !this.getBaseMetaTileEntity().getWorld().isRemote) {
             maxAmps = getAmpsfromMeta(this.getBaseMetaTileEntity().getMetaTileID());
-            aAmps=maxAmps;
+            aAmps = maxAmps;
         }
     }
 
@@ -100,16 +100,16 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
         return new GT_MetaTileEntity_Diode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private long getAmpsfromMeta(int meta){
-        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*2)
+    private long getAmpsfromMeta(int meta) {
+        if (meta > ConfigHandler.IDOffset + GT_Values.VN.length && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 2)
             return 2L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*2 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*3)
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 2 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 3)
             return 4L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*3 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*4)
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 3 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 4)
             return 8L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*4 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*5)
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 4 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 5)
             return 12L;
-        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length*5 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length*6)
+        else if (meta > ConfigHandler.IDOffset + GT_Values.VN.length * 5 && meta <= ConfigHandler.IDOffset + GT_Values.VN.length * 6)
             return 16L;
         else
             return 0L;
@@ -117,6 +117,6 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
     @SuppressWarnings("deprecation")
     public String[] getDescription() {
-        return new String[]{mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name")+ " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier],  StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + maxAmperesIn(),  StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") +" " + ChatColorHelper.YELLOW + maxAmperesOut(),  StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
+        return new String[]{mDescription, StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " " + ChatColorHelper.YELLOW + GT_Values.V[this.mTier], StatCollector.translateToLocal("tooltip.tile.tiereddsc.1.name") + " " + ChatColorHelper.YELLOW + maxAmperesIn(), StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " " + ChatColorHelper.YELLOW + maxAmperesOut(), StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks"};
     }
 }

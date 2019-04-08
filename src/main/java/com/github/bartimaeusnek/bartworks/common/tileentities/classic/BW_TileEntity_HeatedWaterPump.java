@@ -268,7 +268,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ISidedI
 
     @Override
     public String[] getInfoData() {
-        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name")+" " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
     }
 
     @Override

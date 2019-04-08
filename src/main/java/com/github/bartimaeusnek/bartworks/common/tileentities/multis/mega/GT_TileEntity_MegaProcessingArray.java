@@ -39,6 +39,11 @@ import java.util.List;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_ProcessingArray {
+    private GT_Recipe mLastRecipe;
+    private int tTier = 0;
+    private int mMult = 0;
+    private String mMachine = "";
+    private GT_MetaTileEntity_Hatch_InputBus machineBus;
     public GT_TileEntity_MegaProcessingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -46,13 +51,6 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
     public GT_TileEntity_MegaProcessingArray(String aName) {
         super(aName);
     }
-
-    private GT_Recipe mLastRecipe;
-    private int tTier = 0;
-    private int mMult = 0;
-    private String mMachine = "";
-
-    private GT_MetaTileEntity_Hatch_InputBus machineBus;
 
     public boolean checkRecipe(ItemStack aStack) {
         if (!isCorrectMachinePart(machineBus.mInventory[0])) {
@@ -138,7 +136,7 @@ public class GT_TileEntity_MegaProcessingArray extends GT_MetaTileEntity_Process
                 this.mMaxProgresstime = tRecipe.mDuration;
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
-                BW_Util.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, map.mAmperage, GT_Values.V[tTier],this);
+                BW_Util.calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, map.mAmperage, GT_Values.V[tTier], this);
                 //In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                     return false;

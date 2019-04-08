@@ -23,29 +23,25 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 
 public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity_ImplosionCompressor {
 
+    public static GT_Recipe.GT_Recipe_Map eicMap;
     private boolean piston;
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
@@ -56,21 +52,19 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         super(aName);
     }
 
-    public static GT_Recipe.GT_Recipe_Map eicMap;
-
     @Override
     public boolean checkRecipe(ItemStack aStack) {
 
-        if (this.mEnergyHatches.get(0).getEUVar() <= 0 || this.mEnergyHatches.get(1).getEUVar() <= 0 )
+        if (this.mEnergyHatches.get(0).getEUVar() <= 0 || this.mEnergyHatches.get(1).getEUVar() <= 0)
             return false;
 
         ArrayList<ItemStack> tInputList = this.getStoredInputs();
         int tInputList_sS = tInputList.size();
 
-        for(int i = 0; i < tInputList_sS - 1; ++i) {
-            for(int j = i + 1; j < tInputList_sS; ++j) {
-                if (GT_Utility.areStacksEqual((ItemStack)tInputList.get(i), (ItemStack)tInputList.get(j))) {
-                    if (((ItemStack)tInputList.get(i)).stackSize < ((ItemStack)tInputList.get(j)).stackSize) {
+        for (int i = 0; i < tInputList_sS - 1; ++i) {
+            for (int j = i + 1; j < tInputList_sS; ++j) {
+                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
+                    if (((ItemStack) tInputList.get(i)).stackSize < ((ItemStack) tInputList.get(j)).stackSize) {
                         tInputList.remove(i--);
                         tInputList_sS = tInputList.size();
                         break;
@@ -82,16 +76,16 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             }
         }
 
-        ItemStack[] tInputs = (ItemStack[])tInputList.toArray(new ItemStack[tInputList.size()]);
+        ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
         if (tInputList.size() > 0) {
-            GT_Recipe tRecipe = eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, (FluidStack[])null, tInputs);
-            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, (FluidStack[])null, tInputs)) {
+            GT_Recipe tRecipe = eicMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, (FluidStack[]) null, tInputs);
+            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, (FluidStack[]) null, tInputs)) {
                 this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
                 this.mEfficiencyIncrease = 10000;
                 this.mEUt = -tRecipe.mEUt;
                 this.mMaxProgresstime = Math.max(1, tRecipe.mDuration);
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-                this.sendLoopStart((byte)20);
+                this.sendLoopStart((byte) 20);
                 this.updateSlots();
                 return true;
             }
@@ -107,7 +101,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         return super.onRunningTick(aStack);
     }
 
-    public void stopMachine(){
+    public void stopMachine() {
         resetPiston();
         super.stopMachine();
     }
@@ -117,13 +111,13 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         piston = true;
     }
 
-    private void resetPiston(){
+    private void resetPiston() {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
-        if (!piston){
+        if (!piston) {
             int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
             int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
-            int aX = this.getBaseMetaTileEntity().getXCoord(),aY = this.getBaseMetaTileEntity().getYCoord() ,aZ = this.getBaseMetaTileEntity().getZCoord();
+            int aX = this.getBaseMetaTileEntity().getXCoord(), aY = this.getBaseMetaTileEntity().getYCoord(), aZ = this.getBaseMetaTileEntity().getZCoord();
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     if (!(Math.abs(x) == 1 && Math.abs(z) == 1))
@@ -134,34 +128,35 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
             piston = !piston;
         }
     }
+
     private void togglePiston() {
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
         int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        int aX = this.getBaseMetaTileEntity().getXCoord(),aY = this.getBaseMetaTileEntity().getYCoord() ,aZ = this.getBaseMetaTileEntity().getZCoord();
+        int aX = this.getBaseMetaTileEntity().getXCoord(), aY = this.getBaseMetaTileEntity().getYCoord(), aZ = this.getBaseMetaTileEntity().getZCoord();
         boolean hax = false;
-        if(piston){
+        if (piston) {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     if (!(Math.abs(x) == 1 && Math.abs(z) == 1)) {
-                        if (this.getBaseMetaTileEntity().getBlock(xDir+aX+x,aY+2,zDir+aZ+z) != GregTech_API.sBlockMetal5 && this.getBaseMetaTileEntity().getMetaID(xDir+aX+x,aY+2,zDir+aZ+z) != 2 ) {
+                        if (this.getBaseMetaTileEntity().getBlock(xDir + aX + x, aY + 2, zDir + aZ + z) != GregTech_API.sBlockMetal5 && this.getBaseMetaTileEntity().getMetaID(xDir + aX + x, aY + 2, zDir + aZ + z) != 2) {
                             hax = true;
                         }
                         this.getBaseMetaTileEntity().getWorld().setBlockToAir(xDir + aX + x, aY + 2, zDir + aZ + z);
                     }
                 }
             }
-            GT_Utility.doSoundAtClient((String)GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
-            piston=!piston;
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+            piston = !piston;
         } else {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     if (!(Math.abs(x) == 1 && Math.abs(z) == 1))
-                        this.getBaseMetaTileEntity().getWorld().setBlock(xDir+aX+x,aY+2,zDir+aZ+z,GregTech_API.sBlockMetal5,2,3);
+                        this.getBaseMetaTileEntity().getWorld().setBlock(xDir + aX + x, aY + 2, zDir + aZ + z, GregTech_API.sBlockMetal5, 2, 3);
                 }
             }
-            GT_Utility.doSoundAtClient((String)GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(5), 10, 1.0F, aX, aY, aZ);
             piston = !piston;
         }
         if (hax)
@@ -170,13 +165,13 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setBoolean("piston",piston);
+        aNBT.setBoolean("piston", piston);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        piston=aNBT.getBoolean("piston");
+        piston = aNBT.getBoolean("piston");
         super.loadNBTData(aNBT);
     }
 
@@ -188,18 +183,17 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
         for (int x = -1; x <= 1; x++) {
             for (int y = -2; y < 7; y++) {
                 for (int z = -1; z <= 1; z++) {
-                    IGregTechTileEntity te = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir+x,y,z+zDir);
+                    IGregTechTileEntity te = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, z + zDir);
                     if (y == -2 || y == 6) {
                         if (!(x == 0 && z == 0)) {
                             if (!this.addMaintenanceToMachineList(te, 16) && !this.addMufflerToMachineList(te, 16) && !this.addInputToMachineList(te, 16) && !this.addOutputToMachineList(te, 16)) {
-                                    Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z);
-                                    byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
-                                    if ((tBlock != GregTech_API.sBlockCasings2 || tMeta != 0) && (tBlock != GregTech_API.sBlockCasings3 || tMeta != 4)) {
-                                        return false;
-                                    }
+                                Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z);
+                                byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
+                                if ((tBlock != GregTech_API.sBlockCasings2 || tMeta != 0) && (tBlock != GregTech_API.sBlockCasings3 || tMeta != 4)) {
+                                    return false;
                                 }
-                        }
-                        else if (x == 0 && z == 0) {
+                            }
+                        } else if (x == 0 && z == 0) {
                             if (y == -2)
                                 if (!this.addEnergyInputToMachineList(te, 16))
                                     return false;
@@ -207,36 +201,32 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                                 if (!this.addEnergyInputToMachineList(te, 16))
                                     return false;
                         }
-                    }
-                    else if ((y > -2 && y < 1) || (y > 3 && y < 6)){
-                        if (y == 0 && xDir+x == 0 && zDir+z==0)
+                    } else if ((y > -2 && y < 1) || (y > 3 && y < 6)) {
+                        if (y == 0 && xDir + x == 0 && zDir + z == 0)
                             continue;
                         Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z);
                         byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
                         if (x == 0 && z == 0) {
                             if (tBlock != BW_BLOCKS[2] || tMeta != 0)
                                 return false;
-                        }else{
+                        } else {
                             if (tBlock != BW_BLOCKS[2] || tMeta != 1)
                                 return false;
                         }
 
-                    }
-                    else if (y == 1) {
-                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 1, zDir + z),1,aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                    } else if (y == 1) {
+                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 1, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
-                    }
-                    else if (y == 2) {
+                    } else if (y == 2) {
                         if (!piston) {
                             if (Math.abs(x) == 1 && Math.abs(z) == 1) {
-                                if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z),1,aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                                if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
                                     return false;
                             }
-                        }else if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z),1,aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                        } else if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 2, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
-                    }
-                    else if (y == 3) {
-                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 3, zDir + z),1,aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
+                    } else if (y == 3) {
+                        if (!GT_Utility.areStacksEqual(new ItemStack(aBaseMetaTileEntity.getBlockOffset(xDir + x, 3, zDir + z), 1, aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z)), Materials.Neutronium.getBlocks(1)))
                             return false;
                     }
                 }

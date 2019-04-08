@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.client.renderer.RendererGlasBlock;
 import com.github.bartimaeusnek.bartworks.client.renderer.RendererSwitchingColorFluid;
 import com.github.bartimaeusnek.bartworks.common.blocks.BioFluidBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BWTileEntityDimIDBridge;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;

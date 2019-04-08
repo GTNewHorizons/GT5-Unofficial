@@ -56,13 +56,13 @@ public class ClientEventHandler {
         if (GLASSMAP.containsKey(PAIR)) {
             int tier = GLASSMAP.get(PAIR);
             event.toolTip.add(
-                    StatCollector.translateToLocal("tooltip.glas.0.name")+
-                    " "
+                    StatCollector.translateToLocal("tooltip.glas.0.name") +
+                            " "
                             + BW_Util.getColorForTier(tier) + GT_Values.VN[tier] + ChatColorHelper.RESET);
         } else if (BLOCK.getMaterial().equals(Material.glass)) {
-            event.toolTip.add(StatCollector.translateToLocal("tooltip.glas.0.name")+
+            event.toolTip.add(StatCollector.translateToLocal("tooltip.glas.0.name") +
                     " "
-                    +  BW_Util.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
+                    + BW_Util.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
         }
     }
 }
