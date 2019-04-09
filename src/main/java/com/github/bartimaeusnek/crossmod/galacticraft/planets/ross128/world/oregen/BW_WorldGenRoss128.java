@@ -22,13 +22,10 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider.WorldProviderRoss128b;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.world.GT_Worldgen;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,8 +48,8 @@ public class BW_WorldGenRoss128 extends BW_OreLayer {
         new BW_WorldGenRoss128("ore.mix.ross128.Roquesit", true, 5, 250, 3, 1, 12, WerkstoffLoader.Arsenopyrite, WerkstoffLoader.Ferberite, WerkstoffLoader.Loellingit, WerkstoffLoader.Roquesit);
         new BW_WorldGenRoss128("ore.mix.ross128.Tungstate", true, 5, 250, 10, 4, 14, WerkstoffLoader.Ferberite, WerkstoffLoader.Huebnerit, WerkstoffLoader.Loellingit, Materials.Scheelite);
         new BW_WorldGenRoss128("ore.mix.ross128.CopperSulfits", true, 40, 70, 80, 3, 24, WerkstoffLoader.Djurleit, WerkstoffLoader.Bornite, WerkstoffLoader.Wittichenit, Materials.Tetrahedrite);
-        new BW_WorldGenRoss128("ore.mix.ross128.Forsterit", true, 60, 180, 50, 2, 32, WerkstoffLoader.Forsterit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescolizitCUVO4, WerkstoffLoader.DescolizitZNVO4);
-        new BW_WorldGenRoss128("ore.mix.ross128.Hedenbergit", true, 30, 60, 50, 2, 32, WerkstoffLoader.Hedenbergit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescolizitZNVO4, WerkstoffLoader.Forsterit);
+        new BW_WorldGenRoss128("ore.mix.ross128.Forsterit", true, 20, 180, 50, 2, 32, WerkstoffLoader.Forsterit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescloiziteCUVO4, WerkstoffLoader.DescloiziteZNVO4);
+        new BW_WorldGenRoss128("ore.mix.ross128.Hedenbergit", true, 20, 180, 50, 2, 32, WerkstoffLoader.Hedenbergit, WerkstoffLoader.Fayalit, WerkstoffLoader.DescloiziteCUVO4, WerkstoffLoader.DescloiziteZNVO4);
         new BW_WorldGenRoss128("ore.mix.ross128.RedZircon", true, 10, 40, 40, 3, 24, WerkstoffLoader.Fayalit,WerkstoffLoader.FuchsitAL , WerkstoffLoader.RedZircon,WerkstoffLoader.FuchsitCR);
     }
 

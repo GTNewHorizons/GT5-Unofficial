@@ -354,7 +354,7 @@ public class WerkstoffLoader implements Runnable {
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
     );
     public static final Werkstoff Forsterit = new Werkstoff(
-            new short[]{150,150,150,0},
+            new short[]{255,255,255,0},
             "Forsterite",
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
@@ -380,28 +380,28 @@ public class WerkstoffLoader implements Runnable {
             new Pair<ISubTagContainer, Integer>(Materials.Silicon, 2),
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 6)
     );
-    public static final Werkstoff DescolizitZNVO4 = new Werkstoff(
-            new short[]{100,60,30,0},
-            "Descolizite(ZnVO4)",//Pb(Zn,Cu)[OH|VO4
+    public static final Werkstoff DescloiziteZNVO4 = new Werkstoff(
+            new short[]{0xBF,0x18,0x0F,0},
+            "Red Descloizite",//Pb(Zn,Cu)[OH|VO4
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures(),
             26,
-            TextureSet.SET_METALLIC,
+            TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Lead,Materials.Copper,Materials.Vanadium),
             new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
             new Pair<ISubTagContainer, Integer>(Materials.Zinc, 1),
             new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 1),
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
     );
-    public static final Werkstoff DescolizitCUVO4 = new Werkstoff(
-            new short[]{100,60,30,0},
-            "Descolizite(CuVO4)",//Pb(Zn,Cu)[OH|VO4
+    public static final Werkstoff DescloiziteCUVO4 = new Werkstoff(
+            new short[]{0xf9,0x6d,0x18,0},
+            "Orange Descolizite",//Pb(Zn,Cu)[OH|VO4
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures(),
             27,
-            TextureSet.SET_METALLIC,
+            TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Lead,Materials.Zinc,Materials.Vanadium),
             new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
             new Pair<ISubTagContainer, Integer>(Materials.Copper, 1),
@@ -410,7 +410,7 @@ public class WerkstoffLoader implements Runnable {
     );
     public static final Werkstoff FuchsitAL = new Werkstoff(
             new short[]{0x4D,0x7F,0x64,0},
-            "Fuchsite(Al)",
+            "Green Fuchsite",
             "KAl3Si3O10(OH)2",
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
@@ -427,7 +427,7 @@ public class WerkstoffLoader implements Runnable {
     );
     public static final Werkstoff FuchsitCR = new Werkstoff(
             new short[]{128,0,0,0},
-            "Fuchsite(Cr)",
+            "Red Fuchsite",
             "KCr3Si3O10(OH)2",
             new Werkstoff.Stats().setElektrolysis(true),
             Werkstoff.Types.COMPOUND,
