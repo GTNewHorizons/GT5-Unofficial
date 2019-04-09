@@ -8,6 +8,8 @@ import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
     public ProcessingIngot() {
