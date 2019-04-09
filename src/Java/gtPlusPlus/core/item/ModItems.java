@@ -526,9 +526,9 @@ public final class ModItems {
 			//Custom Materials that are from Runescape
 			MaterialGenerator.generate(ELEMENT.STANDALONE.BLACK_METAL);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
-			MaterialGenerator.generate(ELEMENT.STANDALONE.GRANITE);
-			MaterialGenerator.generate(ELEMENT.STANDALONE.RUNITE);
-			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.GRANITE, false, false);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.RUNITE, false);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -640,6 +640,17 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TITANSTEEL);
 			MaterialGenerator.generate(ALLOY.ARCANITE);
 			MaterialGenerator.generate(ALLOY.OCTIRON);			
+
+			MaterialGenerator.generate(ALLOY.BABBIT_ALLOY, false);
+			MaterialGenerator.generate(ALLOY.BLACK_TITANIUM, false);
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);

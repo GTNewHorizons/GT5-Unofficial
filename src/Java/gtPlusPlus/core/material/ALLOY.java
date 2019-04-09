@@ -190,7 +190,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 20),
 					new MaterialStack(NICHROME, 10)
 			});
-	
+
 	public static final Material NITINOL_60 = new Material(
 			"Nitinol 60", //Material Name
 			MaterialState.SOLID, //State
@@ -474,7 +474,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
 					new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 50)
 			});
-	
+
 	public static final Material TUNGSTEN_TITANIUM_CARBIDE = new Material(
 			"Tungsten Titanium Carbide", //Material Name
 			MaterialState.SOLID, //State
@@ -549,7 +549,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 50),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50)
 			});
-	
+
 	public static final Material ARCANITE = new Material(
 			"Arcanite", //Material Name
 			MaterialState.SOLID, //State
@@ -680,7 +680,7 @@ public final class ALLOY {
 					new MaterialStack(TRINIUM_NAQUADAH, 9),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
 			});
-	
+
 	public static final Material TRINIUM_REINFORCED_STEEL = new Material(
 			"Arceus Alloy 2B", //Material Name
 			MaterialState.SOLID, //State
@@ -697,8 +697,8 @@ public final class ALLOY {
 					new MaterialStack(ALLOY.TUNGSTENSTEEL, 20),
 					new MaterialStack(ALLOY.OSMIRIDIUM, 10)
 			});
-	
-	
+
+
 
 	/*
 	 * Witchery Material
@@ -719,12 +719,12 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().THAUMIUM, 30),
 					new MaterialStack(ELEMENT.getInstance().IRON, 35)
 			});
-	
-	
+
+
 	/*
 	 * Top Tier Alloys
 	 */
-	
+
 	//0lafe Compound
 	public static final Material LAFIUM = new Material(
 			"Lafium Compound", //Material Name
@@ -768,12 +768,12 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().TITANIUM, 12),
 					new MaterialStack(ALLOY.OSMIRIDIUM, 6)
 			});
-	
+
 	//Piky Alloy
 	public static final Material PIKYONIUM = new Material(
 			"Pikyonium 64B", //Material Name
 			MaterialState.SOLID, //State
-            new short[]{52, 103, 186, 0}, //Material Colour
+			new short[]{52, 103, 186, 0}, //Material Colour
 			7850, //Melting Point in C
 			11765, //Boiling Point in C
 			-1,
@@ -790,7 +790,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
 					new MaterialStack(ALLOY.TUNGSTENSTEEL, 8)
 			});
-	
+
 	//Piky Alloy
 	public static final Material ABYSSAL = new Material(
 			"Abyssal Alloy", //Material Name
@@ -812,7 +812,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().RADON, 2),
 					new MaterialStack(ELEMENT.getInstance().GERMANIUM, 2),
 			});
-	
+
 	//Titansteel
 	public static final Material TITANSTEEL = new Material(
 			"Titansteel", //Material Name
@@ -830,8 +830,8 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().TERRA, 1),
 					new MaterialStack(ELEMENT.getInstance().PERDITIO, 1),
 			});
-	
-	
+
+
 	public static final Material OCTIRON = new Material(
 			"Octiron", //Material Name
 			MaterialState.SOLID, //State
@@ -849,7 +849,62 @@ public final class ALLOY {
 					new MaterialStack(STEEL_BLACK, 10),
 					new MaterialStack(ELEMENT.getInstance().THAUMIUM, 25)
 			});
+
+
+
+	public static final Material BLACK_TITANIUM = new Material(
+			"Black Titanium", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			Materials.Titanium.mMeltingPoint*4, //Melting Point in C
+			Materials.Titanium.mMeltingPoint*16,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 55),
+					new MaterialStack(ELEMENT.getInstance().PRASEODYMIUM, 12),
+					new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 8),
+					new MaterialStack(ELEMENT.getInstance().COBALT, 6),
+					new MaterialStack(ELEMENT.getInstance().MANGANESE, 4),
+					new MaterialStack(ELEMENT.getInstance().PHOSPHORUS, 4),
+					new MaterialStack(ELEMENT.getInstance().PALLADIUM, 4),
+					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().ARGON, 5)
+			});
 	
+	public static final Material BABBIT_ALLOY = new Material(
+			"Babbit Alloy", //Material Name
+			MaterialState.SOLID, //State
+			null, //Material Colour
+			268, //Melting Point in C
+			589,
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TIN, 10),
+					new MaterialStack(ELEMENT.getInstance().LEAD, 72),
+					new MaterialStack(ELEMENT.getInstance().ANTIMONY, 16),
+					new MaterialStack(ELEMENT.getInstance().ARSENIC, 2)
+			});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	//Quantum
 	public static final Material QUANTUM = new Material(
 			"Quantum", //Material Name
