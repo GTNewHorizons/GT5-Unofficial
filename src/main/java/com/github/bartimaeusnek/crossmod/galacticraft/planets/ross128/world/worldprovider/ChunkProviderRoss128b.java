@@ -23,6 +23,8 @@
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
 
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WordGenerator;
+import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.objects.XSTR;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -76,6 +78,10 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
                 this.biomesForGeneration[i] = BiomeGenBase.taiga;
             } else if (biomeGenBase.biomeID == BiomeGenBase.mushroomIslandShore.biomeID) {
                 this.biomesForGeneration[i] = BiomeGenBase.stoneBeach;
+            }
+            if (Loader.isModLoaded("Thaumcraft")) {
+                if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
+                    this.biomesForGeneration[i] = BiomeGenBase.taiga;
             }
         }
         this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);
