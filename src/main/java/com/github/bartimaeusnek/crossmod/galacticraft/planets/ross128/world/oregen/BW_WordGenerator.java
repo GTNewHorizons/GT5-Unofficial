@@ -97,13 +97,13 @@ public class BW_WordGenerator implements IWorldGenerator {
             ChunkCoordIntPair centerChunk = new ChunkCoordIntPair(xCenter, zCenter);
             if (!mGenerated.contains(centerChunk) && surroundingChunksLoaded(xCenter, zCenter)) {
                 mGenerated.add(centerChunk);
-                if ((BW_WorldGenRoss128.sWeight > 0) && (BW_WorldGenRoss128.sList.size() > 0)) {
+                if ((BW_OreLayer.sWeight > 0) && (BW_OreLayer.sList.size() > 0)) {
                     boolean temp = true;
                     int tRandomWeight;
                     for (int i = 0; (i < 256) && (temp); i++) {
-                        tRandomWeight = random.nextInt(BW_WorldGenRoss128.sWeight);
-                        for (GT_Worldgen tWorldGen : BW_WorldGenRoss128.sList) {
-                            tRandomWeight -= ((BW_WorldGenRoss128) tWorldGen).mWeight;
+                        tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
+                        for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
+                            tRandomWeight -= ((BW_OreLayer) tWorldGen).mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
                                     if (tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider)) {

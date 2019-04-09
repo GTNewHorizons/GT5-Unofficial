@@ -24,7 +24,7 @@ package com.github.bartimaeusnek.bartworks.common.net;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_BioVat;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -73,7 +73,7 @@ public class RendererPacket extends GT_Packet {
 //    public void decodetest (byte[] buffer){
 //        this.coords=new Coords(ByteBuffer.wrap(buffer).getInt(0),ByteBuffer.wrap(buffer).getShort(4),ByteBuffer.wrap(buffer).getInt(6),ByteBuffer.wrap(buffer).getInt(10));
 //        int[] rgb = {ByteBuffer.wrap(buffer).get(14)-Byte.MIN_VALUE, ByteBuffer.wrap(buffer).get(15)-Byte.MIN_VALUE, ByteBuffer.wrap(buffer).get(16)-Byte.MIN_VALUE};
-//        this.integer= BW_Util.getColorFromArray(rgb);
+//        this.integer= BW_Util.getColorFromRGBArray(rgb);
 //        this.removal=ByteBuffer.wrap(buffer).get(17);
 //
 //        byte checksum = (byte) (coords.x%25+coords.y%25+coords.z%25+coords.wID%25+integer%25+removal);
@@ -87,7 +87,7 @@ public class RendererPacket extends GT_Packet {
 
         this.coords = new Coords(ByteBuffer.wrap(buffer).getInt(0), ByteBuffer.wrap(buffer).getShort(4), ByteBuffer.wrap(buffer).getInt(6), ByteBuffer.wrap(buffer).getInt(10));
         int[] rgb = {ByteBuffer.wrap(buffer).get(14) - Byte.MIN_VALUE, ByteBuffer.wrap(buffer).get(15) - Byte.MIN_VALUE, ByteBuffer.wrap(buffer).get(16) - Byte.MIN_VALUE};
-        this.integer = BW_Util.getColorFromArray(rgb);
+        this.integer = BW_ColorUtil.getColorFromRGBArray(rgb);
         this.removal = ByteBuffer.wrap(buffer).get(17);
 
         byte checksum = (byte) (coords.x % 25 + coords.y % 25 + coords.z % 25 + coords.wID % 25 + integer % 25 + removal);

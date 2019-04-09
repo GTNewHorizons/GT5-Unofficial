@@ -31,13 +31,16 @@ import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.GregTech_API;
-import gregtech.common.GT_Worldgen_GT_Ore_Layer;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,15 +61,23 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-//        transferRects.add(new RecipeTransferRect(new Rectangle(0,40,40,10),"quickanddirtyneihandler"));
+        transferRects.add(new RecipeTransferRect(new Rectangle(0,40,40,10),"quickanddirtyneihandler"));
+    }
+
+    @Override
+    public int recipiesPerPage() {
+        return 1;
     }
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equalsIgnoreCase("quickanddirtyneihandler")) {
             for (int i = 0; i < Werkstoff.werkstoffHashMap.values().size(); i++) {
-                ItemStack result = new ItemStack(WerkstoffLoader.BWOres, 1, i);
-                if (Block.getBlockFromItem(result.getItem()) instanceof BW_MetaGenerated_Ores) {
+                Werkstoff w = Werkstoff.werkstoffHashMap.get((short)i);
+                if (w == null || w == Werkstoff.default_null_Werkstoff)
+                    continue;
+                if (w.getGenerationFeatures().hasOres()) {
+                    ItemStack result = w.get(OrePrefixes.ore);
                     CachedRecipe tmp = new CachedRecipe() {
 
                         PositionedStack stack = new PositionedStack(result, 0, 0);
@@ -79,10 +90,10 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                         @Override
                         public List<PositionedStack> getOtherStacks() {
                             ArrayList<PositionedStack> ret = new ArrayList<>();
-                            for (int i = 0; i < GT_Worldgen_GT_Ore_Layer.sList.size(); i++) {
-                                if (BW_WorldGenRoss128.sList.get(i) instanceof BW_WorldGenRoss128) {
+                            for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
+                                if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128) {
                                     int baseMeta = result.getItemDamage();
-                                    BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_WorldGenRoss128.sList.get(i));
+                                    BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_OreLayer.sList.get(i));
                                     if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                         ItemStack other;
                                         other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
@@ -130,7 +141,15 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                             return ret;
                         }
                     };
-                    this.arecipes.add(tmp);
+                    boolean add = true;
+                    for (TemplateRecipeHandler.CachedRecipe recipe: arecipes) {
+                        if (recipe == null || recipe.getOtherStacks() == null || recipe.getOtherStacks().get(0) == null || recipe.getOtherStacks().get(0).item == null)
+                            continue;
+                        if (GT_Utility.areStacksEqual(recipe.getOtherStacks().get(0).item,tmp.getOtherStacks().get(0).item))
+                            add = false;
+                    }
+                    if (add)
+                        this.arecipes.add(tmp);
                 }
             }
         } else super.loadCraftingRecipes(outputId, results);
@@ -138,7 +157,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void drawExtras(int recipe) {
-
+    if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe).getOtherStacks().size() >= 4) ) {
         GuiDraw.drawString(ChatColorHelper.BOLD + "DIM:" + ChatColorHelper.RESET + " Ross128", 0, 40, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Primary:", 0, 50, 0, false);
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(0).item.getDisplayName(), 0, 60, 0, false);
@@ -148,6 +167,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
         GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
         GuiDraw.drawString(this.arecipes.get(recipe).getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
+    }
         super.drawExtras(recipe);
     }
 
@@ -166,10 +186,10 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                 @Override
                 public List<PositionedStack> getOtherStacks() {
                     ArrayList<PositionedStack> ret = new ArrayList<>();
-                    for (int i = 0; i < GT_Worldgen_GT_Ore_Layer.sList.size(); i++) {
-                        if (BW_WorldGenRoss128.sList.get(i) instanceof BW_WorldGenRoss128) {
+                    for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
+                        if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128) {
                             int baseMeta = result.getItemDamage();
-                            BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_WorldGenRoss128.sList.get(i));
+                            BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_OreLayer.sList.get(i));
                             if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                 ItemStack other;
                                 other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
@@ -228,6 +248,6 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return "OreShit";
+        return "BartWorks Ores";
     }
 }

@@ -38,6 +38,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_Til
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_AcidGenerator;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_Diode;
 import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_EnergyDistributor;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -91,8 +92,9 @@ public class ItemRegistry {
                             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
                             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5",
                             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
+                            MainMod.MOD_ID + ":ThoriumYttriumGlass",
                     },
-                    new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}},
+                    new short[][]{Materials.BorosilicateGlass.getRGBA(), Materials.Nickel.getRGBA(), Materials.Tungsten.getRGBA(), Materials.Chrome.getRGBA(), Materials.Iridium.getRGBA(), Materials.Osmium.getRGBA(), new short[]{0xff, 0, 0}, new short[]{0, 0xff, 0}, new short[]{0x80, 0, 0xff}, new short[]{0xff, 0xff, 0}, new short[]{0, 0xff, 0x80}, new short[]{0x80, 0x33, 0}, WerkstoffLoader.YttriumOxide.getRGBA()},
                     MainMod.BIO_TAB,
                     true, false
             )

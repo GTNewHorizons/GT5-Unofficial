@@ -25,14 +25,22 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
+import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.objects.GT_MultiTexture;
+import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -40,11 +48,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static gregtech.api.enums.OrePrefixes.*;
 
@@ -53,6 +59,8 @@ public class WerkstoffLoader implements Runnable {
     private WerkstoffLoader() {}
 
     public static final WerkstoffLoader INSTANCE = new WerkstoffLoader();
+
+    //TODO: FREE ID RANGE: 19-32766
 
     public static final Werkstoff Bismutite = new Werkstoff(
             new short[]{255, 233, 0, 0},
@@ -77,9 +85,31 @@ public class WerkstoffLoader implements Runnable {
             new Pair<ISubTagContainer, Integer>(Materials.Bismuth, 2),
             new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 3)
     );
+    public static final Werkstoff Zirconium = new Werkstoff(
+            new short[]{175, 175, 175, 0},
+            "Zirconium",
+            "Zr",
+            new Werkstoff.Stats().setProtons(40),
+            Werkstoff.Types.ELEMENT,
+            new Werkstoff.GenerationFeatures().onlyDust(),
+            3,
+            TextureSet.SET_METALLIC,
+            Arrays.asList()
+    );
+    public static final Werkstoff Zirconia = new Werkstoff(
+            new short[]{255, 255, 255, 0},
+            "Cubic Zirconia",
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().onlyDust().addGems(),
+            4,
+            TextureSet.SET_DIAMOND,
+            Arrays.asList(WerkstoffLoader.Zirconium),
+            new Pair<ISubTagContainer, Integer>(WerkstoffLoader.Zirconium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 2)
+    );
     public static final Werkstoff FluorBuergerit = new Werkstoff(
             new short[]{0x20, 0x20, 0x20, 0},
-            "Fluor-Buergerit",
+            "Fluor-Buergerite",
             "NaFe3Al6(Si6O18)(BO3)3O3F",
             Werkstoff.Types.COMPOUND,
             new Werkstoff.GenerationFeatures().addGems(),
@@ -93,6 +123,16 @@ public class WerkstoffLoader implements Runnable {
             new Pair<ISubTagContainer, Integer>(Materials.Boron, 3),
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 30),
             new Pair<ISubTagContainer, Integer>(Materials.Fluorine, 1)
+    );
+    public static final Werkstoff YttriumOxide = new Werkstoff(
+            new short[]{255,255,255,0},
+            "Yttrium Oxide",
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().onlyDust(), //No autoadd here to gate this material by hand
+            6,
+            TextureSet.SET_DULL,
+            new Pair<ISubTagContainer, Integer>(Materials.Yttrium, 2),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 3)
     );
     public static final Werkstoff ChromoAluminoPovondrait = new Werkstoff(
             new short[]{0, 0x79, 0x6A, 0},
@@ -130,8 +170,6 @@ public class WerkstoffLoader implements Runnable {
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 31),
             new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 3)
     );
-
-    //TODO: FREE ID RANGE: 3,4,6,19-32766
     public static final Werkstoff Olenit = new Werkstoff(
             new short[]{210, 210, 210, 0},
             "Olenite",
@@ -245,15 +283,169 @@ public class WerkstoffLoader implements Runnable {
     );
     public static final Werkstoff Thorianit = new Werkstoff(
             new short[]{0x30, 0x30, 0x30, 0},
-            "Thorianit",
+            "Thorianite",
             Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures(),
+            new Werkstoff.GenerationFeatures().addChemicalRecipes(),
             18,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Thorium),
             new Pair<ISubTagContainer, Integer>(Materials.Thorium, 1),
             new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 2)
     );
+    public static final Werkstoff RedZircon = new Werkstoff(
+            new short[]{195, 19, 19, 0},
+            "Red Zircon",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            19,
+            TextureSet.SET_GEM_VERTICAL,
+            Arrays.asList(WerkstoffLoader.Zirconium,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(WerkstoffLoader.Zirconium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+    );
+
+    //GT Enhancements
+    public static final Werkstoff Salt = new Werkstoff(
+            Materials.Salt.mRGBa,
+            "Salt",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addGems().addSifterRecipes(),
+            20,
+            TextureSet.SET_FLINT,
+            Arrays.asList(Materials.RockSalt,Materials.Borax),
+            new Pair<ISubTagContainer, Integer>(Materials.Salt, 1)
+    );
+    public static final Werkstoff Spodumen = new Werkstoff(
+            Materials.Spodumene.mRGBa,
+            "Spodumene",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addGems().addSifterRecipes(),
+            21,
+            TextureSet.SET_FLINT,
+            Arrays.asList(Materials.Spodumene),
+            new Pair<ISubTagContainer, Integer>(Materials.Spodumene, 1)
+    );
+    public static final Werkstoff RockSalt = new Werkstoff(
+            Materials.RockSalt.mRGBa,
+            "Rock Salt",
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addGems().addSifterRecipes(),
+            22,
+            TextureSet.SET_FLINT,
+            Arrays.asList(Materials.RockSalt,Materials.Borax),
+            new Pair<ISubTagContainer, Integer>(Materials.RockSalt, 1)
+    );
+    public static final Werkstoff Fayalit = new Werkstoff(
+            new short[]{50,50,50,0},
+            "Fayalite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            23,
+            TextureSet.SET_QUARTZ,
+            Arrays.asList(Materials.Iron,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(Materials.Iron, 2),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+    );
+    public static final Werkstoff Forsterit = new Werkstoff(
+            new short[]{255,255,255,0},
+            "Forsterite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            24,
+            TextureSet.SET_QUARTZ,
+            Arrays.asList(Materials.Magnesium,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(Materials.Magnesium, 2),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+    );
+    public static final Werkstoff Hedenbergit = new Werkstoff(
+            new short[]{100,150,100,0},
+            "Hedenbergite",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().addGems(),
+            25,
+            TextureSet.SET_QUARTZ,
+            Arrays.asList(Materials.Iron,Materials.Calcium,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(Materials.Calcium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 2),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 6)
+    );
+    public static final Werkstoff DescloiziteZNVO4 = new Werkstoff(
+            new short[]{0xBF,0x18,0x0F,0},
+            "Red Descloizite",//Pb(Zn,Cu)[OH|VO4
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            26,
+            TextureSet.SET_QUARTZ,
+            Arrays.asList(Materials.Lead,Materials.Copper,Materials.Vanadium),
+            new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Zinc, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+    );
+    public static final Werkstoff DescloiziteCUVO4 = new Werkstoff(
+            new short[]{0xf9,0x6d,0x18,0},
+            "Orange Descolizite",//Pb(Zn,Cu)[OH|VO4
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            27,
+            TextureSet.SET_QUARTZ,
+            Arrays.asList(Materials.Lead,Materials.Zinc,Materials.Vanadium),
+            new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Copper, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+    );
+    public static final Werkstoff FuchsitAL = new Werkstoff(
+            new short[]{0x4D,0x7F,0x64,0},
+            "Green Fuchsite",
+            "KAl3Si3O10(OH)2",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            28,
+            TextureSet.SET_METALLIC,
+            Arrays.asList(Materials.Potassium,Materials.Aluminium,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(Materials.Potassium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Aluminium, 3),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 3),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 12),
+            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 2)
+
+    );
+    public static final Werkstoff FuchsitCR = new Werkstoff(
+            new short[]{128,0,0,0},
+            "Red Fuchsite",
+            "KCr3Si3O10(OH)2",
+            new Werkstoff.Stats().setElektrolysis(true),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures(),
+            29,
+            TextureSet.SET_METALLIC,
+            Arrays.asList(Materials.Potassium,Materials.Chrome,Materials.Silicon),
+            new Pair<ISubTagContainer, Integer>(Materials.Potassium, 1),
+            new Pair<ISubTagContainer, Integer>(Materials.Chrome, 3),
+            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 3),
+            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 12),
+            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 2)
+
+    );
+
+
+
+
     public static HashMap<OrePrefixes, BW_MetaGenerated_Items> items = new HashMap<>();
     public static Block BWOres;
     public boolean registered = false;
@@ -263,6 +455,9 @@ public class WerkstoffLoader implements Runnable {
     }
 
     public static ItemStack getCorresopndingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
+        ItemStack ret = OreDictHandler.getItemStack(werkstoff.getDefaultName(),orePrefixes,amount);
+            if (ret != null)
+                return ret;
         if (orePrefixes == ore)
             return new ItemStack(BWOres, amount, werkstoff.getmID());
         return new ItemStack(items.get(orePrefixes), amount, werkstoff.getmID()).copy();
@@ -274,9 +469,14 @@ public class WerkstoffLoader implements Runnable {
     }
 
     public void runInit() {
+        MainMod.LOGGER.info("Making Meta Items for BW Materials");
+        long timepre = System.nanoTime();
         WerkstoffAdderRegistry.getINSTANCE().run();
         addSubTags();
         addItemsForGeneration();
+        runAdditionalOreDict();
+        long timepost = System.nanoTime();
+        MainMod.LOGGER.info("Making Meta Items for BW Materials took " + (timepost - timepre) + "ns/" + ((timepost - timepre) / 1000000) + "ms/" + ((timepost - timepre) / 1000000000) + "s!");
     }
 
     @Override
@@ -284,7 +484,7 @@ public class WerkstoffLoader implements Runnable {
         if (!registered) {
             MainMod.LOGGER.info("Loading Processing Recipes for BW Materials");
             long timepre = System.nanoTime();
-            ProgressManager.ProgressBar progressBar = ProgressManager.push("Register BW Materials", Werkstoff.werkstoffHashMap.size());
+            ProgressManager.ProgressBar progressBar = ProgressManager.push("Register BW Materials", Werkstoff.werkstoffHashMap.size()+1);
 
             for (short i = 0; i < Werkstoff.werkstoffHashMap.size(); i++) {
                 Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get(i);
@@ -298,6 +498,8 @@ public class WerkstoffLoader implements Runnable {
                 addCrushedRecipes(werkstoff);
                 progressBar.step(werkstoff.getDefaultName());
             }
+            progressBar.step("Load Additional Recipes");
+            new AdditionalRecipes().run();
             ProgressManager.pop(progressBar);
             long timepost = System.nanoTime();
             MainMod.LOGGER.info("Loading Processing Recipes for BW Materials took " + (timepost - timepre) + "ns/" + ((timepost - timepre) / 1000000) + "ms/" + ((timepost - timepre) / 1000000000) + "s!");
@@ -325,15 +527,19 @@ public class WerkstoffLoader implements Runnable {
                 W.add(SubTag.CRYSTALLISABLE);
             }
         }
-
-
     }
 
     private void addItemsForGeneration() {
         int toGenerateGlobal = 0b0000000;
 
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            for (OrePrefixes p : OrePrefixes.values())
+                if ((werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0 && OreDictHandler.getItemStack(werkstoff.getDefaultName(),p,1) != null) {
+                    MainMod.LOGGER.info("Found: "+(p+werkstoff.getDefaultName().replaceAll(" ",""))+" in oreDict, disable and reroute my Items to that, also add a Tooltip.");
+                    werkstoff.getGenerationFeatures().setBlacklist(p);
+                }
             toGenerateGlobal = (toGenerateGlobal | werkstoff.getGenerationFeatures().toGenerate);
+        }
 
         if ((toGenerateGlobal & 0b1) != 0) {
             items.put(dust, new BW_MetaGenerated_Items(dust));
@@ -350,6 +556,7 @@ public class WerkstoffLoader implements Runnable {
             items.put(gemExquisite, new BW_MetaGenerated_Items(gemExquisite));
             items.put(gemFlawed, new BW_MetaGenerated_Items(gemFlawed));
             items.put(gemFlawless, new BW_MetaGenerated_Items(gemFlawless));
+            items.put(lens,new BW_MetaGenerated_Items(lens));
         }
         if ((toGenerateGlobal & 0b1000) != 0) {
             if (FMLCommonHandler.instance().getSide().isClient())
@@ -366,30 +573,47 @@ public class WerkstoffLoader implements Runnable {
         }
     }
 
+    private void runAdditionalOreDict(){
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            if (werkstoff.getGenerationFeatures().hasOres())
+                GT_OreDictUnificator.registerOre(ore + werkstoff.getDefaultName().replaceAll(" ",""), werkstoff.get(ore));
+            if (werkstoff.getGenerationFeatures().hasGems())
+                OreDictionary.registerOre("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens));
+        }
+
+        GT_OreDictUnificator.registerOre("craftingIndustrialDiamond",Zirconia.get(gemExquisite));
+    }
+
     private void addGemRecipes(Werkstoff werkstoff) {
         if (werkstoff.getGenerationFeatures().hasGems()) {
-
-            GT_Values.RA.addSifterRecipe(
-                    getCorresopndingItemStack(crushedPurified, werkstoff),
-                    new ItemStack[]{
-                            getCorresopndingItemStack(gemExquisite, werkstoff),
-                            getCorresopndingItemStack(gemFlawless, werkstoff),
-                            getCorresopndingItemStack(gem, werkstoff),
-                            getCorresopndingItemStack(gemFlawed, werkstoff),
-                            getCorresopndingItemStack(gemChipped, werkstoff),
-                            getCorresopndingItemStack(dust, werkstoff)
-                    },
-                    new int[]{
-                            100, 400, 1500, 2000, 4000, 5000
-                    },
-                    800,
-                    16
-            );
+            if (werkstoff.getGenerationFeatures().hasSifterRecipes() || ((werkstoff.getGenerationFeatures().toGenerate & 0b1000) != 0 && (werkstoff.getGenerationFeatures().toGenerate & 0b1) != 0)) {
+                GT_Values.RA.addSifterRecipe(
+                        getCorresopndingItemStack(crushedPurified, werkstoff),
+                        new ItemStack[]{
+                                getCorresopndingItemStack(gemExquisite, werkstoff),
+                                getCorresopndingItemStack(gemFlawless, werkstoff),
+                                getCorresopndingItemStack(gem, werkstoff),
+                                getCorresopndingItemStack(gemFlawed, werkstoff),
+                                getCorresopndingItemStack(gemChipped, werkstoff),
+                                getCorresopndingItemStack(dust, werkstoff)
+                        },
+                        new int[]{
+                                100, 400, 1500, 2000, 4000, 5000
+                        },
+                        800,
+                        16
+                );
+            }
             GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemExquisite), werkstoff.get(dust, 4));
             GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemFlawless), werkstoff.get(dust, 2));
             GT_ModHandler.addPulverisationRecipe(werkstoff.get(gem), werkstoff.get(dust));
             GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemFlawed), werkstoff.get(dustSmall, 1));
             GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemChipped), werkstoff.get(dustTiny));
+
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(gemFlawless,2),0,new Object[]{"h  ", "W  ",'W',werkstoff.get(gemExquisite)});
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(gem, 2),0,new Object[]{"h  ", "W  ",'W',werkstoff.get(gemFlawless)});
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(gemFlawed, 2),0,new Object[]{"h  ", "W  ",'W',werkstoff.get(gem)});
+            GT_ModHandler.addCraftingRecipe(werkstoff.get(gemChipped, 2),0,new Object[]{"h  ", "W  ",'W',werkstoff.get(gemFlawed)});
 
             GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemExquisite), werkstoff.get(gemFlawless, 2), 64, 16);
             GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemFlawless), werkstoff.get(gem, 2), 64, 16);
@@ -404,6 +628,22 @@ public class WerkstoffLoader implements Runnable {
 
             GT_Values.RA.addImplosionRecipe(werkstoff.get(dust, 4), 24, werkstoff.get(gem, 3), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8));
 
+            if ((werkstoff.getGenerationFeatures().toGenerate & 2) != 0){
+                GT_Values.RA.addLatheRecipe(werkstoff.get(plate),werkstoff.get(lens),werkstoff.get(dustSmall), 1200, 120);
+            }
+            GT_Values.RA.addLatheRecipe(werkstoff.get(gemExquisite),werkstoff.get(lens),werkstoff.get(dust,2), 2400, 30);
+            GregTech_API.registerCover(werkstoff.get(lens), new GT_MultiTexture(Textures.BlockIcons.MACHINE_CASINGS[2][0], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false)), new gregtech.common.covers.GT_Cover_Lens(BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex));
+            GT_ModHandler.addPulverisationRecipe(werkstoff.get(lens), werkstoff.get(dustSmall,3));
+            //            if (MainMod.GTNH) {
+            //Engraver Recipe adder
+                for (ItemStack is : OreDictionary.getOres("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
+                    is.stackSize = 0;
+                    GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gemChipped, 3), is, werkstoff.get(gemFlawed, 1), 600, 30);
+                    GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gemFlawed, 3), is, werkstoff.get(gem, 1), 600, 120);
+                    GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gem, 3), is, werkstoff.get(gemFlawless, 1), 1200, 480);
+                    GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gemFlawless, 3), is, werkstoff.get(gemExquisite, 1), 2400, 2000);
+                }
+//            }
         }
     }
 
@@ -415,7 +655,7 @@ public class WerkstoffLoader implements Runnable {
             HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
             int cells = 0;
 
-            if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge()) {
+            if (werkstoff.getStats().isElektrolysis() || werkstoff.getStats().isCentrifuge() || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents().getValue().toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
                         if (((Materials) container.getKey()).hasCorrespondingGas() || ((Materials) container.getKey()).hasCorrespondingFluid() || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID) {
@@ -463,23 +703,19 @@ public class WerkstoffLoader implements Runnable {
                     GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.addRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), (Object) null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30, 0);
                 if (werkstoff.getStats().isCentrifuge())
                     GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(true, new ItemStack[]{input, cells > 0 ? Materials.Empty.getCells(cells) : null}, stOutputs.toArray(new ItemStack[0]), (Object) null, null, new FluidStack[]{null}, new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null}, (int) Math.max(1L, Math.abs(werkstoff.getStats().mass * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 5, 0);
+                if (werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
+                    if (cells > 0)
+                        stOutputs.add(Materials.Empty.getCells(cells));
+                    GT_Recipe.GT_Recipe_Map.sChemicalRecipes.addRecipe(true, stOutputs.toArray(new ItemStack[0]),new ItemStack[]{input},null,null,new FluidStack[]{flOutputs.size() > 0 ? flOutputs.get(0) : null},null,(int) Math.max(1L, Math.abs(werkstoff.getStats().protons * werkstoff.getContents().getValue().size())), Math.min(4, werkstoff.getContents().getValue().size()) * 30,0);
+                }
             }
 
-            GT_ModHandler.addShapelessCraftingRecipe(getCorresopndingItemStack(dust, werkstoff), 0, new Object[]{
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
-                    getCorresopndingItemStack(dustTiny, werkstoff),
+            GT_ModHandler.addCraftingRecipe(getCorresopndingItemStack(dust, werkstoff),  new Object[]{
+                    "TTT","TTT","TTT",'T',
                     getCorresopndingItemStack(dustTiny, werkstoff)
             });
-            GT_ModHandler.addShapelessCraftingRecipe(getCorresopndingItemStack(dust, werkstoff), 0, new Object[]{
-                    getCorresopndingItemStack(dustSmall, werkstoff),
-                    getCorresopndingItemStack(dustSmall, werkstoff),
-                    getCorresopndingItemStack(dustSmall, werkstoff),
+            GT_ModHandler.addCraftingRecipe(getCorresopndingItemStack(dust, werkstoff),  new Object[]{
+                    "TT ","TT ",'T',
                     getCorresopndingItemStack(dustSmall, werkstoff)
             });
             GT_ModHandler.addCraftingRecipe(getCorresopndingItemStack(dustSmall, werkstoff, 4), new Object[]{
@@ -493,14 +729,6 @@ public class WerkstoffLoader implements Runnable {
                 GT_ModHandler.addSmeltingRecipe(getCorresopndingItemStack(dust, werkstoff), getCorresopndingItemStack(ingot, werkstoff));
                 GT_ModHandler.addSmeltingRecipe(getCorresopndingItemStack(dustTiny, werkstoff), getCorresopndingItemStack(nugget, werkstoff));
             }
-
-            if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
-                GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustPure), Materials.Water.getFluid(200L), werkstoff.get(gem), 9000, 2000, 24);
-                GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustImpure), Materials.Water.getFluid(200L), werkstoff.get(gem), 9000, 2000, 24);
-                GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustPure), gregtech.api.util.GT_ModHandler.getDistilledWater(200L), werkstoff.get(gem), 9500, 1500, 24);
-                GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustImpure), gregtech.api.util.GT_ModHandler.getDistilledWater(200L), werkstoff.get(gem), 9500, 1500, 24);
-            }
-
         }
     }
 
@@ -513,7 +741,7 @@ public class WerkstoffLoader implements Runnable {
             GT_ModHandler.addPulverisationRecipe(
                     werkstoff.get(ore),
                     werkstoff.get(crushed, 2),
-                    werkstoff.getOreByProduct(0, gem) != null ? werkstoff.getOreByProduct(0, gem) : werkstoff.getOreByProduct(0, dust),
+                    werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
                     werkstoff.getNoOfByProducts() > 0 ? 10 : 0,
                     Materials.Stone.getDust(1),
                     50,
@@ -524,6 +752,10 @@ public class WerkstoffLoader implements Runnable {
     private void addCrushedRecipes(Werkstoff werkstoff) {
         if ((werkstoff.getGenerationFeatures().toGenerate & 0b1000) == 0 || (werkstoff.getGenerationFeatures().toGenerate & 0b1) == 0)
             return;
+
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(dustImpure),new Object[]{"h  ", "W  ",'W',werkstoff.get(crushed)});
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(dustPure),new Object[]{"h  ", "W  ",'W',werkstoff.get(crushedPurified)});
+        GT_ModHandler.addCraftingRecipe(werkstoff.get(dust),new Object[]{"h  ", "W  ",'W',werkstoff.get(crushedCentrifuged)});
 
         GT_Values.RA.addForgeHammerRecipe(werkstoff.get(crushed), werkstoff.get(dustImpure), 10, 16);
         GT_ModHandler.addPulverisationRecipe(werkstoff.get(crushed), werkstoff.get(dustImpure), werkstoff.getOreByProduct(0, dust), 10, false);
@@ -540,7 +772,12 @@ public class WerkstoffLoader implements Runnable {
         GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustImpure), 0, werkstoff.get(dust), werkstoff.getOreByProduct(0, dustTiny), null, null, null, null, (int) Math.max(1L, werkstoff.getStats().mass * 8L));
         GT_Values.RA.addCentrifugeRecipe(werkstoff.get(dustPure), 0, werkstoff.get(dust), werkstoff.getOreByProduct(1, dustTiny), null, null, null, null, (int) Math.max(1L, werkstoff.getStats().mass * 8L));
 
-
+        if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
+            GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustPure), Materials.Water.getFluid(200L), werkstoff.get(gem), 9000, 2000, 24);
+            GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustImpure), Materials.Water.getFluid(200L), werkstoff.get(gem), 9000, 2000, 24);
+            GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustPure), gregtech.api.util.GT_ModHandler.getDistilledWater(200L), werkstoff.get(gem), 9500, 1500, 24);
+            GT_Values.RA.addAutoclaveRecipe(werkstoff.get(dustImpure), gregtech.api.util.GT_ModHandler.getDistilledWater(200L), werkstoff.get(gem), 9500, 1500, 24);
+        }
         if (werkstoff.contains(SubTag.WASHING_MERCURY))
             GT_Values.RA.addChemicalBathRecipe(werkstoff.get(crushed), Materials.Mercury.getFluid(1000L), werkstoff.get(crushedPurified), werkstoff.getOreByProduct(1, dust), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new int[]{10000, 7000, 4000}, 800, 8);
         if (werkstoff.contains(SubTag.WASHING_SODIUMPERSULFATE))
