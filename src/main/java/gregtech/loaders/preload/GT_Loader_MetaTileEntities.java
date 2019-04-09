@@ -1542,6 +1542,10 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         //Tesseract
         ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1L));
         
+		//Super Cooling Freezer
+        ItemList.Machine_MultiblockSuperCoolingFreezer.set(new GT_MetaTileEntity_SuperCoolingFreezer(12199, "multimachine.supercoolingfreezer", "Super Cooling Freezer").getStackForm(1));
+        GT_ModHandler.addCraftingRecipe(ItemList.Machine_MultiblockSuperCoolingFreezer.get(1L, new Object[0]), bitsd, new Object[]{"PPP", "CMC", "SWS", 'P', ItemList.Electric_Pump_ZPM, 'S', OrePrefixes.circuit.get(Materials.Ultimate), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'M', ItemList.Hull_ZPM, 'C', ItemList.Reactor_Coolant_Le_3});
+        
    }
 
     private static void run4() {

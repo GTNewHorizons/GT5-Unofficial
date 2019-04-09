@@ -101,6 +101,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 break;
             case ingotHot:
                 GT_Values.RA.addVacuumFreezerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), (int) Math.max(aMaterialMass * 3L, 1L));
+                GT_Values.RA.addSuperCoolingFreezerRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), Materials.SuperCoolant.getFluid(150), new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 50), (int) Math.max(aMaterialMass * 3L, 1L)/6, (int) Math.max(aMaterial.getMass() / 10L, 1L) * aMaterial.mBlastFurnaceTemp);
                 break;
         }
     }

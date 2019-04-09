@@ -672,6 +672,16 @@ public interface IGT_RecipeAdder {
     
     public boolean addTesseractRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt);
     
+	/**
+     * Adds a Super Cooling Freezer Recipe
+     *
+     * @param aInput1   must be != null
+     * @param aOutput1  must be != null
+     * @param aFluidInput  must be != null
+     * @param aDuration must be > 0
+     */
+    public boolean addSuperCoolingFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
+
     /**
      * Adds a Distillation Tower Recipe
      * Every Fluid also gets separate distillation recipes
