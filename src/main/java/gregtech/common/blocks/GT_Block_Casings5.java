@@ -16,6 +16,8 @@ import net.minecraft.world.IBlockAccess;
 
 public class GT_Block_Casings5
         extends GT_Block_Casings_Abstract {
+	public static boolean mConnectedMachineTextures = true;
+	
     public GT_Block_Casings5() {
         super(GT_Item_Casings5.class, "gt.blockcasings5", GT_Material_Casings.INSTANCE);
         GT_Utility.addTexturePage((byte) 1);
