@@ -58,11 +58,10 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         this.setCreativeTab(metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             if (w != null) {
-                if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0)
+                if ((w.getGenerationFeatures().toGenerate & 0b1000) == 0 || ((w.getGenerationFeatures().blacklist & 0b1000) != 0))
                     continue;
                 GT_ModHandler.addValuableOre(this, w.getmID(), 1);
                 GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + w.getmID() + ".name", w.getDefaultName() + OrePrefixes.ore.mLocalizedMaterialPost);
-                GT_OreDictUnificator.registerOre(OrePrefixes.ore + w.getDefaultName(), new ItemStack(this, 1, w.getmID()));
             }
         }
     }
@@ -160,7 +159,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
         for (int i = 0; i < Werkstoff.werkstoffHashSet.size(); i++) {
             Werkstoff tMaterial = Werkstoff.werkstoffHashMap.get((short) i);
-            if ((tMaterial != null) && ((tMaterial.getGenerationFeatures().toGenerate & 0x8) != 0)) {
+            if ((tMaterial != null) && ((tMaterial.getGenerationFeatures().toGenerate & 0x8) != 0) && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
                 aList.add(new ItemStack(aItem, 1, i));
             }
         }

@@ -26,7 +26,7 @@ import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.gui.GT_GUIContainer_RadioHatch;
 import com.github.bartimaeusnek.bartworks.server.container.GT_Container_RadioHatch;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -295,7 +295,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
         aNBT.setByte("mMass", mass);
         aNBT.setByte("mSv", (byte) (sievert - 100));
         aNBT.setByte("mCoverage", coverage);
-        aNBT.setInteger("mTextColor", BW_Util.getColorFromArray(getColorForGUI()));
+        aNBT.setInteger("mTextColor", BW_ColorUtil.getColorFromRGBArray(getColorForGUI()));
         if (material != null && !material.isEmpty())
             aNBT.setString("mMaterial", material);
         aNBT.setLong("timer", timer);
@@ -312,7 +312,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch {
         mass = aNBT.getByte("mMass");
         sievert = aNBT.getByte("mSv") + 100;
         coverage = aNBT.getByte("mCoverage");
-        colorForGUI = BW_Util.splitColortoArray(aNBT.getInteger("mTextColor"));
+        colorForGUI = BW_ColorUtil.splitColorToRBGArray(aNBT.getInteger("mTextColor"));
         material = aNBT.getString("mMaterial");
         super.loadNBTData(aNBT);
     }

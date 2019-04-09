@@ -24,6 +24,7 @@ package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
@@ -36,8 +37,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import javax.annotation.Nonnegative;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -92,18 +95,6 @@ public class BW_Util {
         return (int) (30 * Math.pow(4, (tier - 1)));
     }
 
-    public static short[] splitColortoArray(int rgb) {
-        return new short[]{(short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF)};
-    }
-
-    public static int getColorFromArray(short[] color) {
-        return ((color[0] & 0x0ff) << 16) | ((color[1] & 0x0ff) << 8) | (color[2] & 0x0ff);
-    }
-
-    public static int getColorFromArray(int[] color) {
-        return ((color[0] & 0x0ff) << 16) | ((color[1] & 0x0ff) << 8) | (color[2] & 0x0ff);
-    }
-
     public static boolean areStacksEqual(ItemStack aStack1, ItemStack aStack2) {
         return (aStack1 == null && aStack2 == null) || GT_Utility.areStacksEqual(aStack1, aStack2);
     }
@@ -136,51 +127,11 @@ public class BW_Util {
             case 5:
                 ret = 8;
                 break;
+            case 12:
+                ret = 5;
+                break;
             default:
                 ret = 3;
-        }
-        return ret;
-    }
-
-    public static String getColorForTier(int tier) {
-        String ret;
-        switch (tier) {
-            case 0:
-                ret = ChatColorHelper.RED;
-                break;
-            case 1:
-                ret = ChatColorHelper.GRAY;
-                break;
-            case 2:
-                ret = ChatColorHelper.AQUA;
-                break;
-            case 3:
-                ret = ChatColorHelper.GOLD;
-                break;
-            case 4:
-                ret = ChatColorHelper.DARKPURPLE;
-                break;
-            case 5:
-                ret = ChatColorHelper.DARKBLUE;
-                break;
-            case 6:
-                ret = ChatColorHelper.LIGHT_PURPLE;
-                break;
-            case 7:
-                ret = ChatColorHelper.WHITE;
-                break;
-            case 8:
-                ret = ChatColorHelper.DARKAQUA;
-                break;
-            case 9:
-                ret = ChatColorHelper.DARKRED;
-                break;
-            case 10:
-                ret = ChatColorHelper.GREEN;
-                break;
-            default:
-                ret = ChatColorHelper.OBFUSCATED;
-                break;
         }
         return ret;
     }

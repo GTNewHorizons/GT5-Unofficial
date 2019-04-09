@@ -147,7 +147,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public int getColorRGB() {
-        return BW_Util.getColorFromArray(new int[]{this.color.getRed(), this.color.getGreen(), this.color.getBlue()});
+        return BW_ColorUtil.getColorFromRGBArray(new int[]{this.color.getRed(), this.color.getGreen(), this.color.getBlue()});
     }
 
     public Color getColor() {
