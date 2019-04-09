@@ -52,8 +52,8 @@ public class GT_MetaTileEntity_AntimatterReactor extends GT_MetaTileEntity_Multi
         return new String[]{
                 "REBIRTH IN A NEW ERA!!!",
                 "Size(WxHxD): 15x15x15 (Almost Chunk)",
-                "108 x Magnetic Coil Block",
-                "86 x Radiation Proof Casing",
+                "116 x Magnetic Coil Block",
+                "90 x Radiation Proof Casing",
                 "60 x Dyson Ring Casing",
                 "40 x Fusion Casing MKII",
                 "6 x Core Chamber Casing",
