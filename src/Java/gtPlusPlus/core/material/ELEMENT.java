@@ -214,6 +214,14 @@ public final class ELEMENT {
 		public static final Material ADVANCED_NITINOL = new Material("Advanced Nitinol", MaterialState.SOLID, TextureSets.ENRICHED.get(), ALLOY.NITINOL_60.getRGB(), 8400, 14377, 40, 51, true, "⚷⚙⚷ Ni4Ti6", 0);//Not a GT Inherited Material
 		public static final Material HYPOGEN = new Material("Hypogen", MaterialState.SOLID, TextureSets.NUCLEAR.get(), new short[]{220, 120, 75}, 12255, 19377, 240, 251, true, "Hy⚶", 0);//Not a GT Inherited Material
 		
+		
+		//Runescape materials
+		public static final Material BLACK_METAL = new Material("Black", MaterialState.SOLID, TextureSet.SET_FINE, new short[] {5, 5, 5}, 2350, 4650, 24, 17, false, "҈", 0);//Not a GT Inherited Material
+		public static final Material WHITE_METAL = new Material("White", MaterialState.SOLID, TextureSet.SET_FINE, new short[] {250, 250, 250}, 4560, 7580, 35, 41, false, "҉", 0);//Not a GT Inherited Material
+		public static final Material GRANITE = new Material("Ancient Granite", MaterialState.SOLID, TextureSet.SET_SAND, new short[] {127, 127, 127}, 500, 2000, 16, 12, false, "«»", 0);//Not a GT Inherited Material
+		public static final Material RUNITE = new Material("Runite", MaterialState.SOLID, TextureSet.SET_METALLIC, new short[] {20, 40, 220}, 6750, 11550, 73, 87, true, "§", 0);//Not a GT Inherited Material
+		public static final Material DRAGON_METAL = new Material("Dragon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[] {220, 40, 20}, 12560, 19850, 96, 105, true, "۞", 0);//Not a GT Inherited Material
+		
 	}
 
 

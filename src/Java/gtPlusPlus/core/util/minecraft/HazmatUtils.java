@@ -55,13 +55,18 @@ public class HazmatUtils {
 		addProtection(Ic2Items.nanoLeggings);
 		addProtection(Ic2Items.nanoBoots);
 		
+		Logger.INFO("[Hazmat] Registered Nano as hazmat gear.");
+		
 		//Make Quantum a hazmat suit
 		addProtection(Ic2Items.quantumHelmet);
 		addProtection(Ic2Items.quantumBodyarmor);
 		addProtection(Ic2Items.quantumLeggings);
-		addProtection(Ic2Items.quantumBoots);		
+		addProtection(Ic2Items.quantumBoots);
+		Logger.INFO("[Hazmat] Registered Quantum as hazmat gear.");		
 		
-		Utils.registerEvent(mInstance);		
+		Utils.registerEvent(mInstance);	
+		Logger.INFO("[Hazmat] Registered Tooltip handler for hazmat gear.");
+		mInit = true;
 		
 	}
 	
@@ -71,24 +76,24 @@ public class HazmatUtils {
 	public void onItemTooltip(ItemTooltipEvent event){	
 		Logger.INFO("Ticking Hazmat handler");
 		if (GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.STARTED && GTplusplus.CURRENT_LOAD_PHASE != INIT_PHASE.SERVER_START) {
-			Logger.INFO("Bad Phase : "+GTplusplus.CURRENT_LOAD_PHASE);
+			Logger.INFO("[Hazmat] Bad Phase : "+GTplusplus.CURRENT_LOAD_PHASE);
 			return;
 		}
 		if (event.itemStack == null || isVanillaHazmatPiece(event.itemStack)) {
-			Logger.INFO("Invalid Itemstack or vanilla hazmat");
+			Logger.INFO("[Hazmat] Invalid Itemstack or vanilla hazmat");
 			return;
 		}
 		else {
-			Logger.INFO("Finding Tooltip Data");
+			Logger.INFO("[Hazmat] Finding Tooltip Data");
 			ItemStack aStackTemp = event.itemStack;
 			GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
 			String[] aTooltips = getTooltips(aStack);
 			if (aTooltips == null || aTooltips.length == 0) {
-				Logger.INFO("No Info!");
+				Logger.INFO("[Hazmat] No Info!");
 				return;
 			}
 			else {	
-				Logger.INFO("Found Tooltips!");			
+				Logger.INFO("[Hazmat] Found Tooltips!");			
 				if (providesProtection(aStackTemp)) {	
 					event.toolTip.add("Provides full hazmat protection.");					
 				}	
@@ -168,6 +173,7 @@ public class HazmatUtils {
 	 * @return - Did we register this ItemStack properly?
 	 */
 	public static boolean addProtection(ItemStack aVanStack) {	
+		Logger.INFO("[Hazmat] Registering "+aVanStack.getDisplayName() +" for full Hazmat protection.");
 		GT_ItemStack aStack = getGtStackFromVanilla(aVanStack);
 		AutoMap<Boolean> aAdded = new AutoMap<Boolean>();
 		aAdded.put(addProtection_Frost(aStack));
@@ -181,6 +187,7 @@ public class HazmatUtils {
 				return false;
 			}
 		}
+		Logger.INFO("[Hazmat] Protection added for all 6 damage types, registering to master Hazmat list.");
 		sHazmatList.add(aStack);
 		return true;		
 	}
@@ -254,23 +261,26 @@ public class HazmatUtils {
 	private static String[] getTooltips(GT_ItemStack aStack) {		
 		AutoMap<String> aTempTooltipData = mToolTips.get(aStack);
 		if (aTempTooltipData == null) {
-			Logger.INFO("Item was not mapped for TTs");
+			Logger.INFO("[Hazmat] Item was not mapped for TTs");
 			return new String[] {};
 		}
 		else {
-			Logger.INFO("Item was mapped for TTs");
+			Logger.INFO("[Hazmat] Item was mapped for TTs");
 			Collections.sort(aTempTooltipData);
-			Logger.INFO("Sorted TTs");
+			Logger.INFO("[Hazmat] Sorted TTs");
 			return aTempTooltipData.toArray();
 		}
 	}
 	
 	private static void registerTooltip(GT_ItemStack aStack, String aTooltip) {
+		Logger.INFO("[Hazmat] Mapping "+aTooltip+" for "+getStackFromGtStack(aStack).getDisplayName());
 		AutoMap<String> aTempTooltipData = mToolTips.get(aStack);
 		if (aTempTooltipData == null) {
+			Logger.INFO("No data mapped yet, creating.");
 			aTempTooltipData = new AutoMap<String>();
 		}
 		aTempTooltipData.add(aTooltip);
+		mToolTips.put(aStack, aTempTooltipData);
 	}
 	
 	public static ItemStack getStackFromGtStack(GT_ItemStack aGtStack) {
