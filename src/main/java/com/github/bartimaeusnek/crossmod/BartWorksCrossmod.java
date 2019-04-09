@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.crossmod;
 
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
+import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -48,11 +49,10 @@ public class BartWorksCrossmod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-
-
         if (Loader.isModLoaded("GalacticraftCore"))
             GalacticraftProxy.preInit(preinit);
-
+        if (Loader.isModLoaded("Thaumcraft"))
+            new CustomAspects();
     }
 
     @Mod.EventHandler
