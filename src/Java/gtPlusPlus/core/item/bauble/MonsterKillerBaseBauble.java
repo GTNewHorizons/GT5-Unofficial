@@ -11,6 +11,7 @@ import gtPlusPlus.api.objects.minecraft.AABB;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -85,12 +86,12 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 		String aEUT = aEU + "/t";
 
 		list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
-		list.add(EnumChatFormatting.GREEN + aString2 + " " + (int) getTransferLimit(stack) + aEUT + aString3
+		list.add(EnumChatFormatting.GREEN + aString2 + " " + (int) getTransferLimit(stack) + aEUT + " " + aString3
 				+ EnumChatFormatting.GRAY);
 		list.add("");
 		list.add("" + EnumChatFormatting.GREEN + aString4 + " " + EnumChatFormatting.GRAY);
 		for (Class cz : mTargets) {
-			list.add("- " + EnumChatFormatting.DARK_GREEN + cz.getSimpleName() + EnumChatFormatting.GRAY);
+			list.add("- " + EnumChatFormatting.DARK_GREEN + cz.getSimpleName().replace("Entity", "") + EnumChatFormatting.GRAY);
 		}
 
 		super.addInformation(stack, aPlayer, list, bool);
@@ -151,6 +152,7 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 								long aEuUsage = (long) (aEntHealthPerc * 50 * aEntMaxHealth);
 								if (this.discharge(aBaubleStack, aEuUsage, mTier, true, false, false) > 0) {
 									aClosest.setDead();
+									PlayerUtils.messagePlayer(aPlayer, "Removed 1x "+aClosest.getCommandSenderName());
 									break;
 								}
 							} else {

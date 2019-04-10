@@ -19,7 +19,6 @@ import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
-import ic2.core.Ic2Items;
 import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.armor.ItemArmorNanoSuit;
 import ic2.core.item.armor.ItemArmorQuantumSuit;
@@ -81,24 +80,24 @@ public class HazmatUtils {
 			return;
 		}
 		if (event.itemStack == null || isVanillaHazmatPiece(event.itemStack)) {
-			Logger.INFO("[Hazmat] Invalid Itemstack or vanilla hazmat");
+			//Logger.INFO("[Hazmat] Invalid Itemstack or vanilla hazmat");
 			return;
 		} else {
 			ItemStack aStackTemp = event.itemStack;
 			GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
 			if (isNanoArmourPiece(aStackTemp) || isQuantumArmourPiece(aStackTemp)) {
-				event.toolTip.add("Provides full hazmat protection.");				
+				event.toolTip.add(EnumChatFormatting.DARK_PURPLE+"Provides full hazmat protection.");				
 			}
 			else {
-				Logger.INFO("[Hazmat] Finding Tooltip Data");
+				//Logger.INFO("[Hazmat] Finding Tooltip Data");
 				String[] aTooltips = getTooltips(aStack);
 				if (aTooltips == null || aTooltips.length == 0) {
-					Logger.INFO("[Hazmat] No Info!");
+					//Logger.INFO("[Hazmat] No Info!");
 					return;
 				} else {
-					Logger.INFO("[Hazmat] Found Tooltips!");
+					//Logger.INFO("[Hazmat] Found Tooltips!");
 					if (providesProtection(aStackTemp)) {
-						event.toolTip.add("Provides full hazmat protection.");
+						event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE+"Provides full hazmat protection.");
 					} else {
 						event.toolTip.add(mToolTipText);
 						for (String r : aTooltips) {
@@ -301,12 +300,12 @@ public class HazmatUtils {
 		String aKey = convertGtItemstackToStringData(aStack);
 		AutoMap<String> aTempTooltipData = mToolTips.get(aKey);
 		if (aTempTooltipData == null) {
-			Logger.INFO("[Hazmat] Item was not mapped for TTs - "+aKey);
+			//Logger.INFO("[Hazmat] Item was not mapped for TTs - "+aKey);
 			return new String[] {};
 		} else {
-			Logger.INFO("[Hazmat] Item was mapped for TTs");
+			//Logger.INFO("[Hazmat] Item was mapped for TTs");
 			Collections.sort(aTempTooltipData);
-			Logger.INFO("[Hazmat] Sorted TTs");
+			//Logger.INFO("[Hazmat] Sorted TTs");
 			return aTempTooltipData.toArray();
 		}
 	}
