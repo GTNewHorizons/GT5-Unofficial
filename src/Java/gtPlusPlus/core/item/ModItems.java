@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
+import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -344,6 +345,15 @@ public final class ModItems {
 	public static CoreItem itemBombUnf;
 	public static CoreItem itemDetCable;
 	public static ItemThrowableBomb itemBomb;
+
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Zombie;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Skeleton;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Spider;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Creeper;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Enderman;
+	
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Nether;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
 
 	static {
 		Logger.INFO("Items!");
@@ -829,7 +839,7 @@ public final class ModItems {
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
 		}
-		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), null, itemHotTitaniumIngot, null, 10 * 20, 512, Materials.Titanium.mBlastFurnaceTemp);
+		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), CI.getNumberedCircuit(16), itemHotTitaniumIngot, null, 10 * 20, 500, Materials.Titanium.mBlastFurnaceTemp);
 
 		//Special Sillyness
 		if (true) {

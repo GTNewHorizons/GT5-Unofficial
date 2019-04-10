@@ -3,14 +3,18 @@ package gtPlusPlus.core.item.bauble;
 import java.util.List;
 
 import baubles.api.BaubleType;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.AABB;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EntityUtils;
 import ic2.api.item.ElectricItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,14 +24,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class MonsterKillerBaseBauble extends ElectricBaseBauble {
-	
-	private final int mTier;
+
 	private final Class[] mTargets;
 
-	public MonsterKillerBaseBauble(Class[] aMonsterBaseClassArray, String aMonsterTypeName, int aPowerTier) {	
-		super(BaubleType.AMULET, aPowerTier, GT_Values.V[aPowerTier] * 20 * 300, "GTPP.MonsterKiller."+aMonsterTypeName+".name");
-		mTier = aPowerTier;
-		mTargets = aMonsterBaseClassArray;				
+	public MonsterKillerBaseBauble(Class[] aMonsterBaseClassArray, String aMonsterTypeName, int aPowerTier) {
+		super(BaubleType.AMULET, aPowerTier, GT_Values.V[aPowerTier] * 20 * 300,
+				"GTPP.MonsterKiller." + aMonsterTypeName + ".name");
+		mTargets = aMonsterBaseClassArray;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -56,7 +59,7 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 
 	@Override
 	public boolean canProvideEnergy(final ItemStack itemStack) {
-		double aItemCharge = ElectricItem.manager.getCharge(itemStack);		
+		double aItemCharge = ElectricItem.manager.getCharge(itemStack);
 		return aItemCharge > 0;
 	}
 
@@ -78,17 +81,18 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 		String aString2 = StatCollector.translateToLocal("GTPP.monsterkiller.tooltip.2");
 		String aString3 = StatCollector.translateToLocal("GTPP.monsterkiller.tooltip.3");
 		String aString4 = StatCollector.translateToLocal("GTPP.monsterkiller.tooltip.4");
-		String aEU = StatCollector.translateToLocal("GTPP.info.eu");	
-		String aEUT = aEU+"/t";
+		String aEU = StatCollector.translateToLocal("GTPP.info.eu");
+		String aEUT = aEU + "/t";
 
 		list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
-		list.add(EnumChatFormatting.GREEN + aString2+" " + (int) getTransferLimit(stack) + aEUT + aString3 + EnumChatFormatting.GRAY);
+		list.add(EnumChatFormatting.GREEN + aString2 + " " + (int) getTransferLimit(stack) + aEUT + aString3
+				+ EnumChatFormatting.GRAY);
 		list.add("");
-		list.add(""+EnumChatFormatting.GREEN + aString4 + " " + EnumChatFormatting.GRAY);
+		list.add("" + EnumChatFormatting.GREEN + aString4 + " " + EnumChatFormatting.GRAY);
 		for (Class cz : mTargets) {
-			list.add("- "+EnumChatFormatting.DARK_GREEN + cz.getSimpleName() + EnumChatFormatting.GRAY);			
+			list.add("- " + EnumChatFormatting.DARK_GREEN + cz.getSimpleName() + EnumChatFormatting.GRAY);
 		}
-		
+
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -113,17 +117,57 @@ public class MonsterKillerBaseBauble extends ElectricBaseBauble {
 	}
 
 	@Override // TODO
-	public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayer) {
+	public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayerEntity) {
+		if (aPlayerEntity == null) {
+			return;
+		}
+		EntityPlayer aPlayer = (EntityPlayer) aPlayerEntity;
 		if (!aPlayer.worldObj.isRemote) {
 			if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
-				
+				AABB aPlayerBox = new AABB(aPlayerEntity, 5, 5, 5);
+				if (this.mTargets != null && this.mTargets.length > 0) {
+					for (Class clazz : mTargets) {
+						AutoMap<?> aEnts = EntityUtils.getEntitiesWithinBoundingBox(clazz, aPlayerBox);
+						if (aEnts.isEmpty()) {
+							continue;
+						} else {
+							EntityLiving aClosest = null;
+							double aEntityDistance = Short.MIN_VALUE;
+							for (Object ent : aEnts) {
+								if (!EntityLiving.class.isInstance(ent)) {
+									continue;
+								} else {
+									double aCurEntDis = EntityUtils.getDistance(aPlayerEntity, (Entity) ent);
+									if (aEntityDistance == Short.MIN_VALUE || aCurEntDis < aEntityDistance) {
+										aEntityDistance = aCurEntDis;
+										aClosest = (EntityLiving) ent;
+									}
+								}
+							}
+							if (aClosest != null) {
+								float aEntHealth = aClosest.getHealth();
+								float aEntMaxHealth = aClosest.getMaxHealth();
+								double aEntHealthPerc = MathUtils.findPercentage(aEntHealth, aEntMaxHealth);
+								long aEuUsage = (long) (aEntHealthPerc * 50 * aEntMaxHealth);
+								if (this.discharge(aBaubleStack, aEuUsage, mTier, true, false, false) > 0) {
+									aClosest.setDead();
+									break;
+								}
+							} else {
+								continue;
+							}
+						}
+					}
+				}
+			} else {
+				return;
 			}
 		}
 	}
 
 	@Override
 	public String getTextureNameForBauble() {
-		return CORE.MODID+":"+"";
+		return CORE.MODID + ":" + "baubles/itemAmulet";
 	}
 
 }

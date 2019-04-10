@@ -3,25 +3,27 @@ package gtPlusPlus.core.util.minecraft;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.AABB;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-
-import gregtech.api.util.GT_Utility;
-
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
@@ -157,6 +159,32 @@ public class EntityUtils {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static double getDistance(Entity p1, Entity p2) {
+	    return Math.sqrt( Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
+	}
+	
+	public static AutoMap<Entity> getEntitiesWithinBoundingBoxExcluding(Entity aExclusion, AABB aBoundingBox){
+		
+		if (aExclusion == null) {
+			return new AutoMap<Entity>();
+		}
+		else {
+			List<Entity> aEntities = aBoundingBox.world().getEntitiesWithinAABBExcludingEntity(aExclusion, aBoundingBox.get());			
+			return new AutoMap<Entity>(aEntities);			
+		}
+	}
+	
+	public static AutoMap<Entity> getEntitiesWithinBoundingBox(Class aEntityType, AABB aBoundingBox){
+		
+		if (aEntityType == null) {
+			return new AutoMap<Entity>();
+		}
+		else {
+			List<Entity> aEntities = aBoundingBox.world().getEntitiesWithinAABB(aEntityType, aBoundingBox.get());			
+			return new AutoMap<Entity>(aEntities);			
+		}
 	}
 
 }
