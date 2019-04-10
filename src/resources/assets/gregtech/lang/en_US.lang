@@ -50,7 +50,8 @@ GTPP.nanohealer.hidden=Hiding Info?
 //Tooltips for the Mob Killing Baubles
 GTPP.monsterkiller.tooltip.1=Worn as an Amulet within Baubles
 GTPP.monsterkiller.tooltip.2=Drains
-GTPP.monsterkiller.tooltip.3=to kill
+GTPP.monsterkiller.tooltip.3=per each kill
+GTPP.monsterkiller.tooltip.4=Target Type:
 
 
 
