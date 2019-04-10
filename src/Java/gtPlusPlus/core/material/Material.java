@@ -141,7 +141,7 @@ public class Material {
 		this (materialName, defaultState, set, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, true, true, inputs);
 	}	
 
-	public Material(final String materialName, final MaterialState defaultState, final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs){
+	public Material(final String materialName, final MaterialState defaultState, final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, String chemicalSymbol, final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs){
 
 		if (mMaterialMap.add(this)) {
 
@@ -442,6 +442,11 @@ public class Material {
 
 
 			//Makes a Fancy Chemical Tooltip
+			
+			if (chemicalSymbol == null) {
+				chemicalSymbol = "";
+			}
+			
 			this.vChemicalSymbol = chemicalSymbol;
 			if (this.vMaterialInput != null){
 				this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
