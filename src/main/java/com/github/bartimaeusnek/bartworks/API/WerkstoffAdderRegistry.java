@@ -26,8 +26,8 @@ import java.util.HashSet;
 
 public final class WerkstoffAdderRegistry implements Runnable {
 
-    static final WerkstoffAdderRegistry INSTANCE = new WerkstoffAdderRegistry();
-    final HashSet<Runnable> toRun = new HashSet<>();
+    private static final WerkstoffAdderRegistry INSTANCE = new WerkstoffAdderRegistry();
+    private final HashSet<Runnable> toRun = new HashSet<>();
 
     private WerkstoffAdderRegistry() {
     }
@@ -36,12 +36,12 @@ public final class WerkstoffAdderRegistry implements Runnable {
         return INSTANCE;
     }
 
-    public static void addWerkstoffAdder(Runnable adder) {
+    public static final void addWerkstoffAdder(Runnable adder) {
         INSTANCE.toRun.add(adder);
     }
 
     @Override
-    public void run() {
+    public final void run() {
         for (Runnable r : toRun)
             r.run();
     }

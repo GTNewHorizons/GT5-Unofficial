@@ -43,6 +43,7 @@ public class ConfigHandler {
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
     private static boolean ezmode = false;
+    public static boolean debugLog = false;
 
     public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
         c = new Configuration(new File(e.getModConfigurationDirectory().toString() + "/" + MainMod.MOD_ID + ".cfg"));
@@ -61,7 +62,7 @@ public class ConfigHandler {
             ConfigHandler.IDOffset = 12600;
             c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
         }
-
+        debugLog=c.get("System","Enable Debug Log",false,"Enables or Disables the debug log.").getBoolean(false);
         if (c.hasChanged())
             c.save();
 

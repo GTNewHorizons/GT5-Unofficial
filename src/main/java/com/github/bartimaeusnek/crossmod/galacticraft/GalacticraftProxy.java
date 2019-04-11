@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
-import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128;
+import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -42,11 +42,11 @@ public class GalacticraftProxy {
 
     public static void preInit(FMLPreInitializationEvent e) {
         if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-            serverpreInit(e);
+            GalacticraftProxy.serverpreInit(e);
         } else {
-            clientpreInit(e);
+            GalacticraftProxy.clientpreInit(e);
         }
-        commonpreInit(e);
+        GalacticraftProxy.commonpreInit(e);
     }
 
     private static void serverpreInit(FMLPreInitializationEvent e) {
@@ -57,15 +57,15 @@ public class GalacticraftProxy {
     }
 
     private static void commonpreInit(FMLPreInitializationEvent e) {
-        gtConf = new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
-        uo_dimensionList.getConfig(gtConf, "undergroundfluid");
+        GalacticraftProxy.gtConf = new Configuration(new File(new File(e.getModConfigurationDirectory(), "GregTech"), "GregTech.cfg"));
+        GalacticraftProxy.uo_dimensionList.getConfig(GalacticraftProxy.gtConf, "undergroundfluid");
         init_undergroundFluidsRoss128();
-        if (gtConf.hasChanged())
-            gtConf.save();
+        if (GalacticraftProxy.gtConf.hasChanged())
+            GalacticraftProxy.gtConf.save();
 
         Configuration c = new Configuration(new File(e.getModConfigurationDirectory(), "bartworks.cfg"));
-        Ross128.ross128ID = c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
-        Ross128.enabled = c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
+        Ross128SolarSystem.ross128ID = c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
+        Ross128SolarSystem.enabled = c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
         if (c.hasChanged())
             c.save();
 
@@ -74,11 +74,11 @@ public class GalacticraftProxy {
 
     public static void init(FMLInitializationEvent e) {
         if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-            serverInit(e);
+            GalacticraftProxy.serverInit(e);
         } else {
-            clientInit(e);
+            GalacticraftProxy.clientInit(e);
         }
-        commonInit(e);
+        GalacticraftProxy.commonInit(e);
     }
 
     private static void serverInit(FMLInitializationEvent e) {
@@ -90,7 +90,7 @@ public class GalacticraftProxy {
     }
 
     private static void commonInit(FMLInitializationEvent e) {
-        if (Ross128.enabled)
-            Ross128.init();
+        if (Ross128SolarSystem.enabled)
+            Ross128SolarSystem.init();
     }
 }

@@ -46,7 +46,7 @@ public class BW_WordGenerator implements IWorldGenerator {
     }
 
     public synchronized void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        new WorldGenContainer(aX * 16, aZ * 16, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider).run();
+        new BW_WordGenerator.WorldGenContainer(aX * 16, aZ * 16, aWorld.provider.dimensionId, aWorld, aChunkGenerator, aChunkProvider).run();
     }
 
     public static class WorldGenContainer implements Runnable {
@@ -65,7 +65,6 @@ public class BW_WordGenerator implements IWorldGenerator {
             this.mWorld = aWorld;
             this.mChunkGenerator = aChunkGenerator;
             this.mChunkProvider = aChunkProvider;
-            ;
         }
 
         //returns a coordinate of a center chunk of 3x3 square; the argument belongs to this square
@@ -75,11 +74,11 @@ public class BW_WordGenerator implements IWorldGenerator {
         }
 
         public boolean surroundingChunksLoaded(int xCenter, int zCenter) {
-            return mWorld.checkChunksExist(xCenter - 16, 0, zCenter - 16, xCenter + 16, 0, zCenter + 16);
+            return this.mWorld.checkChunksExist(xCenter - 16, 0, zCenter - 16, xCenter + 16, 0, zCenter + 16);
         }
 
         public XSTR getRandom(int xChunk, int zChunk) {
-            long worldSeed = mWorld.getSeed();
+            long worldSeed = this.mWorld.getSeed();
             XSTR fmlRandom = new XSTR(worldSeed);
             long xSeed = fmlRandom.nextLong() >> 2 + 1L;
             long zSeed = fmlRandom.nextLong() >> 2 + 1L;
@@ -89,21 +88,21 @@ public class BW_WordGenerator implements IWorldGenerator {
         }
 
         public void run() {
-            int xCenter = getVeinCenterCoordinate(mX >> 4);
-            int zCenter = getVeinCenterCoordinate(mZ >> 4);
-            Random random = getRandom(xCenter, zCenter);
+            int xCenter = this.getVeinCenterCoordinate(this.mX >> 4);
+            int zCenter = this.getVeinCenterCoordinate(this.mZ >> 4);
+            Random random = this.getRandom(xCenter, zCenter);
             xCenter <<= 4;
             zCenter <<= 4;
             ChunkCoordIntPair centerChunk = new ChunkCoordIntPair(xCenter, zCenter);
-            if (!mGenerated.contains(centerChunk) && surroundingChunksLoaded(xCenter, zCenter)) {
-                mGenerated.add(centerChunk);
+            if (!BW_WordGenerator.WorldGenContainer.mGenerated.contains(centerChunk) && this.surroundingChunksLoaded(xCenter, zCenter)) {
+                BW_WordGenerator.WorldGenContainer.mGenerated.add(centerChunk);
                 if ((BW_OreLayer.sWeight > 0) && (BW_OreLayer.sList.size() > 0)) {
                     boolean temp = true;
                     int tRandomWeight;
                     for (int i = 0; (i < 256) && (temp); i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
-                            tRandomWeight -= ((BW_OreLayer) tWorldGen).mWeight;
+                            tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
                                     if (tWorldGen.executeWorldgen(this.mWorld, random, "", this.mDimensionType, xCenter, zCenter, this.mChunkGenerator, this.mChunkProvider)) {

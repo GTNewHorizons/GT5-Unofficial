@@ -34,7 +34,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.Arrays;
 
-public class Ross128 {
+public class Ross128SolarSystem {
 
     public static boolean enabled = true;
 
@@ -45,33 +45,33 @@ public class Ross128 {
     //    public static Block Ross128bBlocks;
 //    public static BlockMetaPair Ross128bStone,Ross128bDirt,Ross128bGrass;
     public static int ross128ID = -64;
-    private Ross128() {
+    private Ross128SolarSystem() {
     }
 
     public static void init() {
 
 //        Ross128bBlocks = new UniversalSpaceBlocks("Ross128bBlocks",new String[]{BartWorksCrossmod.MOD_ID+":Ross128bStone",BartWorksCrossmod.MOD_ID+":Ross128bDirt",BartWorksCrossmod.MOD_ID+":Ross128bGrass"});
 
-        Ross128System = new SolarSystem("Ross128System", "milkyWay").setMapPosition(new Vector3(-1.0D, 1.3D, 0.0D));
-        Ross128 = (Star) new Star("Ross128").setParentSolarSystem(Ross128System).setTierRequired(-1);
-        Ross128.setUnreachable();
-        Ross128.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128.png"));
-        Ross128System.setMainStar(Ross128);
+        Ross128SolarSystem.Ross128System = new SolarSystem("Ross128System", "milkyWay").setMapPosition(new Vector3(-1.0D, 1.3D, 0.0D));
+        Ross128SolarSystem.Ross128 = (Star) new Star("Ross128").setParentSolarSystem(Ross128SolarSystem.Ross128System).setTierRequired(-1);
+        Ross128SolarSystem.Ross128.setUnreachable();
+        Ross128SolarSystem.Ross128.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128.png"));
+        Ross128SolarSystem.Ross128System.setMainStar(Ross128SolarSystem.Ross128);
 
-        Ross128b = new Planet("Ross128b").setParentSolarSystem(Ross128System);
-        Ross128b.setRingColorRGB((0x9F) / 255f, (0x8A) / 255f, (0x79) / 255f);
-        Ross128b.setPhaseShift(1.25F);
-        Ross128b.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128b.png"));
-        Ross128b.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 1.75F));
-        Ross128b.setRelativeOrbitTime(0.65F);
-        Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
-        Ross128b.setDimensionInfo(ross128ID, WorldProviderRoss128b.class);
-        Ross128b.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
+        Ross128SolarSystem.Ross128b = new Planet("Ross128b").setParentSolarSystem(Ross128SolarSystem.Ross128System);
+        Ross128SolarSystem.Ross128b.setRingColorRGB((0x9F) / 255f, (0x8A) / 255f, (0x79) / 255f);
+        Ross128SolarSystem.Ross128b.setPhaseShift(1.25F);
+        Ross128SolarSystem.Ross128b.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128b.png"));
+        Ross128SolarSystem.Ross128b.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 1.75F));
+        Ross128SolarSystem.Ross128b.setRelativeOrbitTime(0.65F);
+        Ross128SolarSystem.Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
+        Ross128SolarSystem.Ross128b.setDimensionInfo(Ross128SolarSystem.ross128ID, WorldProviderRoss128b.class);
+        Ross128SolarSystem.Ross128b.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
 
-        Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128b);
-        Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);
-        Ross128ba.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
-        Ross128ba.setUnreachable(); //for now
+        Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);
+        Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);
+        Ross128SolarSystem.Ross128ba.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
+        Ross128SolarSystem.Ross128ba.setUnreachable(); //for now
 
 //        GameRegistry.registerBlock(Ross128bBlocks,Ross128bBlocks.getUnlocalizedName());
 //
@@ -79,9 +79,9 @@ public class Ross128 {
 //        Ross128bDirt=new BlockMetaPair(Ross128bBlocks, (byte) 1);
 //        Ross128bGrass=new BlockMetaPair(Ross128bBlocks, (byte) 2);
 
-        GalaxyRegistry.registerPlanet(Ross128b);
-        GalaxyRegistry.registerMoon(Ross128ba);
-        GalaxyRegistry.registerSolarSystem(Ross128System);
+        GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);
+        GalaxyRegistry.registerMoon(Ross128SolarSystem.Ross128ba);
+        GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalacticraftRegistry.registerTeleportType(WorldProviderRoss128b.class, new UniversalTeleportType());
     }
 
