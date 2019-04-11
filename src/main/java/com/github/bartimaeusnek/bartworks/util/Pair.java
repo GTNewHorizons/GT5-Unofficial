@@ -34,7 +34,6 @@ public class Pair<A, B> implements Map.Entry {
         this.pair = pair;
     }
 
-
     public Pair(A k, B v) {
         this.pair[0] = k;
         this.pair[1] = v;
@@ -70,5 +69,14 @@ public class Pair<A, B> implements Map.Entry {
     public B setValue(Object value) {
         pair[1] = value;
         return (B) pair[1];
+    }
+
+    public Pair<A,B> copyWithNewValue(B value){
+        return new Pair<>((A)this.pair[0],value);
+    }
+
+    public Pair<A,B> replaceValue(B value){
+        this.setValue(value);
+        return this;
     }
 }

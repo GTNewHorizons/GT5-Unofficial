@@ -23,13 +23,9 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.github.bartimaeusnek.bartworks.util.Pair;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -41,61 +37,62 @@ import java.util.*;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
-    public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
+    static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     private static final HashSet<Short> idHashSet = new HashSet<>();
 
-    public static final Werkstoff.Stats DEFAULT_NULL_STATS = new Werkstoff.Stats();
-    public static final GenerationFeatures DEFAULT_NULL_GENERATION_FEATURES = new GenerationFeatures();
+    private static final Werkstoff.Stats DEFAULT_NULL_STATS = new Werkstoff.Stats();
+    private static final Werkstoff.GenerationFeatures DEFAULT_NULL_GENERATION_FEATURES = new Werkstoff.GenerationFeatures().disable();
     public static Werkstoff default_null_Werkstoff;
 
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<ISubTagContainer>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> contents = new LinkedHashSet<>();
     HashSet<SubTag> subtags = new HashSet<>();
     private byte[] rgb = new byte[3];
-    private String defaultName;
+    private final String defaultName;
     private String toolTip;
     private Fluid fluid;
     private Fluid gas;
+
     private Werkstoff.Stats stats;
-    private Werkstoff.Types type;
-    private GenerationFeatures generationFeatures;
-    private short mID;
-    private TextureSet texSet;
+    private final Werkstoff.Types type;
+    private final Werkstoff.GenerationFeatures generationFeatures;
+    private final short mID;
+    private final TextureSet texSet;
 
     public static void init(){
-        default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
+        Werkstoff.default_null_Werkstoff = new Werkstoff(new short[3], "_NULL", "Default null Werkstoff", Werkstoff.DEFAULT_NULL_STATS, Werkstoff.Types.UNDEFINED, Werkstoff.DEFAULT_NULL_GENERATION_FEATURES, -1, TextureSet.SET_NONE);
     }
 
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type), type, generationFeatures, mID, texSet, contents);
     }
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, Werkstoff.Types.getDefaultStatForType(type), type, generationFeatures, mID, texSet, oreByProduct, contents);
     }
-    public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, toolTip, defaultName, Werkstoff.Types.getDefaultStatForType(type), type, generationFeatures, mID, texSet, oreByProduct, contents);
     }
 
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.addAll(oreByProduct);
     }
 
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
     }
 
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, toolTip, stats, type, generationFeatures, mID, texSet, contents);
         this.mOreByProducts.addAll(oreByProduct);
     }
 
-    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type, GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
+    public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet, Pair<ISubTagContainer, Integer>... contents) {
 
-        if (idHashSet.contains((short) mID))
+        if (Werkstoff.idHashSet.contains((short) mID))
             throw new UnsupportedOperationException("ID (" + mID + ") is already in use!");
-        idHashSet.add((short) mID);
+        Werkstoff.idHashSet.add((short) mID);
         if (type == null)
             type = Werkstoff.Types.UNDEFINED;
 
@@ -138,11 +135,38 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.stats = stats.setMass(tmpmass);
 
         this.texSet = texSet;
-        werkstoffHashSet.add(this);
-        werkstoffHashMap.put(this.mID, this);
+        Werkstoff.werkstoffHashSet.add(this);
+        Werkstoff.werkstoffHashMap.put(this.mID, this);
     }
 
 
+    public void setTCAspects(Pair<Object,Integer>... pAspectsArr){
+        this.stats.mTC_Aspects=pAspectsArr;
+    }
+
+    public Pair<Object,Integer>[] getTCAspects(int ratio){
+        if (this.stats.mTC_Aspects == null) {
+            HashSet<TC_Aspects.TC_AspectStack> tc_aspectStacks = new HashSet<>();
+            HashSet<Pair<Object, Integer>> set = new HashSet<>();
+            for (Pair p : this.getContents().getValue()) {
+                if (p.getKey() instanceof Materials)
+                    tc_aspectStacks.addAll(((Materials) p.getKey()).mAspects);
+                if (p.getKey() instanceof Werkstoff)
+                    set.addAll(Arrays.asList(((Werkstoff) p.getKey()).getTCAspects()));
+            }
+            tc_aspectStacks.forEach(tc_aspectStack -> set.add(new Pair<Object, Integer>(tc_aspectStack.mAspect.mAspect, (int) tc_aspectStack.mAmount)));
+            this.stats.mTC_Aspects = set.toArray(new Pair[0]);
+        }
+        Pair<Object,Integer>[] ret = this.stats.mTC_Aspects.clone();
+        for (int i = 0; i < ret.length; i++) {
+            ret[i]=ret[i].copyWithNewValue(ret[i].getValue() * ratio);
+        }
+        return ret;
+    }
+
+    public Pair<Object,Integer>[] getTCAspects(){
+        return getTCAspects(1);
+    }
 
     public Werkstoff.Types getType() {
         return this.type;
@@ -153,8 +177,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         switch (this.type) {
             case COMPOUND:
             case BIOLOGICAL: {
-                for (int i = 0; i < contents.toArray().length; i++) {
-                    ret += ((Pair<ISubTagContainer, Integer>) contents.toArray()[i]).getValue();
+                for (int i = 0; i < this.contents.toArray().length; i++) {
+                    ret += ((Pair<ISubTagContainer, Integer>) this.contents.toArray()[i]).getValue();
                 }
                 break;
             }
@@ -166,31 +190,31 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public int getNoOfByProducts() {
-        return mOreByProducts.size();
+        return this.mOreByProducts.size();
     }
 
     public ISubTagContainer getOreByProductRaw(int aNumber){
-        if (mOreByProducts.size() == 0)
+        if (this.mOreByProducts.size() == 0)
             return null;
         if (aNumber < 0)
-            aNumber = mOreByProducts.size() + aNumber;
-        while (aNumber >= mOreByProducts.size())
+            aNumber = this.mOreByProducts.size() + aNumber;
+        while (aNumber >= this.mOreByProducts.size())
             aNumber--;
-        ISubTagContainer o = mOreByProducts.get(aNumber);
-        if (o == null || o.equals(default_null_Werkstoff) || o.equals(Materials._NULL))
+        ISubTagContainer o = this.mOreByProducts.get(aNumber);
+        if (o == null || o.equals(Werkstoff.default_null_Werkstoff) || o.equals(Materials._NULL))
             return this;
         return o;
     }
 
     public ItemStack getOreByProduct(int aNumber, OrePrefixes prefixes) {
-        if (mOreByProducts.size() == 0)
+        if (this.mOreByProducts.size() == 0)
             return null;
         if (aNumber < 0)
-            aNumber = mOreByProducts.size() + aNumber;
-        while (aNumber >= mOreByProducts.size())
+            aNumber = this.mOreByProducts.size() + aNumber;
+        while (aNumber >= this.mOreByProducts.size())
             aNumber--;
-        Object o = mOreByProducts.get(aNumber);
-        if (o == null||o.equals(default_null_Werkstoff) || o.equals(Materials._NULL))
+        Object o = this.mOreByProducts.get(aNumber);
+        if (o == null||o.equals(Werkstoff.default_null_Werkstoff) || o.equals(Materials._NULL))
             return this.get(prefixes);
         if (o instanceof Werkstoff)
             return WerkstoffLoader.getCorresopndingItemStack(prefixes, (Werkstoff) o);
@@ -215,7 +239,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.mID;
     }
 
-    public GenerationFeatures getGenerationFeatures() {
+    public Werkstoff.GenerationFeatures getGenerationFeatures() {
         return this.generationFeatures;
     }
 
@@ -229,28 +253,30 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     @Override
     public short[] getRGBA() {
-        return new short[]{(short) (rgb[0] + 128), (short) (rgb[1] + 128), (short) (rgb[2] + 128), 0};
+        return new short[]{(short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0};
     }
 
     @Override
     public boolean contains(SubTag subTag) {
-        for (Pair<ISubTagContainer, Integer> p : contents)
+        for (Pair<ISubTagContainer, Integer> p : this.contents)
             if (p.getKey().contains(subTag))
                 return true;
-        if (subtags.contains(subTag))
-            return true;
-        return false;
+        return this.subtags.contains(subTag);
     }
 
     @Override
     public ISubTagContainer add(SubTag... subTags) {
-        subtags.addAll(Arrays.asList(subTags));
+        this.subtags.addAll(Arrays.asList(subTags));
         return this;
     }
 
     @Override
     public boolean remove(SubTag subTag) {
-        return subtags.remove(subTag);
+        return this.subtags.remove(subTag);
+    }
+
+    public void getAndAddToCollection(OrePrefixes prefixes,int amount,Collection<ItemStack> stacks){
+        stacks.add(this.get(prefixes,amount));
     }
 
     public ItemStack get(OrePrefixes prefixes) {
@@ -264,15 +290,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public enum Types {
         MATERIAL, COMPOUND, MIXTURE, BIOLOGICAL, ELEMENT, UNDEFINED;
 
-        public static Stats getDefaultStatForType(Werkstoff.Types T) {
+        public static Werkstoff.Stats getDefaultStatForType(Werkstoff.Types T) {
             switch (T) {
                 case COMPOUND:
                 case BIOLOGICAL:
-                    return new Stats().setElektrolysis(true);
+                    return new Werkstoff.Stats().setElektrolysis(true);
                 case MIXTURE:
-                    return new Stats().setCentrifuge(true);
+                    return new Werkstoff.Stats().setCentrifuge(true);
                 default:
-                    return new Stats();
+                    return new Werkstoff.Stats();
             }
         }
     }
@@ -286,40 +312,40 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         ore 1000
          */
         public byte toGenerate = 0b0001001;
-        public byte blacklist = 0b0000000;
+        public byte blacklist;
 
-        public GenerationFeatures setBlacklist(OrePrefixes p){
+        public Werkstoff.GenerationFeatures setBlacklist(OrePrefixes p){
             if (p == OrePrefixes.dustTiny || p == OrePrefixes.dust || p == OrePrefixes.dustSmall || p == OrePrefixes.crateGtDust){
-                blacklist |= 1;
+                this.blacklist |= 1;
             }else
-                blacklist |= p.mMaterialGenerationBits;
+                this.blacklist |= p.mMaterialGenerationBits;
             return this;
         }
 
         public boolean hasDusts() {
-            return (toGenerate & 0b1) != 0;
+            return (this.toGenerate & 0b1) != 0;
         }
         public boolean hasGems() {
-            return (toGenerate & 0b100) != 0;
+            return (this.toGenerate & 0b100) != 0;
         }
         public boolean hasOres() {
-            return (toGenerate & 0b1000) != 0;
+            return (this.toGenerate & 0b1000) != 0;
         }
 
-        public GenerationFeatures removeGems(){
-            if (hasGems())
-                toGenerate = (byte) (toGenerate ^ 0b100);
+        public Werkstoff.GenerationFeatures removeGems(){
+            if (this.hasGems())
+                this.toGenerate = (byte) (this.toGenerate ^ 0b100);
             return this;
         }
 
-        public GenerationFeatures removeDusts(){
-            if (hasDusts())
-                toGenerate = (byte) (toGenerate ^ 0b1);
+        public Werkstoff.GenerationFeatures removeDusts(){
+            if (this.hasDusts())
+                this.toGenerate = (byte) (this.toGenerate ^ 0b1);
             return this;
         }
-        public GenerationFeatures removeOres(){
-            if (hasOres())
-                toGenerate = (byte) (toGenerate ^ 0b1000);
+        public Werkstoff.GenerationFeatures removeOres(){
+            if (this.hasOres())
+                this.toGenerate = (byte) (this.toGenerate ^ 0b1000);
             return this;
         }
         /*
@@ -327,37 +353,37 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
          * Auto add mixer Recipes 10
          * Auto add Sifter Recipe 100
          */
-        public byte extraRecipes = 0b0;
+        public byte extraRecipes;
 
-        public GenerationFeatures addChemicalRecipes(){
+        public Werkstoff.GenerationFeatures addChemicalRecipes(){
             this.extraRecipes = (byte) (this.extraRecipes | 1);
             return this;
         }
         public boolean hasChemicalRecipes() {
-           return (extraRecipes & 1) != 0;
+           return (this.extraRecipes & 1) != 0;
         }
 
-        public GenerationFeatures addSifterRecipes(){
+        public Werkstoff.GenerationFeatures addSifterRecipes(){
             this.extraRecipes = (byte) (this.extraRecipes | 100);
             return this;
         }
         public boolean hasSifterRecipes() {
-            return (extraRecipes & 100) != 0;
+            return (this.extraRecipes & 100) != 0;
         }
 
-        public GenerationFeatures onlyDust() {
-            toGenerate = (byte) (1);
+        public Werkstoff.GenerationFeatures onlyDust() {
+            this.toGenerate = (byte) (1);
             return this;
         }
 
 
-        public GenerationFeatures disable() {
-            toGenerate = (byte) (0);
+        public Werkstoff.GenerationFeatures disable() {
+            this.toGenerate = (byte) (0);
             return this;
         }
 
-        public GenerationFeatures addGems() {
-            toGenerate = (byte) (toGenerate | 0x4);
+        public Werkstoff.GenerationFeatures addGems() {
+            this.toGenerate = (byte) (this.toGenerate | 0x4);
             return this;
         }
 
@@ -372,8 +398,23 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         long neutrons;
         long electrons;
         long mass;
+        private Pair<Object,Integer>[] mTC_Aspects;
         //logic gate shit
         byte quality = ~0b111111;
+
+        public Stats setmTC_AspectsArray(Pair<Object, Integer>[] mTC_Aspects) {
+            this.mTC_Aspects = mTC_Aspects;
+            return this;
+        }
+
+        public Stats setmTC_AspectsVarArg(Pair<Object, Integer>... mTC_Aspects) {
+            this.mTC_Aspects = mTC_Aspects;
+            return this;
+        }
+
+        Pair<Object, Integer>[] getmTC_Aspects() {
+            return this.mTC_Aspects;
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -393,88 +434,88 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         @Override
         public int hashCode() {
-            return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(49).put(quality).putInt(boilingPoint).putInt(meltingPoint).putLong(protons).putLong(neutrons).putLong(electrons).putLong(mass).array(), 0, 49, 31);
+            return MurmurHash3.murmurhash3_x86_32(ByteBuffer.allocate(49).put(this.quality).putInt(this.boilingPoint).putInt(this.meltingPoint).putLong(this.protons).putLong(this.neutrons).putLong(this.electrons).putLong(this.mass).array(), 0, 49, 31);
         }
 
-        public Stats setMass(long mass) {
-            this.mass = protons;
+        public Werkstoff.Stats setMass(long mass) {
+            this.mass = this.protons;
             return this;
         }
 
-        public Stats setProtons(long protons) {
+        public Werkstoff.Stats setProtons(long protons) {
             this.protons = protons;
             return this;
         }
 
         public boolean isSublimation() {
-            return (quality & 0b1) == 0b1;
+            return (this.quality & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setSublimation(boolean sublimation) {
             if (sublimation)
-                quality = (byte) (quality | 0b000001);
+                this.quality = (byte) (this.quality | 0b000001);
             else
-                quality = (byte) (quality & 0b111110);
+                this.quality = (byte) (this.quality & 0b111110);
             return this;
         }
 
         public boolean isToxic() {
-            return (quality >> 1 & 0b1) == 0b1;
+            return (this.quality >> 1 & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setToxic(boolean toxic) {
             if (toxic)
-                quality = (byte) (quality | 0b000010);
+                this.quality = (byte) (this.quality | 0b000010);
             else
-                quality = (byte) (quality & 0b111101);
+                this.quality = (byte) (this.quality & 0b111101);
             return this;
         }
 
         public boolean isRadioactive() {
-            return (quality >> 2 & 0b1) == 0b1;
+            return (this.quality >> 2 & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setRadioactive(boolean radioactive) {
             if (radioactive)
-                quality = (byte) (quality | 0b000100);
+                this.quality = (byte) (this.quality | 0b000100);
             else
-                quality = (byte) (quality & 0b111011);
+                this.quality = (byte) (this.quality & 0b111011);
             return this;
         }
 
         public boolean isBlastFurnace() {
-            return (quality >> 3 & 0b1) == 0b1;
+            return (this.quality >> 3 & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setBlastFurnace(boolean blastFurnace) {
             if (blastFurnace)
-                quality = (byte) (quality | 0b001000);
+                this.quality = (byte) (this.quality | 0b001000);
             else
-                quality = (byte) (quality & 0b110111);
+                this.quality = (byte) (this.quality & 0b110111);
             return this;
         }
 
         public boolean isElektrolysis() {
-            return (quality >> 4 & 0b1) == 0b1;
+            return (this.quality >> 4 & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setElektrolysis(boolean elektrolysis) {
             if (elektrolysis)
-                quality = (byte) (quality | 0b010000);
+                this.quality = (byte) (this.quality | 0b010000);
             else
-                quality = (byte) (quality & 0b101111);
+                this.quality = (byte) (this.quality & 0b101111);
             return this;
         }
 
         public boolean isCentrifuge() {
-            return (quality >> 5 & 0b1) == 0b1;
+            return (this.quality >> 5 & 0b1) == 0b1;
         }
 
         public Werkstoff.Stats setCentrifuge(boolean centrifuge) {
             if (centrifuge)
-                quality = (byte) (quality | 0b100000);
+                this.quality = (byte) (this.quality | 0b100000);
             else
-                quality = (byte) (quality & 0b011111);
+                this.quality = (byte) (this.quality & 0b011111);
             return this;
         }
     }

@@ -22,7 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
 
-import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128;
+import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -129,7 +129,7 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
 
     @Override
     public boolean canSpaceshipTierPass(int tier) {
-        return Ross128.Ross128b.getTierRequirement() <= tier;
+        return Ross128SolarSystem.Ross128b.getTierRequirement() <= tier;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
 
     @Override
     public CelestialBody getCelestialBody() {
-        return Ross128.Ross128b;
+        return Ross128SolarSystem.Ross128b;
     }
 
     @Override

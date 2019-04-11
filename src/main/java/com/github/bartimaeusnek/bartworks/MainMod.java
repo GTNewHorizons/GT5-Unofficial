@@ -35,6 +35,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -60,6 +61,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
@@ -99,6 +101,13 @@ public final class MainMod {
             GTNH = true;
         }
         CHandler = new ConfigHandler(preinit);
+        if (ConfigHandler.debugLog) {
+            try {
+                new DebugLog(preinit);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (GTNH)
             LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
 
