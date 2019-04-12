@@ -4723,8 +4723,8 @@ if(Loader.isModLoaded("Railcraft")){
 		   
 		   if(Loader.isModLoaded("bartworks")){
         	   
-        	 //XenoxRecycleRecipe
-               GT_Values.RA.addDistillationTowerRecipe(Materials.DelutedXenoxene.getFluid(1000),new FluidStack[]{Materials.Xenoxene.getFluid(250),Materials.RadoxLight.getGas(750)},Materials.Ash.getDust(1),600,500000);
+			 //XenoxRecycleRecipe
+        	 GT_Values.RA.addDistillationTowerRecipe(Materials.DelutedXenoxene.getFluid(1000),new FluidStack[]{Materials.Xenoxene.getFluid(250),Materials.RadoxLight.getGas(750)},Materials.Ash.getDust(1),600,500000);
 
         	   if(Loader.isModLoaded("GalacticraftCore")){
         	   //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
@@ -4793,7 +4793,7 @@ if(Loader.isModLoaded("Railcraft")){
         	                		Materials.Titanium.getPlasma(100L)
         	                },
         	                new FluidStack[]{
-        	                        new GT_FluidStack(Materials.RadoxPolymerHot.getGas(4320))
+        	                        Materials.RadoxPolymerHot.getGas(4320)
         	                },
         	                (ItemStack[])null,
         	                800, 30
