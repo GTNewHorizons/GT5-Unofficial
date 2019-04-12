@@ -747,7 +747,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         boolean alwaysLookConnected = coverBehavior.alwaysLookConnected(side, coverId, coverData, baseMetaTile);
         return letsIn || letsOut || alwaysLookConnected;
     }
-    
+
 	@Override
 	public int connect(byte aSide) {
 		if (aSide >= 6) return 0;

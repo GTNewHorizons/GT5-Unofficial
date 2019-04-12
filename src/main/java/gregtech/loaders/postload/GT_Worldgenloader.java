@@ -6,22 +6,23 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Log;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.GT_Worldgen_Stone;
 import gregtech.common.GT_Worldgenerator;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 public class GT_Worldgenloader
         implements Runnable {
-    public void run() {
+	public void run() {
         boolean tPFAA = (GregTech_API.sWorldgenFile.get(ConfigCategories.general, "AutoDetectPFAA", true)) && (Loader.isModLoaded("PFAAGeologica"));
 
-        new GT_Worldgenerator();
-        if (Loader.isModLoaded("GalacticraftCore") && Loader.isModLoaded("GalacticraftMars")) {
-            new GT_Worldgenerator_Space();
-        }
+    	new GT_Worldgenerator();
 
-        new GT_Worldgen_Stone("overworld.stone.blackgranite.tiny", true, GregTech_API.sBlockGranites, 0, 0, 1, 50, 48, 0, 120, null, false);
+    	new GT_Worldgen_Stone("overworld.stone.blackgranite.tiny", true, GregTech_API.sBlockGranites, 0, 0, 1, 50, 48, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.small", true, GregTech_API.sBlockGranites, 0, 0, 1, 100, 96, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.medium", true, GregTech_API.sBlockGranites, 0, 0, 1, 200, 144, 0, 120, null, false);
         new GT_Worldgen_Stone("overworld.stone.blackgranite.large", true, GregTech_API.sBlockGranites, 0, 0, 1, 300, 192, 0, 120, null, false);
@@ -145,6 +146,18 @@ public class GT_Worldgenloader
         i = 0;
         for (int j = GregTech_API.sWorldgenFile.get("worldgen", "AmountOfCustomLargeVeinSlots", 16); i < j; i++) {
             new GT_Worldgen_GT_Ore_Layer("ore.mix.custom." + (i < 10 ? "0" : "") + i, false, 0, 0, 0, 0, 0, false, false, false, false, false, false, Materials._NULL, Materials._NULL, Materials._NULL, Materials._NULL);
+        }
+        
+        try {
+            Class clazz = Class.forName("bloodasp.galacticgreg.WorldGenGaGT");
+            Constructor constructor=clazz.getConstructor();
+            Method method=clazz.getMethod("run");
+            method.invoke(constructor.newInstance());
+            GT_Log.out.println("Started Galactic Greg ore gen code");
+            //this function calls Galactic Greg and enables its generation.
+        }catch (Exception e){
+            GT_Log.err.println("Unable to start Galactic Greg ore gen code");
+            e.printStackTrace(GT_Log.err);
         }
         
         if (GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes) {

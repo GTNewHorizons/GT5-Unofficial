@@ -55,6 +55,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 
+import bloodasp.galacticgreg.SpaceDimRegisterer;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -71,6 +73,7 @@ public class GT_Mod implements IGT_Mod {
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
+    private static SpaceDimRegisterer SpaceDimReg = null;
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
    
@@ -193,8 +196,20 @@ public class GT_Mod implements IGT_Mod {
         GT_Values.D1 = tMainConfig.get(aTextGeneral, "Debug", false).getBoolean(false);
         GT_Values.D2 = tMainConfig.get(aTextGeneral, "Debug2", false).getBoolean(false);
         GT_Values.allow_broken_recipemap = tMainConfig.get(aTextGeneral, "debug allow broken recipemap",false).getBoolean(false);
+        GT_Values.debugCleanroom = tMainConfig.get(aTextGeneral, "debugCleanroom", false).getBoolean(false);
+        GT_Values.debugDriller = tMainConfig.get(aTextGeneral, "debugDriller", false).getBoolean(false);
+        GT_Values.debugWorldGen = tMainConfig.get(aTextGeneral, "debugWorldGen", false).getBoolean(false);
+        GT_Values.debugOrevein = tMainConfig.get(aTextGeneral, "debugOrevein", false).getBoolean(false);
+        GT_Values.debugSmallOres = tMainConfig.get(aTextGeneral, "debugSmallOres", false).getBoolean(false);
+        GT_Values.debugStones = tMainConfig.get(aTextGeneral, "debugStones", false).getBoolean(false);
+        GT_Values.oreveinPercentage = tMainConfig.get(aTextGeneral, "oreveinPercentage_100",100).getInt(100);
+        GT_Values.oreveinAttempts = tMainConfig.get(aTextGeneral, "oreveinAttempts_64",64).getInt(64);
+        GT_Values.oreveinMaxPlacementAttempts = tMainConfig.get(aTextGeneral, "oreveinMaxPlacementAttempts_8",8).getInt(8);
+        GT_Values.oreveinPlacerOres = tMainConfig.get(aTextGeneral, "oreveinPlacerOres", true).getBoolean(true);
+        GT_Values.oreveinPlacerOresMultiplier = tMainConfig.get(aTextGeneral, "oreveinPlacerOresMultiplier",2).getInt(2);
         GregTech_API.TICKS_FOR_LAG_AVERAGING = tMainConfig.get(aTextGeneral, "TicksForLagAveragingWithScanner", 25).getInt(25);
         GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = tMainConfig.get(aTextGeneral, "MillisecondsPassedInGTTileEntityUntilLagWarning", 100).getInt(100);
+        GT_Values.cleanroomGlass= (float) tMainConfig.get("machines","ReinforcedGlassPercentageForCleanroom",5D).getDouble(5D);
         if (tMainConfig.get(aTextGeneral, "disable_STDOUT", false).getBoolean(false)) {
             System.out.close();
         }
@@ -292,7 +307,6 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile.get("general", "enableRedGraniteOres", gregtechproxy.enableRedGraniteOres);
         gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile.get("general", "enableMarbleOres", gregtechproxy.enableMarbleOres);
         gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile.get("general", "enableBasaltOres", gregtechproxy.enableBasaltOres);
-        gregtechproxy.enableGCOres = GregTech_API.sWorldgenFile.get("general", "enableGCOres", gregtechproxy.enableGCOres);
         gregtechproxy.enableUBOres = GregTech_API.sWorldgenFile.get("general", "enableUBOres", gregtechproxy.enableUBOres);
         gregtechproxy.gt6Pipe = tMainConfig.get("general", "GT6StyledPipesConnection", true).getBoolean(true);
         gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", false).getBoolean(false);
@@ -602,9 +616,25 @@ public class GT_Mod implements IGT_Mod {
                 tRunnable.run();
             }
         } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
-		
-		new BacteriaRegistry().runAllPostinit();
-		
+        
+        new BacteriaRegistry().runAllPostinit();
+        
+     // Register Dimensions in GalacticGregGT5
+     		if (Loader.isModLoaded("galacticgreg"))
+     		{
+         		SpaceDimReg = new SpaceDimRegisterer();
+         		if (!SpaceDimReg.Init())
+         		{
+         			GT_Log.err.println("Unable to register SpaceDimensions; You are probably using the wrong Version of GalacticGreg");
+         			GT_Log.out.println("[SpaceDim] Unable to register SpaceDimensions. Wrong Version of GGreg found!");
+         		}
+         		else
+         		{
+         			GT_Log.err.println("Registering SpaceDimensions");
+         		    SpaceDimReg.Register();
+         		}
+
+      		}
     }
 
     @Mod.EventHandler
