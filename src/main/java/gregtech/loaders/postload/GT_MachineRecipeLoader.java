@@ -4728,22 +4728,22 @@ if(Loader.isModLoaded("Railcraft")){
 
         	   if(Loader.isModLoaded("GalacticraftCore")){
         	   //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
-               GT_Values.RA.addAutoclaveSpaceRecipe(Materials.Naquadah.getDust(1),RadoxLight.getGas(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,true);
+               GT_Values.RA.addAutoclaveSpaceRecipe(Materials.Naquadah.getDust(1),Materials.RadoxLight.getGas(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,true);
 
                //super heavy -> heavy radox conversion
-               GT_Values.RA.addCentrifugeRecipe(null,null,RadoxSuperHeavy.getFluid(1000),RadoxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
+               GT_Values.RA.addCentrifugeRecipe(null,null,Materials.RadoxSuperHeavy.getFluid(1000),Materials.RadoxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
 
                //heavy radox + Nq+ -> Nq*
-               GT_Values.RA.addAutoclaveSpaceRecipe(Materials.NaquadahEnriched.getDust(1),RadoxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,true);
+               GT_Values.RA.addAutoclaveSpaceRecipe(Materials.NaquadahEnriched.getDust(1),Materials.RadoxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,true);
         	   }else {
         		   //LightRadox + Nq -> Enriched Naquadah condensation int aChance, int aDuration, int aEUt, boolean aCleanroom
-                   GT_Values.RA.addAutoclaveRecipe(Materials.Naquadah.getDust(1),RadoxLight.getGas(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,false);
+                   GT_Values.RA.addAutoclaveRecipe(Materials.Naquadah.getDust(1),Materials.RadoxLight.getGas(2000),Materials.NaquadahEnriched.getDust(3),10000,350,7680,false);
 
                    //super heavy -> heavy radox conversion
                    GT_Values.RA.addCentrifugeRecipe(null,null,Materials.RadoxSuperHeavy.getFluid(1000),Materials.RadoxHeavy.getFluid(2000),null,null,null,null,null,null,null,60000, 500000);
 
                    //heavy radox + Nq+ -> Nq*
-                   GT_Values.RA.addAutoclaveRecipe(Materials.NaquadahEnriched.getDust(1),RadoxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,false); 
+                   GT_Values.RA.addAutoclaveRecipe(Materials.NaquadahEnriched.getDust(1),Materials.RadoxHeavy.getFluid(4000),Materials.Naquadria.getDust(3),10000,350,122880,false); 
         	   }
         	   if(Loader.isModLoaded("GalaxySpace")){
         	        GT_Values.RA.addPyrolyseRecipe(GT_ModHandler.getModItem("GalaxySpace","barnardaClog",64L),Materials.Xenoxene.getFluid(1000),24,Materials.Ash.getDust(8),Materials.RawRadox.getFluid(1000),3600,500000);

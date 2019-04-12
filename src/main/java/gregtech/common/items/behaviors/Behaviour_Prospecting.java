@@ -40,11 +40,13 @@ public class Behaviour_Prospecting
         if (aWorld.isRemote) {
             return false;
         }
-      Block aBlock = aWorld.getBlock(aX, aY, aZ);
-      if (aBlock == null) {
-          return false;
-      }
-      byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
+        Block aBlock = aWorld.getBlock(aX, aY, aZ);
+        if (aBlock == null) {
+            return false;
+        }
+        byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
+
+
         ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
         if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))){
         	GT_Utility.sendChatToPlayer(aPlayer, trans("100","This is ") + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + trans("101"," Ore."));
@@ -59,13 +61,9 @@ public class Behaviour_Prospecting
 		    	aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites) ||
 		    	(aBlock == GregTech_API.sBlockOresUb1)  || 
 		    	(aBlock == GregTech_API.sBlockOresUb2)  ||  
-		    	(aBlock == GregTech_API.sBlockOresUb3)  ||
-		    	(aBlock == GregTech_API.sBlockOresCh)  ||
-		    	(aBlock == GregTech_API.sBlockOresEP1)  ||
-		    	(aBlock == GregTech_API.sBlockOresEP2)  ||
-		    	(aBlock == GregTech_API.sBlockOresEP3)  ||
-		    	(aBlock == GregTech_API.sBlockOres1)  ||
-		    	(aBlock == GregTech_API.sBlockOresGC)){
+		    	(aBlock == GregTech_API.sBlockOresUb3)  || 
+		    	(aBlock == GregTech_API.sBlockOresGC)  ||
+		    	(aBlock == GregTech_API.sBlockOres1)){
 	            if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
               GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(1)), 1.0F, -1.0F, aX, aY, aZ);
               int tMetaID = 0;
