@@ -35,10 +35,12 @@ import net.minecraftforge.fluids.FluidStack;
 import static gregtech.api.enums.OrePrefixes.*;
 
 public class AdditionalRecipes implements Runnable {
+
     @Override
     public void run() {
         GT_Values.RA.addChemicalRecipe(Materials.Yttrium.getDust(2), GT_Utility.getIntegratedCircuit(11),Materials.Oxygen.getGas(3000),null, WerkstoffLoader.YttriumOxide.get(dust),64, BW_Util.getMachineVoltageFromTier(4));
         GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(false, new ItemStack[]{WerkstoffLoader.Zirconium.get(dust,10), WerkstoffLoader.YttriumOxide.get(dust)}, new ItemStack[]{WerkstoffLoader.YttriumOxide.get(dust), WerkstoffLoader.Zirconia.get(gemFlawed, 40)}, (Object) null, (int[]) null, new FluidStack[]{Materials.Oxygen.getGas(20000)}, null, 14400, BW_Util.getMachineVoltageFromTier(4), 2953);
         GT_Values.RA.addBlastRecipe(WerkstoffLoader.YttriumOxide.get(dustSmall,2),WerkstoffLoader.Thorianit.get(dustSmall,2),Materials.Glass.getMolten(144),null,new ItemStack(ItemRegistry.bw_glasses[0],1,12),null,800,BW_Util.getMachineVoltageFromTier(5),3663);
     }
+
 }

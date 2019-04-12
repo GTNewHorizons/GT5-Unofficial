@@ -54,7 +54,7 @@ public class ThaumcraftHandler {
 
     public static class AspectAdder {
         private static Class mAspectListClass;
-        private static Class mAspectClass;
+        public static Class mAspectClass;
         private static Method registerObjectTag;
         private static Method addToList;
         private static Method getName;
