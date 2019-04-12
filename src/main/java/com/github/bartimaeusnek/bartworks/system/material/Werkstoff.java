@@ -314,6 +314,13 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public byte toGenerate = 0b0001001;
         public byte blacklist;
 
+        /*
+         * Auto add Chemical Recipes 1
+         * Auto add mixer Recipes 10
+         * Auto add Sifter Recipe 100
+         */
+        public byte extraRecipes;
+
         public Werkstoff.GenerationFeatures setBlacklist(OrePrefixes p){
             if (p == OrePrefixes.dustTiny || p == OrePrefixes.dust || p == OrePrefixes.dustSmall || p == OrePrefixes.crateGtDust){
                 this.blacklist |= 1;
@@ -348,12 +355,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 this.toGenerate = (byte) (this.toGenerate ^ 0b1000);
             return this;
         }
-        /*
-         * Auto add Chemical Recipes 1
-         * Auto add mixer Recipes 10
-         * Auto add Sifter Recipe 100
-         */
-        public byte extraRecipes;
 
         public Werkstoff.GenerationFeatures addChemicalRecipes(){
             this.extraRecipes = (byte) (this.extraRecipes | 1);
@@ -375,7 +376,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             this.toGenerate = (byte) (1);
             return this;
         }
-
 
         public Werkstoff.GenerationFeatures disable() {
             this.toGenerate = (byte) (0);

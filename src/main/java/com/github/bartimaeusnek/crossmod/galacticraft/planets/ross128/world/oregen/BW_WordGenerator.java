@@ -41,8 +41,8 @@ import java.util.Random;
 public class BW_WordGenerator implements IWorldGenerator {
 
     public BW_WordGenerator() {
-        //GT_NH Override...
-//        GameRegistry.registerWorldGenerator(this, 1073741823);
+        //GT_NH Override... wont be actually registered to force its generation directly in the ChunkProvider
+        //GameRegistry.registerWorldGenerator(this, 1073741823);
     }
 
     public synchronized void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {

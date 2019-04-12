@@ -42,7 +42,7 @@ public class BW_WorldGenRoss128 extends BW_OreLayer {
 
     public static void init_OresRoss128() {
         new BW_WorldGenRoss128("ore.mix.ross128.Thorianit", true, 30, 60, 17, 1, 16, WerkstoffLoader.Thorianit, Materials.Uraninite, Materials.Lepidolite, Materials.Spodumene);
-        new BW_WorldGenRoss128("ore.mix.ross128.carbon", true, 5, 25, 5, 4, 12, Materials.Graphite, Materials.Diamond, Materials.Coal, Materials.Graphene);
+        new BW_WorldGenRoss128("ore.mix.ross128.carbon", true, 5, 25, 5, 4, 12, Materials.Graphite, Materials.Diamond, Materials.Coal, Materials.Graphite);
         new BW_WorldGenRoss128("ore.mix.ross128.bismuth", true, 5, 80, 30, 1, 16, WerkstoffLoader.Bismuthinit, Materials.Stibnite, Materials.Bismuth, WerkstoffLoader.Bismutite);
         new BW_WorldGenRoss128("ore.mix.ross128.TurmalinAlkali", true, 5, 200, 15, 4, 48, WerkstoffLoader.Olenit, WerkstoffLoader.FluorBuergerit, WerkstoffLoader.ChromoAluminoPovondrait, WerkstoffLoader.VanadioOxyDravit);
         new BW_WorldGenRoss128("ore.mix.ross128.Roquesit", true, 5, 250, 3, 1, 12, WerkstoffLoader.Arsenopyrite, WerkstoffLoader.Ferberite, WerkstoffLoader.Loellingit, WerkstoffLoader.Roquesit);

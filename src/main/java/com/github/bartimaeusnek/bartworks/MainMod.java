@@ -36,35 +36,25 @@ import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
+import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.HashSet;
-
-import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 
 @Mod(
         modid = MainMod.MOD_ID, name = MainMod.NAME, version = MainMod.VERSION,
@@ -128,8 +118,12 @@ public final class MainMod {
         new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
-        if (ConfigHandler.newStuff)
-            WerkstoffLoader.INSTANCE.runInit();
+        if (ConfigHandler.newStuff) {
+            if (ConfigHandler.experimentalThreadedLoader)
+                new ThreadedLoader().runInit();
+            else
+                WerkstoffLoader.INSTANCE.runInit();
+        }
     }
 
     @Mod.EventHandler
@@ -138,8 +132,12 @@ public final class MainMod {
         if (ConfigHandler.BioLab)
             new GTNHBlocks().run();
         BioObjectAdder.regenerateBioFluids();
-        if (ConfigHandler.newStuff)
-            WerkstoffLoader.INSTANCE.run();
+        if (ConfigHandler.newStuff) {
+            if (ConfigHandler.experimentalThreadedLoader)
+                new ThreadedLoader().run();
+            else
+                WerkstoffLoader.INSTANCE.run();
+        }
         ConfigHandler.setUpComments();
     }
 
