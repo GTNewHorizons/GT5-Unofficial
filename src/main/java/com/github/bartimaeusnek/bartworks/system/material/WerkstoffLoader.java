@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores;
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
@@ -541,9 +542,8 @@ public class WerkstoffLoader implements Runnable {
         }
     }
 
+    public static int toGenerateGlobal = 0b0000000;
     private void addItemsForGeneration() {
-        int toGenerateGlobal = 0b0000000;
-
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             for (OrePrefixes p : values())
                 if ((werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0 && OreDictHandler.getItemStack(werkstoff.getDefaultName(),p,1) != null) {
@@ -571,18 +571,22 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(lens,new BW_MetaGenerated_Items(lens));
         }
         if ((toGenerateGlobal & 0b1000) != 0) {
-            if (FMLCommonHandler.instance().getSide().isClient())
-                RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
-            GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
-            WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
-            GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
-
+            if (!ConfigHandler.experimentalThreadedLoader)
+                gameRegistryHandler();
             WerkstoffLoader.items.put(crushed, new BW_MetaGenerated_Items(crushed));
             WerkstoffLoader.items.put(crushedPurified, new BW_MetaGenerated_Items(crushedPurified));
             WerkstoffLoader.items.put(crushedCentrifuged, new BW_MetaGenerated_Items(crushedCentrifuged));
             WerkstoffLoader.items.put(dustPure, new BW_MetaGenerated_Items(dustPure));
             WerkstoffLoader.items.put(dustImpure, new BW_MetaGenerated_Items(dustImpure));
         }
+    }
+
+    public void gameRegistryHandler(){
+        if (FMLCommonHandler.instance().getSide().isClient())
+            RenderingRegistry.registerBlockHandler(BW_Renderer_Block_Ores.INSTANCE);
+        GameRegistry.registerTileEntity(BW_MetaGeneratedOreTE.class, "bw.blockoresTE");
+        WerkstoffLoader.BWOres = new BW_MetaGenerated_Ores(Material.rock, BW_MetaGeneratedOreTE.class, "bw.blockores");
+        GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedOre_Item.class, "bw.blockores.01");
     }
 
     private void runAdditionalOreDict(){

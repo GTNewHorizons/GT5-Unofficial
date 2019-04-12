@@ -22,6 +22,9 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +36,30 @@ public class ThreadedLoader  implements Runnable {
 
     @Override
     public synchronized void run() {
+        MainMod.LOGGER.warn("EXPERIMENTAL THREADED-LOADER ENABLED!");
+        MainMod.LOGGER.info("Starting to register BartWorks Materials Recipes to Gregtech");
         threads.add(new AllRecipes());
         threads.forEach(Thread::start);
     }
 
     public synchronized void runInit() {
+        MainMod.LOGGER.warn("EXPERIMENTAL THREADED-LOADER ENABLED!");
+        MainMod.LOGGER.info("Starting the Material Generation Thread");
         threadsInit.add(new MaterialGen());
         threadsInit.forEach(Thread::start);
+        for (Thread thread : threadsInit) {
+            try {
+                MainMod.LOGGER.info("Trying to join the Material Generation Thread");
+                thread.join();
+            }catch (InterruptedException e){
+                e.printStackTrace();
+                FMLCommonHandler.instance().exitJava(500,true);
+            }
+        }
+        MainMod.LOGGER.info("Successfully joined the Material Generation Thread, Registering the Items/Blocks to the GameRegistry");
+        if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0)
+            WerkstoffLoader.INSTANCE.gameRegistryHandler();
+
     }
 
     class AllRecipes extends Thread {
