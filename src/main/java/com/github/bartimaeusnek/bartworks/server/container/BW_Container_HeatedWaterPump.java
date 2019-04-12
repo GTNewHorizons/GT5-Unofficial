@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.server.container;
 
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
+import com.github.bartimaeusnek.bartworks.server.container.Slots.BW_FuelSlot;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_Slot_Render;
@@ -48,7 +49,7 @@ public class BW_Container_HeatedWaterPump extends Container {
         this.TILE = TILE;
         this.INVENTORY = INVENTORY.inventory;
 
-        this.addSlotToContainer(new Slot(TILE, 0, 56, 53));
+        this.addSlotToContainer(new BW_FuelSlot(TILE, 0, 56, 53));
         this.addSlotToContainer(new GT_Slot_Render(TILE, 1, 86, 33));
         int i;
 
