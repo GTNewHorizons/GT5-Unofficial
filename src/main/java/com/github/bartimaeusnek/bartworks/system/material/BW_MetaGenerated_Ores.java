@@ -128,13 +128,12 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         return 0;
     }
 
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block par5, int par6) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntity tTileEntity = world.getTileEntity(x, y, z);
         if ((tTileEntity instanceof BW_MetaGeneratedOreTE)) {
             mTemporaryTileEntity.set((BW_MetaGeneratedOreTE) tTileEntity);
         }
-        super.breakBlock(aWorld, aX, aY, aZ, par5, par6);
-        aWorld.removeTileEntity(aX, aY, aZ);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
