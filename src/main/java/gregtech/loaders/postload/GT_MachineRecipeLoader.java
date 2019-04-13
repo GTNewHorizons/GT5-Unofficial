@@ -1290,7 +1290,6 @@ if(Loader.isModLoaded("Railcraft")){
 		//Ti & O Plasma Recipes
         GT_Values.RA.addFusionReactorRecipe(Materials.Aluminium.getMolten(144),Materials.Fluorine.getGas(144),Materials.Titanium.getPlasma(144),160,49152,100000000);
         GT_Values.RA.addFusionReactorRecipe(Materials.Helium.getPlasma(144),Materials.Lithium.getMolten(144),Materials.Boron.getPlasma(144),240,10240,50000000);
-        GT_Values.RA.addFusionReactorRecipe(Materials.Boron.getPlasma(144),Materials.Lithium.getMolten(144),Materials.Oxygen.getPlasma(144),240,49152,100000000);
         
 		//MK4
         GT_Values.RA.addFusionReactorRecipe(Materials.Radon.getPlasma(16), Materials.Neutronium.getMolten(16), Materials.Phoenixite.getMolten(8), 120, 196608, 1000000000);//FT4
