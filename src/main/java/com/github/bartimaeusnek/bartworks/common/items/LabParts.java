@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.items;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -66,7 +67,7 @@ public class LabParts extends SimpleSubItemClass {
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
         if (stack.getItemDamage() == 0 && stack.getTagCompound() != null && stack.getTagCompound().getIntArray("Color") != null && stack.getTagCompound().getIntArray("Color").length > 0) {
             int[] rgb = stack.getTagCompound().getIntArray("Color");
-            return BW_Util.getColorFromArray(rgb);
+            return BW_ColorUtil.getColorFromRGBArray(rgb);
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
@@ -103,16 +104,16 @@ public class LabParts extends SimpleSubItemClass {
 
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name")+" " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.5.name") + " " + itemStack.getTagCompound().getString("Name"));
                 if (!itemStack.getTagCompound().getBoolean("Breedable")) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name")+" " + itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.7.name") + " " + itemStack.getTagCompound().getString("Name"));
                 break;
             case 2:
-                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name")+" "+ itemStack.getTagCompound().getString("Name"));
+                list.add(StatCollector.translateToLocal("tooltip.labparts.8.name") + " " + itemStack.getTagCompound().getString("Name"));
                 break;
             default:
                 break;

@@ -62,8 +62,7 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
                     }
             }
-        }
-        else
+        } else
             super.loadCraftingRecipes(aResult);
     }
 
@@ -81,8 +80,7 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
 
                     }
             }
-        }
-        else
+        } else
             super.loadCraftingRecipes(aResult);
     }
 }

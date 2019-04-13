@@ -64,9 +64,9 @@ public class GT_GUIContainer_RadioHatch extends GT_GUIContainerMetaTile_Machine 
         this.drawTexturedModalRect(65, 13, 192, 0, (48 * (((GT_Container_RadioHatch) mContainer).sv)) / (maxSv), 16);
 
 
-//        this.fontRendererObj.drawString("Sv: " + ((GT_Container_RadioHatch) mContainer).sievert, 8, 50, BW_Util.getColorFromArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
-//        this.fontRendererObj.drawString("Kg: " + ((GT_Container_RadioHatch) mContainer).mass, 8, 68, BW_Util.getColorFromArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
-//        this.fontRendererObj.drawString("Time: " + timer, 8, 76, BW_Util.getColorFromArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
+//        this.fontRendererObj.drawString("Sv: " + ((GT_Container_RadioHatch) mContainer).sievert, 8, 50, BW_Util.getColorFromRGBArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
+//        this.fontRendererObj.drawString("Kg: " + ((GT_Container_RadioHatch) mContainer).mass, 8, 68, BW_Util.getColorFromRGBArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
+//        this.fontRendererObj.drawString("Time: " + timer, 8, 76, BW_Util.getColorFromRGBArray(new short[]{((GT_Container_RadioHatch) mContainer).r, ((GT_Container_RadioHatch) mContainer).g, ((GT_Container_RadioHatch) mContainer).b}));
 
     }
 

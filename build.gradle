@@ -21,8 +21,14 @@ plugins {
 }
 
 apply plugin: 'forge'
-apply plugin: 'idea'
 apply plugin: 'signing'
+apply plugin: 'idea'
+idea{
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
 
 import de.undercouch.gradle.tasks.download.Download
 
@@ -61,10 +67,34 @@ repositories {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
     }
+    maven { // AppleCore
+        url "http://www.ryanliptak.com/maven/"
+    }
+    maven { // GalacticGreg, YAMCore,..
+        name 'UsrvDE'
+        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/"
+    }
+    ivy {
+        name 'gtnh_download_source_stupid_underscore_typo'
+        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]_[revision].[ext]"
+    }
+    ivy {
+        name 'gtnh_download_source'
+        artifactPattern "http://downloads.gtnewhorizons.com/Mods_for_Jenkins/[module]-[revision].[ext]"
+    }
+    maven {
+        name = "gt"
+        url = "https://gregtech.overminddl1.com/"
+    }
+
 }
 
 dependencies {
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+    compileOnly "applecore:AppleCore:${config.applecore.version}:api"
+    compile "micdoodle8.mods:MicdoodleCore:${config.galacticraft.version}:Dev"
+    compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
+    compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
 }
 
 //task getGregTech(type: Download) {
@@ -99,6 +129,13 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'com.github.bartimaeusnek.ASM.BWCorePlugin',
+				'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

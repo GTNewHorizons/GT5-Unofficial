@@ -32,6 +32,7 @@ public class NEI_BW_Config implements IConfigureNEI {
 
     public void loadConfig() {
         sIsAdded = false;
+        new BW_NEI_OreHandler();
         new BW_NEI_BioVatHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BACTERIALVATBYTE));
         new BW_NEI_BioLabHandler(BWRecipes.instance.getMappingsFor(BWRecipes.BIOLABBYTE));
         sIsAdded = true;

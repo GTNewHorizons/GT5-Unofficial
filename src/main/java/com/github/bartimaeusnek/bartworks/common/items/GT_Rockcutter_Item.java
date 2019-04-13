@@ -75,8 +75,8 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     }
 
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
-        aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") +" " + GT_Values.VN[this.mTier]);
-        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name")  + ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     public void onUpdate(ItemStack aStack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {

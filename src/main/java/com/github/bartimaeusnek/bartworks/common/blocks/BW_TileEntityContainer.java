@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.blocks;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
+import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -32,14 +33,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -65,7 +69,7 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
     @Override
     public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (worldObj.isRemote) {
-            return true;
+            return false;
         }
         final TileEntity tile = worldObj.getTileEntity(x, y, z);
         if (tile instanceof BW_TileEntity_HeatedWaterPump) {
@@ -113,6 +117,19 @@ public class BW_TileEntityContainer extends BlockContainer implements ITileAddsI
                 }
             }
         }
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntity t = world.getTileEntity(x,y,z);
+        if (t instanceof ITileDropsContent){
+            int[] dropSlots = ((ITileDropsContent)t).getDropSlots();
+            for (int i = 0; i < dropSlots.length; i++) {
+                if (((ITileDropsContent)t).getStackInSlot(dropSlots[i]) != null)
+                    world.spawnEntityInWorld(new EntityItem(world,x,y,z,((BW_TileEntity_HeatedWaterPump)t).getStackInSlot(dropSlots[i])));
+            }
+        }
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     @Override

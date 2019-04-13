@@ -45,33 +45,33 @@ public class GT_TileEntity_CrackingDistillTower extends GT_MetaTileEntity_Distil
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        if (!GT_Utility.areStacksEqual(itemStack, GT_Utility.getIntegratedCircuit(0),true))
+        if (!GT_Utility.areStacksEqual(itemStack, GT_Utility.getIntegratedCircuit(0), true))
             return false;
-        else{
+        else {
             FluidStack[] array = new FluidStack[0];
             ArrayList<FluidStack> fluidInputs = new ArrayList<FluidStack>();
-            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches){
-                if (hatch != null){
+            for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
+                if (hatch != null) {
                     fluidInputs.add(hatch.getFluid());
                 }
             }
             array = fluidInputs.toArray(array);
             GT_Recipe.GT_Recipe_Map rMapCracking = GT_Recipe.GT_Recipe_Map.sCrakingRecipes;
             GT_Recipe.GT_Recipe_Map rMapDistillTower = GT_Recipe.GT_Recipe_Map.sDistillationRecipes;
-            GT_Recipe recipeCracking = rMapCracking.findRecipe(this.getBaseMetaTileEntity(),false,this.getMaxInputVoltage(),array,itemStack);
+            GT_Recipe recipeCracking = rMapCracking.findRecipe(this.getBaseMetaTileEntity(), false, this.getMaxInputVoltage(), array, itemStack);
             if (recipeCracking == null)
                 return false;
-            GT_Recipe recipeDistill = rMapDistillTower.findRecipe(this.getBaseMetaTileEntity(),false,this.getMaxInputVoltage(),recipeCracking.mFluidOutputs);
+            GT_Recipe recipeDistill = rMapDistillTower.findRecipe(this.getBaseMetaTileEntity(), false, this.getMaxInputVoltage(), recipeCracking.mFluidOutputs);
             if (recipeDistill == null)
                 return false;
-            float ratio = (float)recipeCracking.mFluidOutputs[0].amount/(float)recipeDistill.mFluidInputs[0].amount;
+            float ratio = (float) recipeCracking.mFluidOutputs[0].amount / (float) recipeDistill.mFluidInputs[0].amount;
             FluidStack[] nuoutputs = new FluidStack[recipeDistill.mFluidOutputs.length];
             for (int i = 0; i < nuoutputs.length; i++) {
-                nuoutputs[i]=recipeDistill.mFluidOutputs[i];
-                nuoutputs[i].amount=(int)(Math.floor(recipeDistill.mFluidOutputs[i].amount*ratio));
+                nuoutputs[i] = recipeDistill.mFluidOutputs[i];
+                nuoutputs[i].amount = (int) (Math.floor(recipeDistill.mFluidOutputs[i].amount * ratio));
             }
-            BWRecipes.DynamicGTRecipe combined = new BWRecipes.DynamicGTRecipe(true,null,recipeDistill.mOutputs,null,recipeDistill.mChances,recipeCracking.mFluidInputs,nuoutputs,(int)(Math.floor(recipeDistill.mDuration*ratio))+recipeCracking.mDuration,Math.max((int)(Math.floor(recipeDistill.mEUt*ratio)),recipeCracking.mEUt),0);
-            if (combined.isRecipeInputEqual(true, array)){
+            BWRecipes.DynamicGTRecipe combined = new BWRecipes.DynamicGTRecipe(true, null, recipeDistill.mOutputs, null, recipeDistill.mChances, recipeCracking.mFluidInputs, nuoutputs, (int) (Math.floor(recipeDistill.mDuration * ratio)) + recipeCracking.mDuration, Math.max((int) (Math.floor(recipeDistill.mEUt * ratio)), recipeCracking.mEUt), 0);
+            if (combined.isRecipeInputEqual(true, array)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 BW_Util.calculateOverclockedNessMulti(combined.mEUt, combined.mDuration, 1, this.getMaxInputVoltage(), this);
@@ -81,8 +81,8 @@ public class GT_TileEntity_CrackingDistillTower extends GT_MetaTileEntity_Distil
                     this.mEUt = (-this.mEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputFluids=combined.mFluidOutputs.clone();
-                this.mOutputItems=combined.mOutputs.clone();
+                this.mOutputFluids = combined.mFluidOutputs.clone();
+                this.mOutputItems = combined.mOutputs.clone();
                 this.updateSlots();
                 return true;
             }

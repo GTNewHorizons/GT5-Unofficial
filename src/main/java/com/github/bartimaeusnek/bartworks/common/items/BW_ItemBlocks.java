@@ -25,6 +25,7 @@ package com.github.bartimaeusnek.bartworks.common.items;
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -67,7 +68,7 @@ public class BW_ItemBlocks extends ItemBlock {
     @SideOnly(Side.CLIENT)
     public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
         if (this.field_150939_a instanceof BW_GlasBlocks)
-            aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") +" " + BW_Util.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
+            aList.add(StatCollector.translateToLocal("tooltip.glas.0.name") + " " + BW_ColorUtil.getColorForTier(BW_Util.getTierFromGlasMeta(aStack.getItemDamage())) + GT_Values.VN[BW_Util.getTierFromGlasMeta(aStack.getItemDamage())]);
         if (this.field_150939_a instanceof ITileAddsInformation) {
             for (int i = 0; i < ((ITileAddsInformation) this.field_150939_a).getInfoData().length; i++) {
                 aList.add(((ITileAddsInformation) this.field_150939_a).getInfoData()[i]);
@@ -77,7 +78,7 @@ public class BW_ItemBlocks extends ItemBlock {
         if (!(this.field_150939_a instanceof ITileEntityProvider))
             aList.add(this.mNoTileEntityToolTip);
 
-        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name")+ ChatColorHelper.DARKGREEN + " BartWorks");
+        aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 
     @Override

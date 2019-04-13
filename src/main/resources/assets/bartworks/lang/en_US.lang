@@ -55,6 +55,7 @@ BW_GlasBlocks.8.name=Colored Borosilicate Glass Block (Purple)
 BW_GlasBlocks.9.name=Colored Borosilicate Glass Block (Yellow)
 BW_GlasBlocks.10.name=Colored Borosilicate Glass Block (Light Green)
 BW_GlasBlocks.11.name=Colored Borosilicate Glass Block (Brown)
+BW_GlasBlocks.12.name=Thorium Yttrium Glass Block
 
 tooltip.glas.0.name=Glass-Tier:
 tooltip.LESU.0.name=Maximum Capacity!
@@ -142,3 +143,10 @@ tile.biovat.name=Bacterial Vat
 tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
+
+itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
+
+planet.Ross128b=Ross128b
+moon.Ross128ba=Ross128ba
+star.Ross128=Ross128
+solarsystem.Ross128System=Ross128-System

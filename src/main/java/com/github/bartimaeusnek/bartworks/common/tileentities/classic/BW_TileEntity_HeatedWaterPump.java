@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.classic;
 
 import com.github.bartimaeusnek.bartworks.API.ITileAddsInformation;
+import com.github.bartimaeusnek.bartworks.API.ITileDropsContent;
 import com.github.bartimaeusnek.bartworks.API.ITileHasDifferentTextureSides;
 import com.github.bartimaeusnek.bartworks.API.ITileWithGUI;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -39,7 +40,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ISidedInventory, IFluidHandler, IFluidTank, ITileWithGUI, ITileAddsInformation, ITileHasDifferentTextureSides {
+public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank, ITileWithGUI, ITileAddsInformation, ITileHasDifferentTextureSides {
 
     public static final int FUELSLOT = 0;
     public static final Fluid WATER = FluidRegistry.WATER;
@@ -268,7 +269,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ISidedI
 
     @Override
     public String[] getInfoData() {
-        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name")+" " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
+        return new String[]{StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " " + ConfigHandler.mbWaterperSec + StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"), StatCollector.translateToLocal("tooltip.tile.waterpump.2.name")};
     }
 
     @Override

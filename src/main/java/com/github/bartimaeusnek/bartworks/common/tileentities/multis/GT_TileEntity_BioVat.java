@@ -336,7 +336,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     private byte calculateGlassTier(@Nonnull Block block, @Nonnegative Byte meta) {
 
         if (block.equals(ItemRegistry.bw_glasses[0]))
-            return meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
+            return meta == 12 ? 5 : meta > 1 && meta < 6 ? (byte) (meta + 3) : 4;
 
         if (block.getUnlocalizedName().equals("blockAlloyGlass"))
             return 4;
@@ -600,10 +600,10 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public String[] getDescription() {
         String[] dsc = StatCollector.translateToLocal("tooltip.tile.bvat.0.name").split(";");
-        String[] fdsc =  new String[dsc.length+1];
+        String[] fdsc = new String[dsc.length + 1];
         for (int i = 0; i < dsc.length; i++) {
-            fdsc[i]=dsc[i];
-            fdsc[dsc.length]=StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+            fdsc[i] = dsc[i];
+            fdsc[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
         }
         return fdsc;
     }
