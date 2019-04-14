@@ -71,7 +71,6 @@ public class GT_Mod implements IGT_Mod {
     public static GT_Proxy gregtechproxy;
     public static int MAX_IC2 = 2147483647;
     public static GT_Achievements achievements;
-    private static SpaceDimRegisterer SpaceDimReg = null;
     private final String aTextGeneral = "general";
     private final String aTextIC2 = "ic2_";
    
