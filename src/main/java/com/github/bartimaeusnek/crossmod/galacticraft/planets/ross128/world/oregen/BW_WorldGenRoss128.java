@@ -22,8 +22,8 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
-import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import net.minecraft.util.StatCollector;
@@ -63,7 +63,7 @@ public class BW_WorldGenRoss128 extends BW_OreLayer {
 
     @Override
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
-        return aWorld.provider.dimensionId == Ross128SolarSystem.ross128ID;
+        return aWorld.provider.dimensionId == ConfigHandler.ross128ID;
     }
 
 }

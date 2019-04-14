@@ -23,60 +23,66 @@
 package com.github.bartimaeusnek.bartworks.common.configs;
 
 
-import com.github.bartimaeusnek.bartworks.MainMod;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import com.github.bartimaeusnek.ASM.BWCoreTransformer;
 import gregtech.api.enums.GT_Values;
 import net.minecraftforge.common.config.Configuration;
-
-import javax.annotation.Nonnull;
-import java.io.File;
 
 public class ConfigHandler {
     private static final int IDU = GT_Values.VN.length * 8 + 1;
     public static int IDOffset = 12600;
-    public static boolean teslastaff = false;
+    public static boolean teslastaff;
     public static long energyPerCell = 1000000L;
     public static boolean newStuff = true;
     public static boolean BioLab = true;
     public static Configuration c;
-    public static boolean DEHPDirectSteam = false;
+    public static boolean DEHPDirectSteam;
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
-    private static boolean ezmode = false;
-    public static boolean debugLog = false;
-    public static boolean experimentalThreadedLoader = false;
+    public static int ross128ID = -64;
+    public static boolean Ross128Enabled = true;
+    public static boolean debugLog;
+    public static boolean experimentalThreadedLoader;
+    public static boolean GTNH;
+    public static boolean ezmode;
 
-    public ConfigHandler(@Nonnull FMLPreInitializationEvent e) {
-        c = new Configuration(new File(e.getModConfigurationDirectory().toString() + "/" + MainMod.MOD_ID + ".cfg"));
+    public ConfigHandler(Configuration C) {
+        ConfigHandler.c = C;
 
-        IDOffset = c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
-        energyPerCell = c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
-        ezmode = c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
-        MainMod.GTNH = ezmode ? !MainMod.GTNH : MainMod.GTNH;
-        teslastaff = c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
-        newStuff = !c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
-        BioLab = !c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
-        DEHPDirectSteam = c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
-        megaMachinesMax = c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
-        mbWaterperSec = c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
+        ConfigHandler.IDOffset = ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").getInt(12600);
+        ConfigHandler.energyPerCell = ConfigHandler.c.get("Multiblocks", "energyPerLESUCell", 1000000, "This will set Up the Energy per LESU Cell", 1000000, Integer.MAX_VALUE).getInt(1000000);
+        ConfigHandler.ezmode = ConfigHandler.c.get("System", "Mode switch", false, "If GTNH is Loaded, this will enable easy recipes, if not, it will enable harder recipes.").getBoolean(false);
+        ConfigHandler.teslastaff = ConfigHandler.c.get("System", "Enable Teslastaff", false, "Enables the Teslastaff, an Item used to destroy Electric Armors").getBoolean(false);
+        ConfigHandler.newStuff = !ConfigHandler.c.get("System", "Disable non-original-GT-stuff", false, "This switch disables my new content, that is not part of the GT2 compat").getBoolean(false);
+        ConfigHandler.BioLab = !ConfigHandler.c.get("System", "Disable BioLab", false, "This switch disables the BioLab, BioVat etc. If you use GT5.08 or equivalent, this needs to be turned off!").getBoolean(false);
+        ConfigHandler.DEHPDirectSteam = ConfigHandler.c.get("Multiblocks", "DEHP Direct Steam Mode", false, "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant").getBoolean(false);
+        ConfigHandler.megaMachinesMax = ConfigHandler.c.get("Multiblocks", "Mega Machines Maximum Recipes per Operation", 256, "This changes the Maximum Recipes per Operation to the specified Valure").getInt(256);
+        ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150).getInt(150);
         if (ConfigHandler.IDOffset == 0) {
             ConfigHandler.IDOffset = 12600;
-            c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
+            ConfigHandler.c.get("System", "ID Offset", 12600, "ID Offset for this mod. This Mod uses " + ConfigHandler.IDU + " IDs. DO NOT CHANGE IF YOU DONT KNOW WHAT THIS IS").set(12600);
         }
-        debugLog=c.get("System","Enable Debug Log",false,"Enables or Disables the debug log.").getBoolean(false);
-        experimentalThreadedLoader =c.get("System","Enable Experimental Threaded Material Loader",false,"Enables or Disables the Experimental Threaded Material Loader.").getBoolean(false);
-        if (c.hasChanged())
-            c.save();
+        ConfigHandler.debugLog = ConfigHandler.c.get("System", "Enable Debug Log", false, "Enables or Disables the debug log.").getBoolean(false);
+        ConfigHandler.experimentalThreadedLoader = ConfigHandler.c.get("System", "Enable Experimental Threaded Material Loader", false, "Enables or Disables the Experimental Threaded Material Loader.").getBoolean(false);
 
+        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
+            BWCoreTransformer.shouldTransform[i] = ConfigHandler.c.get("ASM fixes", BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i], true).getBoolean(true);
+        }
+
+        ConfigHandler.ross128ID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
+        ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
+
+        ConfigHandler.setUpComments();
+
+        if (ConfigHandler.c.hasChanged())
+            ConfigHandler.c.save();
     }
 
-    public static void setUpComments(){
-        c.addCustomCategoryComment("ASM fixes","Disable ASM fixes here.");
-        c.addCustomCategoryComment("Multiblocks","Multliblock Options can be set here.");
-        c.addCustomCategoryComment("Singleblocks","Singleblock Options can be set here.");
-        c.addCustomCategoryComment("System","Different System Settings can be set here.");
-        c.addCustomCategoryComment("CrossMod Interactions","CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
-        c.save();
+    public static void setUpComments() {
+        ConfigHandler.c.addCustomCategoryComment("ASM fixes", "Disable ASM fixes here.");
+        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multliblock Options can be set here.");
+        ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
+        ConfigHandler.c.addCustomCategoryComment("System", "Different System Settings can be set here.");
+        ConfigHandler.c.addCustomCategoryComment("CrossMod Interactions", "CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
     }
 
 }

@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.common.config.Configuration;
@@ -44,13 +45,8 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
         if (minecraftDir != null)
             return;//get called twice, once for IFMLCallHook
         minecraftDir = (File) FMLInjectionData.data()[6];
-
-        Configuration asmconfighandler = new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg"));
-        for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
-            BWCoreTransformer.shouldTransform[i] = asmconfighandler.get("ASM fixes", BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i], true).getBoolean(true);
-        }
-        if (asmconfighandler.hasChanged())
-            asmconfighandler.save();
+        //do all the configuration already now...
+        new ConfigHandler(new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg")));
     }
 
     @Override

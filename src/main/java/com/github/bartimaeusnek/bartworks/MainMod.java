@@ -35,6 +35,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -72,11 +73,9 @@ public final class MainMod {
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new bartworksTab("bartworks");
     public static final IGuiHandler GH = new GuiHandler();
-    public static boolean GTNH = false;
 
     @Mod.Instance(MOD_ID)
     public static MainMod instance;
-    public static ConfigHandler CHandler;
     public static BW_Network BW_Network_instance = new BW_Network();
 
     @Mod.EventHandler
@@ -88,9 +87,9 @@ public final class MainMod {
         }
 
         if (Loader.isModLoaded("dreamcraft")) {
-            GTNH = true;
+            ConfigHandler.GTNH = true;
         }
-        CHandler = new ConfigHandler(preinit);
+        ConfigHandler.GTNH = ConfigHandler.ezmode != ConfigHandler.GTNH;
         if (ConfigHandler.debugLog) {
             try {
                 new DebugLog(preinit);
@@ -98,7 +97,7 @@ public final class MainMod {
                 e.printStackTrace();
             }
         }
-        if (GTNH)
+        if (ConfigHandler.GTNH)
             LOGGER.info("GTNH-Detected . . . ACTIVATE HARDMODE.");
 
         if (ConfigHandler.BioLab) {
@@ -124,6 +123,7 @@ public final class MainMod {
             else
                 WerkstoffLoader.INSTANCE.runInit();
         }
+
     }
 
     @Mod.EventHandler
