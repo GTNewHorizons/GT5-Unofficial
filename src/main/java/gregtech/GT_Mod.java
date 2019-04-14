@@ -617,24 +617,10 @@ public class GT_Mod implements IGT_Mod {
             }
         } catch (Throwable e) {e.printStackTrace(GT_Log.err);}
         
+		if (Loader.isModLoaded("bartworks"))
+ 		{
         new BacteriaRegistry().runAllPostinit();
-        
-     // Register Dimensions in GalacticGregGT5
-     		if (Loader.isModLoaded("galacticgreg"))
-     		{
-         		SpaceDimReg = new SpaceDimRegisterer();
-         		if (!SpaceDimReg.Init())
-         		{
-         			GT_Log.err.println("Unable to register SpaceDimensions; You are probably using the wrong Version of GalacticGreg");
-         			GT_Log.out.println("[SpaceDim] Unable to register SpaceDimensions. Wrong Version of GGreg found!");
-         		}
-         		else
-         		{
-         			GT_Log.err.println("Registering SpaceDimensions");
-         		    SpaceDimReg.Register();
-         		}
-
-      		}
+ 		}
     }
 
     @Mod.EventHandler
