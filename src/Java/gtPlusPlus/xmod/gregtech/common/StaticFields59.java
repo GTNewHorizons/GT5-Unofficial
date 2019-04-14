@@ -26,6 +26,9 @@ import net.minecraft.item.ItemStack;
 
 public class StaticFields59 {
 
+	
+	public static final boolean mGT6StylePipes;
+	
 	public static final Field mGtBlockCasings5;
 	public static final Field mPreventableComponents;
 	public static final Field mDisabledItems;
@@ -45,6 +48,9 @@ public class StaticFields59 {
 
 	static {
 		Logger.INFO("[SH] Creating Static Helper for various fields which require reflective access.");
+		
+		mGT6StylePipes = (boolean) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "gt6Pipe");		
+		
 		mGtBlockCasings5 = getField(GregTech_API.class, "sBlockCasings5");
 		Logger.INFO("[SH] Got Field: sBlockCasings5");
 		mPreventableComponents = getField(OrePrefixes.class, "mPreventableComponents");

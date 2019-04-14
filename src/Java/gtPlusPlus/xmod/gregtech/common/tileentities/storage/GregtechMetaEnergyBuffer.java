@@ -26,10 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
-	/*
-	 * public GregtechMetaEnergyBuffer() { super.this
-	 * setCreativeTab(GregTech_API.TAB_GREGTECH); }
-	 */
+	private byte aCurrentOutputAmperage = 4;
 
 	public GregtechMetaEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -41,7 +38,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Accepts/Outputs 4Amp",};
+		return new String[] {this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver", "Now Portable!", CORE.GT_Tooltip};
 	}
 	
 	@Override
@@ -200,12 +197,12 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public long maxAmperesIn() {
-		return 4;
+		return aCurrentOutputAmperage;
 	}
 
 	@Override
 	public long maxAmperesOut() {
-		return 4;
+		return aCurrentOutputAmperage;
 	}
 	@Override public int rechargerSlotStartIndex()					{return 0;}
 	@Override public int dechargerSlotStartIndex()					{return 0;}
@@ -216,13 +213,25 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override public boolean isAccessAllowed(final EntityPlayer aPlayer)	{return true;}
 
 	@Override
-	public void saveNBTData(final NBTTagCompound aNBT) {
-		//
+	public void saveNBTData(final NBTTagCompound aNBT) {		
+		aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);	
+		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED) {	
+			long aEU = this.getBaseMetaTileEntity().getStoredEU();
+			if (aEU > 0){
+				aNBT.setLong("aStoredEU", aEU);
+				if (aNBT.hasKey("aStoredEU")) {
+					Logger.WARNING("Set aStoredEU to NBT.");        		
+				}
+			}     
+		}		
 	}
 
 	@Override
-	public void loadNBTData(final NBTTagCompound aNBT) {
-		//
+	public void loadNBTData(final NBTTagCompound aNBT) {	
+		aCurrentOutputAmperage = aNBT.getByte("aCurrentOutputAmperage");
+		if (aNBT.hasKey("aStoredEU")) {
+			this.setEUVar(aNBT.getLong("aStoredEU"));			
+		}
 	}
 
 	@Override
@@ -373,6 +382,35 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override
 	public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
 		return false;
+	}	
+	
+	@Override
+	public void setItemNBT(NBTTagCompound aNBT) {
+		if (CORE.NBT_PERSISTENCY_PATCH_APPLIED) {	
+			aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);	
+			long aEU = this.getBaseMetaTileEntity().getStoredEU();
+			if (aEU > 0){
+				aNBT.setLong("aStoredEU", aEU);
+				if (aNBT.hasKey("aStoredEU")) {
+					Logger.WARNING("Set aStoredEU to NBT.");        		
+				}
+			}     
+		}
 	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		byte aTest = (byte) (aCurrentOutputAmperage + 1);
+		if (aTest > 16 || aTest <= 0 ) {
+			aTest = 1;
+		}
+		aCurrentOutputAmperage = aTest;
+		PlayerUtils.messagePlayer(aPlayer, "Now handling "+aCurrentOutputAmperage+" Amps.");	
+	}
+	
+	
+	
+	
+	
 
 }

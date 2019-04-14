@@ -18,9 +18,12 @@ import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Heat;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -94,7 +97,16 @@ public class GregtechConduits {
 				Logger.INFO("Failed during Hexadecuple pipe generation. [Ecx]");
 				e.printStackTrace();
 			}		
-		}		
+		}	
+		
+		
+		//Generate Heat Pipes
+		GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(27550,	"gtpp.pipe.heat.basic.01", "Basic Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
+		GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(27551,	"gtpp.pipe.heat.basic.02", "Basic Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
+		GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(27552,	"gtpp.pipe.heat.basic.03", "Basic Heat Pipe (750C)", Materials.Thorium, 750).getStackForm(1L));
+		
+		
+		
 	}
 	
 	private static void generateFluidMultiPipes(Constructor<GT_MetaPipeEntity_Fluid> aClazz, Materials aMaterial, String name, String displayName, int startID, int baseCapacity, int heatCapacity, boolean gasProof){

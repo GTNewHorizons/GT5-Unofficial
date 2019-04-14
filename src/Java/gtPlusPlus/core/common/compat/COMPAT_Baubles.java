@@ -8,8 +8,12 @@ import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemHealingDevice;
 import gtPlusPlus.core.item.general.ItemSlowBuildingRing;
 import gtPlusPlus.core.lib.LoadedMods;
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
@@ -41,11 +45,12 @@ public class COMPAT_Baubles {
 			t.printStackTrace();
 		}
 
-		ModItems.itemAmuletMonsterKiller_Zombie = new MonsterKillerBaseBauble(new Class[] {EntityZombie.class}, "Zombie", 6);
-		ModItems.itemAmuletMonsterKiller_Skeleton = new MonsterKillerBaseBauble(new Class[] {EntitySkeleton.class}, "Skeleton", 6);
-		ModItems.itemAmuletMonsterKiller_Spider = new MonsterKillerBaseBauble(new Class[] {EntitySpider.class}, "Spider", 6);
-		ModItems.itemAmuletMonsterKiller_Creeper = new MonsterKillerBaseBauble(new Class[] {EntityCreeper.class}, "Creeper", 6);
-		ModItems.itemAmuletMonsterKiller_Enderman = new MonsterKillerBaseBauble(new Class[] {EntityEnderman.class}, "Enderman", 6);
+		ModItems.itemAmuletMonsterKiller_Zombie = new MonsterKillerBaseBauble(new Class[] {EntityZombie.class}, "Zombie", 3);
+		ModItems.itemAmuletMonsterKiller_Skeleton = new MonsterKillerBaseBauble(new Class[] {EntitySkeleton.class}, "Skeleton", 3);
+		ModItems.itemAmuletMonsterKiller_Spider = new MonsterKillerBaseBauble(new Class[] {EntitySpider.class}, "Spider", 3);
+		ModItems.itemAmuletMonsterKiller_Creeper = new MonsterKillerBaseBauble(new Class[] {EntityCreeper.class}, "Creeper", 4);
+		ModItems.itemAmuletMonsterKiller_Enderman = new MonsterKillerBaseBauble(new Class[] {EntityEnderman.class}, "Enderman", 4);
+		ModItems.itemAmuletMonsterKiller_Nether = new MonsterKillerBaseBauble(new Class[] {EntityPigZombie.class, EntityGhast.class, EntityMagmaCube.class, EntityBlaze.class}, "Hellish", 6);
 		
 		if (LoadedMods.PlayerAPI){
 			ModItems.itemSlowBuildingRing = new ItemSlowBuildingRing();

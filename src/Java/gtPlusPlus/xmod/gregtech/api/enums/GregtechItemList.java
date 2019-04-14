@@ -530,6 +530,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Block that enables uplink to a superconductor network
 	SuperConductorInputNode,
+	
+	//Heat Pipes
+	HeatPipe_Tier_1,
+	HeatPipe_Tier_2,
+	HeatPipe_Tier_3,
 
 
 	//Chemical Dehydrators for nuclear fuels
