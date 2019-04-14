@@ -5218,8 +5218,8 @@ if(Loader.isModLoaded("Railcraft")){
                         ItemList.Circuit_Chip_PPIC.get(2L,  new Object(){}),
                         new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
                         ItemList.UV_Coil.get(2L, new Object(){}),
-                        new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object(){}), ItemList.Reactor_Coolant_Le_2.get(1, new Object(){})},
-                        new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object(){}), ItemList.Reactor_Coolant_Le_2.get(1, new Object(){})},
+                        new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object(){}), ItemList.Reactor_Coolant_NaK_6.get(1, new Object(){}), ItemList.Reactor_Coolant_Le_2.get(1, new Object(){})},
+                        new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object(){}), ItemList.Reactor_Coolant_NaK_6.get(1, new Object(){}), ItemList.Reactor_Coolant_Le_2.get(1, new Object(){})},
                         ItemList.Electric_Pump_UV.get(1L, new Object(){})},
                 new FluidStack[]{
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
