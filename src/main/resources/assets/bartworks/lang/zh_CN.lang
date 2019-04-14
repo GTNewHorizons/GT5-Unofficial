@@ -55,6 +55,7 @@ BW_GlasBlocks.8.name=染色硼硅酸盐方块(紫)
 BW_GlasBlocks.9.name=染色硼硅酸盐方块(黄)
 BW_GlasBlocks.10.name=染色硼硅酸盐方块(淡绿)
 BW_GlasBlocks.11.name=染色硼硅酸盐方块(棕)
+BW_GlasBlocks.12.name=钍钇玻璃块
 
 tooltip.glas.0.name=玻璃等级:
 tooltip.LESU.0.name=最大容量!
@@ -142,4 +143,11 @@ tile.biovat.name=生物培养缸
 tile.radiohatch.name=放射仓
 tile.bw.windmill.name=风车
 tile.manutrafo.name=手动变压器
-//This zh_CN.lang is translation by huajijam for bartworks (11/3/19)
+
+itemGroup.bartworksMetaMaterials=BartWorks' meta材料
+
+planet.Ross128b=罗斯128b
+moon.Ross128ba=罗斯128ba
+star.Ross128=罗斯128
+solarsystem.Ross128System=罗斯128-行星系
+//This zh_CN.lang is translation by huajijam for bartworks (14/4/19)
