@@ -22,10 +22,10 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_LESU;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ManualTrafo;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
 import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_Windmill;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.GregTech_API;
@@ -51,7 +51,7 @@ public class RecipeLoader implements Runnable {
     @Override
     public void run() {
 
-        if (MainMod.GTNH) {
+        if (ConfigHandler.GTNH) {
             /*
              * GTNH "hardmode" Recipes
              */
@@ -96,11 +96,11 @@ public class RecipeLoader implements Runnable {
                         "CDC",
                         "SBS",
                         "CFC",
-                        'C', GT_OreDictUnificator.get(OrePrefixes.circuit, MainMod.GTNH ? Materials.Advanced : Materials.Basic, 1L),
+                        'C', GT_OreDictUnificator.get(OrePrefixes.circuit, ConfigHandler.GTNH ? Materials.Advanced : Materials.Basic, 1L),
                         'D', ItemList.Cover_Screen.get(1L),
-                        'S', GT_OreDictUnificator.get(OrePrefixes.cableGt12, MainMod.GTNH ? Materials.Platinum : Materials.AnnealedCopper, 1L),
+                        'S', GT_OreDictUnificator.get(OrePrefixes.cableGt12, ConfigHandler.GTNH ? Materials.Platinum : Materials.AnnealedCopper, 1L),
                         'B', new ItemStack(ItemRegistry.BW_BLOCKS[1]),
-                        'F', MainMod.GTNH ? ItemList.Field_Generator_HV.get(1L) : ItemList.Field_Generator_LV.get(1L)
+                        'F', ConfigHandler.GTNH ? ItemList.Field_Generator_HV.get(1L) : ItemList.Field_Generator_LV.get(1L)
                 });
 
         GT_ModHandler.addCraftingRecipe(
@@ -111,7 +111,7 @@ public class RecipeLoader implements Runnable {
                         "PLP",
                         "CPC",
                         'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                        'P', GT_OreDictUnificator.get(MainMod.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, Materials.Aluminium, 1L),
+                        'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, Materials.Aluminium, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
 
@@ -123,7 +123,7 @@ public class RecipeLoader implements Runnable {
                         "PLP",
                         "CPC",
                         'C', GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                        'P', GT_OreDictUnificator.get(MainMod.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, MainMod.GTNH ? Materials.Steel : Materials.Iron, 1L),
+                        'P', GT_OreDictUnificator.get(ConfigHandler.GTNH ? OrePrefixes.plateDouble : OrePrefixes.plate, ConfigHandler.GTNH ? Materials.Steel : Materials.Iron, 1L),
                         'L', new ItemStack(Items.lava_bucket)
                 });
 
@@ -219,7 +219,7 @@ public class RecipeLoader implements Runnable {
                     }
             );
 
-            if (!MainMod.GTNH)
+            if (!ConfigHandler.GTNH)
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.dehp,
                         BITSD,
@@ -727,6 +727,19 @@ public class RecipeLoader implements Runnable {
                             'G', GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L),
                     }
             );
+            GT_TileEntity_THTR.THTRMaterials.registerTHR_Recipes();
+            GT_ModHandler.addCraftingRecipe(
+                    ItemRegistry.thtr,
+                    RecipeLoader.BITSD,
+                    new Object[]{
+                            "BZB",
+                            "BRB",
+                            "BZB",
+                            'B',new ItemStack(GregTech_API.sBlockCasings3,1,12),
+                            'R',GT_ModHandler.getModItem("IC2","blockGenerator",1,5),
+                            'Z',"circuitUltimate"
+                    }
+                    );
 
         }
     }
