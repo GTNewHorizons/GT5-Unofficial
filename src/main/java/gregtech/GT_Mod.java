@@ -55,8 +55,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.StringUtils;
 
-import bloodasp.galacticgreg.SpaceDimRegisterer;
-
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
