@@ -26,7 +26,6 @@ import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -42,7 +41,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import ic2.core.ExplosionIC2;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -55,7 +53,7 @@ import java.util.Arrays;
 public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     private static final int BASECASINGINDEX = 44;
-    private static final int HELIUM_NEEDED = 320;
+    private static final int HELIUM_NEEDED = 730000;
     private int HeliumSupply;
     private int BISOPeletSupply;
     private int TRISOPeletSupply;
@@ -270,6 +268,18 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         return new GT_TileEntity_THTR(this.mName);
     }
 
+
+    @Override
+    public String[] getInfoData() {
+        return new String[]{
+                "Progress:", this.mProgresstime / 20 + "secs", this.mMaxProgresstime / 20 + "secs",
+                "BISO-Pebbles:", this.BISOPeletSupply + "pcs.",
+                "TRISO-Pebbles:", this.TRISOPeletSupply + "pcs.",
+                "Helium-Level:", this.HeliumSupply+"L / "+HELIUM_NEEDED+"L",
+                "Coolant/sec:", this.BISOPeletSupply+this.TRISOPeletSupply >= 100000 ? (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply))+"L/t" : "0L/t",
+                "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
+        };
+    }
 
     @Override
     public String[] getDescription() {
