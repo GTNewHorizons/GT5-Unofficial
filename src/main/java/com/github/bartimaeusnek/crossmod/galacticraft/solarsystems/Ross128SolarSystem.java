@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.solarsystems;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.galacticraft.UniversalTeleportType;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider.WorldProviderRoss128b;
@@ -36,15 +37,11 @@ import java.util.Arrays;
 
 public class Ross128SolarSystem {
 
-    public static boolean enabled = true;
-
     public static SolarSystem Ross128System;
     public static Star Ross128;
     public static Planet Ross128b;
     public static Moon Ross128ba;
-    //    public static Block Ross128bBlocks;
-//    public static BlockMetaPair Ross128bStone,Ross128bDirt,Ross128bGrass;
-    public static int ross128ID = -64;
+
     private Ross128SolarSystem() {
     }
 
@@ -65,7 +62,7 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128b.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 1.75F));
         Ross128SolarSystem.Ross128b.setRelativeOrbitTime(0.65F);
         Ross128SolarSystem.Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
-        Ross128SolarSystem.Ross128b.setDimensionInfo(Ross128SolarSystem.ross128ID, WorldProviderRoss128b.class);
+        Ross128SolarSystem.Ross128b.setDimensionInfo(ConfigHandler.ross128ID, WorldProviderRoss128b.class);
         Ross128SolarSystem.Ross128b.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
 
         Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);

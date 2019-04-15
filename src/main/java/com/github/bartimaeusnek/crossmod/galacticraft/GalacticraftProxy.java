@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -62,13 +63,6 @@ public class GalacticraftProxy {
         init_undergroundFluidsRoss128();
         if (GalacticraftProxy.gtConf.hasChanged())
             GalacticraftProxy.gtConf.save();
-
-        Configuration c = new Configuration(new File(e.getModConfigurationDirectory(), "bartworks.cfg"));
-        Ross128SolarSystem.ross128ID = c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
-        Ross128SolarSystem.enabled = c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
-        if (c.hasChanged())
-            c.save();
-
         init_OresRoss128();
     }
 
@@ -90,7 +84,7 @@ public class GalacticraftProxy {
     }
 
     private static void commonInit(FMLInitializationEvent e) {
-        if (Ross128SolarSystem.enabled)
+        if (ConfigHandler.Ross128Enabled)
             Ross128SolarSystem.init();
     }
 }

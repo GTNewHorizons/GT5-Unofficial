@@ -64,11 +64,17 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
 
         if (this.getBaseMetaTileEntity().getWorld().isRemote)
             return;
-
-        --aAmps;
-        if (aAmps < 0)
-            aAmps = maxAmps;
-        GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+        if (!aPlayer.isSneaking()) {
+            --aAmps;
+            if (aAmps < 0)
+                aAmps = maxAmps;
+            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+        }else{
+            ++aAmps;
+            if (aAmps > maxAmps)
+                aAmps = 0;
+            GT_Utility.sendChatToPlayer(aPlayer, "Max Amps: " + aAmps);
+        }
     }
 
     @Override

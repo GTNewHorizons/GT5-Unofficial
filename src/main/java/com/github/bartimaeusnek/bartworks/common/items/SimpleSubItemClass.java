@@ -41,7 +41,7 @@ public class SimpleSubItemClass extends Item {
     protected IIcon[] itemIcon;
     String[] tex;
 
-    public SimpleSubItemClass(String[] tex) {
+    public SimpleSubItemClass(String... tex) {
         this.tex = tex;
         this.hasSubtypes = true;
         this.setCreativeTab(MainMod.BWT);
