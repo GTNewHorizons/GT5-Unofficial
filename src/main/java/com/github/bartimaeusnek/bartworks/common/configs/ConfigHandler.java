@@ -23,12 +23,11 @@
 package com.github.bartimaeusnek.bartworks.common.configs;
 
 
-import com.github.bartimaeusnek.ASM.BWCoreTransformer;
-import gregtech.api.enums.GT_Values;
+import com.github.bartimaeusnek.ASM.BWCoreTransformer;;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
-    private static final int IDU = GT_Values.VN.length * 8 + 1;
+    private static final int IDU = 10 * 8 + 5;
     public static int IDOffset = 12600;
     public static boolean teslastaff;
     public static long energyPerCell = 1000000L;
