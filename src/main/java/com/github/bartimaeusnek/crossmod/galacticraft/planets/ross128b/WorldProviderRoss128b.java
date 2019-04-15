@@ -20,22 +20,20 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
+package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.AbstractWorldProviderSpace;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IExitHeight;
-import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHeight, ISolarLevel {
+public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
 
     @Override
     public boolean canRespawnHere() {
@@ -85,16 +83,6 @@ public class WorldProviderRoss128b extends WorldProviderSpace implements IExitHe
         float green = 120 / 255f;
         float blue = 0.0F;
         return new Vector3(red, green, blue);
-    }
-
-    @Override
-    public boolean canRainOrSnow() {
-        return false;
-    }
-
-    @Override
-    public boolean hasSunset() {
-        return true;
     }
 
     @Override

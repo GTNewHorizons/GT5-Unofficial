@@ -143,11 +143,11 @@ public class BWCoreTransformer implements IClassTransformer {
                                     nu.add(new VarInsnNode(ALOAD, 0));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/renderer/RenderGlobal", useSrc ? theWorld_src : "theWorld", "Lnet/minecraft/client/multiplayer/WorldClient;"));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/multiplayer/WorldClient", useSrc ? provider_src : "provider", "Lnet/minecraft/world/WorldProvider;"));
-                                    nu.add(new TypeInsnNode(INSTANCEOF, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128/world/worldprovider/WorldProviderRoss128b"));
+                                    nu.add(new TypeInsnNode(INSTANCEOF, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/WorldProviderRoss128b"));
                                     nu.add(new JumpInsnNode(IFEQ, LabelNodes[0]));
                                     nu.add(new VarInsnNode(ALOAD, 0));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/renderer/RenderGlobal", useSrc ? renderEngine_src : "renderEngine", "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(new FieldInsnNode(GETSTATIC, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128/world/worldprovider/SkyProviderRoss128b", "sunTex", "Lnet/minecraft/util/ResourceLocation;"));
+                                    nu.add(new FieldInsnNode(GETSTATIC, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/SkyProviderRoss128b", "sunTex", "Lnet/minecraft/util/ResourceLocation;"));
                                     nu.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/client/renderer/texture/TextureManager", useSrc ? bindTexture_src : "bindTexture", "(Lnet/minecraft/util/ResourceLocation;)V", false));
                                     nu.add(new JumpInsnNode(GOTO, LabelNodes[1]));
                                     nu.add(LabelNodes[0]);
