@@ -144,13 +144,13 @@ tile.radiohatch.name=放射仓
 tile.bw.windmill.name=风车
 tile.manutrafo.name=手动变压器
 
-tooltip.tile.htr.0.name=高温钍反应堆的控制器方块;大小(宽x高x长): 9x12x9 (中空);角落和两个接近的方块是空气;一旦搭建,需将氦气输入输入仓,直到它不再接受为止;1+输出仓(任意底部机械方块);1+输入仓(任意顶部机械方块);1+输入总线(任意顶部机械方块);1x维护仓(任意机械方块);其余的为辐射防护机械方块;需要持续供应冷却液或将关机;需要至少100k燃料卵石才能开始工作(最多可使用675k个卵石);每次操作消耗1个燃料颗粒;高温钍反应堆卵石增加30%的能量;每个卵石都会增加转换冷却剂的需求数量;一次操作需要27个游戏天数
-item.TRISOPellet.name=高温钍反应堆卵石
-item.TRISOPelletBall.name=高温钍反应堆卵石球
-item.BISOPelletBall.name=BISO 卵石球
-item.BISOPellet.name=BRISO 卵石
-item.TRISOPelletCompound.name=高温钍反应堆卵石复合材料
-item.BISOPelletCompound.name=BISO 卵石复合材料
+tooltip.tile.htr.0.name=高温钍反应堆的控制器方块;大小(宽x高x长): 9x12x9 (中空);角落和两个接近的方块是空气;一旦搭建,需将氦气输入输入仓,直到它不再接受为止;1+输出仓(任意底部机械方块);1+输入仓(任意顶部机械方块);1+输入总线(任意顶部机械方块);1x维护仓(任意机械方块);其余的为辐射防护机械方块;需要持续供应冷却液或将关机;需要至少100k燃料卵石才能开始工作(最多可使用675k个卵石);每次操作消耗1个燃料颗粒;TRISO卵石将提供30%的额外能量;每个卵石都会增加转换冷却剂的需求数量;一次工作耗时27个游戏天数
+item.TRISOPellet.name=TRISO卵石
+item.TRISOPelletBall.name=TRISO卵石球
+item.BISOPelletBall.name=BISO卵石球
+item.BISOPellet.name=BISO卵石
+item.TRISOPelletCompound.name=TRISO卵石复合材料
+item.BISOPelletCompound.name=BISO卵石复合材料
 itemGroup.bartworksMetaMaterials=BartWorks-meta材料
 
 planet.Ross128b=罗斯128b
