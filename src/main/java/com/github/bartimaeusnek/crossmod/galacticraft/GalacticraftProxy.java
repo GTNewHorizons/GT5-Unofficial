@@ -32,8 +32,8 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
-import static com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128.init_OresRoss128;
-import static com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128.init_undergroundFluidsRoss128;
+import static com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b.init_OresRoss128;
+import static com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b.init_undergroundFluidsRoss128;
 
 public class GalacticraftProxy {
     public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
+package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;

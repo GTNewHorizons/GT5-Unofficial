@@ -29,10 +29,9 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_OreLayer;
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WorldGenRoss128;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
@@ -91,9 +90,9 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                         public List<PositionedStack> getOtherStacks() {
                             ArrayList<PositionedStack> ret = new ArrayList<>();
                             for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
-                                if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128) {
+                                if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128b) {
                                     int baseMeta = result.getItemDamage();
-                                    BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_OreLayer.sList.get(i));
+                                    BW_WorldGenRoss128b worldGen = ((BW_WorldGenRoss128b) BW_OreLayer.sList.get(i));
                                     if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                         ItemStack other;
                                         other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));
@@ -187,9 +186,9 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                 public List<PositionedStack> getOtherStacks() {
                     ArrayList<PositionedStack> ret = new ArrayList<>();
                     for (int i = 0; i < BW_OreLayer.sList.size(); i++) {
-                        if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128) {
+                        if (BW_OreLayer.sList.get(i) instanceof BW_WorldGenRoss128b) {
                             int baseMeta = result.getItemDamage();
-                            BW_WorldGenRoss128 worldGen = ((BW_WorldGenRoss128) BW_OreLayer.sList.get(i));
+                            BW_WorldGenRoss128b worldGen = ((BW_WorldGenRoss128b) BW_OreLayer.sList.get(i));
                             if (worldGen.mPrimaryMeta == baseMeta || worldGen.mSecondaryMeta == baseMeta || worldGen.mBetweenMeta == baseMeta || worldGen.mSporadicMeta == baseMeta) {
                                 ItemStack other;
                                 other = result.copy().setStackDisplayName(result.getDisplayName().replaceAll("Ore", "Vein"));

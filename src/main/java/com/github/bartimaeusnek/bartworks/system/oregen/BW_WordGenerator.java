@@ -20,13 +20,12 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen;
+package com.github.bartimaeusnek.bartworks.system.oregen;
 
 
 import cpw.mods.fml.common.IWorldGenerator;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
-import gregtech.api.world.GT_Worldgen;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
