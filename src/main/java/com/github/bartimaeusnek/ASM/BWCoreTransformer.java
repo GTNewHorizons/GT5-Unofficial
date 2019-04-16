@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.ASM;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
@@ -42,11 +41,29 @@ public class BWCoreTransformer implements IClassTransformer {
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
-            //"micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld",
             "net.minecraft.client.renderer.RenderGlobal",
     };
     public static boolean obfs = false;
-    public static boolean[] shouldTransform = ArrayUtils.toPrimitive(new Boolean[BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length], true);
+
+    public static boolean[] shouldTransform = new boolean[CLASSESBEEINGTRANSFORMED.length];
+
+    static {
+        //hacky way to detect if the mods are loaded
+        try{
+            Class.forName("com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime");
+            shouldTransform[0] = true;
+            shouldTransform[1] = true;
+        }catch (ClassNotFoundException e){
+            shouldTransform[0] = false;
+            shouldTransform[1] = false;
+        }
+        try{
+            Class.forName("micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld");
+            shouldTransform[2] = true;
+        }catch (ClassNotFoundException e){
+            shouldTransform[2] = false;
+        }
+    }
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
