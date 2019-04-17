@@ -787,7 +787,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CERIUM, 6),
 					new MaterialStack(ELEMENT.getInstance().ANTIMONY, 4),
 					new MaterialStack(ELEMENT.getInstance().PLATINUM, 4),					
-					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().YTTERBIUM, 2),
 					new MaterialStack(ALLOY.TUNGSTENSTEEL, 8)
 			});
 
