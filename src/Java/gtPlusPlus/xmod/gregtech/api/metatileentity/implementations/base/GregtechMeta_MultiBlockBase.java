@@ -273,7 +273,7 @@ GT_MetaTileEntity_MultiBlockBase {
 	public final static String TAG_HIDE_HATCHES = "TAG_HIDE_HATCHES";
 	public final static String TAG_HIDE_POLLUTION = "TAG_HIDE_POLLUTION";
 	public final static String TAG_HIDE_MACHINE_TYPE = "TAG_HIDE_MACHINE_TYPE";
-	
+
 	@Override
 	public final String[] getDescription() {		
 		/*if (aCachedToolTip != null) {
@@ -291,13 +291,13 @@ GT_MetaTileEntity_MultiBlockBase {
 				aCachedToolTip = null;
 			}			
 		}*/
-		
+
 		String aRequiresMuffler = "1x Muffler Hatch";
 		String aRequiresCoreModule = "1x Core Module";
 		String aRequiresMaint = "1x Maintanence Hatch";
-		
+
 		String[] x = getTooltip();
-		
+
 		//Filter List, toggle switches, rebuild map without flags
 		boolean showHatches = true;
 		boolean showMachineType = true;
@@ -323,8 +323,8 @@ GT_MetaTileEntity_MultiBlockBase {
 		for (int ee = 0; ee < x.length; ee++) {
 			x[ee] = aTempMap.get(ee);
 		}
-		
-		
+
+
 		//Assemble ordered map for misc tooltips
 		AutoMap<String> aOrderedMap = new AutoMap<String>();		
 		if (showHatches) {
@@ -338,15 +338,15 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (showMachineType) {
 			aOrderedMap.put(getMachineTooltip());			
 		}
-		
+
 		if (showPollution) {
 			aOrderedMap.put(getPollutionTooltip());				
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		//Add Stock Tooltip to bottom of list
 		String[] z;	
 		z = new String[aOrderedMap.size()];
@@ -476,62 +476,6 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 		return true;
 	}
-	
-	private int boostOutput(int aAmount) {		
-		if (aAmount <= 0) {
-			return 10000;
-		}		
-		if (aAmount <= 250) {
-			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);
-		}
-		else if (aAmount <= 500) {
-			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
-		}
-		else if (aAmount <= 750) {
-			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
-		}
-		else if (aAmount <= 1000) {
-			aAmount = (aAmount*2);
-		}
-		else if (aAmount <= 1500) {
-			aAmount = (aAmount*2);			
-		}
-		else if (aAmount <= 2000) {
-			aAmount = (int) (aAmount*1.5);		
-		}
-		else if (aAmount <= 3000) {
-			aAmount = (int) (aAmount*1.5);			
-		}
-		else if (aAmount <= 4000) {
-			aAmount = (int) (aAmount*1.2);			
-		}
-		else if (aAmount <= 5000) {
-			aAmount = (int) (aAmount*1.2);			
-		}
-		else if (aAmount <= 7000) {
-			aAmount = (int) (aAmount*1.2);			
-		}
-		else if (aAmount <= 9000) {
-			aAmount = (int) (aAmount*1.1);			
-		}		
-		return Math.min(10000, aAmount);
-	}
-	
-	public GT_Recipe generateAdditionalOutputForRecipe(GT_Recipe aRecipe) {
-		AutoMap<Integer> aNewChances = new AutoMap<Integer>();
-		for (int chance : aRecipe.mChances) {
-			aNewChances.put(boostOutput(chance));
-		}
-		GT_Recipe aClone = aRecipe.copy();
-		int[] aTemp = new int[aNewChances.size()];
-		int slot = 0;
-		for (int g : aNewChances) {
-			aTemp[slot] = g;
-			slot++;
-		}		
-		aClone.mChances = aTemp;		
-		return aClone;
-	}
 
 	/**
 	 * A Static {@link Method} object which holds the current status of logging.
@@ -539,23 +483,16 @@ GT_MetaTileEntity_MultiBlockBase {
 	public static Method aLogger = null;
 
 	public void log(String s) {
+
 		boolean isDebugLogging = CORE.DEBUG;	
 		boolean reset = true;
-		
-		if (!isDebugLogging) {
-			return;
-		}
-		
+
 		if (aLogger == null || reset) {
 			if (isDebugLogging) {
-				try {
-					aLogger = Logger.class.getMethod("INFO", String.class);
-				} catch (NoSuchMethodException | SecurityException e) {}
+				aLogger = ReflectionUtils.getMethod(Logger.class, "INFO", String.class);				
 			}
 			else {
-				try {
-					aLogger = Logger.class.getMethod("MACHINE_INFO", String.class);
-				} catch (NoSuchMethodException | SecurityException e) {}			
+				aLogger = ReflectionUtils.getMethod(Logger.class, "MACHINE_INFO", String.class);				
 			}
 		}
 		try {
@@ -606,38 +543,195 @@ GT_MetaTileEntity_MultiBlockBase {
 			ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
 			int aMaxParallelRecipes, int aEUPercent,
 			int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+		// Based on the Processing Array. A bit overkill, but very flexible.
+
 		
+		if (this.doesMachineBoostOutput()) {
+			log("Boosting.");
+			return checkRecipeBoostedOutputs(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, aRecipe);
+		}
+		
+
+		//Control Core to control the Multiblocks behaviour.
+		int aControlCoreTier = getControlCoreTier();
+
+		//If no core, return false;				
+		if (aControlCoreTier > 0) {
+			log("Control core found.");
+		}
+
+
+		// Reset outputs and progress stats
+		this.mEUt = 0;
+		this.mMaxProgresstime = 0;
+		this.mOutputItems = new ItemStack[]{};
+		this.mOutputFluids = new FluidStack[]{};
+
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		log("Running checkRecipeGeneric(0)");
+
+		//Check to see if Voltage Tier > Control Core Tier
+		if (tTier > aControlCoreTier) {
+			log("Control core found is lower tier than power tier. OK");
+			tTier = (byte) aControlCoreTier;
+		}
+
 
 		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
 				gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
 
+		log("Running checkRecipeGeneric(1)");
+		// Remember last recipe - an optimization for findRecipe()
+		this.mLastRecipe = tRecipe;
+
 		if (tRecipe == null) {
 			log("BAD RETURN - 1");
 			return false;
 		}
-		
-		//Boost output if machine implements this strategy
-		if (doesMachineBoostOutput()) {
-			return checkRecipeBoostedOutputs(aItemInputs, aFluidInputs, aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll, tRecipe);
-		}		
-		else {
-			return checkRecipeGeneric(tRecipe, aSpeedBonusPercent, aOutputChanceRoll);
+
+		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
+			log("BAD RETURN - 2");
+			return false;
 		}
-		
+
+		// EU discount
+		float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
+		float tTotalEUt = 0.0f;
+
+		int parallelRecipes = 0;
+
+		log("parallelRecipes: "+parallelRecipes);
+		log("aMaxParallelRecipes: "+aMaxParallelRecipes);
+		log("tTotalEUt: "+tTotalEUt);
+		log("tVoltage: "+tVoltage);
+		log("tRecipeEUt: "+tRecipeEUt);
+		// Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
+		for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (tVoltage - tRecipeEUt); parallelRecipes++) {
+			if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
+				log("Broke at "+parallelRecipes+".");
+				break;
+			}
+			log("Bumped EU from "+tTotalEUt+" to "+(tTotalEUt+tRecipeEUt)+".");
+			tTotalEUt += tRecipeEUt;
+		}
+
+		if (parallelRecipes == 0) {
+			log("BAD RETURN - 3");
+			return false;
+		}
+
+		// -- Try not to fail after this point - inputs have already been consumed! --
+
+
+		// Convert speed bonus to duration multiplier
+		// e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
+		aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
+		float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
+		this.mMaxProgresstime = (int)(tRecipe.mDuration * tTimeFactor);
+
+		this.mEUt = (int)Math.ceil(tTotalEUt);
+
+		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		this.mEfficiencyIncrease = 10000;
+
+		// Overclock
+		if (this.mEUt <= 16) {
+			this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+			this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+		} else {
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+		}
+
+		if (this.mEUt > 0) {
+			this.mEUt = (-this.mEUt);
+		}
+
+		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+		// Collect fluid outputs
+		FluidStack[] tOutputFluids = new FluidStack[tRecipe.mFluidOutputs.length];
+		for (int h = 0; h < tRecipe.mFluidOutputs.length; h++) {
+			if (tRecipe.getFluidOutput(h) != null) {
+				tOutputFluids[h] = tRecipe.getFluidOutput(h).copy();
+				tOutputFluids[h].amount *= parallelRecipes;
+			}
+		}
+
+		// Collect output item types
+		ItemStack[] tOutputItems = new ItemStack[tRecipe.mOutputs.length];
+		for (int h = 0; h < tRecipe.mOutputs.length; h++) {
+			if (tRecipe.getOutput(h) != null) {
+				tOutputItems[h] = tRecipe.getOutput(h).copy();
+				tOutputItems[h].stackSize = 0;
+			}
+		}
+
+		// Set output item stack sizes (taking output chance into account)
+		for (int f = 0; f < tOutputItems.length; f++) {
+			if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
+				for (int g = 0; g < parallelRecipes; g++) {
+					if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
+						tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
+				}
+			}
+		}
+
+		tOutputItems = removeNulls(tOutputItems);
+
+		// Sanitize item stack size, splitting any stacks greater than max stack size
+		List<ItemStack> splitStacks = new ArrayList<ItemStack>();
+		for (ItemStack tItem : tOutputItems) {
+			while (tItem.getMaxStackSize() < tItem.stackSize) {
+				ItemStack tmp = tItem.copy();
+				tmp.stackSize = tmp.getMaxStackSize();
+				tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
+				splitStacks.add(tmp);
+			}
+		}
+
+		if (splitStacks.size() > 0) {
+			ItemStack[] tmp = new ItemStack[splitStacks.size()];
+			tmp = splitStacks.toArray(tmp);
+			tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
+		}
+
+		// Strip empty stacks
+		List<ItemStack> tSList = new ArrayList<ItemStack>();
+		for (ItemStack tS : tOutputItems) {
+			if (tS.stackSize > 0) tSList.add(tS);
+		}
+		tOutputItems = tSList.toArray(new ItemStack[tSList.size()]);
+
+		// Commit outputs
+		this.mOutputItems = tOutputItems;
+		this.mOutputFluids = tOutputFluids;
+		updateSlots();
+
+		// Play sounds (GT++ addition - GT multiblocks play no sounds)
+		startProcess();
+
+		log("GOOD RETURN - 1");
+		return true;
 	}
-	
+
+
+
+
+
 
 	/*
 	 * Here we handle recipe boosting, which grants additional output %'s to recipes that do not have 100%.
 	 */
-	
+
 	private boolean mHasBoostedCurrentRecipe = false;
 	private GT_Recipe mBoostedRecipe = null;
 	private ItemStack[] mInputVerificationForBoosting = null;
-	
+
 	/**
 	 * Does this machine boost it's output?
 	 * @return - if true, gives additional % to output chances.
@@ -645,6 +739,65 @@ GT_MetaTileEntity_MultiBlockBase {
 	protected boolean doesMachineBoostOutput() {
 		return false;
 	}
+
+
+
+	private int boostOutput(int aAmount) {		
+		if (aAmount <= 0) {
+			return 10000;
+		}		
+		if (aAmount <= 250) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);
+		}
+		else if (aAmount <= 500) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
+		}
+		else if (aAmount <= 750) {
+			aAmount += MathUtils.randInt(Math.max(aAmount/2, 1), aAmount*2);			
+		}
+		else if (aAmount <= 1000) {
+			aAmount = (aAmount*2);
+		}
+		else if (aAmount <= 1500) {
+			aAmount = (aAmount*2);			
+		}
+		else if (aAmount <= 2000) {
+			aAmount = (int) (aAmount*1.5);		
+		}
+		else if (aAmount <= 3000) {
+			aAmount = (int) (aAmount*1.5);			
+		}
+		else if (aAmount <= 4000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 5000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 7000) {
+			aAmount = (int) (aAmount*1.2);			
+		}
+		else if (aAmount <= 9000) {
+			aAmount = (int) (aAmount*1.1);			
+		}		
+		return Math.min(10000, aAmount);
+	}
+
+	public GT_Recipe generateAdditionalOutputForRecipe(GT_Recipe aRecipe) {
+		AutoMap<Integer> aNewChances = new AutoMap<Integer>();
+		for (int chance : aRecipe.mChances) {
+			aNewChances.put(boostOutput(chance));
+		}
+		GT_Recipe aClone = aRecipe.copy();
+		int[] aTemp = new int[aNewChances.size()];
+		int slot = 0;
+		for (int g : aNewChances) {
+			aTemp[slot] = g;
+			slot++;
+		}		
+		aClone.mChances = aTemp;		
+		return aClone;
+	}
+
 
 	/**
 	 * Processes recipes but provides a bonus to the output % of items if they are < 100%.
@@ -744,67 +897,6 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("BAD RETURN - 1");
 			return false;
 		}
-		
-		// -- Try not to fail after this point - inputs have already been consumed! --
-		return checkRecipeGeneric(tRecipe, aSpeedBonusPercent, aOutputChanceRoll);
-	}
-	
-
-	/**
-	 * Directly processes a recipe from a non-generic recipe handler
-	 * @param aRecipe - A pre-modified GT_Recipe
-	 * @return - Did we process?
-	 */
-	public boolean checkRecipeGeneric(GT_Recipe tRecipe, int rSpeedBonus, int aMaxOutputChance) {
-		// Based on the Processing Array. A bit overkill, but very flexible.
-
-		if (tRecipe == null) {
-			return false;
-		}
-		
-
-		ItemStack[] aItemInputs = tRecipe.mInputs;
-		FluidStack[] aFluidInputs = tRecipe.mFluidInputs;
-		int aMaxParallelRecipes = getMaxParallelRecipes();
-		int aEUPercent = this.getEuDiscountForParallelism();
-		int aSpeedBonusPercent = rSpeedBonus;
-		int aOutputChanceRoll = aMaxOutputChance;
-		
-		
-
-		//Control Core to control the Multiblocks behaviour.
-		int aControlCoreTier = getControlCoreTier();
-		
-		//If no core, return false;				
-		if (aControlCoreTier == 0 && requireControlCores) {
-			log("No control core found.");
-			return false;
-		}
-
-		// Reset outputs and progress stats
-		this.mEUt = 0;
-		this.mMaxProgresstime = 0;
-		this.mOutputItems = new ItemStack[]{};
-		this.mOutputFluids = new FluidStack[]{};
-
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		log("Running checkRecipeGeneric(0)");
-
-		//Check to see if Voltage Tier > Control Core Tier
-		if (tTier > aControlCoreTier && requireControlCores) {
-			log("Control core found is lower tier than power tier.");
-			return false;
-		}
-
-		log("Running checkRecipeGeneric(1)");
-		// Remember last recipe - an optimization for findRecipe()
-		this.mLastRecipe = tRecipe;
-
-		if (tRecipe == null) {
-			log("BAD RETURN - 1");
-			return false;
-		}
 
 		if (!this.canBufferOutputs(tRecipe, aMaxParallelRecipes)) {
 			log("BAD RETURN - 2");
@@ -850,11 +942,6 @@ GT_MetaTileEntity_MultiBlockBase {
 
 		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 		this.mEfficiencyIncrease = 10000;
-
-
-		//Only Overclock as high as the control circuit.
-		byte tTierOld = tTier;
-		tTier = getControlCoreTier() > 0 ? (byte) aControlCoreTier : tTierOld;
 
 		// Overclock
 		if (this.mEUt <= 16) {
@@ -939,40 +1026,30 @@ GT_MetaTileEntity_MultiBlockBase {
 		return true;
 	}
 
-	public GT_Recipe reduceRecipeTimeByPercentage(final GT_Recipe tRecipe,
-			final float percentage) {
-		int cloneTime = 0;
-		GT_Recipe baseRecipe;
-		GT_Recipe cloneRecipe = null;
 
-		baseRecipe = tRecipe.copy();
-		if ((baseRecipe != null) && ((cloneRecipe != baseRecipe) || (cloneRecipe == null))) {
-			cloneRecipe = baseRecipe.copy();
-			log("Setting Recipe");
-		}
-		if ((baseRecipe != null) && ((cloneTime != baseRecipe.mDuration) || (cloneTime == 0))) {
-			cloneTime = baseRecipe.mDuration;
-			log("Setting Time");
-		}
 
-		if ((cloneRecipe != null) && cloneRecipe.mDuration > 0) {
-			final int originalTime = cloneRecipe.mDuration;
-			final int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration,
-					(100 - percentage));
-			cloneRecipe.mDuration = tempTime;
-			if (cloneRecipe.mDuration < originalTime) {
-				log("Generated recipe with a smaller time. | "
-						+ originalTime + " | " + cloneRecipe.mDuration + " |");
-				return cloneRecipe;
-			} else {
-				log("Did not generate recipe with a smaller time. | "
-						+ originalTime + " | " + cloneRecipe.mDuration + " |");
-				return tRecipe;
-			}
-		}
-		log("Error generating recipe, returning null.");
-		return null;
-	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public boolean isMachineRunning() {
 		boolean aRunning = this.getBaseMetaTileEntity().isActive();
@@ -1166,13 +1243,13 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public int getControlCoreTier() {	
-		
+
 		//Always return best tier if config is off.
 		/*boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
 		if (!aCoresConfig) {
 			return 10;
 		}*/
-		
+
 		if (mControlCoreBus.isEmpty()) {
 			log("No Control Core Modules Found.");
 			return 0;
@@ -1212,9 +1289,9 @@ GT_MetaTileEntity_MultiBlockBase {
 			log("Tried to add a secondary control core module.");
 			return false;
 		}
-		
+
 		GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) aMetaTileEntity;
-		
+
 		if (Module != null) {
 			if (Module.setOwner(aTileEntity)) {
 				log("Adding control core module.");
@@ -1503,12 +1580,12 @@ GT_MetaTileEntity_MultiBlockBase {
 	@SuppressWarnings("rawtypes")
 	public boolean isThisHatchMultiDynamo(Object aMetaTileEntity){
 		Class mDynamoClass;
-			mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
-			if (mDynamoClass != null){
-				if (mDynamoClass.isInstance(aMetaTileEntity)){
-					return true;
-				}
+		mDynamoClass = ReflectionUtils.getClass("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
+		if (mDynamoClass != null){
+			if (mDynamoClass.isInstance(aMetaTileEntity)){
+				return true;
 			}
+		}
 		return false;
 	}
 
@@ -1540,7 +1617,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return "";
 		}
 	}
-	
+
 	private static Method calculatePollutionReduction;
 	public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i , int g) {		
 		if (calculatePollutionReduction == null) {
@@ -1794,17 +1871,17 @@ GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	public abstract boolean checkMultiblock(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack);
-	
-	
+
+
 	public boolean isValidBlockForStructure(IGregTechTileEntity aBaseMetaTileEntity, int aCasingID, boolean canBeHatch,
 			Block aFoundBlock, int aFoundMeta, Block aExpectedBlock, int aExpectedMeta) {
 		boolean isHatch = false;
 		if (aBaseMetaTileEntity != null) {
-			
+
 			if (aCasingID < 64) {
 				aCasingID = TAE.GTPP_INDEX(aCasingID);
 			}
-			
+
 			isHatch = this.addToMachineList(aBaseMetaTileEntity, aCasingID);
 			if (isHatch) {
 				return true;

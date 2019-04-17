@@ -216,11 +216,11 @@ public final class ELEMENT {
 		
 		
 		//Runescape materials
-		public static final Material BLACK_METAL = new Material("Black", MaterialState.SOLID, TextureSet.SET_METALLIC, new short[] {5, 5, 5}, 2350, 4650, 24, 17, false, "҈", 0, new MaterialStack[]{new MaterialStack(getInstance().LEAD, 15), new MaterialStack(getInstance().TUNGSTEN, 25), new MaterialStack(getInstance().CARBON, 60)});//Not a GT Inherited Material
-		public static final Material WHITE_METAL = new Material("White", MaterialState.SOLID, TextureSet.SET_METALLIC, new short[] {255, 255, 255}, 4560, 7580, 35, 41, false, "҉", 0, new MaterialStack[]{new MaterialStack(getInstance().COPPER, 5), new MaterialStack(getInstance().ANTIMONY, 10), new MaterialStack(getInstance().PLATINUM, 10), new MaterialStack(getInstance().TIN, 75)});//Not a GT Inherited Material
-		public static final Material GRANITE = new Material("Ancient Granite", MaterialState.SOLID, TextureSet.SET_SAND, new short[] {107, 107, 107}, 500, 2000, 16, 12, false, "«»", 0);//Not a GT Inherited Material
+		public static final Material BLACK_METAL = new Material("Black Metal", MaterialState.SOLID, TextureSet.SET_METALLIC, new short[] {5, 5, 5}, 2350, 4650, 24, 17, false, "҈", 0, new MaterialStack[]{new MaterialStack(getInstance().LEAD, 15), new MaterialStack(getInstance().TUNGSTEN, 25), new MaterialStack(getInstance().CARBON, 60)});//Not a GT Inherited Material
+		public static final Material WHITE_METAL = new Material("White Metal", MaterialState.SOLID, TextureSet.SET_METALLIC, new short[] {255, 255, 255}, 4560, 7580, 35, 41, false, "҉", 0, new MaterialStack[]{new MaterialStack(getInstance().COPPER, 5), new MaterialStack(getInstance().ANTIMONY, 10), new MaterialStack(getInstance().PLATINUM, 10), new MaterialStack(getInstance().TIN, 75)});//Not a GT Inherited Material
+		public static final Material GRANITE = new Material("Ancient Granite", MaterialState.SOLID, TextureSet.SET_SAND, new short[] {107, 107, 107}, 500, 2000, 16, 12, false, "«»", 0, false);//Not a GT Inherited Material
 		public static final Material RUNITE = new Material("Runite", MaterialState.SOLID, TextureSet.SET_FINE, new short[] {60, 200, 190}, 6750, 11550, 73, 87, true, "§", 0);//Not a GT Inherited Material
-		public static final Material DRAGON_METAL = new Material("Dragon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[] {220, 40, 20, 2}, 10160, 17850, 96, 105, true, "۞", 0);//Not a GT Inherited Material
+		public static final Material DRAGON_METAL = new Material("Dragonblood", MaterialState.SOLID, TextureSet.SET_SHINY, new short[] {220, 40, 20, 2}, 10160, 17850, 96, 105, true, "۞", 0);//Not a GT Inherited Material
 		
 	}
 

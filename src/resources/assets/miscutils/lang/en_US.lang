@@ -2609,7 +2609,7 @@ item.particle.ion.Antimony.name=Antimony Ion
 item.particle.ion.Tellurium.name=Tellurium Ion
 item.particle.ion.Iodine.name=Iodine Ion
 item.particle.ion.Xenon.name=Xenon Ion
-item.particle.ion.Cesium.name=Cesium Ion
+item.particle.ion.Cesium.name=Caesium Ion
 item.particle.ion.Barium.name=Barium Ion
 item.particle.ion.Lanthanum.name=Lanthanum Ion
 item.particle.ion.Cerium.name=Cerium Ion
@@ -2771,3 +2771,104 @@ item.itemPlateTeflon.name=Teflon Plate
 item.itemPlateDoubleTeflon.name=Double Teflon Plate
 item.itemCellTeflon.name=Teflon Cell
 tile.Block of Teflon.name=Block of Teflon
+
+//Added 17/4/19
+//Spelling Corrections
+item.particle.ion.Aluminium.name=Aluminium Ion
+item.particle.ion.Caesium.name=Caesium Ion
+
+item.GTPP.MonsterKiller.Enderman.name=Enderman Killer
+item.GTPP.MonsterKiller.Spider.name=Spider Killer
+item.GTPP.MonsterKiller.Skeleton.name=Skeleton Killer
+item.GTPP.MonsterKiller.Creeper.name=Creeper Killer
+item.GTPP.MonsterKiller.Zombie.name=Zombie Killer
+item.GTPP.MonsterKiller.Hellish.name=Nether Mob Killer
+
+item.itemIngotRunite.name=Runite Ingot
+item.itemDustRunite.name=Runite Dust
+item.itemDustTinyRunite.name=Tiny Pile of Runite Dust
+item.itemDustSmallRunite.name=Small Pile of Runite Dust
+item.itemNuggetRunite.name=Runite Nugget
+item.itemPlateRunite.name=Runite Plate
+item.itemPlateDoubleRunite.name=Double Runite Plate
+item.itemCellRunite.name=Runite Cell
+tile.Block of Runite.name=Block of Runite
+
+item.itemIngotDragonblood.name=Dragonblood Ingot
+item.itemDustDragonblood.name=Dragonblood Dust
+item.itemDustTinyDragonblood.name=Tiny Pile of Dragonblood Dust
+item.itemDustSmallDragonblood.name=Small Pile of Dragonblood Dust
+item.itemNuggetDragonblood.name=Dragonblood Nugget
+item.itemPlateDragonblood.name=Dragonblood Plate
+item.itemPlateDoubleDragonblood.name=Double Dragonblood Plate
+item.itemCellDragonblood.name=Dragonblood Cell
+tile.Block of Dragonblood.name=Block of Dragonblood
+
+item.itemIngotBlackTitanium.name=Black Titanium Ingot
+item.itemDustBlackTitanium.name=Black Titanium Dust
+item.itemDustTinyBlackTitanium.name=Tiny Pile of Black Titanium Dust
+item.itemDustSmallBlackTitanium.name=Small Pile of Black Titanium Dust
+item.itemNuggetBlackTitanium.name=Black Titanium Nugget
+item.itemPlateBlackTitanium.name=Black Titanium Plate
+item.itemPlateDoubleBlackTitanium.name=Double Black Titanium Plate
+item.itemCellBlackTitanium.name=Black Titanium Cell
+tile.Block of Black Titanium.name=Block of Black Titanium
+
+item.itemIngotAncientGranite.name=Ancient Granite Ingot
+item.itemHotIngotAncientGranite.name=Hot Ancient Granite Ingot
+item.itemDustAncientGranite.name=Ancient Granite Dust
+item.itemDustTinyAncientGranite.name=Tiny Pile of Ancient Granite Dust
+item.itemDustSmallAncientGranite.name=Small Pile of Ancient Granite Dust
+item.itemNuggetAncientGranite.name=Ancient Granite Nugget
+item.itemPlateAncientGranite.name=Ancient Granite Plate
+item.itemPlateDoubleAncientGranite.name=Double Ancient Granite Plate
+tile.Block of Ancient Granite.name=Block of Ancient Granite
+
+item.itemIngotBabbitAlloy.name=Babbit Alloy Ingot
+item.itemHotIngotBabbitAlloy.name=Hot Babbit Alloy Ingot
+item.itemDustBabbitAlloy.name=Babbit Alloy Dust
+item.itemDustTinyBabbitAlloy.name=Tiny Pile of Babbit Alloy Dust
+item.itemDustSmallBabbitAlloy.name=Small Pile of Babbit Alloy Dust
+item.itemNuggetBabbitAlloy.name=Babbit Alloy Nugget
+item.itemPlateBabbitAlloy.name=Babbit Alloy Plate
+item.itemPlateDoubleBabbitAlloy.name=Double Babbit Alloy Plate
+item.itemCellBabbitAlloy.name=Babbit Alloy Cell
+tile.Block of Babbit Alloy.name=Block of Babbit Alloy
+
+item.itemIngotBlackMetal.name=Black Metal Ingot
+item.itemHotIngotBlackMetal.name=Hot Black Metal Ingot
+item.itemDustBlackMetal.name=Black Metal Dust
+item.itemDustTinyBlackMetal.name=Tiny Pile of Black Metal Dust
+item.itemDustSmallBlackMetal.name=Small Pile of Black Metal Dust
+item.itemNuggetBlackMetal.name=Black Metal Nugget
+item.itemPlateBlackMetal.name=Black Metal Plate
+item.itemPlateDoubleBlackMetal.name=Double Black Metal Plate
+item.itemBoltBlackMetal.name=Black Metal Bolt
+item.itemRodBlackMetal.name=Black Metal Rod
+item.itemRodLongBlackMetal.name=Long Black Metal Rod
+item.itemRingBlackMetal.name=Black Metal Ring
+item.itemScrewBlackMetal.name=Black Metal Screw
+item.itemRotorBlackMetal.name=Black Metal Rotor
+item.itemGearBlackMetal.name=Black Metal Gear
+item.itemCellBlackMetal.name=Black Metal Cell
+tile.Block of Black Metal.name=Block of Black Metal
+tile.Black Metal Frame Box.name=Black Metal Frame Box
+
+item.itemIngotWhiteMetal.name=White Metal Ingot
+item.itemHotIngotWhiteMetal.name=Hot White Metal Ingot
+item.itemDustWhiteMetal.name=White Metal Dust
+item.itemDustTinyWhiteMetal.name=Tiny Pile of White Metal Dust
+item.itemDustSmallWhiteMetal.name=Small Pile of White Metal Dust
+item.itemNuggetWhiteMetal.name=White Metal Nugget
+item.itemPlateWhiteMetal.name=White Metal Plate
+item.itemPlateDoubleWhiteMetal.name=Double White Metal Plate
+item.itemBoltWhiteMetal.name=White Metal Bolt
+item.itemRodWhiteMetal.name=White Metal Rod
+item.itemRodLongWhiteMetal.name=Long White Metal Rod
+item.itemRingWhiteMetal.name=White Metal Ring
+item.itemScrewWhiteMetal.name=White Metal Screw
+item.itemRotorWhiteMetal.name=White Metal Rotor
+item.itemGearWhiteMetal.name=White Metal Gear
+item.itemCellWhiteMetal.name=White Metal Cell
+tile.Block of White Metal.name=Block of White Metal
+tile.White Metal Frame Box.name=White Metal Frame Box
