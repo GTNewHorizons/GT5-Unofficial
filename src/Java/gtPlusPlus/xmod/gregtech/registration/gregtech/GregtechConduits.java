@@ -101,9 +101,9 @@ public class GregtechConduits {
 		
 		
 		//Generate Heat Pipes
-		GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(27550,	"gtpp.pipe.heat.basic.01", "Basic Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
-		GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(27551,	"gtpp.pipe.heat.basic.02", "Basic Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
-		GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(27552,	"gtpp.pipe.heat.basic.03", "Basic Heat Pipe (750C)", Materials.Thorium, 750).getStackForm(1L));
+		GregtechItemList.HeatPipe_Tier_1.set(new GT_MetaPipeEntity_Heat(31021,	"gtpp.pipe.heat.basic.01", "Lead Heat Pipe (500C)", Materials.Lead, 500).getStackForm(1L));
+		GregtechItemList.HeatPipe_Tier_2.set(new GT_MetaPipeEntity_Heat(31022,	"gtpp.pipe.heat.basic.02", "Iron Heat Pipe (500C)", Materials.Iron, 500).getStackForm(1L));
+		GregtechItemList.HeatPipe_Tier_3.set(new GT_MetaPipeEntity_Heat(31023,	"gtpp.pipe.heat.basic.03", "Silver Heat Pipe (1500C)", Materials.Silver, 1500).getStackForm(1L));
 		
 		
 		
