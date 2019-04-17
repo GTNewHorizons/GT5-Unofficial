@@ -13,7 +13,7 @@ import gtPlusPlus.core.lib.CORE;
 public final class TexturesGtTools {
 
 	public final static CustomIcon SKOOKUM_CHOOCHER = new CustomIcon("iconsets/SKOOKUMCHOOCHER");
-	public final static CustomIcon ANGEL_GRINDER = new CustomIcon("iconsets/SKOOKUMCHOOCHER");
+	public final static CustomIcon ANGEL_GRINDER = new CustomIcon("iconsets/ANGEL_GRINDER");
 
 
 
