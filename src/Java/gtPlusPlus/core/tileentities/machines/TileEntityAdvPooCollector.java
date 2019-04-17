@@ -1,6 +1,5 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -15,7 +14,6 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -132,17 +130,17 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
 	}
 
 	@Override
-	public Item itemToSpawnInWorldIfTankIsFull() {
+	public ItemStack itemToSpawnInWorldIfTankIsFull() {		
 		int a = MathUtils.randInt(0, 75);
-		Item aItem = null;		
+		ItemStack aItem = null;		
 		if (a <= 30) {
-			aItem = AgriculturalChem.dustDirt;
+			aItem = ItemUtils.getSimpleStack(AgriculturalChem.dustDirt);
 		}
 		else if (a <= 40) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1);
 		}
 		else if (a <= 55) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);
 		}		
 		return aItem;
 	}

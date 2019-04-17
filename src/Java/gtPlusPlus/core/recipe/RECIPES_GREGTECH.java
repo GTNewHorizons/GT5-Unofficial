@@ -2127,6 +2127,21 @@ public class RECIPES_GREGTECH {
 
 	private static void sifterRecipes() {		
 
+		// Rare Earth Processing
+		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1),
+				new ItemStack[] { 
+						ELEMENT.getInstance().YTTRIUM.getSmallDust(1),
+						ELEMENT.getInstance().NEODYMIUM.getSmallDust(1),
+						ELEMENT.getInstance().LANTHANUM.getSmallDust(1),
+						ELEMENT.getInstance().CERIUM.getSmallDust(1),
+						ELEMENT.getInstance().CADMIUM.getSmallDust(1),
+						ELEMENT.getInstance().CAESIUM.getSmallDust(1),
+						ELEMENT.getInstance().YTTERBIUM.getTinyDust(1),
+						ELEMENT.getInstance().SAMARIUM.getTinyDust(1),
+						ELEMENT.getInstance().GADOLINIUM.getTinyDust(1)
+						},
+				new int[] { 2000, 2000, 2000, 2000, 2000, 2000, 1000, 1000, 1000 }, 20 * 30, 500);
+		
 		// Zirconium
 		GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedIlmenite", 1),
 				new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),

@@ -32,6 +32,7 @@ import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.*;
+import gtPlusPlus.xmod.gregtech.recipes.RecipesToRemove;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
 import net.minecraft.item.Item;
@@ -110,6 +111,7 @@ public class HANDLER_GT {
 	public static void onLoadComplete(FMLLoadCompleteEvent event) {
 		removeCrudeTurbineRotors();
 		cleanAssemblyLineRecipeMap();
+		RecipesToRemove.go();
 	}
 	
 	private static int removeCrudeTurbineRotors() {
