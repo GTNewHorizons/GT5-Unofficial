@@ -26,16 +26,16 @@ public class GregtechSimpleWasher {
 			
 			//People want them in higher tiers apparently
 			GregtechItemList.SimpleDustWasher_MV
-			.set(new GregtechMetaTileEntity_BasicWasher(30410, "simplewasher.01.tier.02", "Simple Washer II", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(31017, "simplewasher.01.tier.02", "Simple Washer II", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_EV
-			.set(new GregtechMetaTileEntity_BasicWasher(30411, "simplewasher.01.tier.03", "Simple Washer III", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(31018, "simplewasher.01.tier.03", "Simple Washer III", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_LuV
-			.set(new GregtechMetaTileEntity_BasicWasher(30412, "simplewasher.01.tier.04", "Simple Washer IV", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(31019, "simplewasher.01.tier.04", "Simple Washer IV", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_UV
-			.set(new GregtechMetaTileEntity_BasicWasher(30413, "simplewasher.01.tier.05", "Simple Washer V", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(31020, "simplewasher.01.tier.05", "Simple Washer V", 0)
 					.getStackForm(1L));
 		}
 	}

@@ -770,6 +770,10 @@ public class CI {
 
 		ItemStack aTempStack = null;
 		
+		if (aPrefix == OrePrefixes.rod) {
+			aPrefix = OrePrefixes.stick;
+		}
+		
 		if (aPrefix == OrePrefixes.gear || aPrefix == OrePrefixes.gearGt) {
 			m = aMaster[0][aTier];
 		}

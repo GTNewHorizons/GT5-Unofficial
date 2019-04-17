@@ -6,6 +6,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import java.util.Collection;
@@ -70,6 +71,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 	}
 
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		Logger.WARNING("Right Clicked");
 		if (aBaseMetaTileEntity.isClientSide()) {
 			return true;
 		} else {
@@ -175,7 +177,9 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 	}
 
 	public boolean isFluidInputAllowed(FluidStack aFluid) {
-		return this.getFuelValue(aFluid) > 0;
+		int aVal = this.getFuelValue(aFluid);
+		Logger.WARNING("Fuel Value: "+aVal);
+		return aVal > 0;
 	}
 
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -223,6 +227,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 		}
 
 		if (aBaseMetaTileEntity.isServerSide()) {
+			Logger.WARNING("Ticking Servside");
 			aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity
 					.getUniversalEnergyStored() >= this.maxEUOutput() + this.getMinimumStoredEU());
 		}
@@ -242,6 +247,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 	public int getFuelValue(FluidStack aLiquid) {
 		if (aLiquid != null && this.getRecipes() != null) {
 			Collection<GT_Recipe> tRecipeList = this.getRecipes().mRecipeList;
+			Logger.WARNING("Fuels: "+tRecipeList.size());
 			if (tRecipeList != null) {
 				Iterator var4 = tRecipeList.iterator();
 
@@ -250,6 +256,13 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 					FluidStack tLiquid;
 					if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null
 							&& aLiquid.isFluidEqual(tLiquid)) {
+						Logger.WARNING("Fuel Ok");
+						return (int) ((long) tFuel.mSpecialValue * (long) this.getEfficiency()
+								* (long) this.consumedFluidPerOperation(tLiquid) / 100L);
+					}
+					if ((tLiquid = tFuel.getRepresentativeFluidInput(0)) != null
+							&& aLiquid.isFluidEqual(tLiquid)) {
+						Logger.WARNING("Fuel Ok");
 						return (int) ((long) tFuel.mSpecialValue * (long) this.getEfficiency()
 								* (long) this.consumedFluidPerOperation(tLiquid) / 100L);
 					}
@@ -264,6 +277,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 
 	public int getFuelValue(ItemStack aStack) {
 		if (!GT_Utility.isStackInvalid(aStack) && this.getRecipes() != null) {
+			Logger.WARNING("Fuel Item OK");
 			GT_Recipe tFuel = this.getRecipes().findRecipe(this.getBaseMetaTileEntity(), false, Long.MAX_VALUE,
 					(FluidStack[]) null, new ItemStack[]{aStack});
 			return tFuel != null ? (int) ((long) tFuel.mSpecialValue * 1000L * (long) this.getEfficiency() / 100L) : 0;
