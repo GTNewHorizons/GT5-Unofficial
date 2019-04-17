@@ -50,7 +50,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 	public void materialsLoops() {
 		final Materials[] i = Materials.values();
 		final int size = i.length;
-		Logger.INFO("Materials to attempt tool gen. with: " + size);
+		Logger.MATERIALS("Materials to attempt tool gen. with: " + size);
 		int used = 0;
 		Materials aMaterial = null;
 		for (int r = 0; r < size; r++) {
@@ -61,7 +61,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 						&& (!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.TRANSPARENT))
 						&& (!aMaterial.contains(SubTag.FLAMMABLE)) && (!aMaterial.contains(SubTag.MAGICAL))
 						&& (!aMaterial.contains(SubTag.NO_SMELTING))) {
-					Logger.INFO("Generating Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
+					Logger.MATERIALS("Generating Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 					// Input 1
 					
 
@@ -73,7 +73,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 					     addRecipe(aMaterial, 800000L, 3, ItemList.Battery_RE_HV_Sodium.get(1));						
 						used++;
 					} else {
-						Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Plate or Long Rod may be invalid. Invalid | Plate? "+(plate == null) +" | Rod? "+" |");
+						Logger.MATERIALS("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Plate or Long Rod may be invalid. Invalid | Plate? "+(plate == null) +" | Rod? "+" |");
 					}
 					// GT_ModHandler.addCraftingRecipe(,
 					// GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -82,10 +82,10 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 					// Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
 					// Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
 				} else {
-					Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
+					Logger.MATERIALS("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 				}
 			} else {
-				Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
+				Logger.MATERIALS("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 			}
 
 		}
@@ -112,7 +112,7 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 
 		long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);	
 		if (aDura <= 32000) {
-			Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Durability: "+aDura);
+			Logger.MATERIALS("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Durability: "+aDura);
 			return false;
 		}
 		
