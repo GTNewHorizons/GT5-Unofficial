@@ -125,8 +125,10 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Loading some textures on the client.");
 		// Tools
 		Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
-		Logger.WARNING("Processing texture: " + TexturesGtTools.ANGEL_GRINDER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
 		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath());
 
 		// Blocks
 		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());

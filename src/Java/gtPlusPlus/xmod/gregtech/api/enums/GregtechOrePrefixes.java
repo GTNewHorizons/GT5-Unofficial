@@ -56,6 +56,8 @@ public enum GregtechOrePrefixes {
 	toolSkookumChoocher("Skookum Choocher", "", " Skookum Choocher", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 	toolAngleGrinder("Angle Grinder", "", "Angle Grinder", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 	toolElectricSnips("Electric Snips", "", "Electric Snips", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolElectricLighter("Electric Lighter", "", "Electric Lighter", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolElectricButcherKnife("Electric Butcher Knife", "", "Electric Butcher Knife", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 
 
 

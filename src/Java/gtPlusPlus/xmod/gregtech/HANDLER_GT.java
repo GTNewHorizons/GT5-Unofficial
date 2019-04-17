@@ -96,6 +96,8 @@ public class HANDLER_GT {
 		}
 		new ProcessingAngelGrinder().run();
 		new ProcessingElectricSnips().run();
+		new ProcessingElectricButcherKnife().run();
+		new ProcessingElectricLighter().run();
 		
 		if (CORE.ConfigSwitches.enableNitroFix){
 			GregtechNitroDieselFix.run();

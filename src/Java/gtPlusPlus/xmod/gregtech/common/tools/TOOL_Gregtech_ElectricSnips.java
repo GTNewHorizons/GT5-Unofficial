@@ -156,13 +156,13 @@ extends GT_Tool {
 	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 		return (IIconContainer) (aIsToolHead
 				? TexturesGtTools.ELECTRIC_SNIPS
-				: ItemIcons.POWER_UNIT_HV);
+				: ItemIcons.POWER_UNIT_MV);
 	}
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
 		return !aIsToolHead
 				? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-				: GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+				: GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
 	}
 	
 	

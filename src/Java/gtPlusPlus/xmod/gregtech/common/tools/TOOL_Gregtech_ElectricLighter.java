@@ -6,14 +6,13 @@ import java.util.List;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
+import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Electric_Lighter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
-public class TOOL_Gregtech_AngelGrinder
+public class TOOL_Gregtech_ElectricLighter
 extends GT_Tool {
 
 	public static final List<String> mEffectiveList = Arrays.asList(new String[]{EntityIronGolem.class.getName(), "EntityTowerGuardian"});
@@ -157,14 +156,14 @@ extends GT_Tool {
 	
 	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 		return (IIconContainer) (aIsToolHead
-				? TexturesGtTools.ANGLE_GRINDER
+				? TexturesGtTools.ELECTRIC_LIGHTER
 				: ItemIcons.POWER_UNIT_HV);
 	}
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
 		return !aIsToolHead
 				? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-				: Materials.TungstenSteel.mRGBa;
+				: Materials.Silver.mRGBa;
 	}
 	
 	
@@ -188,7 +187,7 @@ extends GT_Tool {
 
 	@Override
 	public void onStatsAddedToTool(final GT_MetaGenerated_Tool aItem, final int aID) {
-		aItem.addItemBehavior(aID, new Behaviour_None());
+		aItem.addItemBehavior(aID, new Behaviour_Electric_Lighter(null, 32000));
 	}
 
 	@Override
