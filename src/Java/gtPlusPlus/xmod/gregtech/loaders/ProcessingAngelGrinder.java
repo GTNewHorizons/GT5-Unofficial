@@ -10,6 +10,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
@@ -124,12 +125,12 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 						 "SXL",
 						 "GMG",
 						 "PBP",
-						 'X', ItemList.Component_Grinder_Diamond.get(1),
+						 'X', ItemList.Component_Grinder_Tungsten.get(1),
 						 'M', CI.getElectricMotor(aVoltageTier, 1),
 						 'S', OrePrefixes.screw.get(Materials.Titanium),
 						 'L', OrePrefixes.stickLong.get(aMaterial),
 						 'P', OrePrefixes.plate.get(aMaterial),
-						 'G', OrePrefixes.gearGtSmall.get(Materials.StainlessSteel),
+						 'G', ELEMENT.STANDALONE.BLACK_METAL.getGear(1),
 						 'B', aBattery
 						 });
 		    

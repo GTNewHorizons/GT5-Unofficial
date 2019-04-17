@@ -9,7 +9,9 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
@@ -108,7 +110,12 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 				 Materials.Titanium, 
 				 new long[]{aBatteryStorage, GT_Values.V[aVoltageTier], 3L, -1L});
 		
-		
+		ItemStack aInputCutter = GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+				GT_MetaGenerated_Tool_01.WIRECUTTER,
+				 1,
+				 aMaterial,
+				 aMaterial, 
+				 null);
 
 		long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);	
 		if (aDura <= 32000) {
@@ -123,11 +130,11 @@ public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, 
 						 "SXS",
 						 "GMG",
 						 "PBP",
-						 'X', ItemList.Component_Grinder_Tungsten.get(1),
-						 'M', CI.getElectricMotor(aVoltageTier+1, 1),
-						 'S', OrePrefixes.screw.get(Materials.Tungsten),
+						 'X', aInputCutter,
+						 'M', CI.getElectricMotor(aVoltageTier, 1),
+						 'S', OrePrefixes.wireFine.get(Materials.Electrum),
 						 'P', OrePrefixes.plate.get(aMaterial),
-						 'G', OrePrefixes.gearGtSmall.get(Materials.Titanium),
+						 'G', ELEMENT.STANDALONE.WHITE_METAL.getGear(1),
 						 'B', aBattery
 						 });
 		    
