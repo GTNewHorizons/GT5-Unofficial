@@ -12,7 +12,6 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -53,7 +52,11 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 			}
 			else {
 				return false;
+			}			
+			if (!ItemUtils.checkForInvalidItems(aPoop)) {
+				return false;
 			}
+			
 			//Add poop to world
 			//Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());
 			
@@ -123,17 +126,17 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 	}
 
 	@Override
-	public Item itemToSpawnInWorldIfTankIsFull() {
+	public ItemStack itemToSpawnInWorldIfTankIsFull() {
 		int a = MathUtils.randInt(0, 100);
-		Item aItem = null;		
+		ItemStack aItem = null;		
 		if (a <= 30) {
-			aItem = AgriculturalChem.dustDirt;
+			aItem = ItemUtils.getSimpleStack(AgriculturalChem.dustDirt);
 		}
 		else if (a <= 40) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);
 		}
 		else if (a <= 55) {
-			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1).getItem();
+			aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);
 		}		
 		return aItem;
 	}

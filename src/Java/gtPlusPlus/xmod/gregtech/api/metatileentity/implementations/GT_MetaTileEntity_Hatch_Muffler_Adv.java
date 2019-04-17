@@ -6,7 +6,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +23,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 		super.onConfigLoad(aConfig);
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK || CORE.GTNH) {			
 			try {
-				Integer a1 = (int) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "mPollutionSmogLimit");
+				Integer a1 = (int) StaticFields59.getFieldFromGregtechProxy(false, "mPollutionSmogLimit");
 				if (a1 != null && a1 > 0) {
 					mPollutionSmogLimit = a1;
 				}

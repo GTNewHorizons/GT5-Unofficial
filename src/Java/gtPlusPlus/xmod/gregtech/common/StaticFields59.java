@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -18,8 +19,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -27,7 +30,7 @@ import net.minecraft.item.ItemStack;
 public class StaticFields59 {
 
 	
-	public static final boolean mGT6StylePipes;
+	public static boolean mGT6StylePipes;
 	
 	public static final Field mGtBlockCasings5;
 	public static final Field mPreventableComponents;
@@ -48,8 +51,6 @@ public class StaticFields59 {
 
 	static {
 		Logger.INFO("[SH] Creating Static Helper for various fields which require reflective access.");
-		
-		mGT6StylePipes = (boolean) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "gt6Pipe");		
 		
 		mGtBlockCasings5 = getField(GregTech_API.class, "sBlockCasings5");
 		Logger.INFO("[SH] Got Field: sBlockCasings5");
@@ -178,6 +179,37 @@ public class StaticFields59 {
 		}
 		catch (Throwable t) {
 			
+		}
+		return null;
+	}
+
+	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
+		Object proxyGT;
+	
+		if (Meta_GT_Proxy.mProxies[0] != null && client) {
+			proxyGT = Meta_GT_Proxy.mProxies[0];
+		} else if (Meta_GT_Proxy.mProxies[1] != null && !client) {
+			proxyGT = Meta_GT_Proxy.mProxies[1];
+		} else {
+			try {
+				proxyGT = (client ? ProxyFinder.getClientProxy(GT_Mod.instance)
+						: ProxyFinder.getServerProxy(GT_Mod.instance));
+			} catch (final ReflectiveOperationException e1) {
+				proxyGT = null;
+				Logger.INFO("Failed to obtain instance of GT " + (client ? "Client" : "Server") + " proxy.");
+			}
+			if (Meta_GT_Proxy.mProxies[0] == null && client) {
+				Meta_GT_Proxy.mProxies[0] = (GT_Proxy) proxyGT;
+			} else if (Meta_GT_Proxy.mProxies[1] == null && !client) {
+				Meta_GT_Proxy.mProxies[1] = (GT_Proxy) proxyGT;
+			}
+		}
+	
+		if (proxyGT != null && proxyGT instanceof GT_Proxy) {
+			try {
+				return ReflectionUtils.getField(proxyGT.getClass(), fieldName).get(proxyGT);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+			}
 		}
 		return null;
 	}

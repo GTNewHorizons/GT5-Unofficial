@@ -38,7 +38,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver", "Now Portable!", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver", "Now Portable!"};
 	}
 	
 	@Override
@@ -253,6 +253,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		final double c = ((double) tempStorage / this.maxEUStore()) * 100;
 		final double roundOff = Math.round(c * 100.00) / 100.00;
 		PlayerUtils.messagePlayer(playerIn, "Energy: " + GT_Utility.formatNumbers(tempStorage) + " EU at "+V[this.mTier]+"v ("+roundOff+"%)");
+		PlayerUtils.messagePlayer(playerIn, "Amperage: " + GT_Utility.formatNumbers(maxAmperesIn())+"A");
 
 	}
 	//Utils.LOG_WARNING("Begin Show Energy");

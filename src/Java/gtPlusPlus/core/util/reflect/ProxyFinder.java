@@ -20,7 +20,7 @@ public class ProxyFinder {
 					}
 
 				} catch (final NoClassDefFoundError err) {
-					//its server side
+					//its client side
 					return null;
 				}
 				break;
