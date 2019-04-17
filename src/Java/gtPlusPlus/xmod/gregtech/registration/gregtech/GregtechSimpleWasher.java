@@ -21,18 +21,18 @@ public class GregtechSimpleWasher {
 			generateDirtyCrushedRecipes();
 			// Register the Simple Washer Entity.
 			GregtechItemList.SimpleDustWasher_ULV
-			.set(new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.01", "Simple Washer", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.01", "Simple Washer I", 0)
 					.getStackForm(1L));
 			
 			//People want them in higher tiers apparently
 			GregtechItemList.SimpleDustWasher_MV
-			.set(new GregtechMetaTileEntity_BasicWasher(30410, "simplewasher.01.tier.02", "Simple Washe IIr", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(30410, "simplewasher.01.tier.02", "Simple Washer II", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_EV
 			.set(new GregtechMetaTileEntity_BasicWasher(30411, "simplewasher.01.tier.03", "Simple Washer III", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_LuV
-			.set(new GregtechMetaTileEntity_BasicWasher(30412, "simplewasher.01.tier.04", "Simple Washe IVr", 0)
+			.set(new GregtechMetaTileEntity_BasicWasher(30412, "simplewasher.01.tier.04", "Simple Washer IV", 0)
 					.getStackForm(1L));
 			GregtechItemList.SimpleDustWasher_UV
 			.set(new GregtechMetaTileEntity_BasicWasher(30413, "simplewasher.01.tier.05", "Simple Washer V", 0)

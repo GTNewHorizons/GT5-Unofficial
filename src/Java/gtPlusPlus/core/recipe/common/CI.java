@@ -369,6 +369,7 @@ public class CI {
 		return Materials._NULL;
 	}
 
+	@Deprecated
 	public static String getTieredComponent(OrePrefixes type, int tier){
 		Object material = getMaterialFromTier(tier);
 		if (material != null){

@@ -94,6 +94,7 @@ public class HANDLER_GT {
 		if (CORE.ConfigSwitches.enableSkookumChoochers){
 			new ProcessingToolHeadChoocher().run();
 		}
+		new ProcessingAngelGrinder().run();
 		
 		if (CORE.ConfigSwitches.enableNitroFix){
 			GregtechNitroDieselFix.run();
