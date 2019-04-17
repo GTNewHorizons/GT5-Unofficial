@@ -702,26 +702,26 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialMultiTankController);
 			}
 
-			ItemStack mSemiFluidgen = ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);
 			//Semi-Fluid Generators
-			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_LV.get(1L, new Object[0]), CI.bitsd,
-					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('P'),
-							ItemList.Electric_Piston_LV, Character.valueOf('E'), ItemList.Electric_Motor_LV,
-							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic), Character.valueOf('W'),
-							mSemiFluidgen, Character.valueOf('G'),
-							OrePrefixes.gearGt.get(Materials.Steel) });
-			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_MV.get(1L, new Object[0]), CI.bitsd,
-					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('P'),
-							ItemList.Electric_Piston_MV, Character.valueOf('E'), ItemList.Electric_Motor_MV,
-							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good), Character.valueOf('W'),
-							mSemiFluidgen, Character.valueOf('G'),
-							OrePrefixes.gearGt.get(Materials.Aluminium) });
-			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_HV.get(1L, new Object[0]), CI.bitsd,
-					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('P'),
-							ItemList.Electric_Piston_HV, Character.valueOf('E'), ItemList.Electric_Motor_HV,
-							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('W'),
-							mSemiFluidgen, Character.valueOf('G'),
-							OrePrefixes.gearGt.get(Materials.StainlessSteel) });
+			ItemStack mSemiFluidgen = ItemUtils.getItemStackFromFQRN("IC2:blockGenerator:7", 1);
+			mSemiFluidgen.setItemDamage(7);
+					//ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);			
+			ItemStack[] aSemifluids = new ItemStack[] {mSemiFluidgen, GregtechItemList.Generator_SemiFluid_LV.get(1), GregtechItemList.Generator_SemiFluid_MV.get(1), GregtechItemList.Generator_SemiFluid_HV.get(1)};
+			for (int o=1;o<4;o++) {
+				CORE.RA.addSixSlotAssemblingRecipe(
+						new ItemStack[] {
+								aSemifluids[o-1],
+								CI.getElectricPiston(o, GTNH ? 4 : 2),
+								CI.getElectricMotor(o, GTNH ? 2 : 1),
+								CI.getTieredComponent(OrePrefixes.circuit, o, GTNH ? 4 : 2),
+								CI.getPlate(o, GTNH ? 8 : 4),
+								CI.getGear(o-1, GTNH ? 4 : 2)
+						},
+						CI.getAlternativeTieredFluid(o, 144 * 4),
+						aSemifluids[o],
+						20 * 30,
+						(int) GT_Values.V[o]);
+			}			
 
 			if (CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter){
 				//Industrial Blast Smelter
