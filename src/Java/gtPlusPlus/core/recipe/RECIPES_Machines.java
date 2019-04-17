@@ -849,15 +849,15 @@ public class RECIPES_Machines {
 			if (CORE.ConfigSwitches.enableMachine_SimpleWasher){
 				ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
 				ItemStack washerPipe;
+				
+				
 				if (CORE.ConfigSwitches.enableCustom_Pipes){
 					washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
 					RecipeUtils.addShapedGregtechRecipe(
 							plateWrought, CI.electricPump_LV, plateWrought,
 							plateWrought, washerPipe, plateWrought,
 							plateWrought, CI.machineCasing_ULV, plateWrought,
-							GregtechItemList.SimpleDustWasher.get(1));
-				}
-				else {			
+							GregtechItemList.SimpleDustWasher_ULV.get(1));
 				}
 				//Add Recipe
 				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);					
@@ -865,7 +865,69 @@ public class RECIPES_Machines {
 						plateWrought, CI.electricPump_LV, plateWrought,
 						plateWrought, washerPipe, plateWrought,
 						plateWrought, CI.machineCasing_ULV, plateWrought,
-						GregtechItemList.SimpleDustWasher.get(1));
+						GregtechItemList.SimpleDustWasher_ULV.get(1));
+				
+				int aSimpleWasherTier = 2;
+				int aSlot = 0;
+				ItemStack[][] aInputsForSimpleWashers = new ItemStack[4][6];
+
+				aInputsForSimpleWashers[0] = new ItemStack[] {
+						CI.getTieredMachineHull(2),
+						CI.getTieredComponent(OrePrefixes.screw, 2, GTNH ? 16 : 8),
+						CI.getTieredComponent(OrePrefixes.plate, 1, GTNH ? 8 : 4),
+						CI.getTieredComponent(OrePrefixes.rod, 2, GTNH ? 4 : 2),
+						CI.getTieredComponent(OrePrefixes.circuit, 2, GTNH ? 3 : 1),
+						
+				};
+				aInputsForSimpleWashers[1] = new ItemStack[] {
+						CI.getTieredMachineHull(4),
+						CI.getTieredComponent(OrePrefixes.screw, 4, GTNH ? 24 : 12),
+						CI.getTieredComponent(OrePrefixes.plate, 3, GTNH ? 12 : 6),
+						CI.getTieredComponent(OrePrefixes.rod, 4, GTNH ? 6 : 3),
+						CI.getTieredComponent(OrePrefixes.circuit, 4, GTNH ? 4 : 2),
+						
+				};
+				aInputsForSimpleWashers[2] = new ItemStack[] {
+						CI.getTieredMachineHull(6),
+						CI.getTieredComponent(OrePrefixes.screw, 6, GTNH ? 48 : 24),
+						CI.getTieredComponent(OrePrefixes.plate, 5, GTNH ? 16 : 8),
+						CI.getTieredComponent(OrePrefixes.rod, 6, GTNH ? 8 : 4),
+						CI.getTieredComponent(OrePrefixes.circuit, 6, GTNH ? 6 : 3),
+						
+				};
+				aInputsForSimpleWashers[3] = new ItemStack[] {
+						CI.getTieredMachineHull(8),
+						CI.getTieredComponent(OrePrefixes.screw, 8, GTNH ? 64 : 32),
+						CI.getTieredComponent(OrePrefixes.plate, 7, GTNH ? 32 : 16),
+						CI.getTieredComponent(OrePrefixes.rod, 8, GTNH ? 10 : 5),
+						CI.getTieredComponent(OrePrefixes.circuit, 8, GTNH ? 8 : 4),
+						
+				};
+				
+				
+				
+				
+				
+				
+				ItemStack[] aSimpleWashers = new ItemStack[] {GregtechItemList.SimpleDustWasher_MV.get(1), GregtechItemList.SimpleDustWasher_EV.get(1), GregtechItemList.SimpleDustWasher_LuV.get(1), GregtechItemList.SimpleDustWasher_UV.get(1)};
+				for (int i=0;i<4;i++) {
+					
+					CORE.RA.addSixSlotAssemblingRecipe(
+							aInputsForSimpleWashers[aSlot],
+							CI.getTieredFluid(aSimpleWasherTier, 144 * aSimpleWasherTier), 
+							aSimpleWashers[aSlot], 
+							20 * 15 * aSimpleWasherTier,
+							(int) GT_Values.V[aSimpleWasherTier]);
+					
+					aSimpleWasherTier += 2;
+					aSlot++;
+				}
+				
+				
+				
+				
+				
+				
 			}
 
 			if (CORE.ConfigSwitches.enableMachine_Pollution && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){

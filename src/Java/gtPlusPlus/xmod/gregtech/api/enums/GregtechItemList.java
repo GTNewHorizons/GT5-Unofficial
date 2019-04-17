@@ -423,7 +423,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Basically is an automatic Cauldron
-	SimpleDustWasher, 
+	SimpleDustWasher_ULV, 
+	SimpleDustWasher_MV, 
+	SimpleDustWasher_EV, 
+	SimpleDustWasher_LuV, 
+	SimpleDustWasher_UV, 
 	
 	//Solar Tower Reflector
 	Solar_Tower_Reflector,

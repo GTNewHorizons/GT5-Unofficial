@@ -6,8 +6,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.common.GT_Pollution;
 import java.util.Collection;
 import java.util.Iterator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -200,7 +200,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 							(this.maxEUStore() - aBaseMetaTileEntity.getUniversalEnergyStored()) / (long) tFuelValue);
 					if (tFluidAmountToUse > 0L && aBaseMetaTileEntity
 							.increaseStoredEnergyUnits(tFluidAmountToUse * (long) tFuelValue, true)) {
-						GT_Pollution.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
+						PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
 						this.mFluid.amount = (int) ((long) this.mFluid.amount - tFluidAmountToUse * (long) tConsumed);
 					}
 				}
@@ -216,7 +216,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
 					if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tEmptyContainer)) {
 						aBaseMetaTileEntity.increaseStoredEnergyUnits((long) tFuelValue, true);
 						aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
-						GT_Pollution.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
+						PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10 * this.getPollution());
 					}
 				}
 			}

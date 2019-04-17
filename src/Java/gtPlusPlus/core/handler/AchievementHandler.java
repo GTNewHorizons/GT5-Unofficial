@@ -71,7 +71,7 @@ public class AchievementHandler {
 		this.registerAchievement("rtg", -16, -10, GregtechItemList.RTG.get(1), aBaseAchievementName, false);
 		this.registerAchievement("dehydrate", -15, -10, GregtechItemList.GT_Dehydrator_HV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("semifluid", -14, -10, GregtechItemList.Generator_SemiFluid_HV.get(1), aBaseAchievementName, false);
-		this.registerAchievement("earlywasher", -13, -10, GregtechItemList.SimpleDustWasher.get(1), aBaseAchievementName, false);
+		this.registerAchievement("earlywasher", -13, -10, GregtechItemList.SimpleDustWasher_ULV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("advancedsteam", -12, -10, GregtechItemList.Boiler_Advanced_MV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("pollutionremoval", -11, -10, GregtechItemList.Pollution_Cleaner_IV.get(1), aBaseAchievementName, false);
 		this.registerAchievement("hiampxform", -10, -10, GregtechItemList.Transformer_HA_HV_MV.get(1), aBaseAchievementName, false);		
