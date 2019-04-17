@@ -18,9 +18,9 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegis
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, Runnable {
-	public ProcessingAngelGrinder() {
-		GregtechOrePrefixes.toolAngleGrinder.add(this);
+public class ProcessingElectricSnips implements Interface_OreRecipeRegistrator, Runnable {
+	public ProcessingElectricSnips() {
+		GregtechOrePrefixes.toolElectricSnips.add(this);
 	}
 
 	@Override
@@ -61,20 +61,19 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 						&& (!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.TRANSPARENT))
 						&& (!aMaterial.contains(SubTag.FLAMMABLE)) && (!aMaterial.contains(SubTag.MAGICAL))
 						&& (!aMaterial.contains(SubTag.NO_SMELTING))) {
-					Logger.INFO("Generating Angle Grinder from "+MaterialUtils.getMaterialName(aMaterial));
+					Logger.INFO("Generating Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 					// Input 1
 					
 
 					final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
-					//final ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 
-					if ((null != plate /*&& longrod != null*/)) {						
+					if ((null != plate)) {						
 					     addRecipe(aMaterial, 1600000L, 3, ItemList.Battery_RE_HV_Lithium.get(1));
 					     addRecipe(aMaterial, 1200000L, 3, ItemList.Battery_RE_HV_Cadmium.get(1));
 					     addRecipe(aMaterial, 800000L, 3, ItemList.Battery_RE_HV_Sodium.get(1));						
 						used++;
 					} else {
-						Logger.INFO("Unable to generate Angle Grinder from "+MaterialUtils.getMaterialName(aMaterial)+", Plate or Long Rod may be invalid. Invalid | Plate? "+(plate == null) /*+" | Rod? "+(longrod == null)+" |"*/);
+						Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Plate or Long Rod may be invalid. Invalid | Plate? "+(plate == null) +" | Rod? "+" |");
 					}
 					// GT_ModHandler.addCraftingRecipe(,
 					// GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -83,10 +82,10 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 					// Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
 					// Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
 				} else {
-					Logger.INFO("Unable to generate Angle Grinder from "+MaterialUtils.getMaterialName(aMaterial));
+					Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 				}
 			} else {
-				Logger.INFO("Unable to generate Angle Grinder from "+MaterialUtils.getMaterialName(aMaterial));
+				Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial));
 			}
 
 		}
@@ -96,14 +95,14 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 
 	@Override
 	public void run() {
-		Logger.INFO("Generating Angle Grinders for all valid GT Materials.");
+		Logger.INFO("Generating Electric Snipss for all valid GT Materials.");
 		this.materialsLoops();
 	}
 	
 	public boolean addRecipe(Materials aMaterial, long aBatteryStorage, int aVoltageTier, ItemStack aBattery) {
 		
 		ItemStack aOutputStack = MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-				 MetaGeneratedGregtechTools.ANGLE_GRINDER,
+				 MetaGeneratedGregtechTools.ELECTRIC_SNIPS,
 				 1,
 				 aMaterial,
 				 Materials.Titanium, 
@@ -113,7 +112,7 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 
 		long aDura = MetaGeneratedGregtechTools.getToolMaxDamage(aOutputStack);	
 		if (aDura <= 32000) {
-			Logger.INFO("Unable to generate Angle Grinder from "+MaterialUtils.getMaterialName(aMaterial)+", Durability: "+aDura);
+			Logger.INFO("Unable to generate Electric Snips from "+MaterialUtils.getMaterialName(aMaterial)+", Durability: "+aDura);
 			return false;
 		}
 		
@@ -124,11 +123,11 @@ public class ProcessingAngelGrinder implements Interface_OreRecipeRegistrator, R
 						 "SXS",
 						 "GMG",
 						 "PBP",
-						 'X', ItemList.Component_Grinder_Diamond.get(1),
-						 'M', CI.getElectricMotor(aVoltageTier, 1),
-						 'S', OrePrefixes.screw.get(Materials.Titanium),
+						 'X', ItemList.Component_Grinder_Tungsten.get(1),
+						 'M', CI.getElectricMotor(aVoltageTier+1, 1),
+						 'S', OrePrefixes.screw.get(Materials.Tungsten),
 						 'P', OrePrefixes.plate.get(aMaterial),
-						 'G', OrePrefixes.gearGtSmall.get(Materials.Tungsten),
+						 'G', OrePrefixes.gearGtSmall.get(Materials.Titanium),
 						 'B', aBattery
 						 });
 		    

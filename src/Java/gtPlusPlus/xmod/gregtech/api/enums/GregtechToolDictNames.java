@@ -2,6 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 public enum GregtechToolDictNames {
 
-	craftingToolSkookumChoocher, craftingToolHandPump, craftingToolAngleGrinder;
+	craftingToolSkookumChoocher, craftingToolHandPump, craftingToolAngleGrinder, craftingToolElectricSnips;
 
 }

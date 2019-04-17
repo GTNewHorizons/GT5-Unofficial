@@ -6,14 +6,12 @@ import java.util.List;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
-public class TOOL_Gregtech_AngelGrinder
+public class TOOL_Gregtech_ElectricSnips
 extends GT_Tool {
 
 	public static final List<String> mEffectiveList = Arrays.asList(new String[]{EntityIronGolem.class.getName(), "EntityTowerGuardian"});
@@ -66,17 +64,17 @@ extends GT_Tool {
 
 	@Override
 	public float getBaseDamage() {
-		return 8.0F;
+		return 4.0F;
 	}
 
 	@Override
 	public float getSpeedMultiplier() {
-		return 2F;
+		return 1F;
 	}
 
 	@Override
 	public float getMaxDurabilityMultiplier() {
-		return 1.8F;
+		return 1.4F;
 	}
 
 	@Override
@@ -121,7 +119,7 @@ extends GT_Tool {
 	@Override
 	public boolean isMinableBlock(final Block aBlock, final byte aMetaData) {
 		final String tTool = aBlock.getHarvestTool(aMetaData);
-		return (tTool != null) && (tTool.equals("sword") || tTool.equals("file")); 
+		return (tTool != null) && (tTool.equals("sword") || tTool.equals("cutter")); 
 	}
 	
 
@@ -157,14 +155,14 @@ extends GT_Tool {
 	
 	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 		return (IIconContainer) (aIsToolHead
-				? TexturesGtTools.ANGEL_GRINDER
+				? TexturesGtTools.ELECTRIC_SNIPS
 				: ItemIcons.POWER_UNIT_HV);
 	}
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
 		return !aIsToolHead
 				? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-				: Materials.Diamond.mRGBa;
+				: GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
 	}
 	
 	
@@ -183,7 +181,7 @@ extends GT_Tool {
 
 	@Override
 	public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
-		return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been Ground out of existence by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+		return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " has been Snipped out of existence by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
 	}
 
 	@Override

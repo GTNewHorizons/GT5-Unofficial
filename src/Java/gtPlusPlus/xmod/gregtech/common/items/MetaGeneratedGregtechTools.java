@@ -7,11 +7,13 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechToolDictNames;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_AngelGrinder;
 import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_Choocher;
+import gtPlusPlus.xmod.gregtech.common.tools.TOOL_Gregtech_ElectricSnips;
 
 public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 
 	public static final short SKOOKUM_CHOOCHER = 7734;
 	public static final short ANGLE_GRINDER = 7834;
+	public static final short ELECTRIC_SNIPS = 7934;
 	public static GT_MetaGenerated_Tool INSTANCE;
 
 	public MetaGeneratedGregtechTools() {
@@ -30,6 +32,14 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 		this.addTool(ANGLE_GRINDER, "Angle Grinder", "Hand-held electric filing device",
 				new TOOL_Gregtech_AngelGrinder(),
 				new Object[] { GregtechToolDictNames.craftingToolAngleGrinder, ToolDictNames.craftingToolFile,
+						new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
+						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
+						new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
+
+		// Electric Wire Cutter
+		this.addTool(ELECTRIC_SNIPS, "Automatic Snips", "Hand-held electric wire cutter",
+				new TOOL_Gregtech_ElectricSnips(),
+				new Object[] { GregtechToolDictNames.craftingToolElectricSnips, ToolDictNames.craftingToolWireCutter,
 						new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L),
 						new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 2L),
 						new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 2L) });
