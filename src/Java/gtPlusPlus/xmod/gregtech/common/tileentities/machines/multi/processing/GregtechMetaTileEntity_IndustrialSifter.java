@@ -170,7 +170,7 @@ extends GregtechMeta_MultiBlockBase {
 							
 						}
 						else {							
-							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
+							if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
 								log("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
 								log("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
@@ -181,16 +181,9 @@ extends GregtechMeta_MultiBlockBase {
 					else {
 						//Dealt with inner 5x5, now deal with the exterior.
 						//Deal with all 4 sides (Sifter walls)
-						boolean checkController = false;
-						if (((xDir + i) != 0) || (((zDir + j) != 0) && (h == 0))) {//no controller
-							checkController = true;
-						}
-						else {
-							checkController = false;
-						}						
-						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {							
+						boolean checkController = false;											
 							if (!checkController){		
-								if (!isValidBlockForStructure(null, TAE.GTPP_INDEX(21), false, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
+								if (!isValidBlockForStructure(tTileEntity, TAE.GTPP_INDEX(21), true, aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j), (int) aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j), ModBlocks.blockCasings2Misc, 5)) {
 									if ((tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter) || (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines)){
 										if (h != 0){
 											log("Found a secondary controller at the wrong Y level.");
@@ -205,10 +198,7 @@ extends GregtechMeta_MultiBlockBase {
 								}
 							}
 							tAmount++;
-						}
-						else {
-							tAmount++;
-						}
+						
 					}
 				}
 			}
