@@ -36,10 +36,10 @@ public class GenericChem extends ItemPackage {
 			null,
 			0,
 			new MaterialStack[] {
-					new MaterialStack(NONMATERIAL.PTFE, 88),
-					new MaterialStack(NONMATERIAL.PLASTIC, 6),
-					new MaterialStack(ELEMENT.getInstance().CHLORINE, 3),
-					new MaterialStack(ELEMENT.getInstance().SODIUM, 3)
+					new MaterialStack(NONMATERIAL.PTFE, 75),
+					new MaterialStack(NONMATERIAL.PLASTIC, 15),
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 5),
+					new MaterialStack(ELEMENT.getInstance().SODIUM, 5)
 					});// Not a GT
 																										// Inherited
 																										// Material
