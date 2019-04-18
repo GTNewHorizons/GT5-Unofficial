@@ -27,7 +27,10 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.ORES;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -156,8 +159,23 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				this.putMiningPipesFromInputsInController();
 
 				if (!this.tryConsumeDrillingFluid()) {
+					Logger.INFO("No drilling Fluid.");
 					return false;
 				}
+				
+				if (this.mRuntime % 2 == 0) {
+					if (!this.tryConsumePyrotheum()) {
+						Logger.INFO("No tryConsumePyrotheum Fluid.");
+						return false;
+					}
+				}
+				else {
+					if (!this.tryConsumeCryotheum()) {
+						Logger.INFO("No tryConsumeCryotheum Fluid.");
+						return false;
+					}
+				}
+				
 
 				if (this.oreBlockPositions.isEmpty()) {
 					// Hit bedrock Either retract pipe or Dig!
@@ -171,6 +189,134 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 						}
 						// Full Power!
 						else {
+							
+							//We assume this drill head is in a supported location at Y 5 or less. It should also be touching bedrock.
+							ItemStack[] aOutputs = new ItemStack[] {
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().IRON.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().COPPER.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().GOLD.getOre(1),
+									ELEMENT.getInstance().SILVER.getOre(1),
+									ELEMENT.getInstance().SILVER.getOre(1),
+									ELEMENT.getInstance().SILVER.getOre(1),
+									ELEMENT.getInstance().SILVER.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().ALUMINIUM.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().TIN.getOre(1),
+									ELEMENT.getInstance().ZINC.getOre(1),
+									ELEMENT.getInstance().ZINC.getOre(1),
+									ELEMENT.getInstance().ZINC.getOre(1),
+									ELEMENT.getInstance().ZINC.getOre(1),
+									ELEMENT.getInstance().NICKEL.getOre(1),
+									ELEMENT.getInstance().NICKEL.getOre(1),
+									ELEMENT.getInstance().NICKEL.getOre(1),
+									ELEMENT.getInstance().NICKEL.getOre(1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),
+									ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),									
+									ItemUtils.getItemStackOfAmountFromOreDict("oreTungstate", 1),								
+									ELEMENT.STANDALONE.RUNITE.getOre(1),
+									ELEMENT.STANDALONE.GRANITE.getOre(1),									
+									ORES.AGARDITE_CD.getOre(1),	
+									ORES.ALBURNITE.getOre(1),	
+									ORES.CERITE.getOre(1),	
+									ORES.FLUORCAPHITE.getOre(1),	
+									ORES.HIBONITE.getOre(1),	
+									ORES.MIESSIITE.getOre(1),	
+									ORES.ZIMBABWEITE.getOre(1),	
+									ORES.SAMARSKITE_YB.getOre(1),	
+							};
+							
+							int aChance = MathUtils.randInt(0, 10000);
+							if (aChance <= 100) {								
+								ItemStack aChance1 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+								if (ItemUtils.checkForInvalidItems(aChance1)) {
+									this.addOutput(aChance1);									
+								}
+								ItemStack aChance2 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+								if (ItemUtils.checkForInvalidItems(aChance2)) {
+									this.addOutput(aChance2);									
+								}
+								ItemStack aChance3 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+								if (ItemUtils.checkForInvalidItems(aChance3)) {
+									this.addOutput(aChance3);									
+								}
+							}							
 							didWork[g] = true;
 						}
 					}

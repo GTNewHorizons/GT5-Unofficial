@@ -132,6 +132,25 @@ public class GTplusplus_Everglades implements ActionListener {
 					ELEMENT.getInstance().TRINIUM_REFINED.getRGBA());
 		}
 		
+		
+		
+		/*
+		 * OSRS Materials
+		 */
+		
+		MaterialGenerator.generateOreMaterial(
+				ELEMENT.STANDALONE.GRANITE,
+				true,
+				false,
+				false,
+				ELEMENT.STANDALONE.GRANITE.getRGBA());		
+		MaterialGenerator.generateOreMaterial(
+				ELEMENT.STANDALONE.RUNITE,
+				true,
+				false,
+				false,
+				ELEMENT.STANDALONE.RUNITE.getRGBA());
+		
 
 		
 	}
