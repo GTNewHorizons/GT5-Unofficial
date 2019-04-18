@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
+import static gregtech.api.GregTech_API.sBlockCasings4;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -116,25 +118,180 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		aNBT.setDouble("mProductionModifier", mProductionModifier);
-		for (int g = 0; g < 5; g++) {
-			aNBT.setBoolean("isPickingPipes" + g, this.isPickingPipes[g]);
-		}
 	}
 
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
 		this.mProductionModifier = aNBT.getDouble("mProductionModifier");
-		for (int g = 0; g < 5; g++) {
-			this.isPickingPipes[g] = aNBT.getBoolean("isPickingPipes" + g);
-		}
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-		this.setElectricityStats();
+		//this.setElectricityStats();
 
 		boolean[] didWork = new boolean[5];
-
-		final int oldYHead = this.yHead[0];
+		
+		if (!this.tryConsumeDrillingFluid()) {
+			Logger.INFO("No drilling Fluid.");
+			return false;
+		}
+		
+		if (MathUtils.isNumberEven((int) this.mProductionModifier)) {
+			if (!this.tryConsumePyrotheum()) {
+				Logger.INFO("No tryConsumePyrotheum Fluid.");
+				return false;
+			}
+			else {
+				mProductionModifier++;
+				Logger.INFO("tryConsumePyrotheum Fluid. "+(int) this.mProductionModifier);						
+			}
+		}
+		else {
+			if (!this.tryConsumeCryotheum()) {
+				Logger.INFO("No tryConsumeCryotheum Fluid.");
+				return false;
+			}
+			else {
+				mProductionModifier++;
+				Logger.INFO("tryConsumeCryotheum Fluid. "+(int) this.mProductionModifier);						
+			}
+		}
+		
+		for (int i = 0; i < 5; i++) {			
+			//We assume this drill head is in a supported location at Y 5 or less. It should also be touching bedrock.
+			ItemStack[] aOutputs = new ItemStack[] {
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().IRON.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().COPPER.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().GOLD.getOre(1),
+					ELEMENT.getInstance().SILVER.getOre(1),
+					ELEMENT.getInstance().SILVER.getOre(1),
+					ELEMENT.getInstance().SILVER.getOre(1),
+					ELEMENT.getInstance().SILVER.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().ALUMINIUM.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().TIN.getOre(1),
+					ELEMENT.getInstance().ZINC.getOre(1),
+					ELEMENT.getInstance().ZINC.getOre(1),
+					ELEMENT.getInstance().ZINC.getOre(1),
+					ELEMENT.getInstance().ZINC.getOre(1),
+					ELEMENT.getInstance().NICKEL.getOre(1),
+					ELEMENT.getInstance().NICKEL.getOre(1),
+					ELEMENT.getInstance().NICKEL.getOre(1),
+					ELEMENT.getInstance().NICKEL.getOre(1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),									
+					ItemUtils.getItemStackOfAmountFromOreDict("oreTungstate", 1),								
+					ELEMENT.STANDALONE.RUNITE.getOre(1),
+					ELEMENT.STANDALONE.GRANITE.getOre(1),									
+					ORES.AGARDITE_CD.getOre(1),	
+					ORES.ALBURNITE.getOre(1),	
+					ORES.CERITE.getOre(1),	
+					ORES.FLUORCAPHITE.getOre(1),	
+					ORES.HIBONITE.getOre(1),	
+					ORES.MIESSIITE.getOre(1),	
+					ORES.ZIMBABWEITE.getOre(1),	
+					ORES.SAMARSKITE_YB.getOre(1),	
+			};
+			
+			int aChance = MathUtils.randInt(0, 10000);
+			if (aChance <= 100) {								
+				ItemStack aChance1 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+				if (ItemUtils.checkForInvalidItems(aChance1)) {
+					this.addOutput(aChance1);									
+				}
+				ItemStack aChance2 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+				if (ItemUtils.checkForInvalidItems(aChance2)) {
+					this.addOutput(aChance2);									
+				}
+				ItemStack aChance3 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
+				if (ItemUtils.checkForInvalidItems(aChance3)) {
+					this.addOutput(aChance3);									
+				}
+				Logger.INFO("Tried to add some loot to DEDP.");
+			}							
+			didWork[i] = true;
+		
+		}
+		
+		
+		
+		/*final int oldYHead = this.yHead[0];
 		if (!this.checkPipesAndSetYHead() || !this.isEnergyEnough()) {
 			this.stopMachine();
 			return false;
@@ -168,11 +325,17 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 						Logger.INFO("No tryConsumePyrotheum Fluid.");
 						return false;
 					}
+					else {
+						Logger.INFO("tryConsumePyrotheum Fluid.");						
+					}
 				}
 				else {
 					if (!this.tryConsumeCryotheum()) {
 						Logger.INFO("No tryConsumeCryotheum Fluid.");
 						return false;
+					}
+					else {
+						Logger.INFO("tryConsumeCryotheum Fluid.");						
 					}
 				}
 				
@@ -321,8 +484,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 						}
 					}
 				}
+				else {		
+					didWork[g] = true;					
+				}
 			}
-		}
+		}*/
 
 		// Fail recipe handling if one pipe didn't handle properly, to try again
 		// next run.
@@ -332,7 +498,14 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				return false;
 			}
 		}
-		// Logger.INFO("[Bedrock Miner] Success? [x]");
+		
+		this.mEUt = 8000;
+		this.mMaxProgresstime = 10;
+		this.mEfficiencyIncrease = 10000;
+		//this.mProgresstime = (this.mMaxProgresstime > this.mProgresstime ? this.mProgresstime + 1 : 0);
+		
+		updateSlots();
+		Logger.INFO("[Bedrock Miner] Success? [x]");
 		return true;
 	}
 
@@ -428,16 +601,16 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		boolean g = (this.getBaseMetaTileEntity().getWorld().getTotalWorldTime() % 2 == 0);
 		consumed = (g ? tryConsumePyrotheum() : tryConsumeCryotheum());
 		if (consumed) {
-			increaseProduction(g ? 2 : 1);
+			//increaseProduction(g ? 2 : 1);
 		}
 		else {
-			lowerProduction(g ? 5 : 3);
+			//lowerProduction(g ? 5 : 3);
 		}
 		return consumed;
 	}
 
 	private boolean tryConsumePyrotheum() {
-		return this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 2));
+		return this.depleteInput(FluidUtils.getFluidStack("pyrotheum", 4));
 	}
 
 	private boolean tryConsumeCryotheum() {
@@ -528,11 +701,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		}
 		boolean didWork[] = new boolean[3];
 
-		if (this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], Blocks.bedrock,
+		/*if (this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], Blocks.bedrock,
 				32767)) {
 			// Logger.INFO("[Bedrock Miner] Pipe "+pipe+" is at Bedrock.");
 			return false;
-		}
+		}*/
 		didWork[0] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] - 1,
 				this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
 		if (didWork[0]) {
@@ -571,7 +744,72 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		this.updateCoordinates();
-		for (int xOff = -1 + this.back.offsetX; xOff <= 1 + this.back.offsetX; ++xOff) {
+		
+		
+		
+		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		int tAmount = 0;
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+			return false;
+		} else {
+			
+			Block aCasing = Block.getBlockFromItem(getCasingBlockItem().getItem());
+			
+			for (int i = -1; i < 2; ++i) {
+				for (int j = -1; j < 2; ++j) {
+					for (int h = -1; h < 2; ++h) {
+						if (h != 0 || (xDir + i != 0 || zDir + j != 0) && (i != 0 || j != 0)) {
+							IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
+									h, zDir + j);
+							Block aBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							int aMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+
+							if (!this.addToMachineList(tTileEntity, 48)) {
+								if (aBlock != aCasing) {
+									Logger.INFO("Found Bad Casing");
+									return false;
+								}
+								if (aMeta != 3) {
+									Logger.INFO("Found Bad Meta");
+									return false;
+								}
+							}
+							++tAmount;
+							
+							
+							
+							/*if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta,	sBlockCasings4, 0)) {
+								Logger.INFO("Bad centrifuge casing");
+								return false;
+							}*/
+
+						}
+					}
+				}
+			}
+			return tAmount >= 10;
+		}
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*for (int xOff = -1 + this.back.offsetX; xOff <= 1 + this.back.offsetX; ++xOff) {
 			for (int zOff = -1 + this.back.offsetZ; zOff <= 1 + this.back.offsetZ; ++zOff) {
 				if (xOff != 0 || zOff != 0) {
 					final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xOff, 0, zOff);
@@ -582,7 +820,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 							&& !this.addInputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addOutputToMachineList(tTileEntity, this.casingTextureIndex)
 							&& !this.addEnergyInputToMachineList(tTileEntity, this.casingTextureIndex)) {
-						Logger.INFO("[Bedrock Miner] Found bad blosck in Structure.");
+						Logger.INFO("[Bedrock Miner] Found bad block in Structure.");
 						if (tBlock != null) {
 							//Logger.INFO("[Bedrock Miner] Found "+(new ItemStack(tBlock, tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), xOff, 0, zOff))).getDisplayName()+", expected "+this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName());
 						}
@@ -612,12 +850,12 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			}
 		}
 		Logger.INFO("[Bedrock Miner] Built.");
-		return true;
+		return true;*/
 	}
 
 	private void updateCoordinates() {
 		this.xDrill = this.getBaseMetaTileEntity().getXCoord();
-		this.yDrill = this.getBaseMetaTileEntity().getYCoord();
+		this.yDrill = this.getBaseMetaTileEntity().getYCoord()-1;
 		this.zDrill = this.getBaseMetaTileEntity().getZCoord();
 		this.back = ForgeDirection.getOrientation((int) this.getBaseMetaTileEntity().getBackFacing());
 
@@ -641,7 +879,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	private boolean checkPipesAndSetYHead() {
 		for (int g = 0; g < 5; g++) {
-			this.yHead[g] = this.yDrill - 1;
+			this.yHead[g] = this.yDrill -5;
 			// Logger.INFO("[Bedrock Miner] Set yHead["+g+"] to
 			// "+this.yHead[g]+".");
 			while (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
@@ -650,7 +888,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			}
 			if (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
 					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock, 32767)
-					|| ++this.yHead[g] == this.yDrill) {
+					|| ++this.yHead[g] == this.yDrill || GT_Utility.isBlockAir(this.getBaseMetaTileEntity().getWorld(), this.xCenter[g], this.yHead[g], this.zCenter[g])) {
 				continue;
 			}
 			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g], this.zCenter[g],

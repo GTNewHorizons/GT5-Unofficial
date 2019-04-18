@@ -19,6 +19,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -43,7 +44,7 @@ public class AchievementHandler {
 		GT_Log.out.println("Initializing GT++ achievements");
 		
 		//register first
-		this.registerAchievement(aBaseAchievementName, 0, 0, GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, Materials.Neutronium, Materials.Osmium, null), "", true);
+		this.registerAchievement(aBaseAchievementName, 0, 0, MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(MetaGeneratedGregtechTools.ANGLE_GRINDER, 1, Materials.Osmium, Materials.Osmium, null), "", true);
 	       
 		//Useful Info
 		boolean cores = CORE.ConfigSwitches.requireControlCores;
