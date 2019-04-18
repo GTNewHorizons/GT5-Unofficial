@@ -47,7 +47,9 @@ import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
+import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
@@ -61,6 +63,7 @@ import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBat;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 
@@ -138,6 +141,8 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGiantChickenBase.class, new RenderGiantChicken(new ModelGiantChicken(), 1f));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBatKing.class, new RenderBatKing());
+		RenderingRegistry.registerEntityRenderingHandler(EntityThrowableBomb.class, new RenderSnowball(ModItems.itemBomb, 1));
+		RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
 
 		/**
 		 * Tiles
