@@ -12,6 +12,7 @@ import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +52,7 @@ public class ItemThrowableBomb extends CoreItem {
 			for (ItemStack aPlaySlot : player.inventory.mainInventory) {
 				if (aPlaySlot != null) {
 					for (ItemStack aLighter : mLighters) {
-						if (GT_Utility.areStacksEqual(aPlaySlot, aLighter)) {
+						if (GT_Utility.areStacksEqual(aPlaySlot, aLighter) || (aPlaySlot.getItem() instanceof MetaGeneratedGregtechTools && aPlaySlot.getItemDamage() == MetaGeneratedGregtechTools.ELECTRIC_LIGHTER)) {
 							hasLighter = true;
 							break;
 						}					
