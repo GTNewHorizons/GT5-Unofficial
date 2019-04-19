@@ -23,11 +23,9 @@
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import net.minecraft.util.ResourceLocation;
 
-public class SkyProviderRoss128b extends SkyProviderOverworld {
-
+public class SkyProviderRoss128b {
     //ASM enables this texture
     public static final ResourceLocation sunTex = new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/World/SunRoss128.png");
 }

@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +39,9 @@ import org.apache.logging.log4j.Logger;
         dependencies = "required-after:IC2; "
                 + "required-after:gregtech; "
                 + "required-after:bartworks;"
-                + "after:GalacticraftCore;"
+                + "after:GalacticraftMars; "
+                + "after:GalacticraftCore; "
+                + "after:Micdoodlecore; "
 )
 public class BartWorksCrossmod {
     public static final String NAME = "BartWorks Mod Additions";
@@ -62,6 +65,13 @@ public class BartWorksCrossmod {
         if (Loader.isModLoaded("GalacticraftCore"))
             GalacticraftProxy.init(init);
     }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent init) {
+        if (Loader.isModLoaded("GalacticraftCore"))
+            GalacticraftProxy.postInit(init);
+    }
+
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {

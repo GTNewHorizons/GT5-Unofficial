@@ -22,6 +22,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
+import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -32,6 +33,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ImplosionCo
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -186,7 +188,7 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
                     IGregTechTileEntity te = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, z + zDir);
                     if (y == -2 || y == 6) {
                         if (!(x == 0 && z == 0)) {
-                            if (!this.addMaintenanceToMachineList(te, 16) && !this.addMufflerToMachineList(te, 16) && !this.addInputToMachineList(te, 16) && !this.addOutputToMachineList(te, 16)) {
+                            if (!this.addMaintenanceToMachineList(te, 16) && !this.addInputToMachineList(te, 16) && !this.addOutputToMachineList(te, 16)) {
                                 Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z);
                                 byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z);
                                 if ((tBlock != GregTech_API.sBlockCasings2 || tMeta != 0) && (tBlock != GregTech_API.sBlockCasings3 || tMeta != 4)) {
@@ -248,6 +250,12 @@ public class GT_TileEntity_ElectricImplosionCompressor extends GT_MetaTileEntity
 
     @Override
     public String[] getDescription() {
-        return new String[0];
+        String[] dsc = StatCollector.translateToLocal("tooltip.tile.eic.0.name").split(";");
+        String[] mDescription = new String[dsc.length + 1];
+        for (int i = 0; i < dsc.length; i++) {
+            mDescription[i] = dsc[i];
+            mDescription[dsc.length] = StatCollector.translateToLocal("tooltip.bw.1.name") + ChatColorHelper.DARKGREEN + " BartWorks";
+        }
+        return mDescription;
     }
 }

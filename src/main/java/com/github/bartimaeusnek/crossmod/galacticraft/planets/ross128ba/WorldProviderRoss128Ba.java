@@ -30,7 +30,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderRoss128ba extends AbstractWorldProviderSpace {
+public class WorldProviderRoss128Ba extends AbstractWorldProviderSpace {
     @Override
     public Vector3 getFogColor() {
         return new Vector3(0,0,0);

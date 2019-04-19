@@ -47,6 +47,8 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
         minecraftDir = (File) FMLInjectionData.data()[6];
         //do all the configuration already now...
         new ConfigHandler(new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg")));
+        //config Override if mods are missing.
+        new BWCoreTransformer().checkForMods();
     }
 
     @Override

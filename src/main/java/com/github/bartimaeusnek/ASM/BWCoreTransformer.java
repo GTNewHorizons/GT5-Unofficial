@@ -47,7 +47,7 @@ public class BWCoreTransformer implements IClassTransformer {
 
     public static boolean[] shouldTransform = new boolean[CLASSESBEEINGTRANSFORMED.length];
 
-    static {
+    public void checkForMods() {
         //hacky way to detect if the mods are loaded
         try{
             Class.forName("com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime");
@@ -58,7 +58,7 @@ public class BWCoreTransformer implements IClassTransformer {
             shouldTransform[1] = false;
         }
         try{
-            Class.forName("micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld");
+            Class.forName("micdoodle8.mods.galacticraft.core.Constants");
             shouldTransform[2] = true;
         }catch (ClassNotFoundException e){
             shouldTransform[2] = false;

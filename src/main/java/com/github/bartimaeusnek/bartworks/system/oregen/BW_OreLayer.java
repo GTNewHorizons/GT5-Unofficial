@@ -23,15 +23,12 @@
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GT_Worldgen;
-import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

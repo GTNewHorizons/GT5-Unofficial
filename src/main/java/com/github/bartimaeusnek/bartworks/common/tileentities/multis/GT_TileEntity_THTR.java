@@ -176,7 +176,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 //                    0.01f,
 //                    ExplosionIC2.Type.Nuclear
 //                    ).doExplosion();
-            return false;
+            toProduce=accessibleCoolant;
         }
 
         accessibleCoolant=toProduce;
