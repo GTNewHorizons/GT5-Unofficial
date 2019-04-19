@@ -23,7 +23,6 @@
 package com.github.bartimaeusnek.ASM;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
@@ -42,11 +41,29 @@ public class BWCoreTransformer implements IClassTransformer {
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
-            //"micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld",
             "net.minecraft.client.renderer.RenderGlobal",
     };
     public static boolean obfs = false;
-    public static boolean[] shouldTransform = ArrayUtils.toPrimitive(new Boolean[BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length], true);
+
+    public static boolean[] shouldTransform = new boolean[CLASSESBEEINGTRANSFORMED.length];
+
+    static {
+        //hacky way to detect if the mods are loaded
+        try{
+            Class.forName("com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime");
+            shouldTransform[0] = true;
+            shouldTransform[1] = true;
+        }catch (ClassNotFoundException e){
+            shouldTransform[0] = false;
+            shouldTransform[1] = false;
+        }
+        try{
+            Class.forName("micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld");
+            shouldTransform[2] = true;
+        }catch (ClassNotFoundException e){
+            shouldTransform[2] = false;
+        }
+    }
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
@@ -143,11 +160,11 @@ public class BWCoreTransformer implements IClassTransformer {
                                     nu.add(new VarInsnNode(ALOAD, 0));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/renderer/RenderGlobal", useSrc ? theWorld_src : "theWorld", "Lnet/minecraft/client/multiplayer/WorldClient;"));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/multiplayer/WorldClient", useSrc ? provider_src : "provider", "Lnet/minecraft/world/WorldProvider;"));
-                                    nu.add(new TypeInsnNode(INSTANCEOF, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128/world/worldprovider/WorldProviderRoss128b"));
+                                    nu.add(new TypeInsnNode(INSTANCEOF, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/WorldProviderRoss128b"));
                                     nu.add(new JumpInsnNode(IFEQ, LabelNodes[0]));
                                     nu.add(new VarInsnNode(ALOAD, 0));
                                     nu.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/renderer/RenderGlobal", useSrc ? renderEngine_src : "renderEngine", "Lnet/minecraft/client/renderer/texture/TextureManager;"));
-                                    nu.add(new FieldInsnNode(GETSTATIC, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128/world/worldprovider/SkyProviderRoss128b", "sunTex", "Lnet/minecraft/util/ResourceLocation;"));
+                                    nu.add(new FieldInsnNode(GETSTATIC, "com/github/bartimaeusnek/crossmod/galacticraft/planets/ross128b/SkyProviderRoss128b", "sunTex", "Lnet/minecraft/util/ResourceLocation;"));
                                     nu.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/client/renderer/texture/TextureManager", useSrc ? bindTexture_src : "bindTexture", "(Lnet/minecraft/util/ResourceLocation;)V", false));
                                     nu.add(new JumpInsnNode(GOTO, LabelNodes[1]));
                                     nu.add(LabelNodes[0]);

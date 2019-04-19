@@ -23,12 +23,11 @@
 package com.github.bartimaeusnek.bartworks.common.configs;
 
 
-import com.github.bartimaeusnek.ASM.BWCoreTransformer;
-import gregtech.api.enums.GT_Values;
+import com.github.bartimaeusnek.ASM.BWCoreTransformer;;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
-    private static final int IDU = GT_Values.VN.length * 8 + 1;
+    private static final int IDU = 10 * 8 + 5;
     public static int IDOffset = 12600;
     public static boolean teslastaff;
     public static long energyPerCell = 1000000L;
@@ -38,7 +37,8 @@ public class ConfigHandler {
     public static boolean DEHPDirectSteam;
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
-    public static int ross128ID = -64;
+    public static int ross128BID = -64;
+    public static int ross128BAID = -63;
     public static boolean Ross128Enabled = true;
     public static boolean debugLog;
     public static boolean experimentalThreadedLoader;
@@ -68,7 +68,9 @@ public class ConfigHandler {
             BWCoreTransformer.shouldTransform[i] = ConfigHandler.c.get("ASM fixes", BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i], true).getBoolean(true);
         }
 
-        ConfigHandler.ross128ID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
+        ConfigHandler.ross128BID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
+        ConfigHandler.ross128BAID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128ba", -63, "The Dim ID for Ross128ba (Ross128b's Moon)").getInt(-63);
+
         ConfigHandler.Ross128Enabled = ConfigHandler.c.get("CrossMod Interactions", "Galacticraft - Activate Ross128 System", true, "If the Ross128 System should be activated").getBoolean(true);
 
         ConfigHandler.setUpComments();

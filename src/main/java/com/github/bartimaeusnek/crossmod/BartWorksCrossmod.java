@@ -22,12 +22,14 @@
 
 package com.github.bartimaeusnek.crossmod;
 
+import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,4 +63,8 @@ public class BartWorksCrossmod {
             GalacticraftProxy.init(init);
     }
 
+    @Mod.EventHandler
+    public void onFMLServerStart(FMLServerStartingEvent event) {
+        event.registerServerCommand(new SummonRuin());
+    }
 }

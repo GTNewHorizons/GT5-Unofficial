@@ -20,15 +20,22 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen;
+package com.github.bartimaeusnek.bartworks.system.oregen;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.blocks.GT_Block_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -40,12 +47,14 @@ import java.util.Random;
 /**
  * Original GT File Stripped and adjusted to work with this mod
  */
-public class BW_OreLayer extends GT_Worldgen {
+public abstract class BW_OreLayer extends GT_Worldgen {
     public static final List<BW_OreLayer> sList = new ArrayList<>();
     private static final boolean logOregenRoss128 = false;
     public static int sWeight;
     public byte bwOres;
     public int mMinY, mWeight, mDensity, mSize, mMaxY, mPrimaryMeta, mSecondaryMeta, mBetweenMeta, mSporadicMeta;
+
+    public abstract Block getDefaultBlockToReplace();
 
     public BW_OreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize, ISubTagContainer top, ISubTagContainer bottom, ISubTagContainer between, ISubTagContainer sprinkled) {
         super(aName, BW_OreLayer.sList, aDefault);
@@ -95,8 +104,7 @@ public class BW_OreLayer extends GT_Worldgen {
     }
 
     @Override
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
-        {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX, int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) { {
             int tMinY = this.mMinY + aRandom.nextInt(this.mMaxY - this.mMinY - 5);
             int cX = aChunkX - aRandom.nextInt(this.mSize);
             int eX = aChunkX + 16 + aRandom.nextInt(this.mSize);
@@ -143,8 +151,31 @@ public class BW_OreLayer extends GT_Worldgen {
 
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {
         if ((aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0) || (aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0) || (aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0) || (aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0)) {
-            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false);
+            return BW_MetaGenerated_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, getDefaultBlockToReplace());
         }
-        return GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, isSmallOre, false);
+        return setGTOreBlockSpace(aWorld, aX, aY, aZ, aMetaData, getDefaultBlockToReplace());
+    }
+
+    public boolean setGTOreBlockSpace(World aWorld, int aX, int aY, int aZ, int aMetaData, Block block){
+        if (!GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) {
+            aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+            Block tBlock = aWorld.getBlock(aX, aY, aZ);
+            Block tOreBlock = GregTech_API.sBlockOres1;
+            if (aMetaData < 0 || tBlock == Blocks.air) {
+                return false;
+            } else {
+                if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, block)) {
+                    return false;
+                }
+                aMetaData += 5000;
+                aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
+                TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+                if (tTileEntity instanceof GT_TileEntity_Ores) {
+                    ((GT_TileEntity_Ores) tTileEntity).mMetaData = (short) aMetaData;
+                }
+                return true;
+            }
+        }else
+            return true;
     }
 }

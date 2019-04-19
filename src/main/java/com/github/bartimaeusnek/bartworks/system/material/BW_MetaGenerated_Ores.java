@@ -65,7 +65,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
         }
     }
 
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air) {
+    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block) {
         if (!air) {
             aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
         }
@@ -76,7 +76,7 @@ public class BW_MetaGenerated_Ores extends BW_TileEntityContainer {
             return false;
         } else {
 
-            if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)) {
+            if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, block)) {
                 return false;
             }
 

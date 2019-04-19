@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider;
+package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.oregen.BW_WordGenerator;
+import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
+import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.objects.XSTR;
@@ -55,6 +56,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     private World worldObj;
     private MapGenBase caveGenerator = new MapGenCaves();
     private MapGenBase ravineGenerator = new MapGenRavine();
+    private MapGenRuins.RuinsBase ruinsBase = new MapGenRuins.RuinsBase();
 
     public ChunkProviderRoss128b(World par1World, long seed, boolean mapFeaturesEnabled) {
         super(par1World, seed, mapFeaturesEnabled);
@@ -111,20 +113,27 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             long j1 = this.rand.nextLong() / 2L * 2L + 1L;
             this.rand.setSeed((long) p_73153_2_ * i1 + (long) p_73153_3_ * j1 ^ this.worldObj.getSeed());
         }
-        boolean flag = false;
 
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag));
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false));
 
-        int k1;
-        int l1;
-        int i2;
+        int x1;
+        int y1;
+        int z1;
 
-        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && !flag && this.rand.nextInt(4) == 0
-                && TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag, LAKE)) {
-            k1 = k + this.rand.nextInt(16) + 8;
-            l1 = this.rand.nextInt(256);
-            i2 = l + this.rand.nextInt(16) + 8;
-            (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, k1, l1, i2);
+        if (biomegenbase != BiomeGenBase.ocean && biomegenbase != BiomeGenBase.deepOcean && biomegenbase != BiomeGenBase.river && biomegenbase != BiomeGenBase.frozenOcean && biomegenbase != BiomeGenBase.frozenRiver
+                    && this.rand.nextInt(512) == 0) {
+                x1 = k + this.rand.nextInt(16) + 3;
+                y1 = this.rand.nextInt(256);
+                z1 = l + this.rand.nextInt(16) + 3;
+                ruinsBase.generate(worldObj, rand, x1, y1, z1);
+        }
+
+        if (biomegenbase != BiomeGenBase.desert && biomegenbase != BiomeGenBase.desertHills && this.rand.nextInt(4) == 0
+                && TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false, LAKE)) {
+            x1 = k + this.rand.nextInt(16) + 8;
+            y1 = this.rand.nextInt(256);
+            z1 = l + this.rand.nextInt(16) + 8;
+            (new WorldGenLakes(Blocks.water)).generate(this.worldObj, this.rand, x1, y1, z1);
         }
 
         biomegenbase.decorate(this.worldObj, this.rand, k, l);
@@ -132,23 +141,23 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
         k += 8;
         l += 8;
 
-        boolean doGen = TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag, ICE);
-        for (k1 = 0; doGen && k1 < 16; ++k1) {
-            for (l1 = 0; l1 < 16; ++l1) {
-                i2 = this.worldObj.getPrecipitationHeight(k + k1, l + l1);
+        boolean doGen = TerrainGen.populate(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false, ICE);
+        for (x1 = 0; doGen && x1 < 16; ++x1) {
+            for (y1 = 0; y1 < 16; ++y1) {
+                z1 = this.worldObj.getPrecipitationHeight(k + x1, l + y1);
 
-                if (this.worldObj.isBlockFreezable(k1 + k, i2 - 1, l1 + l)) {
-                    this.worldObj.setBlock(k1 + k, i2 - 1, l1 + l, Blocks.ice, 0, 2);
+                if (this.worldObj.isBlockFreezable(x1 + k, z1 - 1, y1 + l)) {
+                    this.worldObj.setBlock(x1 + k, z1 - 1, y1 + l, Blocks.ice, 0, 2);
                 }
 
-                if (this.worldObj.func_147478_e(k1 + k, i2, l1 + l, true)) {
-                    this.worldObj.setBlock(k1 + k, i2, l1 + l, Blocks.snow_layer, 0, 2);
+                if (this.worldObj.func_147478_e(x1 + k, z1, y1 + l, true)) {
+                    this.worldObj.setBlock(x1 + k, z1, y1 + l, Blocks.snow_layer, 0, 2);
                 }
             }
         }
-        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag));
 
         BWOreGen.generate(rand, p_73153_2_, p_73153_3_, worldObj, this, this);
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, false));
 
         BlockFalling.fallInstantly = false;
     }
@@ -161,18 +170,10 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
     public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] blocks, byte[] metas, BiomeGenBase[] p_147422_5_) {
         super.replaceBlocksForBiome(p_147422_1_, p_147422_2_, blocks, metas, p_147422_5_);
         for (int i = 0; i < blocks.length; i++) {
-//            if (blocks[i] == Blocks.stone) {
-//                blocks[i] = Ross128.Ross128bStone.getBlock();
-//                metas[i] = Ross128.Ross128bStone.getMetadata();
-//            }else
             if (blocks[i] == Blocks.grass) {
                 blocks[i] = Blocks.dirt;
                 metas[i] = 2;
             }
-//            else if (blocks[i] == Blocks.dirt) {
-//                blocks[i] = Ross128.Ross128bDirt.getBlock();
-//                metas[i] = Ross128.Ross128bDirt.getMetadata();
-//            }
         }
     }
 }

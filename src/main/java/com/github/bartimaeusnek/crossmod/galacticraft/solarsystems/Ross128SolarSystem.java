@@ -25,7 +25,8 @@ package com.github.bartimaeusnek.crossmod.galacticraft.solarsystems;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.galacticraft.UniversalTeleportType;
-import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128.world.worldprovider.WorldProviderRoss128b;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
+import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba.WorldProviderRoss128ba;
 import cpw.mods.fml.common.Loader;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -47,8 +48,6 @@ public class Ross128SolarSystem {
 
     public static void init() {
 
-//        Ross128bBlocks = new UniversalSpaceBlocks("Ross128bBlocks",new String[]{BartWorksCrossmod.MOD_ID+":Ross128bStone",BartWorksCrossmod.MOD_ID+":Ross128bDirt",BartWorksCrossmod.MOD_ID+":Ross128bGrass"});
-
         Ross128SolarSystem.Ross128System = new SolarSystem("Ross128System", "milkyWay").setMapPosition(new Vector3(-1.0D, 1.3D, 0.0D));
         Ross128SolarSystem.Ross128 = (Star) new Star("Ross128").setParentSolarSystem(Ross128SolarSystem.Ross128System).setTierRequired(-1);
         Ross128SolarSystem.Ross128.setUnreachable();
@@ -62,24 +61,22 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128b.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 1.75F));
         Ross128SolarSystem.Ross128b.setRelativeOrbitTime(0.65F);
         Ross128SolarSystem.Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
-        Ross128SolarSystem.Ross128b.setDimensionInfo(ConfigHandler.ross128ID, WorldProviderRoss128b.class);
+        Ross128SolarSystem.Ross128b.setDimensionInfo(ConfigHandler.ross128BID, WorldProviderRoss128b.class);
         Ross128SolarSystem.Ross128b.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
 
         Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);
         Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);
         Ross128SolarSystem.Ross128ba.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
-        Ross128SolarSystem.Ross128ba.setUnreachable(); //for now
+        Ross128SolarSystem.Ross128ba.setDimensionInfo(ConfigHandler.ross128BAID, WorldProviderRoss128ba.class);
+        Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("galaxyspace") ? 5 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
 
-//        GameRegistry.registerBlock(Ross128bBlocks,Ross128bBlocks.getUnlocalizedName());
-//
-//        Ross128bStone=new BlockMetaPair(Ross128bBlocks, (byte) 0);
-//        Ross128bDirt=new BlockMetaPair(Ross128bBlocks, (byte) 1);
-//        Ross128bGrass=new BlockMetaPair(Ross128bBlocks, (byte) 2);
+        Ross128SolarSystem.Ross128ba.setUnreachable();
 
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);
         GalaxyRegistry.registerMoon(Ross128SolarSystem.Ross128ba);
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalacticraftRegistry.registerTeleportType(WorldProviderRoss128b.class, new UniversalTeleportType());
+        GalacticraftRegistry.registerTeleportType(WorldProviderRoss128ba.class, new UniversalTeleportType());
     }
 
 }

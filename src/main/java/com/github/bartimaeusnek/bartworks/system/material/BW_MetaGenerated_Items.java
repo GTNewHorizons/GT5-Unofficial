@@ -76,28 +76,30 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
     }
 
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
-        int aDamage = aItemEntity.getEntityItem().getItemDamage();
-        if ((aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
-            Werkstoff aMaterial = werkstoffHashMap.get((short) aDamage);
-            if ((aMaterial != null) && (aMaterial != Werkstoff.default_null_Werkstoff)) {
-                int tX = MathHelper.floor_double(aItemEntity.posX);
-                int tY = MathHelper.floor_double(aItemEntity.posY);
-                int tZ = MathHelper.floor_double(aItemEntity.posZ);
-                if ((orePrefixes == OrePrefixes.dustImpure) || (orePrefixes == OrePrefixes.dustPure)) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
-                    }
-                } else if (orePrefixes == OrePrefixes.crushed) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
+        if (orePrefixes == OrePrefixes.dustImpure || orePrefixes == OrePrefixes.dustPure || orePrefixes == OrePrefixes.crushed) {
+            int aDamage = aItemEntity.getEntityItem().getItemDamage();
+            if ((aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
+                Werkstoff aMaterial = werkstoffHashMap.get((short) aDamage);
+                if ((aMaterial != null) && (aMaterial != Werkstoff.default_null_Werkstoff)) {
+                    int tX = MathHelper.floor_double(aItemEntity.posX);
+                    int tY = MathHelper.floor_double(aItemEntity.posY);
+                    int tZ = MathHelper.floor_double(aItemEntity.posZ);
+                    if ((orePrefixes == OrePrefixes.dustImpure) || (orePrefixes == OrePrefixes.dustPure)) {
+                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
+                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                        if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
+                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
+                            return true;
+                        }
+                    } else if (orePrefixes == OrePrefixes.crushed) {
+                        Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
+                        byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                        if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
+                            aItemEntity.setEntityItemStack(WerkstoffLoader.getCorresopndingItemStack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                            aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
+                            return true;
+                        }
                     }
                 }
             }
@@ -113,6 +115,8 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item {
         if (orePrefixes == OrePrefixes.dustImpure || orePrefixes == OrePrefixes.dustPure) {
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }
+        if (orePrefixes == OrePrefixes.crushed)
+            aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify.2"));
         aList.add(StatCollector.translateToLocal("tooltip.bw.0.name") + ChatColorHelper.DARKGREEN + " BartWorks");
     }
 

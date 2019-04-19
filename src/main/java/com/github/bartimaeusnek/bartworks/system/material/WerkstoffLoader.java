@@ -42,6 +42,7 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -74,9 +75,9 @@ public class WerkstoffLoader implements Runnable {
             1,
             TextureSet.SET_FLINT,
             Arrays.asList(Materials.Bismuth),
-            new Pair<ISubTagContainer, Integer>(Materials.Bismuth, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.CarbonDioxide, 2)
+            new Pair<>(Materials.Bismuth, 2),
+            new Pair<>(Materials.Oxygen, 2),
+            new Pair<>(Materials.CarbonDioxide, 2)
     );
     public static final Werkstoff Bismuthinit = new Werkstoff(
             new short[]{192, 192, 192, 0},
@@ -86,8 +87,8 @@ public class WerkstoffLoader implements Runnable {
             2,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Bismuth, Materials.Sulfur),
-            new Pair<ISubTagContainer, Integer>(Materials.Bismuth, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 3)
+            new Pair<>(Materials.Bismuth, 2),
+            new Pair<>(Materials.Sulfur, 3)
     );
     public static final Werkstoff Zirconium = new Werkstoff(
             new short[]{175, 175, 175, 0},
@@ -108,8 +109,8 @@ public class WerkstoffLoader implements Runnable {
             4,
             TextureSet.SET_DIAMOND,
             Arrays.asList(Zirconium),
-            new Pair<ISubTagContainer, Integer>(Zirconium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 2)
+            new Pair<>(Zirconium, 1),
+            new Pair<>(Materials.Oxygen, 2)
     );
     public static final Werkstoff FluorBuergerit = new Werkstoff(
             new short[]{0x20, 0x20, 0x20, 0},
@@ -120,13 +121,13 @@ public class WerkstoffLoader implements Runnable {
             5,
             TextureSet.SET_RUBY,
             Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Sodium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Aluminium, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Boron, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 30),
-            new Pair<ISubTagContainer, Integer>(Materials.Fluorine, 1)
+            new Pair<>(Materials.Sodium, 1),
+            new Pair<>(Materials.Iron, 3),
+            new Pair<>(Materials.Aluminium, 6),
+            new Pair<>(Materials.Silicon, 6),
+            new Pair<>(Materials.Boron, 3),
+            new Pair<>(Materials.Oxygen, 30),
+            new Pair<>(Materials.Fluorine, 1)
     );
     public static final Werkstoff YttriumOxide = new Werkstoff(
             new short[]{255,255,255,0},
@@ -135,8 +136,8 @@ public class WerkstoffLoader implements Runnable {
             new Werkstoff.GenerationFeatures().onlyDust(), //No autoadd here to gate this material by hand
             6,
             TextureSet.SET_DULL,
-            new Pair<ISubTagContainer, Integer>(Materials.Yttrium, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 3)
+            new Pair<>(Materials.Yttrium, 2),
+            new Pair<>(Materials.Oxygen, 3)
     );
     public static final Werkstoff ChromoAluminoPovondrait = new Werkstoff(
             new short[]{0, 0x79, 0x6A, 0},
@@ -148,13 +149,13 @@ public class WerkstoffLoader implements Runnable {
             7,
             TextureSet.SET_RUBY,
             Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Sodium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Chrome, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Magnalium, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Boron, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 31),
-            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 3)
+            new Pair<>(Materials.Sodium, 1),
+            new Pair<>(Materials.Chrome, 3),
+            new Pair<>(Materials.Magnalium, 6),
+            new Pair<>(Materials.Silicon, 6),
+            new Pair<>(Materials.Boron, 3),
+            new Pair<>(Materials.Oxygen, 31),
+            new Pair<>(Materials.Hydrogen, 3)
     );
     public static final Werkstoff VanadioOxyDravit = new Werkstoff(
             new short[]{0x60, 0xA0, 0xA0, 0},
@@ -166,13 +167,13 @@ public class WerkstoffLoader implements Runnable {
             8,
             TextureSet.SET_RUBY,
             Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Sodium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Magnalium, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Boron, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 31),
-            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 3)
+            new Pair<>(Materials.Sodium, 1),
+            new Pair<>(Materials.Vanadium, 3),
+            new Pair<>(Materials.Magnalium, 6),
+            new Pair<>(Materials.Silicon, 6),
+            new Pair<>(Materials.Boron, 3),
+            new Pair<>(Materials.Oxygen, 31),
+            new Pair<>(Materials.Hydrogen, 3)
     );
     public static final Werkstoff Olenit = new Werkstoff(
             new short[]{210, 210, 210, 0},
@@ -184,12 +185,12 @@ public class WerkstoffLoader implements Runnable {
             9,
             TextureSet.SET_RUBY,
             Arrays.asList(Materials.Sodium, Materials.Boron, Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Sodium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Aluminium, 9),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 6),
-            new Pair<ISubTagContainer, Integer>(Materials.Boron, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 31),
-            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 1)
+            new Pair<>(Materials.Sodium, 1),
+            new Pair<>(Materials.Aluminium, 9),
+            new Pair<>(Materials.Silicon, 6),
+            new Pair<>(Materials.Boron, 3),
+            new Pair<>(Materials.Oxygen, 31),
+            new Pair<>(Materials.Hydrogen, 1)
     );
     public static final Werkstoff Arsenopyrite = new Werkstoff(
             new short[]{0xB0, 0xB0, 0xB0, 0},
@@ -199,9 +200,9 @@ public class WerkstoffLoader implements Runnable {
             10,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Sulfur, Materials.Arsenic, Materials.Iron),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Arsenic, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 1)
+            new Pair<>(Materials.Iron, 1),
+            new Pair<>(Materials.Arsenic, 1),
+            new Pair<>(Materials.Sulfur, 1)
     );
     public static final Werkstoff Ferberite = new Werkstoff(
             new short[]{0xB0, 0xB0, 0xB0, 0},
@@ -211,9 +212,9 @@ public class WerkstoffLoader implements Runnable {
             11,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Iron, Materials.Tungsten),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Tungsten, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 3)
+            new Pair<>(Materials.Iron, 1),
+            new Pair<>(Materials.Tungsten, 1),
+            new Pair<>(Materials.Oxygen, 3)
     );
     public static final Werkstoff Loellingit = new Werkstoff(
             new short[]{0xD0, 0xD0, 0xD0, 0},
@@ -223,8 +224,8 @@ public class WerkstoffLoader implements Runnable {
             12,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Iron, Materials.Arsenic),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Arsenic, 2)
+            new Pair<>(Materials.Iron, 1),
+            new Pair<>(Materials.Arsenic, 2)
     );
     public static final Werkstoff Roquesit = new Werkstoff(
             new short[]{0xA0, 0xA0, 0xA0, 0},
@@ -234,9 +235,9 @@ public class WerkstoffLoader implements Runnable {
             13,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Copper, Materials.Sulfur),
-            new Pair<ISubTagContainer, Integer>(Materials.Copper, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Indium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 2)
+            new Pair<>(Materials.Copper, 1),
+            new Pair<>(Materials.Indium, 1),
+            new Pair<>(Materials.Sulfur, 2)
     );
     public static final Werkstoff Bornite = new Werkstoff(
             new short[]{0x97, 0x66, 0x2B, 0},
@@ -246,9 +247,9 @@ public class WerkstoffLoader implements Runnable {
             14,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Copper, Materials.Iron, Materials.Sulfur),
-            new Pair<ISubTagContainer, Integer>(Materials.Copper, 5),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 4)
+            new Pair<>(Materials.Copper, 5),
+            new Pair<>(Materials.Iron, 1),
+            new Pair<>(Materials.Sulfur, 4)
     );
     public static final Werkstoff Wittichenit = new Werkstoff(
             Materials.Copper.mRGBa,
@@ -258,9 +259,9 @@ public class WerkstoffLoader implements Runnable {
             15,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Copper, Materials.Bismuth, Materials.Sulfur),
-            new Pair<ISubTagContainer, Integer>(Materials.Copper, 5),
-            new Pair<ISubTagContainer, Integer>(Materials.Bismuth, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 4)
+            new Pair<>(Materials.Copper, 5),
+            new Pair<>(Materials.Bismuth, 1),
+            new Pair<>(Materials.Sulfur, 4)
     );
     public static final Werkstoff Djurleit = new Werkstoff(
             new short[]{0x60, 0x60, 0x60, 0},
@@ -270,8 +271,8 @@ public class WerkstoffLoader implements Runnable {
             16,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Copper, Materials.Copper, Materials.Sulfur),
-            new Pair<ISubTagContainer, Integer>(Materials.Copper, 31),
-            new Pair<ISubTagContainer, Integer>(Materials.Sulfur, 16)
+            new Pair<>(Materials.Copper, 31),
+            new Pair<>(Materials.Sulfur, 16)
     );
     public static final Werkstoff Huebnerit = new Werkstoff(
             new short[]{0x80, 0x60, 0x60, 0},
@@ -281,9 +282,9 @@ public class WerkstoffLoader implements Runnable {
             17,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Manganese, Materials.Tungsten),
-            new Pair<ISubTagContainer, Integer>(Materials.Manganese, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Tungsten, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 3)
+            new Pair<>(Materials.Manganese, 1),
+            new Pair<>(Materials.Tungsten, 1),
+            new Pair<>(Materials.Oxygen, 3)
     );
     public static final Werkstoff Thorianit = new Werkstoff(
             new short[]{0x30, 0x30, 0x30, 0},
@@ -293,8 +294,8 @@ public class WerkstoffLoader implements Runnable {
             18,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Thorium),
-            new Pair<ISubTagContainer, Integer>(Materials.Thorium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 2)
+            new Pair<>(Materials.Thorium, 1),
+            new Pair<>(Materials.Oxygen, 2)
     );
     public static final Werkstoff RedZircon = new Werkstoff(
             new short[]{195, 19, 19, 0},
@@ -305,9 +306,9 @@ public class WerkstoffLoader implements Runnable {
             19,
             TextureSet.SET_GEM_VERTICAL,
             Arrays.asList(Zirconium,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Zirconium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+            new Pair<>(Zirconium, 1),
+            new Pair<>(Materials.Silicon, 1),
+            new Pair<>(Materials.Oxygen, 4)
     );
 
     //GT Enhancements
@@ -320,7 +321,7 @@ public class WerkstoffLoader implements Runnable {
             20,
             TextureSet.SET_FLINT,
             Arrays.asList(Materials.RockSalt,Materials.Borax),
-            new Pair<ISubTagContainer, Integer>(Materials.Salt, 1)
+            new Pair<>(Materials.Salt, 1)
     );
     public static final Werkstoff Spodumen = new Werkstoff(
             Materials.Spodumene.mRGBa,
@@ -331,7 +332,7 @@ public class WerkstoffLoader implements Runnable {
             21,
             TextureSet.SET_FLINT,
             Arrays.asList(Materials.Spodumene),
-            new Pair<ISubTagContainer, Integer>(Materials.Spodumene, 1)
+            new Pair<>(Materials.Spodumene, 1)
     );
     public static final Werkstoff RockSalt = new Werkstoff(
             Materials.RockSalt.mRGBa,
@@ -342,7 +343,7 @@ public class WerkstoffLoader implements Runnable {
             22,
             TextureSet.SET_FLINT,
             Arrays.asList(Materials.RockSalt,Materials.Borax),
-            new Pair<ISubTagContainer, Integer>(Materials.RockSalt, 1)
+            new Pair<>(Materials.RockSalt, 1)
     );
     public static final Werkstoff Fayalit = new Werkstoff(
             new short[]{50,50,50,0},
@@ -353,9 +354,9 @@ public class WerkstoffLoader implements Runnable {
             23,
             TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Iron,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+            new Pair<>(Materials.Iron, 2),
+            new Pair<>(Materials.Silicon, 1),
+            new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff Forsterit = new Werkstoff(
             new short[]{255,255,255,0},
@@ -366,9 +367,9 @@ public class WerkstoffLoader implements Runnable {
             24,
             TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Magnesium,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Magnesium, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+            new Pair<>(Materials.Magnesium, 2),
+            new Pair<>(Materials.Silicon, 1),
+            new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff Hedenbergit = new Werkstoff(
             new short[]{100,150,100,0},
@@ -379,10 +380,10 @@ public class WerkstoffLoader implements Runnable {
             25,
             TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Iron,Materials.Calcium,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Calcium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Iron, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 2),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 6)
+            new Pair<>(Materials.Calcium, 1),
+            new Pair<>(Materials.Iron, 1),
+            new Pair<>(Materials.Silicon, 2),
+            new Pair<>(Materials.Oxygen, 6)
     );
     public static final Werkstoff DescloiziteZNVO4 = new Werkstoff(
             new short[]{0xBF,0x18,0x0F,0},
@@ -393,10 +394,10 @@ public class WerkstoffLoader implements Runnable {
             26,
             TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Lead,Materials.Copper,Materials.Vanadium),
-            new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Zinc, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+            new Pair<>(Materials.Lead, 1),
+            new Pair<>(Materials.Zinc, 1),
+            new Pair<>(Materials.Vanadium, 1),
+            new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff DescloiziteCUVO4 = new Werkstoff(
             new short[]{0xf9,0x6d,0x18,0},
@@ -407,10 +408,10 @@ public class WerkstoffLoader implements Runnable {
             27,
             TextureSet.SET_QUARTZ,
             Arrays.asList(Materials.Lead,Materials.Zinc,Materials.Vanadium),
-            new Pair<ISubTagContainer, Integer>(Materials.Lead, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Copper, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Vanadium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 4)
+            new Pair<>(Materials.Lead, 1),
+            new Pair<>(Materials.Copper, 1),
+            new Pair<>(Materials.Vanadium, 1),
+            new Pair<>(Materials.Oxygen, 4)
     );
     public static final Werkstoff FuchsitAL = new Werkstoff(
             new short[]{0x4D,0x7F,0x64,0},
@@ -422,11 +423,11 @@ public class WerkstoffLoader implements Runnable {
             28,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Potassium,Materials.Aluminium,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Potassium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Aluminium, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 12),
-            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 2)
+            new Pair<>(Materials.Potassium, 1),
+            new Pair<>(Materials.Aluminium, 3),
+            new Pair<>(Materials.Silicon, 3),
+            new Pair<>(Materials.Oxygen, 12),
+            new Pair<>(Materials.Hydrogen, 2)
 
     );
     public static final Werkstoff FuchsitCR = new Werkstoff(
@@ -439,11 +440,11 @@ public class WerkstoffLoader implements Runnable {
             29,
             TextureSet.SET_METALLIC,
             Arrays.asList(Materials.Potassium,Materials.Chrome,Materials.Silicon),
-            new Pair<ISubTagContainer, Integer>(Materials.Potassium, 1),
-            new Pair<ISubTagContainer, Integer>(Materials.Chrome, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Silicon, 3),
-            new Pair<ISubTagContainer, Integer>(Materials.Oxygen, 12),
-            new Pair<ISubTagContainer, Integer>(Materials.Hydrogen, 2)
+            new Pair<>(Materials.Potassium, 1),
+            new Pair<>(Materials.Chrome, 3),
+            new Pair<>(Materials.Silicon, 3),
+            new Pair<>(Materials.Oxygen, 12),
+            new Pair<>(Materials.Hydrogen, 2)
 
     );
     public static final Werkstoff Thorium232 = new Werkstoff(
@@ -477,6 +478,7 @@ public class WerkstoffLoader implements Runnable {
     public void init() {
         if (WerkstoffLoader.INSTANCE == null)
             MainMod.LOGGER.error("INSTANCE IS NULL THIS SHOULD NEVER HAPPEN!");
+        GT_LanguageManager.addStringLocalization("metaitem.01.tooltip.purify.2","Throw into Cauldron to get clean crushed Ore");
     }
 
     public void runInit() {
@@ -588,6 +590,11 @@ public class WerkstoffLoader implements Runnable {
             WerkstoffLoader.items.put(crushedCentrifuged, new BW_MetaGenerated_Items(crushedCentrifuged));
             WerkstoffLoader.items.put(dustPure, new BW_MetaGenerated_Items(dustPure));
             WerkstoffLoader.items.put(dustImpure, new BW_MetaGenerated_Items(dustImpure));
+        }
+        if ((toGenerateGlobal & 0b10000) != 0) {
+            WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
+            WerkstoffLoader.items.put(bottle, new BW_MetaGenerated_Items(bottle));
+            WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
         }
     }
 
