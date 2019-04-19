@@ -50,7 +50,7 @@ public class BWCoreTransformer implements IClassTransformer {
     public void checkForMods() {
         //hacky way to detect if the mods are loaded
         try{
-            Class.forName("com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime");
+            Class.forName("com.rwtema.extrautils.core.Tuple");
             shouldTransform[0] = true;
             shouldTransform[1] = true;
         }catch (ClassNotFoundException e){
