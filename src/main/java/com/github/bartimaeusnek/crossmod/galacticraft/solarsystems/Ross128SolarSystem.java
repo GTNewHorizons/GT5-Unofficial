@@ -65,13 +65,13 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128b.setRelativeOrbitTime(0.65F);
         Ross128SolarSystem.Ross128b.atmosphere.addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
         Ross128SolarSystem.Ross128b.setDimensionInfo(ConfigHandler.ross128BID, WorldProviderRoss128b.class);
-        Ross128SolarSystem.Ross128b.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
+        Ross128SolarSystem.Ross128b.setTierRequired(3);
 
         Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);
         Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f)).setRelativeOrbitTime(1 / 0.01F);
         Ross128SolarSystem.Ross128ba.setBodyIcon(new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
 //        Ross128SolarSystem.Ross128ba.setDimensionInfo(ConfigHandler.ross128BAID, WorldProviderRoss128Ba.class);
-        Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("galaxyspace") ? 5 : Loader.isModLoaded("GalacticraftMars") ? 3 : -1);
+        Ross128SolarSystem.Ross128ba.setTierRequired(Loader.isModLoaded("galaxyspace") ? 4 : 3);
 
         Ross128SolarSystem.Ross128ba.setUnreachable();
 
