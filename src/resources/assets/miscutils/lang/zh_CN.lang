@@ -2762,4 +2762,114 @@ item.itemPlateNylon.name=尼龙板
 item.itemPlateDoubleNylon.name=双重尼龙板
 item.itemCellNylon.name=尼龙单元
 tile.Block of Nylon.name=尼龙块
-//This zh_CN.lang is translation by huajijam for GregTech++ (18/3/19)
+item.itemIngotTeflon.name=特氟龙锭
+item.itemDustTeflon.name=特氟龙粉
+item.itemDustTinyTeflon.name=小撮特氟龙粉
+item.itemDustSmallTeflon.name=小堆特氟龙粉
+item.itemNuggetTeflon.name=特氟龙粒
+item.itemPlateTeflon.name=特氟龙板
+item.itemPlateDoubleTeflon.name=双重特氟龙板
+item.itemCellTeflon.name=特氟龙单元
+tile.Block of Teflon.name=特氟龙块
+
+//Added 17/4/19
+//Spelling Corrections
+item.particle.ion.Aluminium.name=铝离子
+item.particle.ion.Caesium.name=铯离子
+
+item.GTPP.MonsterKiller.Enderman.name=末影人杀手
+item.GTPP.MonsterKiller.Spider.name=蜘蛛杀手
+item.GTPP.MonsterKiller.Skeleton.name=骷髅杀手
+item.GTPP.MonsterKiller.Creeper.name=爬行者杀手
+item.GTPP.MonsterKiller.Zombie.name=僵尸杀手
+item.GTPP.MonsterKiller.Hellish.name=下界生物杀手
+
+item.itemIngotRunite.name=虚恩锭
+item.itemDustRunite.name=虚恩粉
+item.itemDustTinyRunite.name=小撮虚恩粉
+item.itemDustSmallRunite.name=小堆虚恩粉
+item.itemNuggetRunite.name=虚恩锭
+item.itemPlateRunite.name=虚恩板
+item.itemPlateDoubleRunite.name=双重虚恩板
+item.itemCellRunite.name=虚恩单元
+tile.Block of Runite.name=虚恩块
+
+item.itemIngotDragonblood.name=龙血锭
+item.itemDustDragonblood.name=龙血粉
+item.itemDustTinyDragonblood.name=小撮龙血粉
+item.itemDustSmallDragonblood.name=小堆龙血粉
+item.itemNuggetDragonblood.name=龙血粒
+item.itemPlateDragonblood.name=龙血板
+item.itemPlateDoubleDragonblood.name=双重龙血板
+item.itemCellDragonblood.name=龙血单元
+tile.Block of Dragonblood.name=龙血块
+
+item.itemIngotBlackTitanium.name=黑钛锭
+item.itemDustBlackTitanium.name=黑钛粉
+item.itemDustTinyBlackTitanium.name=小撮黑钛粉
+item.itemDustSmallBlackTitanium.name=小堆黑钛粉
+item.itemNuggetBlackTitanium.name=黑钛粒
+item.itemPlateBlackTitanium.name=黑钛板
+item.itemPlateDoubleBlackTitanium.name=双重黑钛板
+item.itemCellBlackTitanium.name=黑钛单元
+tile.Block of Black Titanium.name=黑钛块
+
+item.itemIngotAncientGranite.name=古花岗岩锭
+item.itemHotIngotAncientGranite.name=热古花岗岩锭
+item.itemDustAncientGranite.name=古花岗岩粉
+item.itemDustTinyAncientGranite.name=小撮古花岗岩粉
+item.itemDustSmallAncientGranite.name=小堆古花岗岩粉
+item.itemNuggetAncientGranite.name=古花岗岩粒
+item.itemPlateAncientGranite.name=古花岗岩板
+item.itemPlateDoubleAncientGranite.name=双重古花岗岩板
+tile.Block of Ancient Granite.name=古花岗岩块
+
+item.itemIngotBabbitAlloy.name=巴氏合金锭
+item.itemHotIngotBabbitAlloy.name=热巴氏合金锭
+item.itemDustBabbitAlloy.name=巴氏合金粉
+item.itemDustTinyBabbitAlloy.name=小撮巴氏合金粉
+item.itemDustSmallBabbitAlloy.name=小堆巴氏合金粉
+item.itemNuggetBabbitAlloy.name=巴氏合金粒
+item.itemPlateBabbitAlloy.name=巴氏合金板
+item.itemPlateDoubleBabbitAlloy.name=双重巴氏合金板
+item.itemCellBabbitAlloy.name=巴氏合金单元
+tile.Block of Babbit Alloy.name=巴氏合金块
+
+item.itemIngotBlackMetal.name=黑物质锭
+item.itemHotIngotBlackMetal.name=热黑物质锭
+item.itemDustBlackMetal.name=黑物质粉
+item.itemDustTinyBlackMetal.name=小撮黑物质粉
+item.itemDustSmallBlackMetal.name=小堆黑物质粉
+item.itemNuggetBlackMetal.name=黑物质粒
+item.itemPlateBlackMetal.name=黑物质板
+item.itemPlateDoubleBlackMetal.name=双重黑物质板
+item.itemBoltBlackMetal.name=黑物质螺栓
+item.itemRodBlackMetal.name=黑物质杆
+item.itemRodLongBlackMetal.name=黑物质长杆
+item.itemRingBlackMetal.name=黑物质环
+item.itemScrewBlackMetal.name=黑物质螺丝
+item.itemRotorBlackMetal.name=黑物质转子
+item.itemGearBlackMetal.name=黑物质齿轮
+item.itemCellBlackMetal.name=黑物质单元
+tile.Block of Black Metal.name=黑物质块
+tile.Black Metal Frame Box.name=黑物质框架
+
+item.itemIngotwhiteMetal.name=白物质锭
+item.itemHotIngotwhiteMetal.name=热白物质锭
+item.itemDustwhiteMetal.name=白物质粉
+item.itemDustTinywhiteMetal.name=小撮白物质粉
+item.itemDustSmallwhiteMetal.name=小堆白物质粉
+item.itemNuggetwhiteMetal.name=白物质粒
+item.itemPlatewhiteMetal.name=白物质板
+item.itemPlateDoublewhiteMetal.name=双重白物质板
+item.itemBoltwhiteMetal.name=白物质螺栓
+item.itemRodwhiteMetal.name=白物质杆
+item.itemRodLongwhiteMetal.name=白物质长杆
+item.itemRingwhiteMetal.name=白物质环
+item.itemScrewwhiteMetal.name=白物质螺丝
+item.itemRotorwhiteMetal.name=白物质转子
+item.itemGearwhiteMetal.name=白物质齿轮
+item.itemCellwhiteMetal.name=白物质单元
+tile.Block of white Metal.name=白物质块
+tile.white Metal Frame Box.name=白物质框架
+//This zh_CN.lang is translation by huajijam for GregTech++ (20/4/19)
