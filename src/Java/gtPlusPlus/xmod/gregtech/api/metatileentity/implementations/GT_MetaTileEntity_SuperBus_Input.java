@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 				if (s.startsWith(" ")) {
 					s = s.substring(1);
 				}			
-				superString += (s+"\r\n");
+				superString += (s+", ");
 			}
 			PlayerUtils.messagePlayer(aPlayer, superString);
 		}

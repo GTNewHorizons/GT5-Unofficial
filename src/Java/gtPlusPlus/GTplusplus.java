@@ -46,6 +46,7 @@ import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.HazmatUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -124,6 +125,10 @@ public class GTplusplus implements ActionListener {
 		Logger.INFO("Loading some textures on the client.");
 		// Tools
 		Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
+		Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_BUTCHER_KNIFE.getTextureFile().getResourcePath());
 
 		// Blocks
 		Logger.WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
@@ -186,6 +191,7 @@ public class GTplusplus implements ActionListener {
 		INIT_PHASE.INIT.setPhaseActive(true);
 		mChunkLoading.init(event);
 		proxy.init(event);
+		HazmatUtils.init();
 		proxy.registerNetworkStuff();
 		instanceGtProxy.init();
 		Core_Manager.init();

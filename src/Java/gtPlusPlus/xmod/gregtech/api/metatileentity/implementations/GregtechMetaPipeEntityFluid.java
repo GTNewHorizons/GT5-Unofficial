@@ -15,7 +15,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 
 public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	
@@ -23,7 +23,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	public static final boolean mGt6Pipe;
 	
 	static {
-		Boolean aGt6 = (Boolean) Meta_GT_Proxy.getFieldFromGregtechProxy(false, "gt6Pipe");
+		Boolean aGt6 = (Boolean) StaticFields59.getFieldFromGregtechProxy(false, "gt6Pipe");
 		if (aGt6 != null) {
 			mGt6Pipe = aGt6;
 		}

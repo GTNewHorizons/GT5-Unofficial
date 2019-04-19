@@ -3,20 +3,16 @@ package gtPlusPlus.core.item.bauble;
 import java.util.List;
 
 import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,23 +24,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-@Optional.InterfaceList(value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-		@Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
-public class BatteryPackBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager, IBauble {
+public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
-	final int mTier;
-	private final double maxValueEU;
 
 	public BatteryPackBaseBauble(int tier) {		
-		super(BaubleType.BELT, "GTPP.BattPack.0" + tier + ".name", 0);
-		mTier = tier;
-		maxValueEU = GT_Values.V[mTier] * 20 * 300;
-		String aUnlocalName = "GTPP.BattPack.0" + mTier + ".name";
-		this.setUnlocalizedName(aUnlocalName);
-		this.setTextureName(CORE.MODID + ":" + "chargepack/"+tier);
-		this.setMaxDamage(27);
-		this.setMaxStackSize(1);
-		this.setNoRepair();
+		super(BaubleType.BELT, tier, GT_Values.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
+		String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
 		this.setCreativeTab(AddToCreativeTab.tabMachines);		
 		if (GameRegistry.findItem(CORE.MODID, aUnlocalName) == null) {
 			GameRegistry.registerItem(this, aUnlocalName);			
@@ -82,43 +67,8 @@ public class BatteryPackBaseBauble extends BaseBauble implements IElectricItem, 
 	}
 
 	@Override
-	public Item getChargedItem(final ItemStack itemStack) {
-		final ItemStack x = itemStack.copy();
-		x.setItemDamage(27);
-		return x.getItem();
-	}
-
-	@Override
-	public Item getEmptyItem(final ItemStack itemStack) {
-		final ItemStack x = itemStack.copy();
-		x.setItemDamage(0);
-		return x.getItem();
-	}
-
-	@Override
-	public double getMaxCharge(final ItemStack itemStack) {
-		return maxValueEU;
-	}
-
-	@Override
-	public int getTier(final ItemStack itemStack) {
-		return mTier;
-	}
-
-	@Override
-	public double getTransferLimit(final ItemStack itemStack) {
-		return GT_Values.V[mTier];
-	}
-
-	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 		return (EnumChatFormatting.BLUE + super.getItemStackDisplayName(p_77653_1_) + EnumChatFormatting.GRAY);
-	}
-
-	@Override
-	public double getDurabilityForDisplay(final ItemStack stack) {
-		// return 1.0D - getEnergyStored(stack) / this.capacity;
-		return 1.0D - (this.getCharge(stack) / this.getMaxCharge(stack));
 	}
 
 	@Override
@@ -140,68 +90,14 @@ public class BatteryPackBaseBauble extends BaseBauble implements IElectricItem, 
 		String aString2 = StatCollector.translateToLocal("GTPP.battpack.tooltip.2");
 		String aString3 = StatCollector.translateToLocal("GTPP.battpack.tooltip.3");
 		String aString4 = StatCollector.translateToLocal("GTPP.battpack.tooltip.4");
-
-		String aEuInfo = StatCollector.translateToLocal("GTPP.info.euInfo");
-		String aTier = StatCollector.translateToLocal("GTPP.machines.tier");
-		String aInputLimit = StatCollector.translateToLocal("GTPP.info.inputLimit");
-		String aCurrentPower = StatCollector.translateToLocal("GTPP.info.currentPower");
+		
 		String aEU = StatCollector.translateToLocal("GTPP.info.eu");	
 		String aEUT = aEU+"/t";
 
 		list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
 		list.add(EnumChatFormatting.GREEN + aString2+" " + (int) getTransferLimit(stack) + aEUT +" "+ aString3 + EnumChatFormatting.GRAY);
 		list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
-		list.add("");
-		list.add(EnumChatFormatting.GOLD + aEuInfo + EnumChatFormatting.GRAY);
-		list.add(EnumChatFormatting.GRAY + aTier+": [" + EnumChatFormatting.YELLOW + this.getTier(stack)
-		+ EnumChatFormatting.GRAY + "] "+aInputLimit+": [" + EnumChatFormatting.YELLOW
-		+ this.getTransferLimit(stack) + EnumChatFormatting.GRAY + aEUT);
-		list.add(EnumChatFormatting.GRAY + aCurrentPower +": [" + EnumChatFormatting.YELLOW + (long) this.getCharge(stack)
-		+ EnumChatFormatting.GRAY + aEU +"] [" + EnumChatFormatting.YELLOW
-		+ MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)) + EnumChatFormatting.GRAY
-		+ "%]");
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
-	@Override
-	public double charge(final ItemStack stack, final double amount, final int tier, final boolean ignoreTransferLimit,
-			final boolean simulate) {
-
-		if (!simulate) {
-			ElectricItem.manager.charge(stack, amount, tier, true, simulate);
-
-		}
-		return ElectricItem.manager.charge(stack, amount, tier, true, simulate);
-	}
-
-	@Override
-	public double discharge(final ItemStack stack, final double amount, final int tier,
-			final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
-		if (!simulate) {
-			ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
-		}
-
-		return ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
-	}
-
-	@Override
-	public double getCharge(final ItemStack stack) {
-		return ElectricItem.manager.getCharge(stack);
-	}
-
-	@Override
-	public boolean canUse(final ItemStack stack, final double amount) {
-		return ElectricItem.manager.canUse(stack, amount);
-	}
-
-	@Override
-	public boolean use(final ItemStack stack, final double amount, final EntityLivingBase entity) {
-		return ElectricItem.manager.use(stack, amount, entity);
-	}
-
-	@Override
-	public void chargeFromArmor(final ItemStack stack, final EntityLivingBase entity) {
-		ElectricItem.manager.chargeFromArmor(stack, entity);
 	}
 
 	@Override
@@ -217,11 +113,6 @@ public class BatteryPackBaseBauble extends BaseBauble implements IElectricItem, 
 	@Override
 	public boolean canUnequip(final ItemStack arg0, final EntityLivingBase arg1) {
 		return true;
-	}
-
-	@Override
-	public BaubleType getBaubleType(final ItemStack arg0) {
-		return BaubleType.BELT;
 	}
 
 	@Override // TODO
@@ -347,6 +238,12 @@ public class BatteryPackBaseBauble extends BaseBauble implements IElectricItem, 
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getTextureNameForBauble() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

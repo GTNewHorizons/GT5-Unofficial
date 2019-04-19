@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,8 +8,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
-
-import gtPlusPlus.core.lib.CORE;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicMachine {
@@ -67,7 +64,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	@Override
 	public int getCapacity() {
-		return 8000;
+		return 8000 * Math.max(1, this.mTier);
 	}
 
 }

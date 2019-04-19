@@ -1,23 +1,29 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-
+import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.AABB;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-
-import gregtech.api.util.GT_Utility;
-
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
 
 public class EntityUtils {
 
@@ -124,6 +130,61 @@ public class EntityUtils {
 
 	public static void doDamage(Entity entity, DamageSource dmg, int i) {		
 		entity.attackEntityFrom(dmg, i);		
+	}
+	
+	public static boolean isTileEntityRegistered(Class aTileClass, String aTileName) {
+		Field aRegistry = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "nameToClassMap");	
+		Field aRegistry2 = ReflectionUtils.getField(ReflectionUtils.getClass("net.minecraft.tileentity.TileEntity"), "classToNameMap");
+		try {
+			Object o = aRegistry.get(null);
+			if (o != null) {
+			    Map nameToClassMap = (Map) o;			    
+			    if (!nameToClassMap.containsKey(aTileName)) {			    	
+			    	 o = aRegistry2.get(null);
+						if (o != null) {
+						    Map classToNameMap = (Map) o;			    
+						    if (!classToNameMap.containsKey(aTileClass)) {
+								return false;		    	
+						    }	
+						    else {
+						    	return true;
+						    } 
+						}			    		    	
+			    }	
+			    else {
+			    	return true;
+			    }
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {			
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static double getDistance(Entity p1, Entity p2) {
+	    return Math.sqrt( Math.pow(p1.posX - p2.posX, 2) + Math.pow(p1.posY - p2.posY, 2) + Math.pow(p1.posZ - p2.posZ, 2));
+	}
+	
+	public static AutoMap<Entity> getEntitiesWithinBoundingBoxExcluding(Entity aExclusion, AABB aBoundingBox){
+		
+		if (aExclusion == null) {
+			return new AutoMap<Entity>();
+		}
+		else {
+			List<Entity> aEntities = aBoundingBox.world().getEntitiesWithinAABBExcludingEntity(aExclusion, aBoundingBox.get());			
+			return new AutoMap<Entity>(aEntities);			
+		}
+	}
+	
+	public static AutoMap<Entity> getEntitiesWithinBoundingBox(Class aEntityType, AABB aBoundingBox){
+		
+		if (aEntityType == null) {
+			return new AutoMap<Entity>();
+		}
+		else {
+			List<Entity> aEntities = aBoundingBox.world().getEntitiesWithinAABB(aEntityType, aBoundingBox.get());			
+			return new AutoMap<Entity>(aEntities);			
+		}
 	}
 
 }

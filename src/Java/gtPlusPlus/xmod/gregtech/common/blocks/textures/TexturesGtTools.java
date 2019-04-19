@@ -13,6 +13,10 @@ import gtPlusPlus.core.lib.CORE;
 public final class TexturesGtTools {
 
 	public final static CustomIcon SKOOKUM_CHOOCHER = new CustomIcon("iconsets/SKOOKUMCHOOCHER");
+	public final static CustomIcon ANGLE_GRINDER = new CustomIcon("iconsets/ANGLE_GRINDER");
+	public final static CustomIcon ELECTRIC_SNIPS = new CustomIcon("iconsets/ELECTRIC_SNIPS");
+	public final static CustomIcon ELECTRIC_LIGHTER = new CustomIcon("iconsets/ELECTRIC_LIGHTER");
+	public final static CustomIcon ELECTRIC_BUTCHER_KNIFE = new CustomIcon("iconsets/ELECTRIC_BUTCHER_KNIFE");
 
 
 

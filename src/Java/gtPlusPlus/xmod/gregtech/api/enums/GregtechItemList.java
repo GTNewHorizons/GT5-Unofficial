@@ -423,7 +423,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 
 	//Basically is an automatic Cauldron
-	SimpleDustWasher, 
+	SimpleDustWasher_ULV, 
+	SimpleDustWasher_MV, 
+	SimpleDustWasher_EV, 
+	SimpleDustWasher_LuV, 
+	SimpleDustWasher_UV, 
 	
 	//Solar Tower Reflector
 	Solar_Tower_Reflector,
@@ -530,6 +534,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Block that enables uplink to a superconductor network
 	SuperConductorInputNode,
+	
+	//Heat Pipes
+	HeatPipe_Tier_1,
+	HeatPipe_Tier_2,
+	HeatPipe_Tier_3,
 
 
 	//Chemical Dehydrators for nuclear fuels

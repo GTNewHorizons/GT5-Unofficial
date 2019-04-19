@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
+import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
@@ -345,6 +346,15 @@ public final class ModItems {
 	public static CoreItem itemDetCable;
 	public static ItemThrowableBomb itemBomb;
 
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Zombie;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Skeleton;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Spider;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Creeper;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Enderman;
+	
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Nether;
+	public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
+
 	static {
 		Logger.INFO("Items!");
 		//Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is called upon.
@@ -522,7 +532,13 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.HYPOGEN);
 			MaterialGenerator.generate(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
-
+			
+			//Custom Materials that are from Runescape
+			MaterialGenerator.generate(ELEMENT.STANDALONE.BLACK_METAL);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.WHITE_METAL);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.GRANITE, false, false);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.RUNITE, false);
+			MaterialGenerator.generate(ELEMENT.STANDALONE.DRAGON_METAL, false);
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -634,6 +650,17 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TITANSTEEL);
 			MaterialGenerator.generate(ALLOY.ARCANITE);
 			MaterialGenerator.generate(ALLOY.OCTIRON);			
+
+			MaterialGenerator.generate(ALLOY.BABBIT_ALLOY, false);
+			MaterialGenerator.generate(ALLOY.BLACK_TITANIUM, false);
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
@@ -812,7 +839,7 @@ public final class ModItems {
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
 		}
-		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), null, itemHotTitaniumIngot, null, 10 * 20, 512, Materials.Titanium.mBlastFurnaceTemp);
+		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), CI.getNumberedCircuit(16), itemHotTitaniumIngot, null, 10 * 20, 500, Materials.Titanium.mBlastFurnaceTemp);
 
 		//Special Sillyness
 		if (true) {

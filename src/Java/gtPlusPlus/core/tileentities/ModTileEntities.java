@@ -7,6 +7,7 @@ import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.*;
+import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
 import gtPlusPlus.core.tileentities.machines.*;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
 

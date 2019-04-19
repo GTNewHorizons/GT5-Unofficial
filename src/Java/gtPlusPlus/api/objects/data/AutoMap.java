@@ -3,7 +3,7 @@ package gtPlusPlus.api.objects.data;
 import java.io.Serializable;
 import java.util.*;
 
-public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collection<V>, Queue<V> {
+public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collection<V>, Queue<V>, List<V> {
 
 	/**
 	 * The Internal Map
@@ -22,11 +22,55 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 		this(new LinkedHashMap<Integer, V>());
 	}
 	
+	public Map<Integer, V> getMap(){
+		return mInternalMap;
+	}
+	
 	public AutoMap(Map<Integer, V> defaultMapType) {
 		mInternalMap = defaultMapType;
 		mInternalNameMap = new LinkedHashMap<String, Integer>();
 	}
 	
+	/**
+	 * Generates an AutoMap from the List.
+	 * @param aList - Data to be inserted into the AutoMap.
+	 */
+	public AutoMap(List<V> aList) {
+		mInternalMap = new LinkedHashMap<Integer, V>();
+		mInternalNameMap = new LinkedHashMap<String, Integer>();	
+		if (aList != null && aList.size() > 0) {
+			for (V obj : aList) {
+				add(obj);
+			}
+		}		
+	}
+	/**
+	 * Generates an AutoMap from a Set.
+	 * @param aList - Data to be inserted into the AutoMap.
+	 */
+	public AutoMap(Set<V> aList) {
+		mInternalMap = new LinkedHashMap<Integer, V>();
+		mInternalNameMap = new LinkedHashMap<String, Integer>();	
+		if (aList != null && aList.size() > 0) {
+			for (V obj : aList) {
+				add(obj);
+			}
+		}		
+	}
+	/**
+	 * Generates an AutoMap from a Collection.
+	 * @param aList - Data to be inserted into the AutoMap.
+	 */
+	public AutoMap(Collection<V> aList) {
+		mInternalMap = new LinkedHashMap<Integer, V>();
+		mInternalNameMap = new LinkedHashMap<String, Integer>();	
+		if (aList != null && aList.size() > 0) {
+			for (V obj : aList) {
+				add(obj);
+			}
+		}		
+	}
+
 	@Override
 	public Iterator<V> iterator() {		
 		return values().iterator();
@@ -210,6 +254,79 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
 	@Override
 	public V peek() {
 		return element();
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends V> c) {
+		for (V y : c) {
+			add(y);
+		}
+		return true;
+	}
+
+	@Override
+	public V set(int index, V element) {
+		return mInternalMap.put(index, element);
+	}
+
+	@Override
+	public void add(int index, V element) {
+		add(element);		
+	}
+
+	@Override
+	public V remove(int index) {
+		V h = mInternalMap.get(index);		
+		set(index, null);
+		return h;
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		int aCount = 0;
+		for (V of : mInternalMap.values()) {
+			if (of != o) {
+				aCount++;
+				continue;
+			}
+			else {
+				return aCount;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		//TODO
+		return indexOf(o);
+	}
+
+	@Override
+	public ListIterator<V> listIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ListIterator<V> listIterator(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<V> subList(int fromIndex, int toIndex) {
+		AutoMap<V> aNewSubList = new AutoMap<V>();		
+		for (int slot=fromIndex; slot<=toIndex; slot++) {
+			V obj = mInternalMap.get(slot);
+			if (obj == null) {
+				continue;
+			}
+			else {
+				aNewSubList.put(obj);
+			}
+		}
+		return aNewSubList;
 	}
   
 }

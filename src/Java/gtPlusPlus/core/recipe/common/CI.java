@@ -369,6 +369,7 @@ public class CI {
 		return Materials._NULL;
 	}
 
+	@Deprecated
 	public static String getTieredComponent(OrePrefixes type, int tier){
 		Object material = getMaterialFromTier(tier);
 		if (material != null){
@@ -768,6 +769,10 @@ public class CI {
 		}		
 
 		ItemStack aTempStack = null;
+		
+		if (aPrefix == OrePrefixes.rod) {
+			aPrefix = OrePrefixes.stick;
+		}
 		
 		if (aPrefix == OrePrefixes.gear || aPrefix == OrePrefixes.gearGt) {
 			m = aMaster[0][aTier];

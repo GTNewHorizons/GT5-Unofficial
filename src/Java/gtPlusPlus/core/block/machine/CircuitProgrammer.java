@@ -51,6 +51,8 @@ public class CircuitProgrammer extends BlockContainer implements ITileTooltip
 	@SuppressWarnings("deprecation")
 	public CircuitProgrammer(){
 		super(Material.iron);
+		this.setHardness(5f);
+		this.setResistance(1f);
 		this.setBlockName("blockCircuitProgrammer");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockCircuitProgrammer");

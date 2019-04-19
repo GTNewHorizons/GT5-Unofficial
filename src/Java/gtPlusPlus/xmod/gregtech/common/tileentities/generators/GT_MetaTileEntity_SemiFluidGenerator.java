@@ -18,9 +18,11 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.GTPP_MTE_BasicLosslessGenerator;
 
-public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_BasicGenerator{
+public class GT_MetaTileEntity_SemiFluidGenerator extends GTPP_MTE_BasicLosslessGenerator{
 
 	public static final int BASE_POLLUTION = 2;
 	public int mEfficiency;
@@ -48,7 +50,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public int getCapacity() {
-		return 8000;
+		return 4000 * this.mTier;
 	}
 
 	public void onConfigLoad() {
@@ -63,6 +65,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
+		//Logger.INFO("Fuel Count: "+Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size());
 		return Gregtech_Recipe_Map.sSemiFluidLiquidFuels;
 	}
 	
@@ -91,12 +94,15 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	
 	@Override
 	public int getFuelValue(ItemStack aStack) {
-		if ((GT_Utility.isStackInvalid(aStack)) || (getRecipes() == null))
+		if ((GT_Utility.isStackInvalid(aStack)) || (getRecipes() == null)) {
+			Logger.INFO("Bad Fuel?");
 			return 0;
+		}
 		int rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
 		if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
 			rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
 		}
+		Logger.INFO("Good Fuel: "+rValue);
 		return rValue;
 	}
 
@@ -110,7 +116,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public ITexture[] getBack(byte aColor) {
 		return new ITexture[] { super.getBack(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
 	}
 
 	@Override
@@ -122,13 +128,13 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public ITexture[] getTop(byte aColor) {
 		return new ITexture[] { super.getTop(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE) };
 	}
 
 	@Override
 	public ITexture[] getSides(byte aColor) {
 		return new ITexture[] { super.getSides(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP) };
 	}
 
 	@Override
@@ -141,7 +147,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public ITexture[] getBackActive(byte aColor) {
 		return new ITexture[] { super.getBackActive(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
 	}
 
 	@Override
@@ -153,13 +159,13 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public ITexture[] getTopActive(byte aColor) {
 		return new ITexture[] { super.getTopActive(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE) };
 	}
 
 	@Override
 	public ITexture[] getSidesActive(byte aColor) {
 		return new ITexture[] { super.getSidesActive(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE) };
+				new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE) };
 	}
 
 }

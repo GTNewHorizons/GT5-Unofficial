@@ -38,6 +38,8 @@ public class Machine_PooCollector extends BlockContainer {
 
 	public Machine_PooCollector() {
 		super(Material.iron);
+		this.setHardness(5f);
+		this.setResistance(1f);
 		this.setBlockName("blockPooCollector");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, ItemBlockMeta.class,"blockPooCollector");

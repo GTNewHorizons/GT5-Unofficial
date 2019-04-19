@@ -58,6 +58,7 @@ public class SemiFluidFuelHandler {
 	public static boolean generateFuels() {
 		final FluidStack aCreosote = FluidUtils.getFluidStack("creosote", 1000);
 		final FluidStack aHeavyFuel = FluidUtils.getFluidStack("liquid_heavy_fuel", 1000);
+		final FluidStack aHeavyOil = FluidUtils.getFluidStack("liquid_heavy_oil", 1000);
 		final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<Integer, Pair<FluidStack, Integer>>();
 		// Find Fluids From items
 		for (final GT_Recipe r : gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels.mRecipeList) {
@@ -80,7 +81,7 @@ public class SemiFluidFuelHandler {
 						aContainsCreosote = true;
 					}
 				}
-				g.mSpecialValue *= aContainsCreosote ? 8 : 4;
+				g.mSpecialValue *= aContainsCreosote ? 6 : 3;
 				Logger.INFO("Added " + g.mFluidInputs[0].getLocalizedName() + " to the Semi-Fluid Generator fuel map. Fuel Produces "+g.mSpecialValue+"EU per 1000L.");
 				sSemiFluidLiquidFuels.add(g);
 			}
@@ -89,9 +90,9 @@ public class SemiFluidFuelHandler {
 			if (p != null) {
 				int aFuelValue = p.getValue();
 				if (p.getKey().isFluidEqual(aCreosote)) {
-					aFuelValue *= 8;
+					aFuelValue *= 6;
 				}
-				else if (p.getKey().isFluidEqual(aHeavyFuel)){
+				else if (p.getKey().isFluidEqual(aHeavyFuel) || p.getKey().isFluidEqual(aHeavyOil)){
 					aFuelValue *= 1.5;
 				}
 				else {

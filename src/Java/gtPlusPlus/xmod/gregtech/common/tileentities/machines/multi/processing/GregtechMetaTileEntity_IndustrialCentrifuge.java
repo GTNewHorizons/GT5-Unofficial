@@ -1,13 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -27,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class GregtechMetaTileEntity_IndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	
-	private boolean mIsAnimated = true;
+	private boolean mIsAnimated;
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
 	private static CustomIcon GT9_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
@@ -38,10 +35,12 @@ extends GregtechMeta_MultiBlockBase {
 		super(aID, aName, aNameRegional);
 		frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
 		frontFace = new GT_RenderedTexture(GT9_5);
+		mIsAnimated = true;
 	}
 
 	public GregtechMetaTileEntity_IndustrialCentrifuge(final String aName) {
 		super(aName);
+		mIsAnimated = true;
 	}
 
 	@Override
@@ -59,6 +58,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
 				"125% faster than using single block machines of the same voltage",
+				"Disable animations with a screwdriver",
 				"Only uses 90% of the eu/t normally required",
 				"Processes six items per voltage tier",
 				"Size: 3x3x3 (Hollow)",
@@ -179,13 +179,14 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		this.mIsAnimated = Utils.invertBoolean(mIsAnimated);
+		this.mIsAnimated = !mIsAnimated;
+		Logger.INFO("Is Centrifuge animated "+this.mIsAnimated);	
 		if (this.mIsAnimated) {
-			PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
+			PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture. ");
 		}
 		else {
-			PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");			
-		}			
+			PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture. ");			
+		}		
 	}
 
 	@Override
@@ -196,12 +197,18 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);
-		mIsAnimated = aNBT.getBoolean("mIsAnimated");
+		super.loadNBTData(aNBT);		
+		if (aNBT.hasKey("mIsAnimated")) {
+			mIsAnimated = aNBT.getBoolean("mIsAnimated");			
+		}
+		else {
+			mIsAnimated = true;			
+		}		
 	}
 	
 	public boolean usingAnimations() {
-		return mIsAnimated;
+		//Logger.INFO("Is animated? "+this.mIsAnimated);
+		return this.mIsAnimated;
 	}
 	
 	private ITexture getFrontFacingTurbineTexture(boolean isActive) {

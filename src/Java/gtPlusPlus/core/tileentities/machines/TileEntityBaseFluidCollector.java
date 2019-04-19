@@ -2,7 +2,6 @@ package gtPlusPlus.core.tileentities.machines;
 
 import java.util.List;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -11,7 +10,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -208,9 +206,11 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 				this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
 			}
 			else {
-				ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull());
-				if (aDirtStack != null)
-				if (!this.mInventory.addItemStack(aDirtStack)) {
+				ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull(), 1);				
+				if (!ItemUtils.checkForInvalidItems(aDirtStack)) {
+					return;
+				}				
+				if (!this.mInventory.addItemStack(aDirtStack)) {					
 					EntityItem entity = new EntityItem(worldObj, xCoord, yCoord+1.5, zCoord, aDirtStack);
 					worldObj.spawnEntityInWorld(entity);
 				}
@@ -230,7 +230,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 	
 	public abstract Fluid fluidToProvide();
 	
-	public abstract Item itemToSpawnInWorldIfTankIsFull();
+	public abstract ItemStack itemToSpawnInWorldIfTankIsFull();
 	
 	
 	

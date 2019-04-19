@@ -46,7 +46,12 @@ GTPP.nanohealer.tooltip.4=WILL NOT PREVENT DEATH
 GTPP.nanohealer.tooltip.5=Shift+RMB to toggle notifications
 GTPP.nanohealer.hidden=Hiding Info?
 
-
+//10/4/19
+//Tooltips for the Mob Killing Baubles
+GTPP.monsterkiller.tooltip.1=Worn as an Amulet within Baubles
+GTPP.monsterkiller.tooltip.2=Drains
+GTPP.monsterkiller.tooltip.3=per each kill
+GTPP.monsterkiller.tooltip.4=Target Type:
 
 
 

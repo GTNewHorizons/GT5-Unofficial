@@ -5,7 +5,6 @@ import static gtPlusPlus.xmod.gregtech.common.covers.GTPP_Cover_Overflow.mOverfl
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.TimerTask;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -24,11 +22,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
-import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -39,11 +34,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.ProxyFinder;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
-import gtPlusPlus.xmod.gregtech.loaders.misc.AssLineAchievements;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,6 +90,9 @@ public class Meta_GT_Proxy {
             GT_Log.out.println("GT++ Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
             throw new RuntimeException("");
         }
+		
+        //Gotta set it here so that we don't try call gregtech too early.
+		StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy(true, "gt6Pipe");		
         
         GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
@@ -375,37 +370,13 @@ public class Meta_GT_Proxy {
 	}
 	
 	
-	private static GT_Proxy[] mProxies = new GT_Proxy[2];
+	static GT_Proxy[] mProxies = new GT_Proxy[2];
 
+	/**
+	 * @deprecated Use {@link StaticFields59#getFieldFromGregtechProxy(boolean,String)} instead
+	 */
 	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
-		Object proxyGT;
-
-		if (mProxies[0] != null && client) {
-			proxyGT = mProxies[0];
-		} else if (mProxies[1] != null && !client) {
-			proxyGT = mProxies[1];
-		} else {
-			try {
-				proxyGT = (client ? ProxyFinder.getClientProxy(GT_Mod.instance)
-						: ProxyFinder.getServerProxy(GT_Mod.instance));
-			} catch (final ReflectiveOperationException e1) {
-				proxyGT = null;
-				Logger.INFO("Failed to obtain instance of GT " + (client ? "Client" : "Server") + " proxy.");
-			}
-			if (mProxies[0] == null && client) {
-				mProxies[0] = (GT_Proxy) proxyGT;
-			} else if (mProxies[1] == null && !client) {
-				mProxies[1] = (GT_Proxy) proxyGT;
-			}
-		}
-
-		if (proxyGT != null && proxyGT instanceof GT_Proxy) {
-			try {
-				return ReflectionUtils.getField(proxyGT.getClass(), fieldName).get(proxyGT);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-			}
-		}
-		return null;
+		return StaticFields59.getFieldFromGregtechProxy(client, fieldName);
 	}
 	
 	public void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {

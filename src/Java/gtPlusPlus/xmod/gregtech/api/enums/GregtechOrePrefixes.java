@@ -54,6 +54,10 @@ public enum GregtechOrePrefixes {
 	type2("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
 
 	toolSkookumChoocher("Skookum Choocher", "", " Skookum Choocher", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolAngleGrinder("Angle Grinder", "", "Angle Grinder", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolElectricSnips("Electric Snips", "", "Electric Snips", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolElectricLighter("Electric Lighter", "", "Electric Lighter", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+	toolElectricButcherKnife("Electric Butcher Knife", "", "Electric Butcher Knife", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 
 
 
@@ -61,7 +65,7 @@ public enum GregtechOrePrefixes {
 	battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
 	circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
 	chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Buildcraft
-	computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1); // A whole Computer. "computerMaster" = ComputerCube
+	computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1),; // A whole Computer. "computerMaster" = ComputerCube
 
 	public static volatile int VERSION = 508;
 

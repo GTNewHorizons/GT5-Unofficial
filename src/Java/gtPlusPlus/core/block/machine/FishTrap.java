@@ -51,6 +51,7 @@ public class FishTrap extends BlockContainer implements ITileTooltip
 		super(Material.iron);
 		this.setBlockName("blockFishTrap");
 		this.setHardness(5f);
+		this.setResistance(1f);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockFishTrap");
 		LanguageRegistry.addName(this, "Fish Catcher");

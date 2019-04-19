@@ -1,16 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialCentrifuge;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class TexturesCentrifugeMultiblock {
 
@@ -92,103 +90,55 @@ public class TexturesCentrifugeMultiblock {
 				TileEntity tTileEntity;
 				IMetaTileEntity tMetaTileEntity;
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[0].getIcon();
-					}
-					return this.CENTRIFUGE[0].getIcon();
+					return getIconByIndex(tMetaTileEntity, 0);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[3].getIcon();
-					}
-					return this.CENTRIFUGE[3].getIcon();
+					return getIconByIndex(tMetaTileEntity, 3);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[6].getIcon();
-					}
-					return this.CENTRIFUGE[6].getIcon();
+					return getIconByIndex(tMetaTileEntity, 6);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[1].getIcon();
-					}
-					return this.CENTRIFUGE[1].getIcon();
+					return getIconByIndex(tMetaTileEntity, 1);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[7].getIcon();
-					}
-					return this.CENTRIFUGE[7].getIcon();
+					return getIconByIndex(tMetaTileEntity, 7);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[8].getIcon();
-					}
-					return this.CENTRIFUGE[8].getIcon();
+					return getIconByIndex(tMetaTileEntity, 8);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[5].getIcon();
-					}
-					return this.CENTRIFUGE[5].getIcon();
+					return getIconByIndex(tMetaTileEntity, 5);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[2].getIcon();
-					}
-					return this.CENTRIFUGE[2].getIcon();
+					return getIconByIndex(tMetaTileEntity, 2);
 				}
 			} else if ((aSide == 4) || (aSide == 5)) {
 				TileEntity tTileEntity;
 				Object tMetaTileEntity;
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[0].getIcon();
-					}
-					return this.CENTRIFUGE[0].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 0);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[3].getIcon();
-					}
-					return this.CENTRIFUGE[3].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 3);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[6].getIcon();
-					}
-					return this.CENTRIFUGE[6].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 6);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[1].getIcon();
-					}
-					return this.CENTRIFUGE[1].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 1);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[7].getIcon();
-					}
-					return this.CENTRIFUGE[7].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 7);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[8].getIcon();
-					}
-					return this.CENTRIFUGE[8].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 8);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[5].getIcon();
-					}
-					return this.CENTRIFUGE[5].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 5);
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge))) {
-					if (isUsingAnimatedTexture(tTileEntity)) {
-						return this.CENTRIFUGE_ACTIVE[2].getIcon();
-					}
-					return this.CENTRIFUGE[2].getIcon();
+					return getIconByIndex((IMetaTileEntity) tMetaTileEntity, 2);
 				}
 			}
 			return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
@@ -440,15 +390,33 @@ public class TexturesCentrifugeMultiblock {
 		return Textures.BlockIcons.CONNECTED_HULLS[(tStartIndex + 7)].getIcon();
 	}
 	
-	public boolean isUsingAnimatedTexture(TileEntity tTileEntity) {
-		IGregTechTileEntity aTile;
-		if (tTileEntity instanceof IGregTechTileEntity) {
-			aTile = (IGregTechTileEntity) tTileEntity;
-			if (aTile instanceof GregtechMetaTileEntity_IndustrialCentrifuge) {
-				return ((GregtechMetaTileEntity_IndustrialCentrifuge) aTile).usingAnimations();
-			}
-		}		
+	public boolean isCentrifugeRunning(IMetaTileEntity aTile) {
+		if (aTile == null) {
+			return false;
+		}
+		else {
+			return aTile.getBaseMetaTileEntity().isActive();
+		}
+		
+		
+	}
+	
+	public boolean isUsingAnimatedTexture(IMetaTileEntity aMetaTileEntity) {
+			if (aMetaTileEntity != null) {
+				if (aMetaTileEntity instanceof GregtechMetaTileEntity_IndustrialCentrifuge) {
+					return ((GregtechMetaTileEntity_IndustrialCentrifuge) aMetaTileEntity).usingAnimations();
+				}
+			}		
 		return false;
 	}
 
+	public IIcon getIconByIndex(IMetaTileEntity aMetaTileEntity, int aIndex) {
+		if (isUsingAnimatedTexture(aMetaTileEntity)) {
+			if (isCentrifugeRunning(aMetaTileEntity)) {
+				return this.CENTRIFUGE_ACTIVE[aIndex].getIcon();				
+			}
+		}
+		return this.CENTRIFUGE[aIndex].getIcon();
+	}
+	
 }

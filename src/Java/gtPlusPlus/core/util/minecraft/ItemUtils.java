@@ -13,6 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -29,6 +30,8 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -1112,6 +1115,68 @@ public class ItemUtils {
 			aDisplay = aStack.getItem().getUnlocalizedNameInefficiently(aStack);
 		}
 		return aDisplay;
+	}
+	
+	public static boolean isItemGregtechTool(ItemStack aStack) {
+		if (aStack == null) {
+			return false;
+		}
+		final Item mItem = aStack.getItem();
+		final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
+		final Class aSkookClass = aSkookum.getClass();
+		if (aSkookClass.isInstance(mItem) || mItem instanceof GT_MetaGenerated_Tool_01 || mItem instanceof MetaGeneratedGregtechTools || mItem instanceof Gregtech_MetaTool || mItem == aSkookum) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolWrench(ItemStack aWrench) {
+		if (isItemGregtechTool(aWrench) && (aWrench.getItemDamage() == 16 || aWrench.getItemDamage() == 120 || aWrench.getItemDamage() == 122 || aWrench.getItemDamage() == 124 || aWrench.getItemDamage() == 7734)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolMallet(ItemStack aMallet) {
+		if (isItemGregtechTool(aMallet) && (aMallet.getItemDamage() == 14)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
+		if (isItemGregtechTool(aScrewdriver) && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolCrowbar(ItemStack aCrowbar) {
+		if (isItemGregtechTool(aCrowbar) && (aCrowbar.getItemDamage() == 20)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolWirecutters(ItemStack aWirecutters) {
+		if (isItemGregtechTool(aWirecutters) && (aWirecutters.getItemDamage() == 26)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolHammer(ItemStack aHammer) {
+		if (isItemGregtechTool(aHammer) && (aHammer.getItemDamage() == 12 || aHammer.getItemDamage() == 7734)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isToolSolderingIron(ItemStack aSoldering) {
+		if (isItemGregtechTool(aSoldering) && (aSoldering.getItemDamage() == 160)) {
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -201,6 +201,12 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 				return new ClassTransformer_IC2_GetHarvestTool(basicClass, obfuscated, transformedName).getWriter().toByteArray();			
 			}
 		}
+		//Fix IC2 Hazmat
+		
+		if (transformedName.equals("ic2.core.item.armor.ItemArmorHazmat")) {
+			FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_IC2_Hazmat(basicClass, transformedName).getWriter().toByteArray();			
+		}
 		
 		//Fix Thaumcraft Shit
 		//Patching ItemWispEssence to allow invalid item handling
