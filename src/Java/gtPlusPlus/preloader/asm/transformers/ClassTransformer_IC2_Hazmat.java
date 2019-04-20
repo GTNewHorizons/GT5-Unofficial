@@ -83,7 +83,7 @@ public class ClassTransformer_IC2_Hazmat {
 		
 		FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Injecting " + aMethodName + ".");		
 		if (aMethodName.equals("hasCompleteHazmat")) {
-			mv = cw.visitMethod(ACC_PUBLIC, "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", null, null);
+			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);

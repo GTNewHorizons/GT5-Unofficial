@@ -1,18 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
-import static gregtech.api.GregTech_API.sBlockCasings4;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkPosition;
-
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -24,19 +15,28 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-
+import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MiningUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -46,7 +46,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	private static final Block miningPipeTipBlock;
 
 	private final ArrayList<ChunkPosition> oreBlockPositions;
-	protected double mProductionModifier = 100;
+	protected double mProductionModifier = 0;
 
 	private Block casingBlock;
 	private int casingMeta;
@@ -141,8 +141,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				return false;
 			}
 			else {
-				mProductionModifier++;
-				Logger.INFO("tryConsumePyrotheum Fluid. "+(int) this.mProductionModifier);						
+				mProductionModifier++;						
 			}
 		}
 		else {
@@ -151,344 +150,14 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				return false;
 			}
 			else {
-				mProductionModifier++;
-				Logger.INFO("tryConsumeCryotheum Fluid. "+(int) this.mProductionModifier);						
+				mProductionModifier++;					
 			}
 		}
 		
 		for (int i = 0; i < 5; i++) {			
-			//We assume this drill head is in a supported location at Y 5 or less. It should also be touching bedrock.
-			ItemStack[] aOutputs = new ItemStack[] {
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().IRON.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().COPPER.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().GOLD.getOre(1),
-					ELEMENT.getInstance().SILVER.getOre(1),
-					ELEMENT.getInstance().SILVER.getOre(1),
-					ELEMENT.getInstance().SILVER.getOre(1),
-					ELEMENT.getInstance().SILVER.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().ALUMINIUM.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().TIN.getOre(1),
-					ELEMENT.getInstance().ZINC.getOre(1),
-					ELEMENT.getInstance().ZINC.getOre(1),
-					ELEMENT.getInstance().ZINC.getOre(1),
-					ELEMENT.getInstance().ZINC.getOre(1),
-					ELEMENT.getInstance().NICKEL.getOre(1),
-					ELEMENT.getInstance().NICKEL.getOre(1),
-					ELEMENT.getInstance().NICKEL.getOre(1),
-					ELEMENT.getInstance().NICKEL.getOre(1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),									
-					ItemUtils.getItemStackOfAmountFromOreDict("oreTungstate", 1),								
-					ELEMENT.STANDALONE.RUNITE.getOre(1),
-					ELEMENT.STANDALONE.GRANITE.getOre(1),									
-					ORES.AGARDITE_CD.getOre(1),	
-					ORES.ALBURNITE.getOre(1),	
-					ORES.CERITE.getOre(1),	
-					ORES.FLUORCAPHITE.getOre(1),	
-					ORES.HIBONITE.getOre(1),	
-					ORES.MIESSIITE.getOre(1),	
-					ORES.ZIMBABWEITE.getOre(1),	
-					ORES.SAMARSKITE_YB.getOre(1),	
-			};
-			
-			int aChance = MathUtils.randInt(0, 10000);
-			if (aChance <= 100) {								
-				ItemStack aChance1 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-				if (ItemUtils.checkForInvalidItems(aChance1)) {
-					this.addOutput(aChance1);									
-				}
-				ItemStack aChance2 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-				if (ItemUtils.checkForInvalidItems(aChance2)) {
-					this.addOutput(aChance2);									
-				}
-				ItemStack aChance3 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-				if (ItemUtils.checkForInvalidItems(aChance3)) {
-					this.addOutput(aChance3);									
-				}
-				Logger.INFO("Tried to add some loot to DEDP.");
-			}							
-			didWork[i] = true;
-		
+			process();						
+			didWork[i] = true;		
 		}
-		
-		
-		
-		/*final int oldYHead = this.yHead[0];
-		if (!this.checkPipesAndSetYHead() || !this.isEnergyEnough()) {
-			this.stopMachine();
-			return false;
-		}
-		if (this.yHead[0] != oldYHead) {
-			this.oreBlockPositions.clear();
-		}
-
-		for (int g = 0; g < 5; g++) {
-			if (this.isPickingPipes[g]) {
-				if (this.tryPickPipe(g)) {
-					this.mOutputItems = new ItemStack[] { GT_Utility.copyAmount(1L,
-							new Object[] { GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe }) };
-					didWork[g] = true;
-					continue;
-				}
-				this.isPickingPipes[g] = false;
-				this.stopMachine();
-				didWork[g] = false;
-			}
-			else {
-				this.putMiningPipesFromInputsInController();
-
-				if (!this.tryConsumeDrillingFluid()) {
-					Logger.INFO("No drilling Fluid.");
-					return false;
-				}
-				
-				if (this.mRuntime % 2 == 0) {
-					if (!this.tryConsumePyrotheum()) {
-						Logger.INFO("No tryConsumePyrotheum Fluid.");
-						return false;
-					}
-					else {
-						Logger.INFO("tryConsumePyrotheum Fluid.");						
-					}
-				}
-				else {
-					if (!this.tryConsumeCryotheum()) {
-						Logger.INFO("No tryConsumeCryotheum Fluid.");
-						return false;
-					}
-					else {
-						Logger.INFO("tryConsumeCryotheum Fluid.");						
-					}
-				}
-				
-
-				if (this.oreBlockPositions.isEmpty()) {
-					// Hit bedrock Either retract pipe or Dig!
-					if (!this.tryLowerPipe(g)) {
-						// Mining Head is too high, we best retract.
-						if (!mMiningHeads.isEmpty() && mMiningHeads.containsKey(g) && mMiningHeads.get(g).yPos >= 6) {
-							for (int r = 0; r < 5; r++) {
-								this.isPickingPipes[r] = true;
-							}
-							didWork[g] = this.isPickingPipes[g];
-						}
-						// Full Power!
-						else {
-							
-							//We assume this drill head is in a supported location at Y 5 or less. It should also be touching bedrock.
-							ItemStack[] aOutputs = new ItemStack[] {
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().IRON.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().COPPER.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().GOLD.getOre(1),
-									ELEMENT.getInstance().SILVER.getOre(1),
-									ELEMENT.getInstance().SILVER.getOre(1),
-									ELEMENT.getInstance().SILVER.getOre(1),
-									ELEMENT.getInstance().SILVER.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().ALUMINIUM.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().TIN.getOre(1),
-									ELEMENT.getInstance().ZINC.getOre(1),
-									ELEMENT.getInstance().ZINC.getOre(1),
-									ELEMENT.getInstance().ZINC.getOre(1),
-									ELEMENT.getInstance().ZINC.getOre(1),
-									ELEMENT.getInstance().NICKEL.getOre(1),
-									ELEMENT.getInstance().NICKEL.getOre(1),
-									ELEMENT.getInstance().NICKEL.getOre(1),
-									ELEMENT.getInstance().NICKEL.getOre(1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreBauxite", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRedstone", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreDiamond", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreEmerald", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreRuby", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreSapphire", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),
-									ItemUtils.getItemStackOfAmountFromOreDict("oreThorium", 1),									
-									ItemUtils.getItemStackOfAmountFromOreDict("oreTungstate", 1),								
-									ELEMENT.STANDALONE.RUNITE.getOre(1),
-									ELEMENT.STANDALONE.GRANITE.getOre(1),									
-									ORES.AGARDITE_CD.getOre(1),	
-									ORES.ALBURNITE.getOre(1),	
-									ORES.CERITE.getOre(1),	
-									ORES.FLUORCAPHITE.getOre(1),	
-									ORES.HIBONITE.getOre(1),	
-									ORES.MIESSIITE.getOre(1),	
-									ORES.ZIMBABWEITE.getOre(1),	
-									ORES.SAMARSKITE_YB.getOre(1),	
-							};
-							
-							int aChance = MathUtils.randInt(0, 10000);
-							if (aChance <= 100) {								
-								ItemStack aChance1 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-								if (ItemUtils.checkForInvalidItems(aChance1)) {
-									this.addOutput(aChance1);									
-								}
-								ItemStack aChance2 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-								if (ItemUtils.checkForInvalidItems(aChance2)) {
-									this.addOutput(aChance2);									
-								}
-								ItemStack aChance3 = ItemUtils.getSimpleStack(aOutputs[MathUtils.randInt(0, aOutputs.length-1)], MathUtils.randInt(0, 3));
-								if (ItemUtils.checkForInvalidItems(aChance3)) {
-									this.addOutput(aChance3);									
-								}
-							}							
-							didWork[g] = true;
-						}
-					}
-				}
-				else {		
-					didWork[g] = true;					
-				}
-			}
-		}*/
 
 		// Fail recipe handling if one pipe didn't handle properly, to try again
 		// next run.
@@ -500,12 +169,9 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		}
 		
 		this.mEUt = 8000;
-		this.mMaxProgresstime = 10;
+		this.mMaxProgresstime = 1;
 		this.mEfficiencyIncrease = 10000;
-		//this.mProgresstime = (this.mMaxProgresstime > this.mProgresstime ? this.mProgresstime + 1 : 0);
 		
-		updateSlots();
-		Logger.INFO("[Bedrock Miner] Success? [x]");
 		return true;
 	}
 
@@ -547,13 +213,15 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	private void setElectricityStats() {
 		//this.mEfficiency = this.getCurrentEfficiency((ItemStack) null);
 		this.mEfficiencyIncrease = 10000;
-		final int overclock = 1 << GT_Utility.getTier(this.getMaxInputVoltage()) - 1;
-		this.mEUt = -12 * overclock * overclock;
+		final int overclock = 8 << GT_Utility.getTier(this.getMaxInputVoltage());
+		//this.mEUt = -12 * overclock * overclock;
+		Logger.INFO("Trying to set EU to "+(12 * overclock * overclock));
 		int mCombinedAvgTime = 0;
 		for (int g = 0; g < 5; g++) {
 			mCombinedAvgTime += (this.isPickingPipes[g] ? 80 : this.getBaseProgressTime()) / overclock;
 		}
-		this.mMaxProgresstime = (mCombinedAvgTime / 5);
+		Logger.INFO("Trying to set Max Time to "+(mCombinedAvgTime));
+		//this.mMaxProgresstime = (mCombinedAvgTime / 5);
 	}
 
 	/*
@@ -979,4 +647,288 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		miningPipeBlock = ModBlocks.blockFakeMiningPipe;
 		miningPipeTipBlock = ModBlocks.blockFakeMiningHead;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private AutoMap<ItemStack> mOutputs;
+	
+	public void process() {
+		ItemStack aOutput = generateOutputWithchance();
+		if (aOutput != null) {
+			this.addOutput(aOutput);
+			Logger.INFO("Mined some "+aOutput.getDisplayName());
+		}
+		this.updateSlots();
+	}
+	
+	public ItemStack generateOutputWithchance() {
+		int aChance = MathUtils.randInt(0, 7500);
+		if (aChance < 100) {
+			return generateOutput();
+		}
+		else {
+			return null;
+		}
+	}
+
+	public ItemStack generateOutput() {
+		AutoMap<ItemStack> aData = generateOreForOutput();
+		int aMax = aData.size()-1;
+		return aData.get(MathUtils.randInt(0, aMax));
+	}
+	
+	/**
+	 * Here we generate valid ores and also a basic loot set
+	 */
+	
+	public AutoMap<ItemStack> generateOreForOutput() {
+		
+		if (mOutputs != null) {
+			return mOutputs;
+		}
+
+		AutoMap<GT_Worldgen_GT_Ore_Layer> aOverWorldOres = MiningUtils.getOresForDim(0);
+		AutoMap<GT_Worldgen_GT_Ore_Layer> aNetherOres = MiningUtils.getOresForDim(-1);
+		AutoMap<GT_Worldgen_GT_Ore_Layer> aEndOres = MiningUtils.getOresForDim(1);
+		
+		AutoMap<ItemStack> aTempMap = new AutoMap<ItemStack>();
+		Block tOreBlock = GregTech_API.sBlockOres1;
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [Initial]");
+		
+		for (GT_Worldgen_GT_Ore_Layer layer : aOverWorldOres) {
+			if (layer.mEnabled) {
+				ItemStack aTempOreStack1 = ItemUtils.simpleMetaStack(tOreBlock, layer.mPrimaryMeta, 1);	
+				ItemStack aTempOreStack2 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSecondaryMeta, 1);	
+				ItemStack aTempOreStack3 = ItemUtils.simpleMetaStack(tOreBlock, layer.mBetweenMeta, 1);	
+				ItemStack aTempOreStack4 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSporadicMeta, 1);
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);				
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);				
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);				
+			}
+		}
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [Overworld]");
+		for (GT_Worldgen_GT_Ore_Layer layer : aNetherOres) {
+			if (layer.mEnabled) {
+				ItemStack aTempOreStack1 = ItemUtils.simpleMetaStack(tOreBlock, layer.mPrimaryMeta, 1);	
+				ItemStack aTempOreStack2 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSecondaryMeta, 1);	
+				ItemStack aTempOreStack3 = ItemUtils.simpleMetaStack(tOreBlock, layer.mBetweenMeta, 1);	
+				ItemStack aTempOreStack4 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSporadicMeta, 1);
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);	
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);			
+			}
+		}
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [Nether]");
+		for (GT_Worldgen_GT_Ore_Layer layer : aEndOres) {
+			if (layer.mEnabled) {
+				ItemStack aTempOreStack1 = ItemUtils.simpleMetaStack(tOreBlock, layer.mPrimaryMeta, 1);	
+				ItemStack aTempOreStack2 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSecondaryMeta, 1);	
+				ItemStack aTempOreStack3 = ItemUtils.simpleMetaStack(tOreBlock, layer.mBetweenMeta, 1);	
+				ItemStack aTempOreStack4 = ItemUtils.simpleMetaStack(tOreBlock, layer.mSporadicMeta, 1);
+				aTempMap.put(aTempOreStack1);
+				aTempMap.put(aTempOreStack2);
+				aTempMap.put(aTempOreStack3);
+				aTempMap.put(aTempOreStack4);				
+			}
+		}
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [End]");
+
+		addOreTypeToMap(ELEMENT.getInstance().IRON, 200, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().COPPER, 175, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().TIN, 150, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().GOLD, 150, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().SILVER, 110, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().NICKEL, 40, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().ZINC, 40, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().LEAD, 40, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().ALUMINIUM, 30, aTempMap);
+		addOreTypeToMap(ELEMENT.getInstance().THORIUM, 20, aTempMap);
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [Extra Common Ores]");
+		
+		AutoMap<Pair<String, Integer>> mMixedOreData = new AutoMap<Pair<String, Integer>>();
+		mMixedOreData.put(new Pair<String, Integer>("oreRuby", 30));
+		mMixedOreData.put(new Pair<String, Integer>("oreSapphire", 25));
+		mMixedOreData.put(new Pair<String, Integer>("oreEmerald", 25));
+		mMixedOreData.put(new Pair<String, Integer>("oreLapis", 40));
+		mMixedOreData.put(new Pair<String, Integer>("oreRedstone", 40));
+		
+		if (LoadedMods.Thaumcraft || (OreDictionary.doesOreNameExist("oreAmber") && OreDictionary.doesOreNameExist("oreCinnabar"))) {
+			mMixedOreData.put(new Pair<String, Integer>("oreAmber", 20));
+			mMixedOreData.put(new Pair<String, Integer>("oreCinnabar", 20));
+		}
+		if (LoadedMods.Railcraft || OreDictionary.doesOreNameExist("oreSaltpeter")) {	
+			mMixedOreData.put(new Pair<String, Integer>("oreSaltpeter", 10));
+		}
+		if (LoadedMods.IndustrialCraft2 || OreDictionary.doesOreNameExist("oreUranium")) {
+			mMixedOreData.put(new Pair<String, Integer>("oreUranium", 10));	
+		}
+		if (OreDictionary.doesOreNameExist("oreSulfur")) {
+			mMixedOreData.put(new Pair<String, Integer>("oreSulfur", 15));			
+		}
+		if (OreDictionary.doesOreNameExist("oreSilicon")) {
+			mMixedOreData.put(new Pair<String, Integer>("oreSilicon", 15));			
+		}
+		if (OreDictionary.doesOreNameExist("oreApatite")) {
+			mMixedOreData.put(new Pair<String, Integer>("oreApatite", 25));			
+		}
+		
+		mMixedOreData.put(new Pair<String, Integer>("oreFirestone", 2));
+		mMixedOreData.put(new Pair<String, Integer>("oreBismuth", 20));
+		mMixedOreData.put(new Pair<String, Integer>("oreLithium", 20));
+		mMixedOreData.put(new Pair<String, Integer>("oreManganese", 20));
+		mMixedOreData.put(new Pair<String, Integer>("oreBeryllium", 20));
+		mMixedOreData.put(new Pair<String, Integer>("oreCoal", 75));
+		mMixedOreData.put(new Pair<String, Integer>("oreLignite", 75));
+		mMixedOreData.put(new Pair<String, Integer>("oreSalt", 15));
+		mMixedOreData.put(new Pair<String, Integer>("oreCalcite", 15));
+		mMixedOreData.put(new Pair<String, Integer>("oreBauxite", 20));
+		mMixedOreData.put(new Pair<String, Integer>("oreAlmandine", 15));
+		mMixedOreData.put(new Pair<String, Integer>("oreGraphite", 25));
+		mMixedOreData.put(new Pair<String, Integer>("oreGlauconite", 15));
+		mMixedOreData.put(new Pair<String, Integer>("orePyrolusite", 15));
+		mMixedOreData.put(new Pair<String, Integer>("oreGrossular", 15));
+		mMixedOreData.put(new Pair<String, Integer>("oreTantalite", 15));
+		
+		for (Pair<String, Integer> g : mMixedOreData) {
+			for (int i=0; i<g.getValue();i++) {
+				aTempMap.put(ItemUtils.getItemStackOfAmountFromOreDict(g.getKey(), 1));
+			}
+		}
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [Extra Mixed Ores]");
+		
+		
+		addOreTypeToMap(ELEMENT.STANDALONE.RUNITE, 2, aTempMap);
+		addOreTypeToMap(ELEMENT.STANDALONE.GRANITE, 8, aTempMap);
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [OSRS Ores]");
+		
+		
+		AutoMap<Material> aMyOreMaterials = new AutoMap<Material>();		
+		aMyOreMaterials.add(ORES.CROCROITE);
+		aMyOreMaterials.add(ORES.GEIKIELITE);
+		aMyOreMaterials.add(ORES.NICHROMITE);
+		aMyOreMaterials.add(ORES.TITANITE);
+		aMyOreMaterials.add(ORES.ZIMBABWEITE);
+		aMyOreMaterials.add(ORES.ZIRCONILITE);
+		aMyOreMaterials.add(ORES.GADOLINITE_CE);
+		aMyOreMaterials.add(ORES.GADOLINITE_Y);
+		aMyOreMaterials.add(ORES.LEPERSONNITE);
+		aMyOreMaterials.add(ORES.SAMARSKITE_Y);
+		aMyOreMaterials.add(ORES.SAMARSKITE_YB);
+		aMyOreMaterials.add(ORES.XENOTIME);
+		aMyOreMaterials.add(ORES.YTTRIAITE);
+		aMyOreMaterials.add(ORES.YTTRIALITE);
+		aMyOreMaterials.add(ORES.YTTROCERITE);
+		aMyOreMaterials.add(ORES.ZIRCON);
+		aMyOreMaterials.add(ORES.POLYCRASE);
+		aMyOreMaterials.add(ORES.ZIRCOPHYLLITE);
+		aMyOreMaterials.add(ORES.ZIRKELITE);
+		aMyOreMaterials.add(ORES.LANTHANITE_LA);
+		aMyOreMaterials.add(ORES.LANTHANITE_CE);
+		aMyOreMaterials.add(ORES.LANTHANITE_ND);
+		aMyOreMaterials.add(ORES.AGARDITE_Y);
+		aMyOreMaterials.add(ORES.AGARDITE_CD);
+		aMyOreMaterials.add(ORES.AGARDITE_LA);
+		aMyOreMaterials.add(ORES.AGARDITE_ND);
+		aMyOreMaterials.add(ORES.HIBONITE);
+		aMyOreMaterials.add(ORES.CERITE);
+		aMyOreMaterials.add(ORES.FLUORCAPHITE);
+		aMyOreMaterials.add(ORES.FLORENCITE);
+		aMyOreMaterials.add(ORES.CRYOLITE);
+		aMyOreMaterials.add(ORES.LAUTARITE);
+		aMyOreMaterials.add(ORES.LAFOSSAITE);
+		aMyOreMaterials.add(ORES.DEMICHELEITE_BR);
+		aMyOreMaterials.add(ORES.COMANCHEITE);
+		aMyOreMaterials.add(ORES.PERROUDITE);
+		aMyOreMaterials.add(ORES.HONEAITE);
+		aMyOreMaterials.add(ORES.ALBURNITE);
+		aMyOreMaterials.add(ORES.MIESSIITE);
+		aMyOreMaterials.add(ORES.KASHINITE);
+		aMyOreMaterials.add(ORES.IRARSITE);
+		aMyOreMaterials.add(ORES.RADIOBARITE);
+		aMyOreMaterials.add(ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT);		
+		
+		for (Material aOreType : aMyOreMaterials) {			
+			if (aOreType == ORES.DEEP_EARTH_REACTOR_FUEL_DEPOSIT || aOreType == ORES.RADIOBARITE) {
+				addOreTypeToMap(aOreType, 4, aTempMap);					
+			}
+			else {
+				addOreTypeToMap(aOreType, 7, aTempMap);					
+			}					
+		}		
+		
+		//Cleanup Map
+		Logger.INFO("Ore Map contains "+aTempMap.size()+" values. [GT++]");
+		AutoMap<ItemStack> aCleanUp = new AutoMap<ItemStack>();
+		for (ItemStack verify : aTempMap) {
+			if (!ItemUtils.checkForInvalidItems(verify)) {
+				aCleanUp.put(verify);
+			}
+		}		
+		Logger.INFO("Cleanup Map contains "+aCleanUp.size()+" values.");
+		for (ItemStack remove : aCleanUp) {
+			aTempMap.remove(remove);
+		}		
+		
+		//Generate Massive Map
+		AutoMap<ItemStack> aFinalMap = new AutoMap<ItemStack>();		
+		for (ItemStack aTempItem : aTempMap) {			
+			int aTempMulti = MathUtils.randInt(20, 50);
+			for (int i=0;i<aTempMulti;i++) {
+				aFinalMap.put(aTempItem.copy());
+			}			
+		}		
+		Logger.INFO("Final Ore Map contains "+aFinalMap.size()+" values.");
+		mOutputs = aFinalMap;
+		return mOutputs;
+	}
+	
+	
+	private static void addOreTypeToMap(Material aMaterial, int aAmount, AutoMap<ItemStack> aMap) {
+		for (int i=0; i<aAmount;i++) {
+			aMap.add(aMaterial.getOre(1));
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 }
