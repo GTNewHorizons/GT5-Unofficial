@@ -839,8 +839,10 @@ public final class ModItems {
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
 		}
-		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), CI.getNumberedCircuit(16), itemHotTitaniumIngot, null, 10 * 20, 500, Materials.Titanium.mBlastFurnaceTemp);
-
+		if (itemHotTitaniumIngot != null) {
+			GT_Values.RA.addBlastRecipe(ItemUtils.getItemStackOfAmountFromOreDict("ingotTitanium", 1), CI.getNumberedCircuit(16), itemHotTitaniumIngot, null, 10 * 20, 500, Materials.Titanium.mBlastFurnaceTemp);
+		}
+		
 		//Special Sillyness
 		if (true) {
 			
