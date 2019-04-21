@@ -144,7 +144,7 @@ tile.radiohatch.name=Radio Hatch
 tile.bw.windmill.name=Windmill
 tile.manutrafo.name=Manual Trafo
 
-tooltip.tile.htr.0.name=Controller Block for the Thorium High Temperature Reactor;Size(WxHxD): 9x12x9 (Hollow);Corners and the 2 touching blocks are air;Once build, Helium is inserted into the Fluid Input Hatch until it doesnt accept any more;1+ Output Hatch (Any Bottom casing);1+ Input Hatch (Any Top casing);1+ Input Bus (Any Top casing);1x Maintenance Hatch (Any casing);Raidation Proof Casings for the Rest;Needs a constant supply of coolant or will shut down;Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles);Consumes 1 Fuel Pellet per Operation;TRISO pebbles provide 30% more Energy;Each pebble increases the amount of converted coolant;One Operation takes 27 Ingame Days
+tooltip.tile.htr.0.name=Controller Block for the Thorium High Temperature Reactor;Size(WxHxD): 11x12x11 (Hollow);Controller: Front Center, Lowest Layer;Corners and the 2 touching blocks are air;Once build, Helium is inserted into the Fluid Input Hatch until it doesnt accept any more;1+ Output Hatch (Any Bottom casing);1+ Input Hatch (Any Top casing);1+ Input Bus (Any Top casing);1x Maintenance Hatch (Any casing);Raidation Proof Casings for the Rest;Needs a constant supply of coolant while running, will output after complete Operation;Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles);Consumes 1 Fuel Pellet per Operation;TRISO pebbles provide 30% more Energy;Each pebble increases the amount of converted coolant;One Operation takes 27 Ingame Days
 item.TRISOPellet.name=TRISO pebble
 item.TRISOPelletBall.name=TRISO pebble ball
 item.BISOPelletBall.name=BISO pebble ball

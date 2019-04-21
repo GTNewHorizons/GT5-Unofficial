@@ -86,7 +86,9 @@ repositories {
         name = "gt"
         url = "https://gregtech.overminddl1.com/"
     }
-
+    maven {
+        url = "http://maven.cil.li/"
+    }
 }
 
 dependencies {
@@ -95,6 +97,7 @@ dependencies {
     compile "micdoodle8.mods:MicdoodleCore:${config.galacticraft.version}:Dev"
     compile "micdoodle8.mods:GalacticraftCore:${config.galacticraft.version}:Dev"
     compile "micdoodle8.mods:Galacticraft-Planets:${config.galacticraft.version}:Dev"
+    compile "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
 }
 
 //task getGregTech(type: Download) {
