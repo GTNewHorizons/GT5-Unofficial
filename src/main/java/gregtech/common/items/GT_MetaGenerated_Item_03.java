@@ -147,6 +147,8 @@ public class GT_MetaGenerated_Item_03
         ItemList.Circuit_Chip_PPIC.set(addItem(tLastID = 163, "Piko Power IC", "Piko Power Circuit", o));
         ItemList.Circuit_Wafer_QPIC.set(addItem(tLastID = 164, "QPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_QPIC.set(addItem(tLastID = 165, "Quantum Power IC", "Quantum Power Circuit", o));
+        ItemList.Circuit_Wafer_FPIC.set(addItem(tLastID = 166, "FPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Chip_FPIC.set(addItem(tLastID = 167, "Femto Power IC", "Femto Power Circuit", o));
         
         ItemList.Circuit_Silicon_Ingot4.set(addItem(tLastID = 64, "Enderium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer4.set(addItem(tLastID = 65, "Enderium doped Wafer", "Raw Circuit", o));
@@ -165,6 +167,9 @@ public class GT_MetaGenerated_Item_03
         
         ItemList.Circuit_Silicon_Ingot9.set(addItem(tLastID = 129, "Vibrant Alloy doped Monocrystalline Silicon Boule", "Raw Circuit", o));
         ItemList.Circuit_Silicon_Wafer9.set(addItem(tLastID = 130, "Vibrant Alloy doped Wafer", "Raw Circuit", o));
+		
+		ItemList.Circuit_Silicon_Ingot10.set(addItem(tLastID = 154, "Neutronium doped Monocrystalline Silicon Boule", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer10.set(addItem(tLastID = 155, "Neutronium doped Wafer", "Raw Circuit", o));
         
         /**
          * Engraved Crystal Chip

@@ -277,7 +277,7 @@ public class GT_RecipeAdder
         return true;
     }
 
-	public boolean addCannerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
+    public boolean addCannerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
             return false;
         }
@@ -611,7 +611,7 @@ public class GT_RecipeAdder
         return true;
     }
     
-	public boolean addSuperCoolingFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
+    public boolean addSuperCoolingFreezerRecipe(ItemStack aInput1, ItemStack aOutput1, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aFluidInput == null) || ((aOutput1 == null))) {
             return false;
         }
@@ -1147,7 +1147,6 @@ public class GT_RecipeAdder
         return true;
     }
     
-    
     @Override
     public boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput, FluidStack aFluidOutput, int aDuration, int aEUt) {
         if (aInput == null) {
@@ -1288,6 +1287,21 @@ public class GT_RecipeAdder
             aCleanroom = false;
         }
         GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
+        return true;
+    }
+
+    @Override
+    public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom) {
+        if ((aInputs == null) || (aOutput == null) || aInputs.length>6 || aInputs.length<1) {
+            return false;
+        }
+        if ((aDuration = GregTech_API.sRecipeFile.get("wireassembler", aOutput, aDuration)) <= 0) {
+            return false;
+        }
+        if (!GT_Mod.gregtechproxy.mEnableCleanroom){
+            aCleanroom = false;
+        }
+        GT_Recipe.GT_Recipe_Map.sWireAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, aCleanroom ? -200 : 0);
         return true;
     }
 

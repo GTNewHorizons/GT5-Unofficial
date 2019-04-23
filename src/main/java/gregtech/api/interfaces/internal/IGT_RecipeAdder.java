@@ -314,6 +314,16 @@ public interface IGT_RecipeAdder {
     public boolean addCircuitAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
     
     public boolean addCircuitAssemblerSpaceRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
+    /**
+     * Adds a Wire Assembler Recipe
+     *
+     * @param aInputs   must be 1-6 ItemStacks
+     * @param aFluidInput 0-1 fluids
+     * @param aOutput  must be != null
+     * @param aDuration must be > 0
+     * @param aEUt      should be > 0
+     */
+    public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
     
     /**
      * Adds a Assemblyline Recipe
@@ -672,7 +682,7 @@ public interface IGT_RecipeAdder {
     
     public boolean addTesseractRecipe(ItemStack aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt);
     
-	/**
+    /**
      * Adds a Super Cooling Freezer Recipe
      *
      * @param aInput1   must be != null
