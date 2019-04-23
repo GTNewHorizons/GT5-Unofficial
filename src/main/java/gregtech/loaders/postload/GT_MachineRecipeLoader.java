@@ -5114,8 +5114,7 @@ if(Loader.isModLoaded("Railcraft")){
                 96000, 256, 1000000, 16,  new ItemStack[]{
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                         ItemList.Circuit_Biowaresupercomputer.get(2L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
-                        ItemList.Circuit_Parts_Coil.get(64L),
+                        ItemList.UV_Coil.get(16L),
                         ItemList.Circuit_Parts_CapacitorSMD.get(64L),
                         ItemList.Circuit_Parts_ResistorSMD.get(64L),
                         ItemList.Circuit_Parts_TransistorSMD.get(64L),
@@ -5151,8 +5150,7 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Biowaresupercomputer.get(1L), 576000, new ItemStack[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 4L),
                 ItemList.Circuit_Biowaresupercomputer.get(2L),
-                ItemList.Circuit_Parts_Coil.get(64L),
-                ItemList.Circuit_Parts_Coil.get(64L),
+                ItemList.UV_Coil.get(16L),
                 ItemList.Circuit_Parts_CapacitorSMD.get(64L),
                 ItemList.Circuit_Parts_ResistorSMD.get(64L),
                 ItemList.Circuit_Parts_TransistorSMD.get(64L),
