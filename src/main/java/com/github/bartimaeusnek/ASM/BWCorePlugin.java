@@ -28,27 +28,27 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 @IFMLLoadingPlugin.SortingIndex(999999999)//Load as late as possible (after fastcraft/OptiFine).
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.TransformerExclusions({"com.github.bartimaeusnek.ASM"})
+@IFMLLoadingPlugin.TransformerExclusions("com.github.bartimaeusnek.ASM")
 @IFMLLoadingPlugin.Name(BWCorePlugin.BWCORE_PLUGIN_NAME)
 public class BWCorePlugin implements IFMLLoadingPlugin {
 
     public static final String BWCORE_PLUGIN_NAME = "BartWorks ASM Core Plugin";
 
-    public static File minecraftDir = null;
+    public static File minecraftDir;
 
     public BWCorePlugin() {
         //Injection Code taken from CodeChickenLib
-        if (minecraftDir != null)
+        if (BWCorePlugin.minecraftDir != null)
             return;//get called twice, once for IFMLCallHook
-        minecraftDir = (File) FMLInjectionData.data()[6];
+        BWCorePlugin.minecraftDir = (File) FMLInjectionData.data()[6];
         //do all the configuration already now...
-        new ConfigHandler(new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg")));
-        //config Override if mods are missing.
-        new BWCoreTransformer().checkForMods();
+        new ConfigHandler(new Configuration(new File(new File(BWCorePlugin.minecraftDir, "config"), "bartworks.cfg")));
+        BWCoreTransformer.shouldTransform[2] = false;
     }
 
     @Override
@@ -70,6 +70,14 @@ public class BWCorePlugin implements IFMLLoadingPlugin {
     public void injectData(Map<String, Object> data) {
         if (data.get("runtimeDeobfuscationEnabled") != null) {
             BWCoreTransformer.obfs = (boolean) data.get("runtimeDeobfuscationEnabled");
+        }
+        if (data.get("coremodList") != null) {
+            for (Object o : (ArrayList) data.get("coremodList")) {
+                if (o.toString().contains("MicdoodlePlugin")) {
+                    BWCoreTransformer.shouldTransform[2] = ConfigHandler.enabledPatches[2];
+                    break;
+                }
+            }
         }
     }
 

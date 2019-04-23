@@ -20,33 +20,32 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.bartworks.system.material;
+package com.github.bartimaeusnek.bartworks.system.oredict;
 
-import gregtech.api.enums.OrePrefixes;
+import com.github.bartimaeusnek.bartworks.util.Pair;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class OreDictHandler {
+public class OreDictAdder {
 
-    private static final HashMap<String,ItemStack> cache = new HashMap<>();
+    private static ConcurrentHashMap<String, ItemStack> toAddMap = new ConcurrentHashMap<>();
 
-    public static HashMap<String, ItemStack> getCache() {
-        return OreDictHandler.cache;
+    public static synchronized void addToMap(Pair<String, ItemStack> element){
+            OreDictAdder.toAddMap.put(element.getKey(),element.getValue());
     }
 
-    public static ItemStack getItemStack(String elementName, OrePrefixes prefixes, int amount){
-        if (cache.get(prefixes+elementName.replaceAll(" ","")) != null){
-            ItemStack tmp = cache.get(prefixes+elementName.replaceAll(" ","")).copy();
-            tmp.stackSize=amount;
-            return tmp;
-        } else if (!OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).isEmpty()){
-            ItemStack tmp = OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy();
-            tmp.stackSize=amount;
-            cache.put(prefixes+elementName.replaceAll(" ",""),tmp);
-            return tmp;
+    public static synchronized void addToMap(Pair<String, ItemStack>... elements){
+        for (Pair<String, ItemStack> p : elements)
+            OreDictAdder.toAddMap.put(p.getKey(),p.getValue());
+    }
+
+    public static void addToOreDict(){
+        for (Map.Entry<String, ItemStack> entry: toAddMap.entrySet()){
+            GT_OreDictUnificator.registerOre(entry.getKey(),entry.getValue());
         }
-        return null;
     }
+
 }

@@ -23,6 +23,7 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class ThreadedLoader  implements Runnable {
         MainMod.LOGGER.info("Starting to register BartWorks Materials Recipes to Gregtech");
         threads.add(new AllRecipes());
         threads.forEach(Thread::start);
+
     }
 
     public synchronized void runInit() {
@@ -57,9 +59,11 @@ public class ThreadedLoader  implements Runnable {
             }
         }
         MainMod.LOGGER.info("Successfully joined the Material Generation Thread, Registering the Items/Blocks to the GameRegistry");
+        if ((WerkstoffLoader.toGenerateGlobal) != 0){
+            OreDictAdder.addToOreDict();
+        }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0)
             WerkstoffLoader.INSTANCE.gameRegistryHandler();
-
     }
 
     class AllRecipes extends Thread {

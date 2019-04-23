@@ -28,6 +28,8 @@ import com.github.bartimaeusnek.bartworks.client.renderer.BW_Renderer_Block_Ores
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictAdder;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
@@ -607,14 +609,25 @@ public class WerkstoffLoader implements Runnable {
     }
 
     private void runAdditionalOreDict(){
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (werkstoff.getGenerationFeatures().hasOres())
-                GT_OreDictUnificator.registerOre(ore + werkstoff.getDefaultName().replaceAll(" ",""), werkstoff.get(ore));
-            if (werkstoff.getGenerationFeatures().hasGems())
-                OreDictionary.registerOre("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens));
-        }
+        if (ConfigHandler.experimentalThreadedLoader){
+            for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+                if (werkstoff.getGenerationFeatures().hasOres())
+                    OreDictAdder.addToMap(new Pair<>(ore + werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.get(ore)));
+                if (werkstoff.getGenerationFeatures().hasGems())
+                    OreDictAdder.addToMap(new Pair<>("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens)));
+            }
 
-        GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.Zirconia.get(gemExquisite));
+            OreDictAdder.addToMap(new Pair<>("craftingIndustrialDiamond", WerkstoffLoader.Zirconia.get(gemExquisite)));
+        }else {
+            for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+                if (werkstoff.getGenerationFeatures().hasOres())
+                    GT_OreDictUnificator.registerOre(ore + werkstoff.getDefaultName().replaceAll(" ", ""), werkstoff.get(ore));
+                if (werkstoff.getGenerationFeatures().hasGems())
+                    OreDictionary.registerOre("craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""), werkstoff.get(lens));
+            }
+
+            GT_OreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.Zirconia.get(gemExquisite));
+        }
     }
 
     private void addGemRecipes(Werkstoff werkstoff) {
