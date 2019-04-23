@@ -23,6 +23,8 @@ public class GenericChem extends ItemPackage {
 	
 	public static final Material BAKELITE = new Material("Bakelite", MaterialState.SOLID, TextureSet.SET_DULL, new short[]{90, 140, 140}, 120, 240, 23, 24, true, null, 0);//Not a GT Inherited Material
 	public static final Material NYLON = new Material("Nylon", MaterialState.SOLID, TextureSet.SET_SHINY, new short[]{45, 45, 45}, 300, 600, 44, 48, true, null, 0);//Not a GT Inherited Material
+	public static final Material CARBYNE = new Material("Carbyne", MaterialState.SOLID, TextureSet.SET_DULL, new short[]{25, 25, 25}, 2500, 5000, 63, 52, true, null, 0);//Not a GT Inherited Material
+	
 	
 	//Refined PTFE
 	public static final Material TEFLON = new Material(

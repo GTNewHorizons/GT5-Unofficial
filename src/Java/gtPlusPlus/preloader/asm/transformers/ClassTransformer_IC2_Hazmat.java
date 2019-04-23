@@ -20,7 +20,7 @@ public class ClassTransformer_IC2_Hazmat {
 	private final ClassWriter writer;
 	private final String className;
 	
-	public boolean hasCompleteHazmat(EntityLivingBase living) {
+	public static boolean hasCompleteHazmat(EntityLivingBase living) {
 		return HazmatUtils.hasCompleteHazmat(living);
 	}
 
@@ -79,11 +79,14 @@ public class ClassTransformer_IC2_Hazmat {
 		if (isObf) {
 			aEntityLivingBase = "sv";
 		}
+		FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Method Handler: "+aEntityLivingBase);
 		
 		
 		FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Injecting " + aMethodName + ".");		
 		if (aMethodName.equals("hasCompleteHazmat")) {
-			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", null, null);
+			
+			//Bad Local Variable - https://pastebin.com/TUCfdHqS
+			/*mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
 			mv.visitLabel(l0);
@@ -96,6 +99,21 @@ public class ClassTransformer_IC2_Hazmat {
 			mv.visitLocalVariable("this", "Lic2/core/item/armor/ItemArmorHazmat;", null, l0, l1, 0);
 			mv.visitLocalVariable("living", "L"+aEntityLivingBase+";", null, l0, l1, 1);
 			mv.visitMaxs(1, 2);
+			mv.visitEnd();*/
+			
+			
+			mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC, "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", null, null);
+			mv.visitCode();
+			Label l0 = new Label();
+			mv.visitLabel(l0);
+			mv.visitLineNumber(24, l0);
+			mv.visitVarInsn(ALOAD, 0);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/core/util/minecraft/HazmatUtils", "hasCompleteHazmat", "(L"+aEntityLivingBase+";)Z", false);
+			mv.visitInsn(IRETURN);
+			Label l1 = new Label();
+			mv.visitLabel(l1);
+			mv.visitLocalVariable("living", "L"+aEntityLivingBase+";", null, l0, l1, 0);
+			mv.visitMaxs(1, 1);
 			mv.visitEnd();
 		}
 		FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Method injection complete.");
