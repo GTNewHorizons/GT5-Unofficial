@@ -2,7 +2,10 @@
 
 ## Current Build Status  
 ### CircleCI - [![CircleCI](https://circleci.com/gh/alkcorp/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/alkcorp/GTplusplus/tree/master)   
-Click the CI button for the latest BETA builds! Please sign in with Github to find the artefacts (builds) located within each job.  
+Click the Green Passed/Red Failed button for the latest BETA builds!  
+Make sure you are signed in via Github/BitBucket.  
+If you have not done so, login here first. [Sign into CircleCI here!](https://circleci.com/vcs-authorize/)  
+Downloads can be found on the artefacts tab (builds) located within each job.  
   
 ### Discord  
 [Join the GT++ Channel - Click here](https://discord.gg/YdXJbgb)  
