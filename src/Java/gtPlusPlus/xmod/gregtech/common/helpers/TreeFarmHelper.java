@@ -285,6 +285,37 @@ public class TreeFarmHelper {
 		}
 		return SAWTOOL.NONE;
 	}
+	
+	public static boolean isCorrectPart(final ItemStack aStack) {
+		if (aStack != null){
+			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
+			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
+				if (OrePrefixes.craftingTool.contains(aStack)){
+					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01")){
+						if (aStack.getItemDamage() == 10){
+							return true;
+						}
+						else if (aStack.getItemDamage() == 140  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
+							return true;
+						}
+						else if (aStack.getItemDamage() == 110  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.110")){
+							return true;
+						}
+						else if (aStack.getItemDamage() == 112  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.112")){
+							return true;
+						}
+						else if (aStack.getItemDamage() == 114  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.114")){
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	public static boolean isHumusLoaded = false;
 	public static boolean isForestryLogsLoaded = false;

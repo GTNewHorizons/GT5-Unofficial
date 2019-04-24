@@ -115,6 +115,7 @@ public class ClassTransformer_IC2_Hazmat {
 			mv.visitLocalVariable("living", "L"+aEntityLivingBase+";", null, l0, l1, 0);
 			mv.visitMaxs(1, 1);
 			mv.visitEnd();
+			didInject = true;
 		}
 		FMLRelaunchLog.log("[GT++ ASM] IC2 Hazmat Patch", Level.INFO, "Method injection complete.");
 		return didInject;

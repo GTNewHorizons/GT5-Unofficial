@@ -122,6 +122,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		 * Gregtech ASM Patches
 		 */
 		
+		//Make GT_Utilities safer		
+		if (transformedName.equals("gtPlusPlus.preloader.asm.transformers.ClassTransformer_GT_Utility")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
+		}
 		//Try patch achievements
 		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);

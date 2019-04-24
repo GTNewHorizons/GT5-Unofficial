@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import gregtech.api.enums.TC_Aspects;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.GT_ThaumcraftCompat;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;

@@ -1,16 +1,11 @@
 package gtPlusPlus.xmod.thaumcraft;
 
-import java.util.Arrays;
-import java.util.List;
-
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectCompat;
 import gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectStack;
-import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

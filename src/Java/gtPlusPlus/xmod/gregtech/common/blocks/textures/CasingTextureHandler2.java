@@ -60,7 +60,8 @@ public class CasingTextureHandler2 {
 				case 14:
 					return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 				case 15:
-					if (aSide <2) {
+					return TexturesGtBlock.Casing_Machine_Acacia_Log.getIcon();	
+					/*if (aSide <2) {
 						if (aSide == 1) {
 							return TexturesGtBlock.Casing_Machine_Podzol.getIcon();					
 						}
@@ -68,7 +69,7 @@ public class CasingTextureHandler2 {
 					}
 					else {
 						return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();					
-					}
+					}*/
 				default:
 					return TexturesGtBlock.Overlay_UU_Matter.getIcon();
 

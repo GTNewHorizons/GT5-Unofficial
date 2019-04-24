@@ -60,7 +60,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Autocrafter Frame");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Tesla Containment Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Casing "); //Tree Farmer Textures
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing"); //Tree Farmer Textures
 		GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));

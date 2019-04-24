@@ -1,73 +1,50 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
 import gtPlusPlus.api.objects.data.AutoMap;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class BlockPos implements Serializable{
+public class FakeBlockPos extends BlockPos {
 
-	private static final long serialVersionUID = -7271947491316682006L;
-	public final int xPos;
-	public final int yPos;
-	public final int zPos;
-	public final int dim;
-	public final World world;
+	private static final long serialVersionUID = -6442245826092414593L;
+	private Block aBlockAtPos;
+	private int aBlockMetaAtPos = 0;
 	
-	public static BlockPos generateBlockPos(String sUUID) {
+	public static FakeBlockPos generateBlockPos(String sUUID) {
 		String[] s2 = sUUID.split("@");
-		return new BlockPos(s2);
+		return new FakeBlockPos(s2);
 	}
 	
-	public BlockPos(String[] s){
+	public FakeBlockPos(String[] s){
 		this(Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]), Integer.parseInt(s[0]));
 	}
 
-	public BlockPos(int x, int y, int z){
+	public FakeBlockPos(int x, int y, int z, Block aBlock, int aMeta){
 		this(x, y, z, 0);
+		aBlockAtPos = aBlock;
+		aBlockMetaAtPos = aMeta;
 	}
 
-	public BlockPos(int x, int y, int z, int dim){
+	private FakeBlockPos(int x, int y, int z, int dim){
 		this(x, y, z, DimensionManager.getWorld(dim));
 	}
 
-	public BlockPos(int x, int y, int z, World dim){
-		this.xPos = x;
-		this.yPos = y;
-		this.zPos = z;
-		
-		if (dim != null) {
-			this.dim = dim.provider.dimensionId;
-			this.world = dim;			
-		}
-		else {
-			this.dim = 0;
-			this.world = null;			
-		}
-		
-	}
-	
-	public BlockPos(IGregTechTileEntity b) {
-		this (b.getXCoord(), b.getYCoord(), b.getZCoord(), b.getWorld());
-	}
-	
-	public BlockPos(TileEntity b) {
-		this (b.xCoord, b.yCoord, b.zCoord, b.getWorldObj());
+	private FakeBlockPos(int x, int y, int z, World dim){
+		super(x, y, z, null);
 	}
 
 	public String getLocationString() {
-		return "[X: "+this.xPos+"][Y: "+this.yPos+"][Z: "+this.zPos+"][Dim: "+this.dim+"]";
+		String S = ""+this.xPos+"@"+this.yPos+"@"+this.zPos;
+		return S;
 	}
 	
 	public String getUniqueIdentifier() {
-		String S = ""+this.dim+"@"+this.xPos+"@"+this.yPos+"@"+this.zPos;
+		String S = ""+this.xPos+"@"+this.yPos+"@"+this.zPos+this.aBlockAtPos.getLocalizedName()+"@"+this.aBlockMetaAtPos;
 		return S;
 	}	
 
@@ -89,14 +66,14 @@ public class BlockPos implements Serializable{
 		if (other == this) {
 			return true;
 		}
-		if(!(other instanceof BlockPos)) {
+		if(!(other instanceof FakeBlockPos)) {
 			return false;
 		}
-		BlockPos otherPoint = (BlockPos)other;
-		return this.xPos == otherPoint.xPos && this.yPos == otherPoint.yPos && this.zPos == otherPoint.zPos && this.dim == otherPoint.dim;
+		FakeBlockPos otherPoint = (FakeBlockPos) other;
+		return this.xPos == otherPoint.xPos && this.yPos == otherPoint.yPos && this.zPos == otherPoint.zPos;
 	}
 
-	public int distanceFrom(BlockPos target) {
+	public int distanceFrom(FakeBlockPos target) {
 		if (target.dim != this.dim) {
 			return Short.MIN_VALUE;
 		}    	
@@ -117,7 +94,7 @@ public class BlockPos implements Serializable{
 		return distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ;
 	}
 
-	public boolean isWithinRange(BlockPos target, int range) {    	
+	public boolean isWithinRange(FakeBlockPos target, int range) {    	
 		if (target.dim != this.dim) {
 			return false;
 		}    	
@@ -129,28 +106,28 @@ public class BlockPos implements Serializable{
 	}
 
 	
-	public BlockPos getUp() {
-		return new BlockPos(this.xPos, this.yPos+1, this.zPos, this.dim);
+	public FakeBlockPos getUp() {
+		return new FakeBlockPos(this.xPos, this.yPos+1, this.zPos, this.dim);
 	}
 	
-	public BlockPos getDown() {
-		return new BlockPos(this.xPos, this.yPos-1, this.zPos, this.dim);
+	public FakeBlockPos getDown() {
+		return new FakeBlockPos(this.xPos, this.yPos-1, this.zPos, this.dim);
 	}	
 
-	public BlockPos getXPos() {
-		return new BlockPos(this.xPos+1, this.yPos, this.zPos, this.dim);
+	public FakeBlockPos getXPos() {
+		return new FakeBlockPos(this.xPos+1, this.yPos, this.zPos, this.dim);
 	}
 	
-	public BlockPos getXNeg() {
-		return new BlockPos(this.xPos-1, this.yPos, this.zPos, this.dim);
+	public FakeBlockPos getXNeg() {
+		return new FakeBlockPos(this.xPos-1, this.yPos, this.zPos, this.dim);
 	}
 	
-	public BlockPos getZPos() {
-		return new BlockPos(this.xPos, this.yPos, this.zPos+1, this.dim);
+	public FakeBlockPos getZPos() {
+		return new FakeBlockPos(this.xPos, this.yPos, this.zPos+1, this.dim);
 	}
 
-	public BlockPos getZNeg() {
-		return new BlockPos(this.xPos, this.yPos, this.zPos-1, this.dim);
+	public FakeBlockPos getZNeg() {
+		return new FakeBlockPos(this.xPos, this.yPos, this.zPos-1, this.dim);
 	}
 	
 	public AutoMap<BlockPos> getSurroundingBlocks(){
@@ -168,24 +145,24 @@ public class BlockPos implements Serializable{
 		return getBlockAtPos(this);
 	}
 	
-	public Block getBlockAtPos(BlockPos pos) {
+	public Block getBlockAtPos(FakeBlockPos pos) {
 		return getBlockAtPos(world, pos);
 	}
 	
-	public Block getBlockAtPos(World world, BlockPos pos) {
-		return world.getBlock(pos.xPos, pos.yPos, pos.zPos);
+	public Block getBlockAtPos(World world, FakeBlockPos pos) {
+		return aBlockAtPos;
 	}
 	
 	public int getMetaAtPos() {
 		return getMetaAtPos(this);
 	}
 	
-	public int getMetaAtPos(BlockPos pos) {
+	public int getMetaAtPos(FakeBlockPos pos) {
 		return getMetaAtPos(world, pos);
 	}
 	
-	public int getMetaAtPos(World world, BlockPos pos) {
-		return world.getBlockMetadata(pos.xPos, pos.yPos, pos.zPos);
+	public int getMetaAtPos(World world, FakeBlockPos pos) {
+		return aBlockMetaAtPos;
 	}
 	
 	public boolean hasSimilarNeighbour() {
@@ -246,5 +223,31 @@ public class BlockPos implements Serializable{
 		}		
 		return result;
 	}
+	
+    /**
+     * Called when a plant grows on this block, only implemented for saplings using the WorldGen*Trees classes right now.
+     * Modder may implement this for custom plants.
+     * This does not use ForgeDirection, because large/huge trees can be located in non-representable direction,
+     * so the source location is specified.
+     * Currently this just changes the block to dirt if it was grass.
+     *
+     * Note: This happens DURING the generation, the generation may not be complete when this is called.
+     *
+     * @param world Current world
+     * @param x Soil X
+     * @param y Soil Y
+     * @param z Soil Z
+     * @param sourceX Plant growth location X
+     * @param sourceY Plant growth location Y
+     * @param sourceZ Plant growth location Z
+     */
+    public void onPlantGrow(FakeWorld world, int x, int y, int z, int sourceX, int sourceY, int sourceZ)
+    {
+        if (getBlockAtPos() == Blocks.grass || getBlockAtPos() == Blocks.farmland)
+        {
+            this.aBlockAtPos = Blocks.dirt;
+            this.aBlockMetaAtPos = 0;
+        }
+    }
 	
 }
