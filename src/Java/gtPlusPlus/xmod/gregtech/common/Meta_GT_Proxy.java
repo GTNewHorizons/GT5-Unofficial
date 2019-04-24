@@ -32,6 +32,7 @@ import gtPlusPlus.api.objects.minecraft.FormattedTooltipString;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
@@ -91,8 +92,10 @@ public class Meta_GT_Proxy {
             throw new RuntimeException("");
         }
 		
-        //Gotta set it here so that we don't try call gregtech too early.
-		StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy(true, "gt6Pipe");		
+        //Gotta set it here so that we don't try call gregtech too early.        
+        //Must set on the correct side
+    	StaticFields59.mGT6StylePipes = (boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");        	
+        
         
         GT_Log.out.println("GT++ Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity_GTPP");
@@ -376,7 +379,7 @@ public class Meta_GT_Proxy {
 	 * @deprecated Use {@link StaticFields59#getFieldFromGregtechProxy(boolean,String)} instead
 	 */
 	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
-		return StaticFields59.getFieldFromGregtechProxy(client, fieldName);
+		return StaticFields59.getFieldFromGregtechProxy(fieldName);
 	}
 	
 	public void setCustomGregtechTooltip(String aNbtTagName, FormattedTooltipString aData) {

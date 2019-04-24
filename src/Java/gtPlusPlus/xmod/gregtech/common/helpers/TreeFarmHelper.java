@@ -320,7 +320,7 @@ public class TreeFarmHelper {
 		if(blockHumus != null){
 			return blockHumus;
 		}
-		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
+		else if (isHumusLoaded){
 				final Class<?> humusClass = ReflectionUtils.getClass("forestry.core.blocks.BlockSoil");
 				final ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
 				if (humusClass != null){

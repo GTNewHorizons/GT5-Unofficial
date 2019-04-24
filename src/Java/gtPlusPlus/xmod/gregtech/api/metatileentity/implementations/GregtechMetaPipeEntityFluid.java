@@ -1,10 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ITexture;
@@ -12,10 +8,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.objects.GT_RenderedTexture;
-
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	
@@ -23,7 +18,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 	public static final boolean mGt6Pipe;
 	
 	static {
-		Boolean aGt6 = (Boolean) StaticFields59.getFieldFromGregtechProxy(false, "gt6Pipe");
+		Boolean aGt6 = (Boolean) StaticFields59.getFieldFromGregtechProxy("gt6Pipe");
 		if (aGt6 != null) {
 			mGt6Pipe = aGt6;
 		}
