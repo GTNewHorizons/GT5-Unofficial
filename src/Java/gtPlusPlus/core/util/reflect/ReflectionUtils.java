@@ -463,11 +463,13 @@ public class ReflectionUtils {
 	 * therefore no more risk of code throwing NoClassDefFoundException.
 	 */
 	private static boolean isClassPresent(final String className) {
-		if (getClass(className) != null) {
-			return true;				
+		try {
+			Class.forName(className);
+			return true;
+		} catch (final Throwable ex) {
+			// Class or one of its dependencies is not present...
+			return false;
 		}
-		// Class or one of its dependencies is not present...
-		return false;
 	}
 
 	@Deprecated
