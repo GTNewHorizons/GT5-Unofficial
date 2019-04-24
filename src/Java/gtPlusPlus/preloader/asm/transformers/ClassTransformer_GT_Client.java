@@ -78,7 +78,7 @@ public class ClassTransformer_GT_Client {
 	private final boolean valid;
 	private final ClassReader read;
 	private final ClassWriter write;
-	private boolean mModern;
+	private boolean mModern = true;
 	private byte[] mTooledClass;
 
 	public ClassTransformer_GT_Client(byte[] basicClass) {
@@ -92,12 +92,13 @@ public class ClassTransformer_GT_Client {
 		/**
 		 * Let's just read the GT archive for some info
 		 */
-		mModern = findAssemblyLineClass();
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Found Assembly Line? "+mModern+".");		
+		//mModern = findAssemblyLineClass();
+		//FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Found Assembly Line? "+mModern+".");
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Fixing Issues in vanilla GT.");		
 		if (mModern) {
 			aTempReader.accept(new MethodAdaptor2(aTempWriter), 0);
-			FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Patching Client handling of Assembly Line recipe visibility for GT 5.09");	
-			injectMethod(aTempWriter, "onPlayerTickEventClient");
+			//FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Patching Client handling of Assembly Line recipe visibility for GT 5.09");	
+			//injectMethod(aTempWriter, "onPlayerTickEventClient");
 			injectMethod(aTempWriter, "onPostLoad");
 			if (aTempReader != null && aTempWriter != null) {
 				valid = true;
@@ -372,7 +373,7 @@ public class ClassTransformer_GT_Client {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			MethodVisitor methodVisitor;
-			if (name.equals("onPlayerTickEventClient") || name.equals("onPostLoad")) {
+			if (/*name.equals("onPlayerTickEventClient") || */name.equals("onPostLoad")) {
 				FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO,
 						"Found method " + name + ", removing.");
 				methodVisitor = null;
