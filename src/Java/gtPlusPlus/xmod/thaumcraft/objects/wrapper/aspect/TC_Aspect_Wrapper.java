@@ -11,6 +11,7 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 import net.minecraft.util.ResourceLocation;
@@ -47,7 +48,7 @@ public class TC_Aspect_Wrapper {
 	 * Statically set the Class objects
 	 */
 	static {
-		mClass_Aspect = ReflectionUtils.getClass("thaumcraft.api.aspects.Aspect");
+		Logger.INFO("[Thaumcraft++] Creating TC_Aspect_Wrapper data tables.");
 	}	
 	
 	/**
@@ -57,16 +58,19 @@ public class TC_Aspect_Wrapper {
 	public static LinkedHashMap<String, Object> getVanillaAspectList() {
 		try {
 			if (mField_Aspects == null) {
+				Logger.INFO("[Thaumcraft++] Getting Aspect list Reflectively.");
 				mField_Aspects =  ReflectionUtils.getField(mClass_Aspect, "aspects");
 			}
+			Logger.INFO("[Thaumcraft++] Obtained Vanilla Aspects as a HashMap");
 			return (LinkedHashMap<String, Object>) mField_Aspects.get(null);			
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			Logger.REFLECTION("Failed configuring TC Aspect compatibility.");
+			Logger.INFO("[Thaumcraft++] Failed configuring TC Aspect compatibility.");
 			return new LinkedHashMap<String, Object>();
 		}
 	}
 	
 	public static Object getVanillaAspectObject(String aAspectName) {
+		Logger.INFO("[Thaumcraft++] Looking for Aspect '"+aAspectName+"' in Vanilla Data Tables.");
 		return getVanillaAspectList().get(aAspectName);
 	}
 	
@@ -138,6 +142,16 @@ public class TC_Aspect_Wrapper {
 		if (components == null) {
 			components = new TC_Aspect_Wrapper[] {};
 		}
+		
+		//Set Reflective Class data here instead of in static{}
+		if (LoadedMods.Thaumcraft) {
+			if (mClass_Aspect == null) {
+				Logger.INFO("[Thaumcraft++] Getting Aspect base class reflectively.");
+				mClass_Aspect = ReflectionUtils.getClass("thaumcraft.api.aspects.Aspect");
+			}
+		}
+		
+		
 		//String aTag = vanilla ? tag.toLowerCase() : "custom"+(aInternalAspectIDAllocation++);		
 		String aTag = tag.toLowerCase();		
 		if (getAspectList().containsKey(tag.toLowerCase())) {
@@ -168,6 +182,7 @@ public class TC_Aspect_Wrapper {
 						}
 					}
 				} catch (IllegalArgumentException e1) {
+					Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [0]");
 					e1.printStackTrace();
 				}
 			}
@@ -191,21 +206,25 @@ public class TC_Aspect_Wrapper {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	@SuppressWarnings("unused")
 	public static TC_Aspect_Wrapper generate(Object aBaseAspect) {	
 		try {
+		Logger.INFO("[Thaumcraft++] Trying to generate Aspect.");
 		Field aTagF = ReflectionUtils.getField(mClass_Aspect, "tag");		
 		if (aTagF == null) {
+			Logger.INFO("[Thaumcraft++] Failed - Invalid Getter for Aspect [1].");
 			return null;
 		}		
 		String aTafB = (String) aTagF.get(aBaseAspect);
 		if (aTafB == null) {
+			Logger.INFO("[Thaumcraft++] Failed - Invalid Getting for Aspect [2].");
 			return null;
 		}
 		String aTag = aTafB.toLowerCase();			
 		if (aTag != null && getAspectList().containsKey(aTag.toLowerCase())) {
+			Logger.INFO("[Thaumcraft++] Found existing Aspect, reusing. Aspect: "+aTag);
 			return  getAspect(aTag);
 		} else {
+			Logger.INFO("[Thaumcraft++] Generating our own, as it does not yet exist. Aspect: "+aTag);
 			TC_Aspect_Wrapper aTemp = new TC_Aspect_Wrapper(
 					aTag,
 					(int) ReflectionUtils.getField(mClass_Aspect, "color").get(aBaseAspect),
@@ -225,6 +244,7 @@ public class TC_Aspect_Wrapper {
 		}	
 		}
 		catch (Throwable t) {
+			Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [1]");
 			t.printStackTrace();
 			return null;
 		}
@@ -255,9 +275,11 @@ public class TC_Aspect_Wrapper {
 					return aTemp;
 				}
 			} catch (IllegalArgumentException e) {
+				Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [2.1]");
 				e.printStackTrace();
 			}
 		}
+		Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [2.2]");
 		return null;
 	}
 	
@@ -281,6 +303,7 @@ public class TC_Aspect_Wrapper {
 				}
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
+			Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [3]");
 			e.printStackTrace();
 			aAspectArray = new TC_Aspect_Wrapper[0];
 		}			
@@ -315,6 +338,7 @@ public class TC_Aspect_Wrapper {
 			}			
 			return myObject;
 		} catch (Throwable t) {
+			Logger.INFO("[Thaumcraft++] Error generating Aspects for GT++ usage. [4]");
 			t.printStackTrace();
 			return null;
 		}

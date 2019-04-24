@@ -58,9 +58,9 @@ public class BaseOreComponent extends Item{
 		registerComponent();
 		GT_OreDictUnificator.registerOre(componentType.getComponent()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 		if (LoadedMods.Thaumcraft) {
-			ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
+			//ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
 			if (componentMaterial.isRadioactive) {
-				ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
+				//ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this), TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);				
 			}
 		}
 		

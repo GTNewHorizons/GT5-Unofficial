@@ -83,6 +83,8 @@ public class GTPP_AspectCompat {
 	
 	public GTPP_AspectCompat() {
 		
+		Logger.INFO("[Thaumcraft++] Initialising custom Thaumcraft 4 Aspects.");
+		Logger.INFO("[Thaumcraft++] Mapping Vanilla Aspects to data tables.");
 		
 		// Generate all existing Aspects as TC_Aspects
 		LinkedHashMap<String, Object> h = TC_Aspect_Wrapper.getVanillaAspectList();
@@ -96,6 +98,8 @@ public class GTPP_AspectCompat {
 				}
 			}
 		}
+		
+		Logger.INFO("[Thaumcraft++] Finished mapping Vanilla Aspects to data tables. Mapped "+mAspectCache.size());
 		
 		
 		
@@ -113,6 +117,7 @@ public class GTPP_AspectCompat {
 				false,
 				1,
 				"Ancient Knowledge");
+		Logger.INFO("[Thaumcraft++] Added new Aspect: Sagrausten");
 
 		ASPECT_LUST = 
 				new TC_Aspect_Wrapper(
@@ -126,6 +131,7 @@ public class GTPP_AspectCompat {
 				false,
 				1,
 				"Warped Thoughts");
+		Logger.INFO("[Thaumcraft++] Added new Aspect: Slusium");
 
 		ASPECT_STARBOUND = 
 				new TC_Aspect_Wrapper(
@@ -138,6 +144,7 @@ public class GTPP_AspectCompat {
 				false,
 				1,
 				"A beginning to something new");
+		Logger.INFO("[Thaumcraft++] Added new Aspect: Xenil");
 
 		ASPECT_TOXIC = 
 				new TC_Aspect_Wrapper(
@@ -151,6 +158,7 @@ public class GTPP_AspectCompat {
 				false,
 				1,
 				"Insanity");
+		Logger.INFO("[Thaumcraft++] Added new Aspect: Xablum");
 
 		ASPECT_HEAVEN = 
 				new TC_Aspect_Wrapper(
@@ -163,7 +171,8 @@ public class GTPP_AspectCompat {
 				new ResourceLocation(CORE.MODID+":textures/aspects/" + "Zetralt.png"),
 				false,
 				1,
-				"Control, Respect, Glory");	
+				"Control, Respect, Glory");
+		Logger.INFO("[Thaumcraft++] Added new Aspect: Zetralt");	
 		
 		
 	}
@@ -172,6 +181,7 @@ public class GTPP_AspectCompat {
 		try {
 			return TC_Aspect_Wrapper.generate(aGtObjects.mAspect);
 		} catch (IllegalArgumentException e) {
+			Logger.INFO("[Thaumcraft++] Error getting Aspects for GT++ usage. [1]");
 			e.printStackTrace();
 			return null;
 		}
