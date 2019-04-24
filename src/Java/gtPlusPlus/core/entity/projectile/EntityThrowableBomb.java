@@ -13,6 +13,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 
 public class EntityThrowableBomb extends EntityThrowable {
 
@@ -39,19 +40,26 @@ public class EntityThrowableBomb extends EntityThrowable {
 		if (object.entityHit != null) {
 			byte b0 = 6;
 			if (!GT_Utility.isWearingFullRadioHazmat((EntityLivingBase) object.entityHit)){
-				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), b0);
-				EntityUtils.setEntityOnFire(object.entityHit, 10);
+				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 20);
+				EntityUtils.setEntityOnFire(object.entityHit, 20);
 				object.entityHit.fireResistance = 0;
 				ravage(EntityUtils.findBlockPosUnderEntity(object.entityHit));
 			}
 		}
-		if (object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){			
-			ravage(new BlockPos(xBlock, yBlock, zBlock));			
+		if (object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){
+
+			ravage(new BlockPos(xBlock, yBlock, zBlock));
+			for (BlockPos aSur : new BlockPos(xBlock, yBlock, zBlock).getSurroundingBlocks()) {
+				ravage(new BlockPos(aSur.xPos, aSur.yPos, aSur.zPos));
+				for (BlockPos aSur2 : new BlockPos(aSur.xPos, aSur.yPos, aSur.zPos).getSurroundingBlocks()) {
+					//ravage(new BlockPos(aSur2.xPos, aSur2.yPos, aSur2.zPos));
+				}	
+			}			
 		}
 
 		String mParticleType = "reddust";
 		int e=0;
-		for (int i = 0; i < 24; ++i) {
+		for (int i = 0; i < 127; ++i) {
 			if ((e = MathUtils.randInt(0, 5)) <= 1){
 				if (e==0)
 					mParticleType = "largesmoke";
@@ -68,19 +76,41 @@ public class EntityThrowableBomb extends EntityThrowable {
 
 	private boolean ravage(BlockPos blockpos){
 
-		int radius = 1;		
+		int radius = 5;		
 
 		for (int i=(blockpos.xPos-radius);i<(blockpos.xPos+radius);i++){
 			for (int j=(blockpos.yPos-radius);j<(blockpos.yPos+radius);j++){
 				for (int h=(blockpos.zPos-radius);h<(blockpos.zPos+radius);h++){
 
-					int mChance = MathUtils.randInt(1, 10);
+					int mChance = MathUtils.randInt(0, 100);
 					if (mChance <= 3){
 						Block mBlockhit = worldObj.getBlock(i, j, h);
 						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
 						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(-2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
+						this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(2, 2), this.posY+MathUtils.randDouble(-2, 2), this.posZ+MathUtils.randDouble(-2, 2), 0.0D, 0.0D, 0.0D);
 
-						//GT_Pollution.addPollution(worldObj.getChunkFromBlockCoords(blockpos.xPos, blockpos.zPos), mPol);						
+						PollutionUtils.addPollution(worldObj.getChunkFromBlockCoords(blockpos.xPos, blockpos.zPos), 500);						
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 0.01f, true);
 						if (mBlockhit == Blocks.grass || mBlockhit == Blocks.mycelium){
 							worldObj.setBlock(i, j+1, h, Blocks.fire);

@@ -17,6 +17,7 @@ import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
@@ -26,6 +27,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -146,6 +148,15 @@ public class RECIPES_GREGTECH {
 				2048 * 4,
 				(int) GT_Values.V[9],
 				600000000 * 2);
+
+		//Rhugnor
+		GT_Values.RA.addFusionReactorRecipe(
+				GenericChem.TEFLON.getFluid(64),
+				ALLOY.PIKYONIUM.getFluid(128),
+				ELEMENT.STANDALONE.RHUGNOR.getFluid(8),
+				2048 * 4,
+				(int) GT_Values.V[7],
+				150000000 * 2);
 		
 	}
 
@@ -1735,6 +1746,20 @@ public class RECIPES_GREGTECH {
 				4 * 60 * 20,
 				MaterialUtils.getVoltageForTier(GTNH ? 3 : 2),
 				2800);
+		
+		//Krypton Processing
+		if (ModItems.itemHotTitaniumIngot != null) {
+			GT_Values.RA.addBlastRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("ingotTitanium", 1),
+					CI.getNumberedCircuit(16),
+					GT_Values.NF,
+					GT_Values.NF,
+					ItemUtils.getItemStackOfAmountFromOreDict("ingotHotTitanium", 1),
+					null,
+					10 * 20,
+					500,
+					Materials.Titanium.mBlastFurnaceTemp);
+		}
 		
 		
 	}

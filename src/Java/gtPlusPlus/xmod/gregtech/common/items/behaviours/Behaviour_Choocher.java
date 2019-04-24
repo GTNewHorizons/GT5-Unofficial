@@ -10,6 +10,9 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.items.behaviors.Behaviour_Wrench;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class Behaviour_Choocher
 extends Behaviour_None {
@@ -30,30 +33,47 @@ extends Behaviour_None {
 		if (aWorld.isRemote) {
 			return false;
 		}
+		
+		boolean inWrenchMode;
+		if (NBTUtils.hasKey(aStack, "aMode")) {
+			inWrenchMode = NBTUtils.getBoolean(aStack, "aMode");
+		}
+		else {
+			aStack.getTagCompound().setBoolean("aMode", true);
+			inWrenchMode = true;
+		}		
+		
 		if (aPlayer.isSneaking()){
-			if (this.isWrench){
-				this.isWrench = false;
-				return false;
-			}
-			this.isWrench = true;
-			return false;
+			boolean aModeNew = Utils.invertBoolean(inWrenchMode);
+			aStack.getTagCompound().setBoolean("aMode", aModeNew);
+			PlayerUtils.messagePlayer(aPlayer, "Mode: "+(aModeNew ? "Wrench" : "Hammer"));	
+			return true;
 		}
-		else if (!aPlayer.isSneaking()){
-			if (this.isWrench){
-				this.wrench.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aSide, aSide, aSide, aSide, hitZ, hitZ, hitZ);
-				return false;
+		else {
+			if (inWrenchMode){
+				return this.wrench.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aSide, aSide, aSide, aSide, hitZ, hitZ, hitZ);
 			}
-			this.prospecting.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
-			return false;
+			else {
+				return this.prospecting.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);			
+			}
 		}
-		return false;
 	}
 
 	@Override
 	public List<String> getAdditionalToolTips(final GT_MetaBase_Item aItem, final List<String> aList, final ItemStack aStack) {
 
+		boolean inWrenchMode;
+		if (NBTUtils.hasKey(aStack, "aMode")) {
+			inWrenchMode = NBTUtils.getBoolean(aStack, "aMode");
+		}
+		else {
+			NBTUtils.setBoolean(aStack, "aMode", true);
+			aStack.getTagCompound().setBoolean("aMode", true);
+			inWrenchMode = true;
+		}	
+		
 
-		if (this.isWrench){
+		if (inWrenchMode){
 			aList.add(this.mTooltip1+"Wrench");
 			aList.add(this.mTooltipW);
 		}

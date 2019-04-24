@@ -7,9 +7,15 @@ import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.GT_Utility.ItemNBT;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import ic2.api.item.IElectricItemManager;
@@ -19,14 +25,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class Behaviour_Electric_Lighter extends Behaviour_None {
-
-	private final ItemStack mLighter;
-
-	private final long mFuelAmount;
 
 	private final String mTooltip = GT_LanguageManager.addStringLocalization("gt.behaviour.lighter.tooltip",
 			"Can light things on Fire");
@@ -35,9 +38,8 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 	private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization("gt.behaviour.unstackable",
 			"Not usable when stacked!");
 
-	public Behaviour_Electric_Lighter(ItemStack aFullLighter, long aFuelAmount) {
-		this.mLighter = aFullLighter;
-		this.mFuelAmount = aFuelAmount;
+	public Behaviour_Electric_Lighter() {
+		
 	}
 
 	public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
@@ -60,30 +62,97 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
 	public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
 			int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+		if (!aWorld.isRemote && aStack.stackSize == 1) {			
+			if (aPlayer.isSneaking()) {
+				Logger.INFO("Changing Mode");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				Logger.INFO("Is currently in Fireball mode? "+aCurrentMode);
+				boolean aNewMode = Utils.invertBoolean(aCurrentMode);
+				Logger.INFO("Is now set to Fireball mode? "+aNewMode);
+				aStack.getTagCompound().setBoolean("aFireballMod", aNewMode);
+				//NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
+				PlayerUtils.messagePlayer(aPlayer, "Current Mode: "+EnumChatFormatting.RED+(aNewMode ? "Projectile" : "Fire Starter"));
+			}
+			else {
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				if (aCurrentMode) {
+					//Shoot Lightning Attack
+					aWorld.playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+					if (!aWorld.isRemote) {
+						aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
+					}
+				}
+				else {
+					//Lights Fires Mode
+					Logger.WARNING("Preparing Lighter a");
+					boolean rOutput = false;
+					ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
+					aX += tDirection.offsetX;
+					aY += tDirection.offsetY;
+					aZ += tDirection.offsetZ;
+					if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+						Logger.WARNING("Preparing Lighter b");
+						if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
+							Logger.WARNING("Preparing Lighter c");
+							GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY,
+									aZ);
+							aWorld.setBlock(aX, aY, aZ, Blocks.fire);
+							rOutput = true;
+							// ItemNBT.setLighterFuel(aStack, tFuelAmount);
+							return rOutput;
+						}
+					}
+				}
+			}			
+		}
+		Logger.WARNING("Preparing Lighter z");
 		return false;
 	}
 
 	public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
 			int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-		if (!aWorld.isRemote && aStack.stackSize == 1) {
-			Logger.WARNING("Preparing Lighter a");
-			boolean rOutput = false;
-			ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
-			aX += tDirection.offsetX;
-			aY += tDirection.offsetY;
-			aZ += tDirection.offsetZ;
-			if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
-				Logger.WARNING("Preparing Lighter b");
-				if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
-					Logger.WARNING("Preparing Lighter c");
-					GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY,
-							aZ);
-					aWorld.setBlock(aX, aY, aZ, Blocks.fire);
-					rOutput = true;
-					// ItemNBT.setLighterFuel(aStack, tFuelAmount);
-					return rOutput;
-				}
+		if (!aWorld.isRemote && aStack.stackSize == 1) {			
+			if (aPlayer.isSneaking()) {
+				Logger.INFO("Changing Mode");
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				Logger.INFO("Is currently in Fireball mode? "+aCurrentMode);
+				boolean aNewMode = Utils.invertBoolean(aCurrentMode);
+				Logger.INFO("Is now set to Fireball mode? "+aNewMode);
+				aStack.getTagCompound().setBoolean("aFireballMod", aNewMode);
+				//NBTUtils.setBoolean(aStack, "aFireballMode", aNewMode);
+				PlayerUtils.messagePlayer(aPlayer, "Current Mode: "+EnumChatFormatting.RED+(aNewMode ? "Projectile" : "Fire Starter"));
 			}
+			else {
+				boolean aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+				if (aCurrentMode) {
+					//Shoot Lightning Attack
+					aWorld.playSoundAtEntity(aPlayer, "random.bow", 0.5F, 0.4F / (CORE.RANDOM.nextFloat() * 0.4F + 0.8F));
+					if (!aWorld.isRemote) {
+						aWorld.spawnEntityInWorld(new EntityLightningAttack(aWorld, aPlayer, hitX, hitY, hitZ));
+					}
+				}
+				else {
+					//Lights Fires Mode
+					Logger.WARNING("Preparing Lighter a");
+					boolean rOutput = false;
+					ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
+					aX += tDirection.offsetX;
+					aY += tDirection.offsetY;
+					aZ += tDirection.offsetZ;
+					if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+						Logger.WARNING("Preparing Lighter b");
+						if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
+							Logger.WARNING("Preparing Lighter c");
+							GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(6), 1.0F, 1.0F, aX, aY,
+									aZ);
+							aWorld.setBlock(aX, aY, aZ, Blocks.fire);
+							rOutput = true;
+							// ItemNBT.setLighterFuel(aStack, tFuelAmount);
+							return rOutput;
+						}
+					}
+				}
+			}			
 		}
 		Logger.WARNING("Preparing Lighter z");
 		return false;
@@ -138,6 +207,17 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 		NBTTagCompound tNBT = aStack.getTagCompound();
 		aList.add(this.mTooltipUses + " " + aUses);
 		aList.add(this.mTooltipUnstackable);
+		
+		
+		boolean aCurrentMode; 
+		if (NBTUtils.hasKey(aStack, "aFireballMode")) {
+			aCurrentMode = NBTUtils.getBoolean(aStack, "aFireballMod");
+		}
+		else {
+			aStack.getTagCompound().setBoolean("aFireballMod", false);
+			aCurrentMode = false;
+		}
+		aList.add("Current Mode: "+EnumChatFormatting.RED+(aCurrentMode ? "Projectile" : "Fire Starter"));		
 		return aList;
 	}
 }

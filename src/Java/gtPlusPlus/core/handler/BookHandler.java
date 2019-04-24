@@ -118,7 +118,7 @@ public class BookHandler {
 		//Test Novel
 		//20/21/22
 		book_MultiMachineManual = writeBookTemplate(
-				"Manual_Multi_Machine", "Multi Machine Manual", "Alkalus", 
+				"Manual_Multi_Machine", "Multi-Machine Manual", "Alkalus", 
 				new String[] {
 						"This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
 						"To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",

@@ -43,9 +43,9 @@ public class HANDLER_Thaumcraft {
 			
 			
 			//sThaumcraftCompat = (IThaumcraftCompat) GT_Utility.callConstructor("gtPlusPlus.xmod.thaumcraft.aspect.GTPP_AspectCompat", 0, null, GT_Values.D1, new Object[0]);
-			sThaumcraftCompat = new GTPP_AspectCompat();	
+			//sThaumcraftCompat = new GTPP_AspectCompat();	
 			
-			if (!sItemsToGetAspects.isEmpty() && false) {
+			/*if (!sItemsToGetAspects.isEmpty() && false) {
 				for (Pair<ItemStack, GTPP_AspectStack[]> j : sItemsToGetAspects) {
 					if (j .getKey() != null && (j.getValue() != null && j.getValue().length > 0)) {
 						List<GTPP_AspectStack> list = Arrays.asList(j.getValue());
@@ -57,7 +57,7 @@ public class HANDLER_Thaumcraft {
 						}
 					}
 				}
-			}
+			}*/
 		}
 	}
 	

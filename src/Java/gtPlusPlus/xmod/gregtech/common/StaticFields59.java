@@ -22,6 +22,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ProxyFinder;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
@@ -183,6 +184,11 @@ public class StaticFields59 {
 		return null;
 	}
 
+
+	public static Object getFieldFromGregtechProxy(String fieldName) {
+		return getFieldFromGregtechProxy(Utils.isServer() ? false : true, fieldName);
+	}
+	
 	public static Object getFieldFromGregtechProxy(boolean client, String fieldName) {
 		Object proxyGT;
 	

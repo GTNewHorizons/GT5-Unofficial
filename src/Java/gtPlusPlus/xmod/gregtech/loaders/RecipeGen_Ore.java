@@ -107,7 +107,7 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 						//If Fourth Output has no solid output, try the Fifth (If it exists)
 						if (!bonusB.hasSolidForm() && material.getComposites().size() >= 5 && material.getComposites().get(4) != null) {
 							bonusB = material.getComposites().get(4).getStackMaterial();
-							//If Fifth Output has no solid output, default out to Chrome.
+							//If Fifth Output has no solid output, default out to Stone dust.
 							if (!bonusB.hasSolidForm()) {
 								allFailed = true;
 								bonusB = mStone;
@@ -127,11 +127,11 @@ public class RecipeGen_Ore extends RecipeGen_Base {
 
 		//Default out if it's made of fluids or some shit.
 		if (bonusA == null) {
-			bonusA = tVoltageMultiplier <= 100 ? material : mStone;
+			bonusA = tVoltageMultiplier > 100 ? material : mStone;
 		}
 		//Default out if it's made of fluids or some shit.
 		if (allFailed || bonusB == null) {
-			bonusB = tVoltageMultiplier <= 100 ? material : mStone;
+			bonusB = tVoltageMultiplier > 100 ? material : mStone;
 		}
 
 		AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<Pair<Integer, Material>>();

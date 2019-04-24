@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -1329,6 +1330,45 @@ public class Material {
 		catch (Throwable r){
 			r.printStackTrace();
 			return 75;
+		}
+	}
+	
+	
+	
+	
+	public boolean registerComponentForMaterial(ComponentTypes aPrefix, ItemStack aStack) {
+		return registerComponentForMaterial(this, aPrefix.getGtOrePrefix(), aStack);
+	}
+	
+	public boolean registerComponentForMaterial(OrePrefixes aPrefix, ItemStack aStack) {
+		return registerComponentForMaterial(this, aPrefix, aStack);
+	}
+
+	public static boolean registerComponentForMaterial(Material componentMaterial, ComponentTypes aPrefix, ItemStack aStack) {
+		return registerComponentForMaterial(componentMaterial, aPrefix.getGtOrePrefix(), aStack);		
+	}
+	
+	public static boolean registerComponentForMaterial(Material componentMaterial, OrePrefixes aPrefix, ItemStack aStack) {		
+		if (componentMaterial == null) {
+			return false;
+		}		
+		//Register Component
+		Map<String, ItemStack> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
+		if (aMap == null) {
+			aMap = new HashMap<String, ItemStack>();
+		}
+		String aKey = aPrefix.name();
+		ItemStack x = aMap.get(aKey);
+		if (x == null) {
+			aMap.put(aKey, aStack);
+			Logger.MATERIALS("Registering a material component. Item: ["+componentMaterial.getUnlocalizedName()+"] Map: ["+aKey+"]");
+			Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
+			return true;
+		}
+		else {
+			//Bad
+			Logger.MATERIALS("Tried to double register a material component. ");
+			return false;
 		}
 	}
 

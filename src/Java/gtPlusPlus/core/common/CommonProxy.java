@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ChunkManager;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -42,6 +44,7 @@ import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.ForgeChunkManager;
 
@@ -107,6 +110,7 @@ public class CommonProxy {
 			DEBUG_INIT.registerHandlers();
 		}
 
+		registerCustomItemsForMaterials();
 		ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
 
 		if (!mFluidsGenerated && ItemList.valueOf("Cell_Empty").hasBeenSet()) {
@@ -215,6 +219,10 @@ public class CommonProxy {
 		Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
 		Utils.createNewMobSpawner(1, EntitySickBlaze.class);
 		Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
+	}
+	
+	public void registerCustomItemsForMaterials() {
+		Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate, GregtechItemList.Carbyne_Sheet_Finished.get(1));
 	}
 
 }

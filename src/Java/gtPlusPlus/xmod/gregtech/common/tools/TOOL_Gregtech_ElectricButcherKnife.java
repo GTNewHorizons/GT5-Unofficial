@@ -13,6 +13,7 @@ import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -39,7 +40,7 @@ extends GT_Tool {
 
 	@Override
 	public int getToolDamagePerBlockBreak() {
-		return 50;
+		return 100;
 	}
 
 	@Override
@@ -49,12 +50,12 @@ extends GT_Tool {
 
 	@Override
 	public int getToolDamagePerContainerCraft() {
-		return 400;
+		return 100;
 	}
 
 	@Override
 	public int getToolDamagePerEntityAttack() {
-		return 100;
+		return 200;
 	}
 
 	@Override
@@ -112,40 +113,9 @@ extends GT_Tool {
 	}
 
 	@Override
-	public boolean isWeapon() {
-		return true;
-	}
-
-	@Override
 	public boolean isMinableBlock(final Block aBlock, final byte aMetaData) {
 		final String tTool = aBlock.getHarvestTool(aMetaData);
-		return (tTool != null) && (tTool.equals("sword") || tTool.equals("file")); 
-	}
-	
-
-	@Override
-	public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune, final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
-		int rConversions = 0;
-		/*GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new ItemStack[]{new ItemStack(aBlock, 1, aMetaData)});
-		if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
-			for (final ItemStack tDrop : aDrops) {
-				tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(null, true, 2147483647L, null, new ItemStack[]{GT_Utility.copyAmount(1L, new Object[]{tDrop})});
-				if (tRecipe != null) {
-					final ItemStack tHammeringOutput = tRecipe.getOutput(0);
-					if (tHammeringOutput != null) {
-						rConversions += tDrop.stackSize;
-						tDrop.stackSize *= tHammeringOutput.stackSize;
-						tHammeringOutput.stackSize = tDrop.stackSize;
-						GT_Utility.setStack(tDrop, tHammeringOutput);
-					}
-				}
-			}
-		} else {
-			aDrops.clear();
-			aDrops.add(tRecipe.getOutput(0));
-			rConversions++;
-		}*/
-		return rConversions;
+		return (tTool != null) && (tTool.equals("sword") || tTool.equals("knife")); 
 	}
 
 	@Override
@@ -192,6 +162,31 @@ extends GT_Tool {
 	@Override
 	public boolean isGrafter() {
 		return false;
+	}
+
+	@Override
+	public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
+		return aOriginalHurtResistance * 2;
+	}
+
+	@Override
+	public boolean isWeapon() {
+		return true;
+	}
+
+	@Override
+	public boolean isMiningTool() {
+		return false;
+	}
+
+	@Override
+	public Enchantment[] getEnchantments(ItemStack aStack) {
+		return LOOTING_ENCHANTMENT;
+	}
+
+	@Override
+	public int[] getEnchantmentLevels(ItemStack aStack) {
+		return new int[]{(4 + GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolQuality) / 2};
 	}
 	
 }

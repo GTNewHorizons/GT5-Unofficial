@@ -653,7 +653,9 @@ public final class ModItems {
 
 			MaterialGenerator.generate(ALLOY.BABBIT_ALLOY, false);
 			MaterialGenerator.generate(ALLOY.BLACK_TITANIUM, false);
-			
+
+			// High Level Bioplastic
+			MaterialGenerator.generate(ELEMENT.STANDALONE.RHUGNOR, false, false);
 			
 			
 			
@@ -839,8 +841,7 @@ public final class ModItems {
 		else {
 			itemHotTitaniumIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotHotTitanium", 1);
 		}
-		GT_Values.RA.addBlastRecipe(ELEMENT.getInstance().TITANIUM.getIngot(1), CI.getNumberedCircuit(16), itemHotTitaniumIngot, null, 10 * 20, 500, Materials.Titanium.mBlastFurnaceTemp);
-
+		
 		//Special Sillyness
 		if (true) {
 			
