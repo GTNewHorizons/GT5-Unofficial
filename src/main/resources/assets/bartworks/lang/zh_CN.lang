@@ -144,7 +144,7 @@ tile.radiohatch.name=放射仓
 tile.bw.windmill.name=风车
 tile.manutrafo.name=手动变压器
 
-tooltip.tile.htr.0.name=高温钍反应堆的控制器方块;大小(宽x高x长):9x12x9(中空);角落和两个相邻的方块是空气;一旦搭建完成,需要在输入仓中输入氦气直到不再接受;1+输出仓(任意底部机械方块);1+输入仓(任意顶部机械方块);1+输入总线(任意顶部机械方块);1x维护仓(任意机械方块);其余的为辐射防护机械方块;需要持续供应冷却液否则将灰关机;需要至少100k卵石燃料才能开始工作(最多可使用675k个卵石);每次操作消耗1个燃料颗粒;TRISO卵石将提供30%的额外能量;每个卵石都会增加转换冷却剂的需求数量;一次工作耗时27个游戏日
+tooltip.tile.htr.0.name=高温钍反应堆的控制器方块;大小(宽x高x长):11x12x11 (中空);控制器:正面中心,最低一层;角落和两个相邻的方块是空气;:一旦搭建完成,需要在输入仓中输入氦气直到不再接受;1+输出仓(任意底部机械方块);1+输入仓(任意顶部机械方块);1+输入总线(任意顶部机械方块);1x维护仓(任意机械方块);其余的为辐射防护机械方块;在运行时需要持续供应冷却液,完成工作后输出;需要至少100k卵石燃料才能开始工作(最多可使用675k个卵石);每次操作消耗1个燃料颗粒;TRISO卵石将提供30%的额外能量;每个卵石都会增加转换冷却剂的需求数量;一次工作耗时27个游戏日
 item.TRISOPellet.name=TRISO卵石
 item.TRISOPelletBall.name=TRISO卵石球
 item.BISOPelletBall.name=BISO卵石球
@@ -153,8 +153,11 @@ item.TRISOPelletCompound.name=TRISO卵石复合材料
 item.BISOPelletCompound.name=BISO卵石复合材料
 itemGroup.bartworksMetaMaterials=BartWorks-meta材料
 
+tooltip.tile.eic.0.name=电气聚爆压缩机的控制器方块;大小(宽x高x长):3x9x3;使用电而不是爆炸物工作;控制器在第三层正面中心;第一到第九层为坚硬钢机械方块,每层中间为能量仓;第2,3,7,8层:中心为镍锌铁氧体方块,其余的为变压器线圈块;第4,5,6层为中子块;1+输入总线,1+输出总线,1个维护仓于坚硬钢机械方块;在操作过程中,请勿遮挡或挖掘移动方块,这会上演爆炸的艺术!!
+
+
 planet.Ross128b=罗斯128b
 moon.Ross128ba=罗斯128ba
 star.Ross128=罗斯128
 solarsystem.Ross128System=罗斯128-行星系
-//This zh_CN.lang is translated by huajijam for bartworks (15/4/19)
+//This zh_CN.lang is translated by huajijam for bartworks (24/4/19)
