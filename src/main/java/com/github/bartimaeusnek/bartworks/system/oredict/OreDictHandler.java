@@ -20,26 +20,33 @@
  * SOFTWARE.
  */
 
-package com.github.bartimaeusnek.crossmod.galacticraft.planets;
+package com.github.bartimaeusnek.bartworks.system.oredict;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
-import micdoodle8.mods.galacticraft.api.world.IExitHeight;
-import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import gregtech.api.enums.OrePrefixes;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-public abstract class AbstractWorldProviderSpace extends WorldProviderSpace implements IExitHeight, ISolarLevel {
-    @Override
-    public boolean canRainOrSnow() {
-        return false;
+import java.util.HashMap;
+
+public class OreDictHandler {
+
+    private static final HashMap<String,ItemStack> cache = new HashMap<>();
+
+    public static HashMap<String, ItemStack> getCache() {
+        return OreDictHandler.cache;
     }
 
-    @Override
-    public String getDimensionName() {
-        return this.getCelestialBody().getLocalizedName();
+    public static ItemStack getItemStack(String elementName, OrePrefixes prefixes, int amount){
+        if (cache.get(prefixes+elementName.replaceAll(" ","")) != null){
+            ItemStack tmp = cache.get(prefixes+elementName.replaceAll(" ","")).copy();
+            tmp.stackSize=amount;
+            return tmp;
+        } else if (!OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).isEmpty()){
+            ItemStack tmp = OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy();
+            tmp.stackSize=amount;
+            cache.put(prefixes+elementName.replaceAll(" ",""),tmp);
+            return tmp;
+        }
+        return null;
     }
-
-    @Override
-    public boolean hasSunset() {
-        return true;
-    }
-
 }

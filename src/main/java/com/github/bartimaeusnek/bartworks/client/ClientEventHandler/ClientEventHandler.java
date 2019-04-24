@@ -25,7 +25,7 @@ package com.github.bartimaeusnek.bartworks.client.ClientEventHandler;
 import com.github.bartimaeusnek.bartworks.API.BioVatLogicAdder;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
-import com.github.bartimaeusnek.bartworks.system.material.OreDictHandler;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;

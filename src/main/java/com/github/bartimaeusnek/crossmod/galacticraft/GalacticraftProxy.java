@@ -26,6 +26,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.objects.GT_UO_DimensionList;
 import net.minecraftforge.common.config.Configuration;
@@ -39,6 +40,15 @@ public class GalacticraftProxy {
     public static GT_UO_DimensionList uo_dimensionList = new GT_UO_DimensionList();
     static Configuration gtConf;
     private GalacticraftProxy() {
+    }
+
+    public static void postInit(FMLPostInitializationEvent e){
+        if (FMLCommonHandler.instance().getSide().isServer() || FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+            GalacticraftProxy.serverPostInit(e);
+        } else {
+            GalacticraftProxy.clientPostInit(e);
+        }
+        GalacticraftProxy.commonPostInit(e);
     }
 
     public static void preInit(FMLPreInitializationEvent e) {
@@ -86,5 +96,16 @@ public class GalacticraftProxy {
     private static void commonInit(FMLInitializationEvent e) {
         if (ConfigHandler.Ross128Enabled)
             Ross128SolarSystem.init();
+    }
+    private static void serverPostInit(FMLPostInitializationEvent e) {
+
+    }
+
+    private static void clientPostInit(FMLPostInitializationEvent e) {
+
+    }
+
+    private static void commonPostInit(FMLPostInitializationEvent e) {
+
     }
 }

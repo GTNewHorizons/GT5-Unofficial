@@ -397,8 +397,9 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
         this.getBaseMetaTileEntity().setActive(true);
 
         long finishedTime = System.nanoTime();
+        //System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
         if (finishedTime - startingTime > 5000000)
-            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime) + "ns / " + ((finishedTime - startingTime) / 1000000) + "ms) Owner:"+this.getBaseMetaTileEntity().getOwnerName()+" Check at x:" + this.getBaseMetaTileEntity().getXCoord() + " y:" + this.getBaseMetaTileEntity().getYCoord() + " z:" + this.getBaseMetaTileEntity().getZCoord() + " DIM-ID: " + this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
         return true;
     }
 

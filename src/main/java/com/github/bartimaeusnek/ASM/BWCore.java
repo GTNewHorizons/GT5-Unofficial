@@ -22,11 +22,13 @@
 
 package com.github.bartimaeusnek.ASM;
 
+import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
@@ -37,23 +39,28 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.bartimaeusnek.ASM.BWCoreTransformer.shouldTransform;
+
 public class BWCore extends DummyModContainer {
 
     public static final String BWCORE_NAME = "BartWorks ASM Core";
-    public static final Logger BWCORE_LOG = LogManager.getLogger(BWCORE_NAME);
+    public static final Logger BWCORE_LOG = LogManager.getLogger(BWCore.BWCORE_NAME);
 
     public BWCore() {
         super(new ModMetadata());
-        ModMetadata metadata = getMetadata();
+        ModMetadata metadata = this.getMetadata();
         metadata.modId = "BWCore";
-        metadata.name = BWCORE_NAME;
+        metadata.name = BWCore.BWCORE_NAME;
         metadata.version = "0.0.1";
         metadata.authorList.add("bartimaeusnek");
-        metadata.dependants = getDependants();
+        metadata.dependants = this.getDependants();
     }
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
+        shouldTransform[0] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[0];
+        shouldTransform[1] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[1];
+        BWCore.BWCORE_LOG.info("Extra Utilities found? " + shouldTransform[0]);
     }
 
     @Override

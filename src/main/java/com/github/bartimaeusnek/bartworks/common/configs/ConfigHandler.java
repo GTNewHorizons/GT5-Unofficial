@@ -26,6 +26,8 @@ package com.github.bartimaeusnek.bartworks.common.configs;
 import com.github.bartimaeusnek.ASM.BWCoreTransformer;;
 import net.minecraftforge.common.config.Configuration;
 
+import java.util.Arrays;
+
 public class ConfigHandler {
     private static final int IDU = 10 * 8 + 5;
     public static int IDOffset = 12600;
@@ -44,7 +46,7 @@ public class ConfigHandler {
     public static boolean experimentalThreadedLoader;
     public static boolean GTNH;
     public static boolean ezmode;
-
+    public static boolean[] enabledPatches ;
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
 
@@ -67,6 +69,8 @@ public class ConfigHandler {
         for (int i = 0; i < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length; i++) {
             BWCoreTransformer.shouldTransform[i] = ConfigHandler.c.get("ASM fixes", BWCoreTransformer.DESCRIPTIONFORCONFIG[i] + " in class: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[i], true).getBoolean(true);
         }
+        enabledPatches = new boolean[BWCoreTransformer.shouldTransform.length];
+        enabledPatches = Arrays.copyOf(BWCoreTransformer.shouldTransform,BWCoreTransformer.shouldTransform.length);
 
         ConfigHandler.ross128BID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b").getInt(-64);
         ConfigHandler.ross128BAID = ConfigHandler.c.get("CrossMod Interactions", "DimID - Ross128ba", -63, "The Dim ID for Ross128ba (Ross128b's Moon)").getInt(-63);

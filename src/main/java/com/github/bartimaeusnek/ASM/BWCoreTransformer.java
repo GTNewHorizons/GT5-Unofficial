@@ -23,12 +23,15 @@
 package com.github.bartimaeusnek.ASM;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarFile;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -47,23 +50,25 @@ public class BWCoreTransformer implements IClassTransformer {
 
     public static boolean[] shouldTransform = new boolean[CLASSESBEEINGTRANSFORMED.length];
 
-    static {
-        //hacky way to detect if the mods are loaded
-        try{
-            Class.forName("com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime");
-            shouldTransform[0] = true;
-            shouldTransform[1] = true;
-        }catch (ClassNotFoundException e){
-            shouldTransform[0] = false;
-            shouldTransform[1] = false;
-        }
-        try{
-            Class.forName("micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld");
-            shouldTransform[2] = true;
-        }catch (ClassNotFoundException e){
-            shouldTransform[2] = false;
-        }
-    }
+//    public void checkForMods() {
+//        //hacky way to detect if the mods are loaded
+//        try{
+//            Class.forName("com.rwtema.extrautils.core.Tuple");
+//            shouldTransform[0] = true;
+//            shouldTransform[1] = true;
+//        }catch (ClassNotFoundException e){
+//            BWCore.BWCORE_LOG.info("Extra Utilities not found!");
+//            shouldTransform[0] = false;
+//            shouldTransform[1] = false;
+//        }
+//        try{
+//            Class.forName("micdoodle8.mods.galacticraft.core.Constants");
+//            shouldTransform[2] = true;
+//        }catch (ClassNotFoundException e){
+//            BWCore.BWCORE_LOG.info("micdoodle Core not found!");
+//            shouldTransform[2] = false;
+//        }
+//    }
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {

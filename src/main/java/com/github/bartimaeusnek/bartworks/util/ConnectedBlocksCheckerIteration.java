@@ -26,112 +26,56 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class ConnectedBlocksChecker {
+
+/**
+ * This implementation is for some reason slower than the Recursive Check....
+ * For ~3400 blocks this takes 8ms, the Recursive Check 5ms.
+ */
+public class ConnectedBlocksCheckerIteration {
 
     public final HashSet<Coords> hashset = new HashSet<Coords>(2048);
+    public final HashSet<Coords> checked = new HashSet<Coords>(4096);
+    private final Queue<Coords> kwoe = new LinkedList<Coords>();
 
-    public static byte check_sourroundings(Coords C, Block b) {
-        byte ret = 0;
-        World w = DimensionManager.getWorld(C.wID);
-        int x = C.x, y = C.y, z = C.z;
-
-        if (w.getBlock(x + 1, y, z).equals(b))
-            ret = (byte) (ret | 0b000100);
-
-        if (w.getBlock(x - 1, y, z).equals(b))
-            ret = (byte) (ret | 0b001000);
-
-        if (w.getBlock(x, y, z + 1).equals(b))
-            ret = (byte) (ret | 0b010000);
-
-        if (w.getBlock(x, y, z - 1).equals(b))
-            ret = (byte) (ret | 0b100000);
-
-        if (w.getBlock(x, y + 1, z).equals(b))
-            ret = (byte) (ret | 0b000001);
-
-        if (w.getBlock(x, y - 1, z).equals(b))
-            ret = (byte) (ret | 0b000010);
-
-
-        return ret;
-    }
-
-    public int get_connected(World w, int x, int y, int z, Block b) {
-        int ret = 0;
-
-        int wID = w.provider.dimensionId;
-
-        byte sides = check_sourroundings(w, x, y, z, b);
-
-        if (((sides | 0b111011) == 0b111111) && !hashset.contains(new Coords(x + 1, y, z, wID))) {
-            ret++;
-            ret += get_connected(w, x + 1, y, z, b);
+    public long get_connected(World w, int x, int y, int z, Block b){
+        kwoe.add(new Coords(x,y,z,w.provider.dimensionId));
+        hashset.add(new Coords(x,y,z,w.provider.dimensionId));
+        while (!kwoe.isEmpty()){
+            Coords tocheck = kwoe.poll();
+            int wID = w.provider.dimensionId;
+            checked.add(tocheck);
+            Coords c;
+            if (!checked.contains(c = new Coords(tocheck.x + 1, tocheck.y, tocheck.z, wID)) && w.getBlock(tocheck.x + 1, tocheck.y, tocheck.z).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
+            if (!checked.contains(c = new Coords(tocheck.x - 1, tocheck.y, tocheck.z, wID)) && w.getBlock(tocheck.x - 1, tocheck.y, tocheck.z).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z + 1, wID)) && w.getBlock(tocheck.x, tocheck.y, tocheck.z + 1).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y, tocheck.z - 1, wID)) && w.getBlock(tocheck.x, tocheck.y, tocheck.z - 1).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y + 1, tocheck.z, wID)) && w.getBlock(tocheck.x, tocheck.y + 1, tocheck.z).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
+            if (!checked.contains(c = new Coords(tocheck.x, tocheck.y - 1, tocheck.z, wID)) && w.getBlock(tocheck.x, tocheck.y - 1, tocheck.z).equals(b)) {
+                kwoe.add(c);
+                hashset.add(c);
+            }
         }
-
-        if (((sides | 0b110111) == 0b111111) && !hashset.contains(new Coords(x - 1, y, z, wID))) {
-            ret++;
-            ret += get_connected(w, x - 1, y, z, b);
-        }
-
-        if (((sides | 0b101111) == 0b111111) && !hashset.contains(new Coords(x, y, z + 1, wID))) {
-            ret++;
-            ret += get_connected(w, x, y, z + 1, b);
-        }
-
-        if (((sides | 0b011111) == 0b111111) && !hashset.contains(new Coords(x, y, z - 1, wID))) {
-            ret++;
-            ret += get_connected(w, x, y, z - 1, b);
-        }
-
-
-        if (((sides | 0b111110) == 0b111111) && !hashset.contains(new Coords(x, y + 1, z, wID))) {
-            ret++;
-            ret += get_connected(w, x, y + 1, z, b);
-        }
-
-        if (((sides | 0b111101) == 0b111111) && !hashset.contains(new Coords(x, y - 1, z, wID))) {
-            ret++;
-            ret += get_connected(w, x, y - 1, z, b);
-        }
-
-        return ret;
-    }
-
-    public byte check_sourroundings(World w, int x, int y, int z, Block b) {
-
-        byte ret = 0;
-        int wID = w.provider.dimensionId;
-
-        if (hashset.contains(new Coords(x, y, z, wID)))
-            return ret;
-
-        hashset.add(new Coords(x, y, z, wID));
-
-        if (w.getBlock(x + 1, y, z).equals(b))
-            ret = (byte) (ret | 0b000100);
-
-        if (w.getBlock(x - 1, y, z).equals(b))
-            ret = (byte) (ret | 0b001000);
-
-        if (w.getBlock(x, y, z + 1).equals(b))
-            ret = (byte) (ret | 0b010000);
-
-        if (w.getBlock(x, y, z - 1).equals(b))
-            ret = (byte) (ret | 0b100000);
-
-        if (w.getBlock(x, y + 1, z).equals(b))
-            ret = (byte) (ret | 0b000001);
-
-        if (w.getBlock(x, y - 1, z).equals(b))
-            ret = (byte) (ret | 0b000010);
-
-        return ret;
+        return hashset.size();
     }
 
     public boolean get_meta_of_sideblocks(World w, int n, int[] xyz, boolean GT) {

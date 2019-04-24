@@ -122,7 +122,7 @@ public class ItemRegistry {
             }, BWT),
 
     };
-    public static ItemStack dehp;
+
     public static ItemStack[] diode2A = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] diode4A = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] diode8A = new ItemStack[GT_Values.VN.length];
@@ -131,11 +131,14 @@ public class ItemRegistry {
     public static ItemStack[] energyDistributor = new ItemStack[GT_Values.VN.length];
     public static ItemStack[] acidGens = new ItemStack[3];
     public static ItemStack[] megaMachines = new ItemStack[2];
+    public static ItemStack dehp;
     public static ItemStack thtr;
+    public static ItemStack eic;
 
     public static void run() {
 
         if (newStuff) {
+            eic=new GT_TileEntity_ElectricImplosionCompressor(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6,"ElectricImplosionCompressor","Electric Implosion Compressor").getStackForm(1L);
             thtr=new GT_TileEntity_THTR(ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,"THTR","Thorium High Temperature Reactor").getStackForm(1L);
             GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
             GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BW_ItemBlocks.class, "BW_GlasBlocks");

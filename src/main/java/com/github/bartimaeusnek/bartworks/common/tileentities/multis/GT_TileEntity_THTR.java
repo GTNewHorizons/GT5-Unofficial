@@ -41,6 +41,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -57,6 +58,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
     private int HeliumSupply;
     private int BISOPeletSupply;
     private int TRISOPeletSupply;
+    private boolean empty;
 
     public GT_TileEntity_THTR(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,6 +79,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         HeliumSupply=aNBT.getInteger("HeliumSupply");
         BISOPeletSupply=aNBT.getInteger("BISOPeletSupply");
         TRISOPeletSupply=aNBT.getInteger("TRISOPeletSupply");
+        empty=aNBT.getBoolean("EmptyMode");
     }
 
     @Override
@@ -85,6 +88,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         aNBT.setInteger("HeliumSupply",HeliumSupply);
         aNBT.setInteger("BISOPeletSupply",BISOPeletSupply);
         aNBT.setInteger("TRISOPeletSupply",TRISOPeletSupply);
+        aNBT.setBoolean("EmptyMode",empty);
     }
 
     @Override
@@ -155,6 +159,17 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+
+        if (empty){
+            this.addOutput(Materials.Helium.getGas(HeliumSupply));
+            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, TRISOPeletSupply, 3));
+            this.addOutput(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, BISOPeletSupply, 1));
+            this.HeliumSupply = 0;
+            this.TRISOPeletSupply = 0;
+            this.BISOPeletSupply = 0;
+            return true;
+        }
+
         long accessibleCoolant = 0;
         long toProduce=0;
         for (FluidStack fluidStack : this.getStoredFluids()) {
@@ -176,7 +191,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 //                    0.01f,
 //                    ExplosionIC2.Type.Nuclear
 //                    ).doExplosion();
-            return false;
+            toProduce=accessibleCoolant;
         }
 
         accessibleCoolant=toProduce;
@@ -198,16 +213,17 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 4;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 4;
-        for (int x = -4; x <= 4; x++) {
-                for (int z = -4; z <= 4; z++) {
+        final byte xz = 5;
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * xz;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * xz;
+        for (int x = -xz; x <= xz; x++) {
+                for (int z = -xz; z <= xz; z++) {
                     for (int y = 0; y < 12; y++) {
                         if (y == 0 || y == 11) {
                             if (
-                                    !((Math.abs(z) == 3 && Math.abs(x) == 4)) &&
-                                    !((Math.abs(z) == 4 && Math.abs(x) == 3)) &&
-                                    !((Math.abs(x) == Math.abs(z) && Math.abs(x) == 4))
+                                    !((Math.abs(z) == xz-1 && Math.abs(x) == xz)) &&
+                                    !((Math.abs(z) == xz && Math.abs(x) == xz-1)) &&
+                                    !((Math.abs(x) == Math.abs(z) && Math.abs(x) == xz))
                             ) {
                                 if (x + xDir == 0 && y == 0 && z + zDir == 0)
                                     continue;
@@ -223,10 +239,18 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                                 }
                             }
                         }
-                        else if (!((Math.abs(x) == 4 && Math.abs(z) == 4) || (Math.abs(x) == 3 && Math.abs(z) == 3)) && !(Math.abs(x) < 3 || Math.abs(z) < 3) && !((Math.abs(x) == Math.abs(z) && Math.abs(x) == 3) || Math.abs(x) == 4 || Math.abs(z) == 4)) {
-                        if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
+
+
+//                        else if (!((Math.abs(x) == 4 && Math.abs(z) == 4) || (Math.abs(x) == 3 && Math.abs(z) == 3)) && !(Math.abs(x) < 3 || Math.abs(z) < 3) && !((Math.abs(x) == Math.abs(z) && Math.abs(x) == 3) || Math.abs(x) == 4 || Math.abs(z) == 4)) {
+                        else if (!((Math.abs(z) == xz-1 && Math.abs(x) == xz)))
+                                        if (!((Math.abs(z) == xz && Math.abs(x) == xz-1)))
+                                            if (!((Math.abs(x) == Math.abs(z) && Math.abs(x) == xz)))
+                                                if (!(Math.abs(x) < xz && Math.abs(z) != xz))
+
+                        {
+                            if (!(aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z) == GregTech_API.sBlockCasings3 && aBaseMetaTileEntity.getMetaIDOffset(xDir + x, y, zDir + z) == 12)) {
                             if (
-                                            !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX))
+                                    !this.addMaintenanceToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + x, y, zDir + z), BASECASINGINDEX))
                             {
                                 return false;
                             }
@@ -237,10 +261,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
 
         }
 
-        if (this.mMaintenanceHatches.size() != 1)
-            return false;
-
-        return true;
+        return this.mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -276,7 +297,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
                 "BISO-Pebbles:", this.BISOPeletSupply + "pcs.",
                 "TRISO-Pebbles:", this.TRISOPeletSupply + "pcs.",
                 "Helium-Level:", this.HeliumSupply+"L / "+HELIUM_NEEDED+"L",
-                "Coolant/sec:", this.BISOPeletSupply+this.TRISOPeletSupply >= 100000 ? (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply))+"L/t" : "0L/t",
+                "Coolant/t:", this.BISOPeletSupply+this.TRISOPeletSupply >= 100000 ? (long) ((0.03471*(float)this.TRISOPeletSupply + 0.0267*(float)this.BISOPeletSupply))+"L/t" : "0L/t",
                 "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus())
         };
     }
@@ -297,6 +318,11 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_MultiBlockBase {
         return aSide == aFacing ? new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[BASECASINGINDEX], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER)} : new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[BASECASINGINDEX]};
     }
 
+    @Override
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        empty = !empty;
+        GT_Utility.sendChatToPlayer(aPlayer,empty ? "THTR will now empty itself." : "THTR is back in normal Operation");
+    }
 
     public static class THTRMaterials{
         static final SimpleSubItemClass aTHTR_Materials = new SimpleSubItemClass("BISOPelletCompound","BISOPellet","TRISOPelletCompound","TRISOPellet","BISOPelletBall","TRISOPelletBall");
