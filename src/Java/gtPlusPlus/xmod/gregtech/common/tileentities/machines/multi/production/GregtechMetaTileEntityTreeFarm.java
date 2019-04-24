@@ -49,6 +49,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
+		
+		if (mTreeData == null) {
+			mTreeData = new TreeGenerator();
+		}
+		
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -219,10 +224,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (mTreeData == null) {
-			mTreeData = new TreeGenerator();
-		}
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {		
 		if (mTreeData != null) {
 			//this.getBaseMetaTileEntity().enableWorking();
 		}

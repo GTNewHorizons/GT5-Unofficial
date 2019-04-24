@@ -137,7 +137,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		//Also Fix Achievements, although currently disabled.
 		if (transformedName.equals("gregtech.common.GT_Client")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GT_Client(basicClass).getByteArray();
+			return new ClassTransformer_GT_Client(basicClass, obfuscated).getByteArray();
 		}
 
 		//Make GT packets safer, fill them with debug info.

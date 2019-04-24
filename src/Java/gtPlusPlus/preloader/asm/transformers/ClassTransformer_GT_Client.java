@@ -1,31 +1,10 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.AALOAD;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ARRAYLENGTH;
 import static org.objectweb.asm.Opcodes.ASM5;
-import static org.objectweb.asm.Opcodes.ASTORE;
-import static org.objectweb.asm.Opcodes.F_APPEND;
-import static org.objectweb.asm.Opcodes.F_FULL;
-import static org.objectweb.asm.Opcodes.F_SAME;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.ICONST_0;
-import static org.objectweb.asm.Opcodes.ICONST_1;
-import static org.objectweb.asm.Opcodes.IFNULL;
-import static org.objectweb.asm.Opcodes.IF_ICMPLT;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INTEGER;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.ISTORE;
-import static org.objectweb.asm.Opcodes.LCONST_1;
-import static org.objectweb.asm.Opcodes.POP;
 import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
@@ -61,6 +40,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -70,6 +50,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AssLineAchievements;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatFileWriter;
 
@@ -79,12 +60,15 @@ public class ClassTransformer_GT_Client {
 	private final ClassReader read;
 	private final ClassWriter write;
 	private boolean mModern = true;
+	private boolean mObfuscated = true;
 	private byte[] mTooledClass;
 
-	public ClassTransformer_GT_Client(byte[] basicClass) {
+	public ClassTransformer_GT_Client(byte[] basicClass, boolean obfuscated) {
 
 		ClassReader aTempReader = null;
 		ClassWriter aTempWriter = null;
+		
+		mObfuscated = obfuscated;
 
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);	
@@ -214,7 +198,7 @@ public class ClassTransformer_GT_Client {
 	public boolean injectMethod(ClassWriter cw, String string) {
 		MethodVisitor mv;
 		boolean didInject = false;
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Injecting " + string + ".");
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Injecting " + string + ". Obfuscated? "+mObfuscated);
 
 		if (string.equals("onPlayerTickEventClient")) {
 			/**
@@ -243,121 +227,36 @@ public class ClassTransformer_GT_Client {
 			mv.visitLocalVariable("aEvent", "Lcpw/mods/fml/common/gameevent/TickEvent$PlayerTickEvent;", null, l0, l2, 1);
 			mv.visitMaxs(1, 2);
 			mv.visitEnd();
+			didInject = true;
 		}
 		else if (string.equals("onPostLoad")) {
-
-			String aItemStackClassName;
-			String aEntityPlayerClassName;
-			
-			try {
-				aItemStackClassName = Class.forName("net/minecraft/item/ItemStack") != null ? "net/minecraft/item/ItemStack" : "add";
-			} catch (ClassNotFoundException e) {
-				aItemStackClassName = "add";
-			}
-			
-			try {
-				aEntityPlayerClassName = Class.forName("net/minecraft/entity/player/EntityPlayer") != null ? "net/minecraft/entity/player/EntityPlayer" : "yz";
-			} catch (ClassNotFoundException e) {
-				aEntityPlayerClassName = "yz";				
-			}
-			
 			mv = cw.visitMethod(ACC_PUBLIC, "onPostLoad", "()V", null, null);
 			mv.visitCode();
 			Label l0 = new Label();
-			Label l1 = new Label();
-			Label l2 = new Label();
-			mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Throwable");
-			Label l3 = new Label();
-			Label l4 = new Label();
-			Label l5 = new Label();
-			mv.visitTryCatchBlock(l3, l4, l5, "java/lang/Throwable");
-			Label l6 = new Label();
-			mv.visitLabel(l6);
-			mv.visitLineNumber(315, l6);
+			mv.visitLabel(l0);
+			mv.visitLineNumber(315, l0);
 			mv.visitVarInsn(ALOAD, 0);
 			mv.visitMethodInsn(INVOKESPECIAL, "gregtech/common/GT_Proxy", "onPostLoad", "()V", false);
-			mv.visitLabel(l3);
-			mv.visitLineNumber(317, l3);
-			mv.visitInsn(ICONST_0);
-			mv.visitVarInsn(ISTORE, 1);
-			Label l7 = new Label();
-			mv.visitLabel(l7);
-			Label l8 = new Label();
-			mv.visitJumpInsn(GOTO, l8);
-			mv.visitLabel(l0);
-			mv.visitLineNumber(319, l0);
-			mv.visitFrame(F_APPEND,1, new Object[] {INTEGER}, 0, null);
-			mv.visitFieldInsn(GETSTATIC, "gregtech/api/GregTech_API", "METATILEENTITIES", "[Lgregtech/api/interfaces/metatileentity/IMetaTileEntity;");
-			mv.visitVarInsn(ILOAD, 1);
-			mv.visitInsn(AALOAD);
-			Label l9 = new Label();
-			mv.visitJumpInsn(IFNULL, l9);
-			Label l10 = new Label();
-			mv.visitLabel(l10);
-			mv.visitLineNumber(320, l10);
-			mv.visitFieldInsn(GETSTATIC, "gregtech/api/GregTech_API", "METATILEENTITIES", "[Lgregtech/api/interfaces/metatileentity/IMetaTileEntity;");
-			mv.visitVarInsn(ILOAD, 1);
-			mv.visitInsn(AALOAD);
-			mv.visitInsn(LCONST_1);
-			mv.visitMethodInsn(INVOKEINTERFACE, "gregtech/api/interfaces/metatileentity/IMetaTileEntity", "getStackForm", "(J)L"+aItemStackClassName+";", true);
-			mv.visitInsn(ACONST_NULL);
-			mv.visitInsn(ICONST_1);
-			mv.visitMethodInsn(INVOKEVIRTUAL, ""+aItemStackClassName+"", "getTooltip", "(L"+aEntityPlayerClassName+";Z)Ljava/util/List;", false);
-			mv.visitInsn(POP);
+			Label l1 = new Label();
 			mv.visitLabel(l1);
-			mv.visitLineNumber(322, l1);
-			mv.visitJumpInsn(GOTO, l9);
+			mv.visitLineNumber(316, l1);
+			mv.visitMethodInsn(INVOKESTATIC, "gtPlusPlus/preloader/asm/transformers/ClassTransformer_GT_Client", "onPostLoad", "()V", false);
+			Label l2 = new Label();
 			mv.visitLabel(l2);
-			mv.visitLineNumber(323, l2);
-			mv.visitFrame(F_SAME1, 0, null, 1, new Object[] {"java/lang/Throwable"});
-			mv.visitVarInsn(ASTORE, 2);
-			Label l11 = new Label();
-			mv.visitLabel(l11);
-			mv.visitLineNumber(324, l11);
-			mv.visitVarInsn(ALOAD, 2);
-			mv.visitFieldInsn(GETSTATIC, "gregtech/api/util/GT_Log", "err", "Ljava/io/PrintStream;");
-			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Throwable", "printStackTrace", "(Ljava/io/PrintStream;)V", false);
-			mv.visitLabel(l9);
-			mv.visitLineNumber(317, l9);
-			mv.visitFrame(F_SAME, 0, null, 0, null);
-			mv.visitIincInsn(1, 1);
-			mv.visitLabel(l8);
-			mv.visitFrame(F_SAME, 0, null, 0, null);
-			mv.visitVarInsn(ILOAD, 1);
-			mv.visitFieldInsn(GETSTATIC, "gregtech/api/GregTech_API", "METATILEENTITIES", "[Lgregtech/api/interfaces/metatileentity/IMetaTileEntity;");
-			mv.visitInsn(ARRAYLENGTH);
-			mv.visitJumpInsn(IF_ICMPLT, l0);
-			mv.visitLabel(l4);
-			mv.visitLineNumber(327, l4);
-			Label l12 = new Label();
-			mv.visitJumpInsn(GOTO, l12);
-			mv.visitLabel(l5);
-			mv.visitFrame(F_FULL, 1, new Object[] {"gregtech/common/GT_Client"}, 1, new Object[] {"java/lang/Throwable"});
-			mv.visitVarInsn(ASTORE, 1);
-			Label l13 = new Label();
-			mv.visitLabel(l13);
-			mv.visitLineNumber(328, l13);
-			mv.visitVarInsn(ALOAD, 1);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Throwable", "printStackTrace", "()V", false);
-			mv.visitLabel(l12);
-			mv.visitLineNumber(330, l12);
-			mv.visitFrame(F_SAME, 0, null, 0, null);
+			mv.visitLineNumber(317, l2);
 			mv.visitInsn(RETURN);
-			Label l14 = new Label();
-			mv.visitLabel(l14);
-			mv.visitLocalVariable("this", "Lgregtech/common/GT_Client;", null, l6, l14, 0);
-			mv.visitLocalVariable("i", "I", null, l7, l4, 1);
-			mv.visitLocalVariable("t", "Ljava/lang/Throwable;", null, l11, l9, 2);
-			mv.visitLocalVariable("var2", "Ljava/lang/Throwable;", null, l13, l12, 1);
-			mv.visitMaxs(3, 3);
-			mv.visitEnd();
+			Label l3 = new Label();
+			mv.visitLabel(l3);
+			mv.visitLocalVariable("this", "Lgregtech/common/GT_Client;", null, l0, l3, 0);
+			mv.visitMaxs(1, 1);
+			mv.visitEnd();			
+			didInject = true;
 		}
 		
 		
 
 
 
-		didInject = true;
 		FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Method injection complete.");
 		return didInject;			
 
@@ -471,6 +370,31 @@ public class ClassTransformer_GT_Client {
 			}
 		}
 	}
+	
+	
+	
+	
+	/**
+	 * GT_Client's onPostLoad
+	 */
+	
+    public static void onPostLoad() {
+    	try {
+    		for (int i = 0; i < GregTech_API.METATILEENTITIES.length; i++) {    			
+    			try {    			
+    			if (GregTech_API.METATILEENTITIES[i] != null) {
+    				GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip((EntityPlayer) null, true);
+    			}    			
+    			}
+    			catch (Throwable t) {
+    				GT_Log.err.println("Error in MetaTileEntity with ID of "+i);
+    	    		t.printStackTrace(GT_Log.err);    				
+    			}
+    		}
+    	} catch (Throwable var2) {
+    		var2.printStackTrace();
+    	}
+    }
 
 
 

@@ -133,7 +133,8 @@ public class TreeGenerator {
 	    public FakeWorld getWorld() {
 	    	FakeWorld aWorld = this.mFakeWorld.get(mCurrentGeneratorIteration);
 	    	if (aWorld == null) {
-	    		aWorld = (this.mFakeWorld.set(mCurrentGeneratorIteration, new FakeWorld(200)));
+	    		this.mFakeWorld.set(mCurrentGeneratorIteration, new FakeWorld(200));
+	    		aWorld = this.mFakeWorld.get(mCurrentGeneratorIteration);
 	    	}
 	    	return aWorld;
 	    }
