@@ -174,7 +174,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 			
 			this.mMaxProgresstime = 100;
-			this.mEUt = 500;
+			this.mEUt = (int) tVoltage;
 			
 			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
@@ -203,7 +203,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
 			if (aChance < 8) {
 				//1% Chance per Tick				
-				for (int u=0; u<(Math.max(1, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
+				for (int u=0; u<(Math.max(20, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
 					aOutputs = mTreeData.generateOutput(0);		
 					if (aOutputs.size() > 0) {
 						Logger.WARNING("Generated some Loot, adding it to the output busses");
