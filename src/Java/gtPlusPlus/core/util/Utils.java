@@ -31,6 +31,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -958,6 +959,18 @@ public class Utils {
 	
 	public static long getTicksFromSeconds(long aSeconds) {
 		return (aSeconds*20);
+	}
+	
+	public static byte getTier(long l) {
+		byte i = -1;
+		do {
+			++i;
+			if (i >= GT_Values.V.length) {
+				return i;
+			}
+		} while (l > GT_Values.V[i]);
+		i = (byte) MathUtils.getValueWithinRange(i, 0, 15);
+		return i;
 	}
 
 }

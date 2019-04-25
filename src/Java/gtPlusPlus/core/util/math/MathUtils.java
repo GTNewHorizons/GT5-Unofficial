@@ -692,4 +692,9 @@ public class MathUtils {
 		return Math.max(Math.min(aInput, aMax), aMin);
 	}
 
+	public static int getValueWithinRange(byte aInput, int aMin, int aMax) {
+		int aAmount = Math.max(Math.min(aInput, aMax), aMin);
+		return aAmount;
+	}
+
 }

@@ -15,7 +15,7 @@ public class GregtechMetaTileEntity_BedrockMiningPlatform2 extends GregtechMetaT
 		super(aName);
 	}
 
-	public String[] getDescription() {
+	public String[] getTooltip() {
 		return this.getDescriptionInternal("II");
 	}
 

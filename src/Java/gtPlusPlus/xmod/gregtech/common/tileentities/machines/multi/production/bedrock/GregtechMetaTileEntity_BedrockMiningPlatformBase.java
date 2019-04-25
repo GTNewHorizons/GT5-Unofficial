@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
@@ -11,7 +8,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -19,8 +15,6 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
@@ -30,24 +24,22 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MiningUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GT_MetaTileEntity_MultiBlockBase {
+public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends GregtechMeta_MultiBlockBase {
+
+	protected double mProductionModifier = 0;
+
 
 	private static final ItemStack miningPipe;
 	private static final ItemStack miningPipeTip;
-	private static final Block miningPipeBlock;
-	private static final Block miningPipeTipBlock;
-
-	private final ArrayList<ChunkPosition> oreBlockPositions;
-	protected double mProductionModifier = 0;
-
+	
 	private Block casingBlock;
 	private int casingMeta;
 	// private int frameMeta;
@@ -61,36 +53,22 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
 	private int[] xCenter = new int[5];
 	private int[] zCenter = new int[5];
-	private int[] yHead = new int[5];
-	private boolean[] isPickingPipes = new boolean[5];
 
 	public GregtechMetaTileEntity_BedrockMiningPlatformBase(final int aID, final String aName,
 			final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		this.oreBlockPositions = new ArrayList<ChunkPosition>();
 		this.initFields();
 	}
 
 	public GregtechMetaTileEntity_BedrockMiningPlatformBase(final String aName) {
 		super(aName);
-		this.oreBlockPositions = new ArrayList<ChunkPosition>();
 		this.initFields();
 	}
 
 	private void initFields() {
 		this.casingBlock = this.getCasingBlockItem().getBlock();
 		this.casingMeta = this.getCasingBlockItem().get(0L, new Object[0]).getItemDamage();
-		/*
-		 * final int frameId = 4096 + this.getFrameMaterial().mMetaItemSubID;
-		 * this.frameMeta = ((GregTech_API.METATILEENTITIES[frameId] != null) ?
-		 * GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType() :
-		 * 32767);
-		 */
 		this.casingTextureIndex = this.getCasingTextureIndex();
-
-		for (int g = 0; g < 5; g++) {
-			this.isPickingPipes[g] = false;
-		}
 	}
 
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
@@ -168,7 +146,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			}
 		}
 		
-		this.mEUt = 8000;
+		this.mEUt = -8000;
 		this.mMaxProgresstime = 1;
 		this.mEfficiencyIncrease = 10000;
 		
@@ -186,30 +164,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		return false;
 	}
 
-	private boolean tryPickPipe(int pipe) {
-		if (this.yHead[pipe] == this.yDrill) {
-			return false;
-		}
-		boolean didWork[] = new boolean[3];
-		didWork[0] = this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],
-				GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767);
-		if (didWork[0]) {
-			didWork[1] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] + 1,
-					this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
-		}
-		if (didWork[1]) {
-			mMiningHeads.put(pipe, new BlockPos(this.xCenter[pipe], this.yHead[pipe] + 1, this.zCenter[pipe],
-					this.getBaseMetaTileEntity().getWorld()));
-			didWork[2] = this.getBaseMetaTileEntity().getWorld().setBlockToAir(this.xCenter[pipe], this.yHead[pipe],
-					this.zCenter[pipe]);
-		}
-
-		if (didWork[0] && didWork[1] && didWork[2]) {
-			return true;
-		}
-		return false;
-	}
-
 	private void setElectricityStats() {
 		//this.mEfficiency = this.getCurrentEfficiency((ItemStack) null);
 		this.mEfficiencyIncrease = 10000;
@@ -218,51 +172,11 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		Logger.INFO("Trying to set EU to "+(12 * overclock * overclock));
 		int mCombinedAvgTime = 0;
 		for (int g = 0; g < 5; g++) {
-			mCombinedAvgTime += (this.isPickingPipes[g] ? 80 : this.getBaseProgressTime()) / overclock;
+			mCombinedAvgTime += this.getBaseProgressTime() / overclock;
 		}
 		Logger.INFO("Trying to set Max Time to "+(mCombinedAvgTime));
 		//this.mMaxProgresstime = (mCombinedAvgTime / 5);
 	}
-
-	/*
-	 * private ItemStack[] getOutputByDrops(final ArrayList<ItemStack>
-	 * oreBlockDrops) { final long voltage = this.getMaxInputVoltage(); final
-	 * ArrayList<ItemStack> outputItems = new ArrayList<ItemStack>(); while
-	 * (!oreBlockDrops.isEmpty()) { final ItemStack currentItem =
-	 * oreBlockDrops.remove(0).copy(); if
-	 * (!this.doUseMaceratorRecipe(currentItem)) {
-	 * this.multiplyStackSize(currentItem); outputItems.add(currentItem); } else
-	 * { final GT_Recipe tRecipe =
-	 * GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(
-	 * (IHasWorldObjectAndCoords) this.getBaseMetaTileEntity(), false, voltage,
-	 * (FluidStack[]) null, new ItemStack[]{currentItem}); if (tRecipe == null)
-	 * { outputItems.add(currentItem); } else { for (int i = 0; i <
-	 * tRecipe.mOutputs.length; ++i) { final ItemStack recipeOutput =
-	 * tRecipe.mOutputs[i].copy(); if
-	 * (this.getBaseMetaTileEntity().getRandomNumber(10000) <
-	 * tRecipe.getOutputChance(i)) { this.multiplyStackSize(recipeOutput); }
-	 * outputItems.add(recipeOutput); } } } } return outputItems.toArray(new
-	 * ItemStack[0]); }
-	 */
-
-	/*
-	 * private boolean doUseMaceratorRecipe(final ItemStack currentItem) { final
-	 * ItemData itemData = GT_OreDictUnificator.getItemData(currentItem); return
-	 * itemData == null || (itemData.mPrefix != OrePrefixes.crushed &&
-	 * itemData.mPrefix != OrePrefixes.dustImpure && itemData.mPrefix !=
-	 * OrePrefixes.dust && itemData.mMaterial.mMaterial != Materials.Oilsands);
-	 * } private void multiplyStackSize(final ItemStack itemStack) {
-	 * itemStack.stackSize *= this.getBaseMetaTileEntity().getRandomNumber(4) +
-	 * 1; } private ArrayList<ItemStack> getBlockDrops(final Block oreBlock,
-	 * final int posX, final int posY, final int posZ) { final int blockMeta =
-	 * this.getBaseMetaTileEntity().getMetaID(posX, posY, posZ); if
-	 * (oreBlock.canSilkHarvest(this.getBaseMetaTileEntity().getWorld(),
-	 * (EntityPlayer) null, posX, posY, posZ, blockMeta)) { return new
-	 * ArrayList<ItemStack>() { { this.add(new ItemStack(oreBlock, 1,
-	 * blockMeta)); } }; } return (ArrayList<ItemStack>)
-	 * oreBlock.getDrops(this.getBaseMetaTileEntity().getWorld(), posX, posY,
-	 * posZ, blockMeta, 1); }
-	 */
 
 	private boolean tryConsumeDrillingFluid() {
 		boolean consumed = false;
@@ -285,30 +199,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		return this.depleteInput(FluidUtils.getFluidStack("cryotheum", 4));
 	}
 
-	private boolean lowerProduction(int reduce) {
-		if ((mProductionModifier - reduce) >= 10) {
-			this.mProductionModifier -= reduce;
-			return true;
-		}
-		else {
-			this.mProductionModifier = 10;
-			return false;
-		}
-	}
-
-	private boolean increaseProduction(int increase) {
-		if ((mProductionModifier + increase) <= 150) {
-			this.mProductionModifier += increase;
-			return true;
-		}
-		else {
-			this.mProductionModifier = 150;
-			return false;
-		}
-	}
-
 	private void putMiningPipesFromInputsInController() {
-		final int maxPipes = GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe.getMaxStackSize();
+		final int maxPipes = 64;
 		if (this.isHasMiningPipes(maxPipes)) {
 			return;
 		}
@@ -335,74 +227,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		this.updateSlots();
 	}
 
-	/*
-	 * private void fillMineListIfEmpty() { if
-	 * (!this.oreBlockPositions.isEmpty()) { return; }
-	 * this.tryAddOreBlockToMineList(this.xCenter, this.yHead - 1,
-	 * this.zCenter); if (this.yHead == this.yDrill) { return; } for (int radius
-	 * = this.getRadiusInChunks() << 4, xOff = -radius; xOff <= radius; ++xOff)
-	 * { for (int zOff = -radius; zOff <= radius; ++zOff) {
-	 * this.tryAddOreBlockToMineList(this.xDrill + xOff, this.yHead, this.zDrill
-	 * + zOff); } } } private void tryAddOreBlockToMineList(final int x, final
-	 * int y, final int z) { final Block block =
-	 * this.getBaseMetaTileEntity().getBlock(x, y, z); final int blockMeta =
-	 * this.getBaseMetaTileEntity().getMetaID(x, y, z); final ChunkPosition
-	 * blockPos = new ChunkPosition(x, y, z); if
-	 * (this.oreBlockPositions.contains(blockPos)) { return; } if (block
-	 * instanceof GT_Block_Ores_Abstract) { final TileEntity tTileEntity =
-	 * this.getBaseMetaTileEntity().getTileEntity(x, y, z); if (tTileEntity !=
-	 * null && tTileEntity instanceof GT_TileEntity_Ores &&
-	 * ((GT_TileEntity_Ores) tTileEntity).mNatural) {
-	 * this.oreBlockPositions.add(blockPos); } } else { final ItemData
-	 * association = GT_OreDictUnificator.getAssociation(new ItemStack(block, 1,
-	 * blockMeta)); if (association != null &&
-	 * association.mPrefix.toString().startsWith("ore")) {
-	 * this.oreBlockPositions.add(blockPos); } } }
-	 */
 
-	private HashMap<Integer, BlockPos> mMiningHeads = new HashMap<Integer, BlockPos>();
-
-	private boolean tryLowerPipe(int pipe) {
-		if (!this.isHasMiningPipes()) {
-			Logger.INFO("[Bedrock Miner] No Pipes to Lower.");
-			return false;
-		}
-		boolean didWork[] = new boolean[3];
-
-		/*if (this.checkBlockAndMeta(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe], Blocks.bedrock,
-				32767)) {
-			// Logger.INFO("[Bedrock Miner] Pipe "+pipe+" is at Bedrock.");
-			return false;
-		}*/
-		didWork[0] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe] - 1,
-				this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
-		if (didWork[0]) {
-			mMiningHeads.put(pipe, new BlockPos(this.xCenter[pipe], this.yHead[pipe] - 1, this.zCenter[pipe],
-					this.getBaseMetaTileEntity().getWorld()));
-		}
-
-		didWork[1] = (this.yHead[pipe] != this.yDrill);
-		Logger.INFO("A: " + this.yHead[pipe] + " | B: " + this.yDrill);
-
-		if (didWork[1]) {
-			didWork[2] = this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[pipe], this.yHead[pipe],
-					this.zCenter[pipe], GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock);
-		}
-
-		if (didWork[0] && didWork[1] && didWork[2]) {
-			this.getBaseMetaTileEntity().decrStackSize(1, 1);
-			Logger.INFO("[Bedrock Miner] Lowered Pipe " + pipe + ".");
-			return true;
-		}
-
-		Logger.INFO("[Bedrock Miner] Issue when lowering Pipe " + pipe + ". 1: " + didWork[0] + " | 2: " + didWork[1]
-				+ " | 3: " + didWork[2]);
-		return false;
-	}
-
-	private boolean isHasMiningPipes() {
-		return this.isHasMiningPipes(1);
-	}
 
 	private boolean isHasMiningPipes(final int minCount) {
 		final ItemStack pipe = this.getStackInSlot(1);
@@ -410,11 +235,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 				&& pipe.isItemEqual(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe);
 	}
 
-	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		this.updateCoordinates();
-		
-		
-		
+	public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		this.updateCoordinates();		
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 		int tAmount = 0;
@@ -459,66 +281,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 			return tAmount >= 10;
 		}
 	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*for (int xOff = -1 + this.back.offsetX; xOff <= 1 + this.back.offsetX; ++xOff) {
-			for (int zOff = -1 + this.back.offsetZ; zOff <= 1 + this.back.offsetZ; ++zOff) {
-				if (xOff != 0 || zOff != 0) {
-					final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xOff, 0, zOff);
-					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xOff, 0,
-							zOff);
-					if (!this.checkCasingBlock(xOff, 0, zOff)
-							&& !this.addMaintenanceToMachineList(tTileEntity, this.casingTextureIndex)
-							&& !this.addInputToMachineList(tTileEntity, this.casingTextureIndex)
-							&& !this.addOutputToMachineList(tTileEntity, this.casingTextureIndex)
-							&& !this.addEnergyInputToMachineList(tTileEntity, this.casingTextureIndex)) {
-						Logger.INFO("[Bedrock Miner] Found bad block in Structure.");
-						if (tBlock != null) {
-							//Logger.INFO("[Bedrock Miner] Found "+(new ItemStack(tBlock, tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), xOff, 0, zOff))).getDisplayName()+", expected "+this.getCasingBlockItem().get(0L, new Object[0]).getDisplayName());
-						}
-						return false;
-					}
-				}
-			}
-		}
-		if (this.mMaintenanceHatches.isEmpty() || this.mInputHatches.isEmpty() || this.mOutputBusses.isEmpty()
-				|| this.mEnergyHatches.isEmpty()) {
-			Logger.INFO("[Bedrock Miner] Missing Hatches/Busses.");
-			return false;
-		}
-		if (GT_Utility.getTier(this.getMaxInputVoltage()) < this.getMinTier()) {
-			Logger.INFO("[Bedrock Miner] getMaxInputVoltage() < getMinTier().");
-			return false;
-		}
-		for (int yOff = 1; yOff < 4; ++yOff) {
-			if (!this.checkCasingBlock(this.back.offsetX, yOff, this.back.offsetZ)
-					|| !this.checkFrameBlock(this.back.offsetX + 1, yOff, this.back.offsetZ)
-					|| !this.checkFrameBlock(this.back.offsetX - 1, yOff, this.back.offsetZ)
-					|| !this.checkFrameBlock(this.back.offsetX, yOff, this.back.offsetZ + 1)
-					|| !this.checkFrameBlock(this.back.offsetX, yOff, this.back.offsetZ - 1)
-					|| !this.checkFrameBlock(this.back.offsetX, yOff + 3, this.back.offsetZ)) {
-				Logger.INFO("[Bedrock Miner] Missing Frames? yOff = " + yOff);
-				return false;
-			}
-		}
-		Logger.INFO("[Bedrock Miner] Built.");
-		return true;*/
 	}
 
 	private void updateCoordinates() {
@@ -543,46 +305,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		this.xCenter[4] = xCenter[0];
 		this.zCenter[4] = zCenter[0] - 1;
 
-	}
-
-	private boolean checkPipesAndSetYHead() {
-		for (int g = 0; g < 5; g++) {
-			this.yHead[g] = this.yDrill -5;
-			// Logger.INFO("[Bedrock Miner] Set yHead["+g+"] to
-			// "+this.yHead[g]+".");
-			while (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
-					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeBlock, 32767)) {
-				--this.yHead[g];
-			}
-			if (this.checkBlockAndMeta(this.xCenter[g], this.yHead[g], this.zCenter[g],
-					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock, 32767)
-					|| ++this.yHead[g] == this.yDrill || GT_Utility.isBlockAir(this.getBaseMetaTileEntity().getWorld(), this.xCenter[g], this.yHead[g], this.zCenter[g])) {
-				continue;
-			}
-			this.getBaseMetaTileEntity().getWorld().setBlock(this.xCenter[g], this.yHead[g], this.zCenter[g],
-					GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTipBlock);
-
-		}
-		return true;
-	}
-
-	private boolean checkCasingBlock(final int xOff, final int yOff, final int zOff) {
-		return this.checkBlockAndMetaOffset(xOff, yOff, zOff, this.casingBlock, this.casingMeta);
-	}
-
-	private boolean checkFrameBlock(final int xOff, final int yOff, final int zOff) {
-		return this.checkBlockAndMetaOffset(xOff, yOff, zOff,
-				Block.getBlockFromItem(this.getFrameMaterial().getFrameBox(1).getItem()), 0);
-	}
-
-	private boolean checkBlockAndMetaOffset(final int xOff, final int yOff, final int zOff, final Block block,
-			final int meta) {
-		return this.checkBlockAndMeta(this.xDrill + xOff, this.yDrill + yOff, this.zDrill + zOff, block, meta);
-	}
-
-	private boolean checkBlockAndMeta(final int x, final int y, final int z, final Block block, final int meta) {
-		Logger.INFO("Found "+this.getBaseMetaTileEntity().getBlock(x, y, z).getLocalizedName()+":"+this.getBaseMetaTileEntity().getMetaID(x, y, z)+" | Expected: "+block.getUnlocalizedName()+":"+meta);
-		return (this.getBaseMetaTileEntity().getMetaID(x, y, z) == meta) && this.getBaseMetaTileEntity().getBlock(x, y, z) == block;
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
@@ -640,12 +362,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 	static {
 		miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0L);
 		miningPipeTip = GT_ModHandler.getIC2Item("miningPipeTip", 0L);
-		// miningPipeBlock =
-		// GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipe);
-		// miningPipeTipBlock =
-		// GT_Utility.getBlockFromStack(GregtechMetaTileEntity_BedrockMiningPlatformBase.miningPipeTip);
-		miningPipeBlock = ModBlocks.blockFakeMiningPipe;
-		miningPipeTipBlock = ModBlocks.blockFakeMiningHead;
 	}
 	
 	
@@ -923,6 +639,33 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 		for (int i=0; i<aAmount;i++) {
 			aMap.add(aMaterial.getOre(1));
 		}
+	}
+	
+
+
+	@Override
+	public boolean hasSlotInGUI() {
+		return true;
+	}
+
+	@Override
+	public String getCustomGUIResourceName() {
+		return null;
+	}
+
+	@Override
+	public String getMachineType() {
+		return "Miner";
+	}
+
+	@Override
+	public int getMaxParallelRecipes() {
+		return 1;
+	}
+
+	@Override
+	public int getEuDiscountForParallelism() {
+		return 0;
 	}
 	
 	

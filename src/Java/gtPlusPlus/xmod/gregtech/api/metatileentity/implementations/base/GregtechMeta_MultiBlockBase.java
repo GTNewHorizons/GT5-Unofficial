@@ -577,6 +577,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			tTier = (byte) aControlCoreTier;
 		}
 
+		tTier = (byte) MathUtils.getValueWithinRange(tTier, 0, 9);
 
 		GT_Recipe tRecipe = aRecipe != null ? aRecipe : findRecipe(
 				getBaseMetaTileEntity(), mLastRecipe, false,
@@ -1922,8 +1923,8 @@ GT_MetaTileEntity_MultiBlockBase {
 				return true;
 			}
 			else if (aFoundBlock != aExpectedBlock) {
-				log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
 				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
+					log("A1 - Found: "+aFoundBlock.getLocalizedName()+":"+aFoundMeta+", Expected: "+aExpectedBlock.getLocalizedName()+":"+aExpectedMeta);	
 					log("Loc: "+(new BlockPos(aBaseMetaTileEntity).getLocationString()));
 				}
 				return false;

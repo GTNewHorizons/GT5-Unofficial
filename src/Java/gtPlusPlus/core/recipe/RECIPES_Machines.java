@@ -801,10 +801,10 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialSieveGrate);
 			}
 
-			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){/*
+			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){
 				//Industrial Tree Farmer
 				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
-				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(Casing_Amount);
+				RECIPE_TreeFarmFrame = GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(Casing_Amount);
 				//Industrial Tree Farm Controller
 				if (!GTNH) {
 					RecipeUtils.addShapedGregtechRecipe(
@@ -813,7 +813,7 @@ public class RECIPES_Machines {
 							"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
 							RECIPE_TreeFarmController);
 				}
-				if (GTNH) {
+				else {
 					RecipeUtils.addShapedGregtechRecipe(
 							"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
 							"cableGt02Silver", "pipeMediumStainlessSteel", "cableGt02Silver",
@@ -826,7 +826,7 @@ public class RECIPES_Machines {
 						"plankWood", "frameGtTumbaga", "plankWood",
 						"plankWood", "plankWood", "plankWood",
 						RECIPE_TreeFarmFrame);
-			 */}
+			 }
 
 			if (CORE.ConfigSwitches.enableMachine_Tesseracts){
 				//Tesseracts

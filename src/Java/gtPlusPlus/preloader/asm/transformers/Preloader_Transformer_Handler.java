@@ -122,15 +122,23 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 		 * Gregtech ASM Patches
 		 */
 		
+		//Make GT_Utilities safer		
+		if (transformedName.equals("gtPlusPlus.preloader.asm.transformers.ClassTransformer_GT_Utility")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
+		}
 		//Try patch achievements
 		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_Achievements_CrashFix(basicClass, obfuscated).getWriter().toByteArray();
 		}
-		/*if (transformedName.equals("gregtech.common.GT_Client")) {	
-			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);
-			return new ClassTransformer_GT_Client(basicClass).getByteArray();
-		}*/
+		
+		//Fix bad handling of a loop left from original decompilation
+		//Also Fix Achievements, although currently disabled.
+		if (transformedName.equals("gregtech.common.GT_Client")) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Client Proxy Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_Client(basicClass, obfuscated).getByteArray();
+		}
 
 		//Make GT packets safer, fill them with debug info.
 		if (transformedName.equals("gregtech.api.net.GT_Packet_TileEntity")) {	
