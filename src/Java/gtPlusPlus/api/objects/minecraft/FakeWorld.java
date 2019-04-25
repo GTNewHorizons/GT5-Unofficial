@@ -40,17 +40,17 @@ public class FakeWorld implements IBlockAccess {
 		aWorldSize = aSize;
 		aDistanceFromOrigin = ((aWorldSize-1)/2);
 		aWorldHeight = aDistanceFromOrigin >= 255 ? 255 : aDistanceFromOrigin;
-		Logger.INFO("Created a Fake World with data:");
-		Logger.INFO("World Size: "+aWorldSize);
-		Logger.INFO("Distance from Origin in each dir: "+aDistanceFromOrigin);
-		Logger.INFO("World Height: "+aWorldHeight);
+		Logger.WARNING("Created a Fake World with data:");
+		Logger.WARNING("World Size: "+aWorldSize);
+		Logger.WARNING("Distance from Origin in each dir: "+aDistanceFromOrigin);
+		Logger.WARNING("World Height: "+aWorldHeight);
 		init();
 	}
 	
 	public void init() {
 		
 		/*if (mStaticFakeWorldData == null) {
-			Logger.INFO("Setting all Blocks in Fake World to Air.");
+			Logger.WARNING("Setting all Blocks in Fake World to Air.");
 			mStaticFakeWorldData = new HashMap<String, FakeBlockPos>();
 			for (int y=0;y<=aWorldHeight;y++) {
 				for (int x=-aDistanceFromOrigin;x<=aDistanceFromOrigin;x++) {
@@ -62,13 +62,13 @@ public class FakeWorld implements IBlockAccess {
 			}
 		}*/
 		//if (mStaticFakeWorldData != null) {
-			//Logger.INFO(" Instancing static air world.");
+			//Logger.WARNING(" Instancing static air world.");
 			mFakeWorldData = new HashMap<String, FakeBlockPos>();
 			//mFakeWorldData = (HashMap<String, FakeBlockPos>) mStaticFakeWorldData.clone();			
 		//}
 		
 		
-		//Logger.INFO("Initialisation of FakeWorld is now complete.");
+		//Logger.WARNING("Initialisation of FakeWorld is now complete.");
 	}
 	
 	public FakeBlockPos getBlockAtCoords(int x, int y, int z) {
@@ -82,7 +82,7 @@ public class FakeWorld implements IBlockAccess {
 	
 	public void setBlockAtCoords(int x, int y, int z, Block aBlock, int aMeta) {
 		FakeBlockPos aTempPos = new FakeBlockPos(x, y, z, aBlock, aMeta);
-		Logger.INFO("Setting "+x+", "+y+", "+z+" to "+aBlock.getLocalizedName()+":"+aMeta);
+		Logger.WARNING("Setting "+x+", "+y+", "+z+" to "+aBlock.getLocalizedName()+":"+aMeta);
 		mFakeWorldData.put(aTempPos.getLocationString(), aTempPos);		
 	}
 	
@@ -95,7 +95,7 @@ public class FakeWorld implements IBlockAccess {
 			else {
 				ItemStack aTempStack = ItemUtils.simpleMetaStack(aPos.getBlockAtPos(), aPos.getMetaAtPos(), 1);
 				if (ItemUtils.checkForInvalidItems(aTempStack)) {
-					//Logger.INFO("Output: "+aTempStack.getDisplayName());
+					//Logger.WARNING("Output: "+aTempStack.getDisplayName());
 					aOutput.put(aTempStack);
 				}
 			}

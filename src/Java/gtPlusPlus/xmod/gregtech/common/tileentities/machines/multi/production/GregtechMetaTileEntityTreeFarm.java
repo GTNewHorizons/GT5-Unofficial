@@ -166,9 +166,9 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-		//Logger.INFO("Trying to process virtual tree farming");
+		//Logger.WARNING("Trying to process virtual tree farming");
 		if (mTreeData != null) {
-			//Logger.INFO("Tree Data is valid");
+			//Logger.WARNING("Tree Data is valid");
 			
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -200,13 +200,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 			
 			try {
-				//Logger.INFO("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
+				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
 			if (aChance < 8) {
 				//1% Chance per Tick				
 				for (int u=0; u<(Math.max(1, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
 					aOutputs = mTreeData.generateOutput(0);		
 					if (aOutputs.size() > 0) {
-						Logger.INFO("Generated some Loot, adding it to the output busses");
+						Logger.WARNING("Generated some Loot, adding it to the output busses");
 						
 						ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
 						
@@ -215,7 +215,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 								this.addOutput(aOutputItemStack);
 							}
 						}
-						Logger.INFO("Updating Slots");
+						Logger.WARNING("Updating Slots");
 						this.updateSlots();
 					}	
 				}			
@@ -226,11 +226,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				t.printStackTrace();
 			}
 			
-			//Logger.INFO("Valid Recipe");
+			//Logger.WARNING("Valid Recipe");
 			return true;
 		}
 		else {
-			//Logger.INFO("Invalid Recipe");
+			//Logger.WARNING("Invalid Recipe");
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
@@ -264,7 +264,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 
 							if (!isValidBlockForStructure(tTileEntity, CASING_TEXTURE_ID, true, aBlock, aMeta,
 									ModBlocks.blockCasings2Misc, 15)) {
-								Logger.INFO("Bad centrifuge casing");
+								Logger.WARNING("Bad centrifuge casing");
 								return false;
 							}
 							++tAmount;
