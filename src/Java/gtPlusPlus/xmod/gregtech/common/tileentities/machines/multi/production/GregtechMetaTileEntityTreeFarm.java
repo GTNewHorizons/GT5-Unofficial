@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -9,8 +13,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -20,6 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.treefarm.TreeGenerator;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,6 +49,16 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
+	
+	
+	/*
+	 * Static thread for Fake World Handling
+	 */
+	
+	
+	private static ScheduledExecutorService executor;
+	private static ThreadFakeWorldGenerator aThread;
+	
 	public GregtechMetaTileEntityTreeFarm(final String aName) {
 		super(aName);
 		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
@@ -50,9 +67,32 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 		
+		/*if (executor == null || mTreeData == null) {			
+			if (executor == null) {
+				executor = Executors.newScheduledThreadPool(10);				
+			}
+			if (executor != null) {				
+				if (aThread == null) {
+					aThread = new ThreadFakeWorldGenerator();	
+					executor.scheduleAtFixedRate(aThread, 0, 1, TimeUnit.SECONDS);			
+					while (aThread.mGenerator == null) {
+						if (aThread.mGenerator != null) {
+							break;
+						}
+					}		
+					if (aThread.mGenerator != null) {
+						mTreeData = aThread.mGenerator;
+					}
+				}
+			}			
+		}*/	
+		
 		if (mTreeData == null) {
-			mTreeData = new TreeGenerator();
+			mTreeData = new TreeGenerator();			
 		}
+
+		
+		
 		
 	}
 
@@ -117,7 +157,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		return TreeFarmHelper.isCorrectPart(aStack);
+		//return TreeFarmHelper.isCorrectPart(aStack);
+		return true;
 	}
 
 	public boolean isFacingValid(final byte aFacing) {
@@ -125,42 +166,71 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean checkRecipe(final ItemStack aStack) {
-		Logger.INFO("Trying to process virtual tree farming");
+		//Logger.INFO("Trying to process virtual tree farming");
 		if (mTreeData != null) {
-			Logger.INFO("Tree Data is valid");
-			this.getBaseMetaTileEntity().enableWorking();
-			this.mMaxProgresstime = 100;
-			this.mEUt = -500;
-			this.mEfficiencyIncrease = 10000;
+			//Logger.INFO("Tree Data is valid");
 			
-			int aChance = MathUtils.randInt(0, 10000);
+			long tVoltage = getMaxInputVoltage();
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			
+			this.mMaxProgresstime = 100;
+			this.mEUt = 500;
+			
+			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+			this.mEfficiencyIncrease = 10000;
+
+			// Overclock
+			if (this.mEUt <= 16) {
+				this.mEUt = (this.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+				this.mMaxProgresstime = (this.mMaxProgresstime / (1 << tTier - 1));
+			} else {
+				while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+					this.mEUt *= 4;
+					this.mMaxProgresstime /= 2;
+				}
+			}
+
+			if (this.mEUt > 0) {
+				this.mEUt = (-this.mEUt);
+			}
+			
+			
+			
+			int aChance = MathUtils.randInt(0, 10);
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
 			
 			try {
-				Logger.INFO("Output Chance - "+aChance+" | Valid number? "+(aChance < 100));
-			if (aChance < 100) {
-				//1% Chance per Tick
-				aOutputs = mTreeData.generateOutput(0);		
-				if (aOutputs.size() > 0) {
-					Logger.INFO("Generated some Loot, adding it to the output busses");
-					for (ItemStack aOutputItemStack : aOutputs) {
-						this.addOutput(aOutputItemStack);
-					}
-					Logger.INFO("Updating Slots");
-					this.updateSlots();
-				}	
+				//Logger.INFO("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
+			if (aChance < 8) {
+				//1% Chance per Tick				
+				for (int u=0; u<(Math.max(1, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
+					aOutputs = mTreeData.generateOutput(0);		
+					if (aOutputs.size() > 0) {
+						Logger.INFO("Generated some Loot, adding it to the output busses");
+						
+						ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
+						
+						for (ItemStack aOutputItemStack : aOutputs) {
+							if (!GT_Utility.areStacksEqual(aLeaves, aOutputItemStack)) {
+								this.addOutput(aOutputItemStack);
+							}
+						}
+						Logger.INFO("Updating Slots");
+						this.updateSlots();
+					}	
+				}			
+				
 			}				
 			}
 			catch (Throwable t) {
 				t.printStackTrace();
 			}
 			
-			Logger.INFO("Valid Recipe");
+			//Logger.INFO("Valid Recipe");
 			return true;
 		}
 		else {
-			Logger.INFO("Invalid Recipe");
-			this.getBaseMetaTileEntity().disableWorking();
+			//Logger.INFO("Invalid Recipe");
 			return false;
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);

@@ -18,6 +18,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class FakeWorld implements IBlockAccess {
 
+	public static HashMap<String, FakeBlockPos> mStaticFakeWorldData;
+
 	public HashMap<String, FakeBlockPos> mFakeWorldData = new HashMap<String, FakeBlockPos>();
 	
 	/**
@@ -45,22 +47,36 @@ public class FakeWorld implements IBlockAccess {
 		init();
 	}
 	
-	private void init() {
-		Logger.INFO("Setting all Blocks in Fake World to Air.");
-		for (int y=0;y<=aWorldHeight;y++) {
-			for (int x=-aDistanceFromOrigin;x<=aDistanceFromOrigin;x++) {
-				for (int z=-aDistanceFromOrigin;z<=aDistanceFromOrigin;z++) {
-					FakeBlockPos aTempPos = new FakeBlockPos(x, y, z, Blocks.air, 0);
-					mFakeWorldData.put(aTempPos.getLocationString(), aTempPos);
+	public void init() {
+		
+		/*if (mStaticFakeWorldData == null) {
+			Logger.INFO("Setting all Blocks in Fake World to Air.");
+			mStaticFakeWorldData = new HashMap<String, FakeBlockPos>();
+			for (int y=0;y<=aWorldHeight;y++) {
+				for (int x=-aDistanceFromOrigin;x<=aDistanceFromOrigin;x++) {
+					for (int z=-aDistanceFromOrigin;z<=aDistanceFromOrigin;z++) {
+						FakeBlockPos aTempPos = new FakeBlockPos(x, y, z, Blocks.air, 0);
+						mStaticFakeWorldData.put(aTempPos.getLocationString(), aTempPos);
+					}
 				}
 			}
-		}
-		Logger.INFO("Initialisation of FakeWorld is now complete.");
+		}*/
+		//if (mStaticFakeWorldData != null) {
+			//Logger.INFO(" Instancing static air world.");
+			mFakeWorldData = new HashMap<String, FakeBlockPos>();
+			//mFakeWorldData = (HashMap<String, FakeBlockPos>) mStaticFakeWorldData.clone();			
+		//}
+		
+		
+		//Logger.INFO("Initialisation of FakeWorld is now complete.");
 	}
 	
 	public FakeBlockPos getBlockAtCoords(int x, int y, int z) {
 		String S = ""+x+"@"+y+"@"+z;
-		FakeBlockPos aBlock = mFakeWorldData.get(S);	
+		FakeBlockPos aBlock = mFakeWorldData.get(S);
+		if (aBlock == null) {
+			return new FakeBlockPos(x, y, z, Blocks.air, 0);
+		}
 		return aBlock;		
 	}
 	
@@ -73,12 +89,13 @@ public class FakeWorld implements IBlockAccess {
 	public AutoMap<ItemStack> getAllBlocksStoredInFakeWorld(){
 		AutoMap<ItemStack> aOutput = new AutoMap<ItemStack>();		
 		for (FakeBlockPos aPos : mFakeWorldData.values()) {
-			if (aPos.getBlockAtPos() == Blocks.air) {
+			if (aPos == null || aPos.getBlockAtPos() == Blocks.air) {
 				continue;
 			}
 			else {
 				ItemStack aTempStack = ItemUtils.simpleMetaStack(aPos.getBlockAtPos(), aPos.getMetaAtPos(), 1);
 				if (ItemUtils.checkForInvalidItems(aTempStack)) {
+					//Logger.INFO("Output: "+aTempStack.getDisplayName());
 					aOutput.put(aTempStack);
 				}
 			}

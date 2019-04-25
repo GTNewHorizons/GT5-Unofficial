@@ -20,11 +20,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TreeGenerator {
 
-	private final FakeTreeInFakeWorldGenerator mTreeData;
+	private static final FakeTreeInFakeWorldGenerator mTreeData;
+	
+	static {
+		Logger.INFO("Created Fake Tree Generator.");	
+		mTreeData = new FakeTreeInFakeWorldGenerator();	
+	}
+	
 	
 	public TreeGenerator() {
-		Logger.INFO("Created Fake Tree Generator.");
-		mTreeData = new FakeTreeInFakeWorldGenerator();		
 		if (!mTreeData.hasGenerated) {
 			mTreeData.generate(null, CORE.RANDOM, 0, 0, 0);
     	}		
@@ -34,12 +38,14 @@ public class TreeGenerator {
 		AutoMap<ItemStack> aTemp = new AutoMap<ItemStack>();
 		AutoMap<ItemStack> aOutputMap = mTreeData.getOutputFromTree();
 		if (aOutputMap != null && aOutputMap.size() > 0) {
+			Logger.INFO("Valid tree data output");
 			return aOutputMap;
 		}		
+		Logger.INFO("Invalid tree data output");
 		return aTemp;
 	}
 	
-	public class FakeTreeInFakeWorldGenerator extends WorldGenAbstractTree
+	public static class FakeTreeInFakeWorldGenerator extends WorldGenAbstractTree
 	{
 	    /** The minimum height of a generated tree. */
 	    private final int minTreeHeight;
@@ -78,12 +84,14 @@ public class TreeGenerator {
 	    
 	    public AutoMap<ItemStack> getOutputFromTree(){
 	    	if (!hasGenerated) {
+				Logger.INFO("Generating Tree sample data");
 	    		generate(null, CORE.RANDOM, 0, 0, 0);
 	    	}	    	
 	    	AutoMap<ItemStack> aOutputMap = new AutoMap<ItemStack>();		
 			int aRandomTreeID = MathUtils.randInt(0, this.mFakeWorld.size()-1);
 			FakeWorld aWorld = this.mFakeWorld.get(aRandomTreeID);
 			if (aWorld != null) {
+				Logger.INFO("Getting all block data from fake world");
 				aOutputMap = aWorld.getAllBlocksStoredInFakeWorld();				
 			}	
 			return aOutputMap;
@@ -130,6 +138,8 @@ public class TreeGenerator {
 	    	}   	
 	    }
 	    
+	    private FakeWorld aFakeWorld;
+	    
 	    public FakeWorld getWorld() {
 	    	FakeWorld aWorld = this.mFakeWorld.get(mCurrentGeneratorIteration);
 	    	if (aWorld == null) {
@@ -143,7 +153,8 @@ public class TreeGenerator {
 	    	FakeWorld aWorld = getWorld();
 	    	
 	    	//Set some static values
-	    	
+
+			Logger.INFO("Stepping through generateTree [0]");
 	    	//Dummy Value
 	    	int aWorldY = 10;
 	    	
@@ -152,6 +163,7 @@ public class TreeGenerator {
 
 	        if (aWorldY >= 1 && aWorldY + l + 1 <= 256)
 	        {
+				Logger.INFO("Stepping through generateTree [1]");
 	            byte b0;
 	            int k1;
 	            Block block;
@@ -193,16 +205,19 @@ public class TreeGenerator {
 
 	            if (!flag)
 	            {
+	    			Logger.INFO("Stepping through generateTree [2]");
 	                return false;
 	            }
 	            else
 	            {
+	    			Logger.INFO("Stepping through generateTree [3]");
 	                Block block2 = aWorld.getBlock(aWorldX, aWorldY - 1, aWorldZ);
 	                FakeBlockPos aBlockToGrowPlantOn = aWorld.getBlockAtCoords(aWorldX, aWorldY-1, aWorldZ);
 
 	                boolean isSoil = block2.canSustainPlant(aWorld, aWorldX, aWorldY - 1, aWorldZ, ForgeDirection.UP, (BlockSapling)Blocks.sapling);
-	                if (isSoil && aWorldY < 256 - l - 1)
+	                if (/*isSoil &&*/ aWorldY < 256 - l - 1)
 	                {
+	        			Logger.INFO("Stepping through generateTree [4]");
 	                	aBlockToGrowPlantOn.onPlantGrow(aWorld, aWorldX, aWorldY - 1, aWorldZ, aWorldX, aWorldY, aWorldZ);
 	                    b0 = 3;
 	                    byte b1 = 0;
@@ -236,6 +251,7 @@ public class TreeGenerator {
 	                            }
 	                        }
 	                    }
+	        			Logger.INFO("Stepping through generateTree [5]");
 
 	                    for (k1 = 0; k1 < l; ++k1)
 	                    {
@@ -269,9 +285,11 @@ public class TreeGenerator {
 	                            }
 	                        }
 	                    }
+	        			Logger.INFO("Stepping through generateTree [6]");
 
 	                    if (this.vinesGrow)
 	                    {
+	            			Logger.INFO("Stepping through generateTree [7]");
 	                        for (k1 = aWorldY - 3 + l; k1 <= aWorldY + l; ++k1)
 	                        {
 	                            i3 = k1 - (aWorldY + l);
@@ -306,6 +324,7 @@ public class TreeGenerator {
 	                                }
 	                            }
 	                        }
+	            			Logger.INFO("Stepping through generateTree [8]");
 
 	                        if (CORE.RANDOM.nextInt(5) == 0 && l > 5)
 	                        {
@@ -322,16 +341,19 @@ public class TreeGenerator {
 	                            }
 	                        }
 	                    }
+	        			Logger.INFO("Stepping through generateTree [9]");
 	                    return true;
 	                }
 	                else
 	                {
+	        			Logger.INFO("Stepping through generateTree [10]");
 	                    return false;
 	                }
 	            }
 	        }
 	        else
 	        {
+				Logger.INFO("Stepping through generateTree [11]");
 	            return false;
 	        }
 	    }
@@ -354,6 +376,7 @@ public class TreeGenerator {
 		
 		protected void setBlockAndNotifyAdequately(FakeWorld aWorld, int aX, int aY, int aZ, Block aBlock, int aMeta) {			
 			if (aBlock != null && (aMeta >= 0 && aMeta <= Short.MAX_VALUE)) {
+				Logger.INFO("Setting block "+aX+", "+aY+", "+aZ+" | "+aBlock.getLocalizedName()+" | "+aMeta);
 				aWorld.setBlockAtCoords(aX, aY, aZ, aBlock, aMeta);
 				//aOutputsFromGenerator.put(ItemUtils.simpleMetaStack(aBlock, aMeta, 1));
 			}			
