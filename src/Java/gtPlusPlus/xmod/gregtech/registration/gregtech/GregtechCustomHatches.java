@@ -1,8 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -100,41 +101,47 @@ public class GregtechCustomHatches {
 
 	private static void run3() {
 
+		
+		
 		/*
 		 * Super Input Busses
 		 */
 		
 		int aStartID = 30021;
 
+		Class aGT_MetaTileEntity_SuperBus_Input = GT_MetaTileEntity_SuperBus_Input.class;
+		Class aGT_MetaTileEntity_SuperBus_Output = GT_MetaTileEntity_SuperBus_Output.class;
+		
+
 		GregtechItemList.Hatch_SuperBus_Input_ULV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.00", "Super Bus (I) (ULV)", 0))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.00", "Super Bus (I) (ULV)", 0))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_LV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.01", "Super Bus (I) (LV)", 1))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.01", "Super Bus (I) (LV)", 1))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_MV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.02", "Super Bus (I) (MV)", 2))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.02", "Super Bus (I) (MV)", 2))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_HV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.03", "Super Bus (I) (HV)", 3))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.03", "Super Bus (I) (HV)", 3))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_EV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.04", "Super Bus (I) (EV)", 4))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.04", "Super Bus (I) (EV)", 4))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_IV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.05", "Super Bus (I) (IV)", 5))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.05", "Super Bus (I) (IV)", 5))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_LuV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.06", "Super Bus (I) (LuV)", 6))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.06", "Super Bus (I) (LuV)", 6))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_ZPM
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.07", "Super Bus (I) (ZPM)", 7))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.07", "Super Bus (I) (ZPM)", 7))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_UV
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.08", "Super Bus (I) (UV)", 8))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.08", "Super Bus (I) (UV)", 8))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Input_MAX
-				.set((new GT_MetaTileEntity_SuperBus_Input(aStartID++, "hatch.superbus.input.tier.09", "Super Bus (I) (MAX)", 9))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Input, aStartID++, "hatch.superbus.input.tier.09", "Super Bus (I) (MAX)", 9))
 						.getStackForm(1L));
 
 		/*
@@ -142,36 +149,70 @@ public class GregtechCustomHatches {
 		 */
 
 		GregtechItemList.Hatch_SuperBus_Output_ULV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.00", "Super Bus (O) (ULV)", 0))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.00", "Super Bus (O) (ULV)", 0))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_LV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.01", "Super Bus (O) (LV)", 1))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.01", "Super Bus (O) (LV)", 1))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_MV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.02", "Super Bus (O) (MV)", 2))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.02", "Super Bus (O) (MV)", 2))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_HV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.03", "Super Bus (O) (HV)", 3))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.03", "Super Bus (O) (HV)", 3))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_EV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.04", "Super Bus (O) (EV)", 4))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.04", "Super Bus (O) (EV)", 4))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_IV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.05", "Super Bus (O) (IV)", 5))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.05", "Super Bus (O) (IV)", 5))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_LuV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.06", "Super Bus (O) (LuV)", 6))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.06", "Super Bus (O) (LuV)", 6))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_ZPM
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.07", "Super Bus (O) (ZPM)", 7))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.07", "Super Bus (O) (ZPM)", 7))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_UV
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.08", "Super Bus (O) (UV)", 8))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.08", "Super Bus (O) (UV)", 8))
 						.getStackForm(1L));
 		GregtechItemList.Hatch_SuperBus_Output_MAX
-				.set((new GT_MetaTileEntity_SuperBus_Output(aStartID++, "hatch.superbus.output.tier.09", "Super Bus (O) (MAX)", 9))
+				.set(((IMetaTileEntity) generateBus(aGT_MetaTileEntity_SuperBus_Output, aStartID++, "hatch.superbus.output.tier.09", "Super Bus (O) (MAX)", 9))
 						.getStackForm(1L));
 
+	}
+	
+	private static Object generateBus(Class aClass, int aID, String aUnlocalName, String aLocalName, int aTier) {
+		Class<?> aBusEntity = aClass;
+		Constructor<?> constructor;
+		try {
+			constructor = aBusEntity.getConstructor(int.class, String.class, String.class,  int.class, int.class);
+			if (constructor != null) {
+				Object aPipe;
+				try {
+					aPipe = constructor.newInstance(
+							aID, aUnlocalName,
+							aLocalName,
+							aTier,
+							(1+ aTier) * 32);
+					if (aPipe == null) {
+						//Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes.");
+					}
+					else {
+						Logger.INFO("Generated "+aLocalName+".");
+						return aPipe;
+						//GT_OreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
+					}
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					//Logger.INFO("Failed to Generate "+aMaterial+" Hexadecuple pipes. [Ecx]");
+					e.printStackTrace();
+				}
+			}
+		} catch (NoSuchMethodException | SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
 	}
 
 }

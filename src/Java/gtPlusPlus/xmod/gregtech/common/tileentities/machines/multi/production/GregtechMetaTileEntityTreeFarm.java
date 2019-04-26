@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
@@ -11,6 +9,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -19,6 +18,8 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ThreadFakeWorldGenerator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.EnergyUtils;
+import gtPlusPlus.core.util.minecraft.EnergyUtils.EU;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -34,39 +35,30 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase {
 
 	public static int CASING_TEXTURE_ID;
-	public static String mCryoFuelName = "Gelid Cryotheum";
 	public static String mCasingName = "Advanced Cryogenic Casing";
-	public static String mHatchName = "Cryotheum Hatch";
-	public static FluidStack mFuelStack;
 	public static TreeGenerator mTreeData;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
-		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
 	}
 
-	
-	
+
+
 	/*
 	 * Static thread for Fake World Handling
 	 */
-	
-	
+
+
 	private static ScheduledExecutorService executor;
 	private static ThreadFakeWorldGenerator aThread;
-	
+
 	public GregtechMetaTileEntityTreeFarm(final String aName) {
 		super(aName);
-		mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
 		CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
-		mCryoFuelName = mFuelStack.getLocalizedName();
 		mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
-		mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
-		
+
 		/*if (executor == null || mTreeData == null) {			
 			if (executor == null) {
 				executor = Executors.newScheduledThreadPool(10);				
@@ -86,14 +78,14 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 				}
 			}			
 		}*/	
-		
+
 		if (mTreeData == null) {
 			mTreeData = new TreeGenerator();			
 		}
 
-		
-		
-		
+
+
+
 	}
 
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
@@ -110,20 +102,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		if (mCasingName.toLowerCase().contains(".name")) {
 			mCasingName = ItemUtils.getLocalizedNameOfBlock(ModBlocks.blockCasings2Misc, 15);
 		}
-		if (mCryoFuelName.toLowerCase().contains(".")) {
-			mCryoFuelName = FluidUtils.getFluidStack("cryotheum", 1).getLocalizedName();
-		}
-		if (mHatchName.toLowerCase().contains(".name")) {
-			mHatchName = ItemUtils.getLocalizedNameOfBlock(GregTech_API.sBlockMachines, 967);
-		}
-		
+
 		return new String[]{
-				"Factory Grade Tree Growth Simulator",
+				"Converts EU to Oak Logs",
 				"Speed: Very Fast | Eu Usage: 100% | Parallel: 1",				
-				//"Consumes 1L of "+mCryoFuelName+"/t during operation",
+				"Requires a Saw, Buzz Saw or Chainsaw in GUI slot",
 				"Constructed exactly the same as a normal Vacuum Freezer",
 				"Use "+mCasingName+"s (10 at least!)",
-				"1x " + mHatchName + " (Required)",
 				"TAG_HIDE_HATCHES"
 		};
 	}
@@ -141,7 +126,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	public boolean hasSlotInGUI() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean requiresVanillaGtGUI() {
 		return true;
@@ -157,8 +142,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
-		//return TreeFarmHelper.isCorrectPart(aStack);
-		return true;
+		return TreeFarmHelper.isCorrectPart(aStack);
+		//return true;
 	}
 
 	public boolean isFacingValid(final byte aFacing) {
@@ -169,13 +154,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		//Logger.WARNING("Trying to process virtual tree farming");
 		if (mTreeData != null) {
 			//Logger.WARNING("Tree Data is valid");
-			
+
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			
+
 			this.mMaxProgresstime = 100;
 			this.mEUt = (int) tVoltage;
-			
+
 			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 			this.mEfficiencyIncrease = 10000;
 
@@ -193,39 +178,39 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 			if (this.mEUt > 0) {
 				this.mEUt = (-this.mEUt);
 			}
-			
-			
-			
+
+
+
 			int aChance = MathUtils.randInt(0, 10);
 			AutoMap<ItemStack> aOutputs = new AutoMap<ItemStack>();
-			
+
 			try {
 				//Logger.WARNING("Output Chance - "+aChance+" | Valid number? "+(aChance < 1000));
-			if (aChance < 8) {
-				//1% Chance per Tick				
-				for (int u=0; u<(Math.max(20, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
-					aOutputs = mTreeData.generateOutput(0);		
-					if (aOutputs.size() > 0) {
-						Logger.WARNING("Generated some Loot, adding it to the output busses");
-						
-						ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
-						
-						for (ItemStack aOutputItemStack : aOutputs) {
-							if (!GT_Utility.areStacksEqual(aLeaves, aOutputItemStack)) {
-								this.addOutput(aOutputItemStack);
+				if (aChance < 8) {
+					//1% Chance per Tick				
+					for (int u=0; u<(Math.max(20, (MathUtils.randInt((3*tTier), 100)*tTier*tTier)/8));u++) {
+						aOutputs = mTreeData.generateOutput(0);		
+						if (aOutputs.size() > 0) {
+							Logger.WARNING("Generated some Loot, adding it to the output busses");
+
+							ItemStack aLeaves = ItemUtils.getSimpleStack(Blocks.leaves);
+
+							for (ItemStack aOutputItemStack : aOutputs) {
+								if (!GT_Utility.areStacksEqual(aLeaves, aOutputItemStack)) {
+									this.addOutput(aOutputItemStack);
+								}
 							}
-						}
-						Logger.WARNING("Updating Slots");
-						this.updateSlots();
-					}	
-				}			
-				
-			}				
+							Logger.WARNING("Updating Slots");
+							this.updateSlots();
+						}	
+					}			
+
+				}				
 			}
 			catch (Throwable t) {
 				t.printStackTrace();
 			}
-			
+
 			//Logger.WARNING("Valid Recipe");
 			return true;
 		}
@@ -235,7 +220,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 		}
 		//return this.checkRecipeGeneric(4, 100, 100);
 	}
-	
+
 	@Override
 	public int getMaxParallelRecipes() {
 		return 1;
@@ -282,11 +267,11 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 25;
+		return 5;
 	}
 
 	public int getDamageToComponent(final ItemStack aStack) {
-		return 0;
+		return MathUtils.balance((int) (75 - ((GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).getMass()))), 5, 120);
 	}
 
 	public boolean explodesOnComponentBreak(final ItemStack aStack) {
@@ -294,17 +279,42 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {		
-		if (mTreeData != null) {
-			//this.getBaseMetaTileEntity().enableWorking();
-		}
-		
-		
-		/*if (this.getBaseMetaTileEntity().isActive()) {
-			if (!this.depleteInput(mFuelStack.copy())) {
-				this.getBaseMetaTileEntity().setActive(false);
-			}
-		}	*/
-		super.onPostTick(aBaseMetaTileEntity, aTick);
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);		
+		if (this.mInventory[1] != null && aTick % 200 == 0 && this.getBaseMetaTileEntity().isServerSide()) {
+			ItemStack invItem = this.mInventory[1];			
+			if (isCorrectMachinePart(invItem)) {
+
+				boolean didElectricDamage = false;
+				if (EU.isElectricItem(invItem)) {
+					if (EU.hasCharge(invItem)) {
+						long tVoltage = getMaxInputVoltage();
+						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));						
+						if (EU.getCharge(invItem) >= tVoltage) {
+							if (EU.discharge(invItem, (int) tVoltage, tTier)) {
+							}
+							else {
+								this.getBaseMetaTileEntity().disableWorking();
+							}
+							didElectricDamage = true;
+						}							
+					}
+				}
+
+
+				//Logger.INFO("dmg: "+aDmg+" | max: "+aDmgMax);
+
+				if (!didElectricDamage) {
+					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
+					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
+					if (aDmg < aDmgMax && invItem.isItemStackDamageable()) {
+						GT_MetaGenerated_Tool.setToolDamage(invItem, aDmg+getDamageToComponent(invItem));							
+					}
+					else if (aDmg >= aDmgMax) {
+						this.mInventory[1] = null;
+					}
+				}
+			}			
+		}		
 	}
 }

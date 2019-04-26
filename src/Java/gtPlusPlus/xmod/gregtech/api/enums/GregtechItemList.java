@@ -109,6 +109,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Bomb_Cast_Set, Bomb_Cast_Broken,
 	Bomb_Cast_Mold,
 	
+	//Charged Items for Tree Farms
+	Farm_Processor_EV, 
+	Farm_Processor_IV,
+	Farm_Processor_LuV, 
+	Farm_Processor_ZPM, 
+	Farm_Processor_UV,
+	
 
 	//----------------------------------------------------------------------------
 	
@@ -575,7 +582,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	 */
 
 	//Fluid Void Covers
-	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,   
+	Cover_Overflow_ULV, Cover_Overflow_LV, Cover_Overflow_MV, Cover_Overflow_HV, Cover_Overflow_EV, Cover_Overflow_IV,    
 	
 	
 	

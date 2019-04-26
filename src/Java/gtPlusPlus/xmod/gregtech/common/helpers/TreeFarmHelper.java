@@ -48,6 +48,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.particles.BlockBreakParticles;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -289,6 +290,42 @@ public class TreeFarmHelper {
 	public static boolean isCorrectPart(final ItemStack aStack) {
 		if (aStack != null){
 			//Utils.LOG_WARNING("Found "+aStack.getDisplayName()+" in the GUI slot.");
+			
+			if (aStack.getItem() instanceof MetaGeneratedGregtechItems) {
+				int aDmg = aStack.getItemDamage();
+				if (aDmg >= 32120 && aDmg <= 32128) {
+					return true;
+				}
+				else if (aStack.getUnlocalizedName().toLowerCase().contains("mu-metaitem")) {
+					String[] aData = aStack.getUnlocalizedName().toLowerCase().split(".");
+					if (aData != null && aData.length > 0) {
+						for (String s : aData) {
+							if (s.contains("32120")) {
+								return true;
+							}
+							else if (s.contains("32122")) {
+								return true;
+							}
+							else if (s.contains("32124")) {
+								return true;
+							}
+							else if (s.contains("32126")) {
+								return true;
+							}
+							else if (s.contains("32128")) {
+								return true;
+							}
+							else {
+								Logger.INFO("bad Tool in Slot 1");
+								return false;
+							}
+						}
+					}
+				}
+				Logger.INFO("bad Tool in Slot 2 | "+aStack.getUnlocalizedName().toLowerCase() + " | "+aDmg);
+				return false;
+			}			
+			
 			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
 				if (OrePrefixes.craftingTool.contains(aStack)){
 					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01")){
@@ -308,12 +345,14 @@ public class TreeFarmHelper {
 							return true;
 						}
 						else {
+							Logger.INFO("bad Tool in Slot 3");
 							return false;
 						}
 					}
 				}
 			}
 		}
+		Logger.INFO("bad Tool in Slot 4");
 		return false;
 	}
 
