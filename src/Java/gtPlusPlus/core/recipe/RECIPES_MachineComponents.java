@@ -101,7 +101,9 @@ public class RECIPES_MachineComponents {
 		}
 		else {
 			onlyULVComponents();
-			onlyMaxComponents();
+			if (!CORE.GTNH) {
+				onlyMaxComponents();
+			}
 		}
 		gregtechMachinePhase();
 	}
