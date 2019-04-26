@@ -20,7 +20,7 @@ public class GregtechIndustrialTreeFarm {
 	private static void run1() {
 		// Industrial Maceration Stack Multiblock
 		GregtechItemList.Industrial_TreeFarm
-				.set(new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Farmer")
+				.set(new GregtechMetaTileEntityTreeFarm(836, "treefarm.controller.tier.single", "Tree Growth Simulator")
 						.getStackForm(1L));
 
 	}

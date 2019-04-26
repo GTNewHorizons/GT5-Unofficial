@@ -127,6 +127,11 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Utilities Patch", Level.INFO, "Transforming %s", transformedName);
 			return new ClassTransformer_GT_Utility(basicClass, transformedName).getWriter().toByteArray();
 		}
+		//Inject Custom constructors for Busses		
+		if (transformedName.equals(ClassTransformer_GT_BusPatch.aInput) || transformedName.equals(ClassTransformer_GT_BusPatch.aOutput) || transformedName.equals(ClassTransformer_GT_BusPatch.aSuperInput) || transformedName.equals(ClassTransformer_GT_BusPatch.aSuperOutput)) {	
+			FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Transforming %s", transformedName);
+			return new ClassTransformer_GT_BusPatch(basicClass, transformedName).getWriter().toByteArray();
+		}
 		//Try patch achievements
 		if (transformedName.equals("gregtech.loaders.misc.GT_Achievements")) {	
 			FMLRelaunchLog.log("[GT++ ASM] Gregtech Achievements Patch", Level.INFO, "Transforming %s", transformedName);

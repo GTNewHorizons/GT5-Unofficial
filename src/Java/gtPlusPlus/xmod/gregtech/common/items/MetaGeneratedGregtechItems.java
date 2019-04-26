@@ -313,7 +313,19 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Bomb_Cast_Broken.set(this.addItem(114, "Bomb Cast (Broken)", "This is probably just junk", new Object[0]));
 		GregtechItemList.Bomb_Cast_Mold.set(this.addItem(115, "Mold (Bomb Cast)", "Used in the production of Bombs", new Object[0]));
 		
-		
+		/*
+		 * High Tier 'Saws' for the tree Farm
+		 */
+		GregtechItemList.Farm_Processor_EV.set(this.addItem(tLastID = 120, "Farm Processor [EV]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[5]* 10 * 60 * 20, GT_Values.V[4], 4L, -3L, false);
+		GregtechItemList.Farm_Processor_IV.set(this.addItem(tLastID = 122, "Farm Processor [IV]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[6]* 10 * 60 * 20, GT_Values.V[5], 5L, -3L, false);
+		GregtechItemList.Farm_Processor_LuV.set(this.addItem(tLastID = 124, "Farm Processor [LuV]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[7]* 10 * 60 * 20, GT_Values.V[6], 6L, -3L, false);
+		GregtechItemList.Farm_Processor_ZPM.set(this.addItem(tLastID = 126, "Farm Processor [ZPM]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[8]* 10 * 60 * 20, GT_Values.V[7], 7L, -3L, false);
+		GregtechItemList.Farm_Processor_UV.set(this.addItem(tLastID = 128, "Farm Processor [UV]", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
+		this.setElectricStats(32000 + tLastID, GT_Values.V[9]* 10 * 60 * 20, GT_Values.V[8], 8L, -3L, false);
 		
 		
 		
