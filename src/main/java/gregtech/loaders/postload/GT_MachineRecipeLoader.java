@@ -4664,7 +4664,7 @@ if(Loader.isModLoaded("Railcraft")){
            
            GT_Values.RA.addFluidHeaterRecipe(GT_Utility.getIntegratedCircuit(1), Materials.BioMediumRaw.getFluid(200), Materials.BioMediumSterilized.getFluid(200), 20, 30720);
            GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Chip_Stemcell.get(4L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.MysteriousCrystal, 1), Materials.BioMediumRaw.getFluid(1000L), Materials.Mutagen.getFluid(250L), ItemList.Circuit_Chip_Biocell.get(1L), 1200, 30720);
-           GT_Values.RA.addMixerRecipe(Materials.AlienOrganic.getDust(8), Materials.MysteriousCrystal.getDust(8), Materials.Oriharukon.getDust(8), GT_Utility.getIntegratedCircuit(1), Materials.BioMediumRaw.getFluid(4000), Materials.BioMediumRaw.getFluid(4000), GT_Values.NI, 300, 122880);
+           GT_Values.RA.addMixerRecipe(Materials.AlienOrganic.getDust(8), Materials.MysteriousCrystal.getDust(8), Materials.Oriharukon.getDust(8), GT_Utility.getIntegratedCircuit(1), Materials.Mutagen.getFluid(4000), Materials.BioMediumRaw.getFluid(4000), GT_Values.NI, 300, 122880);
            
            //===
            
