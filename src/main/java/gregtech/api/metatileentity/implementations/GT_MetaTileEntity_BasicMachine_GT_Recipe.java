@@ -788,7 +788,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             case 2:
                 return (!mRequiresFluidForFiltering || getFillableStack() != null) && (((getInputAt(0) != null && getInputAt(1) != null) || (getInputAt(0) == null && getInputAt(1) == null ? getRecipeList().containsInput(aStack) : (getRecipeList().containsInput(aStack) && null != getRecipeList().findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), aIndex == getInputSlot() ? new ItemStack[]{aStack, getInputAt(1)} : new ItemStack[]{getInputAt(0), aStack})))));
             default:
-            	return getRecipeList().containsInput(aStack);
+                int tID = getBaseMetaTileEntity().getMetaTileID();
+                if (tID >= 211 && tID <= 218) {// assemblers IDs
+                    if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitBasic")) return true; // allow input all LV-circuits for assemblers
+                    if (GT_OreDictUnificator.isItemStackInstanceOf(aStack, "circuitAdvanced")) return true; // allow input all HV-circuits for assemblers
+                }
+                return getRecipeList().containsInput(aStack);
+
         }
     }
 
