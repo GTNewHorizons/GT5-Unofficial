@@ -32,7 +32,7 @@ public class ClassTransformer_GT_BusPatch {
 
 		aTempReader = new ClassReader(basicClass);
 		aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
-		aTempReader.accept(new localClassVisitor(aTempWriter), 0);		
+		aTempReader.accept(new localClassVisitor(aTempWriter, aClassName), 0);		
 
 		if (aTempReader != null && aTempWriter != null) {
 			isValid = true;
@@ -70,6 +70,7 @@ public class ClassTransformer_GT_BusPatch {
 		boolean didInject = false;		
 		MethodVisitor mv;	
 		ClassWriter cw = getWriter();
+		int aConID = 1;
 
 		//GT_MetaTileEntity_Hatch_InputBus
 		//Constructor
@@ -145,6 +146,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aSlots", "I", null, l0, l6, 5);
 				mv.visitMaxs(12, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 			//Constructor 2
@@ -181,6 +183,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 5);
 				mv.visitMaxs(6, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 			//Third constructor with String[] for GT 5.09
@@ -217,6 +220,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 5);
 				mv.visitMaxs(6, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 
@@ -291,7 +295,8 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTier", "I", null, l0, l5, 4);
 				mv.visitLocalVariable("aSlots", "I", null, l0, l5, 5);
 				mv.visitMaxs(12, 6);
-				mv.visitEnd();			
+				mv.visitEnd();		
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));	
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;IILjava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -320,6 +325,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l2, 5);
 				mv.visitMaxs(6, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;II[Ljava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -348,6 +354,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l2, 5);
 				mv.visitMaxs(6, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 			didInject = true;
@@ -390,6 +397,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aSlots", "I", null, l0, l3, 5);
 				mv.visitMaxs(5, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;ILjava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -424,6 +432,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 4);
 				mv.visitMaxs(6, 5);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;I[Ljava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -460,6 +469,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 4);
 				mv.visitMaxs(6, 5);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 
@@ -503,6 +513,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aSlots", "I", null, l0, l3, 5);
 				mv.visitMaxs(5, 6);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;ILjava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -537,6 +548,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 4);
 				mv.visitMaxs(6, 5);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 			{
 				mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(Ljava/lang/String;I[Ljava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V", null, null);
@@ -573,6 +585,7 @@ public class ClassTransformer_GT_BusPatch {
 				mv.visitLocalVariable("aTextures", "[[[Lgregtech/api/interfaces/ITexture;", null, l0, l3, 4);
 				mv.visitMaxs(6, 5);
 				mv.visitEnd();
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Injection new constructor "+(aConID++));
 			}
 
 			didInject = true;
@@ -580,7 +593,7 @@ public class ClassTransformer_GT_BusPatch {
 
 
 
-		FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Method injection complete.");		
+		FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Method injection complete. Successful? "+didInject);		
 		return didInject;
 
 
@@ -589,14 +602,26 @@ public class ClassTransformer_GT_BusPatch {
 
 	public final class localClassVisitor extends ClassVisitor {
 
-		public localClassVisitor(ClassVisitor cv) {
+		private final String mClassName;
+
+		public localClassVisitor(ClassVisitor cv, String aClassName) {
 			super(ASM5, cv);
+			mClassName = aClassName;
 		}
 
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {		
 			MethodVisitor methodVisitor;
-			methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);			
+			if ((mClassName.equals(aSuperInput) || mClassName.equals(aSuperOutput)) && access == ACC_PUBLIC && name.equals("<init>") && (desc.equals("(Ljava/lang/String;ILjava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V") || desc.equals("(Ljava/lang/String;I[Ljava/lang/String;[[[Lgregtech/api/interfaces/ITexture;)V"))) {
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Found Constructor, "+"'"+access+"', "+"'"+name+"', "+"'"+desc+"', "+"'"+signature+"'");					
+				methodVisitor = null;
+			}	
+			else {
+				methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);							
+			}	
+			if (methodVisitor == null) {
+				FMLRelaunchLog.log("[GT++ ASM] Gregtech Bus Patch", Level.INFO, "Removed Constructor with descriptor '"+desc+"' from "+mClassName);					
+			}
 			return methodVisitor;
 		}
 	}
