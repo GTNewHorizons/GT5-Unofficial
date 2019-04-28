@@ -39,6 +39,7 @@ import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -160,34 +161,37 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-        recipeLoop:
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
-            if (recipe == null || recipe.mInputs == null)
-                continue;
-            try {
-            ItemStack input = recipe.mInputs[0];
-            int i = 0;
-            float durMod = 0;
-            if (checkForExplosives(recipe.mInputs[1])) {
-                if (GT_Utility.areStacksEqual(recipe.mInputs[1], GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                    durMod += ((float) input.stackSize * 2f);
-                else
-                    continue recipeLoop;
-            }
-            while (checkForExplosives(input)) {
-                if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                    durMod += ((float) input.stackSize * 2f);
-                else
-                    continue recipeLoop;
-                i++;
-                input = recipe.mInputs[i];
-            }
+        OreDictHandler.adaptCacheForWorld();
+        if (eicMap == null) {
+            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+            recipeLoop:
+            for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
+                if (recipe == null || recipe.mInputs == null)
+                    continue;
+                try {
+                    ItemStack input = recipe.mInputs[0];
+                    int i = 0;
+                    float durMod = 0;
+                    if (this.checkForExplosives(recipe.mInputs[1])) {
+                        if (GT_Utility.areStacksEqual(recipe.mInputs[1], GT_ModHandler.getIC2Item("industrialTnt", 1L)))
+                            durMod += ((float) input.stackSize * 2f);
+                        else
+                            continue;
+                    }
+                    while (this.checkForExplosives(input)) {
+                        if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)))
+                            durMod += ((float) input.stackSize * 2f);
+                        else
+                            continue recipeLoop;
+                        i++;
+                        input = recipe.mInputs[i];
+                    }
 
-            eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, (int)Math.floor(Math.max((float)recipe.mDuration*durMod,20f)), BW_Util.getMachineVoltageFromTier(10), 0);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
-                e.printStackTrace();
+                    eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, (int) Math.floor(Math.max((float) recipe.mDuration * durMod, 20f)), BW_Util.getMachineVoltageFromTier(10), 0);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    MainMod.LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
+                    e.printStackTrace();
+                }
             }
         }
     }

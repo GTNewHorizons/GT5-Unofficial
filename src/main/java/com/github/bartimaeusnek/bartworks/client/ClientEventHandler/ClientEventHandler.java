@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -37,10 +38,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -52,25 +53,23 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class ClientEventHandler {
 
-    private static final HashMap<ItemStack, List<String>> CACHE = new HashMap<>();
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void getTooltip(ItemTooltipEvent event) {
-        if (CACHE.size() > 500)
-            CACHE.clear();
 
-        if (event.itemStack == null || event.itemStack.getItem() == null || !(OreDictHandler.getCache().containsValue(event.itemStack) || Block.getBlockFromItem(event.itemStack.getItem()) != Blocks.air))
+        if (event.itemStack == null || event.itemStack.getItem() == null)
             return;
 
-        if (!CACHE.containsKey(event.itemStack)) {
+        if (TooltipCache.getTooltip(event.itemStack).isEmpty()) {
+            ItemStack tmp = event.itemStack.copy();
+            Pair<Integer,Short> abstractedStack = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-            if (OreDictHandler.getCache().containsValue(event.itemStack) ) {
-                for (ItemStack stack : OreDictHandler.getCache().values()) {
-                    if (GT_Utility.areStacksEqual(event.itemStack, stack)) {
-                        GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+            if (OreDictHandler.getCache().containsValue(abstractedStack)) {
+                for (Pair<Integer,Short> pair : OreDictHandler.getCache().values()) {
+                    if (pair.equals(abstractedStack)) {
+                        GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                         if (UI == null)
-                            UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(stack.getItem()));
+                            UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
                         if (UI != null) {
                             for (ModContainer modContainer : Loader.instance().getModList()) {
                                 if (UI.modId.equals(MainMod.MOD_ID) || UI.modId.equals(BartWorksCrossmod.MOD_ID) || UI.modId.equals("BWCore"))
@@ -88,7 +87,7 @@ public class ClientEventHandler {
             final Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
             if (BLOCK != null && BLOCK != Blocks.air) {
                 if (BLOCK instanceof BW_Blocks) {
-                    CACHE.put(event.itemStack, tooAdd);
+                    TooltipCache.put(event.itemStack, tooAdd);
                     return;
                 }
                 final BioVatLogicAdder.BlockMetaPair PAIR = new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
@@ -106,10 +105,10 @@ public class ClientEventHandler {
                 }
             }
 
-            CACHE.put(event.itemStack, tooAdd);
+            TooltipCache.put(event.itemStack, tooAdd);
             event.toolTip.addAll(tooAdd);
         } else {
-            event.toolTip.addAll(CACHE.get(event.itemStack));
+            event.toolTip.addAll(TooltipCache.getTooltip(event.itemStack));
         }
     }
 }
