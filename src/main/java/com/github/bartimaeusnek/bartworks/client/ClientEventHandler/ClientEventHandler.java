@@ -64,8 +64,8 @@ public class ClientEventHandler {
             ItemStack tmp = event.itemStack.copy();
             Pair<Integer,Short> abstractedStack = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-            if (OreDictHandler.getCache().containsValue(abstractedStack)) {
-                for (Pair<Integer,Short> pair : OreDictHandler.getCache().values()) {
+            if (OreDictHandler.getNonBWCache().contains(abstractedStack)) {
+                for (Pair<Integer,Short> pair : OreDictHandler.getNonBWCache()) {
                     if (pair.equals(abstractedStack)) {
                         GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                         if (UI == null)
