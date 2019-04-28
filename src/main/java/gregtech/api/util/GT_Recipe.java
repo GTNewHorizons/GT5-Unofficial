@@ -271,10 +271,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     }
 
 
-    public GT_Recipe(ItemStack[] itemStacks, ItemStack[] itemStacks2, Object object, Object object2, Object object3,
-			Object object4, int i, int j, int k) {
-		// TODO Auto-generated constructor stub
-	}
+    //Dummy GT_Recipe maker...
+    public GT_Recipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue){
+        this(true, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
+    }
 
 	public static void reInit() {
         GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
