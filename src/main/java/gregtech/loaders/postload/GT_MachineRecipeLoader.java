@@ -5655,6 +5655,23 @@ if(Loader.isModLoaded("Railcraft")){
                 Materials.Osmium.getMolten(1152L)
         }, ItemList.Circuit_Piko.get(1L), 1200, 1000000);
         
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L), 576000, new ItemStack[]{
+        		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
+                ItemList.Circuit_Wetwaresupercomputer.get(2L),
+                ItemList.ZPM_Coil.get(16L),
+                ItemList.Circuit_Parts_CapacitorSMD.get(64L),
+                ItemList.Circuit_Parts_ResistorSMD.get(64L),
+                ItemList.Circuit_Parts_TransistorSMD.get(64L),
+                ItemList.Circuit_Parts_DiodeSMD.get(64L),
+                ItemList.Circuit_Chip_Ram.get(48L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, (Materials.AnySyntheticRubber), 64L),
+        }, new FluidStack[]{
+                Materials.SolderingAlloy.getMolten(2880L),
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
+                Materials.Radon.getGas(2500L),
+        }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
+        
         if(Loader.isModLoaded("tectech")){
 	    TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Piko.get(1L),12000,16,100000,3,new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Tritanium, 4),
@@ -5691,25 +5708,6 @@ if(Loader.isModLoaded("Railcraft")){
                 Materials.UUMatter.getFluid(12000L),
                 Materials.Osmium.getMolten(4608L)
         }, ItemList.Circuit_Nano.get(1L), 4800, 4000000);
-	    
-	  //UHV Circuit
-        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L),
-                24000, 64, 50000, 4,  new ItemStack[]{
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
-                ItemList.Circuit_Wetwaresupercomputer.get(2L),
-                ItemList.ZPM_Coil.get(16L),
-                ItemList.Circuit_Parts_CapacitorSMD.get(64L),
-                ItemList.Circuit_Parts_ResistorSMD.get(64L),
-                ItemList.Circuit_Parts_TransistorSMD.get(64L),
-                ItemList.Circuit_Parts_DiodeSMD.get(64L),
-                ItemList.Circuit_Chip_Ram.get(48L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, (Materials.AnySyntheticRubber), 64L),
-        }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(2880L),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
-                Materials.Radon.getGas(2500L),
-        }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
         
         }else{
             
@@ -5749,22 +5747,6 @@ if(Loader.isModLoaded("Railcraft")){
                     Materials.Osmium.getMolten(4608L)
             }, ItemList.Circuit_Nano.get(1L), 4800, 4000000);
             
-            GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L), 576000, new ItemStack[]{
-            		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
-                    ItemList.Circuit_Wetwaresupercomputer.get(2L),
-                    ItemList.ZPM_Coil.get(16L),
-                    ItemList.Circuit_Parts_CapacitorSMD.get(64L),
-                    ItemList.Circuit_Parts_ResistorSMD.get(64L),
-                    ItemList.Circuit_Parts_TransistorSMD.get(64L),
-                    ItemList.Circuit_Parts_DiodeSMD.get(64L),
-                    ItemList.Circuit_Chip_Ram.get(48L),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16L),
-                    GT_OreDictUnificator.get(OrePrefixes.foil, (Materials.AnySyntheticRubber), 64L),
-            }, new FluidStack[]{
-                    Materials.SolderingAlloy.getMolten(2880L),
-                    new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
-                    Materials.Radon.getGas(2500L),
-            }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
         }
         
       //Fusion Coil
