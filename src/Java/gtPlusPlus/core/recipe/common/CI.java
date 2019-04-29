@@ -484,9 +484,12 @@ public class CI {
 	public static void init() {		
 		//Set Explosives
 		try {			
-			ItemList PowerderBarrel = gtPlusPlus.core.util.Utils.getValueOfItemList("Block_Powderbarrel", null);
+			ItemList PowerderBarrel = Utils.getValueOfItemList("Block_Powderbarrel", null);
 			if (PowerderBarrel != null){
 				explosivePowderKeg = PowerderBarrel.get(1).copy();
+			}
+			else {
+				explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
 			}
 		} catch (java.lang.IllegalArgumentException Y) {
 			explosivePowderKeg = ItemUtils.getSimpleStack(Items.gunpowder).copy();
