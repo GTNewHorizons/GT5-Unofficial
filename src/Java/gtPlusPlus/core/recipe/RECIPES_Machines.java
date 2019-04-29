@@ -931,6 +931,7 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.ConfigSwitches.enableMachine_Pollution && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						"dustCarbon", "dustCarbon", "dustCarbon",
@@ -961,7 +962,7 @@ public class RECIPES_Machines {
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.component_Plate[6], ItemList.Casing_Grate.get(1), CI.component_Plate[6],
 						CI.component_Plate[6], aTieredFluidRegulator, CI.component_Plate[6],
-						CI.getTieredCircuit(5), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(5),
+						CI.getTieredCircuit(4), ItemList.Hatch_Input_IV.get(1), CI.getTieredCircuit(4),
 						GregtechItemList.Hatch_Air_Intake.get(1));
 
 				//ULV
