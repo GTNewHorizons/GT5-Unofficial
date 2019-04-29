@@ -896,6 +896,7 @@ public class GT_Mod implements IGT_Mod {
                 }
             }
         }
+        GT_Recipe.GT_Recipe_Map.sOrganicReplicatorFakeRecipes.addFakeRecipe(false,(new ItemStack[]{ItemList.IC2_Crop_Seeds.getWithName(1,"Instance seeds to duplicate(does not get consumed in progress)",new Object[0])}),(new ItemStack[]{ItemList.IC2_Crop_Seeds.getWithName(1,"Duplicated seeds; Chance equals efficiency")}),null, (new FluidStack[]{Materials.UUMatter.getFluid(1L)}),null,200,32,0);
         if (!GT_MetaTileEntity_Massfabricator.sRequiresUUA) GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes.addFakeRecipe(false, null, null, null, null, new FluidStack[]{Materials.UUMatter.getFluid(1L)}, GT_MetaTileEntity_Massfabricator.sDurationMultiplier, 256, 0);
         GT_Recipe.GT_Recipe_Map.sMassFabFakeRecipes.addFakeRecipe(false, null, null, null, new FluidStack[]{Materials.UUAmplifier.getFluid(GT_MetaTileEntity_Massfabricator.sUUAperUUM)}, new FluidStack[]{Materials.UUMatter.getFluid(1L)}, GT_MetaTileEntity_Massfabricator.sDurationMultiplier / GT_MetaTileEntity_Massfabricator.sUUASpeedBonus, 256, 0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(false, new ItemStack[]{ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side", new Object[0])}, new ItemStack[]{new ItemStack(Blocks.cobblestone, 1)}, null, null, null, 16, 32, 0);
