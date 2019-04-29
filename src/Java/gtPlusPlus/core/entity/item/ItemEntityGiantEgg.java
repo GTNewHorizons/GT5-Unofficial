@@ -86,6 +86,7 @@ public class ItemEntityGiantEgg extends EntityItem {
 			ItemStack g = this.getEntityItem();
 			NBTUtils.setInteger(g, "mTicksExisted", this.age);
 			NBTUtils.setInteger(g, "lifespan", this.lifespan);
+			NBTUtils.setBoolean(g, "playerHeld", false);	
 			this.setEntityItemStack(g);
 			Logger.INFO("Writing age to NBT of stored stack item.");
 		}
@@ -93,6 +94,7 @@ public class ItemEntityGiantEgg extends EntityItem {
 			ItemStack g = ItemUtils.getSimpleStack(ModItems.itemBigEgg);
 			NBTUtils.setInteger(g, "mTicksExisted", this.age);
 			NBTUtils.setInteger(g, "lifespan", this.lifespan);
+			NBTUtils.setBoolean(g, "playerHeld", false);	
 			this.setEntityItemStack(g);
 			Logger.INFO("Writing age to NBT of new stack item.");
 			
