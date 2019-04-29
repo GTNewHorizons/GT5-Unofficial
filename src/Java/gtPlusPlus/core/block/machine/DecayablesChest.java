@@ -52,6 +52,8 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip
 		super(Material.iron);
 		this.setBlockName("blockDecayablesChest");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
+		this.setHardness(5f);
+		this.setResistance(1f);
 		GameRegistry.registerBlock(this, ItemBlockBasicTile.class, "blockDecayablesChest");
 		LanguageRegistry.addName(this, "Lead Lined Box");
 		this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);

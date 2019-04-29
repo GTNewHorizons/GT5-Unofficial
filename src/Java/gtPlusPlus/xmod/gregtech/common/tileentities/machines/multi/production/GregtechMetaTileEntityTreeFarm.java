@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import java.util.concurrent.ScheduledExecutorService;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -291,23 +292,27 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase 
 						long tVoltage = getMaxInputVoltage();
 						byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));						
 						if (EU.getCharge(invItem) >= tVoltage) {
-							if (EU.discharge(invItem, (int) tVoltage, tTier)) {
+							Logger.WARNING("Can drain.");
+							if (EU.discharge(invItem, (int) tVoltage, -1)) {
+								Logger.WARNING("Drained Power.");
+								didElectricDamage = true;
 							}
 							else {
+								Logger.WARNING("Failed when draining Power.");
 								this.getBaseMetaTileEntity().disableWorking();
 							}
-							didElectricDamage = true;
 						}							
 					}
 				}
+				Logger.WARNING("Drained Power? "+didElectricDamage);
 
 
-				//Logger.INFO("dmg: "+aDmg+" | max: "+aDmgMax);
 
-				if (!didElectricDamage) {
+				if (!didElectricDamage && invItem.getItem() instanceof GT_MetaGenerated_Tool) {
 					long aDmg = GT_MetaGenerated_Tool.getToolDamage(invItem);
 					long aDmgMax = GT_MetaGenerated_Tool.getToolMaxDamage(invItem);
-					if (aDmg < aDmgMax && invItem.isItemStackDamageable()) {
+					if (aDmg < aDmgMax && GT_MetaGenerated_Tool.getPrimaryMaterial(invItem) != Materials._NULL) {
+						Logger.WARNING("dmg: "+aDmg+" | max: "+aDmgMax);
 						GT_MetaGenerated_Tool.setToolDamage(invItem, aDmg+getDamageToComponent(invItem));							
 					}
 					else if (aDmg >= aDmgMax) {
