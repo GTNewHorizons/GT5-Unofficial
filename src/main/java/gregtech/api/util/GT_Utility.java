@@ -530,6 +530,17 @@ public class GT_Utility {
         return 0;
     }
 
+    public  static  byte moveSomeItemStacks(Object aTileEntity1, Object aTileEntity2, byte aGrabFrom, byte aPutTo, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize, byte aMaxMoveAtOnce, byte aMinMoveAtOnce, byte aTimes) {
+        byte movedItems = 0;
+        if (aTileEntity1 instanceof IInventory){
+            for (byte i = 0; i < aTimes; i++) {
+                movedItems += moveOneItemStack((IInventory) aTileEntity1, aTileEntity2, aGrabFrom, aPutTo, aFilter, aInvertFilter, aMaxTargetStackSize, aMinTargetStackSize, aMaxMoveAtOnce, aMinMoveAtOnce, true);
+            }
+            return movedItems;
+        }
+        return 0;
+    }
+    
     /**
      * This is only because I needed an additional Parameter for the Double Chest Check.
      */
