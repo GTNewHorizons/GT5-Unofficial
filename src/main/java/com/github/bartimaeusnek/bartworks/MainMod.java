@@ -35,10 +35,12 @@ import com.github.bartimaeusnek.bartworks.common.loaders.BioLabLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.GTNHBlocks;
 import com.github.bartimaeusnek.bartworks.common.loaders.LoaderRegistry;
 import com.github.bartimaeusnek.bartworks.common.net.BW_Network;
+import com.github.bartimaeusnek.bartworks.server.EventHandler.ServerEventHandler;
 import com.github.bartimaeusnek.bartworks.system.log.DebugLog;
 import com.github.bartimaeusnek.bartworks.system.material.ThreadedLoader;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
+import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -49,8 +51,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -59,7 +59,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
@@ -67,7 +66,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 
@@ -132,6 +130,8 @@ public final class MainMod {
     public void init(FMLInitializationEvent init) {
         if (FMLCommonHandler.instance().getSide().isClient() && ConfigHandler.BioLab)
             MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+        if (FMLCommonHandler.instance().getSide().isServer())
+            MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         new LoaderRegistry().run();
         if (ConfigHandler.BioLab)
             new BioLabLoader().run();
@@ -157,37 +157,39 @@ public final class MainMod {
                 WerkstoffLoader.INSTANCE.run();
         }
     }
-
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
-        recipeLoop:
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
-            if (recipe == null || recipe.mInputs == null)
-                continue;
-            try {
-            ItemStack input = recipe.mInputs[0];
-            int i = 0;
-            float durMod = 0;
-            if (checkForExplosives(recipe.mInputs[1])) {
-                if (GT_Utility.areStacksEqual(recipe.mInputs[1], GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                    durMod += ((float) input.stackSize * 2f);
-                else
-                    continue recipeLoop;
-            }
-            while (checkForExplosives(input)) {
-                if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)))
-                    durMod += ((float) input.stackSize * 2f);
-                else
-                    continue recipeLoop;
-                i++;
-                input = recipe.mInputs[i];
-            }
+        OreDictHandler.adaptCacheForWorld();
+        if (eicMap == null) {
+            eicMap = new GT_Recipe.GT_Recipe_Map(new HashSet(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()), "gt.recipe.electricimplosioncompressor", "Electric Implosion Compressor", (String) null, "gregtech:textures/gui/basicmachines/Default", 1, 2, 1, 0, 1, "", 1, "", true, true);
+            recipeLoop:
+            for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList) {
+                if (recipe == null || recipe.mInputs == null)
+                    continue;
+                try {
+                    ItemStack input = recipe.mInputs[0];
+                    int i = 0;
+                    float durMod = 0;
+                    if (this.checkForExplosives(recipe.mInputs[1])) {
+                        if (GT_Utility.areStacksEqual(recipe.mInputs[1], GT_ModHandler.getIC2Item("industrialTnt", 1L)))
+                            durMod += ((float) input.stackSize * 2f);
+                        else
+                            continue;
+                    }
+                    while (this.checkForExplosives(input)) {
+                        if (GT_Utility.areStacksEqual(input, GT_ModHandler.getIC2Item("industrialTnt", 1L)))
+                            durMod += ((float) input.stackSize * 2f);
+                        else
+                            continue recipeLoop;
+                        i++;
+                        input = recipe.mInputs[i];
+                    }
 
-            eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, (int)Math.floor(Math.max((float)recipe.mDuration*durMod,20f)), BW_Util.getMachineVoltageFromTier(10), 0);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
-                e.printStackTrace();
+                    eicMap.addRecipe(true, new ItemStack[]{input}, recipe.mOutputs, null, null, null, (int) Math.floor(Math.max((float) recipe.mDuration * durMod, 20f)), BW_Util.getMachineVoltageFromTier(10), 0);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    MainMod.LOGGER.error("CAUGHT DEFECTIVE IMPLOSION COMPRESSOR RECIPE!");
+                    e.printStackTrace();
+                }
             }
         }
     }

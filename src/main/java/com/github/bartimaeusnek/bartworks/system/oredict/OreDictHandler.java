@@ -22,29 +22,60 @@
 
 package com.github.bartimaeusnek.bartworks.system.oredict;
 
+import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.util.Pair;
+import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class OreDictHandler {
 
-    private static final HashMap<String,ItemStack> cache = new HashMap<>();
+    private static final HashMap<String, Pair<Integer,Short>> cache = new HashMap<>();
+    private static final HashSet<Pair<Integer,Short>> cacheNonBW = new HashSet<>();
 
-    public static HashMap<String, ItemStack> getCache() {
+    public static HashMap<String, Pair<Integer,Short>> getCache() {
         return OreDictHandler.cache;
+    }
+
+    public static HashSet<Pair<Integer,Short>> getNonBWCache(){
+        return OreDictHandler.cacheNonBW;
+    }
+
+    public static void adaptCacheForWorld(){
+        Set<String> used = new HashSet<>(cache.keySet());
+        OreDictHandler.cache.clear();
+        OreDictHandler.cacheNonBW.clear();
+        for (String s : used) {
+            if (!OreDictionary.getOres(s).isEmpty()) {
+                ItemStack tmp = OreDictionary.getOres(s).get(0).copy();
+                Pair<Integer,Short> p = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
+                cache.put(s, p);
+                GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
+                if (UI == null)
+                    UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
+                if (!UI.modId.equals(MainMod.MOD_ID) && !UI.modId.equals(BartWorksCrossmod.MOD_ID) && !UI.modId.equals("BWCore")){
+                    OreDictHandler.cacheNonBW.add(p);
+                }
+            }
+        }
     }
 
     public static ItemStack getItemStack(String elementName, OrePrefixes prefixes, int amount){
         if (cache.get(prefixes+elementName.replaceAll(" ","")) != null){
-            ItemStack tmp = cache.get(prefixes+elementName.replaceAll(" ","")).copy();
-            tmp.stackSize=amount;
-            return tmp;
+            Pair<Integer,Short> p = cache.get(prefixes+elementName.replaceAll(" ",""));
+            return new ItemStack(Item.getItemById(p.getKey()),amount,p.getValue());
         } else if (!OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).isEmpty()){
             ItemStack tmp = OreDictionary.getOres(prefixes+elementName.replaceAll(" ","")).get(0).copy();
+            cache.put(prefixes+elementName.replaceAll(" ",""),new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize=amount;
-            cache.put(prefixes+elementName.replaceAll(" ",""),tmp);
             return tmp;
         }
         return null;

@@ -28,6 +28,7 @@ import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -37,9 +38,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -51,38 +53,41 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class ClientEventHandler {
 
-    HashMap<ItemStack, List<String>> cache = new HashMap<>();
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void getTooltip(ItemTooltipEvent event) {
-        if (event.itemStack == null || event.itemStack.getItem() == null || Block.getBlockFromItem(event.itemStack.getItem()) == null)
+
+        if (event.itemStack == null || event.itemStack.getItem() == null)
             return;
 
-        if (!cache.containsKey(event.itemStack)) {
+        if (TooltipCache.getTooltip(event.itemStack).isEmpty()) {
+            ItemStack tmp = event.itemStack.copy();
+            Pair<Integer,Short> abstractedStack = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
             List<String> tooAdd = new ArrayList<>();
-
-            for (ItemStack stack : OreDictHandler.getCache().values()) {
-                if (GT_Utility.areStacksEqual(event.itemStack, stack)) {
-                    GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(stack.getItem());
-                    if (UI == null)
-                        UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(stack.getItem()));
-                    if (UI != null) {
-                        for (ModContainer modContainer : Loader.instance().getModList()) {
-                            if (UI.modId.equals(MainMod.MOD_ID) || UI.modId.equals(BartWorksCrossmod.MOD_ID) || UI.modId.equals("BWCore"))
-                               break;
-                            if (UI.modId.equals(modContainer.getModId())) {
-                                tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and " + ChatColorHelper.RED + modContainer.getName());
+            if (OreDictHandler.getNonBWCache().contains(abstractedStack)) {
+                for (Pair<Integer,Short> pair : OreDictHandler.getNonBWCache()) {
+                    if (pair.equals(abstractedStack)) {
+                        GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
+                        if (UI == null)
+                            UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
+                        if (UI != null) {
+                            for (ModContainer modContainer : Loader.instance().getModList()) {
+                                if (UI.modId.equals(MainMod.MOD_ID) || UI.modId.equals(BartWorksCrossmod.MOD_ID) || UI.modId.equals("BWCore"))
+                                    break;
+                                if (UI.modId.equals(modContainer.getModId())) {
+                                    tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and " + ChatColorHelper.RED + modContainer.getName());
+                                }
                             }
-                        }
-                    } else
-                        tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and another Mod, that doesn't use the ModContainer propperly!");
+                        } else
+                            tooAdd.add("Shared ItemStack between " + ChatColorHelper.DARKGREEN + "BartWorks" + ChatColorHelper.GRAY + " and another Mod, that doesn't use the ModContainer propperly!");
+                    }
                 }
             }
 
-                final Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
+            final Block BLOCK = Block.getBlockFromItem(event.itemStack.getItem());
+            if (BLOCK != null && BLOCK != Blocks.air) {
                 if (BLOCK instanceof BW_Blocks) {
-                    cache.put(event.itemStack, tooAdd);
+                    TooltipCache.put(event.itemStack, tooAdd);
                     return;
                 }
                 final BioVatLogicAdder.BlockMetaPair PAIR = new BioVatLogicAdder.BlockMetaPair(BLOCK, (byte) event.itemStack.getItemDamage());
@@ -98,10 +103,12 @@ public class ClientEventHandler {
                             " "
                             + BW_ColorUtil.getColorForTier(3) + GT_Values.VN[3] + ChatColorHelper.RESET);
                 }
-                    cache.put(event.itemStack, tooAdd);
-                    event.toolTip.addAll(tooAdd);
+            }
+
+            TooltipCache.put(event.itemStack, tooAdd);
+            event.toolTip.addAll(tooAdd);
         } else {
-            event.toolTip.addAll(cache.get(event.itemStack));
+            event.toolTip.addAll(TooltipCache.getTooltip(event.itemStack));
         }
     }
 }

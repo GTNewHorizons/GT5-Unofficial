@@ -59,7 +59,7 @@ public class BW_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public BW_Network() {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("BartWorks", new ChannelHandler[]{this, new HandlerShared()});
-        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket()};
+        this.mSubChannels = new GT_Packet[]{new RendererPacket(), new CircuitProgrammerPacket(), new OrePacket(), new OreDictCachePacket()};
     }
 
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
