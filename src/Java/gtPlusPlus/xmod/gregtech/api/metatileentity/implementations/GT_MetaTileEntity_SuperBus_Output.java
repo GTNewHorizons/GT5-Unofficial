@@ -96,7 +96,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 		String[] aDesc = new String[] {
 				"Item Output for Multiblocks",
 				"This bus has no GUI",
-				""+this.getSlots(this.mTier)+" Slots",
+				""+getSlots(this.mTier)+" Slots",
 		};
 		return aDesc;
 	}
@@ -130,7 +130,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 		}		
 		
 		if (aNames == null || aNames.length <= 0) {
-			PlayerUtils.messagePlayer(aPlayer, "This Super Bus (O) is Empty. Total Slots: "+this.getSlots(this.mTier));
+			PlayerUtils.messagePlayer(aPlayer, "This Super Bus (O) is Empty. Total Slots: "+getSlots(this.mTier));
 			return;
 		}
 

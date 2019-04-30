@@ -2872,3 +2872,28 @@ item.itemGearWhiteMetal.name=White Metal Gear
 item.itemCellWhiteMetal.name=White Metal Cell
 tile.Block of White Metal.name=Block of White Metal
 tile.White Metal Frame Box.name=White Metal Frame Box
+
+//Added 29/04/2019
+tile.OreRunite.name=Runite Ore
+item.crushedRunite.name=Crushed Runite Ore
+item.crushedCentrifugedRunite.name=Centrifuged Crushed Runite Ore
+item.crushedPurifiedRunite.name=Purified Crushed Runite Ore
+item.dustImpureRunite.name=Impure Runite Dust
+item.dustPureRunite.name=Purified Runite Dust
+
+tile.OreAncientGranite.name=Ancient Granite Ore
+item.crushedAncientGranite.name=Crushed Ancient Granite Ore
+item.crushedCentrifugedAncientGranite.name=Centrifuged Crushed Ancient Granite Ore
+item.crushedPurifiedAncientGranite.name=Purified Crushed Ancient Granite Ore
+item.dustImpureAncientGranite.name=Impure Ancient Granite Dust
+item.dustPureAncientGranite.name=Purified Ancient Granite Dust
+
+item.itemIngotRhugnor.name=Rhugnor Ingot
+item.itemDustRhugnor.name=Rhugnor Dust
+item.itemDustTinyRhugnor.name=Tiny Pile of Rhugnor Dust
+item.itemDustSmallRhugnor.name=Small Pile of Rhugnor Dust
+item.itemNuggetRhugnor.name=Rhugnor Nugget
+item.itemPlateRhugnor.name=Rhugnor Plate
+item.itemPlateDoubleRhugnor.name=Double Rhugnor Plate
+item.itemCellRhugnor.name=Rhugnor Cell
+tile.Block of Rhugnor.name=Block of Rhugnor

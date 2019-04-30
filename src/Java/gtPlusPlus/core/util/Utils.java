@@ -928,24 +928,19 @@ public class Utils {
 		return false;
 	}
 
-	public static ItemList getValueOfItemList(String string, ItemList aOther) {
-		try {
-			Method method = ItemList.class.getDeclaredMethod("values");
-	        Object obj = method.invoke(null);
-			String y = Arrays.toString((Object[]) obj);
-			String[] aCurrentItemsInList = y.split(",");
-			boolean found = false;
-			for (String g : aCurrentItemsInList) {
-				if (g.equals(string)) {
-					found = true;
-					break;
+	public static ItemList getValueOfItemList(String string, ItemList aOther) {		
+		ItemList[] aListValues = ItemList.class.getEnumConstants();		
+		for (ItemList aItem : aListValues) {
+			if (aItem != null) {
+				if (aItem.name().equals(string) || aItem.name().toLowerCase().equals(string.toLowerCase())) {
+					return aItem;
 				}
 			}
-			if (found) {
-				return ItemList.valueOf(string);
-			}
 		}
-		catch (Throwable t) {}
+		Logger.INFO("Tried to obtain '"+string+"' from the GT ItemList, however it does not exist.");
+		if (aOther != null) {
+			Logger.INFO("Using fallback option instead - "+aOther.name());
+		}
 		return aOther;
 	}
 

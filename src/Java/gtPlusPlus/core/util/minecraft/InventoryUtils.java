@@ -17,10 +17,14 @@ public class InventoryUtils {
 	public static void dropInventoryItems(World world, int x, int y, int z, Block block) {
 		TileEntity tileentity = world.getTileEntity(x, y, z);
 
-		if (tileentity != null && tileentity instanceof IInventory
-				&& ((IInventory) tileentity).getSizeInventory() > 0) {
-			for (int i1 = 0; i1 < ((IInventory) tileentity).getSizeInventory(); ++i1) {
-				ItemStack itemstack = ((IInventory) tileentity).getStackInSlot(i1);
+		if (tileentity != null && tileentity instanceof IInventory && ((IInventory) tileentity).getSizeInventory() > 0) {
+			
+			IInventory aTileInv = (IInventory) tileentity;			
+			int aMinSlot = 0;
+			int aMaxSlot = aTileInv.getSizeInventory()-1;
+			
+			for (int i1 = aMinSlot; i1 < aMaxSlot; ++i1) {
+				ItemStack itemstack = aTileInv.getStackInSlot(i1);
 
 				if (itemstack != null) {
 					float f = mRandom.nextFloat() * 0.8F + 0.1F;

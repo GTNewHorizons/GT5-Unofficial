@@ -129,7 +129,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 		String[] aDesc = new String[] {
 				"Item Input for Multiblocks",
 				"This bus has no GUI, but can have items extracted",
-				""+this.getSlots(this.mTier)+" Slots",
+				""+getSlots(this.mTier)+" Slots",
 		};
 		return aDesc;
 	}
@@ -164,7 +164,7 @@ public class GT_MetaTileEntity_SuperBus_Input extends GT_MetaTileEntity_Hatch_In
 		}		
 		
 		if (aNames == null || aNames.length <= 0) {
-			PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) is Empty. Total Slots: "+this.getSlots(this.mTier));
+			PlayerUtils.messagePlayer(aPlayer, "This Super Bus (I) is Empty. Total Slots: "+getSlots(this.mTier));
 			return;
 		}
 
