@@ -2872,4 +2872,29 @@ item.itemGearwhiteMetal.name=白物质齿轮
 item.itemCellwhiteMetal.name=白物质单元
 tile.Block of white Metal.name=白物质块
 tile.white Metal Frame Box.name=白物质框架
-//This zh_CN.lang is translated by huajijam for GregTech++ (20/4/19)
+
+//Added 29/04/2019
+tile.OreRunite.name=虚恩矿
+item.crushedRunite.name=粉碎的虚恩矿
+item.crushedCentrifugedRunite.name=离心的粉碎虚恩矿
+item.crushedPurifiedRunite.name=洗净的的粉碎虚恩矿
+item.dustImpureRunite.name=含杂虚恩粉
+item.dustPureRunite.name=洗净虚恩粉
+
+tile.OreAncientGranite.name=古花岗岩矿
+item.crushedAncientGranite.name=粉碎的古花岗岩矿
+item.crushedCentrifugedAncientGranite.name=离心的粉碎古花岗岩矿
+item.crushedPurifiedAncientGranite.name=洗净的粉碎古花岗岩矿
+item.dustImpureAncientGranite.name=含杂古花岗岩粉
+item.dustPureAncientGranite.name=洗净古花岗岩粉
+
+item.itemIngotRhugnor.name=鲁格诺锭
+item.itemDustRhugnor.name=鲁格诺粉
+item.itemDustTinyRhugnor.name=小撮鲁格诺粉
+item.itemDustSmallRhugnor.name=小堆鲁格诺粉
+item.itemNuggetRhugnor.name=鲁格诺粒
+item.itemPlateRhugnor.name=鲁格诺板
+item.itemPlateDoubleRhugnor.name=双重鲁格诺板
+item.itemCellRhugnor.name=鲁格诺单元
+tile.Block of Rhugnor.name=鲁格诺块
+//This zh_CN.lang is translated by huajijam for GregTech++ (30/4/19)
