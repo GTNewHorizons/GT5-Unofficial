@@ -5664,12 +5664,12 @@ if(Loader.isModLoaded("Railcraft")){
                 ItemList.Circuit_Parts_TransistorSMD.get(64L),
                 ItemList.Circuit_Parts_DiodeSMD.get(64L),
                 ItemList.Circuit_Chip_Ram.get(48L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.foil, (Materials.AnySyntheticRubber), 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 64)
         }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(2880L),
+                Materials.SolderingAlloy.getMolten(2880),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
-                Materials.Radon.getGas(2500L),
+                Materials.Radon.getGas(2500),
         }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
         
         if(Loader.isModLoaded("tectech")){
