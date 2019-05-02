@@ -35,7 +35,11 @@ public class GT_Block_Casings7
 
     	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Naquadah Alloy Machine Casing");
     	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Tungstensteel Gear Box Casing");
-        
+    	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Robust Neutronium Machine Casing");
+    	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Highspeed Intermix Chamber Casing");
+    	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Superconductor Dyson Ring Casing");
+    	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Superconductor Fusion Coil Block MK II");
+    	
     	GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "UIV Machine Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UMV Machine Casing");//adding
@@ -45,6 +49,10 @@ public class GT_Block_Casings7
         
         ItemList.Casing_RobustNaquadahAlloy.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Gearbox_TungstenSteel2.set(new ItemStack(this, 1, 1));
+        ItemList.Casing_RobustNeutronium.set(new ItemStack(this, 1, 2));
+        ItemList.Casing_Internix_Chamber_Highspeed.set(new ItemStack(this, 1, 3));
+        ItemList.Casing_Dyson_Superconductor_Ring.set(new ItemStack(this, 1, 4));
+        ItemList.Casing_Fusion5.set(new ItemStack(this, 1, 5));
         
         ItemList.Casing_UEV.set(new ItemStack(this,1,10));
         ItemList.Casing_UIV.set(new ItemStack(this,1,11));
@@ -61,6 +69,14 @@ public class GT_Block_Casings7
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_NAQUADAHALLOY.getIcon();
             case 1:
                 return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL2.getIcon();
+            case 2:
+                return Textures.BlockIcons.MACHINE_CASING_ROBUST_NEUTRONIUM.getIcon();
+            case 3:
+                return Textures.BlockIcons.MACHINE_INTERMIX_CHAMBER_HIGHSPEED.getIcon();
+            case 4:
+                return Textures.BlockIcons.MACHINE_CASING_DYSON_SUPERCODUCTOR_RING.getIcon();
+            case 5:
+                return Textures.BlockIcons.MACHINE_CASING_FUSION_COIL3.getIcon();
                 
             }
             if (aSide == 0) {
