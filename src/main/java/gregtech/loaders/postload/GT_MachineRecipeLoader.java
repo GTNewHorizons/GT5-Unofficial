@@ -2638,7 +2638,7 @@ if(Loader.isModLoaded("Railcraft")){
             }, ItemList.FusionComputer_UV.get(1,o), 1200, 200000);
             
             GT_Values.RA.addAssemblylineRecipe(GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1), 576000, new Object[]{
-            		ItemList.Casing_Fusion_Coil.get(1,o),
+            		ItemList.Casing_Fusion_Coil2.get(1,o),
             		new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
             		new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
             		new Object[]{OrePrefixes.circuit.get(Materials.Bio), 1},
@@ -4599,19 +4599,35 @@ if(Loader.isModLoaded("Railcraft")){
            }, ItemList.Machine_MultiblockTinyWormHole.get(1L), 4000, 500000);
 		   
 		   
-		//Fusion Reactor MKV
-    	   
-    	GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Crystalmainframe.get(6L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Wetwaresupercomputer.get(6L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Biowarecomputer.get(6L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Piko.get(6L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
+		//Fusion Reactor MKIV & MKV
+		//IV
+    	GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Crystalmainframe.get(6L), ItemList.Field_Generator_ZPM.get(2L), ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Wetwaresupercomputer.get(6L), ItemList.Field_Generator_ZPM.get(2L), ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Biowarecomputer.get(6L), ItemList.Field_Generator_ZPM.get(2L), ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Piko.get(6L), ItemList.Field_Generator_ZPM.get(2L), ItemList.Electric_Pump_ZPM.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
         
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Wetwaremainframe.get(4L), ItemList.Field_Generator_UHV.get(2L), ItemList.Electric_Pump_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Biowaresupercomputer.get(4L), ItemList.Field_Generator_UHV.get(2L), ItemList.Electric_Pump_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Quantum.get(4L), ItemList.Field_Generator_UHV.get(2L), ItemList.Electric_Pump_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Wetwaremainframe.get(4L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Biowaresupercomputer.get(4L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(2L), GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 4), ItemList.Circuit_Quantum.get(4L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 6), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(1728), ItemList.Casing_Fusion_Coil2.get(2L), 300, 2000000, true);
    		
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 4), ItemList.Circuit_Biomainframe.get(4L), ItemList.Field_Generator_UEV.get(2L), ItemList.Electric_Pump_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(3456), ItemList.Casing_Fusion_Coil2.get(4L), 400, 8000000, true);
-   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 4), ItemList.Circuit_Nano.get(4L), ItemList.Field_Generator_UEV.get(2L), ItemList.Electric_Pump_UEV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(3456), ItemList.Casing_Fusion_Coil2.get(4L), 400, 8000000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 4), ItemList.Circuit_Biomainframe.get(4L), ItemList.Field_Generator_UHV.get(2L), ItemList.Electric_Pump_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(3456), ItemList.Casing_Fusion_Coil2.get(4L), 400, 8000000, true);
+   		GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(4L), GT_OreDictUnificator.get(OrePrefixes.plateTriple, Materials.Phoenixite, 4), ItemList.Circuit_Nano.get(4L), ItemList.Field_Generator_UHV.get(2L), ItemList.Electric_Pump_UHV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 8), ItemList.Neutron_Reflector.get(4L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(3456), ItemList.Casing_Fusion_Coil2.get(4L), 400, 8000000, true);
+   		//V
+   		GT_Values.RA.addAssemblylineRecipe(ItemList.Casing_Fusion_Coil2.get(1, new Object(){}),288000,new Object[]{
+                ItemList.Casing_Fusion_Coil2.get(1L, new Object(){}),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Diamericiumtitanium, 32L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Superconductor, 8L),
+                new Object[]{OrePrefixes.circuit.get(Materials.Infinite), 4},
+                ItemList.Field_Generator_UHV.get(2L, new Object(){}),
+                ItemList.Electric_Pump_UHV.get(2L, new Object(){}),
+                ItemList.neutroniumHeatCapacitor.get(1L, new Object(){}),
+                ItemList.neutroniumHeatCapacitor.get(1L, new Object(){})
+                },new FluidStack[]{
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
+                Materials.SolderingAlloy.getMolten(1440),
+                Materials.Neutronium.getMolten(576)},
+        ItemList.Casing_Fusion_Coil3.get(1, new Object[]{}), 800, 500000);
    		
    		if(Loader.isModLoaded("GalacticraftCore")){
    		    GT_Values.RA.addAssemblerSpaceRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 4L), ItemList.Casing_Fusion3.get(1L, new Object[0])}, Materials.Phoenixite.getMolten(288), ItemList.Casing_Fusion4.get(1L, new Object[0]), 400, 500000, true);
@@ -4620,8 +4636,8 @@ if(Loader.isModLoaded("Railcraft")){
    			}
    		
     	   if(Loader.isModLoaded("tectech")){
-   		    TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Fusion_Coil2.get(1L), 12000,32, 500000, 6,new ItemStack[]{
-   		    		    ItemList.Casing_Fusion_Coil2.get(1L),
+   		    TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Casing_Fusion_Coil3.get(1L), 12000,32, 500000, 6,new ItemStack[]{
+   		    		    ItemList.Casing_Fusion_Coil3.get(1L),
 	        			ItemList.Circuit_Nano.get(1L),
 	        			ItemList.Circuit_Nano.get(1L),
 	        			ItemList.Circuit_Nano.get(1L),
@@ -4638,8 +4654,8 @@ if(Loader.isModLoaded("Railcraft")){
    	        
    	        }else{
    	            
-   	        	GT_Values.RA.addAssemblylineRecipe(ItemList.Casing_Fusion_Coil2.get(1L), 1152000, new Object[]{
-   	        			ItemList.Casing_Fusion_Coil2.get(1L),
+   	        	GT_Values.RA.addAssemblylineRecipe(ItemList.Casing_Fusion_Coil3.get(1L), 1152000, new Object[]{
+   	        			ItemList.Casing_Fusion_Coil3.get(1L),
    	        			ItemList.Circuit_Nano.get(1L),
    	        			ItemList.Circuit_Nano.get(1L),
    	        			ItemList.Circuit_Nano.get(1L),

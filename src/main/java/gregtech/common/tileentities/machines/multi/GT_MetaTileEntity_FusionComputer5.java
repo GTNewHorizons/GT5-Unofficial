@@ -39,18 +39,18 @@ public class GT_MetaTileEntity_FusionComputer5 extends GT_MetaTileEntity_FusionC
 
     @Override
     public Block getFusionCoil() {
-        return GregTech_API.sBlockCasings5;
+        return GregTech_API.sBlockCasings7;
     }
 
     @Override
     public int getFusionCoilMeta() {
-        return 11;
+        return 5;
     }
 
     public String[] getDescription() {
         return new String[]{
-        		"A SUN DOWN ON YOUR BASE", 
-        		"Fusion Machine Casings MK IV around Superconductor Fusion Coil Blocks", 
+        		"A WHITE DWARF DOWN ON YOUR BASE", 
+        		"Fusion Machine Casings MK IV around Superconductor Fusion Coil Blocks MK II", 
         		"2-16 Input Hatches", 
         		"1-16 Output Hatches", 
         		"1-16 Energy Hatches", 
