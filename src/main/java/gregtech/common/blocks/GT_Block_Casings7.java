@@ -52,7 +52,7 @@ public class GT_Block_Casings7
         ItemList.Casing_RobustNeutronium.set(new ItemStack(this, 1, 2));
         ItemList.Casing_Internix_Chamber_Highspeed.set(new ItemStack(this, 1, 3));
         ItemList.Casing_Dyson_Superconductor_Ring.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Fusion5.set(new ItemStack(this, 1, 5));
+        ItemList.Casing_Fusion_Coil3.set(new ItemStack(this, 1, 5));
         
         ItemList.Casing_UEV.set(new ItemStack(this,1,10));
         ItemList.Casing_UIV.set(new ItemStack(this,1,11));
