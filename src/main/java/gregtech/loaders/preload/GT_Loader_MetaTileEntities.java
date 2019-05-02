@@ -167,7 +167,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         GT_ModHandler.addCraftingRecipe(ItemList.Hull_UV.get(1L, new Object[0]),  GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{aTextCableHull, 'M', ItemList.Casing_UV, 'C', OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole)});
         GT_ModHandler.addCraftingRecipe(ItemList.Hull_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{aTextCableHull, 'M', ItemList.Casing_MAX, 'C', OrePrefixes.wireGt04.get(Materials.Europium), 'H', OrePrefixes.plate.get(Materials.Neutronium), 'P', OrePrefixes.plateDouble.get(Materials.Polybenzimidazole)});
         GT_ModHandler.addCraftingRecipe(ItemList.Hull_UEV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{aTextCableHull, 'M', ItemList.Casing_UEV, 'C', OrePrefixes.wireGt04.get(Materials.Diamericiumtitanium), 'H', OrePrefixes.plate.get(Materials.Phoenixite), 'P', OrePrefixes.plate.get(Materials.PerroxPolymer)});
-        
+
         GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L, new Object[0]));
         GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L, new Object[0]));
         GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L, new Object[0]));
@@ -1441,7 +1441,7 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.MicroTransmitter_UV.set(new GT_MetaTileEntity_MicrowaveEnergyTransmitter(1166, "basicmachine.microtransmitter.08", "UV Microwave Energy Transmitter", 8).getStackForm(1L));
         GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_HV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_HV, 'B',  ItemList.Battery_RE_HV_Lithium, 'C', ItemList.Emitter_HV, 'G', OrePrefixes.circuit.get(Materials.Advanced), 'P', ItemList.Field_Generator_HV});
         GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_EV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_EV, 'B', OrePrefixes.battery.get(Materials.Master), 'C', ItemList.Emitter_EV, 'G', OrePrefixes.circuit.get(Materials.Data), 'P', ItemList.Field_Generator_EV});
-        GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_IV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_IV, 'B', ItemList.Energy_LapotronicOrb, 'C', ItemList.Emitter_IV, 'G', OrePrefixes.circuit.get(Materials.Elite), 'P', ItemList.Field_Generator_IV});GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_LUV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_LuV, 'B', ItemList.Energy_LapotronicOrb2, 'C', ItemList.Emitter_IV, 'G', OrePrefixes.circuit.get(Materials.Master), 'P', ItemList.Field_Generator_IV});
+        GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_IV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_IV, 'B', ItemList.Energy_LapotronicOrb, 'C', ItemList.Emitter_IV, 'G', OrePrefixes.circuit.get(Materials.Elite), 'P', ItemList.Field_Generator_IV});
         GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_LUV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_LuV, 'B', ItemList.Energy_LapotronicOrb2, 'C', ItemList.Emitter_LuV, 'G', OrePrefixes.circuit.get(Materials.Master), 'P', ItemList.Field_Generator_LuV});
         GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_ZPM.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_ZPM, 'B', ItemList.Energy_Module, 'C', ItemList.Emitter_ZPM, 'G', OrePrefixes.circuit.get(Materials.Ultimate), 'P', ItemList.Field_Generator_ZPM});
         GT_ModHandler.addCraftingRecipe(ItemList.MicroTransmitter_UV.get(1L, new Object[0]), bitsd, new Object[]{"CPC", aTextCableHull, "GBG", 'M', ItemList.Hull_UV, 'B', ItemList.Energy_Cluster, 'C', ItemList.Emitter_UV, 'G', OrePrefixes.circuit.get(Materials.Superconductor), 'P', ItemList.Field_Generator_UV});
@@ -1564,6 +1564,9 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         
         //Tesseract
         ItemList.Machine_MultiblockTesseract.set(new GT_MetaTileEntity_Tesseract(12195, "multimachine.tesseract", "Tesseract").getStackForm(1L));
+        
+        //Tiny Wormhole
+        ItemList.Machine_MultiblockTinyWormHole.set(new GT_MetaTileEntity_TinyWormHole(12197, "multimachine.tinywormhole", "Tiny Wormhole").getStackForm(1L));
         
 		//Super Cooling Freezer
         ItemList.Machine_MultiblockSuperCoolingFreezer.set(new GT_MetaTileEntity_SuperCoolingFreezer(12199, "multimachine.supercoolingfreezer", "Super Cooling Freezer").getStackForm(1));

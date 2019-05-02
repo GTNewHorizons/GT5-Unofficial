@@ -2542,8 +2542,7 @@ if(Loader.isModLoaded("Railcraft")){
                 GregTech_API.mIC2Classic ? Materials.Lava.getFluid(2000L) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000)
         }, ItemList.Circuit_Chip_BioCPU.get(1L), 2400, 160000);
 		
-   
-            GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_LapotronicOrb.get(1, o), 288000, new Object[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Energy_LapotronicOrb.get(1, o), 288000, new Object[]{
             		ItemList.Circuit_Board_Multifiberglass_Elite.get(1,o),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 32L),
                     new Object[]{OrePrefixes.circuit.get(Materials.Master), 4},
@@ -2752,7 +2751,7 @@ if(Loader.isModLoaded("Railcraft")){
     				ItemList.Magnetic_Confinement_Pod_Hydrogen.get(1L),
     				ItemList.Cell_Empty.get(1L), 200, 480);
     		
-    		GT_Values.RA.addAssemblylineRecipe(ItemList.FusionComputer_UV.get(1,o), 576000, new ItemStack[]{
+    		GT_Values.RA.addAssemblylineRecipe(ItemList.Generator_Plasma_UV.get(1,o), 576000, new ItemStack[]{
             		ItemList.Casing_Dyson_Ring.get(1,o),
             		GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
             		GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Superconductor), 1L),
@@ -4579,7 +4578,27 @@ if(Loader.isModLoaded("Railcraft")){
                             Materials.Osmiridium.getMolten(1296)
     	            }, ItemList.Machine_MultiblockTesseract.get(1L), 8000, 2000000);
     	        }
-		
+		   
+		//Tiny Wormhole
+		   GT_Values.RA.addTinyWormHoleRecipe(GT_Values.NI, Materials.UUMatter.getFluid(1000L), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ledox, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MysteriousCrystal, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L), new int[]{10000, 10000, 9000, 5000, 3000, 1500}, 100, 2000000);
+    	   
+		   GT_Values.RA.addAssemblylineRecipe(ItemList.MicroTransmitter_UV.get(1L), 576000, new Object[]{
+           		ItemList.MicroTransmitter_UV.get(1L),
+           		ItemList.Casing_Dyson_Ring.get(8L),
+           		ItemList.Casing_Fusion_Coil.get(8L),
+	                ItemList.Field_Generator_UV.get(4L),
+	                ItemList.Sensor_UV.get(4L),
+	                ItemList.Emitter_UV.get(4L),
+                   new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
+                   GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 16)
+           }, new FluidStack[]{
+           		Materials.UUMatter.getFluid(1000),
+                   Materials.Infuscolium.getMolten(1296),
+                   new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                   Materials.Osmiridium.getMolten(1152)
+           }, ItemList.Machine_MultiblockTinyWormHole.get(1L), 4000, 500000);
+		   
+		   
 		//Fusion Reactor MKV
     	   
     	GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Casing_Fusion_Coil.get(1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Infuscolium, 4), ItemList.Circuit_Crystalmainframe.get(6L), ItemList.Field_Generator_UV.get(2L), ItemList.Electric_Pump_UV.get(1L), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Superconductor, 4), ItemList.neutroniumHeatCapacitor.get(1L), ItemList.neutroniumHeatCapacitor.get(1L), GT_Utility.getIntegratedCircuit(1)},Materials.ElectrumFlux.getMolten(864), ItemList.Casing_Fusion_Coil2.get(1L), 200, 500000, true);
@@ -5636,7 +5655,23 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addForgeHammerRecipe(ItemList.Circuit_Parts_RawMCrystalChip.get(1), ItemList.Circuit_Parts_RawMCrystalParts.get(9), 200, 30720);
         GT_Values.RA.addBlastRecipe(ItemList.Circuit_Parts_RawMCrystalChip.get(1), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MysteriousCrystal, 1), Materials.Radon.getGas(1000), null, ItemList.Circuit_Parts_MCrystal_Chip_Elite.get(1), null, 900, 122880, 11000);
         
-        
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L), 576000, new ItemStack[]{
+        		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
+                ItemList.Circuit_Wetwaresupercomputer.get(2L),
+                ItemList.ZPM_Coil.get(16L),
+                ItemList.Circuit_Parts_CapacitorSMD.get(64L),
+                ItemList.Circuit_Parts_ResistorSMD.get(64L),
+                ItemList.Circuit_Parts_TransistorSMD.get(64L),
+                ItemList.Circuit_Parts_DiodeSMD.get(64L),
+                ItemList.Circuit_Chip_Ram.get(48L),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 64)
+        }, new FluidStack[]{
+                Materials.SolderingAlloy.getMolten(2880),
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
+                Materials.Radon.getGas(2500),
+        }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
+
         GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Chip_Pico.get(1L), 72000, new ItemStack[]{
         		GT_OreDictUnificator.get(OrePrefixes.frameGt,Materials.Duranium, 4),
         		ItemList.Circuit_Chip_Pico.get(1L),
@@ -5654,23 +5689,6 @@ if(Loader.isModLoaded("Railcraft")){
                 Materials.UUMatter.getFluid(4000L),
                 Materials.Osmium.getMolten(1152L)
         }, ItemList.Circuit_Piko.get(1L), 1200, 1000000);
-        
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Circuit_Wetwaresupercomputer.get(1L), 576000, new ItemStack[]{
-        		GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
-                ItemList.Circuit_Wetwaresupercomputer.get(2L),
-                ItemList.ZPM_Coil.get(16L),
-                ItemList.Circuit_Parts_CapacitorSMD.get(64L),
-                ItemList.Circuit_Parts_ResistorSMD.get(64L),
-                ItemList.Circuit_Parts_TransistorSMD.get(64L),
-                ItemList.Circuit_Parts_DiodeSMD.get(64L),
-                ItemList.Circuit_Chip_Ram.get(48L),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silicone, 64)
-        }, new FluidStack[]{
-                Materials.SolderingAlloy.getMolten(2880),
-                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 10000),
-                Materials.Radon.getGas(2500),
-        }, ItemList.Circuit_Wetwaremainframe.get(1L), 2000, 300000);
         
         if(Loader.isModLoaded("tectech")){
 	    TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Circuit_Piko.get(1L),12000,16,100000,3,new ItemStack[]{
