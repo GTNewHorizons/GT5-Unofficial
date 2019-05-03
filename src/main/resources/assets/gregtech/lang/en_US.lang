@@ -554,6 +554,13 @@ achievement.gt.blockmachines.fusioncomputer.tier.08=Fusion Computer Mark III
 achievement.gt.blockmachines.fusioncomputer.tier.08.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.fusioncomputer.tier.09=Fusion Computer Mark IV
 achievement.gt.blockmachines.fusioncomputer.tier.09.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.fusioncomputer.tier.10=Fusion Computer Mark V
+achievement.gt.blockmachines.fusioncomputer.tier.10.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.blockmachines.multimachine.tinywormhole=Tiny Wormhole
+achievement.gt.blockmachines.multimachine.tinywormhole.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.multimachine.tesseract=Tesseract
+achievement.gt.blockmachines.multimachine.tesseract.desc=Pickup this item to see the recipe in NEI
 
 achievement.gt.blockmachines.hatch.energy.tier.06=LuV Energy Hatch
 achievement.gt.blockmachines.hatch.energy.tier.06.desc=Pickup this item to see the recipe in NEI
@@ -580,6 +587,9 @@ achievement.gt.blockmachines.hatch.dynamo.tier.10=UEV Dynamo Hatch
 achievement.gt.blockmachines.hatch.dynamo.tier.10.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.dynamo.tier.11=UIV Dynamo Hatch
 achievement.gt.blockmachines.hatch.dynamo.tier.11.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.blockcasings7.5=Superconductor Fusion Coil MK II
+achievement.gt.blockcasings7.5.desc=Pickup this item to see the recipe in NEI
 
 achievement.gt.metaitem.03.32072=Neuro Processing Unit
 achievement.gt.metaitem.03.32072.desc=Pickup this item to see the recipe in NEI
@@ -616,8 +626,8 @@ achievement.gt.blockmachines.blockmachine.d_transformer.tier.10.desc=Pickup this
 
 achievement.gt.metaitem.01.32605=Ultimate Battery
 achievement.gt.metaitem.01.32605.desc=Pickup this item to see the recipe in NEI
-achievement.gt.metaitem.01.32609=Really Ultimate Battery
-achievement.gt.metaitem.01.32609.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32738=Really Ultimate Battery
+achievement.gt.metaitem.01.32738.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32736=Energy Module
 achievement.gt.metaitem.01.32736.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32737=Energy Cluster
