@@ -5634,33 +5634,87 @@ if(Loader.isModLoaded("Railcraft")){
         GT_Values.RA.addLaserEngraverRecipe(ItemList.Circuit_Wafer_SoC2.get(1L),GT_OreDictUnificator.get(OrePrefixes.lens,Materials.NetherStar,1L).copy().splitStack(0), ItemList.Circuit_Chip_RPico.get(1L),600,128800,true);
         GT_Values.RA.addMultiblockChemicalRecipe(new ItemStack[]{ItemList.Circuit_Chip_RPico.get(1L),Materials.NetherStar.getDustTiny(1)},new FluidStack[]{Materials.EnrichedNaquadria.getFluid(100L)},new FluidStack[]{GT_Values.NF},new ItemStack[]{ItemList.Circuit_Chip_Pico.get(1L)},400,128800);
 
-      //Energy Crystals UHV-UIV
+      //Energy Crystals UV-UIV
         GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
 				ItemList.Circuit_Crystalmainframe.get(2L), null,
-				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+				ItemList.MysteriousCrystal.get(1L), 300, 500000);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
 				ItemList.Circuit_Wetwaresupercomputer.get(2L), null,
-				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+				ItemList.MysteriousCrystal.get(1L), 300, 500000);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
 				ItemList.Circuit_Biowarecomputer.get(2L), null,
-				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+				ItemList.MysteriousCrystal.get(1L), 300, 500000);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.MysteriousCrystal, 1L),
 				ItemList.Circuit_Piko.get(2L), null,
-				ItemList.MysteriousCrystal.get(1L), 300, 1000000);
+				ItemList.MysteriousCrystal.get(1L), 300, 500000);
 		
         GT_Values.RA.addLaserEngraverRecipe(ItemList.MysteriousCrystal.get(1L),GT_OreDictUnificator.get(OrePrefixes.lens,Materials.EnrichedMysteriousCrystal,1L).copy().splitStack(0), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(3L),450,500000,true);
         
-        for (Materials tMat : Materials.values()) {//TODO dream things using soldering go in here!
-            if (tMat.mStandardMoltenFluid != null && tMat.contains(SubTag.SOLDERING_MATERIAL) && !(GregTech_API.mUseOnlyGoodSolderingMaterials && !tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD))) {
-                int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
-
-        if(Loader.isModLoaded("GalacticraftCore")){
-        GT_Values.RA.addCircuitAssemblerSpaceRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1), ItemList.Circuit_Chip_PPIC.get(4), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(24), ItemList.Circuit_Chip_NanoCPU.get(6), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.MysteriousCrystalOrb.get(1), 600, 2000000, true);
-        }else {
-        GT_Values.RA.addCircuitAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Board_Bio_Ultra.get(1), ItemList.Circuit_Chip_PPIC.get(4), ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(24), ItemList.Circuit_Chip_NanoCPU.get(6), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 16), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8)}, tMat.getMolten(144L * tMultiplier * 2), ItemList.MysteriousCrystalOrb.get(1), 600, 2000000, true);	
-        }
+        if(Loader.isModLoaded("tectech")){
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.MysteriousCrystal.get(1L),12000,16,500000,3, new ItemStack[]{
+                            ItemList.Circuit_Board_Bio_Ultra.get(1L, new Object(){}),
+                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Neutronium, 32L),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 4L),
+                            ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L,  new Object(){}),
+                            ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L,  new Object(){}),
+                            ItemList.Circuit_Chip_PPIC.get(64L, new Object(){}),
+                            ItemList.Circuit_Parts_DiodeSMD.get(64L, new Object(){}),
+                            ItemList.Circuit_Parts_CapacitorSMD.get(64L, new Object(){}),
+                            ItemList.Circuit_Parts_ResistorSMD.get(64L, new Object(){}),
+                            ItemList.Circuit_Parts_TransistorSMD.get(64L, new Object(){}),
+            		        GT_OreDictUnificator.get(OrePrefixes.wireFine.get(Materials.Neutronium), 64L)},
+                    new FluidStack[]{
+                            Materials.SolderingAlloy.getMolten(1440)},
+                    ItemList.MysteriousCrystalOrb.get(1, new Object[]{}), 1000, 2000000);
             
-            }
+            TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.MysteriousCrystalOrb.get(1L),24000,16,1000000,6, new ItemStack[]{
+            		GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 16L),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.MysteriousCrystalOrb.get(8L, new Object[0]),
+                    ItemList.Field_Generator_UEV.get(2, new Object(){}),
+                    ItemList.Circuit_Wafer_SoC3.get(64, new Object(){}),
+                    ItemList.Circuit_Wafer_SoC3.get(64, new Object(){}),
+                    ItemList.Circuit_Parts_DiodeSMD.get(64, new Object(){}),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 16),},
+                    new FluidStack[]{
+                    Materials.SolderingAlloy.getMolten(2880), GregTech_API.mIC2Classic ? Materials.Water.getFluid(8000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)},
+                    ItemList.MysteriousCrystalModule.get(1, new Object(){}), 2000, 8000000);
+            
+        }else {
+        	GT_Values.RA.addAssemblylineRecipe(ItemList.MysteriousCrystal.get(1, new Object(){}),576000,new Object[]{
+        			ItemList.Circuit_Board_Bio_Ultra.get(1L, new Object(){}),
+                    GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Neutronium, 32L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Infinite), 4L),
+                    ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L,  new Object(){}),
+                    ItemList.Circuit_Parts_MECrystal_Chip_Elite.get(36L,  new Object(){}),
+                    ItemList.Circuit_Chip_PPIC.get(64L, new Object(){}),
+                    ItemList.Circuit_Parts_DiodeSMD.get(64L, new Object(){}),
+                    ItemList.Circuit_Parts_CapacitorSMD.get(64L, new Object(){}),
+                    ItemList.Circuit_Parts_ResistorSMD.get(64L, new Object(){}),
+                    ItemList.Circuit_Parts_TransistorSMD.get(64L, new Object(){}),
+    		        GT_OreDictUnificator.get(OrePrefixes.wireFine.get(Materials.Neutronium), 64L)},
+            new FluidStack[]{
+                    Materials.SolderingAlloy.getMolten(1440)},
+            ItemList.MysteriousCrystalOrb.get(1, new Object[]{}), 1000, 2000000);
+        	
+        	GT_Values.RA.addAssemblylineRecipe(ItemList.MysteriousCrystalOrb.get(1, new Object(){}), 1440000, new ItemStack[]{
+                    GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Phoenixite, 16L),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.Circuit_Biomainframe.get(1, new Object(){}),
+                    ItemList.MysteriousCrystalOrb.get(8L, new Object[0]),
+                    ItemList.Field_Generator_UEV.get(2, new Object(){}),
+                    ItemList.Circuit_Wafer_SoC3.get(64, new Object(){}),
+                    ItemList.Circuit_Wafer_SoC3.get(64, new Object(){}),
+                    ItemList.Circuit_Parts_DiodeSMD.get(64, new Object(){}),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 16),},
+                    new FluidStack[]{
+                    Materials.SolderingAlloy.getMolten(2880), GregTech_API.mIC2Classic ? Materials.Water.getFluid(8000) : new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000)},
+                    ItemList.MysteriousCrystalModule.get(1, new Object(){}), 2000, 8000000);
         }
       //Circuits UV-UEV
 	  

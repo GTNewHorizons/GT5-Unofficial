@@ -269,10 +269,13 @@ public class GT_MetaGenerated_Item_03
 	    setElectricStats(32000 + tLastID, 819200000L, GT_Values.V[5], 5L, -3L, true);
 	    
 	    ItemList.MysteriousCrystal.set(addItem(tLastID = 205, "Mysterious Energy Crystal", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L)}));
-	    setElectricStats(32000 + tLastID, 5000000000L, GT_Values.V[9], 9L, -3L, true);
+	    setElectricStats(32000 + tLastID, 5000000000L, GT_Values.V[8], 8L, -3L, true);
 	    
 	    ItemList.MysteriousCrystalOrb.set(addItem(tLastID = 206, "Mysterious Energy Crystal Orb", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 10L)}));
-	    setElectricStats(32000 + tLastID, 50000000000L, GT_Values.V[10], 10L, -3L, true);
+	    setElectricStats(32000 + tLastID, 50000000000L, GT_Values.V[9], 9L, -3L, true);
+	    
+	    ItemList.MysteriousCrystalModule.set(addItem(tLastID = 207, "Mysterious Energy Crystal Module", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 12L)}));
+	    setElectricStats(32000 + tLastID, 500000000000L, GT_Values.V[10], 10L, -3L, true);
 	    
 	    
 	    ItemList.ULV_Coil.set(addItem(tLastID = 210, "Ultra Low Voltage Coil", "Primitive Coil", o));
