@@ -39,12 +39,14 @@ public class BWCoreTransformer implements IClassTransformer {
     public static final String[] DESCRIPTIONFORCONFIG = {
             "REMOVING RAIN FROM LAST MILLENIUM (EXU)",
             "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
-            "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS"
+            "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
+            "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
             "net.minecraft.client.renderer.RenderGlobal",
+            "thaumcraft.common.tiles.TileWandPedestal",
     };
     public static boolean obfs = false;
 
@@ -69,6 +71,30 @@ public class BWCoreTransformer implements IClassTransformer {
 //            shouldTransform[2] = false;
 //        }
 //    }
+
+    private static MethodNode transformThaumcraftWandPedestal(MethodNode method) {
+        InsnList nu = new InsnList();
+        for (int j = 0; j < method.instructions.size(); j++) {
+            AbstractInsnNode instruction = method.instructions.get(j);
+            nu.add(instruction);
+            if (instruction.getOpcode() == INVOKEVIRTUAL) {
+                MethodInsnNode invokevirtual = (MethodInsnNode) instruction;
+                if (invokevirtual.name.equals("addVis")) {
+                    AbstractInsnNode beginning = method.instructions.get(j - 7);
+                    LabelNode label = new LabelNode();
+                    nu.insertBefore(beginning, new VarInsnNode(ALOAD, 0));
+                    nu.insertBefore(beginning, new FieldInsnNode(GETFIELD, "thaumcraft/common/tiles/TileWandPedestal", "field_145850_b" /*"worldObj"*/, "Lnet/minecraft/world/World;"));
+                    nu.insertBefore(beginning, new FieldInsnNode(GETFIELD, "net/minecraft/world/World", "field_72995_K" /*"isRemote"*/, "Z"));
+                    nu.insertBefore(beginning, new JumpInsnNode(IFNE, label));
+                    nu.add(new InsnNode(POP));
+                    nu.add(label);
+                    j++; // Skip actual Pop
+                }
+            }
+        }
+        method.instructions = nu;
+        return method;
+    }
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
@@ -191,6 +217,24 @@ public class BWCoreTransformer implements IClassTransformer {
                                 }
                             }
                             toPatch.instructions = nu;
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case 3: {
+                    BWCore.BWCORE_LOG.info("Could find: " + CLASSESBEEINGTRANSFORMED[id]);
+                    String name_deObfs = "updateEntity";
+                    String name_src = "func_145845_h";
+                    String name_Obfs = "h";
+                    String dsc_universal = "()V";
+
+                    for (int i = 0; i < methods.size(); i++) {
+                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
+                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            MethodNode toPatch = methods.get(i);
+                            toPatch = transformThaumcraftWandPedestal(toPatch);
+                            methods.set(i, toPatch);
                             break;
                         }
                     }
