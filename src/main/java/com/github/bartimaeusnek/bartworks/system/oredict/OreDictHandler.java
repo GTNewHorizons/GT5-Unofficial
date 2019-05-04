@@ -55,14 +55,17 @@ public class OreDictHandler {
         OreDictHandler.cacheNonBW.clear();
         for (String s : used) {
             if (!OreDictionary.getOres(s).isEmpty()) {
-                ItemStack tmp = OreDictionary.getOres(s).get(0).copy();
-                Pair<Integer,Short> p = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
+                ItemStack tmpstack = OreDictionary.getOres(s).get(0).copy();
+                Pair<Integer, Short> p = new Pair<>(Item.getIdFromItem(tmpstack.getItem()), (short) tmpstack.getItemDamage());
                 cache.put(s, p);
-                GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
-                if (UI == null)
-                    UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
-                if (!UI.modId.equals(MainMod.MOD_ID) && !UI.modId.equals(BartWorksCrossmod.MOD_ID) && !UI.modId.equals("BWCore")){
-                    OreDictHandler.cacheNonBW.add(p);
+                for (ItemStack tmp : OreDictionary.getOres(s)) {
+                    Pair<Integer, Short> p2 = new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
+                    GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
+                    if (UI == null)
+                        UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
+                    if (!UI.modId.equals(MainMod.MOD_ID) && !UI.modId.equals(BartWorksCrossmod.MOD_ID) && !UI.modId.equals("BWCore")) {
+                        OreDictHandler.cacheNonBW.add(p2);
+                    }
                 }
             }
         }

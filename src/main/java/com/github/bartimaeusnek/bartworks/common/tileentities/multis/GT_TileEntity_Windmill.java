@@ -236,17 +236,17 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_MultiBlockBase {
             itemStack.stackSize -= 1;
             this.mMaxProgresstime = 60 * 20 * 100;
             if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L));
+                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L));
             else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
+                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L));
             return true;
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log2)) {
             itemStack.stackSize -= 1;
             this.mMaxProgresstime = 60 * 20 * 100;
             if (new XSTR().nextInt(2) == 0)
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L));
+                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 12L));
             else
-                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
+                this.mOutputItems[0] = (GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L));
             return true;
         } else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.pumpkin)) {
             itemStack.stackSize -= 1;
