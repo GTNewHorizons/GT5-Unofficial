@@ -60,13 +60,16 @@ public class BWCore extends DummyModContainer {
     public void preInit(FMLPreInitializationEvent event) {
         shouldTransform[0] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[0];
         shouldTransform[1] = Loader.isModLoaded("ExtraUtilities") && ConfigHandler.enabledPatches[1];
-        BWCore.BWCORE_LOG.info("Extra Utilities found? " + shouldTransform[0]);
+        shouldTransform[3] = Loader.isModLoaded("Thaumcraft") && ConfigHandler.enabledPatches[3];
+        BWCore.BWCORE_LOG.info("Extra Utilities found and ASM Patch enabled? " + shouldTransform[0]);
+        BWCore.BWCORE_LOG.info("Thaumcraft found and ASM Patch enabled? " + shouldTransform[3]);
     }
 
     @Override
     public List<ArtifactVersion> getDependants() {
         List<ArtifactVersion> ret = new ArrayList<ArtifactVersion>();
         ret.add(new DefaultArtifactVersion("ExtraUtilities", true));
+        ret.add(new DefaultArtifactVersion("Thaumcraft", true));
         ret.add(new DefaultArtifactVersion(BartWorksCrossmod.MOD_ID, true));
         return ret;
     }
