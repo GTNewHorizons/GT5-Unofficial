@@ -39,52 +39,61 @@ public class BWCoreTransformer implements IClassTransformer {
     public static final String[] DESCRIPTIONFORCONFIG = {
             "REMOVING RAIN FROM LAST MILLENIUM (EXU)",
             "REMVOING CREATURES FROM LAST MILLENIUM (EXU)",
-            "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS"
+            "PATCHING GLOBAL RENDERER FOR USE WITH MY GALACTIC DIMS",
+            "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
     };
     public static final String[] CLASSESBEEINGTRANSFORMED = {
             "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
             "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime",
             "net.minecraft.client.renderer.RenderGlobal",
+            "thaumcraft.common.tiles.TileWandPedestal",
     };
-    public static boolean obfs = false;
+    static boolean obfs;
 
-    public static boolean[] shouldTransform = new boolean[CLASSESBEEINGTRANSFORMED.length];
+    public static boolean[] shouldTransform = new boolean[BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length];
 
-//    public void checkForMods() {
-//        //hacky way to detect if the mods are loaded
-//        try{
-//            Class.forName("com.rwtema.extrautils.core.Tuple");
-//            shouldTransform[0] = true;
-//            shouldTransform[1] = true;
-//        }catch (ClassNotFoundException e){
-//            BWCore.BWCORE_LOG.info("Extra Utilities not found!");
-//            shouldTransform[0] = false;
-//            shouldTransform[1] = false;
-//        }
-//        try{
-//            Class.forName("micdoodle8.mods.galacticraft.core.Constants");
-//            shouldTransform[2] = true;
-//        }catch (ClassNotFoundException e){
-//            BWCore.BWCORE_LOG.info("micdoodle Core not found!");
-//            shouldTransform[2] = false;
-//        }
-//    }
+    /**
+     * Made by DarkShaddow44
+     */
+    private static MethodNode transformThaumcraftWandPedestal(MethodNode method) {
+        InsnList nu = new InsnList();
+        for (int j = 0; j < method.instructions.size(); j++) {
+            AbstractInsnNode instruction = method.instructions.get(j);
+            nu.add(instruction);
+            if (instruction.getOpcode() == INVOKEVIRTUAL) {
+                MethodInsnNode invokevirtual = (MethodInsnNode) instruction;
+                if (invokevirtual.name.equals("addVis")) {
+                    AbstractInsnNode beginning = method.instructions.get(j - 7);
+                    LabelNode label = new LabelNode();
+                    nu.insertBefore(beginning, new VarInsnNode(ALOAD, 0));
+                    nu.insertBefore(beginning, new FieldInsnNode(GETFIELD, "thaumcraft/common/tiles/TileWandPedestal", obfs ? "field_145850_b" : "worldObj", "Lnet/minecraft/world/World;"));
+                    nu.insertBefore(beginning, new FieldInsnNode(GETFIELD, "net/minecraft/world/World", obfs ? "field_72995_K" : "isRemote", "Z"));
+                    nu.insertBefore(beginning, new JumpInsnNode(IFNE, label));
+                    nu.add(new InsnNode(POP));
+                    nu.add(label);
+                    j++; // Skip actual Pop
+                }
+            }
+        }
+        method.instructions = nu;
+        return method;
+    }
 
     public static byte[] transform(int id, byte[] basicClass) {
         if (!BWCoreTransformer.shouldTransform[id]) {
-            BWCore.BWCORE_LOG.info("Patch: " + DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
+            BWCore.BWCORE_LOG.info("Patch: " + BWCoreTransformer.DESCRIPTIONFORCONFIG[id] + " is disabled, will not patch!");
             return basicClass;
         }
 
         if (id < BWCoreTransformer.CLASSESBEEINGTRANSFORMED.length) {
-            BWCore.BWCORE_LOG.info(DESCRIPTIONFORCONFIG[id]);
+            BWCore.BWCORE_LOG.info(BWCoreTransformer.DESCRIPTIONFORCONFIG[id]);
             ClassReader classReader = new ClassReader(basicClass);
             ClassNode classNode = new ClassNode();
             classReader.accept(classNode, ClassReader.SKIP_FRAMES);
             List<MethodNode> methods = classNode.methods;
             switch (id) {
                 case 0: {
-                    BWCore.BWCORE_LOG.info("Could find: " + CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     String name_deObfs = "canDoRainSnowIce";
 
                     String dsc_deObfs = "(Lnet/minecraft/world/chunk/Chunk;)Z";
@@ -112,7 +121,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     break;
                 }
                 case 1: {
-                    BWCore.BWCORE_LOG.info("Could find: " + CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     String name_deObfs = "getPossibleCreatures";
                     String name_src = "func_73155_a";
                     String name_Obfs = "a";
@@ -142,7 +151,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     String dsc_universal = "(F)V";
                     String field_deObfs = "locationSunPng";
                     String field_src = "field_110928_i";
-                    BWCore.BWCORE_LOG.info("Could find: " + CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     for (int i = 0; i < methods.size(); i++) {
                         MethodNode toPatch = methods.get(i);
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal)) {
@@ -157,7 +166,7 @@ public class BWCoreTransformer implements IClassTransformer {
                             String nameFieldToPatch;
 
                             for (int j = 0; j < toPatch.instructions.size(); j++) {
-                                if (toPatch.instructions.get(j) instanceof FieldInsnNode && ((FieldInsnNode) toPatch.instructions.get(j)).getOpcode() == GETSTATIC && !(nameFieldToPatch = ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j)).name, field_deObfs, field_src)).isEmpty()) {
+                                if (toPatch.instructions.get(j) instanceof FieldInsnNode && toPatch.instructions.get(j).getOpcode() == GETSTATIC && !(nameFieldToPatch = ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j)).name, field_deObfs, field_src)).isEmpty()) {
                                     boolean useSrc = nameFieldToPatch.equals(field_src);
                                     if (useSrc)
                                         BWCore.BWCORE_LOG.info("Found either Optifine or Fastcraft... this patch was annoying to make compatible to them...");
@@ -182,9 +191,9 @@ public class BWCoreTransformer implements IClassTransformer {
 
                                 } else {
                                     if (j < toPatch.instructions.size() - 2) {
-                                        if (toPatch.instructions.get(j + 2) instanceof FieldInsnNode && ((FieldInsnNode) toPatch.instructions.get(j + 2)).getOpcode() == GETSTATIC && !ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j + 2)).name, field_deObfs, field_src).isEmpty())
+                                        if (toPatch.instructions.get(j + 2) instanceof FieldInsnNode && toPatch.instructions.get(j + 2).getOpcode() == GETSTATIC && !ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j + 2)).name, field_deObfs, field_src).isEmpty())
                                             continue;
-                                        if (toPatch.instructions.get(j + 1) instanceof FieldInsnNode && ((FieldInsnNode) toPatch.instructions.get(j + 1)).getOpcode() == GETSTATIC && !ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j + 1)).name, field_deObfs, field_src).isEmpty())
+                                        if (toPatch.instructions.get(j + 1) instanceof FieldInsnNode && toPatch.instructions.get(j + 1).getOpcode() == GETSTATIC && !ASMUtils.matchAny(((FieldInsnNode) toPatch.instructions.get(j + 1)).name, field_deObfs, field_src).isEmpty())
                                             continue;
                                     }
                                     nu.add(toPatch.instructions.get(j));
@@ -196,8 +205,24 @@ public class BWCoreTransformer implements IClassTransformer {
                     }
                     break;
                 }
+                case 3: {
+                    BWCore.BWCORE_LOG.info("Could find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
+                    String name_deObfs = "updateEntity";
+                    String name_src = "func_145845_h";
+                    String name_Obfs = "h";
+                    String dsc_universal = "()V";
+
+                    for (int i = 0; i < methods.size(); i++) {
+                        if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src) && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
+                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            methods.set(i, BWCoreTransformer.transformThaumcraftWandPedestal(methods.get(i)));
+                            break;
+                        }
+                    }
+                    break;
+                }
                 default: {
-                    BWCore.BWCORE_LOG.info("Could not find: " + CLASSESBEEINGTRANSFORMED[id]);
+                    BWCore.BWCORE_LOG.info("Could not find: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
                     return basicClass;
                 }
             }
@@ -207,7 +232,7 @@ public class BWCoreTransformer implements IClassTransformer {
             classNode.accept(classWriter);
             byte[] ret = classWriter.toByteArray();
             if (Arrays.hashCode(basicClass) == Arrays.hashCode(ret))
-                BWCore.BWCORE_LOG.warn("Could not patch: " + CLASSESBEEINGTRANSFORMED[id]);
+                BWCore.BWCORE_LOG.warn("Could not patch: " + BWCoreTransformer.CLASSESBEEINGTRANSFORMED[id]);
 
             return ret;
         }
