@@ -2069,8 +2069,7 @@ if(Loader.isModLoaded("Railcraft")){
 		GT_Values.RA.addLatheRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 1L), GT_OreDictUnificator.get(OrePrefixes.lens, Materials.ReinforcedGlass, 1L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Glass, 1L), 400, 16);
 		GT_Values.RA.addCutterRecipe(GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L, 0), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.ReinforcedGlass, 1L), GT_Values.NI, 1200, 30);
 	    
-		GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),   GT_Utility.getIntegratedCircuit(3),  Materials.HydrochloricAcid.getFluid(2000), Materials.IronIIIChloride.getFluid(3000), null, 360);
-        
+		 GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1), ItemList.Cell_Empty.get(3, new Object[0]),  Materials.HydrochloricAcid.getFluid(3000), Materials.IronIIIChloride.getFluid(1000),GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3), 400, 30);
 //      Organic
         //GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem("IC2", "itemBiochaff", 16L, 0), Materials.GrowthMediumRaw.getFluid(750), FluidRegistry.getFluidStack("binnie.bacteria", 750), 1200, 480, false);
         GT_Values.RA.addBrewingRecipeCustom(GT_ModHandler.getModItem("IC2", "itemBiochaff", 16L, 0), Materials.GrowthMediumRaw.getFluid(750), Materials.Bacteria.getFluid(750), 1200, 480, false);
@@ -4471,7 +4470,7 @@ if(Loader.isModLoaded("Railcraft")){
             	GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(2), Materials.Potassiumdichromate.getDustTiny(1),Materials.Dimethylbenzene.getFluid(1000), Materials.PhthalicAcid.getFluid(1000),Materials.Water.getCells(2), 100, 1920);
 
             	//Dichlorobenzidine
-            	GT_Values.RA.addChemicalRecipe(Materials.Copper.getDustTiny(1), GT_Utility.getIntegratedCircuit(1), Materials.Nitrochlorobenzene.getFluid(1000), Materials.Dichlorobenzidine.getFluid(1000),Materials.Copper.getDust(1), 200, 1920);
+            	GT_Values.RA.addChemicalRecipe(Materials.Copper.getDustTiny(1), GT_Utility.getIntegratedCircuit(1), Materials.Nitrochlorobenzene.getFluid(1000), Materials.Dichlorobenzidine.getFluid(1000),null, 200, 1920);
 
             	//Diphenyl Isophthalate
             	GT_Values.RA.addChemicalRecipe(Materials.PhthalicAcid.getCells(1),Materials.SulfuricAcid.getCells(1),Materials.Phenol.getFluid(2000), Materials.DilutedSulfuricAcid.getFluid(1000),Materials.Diphenylisophthalate.getCells(1), ItemList.Cell_Empty.get(1L),100, 7680);
