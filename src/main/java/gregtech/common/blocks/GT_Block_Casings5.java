@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -37,7 +38,11 @@ public class GT_Block_Casings5
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Fusion Machine Casing MK IV");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Superconductor Fusion Coil Block MK I");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Electrum Flux Coil Block");
+        if (Loader.isModLoaded("DraconicEvolution")){
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Awakening Draconium Coil Block");
+        }else {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Diamericium Titanium Coil Block");
+        }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dyson Ring Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Core Chamber Casing");
         
@@ -90,7 +95,11 @@ public class GT_Block_Casings5
             case 12:
                 return Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX.getIcon();
             case 13:
-                return Textures.BlockIcons.MACHINE_COIL_DIAMERICIUM.getIcon();
+            	if (Loader.isModLoaded("DraconicEvolution")){
+                return Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM.getIcon();
+            	}else {
+            	return Textures.BlockIcons.MACHINE_COIL_DIAMERICIUM.getIcon();
+            	}
             case 14:
             	return Textures.BlockIcons.MACHINE_CASING_DYSON_RING.getIcon();
             case 15:
