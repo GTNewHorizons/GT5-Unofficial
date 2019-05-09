@@ -271,6 +271,7 @@ public class ItemComb extends Item {
 		addProcessLV(tComb, Materials.Apatite, 100);
 		addProcessLV(tComb, Materials.Calcium, 80);
 		addProcessLV(tComb, Materials.Phosphate, 80);
+		addProcessHV(tComb, Materials.Pyrochlore, 50);
 		tComb = getStackForType(CombType.ASH);
 		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, ItemList.FR_Wax.get(1, new Object[0]),GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] {5000, 5000, 5000}, 128, 5);
 		//ic2
@@ -401,7 +402,7 @@ public class ItemComb extends Item {
 		addProcessLUV(tComb,Materials.Lutetium,45);
 		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Americium,1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] {1000}, 288, 30720);
 		tComb = getStackForType(CombType.NEUTRONIUM);
-		//addProcessUV(tComb,Materials.Neutronium,15);
+		addProcessUV(tComb,Materials.Neutronium,15);
 		//addProcessZPM(tComb,Materials.Americium,35);
 		GT_Values.RA.addCentrifugeRecipe(tComb, GT_Values.NI, GT_Values.NF, GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dustTiny,Materials.Neutronium,1), GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, GT_Values.NI, new int[] {500}, 364, 500000);
 		

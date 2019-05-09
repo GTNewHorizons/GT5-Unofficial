@@ -1235,7 +1235,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(SALTY.species, ALUMINIUM.species, 5);
-            tMutation.requireResource("blockLithium");
+            tMutation.requireResource("oreLithium");
         }
     },
     SALTY(GT_BranchDefinition.RAREMETAL, "Salt", true, 0xF0C8C8, 0xFAFAFA) {
@@ -1256,7 +1256,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         @Override
         protected void registerMutations() {
             IBeeMutationCustom tMutation = registerMutation(CLAY.species, ALUMINIUM.species, 5);
-            tMutation.requireResource("blockSalt");
+            tMutation.requireResource("oreSalt");
         }
     },
     
