@@ -4861,6 +4861,9 @@ if(Loader.isModLoaded("Railcraft")){
             
         }
         
+        //Pyrolyse casing
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{Materials.Steel.getPlates(4), Materials.Iron.getPlates(2),ItemList.Casing_BronzePlatedBricks.get(1L)}, GT_Values.NF, ItemList.Casing_Pyrolyse.get(1L), 200, 30);
+
         //Fix autogen recipes
         GT_Values.RA.addWiremillRecipe(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 4L), 100, 8);
         GT_Values.RA.addWiremillRecipe(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmiridium, 1L), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 8L), 200, 16);
