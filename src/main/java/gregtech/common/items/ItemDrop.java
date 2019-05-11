@@ -109,7 +109,7 @@ public class ItemDrop extends Item {
 		tDrop = getStackForType(DropType.HYDRA);
 		addProcessMV(tDrop, Materials.FierySteel.getFluid(50L), GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2), 3000, 8);
 		tDrop = getStackForType(DropType.OXYGEN);
-		addProcessLV(tDrop, new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100), GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2), 250, 1200,8);
+		addProcessLV(tDrop, Materials.Oxygen.getGas(100L), GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2), 250, 1200,8);
 		RecipeManagers.squeezerManager.addRecipe(400, new ItemStack[]{tDrop}, new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100), GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2), 30);
 
 	}
