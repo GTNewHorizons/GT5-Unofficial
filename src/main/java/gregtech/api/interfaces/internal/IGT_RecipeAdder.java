@@ -323,6 +323,9 @@ public interface IGT_RecipeAdder {
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
      */
+    
+    public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt);
+    
     public boolean addWireAssemblerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput, int aDuration, int aEUt, boolean aCleanroom);
     
     /**
