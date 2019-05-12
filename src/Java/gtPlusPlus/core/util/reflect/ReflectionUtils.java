@@ -3,10 +3,17 @@ package gtPlusPlus.core.util.reflect;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -133,8 +140,8 @@ public class ReflectionUtils {
 	public static Method getMethod(Object aObject, String aMethodName, Class[] aTypes) {
 		return getMethod(aObject.getClass(), aMethodName, aTypes);
 	}
-	
-	
+
+
 	/**
 	 * Returns a cached {@link Method} object.
 	 * @param aClass - Class containing the Method.
@@ -193,7 +200,7 @@ public class ReflectionUtils {
 			return y.get();
 		}
 	}
-	
+
 	/**
 	 * Returns a cached {@link Field} object.
 	 * @param aInstance - {@link Object} to get the field instance from.
@@ -217,6 +224,20 @@ public class ReflectionUtils {
 
 	public static boolean doesClassExist(final String classname) {
 		return isClassPresent(classname);
+	}
+
+
+	/**
+	 * Returns the class of the objects type parameter
+	 * @param o - Object to examine paramters on
+	 * @return - a Class<?> or null
+	 */
+	public static Class<?> getTypeOfGenericObject(Object o) {
+		Class<?> aTypeParam = findSuperClassParameterType(o, o.getClass(), 0);	
+		if (aTypeParam == null) {
+			aTypeParam = findSubClassParameterType(o, o.getClass(), 0);
+		}		
+		return aTypeParam;
 	}
 
 	public static void makeFieldAccessible(final Field field) {
@@ -271,7 +292,7 @@ public class ReflectionUtils {
 
 		return loaded > 0;
 	}
-	
+
 
 	public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
 		Class<?> clazz = object.getClass();
@@ -414,18 +435,18 @@ public class ReflectionUtils {
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -434,6 +455,135 @@ public class ReflectionUtils {
 	/*
 	 * Internal Magic that probably should not get exposed.
 	 */	
+
+	
+	
+	
+	
+	
+
+
+
+	/*
+	 * 
+	 * Below Code block is used for determining generic types associated with type<E>
+	 * 
+	 */
+
+
+	//https://xebia.com/blog/acessing-generic-types-at-runtime-in-java/
+	//https://www.javacodegeeks.com/2013/12/advanced-java-generics-retreiving-generic-type-arguments.html
+	public static Class<?> findSuperClassParameterType(Object instance, Class<?> classOfInterest, int parameterIndex) {
+		Class<?> subClass = instance.getClass();
+		while (classOfInterest != subClass.getSuperclass()) {
+			// instance.getClass() is no subclass of classOfInterest or instance is a direct instance of classOfInterest
+			subClass = subClass.getSuperclass();
+			if (subClass == null) {
+				return null;
+			}
+		}
+		ParameterizedType parameterizedType = (ParameterizedType) subClass.getGenericSuperclass();
+		Class<?> aReturn;
+		aReturn = (Class<?>) parameterizedType.getActualTypeArguments()[parameterIndex];
+		return aReturn;
+	}
+
+	public static Class<?> findSubClassParameterType(Object instance, Class<?> classOfInterest, int parameterIndex) {
+		Map<Type, Type> typeMap = new HashMap<Type, Type>();
+		Class<?> instanceClass = instance.getClass();
+		while (classOfInterest != instanceClass.getSuperclass()) {
+			extractTypeArguments(typeMap, instanceClass);
+			instanceClass = instanceClass.getSuperclass();
+			if (instanceClass == null) {
+				return null;
+			}
+		}
+
+		ParameterizedType parameterizedType = (ParameterizedType) instanceClass.getGenericSuperclass();
+		Type actualType = parameterizedType.getActualTypeArguments()[parameterIndex];
+		if (typeMap.containsKey(actualType)) {
+			actualType = typeMap.get(actualType);
+		}
+		if (actualType instanceof Class) {
+			return (Class<?>) actualType;
+		} else if (actualType instanceof TypeVariable) {
+			return browseNestedTypes(instance, (TypeVariable<?>) actualType);
+		} else {
+			return null;
+		}
+	}
+
+	private static void extractTypeArguments(Map<Type, Type> typeMap, Class<?> clazz) {
+		Type genericSuperclass = clazz.getGenericSuperclass();
+		if (!(genericSuperclass instanceof ParameterizedType)) {
+			return;
+		}
+
+		ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+		Type[] typeParameter = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
+		Type[] actualTypeArgument = parameterizedType.getActualTypeArguments();
+		for (int i = 0; i < typeParameter.length; i++) {
+			if(typeMap.containsKey(actualTypeArgument[i])) {
+				actualTypeArgument[i] = typeMap.get(actualTypeArgument[i]);
+			}
+			typeMap.put(typeParameter[i], actualTypeArgument[i]);
+		}
+	}
+
+	private static Class<?> browseNestedTypes(Object instance, TypeVariable<?> actualType) {
+		Class<?> instanceClass = instance.getClass();
+		List<Class<?>> nestedOuterTypes = new LinkedList<Class<?>>();
+		for (Class<?> enclosingClass = instanceClass
+				.getEnclosingClass(); enclosingClass != null; enclosingClass = enclosingClass.getEnclosingClass()) {
+			try {
+				Field this$0 = instanceClass.getDeclaredField("this$0");
+				Object outerInstance = this$0.get(instance);
+				Class<?> outerClass = outerInstance.getClass();
+				nestedOuterTypes.add(outerClass);
+				Map<Type, Type> outerTypeMap = new HashMap<Type, Type>();
+				extractTypeArguments(outerTypeMap, outerClass);
+				for (Map.Entry<Type, Type> entry : outerTypeMap.entrySet()) {
+					if (!(entry.getKey() instanceof TypeVariable)) {
+						continue;
+					}
+					TypeVariable<?> foundType = (TypeVariable<?>) entry.getKey();
+					if (foundType.getName().equals(actualType.getName())
+							&& isInnerClass(foundType.getGenericDeclaration(), actualType.getGenericDeclaration())) {
+						if (entry.getValue() instanceof Class) {
+							return (Class<?>) entry.getValue();
+						}
+						actualType = (TypeVariable<?>) entry.getValue();
+					}
+				}
+			} catch (NoSuchFieldException | IllegalAccessException e) {
+
+			}
+
+		}
+		return null;
+	}
+
+	private static boolean isInnerClass(GenericDeclaration outerDeclaration, GenericDeclaration innerDeclaration) {
+		if (!(outerDeclaration instanceof Class) || !(innerDeclaration instanceof Class)) {
+			return false;
+		}
+		Class<?> outerClass = (Class<?>) outerDeclaration;
+		Class<?> innerClass = (Class<?>) innerDeclaration;
+		while ((innerClass = innerClass.getEnclosingClass()) != null) {
+			if (innerClass == outerClass) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/*
+	 * 
+	 * End of Generics Block
+	 * 
+	 */
+
 
 
 	private static Field getField_Internal(final Class<?> clazz, final String fieldName) throws NoSuchFieldException {
@@ -525,26 +675,26 @@ public class ReflectionUtils {
 			return getMethod_Internal(superClass, aMethodName);
 		}
 	}	
-	
+
 	private static void dumpClassInfo(Class aClass) {
 		Logger.INFO("We ran into an error processing reflection in "+aClass.getName()+", dumping all data for debugging.");	
 		// Get the methods
-	    Method[] methods = aClass.getDeclaredMethods();
-	    Field[] fields = aClass.getDeclaredFields();
-	    Constructor[] consts = aClass.getDeclaredConstructors(); 
+		Method[] methods = aClass.getDeclaredMethods();
+		Field[] fields = aClass.getDeclaredFields();
+		Constructor[] consts = aClass.getDeclaredConstructors(); 
 
 		Logger.INFO("Dumping all Methods.");	
-	    for (Method method : methods) {
-		      System.out.println(method.getName()+" | "+StringUtils.getDataStringFromArray(method.getParameterTypes()));
-		    }
+		for (Method method : methods) {
+			System.out.println(method.getName()+" | "+StringUtils.getDataStringFromArray(method.getParameterTypes()));
+		}
 		Logger.INFO("Dumping all Fields.");	
-	    for (Field f : fields) {
-		      System.out.println(f.getName());
-		    }
+		for (Field f : fields) {
+			System.out.println(f.getName());
+		}
 		Logger.INFO("Dumping all Constructors.");	
-	    for (Constructor c : consts) {
-		      System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+StringUtils.getDataStringFromArray(c.getParameterTypes()));
-		    }
+		for (Constructor c : consts) {
+			System.out.println(c.getName()+" | "+c.getParameterCount()+" | "+StringUtils.getDataStringFromArray(c.getParameterTypes()));
+		}
 	}
 
 	private static Class<?> getNonPublicClass(final String className) {

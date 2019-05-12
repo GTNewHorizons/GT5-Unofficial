@@ -24,7 +24,7 @@ public class ThermalStorage implements IThermalStorage {
 	}
 
 	public ThermalStorage readFromNBT(NBTTagCompound arg0) {
-		this.thermal_energy = arg0.getInteger("Energy");
+		this.thermal_energy = arg0.getInteger("ThermalEnergy");
 		if (this.thermal_energy > this.capacity) {
 			this.thermal_energy = this.capacity;
 		}
@@ -35,7 +35,7 @@ public class ThermalStorage implements IThermalStorage {
 		if (this.thermal_energy < 0) {
 			this.thermal_energy = 0;
 		}
-		arg0.setInteger("Energy", this.thermal_energy);
+		arg0.setInteger("ThermalEnergy", this.thermal_energy);
 		return arg0;
 	}
 

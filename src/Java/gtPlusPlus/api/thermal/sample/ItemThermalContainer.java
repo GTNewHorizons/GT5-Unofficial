@@ -49,22 +49,22 @@ public class ItemThermalContainer extends Item implements IThermalContainerItem 
 		if (arg0.getTagCompound() == null) {
 			arg0.stackTagCompound = new NBTTagCompound();
 		}
-		int arg3 = arg0.stackTagCompound.getInteger("Energy");
+		int arg3 = arg0.stackTagCompound.getInteger("ThermalEnergy");
 		int arg4 = Math.min(this.capacity - arg3, Math.min(this.maxReceive, arg1));
 		if (!arg2) {
 			arg3 += arg4;
-			arg0.stackTagCompound.setInteger("Energy", arg3);
+			arg0.stackTagCompound.setInteger("ThermalEnergy", arg3);
 		}
 		return arg4;
 	}
 
 	public int extractThermalEnergy(ItemStack arg0, int arg1, boolean arg2) {
-		if (arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("Energy")) {
-			int arg3 = arg0.stackTagCompound.getInteger("Energy");
+		if (arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("ThermalEnergy")) {
+			int arg3 = arg0.stackTagCompound.getInteger("ThermalEnergy");
 			int arg4 = Math.min(arg3, Math.min(this.maxExtract, arg1));
 			if (!arg2) {
 				arg3 -= arg4;
-				arg0.stackTagCompound.setInteger("Energy", arg3);
+				arg0.stackTagCompound.setInteger("ThermalEnergy", arg3);
 			}
 			return arg4;
 		} else {
@@ -72,9 +72,9 @@ public class ItemThermalContainer extends Item implements IThermalContainerItem 
 		}
 	}
 
-	public int getEnergyStored(ItemStack arg0) {
-		return arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("Energy")
-				? arg0.stackTagCompound.getInteger("Energy")
+	public int getThermalEnergyStored(ItemStack arg0) {
+		return arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("ThermalEnergy")
+				? arg0.stackTagCompound.getInteger("ThermalEnergy")
 				: 0;
 	}
 

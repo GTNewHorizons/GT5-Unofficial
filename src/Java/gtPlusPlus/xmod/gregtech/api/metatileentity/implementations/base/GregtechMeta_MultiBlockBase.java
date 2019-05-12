@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,6 +48,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -1136,6 +1137,47 @@ GT_MetaTileEntity_MultiBlockBase {
 		ItemStack guiSlot = this.mInventory[1];		
 		return guiSlot;
 	}
+	
+	protected boolean setGUIItemStack(ItemStack aNewGuiSlotContents) {
+		boolean result = false;
+		if (this.mInventory[1] == null) {
+			this.mInventory[1] = aNewGuiSlotContents != null ? aNewGuiSlotContents.copy() : null;
+			aNewGuiSlotContents = null;
+			this.updateSlots();
+			result = true;
+		}	
+		return result;
+	}
+	
+	protected boolean clearGUIItemSlot() {
+		return setGUIItemStack(null);
+	}
+	
+
+	public ItemStack findItemInInventory(Item aSearchStack) {
+		return findItemInInventory(aSearchStack, 0);
+	}
+
+	public ItemStack findItemInInventory(Item aSearchStack, int aMeta) {
+		return findItemInInventory(ItemUtils.simpleMetaStack(aSearchStack, aMeta, 1));
+	}
+	
+	public ItemStack findItemInInventory(ItemStack aSearchStack) {
+		if (aSearchStack != null && this.mInputBusses.size() > 0) {
+			for (GT_MetaTileEntity_Hatch_InputBus bus : this.mInputBusses) {
+				if (bus != null) {
+					for (ItemStack uStack : bus.mInventory) {
+						if (uStack != null) {
+							if (aSearchStack.getClass().isInstance(uStack.getItem())) {
+								return uStack;
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void updateSlots() {
@@ -1208,6 +1250,14 @@ GT_MetaTileEntity_MultiBlockBase {
 		if (aTileEntity == null) {
 			return false;
 		}		
+		
+		//Check type
+		Class <?> aHatchType = ReflectionUtils.getTypeOfGenericObject(aList);		
+		if (!aHatchType.isInstance(aTileEntity)) {
+			return false;			
+		}
+		
+		
 		if (aList.isEmpty()) {
 			if (aTileEntity instanceof GT_MetaTileEntity_Hatch) {
 				if (GTplusplus.CURRENT_LOAD_PHASE == INIT_PHASE.STARTED) {
