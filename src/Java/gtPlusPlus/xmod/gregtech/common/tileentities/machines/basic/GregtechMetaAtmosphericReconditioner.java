@@ -127,13 +127,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	}
 
 	@Override
-	public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-		if (getBaseMetaTileEntity().isServerSide()) {
-
-		}
-	}
-
-	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {

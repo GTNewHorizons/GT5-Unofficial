@@ -1,11 +1,17 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
+import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_Hatch_Muffler_Advanced;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_Hatch_Muffler_Advanced;
 import gtPlusPlus.xmod.gregtech.common.StaticFields59;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,11 +19,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch_Muffler {
 
+	protected int SLOT_FILTER = 0;
+	
 	@Override
 	public void onConfigLoad(GT_Config aConfig) {
 		super.onConfigLoad(aConfig);
@@ -49,16 +55,15 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	}
 
 	public String[] getDescription() {
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {
-		
-		String[] mDescArray = StaticFields59.getDescriptionArray(this);
-			
-		String[] desc = new String[mDescArray.length + 4];
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK) {		
+		String[] mDescArray = StaticFields59.getDescriptionArray(this);			
+		String[] desc = new String[mDescArray.length + 5];
 		System.arraycopy(mDescArray, 0, desc, 0, mDescArray.length);
 		desc[mDescArray.length] = "DO NOT OBSTRUCT THE OUTPUT!";
-		desc[mDescArray.length + 1] = "Requires extra Air on the exhaust face";
-		desc[mDescArray.length + 2] = "Reduces Pollution to " + this.calculatePollutionReduction(100) + "%";
-		desc[mDescArray.length + 3] = "Recovers " + (105 - this.calculatePollutionReduction(100))
+		desc[mDescArray.length + 1] = "Requires 3 Air on the exhaust face";
+		desc[mDescArray.length + 2] = "Requires Air Filters";
+		desc[mDescArray.length + 3] = "Reduces Pollution to " + this.calculatePollutionReduction(100) + "%";
+		desc[mDescArray.length + 4] = "Recovers " + (105 - this.calculatePollutionReduction(100))
 				+ "% of CO2/CO/SO2";
 		return desc;
 		}
@@ -88,24 +93,33 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 			EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide())
 			return true;
-		//aBaseMetaTileEntity.openGUI(aPlayer);
+		aBaseMetaTileEntity.openGUI(aPlayer);
 		return true;
 	}
 
-	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		return null;
+
+
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new CONTAINER_Hatch_Muffler_Advanced(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
-	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		return null;
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_Hatch_Muffler_Advanced(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "machine_Charger.png");
+	}
+	
+	private boolean airCheck() {
+		if (
+		this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing()) &&
+		this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 1) &&
+		this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 2)
+		) {
+			return true;
+		}		
+		return false;
 	}
 
 	public boolean polluteEnvironment() {		
-		if (this.getBaseMetaTileEntity().getAirAtSide(this.getBaseMetaTileEntity().getFrontFacing()) && this.getBaseMetaTileEntity().getAirAtSideAndDistance(this.getBaseMetaTileEntity().getFrontFacing(), 1)) {
+		if (airCheck()) {
 			int aEmission = this.calculatePollutionReduction(10000);
 			PollutionUtils.addPollution(this.getBaseMetaTileEntity(), aEmission);			
 			//Logger.INFO("Outputting "+aEmission+"gbl");
@@ -117,15 +131,25 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 	}
 
 	public int calculatePollutionReduction(int aPollution) {
-		return (int) ((double) aPollution * Math.pow(0.64D, (double) (this.mTier - 1)));
+		double aVal1 = aPollution * Math.pow(0.64D, (double) (this.mTier - 1));
+		int aVal2 = (int) aVal1;	
+		if (!hasValidFilter()) {
+			aVal2 = 0;
+		}		
+		return aVal2;
 	}
 
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return true;
+		if (aIndex == this.SLOT_FILTER) {
+			if (isAirFilter(aStack)) {
+				return true;
+			}
+		}		
+		return false;
 	}
 	
 	public boolean hasValidFilter() {
-		return false;
+		return isAirFilter(this.mInventory[this.SLOT_FILTER]);
 	}
 
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -139,8 +163,46 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
 		if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()) {
 			this.pollutionParticles(this.getBaseMetaTileEntity().getWorld(), aParticleName);
 		}
-
 	}
+	
+	public boolean isAirFilter(ItemStack filter){
+		if (filter == null) {
+			return false;
+		}		
+		if (filter.getItem() instanceof ItemAirFilter){
+			return true;
+		}		
+		return false;
+	}
+
+	public boolean damageAirFilter(){
+		ItemStack filter = this.mInventory[this.SLOT_FILTER];
+		if (filter == null) {
+			return false;
+		}		
+
+		if (isAirFilter(filter)){
+			long currentUse = ItemAirFilter.getFilterDamage(filter);
+			//Remove broken Filter
+			if (filter.getItemDamage() == 0 && currentUse >= 50-1){			
+				this.mInventory[this.SLOT_FILTER] = null;
+				return false;				
+			}
+			else if (filter.getItemDamage() == 1 && currentUse >= 2500-1){
+				this.mInventory[this.SLOT_FILTER] = null;
+				return false;			
+			}		
+			else {
+				//Do Damage
+				ItemAirFilter.setFilterDamage(filter, currentUse+1);
+				Logger.WARNING("Filter Damage: "+currentUse);
+				return true;
+			}			
+		}		
+		return false;
+	}
+	
+	
 
 	public void pollutionParticles(World aWorld, String name) {
 		float ran1 = CORE.RANDOM.nextFloat();

@@ -4,21 +4,16 @@ import java.util.Iterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Output;
 import gregtech.api.gui.GT_Slot_Render;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
 import gtPlusPlus.core.slots.SlotLockedInput;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Large;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.item.ItemStack;
 
 public class CONTAINER_SuperChest extends GT_ContainerMetaTile_Machine {
 	
